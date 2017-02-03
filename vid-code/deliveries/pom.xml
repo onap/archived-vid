@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.openecomp.vid</groupId>
+		<artifactId>vid-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<packaging>pom</packaging>
+	<groupId>org.att.ecomp</groupId>
+	<artifactId>vid-deliveries</artifactId>
+
+	<name>VID Deliveries</name>
+	<description>ECOMP VID Deliveries</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<docker.push.registry>${docker_registry}</docker.push.registry>
+		<docker.verbose>true</docker.verbose>
+	</properties>
+
+	<build>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.16.5</version>
+
+				<configuration>
+					<verbose>true</verbose>
+					<authConfig>
+						<username>${docker.login}</username>
+						<password>${docker.password}</password>
+					</authConfig>
+
+					<apiVersion>1.23</apiVersion>
+					<images>
+						<image>
+							<name>ecomp/vid:${project.version}</name>
+							<build>
+								<cleanup>remove</cleanup>
+								<dockerFileDir>docker-files</dockerFileDir>
+								<assembly>
+									<basedir>/</basedir>
+									<user>vidadmin:vidadmin:vidadmin</user>
+									<descriptor>assembly/assembly-for-plugin.xml</descriptor>
+								</assembly>
+							</build>
+						</image>
+					</images>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>generate-image</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					
+					<execution>
+						<id>push-image</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

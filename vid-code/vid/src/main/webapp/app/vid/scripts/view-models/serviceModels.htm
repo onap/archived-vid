@@ -1,0 +1,90 @@
+<!--
+  ============LICENSE_START=======================================================
+  VID
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ============LICENSE_END=========================================================
+  -->
+<link rel="stylesheet" type="text/css" href="app/vid/styles/serviceModels.css" />
+<div popup-window class="popupContents" ngx-show="{{popup.isVisible}}" ng-cloak>
+	<div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"/>
+</div>
+<div>
+
+	<span class="statusLine" ng-class="{true:'smcVisible', false:'smcHidden'}[isSpinnerVisible]">
+			<img src="app/vid/images/spinner.gif"></img>
+			</span>
+			<span class="statusLine" ng-class="{true:'progVisible', false:'progHidden'}[isProgressVisible]">
+			<label>Status:</label><span class="status"><span ng-show="error"><font color='red'><b>Error: </b></font></span>{{status}}</span>
+		</span>
+	<br><br>
+
+	<div class="fn-ebz-container">
+		         Filter:
+		          <input class="fn-ebz-text" type="text" ng-model="searchString" size="20" style="width: 250px;">
+	</div>
+
+	<h1 class="heading1" style="margin-top:20px;">Browse SDC Service Models</h1>
+	<div style="margin-top:30px" ng-init="getServiceModels();">
+		
+		<table att-table table-data="services" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		    <thead  att-table-row type="header">
+				<tr>
+					<th att-table-header key="action">Action</th>
+					<th att-table-header key="uuid">UUID</th>
+					<th att-table-header key="invariantUUID">Invariant UUID</th>
+					<th att-table-header default-sort="A" key="name">Name</th>
+		            <th att-table-header key="version">Version</th>
+		            <th att-table-header key="category">Category</th>
+		            <th att-table-header key="distributionStatus">Distribution Status</th>
+		            <th att-table-header key="lastUpdaterUserId">Last Updated By</th>
+		            <th att-table-header key="toscaModelUrl">Tosca Model</th>
+		        </tr>
+		    </thead>
+		    <tbody att-table-row type="body" row-repeat="service in services">
+		        <tr>
+		        	<td att-table-body ><button type=button ng-click="deployService(service)" att-button btn-type="primary" size="small">Deploy</button></td>
+	            	<td att-table-body ng-bind="service['uuid']"></td>
+	            	<td att-table-body ng-bind="service['invariantUUID']"></td>
+	            	<td att-table-body ng-bind="service['name']"></td>
+	            	<td att-table-body ng-bind="service['version']"></td>
+	            	<td att-table-body ng-bind="service['category']"></td>
+	            	<td att-table-body ng-bind="service['distributionStatus']"></td>
+	            	<td att-table-body ng-bind="service['lastUpdaterUserId']"></td>
+	            	<td att-table-body ng-bind="service['toscaModelUrl']"></td>
+		        </tr>     
+		    </tbody>	  
+		</table>
+		<table width='100%'>
+			<tr>
+					<td width='33%' valign='middle'>
+						<span style="cursor: pointer" ng-if="currentPage>1"><button att-button size="small" ng-click="prevPage();">&lt; prev page</button></span>
+					</td>
+					<td width='33%' valign='middle'>
+						Jump to page:
+		          		<input class="fn-ebz-text" type="text" ng-model="currentPage" size="5" style="width: 47px;">
+		    			Results per page: <span style="cursor: pointer" ng-click="viewPerPage = 10" ng-style="viewPerPage === 10 && {'textDecoration':'underline','text-color':'black'}">10</span> 
+	    				| <span style="cursor: pointer" ng-click="viewPerPage = 25" ng-style="viewPerPage === 25 && {'textDecoration':'underline','text-color':'black'}">25</span> 
+	    				| <span style="cursor: pointer" ng-click="viewPerPage = 50" ng-style="viewPerPage === 50 && {'textDecoration':'underline','text-color':'black'}">50</span> 
+	    			</td>
+	    			<td width='34%' align='right' valign='middle'>
+	    			 	<span style="cursor: pointer" ng-if="currentPage<totalPage"><button att-button ng-click="nextPage();">next page &gt;</button></span>
+					</td>
+			</tr>
+		</table>
+		
+	</div>
+	</div>
+

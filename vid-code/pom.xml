@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.openecomp.vid</groupId>
+	<artifactId>vid-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>VID Parent Project</name>
+	
+	<modules>
+		<module>vid</module>
+		<module>deliveries</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>vid-releases</id>
+			<name>VID Release Repository</name>
+			<url>https://ecomp-nexus:8443/repository/maven-releases</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>vid-snapshots</id>
+			<name>VID Snapshot Repository</name>
+			<url>https://ecomp-nexus:8443/repository/maven-snapshots</url>
+		</snapshotRepository>
+		<site>
+			<id>vid-javadoc</id>
+			<url>dav:https://ecomp-nexus:8443/repository/vid-javadoc/${project.version}</url>
+		</site>
+	</distributionManagement>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>vid-3rd-party</id>
+			<name>VID 3rd Party Repository</name>
+			<url>https://ecomp-nexus:8443/maven-central</url>
+		</pluginRepository>
+	</pluginRepositories>
+	
+	<repositories>
+		<repository>
+			<id>vid-3rd-party</id>
+			<name>VID 3rd Party Repository</name>
+			<url>https://ecomp-nexus:8443/maven-central</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+		 <!-- license plugin for open source -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.9</version>
+                <configuration>
+                    <licenseName>apache_v2</licenseName>
+                    <inceptionYear>2016</inceptionYear>
+                    <organizationName>AT&amp;T</organizationName>
+                    <projectName>VID</projectName>
+                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage> 
+     				<processStartTag>========LICENSE_START===========</processStartTag>
+     				<processEndTag>============LICENSE_END===========</processEndTag>
+                    <roots>
+                        <root>src/main/java</root>
+                    </roots>
+                    <excludes>
+                        <exclude>*.png</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+
+				<configuration>
+					<debug>true</debug>
+					<compilerArgument>-Xlint</compilerArgument>
+					<verbose>true</verbose>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<!-- added for javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.6</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-webdav-jackrabbit</artifactId>
+						<version>2.10</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		
+	</build>
+	<!-- added for javadoc -->
+	<reporting>
+		<plugins>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
+				<configuration>
+					<failOnError>false</failOnError>
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6</version>
+					</docletArtifact>
+					<additionalparam>-views</additionalparam>
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<version>1.0.0</version>
+</project>

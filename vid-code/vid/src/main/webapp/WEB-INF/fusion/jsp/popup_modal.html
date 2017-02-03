@@ -1,0 +1,324 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+
+<script type="text/ng-template" id="modal_informative.html">
+       <div class="modal__informative font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Success!</h2>
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content" style="white-space: pre-wrap;">{{message.text}}</div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Dismiss</button>
+            </div>
+        </div>
+    </script>
+   
+   <script type="text/ng-template" id="modal_message.html">
+       <div class="modal__informative font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Attention!</h2>
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content" style="white-space: pre-wrap;">{{message.text}}</div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Dismiss</button>
+            </div>
+        </div>
+    </script>
+   
+    <script type="text/ng-template" id="delete_informative.html">
+   <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are you sure you want to delete the profile?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+   <script type="text/ng-template" id="email_report_informative.html">
+   <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Mailing your report...</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              The report will be sent to your email soon!
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Ok</button>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="delete_authCode.html">
+   <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are you sure you want to delete the Authorization Code(s)?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+     <script type="text/ng-template" id="delete_Schedule.html">
+   		<div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are You Sure You Want to Delete This Schedule(s) ?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="alternate_number.html">
+   		<div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are You Sure You Want to Delete This Number ?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+     <script type="text/ng-template" id="manage_device.html">
+   		<div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are You Sure You Want to Delete This Line Port ?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="delete_virtualOnNet.html">
+  		 <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are You Sure You Want to Delete this Virtual On-Net User?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="delete_user_meet_me_conference.html">
+   		<div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are You Sure You Want to Delete this Conference?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="confirmation_informative.html">
+   		<div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">{{message.title}}</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content" style="white-space: pre-wrap;">{{message.text}}<br/></div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div> 
+        </div>
+    </script>
+   
+    <script type="text/ng-template" id="confirmation_for_delete.html">
+   		<div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name"> <h2 class="font-showcase-font-name">Are You Sure You Want to Delete This {{message.title}}?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">Deletions are not reversible. {{message.text}}<br/></div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div> 
+        </div>
+    </script>
+   
+   <script type="text/ng-template" id="modal_warning.html">
+   <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Unable to process your request!</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+			<div class="modal__content" style="white-space: pre-wrap;">Unable to process your request.   <br/>{{message.text}}<br/>
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Dismiss</button>
+            </div>
+        </div>
+    </script>
+    
+    <script type="text/ng-template" id="modal_warning_message.html">
+   <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Warning</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+			<div class="modal__content" style="white-space: pre-wrap;">{{message.text}}<br/>
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Dismiss</button>
+            </div>
+        </div>
+    </script>
+
+
+    
+    <script type="text/ng-template" id="modal_prompt.html">
+       <div class="modal__warning font-showcase">
+          <div class="modal__header">
+              <h2 class="font-showcase-font-name">Unable to process your request. </h2>
+              <i class="icon-circle-action-close close-modal modal__header--close"  ng-click="$dismiss()"></i>
+              
+          </div>
+          <div class="divider-container"><hr> </div>      
+          <div class="modal__content">
+              Unable to process your request.   <br/> {{message.text}}
+          </div>
+   	</div>
+    </script>
+     <script type="text/ng-template" id="delete_device.html">
+        <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are You Sure You Want to Delete This Device?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+     <script type="text/ng-template" id="delete_multiple_device.html">
+        <div class="modal__warning font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name">Are You Sure You Want to Delete The Device(s)?</h2>
+				
+                <div class="modal__header--icon"></div>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">
+              Deletions are not reversible.<br/> {{message.text}}
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$close()">Yes</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="$dismiss()">Cancel</button>
+            </div>
+        </div>
+    </script>
+
+<script>
+
+//.controller('modalpopupController', function ($scope, $modalInstance){
+var modalpopupController =  function ($scope, $modalInstance, message){
+	
+	$scope.message = message;
+	
+	
+	$scope.hello = function () {
+        $modalInstance.close($scope.digitPattern);
+    };
+	$modalInstance.ok = function() {
+        //add the  ok functionality
+        alert("Logout");        
+    };
+    $modalInstance.cancel = function() {
+        //add the cancel functionality
+        alert("Keep Log in");
+    };
+    $modalInstance.cancelbutton = function() {
+        //add the cancel functionality
+        alert("Modal Waring popup close event");
+    };
+}
+
+
+</script>

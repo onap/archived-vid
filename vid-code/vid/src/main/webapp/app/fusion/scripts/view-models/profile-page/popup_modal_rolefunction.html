@@ -1,0 +1,46 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+<script type="text/ng-template" id="edit_role_function_popup.html">
+          <div class="modal__informative font-showcase" style="width:400px;">
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name" style="width: 500px;">{{label}}</h2>
+            </div>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">           	 	
+					<div class="fn-ebz-container" >
+					<label class="fn-ebz-text-label"><sup><b>*</b></sup>Name:</label><br>
+					<input type="text" class="fn-ebz-text" ng-model="editRoleFunction.name"
+						maxlength="30" /> 
+					</div>
+					<br/>
+					<div class="fn-ebz-container" >
+					<label class="fn-ebz-text-label"><sup><b>*</b></sup>Code:</label><br>
+					<input type="text" class="fn-ebz-text" ng-model="editRoleFunction.code" ng-disabled="disableCd"
+						maxlength="30" /> 
+					</div>
+            </div>
+            <div class="modal__footer">
+                <button class="button button--primary button--small" herf="javascript:void(0)" ng-click="saveRoleFunction(editRoleFunction);">Save</button>
+				<button class="button button--primary button--small" herf="javascript:void(0)" ng-click="close()">Close</button>
+            </div>
+        </div>
+</script>
+
+

@@ -1,0 +1,274 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+
+<script type="text/ng-template" id="role_functions_popup.html">
+          <div class="modal__informative font-showcase" style="width:700px;height:500px;overflow:scroll">
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name" style="width: 500px;">Select Role Functions</h2>
+            </div>
+            <button align="right" class="button button--primary button--small" herf="javascript:void(0)" ng-click="close()">Close</button>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">           	 	
+				<table table-data="availableRoleFunctions" att-table>
+					<thead att-table-row type="header">
+						<tr>
+							<th att-table-header sortable="false" width="10%"> </th>
+							<th att-table-header sortable="false" width="90%">Role Function</th>
+						</tr>
+					</thead>
+					<tbody att-table-row type="body" row-repeat="availableRoleFunction in availableRoleFunctions" style="max-height: 980px;" >
+					  <tr>
+					  
+						<td width="10%">
+							<div ng-click="toggleRoleFunction(availableRoleFunction.selected,availableRoleFunction);">
+							<input type="checkbox" ng-model="availableRoleFunction.selected" att-toggle-main>
+							</div>
+						</td>
+						<td width="90%">{{ availableRoleFunction.name }}</td>
+						
+					  </tr>
+					</tbody>
+				</table>	
+            </div>
+        </div>
+</script>
+
+
+<script type="text/ng-template" id="child_roles_popup.html">
+          <div class="modal__informative font-showcase" style="width:700px;height:500px;overflow:scroll">
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name" style="width: 500px;">Select Child Roles</h2>
+            </div>
+            <button align="right" class="button button--primary button--small" herf="javascript:void(0)" ng-click="close()">Close</button>
+            <div class="divider-container"><hr> </div>      
+            <div class="modal__content">           	 	
+					<table table-data="availableRoles" att-table>
+						<thead att-table-row type="header">
+							<tr>
+								<th att-table-header sortable="false" width="10%"> </th>
+								<th att-table-header sortable="false" width="90%">Role</th>
+							</tr>
+						</thead>
+						<tbody att-table-row type="body" row-repeat="availableRole in availableRoles" style="max-height: 980px;" >
+							<tr>
+							<td att-table-body width="10%">
+								<div ng-click="toggleChildRole(availableRole.selected,availableRole);">
+								<input type="checkbox" ng-model="availableRole.selected" att-toggle-main>
+								</div>
+							</td>
+							<td att-table-body width="90%">{{ availableRole.name }}</td>
+							</tr>
+						</tbody>
+					</table>	
+            </div>
+        </div>
+</script>
+
+<script>
+
+var rolepopupController =  function ($scope, $modalInstance, role,modalService){
+	$scope.role = role;
+	
+	if($scope.role.childRoles==null){
+		$scope.role.childRoles=[];
+	}
+	
+	$scope.ociavailableRoles=${availableRoles};
+	console.log($scope.ociavailableRoles);
+	$scope.availableRoles=[];
+	if($scope.ociavailableRoles)
+		$.each($scope.ociavailableRoles, function(i, a){ 
+			var availableRole = a;
+			availableRole.selected = false;
+			if($scope.role.childRoles){
+		    $.each($scope.role.childRoles, function(j, b){ 
+		    	if(a.id === b.id) {
+		    		availableRole.selected = true;
+		    	}
+		    });
+			};
+		    $scope.availableRoles.push(availableRole);	    
+		});	
+		;
+	
+	$scope.ociavailableRoleFunctions=${availableRoleFunctions};
+	
+	$scope.availableRoleFunctions = []; 
+	if($scope.ociavailableRoleFunctions)
+		$.each($scope.ociavailableRoleFunctions, function(i, a){ 
+			var availableRoleFunction = a;
+			availableRoleFunction.selected = false;
+		    $.each($scope.role.roleFunctions, function(j, b){ 
+		    	if(a.code === b.code) {
+		    		availableRoleFunction.selected = true;
+		    	}
+		    });
+		    $scope.availableRoleFunctions.push(availableRoleFunction);	    
+		});	
+		;
+	
+		$scope.toggleRoleFunction = function(selected,availableRoleFunction) {
+			//alert('toggleRole: '+selected);
+			 
+			if(!selected) {
+				//remove role function
+				if(role.id==null){
+					var index = $scope.role.roleFunctions.indexOf(availableRoleFunction);
+				 	if(index>=0)
+						$scope.role.roleFunctions.splice(index, 1);
+					return;
+				}
+				var uuu = "role/removeRoleFunction.htm?role_id=${param.role_id}";
+				modalService.popupConfirmWinWithCancel("Confirm","You are about to remove the role function "+availableRoleFunction.name+" from the role for "+$scope.role.name+". Do you want to continue?",
+		    			function(){
+								var postData={roleFunction:availableRoleFunction};
+							  	  $.ajax({
+							  		 type : 'POST',
+							  		 url : uuu,
+							  		 dataType: 'json',
+							  		 contentType: 'application/json',
+							  		 data: JSON.stringify(postData),
+							  		 success : function(data){
+							  			$scope.$apply(function(){$scope.role=data.role;}); 
+									 },
+									 error : function(data){
+										 modalService.showFailure("Fail","Error while saving.");
+									 }
+							  	  });
+					
+		    	},
+		    	function(){
+		    		availableRoleFunction.selected=!availableRoleFunction.selected;
+		    	})
+				
+			} else {
+				//add role function
+				if(role.id==null){
+					$scope.role.roleFunctions.push(availableRoleFunction);
+					return;
+				}
+				var uuu = "role/addRoleFunction.htm?role_id=${param.role_id}";
+				modalService.popupConfirmWinWithCancel("Confirm","You are about to add the role function "+availableRoleFunction.name+" to the role for "+$scope.role.name+". Do you want to continue?",
+		    			function(){
+					  var postData={roleFunction:availableRoleFunction};
+				  	  $.ajax({
+				  		 type : 'POST',
+				  		 url : uuu,
+				  		 dataType: 'json',
+				  		 contentType: 'application/json',
+				  		 data: JSON.stringify(postData),
+				  		 success : function(data){
+				  			$scope.$apply(function(){$scope.role=data.role;}); 
+						 },
+						 error : function(data){
+							 modalService.showFailure("Fail","Error while saving.");
+						 }
+				  	  });
+					
+		    	},
+		    	function(){
+		    		availableRoleFunction.selected=!availableRoleFunction.selected;
+		    	})
+				
+			}
+			
+			  
+	};
+	
+	$scope.toggleChildRole = function(selected,availableRole) {
+		//alert('toggleRole: '+selected);
+
+		if(!selected) {
+			//remove role
+			if(role.id==null){
+				var index = $scope.role.childRoles.indexOf(availableRole);
+			 	if(index>=0)
+					$scope.role.childRoles.splice(index, 1);
+				return;
+			}
+			var uuu = "role/removeChildRole.htm?role_id=${param.role_id}";
+			modalService.popupConfirmWinWithCancel("Confirm","You are about to remove the child role "+availableRole.name+" from the role for "+$scope.role.name+". Do you want to continue?",
+	    			function(){
+						var postData={childRole:availableRole};
+					  	  $.ajax({
+					  		 type : 'POST',
+					  		 url : uuu,
+					  		 dataType: 'json',
+					  		 contentType: 'application/json',
+					  		 data: JSON.stringify(postData),
+					  		 success : function(data){
+					  			 console.log('role',data.role);
+					  			 $scope.$apply(function(){$scope.role=data.role;}); 
+							 },
+							 error : function(data){
+								 modalService.showFailure("Fail","Error while saving.");
+							 }
+					  	  });
+				
+	    	},
+	    	function(){
+	    		 availableRole.selected=true;			
+	    	})
+			
+		} else {
+			//add role
+			if(role.id==null){
+				$scope.role.childRoles.push(availableRole);
+				return;
+			}
+			var uuu = "role/addChildRole.htm?role_id=${param.role_id}";
+			modalService.popupConfirmWinWithCancel("Confirm","You are about to add the child role "+availableRole.name+" to the role for "+$scope.role.name+". Do you want to continue?",
+	    			function(){
+				  var postData={childRole:availableRole};
+			  	  $.ajax({
+			  		 type : 'POST',
+			  		 url : uuu,
+			  		 dataType: 'json',
+			  		 contentType: 'application/json',
+			  		 data: JSON.stringify(postData),
+			  		 success : function(data){
+			  			$scope.$apply(function(){$scope.role=data.role;}); 
+					 },
+					 error : function(data){
+						 modalService.showFailure("Fail","Error while saving.");
+					 }
+			  	});
+				
+	    	},
+	    	function(){
+	    		availableRole.selected=false;
+	    	})
+			
+			
+		}
+		
+		  
+	};
+
+	
+	$scope.close = function() {
+		console.log('role', $scope.role);
+		$modalInstance.close({role:$scope.role});
+	};
+	
+}
+
+
+</script>

@@ -1,0 +1,13 @@
+{
+    "description": "aggregates the context, configuraiton and detailed parameters associated with the request into a single structure",
+    "properties": {
+        "cloudConfiguration": {},
+        "modelInfo": {},
+        "relatedModelList": {},
+        "requestInfo": {},
+        "requestParameters": {},
+        "subscriberInfo": {}
+    },
+    "type": "object"
+}
+

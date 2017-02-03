@@ -1,0 +1,362 @@
+  input, textarea, select, div {
+    font-family: Arial;
+    font-size: 11px;
+    font-weight: normal;
+  }
+  
+  form {
+    margin-top: 5px;  
+  }
+  
+
+  .applicationWindow { border-width:  0px 0px 1px 0px;
+                       border-style:  solid;
+                       border-color:  #959595;
+                       box-shadow:    inset 0 0 10px #000000;
+                       margin-top:    10px;
+                       margin-bottom: 10px;
+                       margin-left:   10px;
+                       margin-right:  10px;
+  }  
+
+  .feedbackMessage  { width: 99%;
+  					  font-family: Arial;
+    				  font-size: 11px;
+					  color: #1f1f1f;
+                      padding: 3px;
+                      border: 1px #eeb420 solid;
+                      margin: 3px;
+                      background: #fff9e5;
+                    }                      
+
+  .menubar {
+    border-width: 0px 0px 0px 1px; border-style: solid; border-color: #959595;
+  }
+
+  .footer {
+    /*clear: both;*/
+    border-width: 0px 1px 0px 1px; border-style: solid; border-color: #959595;
+  	font-family: Verdana,Arial,Helvetica, sans-serif;
+    font-size: 9px;    
+    padding:   10px 10px 30px 10px;
+    background: white;
+  }
+
+  .pageTitle {
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;    
+  }
+
+  .content {
+	border-width:  0px 1px 0px 1px;
+    border-style:  solid;
+    border-color:  #959595;
+  	font-family: Arial;
+    font-size: 11px;
+    padding: 5px;
+    background:   white;
+    /*height: 600px;*/
+  }
+
+  .popupContent {
+    font-family: Arial;
+    font-size: 11px;
+    padding: 3px;
+  }
+
+  .logo {
+	border-width:  0px 1px 0px 1px;
+    border-style:  solid;
+    border-color:  #959595;
+  	text-align: right;
+  }
+
+  .sep {
+    border: 1px solid black
+  }
+
+  .attLogo		{  /*position: relative;*/
+                   float:left;
+                   padding-top: 25px;
+                   padding-left: 25px;   
+                }
+
+  .applicationLogo		{ float:right; 
+                          padding-top: 25px;
+                          padding-right: 25px;                          
+                        }
+
+  .applinkWhite		{ font-family: Arial;
+                          font-size: 13px;
+                          font-weight: 900;
+                          color: #FFFFFF;
+                          text-decoration: none; }
+
+  .terms                { font-family: Verdana, Arial, Helvetica, sans-serif;
+                          font-size: 9px;
+                        }
+
+  .broadcastMessage     { color: red; }
+  .broadcastMessageList { color: red; }
+
+  .button               {  
+					      margin: 5px 1px 5px 1px;
+                          padding: 3px; }
+
+  .toolbarbutton:hover {
+    color:#005491;
+  }
+
+  .headerText		{ font-family: Arial;
+                      font-size: 15px;
+			          font-weight: 700;
+                      color: #000000; }
+
+  .headerBackground	{ background: #336699; }
+
+  .errorMessageText { font-family: Arial;
+                      font-size: 11px;
+                      font-weight: bold; 
+                      color: red;   }
+   
+
+  .normalText		{ font-family: Arial;
+                      font-size: 11px;
+                      color: #000000; }
+
+  .normalTextRed	{ font-family: Arial;
+                      font-size: 11px;
+                      color: red; }
+
+
+  .smallNormalText	{ font-family: Arial;
+                      font-size: 9px;
+                      color: #000000; }
+
+  .tableBorder          { border:1px outset teal }
+
+  .validationError      { background: #b9eaff; }
+
+  .templatebody         {  
+  						  background: url(../images/body_graphic.jpg) repeat-x;
+                          /*margin: 40px 80px 40px 80px;*/  						   
+  						}
+
+  /*--------------------- General Content ------------------------------------*/	  
+
+  .relative {
+    position:relative;
+  }
+  
+  .clear{
+    clear:both;
+  } 
+
+  .left {
+    float:      left;
+  } 
+
+  .leftCentered{
+    float:      left;
+    text-align: center;
+  } 
+
+  .right {
+    float:      right;
+  } 
+
+  .rightAligned{
+    text-align: right;
+  } 
+
+  .centered {
+    text-align: center;
+    align:      center;
+  } 
+
+
+  .noWrap{
+  	white-space:nowrap;
+  }
+
+  .disabled {
+	color:gray;
+	cursor:hand;
+  }
+
+  /*--------------------- Tab styles -------------------------------------*/
+  
+  .current {
+	font-weight: bold;
+  	border-width: 1px 1px 1px 1px; 
+  	border-color: silver;
+  	border-style: solid;
+  }
+ 
+  .subTab {
+	font-weight:bold;
+	font-family: Arial;
+	font-size:   11px;
+	color:     #0F3B82;
+  }
+  
+
+  /*--------------------- Grid styles ------------------------------------*/	  
+
+  /* Grid navigation and header styles */
+	.gridFilterLabel {font-size:   7pt;
+	                  font-align:  justify;
+	                  font-weight: bold;
+	                  display:     block;}
+
+    .gridFilterText  {height:     17px;
+	                  font-size:  8pt;
+	                  width:      60%;
+	                  font-align: justify;}
+
+    .gridNavigationBar { font-family:Arial,Verdana;
+		                  font-size:11px;
+		                  font-weight:normal;
+		                  color:#000;
+                          margin: 0px;
+                          width: 100%;
+                          vertical-align: middle;
+    }
+    
+    .gridNavigationBar .navLinks { float: left;
+                                   margin-right:15px;
+                                   padding-top: 2px;
+                                   height:      19px;
+                                   line-height: 19px;                                   
+                                 }
+
+    .gridNavigationBar .pageControls  { float:        left;
+                                        margin-right: 15px;
+                                        height:       19px;  
+                                        line-height:  19px;                                        
+                                      }
+
+    .gridNavigationBar .pageControls input { font-size:      8pt;
+									         height:         17px;
+									         vertical-align: middle;                                    
+                                           }
+
+    .gridNavigationBar .pageInfo {  float:          right; 
+                                    vertical-align: middle;
+                                    height:         19px;
+                                    line-height:    19px;
+                                 }
+
+    .gridNavigationBar .pageInfo input { font-size:      8pt;
+								         height:         17px;
+								         vertical-align: middle;                                    
+                                       }
+
+
+    .gridNavigationBar span { padding: 3px; }
+
+    .gridNavigationBar a {
+	  text-decoration:underline;
+	  color:#000;
+	  font-weight:normal;
+	}
+
+    .gridNavigationBar img { vertical-align: middle; }
+  
+    .gridBulkUpdateRow {
+      height: 35px; 
+      line-height: 35px;
+    } 
+
+    .gridBulkUpdateRow input {
+      vertical-align: middle;
+    } 
+
+
+    /* dummy class used to lock the form elements of a grid - ex. bulk transaction processing */
+    .alwaysEnabled {}
+
+    .hidden {
+	  display: none;
+    }
+  
+    .selectedPage {
+		background-color:#C4DFFB;
+		color:          white;
+        border-style:   solid;
+        border-width:   1px;
+        border-color:  gray;
+        padding-left:   3px;
+        padding-right:  3px;
+		vertical-align: middle;
+	}
+
+    .selectedRow{
+	  /*background-color:#C4DFFB;*/
+	}
+	
+	/* Action Item styles */
+	.actionList {
+	  margin-left:  -20px;
+	  margin-right: -10px;
+	  padding-left:   5px;
+	}
+
+    .actionList li {
+	  float:left;
+	  padding-left:  3px;
+	  padding-right: 3px;
+	}
+	
+	.actionList li a {
+	  text-decoration:none;
+	  color:#000;
+	}
+
+	/* Filter Operator List styles */
+	
+	.filterList {
+	  margin: 0px;
+	}
+
+    .filterList li {
+      list-style-type: none;
+      padding:3px 3px 3px 2px;
+	  cursor:hand;
+	  font-size:11px;
+	}
+
+    .filterList li:hover {
+      background: #404040;      
+    }
+
+    .filterList li a {
+      color: #000;
+	  text-decoration: none;
+    }
+
+    .filterList li:hover a {
+	  color: white;
+    }
+
+    .filterList li a:hover {
+	  text-decoration: none;
+	  color: white;
+    }
+
+	.filterListItem a {
+	  text-decoration:none;
+	  padding:3px 2px 3px 2px;
+	}
+
+
+  /*---------------------- Customized ZK Styles ------------------------------*/
+  
+  .z-datebox input, .z-timebox input {
+    font-family: Arial;
+    font-size: 11px;
+    height: 15px;
+    margin-top:1px;  	
+  }

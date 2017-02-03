@@ -1,0 +1,35 @@
+<style>
+.grid {
+  width: 100%;
+  height: 400px;
+}
+.grid .ui-grid-header-cell {
+  text-align:center;
+}
+.icon-add-widget:before {
+    content: "\e717";
+}
+</style>
+<h1 class="heading1">Report search</h1>
+<br>
+<div >
+<label class="pull-left" style="margin-top: 10px;margin-right: 5px;">Report Id:</label>
+<div class="form-field form-field__glued pull-left size-onefifth" style="width: 13% !important;">       
+     <div att-search="operatorsRepId" ng-model="operatorRepId" placeholder="Select"></div> 
+</div> 
+<div class="form-field form-field__glued pull-left size-onefifth" style="width:13% !important;">
+    <input ng-model="reportId" type="text" placeholder="Search value?" style="border-radius:0px 5px 5px 0px">                       
+</div>
+
+<label class="pull-left" style="margin-top: 10px;margin-left: 40px;margin-right: 5px;">Report Name:</label>
+<div class="form-field form-field__glued pull-left size-onefifth" style="width: 13% !important;">       
+     <div att-search="operatorsRepName" ng-model="operatorRepName" placeholder="Select"></div> 
+</div> 
+<div class="form-field form-field__glued pull-left size-onefifth" style="width:13% !important;">
+    <input ng-model="reportName" type="text" placeholder="Search value?" style="border-radius:0px 5px 5px 0px">                       
+</div>
+<button type="submit" ng-click="runReport()" att-button btn-type="primary" style="margin-top: 10px;margin-left: 40px;" size="small" title='Submit'>Submit</button>
+
+</div> 
+<br>
+<div id="grid1" ui-grid="gridOptions" ui-grid-pagination ui-grid-resize-columns class="grid"></div>

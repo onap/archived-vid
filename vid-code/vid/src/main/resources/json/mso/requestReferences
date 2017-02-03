@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "provides the instanceId and requestId associated with the request",
+			"type": "object",
+			"properties": { 
+		        "instanceId": {
+			        "description": "UUID for the service instance",
+			        "type": "string",
+					"pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+				},
+		        "requestId": {
+			        "description": "UUID for the request",
+			        "type": "string",
+					"pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+				}
+			},
+			"required": [ "instanceId", "requestId" ]
+}
