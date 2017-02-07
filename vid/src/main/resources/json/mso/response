@@ -1,0 +1,13 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "response structure",
+	"type": "object",
+	"code": {
+			"description": "Return code",
+			"type": "string"
+	},
+	"message": {
+		"description": "Result message",
+			"type": "string"
+	}
+}

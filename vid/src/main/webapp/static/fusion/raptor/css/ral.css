@@ -1,0 +1,1437 @@
+/*
+Reusable Asset Library - CSS Positioning Version (v3.2)
+Release Date: 1/26/07
+Core Styles
+*/
+
+/*------------------------General-----------------------------------*/
+body{
+background:#FFF;
+font-family:Arial,Verdana,Geneva,Helvetica,sans-serif;
+font-size:.71em;
+padding:0;
+margin:0px;
+margin-right:1px;
+border:0;
+}
+.nested{
+border:0;
+padding:0;
+margin:0;
+}
+.btm{
+vertical-align:bottom !important;
+}
+.nowrap{
+white-space:nowrap;
+}
+.top, .top td{
+vertical-align:top !important;
+}
+table{ /*IE5.5 hack*/
+font-size:100%;
+}
+td,tr,th{ /*IE5.5 hack*/
+font-size:inherit;
+}
+.hide{
+display:none !important;
+}
+.mid {
+vertical-align:middle !important;
+}
+.value {
+text-align:right;
+}
+.show{
+display:block !important;
+}
+ul{
+padding:0;
+margin:0;
+border:0;
+}
+.indent{
+margin-left:10px !important;
+}
+.code{
+font-family: Courier,serif;
+}
+p{
+padding:5px 0;
+margin:0;
+border:0;
+}
+h1{
+font-size:150%;
+margin:2px 0px;
+display:block;
+position:relative;
+clear:both;
+}
+h2{
+font-size:130%;
+margin:2px 0px;
+clear:both;
+position:relative;
+display:block;
+}
+h2.blue{
+position:relative;
+top:0;
+left:0;
+font-size:100%;
+background:#369;
+color:#FFF;
+margin:0;
+margin-top:10px;
+padding:2px 5px 2px 8px;
+height:14px;
+width:auto;
+vertical-align:middle;
+}
+h3{
+font-size:120%;
+clear:both;
+margin:2px 0px;
+position:relative;
+display:block;
+}
+h4 {
+font-size:100%;
+clear:both;
+margin:2px 0px;
+position:relative;
+display:block;
+}
+
+/*----------------------Horizontal Rules----------------------------*/
+.hrule-blue {
+height:1px;
+border-top:1px #369 solid;
+margin-top:6px;
+margin-bottom:2px;
+line-height:0px;
+padding:0;
+clear:both;
+}
+hr{
+border:0;
+height:1px;
+margin:10px 0;
+background:#CCC;
+width:100%;
+clear:both;
+}
+
+/*--------------Primay Window Banner--------------------------------*/
+#tBAN{
+padding:0;
+border:0;
+margin:0;
+position:relative;
+background:no-repeat url(../images/swoosh.gif) 100% 0;
+min-width:800px;
+display:table;	/*For vertical centering in standards complaint browsers*/
+height:69px;
+overflow-x:hidden; /*Remove horizonal scroll in IE*/
+}
+#banner-spacer{
+display:block;
+width:650px;
+height:1px;
+position:relative;
+top:-1px;
+}
+#tBAN #logo{
+border:0;
+padding:0;
+margin:0;
+top:10px;
+position:absolute;
+}
+#tBAN #company {
+color:#FFF;
+font-weight:bold;
+font-size:10pt;
+padding-right:10px;
+_position:absolute;  	/*IE Hack for vertical centering*/
+_top:48%;				/*IE Hack for vertical centering*/
+display:table-cell; 	/*For standards complaint browsers*/
+vertical-align:middle;	/*For standards complaint browsers*/
+text-align:right;
+width:99%;
+}
+#tBAN #txt{
+_position:relative;  	/*IE Hack for vertical centering*/
+_top:-48%;				/*IE Hack for vertical centering*/
+width:205px; 
+float:right;
+overflow:hidden;
+}
+#appName{
+position:absolute;
+left:112px;
+top:45px;
+color:#09C;
+font-size:11pt;
+font-weight:bold;
+white-space:nowrap;
+}
+
+/*---------------------Secondary Window Banner----------------------*/
+#tSWB{
+background:#FFF;
+height:69px;
+border-bottom:2px #369 solid;
+}
+#tSWB #appName{
+top:35px;
+}
+
+
+/*--------------------Secondary Windows (General)-------------------*/
+.pHW{
+background:#FFC;
+}
+.pSW{
+background:#FFF;
+}
+.pSW .tPH,.pHW .tPH{
+margin:0;
+}
+/*--------------------mIC: Introductory Copy------------------------*/
+p.mIC{
+padding:0;
+margin:0;
+}
+
+/*-----------------------mQH: Quick Help----------------------------*/
+.qh-link{
+float:right;
+width:12px;
+height:14px;
+background:url(../images/quickhelp_lt.gif) no-repeat 0 50%;
+cursor:pointer;
+position:relative;
+vertical-align:middle;
+}
+.qh-link-field{
+width:12px;
+height:12px;
+background:url(../images/quickhelp_lt.gif) no-repeat 0px 0px;
+cursor:pointer;
+position:relative;
+top:0px;
+}
+.qh-element{
+margin-left:5px;
+vertical-align:middle;
+}
+.icon-quick-help{
+display:inline;
+}
+.mQH {
+clear:both !important;
+display:none;
+background:#9CF !important;
+margin:0 !important;
+border:0 !important;
+height:auto !important;
+padding:4px 8px !important;
+position:relative !important;
+z-index:0;
+}
+.mQH .label{
+font-weight:bold;
+padding-right:5px;
+}
+
+/*----------------------bPF: Footer---------------------------------*/
+#bPF{
+position:relative;
+bottom:0px;
+display:block;
+/*float:none;*/
+height:60px;
+clear:both;
+padding:25px 0 20px 10px;
+line-height:100%;
+color:#333;
+white-space:nowrap;
+}
+#bPF ul{
+position:relative;
+top:0px;
+left:0px;
+margin:0 !important;
+padding:0 !important;
+margin-left:0px !important;
+}
+#bPF li{
+display:inline;
+}
+#bPF .pipe{
+padding-right:5px;
+padding-left:5px;
+}
+
+/*---------------------------LAYOUT---------------------------------*/
+#grid{
+display:block;
+clear:both !important;
+height:50%;
+width:auto;
+position:relative;
+width:95%;
+min-width:800px;
+margin-left:10px;
+z-index:10;
+}
+.grid-secondary{
+margin-top:10px;
+margin-left:10px;
+width:95%;
+position:relative;
+}
+
+/* One column-------------------------------------------------------*/
+.one-col .col1 {
+width:95%;
+}
+.one-col .col2 {
+display:none;
+}
+.one-col .col3 {
+display:none;
+}
+
+/* Two column, wide left:------------------------------------------*/
+.two-col-wl .col1 {
+width:75%;
+float:left;
+}
+.two-col-wl .col2 {
+width:15%;
+float:left;
+margin-left:10px;
+}
+.two-col-wl .col3 {
+display:none;
+}
+
+/* Two column, wide right:------------------------------------------*/
+.two-col-wr .col1 {
+width:15%;
+float:left;
+}
+.two-col-wr .col2 {
+width:75%;
+float:left;
+margin-left:10px;
+}
+.two-col-wr .col3 {
+display:none;
+}
+
+/* Three column-----------------------------------------------------*/
+.three-col .col1 {
+width:15%;
+float:left;
+min-width:140px;
+}
+.three-col .col2 {
+width:60%;
+float:left;
+margin-left:10px;
+}
+.three-col .col3 {
+width:15%;
+float:left;
+margin-left:10px;
+min-width:140px;
+}
+
+
+/*---------------------------Forms----------------------------------*/
+.first-row td{
+padding-top:5px !important;
+}
+.last-row td{
+padding-bottom:5px !important;
+}
+.checkbox{
+height:13px;
+width:13px;
+vertical-align:middle;
+padding:0;
+margin:0;
+margin-right:10px;
+text-align:center !important;
+}
+.col-ast{
+width:10px !important;
+}
+.col-ast div,.col-ast img{
+width:9px;
+height:14px;
+}
+.form-grid td {
+padding:5px 0;
+vertical-align:middle;
+}
+.form-grid label.twoline,
+label.br {
+display:block;
+}
+
+
+.inline{						/*When multiple text input fields */
+margin-right:10px !important;	/*are adjacent, space them out!!*/
+}
+label{
+white-space:nowrap;
+margin-right:15px;
+vertical-align:middle;
+}
+.noborder{
+border:0 !important;
+}
+.rcb-spacer,.rcb-spacer img{
+width:20px;
+}
+p .ast{
+position:relative;
+left:0px;
+padding-right:3px;
+}
+.spacer-left {
+padding:0 !important;
+margin:0 !important;
+width:5px;
+}
+.spacer-left img{
+margin:0;
+padding:0;
+border:0;
+width:5px;
+height:1px;
+}
+label span.br{
+display:block;
+padding-left:5px;
+}
+label.text{
+vertical-align:top !important;
+}
+label.spacer{
+color:white;
+}
+form {
+margin:0;
+padding:0;
+border:0;
+}
+.form-buttons{
+margin:10px 0;
+white-space:nowrap;
+margin-left:0px;
+}
+.top-border{
+border-top:1px #666 solid;
+padding-top:10px;
+margin-top:15px;
+}
+.form-buttons td {
+vertical-align:middle;
+padding:5px 0;
+}
+fieldset{
+border:0;
+border-bottom:1px #000 solid;
+padding:5px;
+}
+fieldset td{
+padding:3px 0;
+}
+fieldset .btm-row td{
+border-top:1px #CCC solid !important;
+}
+fieldset legend{
+color:#000;
+font-weight:bold;
+padding-bottom:5px;
+margin-top:5px;
+margin-left:-6px;
+}
+input.button{
+padding:1px 4px;
+font-size:85%;
+margin:0;
+background:#ccc;
+}
+input.arrow-up{
+background:#CCC url(../images/button_arrow_up.gif) no-repeat 90% 50%;
+padding-right:20px;
+font-size:11px;
+}
+input.arrow-down{
+background:#CCC url(../images/button_arrow_down.gif) no-repeat 90% 50%;
+padding-right:20px;
+font-size:11px;
+}
+input.button-blue{
+padding:1px 4px;
+font-size:85%;
+margin:0;
+color:#FFF;
+background:#369;
+}
+input.button-sm{
+padding:1px;
+font-size:78%;
+margin:0;
+}
+textarea{
+font-size:100%;
+font-family:sans-serif;
+}
+td.spacer{
+height:1px;
+padding:0;
+}
+.disabled {
+color:#CCC !important;
+}
+.abled {
+color:#000 !important;
+}
+input.text, input.password{
+font-size:100%;
+vertical-align:middle;
+}
+input.text:focus,textarea:focus{
+background:#FFC;
+}
+.radio{
+padding:0;
+margin:0;
+border:0;
+height:12px;
+width:12px;
+vertical-align:middle;
+margin-right:8px !important;
+text-align:center !important;
+}
+.rcb {
+line-height:120%;
+}
+select {
+font-size:85%;
+}
+.tip{
+font-size:80%;
+padding-left:5px;
+display:inline;
+position:relative;
+}
+td.tier2 label{
+padding-left:22px !important;
+}
+td.tier2 .checkbox{
+margin-left:-1px;
+}
+.col-radio{
+text-align:center;
+}
+/*---------------------------Help-----------------------------------*/
+.app-help{
+margin-right:auto;
+margin-left:auto;
+}
+.nobullet li{
+list-style:none;
+}
+.plain{
+position:relative;
+top:0px;
+left:0px;
+margin:0 !important;
+padding:0 !important;
+margin-left:1px !important;
+}
+.plain .list-label{
+padding-right:10px;
+}
+.plain li{
+list-style:none;
+}
+.index{
+clear:both;
+padding:0;
+margin:0;
+border:0;
+}
+.index ul{
+padding:0px;
+margin:0px;
+border:0px;
+height:15px;
+}
+.index ul li{
+float:left;
+padding:4px;
+list-style:none;
+}
+.index a{
+text-decoration:none !important;
+}
+.index a:hover{
+text-decoration:underline !important;
+}
+
+/*--------------------------Glossary--------------------------------*/
+.glossary-index{
+height:12px;
+display:block;
+margin:0;
+padding:0;
+border:0;
+padding-top:5px;
+padding-bottom:5px;
+margin-right:auto;
+margin-left:auto;
+text-transform:uppercase;
+}
+.glossary-index li{
+list-style:none;
+display:inline;
+padding-right:2px;
+padding-left:2px;
+font-weight:bold;
+}
+.glossary-index a{
+padding-left:2px;
+padding-right:2px;
+}
+.glossary-index a:hover{
+background:#CCC;
+}
+dl{
+margin:0;
+}
+dt{
+font-weight:bold;
+}
+dd {
+margin-left:20px;
+}
+.marker {
+font-weight:bold;
+color:#369;
+width:100%;
+text-transform:uppercase;
+}
+.section{
+border-bottom:1px #999 solid;
+}
+p.link{
+width:100%;
+text-align:center;
+margin-top:0px;
+padding:0;
+padding-bottom:5px;
+}
+.blocks {
+padding:0;
+margin:0;
+border:0;
+}
+.blocks li{
+list-style:none;
+float:left;
+padding:10px;
+}
+.last{
+border-right:0 !important;
+}
+table {
+clear:both;
+}
+.noline td {
+border-bottom:0 !important;
+}
+.scroll{
+overflow:auto;
+}
+.ital{
+font-style:oblique;
+}
+.em{
+font-weight:bold !important;
+}
+.left{
+float:left;
+}
+.right{
+float:right;
+}
+
+/*--------------------mTIE: Table of Interactive Elements-----------*/
+th{
+font-weight:bold !important;
+}
+th a{
+font-weight:bold !important;
+}
+.mTIE {
+margin:10px 0;
+border:0;
+padding:0;
+border-left:1px #CCC solid;
+border-top:1px #CCC solid;
+width:100%;
+}
+.date, .date-ss, .time {
+text-align:right;
+white-space:nowrap;
+
+}
+.mTIE td{
+margin:0;
+border:0;
+border-bottom:1px #CCC solid;
+border-right:1px #CCC solid;
+padding:4px 6px;
+vertical-align:middle;
+}
+.mTIE .headerRow td {
+text-align:center;
+}
+.mTIE th {
+margin:0;
+border:0;
+border-bottom:1px #CCC solid;
+border-right:1px #CCC solid;
+padding:3px 6px;
+}
+.mTIE a {
+text-decoration:underline;
+}
+.headerRow{
+background:#369 !important;
+color:#FFF;
+font-weight:bold;
+}
+.button-mTIE{ 			/*Check All-Clear All button*/
+padding:1px 4px;
+background:#CCC;
+font-size:85%;
+margin:0;
+width:75px;
+}
+.decimal{
+text-align:right;
+}
+#totalRow {
+background:#FFF !important;
+}
+#totalRow .decTotal {
+text-align:right;
+}
+#totalRow .total{
+text-align:right;
+}
+
+/*------------------------mTAB--------------------------------------*/
+.mTAB {
+margin:0px 0;
+border:0;
+padding:0;
+border-left:1px #CCC solid;
+border-top:1px #CCC solid;
+/*width:100%;*/
+}
+.mTAB .date{
+text-align:right;
+white-space:nowrap;
+}
+.mTAB td{
+margin:0;
+border:0;
+border-bottom:1px #CCC solid;
+border-right:1px #CCC solid;
+padding:4px 6px;
+vertical-align:middle;
+}
+.mTAB .headerRow td {
+text-align:center;
+}
+.mTAB th {
+margin:0;
+border:0;
+border-bottom:1px #CCC solid;
+border-right:1px #CCC solid;
+padding:4px 6px;
+}
+/*.mTAB a {
+text-decoration:underline;
+}*/
+.headerRow{
+background:#369 !important;
+color:#FFF;
+font-weight:bold;
+}
+.button-mTAB{ 			/*Check All-Clear All button*/
+font-size:10px;
+padding:1px 4px;
+height:20px;
+line-height:12px;
+width:75px;
+}
+
+/* LISTS and mTS */
+/*----------------------mIM: Inline Messages------------------------*/
+.mIM{
+background:#9CF;
+margin:5px 0;
+padding:5px;
+background-position:9px 5px !important;
+clear:both;
+display:block;
+}
+.mIM p,.mIM ul,.mIM ol{
+position:relative;
+top:0;
+left:0;
+padding:0;
+margin:0;
+padding-left:48px;
+padding-bottom:5px;
+border:0;
+display:block;
+}
+.mIM ul{
+padding-left:65px;
+width:80%;
+}
+.mIM ol{
+padding-left:70px;
+width:80%;
+}
+* html .mIM { 			/*IE Hack*/
+height:35px;  			/*set the height in IE5.5*/
+voice-family:"\"}\"";
+voice-family:inherit;
+height:30px;			/*set the height in IE6.0*/
+}
+*+.mIM{ 				/*high end browser hack*/
+min-height:30px;
+}
+div.error {
+background:#9CF url(../images/icon_error.gif) no-repeat;
+}
+.error .txt{
+font-size:100%;
+color:#F00;
+font-weight:bold;
+text-align:right;
+padding-right:10px;
+padding-left:44px;
+width:35px;
+}
+.error table{
+position:relative;
+}
+.error table td{
+vertical-align:top;
+}
+.error .list-errors {
+padding:0;
+display:block;
+clear:both;
+left:-1px;
+position:relative;
+}
+.error .list-errors li {
+list-style:none;
+background:url(../images/dash.gif) no-repeat 0 50%;
+padding-left:12px;
+}
+.error p,
+.error ul{
+padding-left:0;
+}
+.error p{
+padding-top:0;
+margin-top:0;
+}
+.info {
+background:#9CF url(../images/icon_info.gif) no-repeat;
+}
+.confirmation {
+background:#9CF url(../images/icon_confirmation.gif) no-repeat;
+}
+.alert {
+background:#9CF url(../images/icon_alert.gif) no-repeat;
+}
+.help {
+background:#9CF url(../images/icon_help.gif) no-repeat;
+}
+
+/*---------------------mRT: Return to Top---------------------------*/
+.mRT {
+margin:10px 0;
+clear:both;
+display:block;
+}
+.mRT a {
+background:url(../images/return_to_top.gif) no-repeat 0 2px;
+padding-left:15px;
+}
+/*---------------------mPW:Please Wait------------------------------*/
+.mPW {
+border-top:1px #666 solid;
+border-bottom:1px #666 solid;
+background:#FFF;
+padding:10px;
+text-align:center;
+height:auto;
+width:auto;
+clear:both;
+display:block;
+margin:10px 0px;
+}
+.icon-wait {
+background:url(../images/please_wait.gif) no-repeat 50% 100%;
+width:100px;
+height:20px;
+margin-left:auto;
+margin-right:auto;
+clear:both;
+display:block;
+}
+
+/*---------------------mDL: Data List-------------------------------*/
+.mDL{
+width:100%;
+margin:10px 0;
+}
+.mDL td{
+padding:4px 0px 4px 10px;
+}
+.mDL th{
+background:#369;
+color:#FFF;
+text-align:left;
+padding:2px 5px;
+}
+.mDL .label{
+text-align:right;
+}
+.mDL .total{  /*are these being duplicated?*/
+text-align:right;
+font-weight:bold;
+padding-right:10px;
+}
+.mDL .decimal{
+text-align:right;
+padding-right:10px;
+}
+
+/*------------------mDDL: Double Data List--------------------------*/
+.mDDL .plain{
+margin-bottom:10px !important;
+}
+.mDDL{
+width:100%;
+margin:10px 0;
+}
+.mDDL td{
+padding:4px 0px 4px 10px;
+}
+.mDDL th{
+background:#369;
+color:#FFF;
+text-align:left;
+padding:2px 5px;
+}
+.mDDL .label{
+text-align:right;
+}
+.mDDL .total{
+text-align:right;
+font-weight:bold;
+padding-right:10px;
+}
+.mDDL .decimal{
+text-align:right;
+padding-right:10px;
+}
+
+/*------------------------mCA: Contact-------------------------*/
+.mCA{
+position:relative;
+width:50%;
+height:auto;
+margin:10px 0;
+}
+.mCA .number {
+position:relative;
+}
+.mCA .mail{
+font-weight:bold;
+position:relative;
+background:inherit;
+}
+.mCA address{
+margin-left:150px;
+font-weight:normal;
+font-style:normal;
+}
+
+
+/*----------mDSR:Data Summary/Review Verification-------------------*/
+.mDSR {
+border-bottom:1px #000 solid;
+width:100%;
+margin:10px 0;
+}
+.mDSR th {
+text-align:left;
+padding:4px 6px;
+}
+.mDSR td {
+text-align:left;
+padding:4px 4px;
+vertical-align:top;
+}
+th a{
+font-weight:normal;
+margin-left:5px;
+}
+
+/*---------------------mLL: Link Listing----------------------------*/
+.mLL {
+margin:10px 0;
+width:100%;
+display:block;
+height:auto;
+position:relative;
+clear:both;
+float:none;
+}
+.mLL ul{
+margin:0;
+padding:10px 0px;
+width:45%;
+position:relative;
+}
+.mLL ul li{
+list-style:none;
+border:0;
+margin:0;
+padding-bottom:2px;
+}
+
+
+/*-----------------mPN: Pagination/Navigation-----------------------*/
+.mPN{
+position:relative;
+display:block;
+clear:both;
+height:45px;
+margin:10px 0;
+white-space:nowrap;
+}
+.mPN p,
+.mPN label {
+line-height:160% !important;
+padding:0;
+margin:0;
+border:0;
+vertical-align:top;
+}
+.mPN .current{
+font-weight:bold;
+}
+.mPN a{
+font-weight:bold;
+}
+.mPN .left,.mPN .right{
+float:left;
+vertical-align:top;
+height:100%;
+color:#999;
+font-weight:bold;
+}
+.mPN .left{
+padding-right:40px;
+}
+.mPN .right{
+padding-left:45px;
+}
+.mPN .middle{
+float:left;
+text-align:left;
+height:100%;
+padding-top:0px;
+}
+.mPN input.text{
+vertical-align:top;
+}
+
+/*-----------------mSN: Simple Navigation---------------------------*/
+.mSN{
+padding:5px 0 !important;
+margin:0;
+border:0;
+width:90%;
+}
+.mSN *{  /*IE Hack to fix jumping*/
+position:relative;
+top:0;
+left:0;
+}
+.mSN ul{
+clear:both;
+width:80%;
+margin:0 !important;
+left:15px;
+}
+.mSN li {
+list-style:none;
+padding-bottom:3px;
+}
+
+/*----------------------mTC: Task Confirmation----------------------*/
+.mTC{
+border:1px #9CF solid;
+border-top:0;
+margin:10px 0;
+min-width:300px;
+}
+.mTC ul{
+margin-left:65px;
+}
+.mTC p{
+margin-left:60px;
+}
+.mTC table{
+padding:0;
+margin:0;
+border:0;
+margin-left:58px;
+}
+.mTC h2{
+position:relative;
+top:0;
+left:0;
+width:auto;
+background:#9CF url(../images/banner-confirmation.gif) repeat-x 0 0;
+padding:12px 10px 12px 60px;
+font-size:100%;
+font-weight:normal;
+margin-bottom:10px;
+}
+
+/*--------------------mHL: Helpful Links (new)----------------------*/
+.mHL{
+border-top:1px #333 solid;
+border-bottom:1px #333 solid;
+padding:10px 0;
+margin-bottom:10px;
+}
+.mHL h3{
+font-size:100%;
+}
+.mHL ul{
+margin-left:65px;
+}
+
+/*--------------------mTI: Task Instructions------------------------*/
+.mTI{
+display:block;
+clear:both;
+margin:10px 0;
+}
+.mTI ul{
+position:relative;
+display:block;
+left:.1em;
+padding:0;
+border:0;
+}
+/*---------------bSWN: Secondary Window Navigation------------------*/
+.bSWN{
+padding:10px 0;
+border-top:1px #369 solid;
+}
+
+/*----------------mSD: Status Dashboard-----------------------------*/
+.mSD{
+border:1px #369 solid;
+margin:10px 0;
+width:100%;
+}
+.mSD th{
+background:#369;
+color:#FFF;
+text-align:left;
+padding:2px 5px;
+}
+
+/*----------------mSDL: Summary Data Listing-----------------------*/
+.mSDL{
+border:1px #369 solid;
+margin:10px 0;
+min-width:250px;
+width:100%;
+}
+.mSDL td{
+border:0;
+margin:0;
+padding:2px 0 2px 8px;
+vertical-align:middle;
+}
+.mSDL th{
+background:#369;
+color:#FFF;
+text-align:left;
+padding:2px 5px;
+}
+.mSDL .value{
+text-align:right;
+}
+
+/*----------------------mDEE: Data Entry/Edit ----------------------*/
+.mDEE{
+margin:10px 0;
+width:100%;
+}
+table.mDEE{
+border:1px #369 solid;
+}
+.mDEE td{
+border:0;
+margin:0;
+padding:5px 0;
+vertical-align:middle;
+}
+.mDEE th{
+background:#369;
+color:#FFF;
+text-align:left;
+padding:2px 5px;
+}
+.nopad{
+padding:0 !important;
+border:0;
+margin:0;
+width:100%;
+}
+.desc {
+text-align:right; 
+}
+
+/*---------------------Supporting Text------------------------------*/
+.mST{
+margin:10px 0;
+display:block;
+clear:both;
+}
+
+/*------------------------tPH: Page header--------------------------*/
+.tPH {
+margin:10px 100px 1px 10px;
+display:block;
+clear:both;
+}
+
+/*----------------Topic index found in pHW2.html--------------------*/
+.topic-index{
+padding:0;
+margin:5px 0;
+width:100%;
+height:14px;
+display:block;
+clear:both;
+position:relative;
+top:0;
+left:0;
+}
+.topic-index li{
+list-style:none;
+float:left;
+margin-right:25px;
+padding:0;
+border:0;
+}
+.topic-index li a{
+padding-left:10px;
+background:url(../images/arrow_down_alt.gif) no-repeat 0 50%;
+}
+.alt li a{
+padding-left:10px;
+background:url(../images/arrow_down_alt2.gif) no-repeat 0 50%;
+}
+
+/*------------------Freezing header mods for NS7------------------- */
+div[class="class_float"] table {
+padding:0;
+margin:0;
+border:1px #CCC solid !important;
+background:#369;
+width:100%;
+}
+div[class="class_float"] th {
+margin:0;
+border-right:0;
+border-bottom:0;
+vertical-align:middle;
+}
+.headerRow nobr{
+border-left:2px #369 solid;
+}
+
+/*------------------mSD:Status Dashboard----------------------------*/
+.data-mSD{
+width:90%;
+margin:0 10px;
+}
+.data-mSD td{
+padding:2px 0 !important;
+margin:0 !important;
+border:0 !important;
+}
+.data-mSD .value{
+text-align:right !important;
+}
+.wrap {
+white-space:normal;
+}
+.input-error{
+color:#F00;
+font-weight:bold;
+}
+
+
+/*-------------------mCC: Convenence Choices------------------------*/
+.mCC{
+margin:10px 0;
+width:100%;
+}
+table.mCC{
+border:1px #369 solid;
+}
+.mCC td{
+border:0;
+margin:0;
+padding:5px 0;
+vertical-align:middle;
+}
+.mCC th{
+background:#369;
+color:#FFF;
+text-align:left;
+padding:2px 5px;
+}
+
+/*-----------------------Layout sample pages------------------------*/
+.layout-template .col1, 
+.layout-template .col2, 
+.layout-template .col3{
+background:#efefef;
+height:350px;
+border:1px #CCC dotted;
+text-align:center;
+}
+.layout-template #grid{
+padding-top:10px;
+}
+.center{
+text-align:center;
+}
+
+/*----------------------Row Exchange Module-------------------------*/
+div.mREX{
+border:1px #999 solid;
+padding:5px 10px;
+margin-bottom:20px;
+background:#efefef;
+}
+h1.mREX{
+background:#999;
+color:#FFF;
+padding:5px 10px;
+margin:0;
+font-size:100%;
+margin-top:20px;
+}
+
+/*---------------508 Complaint Skip Navigation Link-----------------*/
+#skip{
+display:inline;
+color:#FFF !important;
+text-decoration:none;
+font-size:1px;
+position:absolute;
+top:0;
+left:0;
+z-index:10;
+}
+.cal-label{
+font-size:90%;
+color:#999;
+position: relative;
+top:4px;
+}
+caption{
+font-weight:bold;
+color:#369;
+}
+#grid a:visited{
+text-decoration:none;
+border-bottom:1px dotted;
+}
+.clear{
+display:block !imporatn;
+clear:both;
+}
+
+/*---------------------mTS: Task Steps------------------------------*/
+.mTS {
+border:1px #9CF solid;
+width:140px;
+background:#FFF;
+margin:10px 0;
+}
+.mTS h2 {
+text-transform:uppercase;
+text-align:center;
+color:#369;
+padding:0px 4px;
+margin:0;
+border:0;
+font-size:100%;
+border-bottom:1px #9CF solid;
+}
+.mTS ul {
+margin:0;
+border:0;
+padding:5px 0;
+width:90%;
+}
+.mTS ul li {
+list-style:none;
+padding-bottom:8px;
+padding-left:20px;
+padding-right:5px;
+}
+.mTS li.current {
+font-weight:bold;
+background:url(../images/task_arrow_on.gif) no-repeat;
+}
+.mTS li.complete {
+background:url(../images/check.gif) no-repeat;
+}

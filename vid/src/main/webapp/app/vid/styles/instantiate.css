@@ -1,0 +1,62 @@
+div[ng-controller=InstantiationController] .popupContents {
+	text-align: left;
+}
+
+div[ng-controller=InstantiationController] .statusLine {
+	vertical-align: center;
+}
+
+div[ng-controller=InstantiationController] .statusLine img {
+	width: 20px;
+	margin: 10px;
+}
+
+div[ng-controller=InstantiationController] .status {
+	margin-left: 5px;
+}
+
+div[ng-controller=InstantiationController] .feedback {
+	height: 35px;
+	vertical-align: center;
+}
+
+div[ng-controller=InstantiationController] .progress {
+	margin: 0px 10px;
+	font-weight: bold;
+}
+
+div[ng-controller=InstantiationController] .error {
+	width: 630px;
+	font-weight: bold;
+	font-size: 16px;
+	color: red;
+	margin: 0px 10px 0px 45px;
+}
+
+div[ng-controller=InstantiationController] .error img {
+	width: 25px;
+	margin: 0px 10px;
+}
+
+div[ng-controller=InstantiationController] .buttonRow {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+div[ng-controller=InstantiationController] .log {
+	width: 700px;
+	height: 500px;
+	border: solid black 1px;
+	text-align: left !important;
+	margin: 10px;
+	padding: 10px;
+	overflow: auto;
+}
+
+div[ng-controller=InstantiationController] .aaiHidden {
+	visibility: hidden;
+}
+
+div[ng-controller=InstantiationController] .aaiVisible {
+	visibility: visible;
+}

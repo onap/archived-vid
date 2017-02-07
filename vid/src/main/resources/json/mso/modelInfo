@@ -1,0 +1,41 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "fields describing the SDC entity being operated on by the request",
+	"type": "object",
+	"properties": {
+		"modelCustomizationName": {
+			"description": "reference to the customized set of parameters associated with a model in a given service context",
+			"type": "string"
+		},
+		"modelInvariantId": {
+			"description": "Invariant UUID for the model name, irrespective of the version, as defined in SDC--authoritative",
+			"type": "string",
+			"pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+		},
+		"modelName": {
+			"description": "name of the model as defined in SDC--not authoritative",
+			"type": "string"
+		},
+		"modelNameVersionId": {
+			"description": "UUID for the model name and version combination as defined in SDC--authoritative",
+			"type": "string",
+			"pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+		},
+		"modelType": {
+			"description": "short description of the entity being operated on",
+			"type": "string",
+			"enum": [
+				"network",
+				"service",
+				"vfModule",
+				"vnf",
+				"volumeGroup"
+			]
+		},
+		"modelVersion": {
+			"description": "the version of the model as defined in SDC--not authoritative",
+			"type": "number"
+		}
+	},
+	"required": ["modelType"]
+}

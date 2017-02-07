@@ -1,0 +1,63 @@
+li {
+	list-style: none;
+}
+
+#userIcon:hover {
+	color: rgb(191, 231, 239);
+}
+
+ .body-content-jsp {
+	margin-top: 50px;
+	min-height:500px;
+	margin-left:210px;
+	margin-right:50px;
+}
+ 
+.headerContentContainer .primaryMenuContainer .headerIconContainer .popbox .openpopbox:hover
+	{
+	color: #bfe7fb;
+	margin-top: -2px;
+	text-decoration: none;
+	outline: none
+}
+
+.headerContentContainer .primaryMenuContainer .headerIconContainer .popbox .openpopbox
+	{
+	color: #fff;
+	display: block;
+	min-width: 70px;
+	max-width: 115px;
+	text-decoration: none
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* a:active,a:hover {
+	outline: 0;
+	font-weight: bold;
+} */
+b,strong {
+	font-weight: 700
+}
+
+/* .thirdMenuContainer { */
+/* 	width: 100%; */
+/* 	overflow: auto; */
+/* 	margin-top: 101px; */
+/* 	position: fixed; */
+/* 	z-index: 3000; */
+/* 	min-height: 140px; */
+/* 	max-height: 500px; */
+/* 	opacity: 1; */
+/* 	background-color: rgb(255, 255, 255); */
+
+/* } */
+
+.visuallyhidden{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.visuallyhidden .focusable:active,.visuallyhidden .focusable:focus{clip:auto;height:auto;margin:0;overflow:visible;position:static;width:auto}

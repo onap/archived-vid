@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "fields communicating the cloud configuration in a standard way",
+	"type": "object",
+	"properties": {  
+		"lcpCloudRegionId": {
+			"description": "LCP Node Location identifier",
+			"type": "string"
+		},  
+		"tenantId": {
+			"description": "Openstack tenant id",
+			"type": "string"
+		}  
+	}
+}

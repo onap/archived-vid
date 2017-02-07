@@ -1,0 +1,305 @@
+/* Make Plain Grid+smaller comps Padding + white background */
+/* "overflow:hidden ;" not working in Chrome/Safari */
+.GridLayoutNoBorder tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body div.z-cell,div.z-grid,tr.z-grid-odd td.z-row-inner,tr.z-grid-odd .z-cell,tr.z-grid-odd
+	{
+	border: none;
+	zoom: 1;
+	background: white;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
+	padding: 1px;
+}
+
+.GridLayoutNoBorder .z-row:hover>.z-cell {
+   background-color: white;
+   color: black;
+   font-weight: bold;
+}
+
+.GridReport tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body div.z-cell,div.z-grid
+	{
+	background-color: white;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	vertical-align:middle;
+	border-right-color: #ccc;
+	border-bottom-color: #ccc;
+	/*overflow:hidden;*/
+}
+.GridReportodd, .GridReportodd  > td 
+	{
+	color: black; background-color: rgb(255,255,204) !important;
+    }
+
+
+.z-toolbarbutton {
+	display: inline-block;
+	height: 24px;
+	border: 1px solid transparent;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	margin: 0 2px;
+	padding: 1px 0;
+	line-height: 14px;
+	position: relative;
+	cursor: pointer;
+	float: right;
+}
+
+.z-paging-input {
+	font-family:Arial,Sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	font-style:normal;
+	color:#000;
+	height:24px;
+	border:1px solid #8fb9d0;
+	margin-left:6px;
+	padding:3px 0;
+	line-height:20px;
+	vertical-align:baseline;
+}
+.z-paging-text {
+	font-family:Arial,Sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	font-style:normal;
+	color:#000;
+	margin-right:12px
+}
+.z-paging-info {
+	font-family:Arial,Sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	font-style:normal;
+	color:#000;
+	padding:4px 0;
+	position:absolute;
+	top:4px;
+	right:10px;
+}
+.z-menu-text,.z-menuitem-text {
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	display:inline-block;
+	line-height:16px;
+	text-shadow:0 0px #fff
+}
+.z-menubar {
+	border-top: 0px
+	border-bottom: 0px; 
+}
+.z-column-content {
+	font-family: Arial,Sans-serif;
+	font-size: 12px;
+	color: #fff;
+	padding: 4px 5px;
+	line-height: 24px;
+	overflow: hidden;
+}
+.z-column-hover {	
+	background:	-webkit-linear-gradient(top, #336699 0%, #336699 100%); /* Chrome10+,Safari5.1+ */
+	background:	linear-gradient(to bottom, #336699 0%, #336699 100%); /* W3C */
+}
+/*
+.z-row:hover>.z-row-inner, .z-row:hover>.z-cell {
+background: #6ba6bf;
+background-clip: padding-box;
+position: relative;*/
+
+.z-messagebox .z-label  {
+	font-family: Arial,Sans-serif;
+	font-size: 12px;
+	color: #000;
+}
+
+.z-popup .z-popup-content{
+	font-family: Arial,Sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	color: #000;
+	height: 100%;
+	padding: 10px;
+	line-height: 14px;
+}		
+
+.z-notification-pointer ~ .z-notification-content {
+    display:table-cell;
+    width:150px;
+    height:50px;
+    min-height:60px;
+    ${t:borderRadius('5px') };
+    padding:5px 18px 5px 45px;
+    vertical-align:middle;
+}
+.z-loading {
+    background-color:#808080;
+    border:1px outset #A0A0A0;
+    font-weight: bold;
+    padding:2px;
+}
+.z-loading-indicator {
+    color: gray;
+    border:0 none;
+}		
+.z-toolbarbutton-content {
+	color: #fff;
+	text-shadow: 0 0px;
+}
+
+.z-groupbox>.z-groupbox-header {
+	color: #000;
+}
+
+.z-combobox-button, .z-bandbox-button, .z-datebox-button, .z-timebox-button, .z-spinner-button, .z-doublespinner-button {
+	color: #000;
+}
+
+
+/*.z-panel-header {
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+color: #fff;
+border: 0;
+padding: 3px 0 5px 0;
+line-height: 0px;
+background: #369;
+overflow: hidden;
+zoom: 1;
+display: none;
+}*/
+
+
+
+  .z-menupopup .z-menu-image, .z-menupopup .z-menuitem-image {
+min-width: 16px;
+min-height: 16px;
+margin-right: 9px;
+display: none;
+}
+
+
+  .z-menupopup-separator {
+width: 2px;
+height: 100%;
+border-width: 3px 1px 3px 0;
+border-style: solid;
+border-color: #d9f0fc;
+background: #a2c0ce;
+position: absolute;
+top: 0;
+left: 31px;
+z-index: 10;
+display: none;
+}
+ 
+
+     .z-menupopup-content {
+left: 0px;
+}
+
+     .z-menu-icon.z-icon-caret-right {
+font-size: 15px;
+color: red;
+}
+
+
+           .z-menu-content:hover, .z-menuitem-content:hover {
+border-color: #8fb9d0;
+background: -webkit-linear-gradient(top, #e2f3fc 0%, #336699 100%);
+background: linear-gradient(to bottom, #e2f3fc 0%, #336699 100%);
+}
+
+/*.toolBarRaptor .z-toolbar {
+	background:white;
+}
+
+.toolBarRaptor .z-menuitem-content {
+    color:#000;
+}
+
+.toolBarRaptor .z-menuitem-content {
+    color:#000;
+}*/
+
+/*.z-caption .z-label {
+    float: right;
+}
+		
+.z-caption-content, .z-caption .z-label {
+	display: inline-block;
+	padding: 0;
+	line-height: 24px;
+	float: right;
+}  */		
+
+
+
+.ChartPanel .z-panel-head {
+  border:;
+}
+.ChartPanel .z-panel-header {
+line-height: 12px;
+color: #000;
+background:;
+}
+.ChartPanel .z-panel-icon {
+color: #000;
+display: block;
+-webkit-border-radius: ;
+border-radius: ;
+text-align: left;
+overflow: hidden;
+cursor: pointer;
+float: left;
+}
+
+.ChartPanel .z-panel-icon:hover {
+ color: ;
+ border-color: ; 
+  background: 0;
+filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+ background:;
+ float:left;
+}
+
+.ChartPanel .z-panel-expand {
+font-size: 9px;
+width: 12px; 
+line-height: 12px; 
+}
+
+/*[class^="z-icon-"], [class*=" z-icon-"] {*/
+.ChartPanel .z-icon	{
+display: inline-block;
+font-family: FontAwesome;
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+.ChartPanel .z-icon-caret-up:before {
+  content: "\f068";
+}
+
+.ChartPanel .z-icon-caret-down:before {
+  content: "\f067";
+}
+
+.ie8 .z-column {
+background: #369;
+}

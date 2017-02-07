@@ -1,0 +1,183 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+
+     
+     <h1 class="heading1">Self Profile</h1>
+     <br>
+     Please edit the profile details below:&nbsp;<br><br>
+
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label"><sup><b>*</b></sup>First Name:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.firstName"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label"><sup><b>*</b></sup>Last Name:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.lastName"
+			maxlength="30"/> 
+	</div>
+     
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label">User ID:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.orgUserId"
+			maxlength="30" style="margin-right:0px;" readonly="true"/> 
+	</div>
+
+	<div class="fn-ebz-container" >
+	<label class="fn-ebz-text-label">Manager User ID:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.orgManagerUserId"
+			maxlength="30" style="margin-right:0px;" readonly="true"/> 
+	</div>
+<BR>
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label">Login Id:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.loginId"
+			maxlength="30" readonly="true""/> 
+	</div>
+
+	<div class="fn-ebz-container" style="margin-right:20px">
+		<label class="fn-ebz-text-label">Password:</label><BR>
+		<input type="password" ng-model="profile.loginPwd"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label"><sup><b>*</b></sup>Phone:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.phone"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container" >
+	<label class="fn-ebz-text-label">Fax:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.fax"
+			maxlength="30" /> 
+	</div>
+<BR>
+	<div class="fn-ebz-container" >
+	<label class="fn-ebz-text-label">Cellular:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.cellular"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label"><sup><b>*</b></sup>Email:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.email"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label">Address 1:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.address1"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label">Address 2:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.address2"
+			maxlength="30" /> 
+	</div>
+<BR>
+	<div class="fn-ebz-container" >
+	<label class="fn-ebz-text-label">City:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.city"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container">	
+		<label  class="fn-ebz-text-label">State:</label><BR>
+		<div class="form-field" att-select="stateList.options" ng-model="stateList.selected"></div>
+	</div>
+
+	<div class="fn-ebz-container" >
+		<label class="fn-ebz-text-label">Zip Code:</label><BR>
+		<input type="text" class="fn-ebz-text" ng-model="profile.zipCode"
+			maxlength="30" /> 
+	</div>
+
+	<div class="fn-ebz-container">	
+		<label  class="fn-ebz-text-label">Country:</label><BR>
+		<div class="form-field" att-select="countries" ng-model="selectedCountry"></div>
+	</div>
+	<BR>
+	<div class="fn-ebz-container">	
+		<label  class="fn-ebz-text-label">Time Zone:</label><BR>
+		<div class="form-field" att-select="timeZones" ng-model="selectedTimeZone"></div>
+	</div>
+	
+	<div align="left" >
+		<button type="submit" ng-click="saveProfile();" att-button
+			btn-type="primary" size="small">Save</button>
+	</div>
+	
+<br>
+	<div class="pageTitle">
+		<label>Roles</label>
+		<a ng-click="addNewRolePopup();" ng-show="isUserSystemAdmin" class="icon-add" size="small"></a>
+   
+	</div>
+
+	<table 	att-table table-data="profile.roles" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+<!-- 	<table border="1" class="hovertable_1"> -->
+	     <thead att-table-row type="header">
+  		<tr>
+  			<th att-table-header sortable="false" align="left"  width="90%">Name</th>
+  			<th att-table-header sortable="false"  width="10%">Remove?</th>
+  		</tr>
+  		 </thead>
+  		 <tbody att-table-row type="body" row-repeat="role in profile.roles" style="max-height: 980px;" ><!-- background colors will alternate not properly with multiple tbody-->
+<!-- 		  <tr ng-repeat="role in profile.roles track by role.id"> -->
+		  <tr>
+		    <td att-table-body width="90%" >{{ role.name }}</td>
+		    <td att-table-body width="10%">
+		    	<a ng-click="removeRole(role);" ><img src="static/fusion/images/deleteicon.gif"></a>
+		     </td>
+		  </tr>
+		 </tbody>
+	</table>
+	
+	<div id="dialog" style="height:500px;overflow:scroll" class="modal__informative font-showcase" >
+            <div class="modal__header">
+                <h2 class="font-showcase-font-name" style="color:#157BB2">Select Roles</h2>
+            </div>
+            <button align="right" class="button button--primary button--small" herf="javascript:void(0)" ng-click="close()">Close</button>
+            <div class="modal__content">           	 	
+				<table table-data="availableRoles" att-table  >
+			        <thead att-table-row type="header">
+				  		<tr>
+				  			<th att-table-header sortable="false" width="10%"> </th>
+				  			<th att-table-header sortable="false" width="90%">Role</th>
+				  		</tr>
+			  		</thead>
+				  
+				    <tbody att-table-row type="body" row-repeat="availableRole in availableRoles" style="max-height: 980px;" ><!-- background colors will alternate not properly with multiple tbody-->
+				  	  <tr>
+					  	<td att-table-body width="10%">
+					  		<div ng-click="toggleRole(availableRole.selected,availableRole);">
+					    	<input type="checkbox" ng-model="availableRole.selected" att-toggle-main>
+					    	</div>
+					    </td>
+					    <td att-table-body width="90%">{{ availableRole.name }}</td>
+				  	  </tr>
+				    </tbody>
+		        </table>
+            </div>
+    </div>
+	

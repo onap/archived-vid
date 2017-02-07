@@ -1,0 +1,352 @@
+<?xml version="1.0"?>
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openecomp.portalsdk.core.domain">
+
+     <!-- User class mapping details -->
+    <class name="User" table="FN_USER">
+        <id name="id" column="user_id" > 
+          <generator class="native">
+             <param name="sequence">seq_fn_user</param> 
+          </generator>
+        </id>
+
+        <property name="orgId"         column="org_id"/>
+        <property name="managerId"     column="manager_id"/>
+        <property name="firstName"     column="first_name"/>
+        <property name="middleInitial" column="middle_name"/>
+        <property name="lastName"      column="last_name"/>
+        <property name="phone"         column="phone"/>
+        <property name="fax"           column="fax"/>
+        <property name="cellular"      column="cellular"/>
+        <property name="email"         column="email"/>
+        <property name="addressId"     column="address_id"/>
+        <property name="alertMethodCd" column="alert_method_cd"/>
+
+        <property name="address1"      column="address_line_1"/>
+        <property name="address2"      column="address_line_2"/>
+        <property name="city"          column="city"/>
+        <property name="state"         column="state_cd"/>
+        <property name="zipCode"       column="zip_code"/>
+        <property name="country"       column="country_cd"/>
+
+        <property name="hrid"          column="hrid"/>
+        <property name="orgUserId"     column="org_user_id"/>
+        <property name="orgCode"       column="org_code"/>
+        <property name="loginId"       column="login_id"/>
+        <property name="loginPwd"      column="login_pwd"/>
+        <property name="lastLoginDate" column="last_login_date"  type="timestamp"/>
+
+        <property name="locationClli"  column="location_clli" />
+        <property name="orgManagerUserId" column="org_manager_userid" />
+        <property name="company"       column="company" />
+        <property name="department"    column="department" />
+        <property name="departmentName"    	column="department_name" />
+        <property name="businessUnit"  		column="business_unit" />
+        <property name="businessUnitName"   column="business_unit_name" />
+        <property name="jobTitle"      		column="job_title" />
+        <property name="siloStatus"    		column="silo_status" />
+        <property name="financialLocCode"   column="fin_loc_code" />
+
+        <property name="active"        column="active_yn"       type="yes_no"/>
+        <property name="internal"      column="is_internal_yn"  type="yes_no"/>
+
+        <property name="created"  type="timestamp" column="created_date"  />
+        <property name="modified" type="timestamp" column="modified_date" />
+
+        <property name="createdId"  column="created_id" />
+        <property name="modifiedId" column="modified_id" />
+		<property name="timeZoneId" column="timezone" />
+		
+        <set name="userApps" table="FN_USER_ROLE" lazy="false" sort="natural" inverse="true" cascade="all-delete-orphan">
+            <key column="user_id"/>
+            <one-to-many class="org.openecomp.portalsdk.core.domain.UserApp" />
+        </set>
+
+        <set name="pseudoRoles" table="FN_USER_PSEUDO_ROLE" lazy="false" sort="natural">
+            <key column="user_id"/>
+            <many-to-many column="pseudo_role_id" class="org.openecomp.portalsdk.core.domain.Role" />
+        </set>
+    </class>
+
+     <!-- Profile class mapping details;
+     	  dupe of User class, but fewer fields -->
+    <class name="Profile" table="FN_USER">
+        <id name="id" column="user_id" > 
+			<generator class="increment"/>
+        </id>	
+        <property name="first_name"     column="first_name"/>
+        <property name="last_name"      column="last_name"/>
+        <property name="email"         column="email"/>
+        <property name="orgManagerUserId" column="org_manager_userid" />
+        <property name="active_yn"        column="active_yn"/>
+        <property name="orgUserId"         column="org_user_id"/>
+   	</class>
+	
+ 	<class name="UserApp" table="fn_user_role">
+        <composite-id>
+            <key-property name="userId" type="long">
+                <column name="user_id" precision="11" scale="0" />
+            </key-property>
+        	<key-many-to-one name="app" class="org.openecomp.portalsdk.core.domain.App" column="app_id" />
+        	<key-many-to-one name="role" class="org.openecomp.portalsdk.core.domain.Role" column="role_id" />
+        </composite-id>
+        <property name="priority" type="java.lang.Short">
+            <column name="priority" precision="4" scale="0" />
+        </property>
+    </class>
+
+    <!-- App class mapping details -->
+    <class name="App" table="fn_app">
+        <id name="id" column="app_id"/>
+        <property name="name" column="app_name"/>
+        <property name="appPassword" column="app_password"/>
+        <property name="username" column="app_username"/>
+		<property name="imageUrl" column="app_image_url"/>
+		<property name="description" column="app_description"/>
+		<property name="notes" column="app_notes"/>
+		<property name="url" column="app_url"/>
+		<property name="alternateUrl" column="app_alternate_url"/>
+		<property name="restEndpoint" column="app_rest_endpoint"/>
+		<property name="mlAppName" column="ml_app_name"/>
+		<property name="mlAppAdminId" column="ml_app_admin_id"/>
+		<property name="motsId" column="mots_id"/>
+		<property name="open" column="open"/>
+		<property name="enabled" column="enabled"/>
+		<property name="thumbnail" column="thumbnail" type="blob"/>
+		<property name="uebKey" column="ueb_key"/>
+		<property name="uebSecret" column="ueb_secret"/>
+		<property name="uebTopicName" column="ueb_topic_name"/>
+    </class>
+
+
+	<!-- Audit Log class mapping details -->
+    <class name="AuditLog" table="fn_audit_log">
+        <id name="id" column="log_id">
+          <!-- <generator class="sequence">
+            <param name="sequence">seq_fn_audit_log</param>
+          </generator> -->
+          <generator class="native">
+			<param name="sequence">seq_fn_audit_log</param>
+		  </generator>
+        </id>
+        <property name="activityCode"      column="activity_cd"/>
+        <property name="affectedRecordId"  column="affected_record_id"  />
+        <property name="comments"          column="comments"  />
+        <property name="createdId"         column="user_id" />
+    </class>
+    
+    <!-- User Role class mapping details -->
+    <class name="Role" table="FN_ROLE">
+        <id name="id" column="role_id">
+           <generator class="native">
+             <param name="sequence">seq_fn_role</param> 
+          </generator>
+        </id>
+
+        <property name="name"      column="role_name"/>
+        <property name="priority"  column="priority" />
+        <property name="active"    column="active_yn"  type="yes_no"/>
+
+        <set name="roleFunctions" table="FN_ROLE_FUNCTION" lazy="false" sort="natural">
+            <key column="role_id"/>
+            <many-to-many column="function_cd" class="org.openecomp.portalsdk.core.domain.RoleFunction"/>
+        </set>
+
+        <set name="childRoles" table="FN_ROLE_COMPOSITE" lazy="false" sort="natural">
+            <key column="parent_role_id"/>
+            <many-to-many column="child_role_id" class="org.openecomp.portalsdk.core.domain.Role"/>
+        </set>
+        
+        <set name="parentRoles" table="FN_ROLE_COMPOSITE" lazy="false" sort="natural">
+            <key column="child_role_id"/>
+            <many-to-many column="parent_role_id" class="org.openecomp.portalsdk.core.domain.Role"/>
+        </set>
+
+    </class>
+    
+ 
+
+    <!-- User Role Function class mapping details -->
+    <class name="RoleFunction" table="FN_FUNCTION">
+        <id        name="code"  column="function_cd"   />
+        <property  name="name"  column="function_name" />
+    </class>
+    
+    <!-- Menu class mapping details -->
+    <class name="Menu" table="FN_MENU">
+        <id name="id" column="menu_id">
+          <generator class="native">
+             <param name="sequence">seq_fn_menu</param> 
+          </generator>
+        </id>
+
+         <!-- <property name="menuLevel"   column="level-1"/> -->
+         <property name="label"       column="label"/>
+         <property name="parentId"    column="parent_id"/>
+         <property name="action"      column="action"/>
+         <property name="functionCd"  column="function_cd"/>
+         <property name="sortOrder"   column="sort_order"/>
+         <property name="servlet"     column="servlet"/>
+         <property name="queryString" column="query_string"/>
+         <property name="externalUrl" column="external_url"/>
+         <property name="target"      column="target"/>
+         <property name="menuSetCode" column="menu_set_cd"/>
+         <property name="active"      column="active_yn"    type="yes_no"/>
+         <property name="separator"   column="separator_yn" type="yes_no"/>
+         <property name="imageSrc"    column="image_src" />
+    </class>
+
+    <class name="MenuData" table="FN_MENU">
+        <!--  <id       name="id"          column="menu_id"/> -->
+        <id name="id" column="menu_id">
+          <generator class="native">
+             <param name="sequence">seq_fn_menu</param> 
+          </generator>
+        </id>
+        <property name="label"       column="label"/>
+        <property name="action"      column="action"/>
+        <property name="functionCd"  column="function_cd"/>
+        <property name="sortOrder"   column="sort_order"/>
+        <property name="servlet"     column="servlet"/>
+        <property name="queryString" column="query_string"/>
+        <property name="externalUrl" column="external_url"/>
+        <property name="target"      column="target"/>
+        <property name="active"      column="active_yn"    type="yes_no"/>
+        <property name="separator"   column="separator_yn" type="yes_no"/>
+        <property name="imageSrc"    column="image_src" />
+        <property name="menuSetCode" column="menu_set_cd"  />
+
+        <many-to-one name="parentMenu" column="parent_id" class="MenuData"/>
+
+        <set name="childMenus" lazy="false" sort="natural" inverse="true" where="active_yn = 'Y'">
+            <key column="parent_id"/>
+            <one-to-many class="MenuData"/>
+        </set>
+    </class>
+    
+    <!-- Broadcast Message class mapping details -->
+    <class name="BroadcastMessage" table="fn_broadcast_message">
+        <id name="id" column="message_id">
+            <generator class="native">
+              <param name="sequence">seq_fn_broadcast_message</param>
+            </generator>
+        </id>
+        <property name="messageText" column="message_text"/>
+        <property name="locationId"  column="message_location_id"/>
+
+        <property name="startDate"   column="broadcast_start_date"  type="timestamp"/>
+        <property name="endDate"     column="broadcast_end_date"    type="timestamp"/>
+
+        <property name="sortOrder"   column="sort_order"/>
+        <property name="active"      column="active_yn"             type="yes_no"/>
+
+        <property name="siteCd"      column="broadcast_site_cd"    />
+    </class>
+    
+    <!-- State Lookup class mapping details -->
+    <class name="LuState" table="FN_LU_STATE">
+        <id       name="abbr"  column="state_cd" />
+        <property name="state"                   />
+    </class>
+    
+    <!-- Country Lookup class mapping details -->
+    <class name="LuCountry" table="FN_LU_COUNTRY">
+        <id       name="abbr"  column="country_cd" />
+        <property name="country"                   />
+        <property name="fullName" column="full_name" />
+        <property name="webphoneCountryLabel" column="fullwebphone_country_label_name" />
+    </class>
+    
+    <class name="LuTimeZone" table="FN_LU_TIMEZONE">
+        <id       name="timezoneId"  column="timezone_id" />
+        <property name="name" column="timezone_name" />
+        <property name="value" column="timezone_value" />
+    </class>
+
+
+    <!-- Lookup (id/value bean) class mapping details -->
+    <class name="Lookup">
+        <composite-id  name="nameValueId" class="org.openecomp.portalsdk.core.domain.support.NameValueId">
+          <key-property name="val"/>
+          <key-property name="lab" />
+        </composite-id>
+    </class>
+
+	<class name="UrlsAccessible" table="V_URL_ACCESS">
+      <composite-id  name="urlsAccessibleKey" class="org.openecomp.portalsdk.core.domain.UrlsAccessibleKey">
+    	<key-property	name="url"	column="url"/>
+    	<key-property   name="functionCd"	column="function_cd"/>
+      </composite-id>
+    </class>
+
+
+	<query name="ParentIdForLabelList">
+      select distinct md.parentMenu.id from MenuData as md where md.label = :paramLabel and md.label is not null
+    </query>
+    
+	<query name="IdForLabelList">
+      select distinct md.id from MenuData as md where md.label = :paramLabel
+    </query>    
+    
+	<query name="parentList">
+      select distinct md.id, md.label, md.parentMenu.id from MenuData as md where md.label is not null
+    </query>
+    	
+	<query name="functionCDlistOld">
+      select distinct functionCd from MenuData 
+    </query>
+
+	<query name="functionCDlist">
+      select distinct code from RoleFunction 
+    </query>   
+     
+	<query name="menuData">
+      from MenuData where menuSetCode = :menu_set_cd and parentMenu is null
+    </query>
+	<query name="restrictedUrls">
+      FROM UrlsAccessible A where upper(A.urlsAccessibleKey.url) = upper(:current_url)
+    </query>
+
+    <query name="getUserNameById">
+      select firstName, lastName from User where id = :user_id
+    </query>
+
+    <query name="getUserEmail">
+      select email from User where id = :user_id
+    </query>
+
+    <query name="getAllUsers">
+      select id, firstName, lastName from User where active = true order by lastName, firstName
+    </query>
+	
+    <query name="getRoleNameById">
+      select name from Role where id = :role_id
+    </query>
+
+    <query name="getAllRoles">
+      select id, name from Role order by name
+    </query>	
+</hibernate-mapping>

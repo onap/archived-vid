@@ -1,0 +1,175 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+
+<div ng-controller="AdminMenuEditController" >
+	<div class="pageTitle">
+		<br>
+	    <h1 class="heading1" style="margin-left:0px">Admin Menu Items</h1>
+	    <br/>
+	<div style="margin-right: 20px;text-align: justify;text-align-last:auto;">
+		<strong>Add menu item here:</strong>
+	</div>
+		<br/>
+	    <a ng-click="addNewFnMenuItemModalPopup();" class="ion-android-apps" style="font-size:40px;" ></a>
+	</div>
+	<br>
+	<div style="margin-right: 20px;text-align: justify;text-align-last:auto;">
+		<strong>Existing menu items:</strong>
+	</div>
+	<br>
+
+
+
+<div style="width: 30%;">
+<table>
+  <tr>
+  <div style="width: 60%;">
+    <td>Number of records to show:</td>
+  </div>
+    <td>
+	    <div style="width: 40%;">
+	    	<input type="text" id="numberOfRecordstoShow" name="numberOfRecordstoShow" ng-model="numberOfRecordstoShow">
+	    </div>
+    </td>
+  </tr>
+</table>	
+  
+</div> 
+
+<!--  freeze header
+<div class="scrolling-table" style="width: 100%;">
+    <table  att-table table-data="fnMenuItems" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+			<thead  att-table-row>
+				<tr align="left">
+				<th att-table-header sortable="true" key="id" default-sort="a">Menu ID</th>
+				<th att-table-header sortable="true" key="label">Label</th>
+	            <th att-table-header sortable="true" key="ParentId">ParentId</th>
+	            <th att-table-header sortable="true" key="sortOrder">Sort Order</th>
+	            <th att-table-header sortable="true" key="action">Action</th>
+	            <th att-table-header sortable="true" key="functionCd">Function</th>
+	            <th att-table-header sortable="true" key="active">Active</th>
+	            <th att-table-header sortable="true" key="servlet">Servlet</th>
+	            <th att-table-header sortable="true" key="queryString">Query String</th>
+	            <th att-table-header sortable="true" key="externalUrl">External URL</th> 
+	            <th att-table-header sortable="true" key="target">Target</th>
+	            <th att-table-header sortable="true" key="menuSetCode">Menu Set Code</th>
+	            <th att-table-header sortable="true" key="separator">Separator</th>
+	            <th att-table-header sortable="true" key="imageSrc">Image Source</th>     
+
+	            <th att-table-header sortable="false"  key="edit">Edit</th>
+	            <th att-table-header sortable="false" key="delete">Delete</th>       
+		        </tr>
+			</thead>
+        <tbody att-table-row type="body" >
+            <tr>
+                <td id="att-scroll-table-content" att-scrollbar style="width: 86.5%;padding-right:1%;">
+                    <table att-table table-data="fnMenuItems" border="1" view-per-page="scrollViewsPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+                        <tbody att-table-row type="body" row-repeat="fnMenuItem in fnMenuItems | limitTo : numberOfRecordstoShow">
+                            <tr align="left">
+	                <td att-table-body width="1%" >{{ fnMenuItem.id }}</td>
+	                <td att-table-body width="3%" align="left" style="word-break:break-all;">{{ fnMenuItem.label }}</td>
+				    <td att-table-body width="1%" align="left">{{ fnMenuItem.parentId }}</td>
+				    <td att-table-body width="1%" align="left">{{ fnMenuItem.sortOrder }}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;">{{ fnMenuItem.action }}</td>
+				    <td att-table-body width="1%" style="word-break:break-all;">{{ fnMenuItem.functionCd }}</td>
+				    <td att-table-body width="1%" style="word-break:break-all;" align="left">{{ fnMenuItem.active ? "Y" : "N"}}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;" align="left">{{ fnMenuItem.servlet }}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;" align="left">{{ fnMenuItem.queryString }}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;" align="left">{{ fnMenuItem.externalUrl }}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;" align="left">{{ fnMenuItem.target }}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;" align="left">{{ fnMenuItem.menuSetCode }}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;" align="left">{{ fnMenuItem.separator ? "Y" : "N"}}</td>
+				    <td att-table-body width="3%" style="word-break:break-all;" align="left">{{ fnMenuItem.imageSrc }}</td>
+					
+				    <td att-table-body width="1%" align="right">
+				    	<div ng-click="editMenuItemModalPopup(fnMenuItem);" style="font-size:20px;"><a href="javascript:void(0)" class="icon-edit"></a></div>
+				    </td>				
+					<td att-table-body width="1%" align="right">
+			    		<div ng-click="removeMenuItem(fnMenuItem);" style="font-size:20px;"><a href="javascript:void(0)" class="icon-trash"></a></div>
+			     	</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+ 
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+  
+-->
+	<div  id="menusTable" title="Menu Items">	
+		<table att-table table-data="fnMenuItems" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+			<thead  att-table-row type="header">
+				<tr>
+				<th att-table-header sortable="true" key="id" default-sort="a">Menu ID</th>
+				<th att-table-header sortable="true" key="label">Label</th>
+	            <th att-table-header sortable="true" key="ParentId">ParentId</th>
+	            <th att-table-header sortable="true" key="sortOrder">Sort Order</th>
+	            <th att-table-header sortable="true" key="action">Action</th>
+	            <th att-table-header sortable="true" key="functionCd">Function</th>
+	            <th att-table-header sortable="true" key="active">Active</th>
+	            <th att-table-header sortable="true" key="servlet">Servlet</th>
+	            <th att-table-header sortable="true" key="queryString">Query String</th>
+	            <th att-table-header sortable="true" key="externalUrl">External URL</th> 
+	            <th att-table-header sortable="true" key="target">Target</th>
+	            <th att-table-header sortable="true" key="menuSetCode">Menu Set Code</th>
+	            <th att-table-header sortable="true" key="separator">Separator</th>
+	            <th att-table-header sortable="true" key="imageSrc">Image Source</th>     
+
+	            <th att-table-header sortable="false" key="edit">Edit</th>
+	            <th att-table-header sortable="false" key="delete">Delete</th>       
+		        </tr>
+			</thead>
+			<tbody att-table-row type="body" row-repeat="fnMenuItem in fnMenuItems | limitTo : numberOfRecordstoShow">
+				<tr>
+	                <td att-table-body width="1%" style="word-break:break-all;" ng-bind="fnMenuItem.id"></td>
+	                <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.label"></td>
+				    <td att-table-body width="1%" style="word-break:break-all;" ng-bind="fnMenuItem.parentId"></td>
+				    <td att-table-body width="1%" style="word-break:break-all;" ng-bind="fnMenuItem.sortOrder"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.action"></td>
+				    <td att-table-body width="1%" style="word-break:break-all;" ng-bind="fnMenuItem.functionCd"></td>
+				    <td att-table-body width="1%" style="word-break:break-all;" ng-bind="fnMenuItem.active ? 'Y' : 'N'"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.servlet"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.queryString"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.externalUrl"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.target"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.menuSetCode"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.separator ? 'Y' : 'N'"></td>
+				    <td att-table-body width="3%" style="word-break:break-all;" ng-bind="fnMenuItem.imageSrc"></td>
+					
+				    <td att-table-body width="1%">
+				    	<div ng-click="editMenuItemModalPopup(fnMenuItem);" style="font-size:20px;"><a href="javascript:void(0)" class="ion-edit"></a></div>
+				    </td>				
+					<td att-table-body width="1%">
+			    		<div ng-click="removeMenuItem(fnMenuItem);" style="font-size:20px;"><a href="javascript:void(0)" class="ion-trash-b"></a></div>
+			     	</td>	
+			    </tr>
+			</tbody>
+			
+		</table>
+	</div>	
+
+
+</div>

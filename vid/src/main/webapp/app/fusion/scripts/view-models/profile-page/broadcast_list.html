@@ -1,0 +1,71 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+<div style="width:80%;">
+    
+<div ng-controller="broadcastListController" > 	
+	
+	<h1 class="heading1">Broadcast Messages</h1>
+	<br>
+		<div ng-repeat="location in messageLocations" >
+			{{location.label}} Messages
+			<div title="{{location.label}} Messages">
+				
+			  	<table att-table table-data="location.messages" current-page="1">
+				  	<thead att-table-row type="header">
+				  		<tr>
+				  			<th att-table-header sortable="false" width="10%">No.</th>
+				  			<th att-table-header sortable="false" width="30%">Message Text</th>
+				  			<th att-table-header sortable="false" width="10%">Start Date</th>
+				  			<th att-table-header sortable="false" width="10%">End Date</th>
+				  			<th att-table-header sortable="false" width="10%">Sort Order</th>
+				  			<th att-table-header sortable="false" width="10%">Server</th>
+				  			<th att-table-header sortable="false" width="10%">Active?</th>
+				  			<th att-table-header sortable="false" width="10%">Delete?</th>
+				  		</tr>
+				  	</thead>
+				  	<tbody att-table-row type="body" row-repeat="message in location.messages" style="max-height: 980px;" ><!-- background colors will alternate not properly with multiple tbody-->
+					  <tr>
+					   {{message.id}}
+					    <td width="10%"><a href="javascript:editMessage({{location.value}},'{{location.label}}',{{message.id}});">{{$index+1}}</a></td>
+					    <td width="30%">{{message.messageText}}</td>
+					    <td width="10%">
+					    	{{message.displayStartDate}}
+					    </td>
+					    <td width="10%">{{message.displayEndDate}}</td>
+					    <td width="10%">{{message.sortOrder}}</td>
+					    <td width="10%">{{message.siteCd}}</td>
+					    <td width="10%">
+					    	<div ng-click="toggleActive(message);">
+					    		<input type="checkbox" ng-model="message.active" att-toggle-main ng-true-value="on" ng-false-value="off">
+					    	</div>
+					    </td>
+					     <td att-table-body width="10%">
+						    <div ng-click="remove(message);" style="font-size:20px;"><a href="javascript:void(0)" class="ion-trash-b"></a></div>
+					     </td>
+					  </tr>
+					 
+					</tbody>
+				</table>
+			</div>
+			<input att-button btn-type="primary" size="small" class="button" type="button" value="Add" ng-click="editMessage(location);"/>
+	  	  <br/><br/><br/>
+		</div>
+	</div>
+</div>

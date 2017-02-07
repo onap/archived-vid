@@ -1,0 +1,77 @@
+th.header {
+	background: #DDEEFB repeat-x 0 0 !important;
+	text-align: center; 
+	color: #144BA1 !important;
+	font-weight: bold !important;
+}
+td.last, th.last {
+	border-right-width: 3px !important;
+}
+td.years , td.season, td.month {
+	text-align: center; 
+	color: #043554;
+}
+td.years {
+	background: #085d8a !important;
+	color: white;
+}
+.years .z-label {
+	font-size: 16px;
+}
+td.season {
+	background: #F2DFBA !important;
+}
+td.month {
+	background: #CADBA4 !important;
+	font-style: italic;
+}
+.tooltip {
+	padding: .8em;
+	width: 200px;
+	border-width: 2px !important;
+	position: absolute;
+	background:#FFE45C url(${c:encodeURL('/images/tooltip-bg.png')}) repeat-x scroll 50% top;
+	border:1px solid #FED22F;
+	color:#363636;
+	-moz-border-radius-bottomleft:4px;
+	-moz-border-radius-bottomright:4px;
+	-moz-border-radius-topleft:4px;
+	-moz-border-radius-topright:4px;
+	-webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+	top: 280px;
+	display: none;
+}
+
+.tooltip-anchor, .tooltip-anchor-inner {
+	position: absolute; 
+	width:0; 
+	height:0; 
+	border-bottom-width: 0;
+	background: none;
+	border:1px solid #FED22F;
+	color:#363636;
+	border-bottom-width: 0;	
+}
+.tooltip-anchor {
+	border-left:0 none;
+	border-right:17px dotted transparent;
+	border-top-width:14px;
+	bottom:-14px;
+	left:1em;
+	margin:0;
+	right:auto;
+}
+.tooltip-anchor-inner {
+	border-left:0 none;
+	border-right:12px dotted transparent;
+	border-top:10px solid #FFFFFF;
+	bottom:auto;
+	border-top-color:#FFE45C;
+	border-top-style:solid;
+	border-top-width:10px;
+	left:2px;
+	top:-14px;
+}

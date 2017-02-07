@@ -1,0 +1,186 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+<div style="position: relative; z-index: 999;">
+    <div class="headerContainer" id="headerContainer" ng-show="{{showHeader}}">
+        <div style="position: relative; z-index: 999;">
+            <div class="headerContainer" id="headerContainer">
+                <div id="megaMenuContainer" class="megaMenuContainer" style="margin-top: 0; overflow: visible;">
+                    <!--for mega Menu-->
+                    <!-- Mega Menu parent-tab directive with three models menu-items, active-sub-menu, active-menu -->
+                    <div id="topMenu" class="top-megamenu" ng-mouseleave="activeClickSubMenu.x.active=false; activeClickMenu.x.active=false" >
+                        <div style="float:left;width:100%;"parent-tab menu-items="megaMenuDataObject" active-sub-menu='activeClickSubMenu.x' active-menu='activeClickMenu.x'>
+                            <div parentmenu-tabs mega-menu="true" menu-items="megaMenuDataObject" style="height:55px;">
+                                <div style="float:left">
+                                    <li class="megamenu__item" style="line-height:55px;" ng-click="returnToPortal()">
+                                       <div></div>
+                                        <strong	style="font-weight: 400 !important; font-family: Arial !important; font-size: 18px;" >ECOMP Portal</strong>
+                                    </li>
+                                    <div menu-tabs mega-menu="true" tab-name="item.text" menu-item="item"
+                                         active-menu="activeClickMenu.x"
+                                         ng-repeat="item in megaMenuDataObject"
+                                         style="font-size: 18px;"
+                                         ng-mousedown="loadFavorites()">
+                                        <div parentmenu-tabs sub-menu="true" ng-show="activeClickMenu.x.active && item.active"
+                                             menu-items="activeClickMenu.x.children">
+
+                              <!-- Second level menu -->
+                                            <div menu-tabs sub-menu="true" tab-name="subItem.text"
+                                                 tab-url="subItem.url"  menu-item="subItem"
+                                                 ng-repeat="subItem in activeClickMenu.x.children | orderBy : 'column'" active-menu="activeClickSubMenu.x"
+                                                 sub-item-active="{{subItem.active}}" style="float:left;" aria-label="{{subItem.text}}"
+                                                 ng-mouseenter="submenuLevelAction(subItem.text,subItem.column)"
+                                                 ng-mouseleave="submenuLevelAction(subItem.text,subItem.column)"
+                                                 ng-click="submenuLevelAction(subItem.text,subItem.column)"  >
+                                                <i ng-if="subItem.text=='Favorites'" id="favorite-star"
+                                                   class="icon-star favorites-icon-active">
+                                                </i>
+											</div>
+                                                <div class="sub__menu" ng-mouseleave="activeClickSubMenu.x.active=false" >
+                                                    <ul ng-show="activeClickSubMenu.x.active"  role="menubar" class="columns">
+                                                        <!-- Third level menu -->
+                                                        <div menu-tabs
+                                                             menu-item="subItem"
+                                                             class="columns-div"
+                                                             ng-repeat="subItem in activeClickSubMenu.x.children | orderBy : 'column'"
+                                                             ng-show="activeClickSubMenu.x.active">
+
+                                                            <i id="favorite-selector-third-level"
+                                                               ng-show="isUrlFavorite(subItem.menuId)==false"
+                                                               class="icon-star favorites-icon-inactive"
+                                                               ng-if="subItem.url.length > 1">
+                                                            </i>
+                                                            <i id="favorite-selector-third-level"
+                                                               ng-show="isUrlFavorite(subItem.menuId)"
+                                                               class="icon-star favorites-icon-active"
+                                                               ng-if="subItem.url.length > 1">
+                                                            </i>
+															<span class="title" aria-label="{{subItem.text}}"
+                                                                  ng-click="goToUrl(subItem)">{{subItem.text}}</span>
+                                                            <!-- Fourth level menus -->
+                                                            <div att-links-list="">
+                                                                <i id="favorite-selector-fourth-level"
+                                                                   class="icon-star favorites-icon-inactive"
+                                                                   ng-show="isUrlFavorite(tabValue.menuId)==false"
+                                                                   ng-if="tabValue.url.length > 1">
+
+                                                                </i>
+                                                                <i id="favorite-selector-fourth-level"
+                                                                   class="icon-star favorites-icon-active"
+                                                                   ng-show="isUrlFavorite(tabValue.menuId)"
+                                                                   ng-if="tabValue.url.length > 1">
+
+                                                                </i>
+					                                            <span role="menuitem" att-links-list-item=""
+                                                                      ng-repeat="tabValue in subItem.children"
+                                                                      ng-click="goToUrl(tabValue)"
+                                                                      att-accessibility-click="13,32"
+                                                                      ng-class="{'disabled': tabValue.disabled}">{{tabValue.text}}</span>
+                                                            </div>
+                                                            <hr ng-show="!$last"/>
+                                                        </div>
+                                                    </ul>
+									<!-- Favorites level menu -->
+                                                    <div class="favorites-window" ng-show='favoritesWindow' ng-mouseleave="hideFavoritesWindow()">
+                                                        <div id="favorites-menu-items" ng-show="showFavorites">
+                                                            <div ng-repeat="subItem in favoritesMenuItems"
+                                                                 att-links-list=""
+                                                                 style='display: inline'>
+                                                                <i id="favorite-selector-favorites-list"
+                                                                   class="icon-star favorites-icon-active"
+                                                                >
+                                                                </i>
+                                                                <a id="favorites-list" aria-label="{{subItem.text}}"
+                                                                   ng-click="goToUrl(subItem)"
+                                                                   style="margin-left: 3px; margin-right: 20px; text-decoration: none; color: #666666;">
+                                                                    {{subItem.text}}
+                                                                </a>
+                                                            </div>
+                                                            <div>
+                                                                <br>
+                                                                <p style='font-weight: 400; font-family: Arial !important;
+															    font-size: 18px; text-align: center; background-color: lightgray;
+															    width: 400px; margin-left: 25%; margin-right: 25%;'>
+                                                                    Manage favorites on ECOMP Portal.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Favorites when empty -->
+                                                        <div id="favorites-empty" ng-show="emptyFavorites" class="favorites-window-empty">
+                                                            <div>
+                                                                <img src="app/fusion/external/ebz/images/no_favorites_star.png">
+                                                                <p class='favoritesLargeText'>No Favorites</p>
+                                                                <p class='favoritesNormalText'>Manage favorites on ECOMP Portal.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div >
+                                    <li class="megamenu__item" style="line-height:55px;" ng-if="loadMenufail">
+                                        <strong	style="font-weight: 400 !important; font-family: Arial !important; font-size: 18px;" >Unable to load menus</strong>
+                                    </li>
+                                    <div  style="float:right">
+	                                    <li id="bcLoginSnippet" class="megamenu__item" style="width: 140px;" >
+	                                        <div  popover="loginSnippet.html"  aria-label="Login Snippet"
+	                                              referby="loginSnippet" att-accessibility-click="13,32" popover-style="\" popover-placement="below" style="width: 200px;">
+	                                            <div class="ion-android-person login-snippet-icon" style="display:inline-block"></div>
+	                                            <div class="login-snippet-text" style="display: inline-block; font-size:12px; margin-left:5px;overflow: hidden; max-height: 31px; overflow: hidden; max-height: 31px;   max-width:120px; padding-top: 0px; margin-top: 0px; white-space: nowrap;">{{userFirstName}}</div>
+	                                        </div>
+	                                    </li>
+	                                    <li class="megamenu__item" style="width:120px;">&nbsp;</li>
+                                    </div>
+                                    
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="loginSnippet.html">
+    <div style="line-height: normal; right: 167px; min-height: 200px; height: auto; width: auto; " ng-controller="loginSnippetCtrl" >
+        <div id="reg-header-snippet">
+            <div class="reg-profilePicture" style="min-height: 215px; width: auto; " id="reg-profile-links">
+                <div id="reg-profileImage">
+                    <div style="clear: both; height: 80px; position: relative; width: 80px;">
+                        <span style="  background-position: -1px -1px; height: 81px;left: 0;position: absolute;top: 0;width: 81px;">&nbsp;</span>
+                    </div>
+                </div>
+                <div id="reg-logout-div">
+                    <a class="reg-logout-btn" href="logout.htm">Log Out</a>
+                </div>
+            </div>
+            <div tabindex="0" class="reg-profileDetails" id="reg-profiledetails-id">
+                <ul class="reg-Details-table" style="list-style: none;">
+                    <li><div class="reg-userName-table"><div id="reg-userName-table-row"><div id="reg-userName-table-cell"><h3 class="att-global-fonts" style="font-size:18px !important;" id="reg-userName">{{userProfile.fullName}}&nbsp;</h3><span class="visuallyhidden">.</span></div></div></div></li>
+                    <li><div class="reg-userEmail-label"><span class="reg-userEmail-label-spn">EMAIL<span class="visuallyhidden">:</span></span></div></li>
+                    <li><div class="reg-userEmail-value"><span class="reg-userEmail-value-spn">{{userProfile.email}}<span class="visuallyhidden">.</span></span></div></li>
+                    <li><div class="reg-userRole-label"><span class="reg-userRole-label-spn">User ID<span class="visuallyhidden">:</span></span></div></li>
+                    <li><div class="reg-userRole-value"><span class="reg-userRole-value-spn">{{userProfile.orgUserId}}<span class="visuallyhidden"></span></span></div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</script>

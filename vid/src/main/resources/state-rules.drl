@@ -1,0 +1,38 @@
+package org.openecomp.portalsdk.core.drools;
+global String age
+
+rule "Default"
+when
+$droolsRuleService : DroolsRuleServiceImpl( state != null )
+then
+System.out.println($droolsRuleService.accessLabel() +" "+ $droolsRuleService.getState() +" state legal age is " + getDefaultIfNull(age));
+$droolsRuleService.setResultsString($droolsRuleService.getState()+" state legal age is " + getDefaultIfNull(age));
+end
+
+rule "Drools NJ"
+when
+$droolsRuleService : DroolsRuleServiceImpl( state == "NJ" )
+then
+System.out.println($droolsRuleService.accessLabel() +" "+ "NJ state legal age is " + getDefaultIfNull(age));
+$droolsRuleService.setResultsString("NJ state legal age is " + getDefaultIfNull(age));
+end
+
+rule "Drools KY"
+when
+$droolsRuleService : DroolsRuleServiceImpl( state == "KY" )
+then
+System.out.println($droolsRuleService.accessLabel() +" "+ "KY state legal age is " + getDefaultIfNull("20"));
+$droolsRuleService.setResultsString("KY state legal age is " + getDefaultIfNull("20"));
+end
+
+rule "Drools NY"
+when
+$droolsRuleService : DroolsRuleServiceImpl( state == "NY" )
+then
+System.out.println($droolsRuleService.accessLabel() +" "+ "NY state legal age is " + getDefaultIfNull("21"));
+$droolsRuleService.setResultsString("NY state legal age is " + getDefaultIfNull("21"));
+end
+
+function String getDefaultIfNull(String age) {
+return age == null ? "18" : age;
+}

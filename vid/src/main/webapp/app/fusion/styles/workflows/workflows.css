@@ -1,0 +1,50 @@
+/*-
+ * ================================================================================
+ * eCOMP Portal SDK
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ================================================================================
+ */
+.scrolling-table{
+   width: 1200px;
+}
+.scrolling-table .scroll-viewport { 
+    height: 200px !important;
+    width: 99.5% !important;
+    background-color:white;
+}
+
+.scrolling-table .scroll-overview{
+    margin-top:-14px !important;
+}
+
+.scrolling-table .scroll-viewport:hover{
+    background-color:white;
+}
+
+.scrolling-table #att-scroll-table-content{
+    height:200px;
+    position: absolute !important;
+    width:700px;
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right:5px;
+}
+
+.workflow-popup-body{
+	position: relative;
+    padding: 30px;
+} 

@@ -1,0 +1,85 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+<br/>
+<div>
+	<div>
+		<div align="right">
+			<h3>
+				<button ng-click="createWorkflow('lg')" class="btn btn-primary">Create Workflow</button></h3>
+		</div>
+		<div>
+			<form>
+				<div class="form-group">
+					<input type="text" ng-model="search" placeholder = "Current Workflows - Search one"/>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+  	
+<!-- <table att-table table-data="tableData" view-per-page="viewPerPage" 
+	current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage" ng-show="workflows.length > 0">
+	<thead  att-table-row type="header"> -->
+
+
+<table att-table table-data="tableData" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+    <thead att-table-row type="header">	
+		<tr class="info">
+			<th att-table-header>Id</th>
+			<th att-table-header>Name</th>
+			<th>Key</th>
+			<th>Description</th>
+			<th>Workflow Server URL</th>
+			<!-- <th>Suspend Link</th> -->
+			<th>View</th>
+			<th>Active</th>
+			<th>Created </th>
+			<th>Created By</th>
+			<th>Action</th>
+			<th>Schedule</th>			
+			<th>Edit</th>
+			<th>Delete?</th>
+			
+			
+		</tr>
+	</thead>
+	  
+
+	<tbody att-table-row type="body">
+		<tr ng-repeat="workflow in workflows | filter: search">		
+			<td>{{workflow.id}}</td>
+			<td>{{workflow.name}}</td>
+			<td>{{workflow.workflowKey}}</td>
+			<td>{{workflow.description}}</td>
+			<td>{{workflow.runLink}}</td>
+			<td><div ng-click="previewWorkflow(workflow,'lg');" style="font-size:20px;"><a href="javascript:void(0)" class="ion-eye"></a></div></td>			
+			<!-- <td>{{workflow.suspendLink}}</td> -->
+			<td >{{workflow.active}}</td>
+			<td>{{workflow.created}}</td>
+			<td>{{workflow.createdBy}}</td>
+			<td><div ng-show="workflow.active ==='false'" ng-click="activateWorkflow(workflow)" style="font-size:20px;"><a href="javascript:void(0)" class="ion-play"></a></div>
+			<div ng-show="workflow.active ==='true'" ng-click="suspendWorkflow(workflow)" style="font-size:20px;"><a href="javascript:void(0)" class="ion-pause"></a></div></td>
+			<td><div ng-click="scheduleWorkflow(workflow);" style="font-size:20px;"><a href="javascript:void(0)" class="ion-ios-time"></a></div></td>			
+			<td><div ng-click="updateWorkflow(workflow);" style="font-size:20px;"><a href="javascript:void(0)" class="ion-edit"></a></div></td>
+			<td><div ng-click="removeWorkflow(workflow);" style="font-size:20px;"><a href="javascript:void(0)" class="ion-trash-b"></a></div></td>
+		</tr>
+	</tbody>
+</table>
+  

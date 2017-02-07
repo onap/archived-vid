@@ -1,0 +1,139 @@
+<!--
+  ================================================================================
+  eCOMP Portal SDK
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ================================================================================
+  -->
+<div style="margin-bottom:20px;">
+<h1 class="heading1">User Search</h1>
+      <br>
+  		Please enter search criteria below:<br/>
+
+            <div class="fn-ebz-container">
+	          Last Name:<br/>
+	          <input class="fn-ebz-text" type="text"   ng-model="postSearchBean.lastName" value="" size="25">
+            </div>
+          
+            <div class="fn-ebz-container">
+	          First Name:<br/>
+	          <input class="fn-ebz-text" type="text" ng-model="postSearchBean.firstName" value="" size="25">
+            </div>
+         
+            <div class="fn-ebz-container">
+	          User ID:<br/>
+	          <input class="fn-ebz-text" type="text" ng-model="postSearchBean.orgUserId" value="" size="25">
+            </div>
+           
+            <div class="fn-ebz-container">
+	          Manager User ID:<br/>
+	          <input class="fn-ebz-text" type="text" ng-model="postSearchBean.orgManagerUserId" value="" size="25">
+            </div>
+           <br>
+            <div class="fn-ebz-container">
+	          Organization:<br/>
+	          <input class="fn-ebz-text" type="text" ng-model="postSearchBean.orgCode" value="" size="25">
+            </div>
+           
+            <div class="fn-ebz-container">
+	          Email:<br/>
+	          <input class="fn-ebz-text" type="text" ng-model="postSearchBean.email" value="" size="25">
+            </div>
+     <br>
+     <div>
+		 	<input att-button btn-type="primary" size="small" class="button" type="submit" value="Search" ng-click="search(postSearchBean);" />
+		
+		    <input att-button btn-type="primary" size="small" class="button" type="submit" value="Reset"  ng-click="reset();"/>
+	 </div>
+	 <br>
+	 
+		{{noResultsString}}
+     
+     <div ng-if="profileList.length != 0">
+  	    <table att-table table-data="profileList" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		  <thead att-table-row type="header" >
+		    <tr>
+  			<th att-table-header  width="5%" align="left">No</th>
+  			<th att-table-header  width="30%" key="lastName" align="left">Name</th>
+  			<th att-table-header  width="5%"  key="orgUserId" align="left">OrgUserId</th>
+  			<th att-table-header  width="10%" key="orgCode" align="left">Organization</th>
+  			<th att-table-header  width="20%" align="left">Phone</th>
+  			<th att-table-header  width="20%" key="email" align="left">Email</th>
+  			<th att-table-header  width="10%" align="left">Import?</th>
+  			</tr>
+		  </thead>
+         	
+            <tbody att-table-row type="body" row-repeat="profile in profileList" style="max-height: 980px;" ><!-- background colors will alternate not properly with multiple tbody-->	
+              <tr >
+              	<td att-table-body width="5%" align="left">
+                {{$index + 1}}
+                </td>
+            	<td att-table-body width="30%" align="left">                	
+	              <div ng-if="ngexistingUsers[profile.orgUserId] == null">
+        	          {{profile.lastName}},&nbsp;{{profile.firstName}}
+            	  </div>
+	              <div ng-if="ngexistingUsers[profile.orgUserId] != null">
+    	              <a href="profile.htm?profile_id={{ngexistingUsers[profile.orgUserId]}}" alt="View/Edit Profile">
+                  	  {{profile.lastName}},&nbsp;{{profile.firstName}}
+	                  </a>
+            	   </div>
+               
+                </td>
+            	<td att-table-body width="5%" align="left">
+                {{profile.orgUserId}}
+                </td>
+            	<td att-table-body width="10%" align="left">
+                {{profile.orgCode}}
+                </td>
+            	<td att-table-body width="20%" align="left">
+                {{profile.phone}}
+                </td>
+            	<td att-table-body width="20%" align="left">
+                {{profile.email}}
+                </td>
+                
+            	<td att-table-body width="10%" align="left">
+		            <div ng-if="ngexistingUsers[profile.orgUserId] == null">
+		            	<div ng-click="toggleSelection(profile);">
+		                <input name="selected" type="checkbox" ng-model="profile.selected" att-checkbox/>
+		                </div>
+		             </div>
+		             <div ng-if="ngexistingUsers[profile.orgUserId] != null">
+		                Exists
+		             </div>
+                </td>
+              </tr>
+              </tbody>
+	    </table>
+	    <div class="fn-ebz-container">
+	          Rows Per Page:
+	          <input class="fn-ebz-text" type="text" ng-model="viewPerPage" size="5" style="width: 47px;">
+        </div>
+		<div class="fn-ebz-container">
+	          Current Page:
+	          <input class="fn-ebz-text" type="text" ng-model="currentPage" size="5" style="width: 47px;">
+        </div>
+        <div class="fn-ebz-container">
+	          Total Page(s):
+	          <input class="fn-ebz-text" type="text" ng-model="totalPage" size="5" readonly="true" style="width: 47px;">
+        </div>
+		
+        <div ng-if="profileList.length != 0">
+          <input att-button btn-type="primary" size="small" class="button" type="submit" value="Import" ng-click="process();"/>
+        </div>
+
+      </div>
+      
+</div>

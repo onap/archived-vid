@@ -1,0 +1,19 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "fields providing information about the subscriber associated with the request",
+	"type": "object",
+	"properties": {
+		"globalSubscriberId": {
+			"description": "global Customer Id understood by A&AI",
+			"type": "string"
+		},
+		"subscriberCommonSiteId": {
+			"description": "id representing the location of the subscriber",
+			"type": "string"
+		},
+		"subscriberName": {
+			"description": "name of the customer or subscriber",
+			"type": "string"
+		}
+	}
+}

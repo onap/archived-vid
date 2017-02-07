@@ -1,0 +1,66 @@
+<style>
+.grid {
+  width: 100%;
+  height: 400;
+}
+.no-rows {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.no-rows .msg {
+  opacity: 1;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 50%;
+  line-height: 200%;
+  background-color: #eee;
+  border-radius: 4px;
+  border: 1px solid #555;
+  text-align: center;
+  font-size: 24px;
+  display: table;
+}
+
+.no-rows .msg span {
+  display: table-cell;
+  vertical-align: middle;
+}
+.grid .ui-grid-header-cell {
+  text-align:center;
+}
+</style>
+
+<div>
+	<h1 class="heading2">{{reportData.reportName}}  <a ng-href="{{reportEditURL}}" ng-show="reportData.allowEdit" class="icon-edit" style="font-size:20px;"></a>
+	
+	&nbsp;&nbsp;&nbsp;<a ng-href="{{reportChartURL}}" ng-show="reportData.allowEdit && reportData.chartWizardAvailable" class="icon-bar-chart-vertical" style="font-size:20px;"></a>
+	&nbsp;&nbsp;&nbsp;<span  ng-show="reportData.allowEdit && showFormFields" ><input type="checkbox" ng-model="showFormFieldIds" ng-true-value="Hide_IDs" ng-false-value="Show_IDs" att-toggle-main></span>
+	
+	<!-- &nbsp;&nbsp;&nbsp;<a ng-href="{{reportChartURLNew}}" ng-show="reportData.allowEdit" class="icon-bar-chart-horizontal" style="font-size:20px;"></a> -->
+	</h1>
+	  <div ng-show="isInProgress" style="font-size:50px;color:#2ca02c">Loading...</div>
+	  
+	  <form ng-show="showFormFields" class="row section-row" style="margin: 10px">
+	    <form-builder ng-form-fields="reportData.formFieldList" ng-show-field-id="showFormFieldIds" ng-num-form-cols="reportData.numFormCols" ng-model="formFieldSelectedValues" ng-trigger-method="triggerOtherFormFields"></form-builder>
+	    <br><br>
+	    <button type="submit" ng-click="runReport()" att-button btn-type="primary" size="small" title='run'>Run</button>
+	  </form>
+	  <a type="submit" ng-show="showBackButton"  style="margin: 10px" ng-href="report.htm#/report_run/{{parentReportUrlParams}}" att-button btn-type="primary" size="small" title='Back'>Back</a>
+	  <iframe id="chartiframe" ng-show="showChart" width="100%" height="450px" style="border: none" scrolling="no"></iframe>
+	  <div id="errorDiv"></div>
+	  <div  ng-if="showGrid">
+	  	<div id="grid1" ui-grid="gridOptions" ui-grid-pagination ui-grid-pinning ui-grid-resize-columns class="grid" style="height: {{gridHeight}}">
+	  	<div class="no-rows" ng-show="!gridOptions.data.length">
+      		<div class="msg">
+        		<span>{{reportData.message}}</span>
+      		</div>
+	    </div>
+	 </div>
+	  </div>
+</div>	
