@@ -5,7 +5,7 @@
 	<artifactId>vid-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>VID Parent Project</name>
-	
+	<!-- noop to kick gerrit review + jenkins -->
 	<modules>
 		<module>vid</module>
 		<module>deliveries</module>
