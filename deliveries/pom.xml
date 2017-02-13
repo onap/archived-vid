@@ -17,7 +17,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<docker.push.registry>${docker_registry}</docker.push.registry>
+		<docker.push.registry>nexus3.openecomp.org</docker.push.registry>
 		<docker.verbose>true</docker.verbose>
 	</properties>
 
