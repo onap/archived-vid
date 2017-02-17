@@ -9,7 +9,7 @@
 	</parent>
 
 	<packaging>pom</packaging>
-	<groupId>org.att.ecomp</groupId>
+	<groupId>org.openecomp.vid</groupId>
 	<artifactId>vid-deliveries</artifactId>
 
 	<name>VID Deliveries</name>
@@ -31,15 +31,11 @@
 
 				<configuration>
 					<verbose>true</verbose>
-					<authConfig>
-						<username>${docker.login}</username>
-						<password>${docker.password}</password>
-					</authConfig>
 
 					<apiVersion>1.23</apiVersion>
 					<images>
 						<image>
-							<name>ecomp/vid:${project.version}</name>
+							<name>openecomp/vid:${project.version}</name>
 							<build>
 								<cleanup>remove</cleanup>
 								<dockerFileDir>docker-files</dockerFileDir>
