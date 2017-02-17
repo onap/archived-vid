@@ -1,0 +1,14 @@
+OpenECOMP VID for LF
+
+1.  Make these two files available on the docker host VM:
+
+${gerrit_repo_root}/vid/lf_config/vid-my.cnf
+${gerrit_repo_root}/vid/lf_config/vid-pre-init.sql
+
+2.  Set up and run the mariadb docker image:
+
+docker run --name vid-mariadb -e MYSQL_DATABASE=vid_openecomp -e MYSQL_USER=vidadmin -e MYSQL_PASSWORD=<db password here> -e MYSQL_ROOT_PASSWORD=<root db password here> -v /path/to/vid-my.cnf:/etc/mysql/my.cnf -v /path/to/vid-pre-init.sql:/docker-entrypoint-initdb.d/vid-pre-init.sql -v /var/lib/mysql -d mariadb:10
+
+3.  Set up and run the vid-server docker image:
+
+docker run -e VID_MYSQL_DBNAME=vid_openecomp -e VID_MYSQL_PASS=Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U --name vid-server -p 8080:8080 --link vid-mariadb:vid-mariadb-docker-instance -d ecomp-nexus:51215/ecomp/vid:0.0.1-SNAPSHOT
