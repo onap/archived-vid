@@ -1,13 +1,13 @@
 version: '2'
 services:
         vid-server:
-                image: ecomp-nexus:51212/ecomp/vid
+                image: openecomp/vid
                 ports:
                 - "8080:8080"
                 links:
                 - vid-mariadb:vid-mariadb-docker-instance
         vid-mariadb:
-                image: ecomp-nexus:51212/mariadb:10.1.11
+                image: mariadb:10.1.11
                 ports:
                 - "3306:3306"
                 volumes:
