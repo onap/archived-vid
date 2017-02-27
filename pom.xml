@@ -50,22 +50,6 @@
 		</site>
 	</distributionManagement>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>vid-3rd-party</id>
-			<name>VID 3rd Party Repository</name>
-			<url>https://ecomp-nexus:8443/maven-central</url>
-		</pluginRepository>
-	</pluginRepositories>
-	
-	<repositories>
-		<repository>
-			<id>vid-3rd-party</id>
-			<name>VID 3rd Party Repository</name>
-			<url>https://ecomp-nexus:8443/maven-central</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 		 <!-- license plugin for open source -->
