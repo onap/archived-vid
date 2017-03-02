@@ -30,22 +30,28 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<nexus.host>nexus.openecomp.org</nexus.host>
-		<nexus.proto>https</nexus.proto>
 		<build.version>1.0.0-SNAPSHOT</build.version>
+		<nexusproxy>https://nexus.openecomp.org</nexusproxy>
+		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
+		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
+		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
 	</properties>
+
 	<repositories>
 		<repository>
-			<!-- Snapshots repository has ECOMP snapshot artifacts -->
-			<id>nexus-snapshots</id>
-			<name>Nexus Maven Central - Snapshots</name>
-			<url>${nexus.proto}://${nexus.host}/content/repositories/snapshots/</url>
+			<id>ecomp-releases</id>
+			<name>VID Release Repository</name>
+			<url>${nexusproxy}/${releaseNexusPath}</url>
 		</repository>
 		<repository>
-			<!-- Releases repository has ECOMP release artifacts -->
-			<id>nexus</id>
-			<name>Nexus Maven Central - Releases</name>
-			<url>${nexus.proto}://${nexus.host}/content/repositories/releases/</url>
+			<id>ecomp-snapshots</id>
+			<name>VID Snapshot Repository</name>
+			<url>${nexusproxy}/${snapshotNexusPath}</url>
+		</repository>
+		<repository>
+			<id>ecomp-staging</id>
+			<name>VID Staging Repository</name>
+			<url>${nexusproxy}/${stagingNexusPath}</url>
 		</repository>
 		<repository>
 			<!-- Snapshots repository has ECOMP snapshot artifacts -->
@@ -57,24 +63,41 @@
 
 	<distributionManagement>
 		<repository>
-			<id>releases</id>
+			<id>ecomp-releases</id>
 			<name>VID Release Repository</name>
-			<url>${nexus.proto}://${nexus.host}/content/repositories/releases/</url>
+			<url>${nexusproxy}/${releaseNexusPath}</url>
 		</repository>
 		<snapshotRepository>
-			<id>snapshots</id>
+			<id>ecomp-snapshots</id>
 			<name>VID Snapshot Repository</name>
-			<url>${nexus.proto}://${nexus.host}/content/repositories/snapshots/</url>
+			<url>${nexusproxy}/${snapshotNexusPath}</url>
 		</snapshotRepository>
 		<!-- added for javadoc -->
 		<site>
-			<id>javadoc</id>
-			<url>dav:${nexus.proto}://${nexus.host}/content/repositories/vid-javadoc/${project.version}</url>
+			<id>ecomp-javadoc</id>
+			<url>dav:${nexusproxy}/content/repositories/vid-javadoc/${project.version}</url>
 		</site>
 	</distributionManagement>
 
 	<build>
-		<plugins>
+	  <plugins>
+	    <plugin>
+	      <groupId>org.codehaus.mojo</groupId>
+	      <artifactId>versions-maven-plugin</artifactId>
+	      <version>1.3.1</version>
+	    </plugin>
+	    <plugin>
+	        <groupId>org.sonatype.plugins</groupId>
+		<artifactId>nexus-staging-maven-plugin</artifactId>
+		<version>1.6.7</version>
+		<extensions>true</extensions>
+		<configuration>
+		  <nexusUrl>${nexusproxy}</nexusUrl>
+		  <stagingProfileId>176c31dfe190a</stagingProfileId>
+		  <serverId>ecomp-staging</serverId>
+		</configuration>
+	    </plugin>
+
 		 <!-- license plugin for open source -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -86,63 +109,62 @@
                     <organizationName>AT&amp;T</organizationName>
                     <projectName>VID</projectName>
                     <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage> 
-     				<processStartTag>========LICENSE_START===========</processStartTag>
-     				<processEndTag>============LICENSE_END===========</processEndTag>
+     		    <processStartTag>========LICENSE_START===========</processStartTag>
+     		    <processEndTag>============LICENSE_END===========</processEndTag>
                     <roots>
-                        <root>src/main/java</root>
+                      <root>src/main/java</root>
                     </roots>
                     <excludes>
                         <exclude>*.png</exclude>
                     </excludes>
                 </configuration>
             </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
-			</plugin>
+	    <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-deploy-plugin</artifactId>
+		<version>2.8</version>
+	    </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-
-				<configuration>
-					<debug>true</debug>
-					<compilerArgument>-Xlint</compilerArgument>
-					<verbose>true</verbose>
-					<showDeprecation>true</showDeprecation>
-					<showWarnings>true</showWarnings>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<!-- added for javadoc -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.6</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.wagon</groupId>
-						<artifactId>wagon-webdav-jackrabbit</artifactId>
-						<version>2.10</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
+	    <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-surefire-plugin</artifactId>
+		<version>2.17</version>
+	    </plugin>
+	    
+	    <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>2.3.2</version>
 		
+		<configuration>
+		  <debug>true</debug>
+		  <compilerArgument>-Xlint</compilerArgument>
+		  <verbose>true</verbose>
+		  <showDeprecation>true</showDeprecation>
+		  <showWarnings>true</showWarnings>
+		  <source>1.8</source>
+		  <target>1.8</target>
+		</configuration>
+	    </plugin>
+	    <!-- added for javadoc -->
+	    <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-site-plugin</artifactId>
+		<version>3.6</version>
+		<dependencies>
+		  <dependency>
+		    <groupId>org.apache.maven.wagon</groupId>
+		    <artifactId>wagon-webdav-jackrabbit</artifactId>
+		    <version>2.10</version>
+		  </dependency>
+		</dependencies>
+	    </plugin>
+	  </plugins>
 	</build>
+
 	<!-- added for javadoc -->
+
 	<reporting>
 		<plugins>
 			

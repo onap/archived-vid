@@ -9,7 +9,7 @@
 		inherit from a parent maven module. -->
 	<groupId>org.openecomp.vid</groupId>
 	<artifactId>vid</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>VID Webapp</name>
 	<description>VID Webapp based on the Ecomp SDK</description>
@@ -25,19 +25,27 @@
 		<skiptests>true</skiptests>
 		<!--  this should be commented for local debugging -->
 		<!-- <deployenv>local</deployenv> -->
+		<nexusproxy>https://nexus.openecomp.org</nexusproxy>
+		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
+		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
+		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
 	</properties>
+
 	<repositories>
 		<repository>
-			<!-- Snapshots repository has ECOMP snapshot artifacts -->
-			<id>nexus-snapshots</id>
-			<name>Nexus Maven Central - Snapshots</name>
-			<url>https://ecomp-nexus:8443/repository/maven-snapshots/</url>
+			<id>ecomp-releases</id>
+			<name>VID Release Repository</name>
+			<url>${nexusproxy}/${releaseNexusPath}</url>
 		</repository>
 		<repository>
-			<!-- Releases repository has ECOMP release artifacts -->
-			<id>nexus</id>
-			<name>Nexus Maven Central - Releases</name>
-			<url>https://ecomp-nexus:8443/repository/maven-releases/</url>
+			<id>ecomp-snapshots</id>
+			<name>VID Snapshot Repository</name>
+			<url>${nexusproxy}/${snapshotNexusPath}</url>
+		</repository>
+		<repository>
+			<id>ecomp-staging</id>
+			<name>VID Staging Repository</name>
+			<url>${nexusproxy}/${stagingNexusPath}</url>
 		</repository>
 		<repository>
 			<!-- Snapshots repository has ECOMP snapshot artifacts -->
@@ -46,6 +54,8 @@
 			<url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
 		</repository>
 	</repositories>
+
+
 	<profiles>
 		<!-- disable doclint, a new feature in Java 8, when generating javadoc -->
 		<profile>
@@ -146,9 +156,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.5</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
