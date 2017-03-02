@@ -56,6 +56,24 @@
 	</repositories>
 
 
+	<distributionManagement>
+		<repository>
+			<id>ecomp-releases</id>
+			<name>VID Release Repository</name>
+			<url>${nexusproxy}/${releaseNexusPath}</url>
+		</repository>
+		<snapshotRepository>
+			<id>ecomp-snapshots</id>
+			<name>VID Snapshot Repository</name>
+			<url>${nexusproxy}/${snapshotNexusPath}</url>
+		</snapshotRepository>
+		<!-- added for javadoc -->
+		<site>
+			<id>ecomp-javadoc</id>
+			<url>dav:${nexusproxy}/content/repositories/vid-javadoc/${project.version}</url>
+		</site>
+	</distributionManagement>
+
 	<profiles>
 		<!-- disable doclint, a new feature in Java 8, when generating javadoc -->
 		<profile>
