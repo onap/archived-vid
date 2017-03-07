@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
 ENV ROOT_DIR /opt/app/vid
 
 ENV ASDC_CLIENT_TYPE REST
-ENV ASDC_CLIENT_REST_HOST c2.vm1.asdc.simpledemo.openecomp.org
+ENV ASDC_CLIENT_REST_HOST c2.vm1.sdc.simpledemo.openecomp.org
 #old creds 1/9/2017 ENV ASDC_CLIENT_REST_AUTH Basic dmlkOnZpZG9z
 ENV ASDC_CLIENT_REST_AUTH Basic dmlkOktwOGJKNFNYc3pNMFdYbGhhazNlSGxjc2UyZ0F3ODR2YW9HR21KdlV5MlU=
 ENV ASDC_CLIENT_REST_PROTOCOL http
