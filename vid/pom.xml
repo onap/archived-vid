@@ -29,6 +29,7 @@
 		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
 		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
 		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
+                <sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
 	</properties>
 
 	<repositories>
@@ -69,11 +70,32 @@
 		</snapshotRepository>
 		<!-- added for javadoc -->
 		<site>
-			<id>ecomp-javadoc</id>
-			<url>dav:${nexusproxy}/content/repositories/vid-javadoc/${project.version}</url>
+			<id>ecomp-site</id>
+			<url>dav:${nexusproxy}${sitePath}</url>
 		</site>
 	</distributionManagement>
 
+	<reporting>
+	  <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-javadoc-plugin</artifactId>
+	      <version>2.10.4</version>
+	      <configuration>
+		<failOnError>false</failOnError>
+		<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+		<docletArtifact>
+		  <groupId>org.umlgraph</groupId>
+		  <artifactId>umlgraph</artifactId>
+		  <version>5.6</version>
+		</docletArtifact>
+		<additionalparam>-views</additionalparam>
+		<useStandardDocletOptions>true</useStandardDocletOptions>
+	      </configuration>
+	    </plugin>
+	  </plugins>
+	</reporting>
+	
 	<profiles>
 		<!-- disable doclint, a new feature in Java 8, when generating javadoc -->
 		<profile>
@@ -83,44 +105,6 @@
 			</activation>
 			<build>
 			<plugins>
-					<!-- license plugin for open source -->
-		            <!-- <plugin>
-		                <groupId>org.codehaus.mojo</groupId>
-		                <artifactId>license-maven-plugin</artifactId>
-		                <version>1.10</version>
-		                <configuration>
-		                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-		                    <processStartTag>============LICENSE_START=======================================================</processStartTag>
-		                    <processEndTag>============LICENSE_END=========================================================</processEndTag>
-		                    <sectionDelimiter>================================================================================</sectionDelimiter>
-		                    <extraExtensions>
-		                        <js>java</js>
-		                        <sql>java</sql>
-		                    </extraExtensions>
-		                    <licenseName>apache_v2</licenseName>
-		                    <inceptionYear>2017</inceptionYear>
-		                    <organizationName>AT&amp;T Intellectual Property. All rights reserved.</organizationName>
-		                    <projectName>VID</projectName>
-		                    <canUpdateCopyright>true</canUpdateCopyright>
-		                    <canUpdateDescription>true</canUpdateDescription>
-		                    <canUpdateLicense>true</canUpdateLicense>
-		                    <emptyLineAfterHeader>true</emptyLineAfterHeader>
-		                    <roots>
-				                <root>src/main/java</root>
-				                <root>src/test/java</root>
-				                <root>src/main/webapp/app/vid/scripts</root>
-              				</roots>
-		                </configuration>
-		                <executions>
-		                    <execution>
-		                        <id>first</id>
-		                        <goals>
-		                            <goal>update-file-header</goal>
-		                        </goals>
-		                        <phase>process-sources</phase>
-		                    </execution>
-		                </executions>
-		            </plugin>-->
 			    	    <plugin>
 				      <groupId>org.codehaus.mojo</groupId>
 				      <artifactId>versions-maven-plugin</artifactId>
@@ -140,13 +124,18 @@
 				    
 				    <plugin>
 				      <groupId>org.apache.maven.plugins</groupId>
-				      <artifactId>maven-javadoc-plugin</artifactId>
-				      <version>2.10.4</version>
-				      <configuration>
-					<additionalparam>-Xdoclint:none</additionalparam>
-				      </configuration>
+				      <artifactId>maven-site-plugin</artifactId>
+				      <version>3.6</version>
+				      <dependencies>
+					<dependency>
+					  <groupId>org.apache.maven.wagon</groupId>
+					  <artifactId>wagon-webdav-jackrabbit</artifactId>
+					  <version>2.10</version>
+					</dependency>
+				      </dependencies>
 				    </plugin>
-				</plugins>
+				    
+			</plugins>
 			</build>
 		</profile>
 		
