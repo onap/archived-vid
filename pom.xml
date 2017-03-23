@@ -74,7 +74,7 @@
 		</snapshotRepository>
 		<!-- added for javadoc -->
 		<site>
-			<id>ecomp-javadoc</id>
+			<id>ecomp-site</id>
 			<url>dav:${nexusproxy}/content/repositories/vid-javadoc/${project.version}</url>
 		</site>
 	</distributionManagement>
