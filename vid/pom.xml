@@ -29,6 +29,7 @@
 		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
 		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
 		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
+                <sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
 	</properties>
 
 	<repositories>
@@ -69,8 +70,8 @@
 		</snapshotRepository>
 		<!-- added for javadoc -->
 		<site>
-			<id>ecomp-javadoc</id>
-			<url>dav:${nexusproxy}/content/repositories/vid-javadoc/${project.version}</url>
+			<id>ecomp-site</id>
+			<url>dav:${nexusproxy}${sitePath}</url>
 		</site>
 	</distributionManagement>
 
