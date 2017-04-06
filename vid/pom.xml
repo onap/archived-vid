@@ -25,7 +25,7 @@
 		<skiptests>true</skiptests>
 		<!--  this should be commented for local debugging -->
 		<!-- <deployenv>local</deployenv> -->
-		<nexusproxy>https://nexus.openecomp.org</nexusproxy>
+		<nexusproxy>https://nexus.onap.org</nexusproxy>
 		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
 		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
 		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
