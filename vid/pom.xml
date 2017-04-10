@@ -75,6 +75,29 @@
 		</site>
 	</distributionManagement>
 
+	<!-- added for javadoc -->
+
+	<reporting>
+	  <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-javadoc-plugin</artifactId>
+	      <version>2.10.4</version>
+	      <configuration>
+		<failOnError>false</failOnError>
+		<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+		<docletArtifact>
+		  <groupId>org.umlgraph</groupId>
+		  <artifactId>umlgraph</artifactId>
+		  <version>5.6</version>
+		</docletArtifact>
+		<additionalparam>-views</additionalparam>
+		<useStandardDocletOptions>true</useStandardDocletOptions>
+	      </configuration>
+	    </plugin>
+	  </plugins>
+	</reporting>
+
 	<profiles>
 		<!-- disable doclint, a new feature in Java 8, when generating javadoc -->
 		<profile>
@@ -275,9 +298,20 @@
 					</execution>
 				</executions>
 			</plugin>
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-site-plugin</artifactId>
+		  <version>3.6</version>
+		  <dependencies>
+		    <dependency>
+		      <groupId>org.apache.maven.wagon</groupId>
+		      <artifactId>wagon-webdav-jackrabbit</artifactId>
+		      <version>2.10</version>
+		    </dependency>
+		  </dependencies>
+		</plugin>
 		</plugins>
 	</build>
-
 	<dependencies>
 		<!-- SDK components -->
 		<dependency>
