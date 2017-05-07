@@ -84,12 +84,46 @@
 					<url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
 				</repository>
 			</repositories>
+			<distributionManagement>
+				<repository>
+					<id>ecomp-releases</id>
+					<name>VID Release Repository</name>
+					<url>${nexusproxy}/${releaseNexusPath}</url>
+				</repository>
+				<snapshotRepository>
+					<id>ecomp-snapshots</id>
+					<name>VID Snapshot Repository</name>
+					<url>${nexusproxy}/${snapshotNexusPath}</url>
+				</snapshotRepository>
+				<!-- added for javadoc -->
+				<site>
+					<id>ecomp-site</id>
+					<url>dav:${nexusproxy}${sitePath}</url>
+				</site>
+			</distributionManagement>
 		</profile>
 	</profiles>
 
 	<build>
 		<finalName>vid</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>1.3.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<nexusUrl>${nexusproxy}</nexusUrl>
+					<stagingProfileId>176c31dfe190a</stagingProfileId>
+					<serverId>ecomp-staging</serverId>
+				</configuration>
+			</plugin>
+
 			<!-- Compile to Java 1.8 class output format -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
