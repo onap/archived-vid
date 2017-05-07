@@ -1,0 +1,83 @@
+<!--
+  ============LICENSE_START=======================================================
+  VID
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ============LICENSE_END=========================================================
+  -->
+
+<link rel="stylesheet" type="text/css" href="app/vid/styles/aaiGetSubs.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/aaiSubDetails.css" />
+<script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
+<div ng-controller="aaiSubscriberController" ng-cloak>
+
+	<div>
+		<div class="statusLine" ng-class="{true:'aaiVisible', false:'aaiHidden'}[isSpinnerVisible]">
+			<img src="app/vid/images/spinner.gif"></img>
+			<label>Status:</label><span class="status">{{status}}</span>
+		</div>
+
+		<div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
+		
+		 <h2 class="heading2"><center>Search Existing Service Instances</center></h2>
+     		<br>
+    	Please search by the Subscriber name or enter Service Instance Id or Service Instance Name below:&nbsp;<br><br>
+    	 
+		<table> 
+			<tr>
+				<td style="width:30%">
+				<div class="fn-ebz-container">	
+					<label  class="fn-ebz-text-label">Subscriber Name:</label>
+				</div>
+				</td>
+				<td style="width:30%" nowrap>
+					<div class="fn-ebz-container" ng-init="autoGetSubs();">
+						<select  ng-model="selectedCustomer" ng-options="item.globalCustomerId as item.subscriberName for item in customerList | orderBy:'subscriberName'">
+						<option value="">Select a subscriber</option></select>
+					  &nbsp;&nbsp;<a class="btn btn-primary" ng-click="refreshSubs();" ><span class="glyphicon glyphicon-refresh"></span></a>
+					</div>
+				</td>
+	 		
+			</tr>
+			<tr>
+				<td style="width:30%">
+					<div class="fn-ebz-container">
+						<select  style="width: 250px;" ng-model="selectedserviceinstancetype" ng-options="stype.sinstance as stype.sinstance for stype in serviceInstanceses" >
+						<option value="">Select a Service Instance</option>						
+						</select>
+					</div>
+				</td>
+    			<td style="width:60%">
+    				<div class="fn-ebz-container">
+						<input type="text" style="width: 350px;" name="selectedServiceInstance" ng-model="selectedServiceInstance" restrict-input ="{type : selectedserviceinstancetype}" />
+					</div> 
+				</td>
+				
+    		</tr>
+    		<tr>
+				<td>
+				<td style="width:30%">
+					<div>	
+						<button type="submit" class="btn btn-primary" size="small" ng-click="getSubscriberDet(selectedCustomer,selectedserviceinstancetype,selectedServiceInstance);">Submit</button></a>
+					</div>
+				</td>
+				</td>
+			</tr>
+		</table>	
+		
+	
+	</div>
+
+</div>

@@ -9,14 +9,14 @@
 			<includes>
 				<include>vid.war</include>
 			</includes>
-			<directory>../vid/target/</directory>
+			<directory>../epsdk-app-onap/target/</directory>
 			<outputDirectory>artifacts</outputDirectory>
 		</fileSet>
 		<fileSet>
 			<includes>
 				<include>vid-pre-init.sql</include>
 			</includes>
-			<directory>../vid/src/main/resources</directory>
+			<directory>../epsdk-app-onap/src/main/resources</directory>
 			<outputDirectory>scripts</outputDirectory>
 		</fileSet>
 		<fileSet>

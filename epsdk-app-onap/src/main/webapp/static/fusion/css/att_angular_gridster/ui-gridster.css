@@ -1,0 +1,116 @@
+/* ui-gridster.css */
+.gridster-container {
+  background-color: #EFEFEF;
+  color: #fff;
+  border: 1px dashed;
+  overflow-y: auto;
+  overflow-x: hidden; }
+
+/* app css for attGridtser */
+.gridster-item-container {
+  background-color: #FFFFFF;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 79px;
+  height: 100%; }
+  .gridster-item-container .gridster-item-header {
+    /* gridster-item Header */
+    position: relative;
+    height: 50px !important;
+    border: 1px solid #d3d3d3;
+    border-bottom: 0;
+    background-color: #E5E5E5;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    z-index: 1;
+    -webkit-border-radius: 2px 2px 0 0;
+    -moz-border-radius: 2px 2px 0 0;
+    -ms-border-radius: 2px 2px 0 0;
+    -o-border-radius: 2px 2px 0 0;
+    border-radius: 2px 2px 0 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* IE6-8 */ }
+    .gridster-item-container .gridster-item-header .gridster-item-handle {
+      cursor: move;
+      margin: 12px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 0;
+      vertical-align: middle;
+      -ms-interpolation-mode: bicubic;
+      display: block; }
+    .gridster-item-container .gridster-item-header .gridster-item-header-content {
+      line-height: 44px;
+      margin-left: 26px;
+      font-family: clearviewatt;
+      font-size: 18px;
+      color: #444444;
+      float: left; }
+    .gridster-item-container .gridster-item-header .gridster-item-sub-header-content {
+      position: absolute;
+      top: 29.5px;
+      left: 26px;
+      font-family: clearviewatt;
+      font-size: 12px;
+      color: #444444; }
+    .gridster-item-container .gridster-item-header .gridster-item-header-buttons-container {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      overflow: hidden;
+      text-align: right;
+      height: 30px;
+      color: #444444; }
+  .gridster-item-container .gridster-item-body {
+    /* gridster-item Body */
+    position: absolute;
+    width: 100%;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 29px;
+    border: 1px solid #d3d3d3;
+    box-sizing: border-box;
+    overflow: auto;
+    color: #444444;
+    /* text-align: center; */ }
+  .gridster-item-container .gridster-item-footer {
+    /* gridster-item Footer */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 29px !important;
+    text-align: left;
+    cursor: pointer;
+    border: 1px solid #d3d3d3;
+    border-top: 0;
+    background-color: #F2F2F2;
+    -webkit-border-radius: 0 0 2px 2px;
+    -moz-border-radius: 0 0 2px 2px;
+    -ms-border-radius: 0 0 2px 2px;
+    -o-border-radius: 0 0 2px 2px;
+    border-radius: 0 0 2px 2px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-decoration: none;
+    /* IE6-8 */ }
+    .gridster-item-container .gridster-item-footer:hover {
+      background-color: #E5E5E5;
+      color: #565656;
+      text-decoration: underline; }
+    .gridster-item-container .gridster-item-footer .gridster-item-footer-content {
+      line-height: 30px;
+      font-family: clearviewatt;
+      font-size: 12px;
+      color: #565656;
+      margin: 20px;
+      text-decoration: none; }
+      .gridster-item-container .gridster-item-footer .gridster-item-footer-content:hover {
+        color: #199ddf;
+        text-decoration: underline; }

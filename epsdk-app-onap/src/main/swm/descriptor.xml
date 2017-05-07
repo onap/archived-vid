@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<descriptor version="1" concurrent="false" xmlns="http://aft.openecomp.org/swm/descriptor">
+    <platforms>
+		<platform os="Linux" osVersions="*" architecture="*" />
+    </platforms>
+    
+    <paths>
+        <path name="/opt/app/vid" type="d" user="vidadmin" group="vidadmin" permissions="755" recursive="true"/>
+    </paths>
+    
+    <actions>
+        <action type="DINST">
+            <proc stage="PRE" user="vidadmin" group="vidadmin"/>
+            <proc stage="POST" user="vidadmin" group="vidadmin"/>
+        </action>
+        <action type="INIT">
+            <proc stage="PRE" user="vidadmin" group="vidadmin"/>
+            <proc stage="POST" user="vidadmin" group="vidadmin"/>
+        </action>
+        <action type="INST">
+            <proc stage="PRE" user="vidadmin" group="vidadmin"/>
+            <proc stage="POST" user="vidadmin" group="vidadmin"/>
+        </action>
+        <action type="FALL">
+            <proc stage="PRE" user="vidadmin" group="vidadmin"/>
+            <proc stage="POST" user="vidadmin" group="vidadmin"/>
+        </action>
+    </actions>
+    
+    <dependencies>
+		<dependencyFilter componentName="org.openecomp.java:jdk8lin" versions="[1.8.0.77-02]" sequence="1"/>
+		<dependencyFilter componentName="org.openecomp.vid:tomcat" versions="[8.0.36-37,)" sequence="2"/>
+    </dependencies>
+</descriptor>

@@ -1,0 +1,59 @@
+<div id="page-content">
+	<div>
+		<h1 class="heading-page" id="profileSearch">Profile Search</h1>
+		<div ng-show="showLoader" class="span loader-container">
+			<i class="icon-primary-spinner" role="img"
+				aria-label="Please wait while we load your content"></i>
+		</div>
+
+		<div ng-hide="showLoader">
+			<table class="striped" table-data="tableData">
+				<thead>
+					<tr>
+						<th>User ID</th>
+						<th>Last Name</th>
+						<th>First Name</th>
+						<th>Email</th>
+						<th>User ID</th>
+						<th>Manager User ID</th>
+						<th>Edit</th>
+						<th>Active?</th>
+					</tr>
+				</thead>
+				<tbody type="body" ng-repeat="rowData in tableData">
+					<tr>
+						<td>{{rowData.id}}</td>
+						<td>{{rowData.lastName}}</td>
+						<td>{{rowData.firstName}}</td>
+						<td>{{rowData.email}}</td>
+						<td>{{rowData.orgUserId}}</td>
+						<td>{{rowData.orgManagerUserId}}</td>
+						<!--  Include an edit image with respective redirection -->
+						<td><a href="#/profile/{{rowData.id}}" class="icon-misc-pen"
+							style="color: #888; font-size: 20px;"></a></td>
+						<td>
+							<div class="form-row">
+								<label class="btn-switch-label" tabindex="0" role="option">
+									<input type="checkbox" b2b-switches ng-model="rowData.active"
+									ng-disabled="allDisabled" aria-disabled="{{allDisabled}}">
+									<div class="sr-text hidden-spoken" ng-if="!allDisabled">Double
+										tap to turn</div>
+								</label>
+							</div>
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="well" style="padding-bottom: 35px;">
+				<div class="row -page short">
+					<div b2b-pagination="" total-pages="totalPages1"
+						current-page="currentPage1" click-handler="customHandler"
+						role="navigation" aria-label="Customer Data Pages"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>

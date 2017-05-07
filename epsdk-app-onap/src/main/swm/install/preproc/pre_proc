@@ -1,0 +1,18 @@
+#!/bin/bash
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+COMMON_SCRIPT=${DIR}/../../common/common.sh
+
+source "${COMMON_SCRIPT}" || {
+	echo "ERROR: Common script failed"
+	exit 1
+}
+
+if [ -f "${TOMCAT_HOME}/bin/shutdown.sh" ]; then
+	"${TOMCAT_HOME}/bin/shutdown.sh"
+
+	if [ -d "${TOMCAT_HOME}/webapps/${VID_ENDPOINT_NAME}" ]; then
+		rm -r "${TOMCAT_HOME}/webapps/${VID_ENDPOINT_NAME}"
+	fi
+fi
+

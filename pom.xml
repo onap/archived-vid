@@ -5,26 +5,72 @@
 	<artifactId>vid-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>VID Parent Project</name>
-	
+
 	<profiles>
-	  <!-- DO NOT CHANGE THE *ORDER* IN WHICH THESE PROFILES ARE DEFINED! -->
-	  <profile>
-	    <id>default</id>
-	    <activation>
-	      <activeByDefault>true</activeByDefault>
-	    </activation>
-	    <modules>
-	      <module>vid</module>
-	    </modules>
-	  </profile>
-	  
-	  <profile>
-	    <id>docker</id>
-	    <modules>
-              <module>vid</module>
-              <module>deliveries</module>
-            </modules>
-          </profile>
+		<!-- DO NOT CHANGE THE *ORDER* IN WHICH THESE PROFILES ARE DEFINED! -->
+
+		<profile>
+			<id>onap</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>vid-app-common</module>
+				<module>epsdk-app-onap</module>
+			</modules>
+
+			<repositories>
+				<repository>
+					<id>ecomp-releases</id>
+					<name>VID Release Repository</name>
+					<url>${nexusproxy}/${releaseNexusPath}</url>
+				</repository>
+				<repository>
+					<id>ecomp-snapshots</id>
+					<name>VID Snapshot Repository</name>
+					<url>${nexusproxy}/${snapshotNexusPath}</url>
+				</repository>
+				<repository>
+					<id>ecomp-staging</id>
+					<name>VID Staging Repository</name>
+					<url>${nexusproxy}/${stagingNexusPath}</url>
+				</repository>
+				<repository>
+					<!-- Snapshots repository has ECOMP snapshot artifacts -->
+					<id>oss-snapshots</id>
+					<name>oss Central - Snapshots</name>
+					<url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
+				</repository>
+			</repositories>
+
+			<distributionManagement>
+				<repository>
+					<id>ecomp-releases</id>
+					<name>VID Release Repository</name>
+					<url>${nexusproxy}/${releaseNexusPath}</url>
+				</repository>
+				<snapshotRepository>
+					<id>ecomp-snapshots</id>
+					<name>VID Snapshot Repository</name>
+					<url>${nexusproxy}/${snapshotNexusPath}</url>
+				</snapshotRepository>
+				<!-- added for javadoc -->
+				<site>
+					<id>ecomp-site</id>
+					<url>dav:${nexusproxy}${sitePath}</url>
+				</site>
+			</distributionManagement>
+
+		</profile>
+
+		<profile>
+			<id>docker</id>
+			<modules>
+				<module>vid-app-common</module>
+				<module>epsdk-app-onap</module>
+				<module>deliveries</module>
+			</modules>
+		</profile>
 	</profiles>
 
 	<properties>
@@ -35,139 +81,129 @@
 		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
 		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
 		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
-                <sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
+		<sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>ecomp-releases</id>
-			<name>VID Release Repository</name>
-			<url>${nexusproxy}/${releaseNexusPath}</url>
-		</repository>
-		<repository>
-			<id>ecomp-snapshots</id>
-			<name>VID Snapshot Repository</name>
-			<url>${nexusproxy}/${snapshotNexusPath}</url>
-		</repository>
-		<repository>
-			<id>ecomp-staging</id>
-			<name>VID Staging Repository</name>
-			<url>${nexusproxy}/${stagingNexusPath}</url>
-		</repository>
-		<repository>
-			<!-- Snapshots repository has ECOMP snapshot artifacts -->
-			<id>oss-snapshots</id>
-			<name>oss Central - Snapshots</name>
-			<url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<id>ecomp-releases</id>
-			<name>VID Release Repository</name>
-			<url>${nexusproxy}/${releaseNexusPath}</url>
-		</repository>
-		<snapshotRepository>
-			<id>ecomp-snapshots</id>
-			<name>VID Snapshot Repository</name>
-			<url>${nexusproxy}/${snapshotNexusPath}</url>
-		</snapshotRepository>
-		<!-- added for javadoc -->
-		<site>
-			<id>ecomp-site</id>
-			<url>dav:${nexusproxy}${sitePath}</url>
-		</site>
-	</distributionManagement>
-
 	<build>
-	  <plugins>
-	    <plugin>
-	      <groupId>org.codehaus.mojo</groupId>
-	      <artifactId>versions-maven-plugin</artifactId>
-	      <version>1.3.1</version>
-	    </plugin>
-	    <plugin>
-	        <groupId>org.sonatype.plugins</groupId>
-		<artifactId>nexus-staging-maven-plugin</artifactId>
-		<version>1.6.7</version>
-		<extensions>true</extensions>
-		<configuration>
-		  <nexusUrl>${nexusproxy}</nexusUrl>
-		  <stagingProfileId>176c31dfe190a</stagingProfileId>
-		  <serverId>ecomp-staging</serverId>
-		</configuration>
-	    </plugin>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>1.3.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<nexusUrl>${nexusproxy}</nexusUrl>
+					<stagingProfileId>176c31dfe190a</stagingProfileId>
+					<serverId>ecomp-staging</serverId>
+				</configuration>
+			</plugin>
 
-		 <!-- license plugin for open source -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>1.9</version>
-                <configuration>
-                    <licenseName>apache_v2</licenseName>
-                    <inceptionYear>2016</inceptionYear>
-                    <organizationName>AT&amp;T</organizationName>
-                    <projectName>VID</projectName>
-                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage> 
-     		    <processStartTag>========LICENSE_START===========</processStartTag>
-     		    <processEndTag>============LICENSE_END===========</processEndTag>
-                    <roots>
-                      <root>src/main/java</root>
-                    </roots>
-                    <excludes>
-                        <exclude>*.png</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+			<!-- license plugin for open source -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>1.9</version>
+				<configuration>
+					<licenseName>apache_v2</licenseName>
+					<inceptionYear>2017</inceptionYear>
+					<organizationName>AT&amp;T</organizationName>
+					<projectName>VID</projectName>
+					<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+					<processStartTag>========LICENSE_START===========</processStartTag>
+					<processEndTag>============LICENSE_END===========</processEndTag>
+					<roots>
+						<root>src/main/java</root>
+					</roots>
+					<excludes>
+						<exclude>*.png</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 
-	    <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-deploy-plugin</artifactId>
-		<version>2.8</version>
-	    </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8</version>
+			</plugin>
 
-	    <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-surefire-plugin</artifactId>
-		<version>2.17</version>
-	    </plugin>
-	    
-	    <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-compiler-plugin</artifactId>
-		<version>2.3.2</version>
-		
-		<configuration>
-		  <debug>true</debug>
-		  <compilerArgument>-Xlint</compilerArgument>
-		  <verbose>true</verbose>
-		  <showDeprecation>true</showDeprecation>
-		  <showWarnings>true</showWarnings>
-		  <source>1.8</source>
-		  <target>1.8</target>
-		</configuration>
-	    </plugin>
-	    <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-site-plugin</artifactId>
-		<version>3.6</version>
-		<dependencies>
-		  <dependency>
-		    <groupId>org.apache.maven.wagon</groupId>
-		    <artifactId>wagon-webdav-jackrabbit</artifactId>
-		    <version>2.10</version>
-		  </dependency>
-		</dependencies>
-	    </plugin>
-	  </plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+
+				<configuration>
+					<debug>true</debug>
+					<compilerArgument>-Xlint</compilerArgument>
+					<verbose>true</verbose>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.6</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-webdav-jackrabbit</artifactId>
+						<version>2.10</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.blackducksoftware.integration</groupId>
+				<artifactId>hub-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<inherited>false</inherited>
+				<configuration>
+					<hubProjectName>${project.name}</hubProjectName>
+					<outputDirectory>${project.basedir}</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>create-bdio-file</id>
+						<phase>package</phase>
+						<goals>
+							<goal>createHubOutput</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<!-- added for javadoc -->
+	<pluginRepositories>
+		<!-- Black Duck plugin dependencies -->
+		<pluginRepository>
+			<id>JCenter</id>
+			<name>JCenter Repository</name>
+			<url>http://jcenter.bintray.com</url>
+		</pluginRepository>
 
+		<pluginRepository>
+			<id>Restlet</id>
+			<name>Restlet Repository</name>
+			<url>http://maven.restlet.com</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<reporting>
 		<plugins>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>

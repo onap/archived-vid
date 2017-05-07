@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source ${DIR}/../../install/postproc/post_proc || {
+	echo "INITINST post_proc script failed"; exit 1
+}

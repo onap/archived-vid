@@ -1,0 +1,15 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "modelInfo and optional instance id for a model related to the modelInfo being operated on",
+	"type": "object",
+	"properties": {			
+		"instanceId": {
+			"description": "instance Id for the related model",
+			"type": "string"
+		},
+		"modelInfo": {}
+	},
+	"required": [ "modelInfo" ]
+}
+
+

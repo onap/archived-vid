@@ -1,0 +1,67 @@
+<!--
+  ============LICENSE_START=======================================================
+  VID
+  ================================================================================
+  Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+  ================================================================================
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ============LICENSE_END=========================================================
+  -->
+
+<link rel="stylesheet" type="text/css" href="app/vid/styles/aaiGetSubs.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/aaiSubDetails.css" />
+<script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
+<div ng-controller="aaiSubscriberController" ng-cloak>
+
+	<div>
+		<div class="statusLine" ng-class="{true:'aaiVisible', false:'aaiHidden'}[isSpinnerVisible]">
+			<img src="app/vid/images/spinner.gif"></img>
+			<label>Status:</label><span class="status">{{status}}</span>
+		</div>
+		
+		<div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
+		
+		 <h2 class="heading2"><center>Create New Service Instance</center></h2>
+		 
+		<table> 
+			<tr>
+				<td >
+				<div class="fn-ebz-container">	
+					<label  class="fn-ebz-text-label">Subscriber Name:</label>
+				</div>
+				</td>
+				<td style="width:80%" nowrap>
+					<div class="fn-ebz-container" ng-init="autoGetSubs();">
+						<select  ng-model="selectedCustomer" ng-options="item.globalCustomerId as item.subscriberName for item in customerList | orderBy:'subscriberName'">
+						<option value="">Select Subscriber Name</option></select>
+					  &nbsp;&nbsp;<a class="btn btn-primary" ng-click="refreshSubs();" ><span class="glyphicon glyphicon-refresh"></span></a>
+					</div>
+				</td>
+	 		
+			</tr>
+    		<tr>
+				<td >
+				</td>
+				<td style="width:80%">
+					<div >	
+						<button type="submit" class="btn btn-primary"  size="small" ng-click="getServiceTypes(selectedCustomer);">Submit</button></a>
+						&nbsp;&nbsp;<button type="submit" class="btn btn-primary" size="small" ng-click="cancelCreateSI()">Cancel</button></a>
+					</div>
+				</td>
+			</tr>
+		</table>	
+		
+	
+	</div>
+
+</div>

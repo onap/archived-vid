@@ -1,1 +1,0 @@
-<iframe style="border:none" src="app/fusion/sequence/view-models/details.html" height="700" width="1300"></iframe> 

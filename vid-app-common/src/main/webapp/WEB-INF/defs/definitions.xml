@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+      
+	   <definition extends="ebz_template" name="viewlog">   
+       <put-attribute name="body" value="/WEB-INF/jsp/viewlog.jsp"></put-attribute>
+       <put-attribute name="viewName" value="viewlog"></put-attribute>  
+    </definition>   
+    
+    <definition extends="ebz_template" name="serviceModels">   
+       <put-attribute name="body" value="/WEB-INF/jsp/serviceModels.jsp"></put-attribute>
+       <put-attribute name="viewName" value="serviceModels"></put-attribute>  
+    </definition>  
+  
+    
+    <definition extends="ebz_template" name="createnewserviceinstance">   
+       <put-attribute name="body" value="/WEB-INF/jsp/createnewserviceinstance.jsp"></put-attribute>
+       <put-attribute name="viewName" value="createnewserviceinstance"></put-attribute>  
+    </definition>
+    
+     <definition extends="ebz_template" name="welcome">   
+       <put-attribute name="body" value="/WEB-INF/jsp/welcome.jsp"></put-attribute>
+       <put-attribute name="viewName" value="welcome"></put-attribute>  
+    </definition> 
+    
+    <definition extends="ebz_template" name="searchexistingsi">   
+       <put-attribute name="body" value="/WEB-INF/jsp/searchexistingsi.jsp"></put-attribute>
+       <put-attribute name="viewName" value="searchexistingsi"></put-attribute>  
+    </definition>  
+    
+    <definition extends="ebz_template" name="subscriberdetails">   
+       <put-attribute name="body" value="/WEB-INF/jsp/subscriberdetails.jsp"></put-attribute>
+       <put-attribute name="viewName" value="subscriberdetails"></put-attribute>  
+    </definition>  
+    
+    <definition extends="ebz_template" name="testMso">
+       <put-attribute name="body" value="/WEB-INF/jsp/testMso.jsp"></put-attribute>
+       <put-attribute name="viewName" value="testMso"></put-attribute>
+    </definition>
+    <definition extends="ebz_template" name="testViewEdit">
+       <put-attribute name="body" value="/WEB-INF/jsp/testViewEdit.jsp"></put-attribute>
+       <put-attribute name="viewName" value="testViewEdit"></put-attribute>
+    </definition>
+    
+    <definition extends="ebz_template" name="subscriberSearch">
+       <put-attribute name="body" value="/WEB-INF/jsp/subscriberSearch.jsp"></put-attribute>
+       <put-attribute name="viewName" value="subscriberSearch"></put-attribute>
+    </definition>
+    
+
+</tiles-definitions>
