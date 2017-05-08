@@ -31,36 +31,6 @@
 		<sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
 	</properties>
 
-	<profiles>
-		<!-- disable doclint, a new feature in Java 8, when generating javadoc -->
-		<profile>
-			<id>doclint-java8-disable</id>
-			<activation>
-				<jdk>[1.8,)</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.4</version>
-						<configuration>
-							<additionalparam>-Xdoclint:none</additionalparam>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>onap</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-
-			</properties>
-
 			<repositories>
 				<repository>
 					<id>ecomp-releases</id>
@@ -101,6 +71,26 @@
 					<url>dav:${nexusproxy}${sitePath}</url>
 				</site>
 			</distributionManagement>
+
+	<profiles>
+		<!-- disable doclint, a new feature in Java 8, when generating javadoc -->
+		<profile>
+			<id>doclint-java8-disable</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
