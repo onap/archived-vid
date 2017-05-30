@@ -20,8 +20,8 @@
 
 "use strict";
 
-var creationDialogController = function( COMPONENT, FIELD, $scope, $http, $timeout, $log,
-		CreationService, UtilityService, DataService) {
+var creationDialogController = function( COMPONENT, FIELD, PARAMETER, $scope, $http, $timeout, $log,
+		CreationService, UtilityService, DataService,VIDCONFIGURATION) {
 
 	$scope.isDialogVisible = false;
 	$scope.summaryControl = {};
@@ -73,8 +73,29 @@ var creationDialogController = function( COMPONENT, FIELD, $scope, $http, $timeo
 			return false;
 		}
 		return true;
-	}
-
+	};
+	var validateMap = function(mname) {
+		var patt1 = /^{(\s*\w+\s*:\s*\w+\s*)(\s*,\s*\w+\s*:\s*\w+\s*)*}$/im;
+		if ( mname == null ){
+			return true;
+		}
+		if ( !mname.match(patt1) ) {
+			return false;
+		}
+		return true;
+	};
+	
+	var validateList = function(lname) {
+		var patt1 = /^\[(\s*\w+\s*)(\s*,\s*\w+\s*)*\]$/i;
+		if ( lname == null ){
+			return true;
+		}
+		if ( !lname.match(patt1) ) {
+			return false;
+		}
+		return true;
+	};
+		
 	$scope.userParameterChanged = function(id) {
 		CreationService.updateUserParameterList(id, $scope.userProvidedControl);
 	}
@@ -108,7 +129,50 @@ var creationDialogController = function( COMPONENT, FIELD, $scope, $http, $timeo
 				return;
 			}
 		}
-		
+		var arbitraryParametersList = DataService.getArbitraryParameters();
+		var p = null;
+		if (UtilityService.hasContents (arbitraryParametersList)) {
+			for (var i = 0; i < arbitraryParametersList.length; i++) {
+				p = arbitraryParametersList[i];
+				if (p.type === PARAMETER.MAP) {
+					//validate a map: { <entry_key_1>: <entry_value_1>, ... , <entry_key_n>: <entry_value_n> }
+					// need to find the value in paramList
+					for (var j = 0; j < paramList.length; j++) {
+						if (paramList[j].id === p.id) {
+							p.value = paramList[j].value;
+							var isValid = validateMap (p.value);
+							if ( isValid ) {
+								$scope.isErrorVisible = false;
+								break;
+							} 
+							else {
+								showError(FIELD.ERROR.INVALID_MAP + p.id, 
+										FIELD.ERROR.MAP_VALIDATE);
+								return;
+							}	
+						}
+					}
+				} else if (p.type === PARAMETER.LIST) {
+					//validate a list: { value or a list of comma separated values }
+					// need to find the value in paramList
+					for (var j = 0; j < paramList.length; j++) {
+						if (paramList[j].id === p.id) {
+							p.value = paramList[j].value;
+							var isValid = validateList (p.value);
+							if ( isValid ) {
+								$scope.isErrorVisible = false;
+								break;
+							} 
+							else {
+								showError(FIELD.ERROR.INVALID_LIST + p.id, 
+										FIELD.ERROR.LIST_VALIDATE);
+								return;
+							}	
+						}
+					}
+				}
+			}
+		}
 		var requestDetails = CreationService
 				.getMsoRequestDetails($scope.userProvidedControl.getList());
 
@@ -158,6 +222,6 @@ var creationDialogController = function( COMPONENT, FIELD, $scope, $http, $timeo
 	
 }
 
-appDS2.controller("creationDialogController", [ "COMPONENT", "FIELD", "$scope", "$http",
-				"$timeout", "$log", "CreationService", "UtilityService", "DataService",
+appDS2.controller("creationDialogController", [ "COMPONENT", "FIELD", "PARAMETER", "$scope", "$http",
+				"$timeout", "$log", "CreationService", "UtilityService", "DataService","VIDCONFIGURATION",
 				creationDialogController ]);

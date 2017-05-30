@@ -63,7 +63,7 @@
  * string for some known conditions.
  */
 
-var UtilityService = function($log, DataService) {
+var UtilityService = function($log, DataService, PARAMETER) {
 
     var _this = this;
     var convertModel = function (serviceModel) {
@@ -153,6 +153,7 @@ var UtilityService = function($log, DataService) {
 								if (serviceModel.service != null && serviceModel.service.inputs != null &&
 										serviceModel.service.inputs[cmdObj.inputName] != null ) {
 									networkModelDisplayInputs[cmdObj.inputName] = (serviceModel.service.inputs[cmdObj.inputName]);
+									networkModelDisplayInputs[cmdObj.inputName][PARAMETER.DISPLAY_NAME] = cmdObj.displayName;
 								}
 						}
 								
@@ -219,6 +220,7 @@ var UtilityService = function($log, DataService) {
 								if (serviceModel.service != null && serviceModel.service.inputs != null &&
 										serviceModel.service.inputs[cmdObj.inputName] != null ) {
 									vnfModelDisplayInputs[cmdObj.inputName] = (serviceModel.service.inputs[cmdObj.inputName]);
+									vnfModelDisplayInputs[cmdObj.inputName][PARAMETER.DISPLAY_NAME] = cmdObj.displayName;
 								}
 						}
 								
@@ -243,8 +245,8 @@ var UtilityService = function($log, DataService) {
 					if (hasContents (vnfModel.properties.nf_function) ) {
 						vnf_function = vnfModel.properties.nf_function;
 					}
-					if (hasContents (vnfModel.properties.nf_code) ) {
-						vnf_code = vnfModel.properties.nf_code;
+					if (hasContents (vnfModel.properties.nf_naming_code) ) {
+						vnf_code = vnfModel.properties.nf_naming_code;
 					}
 				}
 				convertedAsdcModel.vnfs[vnfCustomizationUuid]["nfType"] = vnf_type;
@@ -344,6 +346,7 @@ var UtilityService = function($log, DataService) {
 								if (serviceModel.service != null && serviceModel.service.inputs != null &&
 										serviceModel.service.inputs[cmdObj.inputName] != null ) {
 									networkModelDisplayInputs[cmdObj.inputName] = (serviceModel.service.inputs[cmdObj.inputName]);
+									networkModelDisplayInputs[cmdObj.inputName][PARAMETER.DISPLAY_NAME] = cmdObj.displayName;
 								}
 						}
 								
@@ -404,6 +407,7 @@ var UtilityService = function($log, DataService) {
 								if (serviceModel.service != null && serviceModel.service.inputs != null &&
 										serviceModel.service.inputs[cmdObj.inputName] != null ) {
 									vnfModelDisplayInputs[cmdObj.inputName] = (serviceModel.service.inputs[cmdObj.inputName]);
+									vnfModelDisplayInputs[cmdObj.inputName][PARAMETER.DISPLAY_NAME] = cmdObj.displayName;
 								}
 						}
 								
@@ -637,4 +641,4 @@ var UtilityService = function($log, DataService) {
 }
 
 //app.factory("UtilityService", UtilityService);
-appDS2.factory("UtilityService", [ "$log", "DataService", UtilityService ]);
+appDS2.factory("UtilityService", [ "$log", "DataService", "PARAMETER", UtilityService ]);

@@ -27,6 +27,11 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 	 */
 	var VNF_STATUS_CHECK_ENABLED = false;
 	/*
+	 * UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED: Determines the Property to Govern Presence of Upload Supplementary File on Volume Group Screen.
+	 * Set to false, to disable the check.
+	 */
+	var UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED = false;
+	/*
 	 * List of valid VNF status combinations
 	 */
 	var vnfValidStatusList = [
@@ -93,6 +98,7 @@ appDS2.constant("VIDCONFIGURATION", (function() {
     	MSO_POLLING_INTERVAL_MSECS : MSO_POLLING_INTERVAL_MSECS,
     	VNF_STATUS_CHECK_ENABLED : VNF_STATUS_CHECK_ENABLED,
     	VNF_VALID_STATUS_LIST : vnfValidStatusList,
+		UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED : UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED,
     	MACRO_SERVICES : MACRO_SERVICES,
     	COMPONENT_LIST_NAMED_QUERY_ID : COMPONENT_LIST_NAMED_QUERY_ID
     };

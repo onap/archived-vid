@@ -82,8 +82,8 @@ var AaiService = function($http, $log, PropertyService, UtilityService, COMPONEN
     					angular.forEach(subscriber[FIELD.ID.SERVICE_SUBSCRIPTIONS][FIELD.ID.SERVICE_SUBSCRIPTION], function(serviceSubscription, key) {
     						var serviceInstanceId = [];
     						var serviceType = "";
-    						if (serviceSubscription[FIELD.ID.SERVICE_TYPE] != null) {
-    							serviceType = serviceSubscription[FIELD.ID.SERVICE_TYPE];
+    						if (serviceSubscription[FIELD.ID.SERVICETYPE] != null) {
+    							serviceType = serviceSubscription[FIELD.ID.SERVICETYPE];
     						} else {
     							serviceType = FIELD.PROMPT.NO_SERVICE_SUB;
     						}
@@ -115,7 +115,8 @@ var AaiService = function($http, $log, PropertyService, UtilityService, COMPONEN
     								serviceType 		: serviceType,
     								serviceInstanceId 	: subVal.serviceInstanceId,
     								aaiModelInvariantId		: subVal.aaiModelInvariantId,
-    								aaiModelVersionId : subVal.aaiModelVersionId,
+    								aaiModelVersionId
+    								: subVal.aaiModelVersionId,
     								serviceInstanceName	: subVal.serviceInstanceName
     							});
     						});
@@ -198,7 +199,7 @@ var AaiService = function($http, $log, PropertyService, UtilityService, COMPONEN
 					    	var serviceSubscriptions = response.data[FIELD.ID.SERVICE_SUBSCRIPTIONS][FIELD.ID.SERVICE_SUBSCRIPTION];
 					    	
 					    	for (var i = 0; i < serviceSubscriptions.length; i++) {
-					    		serviceTypes.push(serviceSubscriptions[i][FIELD.ID.SERVICE_TYPE]);
+					    		serviceTypes.push(serviceSubscriptions[i][FIELD.ID.SERVICETYPE]);
 					    	}
 					    	successCallbackFunction(serviceTypes);
 				    	} else {
@@ -331,7 +332,25 @@ var AaiService = function($http, $log, PropertyService, UtilityService, COMPONEN
 		    	}
 		    })["catch"]
 		    (UtilityService.runHttpErrorHandler);
-}
+},
+getServiceModelsByServiceType : function(namedQueryId,globalCustomerId,serviceType,successCallbackFunction) {
+		$log
+		.debug("AaiService:getServiceModelsByServiceType");
+		var url =   COMPONENT.AAI_GET_SERVICES_BY_TYPE+COMPONENT.FORWARD_SLASH+namedQueryId+COMPONENT.FORWARD_SLASH+globalCustomerId+COMPONENT.FORWARD_SLASH +serviceType+COMPONENT.ASSIGN + Math.random();
+		
+		$http.get(url,
+				{
+			timeout : PropertyService
+			.getServerResponseTimeoutMsec()
+				}).then(function(response) {
+					if (response.data) {
+						successCallbackFunction(response);
+					} else {
+						successCallbackFunction([]);
+					}
+				})["catch"]
+		(UtilityService.runHttpErrorHandler);
+	}
     }
 }
 

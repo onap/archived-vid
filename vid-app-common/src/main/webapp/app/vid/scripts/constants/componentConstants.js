@@ -89,6 +89,7 @@ appDS2.constant("COMPONENT", (function() {
 	ASSIGN : "?r=",
 	AAI_GET_SERVICE_INSTANCE_PATH : "aai_get_service_instance/",
 	AAI_GET_SERVICES : "aai_get_services",
+	AAI_GET_SERVICES_BY_TYPE : "aai_get_models_by_service_type",
 	AAI_GET_TENANTS : "aai_get_tenants/",
 	AAI_SUB_DETAILS_PATH : "aai_sub_details/",
 	AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",

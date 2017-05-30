@@ -236,7 +236,7 @@
 			});
 			
 			DataService.setSubscriberName(serviceObject[FIELD.ID.SUBSCRIBER_NAME]);
-			DataService.setServiceType(serviceObject[FIELD.ID.SERVICE_TYPE]);
+			DataService.setServiceType(serviceObject[COMPONENT.SERVICE_TYPE]);
 			DataService.setServiceInstanceId(serviceInstance[FIELD.ID.SERVICE_INSTANCE_ID]);
 	
 			DataService.setGlobalCustomerId(serviceObject[COMPONENT.GLOBAL_CUSTOMER_ID]);
@@ -366,6 +366,7 @@
 			var vnfModelVersion = null;
 			var vnfModelCustomizationUuid = null;
 			var vnfModel = null;
+			var vnfModelVersionId = null;
 			
 			vnfModelInvariantUuid = vnf.object[FIELD.ID.MODEL_INVAR_ID];
 			vnfModelVersionId = vnf.object[FIELD.ID.MODEL_VERSION_ID];
@@ -435,6 +436,7 @@
 			var vnfModelVersion = null;
 			var vnfModelCustomizationUuid = null;
 			var vnfModel = null;
+			var vnfModelVersionId = null;
 			
 			vnfModelInvariantUuid = vnf.object[FIELD.ID.MODEL_INVAR_ID];
 			vnfModelVersionId = vnf.object[FIELD.ID.MODEL_VERSION_ID];

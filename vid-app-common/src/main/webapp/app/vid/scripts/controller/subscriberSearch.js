@@ -238,7 +238,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 			});
 		}
 	
-
+	
 		$scope.getSubscriberDet = function(selectedCustomer){
 			window.location.href = COMPONENT.SUBDETAILS_SELECTEDSUBSCRIBER + selectedCustomer;
 		};

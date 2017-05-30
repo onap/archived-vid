@@ -124,6 +124,36 @@ var DataService = function($log, DataService) {
 		setServiceUuid : function(serviceUuid) {
 			_this.serviceUuid = serviceUuid;
 		},
+		getServiceTypeName : function() {
+			return _this.serviceTypeName;
+		},
+		setServiceTypeName : function(serviceTypeName) {
+			_this.serviceTypeName = serviceTypeName;
+		},
+		getCreateSubscriberName : function() {
+			return _this.createSubscriberName;
+		},
+		setCreateSubscriberName : function(createSubscriberName) {
+			_this.createSubscriberName = createSubscriberName;
+		},
+		getSdncPreload : function() {
+			return _this.sdncPreload;
+		},
+		setSdncPreload : function(sdncPreload) {
+			_this.sdncPreload = sdncPreload;
+		},
+		getUploadSupplementoryDataFile : function() {
+			return _this.uploadSupplementoryDataFile;
+		},
+		setUploadSupplementoryDataFile : function(uploadSupplementoryDataFile) {
+			_this.uploadSupplementoryDataFile = uploadSupplementoryDataFile;
+		},
+		getSupplementoryDataFile : function() {
+			return _this.supplementoryDataFile;
+		},
+		setSupplementoryDataFile : function(supplementoryDataFile) {
+			_this.supplementoryDataFile = supplementoryDataFile;
+		},
 		getSubscriberId : function() {
 			return _this.subscriberId;
 		},
@@ -236,6 +266,18 @@ var DataService = function($log, DataService) {
 		},
 		setUpdatedVNFProvStatus : function(r) {
 			_this.updatedvnfProvStatus = r;
+		},
+		setArbitraryParameters : function (pList) {
+			_this.arbitraryParameters = pList;
+		},
+		getArbitraryParameters : function () {
+			return _this.arbitraryParameters;
+		},
+		setHideServiceFields:function(b){
+			_this.hideServiceFields=b;
+		},
+		getHideServiceFields:function(){
+			return _this.hideServiceFields;
 		}
 	}
 }

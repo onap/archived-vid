@@ -104,12 +104,14 @@ public class ToscaMeta {
 		
 		try {
 			while ((line = br.readLine()) != null) {
-				final String[] entry = line.split(":");
-				
-				if (entry.length != 2) throw new AsdcCatalogException("TOSCA.meta file cannot be parsed (more than 1 colon found on a single line");
-				if (!entry[1].startsWith(" ")) throw new AsdcCatalogException("TOSCA.meta file cannot be parsed (: not immediately followed by ' ')");
-				
-				metadata.put(entry[0], entry[1].substring(1));
+				if ( line.length() > 0 ) {
+					final String[] entry = line.split(":");
+					
+					if (entry.length != 2) throw new AsdcCatalogException("TOSCA.meta file cannot be parsed (more than 1 colon found on a single line");
+					if (!entry[1].startsWith(" ")) throw new AsdcCatalogException("TOSCA.meta file cannot be parsed (: not immediately followed by ' ')");
+					
+					metadata.put(entry[0], entry[1].substring(1));
+				}
 			}
 		} catch (IOException e) {
 			metadata.clear();

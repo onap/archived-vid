@@ -22,16 +22,19 @@ package org.openecomp.vid.asdc.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
 import javax.ws.rs.NotFoundException;
@@ -44,6 +47,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 
+import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.asdc.AsdcCatalogException;
 import org.openecomp.vid.asdc.AsdcClient;
 import org.openecomp.vid.asdc.beans.Artifact;
@@ -64,8 +68,11 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
  */
 public class RestfulAsdcClient implements AsdcClient {
 
-	/** The Constant LOGGER. */
-	private static final Logger LOGGER = Logger.getLogger(RestfulAsdcClient.class.getName());
+	/** The Constant LOG. */
+	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(RestfulAsdcClient.class);
+	
+	/** The Constant dateFormat. */
+	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 	
 	/** The client. */
 	private final Client client;
@@ -422,7 +429,6 @@ public class RestfulAsdcClient implements AsdcClient {
 	 */
 	private ToscaCsar getToscaModel(InputStream csarInputStream) throws AsdcCatalogException {
 		final Path csarFile;
-		
 		try {
 			csarFile = Files.createTempFile("csar", ".zip");
 			Files.copy(csarInputStream, csarFile, StandardCopyOption.REPLACE_EXISTING);
@@ -444,10 +450,17 @@ public class RestfulAsdcClient implements AsdcClient {
 				final ToscaCsar.Builder csarBuilder = new ToscaCsar.Builder(parentModel);
 				
 				for (Map<String, Map<String, String>> imports : parentModel.getImports()) {
+					LOG.debug("imports = " + imports.toString());
 					for (Entry<String, Map<String, String>> entry : imports.entrySet()) {
-						final InputStream toscaChildEntryYamlStream = csar.getInputStream(csar.getEntry("Definitions/" + entry.getValue().get("file")));
-						final ToscaModel childModel = yaml.loadAs(toscaChildEntryYamlStream, ToscaModel.class);
-						csarBuilder.addVnf(childModel);
+						if ( entry.getValue() != null) {
+							String fname = entry.getValue().get("file");
+							if ( ( fname != null ) && (fname.startsWith("service") || fname.startsWith("resource")) ) {
+								LOG.debug("fname = " + fname);
+								final InputStream toscaChildEntryYamlStream = csar.getInputStream(csar.getEntry("Definitions/" + fname ));
+								final ToscaModel childModel = yaml.loadAs(toscaChildEntryYamlStream, ToscaModel.class);
+								csarBuilder.addVnf(childModel);
+							}
+						}
 					}
 				}
 				

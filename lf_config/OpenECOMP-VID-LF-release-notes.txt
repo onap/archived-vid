@@ -7,8 +7,8 @@ ${gerrit_repo_root}/vid/lf_config/vid-pre-init.sql
 
 2.  Set up and run the mariadb docker image:
 
-docker run --name vid-mariadb -e MYSQL_DATABASE=vid_openecomp -e MYSQL_USER=vidadmin -e MYSQL_PASSWORD=<db password here> -e MYSQL_ROOT_PASSWORD=<root db password here> -v /path/to/vid-my.cnf:/etc/mysql/my.cnf -v /path/to/vid-pre-init.sql:/docker-entrypoint-initdb.d/vid-pre-init.sql -v /var/lib/mysql -d mariadb:10
+docker run --name vid-mariadb -e MYSQL_DATABASE=vid_openecomp_epsdk -e MYSQL_USER=vidadmin -e MYSQL_PASSWORD=<db password here> -e MYSQL_ROOT_PASSWORD=<root db password here> -v /path/to/vid-my.cnf:/etc/mysql/my.cnf -v /path/to/vid-pre-init.sql:/docker-entrypoint-initdb.d/vid-pre-init.sql -v /var/lib/mysql -d mariadb:10
 
 3.  Set up and run the vid-server docker image:
 
-docker run -e VID_MYSQL_DBNAME=vid_openecomp -e VID_MYSQL_PASS=<db password here> --name vid-server -p 8080:8080 --link vid-mariadb:vid-mariadb-docker-instance -d <openecomp-nexus>:<openecomp-nexus-port>/openecomp/vid:1.0.0
+docker run -e VID_MYSQL_DBNAME=vid_openecomp_epsdk -e VID_MYSQL_PASS=<db password here> --name vid-server -p 8080:8080 --link vid-mariadb:vid-mariadb-docker-instance -d <openecomp-nexus>:<openecomp-nexus-port>/openecomp/vid:1.0.0

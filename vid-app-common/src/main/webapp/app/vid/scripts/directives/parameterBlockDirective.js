@@ -49,7 +49,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
     var checkboxInputStyle = "height: 18px; width: 18px; padding: 2px 5px;";
     var selectStyle = "height: 25px; padding: 2px; text-align: center;";
     var requiredLabelStyle = "width: 25px; padding: 5px 10px 10px 5px;";
-    var textInputPrompt = "Enter data";
+    
 
     var getParameterHtml = function(parameter, editable) {
 	var style = valueStyle;
@@ -60,7 +60,11 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
 	if (UtilityService.hasContents(parameter.description)) {
 	    attributeString += " title=' " + parameter.description + " '";
 	}
-	var html = "<tr><td style='" + nameStyle + "'" + attributeString + ">"
+	var rowstyle='';
+	if(parameter.type == 'file' && !parameter.isVisiblity){
+		rowstyle = ' style="display:none;"';
+	}
+	var html = "<tr"+rowstyle+"><td style='" + nameStyle + "'" + attributeString + ">"
 		+ getNameHtml(parameter) + "</td><td style='" + style + "'>";
 	if (editable === undefined) {
 	    if (UtilityService.hasContents(parameter.value)) {
@@ -102,6 +106,8 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
     };
 
     var getValueHtml = function(parameter) {
+    	
+    var textInputPrompt = "Enter data";
 	var attributeString = " parameter-id='" + parameter.id + "'";
 	var additionalStyle = "";
 	if (parameter.isEnabled === false) {
@@ -136,6 +142,14 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
 	    name = parameter.id;
 	}
 	attributeString += " parameter-name='" + name + "'";
+	
+	if ( parameter.type === PARAMETER.MAP ) {
+		textInputPrompt = "{<key1>: <value1>,\.\.\.,<keyN>: <valueN>}";
+	}
+	
+	if ( parameter.type === PARAMETER.LIST ) {
+		textInputPrompt = "[<value1>,\.\.\.,<valueN>]";
+	}
 
 	switch (parameter.type) {
 	case PARAMETER.BOOLEAN:
@@ -150,6 +164,18 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
 			+ "<option value=true>true</option>"
 			+ "</select>";
 		}
+	    break;
+	case PARAMETER.CHECKBOX:
+		if (parameter.value) {
+			return "<input type='checkbox' "+attributeString+ " checked='checked' style='"+checkboxInputStyle+"'" 
+			+ " value='true'/>";
+		}else{
+			return "<input type='checkbox' "+attributeString+ "' style='"+checkboxInputStyle+"'" 
+			+ " value='false'/>";
+		}
+	    break;
+	case PARAMETER.FILE:
+			return "<input type='file' "+attributeString+ " id='"+parameter.id+"' value='"+parameter.value+"'/>";
 	    break;
 	case PARAMETER.NUMBER:
 		var value=parameter.value;
@@ -258,6 +284,9 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
 	};
 	if ($(element).prop("type") === "checkbox") {
 	    parameter.value = $(element).prop("checked");
+	}else if ($(element).prop("type") === "file") {
+	    parameter.value = $('#'+id).attr("value");
+
 	} else {
 	    if ($(element).prop("type") === "text") {
 		$(element).val($(element).val().trim());

@@ -78,30 +78,31 @@
 		    <thead  att-table-row type="header">
 				<tr>
 					<th att-table-header key="action">Action</th>
-					<th att-table-header key="uuid">UUID</th>
-					<th att-table-header key="invariantUUID">Invariant UUID</th>
-					<th att-table-header default-sort="A" key="name">Name</th>
-		            <th att-table-header key="version">Version</th>
-		            <th att-table-header key="category">Category</th>
-		            <th att-table-header key="distributionStatus">Distribution Status</th>
-		            <th att-table-header key="lastUpdaterUserId">Last Updated By</th>
-		            <th att-table-header key="toscaModelUrl">Tosca Model</th>
+					<th att-table-header key="serviceInstanceName">Service Name</th>
+					<th att-table-header key="serviceDescription">Service Description</th>
+					<th att-table-header key="serviceType">Service Type</th>
+		            <th att-table-header key="serviceUuid">Service UUID</th>
+		            <th att-table-header key="serviceInvariantUuid">Service Invariant UUID</th>
+		            <th att-table-header key="serviceVersion">Service Version</th>
+		            <th att-table-header key="actions">Action</th>
 		        </tr>
 		    </thead>
 		    <tbody att-table-row type="body" row-repeat="service in services">
-		        <tr>
-		        	<td att-table-body ><button type=button ng-click="deployService(service)" att-button btn-type="primary" size="small">Deploy</button></td>
-	            	<td att-table-body ng-bind="service['uuid']"></td>
-	            	<td att-table-body ng-bind="service['invariantUUID']"></td>
-	            	<td att-table-body ng-bind="service['name']"></td>
-	            	<td att-table-body ng-bind="service['version']"></td>
-	            	<td att-table-body ng-bind="service['category']"></td>
-	            	<td att-table-body ng-bind="service['distributionStatus']"></td>
-	            	<td att-table-body ng-bind="service['lastUpdaterUserId']"></td>
-	            	<td att-table-body ng-bind="service['toscaModelUrl']"></td>
-		        </tr>     
+		       <tr>
+		        	<td att-table-body ><button type=button ng-click="deployService(service,true)" att-button btn-type="primary" size="small">Deploy</button></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][2]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][0]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][3]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][1]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][4]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][6]['property-value']"></td>
+	            	<td att-table-body ><button type=button ng-click="deploService(service)" att-button btn-type="primary" size="small">Previous Versions</button></td>
+		        </tr>
 		    </tbody>	  
 		</table>
+		<div >	
+			<center><button type="submit" class="btn btn-primary" size="small" ng-click="cancelCreateSIType();">Cancel</button></center>
+		</div>
 		<table width='100%'>
 			<tr>
 					<td width='33%' valign='middle'>

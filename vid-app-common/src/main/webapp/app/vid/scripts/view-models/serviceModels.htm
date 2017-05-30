@@ -52,6 +52,7 @@
 		            <th att-table-header key="distributionStatus">Distribution Status</th>
 		            <th att-table-header key="lastUpdaterUserId">Last Updated By</th>
 		            <th att-table-header key="toscaModelUrl">Tosca Model</th>
+					<th att-table-header key="actions">Action</th>
 		        </tr>
 		    </thead>
 		    <tbody att-table-row type="body" row-repeat="service in services">
@@ -65,6 +66,7 @@
 	            	<td att-table-body ng-bind="service['distributionStatus']"></td>
 	            	<td att-table-body ng-bind="service['lastUpdaterUserId']"></td>
 	            	<td att-table-body ng-bind="service['toscaModelUrl']"></td>
+					<td att-table-body ><button type=button ng-click="deloyService(service)" att-button btn-type="primary" size="small">Previous Versions</button></td>
 		        </tr>     
 		    </tbody>	  
 		</table>

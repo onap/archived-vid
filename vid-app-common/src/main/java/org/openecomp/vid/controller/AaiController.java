@@ -126,7 +126,10 @@ public class AaiController extends RestrictedBaseController{
 			User user = (User) session.getAttribute(SystemProperties.getProperty(SystemProperties.USER_ATTRIBUTE_NAME));
 			if (user != null)
 			{
-				userId = user.getHrid();
+				//userId = user.getHrid();
+				userId = user.getLoginId();
+				if (userId == null)
+					userId = user.getOrgUserId();
 			}
 		}
 

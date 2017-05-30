@@ -29,7 +29,7 @@
  * 
  */
 
-var CreationService = function($log, AaiService, AsdcService, DataService,
+var CreationService = function($log, AaiService, AsdcService, DataService,VIDCONFIGURATION,
 		ComponentService, COMPONENT, FIELD, PARAMETER, UtilityService) {
 
 	var _this = this;
@@ -77,7 +77,11 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 		/*
 		 * Common fields displayed at the top of all create instance screens.
 		 */
-		addToList(FIELD.NAME.SERVICE_NAME, DataService.getServiceName());
+		if(DataService.getModelInfo(_this.componentId)["serviceTypeName"]==null 
+				|| DataService.getModelInfo(_this.componentId)["serviceTypeName"]==undefined
+				|| DataService.getModelInfo(_this.componentId)["serviceTypeName"]==''){
+			addToList(FIELD.NAME.SERVICE_NAME, DataService.getServiceName());
+		}
 
 		switch (_this.componentId) {
 		case COMPONENT.SERVICE:
@@ -98,6 +102,15 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 					}
 				}
 			}
+			if(DataService.getModelInfo(_this.componentId)["createSubscriberName"]!=null && DataService.getModelInfo(_this.componentId)["createSubscriberName"]!=''){
+				addToList(FIELD.NAME.SUBSCRIBER_NAME, DataService
+						.getModelInfo(_this.componentId)["createSubscriberName"]);
+			}
+			if(DataService.getModelInfo(_this.componentId)["serviceTypeName"]!=null && DataService.getModelInfo(_this.componentId)["serviceTypeName"]!=''){
+				addToList(FIELD.NAME.SERVICE_TYPE, DataService
+						.getModelInfo(_this.componentId)["serviceTypeName"]);
+				addToList(FIELD.NAME.SERVICE_NAME, DataService.getServiceName());
+			}
 			addToList(FIELD.NAME.SERVICE_INVARIANT_UUID, DataService
 					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_INVARIANT_ID]);
 			addToList(FIELD.NAME.SERVICE_VERSION, DataService
@@ -115,7 +128,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 			addToList(FIELD.NAME.SERVICE_INSTANCE_NAME, DataService
 					.getServiceInstanceName());
 			addToList(FIELD.NAME.MODEL_NAME, DataService
-					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_INVARIANT_ID]);
+					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_NAME]);
 			addToList(FIELD.NAME.MODEL_INVARIANT_UUID, DataService
 					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_INVARIANT_ID]);
 			addToList(FIELD.NAME.MODEL_VERSION, DataService
@@ -131,7 +144,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 			addToList(FIELD.NAME.SERVICE_INSTANCE_NAME, DataService
 					.getServiceInstanceName());
 			addToList(FIELD.NAME.MODEL_NAME, DataService
-					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_INVARIANT_ID]);
+					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_NAME]);
 			addToList(FIELD.NAME.MODEL_INVARIANT_UUID, DataService
 					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_INVARIANT_ID]);
 			addToList(FIELD.NAME.MODEL_VERSION, DataService
@@ -158,7 +171,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 			addToList(FIELD.NAME.SERVICE_INSTANCE_NAME, DataService
 					.getServiceInstanceName());
 			addToList(FIELD.NAME.MODEL_NAME, DataService
-					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_INVARIANT_ID]);
+					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_NAME]);
 			addToList(FIELD.NAME.MODEL_INVARIANT_UUID, DataService
 					.getModelInfo(_this.componentId)[FIELD.ID.MODEL_INVARIANT_ID]);
 			addToList(FIELD.NAME.MODEL_VERSION, DataService
@@ -181,7 +194,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 			isUserProvidedNaming = true;
 		}
 		var parameterList;
-		if (_this.componentId === COMPONENT.SERVICE) {
+		var hsf = DataService.getHideServiceFields() || false;
+		if (_this.componentId === COMPONENT.SERVICE && !hsf) {	
 			if ( DataService.getALaCarte() ) {
 				parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
 				parameterList = parameterList.concat([ getSubscribersParameter(),
@@ -193,11 +207,11 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 					parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
 					
 				}
-				parameterList = parameterList.concat([ getSubscribersParameter(),
-				    FIELD.PARAMETER.SERVICE_TYPE_DISABLED ]);
+				parameterList = parameterList.concat([ getSubscribersParameter() ]);
 				parameterList = parameterList.concat([ getServiceId(),
 					FIELD.PARAMETER.SERVICE_TYPE,
 					FIELD.PARAMETER.LCP_REGION,
+					FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
 					FIELD.PARAMETER.TENANT_DISABLED ]);
 			}
 		}
@@ -237,8 +251,49 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 						FIELD.PARAMETER.TENANT_DISABLED ]);
 			}
 		}
-
 		parameterList.push(FIELD.PARAMETER.SUPPRESS_ROLLBACK);
+		if(_this.componentId === COMPONENT.VF_MODULE ){
+			parameterList.push({name: "SDN-C Pre-Load",
+				id: "sdncPreload",
+				type: "checkbox",
+				isEnabled: true,
+				isRequired: false
+				}
+			);
+			parameterList.push({name: "Upload Supplementory Data file",
+				id: "uploadSupplementoryDataFile",
+				type: "checkbox",
+				isEnabled: true,
+				isRequired: false
+				}
+			);
+			
+			parameterList.push({name: "Supplemetory file (JSON format)",
+				id: "supplementoryDataFile",
+				type: "file",
+				isRequired: false,
+				isVisiblity: false
+				}
+			);
+		}
+		
+		if( VIDCONFIGURATION.UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED  && _this.componentId === COMPONENT.VOLUME_GROUP){
+				parameterList.push({name: "Upload Supplementory Data file",
+					id: "uploadSupplementoryDataFile",
+					type: "checkbox",
+					isEnabled: true,
+					isRequired: false
+					}
+				);
+				
+				parameterList.push({name: "Supplemetory file (JSON format)",
+					id: "supplementoryDataFile",
+					type: "file",
+					isRequired: false,
+					isVisiblity: false
+					}
+				);
+			}
 
 		addArbitraryParameters(parameterList);
 
@@ -267,6 +322,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 					case PARAMETER.RANGE:
 						break;
 					case PARAMETER.LIST:
+						parameter.type = PARAMETER.LIST;
 						break;
 					case PARAMETER.MAP:
 						parameter.type = PARAMETER.MAP;
@@ -284,6 +340,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 					parameterList.push(parameter);
 				}
 			}
+			DataService.setArbitraryParameters (parameterList);
 		}
 	};
 
@@ -432,6 +489,9 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 
 	var getMsoRequestDetails = function(parameterList) {
 		console.log("getMsoRequestDetails invoked, parameterList="); console.log(JSON.stringify(parameterList,null,4));
+		//console.log("getMsoRequestDetails invoked, DataService.getArbitraryParameters()="); 
+		//console.log(JSON.stringify(DataService.getArbitraryParameters(),null,4));
+		
 		var modelInfo = DataService.getModelInfo(_this.componentId);
 		var requestorloggedInId = DataService.getLoggedInUserId();
 		if (requestorloggedInId ==  null)
@@ -733,53 +793,27 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 
 	var getServiceId = function() {
 		var serviceIdList = DataService.getServiceIdList();
-		var serviceTypeList = DataService.getSubscriptionServiceTypeList();
+		//var serviceTypeList = DataService.getSubscriptionServiceTypeList();
 		var parameter = FIELD.PARAMETER.PRODUCT_FAMILY;
 		parameter.optionList = new Array();
-		
-		if (serviceTypeList == null) {
-			getSubscriptionServiceTypeList();
-			serviceTypeList = DataService.getSubscriptionServiceTypeList();
-		}
-		var went = 0;
-		if ( UtilityService.hasContents (serviceIdList) ) {
+		if ( UtilityService.hasContents(serviceIdList) ) {
+			// load them all
 			for (var i = 0; i < serviceIdList.length; i++) {
-				var go = 0;
-				var name = serviceIdList[i].id;
-	
-				if (UtilityService.hasContents(serviceTypeList) ) { 
-					console.log("STL: " + serviceTypeList);
-					for (var k = 0; k < serviceTypeList.length; k++) {
-						if (angular.equals(name,serviceTypeList[k])) {
-							go = 1;
-							went = 1;
-						}
-					}
-				} else { 
-					go = 1;
-					went = 1;
-				}
-				if (go == 1) {
-					parameter.optionList.push({
-						id : serviceIdList[i].id,
-						name : serviceIdList[i].description
-					});
-				}
-			}  // load them all, ours wasn't in the list
-			if (went == 0) { 
-				for (var i = 0; i < serviceIdList.length; i++) {
-						parameter.optionList.push({
-							id : serviceIdList[i].id,
-							name : serviceIdList[i].description
-						});
-				}
+				parameter.optionList.push({
+					id : serviceIdList[i].id,
+					name : serviceIdList[i].description
+				});
 			}
 		}
+
 		return parameter;
 	};
 
 	var getLcpRegion = function() {
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
+		console.log ( "cloudRegionTenantList=");
+		console.log ( JSON.stringify (cloudRegionTenantList, null, 4 ));
+
 		var parameter = FIELD.PARAMETER.LCP_REGION;
 		if ( UtilityService.hasContents (cloudRegionTenantList) ) {
 			parameter.optionList = new Array();
@@ -842,7 +876,53 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 	};
 	var updateUserParameterList = function(updatedId, parameterListControl) {
 		console.log ("updateUserParameterList() updatedId=" + updatedId);
-		if (updatedId === FIELD.ID.LCP_REGION) {
+		if (updatedId === FIELD.ID.SDN_C_PRELOAD) {
+			var list = parameterListControl.getList(updatedId);
+			if($('input[parameter-id="'+updatedId+'"]').is(':checked')){
+				FIELD.PARAMETER.SDN_C_PRELOAD_CHECKED.value=true;
+				parameterListControl
+				.updateList([ FIELD.PARAMETER.SDN_C_PRELOAD_CHECKED ]);
+			}else{
+				parameterListControl
+				.updateList([ FIELD.PARAMETER.SDN_C_PRELOAD_UNCHECKED ]);
+			}
+		}else if (updatedId === FIELD.ID.UPLOAD_SUPPLEMENTORY_DATA_FILE) {
+			if($('input[parameter-id="'+updatedId+'"]').is(':checked')){
+				$('input[parameter-id="'+FIELD.ID.SUPPLEMENTORY_DATA_FILE+'"]').closest('tr').show();
+				 FIELD.PARAMETER.UPLOAD_SUPPLEMENTORY_DATA_FILE_CHECKED.value=true;
+				parameterListControl
+				.updateList([ FIELD.PARAMETER.UPLOAD_SUPPLEMENTORY_DATA_FILE_CHECKED ]);
+			}else{
+				$('input[parameter-id="'+FIELD.ID.SUPPLEMENTORY_DATA_FILE+'"]').closest('tr').hide();
+				parameterListControl
+				.updateList([ FIELD.PARAMETER.UPLOAD_SUPPLEMENTORY_DATA_FILE_UNCHECKED ]);
+			}
+		} else if (updatedId === FIELD.ID.SUPPLEMENTORY_DATA_FILE) {
+			var filePath =  $('input[parameter-id="'+updatedId+'"]').val();
+			var arr =filePath.split('.');
+			var fileExt  = arr[arr.length-1];
+			if(fileExt!='' && fileExt.toLowerCase()!='json'){
+				 $('input[parameter-id="'+updatedId+'"]').val('');
+				showError("Invalid file format.", 'Please select *.json format file.');
+				return false;
+			}
+			var fileJsonData={};
+			var fileInput = document.getElementById(updatedId);
+			var file = fileInput.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				try{
+					fileJsonData = JSON.parse(reader.result);
+					FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE['value']=(JSON.stringify(fileJsonData)).toString();
+					parameterListControl
+					.updateList([ FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE ]);
+				}catch(e){
+					alert('Invalid json format.');
+					showError("Invalid data format.", 'Please check your file content it is not in json format.');
+				}
+			}
+			reader.readAsText(file);
+		} else  if (updatedId === FIELD.ID.LCP_REGION) {
 			var list = parameterListControl.getList(updatedId);
 			if (list[0].selectedIndex >= 0) {
 				parameterListControl
@@ -920,5 +1000,5 @@ var CreationService = function($log, AaiService, AsdcService, DataService,
 }
 
 appDS2.factory("CreationService", [ "$log", "AaiService", "AsdcService",
-		"DataService", "ComponentService", "COMPONENT", "FIELD", "PARAMETER",
+		"DataService","VIDCONFIGURATION", "ComponentService", "COMPONENT", "FIELD", "PARAMETER",
 		"UtilityService", CreationService ]);

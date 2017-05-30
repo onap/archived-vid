@@ -103,7 +103,7 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
 		SERVICE_INSTANCE_NAME : "service-instance-name",
 		SERVICE_SUBSCRIPTION : "service-subscription",
 		SERVICE_SUBSCRIPTIONS : "service-subscriptions",
-		SERVICE_TYPE : "service-type",
+		SERVICETYPE : "service-type",
 		STATUS_MESSAGE : "statusMessage",
 		SUBNAME : "subscriber-name",
 		TIMESTAMP : "timestamp",
@@ -121,6 +121,9 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
 		VOLUME_GROUP : "volume-group",
 		VOLUME_GROUP_ID : "volume-group-id",
 		VOLUME_GROUP_NAME : "volume-group-name",
+		SDN_C_PRELOAD : "sdncPreload",
+		UPLOAD_SUPPLEMENTORY_DATA_FILE : "uploadSupplementoryDataFile",
+		SUPPLEMENTORY_DATA_FILE : "supplementoryDataFile"
     };
 
     var KEY = {
@@ -144,7 +147,7 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
 	MODEL_VNF_TYPE: "NF Type",
 	MODEL_VNF_ROLE: "NF Role",
 	MODEL_VNF_FUNCTION: "NF Function",
-	MODEL_VNF_CODE: "NF Code",
+	MODEL_VNF_CODE: "NF Naming Code",
 	MODEL_CUSTOMIZATION_NAME: "Resource Name",
 	PRODUCT_FAMILY : "Product Family",
 	RESOURCE_DESCRIPTION : "Resource Description",
@@ -161,6 +164,9 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
 	SERVICE_VERSION : "Service Version",
 	SUBSCRIBER_NAME : "Subscriber Name",
 	SUPPRESS_ROLLBACK : "Suppress Rollback on Failure",
+	SDN_C_PRELOAD : "SDN-C Pre-Load",
+	UPLOAD_SUPPLEMENTORY_DATA_FILE : "Upload Supplementory Data file",
+	SUPPLEMENTORY_DATA_FILE : "Supplementory Data file (JSON format)",
 	TENANT : "Tenant",
 	USER_SERVICE_INSTANCE_NAME : "User Service Instance Name",
 	VF_MODULE_DESCRIPTION : "VF Module Description",
@@ -260,6 +266,10 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
     		FETCHING_SERVICE_INSTANCE_DATA : "Failed to fetch service instance data from A&AI: Response Code: ",
     		INVALID_INSTANCE_NAME : "Invalid instance name: ",
     		INSTANCE_NAME_VALIDATE : "The instance name must contain only alphanumeric or \"_-.\" characters, and must start with an alphabetic character",	
+    		INVALID_LIST : "Invalid list parameter: ",
+    		INVALID_MAP : "Invalid map parameter: ",
+    		LIST_VALIDATE : "A list parameter value must have the following syntax: '[<value1>,\.\.\.,<valueN>]'",
+    		MAP_VALIDATE : "A map parameter value must have the following syntax: '{ <entry_key_1>: <entry_value_1>, \.\.\., <entry_key_n>: <entry_value_n> }'",
     		MAX_POLLS_EXCEEDED : "Maximum number of poll attempts exceeded",
     		MISSING_DATA : "Missing data",
     		MODEL_VERSION_ID_MISSING : "Error: model-version-id is not populated in A&AI",
@@ -341,6 +351,47 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
 	    type : PARAMETER.BOOLEAN,
 	    value : false
 	},
+	SDN_C_PRELOAD_CHECKED : {
+		name : NAME.SDN_C_PRELOAD,
+	    id : ID.SDN_C_PRELOAD,
+	    type : PARAMETER.CHECKBOX,
+	    value : true,
+	    isVisible:true,
+	    isRequired:false
+	},
+	SDN_C_PRELOAD_UNCHECKED : {
+		name : NAME.SDN_C_PRELOAD,
+	    id : ID.SDN_C_PRELOAD,
+	    type : PARAMETER.CHECKBOX,
+	    value : false,
+	    isVisible:true,
+	    isRequired:false
+	},
+	UPLOAD_SUPPLEMENTORY_DATA_FILE_CHECKED : {
+		name : NAME.UPLOAD_SUPPLEMENTORY_DATA_FILE,
+	    id : ID.UPLOAD_SUPPLEMENTORY_DATA_FILE,
+	    type : PARAMETER.CHECKBOX,
+	    value : true,
+	    isVisible:true,
+	    isRequired:false
+	},
+	UPLOAD_SUPPLEMENTORY_DATA_FILE_UNCHECKED : {
+		name : NAME.UPLOAD_SUPPLEMENTORY_DATA_FILE,
+	    id : ID.UPLOAD_SUPPLEMENTORY_DATA_FILE,
+	    type : PARAMETER.CHECKBOX,
+	    value : false,
+	    isVisible:true,
+	    isRequired:false
+	},
+	SUPPLEMENTORY_DATA_FILE : {
+		name : NAME.SUPPLEMENTORY_DATA_FILE,
+	    id : ID.SUPPLEMENTORY_DATA_FILE,
+	    type : PARAMETER.FILE,
+	    isRequired : false,
+	    isVisible : true,
+	    fileData:''
+	},
+
 	SUBSCRIBER_NAME : {
 		name : NAME.SUBSCRIBER_NAME,
 		id : ID.SUBSCRIBER_NAME,

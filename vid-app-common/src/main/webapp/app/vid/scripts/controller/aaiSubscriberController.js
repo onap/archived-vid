@@ -152,20 +152,12 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 				pathQuery = COMPONENT.SERVICES_PATH +globalCustomerId+"/"+$scope.serviceTypeName;
 			}
 			
-			AaiService.getServiceModels(globalCustomerId,$scope.serviceTypeName,function(response) { // success
-				console.log("service models : "+response.data);
-				DataService.setServiceIdList(response);
-			},  function(response) { // failure
-				$scope.showError(FIELD.ERROR.AAI);
-				$scope.errorMsg = FIELD.ERROR.FETCHING_SERVICES+ response.status;
-				$scope.errorDetails = response.data;
-			});
-			
-			/*$http.get('/aai_get_services/'+globalCustomerId+''+$scope.serviceTypeName)
-			.then(function successCallback(response) {
+			var namedQueryId='6e806bc2-8f9b-4534-bb68-be91267ff6c8';
+			AaiService.getServiceModelsByServiceType(namedQueryId,globalCustomerId,$scope.serviceTypeName,function(response) { // success
 				$scope.services = [];
-				if (angular.isArray(response.data)) {
-					$scope.services = response.data;
+				if (angular.isArray(response.data['inventory-response-item'])) {
+					$scope.services = response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item'];
+					$scope.serviceType = response.data['inventory-response-item'][0]['service-subscription']['service-type'];
 					$scope.viewPerPage=10;
 					$scope.totalPage=$scope.services.length/$scope.viewPerPage;
 					$scope.sortBy="name";
@@ -177,15 +169,100 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 					$scope.isSpinnerVisible = false;
 					$scope.isProgressVisible = false;
 				} else {
-					$scope.status = "Failed to get service models from SDC.";
+					$scope.status = "Failed to get service models from ASDC.";
 					$scope.error = true;
 					$scope.isSpinnerVisible = false;
 				}
-			}, function errorCallback(response) {
-				console.log("Error: " + response);
-			}); */
-		
+				DataService.setServiceIdList(response);
+			},  function(response) { // failure
+				$scope.showError(FIELD.ERROR.AAI);
+				$scope.errorMsg = FIELD.ERROR.FETCHING_SERVICES+ response.status;
+				$scope.errorDetails = response.data;
+			});
 			
+			};
+			
+			$scope.createType = "a la carte";
+		$scope.deployService = function(service,hideServiceFields) {
+			hideServiceFields = hideServiceFields|| false;
+			var temp = service;
+			service.uuid = service['service-instance']['model-version-id'];
+			
+			console.log("Instantiating ASDC service " + service.uuid);
+			
+			$http.get('rest/models/services/' + service.uuid)
+				.then(function successCallback(getServiceResponse) {
+					getServiceResponse.data['service'].serviceTypeName =$scope.serviceTypeName ;
+					getServiceResponse.data['service'].createSubscriberName =$scope.createSubscriberName ;
+					var serviceModel = getServiceResponse.data;
+					DataService.setServiceName(serviceModel.service.name);
+					
+					DataService.setModelInfo(COMPONENT.SERVICE, {
+						"modelInvariantId": serviceModel.service.invariantUuid,
+						"modelVersion": serviceModel.service.version,
+						"modelNameVersionId": serviceModel.service.uuid,
+						"modelName": serviceModel.service.name,
+						"description": serviceModel.service.description,
+						"category":serviceModel.service.category,
+						"serviceTypeName":serviceModel.service.serviceTypeName,
+						"createSubscriberName":serviceModel.service.createSubscriberName
+					});
+					DataService.setHideServiceFields(hideServiceFields);
+					DataService.setALaCarte (true);
+					$scope.createType = "a la carte";
+					var broadcastType = "createComponent";
+					
+					if (UtilityService.arrayContains (VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid )) {
+						DataService.setALaCarte (false);
+						$scope.createType = "Macro";
+						var convertedAsdcModel = UtilityService.convertModel(serviceModel);
+						
+						//console.log ("display inputs "); 
+						//console.log (JSON.stringify ( convertedAsdcModel.completeDisplayInputs));
+						
+						DataService.setModelInfo(COMPONENT.SERVICE, {
+							"modelInvariantId": serviceModel.service.invariantUuid,
+							"modelVersion": serviceModel.service.version,
+							"modelNameVersionId": serviceModel.service.uuid,
+							"modelName": serviceModel.service.name,
+							"description": serviceModel.service.description,
+							"category":serviceModel.service.category,
+							"inputs": serviceModel.service.inputs,
+							"displayInputs": convertedAsdcModel.completeDisplayInputs,
+							"serviceTypeName":serviceModel.service.serviceTypeName,
+							"createSubscriberName":serviceModel.service.createSubscriberName
+						});
+					};
+					
+					$scope.$broadcast(broadcastType, {
+					    componentId : COMPONENT.SERVICE,
+					    callbackFunction : function(response) {
+					    	if (response.isSuccessful) {
+								vidService.setModel(serviceModel);
+								
+								var subscriberId = "Not Found";
+								var serviceType = "Not Found";
+								
+								var serviceInstanceId = response.instanceId;
+								
+								for (var i = 0; i < response.control.length; i++) {
+									if (response.control[i].id == "subscriberName") {
+										subscriberId = response.control[i].value;
+									} else if (response.control[i].id == "serviceType") {
+										serviceType = response.control[i].value;
+									}
+								}
+								
+								
+								$scope.refreshSubs(subscriberId,serviceType,serviceInstanceId);
+							
+					    	}
+					    }
+					});
+					
+				}, function errorCallback(response) {
+					console.log("Error: " + response);
+				});
 		};
 		
 		 $scope.cancelCreateSIType = function(){
@@ -207,6 +284,7 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 	}
 
 	$scope.refreshSubs = function() {
+		$scope.init();
 		$scope.fetchSubs(FIELD.PROMPT.REFRESH_SUB_LIST);
 		$scope.fetchServices();
 	};

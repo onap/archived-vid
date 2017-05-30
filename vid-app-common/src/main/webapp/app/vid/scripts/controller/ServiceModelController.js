@@ -139,7 +139,7 @@
 								for (var i = 0; i < response.control.length; i++) {
 									if (response.control[i].id == COMPONENT.SUBSCRIBER_NAME) {
 										subscriberId = response.control[i].value;
-									} else if (response.control[i].id == "service-type") {
+									} else if (response.control[i].id == FIELD.ID.SERVICE_TYPE) {
 										serviceType = response.control[i].value;
 									}
 								}
@@ -182,8 +182,8 @@
 					if (subVal[FIELD.ID.SERVICE_SUBSCRIPTIONS] != null) {
 							angular.forEach(subVal[FIELD.ID.SERVICE_SUBSCRIPTIONS][FIELD.ID.SERVICE_SUBSCRIPTION], function(serviceSubscription, key) {
 								$scope.serviceInstanceId = [];
-								if (serviceSubscription[FIELD.ID.SERVICE_TYPE] != null) {
-									$scope.serviceType = serviceSubscription[FIELD.ID.SERVICE_TYPE];
+								if (serviceSubscription[FIELD.ID.SERVICETYPE] != null) {
+									$scope.serviceType = serviceSubscription[FIELD.ID.SERVICETYPE];
 								} else {
 									$scope.serviceType = FIELD.STATUS.NO_SERVICE_SUBSCRIPTION_FOUND;
 								}
