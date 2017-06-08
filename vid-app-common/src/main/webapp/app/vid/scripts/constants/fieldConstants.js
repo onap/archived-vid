@@ -127,9 +127,8 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
     };
 
     var KEY = {
-	LCP_REGION_TEXT : "LEGACYREGION"
     };
-
+   
     /*
      * NAME values are displayed on GUI pages.
      */
@@ -279,6 +278,7 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
     		SELECT : "Please select a subscriber or enter a service instance", 
     		SERVICE_INST_DNE : "That service instance does not exist.  Please try again.",
     		SYSTEM_FAILURE : "System failure",
+    		INVALID_DATA_FORMAT : 'Invalid data format.Please check your file content whether it is not in json or not.',
     		
     }
 

@@ -41,6 +41,7 @@ import javax.ws.rs.client.Client;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.openecomp.vid.exceptions.VidServiceUnavailableException;
+import org.openecomp.vid.model.ModelUtil;
 import org.openecomp.vid.model.ModelConstants;
 import org.openecomp.vid.model.Network;
 import org.openecomp.vid.model.ServiceModel;
@@ -191,12 +192,11 @@ public class VidController extends RestrictedBaseController {
         LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " start");
         boolean isNewFlow = false;
         
-        String asdcModelNamespace = VidProperties.getAsdcModelNamespace();
+        String asdcModelNamespaces[] = VidProperties.getAsdcModelNamespace();
+        String[] vnfTags = ModelUtil.getTags(asdcModelNamespaces, ModelConstants.VNF);
+        String[] networkTags = ModelUtil.getTags(asdcModelNamespaces, ModelConstants.NETWORK);
+        String[] vfModuleTags = ModelUtil.getTags(asdcModelNamespaces, ModelConstants.VF_MODULE);
         
-        String vnfTag = asdcModelNamespace + ModelConstants.VNF;
-    	String networkTag = asdcModelNamespace + ModelConstants.NETWORK;
-    	String vfModuleTag = asdcModelNamespace + ModelConstants.VF_MODULE;
-    	
 		try {
 			final ServiceModel serviceModel = new ServiceModel();
 			final Map<String, VNF> vnfs = new HashMap<String, VNF> ();
@@ -214,7 +214,8 @@ public class VidController extends RestrictedBaseController {
 				final NodeTemplate nodeTemplate = component.getValue();
 				final String type = nodeTemplate.getType();
 				
-				if (type.startsWith(vnfTag)) {
+				// is it a VNF?
+				if ( ModelUtil.isType (type, vnfTags) ) {
                     LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " found node template type: " + type);
 
 					final UUID vnfUuid = UUID.fromString(nodeTemplate.getMetadata().getUUID());
@@ -234,8 +235,9 @@ public class VidController extends RestrictedBaseController {
 						isNewFlow = true;
 					}
 				}
-				// Networks
-				if (type.startsWith(networkTag)) {
+				
+				// is it a Network?
+				if ( ModelUtil.isType (type, networkTags) ) {
 					LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " found node template type: " + type);
 					final UUID networkUuid = UUID.fromString(nodeTemplate.getMetadata().getUUID());
 					final Network network = new Network();
@@ -291,9 +293,8 @@ public class VidController extends RestrictedBaseController {
 					// VF Module Customization UUID: We may have the complete set of all VF Modules for all VNFs under service and VF Modules under each VNF.
 					// Keep using the VF Modules under VNFs but we need to get the customization uuid from the service level and put them
 					// under each VF module at the VNF level
+					if ( ModelUtil.isType (type, vfModuleTags) ) {
 					
-					if (type.startsWith(vfModuleTag)) {
-						
 						VfModule vfMod = VfModule.extractVfModule(modelCustomizationName, group);
 						
 						// Add the vf module customization uuid from the service model
@@ -320,6 +321,10 @@ public class VidController extends RestrictedBaseController {
 			
 			return serviceModel;
 		} catch (AsdcCatalogException e) {
+			LOG.error("Failed to retrieve service definitions from SDC", e);
+			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
+		}
+		catch (Exception e) {
 			LOG.error("Failed to retrieve service definitions from SDC", e);
 			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
 		}

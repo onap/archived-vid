@@ -187,32 +187,42 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 	};
 
 	var getUserProvidedList = function() {
-		parameterList = [];
+		var parameterList = [];
 		var isUserProvidedNaming = false;
 		if ( (DataService.getModelInfo(_this.componentId).serviceEcompNaming != null) 
 				&& (DataService.getModelInfo(_this.componentId).serviceEcompNaming === "false") ) {
 			isUserProvidedNaming = true;
 		}
-		var parameterList;
-		var hsf = DataService.getHideServiceFields() || false;
-		if (_this.componentId === COMPONENT.SERVICE && !hsf) {	
+		
+		var isInTop = DataService.getHideServiceFields() || false;
+		if (_this.componentId === COMPONENT.SERVICE) {	
 			if ( DataService.getALaCarte() ) {
 				parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
-				parameterList = parameterList.concat([ getSubscribersParameter(),
-				    FIELD.PARAMETER.SERVICE_TYPE_DISABLED ]);
+				if(!isInTop){
+					parameterList = parameterList.concat([ getSubscribersParameter(),
+						FIELD.PARAMETER.SERVICE_TYPE_DISABLED ]);
+				}
 			}
 			else {
 				// macro
-				if (isUserProvidedNaming) {
-					parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
-					
+				
+				if(!isInTop){
+					if (isUserProvidedNaming) {
+						parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
+						
+					}
+					parameterList = parameterList.concat([ getSubscribersParameter() ]);
+					parameterList = parameterList.concat([ getServiceId(),
+						FIELD.PARAMETER.SERVICE_TYPE,
+						FIELD.PARAMETER.LCP_REGION,
+						FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
+						FIELD.PARAMETER.TENANT_DISABLED ]);
+				}else{
+					parameterList = parameterList.concat([ getServiceId(),
+						FIELD.PARAMETER.LCP_REGION,
+						FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
+						FIELD.PARAMETER.TENANT_DISABLED ]);
 				}
-				parameterList = parameterList.concat([ getSubscribersParameter() ]);
-				parameterList = parameterList.concat([ getServiceId(),
-					FIELD.PARAMETER.SERVICE_TYPE,
-					FIELD.PARAMETER.LCP_REGION,
-					FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
-					FIELD.PARAMETER.TENANT_DISABLED ]);
 			}
 		}
 		else {
@@ -312,6 +322,9 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 						isRequired : inputs[key][PARAMETER.REQUIRED],
 						description : inputs[key][PARAMETER.DESCRIPTION]
 				};
+				if ( DataService.getALaCarte() ) {
+					parameter.name = ComponentService.getFieldDisplayName(inputs[key][PARAMETER.DISPLAY_NAME]);
+				}
 				switch (inputs[key][PARAMETER.TYPE]) {
 					case PARAMETER.INTEGER:
 						parameter.type = PARAMETER.NUMBER;
@@ -539,8 +552,13 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				globalSubscriberId : DataService.getGlobalCustomerId(),
 				subscriberName : DataService.getSubscriberName()
 			};
+			var isInTop = DataService.getHideServiceFields() || false;
+			if(isInTop){
+				requestDetails.requestParameters.subscriptionServiceType = DataService.getModelInfo(_this.componentId)["serviceTypeName"];
+			}else{
 			requestDetails.requestParameters.subscriptionServiceType = getValueFromList(
 					FIELD.ID.SERVICE_TYPE, parameterList);
+			}
 			requestDetails.requestParameters.aLaCarte = DataService.getALaCarte();
 			if ( !DataService.getALaCarte() ) {
 				requestDetails.requestInfo.productFamilyId = getValueFromList(
@@ -876,7 +894,13 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 	};
 	var updateUserParameterList = function(updatedId, parameterListControl) {
 		console.log ("updateUserParameterList() updatedId=" + updatedId);
-		if (updatedId === FIELD.ID.SDN_C_PRELOAD) {
+		if (updatedId === FIELD.ID.PRODUCT_FAMILY && DataService.getHideServiceFields()) {
+			var cloudRegionTenantList = new Array();
+			AaiService.getLcpCloudRegionTenantList(DataService.getGlobalCustomerId(), DataService.getServiceType(), function(cloudRegionTenantList) {
+				DataService.setCloudRegionTenantList(cloudRegionTenantList);
+				parameterListControl.updateList([ getLcpRegion() ]);
+			});
+		}else if (updatedId === FIELD.ID.SDN_C_PRELOAD) {
 			var list = parameterListControl.getList(updatedId);
 			if($('input[parameter-id="'+updatedId+'"]').is(':checked')){
 				FIELD.PARAMETER.SDN_C_PRELOAD_CHECKED.value=true;
@@ -903,25 +927,9 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			var fileExt  = arr[arr.length-1];
 			if(fileExt!='' && fileExt.toLowerCase()!='json'){
 				 $('input[parameter-id="'+updatedId+'"]').val('');
-				showError("Invalid file format.", 'Please select *.json format file.');
+				alert("Invalid file format. Please select *.json format file.");
 				return false;
 			}
-			var fileJsonData={};
-			var fileInput = document.getElementById(updatedId);
-			var file = fileInput.files[0];
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				try{
-					fileJsonData = JSON.parse(reader.result);
-					FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE['value']=(JSON.stringify(fileJsonData)).toString();
-					parameterListControl
-					.updateList([ FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE ]);
-				}catch(e){
-					alert('Invalid json format.');
-					showError("Invalid data format.", 'Please check your file content it is not in json format.');
-				}
-			}
-			reader.readAsText(file);
 		} else  if (updatedId === FIELD.ID.LCP_REGION) {
 			var list = parameterListControl.getList(updatedId);
 			if (list[0].selectedIndex >= 0) {

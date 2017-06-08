@@ -41,7 +41,7 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 	$scope.defaultBaseUrl = "";
 	$scope.responseTimeoutMsec = 60000;
 
-	$scope.serviceTypes=[ FIELD.PROMPT.SELECT_SERVICE ];
+	$scope.serviceTypes=[ FIELD.PROMPT.SELECT_SERVICE];
 	$scope.defaultSubscriberName=[ FIELD.PROMPT.SELECT_SUB ];
 
 	var callbackFunction = function(response) {
@@ -142,6 +142,7 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 		    for(var i=0; i<$scope.custSubList.length;i++){
 						if($scope.createSubscriberName === $scope.custSubList[i].subscriberName){
 							globalCustomerId = $scope.custSubList[i].globalCustomerId;
+							globalCustId = globalCustomerId;
 						}
 					};
 			
@@ -182,6 +183,7 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 			
 			};
 			
+			var globalCustId;// This value will be assigned only on create new service instance screen-macro
 			$scope.createType = "a la carte";
 		$scope.deployService = function(service,hideServiceFields) {
 			hideServiceFields = hideServiceFields|| false;
@@ -208,6 +210,11 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 						"createSubscriberName":serviceModel.service.createSubscriberName
 					});
 					DataService.setHideServiceFields(hideServiceFields);
+					if(hideServiceFields){
+						DataService.setServiceType($scope.serviceTypeName);
+						DataService.setGlobalCustomerId(globalCustId);
+					}
+
 					DataService.setALaCarte (true);
 					$scope.createType = "a la carte";
 					var broadcastType = "createComponent";
@@ -227,6 +234,7 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 							"modelName": serviceModel.service.name,
 							"description": serviceModel.service.description,
 							"category":serviceModel.service.category,
+							"serviceEcompNaming": serviceModel.service.serviceEcompNaming,
 							"inputs": serviceModel.service.inputs,
 							"displayInputs": convertedAsdcModel.completeDisplayInputs,
 							"serviceTypeName":serviceModel.service.serviceTypeName,

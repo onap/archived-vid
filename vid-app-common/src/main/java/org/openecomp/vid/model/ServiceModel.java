@@ -182,16 +182,15 @@ public class ServiceModel {
 		
 		final Map<String, VfModule> vfModules = new HashMap<String, VfModule> ();
 		final Map<String, VolumeGroup> volumeGroups = new HashMap<String, VolumeGroup> ();
-		
-		String asdcModelNamespace = VidProperties.getAsdcModelNamespace();
-    	String vfModuleTag = asdcModelNamespace + ModelConstants.VF_MODULE;
-    	
+    	String asdcModelNamespaces[] = VidProperties.getAsdcModelNamespace();
+        String[] vfModuleTags = ModelUtil.getTags(asdcModelNamespaces, ModelConstants.VF_MODULE);
+    
 		for (Entry<String, Group> component : serviceToscaModel.gettopology_template().getGroups().entrySet()) {
 			final Group group = component.getValue();
 			final String type = group.getType();
 			final String customizationName = component.getKey();
 			
-			if (type.startsWith(vfModuleTag)) {
+			if ( ModelUtil.isType (type, vfModuleTags) ) {
 				VfModule vfMod = VfModule.extractVfModule(customizationName, group);
 				vfModules.put(customizationName, vfMod);
 				if ( vfMod.isVolumeGroupAllowed() ) {
