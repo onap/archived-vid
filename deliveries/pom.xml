@@ -56,7 +56,7 @@
 				<executions>
 					<execution>
 						<id>generate-image</id>
-						<phase>deploy</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>build</goal>
 						</goals>
