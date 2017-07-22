@@ -32,8 +32,8 @@ public class ModelConstants {
 	public static final String ASDC_RESOURCE_API_PATH = "sdc.resource.api.path";
 	
 	public static final String DEFAULT_ASDC_MODEL_NAMESPACE = "org.openecomp.";
-	public static final String DEFAULT_ASDC_SVC_API_PATH = "sdc/v1/catalog/services";
-	public static final String DEFAULT_ASDC_RESOURCE_API_PATH = "sdc/v1/catalog/resources";
+	public static final String DEFAULT_ASDC_SVC_API_PATH = "asdc/v1/catalog/services";
+	public static final String DEFAULT_ASDC_RESOURCE_API_PATH = "asdc/v1/catalog/resources";
 	
 	public final static String VF_MODULE = "groups.VfModule";
 	public final static String VNF = "resource.vf";
