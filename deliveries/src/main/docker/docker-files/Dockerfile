@@ -1,7 +1,10 @@
 FROM tomcat:8.0-jre8
-
+# add vim and uncomment alias to speedup troubleshooting purpose
 RUN apt-get update && apt-get install -y \
-	openjdk-8-jdk
+	openjdk-8-jdk vim
+
+RUN sed -i 's/# alias/alias/g' /root/.bashrc
+
 
 ENV ROOT_DIR /opt/app/vid
 
