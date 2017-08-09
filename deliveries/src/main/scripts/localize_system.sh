@@ -7,6 +7,7 @@ echo "Localizing the VID system configuration"
 
 mkdir -p "${VID_MYLOGIN_FEED_DIRECTORY}"
 
+
 sed -e 's/${VID_MYSQL_HOST}/'${VID_MYSQL_HOST}'/g' \
 	-e 's/${VID_MYSQL_PORT}/'${VID_MYSQL_PORT}'/g' \
 	-e 's/${VID_MYSQL_DBNAME}/'${VID_MYSQL_DBNAME}'/g' \
@@ -14,6 +15,9 @@ sed -e 's/${VID_MYSQL_HOST}/'${VID_MYSQL_HOST}'/g' \
 	-e 's/${VID_MYSQL_PASS}/'${VID_MYSQL_PASS}'/g' \
 	-e 's/${VID_AAI_HOST}/'${VID_AAI_HOST}'/g' \
 	-e 's/${VID_AAI_PORT}/'${VID_AAI_PORT}'/g' \
+	-e 's/${AAI_USE_CLIENT_CERT}/'${AAI_USE_CLIENT_CERT}'/g' \
+	-e 's/${AAI_VID_UID}/'${AAI_VID_UID}'/g' \
+	-e 's/${AAI_VID_PASSWD_X}/'${AAI_VID_PASSWD_X}'/g' \
 	-e 's,${AAI_TRUSTSTORE_FILENAME},'${AAI_TRUSTSTORE_FILENAME}',g' \
 	-e 's/${AAI_TRUSTSTORE_PASSWD_X}/'${AAI_TRUSTSTORE_PASSWD_X}'/g' \
 	-e 's,${AAI_KEYSTORE_FILENAME},'${AAI_KEYSTORE_FILENAME}',g' \
