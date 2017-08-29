@@ -11,7 +11,7 @@ Use Apache Maven to build, package and deploy this webapp to a web container
 like Apache Tomcat.  Eclipse users must install the M2E-WTP connector, see 
 https://www.eclipse.org/m2e-wtp/
 
-## Release Notes
+## Release Notes 
 
 All of the release notes in the epsdk-app-common and epsdk-app-overlay areas apply here!
 
