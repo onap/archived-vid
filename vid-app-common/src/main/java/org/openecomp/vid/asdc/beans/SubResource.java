@@ -88,7 +88,7 @@ public class SubResource {
 	 *
 	 * @return the resoucre type
 	 */
-	public String getResourceType() {
+	public String getResoucreType() {
 		return resourceType;
 	}
 	
@@ -151,7 +151,7 @@ public class SubResource {
 	 *
 	 * @param resourceType the new resoucre type
 	 */
-	public void setResourceType(String resourceType) {
+	public void setResoucreType(String resourceType) {
 		this.resourceType = resourceType;
 	}
 	
