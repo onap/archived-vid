@@ -84,7 +84,9 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
 
 		commonHeaders = new MultivaluedHashMap<String, Object> ();
 		commonHeaders.put("Authorization",  Collections.singletonList((Object) ("Basic " + authStringEnc)));
-		
+		//Pass calling application identifier to SO
+		commonHeaders.put("X-FromAppId",  Collections.singletonList("VID"));
+
 		boolean use_ssl = true;
 		if ( (mso_url != null) && ( !(mso_url.isEmpty()) ) ) {
 			if ( mso_url.startsWith("https")) {
