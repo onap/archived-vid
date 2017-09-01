@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_8352a0db",
+        "filename": "vid-app-common/src/main/java/org/openecomp/vid/asdc/beans/SubResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 889
+      },
+      "writtenOn": "2017-09-01T18:50:21Z",
+      "side": 1,
+      "message": "I think this also fixes VID-53, thank you. Shouldn\u0027t SDC be fixed to have the correct spelling?",
+      "revId": "49a483a9b40cb429717ccec69fa99e4908aadbb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
