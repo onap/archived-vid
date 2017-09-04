@@ -41,7 +41,7 @@ appDS2.controller("aaiSubscriberController", [ "COMPONENT", "FIELD", "PARAMETER"
 	$scope.defaultBaseUrl = "";
 	$scope.responseTimeoutMsec = 60000;
 
-	$scope.serviceTypes=[ FIELD.PROMPT.SELECT_SERVICE];
+	$scope.serviceTypes=[ FIELD.PROMPT.SELECT_SERVICE, COMPONENT.UCPE_VMS, COMPONENT.SDN_L3_BONDING, COMPONENT.SDN_ETHERNET_INTERNET];
 	$scope.defaultSubscriberName=[ FIELD.PROMPT.SELECT_SUB ];
 
 	var callbackFunction = function(response) {

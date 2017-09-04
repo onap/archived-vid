@@ -53,27 +53,21 @@ public class VidProperties extends SystemProperties {
 	 * 
 	 * @return the property value or a default value
 	 */
-	public static String[] getAsdcModelNamespace() {
+	public static String getAsdcModelNamespace() {
 		String methodName = "getAsdcModelNamespace ";
-		String[] asdcModelNamespaces = null;
-		String value = null;
+		String asdcModelNamespace = ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE;
 	    try {
-	        value = SystemProperties.getProperty(ModelConstants.ASDC_MODEL_NAMESPACE);
-	        if ( value == null || value.isEmpty()) {
-	        	asdcModelNamespaces = new String[1];
-		    	asdcModelNamespaces[0] = ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE;
+	        asdcModelNamespace = SystemProperties.getProperty(ModelConstants.ASDC_MODEL_NAMESPACE);
+	        if ( asdcModelNamespace == null || asdcModelNamespace.isEmpty()) {
+		    	asdcModelNamespace = ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE;
 		    }
-	        else {
-	        	asdcModelNamespaces = value.split(",");
-	        }
 	    }
 	    catch ( Exception e ) {
 	    	LOG.error (EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + methodName + "unable to find the value, using the default "
 	    			+ ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE);
-	    	asdcModelNamespaces = new String[1];
-	    	asdcModelNamespaces[0] = ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE;
+	    	asdcModelNamespace = ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE;
 	    }
-	    return (asdcModelNamespaces);
+	    return (asdcModelNamespace);
 	}
 	/**
 	 * Gets the specified property value. If the property is not defined, returns a default value.
@@ -96,5 +90,4 @@ public class VidProperties extends SystemProperties {
 	    }
 	    return (propValue);
 	}
-	
 }

@@ -170,7 +170,7 @@ public class VolumeGroup {
 	 *
 	 * @param u the new customization name
 	 */
-	private void setModelCustomizationName(String u) {
+	public void setModelCustomizationName(String u) {
 		this.modelCustomizationName = u;
 		
 	}

@@ -238,7 +238,144 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 			});
 		}
 	
+		/*
+		 * Test data objects:
+		 */
 	
+		var subscriberInfo = {
+			globalSubscriberId : COMPONENT.GLOBAL_SUBSCRIBER_ID_1,
+			subscriberName : COMPONENT.SUBSCRIBER_NAME_GED12
+		};
+	
+		var createServiceRequestDetails = {
+			modelInfo : {
+				modelType : COMPONENT.SERVICE,
+				modelId : COMPONENT.MODEL_ID_1,
+				modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_1,
+				modelName : COMPONENT.MODEL_NAME_WANBONDING,
+				modelVersion : COMPONENT.MODEL_VERSION_1
+			},
+			subscriberInfo : subscriberInfo,
+			requestParameters : {
+				vpnId : COMPONENT.VPN_ID_1,
+				productName : COMPONENT.PRODUCT_NAME_TRINITY,
+				customerId : COMPONENT.CUSTOMER_ID_1
+			}
+		};
+	
+		var deleteServiceRequestDetails = {
+			modelInfo : {
+				modelType : COMPONENT.SERVICE,
+				modelId : COMPONENT.MODEL_ID_1,
+				modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_1,
+				modelName : COMPONENT.MODEL_NAME_WANBONDING,
+				modelVersion : COMPONENT.MODEL_VERSION_1
+			}
+		};
+	
+		var createNetworkRequestDetails = {
+			modelInfo : {
+				modelType : COMPONENT.NETWORK,
+				modelId : COMPONENT.MODEL_ID_2,
+				modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_2,
+				modelName : COMPONENT.MODEL_NAME_VISBCOAMNETWORK,
+				modelVersion : COMPONENT.MODEL_VERSION_1
+			},
+			relatedModelList : [
+					{
+						relatedModel : {
+							instanceId : COMPONENT.INSTANCE_ID_1,
+							modelInfo : {
+								modelType : COMPONENT.SERVICE,
+								modelId : COMPONENT.MODEL_ID_3,
+								modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_3,
+								modelName : COMPONENT.MODEL_NAME_IISBC,
+								modelVersion : COMPONENT.MODEL_VERSION_1
+							}
+						}
+					},
+					{
+						relatedModel : {
+							instanceId : COMPONENT.INSTANCE_ID_2,
+							modelInfo : {
+								modelType : COMPONENT.VNF,
+								modelId : COMPONENT.MODEL_ID_4,
+								modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_4,
+								modelName : COMPONENT.MODEL_NAME_VISBC,
+								modelVersion : COMPONENT.MODEL_VERSION_1
+							}
+						}
+					},
+					{
+						relatedModel : {
+							instanceId : COMPONENT.INSTANCE_ID_3,
+							modelInfo : {
+								modelType : COMPONENT.VF_MODULE,
+								modelId : COMPONENT.MODEL_ID_5,
+								modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_5,
+								modelName : COMPONENT.MODEL_NAME_VISBCRTPEXPANSIONMODULE,
+								modelVersion : COMPONENT.MODEL_VERSION_1
+							}
+						}
+					} ],
+			subscriberInfo : subscriberInfo,
+			requestParameters : {
+				/*
+				 * FYI: quotes around field names are needed due to embedded "-"
+				 * characters
+				 */
+				"cidr-mask" : COMPONENT.CIDR_MASK_1,
+				"gateway-address" : COMPONENT.GATEWAY_ADDRESS_1,
+				"dhcp-enabled" : COMPONENT.TRUE
+			}
+		};
+	
+		var deleteNetworkRequestDetails = {
+			modelInfo : {
+				modelType : COMPONENT.NETWORK,
+				modelId : COMPONENT.MODEL_ID_2,
+				modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_2,
+				modelName : COMPONENT.MODEL_NAME_VISBCOAMNETWORK,
+				modelVersion : COMPONENT.MODEL_VERSION_1
+			},
+			relatedModelList : [
+					{
+						relatedModel : {
+							instanceId : COMPONENT.INSTANCE_ID_1,
+							modelInfo : {
+								modelType : COMPONENT.SERVICE,
+								modelId : COMPONENT.MODEL_ID_3,
+								modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_3,
+								modelName : COMPONENT.MODEL_NAME_IISBC,
+								modelVersion : COMPONENT.MODEL_VERSION_1
+							}
+						}
+					},
+					{
+						relatedModel : {
+							instanceId : COMPONENT.INSTANCE_ID_2,
+							modelInfo : {
+								modelType : COMPONENT.VNF,
+								modelId : COMPONENT.MODEL_ID_4,
+								modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_4,
+								modelName : COMPONENT.MODEL_NAME_VISBC,
+								modelVersion : COMPONENT.MODEL_VERSION_1
+							}
+						}
+					},
+					{
+						relatedModel : {
+							instanceId : COMPONENT.INSTANCE_ID_3,
+							modelInfo : {
+								modelType : COMPONENT.VF_MODULE,
+								modelId : COMPONENT.MODEL_ID_5,
+								modelNameVersionId : COMPONENT.MODEL_NAME_VERSION_ID_5,
+								modelName : COMPONENT.MODEL_NAME_VISBCRTPEXPANSIONMODULE,
+								modelVersion : COMPONENT.MODEL_VERSION_1
+							}
+						}
+					} ]
+		};
 		$scope.getSubscriberDet = function(selectedCustomer){
 			window.location.href = COMPONENT.SUBDETAILS_SELECTEDSUBSCRIBER + selectedCustomer;
 		};

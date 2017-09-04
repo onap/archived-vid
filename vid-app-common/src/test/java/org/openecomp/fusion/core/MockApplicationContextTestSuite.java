@@ -38,7 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-
+import org.testng.annotations.Test;
 import org.openecomp.portalsdk.core.conf.AppConfig;
 import org.openecomp.portalsdk.core.objectcache.AbstractCacheManager;
 import org.openecomp.portalsdk.core.util.SystemProperties;
@@ -61,6 +61,7 @@ import org.openecomp.portalsdk.core.util.CacheManager;
 @WebAppConfiguration
 @ContextConfiguration(loader = AnnotationConfigWebContextLoader.class, classes = {MockAppConfig.class})
 @ActiveProfiles(value="test")
+@Test(enabled=false)
 public class MockApplicationContextTestSuite {
 		
 	    /** The wac. */

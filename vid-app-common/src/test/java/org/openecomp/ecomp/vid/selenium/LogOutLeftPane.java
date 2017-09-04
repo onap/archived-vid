@@ -40,7 +40,7 @@ import org.testng.annotations.Test;
 /**
  * The Class LogOutLeftPane.
  */
-@Test(enabled=true)
+@Test(enabled=false)
 public class LogOutLeftPane {
 
 	/** The login button. */

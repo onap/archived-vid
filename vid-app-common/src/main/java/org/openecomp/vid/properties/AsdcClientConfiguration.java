@@ -24,31 +24,36 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * The Class AsdcClientConfiguration.
  */
 @Configuration
-@PropertySource(value="${container.classpath:}/WEB-INF/conf/asdc.properties")
+
+@PropertySources({
+		@PropertySource(value="asdc.properties",  ignoreResourceNotFound = true),
+		@PropertySource(value="${container.classpath:}/WEB-INF/conf/asdc.properties", ignoreResourceNotFound = true)
+})
 public class AsdcClientConfiguration {
-	
-    @Bean 
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() { 
-        return new PropertySourcesPlaceholderConfigurer(); 
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
 	@Value("${asdc.client.type}")
 	private AsdcClientType asdcClientType;
-	
+
 	/** The asdc client host. */
 	@Value("${asdc.client.rest.host}")
 	private String asdcClientHost;
-	
+
 	/** The asdc client port. */
 	@Value("${asdc.client.rest.port}")
 	private int asdcClientPort;
-	
+
 	/** The asdc client auth. */
 	@Value("${asdc.client.rest.auth}")
 	public String asdcClientAuth;
@@ -56,7 +61,7 @@ public class AsdcClientConfiguration {
 	/** The asdc client protocol. */
 	@Value("${asdc.client.rest.protocol}")
 	public String asdcClientProtocol;
-	
+
 	/**
 	 * Gets the asdc client type.
 	 *
@@ -101,16 +106,19 @@ public class AsdcClientConfiguration {
 	public String getAsdcClientProtocol() {
 		return asdcClientProtocol;
 	}
-	
+
 	/**
 	 * The Enum AsdcClientType.
 	 */
 	public enum AsdcClientType {
-		
+
 		/** The in memory. */
 		IN_MEMORY,
-		
+
 		/** The rest. */
-		REST
+		REST,
+
+		/** The local. */
+		LOCAL
 	}
 }

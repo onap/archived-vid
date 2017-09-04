@@ -276,43 +276,22 @@ public class AAIRestInterface {
         	if (xml)
                	responseType = "application/xml";
         	   
-            initRestClient();
-
-			String clientCert = SystemProperties.getProperty(AAIProperties.AAI_USE_CLIENT_CERT);
-
-			boolean useClientCert = false;
-			if (clientCert != null &&
-					SystemProperties.getProperty(AAIProperties.AAI_USE_CLIENT_CERT).equalsIgnoreCase("true")) {
-				useClientCert  = true;
-			}
+            initRestClient();    
     
             url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL_BASE) + path;
 
-            final Response cres;
-			if (useClientCert == true) {
-				cres = client.target(url)
-						.request()
-						.accept(responseType)
-						.header("X-TransactionId", transId)
-						.header("X-FromAppId",  fromAppId)
-						.header("Content-Type", "application/json")
-						.post(Entity.entity(payload, MediaType.APPLICATION_JSON));
-			} else {
-
-				String vidUsername = SystemProperties.getProperty(AAIProperties.AAI_VID_USERNAME);
-				String vidPassword = Password.deobfuscate(SystemProperties.getProperty(AAIProperties.AAI_VID_PASSWD_X));
-				String encodeThis = vidUsername + ":" + vidPassword;
-
-				cres = client.target(url)
-						.request()
-						.accept(responseType)
-						.header("X-TransactionId", transId)
-						.header("X-FromAppId", fromAppId)
-						.header("Content-Type", "application/json")
-						.header("Authorization", "Basic " + Base64.getEncoder().encodeToString(encodeThis.getBytes("utf-8")))
-						.post(Entity.entity(payload, MediaType.APPLICATION_JSON));
-			}
-
+            String vidUsername = SystemProperties.getProperty(AAIProperties.AAI_VID_USERNAME);
+			String vidPassword = Password.deobfuscate(SystemProperties.getProperty(AAIProperties.AAI_VID_PASSWD_X));
+			String encodeThis = vidUsername + ":" + vidPassword;
+			
+            final Response cres = client.target(url)
+                 .request()
+                 .accept(responseType)
+                 .header("X-TransactionId", transId)
+                 .header("X-FromAppId",  fromAppId)
+                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(encodeThis.getBytes("utf-8")))
+                 .post(Entity.entity(payload, MediaType.APPLICATION_JSON));
+            
         	if (cres.getStatus() == 200 && cres.getStatus() <= 299) {
         		logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
     			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");

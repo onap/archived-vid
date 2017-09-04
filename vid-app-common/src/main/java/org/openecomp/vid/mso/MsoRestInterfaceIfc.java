@@ -70,7 +70,7 @@ public interface MsoRestInterfaceIfc {
 	 */
 	public <T> void Post(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) throws Exception;
 	
-	/**
+	/***
 	 * Log request.
 	 *
 	 * @param r the r

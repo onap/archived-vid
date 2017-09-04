@@ -130,7 +130,7 @@ public class VNF extends Node {
 	 *
 	 * @param modelCustomizationName the new model customization name
 	 */
-	private void setModelCustomizationName(String modelCustomizationName) {
+	public void setModelCustomizationName(String modelCustomizationName) {
 		this.modelCustomizationName = modelCustomizationName;
 	}
 	/**

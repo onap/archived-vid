@@ -1,0 +1,29 @@
+{
+  "services": [
+    {
+      "uuid": "f430728a-4530-42be-a577-1206b9484cef",
+      "invariantUUID": "f430728a-4530-42be-a577-1206b9484cef",
+      "name": "1707vidnf",
+      "version": "1.0",
+      "toscaModelURL": "./service-vf-csar.zip",
+      "category": "Mobility",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "sa997j",
+      "distributionStatus": "DISTRIBUTED"
+    },
+    {
+      "uuid": "f430728a-4530-42be-a577-1206b9484cef",
+      "invariantUUID": "f430728a-4530-42be-a577-1206b9484cef",
+      "name": "4-27_vMME_Service",
+      "version": "1.0",
+      "toscaModelURL": "./service-vf-csar.zip",
+      "category": "Mobility",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "rg276b",
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTED",
+      "artifacts": null,
+      "resources": null
+    }
+  ]
+}
