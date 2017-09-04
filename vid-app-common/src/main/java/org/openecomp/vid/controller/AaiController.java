@@ -302,7 +302,6 @@ public class AaiController extends RestrictedBaseController{
 	 * @param namedQueryId the named query id
 	 * @param globalCustomerId the global customer id
 	 * @param serviceType the service type
-	 * @param serviceInstance the service instance
 	 * @return ResponseEntity The response entity
 	 */
 	@RequestMapping(value="/aai_get_models_by_service_type/{namedQueryId}/{globalCustomerId}/{serviceType}", method = RequestMethod.GET)

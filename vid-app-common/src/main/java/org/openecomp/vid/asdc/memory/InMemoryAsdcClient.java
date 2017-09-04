@@ -7,7 +7,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ * 	
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
@@ -168,7 +168,6 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getResources()
 	 */
 	public Collection<Resource> getResources() throws AsdcCatalogException {
 		final Collection<Resource> resources = new LinkedList<Resource> ();
@@ -299,7 +298,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	/* (non-Javadoc)
 	 * @see org.openecomp.vid.asdc.AsdcClient#getResourceToscaModel(java.util.UUID)
 	 */
-	public ToscaCsar getResourceToscaModel(UUID resourceUuid) throws AsdcCatalogException {
+	public Path getResourceToscaModel(UUID resourceUuid) throws AsdcCatalogException {
 		final String toscaModelURL = getCatalog().getJSONObject("resources")
 				.getJSONObject(resourceUuid.toString())
 				.getString("toscaModelURL");
@@ -309,13 +308,13 @@ public class InMemoryAsdcClient implements AsdcClient {
 		
 		if (toscaModelStream == null) return null;
 		
-		return getToscaModel(toscaModelStream);
+		return null;//getToscaModel(toscaModelStream);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openecomp.vid.asdc.AsdcClient#getServiceToscaModel(java.util.UUID)
 	 */
-	public ToscaCsar getServiceToscaModel(UUID serviceUuid) throws AsdcCatalogException {
+	public Path getServiceToscaModel(UUID serviceUuid) throws AsdcCatalogException {
 		final String toscaModelURL = getCatalog().getJSONObject("services")
 						.getJSONObject(serviceUuid.toString())
 						.getString("toscaModelURL");
@@ -324,7 +323,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 		
 		if (toscaModelStream == null) return null;
 		
-		return getToscaModel(toscaModelStream);
+		return null;//getToscaModel(toscaModelStream);
 	}
 
 	/**
@@ -369,4 +368,5 @@ public class InMemoryAsdcClient implements AsdcClient {
 			throw new AsdcCatalogException("Caught IOException while processing CSAR", e);
 		}
 	}
+
 }

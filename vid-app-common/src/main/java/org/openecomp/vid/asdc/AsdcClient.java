@@ -20,6 +20,8 @@
 
 package org.openecomp.vid.asdc;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -27,7 +29,6 @@ import java.util.UUID;
 import org.openecomp.vid.asdc.beans.Artifact;
 import org.openecomp.vid.asdc.beans.Resource;
 import org.openecomp.vid.asdc.beans.Service;
-import org.openecomp.vid.asdc.beans.tosca.ToscaCsar;
 
 /**
  * The Interface AsdcClient.
@@ -77,7 +78,7 @@ public interface AsdcClient {
 	 * @return the resource tosca model
 	 * @throws AsdcCatalogException the sdc catalog exception
 	 */
-	public ToscaCsar getResourceToscaModel(UUID uuid) throws AsdcCatalogException;
+	public Path getResourceToscaModel(UUID uuid) throws AsdcCatalogException;
 	
 	/**
 	 * Gets the service.
@@ -122,7 +123,7 @@ public interface AsdcClient {
 	 * @return the service tosca model
 	 * @throws AsdcCatalogException the asdc catalog exception
 	 */
-	public ToscaCsar getServiceToscaModel(UUID uuid) throws AsdcCatalogException;
+	public Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException;
 	
 	//TODO: Collect TOSCA information from CSAR
 }

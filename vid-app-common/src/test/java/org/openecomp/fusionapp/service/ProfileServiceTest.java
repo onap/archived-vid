@@ -36,6 +36,7 @@ import org.openecomp.portalsdk.core.service.UserProfileService;
 /**
  * The Class ProfileServiceTest.
  */
+
 public class ProfileServiceTest extends MockApplicationContextTestSuite {
 	
 	/** The service. */
@@ -51,15 +52,9 @@ public class ProfileServiceTest extends MockApplicationContextTestSuite {
 	 */
 	@Test
 	public void testFindAll() {
-	
-		try {		
-		    List<Profile> profiles = service.findAll();
-		    Assert.assertTrue(profiles.size() > 0);
-		}
-		catch (Exception e) {
-		    //TODO: this is only to make maven to not complaint	
-		    return;
-		}
+		
+		List<Profile> profiles = service.findAll();
+		Assert.assertTrue(profiles.size() > 0);
 	}
 
 	/**

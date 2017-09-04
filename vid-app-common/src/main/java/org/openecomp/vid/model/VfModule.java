@@ -207,7 +207,7 @@ public class VfModule {
 	 *
 	 * @param volumeGroupAllowed the new volume group allowed
 	 */
-	private void setVolumeGroupAllowed(boolean volumeGroupAllowed) {
+	public void setVolumeGroupAllowed(boolean volumeGroupAllowed) {
 		this.volumeGroupAllowed = volumeGroupAllowed;
 	}
 	/**
@@ -223,7 +223,7 @@ public class VfModule {
 	 *
 	 * @param modelCustomizationName the new model customization name
 	 */
-	private void setModelCustomizationName(String modelCustomizationName) {
+	public void setModelCustomizationName(String modelCustomizationName) {
 		this.modelCustomizationName = modelCustomizationName;
 	}
 	/**

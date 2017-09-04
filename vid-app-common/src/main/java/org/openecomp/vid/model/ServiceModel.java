@@ -30,11 +30,11 @@ import java.util.Map.Entry;
 import org.openecomp.vid.asdc.beans.tosca.Group;
 import org.openecomp.vid.asdc.beans.tosca.ToscaModel;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.vid.controller.VidController;
 import org.openecomp.vid.properties.VidProperties;
 /**
  * The Class ServiceModel.
  */
+@SuppressWarnings("ALL")
 public class ServiceModel {
 
 	/** The Constant LOG. */
@@ -176,21 +176,22 @@ public class ServiceModel {
 
 		return service;
 	}
-	public void extractGroups (ToscaModel serviceToscaModel) {
+	public static void extractGroups (ToscaModel serviceToscaModel,ServiceModel serviceModel) {
 		// Get the groups. The groups may duplicate the groups that are in the VNF model and have
 		// additional data like the VF module customization String>
 		
 		final Map<String, VfModule> vfModules = new HashMap<String, VfModule> ();
 		final Map<String, VolumeGroup> volumeGroups = new HashMap<String, VolumeGroup> ();
-    	String asdcModelNamespaces[] = VidProperties.getAsdcModelNamespace();
-        String[] vfModuleTags = ModelUtil.getTags(asdcModelNamespaces, ModelConstants.VF_MODULE);
-    
+		
+		String asdcModelNamespace = VidProperties.getAsdcModelNamespace();
+    	String vfModuleTag = asdcModelNamespace + ModelConstants.VF_MODULE;
+    	
 		for (Entry<String, Group> component : serviceToscaModel.gettopology_template().getGroups().entrySet()) {
 			final Group group = component.getValue();
 			final String type = group.getType();
 			final String customizationName = component.getKey();
 			
-			if ( ModelUtil.isType (type, vfModuleTags) ) {
+			if (type.startsWith(vfModuleTag)) {
 				VfModule vfMod = VfModule.extractVfModule(customizationName, group);
 				vfModules.put(customizationName, vfMod);
 				if ( vfMod.isVolumeGroupAllowed() ) {
@@ -200,8 +201,8 @@ public class ServiceModel {
 			}
 		}
 		// add this point vfModules and volume groups are disconnected from VNF
-		this.setVfModules (vfModules);
-		this.setVolumeGroups (volumeGroups);
+		serviceModel.setVfModules (vfModules);
+		serviceModel.setVolumeGroups (volumeGroups);
 		
 	}
 	/**

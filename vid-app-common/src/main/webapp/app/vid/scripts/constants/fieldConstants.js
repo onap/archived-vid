@@ -127,6 +127,7 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
     };
 
     var KEY = {
+	LCP_REGION_TEXT : "AAIAIC25"
     };
    
     /*

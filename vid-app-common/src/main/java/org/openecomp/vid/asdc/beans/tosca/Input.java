@@ -20,6 +20,8 @@
 
 package org.openecomp.vid.asdc.beans.tosca;
 
+import org.openecomp.sdc.toscaparser.api.elements.constraints.*;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -42,7 +44,7 @@ public class Input {
 	private Input entry_schema;
 	
 	/** The constraints */
-	private List<Constraint> constraints;
+	private List<org.openecomp.sdc.toscaparser.api.elements.constraints.Constraint> constraints;
 	
 	/** The required field. If not set, the default is true */
 	private boolean required = true;
@@ -51,7 +53,7 @@ public class Input {
 	 * Instantiates a new input.
 	 */
 	public Input() {
-		constraints = new ArrayList<Constraint>();
+		constraints = new ArrayList<org.openecomp.sdc.toscaparser.api.elements.constraints.Constraint>();
 	}
 	
 	/**
@@ -144,7 +146,7 @@ public class Input {
 	 *
 	 * @param c the new constraints
 	 */
-	public void setConstraints(List<Constraint> c) {
+	public void setConstraints(List<org.openecomp.sdc.toscaparser.api.elements.constraints.Constraint> c) {
 		this.constraints = c;
 	}
 	/**
@@ -152,7 +154,7 @@ public class Input {
 	 *
 	 * @return the constraints
 	 */
-	public List<Constraint> getConstraints() {
+	public List<org.openecomp.sdc.toscaparser.api.elements.constraints.Constraint> getConstraints() {
 		return constraints;
 	}
 	
