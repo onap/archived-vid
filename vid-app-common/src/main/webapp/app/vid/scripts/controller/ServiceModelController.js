@@ -100,6 +100,7 @@
 						"description": serviceModel.service.description,
 						"category":serviceModel.service.category
 					});
+					DataService.setGlobalCustomerId ("Demonstration");
 					DataService.setALaCarte (true);
 					$scope.createType = COMPONENT.A_LA_CARTE;
 					var broadcastType = COMPONENT.CREATE_COMPONENT;
