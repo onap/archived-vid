@@ -39,7 +39,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			getLoggedInUserID();
 		switch (_this.componentId) {
 		case COMPONENT.SERVICE:
-			return [ getSubscribers, getServices ];
+			return [ getSubscribers, getServices, getSubscriptionServiceTypeList ];
 		case COMPONENT.NETWORK:
 			return [ getLcpCloudRegionTenantList ];
 		case COMPONENT.VNF:
@@ -200,7 +200,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
 				if(!isInTop){
 					parameterList = parameterList.concat([ getSubscribersParameter(),
-						FIELD.PARAMETER.SERVICE_TYPE_DISABLED ]);
+						getSubscriptionServiceTypeListParameter() ]);
 				}
 			}
 			else {
@@ -236,7 +236,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				break;
 			case COMPONENT.VF_MODULE:
 				parameterList = parameterList.concat([
-				        getLcpRegion(),
+					getLcpRegion(),
 						FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
 						FIELD.PARAMETER.TENANT_DISABLED
 				]);
@@ -741,6 +741,14 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 	};
 
 	var getSubscriptionServiceTypeList = function() {
+		if (
+			typeof(DataService.getSubscribers()) != "undefined"
+			&& DataService.getSubscribers().length > 0
+			&& typeof(DataService.getSubscribers()[0][FIELD.ID.GLOBAL_CUSTOMER_ID] != "undefined")
+		) {
+			DataService.setGlobalCustomerId(DataService.getSubscribers()[0][FIELD.ID.GLOBAL_CUSTOMER_ID]);
+		}
+
 		AaiService.getSubscriptionServiceTypeList(DataService
 				.getGlobalCustomerId(), function(response) {
 			DataService.setSubscriptionServiceTypeList(response);
@@ -803,6 +811,22 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				parameter.optionList.push({
 					id : subscribers[i][FIELD.ID.GLOBAL_CUSTOMER_ID],
 					name : subscribers[i][FIELD.ID.SUBNAME]
+				})
+			}
+		}
+		return parameter;
+	};
+
+	var getSubscriptionServiceTypeListParameter = function() {
+		var serviceTypes = DataService.getSubscriptionServiceTypeList();
+		var parameter = FIELD.PARAMETER.SERVICE_TYPE;
+		if ( UtilityService.hasContents(serviceTypes)) {
+			parameter.optionList = [];
+
+			for (var i = 0; i < serviceTypes.length; i++) {
+				parameter.optionList.push({
+					id : serviceTypes[i],
+					name : serviceTypes[i]
 				})
 			}
 		}
