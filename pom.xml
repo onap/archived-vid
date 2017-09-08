@@ -4,7 +4,7 @@
 	<groupId>org.openecomp.vid</groupId>
 	<artifactId>vid-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>VID Parent Project</name>
+	<name>vid</name>
 
 	<profiles>
 		<!-- DO NOT CHANGE THE *ORDER* IN WHICH THESE PROFILES ARE DEFINED! -->
