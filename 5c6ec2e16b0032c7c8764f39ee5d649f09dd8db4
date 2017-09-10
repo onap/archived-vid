@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_d505df7a",
+        "filename": "vid-app-common/src/main/java/org/openecomp/vid/mso/MsoRestInterface.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2017-09-10T06:24:50Z",
+      "side": 1,
+      "message": "This value of \"VID\" should be taken from a configuration file, such as system.properties.\n\nplease do not use \"hard-coded values\"",
+      "revId": "5c6ec2e16b0032c7c8764f39ee5d649f09dd8db4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
