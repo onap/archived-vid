@@ -398,7 +398,8 @@ appDS2.factory("FIELD", [ "PARAMETER", function(PARAMETER) {
 		id : ID.SUBSCRIBER_NAME,
 	    type : PARAMETER.SELECT,
 	    prompt : PROMPT.SUBSCRIBER_NAME,
-		isRequired : true
+		isRequired : true,
+		isSingleOptionAutoSelected : false
 	},
 	TENANT_DISABLED : {
 	    name : NAME.TENANT,

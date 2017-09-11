@@ -247,7 +247,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
 	}
 
 	if (UtilityService.hasContents(parameter.prompt)) {
-	    if (!(IS_SINGLE_OPTION_AUTO_SELECTED && parameter.optionList.length === 1)) {
+	    if (!(IS_SINGLE_OPTION_AUTO_SELECTED && parameter.optionList.length === 1) || !(parameter.parameter.isSingleOptionAutoSelected && parameter.optionList.length === 1)) {
 		html += "<option value=''>" + parameter.prompt + "</option>";
 	    }
 	}
