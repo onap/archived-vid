@@ -54,15 +54,14 @@
 							<tr>
 								 <td att-table-body>
 									<div>
-										<a alt="View/Edit" ng-click="getAsdcModel(disData);"> View/Edit </a>
+										<a alt="View/Edit" ng-click="getAsdcModel(disData);" data-tests-id="{{'view/edit-test-data-id-' + disData['serviceInstanceId']}}" ng-bind="disData.isPermitted ? 'View/Edit' : 'View'"></a>
 									</div>
-								</td> 
-							<!--	<td att-table-body ><button type=button ng-click="getAsdcModel(disData);" att-button btn-type="primary" size="small">View/Edit</button></td> --->
+								</td>
 								<td att-table-body ng-bind="disData['globalCustomerId']"></td>
 								<td att-table-body ng-bind="disData['subscriberName']"></td>
 								<td att-table-body ng-bind="disData['serviceType']"></td>
 								<td att-table-body ng-bind="disData['serviceInstanceName']"></td>
-								<td att-table-body ng-bind="disData['serviceInstanceId']"></td>
+								<td att-table-body data-tests-id="{{'instance-id-for-name-' + disData['serviceInstanceName']}}" ng-bind="disData['serviceInstanceId']"></td>
 							</tr>
 						</tbody>
 					</table>

@@ -1,0 +1,8 @@
+{
+  "roles": [
+    "VID_Subscriber_serviceType1_Tenant1",
+    "VID_Subscriber_serviceType1_Tenant2",
+    "read_motorola_epost_tow",
+    "read_motorola_epost"
+  ]
+}

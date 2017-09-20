@@ -24,18 +24,22 @@ import org.openecomp.portalsdk.core.controller.RestrictedBaseController;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.openecomp.vid.asdc.AsdcCatalogException;
+import org.openecomp.vid.asdc.beans.SecureServices;
 import org.openecomp.vid.exceptions.VidServiceUnavailableException;
 import org.openecomp.vid.model.ServiceModel;
+import org.openecomp.vid.roles.Role;
+import org.openecomp.vid.roles.RoleProvider;
+import org.openecomp.vid.roles.RoleValidator;
+import org.openecomp.vid.services.VidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.openecomp.vid.services.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 //import org.openecomp.vid.model.Service;
@@ -61,10 +65,15 @@ public class VidController extends RestrictedBaseController {
 	 * @throws VidServiceUnavailableException the vid service unavailable exception
 	 */
 	@RequestMapping(value={"/rest/models/services"}, method = RequestMethod.GET)
-	public Collection<org.openecomp.vid.asdc.beans.Service> getServices(HttpServletRequest request) throws VidServiceUnavailableException {
+	public SecureServices getServices(HttpServletRequest request) throws VidServiceUnavailableException {
 		try {
+			SecureServices secureServices = new SecureServices();
+			RoleProvider roleProvider = new RoleProvider();
 			Map<String, String[]> requestParams = request.getParameterMap();
-			return service.getServices(requestParams);
+			List<Role> roles = new RoleProvider().getUserRoles(request);
+			secureServices.setServices(service.getServices(requestParams));
+			secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
+			return secureServices;
 		} catch (AsdcCatalogException e) {
 			LOG.error("Failed to retrieve service definitions from SDC", e);
 			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
@@ -83,8 +92,9 @@ public class VidController extends RestrictedBaseController {
 	 * @throws VidServiceUnavailableException the vid service unavailable exception
 	 */
 	@RequestMapping(value={"/rest/models/services/{uuid}"}, method = RequestMethod.GET)
-	public ServiceModel getServices(@PathVariable("uuid") String uuid) throws VidServiceUnavailableException {
+	public ServiceModel getServices(@PathVariable("uuid") String uuid, HttpServletRequest request) throws VidServiceUnavailableException {
 		try {
+//			RoleValidator roleValidator = new RoleValidator(new RoleProvider().getUserRoles(request));
 			return service.getService(uuid);
 		} catch (AsdcCatalogException e) {
 			LOG.error("Failed to retrieve service definitions from SDC", e);

@@ -4,6 +4,9 @@
   "service": {
     "category": "Mobility",
     "description": "Bla bla",
+    "serviceRole":"null",
+    "serviceType":"null",
+    
     "inputs": {
       "greatdefect0_availability_zone_max_count": {
         "constraints": [
@@ -38,7 +41,7 @@
     "serviceEcompNaming": "true",
     "toscaModelURL": null,
     "uuid": "48a52540-8772-4368-9cdb-1f124ea5c931",
-    "version": "1.0"
+    "version": "0.1"
   },
   "vfModules": {
     "greatdefect0..Greatdefect..base_ixla..module-0": {

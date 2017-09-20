@@ -57,6 +57,7 @@ import java.util.UUID;
 /**
  * The Class RestfulAsdcClient.
  */
+@SuppressWarnings("Duplicates")
 public class RestfulAsdcClient implements AsdcClient {
 
     /**
@@ -183,6 +184,7 @@ public class RestfulAsdcClient implements AsdcClient {
      * @see org.openecomp.vid.asdc.AsdcClient#getResource(java.util.UUID)
      */
     public Resource getResource(UUID uuid) throws AsdcCatalogException {
+
         String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_RESOURCE_API_PATH, ModelConstants.DEFAULT_ASDC_RESOURCE_API_PATH);
         try {
             return getClient()

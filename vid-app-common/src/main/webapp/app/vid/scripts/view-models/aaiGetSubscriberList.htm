@@ -42,8 +42,10 @@
 				</td>
 				<td style="width:80%" nowrap>
 					<div class="fn-ebz-container" ng-init="autoGetSubs();">
-						<select  ng-model="selectedCustomer" ng-options="item.globalCustomerId as item.subscriberName for item in customerList | orderBy:'subscriberName'">
-						<option value="">Select Subscriber Name</option></select>
+						<select ng-model="selectedCustomer" data-tests-id="subscriberName">
+							<option value="">Select Subscriber Name</option>
+							<option ng-repeat="item in customerList | orderBy:'subscriberName'" ng-value="item.globalCustomerId" ng-disabled="!item.isPermitted" class="subscriberNameOption">{{item.subscriberName}}</option>
+						</select>
 					  &nbsp;&nbsp;<a class="btn btn-primary" ng-click="refreshSubs();" ><span class="glyphicon glyphicon-refresh"></span></a>
 					</div>
 				</td>

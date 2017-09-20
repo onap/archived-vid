@@ -39,8 +39,9 @@
 			$http.get(pathQuery)
 			.then(function successCallback(response) {
 				$scope.services = [];
-				if (angular.isArray(response.data)) {
-					$scope.services = response.data;
+				if (angular.isArray(response.data.services)) {
+					wholeData = response.data.services;
+					$scope.services = $scope.filterDataWithHigerVersion(wholeData);
 					$scope.viewPerPage=10;
 					$scope.totalPage=$scope.services.length/$scope.viewPerPage;
 					$scope.sortBy=COMPONENT.NAME;
@@ -56,11 +57,72 @@
 					$scope.error = true;
 					$scope.isSpinnerVisible = false;
 				}
+				$scope.deployButtonType = response.data.readOnly ? 'disabled' : 'primary';
 			}, function errorCallback(response) {
 				console.log("Error: " + response);
 			});
 		}
-		
+		$scope.isFiltered=function(arr,obj){
+			var filtered = false;
+			if(arr.length>0){
+				for(var i=0;i<arr.length;i++){
+					if((arr[i].name == obj.name) && (obj.invariantUUID == arr[i].invariantUUID)){
+						filtered = true;
+					}
+				}
+			}
+			return filtered;
+		}
+		var wholeData=[];
+		$scope.filterDataWithHigerVersion = function(serviceData){
+			var fiterDataServices = [];
+			for(var i=0;i<serviceData.length;i++){
+				var higherVersion = serviceData[i];
+				if(!$scope.isFiltered(fiterDataServices,serviceData[i])){
+					for(var j=i;j<serviceData.length;j++){
+						if((serviceData[i].invariantUUID.trim() == serviceData[j].invariantUUID.trim()) && (serviceData[i].name.trim() == serviceData[j].name.trim()) && (parseFloat(serviceData[j].version.trim())>=parseFloat(serviceData[i].version.trim()))){
+							var data = $scope.isThisHigher(fiterDataServices,serviceData[j]);
+							if(data.isHigher){
+								fiterDataServices[data.index] = serviceData[j];
+							}
+						}
+					}
+				}
+			}
+			return fiterDataServices;
+		}
+
+		$scope.isThisHigher = function(arr,obj){
+			var returnObj = {
+					isHigher:false,
+					index:0
+			};
+			if(arr.length>0){
+				var isNotMatched = true;
+				for(var i=0;i<arr.length;i++){
+					if((arr[i].name == obj.name) && (arr[i].invariantUUID == obj.invariantUUID ) && (arr[i].version<obj.version) ){
+						isNotMatched = false;
+						returnObj = {
+								isHigher:true,
+								index:i
+						};
+					}
+				}
+				if(isNotMatched && !$scope.isFiltered(arr,obj)){
+					returnObj = {
+							isHigher:true,
+							index:arr.length
+					};
+				}
+			}else{
+				returnObj = {
+						isHigher:true,
+						index:0
+				}
+			}
+			return returnObj;
+		}
+
 		$scope.init = function() {
     		var msecs = PropertyService.retrieveMsoMaxPollingIntervalMsec();
     		PropertyService.setMsoMaxPollingIntervalMsec(msecs);
@@ -69,7 +131,7 @@
     		PropertyService.setMsoMaxPolls(polls);
     		
     		//PropertyService.setMsoBaseUrl("testmso");
-    		PropertyService.setServerResponseTimeoutMsec(10000);
+    		PropertyService.setServerResponseTimeoutMsec(30000);
         }
 		
 		$scope.prevPage = function() {
@@ -95,6 +157,8 @@
 					DataService.setModelInfo(COMPONENT.SERVICE, {
 						"modelInvariantId": serviceModel.service.invariantUuid,
 						"modelVersion": serviceModel.service.version,
+						"serviceType" : serviceModel.service.serviceType,
+						"serviceRole": serviceModel.service.serviceRole,
 						"modelNameVersionId": serviceModel.service.uuid,
 						"modelName": serviceModel.service.name,
 						"description": serviceModel.service.description,
@@ -121,6 +185,8 @@
 							"category":serviceModel.service.category,
 							"serviceEcompNaming": serviceModel.service.serviceEcompNaming,
 							"inputs": serviceModel.service.inputs,
+							"serviceType": serviceModel.service.serviceType,
+							"serviceRole": serviceModel.service.serviceRole,
 							"displayInputs": convertedAsdcModel.completeDisplayInputs
 						});
 					};
@@ -156,6 +222,27 @@
 				});
 		};
 		
+		$scope.tableData=[];
+		var oldData=[];
+		$scope.loadPreviousVersionData=function(invariantUUID , name, version){
+			$scope.tableData =[];
+			oldData=[];
+			for(var i=0;i<wholeData.length;i++){
+				if(wholeData[i].invariantUUID == invariantUUID && wholeData[i].name == name && version!=wholeData[i].version){
+					oldData.push(wholeData[i]);
+				}
+			}
+			$scope.tableData = oldData;
+			$scope.createType = "Previous Version";
+			var broadcastType = "createTableComponent";
+			$scope.componentName = name;
+			$scope.$broadcast(broadcastType, {
+			    componentId : COMPONENT.OLDVERSION,
+			    callbackFunction : function(response) {
+			    }
+			});
+		}
+
 		$scope.refreshSubs = function(subscriberId, serviceType, serviceInstanceId) {
 			$scope.status = FIELD.STATUS.FETCHING_SUBSCRIBER_LIST_AAI;
 			$scope.init();
@@ -206,14 +293,15 @@
 				}).then(function(response) {
 					angular.forEach(response.data, function(value, key) {
 						angular.forEach(value, function(subVal, key) {
-							var newVal = { "id" : subVal[FIELD.ID.SERVICE_ID], "description" : subVal[FIELD.ID.SERVICE_DESCRIPTION] };
+							var newVal = { "id" : subVal[FIELD.ID.SERVICE_ID], "description" : subVal[FIELD.ID.SERVICE_DESCRIPTION] ,"isPermitted" : subVal[FIELD.ID.IS_PERMITTED] };
 							serviceIdList.push(newVal);
 							DataService.setServiceIdList(serviceIdList);
 							
 							$location.search({
 								"subscriberId": subscriberId,
 								"serviceType": serviceType,
-								"serviceInstanceId": serviceInstanceId
+								"serviceInstanceId": serviceInstanceId,
+								"isPermitted": newVal.isPermitted.toString()
 							});
 							
 							$location.path(COMPONENT.INSTANTIATE_PATH);

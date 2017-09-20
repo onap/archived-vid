@@ -80,6 +80,10 @@ var deletionDialogController = function( COMPONENT, FIELD, $scope, $http, $timeo
 
 		
 	var requestDetails = DeletionService.getMsoRequestDetails($scope.userProvidedControl.getList());
+	
+	if(DeletionService.isMacro === true){
+		requestDetails.requestParameters.aLaCarte = false;
+	}
 
 	$scope.isDialogVisible = false;
 

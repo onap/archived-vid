@@ -1,0 +1,48 @@
+<div ng-controller="previousVersionDialogController">
+
+	<div ng-show="isTableDialogVisible">
+		<div class="titleLine">
+			<img src="app/vid/images/spinner.gif"
+				ngx-visible="{{isTableSpinnerVisible}}"></img>
+			<h3>{{componentName}} - {{createType}}</h3>
+		</div>
+
+		<div class="error" ng-show="isTableErrorVisible">
+			<img src="app/vid/images/error.png"></img>{{error}}
+		</div>
+		<table att-table table-data="tableData" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		    <thead  att-table-row type="header">
+				<tr>
+					<th att-table-header key="action">Action</th>
+					<th att-table-header key="uuid">UUID</th>
+					<th att-table-header key="invariantUUID">Invariant UUID</th>
+					<th att-table-header key="name">Name</th>
+		            <th att-table-header key="version">Version</th>
+		            <th att-table-header key="category">Category</th>
+		            <th att-table-header key="distributionStatus">Distribution Status</th>
+		            <th att-table-header key="lastUpdaterUserId">Last Updated By</th>
+		            <th att-table-header key="toscaModelUrl">Tosca Model</th>
+		        </tr>
+		    </thead>
+		    <tbody att-table-row type="body" row-repeat="row in tableData">
+		        <tr>
+		        	<td att-table-body ><button type=button ng-click="deployService(row)" att-button btn-type="{{deployButtonType}}" size="small">Deploy</button></td>
+	            	<td att-table-body ng-bind="row['uuid']"></td>
+	            	<td att-table-body ng-bind="row['invariantUUID']"></td>
+	            	<td att-table-body ng-bind="row['name']"></td>
+	            	<td att-table-body ng-bind="row['version']"></td>
+	            	<td att-table-body ng-bind="row['category']"></td>
+	            	<td att-table-body ng-bind="row['distributionStatus']"></td>
+	            	<td att-table-body ng-bind="row['lastUpdaterUserId']"></td>
+	            	<td att-table-body ng-bind="row['toscaModelUrl']"></td>
+		        </tr>     
+		    </tbody>	  
+		</table>
+		
+		
+		<div class="buttonRow">
+			<button type="button" ng-click="cancelTable();" att-button
+				btn-type="primary" size="small">Cancel</button>
+		</div>
+	</div>
+</div>

@@ -90,7 +90,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	PropertyService.setAsdcBaseUrl("testasdc");
 	PropertyService.setMsoMaxPollingIntervalMsec(1000);
 	PropertyService.setMsoMaxPolls(7);
-	PropertyService.setServerResponseTimeoutMsec(10000);
+	PropertyService.setServerResponseTimeoutMsec(30000);
     };
 
     $scope.testMsoModeChanged = function() {

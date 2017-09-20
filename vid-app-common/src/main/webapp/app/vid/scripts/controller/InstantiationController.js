@@ -33,8 +33,9 @@
 		$scope.defaultBaseUrl = "";
 		$scope.responseTimeoutMsec = 60000;
 		$scope.properties = UtilityService.getProperties();
-        $scope.init = function() {
+		$scope.isPermitted = $location.search().isPermitted;
 
+        $scope.init = function() {
             /*
              * These 2 statements should be included in non-test code.
              */
@@ -46,7 +47,7 @@
     		var polls = PropertyService.retrieveMsoMaxPolls();
     		PropertyService.setMsoMaxPolls(polls);
     		
-    		PropertyService.setServerResponseTimeoutMsec(10000);
+    		PropertyService.setServerResponseTimeoutMsec(30000);
 
             /*
              * Common parameters that shows an example of how the view edit screen
@@ -224,11 +225,17 @@
 			
 			console.log("Removing Service " + $scope.service.instance.name);
 
-			DataService.setALaCarte (true);
+			if ( $scope.isMacro() ) {
+				DataService.setALaCarte (false);
+				}
+				else {
+				DataService.setALaCarte (true);
+				}
+			DataService.setMacro($scope.isMacro());
 			DataService.setInventoryItem(serviceInstance);
 			
 			DataService.setModelInfo(COMPONENT.SERVICE, {
-				"modelInvariantId": serviceInstance[FIELD.ID.MODEL_INVAR_ID],
+				"modelInvariantId": $scope.service.model.service.invariantUuid,
 				"modelVersion": $scope.service.model.service.version,
 				"modelNameVersionId": $scope.service.model.service.uuid,
 				"modelName": $scope.service.model.service.name,
@@ -344,6 +351,9 @@
 		};
 
 		$scope.deleteVnf = function(serviceObject, vnf) {
+
+
+			debugger;
 
 			console.log("Removing VNF " + vnf.name);
 			

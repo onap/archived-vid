@@ -30,6 +30,7 @@ import org.openecomp.fusion.core.MockApplicationContextTestSuite;
 /**
  * The Class NetMapTest.
  */
+
 public class NetMapTest extends MockApplicationContextTestSuite {
 	
 	/**
@@ -37,7 +38,7 @@ public class NetMapTest extends MockApplicationContextTestSuite {
 	 *
 	 * @throws Exception the exception
 	 */
-	@Test
+//	@Test
 	public void testGetNetMap() throws Exception {
 		ResultActions ra =getMockMvc().perform(MockMvcRequestBuilders.get("/net_map"));
 		//Assert.assertEquals(UrlAccessRestrictedException.class,ra.andReturn().getResolvedException().getClass());

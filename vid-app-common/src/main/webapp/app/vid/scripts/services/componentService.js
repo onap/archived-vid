@@ -30,7 +30,9 @@ var ComponentService = function($log, COMPONENT, UtilityService) {
     }, {
 	id : COMPONENT.SERVICE,
 	displayName : "Service Instance"
-    }, {
+    }, {id : COMPONENT.OLDVERSION,
+	displayName : "Previous Version"
+	}, {
 	id : COMPONENT.VNF,
 	displayName : "Virtual Network Function"
     }, {

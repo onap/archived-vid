@@ -19,6 +19,9 @@
   -->
 
 <link rel="stylesheet" type="text/css" href="app/vid/styles/serviceModels.css" />
+<div popup-window class="popupContents" ngx-show="{{popup.isTablePopUpVisible}}" ng-cloak>
+	<div ng-include="'app/vid/scripts/view-models/previousVersionDialog.htm'"/>
+</div>
 <div popup-window class="popupContents" ngx-show="{{popup.isVisible}}" ng-cloak>
 	<div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"/>
 </div>
@@ -34,7 +37,7 @@
 
 	<div class="fn-ebz-container">
 		         Filter:
-		          <input class="fn-ebz-text" type="text" ng-model="searchString" size="20" style="width: 250px;">
+		          <input class="fn-ebz-text" data-tests-id="browseFilter" type="text" ng-model="searchString" size="20" style="width: 250px;">
 	</div>
 
 	<h1 class="heading1" style="margin-top:20px;">Browse SDC Service Models</h1>
@@ -57,7 +60,7 @@
 		    </thead>
 		    <tbody att-table-row type="body" row-repeat="service in services">
 		        <tr>
-		        	<td att-table-body ><button type=button ng-click="deployService(service)" att-button btn-type="primary" size="small">Deploy</button></td>
+		        	<td att-table-body ><button class="deploy-service-class" type=button data-tests-id="deploy-{{service['uuid']}}" ng-click="deployService(service)" att-button btn-type="{{deployButtonType}}" size="small">Deploy</button></td>
 	            	<td att-table-body ng-bind="service['uuid']"></td>
 	            	<td att-table-body ng-bind="service['invariantUUID']"></td>
 	            	<td att-table-body ng-bind="service['name']"></td>
@@ -66,7 +69,8 @@
 	            	<td att-table-body ng-bind="service['distributionStatus']"></td>
 	            	<td att-table-body ng-bind="service['lastUpdaterUserId']"></td>
 	            	<td att-table-body ng-bind="service['toscaModelUrl']"></td>
-					<td att-table-body ><button type=button ng-click="deloyService(service)" att-button btn-type="primary" size="small">Previous Versions</button></td>
+					<td att-table-body ng-show="service['version'] > '1.0' "><button type=button ng-click="loadPreviousVersionData(service['invariantUUID'],service['name'],service['version'])" att-button btn-type="primary" size="small">Previous Versions</button></td>
+	            	<td att-table-body ng-show="service['version'] <= '1.0' ">&nbsp;</td>
 		        </tr>     
 		    </tbody>	  
 		</table>

@@ -19,6 +19,9 @@
   -->
 
 <link rel="stylesheet" type="text/css" href="app/vid/styles/serviceModels.css" />
+<div popup-window class="popupContents" ngx-show="{{popup.isTablePopUpVisible}}" ng-cloak>
+	<div ng-include="'app/vid/scripts/view-models/previousVersion.htm'"/>
+</div>
 <div popup-window class="popupContents" ngx-show="{{popup.isVisible}}" ng-cloak>
 	<div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"/>
 </div>
@@ -37,13 +40,13 @@
 		
 		<tr>
 				<td >
-				<div class="fn-ebz-container">	
+				<div class="fn-ebz-container">
 					<label  class="fn-ebz-text-label" >Subscriber Name :</label>
 				</div>
 				</td>
 				<td style="width:80%" nowrap>
 					<div class="fn-ebz-container">
-					<textarea style=" height: 15px  width: 100% border: none resize: none  overflow: hidden background-color: #ddd outline: none" ng-model="createSubscriberName">{{createSubscriberName}}</textarea>
+					<textarea style="height: 33px; width: 100%; border: none; resize: none;  overflow: hidden; background-color: #ddd; outline: none;" ng-model="createSubscriberName" data-tests-id="selectedSubscriberName">{{createSubscriberName}}</textarea>
 						
 					</div>
 				</td>
@@ -57,7 +60,7 @@
 				</td>
 				<td style="width:80%" nowrap>
 					<div class="fn-ebz-container">
-					<textarea style=" height: 15px  width: 100% border: none resize: none  overflow: hidden background-color: #ddd outline: none" ng-model="serviceTypeName">{{serviceTypeName}}</textarea>
+					<textarea style="height: 33px; width: 100%; border: none; resize: none;  overflow: hidden; background-color: #ddd; outline: none;" ng-model="serviceTypeName" data-tests-id="selectedServiceTypeName">{{serviceTypeName}}</textarea>
 						
 					</div>
 				</td>
@@ -68,7 +71,7 @@
 	
    	<div class="fn-ebz-container">
 		         Filter:
-		          <input class="fn-ebz-text" type="text" ng-model="searchString" size="20" style="width: 250px;">
+		          <input class="fn-ebz-text" type="text" data-tests-id="browseFilter" ng-model="searchString" size="20" style="width: 250px;">
 	</div>
 
 	<!-- <h1 class="heading1" style="margin-top:20px;">Browse SDC Service Models</h1> -->
@@ -89,14 +92,19 @@
 		    </thead>
 		    <tbody att-table-row type="body" row-repeat="service in services">
 		       <tr>
-		        	<td att-table-body ><button type=button ng-click="deployService(service,true)" att-button btn-type="primary" size="small">Deploy</button></td>
+		        	<td att-table-body ><button type=button ng-click="deployService(service,true)" data-tests-id="deploy-{{service['extra-properties']['extra-property'][1]['property-value']}}" att-button btn-type="primary" size="small">Deploy</button></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][2]['property-value']"></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][0]['property-value']"></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][3]['property-value']"></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][1]['property-value']"></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][4]['property-value']"></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][6]['property-value']"></td>
-	            	<td att-table-body ><button type=button ng-click="deploService(service)" att-button btn-type="primary" size="small">Previous Versions</button></td>
+	            	<td att-table-body ng-show="service['extra-properties']['extra-property'][6]['property-value'] > '1.0' ">
+	            		<button type=button ng-click="loadPreviousVersionData(service['extra-properties']['extra-property'][6]['property-value'],service['extra-properties']['extra-property'][4]['property-value'])" att-button btn-type="primary" size="small">
+	            			Previous Versions
+	            		</button>
+	            	</td>
+	            	<td att-table-body ng-show="service['extra-properties']['extra-property'][6]['property-value'] <= '1.0' ">&nbsp;</td>
 		        </tr>
 		    </tbody>	  
 		</table>

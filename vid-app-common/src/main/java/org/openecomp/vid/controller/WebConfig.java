@@ -4,13 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.openecomp.vid.aai.AaiClient;
+import org.openecomp.vid.aai.AaiClientInterface;
 import org.openecomp.vid.asdc.AsdcClient;
 import org.openecomp.vid.asdc.local.LocalAsdcClient;
 import org.openecomp.vid.asdc.memory.InMemoryAsdcClient;
-import org.openecomp.vid.asdc.rest.RestfulAsdcClient;
 import org.openecomp.vid.asdc.parser.ToscaParserImpl2;
+import org.openecomp.vid.asdc.rest.RestfulAsdcClient;
 import org.openecomp.vid.properties.AsdcClientConfiguration;
 import org.openecomp.vid.properties.AsdcClientConfiguration.AsdcClientType;
+import org.openecomp.vid.services.AaiService;
+import org.openecomp.vid.services.AaiServiceImpl;
 import org.openecomp.vid.services.VidService;
 import org.openecomp.vid.services.VidServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -40,9 +44,21 @@ public class WebConfig {
         return new ObjectMapper();
     }
 
+
+
     @Bean
     public VidService vidService(AsdcClient asdcClient) {
         return new VidServiceImpl(asdcClient);
+    }
+
+    @Bean
+    public AaiService getAaiService(){
+        return new AaiServiceImpl();
+    }
+
+    @Bean
+    public AaiClientInterface getAaiClientInterface(){
+        return new AaiClient();
     }
 
     @Bean

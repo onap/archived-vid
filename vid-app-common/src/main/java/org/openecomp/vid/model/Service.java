@@ -48,6 +48,12 @@ public class Service {
 	
 	/** The category. */
 	private String category;
+
+	/** The Service Type. */
+	private String serviceType;
+
+	/** The Service Role */
+	private String serviceRole;
 	
 	/** The description. */
 	private String description;
@@ -238,6 +244,23 @@ public class Service {
 		
 		return (service.getUuid().equals(getUuid()));
 	}
+
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public String getServiceRole() {
+		return serviceRole;
+	}
+
+	public void setServiceRole(String serviceRole) {
+		this.serviceRole = serviceRole;
+	}
+
 	/*public static void extractVfModuleCustomizationUUID (Service s, String vnfCustomizationName, VfModule vfMod ) {
 		
 		//Look for vnfCustomizationName..vfModuleCustomizationName

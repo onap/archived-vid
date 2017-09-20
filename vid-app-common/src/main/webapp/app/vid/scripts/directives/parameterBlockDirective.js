@@ -49,355 +49,377 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
     var checkboxInputStyle = "height: 18px; width: 18px; padding: 2px 5px;";
     var selectStyle = "height: 25px; padding: 2px; text-align: center;";
     var requiredLabelStyle = "width: 25px; padding: 5px 10px 10px 5px;";
-    
+
 
     var getParameterHtml = function(parameter, editable) {
-	var style = valueStyle;
-	var attributeString = "";
-	if (parameter.type === PARAMETER.BOOLEAN) {
-	    style = checkboxValueStyle;
-	}
-	if (UtilityService.hasContents(parameter.description)) {
-	    attributeString += " title=' " + parameter.description + " '";
-	}
-	var rowstyle='';
-	if(parameter.type == 'file' && !parameter.isVisiblity){
-		rowstyle = ' style="display:none;"';
-	}
-	var html = "<tr"+rowstyle+"><td style='" + nameStyle + "'" + attributeString + ">"
-		+ getNameHtml(parameter) + "</td><td style='" + style + "'>";
-	if (editable === undefined) {
-	    if (UtilityService.hasContents(parameter.value)) {
-		html += parameter.value;
-	    }
-	} else {
-	    html += getValueHtml(parameter);
-	}
-	html += "</td></tr>";
-	return html;
+        var style = valueStyle;
+        var attributeString = "";
+        if (parameter.type === PARAMETER.BOOLEAN) {
+            style = checkboxValueStyle;
+        }
+        if (UtilityService.hasContents(parameter.description)) {
+            attributeString += " title=' " + parameter.description + " '";
+        }
+        var rowstyle='';
+        if(parameter.type == 'file' && !parameter.isVisiblity){
+            rowstyle = ' style="display:none;"';
+        }
+        var html = "<tr"+rowstyle+"><td style='" + nameStyle + "'" + attributeString + ">"
+            + getNameHtml(parameter) + "</td>";
+        if (editable === undefined) {
+            if (UtilityService.hasContents(parameter.value)) {
+                html += "<td data-tests-id='" +  getParameterName(parameter) + "' style='" + style + "'>" + parameter.value;
+            } else {
+                html += "<td data-tests-id='" +  getParameterName(parameter) + "' style='" + style + "'>";
+            }
+        } else {
+            html += "<td style='" + style + "'>" + getValueHtml(parameter);
+        }
+        html += "</td></tr>";
+        return html;
     };
 
     var updateParameter = function(parameter, element, editable) {
-	$(element).parent().parent().children("td").first().html(
-		getNameHtml(parameter));
-	if (editable === undefined) {
-	    $(element).html(parameter.value);
-	} else {
-	    $(element).parent().html(getValueHtml(parameter));
-	}
+        $(element).parent().parent().children("td").first().html(
+            getNameHtml(parameter));
+        if (editable === undefined) {
+            $(element).html(parameter.value);
+        } else {
+            $(element).parent().html(getValueHtml(parameter));
+        }
     };
 
     var getNameHtml = function(parameter) {
-	if (parameter.isVisible === false) {
-	    return "";
-	}
-	var name = "";
-	if (UtilityService.hasContents(parameter.name)) {
-	    name = parameter.name;
-	} else {
-	    name = parameter.id;
-	}
-	var requiredLabel = "";
-	if (parameter.isRequired) {
-	    requiredLabel = "<img src='app/vid/images/asterisk.png' style='"
-		    + requiredLabelStyle + "'></img>";
-	}
-	return name + ":" + requiredLabel;
+        if (parameter.isVisible === false) {
+            return "";
+        }
+        var name = getParameterName(parameter);
+
+        var requiredLabel = "";
+        if (parameter.isRequired) {
+            requiredLabel = "<img src='app/vid/images/asterisk.png' style='"
+                + requiredLabelStyle + "'></img>";
+        }
+        return name + ":" + requiredLabel;
     };
+
+    var getParameterName = function(parameter) {
+        var name = "";
+        if (UtilityService.hasContents(parameter.name)) {
+            name = parameter.name;
+        } else {
+            name = parameter.id;
+        }
+        return name;
+    }
 
     var getValueHtml = function(parameter) {
-    	
-    var textInputPrompt = "Enter data";
-	var attributeString = " parameter-id='" + parameter.id + "'";
-	var additionalStyle = "";
-	if (parameter.isEnabled === false) {
-	    attributeString += " disabled='disabled'";
-	}
-	if (parameter.isRequired) {
-		attributeString += " is-required='true'";
-	}
-	if (UtilityService.hasContents(parameter.description)) {
-	    attributeString += " title=' " + parameter.description + " '";
-	}
-	if (UtilityService.hasContents(parameter.isReadOnly) && (parameter.isReadOnly === true)) {
-		attributeString += " readonly";
-	}
-	if ( (UtilityService.hasContents(parameter.maxLength)) && (UtilityService.hasContents(parameter.minLength)) ) {
-		attributeString += " pattern='.{" + parameter.minLength + "," + parameter.maxLength + "}' required";
-	}
-	else if (UtilityService.hasContents(parameter.maxLength)) {
-		attributeString += " maxlength='" + parameter.maxLength + "'";
-	}
-	else if (UtilityService.hasContents(parameter.minLength)) {
-		attributeString += " pattern='.{" + parameter.minLength + ",}'"
-	}
-	if (parameter.isVisible === false) {
-	    additionalStyle = " visibility: hidden;";
-	}
-	
-	var name = "";
-	if (UtilityService.hasContents(parameter.name)) {
-	    name = parameter.name;
-	} else {
-	    name = parameter.id;
-	}
-	attributeString += " parameter-name='" + name + "'";
-	
-	if ( parameter.type === PARAMETER.MAP ) {
-		textInputPrompt = "{<key1>: <value1>,\.\.\.,<keyN>: <valueN>}";
-	}
-	
-	if ( parameter.type === PARAMETER.LIST ) {
-		textInputPrompt = "[<value1>,\.\.\.,<valueN>]";
-	}
 
-	switch (parameter.type) {
-	case PARAMETER.BOOLEAN:
-		if (parameter.value) {
-			return "<select" + attributeString + " style='" + selectStyle
-			+ additionalStyle + "'>" + "<option value=true>true</option>"
-			+ "<option value=false>false</option>";
-			+ "</select>";
-		}else{
-			return "<select" + attributeString + " style='" + selectStyle
-			+ additionalStyle + "'>" + "<option value=false>false</option>"
-			+ "<option value=true>true</option>"
-			+ "</select>";
-		}
-	    break;
-	case PARAMETER.CHECKBOX:
-		if (parameter.value) {
-			return "<input type='checkbox' "+attributeString+ " checked='checked' style='"+checkboxInputStyle+"'" 
-			+ " value='true'/>";
-		}else{
-			return "<input type='checkbox' "+attributeString+ "' style='"+checkboxInputStyle+"'" 
-			+ " value='false'/>";
-		}
-	    break;
-	case PARAMETER.FILE:
-			return "<input type='file' "+attributeString+ " id='"+parameter.id+"' value='"+parameter.value+"'/>";
-	    break;
-	case PARAMETER.NUMBER:
-		var value=parameter.value;
-		var parameterSpec = "<input type='number'" + attributeString + " style='" + textInputStyle + additionalStyle + "'";
-		
-		if ( UtilityService.hasContents(parameter.min) ) {
-			parameterSpec += " min='" + parameter.min + "'";
-		}
-		if ( UtilityService.hasContents(parameter.max) ) {
-			parameterSpec += " max='" + parameter.max + "'";
-		}
-		if (UtilityService.hasContents(value)) {
-		parameterSpec += " value='" + value + "'";
-		}
-		parameterSpec += ">";
-		
-		/*if(!isNaN(value) && value.toString().index('.') != -1){
-			//float
-			 return "<input type='text'" + attributeString + " style='"
-			    + textInputStyle + additionalStyle + "' only-integers" + value
-			    + "></input>";
-		} else {
-			//integer
-			 return "<input type='text'" + attributeString + " style='"
-			    + textInputStyle + additionalStyle + "'  only-float" + value
-			    + "></input>";
-		}*/
-		return (parameterSpec);
-	    break;
-	case PARAMETER.SELECT:
-	    if (UtilityService.hasContents(parameter.prompt)) {
-		attributeString += " prompt='" + parameter.prompt + "'";
-	    }
-	    return "<select" + attributeString + " style='" + selectStyle
-		    + additionalStyle + "'>" + getOptionListHtml(parameter)
-		    + "</select>";
-	    break;
-	case PARAMETER.STRING:
-	default:
-	    var value = "";
-	    if (UtilityService.hasContents(parameter.value)) {
-		value = " value='" + parameter.value + "'";
-	    }
-	    if (UtilityService.hasContents(parameter.prompt)) {
-		attributeString += " placeholder='" + parameter.prompt + "'";
-	    } else if (textInputPrompt !== "") {
-		attributeString += " placeholder='" + textInputPrompt + "'";
-	    }
-	    var finalString = "<input type='text'" + attributeString + " style='"
-	    + textInputStyle + additionalStyle + "'" + value
-	    + ">";
-	    return finalString;
-	}
+        var textInputPrompt = "Enter data";
+        var attributeString = " data-tests-id='" + parameter.id +"' parameter-id='" + parameter.id + "'";
+        var additionalStyle = "";
+        if (parameter.isEnabled === false) {
+            attributeString += " disabled='disabled'";
+        }
+        if (parameter.isRequired) {
+            attributeString += " is-required='true'";
+        }
+        if (UtilityService.hasContents(parameter.description)) {
+            attributeString += " title=' " + parameter.description + " '";
+        }
+        if (UtilityService.hasContents(parameter.isReadOnly) && (parameter.isReadOnly === true)) {
+            attributeString += " readonly";
+        }
+        if ( (UtilityService.hasContents(parameter.maxLength)) && (UtilityService.hasContents(parameter.minLength)) ) {
+            attributeString += " pattern='.{" + parameter.minLength + "," + parameter.maxLength + "}' required";
+        }
+        else if (UtilityService.hasContents(parameter.maxLength)) {
+            attributeString += " maxlength='" + parameter.maxLength + "'";
+        }
+        else if (UtilityService.hasContents(parameter.minLength)) {
+            attributeString += " pattern='.{" + parameter.minLength + ",}'"
+        }
+        if (parameter.isVisible === false) {
+            additionalStyle = " visibility: hidden;";
+        }
+
+        var name = "";
+        if (UtilityService.hasContents(parameter.name)) {
+            name = parameter.name;
+        } else {
+            name = parameter.id;
+        }
+        attributeString += " parameter-name='" + name + "'";
+
+        if ( parameter.type === PARAMETER.MAP ) {
+            textInputPrompt = "{<key1>: <value1>,\.\.\.,<keyN>: <valueN>}";
+        }
+
+        if ( parameter.type === PARAMETER.LIST ) {
+            textInputPrompt = "[<value1>,\.\.\.,<valueN>]";
+        }
+
+        switch (parameter.type) {
+            case PARAMETER.BOOLEAN:
+                if (parameter.value) {
+                    return "<select" + attributeString + " style='" + selectStyle
+                        + additionalStyle + "'>" + "<option value=true>true</option>"
+                        + "<option value=false>false</option>";
+                    + "</select>";
+                }else{
+                    return "<select" + attributeString + " style='" + selectStyle
+                        + additionalStyle + "'>" + "<option value=false>false</option>"
+                        + "<option value=true>true</option>"
+                        + "</select>";
+                }
+                break;
+            case PARAMETER.CHECKBOX:
+                if (parameter.value) {
+                    return "<input type='checkbox' "+attributeString+ " checked='checked' style='"+checkboxInputStyle+"'"
+                        + " value='true'/>";
+                }else{
+                    return "<input type='checkbox' "+attributeString+ "' style='"+checkboxInputStyle+"'"
+                        + " value='false'/>";
+                }
+                break;
+            case PARAMETER.FILE:
+                return "<input type='file' "+attributeString+ " id='"+parameter.id+"' value='"+parameter.value+"'/>";
+                break;
+            case PARAMETER.NUMBER:
+                var value=parameter.value;
+                var parameterSpec = "<input type='number'" + attributeString + " style='" + textInputStyle + additionalStyle + "'";
+
+                if ( UtilityService.hasContents(parameter.min) ) {
+                    parameterSpec += " min='" + parameter.min + "'";
+                }
+                if ( UtilityService.hasContents(parameter.max) ) {
+                    parameterSpec += " max='" + parameter.max + "'";
+                }
+                if (UtilityService.hasContents(value)) {
+                    parameterSpec += " value='" + value + "'";
+                }
+                parameterSpec += ">";
+
+                /*if(!isNaN(value) && value.toString().index('.') != -1){
+                 //float
+                 return "<input type='text'" + attributeString + " style='"
+                 + textInputStyle + additionalStyle + "' only-integers" + value
+                 + "></input>";
+                 } else {
+                 //integer
+                 return "<input type='text'" + attributeString + " style='"
+                 + textInputStyle + additionalStyle + "'  only-float" + value
+                 + "></input>";
+                 }*/
+                return (parameterSpec);
+                break;
+            case PARAMETER.SELECT:
+                if (UtilityService.hasContents(parameter.prompt)) {
+                    attributeString += " prompt='" + parameter.prompt + "'";
+                }
+                return "<select" + attributeString + " style='" + selectStyle
+                    + additionalStyle + "'>" + getOptionListHtml(parameter)
+                    + "</select>";
+                break;
+            case PARAMETER.STRING:
+            default:
+                var value = "";
+                if (UtilityService.hasContents(parameter.value)) {
+                    value = " value='" + parameter.value + "'";
+                }
+                if (UtilityService.hasContents(parameter.prompt)) {
+                    attributeString += " placeholder='" + parameter.prompt + "'";
+                } else if (textInputPrompt !== "") {
+                    attributeString += " placeholder='" + textInputPrompt + "'";
+                }
+                var finalString = "<input type='text'" + attributeString + " style='"
+                    + textInputStyle + additionalStyle + "'" + value
+                    + ">";
+                return finalString;
+        }
     };
-    
-    
+
+
     var getBooleanListHtml = function(parameter){
-    	var html = "";
-    	
+        var html = "";
+
     };
 
     var getOptionListHtml = function(parameter) {
 
-	var html = "";
+        var html = "";
 
-	if (!angular.isArray(parameter.optionList)
-		|| parameter.optionList.length === 0) {
-	    return "";
-	}
+        if (!angular.isArray(parameter.optionList)
+            || parameter.optionList.length === 0) {
+            return "";
+        }
 
-	if (UtilityService.hasContents(parameter.prompt)) {
+        if (UtilityService.hasContents(parameter.prompt)) {
 	    if (!(IS_SINGLE_OPTION_AUTO_SELECTED && parameter.optionList.length === 1) || !(parameter.isSingleOptionAutoSelected && parameter.optionList.length === 1)) {
-		html += "<option value=''>" + parameter.prompt + "</option>";
-	    }
-	}
+                html += "<option value=''>" + parameter.prompt + "</option>";
+            }
+        }
 
-	for (var i = 0; i < parameter.optionList.length; i++) {
-	    var option = parameter.optionList[i];
-	    var name = option.name;
-	    var value = "";
-	    if (option.id === undefined) {
-		value = option.name;
-	    } else {
-		if (name === undefined) {
-		    name = option.id;
-		}
-		value = option.id;
-	    }
-	    if (option.isDefault === undefined || option.isDefault === false )  {
-	    	html += "<option value='" + value + "'>" + name + "</option>";
-	    }
-	    else {
-	    	html += "<option value='" + value + "' selected>" + name + "</option>";
-	    }
-	}
-	return html;
+        for (var i = 0; i < parameter.optionList.length; i++) {
+            var option = parameter.optionList[i];
+            var name = option.name;
+            var value = "";
+            if (option.id === undefined) {
+                value = option.name;
+            } else {
+                if (name === undefined) {
+                    name = option.id;
+                }
+                value = option.id;
+            }
+            html += getOptionHtml(option.isPermitted, option.isDataLoading, value, name, parameter);
+        }
+        return html;
     };
 
-    var getParameter = function(element, expectedId) {
-	var id = $(element).attr("parameter-id");
-	if (expectedId !== undefined && expectedId !== id) {
-	    return undefined;
-	}
-	var parameter = {
-	    id : id
-	};
-	if ($(element).prop("type") === "checkbox") {
-	    parameter.value = $(element).prop("checked");
-	}else if ($(element).prop("type") === "file") {
-	    parameter.value = $('#'+id).attr("value");
+    function getOptionHtml(isPermitted, isDefault, value, name, parameter) {
+        var html = "";
+        if (isDefault === undefined || isDefault === false )  {
+            if(isPermitted)
+                html = "<option class='" + parameter.id + "Option' value='" + value + "'>" + name + "</option>";
+            else {
+                html = "<option class='" + parameter.id + "Option' value='" + value + "' disabled>" + name + "</option>";
+            }
+        }
+        else {
+            if(isPermitted)
+                html = "<option class='" + parameter.id + "Option' value='" + value + "'>" + "' selected>"  + name + "</option>";
+            else {
+                html = "<option class='" + parameter.id + "Option' value='" + value + "' disabled>" + "' selected>"  + name + "</option>";
+            }
+        }
+        return html;
+    }
 
-	} else {
-	    if ($(element).prop("type") === "text") {
-		$(element).val($(element).val().trim());
-	    }
-	    parameter.value = $(element).val();
-	}
-	if ($(element).prop("selectedIndex") === undefined) {
-	    parameter.selectedIndex = -1;
-	} else {
-	    parameter.selectedIndex = $(element).prop("selectedIndex");
-	    if (UtilityService.hasContents($(element).attr("prompt"))) {
-		parameter.selectedIndex--;
-	    }
-	}
-	return parameter;
+    var getParameter = function(element, expectedId) {
+        var id = $(element).attr("parameter-id");
+        if (expectedId !== undefined && expectedId !== id) {
+            return undefined;
+        }
+        var parameter = {
+            id : id
+        };
+        if ($(element).prop("type") === "checkbox") {
+            parameter.value = $(element).prop("checked");
+        }else if ($(element).prop("type") === "file") {
+            parameter.value = $('#'+id).attr("value");
+
+        } else {
+            if ($(element).prop("type") === "text") {
+                $(element).val($(element).val().trim());
+            }
+            parameter.value = $(element).val();
+        }
+        if ($(element).prop("selectedIndex") === undefined) {
+            parameter.selectedIndex = -1;
+        } else {
+            parameter.selectedIndex = $(element).prop("selectedIndex");
+            if (UtilityService.hasContents($(element).attr("prompt"))) {
+                parameter.selectedIndex--;
+            }
+        }
+        return parameter;
     };
 
     var getRequiredField = function(element) {
-	if ($(element).prop("type") === "text") {
-	    $(element).val($(element).val().trim());
-	}
-	if ($(element).val() === "" || $(element).val() === null) {
-	    return '"' + $(element).attr("parameter-name") + '"';
-	} else {
-	    return "";
-	}
+        if ($(element).prop("type") === "text") {
+            $(element).val($(element).val().trim());
+        }
+        if ($(element).val() === "" || $(element).val() === null) {
+            return '"' + $(element).attr("parameter-name") + '"';
+        } else {
+            return "";
+        }
     };
 
     var callback = function(element, scope) {
-	scope.callback({
-	    id : $(element).attr("parameter-id")
-	});
+        scope.callback({
+            id : $(element).attr("parameter-id")
+        });
     };
 
     return {
-	restrict : "EA",
-	replace  : true,
-	template : "<div><table style='" + tableStyle + "'></table></div>",
-	scope : {
-	    control : "=",
-	    callback : "&"
-	},
-	link : function(scope, element, attrs) {
-		
-	    var control = scope.control || {};
+        restrict : "EA",
+        replace  : true,
+        template : "<div><table style='" + tableStyle + "'></table></div>",
+        scope : {
+            control : "=",
+            callback : "&"
+        },
+        link : function(scope, element, attrs) {
 
-	    control.setList = function(parameterList) {
-		var html = "";
-		for (var i = 0; i < parameterList.length; i++) {
-		    html += getParameterHtml(parameterList[i], attrs.editable);
-		}
-		element.html(html);
-		element.find("input, select").bind("change", function() {
-		    callback(this, scope);
-		});
-	    }
+            var control = scope.control || {};
 
-	    control.updateList = function(parameterList) {
-		element.find("input, select").each(
-			function() {
-			    for (var i = 0; i < parameterList.length; i++) {
-				if (parameterList[i].id === $(this).attr(
-					"parameter-id")) {
-				    updateParameter(parameterList[i], this,
-					    attrs.editable);
-				}
-			    }
-			});
-		element.find("input, select").bind("change", function() {
-		    callback(this, scope);
-		});
-	    }
+            control.setList = function(parameterList) {
+                var html = "";
+                for (var i = 0; i < parameterList.length; i++) {
+                    html += getParameterHtml(parameterList[i], attrs.editable);
+                }
+                element.html(html);
+                element.find("input, select").bind("change", function() {
+                    callback(this, scope);
+                });
+            }
 
-	    control.getList = function(expectedId) {
-		var parameterList = new Array();
-		element.find("input, select").each(function() {
-		    var parameter = getParameter(this, expectedId);
-		    if (parameter !== undefined) {
-			parameterList.push(parameter);
-		    }
-		});
-		return parameterList;
-	    }
+            control.updateList = function(parameterList) {
+                element.find("input, select").each(
+                    function() {
+                        for (var i = 0; i < parameterList.length; i++) {
+                            if (parameterList[i].id === $(this).attr(
+                                    "parameter-id")) {
+                                updateParameter(parameterList[i], this,
+                                    attrs.editable);
+                            }
+                        }
+                    });
+                element.find("input, select").bind("change", function() {
+                    callback(this, scope);
+                });
+            }
 
-	    control.getRequiredFields = function() {
-		var requiredFields = "";
-		var count = 0;
-		element.find("input, select").each(function() {
-			if ($(this).attr("is-required") === "true") {
-			var requiredField = getRequiredField(this);
-			if (requiredField !== "") {
-			    if (++count == 1) {
-				requiredFields = requiredField;
-			    }
-			}
-			}
-		});
-		if (--count <= 0) {
-		    return requiredFields;
-		} else if (count == 1) {
-		    return requiredFields + " and 1 other field";
-		} else {
-		    return requiredFields + " and " + count + " other fields";
-		}
-	    }
-    }
+            control.getList = function(expectedId) {
+                var parameterList = new Array();
+                element.find("input, select").each(function() {
+                    var parameter = getParameter(this, expectedId);
+                    if (parameter !== undefined) {
+                        parameterList.push(parameter);
+                    }
+                });
+                return parameterList;
+            }
+
+            control.getRequiredFields = function() {
+                var requiredFields = "";
+                var count = 0;
+                element.find("input, select").each(function() {
+                    if ($(this).attr("is-required") === "true") {
+                        var requiredField = getRequiredField(this);
+                        if (requiredField !== "") {
+                            if (++count == 1) {
+                                requiredFields = requiredField;
+                            }
+                        }
+                    }
+                });
+                if (--count <= 0) {
+                    return requiredFields;
+                } else if (count == 1) {
+                    return requiredFields + " and 1 other field";
+                } else {
+                    return requiredFields + " and " + count + " other fields";
+                }
+            }
+        }
     }
 }
 
 appDS2.directive('parameterBlock', [ "$log", "PARAMETER", "UtilityService",
-	parameterBlockDirective ]);
+    parameterBlockDirective ]);
 
 
 appDS2.directive('onlyIntegers', function () {
@@ -416,7 +438,7 @@ appDS2.directive('onlyIntegers', function () {
                 } else if (event.which >= 96 && event.which <= 105) {
                     // numpad number
                     return true;
-                } 
+                }
                 // else if ([110, 190].indexOf(event.which) > -1) {
                 //     // dot and numpad dot
                 //     return true;
@@ -435,13 +457,13 @@ appDS2.directive('onlyFloat', function () {
         restrict: 'A',
         link: function (scope, elm, attrs, ctrl) {
             elm.on('keydown', function (event) {
-              if ([110, 190].indexOf(event.which) > -1) {
+                if ([110, 190].indexOf(event.which) > -1) {
                     // dot and numpad dot
                     event.preventDefault();
                     return true;
                 }
                 else{
-                  return false;
+                    return false;
                 }
             });
         }

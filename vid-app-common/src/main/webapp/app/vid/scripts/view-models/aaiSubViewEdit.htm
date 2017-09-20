@@ -20,128 +20,144 @@
 
 <div ng-controller="aaiSubscriberController" ng-cloak>
 
-	<div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
-		ng-cloak>
-		<div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"></div>
-		<div ng-include="'app/vid/scripts/view-models/deletionDialog.htm'"></div>
-		<div ng-include="'app/vid/scripts/view-models/detailsDialog.htm'"></div>
-	</div> 
+    <div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
+         ng-cloak>
+        <div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"></div>
+        <div ng-include="'app/vid/scripts/view-models/deletionDialog.htm'"></div>
+        <div ng-include="'app/vid/scripts/view-models/detailsDialog.htm'"></div>
+    </div>
 
-	<div>
-		<div class="statusLine">
-			<img src="app/vid/images/spinner.gif"
-				ng-class="{true:'aaiVisible', false:'aaiHidden'}[isSpinnerVisible]"></img>
-			<label>Status:</label><span class="status">{{status}}</span>
-		</div>
+    <div>
+        <div class="statusLine">
+            <img src="app/vid/images/spinner.gif"
+                 ng-class="{true:'aaiVisible', false:'aaiHidden'}[isSpinnerVisible]"></img>
+            <label>Status:</label><span class="status">{{status}}</span>
+        </div>
 
-		<h2 class="heading2">
-			<center>VIEW/EDIT SERVICE INSTANCE <a class="btn btn-primary btn-xs pull-right" ng-click="reloadRoute();" ><span class="glyphicon glyphicon-refresh"></span></a></center>
-			</h2>
-			</center>
-		</h2>
-		<br>
-
-
-		<center>
-			<table border="1">
-				<tr>
-					<th style="text-align: center" width="33%">SUBSCRIBER:
-						{{globalCustomerId}}</th>
-					<th style="text-align: center" width="34%">SERVICE TYPE:
-						{{serviceType}}</th>
-					<th style="text-align: center" width="33%">SERVICE INSTANCE
-						ID: {{serviceInstanceId}}</th>
-				<tr>
-				<tr>
-					<td colspan='3' style="text-align: center">Service Instance
-						Name: {{serviceInstanceName || "Not defined"}}
-					</td>
-				<tr>
-			</table>
-
-		</center>
+        <h2 class="heading2">
+            <center>VIEW/EDIT SERVICE INSTANCE <a class="btn btn-primary btn-xs pull-right"
+                                                  ng-click="reloadRoute();"><span
+                    class="glyphicon glyphicon-refresh"></span></a></center>
+        </h2>
+        </center>
+        </h2>
+        <br>
 
 
-		<br>
+        <center>
+            <table border="1">
+                <tr>
+                    <th style="text-align: center" width="33%">SUBSCRIBER:
+                        {{globalCustomerId}}
+                    </th>
+                    <th style="text-align: center" width="34%">SERVICE TYPE:
+                        {{serviceType}}
+                    </th>
+                    <th style="text-align: center" width="33%">SERVICE INSTANCE
+                        ID: {{serviceInstanceId}}
+                    </th>
+                <tr>
+                <tr>
+                    <td colspan='3' style="text-align: center">Service Instance
+                        Name: {{serviceInstanceName || "Not defined"}}
+                    </td>
+                <tr>
+            </table>
 
-		<div ng-init="autoPopulateViewEdit();">
-			<script type="text/ng-template" id="nodes_renderer.html">
-  <div ui-tree-handle data-drag-enabled="false" class="tree-node tree-node-content">
-    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span
-        class="glyphicon"
-        ng-class="{
+        </center>
+
+
+        <br>
+
+        <div ng-init="autoPopulateViewEdit();">
+            <script type="text/ng-template" id="nodes_renderer.html">
+                <div ui-tree-handle data-drag-enabled="false" class="tree-node tree-node-content">
+                    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag
+                       ng-click="toggle(this)"><span
+                            class="glyphicon"
+                            ng-class="{
           'glyphicon-chevron-right': collapsed,
           'glyphicon-chevron-down': !collapsed
         }"></span></a>
-   <div class='btn'>{{node.nodeType}}</div><div class='btn'>{{node.nodeId}}</div><div class='btn'>{{node.nodeStatus}}</div>
-	
-	<a class="pull-right btn btn-danger btn-xs" ng-if="node.delete != false" data-nodrag ng-click="showVnfDetails(node);"><span class="glyphicon glyphicon-remove"></a> 
-    <a class="pull-right btn btn-primary btn-xs" ng-if="node.info != false" data-nodrag ng-click="showVnfDetails();"><span
-        class="glyphicon glyphicon-zoom-in"></span></a>
-    
-  </div>
-  <ol ui-tree-nodes ng-model="node.nodes" ng-class="{hidden: collapsed}">
-    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
-    </li>
-  </ol>
-</script>
-			<b>EXISTING</b>
-			<div ng-controller="TreeCtrl">
-				<div>
-					<div ui-tree id="tree-root" >
-						<ol ui-tree-nodes ng-model="treeList"">
-							<li ng-repeat="node in treeList" ui-tree-node data-nodrag
-								ng-include="'nodes_renderer.html'"></li>
-						</ol>
-					</div>
-				</div>
+                    <div class='btn'>{{node.nodeType}}</div>
+                    <div class='btn'>{{node.nodeId}}</div>
+                    <div class='btn'>{{node.nodeStatus}}</div>
 
-			</div>
-			<b>AVAILABLE</b>
-			
-						<script type="text/ng-template" id="nodes_renderer2.html">
-  <div ui-tree-handle data-drag-enabled="false" class="tree-node tree-node-content" >
-    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span
-        class="glyphicon"
-        ng-class="{
+                    <a class="pull-right btn btn-danger btn-xs" ng-if="node.delete != false" data-nodrag
+                       ng-click="showVnfDetails(node);"><span class="glyphicon glyphicon-remove"></a>
+                    <a class="pull-right btn btn-primary btn-xs" ng-if="node.info != false" data-nodrag
+                       ng-click="showVnfDetails();"><span
+                            class="glyphicon glyphicon-zoom-in"></span></a>
+
+                </div>
+                <ol ui-tree-nodes ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+                    </li>
+                </ol>
+            </script>
+            <b>EXISTING</b>
+            <div ng-controller="TreeCtrl">
+                <div>
+                    <div ui-tree id="tree-root">
+                        <ol ui-tree-nodes ng-model="treeList">
+                        <li ng-repeat="node in treeList" ui-tree-node data-nodrag
+                            ng-include="'nodes_renderer.html'"></li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+            <b>AVAILABLE</b>
+
+            <script type="text/ng-template" id="nodes_renderer2.html">
+                <div ui-tree-handle data-drag-enabled="false" class="tree-node tree-node-content">
+                    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag
+                       ng-click="toggle(this)"><span
+                            class="glyphicon"
+                            ng-class="{
           'glyphicon-chevron-right': collapsed,
           'glyphicon-chevron-down': !collapsed
         }"></span></a>
-    <div class='btn'>{{node.nodeType}}</div><div class='btn'>{{node.nodeId}}</div><div class='btn'>{{node.nodeStatus}}</div>
-	
-	<a class="pull-right btn btn-primary btn-xs" ng-if="node.delete != false" data-nodrag ng-click="callDelete(this)">
-		<span class="glyphicon glyphicon-plus"></span>
-	</a>
+                    <div class='btn'>{{node.nodeType}}</div>
+                    <div class='btn'>{{node.nodeId}}</div>
+                    <div class='btn'>{{node.nodeStatus}}</div>
 
-    <a class="pull-right btn btn-primary btn-xs" ng-if="node.info != false" data-nodrag ng-click="showInfoDialog(node.itemType, node.nodeId, node.nodeType);">
-		<span class="glyphicon glyphicon-zoom-in"></span>
-	</a>
-    
-  </div>
-  <ol ui-tree-nodes ng-model="node.nodes" ng-class="{hidden: collapsed}">
-    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer2.html'">
-    </li>
-  </ol>
-</script>
-				
-			<div ng-controller="TreeCtrl">
-				<div>
-					<div ui-tree id="tree-root">
-						<ol ui-tree-nodes ng-model="availableTreeList">
-							<li ng-repeat="node in availableTreeList" ui-tree-node
-								data-nodrag ng-include="'nodes_renderer2.html'"></li>
-						</ol>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div>
-		
-		<button type="button" " att-button
-					btn-type="primary" size="small">Show Details</button>
-		
-			<pre>
+                    <a class="pull-right btn btn-primary btn-xs" ng-if="node.delete != false" data-nodrag
+                       ng-click="callDelete(this)">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+
+                    <a class="pull-right btn btn-primary btn-xs" ng-if="node.info != false" data-nodrag
+                       ng-click="showInfoDialog(node.itemType, node.nodeId, node.nodeType);">
+                        <span class="glyphicon glyphicon-zoom-in"></span>
+                    </a>
+
+                </div>
+                <ol ui-tree-nodes ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer2.html'">
+                    </li>
+                </ol>
+            </script>
+
+            <div ng-controller="TreeCtrl">
+                <div>
+                    <div ui-tree id="tree-root">
+                        <ol ui-tree-nodes ng-model="availableTreeList">
+                            <li ng-repeat="node in availableTreeList" ui-tree-node
+                                data-nodrag ng-include="'nodes_renderer2.html'"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+
+            <button type="button"
+            " att-button
+            btn-type="primary" size="small">Show Details</button>
+
+            <pre>
   				{{inventoryResponseItem | json}}
 			</pre>
-		</div>
-	</div>
+        </div>
+    </div>

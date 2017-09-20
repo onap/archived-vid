@@ -41,21 +41,42 @@ var VnfService = function($http, $log, VIDCONFIGURATION, FIELD, UtilityService) 
 		if ( ( UtilityService.hasContents ( vnfInstance.object[FIELD.ID.ORCHESTRATION_STATUS] ) ) &&
 				( UtilityService.hasContents ( vnfInstance.object[FIELD.ID.IN_MAINT] ) ) &&
 				( UtilityService.hasContents ( vnfInstance.object[FIELD.ID.PROV_STATUS] ) ) ) {
-
+			
 			status.provStatus = vnfInstance.object[FIELD.ID.PROV_STATUS].toLowerCase();
+			console.log ("PROVSTATUS: " + vnfInstance.object[FIELD.ID.PROV_STATUS].toLowerCase());
+			
 			status.orchestrationStatus = vnfInstance.object[FIELD.ID.ORCHESTRATION_STATUS].toLowerCase();
+			console.log ("ORCHESTRATION STATUS: " + vnfInstance.object[FIELD.ID.ORCHESTRATION_STATUS].toLowerCase());
+			
 			status.inMaint = vnfInstance.object[FIELD.ID.IN_MAINT];
-
+			console.log ("IN MAINT: " + vnfInstance.object[FIELD.ID.IN_MAINT]);
+			
 			if ( UtilityService.hasContents(vnfInstance.object[FIELD.ID.OPERATIONAL_STATUS]) ) {
 				status.operationalStatus = vnfInstance.object[FIELD.ID.OPERATIONAL_STATUS].toLowerCase();
 			}
-
-			if ( UtilityService.arrayContains ( VIDCONFIGURATION.VNF_VALID_STATUS_LIST, status ) ) {
-				return ("");
-			}
-			else {
-				return (errorInvalidCombinationMsg);
-			}
+			var i = VIDCONFIGURATION.VNF_VALID_STATUS_LIST.length;
+		    if ( i > 0 ) {
+			    while (i--) {
+			    	var item = VIDCONFIGURATION.VNF_VALID_STATUS_LIST[i];
+			        if ( (item.provStatus === status.provStatus) && (item.inMaint === status.inMaint ) 
+			        		&& (item.orchestrationStatus === status.orchestrationStatus) )  {
+			        	if (UtilityService.hasContents(vnfInstance.object[FIELD.ID.OPERATIONAL_STATUS])) {
+			        		if (status.operationalStatus === "") { status.operationalStatus = null }
+			        		if ( item.operationalStatus === status.operationalStatus ) {
+			        			return ("");
+			        		}
+			        	}
+			        	else {
+			        		// no contents
+			        		if ( item.operationalStatus === null ) {
+			        			return ("");
+			        		}
+			        	}
+			       }
+			    }
+		    }
+			
+			return (errorInvalidCombinationMsg);
 		}
 		else {
 			return (errorAaiStatusMsg);

@@ -39,7 +39,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			getLoggedInUserID();
 		switch (_this.componentId) {
 		case COMPONENT.SERVICE:
-			return [ getSubscribers, getServices ];
+			return [ getSubscribers, getServices,getAicZones ];
 		case COMPONENT.NETWORK:
 			return [ getLcpCloudRegionTenantList ];
 		case COMPONENT.VNF:
@@ -121,6 +121,13 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 					.getModelInfo(_this.componentId)[FIELD.ID.DESCRIPTION]);
 			addToList(FIELD.NAME.SERVICE_CATEGORY, DataService
 					.getModelInfo(_this.componentId)[FIELD.ID.CATEGORY]);
+			if (DataService.getModelInfo(_this.componentId)[FIELD.ID.SERVICE_TYPE] != "null") {
+				addToList(FIELD.NAME.SERVICE_TYPE, DataService
+					.getModelInfo(_this.componentId)[FIELD.ID.SERVICE_TYPE]);
+				addToList(FIELD.NAME.SERVICE_ROLE, DataService
+					.getModelInfo(_this.componentId)[FIELD.ID.SERVICE_ROLE]);
+			}
+
 			break;
 		case COMPONENT.VF_MODULE:
 			addToList(FIELD.NAME.SUBSCRIBER_NAME, DataService
@@ -209,14 +216,18 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				if(!isInTop){
 					if (isUserProvidedNaming) {
 						parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
-						
+
 					}
 					parameterList = parameterList.concat([ getSubscribersParameter() ]);
 					parameterList = parameterList.concat([ getServiceId(),
 						FIELD.PARAMETER.SERVICE_TYPE,
 						FIELD.PARAMETER.LCP_REGION,
 						FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
-						FIELD.PARAMETER.TENANT_DISABLED ]);
+						FIELD.PARAMETER.TENANT_DISABLED,
+						]);
+					parameterList = parameterList.concat([ getAICZones() ]);
+
+
 				}else{
 					parameterList = parameterList.concat([ getServiceId(),
 						FIELD.PARAMETER.LCP_REGION,
@@ -263,23 +274,27 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 		}
 		parameterList.push(FIELD.PARAMETER.SUPPRESS_ROLLBACK);
 		if(_this.componentId === COMPONENT.VF_MODULE ){
-			parameterList.push({name: "SDN-C Pre-Load",
-				id: "sdncPreload",
+			if(DataService.getSubscriberName() === FIELD.NAME.MOBILITY){
+			parameterList.push({name: FIELD.NAME.SDN_C_PRELOAD,
+				id: FIELD.ID.SDN_C_PRELOAD,
 				type: "checkbox",
 				isEnabled: true,
-				isRequired: false
+				isRequired: false,
+				hideFieldAndLabel: true
 				}
 			);
-			parameterList.push({name: "Upload Supplementory Data file",
-				id: "uploadSupplementoryDataFile",
+			}
+			parameterList.push({name: FIELD.NAME.UPLOAD_SUPPLEMENTORY_DATA_FILE,
+				id: FIELD.ID.UPLOAD_SUPPLEMENTORY_DATA_FILE,
 				type: "checkbox",
 				isEnabled: true,
-				isRequired: false
+				isRequired: false,
+				value:false
 				}
 			);
 			
-			parameterList.push({name: "Supplemetory file (JSON format)",
-				id: "supplementoryDataFile",
+			parameterList.push({name: FIELD.NAME.SUPPLEMENTORY_DATA_FILE,
+				id: FIELD.ID.SUPPLEMENTORY_DATA_FILE,
 				type: "file",
 				isRequired: false,
 				isVisiblity: false
@@ -288,16 +303,16 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 		}
 		
 		if( VIDCONFIGURATION.UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED  && _this.componentId === COMPONENT.VOLUME_GROUP){
-				parameterList.push({name: "Upload Supplementory Data file",
-					id: "uploadSupplementoryDataFile",
+			parameterList.push({name: FIELD.NAME.UPLOAD_SUPPLEMENTORY_DATA_FILE,
+				id: FIELD.ID.UPLOAD_SUPPLEMENTORY_DATA_FILE,
 					type: "checkbox",
 					isEnabled: true,
 					isRequired: false
 					}
 				);
 				
-				parameterList.push({name: "Supplemetory file (JSON format)",
-					id: "supplementoryDataFile",
+			parameterList.push({name: FIELD.NAME.SUPPLEMENTORY_DATA_FILE,
+				id: FIELD.ID.SUPPLEMENTORY_DATA_FILE,
 					type: "file",
 					isRequired: false,
 					isVisiblity: false
@@ -584,7 +599,12 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			
 			break;
 		case COMPONENT.VF_MODULE:
-				break;
+		requestDetails.requestParameters.usePreload = getValueFromList(
+					FIELD.ID.SDN_C_PRELOAD, parameterList);
+			if(_this.componentId == COMPONENT.VF_MODULE &&(requestDetails.requestParameters.usePreload== null || requestDetails.requestParameters.usePreload === '')){
+				requestDetails.requestParameters.usePreload = true;
+			}
+			break;
 		case COMPONENT.VOLUME_GROUP:
 			break;
 		}
@@ -716,12 +736,24 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				break;
 			case FIELD.ID.SUBSCRIBER_NAME:
 				break;
+			case FIELD.ID.SDN_C_PRELOAD:
+				break;
+			case FIELD.ID.UPLOAD_SUPPLEMENTORY_DATA_FILE:
+				break;
+			case FIELD.ID.SUPPLEMENTORY_DATA_FILE:
+				arbitraryParameters =  FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE['value'];
+				arbitraryArray=arbitraryParameters;
+				FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE['value']=[];
+				break;
+
 			default:
-				arbitraryParameters = {
-					name : parameter.id,
-					value : parameter.value
+				if (parameter.value != '') {
+					arbitraryParameters = {
+						name: parameter.id,
+						value: parameter.value
+					}
+					arbitraryArray.push(arbitraryParameters);
 				}
-				arbitraryArray.push(arbitraryParameters);
 			}
 		}
 		return (arbitraryArray);
@@ -766,15 +798,40 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			var serviceIdList = [];
 			angular.forEach(response.data, function(value, key) {
 				angular.forEach(value, function(subVal, key) {
-					var newVal = { "id" : subVal[FIELD.ID.SERVICE_ID], "description" : subVal[FIELD.ID.SERVICE_DESCRIPTION] };
+					var newVal = {
+						"id" : subVal[FIELD.ID.SERVICE_ID],
+						"description" : subVal[FIELD.ID.SERVICE_DESCRIPTION],
+						"isPermitted" : subVal[FIELD.ID.IS_PERMITTED],
+					};
 					serviceIdList.push(newVal);
 					DataService.setServiceIdList(serviceIdList);
 				});
 			});
-		
+
 			UtilityService.startNextAsyncOperation();
 		});
 	};
+	var getAicZones = function() {
+		AaiService.getAicZones(function(response) {
+			var serviceIdList = [];
+			angular.forEach(response.data, function(value, key) {
+				angular.forEach(value, function(subVal, key) {
+					var newVal = {
+						"id" : subVal[FIELD.ID.ZONE_ID],
+						"name" : subVal[FIELD.ID.ZONE_NAME],
+					};
+					serviceIdList.push(newVal);
+					DataService.setAicZones(serviceIdList);
+				});
+			});
+
+			UtilityService.startNextAsyncOperation();
+		});
+
+	};
+
+
+
 	var getLcpCloudRegionTenantList = function() {
 		AaiService.getLcpCloudRegionTenantList(DataService
 				.getGlobalCustomerId(), DataService.getServiceType(), function(
@@ -802,7 +859,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			for (var i = 0; i < subscribers.length; i++) {
 				parameter.optionList.push({
 					id : subscribers[i][FIELD.ID.GLOBAL_CUSTOMER_ID],
-					name : subscribers[i][FIELD.ID.SUBNAME]
+					name : subscribers[i][FIELD.ID.SUBNAME],
+					isPermitted : subscribers[i][FIELD.ID.IS_PERMITTED]
 				})
 			}
 		}
@@ -819,13 +877,34 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			for (var i = 0; i < serviceIdList.length; i++) {
 				parameter.optionList.push({
 					id : serviceIdList[i].id,
-					name : serviceIdList[i].description
+					name : serviceIdList[i].description,
+					isPermitted : serviceIdList[i].isPermitted
 				});
 			}
 		}
 
 		return parameter;
 	};
+
+	var getAICZones = function() {
+		var aicList = DataService.getAicZones();
+		var parameter = FIELD.PARAMETER.AIC_ZONES;
+		parameter.optionList = new Array();
+		if ( UtilityService.hasContents(aicList) ) {
+			// load them all
+			for (var i = 0; i < aicList.length; i++) {
+				parameter.optionList.push({
+					id : aicList[i].id,
+					name : aicList[i].name,
+					isPermitted : true
+
+				});
+			}
+		}
+
+		return parameter;
+	};
+
 
 	var getLcpRegion = function() {
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
@@ -838,14 +917,17 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			for (var i = 0; i < cloudRegionTenantList.length; i++) {
 				for (var j = 0; j < parameter.optionList.length; j++) {
 					if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionId) {
-						break;
-					}
+                        parameter.optionList[j].isPermitted =
+							parameter.optionList[j].isPermitted || cloudRegionTenantList[i].isPermitted;
+                        break;
+                    }
 				}
 				if (j < parameter.optionList.length) {
 					continue;
 				}
 				parameter.optionList.push({
-					id : cloudRegionTenantList[i].cloudRegionId
+					id : cloudRegionTenantList[i].cloudRegionId,
+					isPermitted : cloudRegionTenantList[i].isPermitted
 				});
 			}
 		}
@@ -862,8 +944,10 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				if (cloudRegionTenantList[i].cloudRegionId === cloudRegionId) {
 					parameter.optionList.push({
 						id : cloudRegionTenantList[i].tenantId,
-						name : cloudRegionTenantList[i].tenantName
-					});
+						name : cloudRegionTenantList[i].tenantName,
+                        isPermitted : cloudRegionTenantList[i].isPermitted
+
+                    });
 				}
 			}
 		}
@@ -878,7 +962,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 		}
 		for (var i = 0; i < optionSimpleArray.length; i++) {
 			optionList.push({
-				name : optionSimpleArray[i]
+				name : optionSimpleArray[i],
+                isPermitted :true,
 			});
 		}
 		parameter.optionList = optionList;
@@ -918,6 +1003,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				.updateList([ FIELD.PARAMETER.UPLOAD_SUPPLEMENTORY_DATA_FILE_CHECKED ]);
 			}else{
 				$('input[parameter-id="'+FIELD.ID.SUPPLEMENTORY_DATA_FILE+'"]').closest('tr').hide();
+				FIELD.PARAMETER.UPLOAD_SUPPLEMENTORY_DATA_FILE_CHECKED.value=false;
 				parameterListControl
 				.updateList([ FIELD.PARAMETER.UPLOAD_SUPPLEMENTORY_DATA_FILE_UNCHECKED ]);
 			}
@@ -959,9 +1045,11 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
 					for (var i = 0; i < response.length; i++) {
 						serviceTypeParameters.optionList.push({
-							"id" : response[i],
-							"name" : response[i]
-						});
+							"id" : response[i].name,
+							"name" : response[i].name,
+                            "isPermitted" :response[i].isPermitted
+
+                        });
 					}
 					console.log ( "updateUserParameterList: service type parameters " ); 
 					console.log ( JSON.stringify (serviceTypeParameters, null, 4));

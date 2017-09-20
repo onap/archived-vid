@@ -1,0 +1,44 @@
+<div ng-controller="previousVersionContoller">
+
+	<div ng-show="isTableDialogVisible">
+		<div class="titleLine">
+			<img src="app/vid/images/spinner.gif"
+				ngx-visible="{{isTableSpinnerVisible}}"></img>
+			<h3>{{componentName}} - {{createType}}</h3>
+		</div>
+
+		<div class="error" ng-show="isTableErrorVisible">
+			<img src="app/vid/images/error.png"></img>{{error}}
+		</div>
+		<table att-table table-data="tableData" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		    <thead  att-table-row type="header">
+				<tr>
+					<th att-table-header key="action">Action</th>
+					<th att-table-header key="serviceInstanceName">Service Name</th>
+					<th att-table-header key="serviceDescription">Service Description</th>
+					<th att-table-header key="serviceType">Service Type</th>
+		            <th att-table-header key="serviceUuid">Service UUID</th>
+		            <th att-table-header key="serviceInvariantUuid">Service Invariant UUID</th>
+		            <th att-table-header key="serviceVersion">Service Version</th>
+		        </tr>
+		    </thead>
+		    <tbody att-table-row type="body" row-repeat="service in tableData">
+		        <tr>
+		        	<td att-table-body ><button type=button ng-click="deployService(service,true)" att-button btn-type="primary" size="small">Deploy</button></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][2]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][0]['property-value']"></td>
+	            	<td att-table-body ng-bind="serviceType"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][1]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][4]['property-value']"></td>
+	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][6]['property-value']"></td>
+		        </tr>     
+		    </tbody>	  
+		</table>
+		
+		
+		<div class="buttonRow">
+			<button type="button" ng-click="cancelTable();" att-button
+				btn-type="primary" size="small">Cancel</button>
+		</div>
+	</div>
+</div>
