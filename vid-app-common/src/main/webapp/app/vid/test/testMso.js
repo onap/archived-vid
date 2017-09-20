@@ -41,7 +41,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 		    setTestMsoMode($cookieStore.get(TEST_MODE_COOKIE));
 		    PropertyService.setMsoMaxPollingIntervalMsec(1000);
 		    PropertyService.setMsoMaxPolls(7);
-		    PropertyService.setServerResponseTimeoutMsec(10000);
+		    PropertyService.setServerResponseTimeoutMsec(30000);
 		};
 
 		$scope.testMsoModeChanged = function() {

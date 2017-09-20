@@ -80,7 +80,7 @@ public class HttpsAuthClient{
 				useClientCert = true;
 			}
 			
-		    System.setProperty("javax.net.ssl.trustStore", truststore_path);
+  		    System.setProperty("javax.net.ssl.trustStore", truststore_path);
 		    System.setProperty("javax.net.ssl.trustStorePassword", decrypted_truststore_password);
 			HttpsURLConnection.setDefaultHostnameVerifier( new HostnameVerifier(){
 			    public boolean verify(String string,SSLSession ssls) {

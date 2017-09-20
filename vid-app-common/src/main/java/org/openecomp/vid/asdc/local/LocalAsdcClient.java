@@ -264,7 +264,7 @@ public class LocalAsdcClient implements AsdcClient {
      * @see org.openecomp.vid.asdc.AsdcClient#getResourceArtifact(java.util.UUID, java.util.UUID)
      */
     public Artifact getResourceArtifact(UUID resourceUuid, UUID artifactUuid) throws AsdcCatalogException {
-        final JSONArray artifacts = getCatalog().getJSONObject("resources")
+        final  JSONArray artifacts = getCatalog().getJSONObject("resources")
                 .getJSONObject(resourceUuid.toString())
                 .getJSONArray("artifacts");
 

@@ -29,14 +29,14 @@ import org.openecomp.vid.dao.FnAppDoaImpl;
 
 public class FnAppDoaImplTest {
 	
-	@Test
+	//@Test
 	public void testGetconnection() throws ClassNotFoundException, IOException, SQLException{
 		FnAppDoaImpl impl=new FnAppDoaImpl();
 		impl.getConnection(null,null,null, null);
 		
 	}
 	
-	@Test
+	//@Test
 	public void testProfileCount() throws ClassNotFoundException, IOException, SQLException{
 		FnAppDoaImpl impl=new FnAppDoaImpl();
 		impl.getProfileCount(null,null,null, null);	

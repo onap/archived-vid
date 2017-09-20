@@ -50,7 +50,8 @@ appDS2.constant("COMPONENT", (function() {
 	SDN_L3_BONDING : "SDN-L3-BONDING",
 	SDN_ETHERNET_INTERNET : "SDN-ETHERNET-INTERNET",
 	SERVICE : "service",
-	SERVICE_TYPE : "serviceType",
+    OLDVERSION : 'oldversion',
+    SERVICE_TYPE : "serviceType",
 	SHOW_COMPONENT_DETAILS : "showComponentDetails",
 	STATUS : "status",
 	SUBSCRIBER_NAME : "subscriberName",
@@ -65,9 +66,10 @@ appDS2.constant("COMPONENT", (function() {
 	VNF_ROLE : "vnfRole",
 	VNF_TYPE : "vnfType",
 	VOLUME_GROUP : "volumeGroup",
-	
-	
-	// IDs
+    IS_PERMITTED: "is-permitted",
+
+
+        // IDs
 	CIDR_MASK_1 : "255.255.255.000",
 	//COMPONENT_LIST_NAMED_QUERY_ID : "ed0a0f5b-cf79-4784-88b2-911cd726cd3d",
 	CUSTOMER_ID_1 : "icore9883749",
@@ -96,7 +98,8 @@ appDS2.constant("COMPONENT", (function() {
 	ASSIGN : "?r=",
 	AAI_GET_SERVICE_INSTANCE_PATH : "aai_get_service_instance/",
 	AAI_GET_SERVICES : "aai_get_services",
-	AAI_GET_SERVICES_BY_TYPE : "aai_get_models_by_service_type",
+    AAI_GET_AIC_ZONES :"aai_get_aic_zones",
+    AAI_GET_SERVICES_BY_TYPE : "aai_get_models_by_service_type",
 	AAI_GET_TENANTS : "aai_get_tenants/",
 	AAI_SUB_DETAILS_PATH : "aai_sub_details/",
 	AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
@@ -128,8 +131,9 @@ appDS2.constant("COMPONENT", (function() {
 	SUBDETAILS_SELECTEDSUBSCRIBER : "#subdetails?selectedSubscriber=",
 	SUBSCRIBERNAME_SUB_PATH : "&subscriberName=",
 	WELCOME_PATH : "welcome.htm",
-	
-	//Template Urls
+    IS_PERMITTED_SUB_PATH: "&isPermitted=",
+
+    //Template Urls
 	AAI_GET_SUBS_URL : "app/vid/scripts/view-models/aaiGetSubs.htm",
 	AAI_GET_SUBSCRIBER_URL : "app/vid/scripts/view-models/aaiGetSubscriberList.htm",
 	AAI_SERVICE_TYPES_URL : "app/vid/scripts/view-models/aaiServiceTypes.htm",

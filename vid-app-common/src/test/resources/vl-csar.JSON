@@ -34,7 +34,7 @@
                     "constraints": [
                     ],
                     "default": null,
-                    "description": "Reference to naming policy that ECOMP will use when the name is auto-generated",
+                    "description": "Unique label that defines the role that this network performs.   example: vce oam network, vnat sr-iov1 network\n",
                     "entry_schema": null,
                     "required": true,
                     "type": "string"
@@ -43,7 +43,7 @@
                     "constraints": [
                     ],
                     "default": null,
-                    "description": "Reference to naming policy that ECOMP will use when the name is auto-generated",
+                    "description": "Uniquely identifies the network scope. Valid values for the network scope   includes: VF - VF-level network. Intra-VF network which connects the VFCs (VMs) inside the VF. SERVICE - Service-level network. Intra-Service network which connects  the VFs within the service GLOBAL - Global network which can be shared by multiple services\n",
                     "entry_schema": null,
                     "required": true,
                     "type": "string"
@@ -64,6 +64,8 @@
     "service": {
         "category": "Network L1-3",
         "description": "dsfg",
+          "serviceRole":"null",
+    	"serviceType":"null",
         "inputs": {
             "extvl0_exVL_naming_naming_policy": {
                 "constraints": [
@@ -98,7 +100,7 @@
         "serviceEcompNaming": "true",
         "toscaModelURL": null,
         "uuid": "68101369-6f08-4e99-9a28-fa6327d344f3",
-        "version": "1.0"
+        "version": "0.1"
     },
     "vfModules": {
     },

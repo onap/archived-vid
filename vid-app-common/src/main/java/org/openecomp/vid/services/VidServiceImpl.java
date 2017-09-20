@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The Class VidController.

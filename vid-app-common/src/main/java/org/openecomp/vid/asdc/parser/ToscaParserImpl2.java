@@ -7,7 +7,6 @@ import org.openecomp.sdc.tosca.parser.impl.SdcToscaParserFactory;
 import org.openecomp.sdc.toscaparser.api.Group;
 import org.openecomp.sdc.toscaparser.api.NodeTemplate;
 import org.openecomp.sdc.toscaparser.api.Property;
-import org.openecomp.sdc.toscaparser.api.elements.constraints.Constraint;
 import org.openecomp.sdc.toscaparser.api.parameters.Input;
 import org.openecomp.vid.asdc.beans.Service;
 import org.openecomp.vid.model.*;
@@ -23,8 +22,11 @@ public class ToscaParserImpl2 {
 	public class Constants {
 		public final static String uuid = "UUID";
 		public final static String description = "description";
-		public final static String ecompGeneratedNaming = "ecompGeneratedNaming";
-		public final static String customizationUUID = "customizationUUID";
+		public final static String serviceType = "serviceType";
+        public final static String serviceRole = "serviceRole";
+        public final static String ecompGeneratedNaming = "ecompGeneratedNaming";
+
+        public final static String customizationUUID = "customizationUUID";
 		public final static String vfModuleModelVersion = "vfModuleModelVersion";
 		public final static String vfModuleModelCustomizationUUID = "vfModuleModelCustomizationUUID";
 		public final static String volume_group = "volume_group";
@@ -49,7 +51,7 @@ public class ToscaParserImpl2 {
         serviceModel.setService(extractServiceFromCsar(asdcServiceMetadata, sdcCsarHelper));
         serviceModel.setVolumeGroups(extractVolumeGroups(sdcCsarHelper));
         serviceModel.setVfModules(extractVfModuleFromCsar(sdcCsarHelper));
-        serviceModel.setVnfs(extractVnfsFromCsar(sdcCsarHelper));
+        serviceModel.setVnfs(extractVnfsFromCsar(serviceModel,sdcCsarHelper));
         serviceModel.setNetworks(extractNetworksFromCsar(sdcCsarHelper));
         return serviceModel;
     }
@@ -65,20 +67,50 @@ public class ToscaParserImpl2 {
         service.setDescription(csarHelper.getServiceMetadata().getValue(Constants.description));
         service.setInputs(inputsListToInputsMap(csarHelper.getServiceInputs()));
         service.setServiceEcompNaming(csarHelper.getServiceMetadata().getValue(Constants.ecompGeneratedNaming));
+        service.setServiceType(csarHelper.getServiceMetadata().getValue(Constants.serviceType));
+        service.setServiceRole(csarHelper.getServiceMetadata().getValue(Constants.serviceRole));
+
         return service;
     }
     
-    private Map<String, VNF> extractVnfsFromCsar(ISdcCsarHelper csarHelper) {
+    private Map<String, VNF> extractVnfsFromCsar(ServiceModel serviceModel,ISdcCsarHelper csarHelper) {
         List<NodeTemplate> nodeTemplates = csarHelper.getServiceVfList();
         Map<String, VNF> vnfsMaps = new HashMap<String, VNF>();
 
         for (NodeTemplate nodeTemplate : nodeTemplates) {
             VNF vnf = new VNF();
             populateNodeFromNodeTemplate(nodeTemplate, csarHelper, vnf);
+
             vnf.setModelCustomizationName(nodeTemplate.getName());
+            Map<String, VfModule> vfModuleHashMap = getVfModulesFromVF(csarHelper, vnf.getCustomizationUuid());
+            vnf.setVfModules(vfModuleHashMap);
+
+            Map<String, VolumeGroup> volumeGroupMap = getVolumeGroupsFromVF(csarHelper, vnf.getCustomizationUuid());
+            vnf.setVolumeGroups(volumeGroupMap);
+
             vnfsMaps.put(nodeTemplate.getName(), vnf);
         }
         return vnfsMaps;
+    }
+
+    private Map<String, VfModule> getVfModulesFromVF(ISdcCsarHelper csarHelper, String vfUuid) {
+        Map<String,VfModule> vfModuleHashMap = new HashMap<String,VfModule>();
+        for (Group group : csarHelper.getVfModulesByVf(vfUuid)) {
+            vfModuleHashMap.put(group.getName(), populateVfModuleFromGroup(group));
+        }
+        return vfModuleHashMap;
+    }
+
+    private Map<String, VolumeGroup> getVolumeGroupsFromVF(ISdcCsarHelper csarHelper, String vfCustomizationUuid) {
+        Map<String,VolumeGroup> volumeGroupMap = new HashMap<String,VolumeGroup>();
+        List<Group> groups = csarHelper.getVfModulesByVf(vfCustomizationUuid);
+        for (Group group : groups) {
+            boolean isVolumeGroup = Boolean.valueOf(group.getPropertyValue(Constants.volume_group).toString());
+            if (isVolumeGroup) {
+                volumeGroupMap.put(group.getName(), populateVolumeGroupFromGroup(group));
+            }
+        }
+        return volumeGroupMap;
     }
 
     private Map<String, Network> extractNetworksFromCsar(ISdcCsarHelper csarHelper) {
@@ -99,25 +131,19 @@ public class ToscaParserImpl2 {
         HashMap<String, VfModule> vfModuleHashMap = new HashMap<>();
 
         for (NodeTemplate nodeTemplate : serviceVfList) {
-            List<Group> groups = csarHelper.getVfModulesByVf(nodeTemplate.getMetaData().getValue(Constants.customizationUUID));
-            for (Group group : groups) {
-                vfModuleHashMap.put(group.getName(), populateVfModuleFromGroup(group));
-            }
+            Map<String, VfModule> nodeTemplateVfModule =
+                    getVfModulesFromVF(csarHelper, nodeTemplate.getMetaData().getValue(Constants.customizationUUID));
+            vfModuleHashMap.putAll(nodeTemplateVfModule);
         }
         return vfModuleHashMap;
     }
 
-
     private Map<String, VolumeGroup> extractVolumeGroups(ISdcCsarHelper csarHelper) {
         HashMap<String, VolumeGroup> volumeGroupHashMap = new HashMap<>();
         for (NodeTemplate nodeTemplate : csarHelper.getServiceVfList()) {
-            List<Group> groups = csarHelper.getVfModulesByVf(csarHelper.getNodeTemplateCustomizationUuid(nodeTemplate));
-            for (Group group : groups) {
-                boolean isVolumeGroup = Boolean.valueOf(group.getPropertyValue(Constants.volume_group).toString());
-                if (isVolumeGroup) {
-                    volumeGroupHashMap.put(group.getName(), populateVolumeGroupFromGroup(group));
-                }
-            }
+            Map<String, VolumeGroup> nodeTemplateVolumeGroups =
+                    getVolumeGroupsFromVF(csarHelper, csarHelper.getNodeTemplateCustomizationUuid(nodeTemplate));
+            volumeGroupHashMap.putAll(nodeTemplateVolumeGroups);
         }
         return volumeGroupHashMap;
     }

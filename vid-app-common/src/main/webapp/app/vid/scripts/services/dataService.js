@@ -94,6 +94,12 @@ var DataService = function($log, DataService) {
 		setServiceIdList : function(serviceIdList) {
 			_this.serviceIdList = serviceIdList;
 		},
+		setAicZones : function(aicZones) {
+			_this.aicZones = aicZones;
+		},
+		getAicZones : function(){
+			return _this.aicZones;
+		},
 		getServiceInstanceId : function() {
 			return _this.serviceInstanceId;
 		},
@@ -248,6 +254,15 @@ var DataService = function($log, DataService) {
 				return true;
 			}
 			return _this.aLaCarte;
+		},
+		setMacro : function(aval) {
+			_this.macro = aval;
+		},
+		getMacro : function() {
+			if (_this.macro === undefined) {
+				return false;
+			}
+			return _this.macro;
 		},
 		getResources : function() {
 			return _this.resources;

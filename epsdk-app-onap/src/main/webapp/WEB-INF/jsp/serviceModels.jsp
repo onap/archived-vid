@@ -33,7 +33,8 @@
 <script src="app/vid/scripts/controller/InstantiationController.js"></script>
 <script src="app/vid/scripts/controller/msoCommitController.js"></script>
 <script src="app/vid/scripts/controller/ServiceModelController.js"></script>
-
+<script src="app/vid/scripts/controller/previousVersionDialogController.js"></script>
+<script src="app/vid/scripts/controller/previousVersionContoller.js"></script>
 <script src="app/vid/scripts/directives/extensionsDirective.js"></script>
 <script src="app/vid/scripts/directives/parameterBlockDirective.js"></script>
 <script src="app/vid/scripts/directives/popupWindowDirective.js"></script>

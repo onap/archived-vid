@@ -380,15 +380,19 @@ var DeletionService = function($log, AaiService, AsdcService, DataService,
 			for (var i = 0; i < cloudRegionTenantList.length; i++) {
 				for (var j = 0; j < parameter.optionList.length; j++) {
 					if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionId) {
-						break;
+                        parameter.optionList[j].isPermitted =
+                            parameter.optionList[j].isPermitted || cloudRegionTenantList[i].isPermitted;
+                        break;
 					}
 				}
 				if (j < parameter.optionList.length) {
 					continue;
 				}
 				parameter.optionList.push({
-					id : cloudRegionTenantList[i].cloudRegionId
-				});
+					id : cloudRegionTenantList[i].cloudRegionId,
+          isPermitted : cloudRegionTenantList[i].isPermitted
+
+        });
 			}
 		}
 		return parameter;
@@ -404,8 +408,9 @@ var DeletionService = function($log, AaiService, AsdcService, DataService,
 				if (cloudRegionTenantList[i].cloudRegionId === cloudRegionId) {
 					parameter.optionList.push({
 						id : cloudRegionTenantList[i].tenantId,
-						name : cloudRegionTenantList[i].tenantName
-					});
+						name : cloudRegionTenantList[i].tenantName,
+                        isPermitted : cloudRegionTenantList[i].isPermitted
+                    });
 				}
 			}
 		}
@@ -465,8 +470,8 @@ var DeletionService = function($log, AaiService, AsdcService, DataService,
 
 					for (var i = 0; i < response.length; i++) {
 						serviceTypeParameters.optionList.push({
-							"id" : response[i],
-							"name" : response[i]
+							"id" : response[i].name,
+							"name" : response[i].name
 						});
 					}
 					parameterListControl.updateList([ serviceTypeParameters ]);
@@ -493,7 +498,8 @@ var DeletionService = function($log, AaiService, AsdcService, DataService,
 	},
 	updateUserParameterList : updateUserParameterList,
 	getMsoRequestDetails : getMsoRequestDetails,
-	getMsoUrl : getMsoUrl
+	getMsoUrl : getMsoUrl,
+	isMacro : DataService.getMacro()
     }
 }
 

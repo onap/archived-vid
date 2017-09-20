@@ -111,16 +111,21 @@ var creationDialogController = function( COMPONENT, FIELD, PARAMETER, $scope, $h
 		var isUploadAvailable = false;
 		var uploadIndex =0;
 		var paramList = $scope.userProvidedControl.getList();
-		
+		var isAnyError = false;
 		for (var i = 0; i < paramList.length; i++) {
 			if (paramList[i].id === FIELD.ID.SUPPLEMENTORY_DATA_FILE) {
 				isUploadAvailable = true;
 				uploadIndex=i;
-				break;
+			}
+			if (paramList[i].id === FIELD.ID.UPLOAD_SUPPLEMENTORY_DATA_FILE && paramList[i].value && document.getElementById(FIELD.ID.SUPPLEMENTORY_DATA_FILE).value=='' ) {
+				isAnyError = true;
 			}
 		}
 		
-		if(isUploadAvailable){
+		if(isUploadAvailable && isAnyError ){
+			showError(FIELD.ERROR.MISSING_DATA, FIELD.ERROR.MISSING_FILE);
+			return;
+		}else if(isUploadAvailable && document.getElementById(FIELD.ID.SUPPLEMENTORY_DATA_FILE).value!='' ){
 			var errorMsg = "";
 			var fileInput = document.getElementById(FIELD.ID.SUPPLEMENTORY_DATA_FILE);
 			var file = fileInput.files[0];
@@ -128,8 +133,7 @@ var creationDialogController = function( COMPONENT, FIELD, PARAMETER, $scope, $h
 			reader.onload = function(e) {
 				try{
 					paramList[uploadIndex].value = JSON.parse(reader.result);
-					FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE['value'] = JSON.stringify(paramList[uploadIndex].value);
-					$scope.userProvidedControl.updateList([ FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE ]);
+					FIELD.PARAMETER.SUPPLEMENTORY_DATA_FILE['value'] = paramList[uploadIndex].value;
 					
 					var instanceName = "";
 

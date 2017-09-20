@@ -41,7 +41,7 @@
 				</td>
 				<td style="width:80%" nowrap>
 					<div class="fn-ebz-container">
-					<textarea style=" height: 15px  width: 100% border: none resize: none  overflow: hidden background-color: #ddd outline: none" ng-model="createSubscriberName">{{createSubscriberName}}</textarea>
+					<textarea style="height: 33px; width: 100%; border: none; resize: none;  overflow: hidden; background-color: #ddd; outline: none;" ng-model="createSubscriberName" data-tests-id="selectedSubscriberName">{{createSubscriberName}}</textarea>
 						
 					</div>
 				</td>
@@ -55,8 +55,10 @@
 				</td>
 				<td style="width:80%" nowrap>
 					<div class="fn-ebz-container" ng-init="getServiceTypesList()">
-						<select  ng-model="selectedServicetype" ng-options="key as value for (key , value) in serviceTypeList">
-						<option value="">Select Service Type</option></select>
+						<select ng-model="selectedServicetype" data-tests-id="serviceType">
+							<option value="">Select Service Type</option>
+							<option ng-repeat="serviceType in serviceTypeList" class="serviceTypeOption" ng-value="serviceType.id" ng-disabled="!serviceType.isPermitted">{{serviceType.name}}</option>
+						</select>
 					  &nbsp;&nbsp;<a class="btn btn-primary" ng-click="refreshServiceTypes(subId);" ><span class="glyphicon glyphicon-refresh"></span></a>
 					</div>
 				</td>

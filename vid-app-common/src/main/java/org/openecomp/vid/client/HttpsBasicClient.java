@@ -95,7 +95,7 @@ public class HttpsBasicClient{
 			//May need to make the algorithm a parameter. MSO requires TLSv1.1	or TLSv1.2
 			ctx = SSLContext.getInstance("TLSv1.2");
 			
-			/* 
+			/*
 			KeyManagerFactory kmf = null;
 			try {
 				kmf = KeyManagerFactory.getInstance("SunX509");
@@ -113,7 +113,7 @@ public class HttpsBasicClient{
 			ctx.init(kmf.getKeyManagers(), null, null);
 			*/
 			ctx.init(null, null, null);
-			//config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, 
+			//config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
 			//							new HTTPSProperties( , ctx));
 			
 			return ClientBuilder.newBuilder()
