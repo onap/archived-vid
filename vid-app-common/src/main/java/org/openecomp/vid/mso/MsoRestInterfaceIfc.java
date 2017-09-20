@@ -20,6 +20,7 @@
 
 package org.openecomp.vid.mso;
 
+import org.openecomp.vid.changeManagement.ChangeManagementRequest;
 import org.openecomp.vid.mso.rest.RequestDetails;
 
 /**
@@ -30,7 +31,7 @@ public interface MsoRestInterfaceIfc {
 	/**
 	 * Inits the rest client.
 	 */
-	public void initRestClient();
+	public void initMsoClient();
 	
 	/**
 	 * Gets the.
@@ -70,6 +71,18 @@ public interface MsoRestInterfaceIfc {
 	 */
 	public <T> void Post(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) throws Exception;
 	
+	/**
+	 * Put.
+	 *
+	 * @param <T> the generic type
+	 * @param t the t
+	 * @param r the r
+	 * @param sourceID the source ID
+	 * @param path the path
+	 * @param restObject the rest object
+	 * @throws Exception the exception
+	 */
+	public <T> void Put(T t, ChangeManagementRequest r, String sourceID, String path, RestObject<T> restObject) throws Exception ;
 	/***
 	 * Log request.
 	 *

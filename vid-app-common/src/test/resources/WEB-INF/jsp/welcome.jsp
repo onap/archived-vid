@@ -1,4 +1,5 @@
 
+<script src="app/vid/external/multiselect/angular-bootstrap-multiselect.min.js"></script>
 <div>
      <h1 class="heading1">AT&T Domain 2.0 Network</h1>
      <br>
@@ -19,8 +20,8 @@
     VID was originally developed for the October 2016 release by an integrated IT and Labs team, under the 
       direction of Steve Smokowski and Vivian Pressley.
       <br><br>
-    <h1 class="heading1"><a href="mailto:DL-VIDDeliveryTeam@att.com" target="_top">Contact Us</a></h1>
-    <a href="mailto:DL-VIDDeliveryTeam@att.com" target="_top">Please click here to contact us.</a>
+    <h1 class="heading1"><a href="mailto:VID-Tier4@ist.att.com" target="_top">Contact Us</a></h1>
+    <a href="mailto:VID-Tier4@ist.att.com" target="_top">Please click here to contact us.</a>
 
 	
 

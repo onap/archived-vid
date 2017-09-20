@@ -5,6 +5,7 @@ import org.openecomp.vid.aai.SubscriberFilteredResults;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.openecomp.vid.roles.RoleValidator;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -21,5 +22,13 @@ public interface AaiService {
     
     AaiResponse getAaiZones();
 
+    AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId);
+
+    Response getVNFData(String globalSubscriberId, String serviceType);
+
     AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType, RoleValidator roleValidator);
+
+    AaiResponse getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId);
+
+    Response getVersionByInvariantId(List<String> modelInvariantId);
 }

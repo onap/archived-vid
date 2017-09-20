@@ -46,6 +46,10 @@ public class RelatedModel extends org.openecomp.vid.domain.mso.RelatedModel {
     /** (Required). */
     @JsonProperty("modelInfo")
     private org.openecomp.vid.domain.mso.ModelInfo modelInfo;
+
+//    /** The related model object instance list. */
+//    @JsonProperty("instanceId")
+//    private org.openecomp.vid.domain.mso.InstanceIds instanceId;
     
     /** The additional properties. */
     @JsonIgnore

@@ -1,0 +1,7 @@
+<div class="pull-right">
+    <button ng-repeat="task in vm.manualTasks"
+            type="button" id="{{task}}-button" name="{{task}}" class="btn btn-primary"
+            ng-show="vm.isTaskAvailable(vm.MANUAL_TASKS[task])"
+            ng-click="vm.completeTask(vm.MANUAL_TASKS[task])">{{task.charAt(0).toUpperCase() + task.slice(1)}}</button>
+</div>
+

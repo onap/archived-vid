@@ -37,6 +37,7 @@ import org.openecomp.portalsdk.core.util.SystemProperties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
+import org.openecomp.vid.changeManagement.ChangeManagementRequest;
 import org.openecomp.vid.client.HttpBasicClient;
 import org.openecomp.vid.client.HttpsBasicClient;
 import org.openecomp.vid.mso.rest.RequestDetails;
@@ -57,7 +58,7 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
 	
 	/** The common headers. */
 	private MultivaluedHashMap<String, Object> commonHeaders;
-	
+
 	/**
 	 * Instantiates a new mso rest interface.
 	 */
@@ -68,7 +69,7 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
 	/* (non-Javadoc)
 	 * @see org.openecomp.vid.mso.MsoRestInterfaceIfc#initRestClient()
 	 */
-	public void initRestClient()
+	public void initMsoClient()
 	{
 		final String methodname = "initRestClient()";
 		
@@ -131,7 +132,7 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
 		url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
 		
-        initRestClient();
+        initMsoClient();
 		
 		final Response cres = client.target(url)
 			 .request()
@@ -170,7 +171,7 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
 		logRequest (r);
 
 		try {
-			initRestClient();
+			initMsoClient();
 			
 			url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
 			logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + " methodName sending request to: " + url);
@@ -232,9 +233,9 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
        
         logRequest (r);
         try {
-            
-            initRestClient();    
-    
+
+			initMsoClient();
+
             url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
             logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
             // Change the content length
@@ -245,6 +246,62 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
                  //.header("content-length", 201)
                  //.header("X-FromAppId",  sourceID)
                  .post(Entity.entity(r, MediaType.APPLICATION_JSON));
+            
+            try {
+	   			t = (T) cres.readEntity(t.getClass());
+	   			restObject.set(t);
+            }
+            catch ( Exception e ) {
+            	logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " No response entity, this is probably ok, e="
+            			+ e.getMessage());
+            }
+
+            int status = cres.getStatus();
+    		restObject.setStatusCode (status);
+    		
+    		if ( status >= 200 && status <= 299 ) {
+    			logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
+    			logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
+    		
+             } else {
+            	 logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " with status="+status+", url="+url);
+             }    
+   
+        } catch (Exception e)
+        {
+        	 logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " with url="+url+ ", Exception: " + e.toString());
+        	 throw e;
+        
+        }
+    }
+	
+	
+	/* (non-Javadoc)
+	 * @see org.openecomp.vid.mso.MsoRestInterfaceIfc#Put(java.lang.Object, org.openecomp.vid.mso.rest.RequestDetails, java.lang.String, java.lang.String, org.openecomp.vid.mso.RestObject)
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> void Put(T t, ChangeManagementRequest r, String sourceID, String path, RestObject<T> restObject) throws Exception {
+
+        String methodName = "Put";
+        String url="";
+        
+        logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " start");
+       
+//        logRequest (r);
+        try {
+            
+            initMsoClient();    
+    
+            url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+            logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
+            // Change the content length
+            final Response cres = client.target(url)
+            	 .request()
+                 .accept("application/json")
+	        	 .headers(commonHeaders)
+                 //.header("content-length", 201)
+                 //.header("X-FromAppId",  sourceID)
+                 .put(Entity.entity(r, MediaType.APPLICATION_JSON));
             
             try {
 	   			t = (T) cres.readEntity(t.getClass());
@@ -287,7 +344,9 @@ public class MsoRestInterface extends MsoRestInt implements MsoRestInterfaceIfc 
     public <T> T getInstance(Class<T> clazz) throws IllegalAccessException, InstantiationException
 	{
 		return clazz.newInstance();
-	} 
+	}
+
+
 	
     
 }

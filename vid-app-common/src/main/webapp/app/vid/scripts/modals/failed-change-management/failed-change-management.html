@@ -1,0 +1,12 @@
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/new-change-management/new-change-management.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/failed-change-management/failed-change-management.css" />
+<div class="modal-header">
+    <h3 class="modal-title" id="failed-modal-header">Failed</h3>
+    <span id="cancel" ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+</div>
+<div class="modal-body">
+    <span id="failed-modal-content">{{vm.content}}</span>
+</div>
+<div class="modal-footer">
+    <div ng-include="'app/vid/scripts/modals/change-management-manual-tasks-controller/change-management-manual-tasks.html'"></div>
+</div>

@@ -191,6 +191,8 @@ public class ToscaParserImpl2 {
         volumeGroup.setModelCustomizationName(group.getMetadata().getValue(Constants.vfModuleModelName));
         volumeGroup.setVersion(group.getMetadata().getValue(Constants.vfModuleModelVersion));
         volumeGroup.setUuid(group.getMetadata().getValue(Constants.vfModuleModelUUID));
+        volumeGroup.setCustomizationUuid(group.getMetadata().getValue(Constants.vfModuleModelCustomizationUUID));
+
         return volumeGroup;
     }
 

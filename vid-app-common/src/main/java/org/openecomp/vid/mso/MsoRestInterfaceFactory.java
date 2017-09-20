@@ -21,28 +21,24 @@
 package org.openecomp.vid.mso;
 
 import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.openecomp.vid.mso.rest.MsoRestClientNew;
 
 /**
  * A factory for creating MsoRestInterface objects.
  */
 public class MsoRestInterfaceFactory {
-	
-	/**
-	 * Gets the single instance of MsoRestInterfaceFactory.
-	 *
-	 * @return single instance of MsoRestInterfaceFactory
-	 */
-	public static MsoRestInterfaceIfc getInstance () {
-		MsoRestInterfaceIfc obj = null;
-		
-//		String mso_dme2_enabled = SystemProperties.getProperty(MsoProperties.MSO_DME2_ENABLED);
-//		if ( (mso_dme2_enabled != null) && (mso_dme2_enabled.equalsIgnoreCase("true") ) ) {
-//			obj = new MsoDme2RestInterface();
-//		}
-//		else {
-			obj = new MsoRestInterface();
-//		}
-		return ( obj );
-	}
 
+    /**
+     * Gets the single instance of MsoRestInterfaceFactory.
+     *
+     * @return single instance of MsoRestInterfaceFactory
+     */
+    public static MsoInterface getInstance() {
+        String msoPropertyName = "mso.client.type";
+        if (SystemProperties.containsProperty(msoPropertyName) &&
+                SystemProperties.getProperty(msoPropertyName).equals("LOCAL")) {
+            return new MsoLocalClientNew();
+        } else
+            return new MsoRestClientNew();
+    }
 }

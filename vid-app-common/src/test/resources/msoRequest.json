@@ -1,0 +1,25 @@
+{
+  "requestDetails": {
+    "requestInfo": {
+      "instanceName": "KLKLKL",
+      "source": "VID",
+      "suppressRollback": false,
+      "requestorId": "1"
+    },
+    "modelInfo": {
+      "modelType": "service",
+      "modelInvariantId": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+      "modelVersionId": "1de57bcf-365a-4ba7-8a51-7377b7144586",
+      "modelName": "1707vidnf",
+      "modelVersion": "2.0"
+    },
+    "requestParameters": {
+      "userParams": [],
+      "subscriptionServiceType": "HNGATEWAY",
+      "aLaCarte": true
+    },
+    "subscriberInfo": {
+      "globalSubscriberId": "21014aa2-9e71128cae7-jl319x"
+    }
+  }
+}

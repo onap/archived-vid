@@ -105,6 +105,9 @@
 						<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeService(aService.instance)" style="margin-right: 8px;">
 							<span class="glyphicon glyphicon-info-sign"></span>
 						</a>
+						<a data-tests-id="activateButton" class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="activateMSOInstance()" style="margin-right: 8px;">
+							Activate
+						</a>
 					</div>
 					<ol ui-tree-nodes="" ng-model="aService.instance.vnfs" ng-class="{hidden: collapsed}">
 						<li ng-repeat="vnf in aService.instance.vnfs" ui-tree-node>

@@ -20,7 +20,9 @@
 
 "use strict";
 
-appDS2.constant("COMPONENT", (function() {
+appDS2
+    .constant("_", window._)
+	.constant("COMPONENT", (function() {
     return {
     A_LA_CARTE : "a la carte",
     CLOUD_REGION_ID : "cloudRegionID",
@@ -95,16 +97,30 @@ appDS2.constant("COMPONENT", (function() {
 	VPN_ID_1 : "1a2b3c4d5e6f",
 	
 	// PATHS
+	GET_WORKFLOW: "change-management/workflow?vnfs=@vnfs",
+	GET_MSO_WORKFLOWS: "change-management/mso",
+	GET_SCHEDULER_CHANGE_MANAGEMENTS: "change-management/scheduler",
 	ASSIGN : "?r=",
 	AAI_GET_SERVICE_INSTANCE_PATH : "aai_get_service_instance/",
 	AAI_GET_SERVICES : "aai_get_services",
     AAI_GET_AIC_ZONES :"aai_get_aic_zones",
+    AAI_GET_AIC_ZONE_FOR_PNF :"aai_get_aic_zone_for_pnf/@globalCustomerId/@serviceType/@serviceInstanceId",
     AAI_GET_SERVICES_BY_TYPE : "aai_get_models_by_service_type",
 	AAI_GET_TENANTS : "aai_get_tenants/",
 	AAI_SUB_DETAILS_PATH : "aai_sub_details/",
+	AAI_GET_VERSION_BY_INVARIANT_ID:"aai_get_version_by_invariant_id/",
+	AAI_GET_VNF_DATA_PATH: "aai_get_vnf_data/",
+	AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE: "get_vnf_data_by_globalid_and_service_type/",
 	AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
+	AAI_GET_VNF_INFO : "aai_get_vnf_information",
 	ASDC_GETMODEL_PATH : "asdc/getModel/",
 	CREATE_INSTANCE_PATH : "/models/services/createInstance", 
+	//1710 scheduler contants
+	POST_CREATE_NEW_VNF_CHANGE:"post_create_new_vnf_change",
+	GET_POLICY:"get_policy",
+	GET_TIME_SLOTS:"get_time_slots",
+	SUBMIT_VNF_CHANGE_TIMESLOTS:"submit_vnf_change_timeslots",
+	
 	FORWARD_SLASH : "/",
 	GET_SYSTEM_PROP_VNF_PROV_STATUS_PATH : "get_system_prop_vnf_prov_status",
 	GET_USER_ID : "getuserID",
@@ -116,6 +132,7 @@ appDS2.constant("COMPONENT", (function() {
 	MSO_CREATE_NW_INSTANCE_PATH : "mso_create_nw_instance/",
 	MSO_CREATE_SVC_INSTANCE : "mso_create_svc_instance",
 	MSO_DELETE_SVC_INSTANCE_PATH : "mso_delete_svc_instance/",
+	MSO_ACTIVATE_INSTANCE: "mso/mso_activate_service_instance/@serviceInstanceId",
 	SELECTED_SERVICE_SUB_PATH : "#/instances/subdetails?selectedServiceSubscription=",
 	SELECTED_SUB_PATH : "#/instances/subdetails?selectedSubscriber=",
 	SELECTEDSERVICEINSTANCE_SUB_PATH : "&selectedServiceInstance=",
@@ -154,6 +171,13 @@ appDS2.constant("COMPONENT", (function() {
 	    "vfmodule" : "VF Module",
 	    "vnf" : "VNF",
 	    "volumegroup" : "Volume Group"
+	},
+
+	MANUAL_TASKS: {
+    	"retry": "retry",
+    	"rollback": "rollback",
+    	"abort": "abort",
+    	"skip": "skip"
 	}
 	
     };

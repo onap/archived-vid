@@ -1,9 +1,9 @@
 package org.openecomp.vid.roles;
 
-
 /**
  * Created by Oren on 7/1/17.
  */
+
 public class Role {
 
     private EcompRole ecompRole;

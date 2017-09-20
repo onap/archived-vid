@@ -9,9 +9,13 @@
         "requestState": {
             "description": "short description of the instantiation state",
             "enum": [
-                "complete",
-                "failed",
-                "inProgress"
+                "COMPLETE",
+                "FAILED",
+                "IN_PROGRESS",
+                "PENDING",
+                "UNLOCKED",
+                "COMPLETED",
+                ""
             ],
             "type": "string"
         },

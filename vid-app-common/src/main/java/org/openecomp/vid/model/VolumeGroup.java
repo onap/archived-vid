@@ -161,7 +161,7 @@ public class VolumeGroup {
 	 *
 	 * @param u the new customization uuid
 	 */
-	private void setCustomizationUuid(String u) {
+	public void setCustomizationUuid(String u) {
 		this.customizationUuid = u;
 		
 	}

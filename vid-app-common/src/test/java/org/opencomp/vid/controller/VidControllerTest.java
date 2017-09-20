@@ -11,6 +11,8 @@ import org.openecomp.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.openecomp.sdc.tosca.parser.impl.SdcToscaParserFactory;
 import org.openecomp.sdc.tosca.parser.impl.SdcTypes;
+import org.openecomp.vid.aai.AaiClient;
+import org.openecomp.vid.aai.AaiResponse;
 import org.openecomp.vid.asdc.AsdcCatalogException;
 import org.openecomp.vid.asdc.AsdcClient;
 import org.openecomp.vid.asdc.parser.ToscaParserImpl2;
@@ -41,6 +43,7 @@ public class VidControllerTest {
 
 	@Autowired
 	private AsdcClient asdcClient;
+	
     @Autowired
     ServletContext context;
     public class Constants{
@@ -55,6 +58,19 @@ public class VidControllerTest {
     private ToscaParserImpl2 p2 = new ToscaParserImpl2();
     private ObjectMapper om = new ObjectMapper();
 
+    
+    @Test
+    public void test() {
+    	AaiClient client = new AaiClient(context);
+    	AaiResponse<?> response = client.getVNFData();
+    	 try {
+			System.out.println(new ObjectMapper().writeValueAsString(response));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     @Test
     public void checkPNFFieldsExist() throws SdcToscaParserException {
         String serviceRoleString = "serviceRole";

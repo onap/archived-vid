@@ -58,7 +58,7 @@ import java.util.List;
 public class RequestList {
     
     /** The request list. */
-    private List<Request> requestList;
+    private List<RequestWrapper> requestList;
     
     /** The additional properties. */
     @JsonIgnore
@@ -69,7 +69,7 @@ public class RequestList {
      *
      * @return     The RelatedModel List
      */
-    public List<Request> getRequestList() {
+    public List<RequestWrapper> getRequestList() {
         return requestList;
     }
 
@@ -78,7 +78,7 @@ public class RequestList {
      *
      * @param l the new request list
      */
-    public void setRequestList(List<Request> l) {
+    public void setRequestList(List<RequestWrapper> l) {
         this.requestList = l;
     }
 

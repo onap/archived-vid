@@ -47,6 +47,11 @@
     		templateUrl : "app/vid/scripts/view-models/aaiSubDetails.htm", 
     		controller : "aaiSubscriberController"
         })
+	  	.when('/change-management', {
+              templateUrl : "app/vid/scripts/view-models/change-management.html",
+              controller : "changeManagementController",
+			  controllerAs: 'vm'
+          })
         .when('/instantiate', {
           controller: 'InstantiationController',
           templateUrl: 'app/vid/scripts/view-models/instantiate.htm'

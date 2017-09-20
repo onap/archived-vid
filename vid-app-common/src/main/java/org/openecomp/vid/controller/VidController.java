@@ -67,6 +67,7 @@ public class VidController extends RestrictedBaseController {
 	@RequestMapping(value={"/rest/models/services"}, method = RequestMethod.GET)
 	public SecureServices getServices(HttpServletRequest request) throws VidServiceUnavailableException {
 		try {
+			LOG.info("Start API for browse ASDC was called");
 			SecureServices secureServices = new SecureServices();
 			RoleProvider roleProvider = new RoleProvider();
 			Map<String, String[]> requestParams = request.getParameterMap();

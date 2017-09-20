@@ -1,0 +1,68 @@
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/new-change-management/new-change-management.css" />
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">New VNF Change</h3>
+    <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+</div>
+<form name="newChangeManagement" ng-submit="vm.schedule()">
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label">Subscriber</label>
+            <select class="form-control" ng-model="vm.changeManagement.subscriberId" ng-change="vm.loadServiceTypes()" name="subscriber" id="subscriber" data-tests-id="subscriberName" required>
+                <option value="" disabled>Select subscriber</option>
+                <option data-tests-id="subscriberNameOption" ng-repeat="item in vm.subscribers" ng-value="item['global-customer-id']">{{item['subscriber-name']}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Service type</label>
+            <select class="form-control" ng-model="vm.changeManagement.serviceType" ng-change="vm.loadVNFTypes()" name="serviceType" id="serviceType" ng-options="item['service-type'] for item in vm.serviceTypes" required data-ng-disabled="newChangeManagement.subscriber.$pristine">
+                <option value="" disabled>Select service type</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">VNF type</label>
+            <select class="form-control" ng-model="vm.changeManagement.vnfType" ng-change="vm.loadVNFVersions()" name="vnfType" id="vnfType" ng-options="item for item in vm.vnfTypes" required data-ng-disabled="newChangeManagement.serviceType.$pristine">
+                <option value="" disabled>Select VNF type</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Source Version</label>
+            <select class="form-control" ng-model="vm.changeManagement.fromVNFVersion" ng-change="vm.loadVNFNames()" name="fromVNFVersion" id="fromVNFVersion" ng-options="item.key as item.value for item in vm.fromVNFVersions" required data-ng-disabled="newChangeManagement.vnfType.$pristine">
+                <option value="" disabled>Select from VNF version</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">VNF name</label>
+            <multiselect ng-model="vm.changeManagement.vnfNames" ng-change="vm.loadWorkFlows()" name="vnfName" id="vnfName" options="vm.vnfNames" display-prop="name" id-prop="id" required data-ng-disabled="newChangeManagement.fromVNFVersion.$pristine"></multiselect>
+        </div>
+        <div ng-show="vm.changeManagement.vnfNames && vm.changeManagement.vnfNames.length > 0" class="form-group vnf-versions-container">
+            <table class="table table-bordered">
+                <tbody>
+                <tr ng-repeat="vnfName in vm.changeManagement.vnfNames">
+                    <td class="col-md-6"><span class="vnf-versions-name">{{vnfName.name}}</span></td>
+                    <td class="col-md-3">
+                        <select ng-model="vnfName.version" ng-change="vm.selectVersionForVNFName(vnfName)" class="vnf-versions-select-as-text">
+                            <option value="" disabled="" selected="selected">Select Target Version</option>
+                            <option ng-repeat="version in vnfName.availableVersions">{{version.modelInfo.modelVersion}}</option>
+                        </select>
+                    </td>
+                    <td class="col-md-3 vnf-versions-name">
+                        <input ng-model="vnfName.filePath" onchange="angular.element(this).scope().selectFileForVNFName(this)" type="file" id="{{vnfName['invariant-id']}}" class="vnf-files-select" />
+                        <span class="vnf-versions-name">Select File<span class="caret"></span></span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Workflow</label>
+            <select class="form-control" ng-model="vm.changeManagement.workflow" name="workflow" id="workflow" ng-options="item for item in vm.workflows" required data-ng-disabled="newChangeManagement.vnfName.$pristine">
+                <option value="" disabled>Select workflow</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Schedule</button>
+            <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
+        </div>
+    </div>
+</form>

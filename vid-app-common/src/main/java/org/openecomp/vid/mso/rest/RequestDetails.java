@@ -65,7 +65,7 @@ public class RequestDetails extends org.openecomp.vid.domain.mso.RequestDetails 
     
     /** The related model list. */
     @JsonProperty("relatedModelList")
-    private List<RelatedModel> relatedModelList;
+    private List<RelatedModel> relatedInstanceList;
     
     /** The request info. */
     @JsonProperty("requestInfo")
@@ -122,25 +122,24 @@ public class RequestDetails extends org.openecomp.vid.domain.mso.RequestDetails 
     public void setModelInfo(ModelInfo modelInfo) {
         this.modelInfo = modelInfo;
     }
-
     /**
-     * Gets the related model list.
+     * Gets the related instance list.
      *
-     * @return     The relatedModelList
+     * @return     The relatedInstanceList
      */
-    @JsonProperty("relatedModelList")
-    public List<RelatedModel> getRelatedModelList() {
-        return relatedModelList;
+    @JsonProperty("relatedInstanceList")
+    public List<RelatedModel> getRelatedInstanceList() {
+        return relatedInstanceList;
     }
 
     /**
      * Sets the related model list.
      *
-     * @param relatedModelList     The relatedModelList
+     * @param relatedInstanceList     The relatedInstanceList
      */
-    @JsonProperty("relatedModelList")
-    public void setRelatedModelList( List<RelatedModel> relatedModelList) {
-        this.relatedModelList = relatedModelList;
+    @JsonProperty("relatedInstanceList")
+    public void setRelatedInstanceList( List<RelatedModel> relatedInstanceList) {
+        this.relatedInstanceList = relatedInstanceList;
     }
 
     /**
@@ -212,7 +211,7 @@ public class RequestDetails extends org.openecomp.vid.domain.mso.RequestDetails 
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(cloudConfiguration).append(modelInfo).append(relatedModelList).append(requestInfo).append(getRequestParameters()).append(subscriberInfo).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(cloudConfiguration).append(modelInfo).append(relatedInstanceList).append(requestInfo).append(getRequestParameters()).append(subscriberInfo).append(additionalProperties).toHashCode();
     }
 
     /* (non-Javadoc)
@@ -227,7 +226,7 @@ public class RequestDetails extends org.openecomp.vid.domain.mso.RequestDetails 
             return false;
         }
         RequestDetails rhs = ((RequestDetails) other);
-        return new EqualsBuilder().append(cloudConfiguration, rhs.cloudConfiguration).append(modelInfo, rhs.modelInfo).append(relatedModelList, rhs.relatedModelList).append(requestInfo, rhs.requestInfo).append(getRequestParameters(), rhs.getRequestParameters()).append(subscriberInfo, rhs.subscriberInfo).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(cloudConfiguration, rhs.cloudConfiguration).append(modelInfo, rhs.modelInfo).append(relatedInstanceList, rhs.relatedInstanceList).append(requestInfo, rhs.requestInfo).append(getRequestParameters(), rhs.getRequestParameters()).append(subscriberInfo, rhs.subscriberInfo).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }
