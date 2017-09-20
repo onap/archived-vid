@@ -1,4 +1,4 @@
-
+<script src="app/vid/external/multiselect/angular-bootstrap-multiselect.min.js"></script>
 <div>
      <h1 class="heading1">ONAP</h1>
      <br>

@@ -7,11 +7,19 @@
 			"description": "reference to the customized set of parameters associated with a model in a given service context",
 			"type": "string"
 		},
+		"modelCustomizationId": {
+			"description": "reference to the customized set of parameters associated with a model in a given service context",
+			"type": "string"
+		},
 		"modelInvariantId": {
 			"description": "Invariant UUID for the model name, irrespective of the version, as defined in SDC--authoritative",
 			"type": "string",
 			"pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
 		},
+        "modelVersionId": {
+                "description": "Version id for version",
+                "type": "string"
+            },
 		"modelName": {
 			"description": "name of the model as defined in SDC--not authoritative",
 			"type": "string"
@@ -29,12 +37,13 @@
 				"service",
 				"vfModule",
 				"vnf",
-				"volumeGroup"
+				"volumeGroup",
+				"configuration"
 			]
 		},
 		"modelVersion": {
 			"description": "the version of the model as defined in SDC--not authoritative",
-			"type": "number"
+			"type": "string"
 		}
 	},
 	"required": ["modelType"]

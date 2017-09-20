@@ -1,0 +1,157 @@
+.body-content-jsp {
+    margin-top: 35px;
+    min-height: 500px;
+    margin-left: 201px;
+    margin-right: 0px;
+    background-color: #f8f8f8;
+}
+
+.changes-management {
+    background: white;
+    color: #797979;
+}
+
+.changes-management .header {
+    height: 76px;
+    padding: 13px 0px 0px 26px;
+    background: #00aeef;
+}
+
+.changes-management #change-management-headline {
+    font-family: "Open Sans";
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+}
+
+
+.changes-management .separator {
+    width: 1px;
+    font-size: 35px;
+    background: #00aeef;
+    border-left: 1px solid #d2d2d2;
+    margin: 0px 30px 0px 30px;
+}
+
+.changes-management .header .button-container {
+    display: initial;
+}
+
+.changes-management .header .icon-svg {
+    display: inline;
+    color: #ffffff;
+    position: relative;
+    top: 9px;
+}
+
+.changes-management .header .button-text {
+    position: relative;
+    font-family: "Open Sans";
+    color:  #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    bottom: 5px;
+    left: 5px;
+}
+
+.changes-management .header .icon-filling {
+    width: 40px;
+    height: 40px;
+    fill: #ffffff;
+}
+
+.changes-management .header .search-changes {
+    width: 361px;
+    float: right;
+    height: 41px;
+    border: 0px;
+    background-color: #59c2ed;
+    color: #ffffff;
+    margin-right: 15px;
+    border-radius: 10px;
+    top: 6px;
+}
+
+.changes-management .header .search-changes::placeholder {
+    font-family: "Open Sans";
+    color: #ffffff;
+    text-align: left;
+    font-size: 14px;
+    line-height: 40px;
+    font-style: italic;
+}
+
+.att-accordion__toggle {
+    font-size: 14px;
+}
+
+.jobs-table {
+    background-color: #f8f8f8;
+    padding: 40px;
+}
+
+.nav-tabs.nav-justified {
+    width: 30%;
+    margin-right:2px;
+    border:0px;
+    border-radius:0px;
+}
+
+.uib-tab.nav-item {
+    border: 1px solid #d2d2d2;
+    background-color:  #f8f8f8;
+}
+
+.uib-tab.nav-item.active {
+    border-top: 4px solid #00aeef;
+}
+
+.nav-tabs.nav-justified>li>a {
+    border-radius:0px!important;
+    border: 0px!important;
+}
+
+.table {
+    border: 1px solid #eaeaea;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 7px 0px rgba(34, 31, 31, 0.17);
+    font-family: "Open Sans";
+    color: #5a5a5a;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.table>thead {
+    background-color: #d2d2d2;
+    font-family: "Open Sans";
+    color: #191919;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 40px;
+}
+
+.table-headline-row {
+    font-family: "Open Sans";
+    color: #00aeef;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #eaeaea;
+    box-shadow: 0px 1px 1px 0px rgba(34, 31, 31, 0.19);
+}
+
+.table-bordered{border:1px solid #eaeaea;}
+.table-bordered>tbody>tr>td,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>td,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>thead>tr>th{border:1px solid #eaeaea;}
+
+.centered {
+    text-align: center;
+}

@@ -61,9 +61,6 @@ public class ToscaMetadata {
 	/** The resource vendor release. */
 	private String resourceVendorRelease;
 	
-	/** the resourceVendorModelNumber */
-	private String resourceVendorModelNumber;
-
 	/** The service ecomp naming. */
 	private String serviceEcompNaming;
 	
@@ -91,11 +88,6 @@ public class ToscaMetadata {
 	
 	/** The vf module model version. */
 	private String vfModuleModelVersion;
-
-        /** serviceType */
-        private String serviceType;
-        /** serviceRole */
-        private String serviceRole;
 	
 	/**
 	 * Instantiates a new tosca metadata.
@@ -466,26 +458,4 @@ public class ToscaMetadata {
 		
 		return vfModuleModelCustomizationUUID;
 	}
-
-        /** serviceType */
-        public String getServiceType() {
-                return serviceType;
-        }
-        public void setServiceType(String serviceType) {
-                this.serviceType= serviceType;
-        }
-        /** serviceRole */
-        public String getServiceRole() {
-                return serviceRole;
-        }
-        public void setServiceRole(String serviceRole) {
-                this.serviceRole= serviceRole;
-        }
-        /** resourceVendorModelNumber */
-        public String getResourceVendorModelNumber() {
-                return resourceVendorModelNumber;
-        }
-        public void setResourceVendorModelNumber(String resourceVendorModelNumber) {
-                this.resourceVendorModelNumber= resourceVendorModelNumber;
-        }
 }

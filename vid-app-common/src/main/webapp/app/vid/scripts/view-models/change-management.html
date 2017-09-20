@@ -1,0 +1,112 @@
+<link rel="stylesheet" type="text/css" href="app/vid/styles/change-management.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/change-management-icons.css" />
+<div class="changes-management">
+    <div class="header">
+        <span id="change-management-headline">VNF Changes</span>
+        <span class="separator"></span>
+        <div class="button-container" ng-click="vm.createNewChange()">
+            <div class="icon-svg" id="change-management-new-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 55.47337 55.63023"><path class="icon-filling" d="M27.7367.07843A27.73669,27.73669,0,1,0,55.4734,27.81512,27.73757,27.73757,0,0,0,27.7367.07843ZM40.18824,29.6178H29.53938V40.26666a1.80267,1.80267,0,0,1-3.60535,0V29.6178H15.28516a1.80267,1.80267,0,0,1,0-3.60535H25.934V15.36359a1.80267,1.80267,0,0,1,3.60535,0V26.01245H40.18824a1.80267,1.80267,0,1,1,0,3.60535Z"/></svg>
+        </div>
+            <span class="button-text">New</span>
+        </div>
+
+        <input type="search" id="change-management-search" class="search-changes" ng-change="vm.searchChanges()" ng-model-options="{debounce: 300}" ng-model="vm.searchChangesTerm" placeholder="Type to search">
+    </div>
+    <div class="jobs-table">
+        <div class="row">
+            <div class="col-md-12">
+                <uib-tabset active="activeJustified" justified="true">
+                    <uib-tab index="0" heading="Active" id="active-tab">
+                        <table class="table table-bordered" id="active-table">
+                            <thead class="thead-default">
+                                <tr>
+                                    <th class="col-md-5">VNF Name</th>
+                                    <th class="col-md-2">Type</th>
+                                    <th class="col-md-2">Flow</th>
+                                    <th class="col-md-2">Start time</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-headline-row">
+                                    <th>
+                                        <span id="in-progress-table-head">IN PROGRESS</span>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['FAILED', 'INPROGRESS', 'PENDING']}">
+                                    <th scope="row">{{changeManagement.instanceReferences.vnfInstanceName || 'No-Instance-Name'}}</th>
+                                    <td>{{changeManagement.requestScope}}</td>
+                                    <td>{{changeManagement.requestType}}</td>
+                                    <td>{{changeManagement.startTime}}</td>
+                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'FAILED'"><span class="icon-x" ng-click="vm.openFailedModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'INPROGRESS'"><span class="icon-process" ng-click="vm.openInProgressModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'PENDING'"><span class="icon-alert" ng-click="vm.openAlertModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered"><span class="icon-view"></span></td>
+                                </tr>
+                                <tr class="table-headline-row">
+                                    <th>
+                                        <span id="pending-table-head">PENDING</span>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr ng-repeat="changeManagement in vm.pendingChangeManagements">
+                                    <th scope="row">{{changeManagement.vnfName}}</th>
+                                    <td>{{changeManagement.scheduleRequest.scheduleName}}</td>
+                                    <td>{{changeManagement.workflow}}</td>
+                                    <td>{{changeManagement.startTime}}</td>
+                                    <td class="centered"><span class="icon-pending" ng-click="vm.openPendingModal({details: 'change management is pending in scheduler and waiting to be deployed'})"></span></td>
+                                    <td class="centered"><span class="icon-view"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </uib-tab>
+                    <uib-tab index="1" heading="Finished" id="finished-tab">
+                        <table class="table table-bordered" id="finished-table">
+                            <thead class="thead-default">
+                            <tr>
+                                <th class="col-md-5">VNF Name</th>
+                                <th class="col-md-2">Type</th>
+                                <th class="col-md-2">Flow</th>
+                                <th class="col-md-2">Start time</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-headline-row">
+                                <th>
+                                    <span id="finished-table-head">FINISHED</span>
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['COMPLETE']}">
+                                <th scope="row">{{changeManagement.instanceReferences.vnfInstanceName || 'No-Instance-Name'}}</th>
+                                <td>{{changeManagement.requestScope}}</td>
+                                <td>{{changeManagement.requestType}}</td>
+                                <td>{{changeManagement.startTime}}</td>
+                                <td></td>
+                                <td class="centered"><span class="icon-view"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,35 +21,56 @@
 package org.openecomp.vid.controller;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.glassfish.jersey.client.ClientResponse;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.openecomp.portalsdk.core.controller.RestrictedBaseController;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
-import org.openecomp.vid.model.ExceptionResponse;
-import org.openecomp.vid.mso.*;
-import org.openecomp.vid.mso.rest.RequestDetails;
-import org.openecomp.vid.roles.RoleProvider;
-import org.openecomp.vid.roles.RoleValidator;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+//import java.util.UUID;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.JsonEncoding;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.glassfish.jersey.client.ClientResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.openecomp.vid.model.ExceptionResponse;
+import org.openecomp.vid.mso.*;
+import org.openecomp.vid.mso.rest.*;
+import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import org.openecomp.portalsdk.core.controller.RestrictedBaseController;
+import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.openecomp.portalsdk.core.util.SystemProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 
 /**
  * The Class MsoController.
@@ -59,25 +80,30 @@ import java.util.Map;
 public class MsoController extends RestrictedBaseController {
 
     /**
-     * The Constant SVC_INSTANCE_ID.
-     */
-    public final static String SVC_INSTANCE_ID = "<service_instance_id>";
-    /**
-     * The Constant VNF_INSTANCE_ID.
-     */
-    public final static String VNF_INSTANCE_ID = "<vnf_instance_id>";
-    /**
-     * The Constant dateFormat.
-     */
-    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-    /**
      * The view name.
      */
     String viewName;
+
     /**
      * The logger.
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoController.class);
+
+    /**
+     * The Constant dateFormat.
+     */
+    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+
+    /**
+     * The Constant SVC_INSTANCE_ID.
+     */
+    public final static String SVC_INSTANCE_ID = "<service_instance_id>";
+    public final static String REQUEST_TYPE = "<request_type>";
+
+    /**
+     * The Constant VNF_INSTANCE_ID.
+     */
+    public final static String VNF_INSTANCE_ID = "<vnf_instance_id>";
 
     /**
      * Welcome.
@@ -118,37 +144,70 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_create_svc_instance", method = RequestMethod.POST)
     public ResponseEntity<String> createSvcInstance(HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
-
-
         String methodName = "createSvcInstance";
 
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
-        if (!userIsPermmited(request, mso_request)) {
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-        }
-//		mso_request = retrieveRequestObject (request, mso_request);
-
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
-        String userId = "";
-        HttpSession session = request.getSession();
-        System.out.println((new ObjectMapper().writeValueAsString(session.getAttribute("roles"))));
-        MsoResponseWrapper w = createInstance(mso_request, p);
-        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
         // always return OK, the MSO status code is embedded in the body
 
+        MsoResponseWrapper w = mbl.createSvcInstance(mso_request);
+
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
 
     }
 
-    private boolean userIsPermmited(HttpServletRequest request, RequestDetails mso_request) {
 
-        RoleValidator roleValidator = new RoleValidator(new RoleProvider().getUserRoles(request));
-        boolean isPermitted = roleValidator.isMsoRequestValid(mso_request);
-        if (!isPermitted) {
-            return false;
-        } else {
-            return true;
+    /**
+     * Creates the svc instance.
+     *
+     * @param request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+
+    public ResponseEntity<String> createSvcInstanceNewRest(HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+        String methodName = "createSvcInstance";
+
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        MsoBusinessLogicNew mbln = new MsoBusinessLogicNew();
+
+        // always return OK, the MSO status code is embedded in the body
+
+        MsoResponseWrapper w = mbln.createSvcInstanceRest(mso_request);
+
+        if (w == null) {
+            return null;
         }
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+
+    }
+
+    /**
+     * Creates the svc instance.
+     *
+     * @param request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+
+    public ResponseEntity<String> createSvcInstanceNew(HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+        String methodName = "createSvcInstance";
+
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        MsoBusinessLogicNew mbln = new MsoBusinessLogicNew();
+        // always return OK, the MSO status code is embedded in the body
+
+        MsoResponseWrapper w = mbln.createSvcInstance(mso_request);
+
+        if (w == null) {
+            return null;
+        }
+
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+
     }
 
     /**
@@ -161,23 +220,10 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_create_vnf_instance/{serviceInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> createVnf(@PathVariable("serviceInstanceId") String serviceInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
-//        if (!userIsPermmited(request, mso_request)) {
-            String instanceId = (String) ((Map)((Map)((ArrayList)((Map) mso_request.getAdditionalProperties().get("requestDetails")).get("relatedInstanceList")).get(0)).get("relatedInstance")).get("instanceId");
-            ResponseEntity<String> a = new AaiController(request.getServletContext()).doGetServiceInstance(instanceId,"Service Instance id");
-//            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-//        }
-        String methodName = "createVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
-        //RequestDetails mso_request = retrieveRequestObject (request);
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_VNF_INSTANCE);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
 
-        if (p == null || p.isEmpty()) {
-            throw new Exception("Vnf instance path is not defined");
-        }
-        // /serviceInstances/v2/<service_instance_id>/vnfs
-        String vnf_path = p.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        MsoResponseWrapper w = createInstance(mso_request, vnf_path);
+        MsoResponseWrapper w = mbl.createVnf(mso_request, serviceInstanceId);
 
         // always return OK, the MSO status code is embedded in the body
 
@@ -195,23 +241,12 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_create_nw_instance/{serviceInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> createNwInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
-
         String methodName = "createNwInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start, serviceInstanceId = " + serviceInstanceId);
 
-        //RequestDetails mso_request = retrieveRequestObject (request);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
 
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
-
-        if (p == null || p.isEmpty()) {
-            throw new Exception("Network instance path is not defined");
-        }
-        // /serviceInstances/v2/<serviceInstanceId>/networks/
-
-        String nw_path = p.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        MsoResponseWrapper w = createInstance(mso_request, nw_path);
-
-        // always return OK, the MSO status code is embedded in the body
+        MsoResponseWrapper w = mbl.createNwInstance(mso_request, serviceInstanceId);
 
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
 
@@ -230,21 +265,11 @@ public class MsoController extends RestrictedBaseController {
     public ResponseEntity<String> createVolumeGroupInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, @PathVariable("vnfInstanceId") String vnfInstanceId,
                                                             HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
         String methodName = "createVolumeGroupInstance";
-        if (!userIsPermmited(request, mso_request)) {
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-        }
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
-        //RequestDetails mso_request = retrieveRequestObject (request);
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
 
-        if (p == null || p.isEmpty()) {
-            throw new Exception("Volume group instance path is not defined");
-        }
-        String path = p.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        path = path.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-
-        MsoResponseWrapper w = createInstance(mso_request, path);
+        MsoResponseWrapper w = mbl.createVolumeGroupInstance(mso_request, serviceInstanceId, vnfInstanceId);
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
@@ -265,40 +290,31 @@ public class MsoController extends RestrictedBaseController {
         String methodName = "createVfModuleInstance";
 
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-        if (!userIsPermmited(request, mso_request)) {
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-        }
-        //RequestDetails mso_request = retrieveRequestObject (request);
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
 
-        if (p == null || p.isEmpty()) {
-            throw new Exception("VF module instance path is not defined");
-        }
-        // /serviceInstances/v2/<serviceInstanceId>/vnfs/<vnfInstanceId>/vfmodules
-        String path = p.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        path = path.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
 
-        MsoResponseWrapper w = createInstance(mso_request, path);
+        MsoResponseWrapper w = mbl.createVfModuleInstance(mso_request, serviceInstanceId, vnfInstanceId);
 
         // always return OK, the MSO status code is embedded in the body
 
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
     }
 
-    /**
-     * Creates the instance.
-     *
-     * @param request the request
-     * @param path    the path
-     * @return the mso response wrapper
-     * @throws Exception the exception
-     */
-    protected MsoResponseWrapper createInstance(RequestDetails request, String path) throws Exception {
-        String methodName = "createInstance";
-        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
+	/**
+	 * Creates the instance.
+	 *
+	 * @param request the request
+	 * @param path the path
+	 * @return the mso response wrapper
+	 * @throws ClientHandlerException the client handler exception
+	 * @throws Exception the exception
+	 */
+	protected MsoResponseWrapper createInstance(RequestDetails request, String path) throws Exception {
+		String methodName = "createInstance";
+		logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
 
         try {
-            MsoRestInterfaceIfc restController = MsoRestInterfaceFactory.getInstance();
+            MsoRestInterfaceIfc restController = new MsoRestInterface();
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Post, request = (" + request + ")");
 
             RestObject<String> restObjStr = new RestObject<String>();
@@ -307,14 +323,14 @@ public class MsoController extends RestrictedBaseController {
             restController.<String>Post(str, request, "", path, restObjStr);
             MsoResponseWrapper w = MsoUtil.wrapResponse(restObjStr);
 
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
-            return w;
-        } catch (Exception e) {
-            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            throw e;
-        }
-    }
+			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
+			return w;
+		} catch (Exception e) {
+			logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) +  "<== " + "." + methodName + e.toString());
+			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) +  "<== " + "." + methodName + e.toString());
+			throw e;
+		}
+	}
 
     /**
      * Delete svc instance.
@@ -331,10 +347,9 @@ public class MsoController extends RestrictedBaseController {
         String methodName = "deleteSvcInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
-        //RequestDetails mso_request = retrieveRequestObject (request);
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
-        String path = p + "/" + serviceInstanceId;
-        MsoResponseWrapper w = deleteInstance(mso_request, path);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.deleteSvcInstance(mso_request, serviceInstanceId);
 
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
         // always return OK, the MSO status code is embedded in the body
@@ -359,17 +374,10 @@ public class MsoController extends RestrictedBaseController {
         String methodName = "deleteVnf";
 
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-        if (!userIsPermmited(request, mso_request)) {
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-        }
-        //RequestDetails mso_request = retrieveRequestObject (request);
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_VNF_INSTANCE);
-        if (p == null || p.isEmpty()) {
-            throw new Exception("Vnf instance path is not defined");
-        }
-        // /serviceInstances/v2/<service_instance_id>/vnfs/
-        String vnf_path = p.replaceFirst(SVC_INSTANCE_ID, vnfInstanceId);
-        MsoResponseWrapper w = deleteInstance(mso_request, vnf_path + "/" + vnfInstanceId);
+
+        MsoBusinessLogic mlb = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mlb.deleteVnf(mso_request, serviceInstanceId, vnfInstanceId);
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
@@ -393,21 +401,11 @@ public class MsoController extends RestrictedBaseController {
             @PathVariable("vfModuleId") String vfModuleId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
 
         String methodName = "deleteVfModule";
-
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-        if (!userIsPermmited(request, mso_request)) {
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-        }
-        //RequestDetails mso_request = new RequestDetails();
-        //mso_request = retrieveRequestObject (request);
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
-        if (p == null || p.isEmpty()) {
-            throw new Exception("VF Module instance path is not defined");
-        }
-        // /serviceInstances/v2/<serviceInstanceId>/vnfs/<vnfInstanceId>/vfmodules
-        String path = p.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        path = path.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-        MsoResponseWrapper w = deleteInstance(mso_request, path + "/" + vfModuleId);
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.deleteVfModule(mso_request, serviceInstanceId, vnfInstanceId);
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
@@ -428,21 +426,12 @@ public class MsoController extends RestrictedBaseController {
     public ResponseEntity<String> deleteVolumeGroupInstance(
             @PathVariable("serviceInstanceId") String serviceInstanceId, @PathVariable("vnfInstanceId") String vnfInstanceId, @PathVariable("volumeGroupId") String volumeGroupId,
             HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
-
         String methodName = "deleteVolumeGroupInstance";
-
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-        if (!userIsPermmited(request, mso_request)) {
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-        }
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
-        if (p == null || p.isEmpty()) {
-            throw new Exception("Volume group instance path is not defined");
-        }
-        // /serviceInstances/v2/{serviceInstanceId}/volumeGroups
-        String path = p.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        path = path.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-        MsoResponseWrapper w = deleteInstance(mso_request, path + "/" + volumeGroupId);
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.deleteVolumeGroupInstance(mso_request, serviceInstanceId, vnfInstanceId, volumeGroupId);
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
@@ -460,57 +449,15 @@ public class MsoController extends RestrictedBaseController {
     @RequestMapping(value = "/mso_delete_nw_instance/{serviceInstanceId}/networks/{networkInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> deleteNwInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
                                                    @PathVariable("networkInstanceId") String networkInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
-
         String methodName = "deleteNwInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
-        //RequestDetails mso_request = retrieveRequestObject (request);
-        if (!userIsPermmited(request, mso_request)) {
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-        }
-        String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
-        if (p == null || p.isEmpty()) {
-            throw new Exception("Network instance path is not defined");
-        }
-        // /serviceInstances/v2/<service_instance_id>/networks
-        String path = p.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        MsoResponseWrapper w = deleteInstance(mso_request, path + "/" + networkInstanceId);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.deleteNwInstance(mso_request, serviceInstanceId, networkInstanceId);
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
-
-    }
-
-    /**
-     * Delete instance.
-     *
-     * @param request the request
-     * @param path    the path
-     * @return the mso response wrapper
-     * @throws Exception the exception
-     */
-    protected MsoResponseWrapper deleteInstance(RequestDetails request, String path) throws Exception {
-        String methodName = "deleteInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-
-        try {
-            MsoRestInterfaceIfc restController = MsoRestInterfaceFactory.getInstance();
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Delete, path =[" + path + "]");
-
-            RestObject<String> restObjStr = new RestObject<String>();
-            String str = new String();
-            restObjStr.set(str);
-            restController.<String>Delete(str, request, "", path, restObjStr);
-            MsoResponseWrapper w = MsoUtil.wrapResponse(restObjStr);
-
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
-            return w;
-
-        } catch (Exception e) {
-            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            throw e;
-        }
 
     }
 
@@ -528,27 +475,12 @@ public class MsoController extends RestrictedBaseController {
 
         String methodName = "getOrchestrationRequest";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-        MsoResponseWrapper w = null;
-        try {
-            MsoRestInterfaceIfc restController = MsoRestInterfaceFactory.getInstance();
-            String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQ);
-            String path = p + "/" + requestId;
 
-            RestObject<String> restObjStr = new RestObject<String>();
-            String str = new String();
-            restObjStr.set(str);
 
-            restController.<String>Get(str, "", path, restObjStr);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
 
-            w = MsoUtil.wrapResponse(restObjStr);
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
-            // always return OK, the MSO status code is embedded in the body
+        MsoResponseWrapper w = mbl.getOrchestrationRequest(requestId);
 
-        } catch (Exception e) {
-            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            throw e;
-        }
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
     }
@@ -568,28 +500,99 @@ public class MsoController extends RestrictedBaseController {
 
         String methodName = "getOrchestrationRequests";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-        MsoResponseWrapper w = null;
-        try {
-            MsoRestInterfaceIfc restController = MsoRestInterfaceFactory.getInstance();
-            String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
-            String path = p + filterString;
 
-            RestObject<String> restObjStr = new RestObject<String>();
-            String str = new String();
-            restObjStr.set(str);
 
-            restController.<String>Get(str, "", path, restObjStr);
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
 
-            w = MsoUtil.wrapResponse(restObjStr);
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
-        } catch (Exception e) {
-            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            throw e;
-        }
+        MsoResponseWrapper w = mbl.getOrchestrationRequests(filterString);
+
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
     }
+
+
+    /**
+     * activate to a pnf instance.
+     *
+     * @param serviceInstanceId the id of the service.
+     * @param requestDetails the body of the request.
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "/mso_activate_service_instance/{serviceInstanceId}", method = RequestMethod.POST)
+    public ResponseEntity<String> activateServiceInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, @RequestBody RequestDetails requestDetails) throws Exception {
+        String methodName = "activateServiceInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.activateServiceInstance(requestDetails, serviceInstanceId);
+        return new ResponseEntity<>(w.getResponse(), HttpStatus.OK);
+    }
+
+
+    /**
+     * Gets the orchestration requests for the dashboard.
+     *  currently its all the orchestration requests with RequestType updateInstance or replaceInstance.
+     * @return the orchestration requests
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "/mso_get_orch_reqs/dashboard", method = RequestMethod.GET)
+    public List<Request> getOrchestrationRequestsForDashboard() throws Exception {
+
+        String methodName = "getOrchestrationRequestsForDashboard";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        return mbl.getOrchestrationRequestsForDashboard();
+    }
+
+    /**
+     * Gets the Manual Tasks for the given request id.
+     *
+     * @param originalRequestId the id of the original request.
+     * @return the tasks
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "/mso_get_man_task/{originalRequestId}", method = RequestMethod.GET)
+    public List<Task> getManualTasksByRequestId(@PathVariable("originalRequestId") String originalRequestId) throws Exception {
+
+        String methodName = "getManualTasksByRequestId";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        return  mbl.getManualTasksByRequestId(originalRequestId);
+    }
+
+
+
+    /**
+     * Complete the manual task.
+     *
+     * @param taskId the id of the task to complete.
+     * @param requestDetails the body of the request.
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "/mso_post_man_task/{taskId}", method = RequestMethod.POST)
+    public ResponseEntity<String> manualTaskComplete(@PathVariable("taskId") String taskId , @RequestBody RequestDetails requestDetails) throws Exception {
+
+        String methodName = "manualTaskComplete";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.completeManualTask(requestDetails, taskId);
+        return new ResponseEntity<String>(w.getResponse(), HttpStatus.OK);
+    }
+
+
+
+
 
     /**
      * Gets the orchestration requests for svc instance.
@@ -598,32 +601,32 @@ public class MsoController extends RestrictedBaseController {
      * @return the orchestration requests for svc instance
      * @throws Exception the exception
      */
-    public MsoResponseWrapper getOrchestrationRequestsForSvcInstance(String svc_instance_id) throws Exception {
+//    public MsoResponseWrapper getOrchestrationRequestsForSvcInstance(String svc_instance_id) throws Exception {
 
-        String methodName = "getOrchestrationRequestsForSvcInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-        MsoResponseWrapper w = null;
-
-        try {
-            MsoRestInterfaceIfc restController = MsoRestInterfaceFactory.getInstance();
-            String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
-            String path = p + svc_instance_id;
-
-            RestObject<String> restObjStr = new RestObject<String>();
-            String str = new String();
-            restObjStr.set(str);
-
-            restController.<String>Get(str, "", path, restObjStr);
-            w = MsoUtil.wrapResponse(restObjStr);
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
-
-        } catch (Exception e) {
-            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            throw e;
-        }
-        return w;
-    }
+//        String methodName = "getOrchestrationRequestsForSvcInstance";
+//        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+//        MsoResponseWrapper w = null;
+//
+//        try {
+//            MsoRestInterfaceIfc restController = MsoRestInterfaceFactory.getInstance();
+//            String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
+//            String path = p + svc_instance_id;
+//
+//            RestObject<String> restObjStr = new RestObject<String>();
+//            String str = new String();
+//            restObjStr.set(str);
+//
+//            restController.<String>Get(str, "", path, restObjStr);
+//            w = MsoUtil.wrapResponse(restObjStr);
+//            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
+//
+//        } catch (Exception e) {
+//            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+//            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+//            throw e;
+//        }
+//        return w;
+//    }
 
     /**
      * Exception handler.
@@ -636,7 +639,7 @@ public class MsoController extends RestrictedBaseController {
     private void exceptionHandler(Exception e, HttpServletResponse response) throws IOException {
 
 		/*
-		 * The following "logger.error" lines "should" be sufficient for logging the exception.
+         * The following "logger.error" lines "should" be sufficient for logging the exception.
 		 * However, the console output in my Eclipse environment is NOT showing ANY of the
 		 * logger statements in this class. Thus the temporary "e.printStackTrace" statement
 		 * is also included.
@@ -649,7 +652,7 @@ public class MsoController extends RestrictedBaseController {
         logger.error(EELFLoggerDelegate.errorLogger, sw.toString());
 
 		/*
-		 *  Temporary - IF the above  mentioned "logger.error" glitch is resolved ...
+         *  Temporary - IF the above  mentioned "logger.error" glitch is resolved ...
 		 *  this statement could be removed since it would then likely result in duplicate
 		 *  trace output. 
 		 */
@@ -673,7 +676,8 @@ public class MsoController extends RestrictedBaseController {
      *
      * @param resp the resp
      * @return the list
-     * @throws Exception the exception
+     * @throws ParseException the parse exception
+     * @throws Exception      the exception
      */
     @SuppressWarnings("unchecked")
     public List<JSONObject> parseOrchestrationRequestsForSvcInstance(ClientResponse resp) throws org.json.simple.parser.ParseException, Exception {

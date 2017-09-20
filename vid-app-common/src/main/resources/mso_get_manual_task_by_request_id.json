@@ -1,0 +1,23 @@
+{  
+   "taskList":[  
+      {  
+         "taskId":"daf4dd84-b77a-42da-a051-3239b7a9392c",
+         "type":"fallout",
+         "nfRole":"vSCP",
+         "subscriptionServiceType":"Mobility",
+         "originalRequestId":"za1234d1-5a33-55df-13ab-12abad84e335",
+         "originalRequestorId":"ss835w",
+         "errorSource":"A&AI",
+         "errorCode":"404",
+         "errorMessage":"Failed in A&AI 404",
+         "buildingBlockName":"DoCreateVfModule",
+         "buildingBlockStep":"invokeA&AI:getTenant",
+         "validResponses":[  
+            "rollback",
+            "abort",
+            "skip",
+            "retry"
+         ]
+      }
+   ]
+}

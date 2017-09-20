@@ -1,0 +1,145 @@
+.btn-white {
+    font-family: OpenSans;
+    border-radius: 2px;
+    border: 1px solid #d8d8d8;
+    background-color:  #ffffff;
+    width: 94px;
+    height: 30px;
+    color: #5a5a5a;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 36px;
+    text-align: center;
+}
+
+.btn-primary {
+    font-family: OpenSans;
+    border-radius: 2px;
+    border: 1px solid #0091c8;
+    background-color:  #009fdb;
+    width: 94px;
+    height: 30px;
+    color:  #ffffff;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 36px;
+    text-align: center;
+}
+
+.modal-header {
+    border: none!important;
+    padding: 15px 15px 0px 15px!important;
+}
+
+.modal-header h3 {
+    font-family: OpenSans;
+    color:  #5a5a5a;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 16px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #009fdb;
+
+}
+
+.modal-footer {
+    background-color: #eaeaea;
+}
+
+.modal-dialog {
+    width: 587px;
+    border-radius: 8px;
+}
+
+.modal-content {
+    width: 587px;
+    border-radius: 8px;
+    background-color:  #ffffff;
+}
+.label-font{
+	    font-size: 1em;
+}
+.calender-icon{
+	background-image: url(../../../../../app/fusion/external/ebz/images/Calendar.svg); 
+	background-repeat:no-repeat;
+    background-position:98%;
+    border-radius: 6px;
+    border: 1px solid #888;
+    color: #444;
+    font-family: clearview_att_regular;
+    width: 100%;
+    outline: 0;
+    padding: 7px 10px;
+    text-transform: none;
+    z-index: 0;
+    height: 40px;
+    position: relative;
+    
+}
+
+input.calender-icon:focus{
+	background-image: url(../../../../../app/fusion/external/ebz/images/Calendar_blue.svg); 
+	background-repeat:no-repeat;
+}
+
+
+
+.timeslots-content{
+	margin-top: 0px;
+    margin-bottom: 0px;
+    height: 10em;
+}
+.find-block{
+	float:5em;
+}
+.timeslots-block{ 
+/* 	margin-top: 1em; */
+    height: 85px;
+ } 
+ .policy-combo{
+    background-image: none;
+ }
+ 
+ div[ng-controller=newSchedulerController] .schedulerVisible {
+	visibility: visible;
+}
+div[ng-controller=newSchedulerController] .schedulerHidden {
+	visibility: hidden;
+}
+
+.table {
+    border: 1px solid #eaeaea;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 7px 0px rgba(34, 31, 31, 0.17);
+    font-family: OpenSans;
+    color: #5a5a5a;
+    font-size: 14px;
+    font-weight: 400;
+}
+.table>thead {
+    background-color: #d2d2d2;
+    font-family: OpenSans;
+    color: #191919;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 40px;
+}
+
+.table-headline-row {
+    font-family: OpenSans;
+    color: #5a5a5a;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #eaeaea;
+    box-shadow: 0px 1px 1px 0px rgba(34, 31, 31, 0.19);
+}
+
+.table-bordered{border:1px solid #eaeaea;}
+.table-bordered>tbody>tr>td,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>td,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>thead>tr>th{border:1px solid #eaeaea;}
+

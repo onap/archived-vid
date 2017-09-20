@@ -274,7 +274,6 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 		}
 		parameterList.push(FIELD.PARAMETER.SUPPRESS_ROLLBACK);
 		if(_this.componentId === COMPONENT.VF_MODULE ){
-			if(DataService.getSubscriberName() === FIELD.NAME.MOBILITY){
 			parameterList.push({name: FIELD.NAME.SDN_C_PRELOAD,
 				id: FIELD.ID.SDN_C_PRELOAD,
 				type: "checkbox",
@@ -283,7 +282,6 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 				hideFieldAndLabel: true
 				}
 			);
-			}
 			parameterList.push({name: FIELD.NAME.UPLOAD_SUPPLEMENTORY_DATA_FILE,
 				id: FIELD.ID.UPLOAD_SUPPLEMENTORY_DATA_FILE,
 				type: "checkbox",
@@ -602,7 +600,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 		requestDetails.requestParameters.usePreload = getValueFromList(
 					FIELD.ID.SDN_C_PRELOAD, parameterList);
 			if(_this.componentId == COMPONENT.VF_MODULE &&(requestDetails.requestParameters.usePreload== null || requestDetails.requestParameters.usePreload === '')){
-				requestDetails.requestParameters.usePreload = true;
+				requestDetails.requestParameters.usePreload = false;
 			}
 			break;
 		case COMPONENT.VOLUME_GROUP:

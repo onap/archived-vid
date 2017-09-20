@@ -24,7 +24,6 @@ import org.openecomp.portalsdk.core.util.SystemProperties;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 /**
@@ -35,10 +34,10 @@ public class MsoProperties extends SystemProperties {
 	/** The Constant MSO_SERVER_URL. */
 	//VID Properties related to MSO
 	public static final String MSO_SERVER_URL = "mso.server.url";
-	
+
 	/** The Constant MSO_DME2_SERVER_URL. */
 	public static final String MSO_DME2_SERVER_URL = "mso.dme2.server.url";
-	
+
 	/** The Constant MSO_DME2_CLIENT_TIMEOUT. */
 	public static final String MSO_DME2_CLIENT_TIMEOUT = "mso.dme2.client.timeout";
 	
@@ -51,7 +50,7 @@ public class MsoProperties extends SystemProperties {
 	/** The Constant MSO_POLLING_INTERVAL_MSECS. */
 	// number of msecs to wait between polling requests
 	public static final String MSO_POLLING_INTERVAL_MSECS = "mso.polling.interval.msecs";
-	
+
 	/** The Constant MSO_POLLING_INTERVAL_MSECS_DEFAULT. */
 	public static final String MSO_POLLING_INTERVAL_MSECS_DEFAULT = "60000";
 	
@@ -68,13 +67,16 @@ public class MsoProperties extends SystemProperties {
 	public static final String MSO_USER_NAME = "mso.user.name"; //m03346
 	
 	/** The Constant MSO_PASSWORD. */
-	public static final String MSO_PASSWORD = "mso.password.x"; 
+	public static final String MSO_PASSWORD = "mso.password.x";
 	
 	/** The Constant MSO_REST_API_SVC_INSTANCE. */
-	public static final String MSO_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance"; // /serviceInstances/v2 
+	public static final String MSO_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance"; // /serviceInstances/v2
 	
 	/** The Constant MSO_REST_API_VNF_INSTANCE. */
 	public static final String MSO_REST_API_VNF_INSTANCE = "mso.restapi.vnf.instance"; // /serviceInstances/v2/{service_instance_id}/vnfs
+	
+	/** The Constant MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE. */
+	public static final String MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE = "mso.restapi.vnf.changemanagement.instance"; // /serviceInstances/v2/{service_instance_id}/vnfs/{request_type}
 	
 	/** The Constant MSO_REST_API_NETWORK_INSTANCE. */
 	public static final String MSO_REST_API_NETWORK_INSTANCE = "mso.restapi.network.instance"; // /serviceInstances/v2/{serviceInstanceId}/networks
@@ -84,10 +86,13 @@ public class MsoProperties extends SystemProperties {
 	
 	/** The Constant MSO_REST_API_GET_ORC_REQS. */
 	public static final String MSO_REST_API_GET_ORC_REQS = "mso.restapi.get.orc.reqs";
-	
+
+	/** The Constant MSO_REST_API_GET_MAN_TASK. */
+	public static final String MSO_REST_API_GET_MAN_TASKS = "mso.restapi.get.man.tasks";
+
 	/** The Constant MSO_REST_API_VF_MODULE_INSTANCE. */
 	public static final String MSO_REST_API_VF_MODULE_INSTANCE = "mso.restapi.vf.module.instance";
-	
+
 	/** The Constant MSO_REST_API_VOLUME_GROUP_INSTANCE. */
 	public static final String MSO_REST_API_VOLUME_GROUP_INSTANCE = "mso.restapi.volume.group.instance"; //serviceInstances/v2/{serviceInstanceId}/volumeGroups
 	

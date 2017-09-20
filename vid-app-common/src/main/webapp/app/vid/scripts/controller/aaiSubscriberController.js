@@ -20,8 +20,8 @@
 
 "use strict";
 
-appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService",
-    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, VIDCONFIGURATION, UtilityService, vidService, AaiService) {
+appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService",
+    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService) {
 
         $scope.showVnfDetails = function (vnf) {
             console.log("showVnfDetails");
@@ -900,6 +900,17 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         $scope.prevPage = function () {
             $scope.currentPage--;
         }
+
+        $scope.activateMSOInstance = function() {
+            MsoService.activateInstance($scope.service.instance, $scope.service.model)
+                .then(function(response) {
+                    alert("Activation succeeded");
+                })
+                .catch(function (error) {
+                    $log.error(error);
+                });
+            ;
+        };
 
         $scope.nextPage = function () {
             $scope.currentPage++;

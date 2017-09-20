@@ -37,6 +37,14 @@
 		"suppressRollback": {
 			"description": "true or false boolean indicating whether rollbacks should be suppressed on failures",
 			"type": "boolean"
+		},
+		"responseValue": {
+			"description": "Is the user selected value based on the validResponses list provided to complete the manual task",
+			"type": "string"
+		},
+		"requestorId": {
+			"description": "The id of the person who initiated the completion request",
+			"type": "string"
 		}
 	},
 

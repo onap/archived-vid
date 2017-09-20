@@ -253,6 +253,54 @@ public class AAIRestInterface {
 		return false;
 	}
 	
+	
+	/**
+     * Rest put.
+     *
+     * @param fromAppId the from app id
+     * @param transId the trans id
+     * @param path the path
+     * @param payload the payload
+     * @param xml the xml
+     * @return the string
+     */
+    public Response RestPut(String fromAppId,  String transId,  String path, String payload, boolean xml) {
+        String methodName = "RestPost";
+        String url="";
+        transId = UUID.randomUUID().toString();
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " start");       
+        
+        try {
+            
+        	String responseType = "application/json";
+        	if (xml)
+               	responseType = "application/xml";
+        	   
+            initRestClient();    
+    
+            url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL) + path;
+
+            final Response cres = client.target(url)
+                 .request()
+                 .accept(responseType)
+                 .header("X-TransactionId", transId)
+                 .header("X-FromAppId",  fromAppId)
+                 .put(Entity.entity(payload, MediaType.APPLICATION_JSON));
+            
+        	if (cres.getStatus() == 200 && cres.getStatus() <= 299) {
+        		logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
+    			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
+             } else {
+    			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName +" with status="+cres.getStatus()+", url="+url);
+    		}
+    		return cres;
+        } catch (Exception e) {
+        	logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " with url="+url+ ", Exception: " + e.toString());
+        }
+        return null;
+    }
+	
+	
     
     /**
      * Rest post.

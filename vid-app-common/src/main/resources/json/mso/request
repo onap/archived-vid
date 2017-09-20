@@ -22,7 +22,9 @@
 				"service",
 				"vfModule",
 				"vnf",
-				"volumeGroup"
+				"volumeGroup",
+				"unknown",
+				"configuration"
 			]
 		},
 		"requestStatus": {},
@@ -33,7 +35,11 @@
 				"createInstance",
 				"deleteInstance",
 				"replaceInstance",
-				"updateInstance"
+				"updateInstance",
+				"activateInstance",
+				"deactivateInstance",
+				"unknown",
+				"not provided"
 			]
 		},
 		"startTime": {

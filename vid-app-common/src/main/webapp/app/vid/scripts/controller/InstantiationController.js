@@ -352,9 +352,6 @@
 
 		$scope.deleteVnf = function(serviceObject, vnf) {
 
-
-			debugger;
-
 			console.log("Removing VNF " + vnf.name);
 			
 			var serviceInstance = serviceObject.object;

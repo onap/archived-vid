@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="app/vid/styles/instantiate.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/vidTree.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/dialogs.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/external/bootstrap/css/bootstrap.min.css" />
 
 	
 	<script>
@@ -18,13 +19,19 @@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+<script src="app/vid/external/multiselect/angular-bootstrap-multiselect.min.js"></script>
 
 <script src="app/vid/scripts/angular-ui-tree.js"></script>
 
+<script src="app/vid/external/lodash/lodash.min.js"></script>
 <script src="app/vid/scripts/constants/componentConstants.js"></script>
 <script src="app/vid/scripts/constants/fieldConstants.js"></script>
 <script src="app/vid/scripts/constants/vidConfiguration.js"></script>
 <script src="app/vid/scripts/constants/parameterConstants.js"></script>
+<script src="app/vid/scripts/filters/change-managements-by-statuses.filter.js"></script>
+<script src="app/vid/scripts/filters/date.filter.js"></script>
+<script src="app/vid/scripts/modals/change-management-manual-tasks-controller/change-management-manual-tasks.controller.js"></script>
+<script src="app/vid/scripts/modals/new-change-management/new-change-management.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
 <script src="app/vid/scripts/controller/deletionDialogController.js"></script>
@@ -35,6 +42,8 @@
 <script src="app/vid/scripts/controller/ServiceModelController.js"></script>
 <script src="app/vid/scripts/controller/previousVersionDialogController.js"></script>
 <script src="app/vid/scripts/controller/previousVersionContoller.js"></script>
+<script src="app/vid/scripts/controller/change-management.controller.js"></script>
+
 <script src="app/vid/scripts/directives/extensionsDirective.js"></script>
 <script src="app/vid/scripts/directives/parameterBlockDirective.js"></script>
 <script src="app/vid/scripts/directives/popupWindowDirective.js"></script>
@@ -51,6 +60,7 @@
 <script src="app/vid/scripts/services/propertyService.js"></script>
 <script src="app/vid/scripts/services/utilityService.js"></script>
 <script src="app/vid/scripts/services/vnfService.js"></script>
+<script src="app/vid/scripts/services/change-management.service.js"></script>
 
 <%@ page import="org.openecomp.vid.mso.*"%>
 <%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
