@@ -240,6 +240,20 @@
 							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
 						</configuration>
 					</execution>
+			        <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run. -->
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <dataFile>${sonar.jacoco.reportPath}</dataFile>
+                            <!-- Sets the output directory for the code coverage report. -->
+                            <outputDirectory>${project.build.directory}/jacoco_report</outputDirectory>
+                        </configuration>
+                    </execution>
 				</executions>
 			</plugin>
 		</plugins>
