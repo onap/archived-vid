@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class RoleValidator {
 
+	//Disable roles until AAF integration finishes
 	private boolean disableRoles = true;
     private List<Role> userRoles;
 

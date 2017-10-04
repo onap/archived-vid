@@ -39,8 +39,8 @@
 			$http.get(pathQuery)
 			.then(function successCallback(response) {
 				$scope.services = [];
-				if (angular.isArray(response.data)) {
-					wholeData = response.data;
+				if (response.data && angular.isArray(response.data.services)) {
+					wholeData = response.data.services;
 					$scope.services = $scope.filterDataWithHigerVersion(wholeData);
 					$scope.viewPerPage=10;
 					$scope.totalPage=$scope.services.length/$scope.viewPerPage;

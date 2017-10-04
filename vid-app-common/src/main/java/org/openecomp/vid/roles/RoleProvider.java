@@ -15,6 +15,7 @@ public class RoleProvider {
 
     private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(RoleProvider.class);
     final String readPermissionString = "read";
+    final String roleStringDelimiter = "_";
 
     public static List<String> extractRoleFromSession(HttpServletRequest request) {
 
@@ -24,7 +25,8 @@ public class RoleProvider {
 
     public List<Role> getUserRoles(HttpServletRequest request) {
         List<Role> roleList = new ArrayList<>();
-        HashMap roles = UserUtils.getRoles(request);
+		//Disable roles until AAF integration finishes
+        /*HashMap roles = UserUtils.getRoles(request);
         for (Object role : roles.keySet()) {
             org.openecomp.portalsdk.core.domain.Role sdkRol = (org.openecomp.portalsdk.core.domain.Role) roles.get(role);
             try {
@@ -36,13 +38,13 @@ public class RoleProvider {
                 LOG.error("Failed to parse permission", e);
 
             }
-        }
+        }*/
 
         return roleList;
     }
 
     public String[] splitRole(String roleAsString) {
-        return roleAsString.split("_");
+        return roleAsString.split(roleStringDelimiter);
     }
 
     public boolean userPermissionIsReadOnly(List<Role> roles) {
