@@ -9,7 +9,8 @@ import java.util.List;
 public class SecureServices {
 
     private Collection<Service> services;
-    private boolean isReadOnly = true;
+    //Disable roles until AAF integration finishes
+    private boolean isReadOnly = false;
 
     public void setServices(Collection<Service> services) {
         this.services = services;
