@@ -15,6 +15,7 @@ public class RoleProvider {
 
     private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(RoleProvider.class);
     final String readPermissionString = "read";
+    final String roleStringDelimiter = "_";
 
     public static List<String> extractRoleFromSession(HttpServletRequest request) {
 
@@ -28,7 +29,7 @@ public class RoleProvider {
         for (Object role : roles.keySet()) {
             org.openecomp.portalsdk.core.domain.Role sdkRol = (org.openecomp.portalsdk.core.domain.Role) roles.get(role);
             try {
-                if (sdkRol.getName().contains(readPermissionString))
+                if (sdkRol.getName().contains(readPermissionString) || !sdkRol.getName().contains(roleStringDelimiter))
                     continue;
                 String[] roleParts = splitRole((sdkRol.getName()));
                 roleList.add(createRoleFromStringArr(roleParts));
@@ -42,7 +43,7 @@ public class RoleProvider {
     }
 
     public String[] splitRole(String roleAsString) {
-        return roleAsString.split("_");
+        return roleAsString.split(roleStringDelimiter);
     }
 
     public boolean userPermissionIsReadOnly(List<Role> roles) {

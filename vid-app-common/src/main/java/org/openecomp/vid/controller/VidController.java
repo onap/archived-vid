@@ -73,7 +73,8 @@ public class VidController extends RestrictedBaseController {
 			Map<String, String[]> requestParams = request.getParameterMap();
 			List<Role> roles = new RoleProvider().getUserRoles(request);
 			secureServices.setServices(service.getServices(requestParams));
-			secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
+			//Disable roles until AAF integration finishes
+			//secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
 			return secureServices;
 		} catch (AsdcCatalogException e) {
 			LOG.error("Failed to retrieve service definitions from SDC", e);
