@@ -30,7 +30,7 @@ public class MsoControllerTest {
     @Autowired
     MsoRequestFactory msoRequestFactory;
 
-    @Test
+    //@Test
     public void testInstanceCreationNew() throws Exception {
 
         RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
@@ -41,7 +41,7 @@ public class MsoControllerTest {
 
     }
 
-    @Test
+    //@Test
     public void testInstanceCreationLocalWithRest() throws Exception {
 
         RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
@@ -53,7 +53,7 @@ public class MsoControllerTest {
 
     }
 
-    @Test
+    //@Test
     public void testInstanceCreation() throws Exception {
 
         RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");

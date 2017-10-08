@@ -328,9 +328,14 @@ public class LocalAsdcClient implements AsdcClient {
             JSONObject jsonServiceObject = categoryJsonArray.getJSONObject(i);
             if (jsonServiceObject.get("uuid").equals(serviceUuid.toString())) {
                 toscaModelURL = jsonServiceObject.getString("toscaModelURL");
+                break;
             }
         }
 
+        if (toscaModelURL==null){
+            return null;
+        }
+        
         final InputStream toscaModelStream = getClass().getClassLoader().getResourceAsStream(toscaModelURL);
 
         ClassLoader classLoader = getClass().getClassLoader();

@@ -171,8 +171,8 @@ public class ServiceModel {
 		service.setInputs(serviceToscaModel.gettopology_template().getInputs());
 		//FIXME: SDC is not sending the Version with the Tosca Model for 1610 - they should send it in 1702
 		//THIS IS A TEMPORARY FIX, AT SOME POINT UNCOMMENT ME
-		//service.setVersion(serviceToscaModel.getMetadata().getVersion());
-		service.setVersion(asdcServiceMetadata.getVersion());
+		service.setVersion(serviceToscaModel.getMetadata().getVersion());
+		//service.setVersion(asdcServiceMetadata.getVersion());
 
 		return service;
 	}

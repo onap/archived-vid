@@ -114,7 +114,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	 *
 	 * @param builder the builder
 	 */
-	private InMemoryAsdcClient(Builder builder) {
+	InMemoryAsdcClient(Builder builder) {
 		catalog = builder.catalog;
 		mapper = builder.mapper;
 	}

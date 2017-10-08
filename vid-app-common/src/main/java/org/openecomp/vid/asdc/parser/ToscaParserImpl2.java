@@ -47,7 +47,7 @@ public class ToscaParserImpl2 {
     public ServiceModel makeServiceModel(Path path, Service asdcServiceMetadata) throws Exception {
         ServiceModel serviceModel = new ServiceModel();
         SdcToscaParserFactory factory = SdcToscaParserFactory.getInstance();
-        ISdcCsarHelper sdcCsarHelper = factory.getSdcCsarHelper(path.toFile().getAbsolutePath());
+        ISdcCsarHelper sdcCsarHelper = factory.getSdcCsarHelper(path.toFile().getAbsolutePath()); //, false);
         serviceModel.setService(extractServiceFromCsar(asdcServiceMetadata, sdcCsarHelper));
         serviceModel.setVolumeGroups(extractVolumeGroups(sdcCsarHelper));
         serviceModel.setVfModules(extractVfModuleFromCsar(sdcCsarHelper));
