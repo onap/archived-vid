@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 
-{ HealthCheckControllerTest.class, PropertyControllerTest.class, AaiControllerTest.class })
+{ HealthCheckControllerTest.class, PropertyControllerTest.class, AaiControllerTest.class,
+		ViewEditSubControllerTest.class })
 public class TestSuite { // nothing
 }

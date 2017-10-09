@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 
-{ ServiceModelTest.class })
+{ ModelUtilTest.class, NewServiceTest.class, VolumeGroupTest.class, NewNodeTest.class, ServiceModelTest.class,
+		WorkflowTest.class, NewVNFTest.class })
 public class TestSuite { // nothing
 }

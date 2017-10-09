@@ -3,10 +3,7 @@ package org.openecomp.vid.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
-import org.openecomp.vid.aai.AaiResponse;
-import org.openecomp.vid.model.VersionByInvariantIdsRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -65,7 +62,6 @@ public class AaiControllerTest {
 		testSubject.setViewName(viewName);
 	}
 
-
 	@Test
 	public void testGetTargetProvStatus() throws Exception {
 		AaiController testSubject;
@@ -75,8 +71,6 @@ public class AaiControllerTest {
 		testSubject = createTestSubject();
 		result = testSubject.getTargetProvStatus();
 	}
-
-	
 
 	@Test
 	public void testViewEditGetTenantsFromServiceType() throws Exception {
@@ -91,5 +85,4 @@ public class AaiControllerTest {
 		result = testSubject.viewEditGetTenantsFromServiceType(request, globalCustomerId, serviceType);
 	}
 
-	
 }
