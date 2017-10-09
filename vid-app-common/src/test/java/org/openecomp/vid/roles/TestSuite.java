@@ -6,6 +6,6 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 
-{ RoleValidatorTest.class })
+{ RoleValidatorTest.class, RoleProviderTest.class })
 public class TestSuite { // nothing
 }

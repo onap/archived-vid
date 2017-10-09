@@ -6,6 +6,6 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 
-{ ResourceTest.class })
+{ ArtifactTest.class, ResourceTest.class, SubResourceTest.class })
 public class TestSuite { // nothing
 }
