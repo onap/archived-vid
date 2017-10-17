@@ -42,15 +42,11 @@ decryption_key				  = AGLDdG4D04BKm2IxIWEr8o==
 #hb.dialect=org.hibernate.dialect.PostgreSQLDialect
 #hb.show_sql=true
 
-	db.connectionURL = jdbc:mysql://demeter.homer.att.com:3306/ecomp_sdk_1707_att
-	db.userName = portal
-	db.password = P0rt@l
-
 
 
 #Mysql
-db.driver = com.mysql.jdbc.Driver
-#db.connectionURL = jdbc:mysql://localhost:3306/ecomp_sdk
+db.driver = org.mariadb.jdbc.Driver
+#db.connectionURL = jdbc:mariadb://localhost:3306/vid_openecomp_epsdk
 #db.userName = ecomp_sdk_user
 #db.password = ecomp_sdk_pass
 db.hib.dialect = org.hibernate.dialect.MySQLDialect
