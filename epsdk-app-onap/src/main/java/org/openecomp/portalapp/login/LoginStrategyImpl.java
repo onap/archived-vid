@@ -44,8 +44,7 @@ public class LoginStrategyImpl extends LoginStrategy {
 				if (cookie.getName().equals(USER_ID))
 					userIdcookie = cookie;
 		if(userIdcookie!=null){
-			userId = CipherUtil.decrypt(userIdcookie.getValue(),
-					PortalApiProperties.getProperty(PortalApiConstants.Decryption_Key));
+			userId = CipherUtil.decrypt(userIdcookie.getValue());
 		}
 		return userId;
 	
