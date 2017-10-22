@@ -44,11 +44,11 @@ if [ -z "${VID_ECOMP_SHARED_CONTEXT_REST_URL}" ]; then
 fi
 
 if [ -z "${VID_ECOMP_REDIRECT_URL}" ]; then
-	VID_ECOMP_REDIRECT_URL=https://portal.openecomp.org/ecompportal/ecompportal/process_csp
+	VID_ECOMP_REDIRECT_URL=http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/login.htm
 fi
 
 if [ -z "${VID_ECOMP_REST_URL}" ]; then
-	VID_ECOMP_REST_URL=https://portal.openecomp.org/ecompportal/auxapi
+	VID_ECOMP_REST_URL=http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/auxapi
 fi
 
 if [ -z "${VID_MSO_SERVER_URL}" ]; then

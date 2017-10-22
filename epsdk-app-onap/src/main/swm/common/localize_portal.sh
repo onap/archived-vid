@@ -8,7 +8,7 @@ BACKUP2_CONFIG_FILE=${ROOT_DIR}/war/WEB-INF/classes/portal.properties.bk.2
 echo "Localizing the VID portal configuration"
 
 if [ -z "${VID_ECOMP_REDIRECT_URL}" ]; then
-	VID_ECOMP_REDIRECT_URL=https://portal.openecomp.org/ecompportal/ecompportal/process_csp
+	VID_ECOMP_REDIRECT_URL=http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/login.htm
 fi
 
 if [ -z "${VID_WJ_LOGOUT_URL}" ]; then
@@ -16,7 +16,7 @@ if [ -z "${VID_WJ_LOGOUT_URL}" ]; then
 fi
 
 if [ -z "${VID_ECOMP_REST_URL}" ]; then
-	VID_ECOMP_REST_URL=https://portal.openecomp.org/ecompportal/auxapi
+	VID_ECOMP_REST_URL=http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/auxapi
 fi
 
 if [ -z "${VID_UEB_URL_LIST}" ]; then
