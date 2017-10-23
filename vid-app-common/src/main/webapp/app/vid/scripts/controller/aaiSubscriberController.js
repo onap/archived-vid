@@ -157,7 +157,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 			var namedQueryId='6e806bc2-8f9b-4534-bb68-be91267ff6c8';
 			AaiService.getServiceModelsByServiceType(namedQueryId,globalCustomerId,$scope.serviceTypeName,function(response) { // success
 				$scope.services = [];
-				if (angular.isArray(response.data['inventory-response-item'])) {
+				if (angular.isArray(response.data['inventory-response-item']) && response.data['inventory-response-item'].length > 0 && response.data['inventory-response-item'][0]['inventory-response-items']) {
 					wholeData = response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item'];
 					$scope.services = $scope.filterDataWithHigerVersion(response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item']);
 					$scope.serviceType = response.data['inventory-response-item'][0]['service-subscription']['service-type'];
