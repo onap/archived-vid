@@ -1,9 +1,9 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 
 
-VID Introduction
+VID Architecture
 =================
-Provides a well-structured organization of infrastructure deployment, 
+VID provides a well-structured organization of infrastructure deployment, 
 instantiation and change-management operations used by Operations to derive orchestrations and change-management.
 
 
