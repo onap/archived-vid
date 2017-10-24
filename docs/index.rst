@@ -6,13 +6,14 @@ VID Documentation
 .. toctree::
    :maxdepth: 2
    
-   administration.rst
-   architecture.rst
-   configuration.rst
-   consumedapis.rst
-   offeredapis.rst
-   delivery.rst
-   humaninterfaces.rst
-   installation.rst
-   logging.rst
-   release-notes.rst
+   
+   docs-architecture.rst
+   docs-offeredapis.rst
+   docs-consumedapis.rst
+   docs-delivery.rst
+   docs-logging.rst
+   docs-installation.rst
+   docs-configuration.rst
+   docs-administration.rst
+   docs-humaninterfaces.rst
+   docs-release-notes.rst

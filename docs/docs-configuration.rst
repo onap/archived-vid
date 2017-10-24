@@ -4,24 +4,57 @@
 Configuration
 =============
 
-.. note::
-   * This section is used to describe the options a software component offers for configuration.
+Configurations files are located under ``WEB-INF/conf/``
 
-   * Configuration is typically: provided for platform-component and sdk projects;
-     and referenced in developer and user guides.
-   
-   * This note must be removed after content has been added.
+system.properties file
+----------------------
 
+``db.connectionURL``
+  The connection URL for VID database
 
+``db.userName``
+  The username for VID database
 
-Example ...
+``db.password``
+  The password for VID database
 
-You can provide the following in ``basic.conf``
+``aai.server.url.base``
+  Base URL for A&AI server
 
-``host=ADDRESS``
-  The address of the host
+``aai.server.url``
+  URL for A&AI server including its version (default: v11)
 
-``port=PORT``
-  The port used for signaling
+``aai.vid.username``, ``aai.vid.pass``
+  Credentials for accessing A&AI
 
-  Optional. Default: ``8080``
+``mso.server.url``
+  Base URL for SO server
+
+``mso.polling.interval.msecs``
+  Interval in milliseconds for polling SO for instantiation status
+
+``mso.max.polls``
+  Max polling tryings fo SO instantiation status
+  
+``mso.user.name``,  ``mso.password.x``
+  Credentials for accessing SO
+
+``scheduler.server.url``
+  Base URL for Scheduler
+
+``scheduler.create.new.vnf.change.instance``, ``scheduler.get.time.slots``, ``scheduler.submit.new.vnf.change``, ``scheduler.get.schedules``
+  Scheduler endpoints
+
+asdc.properties file
+----------------------------
+``asdc.client.rest.protocol``
+  States the protocol for accessing SDC: http or https
+
+``asdc.client.rest.host``
+  States the hostname of SDC instance
+
+``asdc.client.rest.port``
+  States the port of SDC instance
+
+``asdc.client.rest.auth``
+  Basic authorization string to access SDC
