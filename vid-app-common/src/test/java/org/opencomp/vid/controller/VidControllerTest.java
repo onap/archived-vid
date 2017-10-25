@@ -87,7 +87,7 @@ public class VidControllerTest {
     }
 
 
-    /*//@Test
+    @Test
     public void assertEqualsBetweenServices() throws Exception {
         for (ToscaParserMockHelper mockHelper: getExpectedServiceModel()) {
             Service expectedService = mockHelper.getNewServiceModel().getService();
@@ -104,11 +104,11 @@ public class VidControllerTest {
 			JsonAssert.assertJsonEquals(mockHelper.getNewServiceModel(), actualServiceModel);
 			/*java.lang.AssertionError: JSON documents are different:
 			Different keys found in node "networks.ExtVL 0.commands". Expected [exVL_naming#naming_policy, network_role, network_scope], got [network_role, network_scope]. Missing: "networks.ExtVL 0.commands.exVL_naming#naming_policy"
-			Different keys found in node "networks.ExtVL 0.inputs". Expected [exVL_naming#naming_policy, network_role, network_scope], got [network_role, network_scope]. Missing: "networks.ExtVL 0.inputs.exVL_naming#naming_policy"* /
+			Different keys found in node "networks.ExtVL 0.inputs". Expected [exVL_naming#naming_policy, network_role, network_scope], got [network_role, network_scope]. Missing: "networks.ExtVL 0.inputs.exVL_naming#naming_policy"*/
 		}
 	}
 
-	//@Test
+	@Test
 	public void assertEqualsBetweenNetworkNodes() throws Exception {
 		for (ToscaParserMockHelper mockHelper: getExpectedServiceModel()) {
 			Map<String, Network> expectedNetworksMap = mockHelper.getNewServiceModel().getNetworks();
@@ -124,7 +124,7 @@ public class VidControllerTest {
 	}
 
 	//Because we are not supporting the old flow, the JSON are different by definition.
-	//@Test
+	@Test
 	public void assertEqualsBetweenVnfsOfTosca() throws Exception {
 		for (ToscaParserMockHelper mockHelper: getExpectedServiceModel()) {
 			Map<String, VNF> expectedVnfsMap = mockHelper.getNewServiceModel().getVnfs();
@@ -140,7 +140,7 @@ public class VidControllerTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void assertEqualsBetweenVolumeGroups() throws Exception {
 		for (ToscaParserMockHelper mockHelper: getExpectedServiceModel()) {
 			Path cSarPath = getCsarPath(mockHelper.getUuid());
@@ -153,7 +153,7 @@ public class VidControllerTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void assertEqualsBetweenVfModules() throws Exception {
 		for (ToscaParserMockHelper mockHelper: getExpectedServiceModel()) {
 			Map<String, VfModule> actualVfModules = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVfModules();
@@ -189,7 +189,7 @@ public class VidControllerTest {
 			mockHelper.setNewServiceModel(newServiceModel1);
 		}
 		return mockHelpers;
-	}*/
+	}
 
 	private Path getCsarPath(String uuid) throws AsdcCatalogException {
 		return asdcClient.getServiceToscaModel(UUID.fromString(uuid));
