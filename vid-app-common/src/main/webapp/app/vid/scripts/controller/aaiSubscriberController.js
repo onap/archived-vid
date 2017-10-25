@@ -172,7 +172,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 					$scope.isSpinnerVisible = false;
 					$scope.isProgressVisible = false;
 				} else {
-					$scope.status = "Failed to get service models from ASDC.";
+					$scope.status = "Failed to get service models from A&AI.";
 					$scope.error = true;
 					$scope.isSpinnerVisible = false;
 				}
