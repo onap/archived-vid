@@ -4,41 +4,20 @@
 Delivery
 ========
 
-.. note::
-   * This section is used to describe a software component packaging.
-     For a run-time component this might be executable images, containers, etc.
-     For an SDK this might be libraries.
-
-   * This section is typically provided for a platform-component and sdk;
-     and referenced in developer and user guides
-   
-   * This note must be removed after content has been added.
-
-Example use of a block diagram.
+VID is delivered as a docker image, and uses MariaDb which also delivered as a docker image. The two images are linked.
 
 .. blockdiag::
    
 
    blockdiag layers {
    orientation = portrait
-   a -> m;
-   b -> n;
-   c -> x;
-   m -> y;
-   m -> z;
+   VID -> MariaDb;
+   MariaDb -> VID;
    group l1 {
 	color = blue;
-	x; y; z;
+	VID; MariaDb;
 	}
-   group l2 {
-	color = yellow;
-	m; n; 
-	}
-   group l3 {
-	color = orange;
-	a; b; c;
-	}
-
    }
+
 
 

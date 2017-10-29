@@ -4,17 +4,28 @@
 Installation
 ============
 
-.. note::
-   * This section is used to describe how a software component is acquired and installed.
+VID is delivered in a Docker image format.
+
+Using docker image
+------------------
+
+Please follow the instructions given below, for installing VID using docker image.
+
+1. Download the vid & mariadb docker image
+
+.. code-block:: bash
+
+  docker pull mariadb:10
+  docker login -u docker -p docker nexus3.onap.org:10001
+  docker pull nexus3.onap.org:10001/openecomp/vid:1.1-STAGING-latest
+
+2. Install by running following command (Use the path for lf_config folder under VID git repository as CONFIG_PATH)
+
+.. code-block:: bash
+
+   #start Maria-DB
+   docker run --name vid-mariadb -e MYSQL_DATABASE=vid_openecomp_epsdk -e MYSQL_USER=vidadmin -e MYSQL_PASSWORD=YOUR_PASSWORD -e MYSQL_ROOT_PASSWORD=ROOT_PASSWORD -v CONFIG_PATH/vid-my.cnf:/etc/mysql/my.cnf -v CONFIG_PATH/vid-pre-init.sql:/docker-entrypoint-initdb.d/vid-pre-init.sql -v /var/lib/mysql -d mariadb:10
    
-   * This section is typically: provided for a platform-component and application; and
-     referenced in user guides.
+   #start VID server
+   docker run -e VID_MYSQL_DBNAME=vid_openecomp_epsdk -e VID_MYSQL_PASS=YOUR_PASSWORD --name vid-server -p 8080:8080 --link vid-mariadb:vid-mariadb-docker-instance -d nexus3.onap.org:10001/openecomp/vid:1.1-STAGING-latest
 
-   * This note must be removed after content has been added.
-
-Environment
------------
-
-
-Steps
------
