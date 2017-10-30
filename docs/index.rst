@@ -14,6 +14,5 @@ VID Documentation
    docs-logging.rst
    docs-installation.rst
    docs-configuration.rst
-   docs-administration.rst
    docs-humaninterfaces.rst
    docs-release-notes.rst
