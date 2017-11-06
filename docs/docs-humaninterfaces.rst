@@ -4,14 +4,8 @@
 Human Interfaces
 ================
 
-.. note::
-   * This section is used to describe a software component's command line and graphical
-     user interfaces.
+The following VID user guides are available in ONAP Wiki:
    
-   * This section is typically: provided for a platform-component and application; and
-     referenced from  user guides.
-   
-   * This note must be removed after content has been added.
-
-
-
+- `VID Application overview <https://wiki.onap.org/display/DW/VID>`_ 
+- `Gather and validate data for an infrastructure service/network <https://wiki.onap.org/pages/viewpage.action?pageId=1019313>`_ 
+- `Instantiate an infrastructure service <https://wiki.onap.org/display/DW/Instantiate+an+infrastructure+service>`_ 
