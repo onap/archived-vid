@@ -17,7 +17,7 @@
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<epsdk.version>1.3.1</epsdk.version>
+		<epsdk.version>1.3.2</epsdk.version>
 		<springframework.version>4.2.0.RELEASE</springframework.version>
 		<hibernate.version>4.3.11.Final</hibernate.version>
 		<!-- Skip assembling the zip; assemble via mvn -Dskipassembly=false .. -->
