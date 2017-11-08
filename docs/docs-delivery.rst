@@ -4,15 +4,12 @@
 Delivery
 ========
 
-VID is delivered as a Docker image, and uses MariaDb which is also delivered as a Docker image. The two images are linked.
-
-
-- MariaDB Image
-  Create a container using the Docker MariaDB image.
+- |  **MariaDB Image**
+  |  Create a container using the Docker MariaDB image.
   
-- VID Image
-  Create a Docker image which extends the Tomcat Docker image, and linked to the MariaDB container created earlier. 
-  Configuration of the Docker container will be customized by providing environment variables to the "docker run" command.
+- |  **VID Image**
+  |  Create a Docker image which extends the Tomcat Docker image, and linked to the MariaDB container created earlier. 
+  |  Configuration of the Docker container will be customized by providing environment variables to the "docker run" command.
 
 
 .. blockdiag::
@@ -32,9 +29,9 @@ VID is delivered as a Docker image, and uses MariaDb which is also delivered as 
 
 Recommended Rackspace VM Flavor
 --------------------------------
-+------------+------------------------+--------+------+-----------+-------+-------------+--+--+--+
-| ID         | Flavor name            | Memory | Disk | Ephemeral | VCPUs | RTTX factor |  |  |  |
-+------------+------------------------+--------+------+-----------+-------+-------------+--+--+--+
-| general1-2 | 2GB General Purpose v1 | 2048   | 40   | 0         | 2     | 400.0       |  |  |  |
-+------------+------------------------+--------+------+-----------+-------+-------------+--+--+--+
++------------+------------------------+--------+------+-----------+-------+-------------+
+| ID         | Flavor name            | Memory | Disk | Ephemeral | VCPUs | RTTX factor |
++============+========================+========+======+===========+=======+=============+
+| general1-2 | 2GB General Purpose v1 | 2048   | 40   | 0         | 2     | 400.0       |
++------------+------------------------+--------+------+-----------+-------+-------------+
 
