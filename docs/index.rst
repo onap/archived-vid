@@ -7,13 +7,13 @@ VID Documentation
    :maxdepth: 2
    
    
-   docs-architecture.rst
-   docs-offeredapis.rst
-   docs-consumedapis.rst
-   docs-delivery.rst
-   docs-logging.rst
-   docs-installation.rst
-   docs-configuration.rst
-   docs-administration.rst
-   docs-humaninterfaces.rst
-   docs-release-notes.rst
+   architecture.rst
+   offeredapis.rst
+   consumedapis.rst
+   delivery.rst
+   logging.rst
+   installation.rst
+   configuration.rst
+   administration.rst
+   humaninterfaces.rst
+   release-notes.rst
