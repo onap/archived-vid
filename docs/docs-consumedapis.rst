@@ -9,9 +9,9 @@ SDC
 ----
 
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| /sdc/v1/catalog/services/meta                                                                                                 | Get services general.                                                  |
+| /sdc/v1/catalog/services/meta                                                                                                 | Get available services                                                 |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| /sdc/v1/catalog/services/toscaModel                                                                                           | Download csar by UUID                                                  |
+| /sdc/v1/catalog/services/toscaModel                                                                                           | Download CSAR by UUID                                                  |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 
 SO
@@ -38,7 +38,7 @@ SO
 | POST                                                                                                                          | Create Volume group                                                    |
 |   /serviceInstances/v5/<service_instance_id>/vnfs/<vnf_instance_id>/volumeGroups                                              |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| DELETE                                                                                                                        | Delete Volume Group                                                    |
+| DELETE                                                                                                                        | Delete Volume group                                                    |
 |   /serviceInstances/v5/<service_instance_id>/vnfs/<vnf_instance_id>/volumeGroups                                              |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST                                                                                                                          | Create configuration                                                   |
@@ -55,7 +55,7 @@ SO
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET /orchestrationRequests/v5                                                                                                 | Get orchestration status                                               |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET /tasks/v1                                                                                                                 | Get available Manual tasks by request id                               |
+| GET /tasks/v1                                                                                                                 | Get available manual tasks by request id                               |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 
 
@@ -66,13 +66,13 @@ A&AI
 | GET                                                                                                                           | Get all subscribers                                                    |
 |   aai/v11/business/customers?subscriber-type=INFRA&depth=2                                                                    |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v11/                                                                                                                  | Get data for specific subscriber including its available services      |
+| GET aai/v11/                                                                                                                  | Get data for a specific subscriber including its available services    |
 |   business/customers/customer/<global_customer_id>                                                                            |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get all service types                                                  |
 |   aai/v11/service-design-and-creation/services                                                                                |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET                                                                                                                           | Get services by owning entity id                                       |
+| GET                                                                                                                           | Get services by owner entity id                                        |
 |   aai/v11/business/owning-entities?<owning_entitiy_ids>                                                                       |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get services by project name                                           |
@@ -80,17 +80,17 @@ A&AI
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET aai/v11/network/zones                                                                                                     | Get all AIC zones                                                      |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| POST search/named-query                                                                                                       | Get the data regarding instance and it’s related nodes                 |
+| POST search/named-query                                                                                                       | Get data regarding an instance and the instance's related nodes        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v11/                                                                                                                  | Get AIC zones for specific service instance                            |
+| GET aai/v11/                                                                                                                  | Get AIC zones for a specific service instance                          |
 |   business/customers/customer/<global_customer_id>/                                                                           |                                                                        |
 |   /service-subscriptions/service-subscription/<service_type>/service-instances/service-instance/<service_instance_id>         |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| PUT Aai/v11/query?format=simple(types:                                                                                        | This is custom query and has multiple types (declared in the url line) |
+| PUT Aai/v11/query?format=simple(types:                                                                                        | This is a custom query and has multiple types(declared in the url line)|
 |   “query/vnfFromModelbyRegion?cloudRegionId”,”                                                                                |                                                                        |
 |   vnf-topology-fromServiceInstance”)                                                                                          |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| Aai/v11/                                                                                                                      | Get human readable version by version id                               |
+| Aai/v11/                                                                                                                      | Get the human readable version by version id                           |
 |   service-design-and-creation/models?depth=2                                                                                  |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | business/customers/customer/<global_customer_id>/service-subscriptions/service-subscription/<service_Subscription_Id>?depth=0 | Get all service subscriptions                                          |

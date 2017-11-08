@@ -6,12 +6,12 @@ Installation
 
 VID is delivered in a Docker image format.
 
-Using docker image
-------------------
+Installing VID Using a Docker Image
+-----------------------------------
 
-Please follow the instructions given below, for installing VID using docker image.
+Please follow the instructions given below, for installing VID using a Docker image.
 
-1. Download the vid & mariadb docker image
+1. Download the vid & mariadb Docker image
 
 .. code-block:: bash
 
@@ -19,7 +19,7 @@ Please follow the instructions given below, for installing VID using docker imag
   docker login -u docker -p docker nexus3.onap.org:10001
   docker pull nexus3.onap.org:10001/openecomp/vid:1.1-STAGING-latest
 
-2. Install by running following command (Use the path for lf_config folder under VID git repository as CONFIG_PATH)
+2. Install by running following command (Use the path for the lf_config folder under the VID git repository as CONFIG_PATH)
 
 .. code-block:: bash
 
