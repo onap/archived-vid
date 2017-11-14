@@ -3,7 +3,7 @@
 Release Notes
 =============
 
-Version: 1.1.0
+Version: 1.1.1
 ==============
 
 :Release Date: 2017-11-16
@@ -17,16 +17,14 @@ New Features
 
 **Epics**
 
--  [`VID-23`_] - Role management for instantiation flows
--  [`VID-25`_] - Role management for instantiation flows
--  [`VID-26`_] - Role management for instantiation flows
--  [`VID-27`_] - Change management with work flows
--  [`VID-28`_] - Change management with work flows
--  [`VID-29`_] - Change management with work flows
--  [`VID-30`_] - PNF instantiation
--  [`VID-31`_] - PNF Instantiation
+-  [`VID-25`_] - Role management: Global Read only role
+-  [`VID-26`_] - Role management: Support VID specific Roles
+-  [`VID-27`_] - Change management: Schedule workflow
+-  [`VID-28`_] - Change management: Status of workflow
+-  [`VID-29`_] - Change management: Manual intervention
+-  [`VID-30`_] - PNF instantiation: Trigger PNF service information to SO
+-  [`VID-31`_] - PNF Instantiation: support service type PNF & display new fields
 
-.. _VID-23: https://jira.onap.org/browse/VID-23
 .. _VID-25: https://jira.onap.org/browse/VID-25
 .. _VID-26: https://jira.onap.org/browse/VID-26
 .. _VID-27: https://jira.onap.org/browse/VID-27
