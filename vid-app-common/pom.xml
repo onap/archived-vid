@@ -9,7 +9,7 @@
 		inherit from a parent maven module. -->
 	<groupId>org.openecomp.vid</groupId>
 	<artifactId>vid-app-common</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>VID Common</name>
 	<description>VID Common code for opensource version</description>
