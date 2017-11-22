@@ -13,7 +13,7 @@ New Features
 
 1. Improved TOSCA parser.
 2. Change Management - Provides the Operators a single tool for installing and maintaining the services as a self service activity. Provides the ability to schedule and execute change management workflows, Maintenance activities for vNFs that are already installed .
-3. PNF - PNFs are already installed on the edges of the cloud. In order to configure the PNF, the service needs to be connected to the PNF.
+3. PNF Instantiation - PNFs are already installed on the edges of the cloud. In order to configure the PNF, the service needs to be connected to the PNF.
 
 **Epics**
 
