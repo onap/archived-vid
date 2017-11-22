@@ -1,15 +1,15 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 
-Release Notes
-=============
+VID Release Notes
+=================
 
 Version: 1.1.1
-==============
+--------------
 
 :Release Date: 2017-11-16
 
 New Features
--------------
+------------
 
 1. Improved TOSCA parser.
 2. Change Management - Provides the Operators a single tool for installing and maintaining the services as a self service activity. Provides the ability to schedule and execute change management workflows, Maintenance activities for vNFs that are already installed .
@@ -56,7 +56,7 @@ Bug Fixes
 -  [`VID-20`_] - Failed to get service models from ASDC in VID
 -  [`VID-59`_] - VID Fails Robot Health Check
 -  [`VID-62`_] - VID healthcheck failure in RS ORD ONAP 1.1.0
--  [`VID-64`_] - got 500 from role/user API call
+-  [`VID-64`_] - Got 500 from role/user API call
 -  [`VID-79`_] - Not able to create service instance using VID portal
 -  [`VID-82`_] - Create VF module with SDNC preload is throwing
    exception
@@ -70,13 +70,15 @@ Bug Fixes
 
 
 **Known Issues**
-	- `VID-78 <https://jira.onap.org/browse/VID-78>`_ 
-	  VID shows the HTML code output whenever the customer list is empty (Cosmetic)
+
+- `VID-78 <https://jira.onap.org/browse/VID-78>`_ VID shows the HTML code output whenever the customer list is empty (Cosmetic)
 
 **Upgrade Notes**
+
 A scheduler is needed for the change management feature to work (not included in the Amsterdam release).
 
 **Other**
+
 In order to work properly, VID needs a working instance of SDC, A&AI and SO.
 
 ===========
