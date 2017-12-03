@@ -153,7 +153,7 @@ public class MsoBusinessLogic {
         return msoClientInterface.deleteVnf(requestDetails, vnf_endpoint);
     }
 
-    public MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception{
+    public MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId, String vfModuleId) throws Exception{
         String methodName = "deleteVfModule";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
@@ -164,8 +164,9 @@ public class MsoBusinessLogic {
             throw exception;
         }
 
-        String svc_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        String delete_vf_endpoint = svc_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        String vf__modules_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId).replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+
+        String delete_vf_endpoint = vf__modules_endpoint + '/' + vfModuleId;
 
         return msoClientInterface.deleteVfModule(requestDetails, delete_vf_endpoint);
     }
