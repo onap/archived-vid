@@ -405,7 +405,7 @@ public class MsoController extends RestrictedBaseController {
 
         MsoBusinessLogic mbl = new MsoBusinessLogic();
 
-        MsoResponseWrapper w = mbl.deleteVfModule(mso_request, serviceInstanceId, vnfInstanceId);
+        MsoResponseWrapper w = mbl.deleteVfModule(mso_request, serviceInstanceId, vnfInstanceId, vfModuleId);
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
