@@ -86,11 +86,7 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<version>1.3.1</version>
-			</plugin>
+
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
@@ -115,12 +111,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<plugin>
 
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<version>1.3.1</version>
-			</plugin>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
@@ -133,27 +124,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- license plugin for open source -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>1.9</version>
-				<configuration>
-					<licenseName>apache_v2</licenseName>
-					<inceptionYear>2017</inceptionYear>
-					<organizationName>AT&amp;T</organizationName>
-					<projectName>VID</projectName>
-					<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-					<processStartTag>========LICENSE_START===========</processStartTag>
-					<processEndTag>============LICENSE_END===========</processEndTag>
-					<roots>
-						<root>src/main/java</root>
-					</roots>
-					<excludes>
-						<exclude>*.png</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
