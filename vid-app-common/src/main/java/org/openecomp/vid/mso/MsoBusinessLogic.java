@@ -13,14 +13,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.openecomp.vid.controller.MsoController.SVC_INSTANCE_ID;
-import static org.openecomp.vid.controller.MsoController.REQUEST_TYPE;
-import static org.openecomp.vid.controller.MsoController.VNF_INSTANCE_ID;
+import static org.openecomp.vid.controller.MsoController.*;
 
 /**
  * Created by pickjonathan on 19/06/2017.
  */
 public class MsoBusinessLogic {
+
+    private static final String ACTIVATE = "/activate";
+    private static final String DEACTIVATE = "/deactivate";
+    private static final String ENABLE_PORT = "/enablePort";
+    private static final String DISABLE_PORT = "/disablePort";
 
     /**
      * The Mso REST client
@@ -119,6 +122,16 @@ public class MsoBusinessLogic {
         String vf_module_endpoint = partial_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
 
         return msoClientInterface.createVfModuleInstance(requestDetails, vf_module_endpoint);
+    }
+
+    public MsoResponseWrapper createConfigurationInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception{
+        String methodName = "createConfigurationInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATIONS);
+        endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
+
+        return msoClientInterface.createConfigurationInstance(requestDetails, endpoint);
     }
 
     public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception{
@@ -413,4 +426,55 @@ public class MsoBusinessLogic {
 		return msoClientInterface.replaceVnf(requestDetails, vnf_endpoint);		
 	}
 
+    public MsoResponseWrapper deleteConfiguration(
+            RequestDetails requestDetails,
+            String serviceInstanceId,
+            String configurationId) throws Exception {
+
+        String methodName = "deleteConfiguration";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATION_INSTANCE);
+        endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
+        endpoint = endpoint.replace(CONFIGURATION_ID, configurationId);
+
+        return msoClientInterface.deleteConfiguration(requestDetails, endpoint);
+    }
+
+    public MsoResponseWrapper setConfigurationActiveStatus(
+            RequestDetails requestDetails,
+            String serviceInstanceId,
+            String configurationId,
+            boolean isActivate) throws Exception {
+
+        String methodName = "setConfigurationActiveStatus";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATION_INSTANCE);
+        endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
+        endpoint = endpoint.replace(CONFIGURATION_ID, configurationId);
+
+        String isActivateState = (isActivate ? ACTIVATE : DEACTIVATE);
+        endpoint = endpoint + isActivateState;
+
+        return msoClientInterface.setConfigurationActiveStatus(requestDetails, endpoint);
+    }
+
+    public MsoResponseWrapper setPortOnConfigurationStatus(
+            RequestDetails requestDetails,
+            String serviceInstanceId,
+            String configurationId,
+            boolean isEnable) throws Exception {
+        String methodName = "setPortOnConfigurationStatus";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATION_INSTANCE);
+        endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
+        endpoint = endpoint.replace(CONFIGURATION_ID, configurationId);
+
+        String isEnablePortStatus = (isEnable ? ENABLE_PORT : DISABLE_PORT);
+        endpoint = endpoint + isEnablePortStatus;
+
+        return msoClientInterface.setPortOnConfigurationStatus(requestDetails, endpoint);
+    }
 }

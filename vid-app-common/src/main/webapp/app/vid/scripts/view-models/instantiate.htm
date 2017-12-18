@@ -23,7 +23,7 @@
 	<div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
 		 ng-cloak>
 		<div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"></div>
-		<div ng-include="'app/vid/scripts/view-models/deletionDialog.htm'"></div>
+		<div ng-include="'app/vid/scripts/view-models/deleteResumeDialog.htm'"></div>
 		<div ng-include="'app/vid/scripts/view-models/detailsDialog.htm'"></div>
 		<div ng-include="'app/vid/scripts/view-models/statusDialog.htm'"></div>
 	</div>
@@ -180,7 +180,7 @@
 										</a>
 										VFMODULE: {{vfModule.name}} | TYPE: {{vfModule.nodeType}} | ORCH STATUS: {{vfModule.nodeStatus}}
 										<!--  -->
-										<a class="pull-right btn btn-danger btn-xs" ng-if="isPermitted" data-tests-id="deleteVFModuleButton" data-nodrag ng-click="deleteVfModule(aService.instance, vfModule, vnf)">
+										<a class="pull-right btn btn-danger btn-xs" ng-if="isPermitted" data-tests-id="deleteVFModuleButton-{{vfModule.name}}" data-nodrag ng-click="deleteVfModule(aService.instance, vfModule, vnf)">
 											<span class="glyphicon glyphicon-remove"></span>
 										</a>
 										<div class="pull-right btn-group">
@@ -196,6 +196,12 @@
 										<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeVfModule(aService.instance, vfModule, vnf)" style="margin-right: 8px;">
 											<span class="glyphicon glyphicon-info-sign"></span>
 										</a>
+										<div class="resume" ng-if="isPermitted&&(vfModule.nodeStatus==resumeStatus)">
+											<a data-tests-id="resumeVFModuleButton-{{vfModule.name}}" class="pull-right btn btn-success btn-xs button-margin" ng-click="resume(aService.instance, vfModule, vnf)" >
+												Resume
+											</a>
+										</div>
+
 									</div>
 									<ol ui-tree-nodes="" ng-model="vfModule.volumeGroups" ng-class="{hidden: collapsed}">
 										<li ng-repeat="volumeGroup in vfModule.volumeGroups" ui-tree-node>
@@ -242,6 +248,37 @@
 									<span class="glyphicon glyphicon-info-sign"></span>
 								</a>
 							</div>
+						</li>
+					</ol>
+
+
+					<ol ui-tree-nodes="" ng-model="aService.instance.configurations" ng-class="{hidden: collapsed}">
+						<li ng-repeat="configuration in aService.instance.configurations" ui-tree-node>
+							<div ui-tree-handle class="tree-node tree-node-content">
+								<a class="btn btn-success btn-xs" ng-if="(configuration.ports && configuration.ports.length > 0)" data-nodrag ng-click="this.toggle()">
+									<span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+								</a>
+								CONFIGURATION: {{configuration.name}} | TYPE: {{configuration.nodeType}} | ORCH	STATUS: {{configuration.nodeStatus}}
+
+								<a class="pull-right btn btn-danger btn-xs" ng-if="!isMacro() && isPermitted && configuration.nodeStatus === STATUS_CONSTANTS.AAI_INACTIVE" data-tests-id="deleteConfigurationButton" data-nodrag ng-click="deleteConfiguration(aService.instance, configuration)">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+
+								<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="toggleConfigurationStatus(aService, configuration)" ng-if="isPermitted && allowConfigurationActions">
+									{{configuration.nodeStatus === STATUS_CONSTANTS.AAI_ACTIVE ? "Deactivate" : "Activate"}}
+								</a>
+							</div>
+							<ol ui-tree-nodes="" ng-model="configuration.ports" ng-class="{hidden: collapsed}">
+								<li ng-repeat="port in configuration.ports" ui-tree-node>
+									<div ui-tree-handle class="tree-node tree-node-content">
+										PORT: {{port.portName}} | ORCH STATUS: {{port.portStatus}}
+
+										<button type="button" class="pull-right btn btn-primary btn-xs" ng-if="configuration.nodeStatus == STATUS_CONSTANTS.AAI_ACTIVE" ng-click="togglePortStatus(aService, configuration, port)">
+											{{port.portStatus === STATUS_CONSTANTS.AAI_ENABLED ? "Disable" : "Enable"}}
+										</button>
+									</div>
+								</li>
+							</ol>
 						</li>
 					</ol>
 				</li>

@@ -20,8 +20,8 @@
 
 "use strict";
 
-appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService",
-    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService) {
+appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService",
+    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService) {
 
         $scope.showVnfDetails = function (vnf) {
             console.log("showVnfDetails");
@@ -157,7 +157,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 			var namedQueryId='6e806bc2-8f9b-4534-bb68-be91267ff6c8';
 			AaiService.getServiceModelsByServiceType(namedQueryId,globalCustomerId,$scope.serviceTypeName,function(response) { // success
 				$scope.services = [];
-				if (angular.isArray(response.data['inventory-response-item']) && response.data['inventory-response-item'].length > 0 && response.data['inventory-response-item'][0]['inventory-response-items']) {
+				if (angular.isArray(response.data['inventory-response-item'])) {
 					wholeData = response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item'];
 					$scope.services = $scope.filterDataWithHigerVersion(response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item']);
 					$scope.serviceType = response.data['inventory-response-item'][0]['service-subscription']['service-type'];
@@ -172,7 +172,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 					$scope.isSpinnerVisible = false;
 					$scope.isProgressVisible = false;
 				} else {
-					$scope.status = "Failed to get service models from A&AI.";
+					$scope.status = "Failed to get service models from ASDC.";
 					$scope.error = true;
 					$scope.isSpinnerVisible = false;
 				}
@@ -274,7 +274,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 					});
 
 				}, function errorCallback(response) {
-					console.log("Error: " + response);
+					$log.error("Error: ", response);
 				});
 		};
 		$scope.isFiltered=function(arr,obj){
@@ -531,8 +531,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
         $scope.getAsdcModel = function (disData) {
 
-            console.log("disData");
-            console.log(JSON.stringify(disData, null, 4));
+            $log.debug("disData", disData, null, 4);
 
             // if ( !(UtilityService.hasContents (disData.aaiModelVersionId)) ) {
             // 	$scope.errorMsg = FIELD.ERROR.MODEL_VERSION_ID_MISSING;
@@ -555,7 +554,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     COMPONENT.IS_PERMITTED_SUB_PATH + disData.isPermitted;
                 console.log("aaiSubscriber getAsdcModel DONE!!!!");
             }, function errorCallback(response) {
-                console.log("aaiSubscriber getAsdcModel - No matching model found matching the A&AI model version ID = " + disData.aaiModelVersionId);
+                $log.error("aaiSubscriber getAsdcModel - No matching model found matching the A&AI model version ID = " + disData.aaiModelVersionId);
                 $scope.errorMsg = FIELD.ERROR.NO_MATCHING_MODEL_AAI + disData.aaiModelVersionId;
                 alert($scope.errorMsg);
             });
@@ -575,7 +574,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         $scope.handleInitialResponseInventoryItems = function (response) {
 
             $scope.inventoryResponseItemList = response.data[FIELD.ID.INVENTORY_RESPONSE_ITEM]; // get data from json
-            console.log($scope.inventoryResponseItemList.toString());
+            $log.debug($scope.inventoryResponseItemList);
 
             $scope.displayData = [];
             $scope.vnfs = [];
@@ -609,12 +608,13 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                 "type": PARAMETER.STRING,
                                 "description": FIELD.PROMPT.VAR_DESCRIPTION_B,
                                 "default": FIELD.PROMPT.DEFAULT_B
-                            },
+                            }
                         },
                         "object": $scope.inventoryResponseItem[FIELD.ID.SERVICE_INSTANCE],
                         "vnfs": [],
-                        "networks": []
-                    }
+                        "networks": [],
+                        "configurations": []
+                    };
 
                     if (inventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
 
@@ -760,6 +760,44 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                     });
                                 }
                             }
+
+                            if (subInventoryResponseItem[FIELD.ID.GENERIC_CONFIGURATION] != null) {
+                                var configObject = subInventoryResponseItem[FIELD.ID.GENERIC_CONFIGURATION];
+                                var config = {
+                                    "id": $scope.counter++,
+                                    "name": configObject[FIELD.ID.CONFIGURATION_NAME],
+                                    "itemType": FIELD.ID.CONFIGURATION,
+                                    "nodeId": configObject[FIELD.ID.CONFIGURATION_ID],
+                                    "nodeType": configObject[FIELD.ID.CONFIGURATION_TYPE],
+                                    "nodeStatus": configObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                    "modelInvariantId": configObject[FIELD.ID.MODEL_INVAR_ID],
+                                    "modelVersionId": configObject[FIELD.ID.MODEL_VERSION_ID],
+                                    "modelCustomizationId": configObject[FIELD.ID.MODEL_CUSTOMIZATION_ID],
+                                    "object": configObject,
+                                    "ports": []
+                                };
+
+                                $scope.allowConfigurationActions = [FIELD.STATUS.AAI_ACTIVE, FIELD.STATUS.AAI_INACTIVE, FIELD.STATUS.AAI_CREATED].indexOf(config.nodeStatus) != -1;
+
+                                if (subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
+                                    angular.forEach(subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS][FIELD.ID.INVENTORY_RESPONSE_ITEM], function (subSubInventoryResponseItem, key) {
+                                        var port = {};
+                                        var portObject;
+                                        if (subSubInventoryResponseItem[FIELD.ID.PORT] != null) {
+                                            portObject = subSubInventoryResponseItem[FIELD.ID.PORT];
+                                            port = {
+                                                "portId": portObject[FIELD.ID.PORT_ID],
+                                                "portName": portObject[FIELD.ID.PORT_NAME],
+                                                "portStatus": portObject[FIELD.ID.PORT_MIRRORED] === true ? FIELD.STATUS.AAI_ENABLED : FIELD.ID.AAI_DISABLED,
+                                                "object": portObject
+                                            };
+                                            config.ports.push(port);
+                                        }
+                                    });
+                                }
+                                $scope.service.instance[FIELD.ID.CONFIGURATIONS].push(config);
+                            }
+
                         });
                     }
                 });
@@ -910,6 +948,75 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     $log.error(error);
                 });
             ;
+        };
+
+        $scope.toggleConfigurationStatus = function (serviceObject, configuration) {
+
+            var serviceModelInfo =  {
+                "modelType": "service",
+                "modelInvariantId": serviceObject.model.service.invariantUuid,
+                "modelVersionId": "uuid",
+                "modelName": serviceObject.model.service.name,
+                "modelVersion": serviceObject.model.service.version
+            };
+
+            var configurationModelInfo = {
+                "modelType": "configuration",
+                "modelInvariantId": configuration.modelInvariantId,
+                "modelVersionId": configuration.modelVersionId,
+                "modelCustomizationId": configuration.modelCustomizationId
+            };
+
+            DataService.setServiceInstanceId(serviceObject.instance.serviceInstanceId);
+            DataService.setConfigurationInstanceId(configuration.nodeId);
+            DataService.setConfigurationStatus(configuration.nodeStatus);
+            DataService.setModelInfo(COMPONENT.SERVICE, serviceModelInfo);
+            DataService.setModelInfo(COMPONENT.CONFIGURATION, configurationModelInfo);
+
+            openMsoModal(COMPONENT.MSO_CHANGE_STATUS_REQ, COMPONENT.CONFIGURATION);
+        };
+
+        $scope.togglePortStatus = function(serviceObject, configuration, port) {
+
+            var serviceModelInfo =  {
+                "modelType": "service",
+                "modelInvariantId": serviceObject.model.service.invariantUuid,
+                "modelVersionId": "uuid",
+                "modelName": serviceObject.model.service.name,
+                "modelVersion": serviceObject.model.service.version
+            };
+
+            var configurationModelInfo = {
+                "modelType": "configuration",
+                "modelInvariantId": configuration.modelInvariantId,
+                "modelVersionId": configuration.modelVersionId,
+                "modelCustomizationId": configuration.modelCustomizationId
+            };
+
+            DataService.setServiceInstanceId(serviceObject.instance.serviceInstanceId);
+            DataService.setConfigurationInstanceId(configuration.nodeId);
+            DataService.setPortId(port.portId);
+            DataService.setPortStatus(port.portStatus);
+            DataService.setModelInfo(COMPONENT.SERVICE, serviceModelInfo);
+            DataService.setModelInfo(COMPONENT.CONFIGURATION, configurationModelInfo);
+
+            openMsoModal(COMPONENT.MSO_CHANGE_STATUS_REQ, COMPONENT.PORT);
+        };
+
+        var openMsoModal = function (msoType, componentId) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/mso-commit/mso-commit.html',
+                controller : "msoCommitModalController",
+                backdrop: false,
+                resolve: {
+                    msoType: function () {
+                        return msoType;
+                    },
+                    componentId: function () {
+                        return componentId;
+                    }
+                }
+            });
         };
 
         $scope.nextPage = function () {

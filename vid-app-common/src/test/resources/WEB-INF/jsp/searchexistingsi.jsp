@@ -12,7 +12,7 @@
 <script src="app/vid/test/testAaiData.js"></script>
 
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
-<script src="app/vid/scripts/controller/deletionDialogController.js"></script>
+<script src="app/vid/scripts/controller/deleteResumeDialogController.js"></script>
 <script src="app/vid/scripts/controller/detailsDialogController.js"></script>
 <script src="app/vid/scripts/controller/statusDialogController.js"></script>
 <script src="app/vid/scripts/controller/msoCommitController.js"></script>
@@ -21,7 +21,7 @@
 <script src="app/vid/scripts/services/asdcService.js"></script>
 <script src="app/vid/scripts/services/creationService.js"></script>
 <script src="app/vid/scripts/services/dataService.js"></script>
-<script src="app/vid/scripts/services/deletionService.js"></script>
+<script src="app/vid/scripts/services/deleteResumeService.js"></script>
 <script src="app/vid/scripts/services/detailsService.js"></script>
 <script src="app/vid/scripts/services/statusService.js"></script>
 <script src="app/vid/scripts/services/componentService.js"></script>

@@ -13,6 +13,7 @@ import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIResp
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.openecomp.vid.model.SubscriberList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.UriUtils;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.BadRequestException;
@@ -20,6 +21,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -81,8 +84,8 @@ public class AaiClient implements AaiClientInterface {
         AaiResponse aaiAicZones = proccessAaiResponse(resp, AicZones.class, null);
         return aaiAicZones;
     }
-    
-    
+
+
 	@Override
 	public AaiResponse<String> getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId) {
 		String certiPath = getCertificatesFile().getAbsolutePath();
@@ -94,7 +97,7 @@ public class AaiClient implements AaiClientInterface {
 		AaiResponse<String> aaiAicZonaForPnfResponse = new AaiResponse(aicZone , null ,HttpStatus.SC_OK);
 		return  aaiAicZonaForPnfResponse;
 	}
-    
+
 
     @Override
     public AaiResponse getVNFData() {
@@ -117,7 +120,7 @@ public class AaiClient implements AaiClientInterface {
     @Override
     public AaiResponse getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId) {
         String certiPath = getCertificatesFile().getAbsolutePath();
-        String payload = "{\"start\": [\"/business/customers/customer/" + globalSubscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances/service-instance/" + serviceInstanceId + "\"],	\"query\": \"query/vnf-topology-fromServiceInstance\"}";
+        String payload = "{\"start\": [\"/business/customers/customer/" + globalSubscriberId + "/service-subscriptions/service-subscription/" + encodePathSegment(serviceType) + "/service-instances/service-instance/" + serviceInstanceId + "\"],	\"query\": \"query/vnf-topology-fromServiceInstance\"}";
         Response resp = doAaiPut(certiPath, "query?format=simple", payload, false);
         return proccessAaiResponse(resp, AaiGetVnfResponse.class, null);
     }
@@ -164,6 +167,19 @@ public class AaiClient implements AaiClientInterface {
 
         AaiResponse<GetTenantsResponse[]> getTenantsResponse = proccessAaiResponse(resp, GetTenantsResponse[].class, responseAsString);
         return getTenantsResponse;
+    }
+
+    @Override
+    public AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion) {
+
+        String certiPath = getCertificatesFile().getAbsolutePath();
+        String payload = "{\"start\": [\"" +
+                "/network/generic-vnfs?model-version-id=" + modelVersionId +
+                "&model-invariant-id="+modelInvariantId + "\"],	" +
+                "\"query\": \"query/vnfFromModelbyRegion?cloudRegionId="+cloudRegion+"\"}";
+
+        Response resp = doAaiPut(certiPath, "query?format=simple", payload, false);
+        return proccessAaiResponse(resp, Object.class, null);
     }
 
     private AaiResponse proccessAaiResponse(Response resp, Class classType, String responseBody) {
@@ -348,5 +364,12 @@ public class AaiClient implements AaiClientInterface {
 
     }
 
+    private static String encodePathSegment(String serviceType) {
+        try {
+            return UriUtils.encodePathSegment(serviceType, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("URI encoding failed unexpectedly", e);
+        }
+    }
 
 }

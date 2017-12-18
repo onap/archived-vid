@@ -17,6 +17,7 @@
 			<modules>
 				<module>vid-app-common</module>
 				<module>epsdk-app-onap</module>
+				<module>vid-automation</module>
 			</modules>
 
 			<repositories>

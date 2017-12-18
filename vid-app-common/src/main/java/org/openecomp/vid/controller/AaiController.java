@@ -45,6 +45,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
@@ -55,8 +56,7 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -342,7 +342,7 @@ public class AaiController extends RestrictedBaseController {
         AaiResponse response = aaiService.getAaiZones();
         return aaiResponseToResponseEntity(response);
     }
-    
+
     @RequestMapping(value = {"/aai_get_aic_zone_for_pnf/{globalCustomerId}/{serviceType}/{serviceId}"}, method = RequestMethod.GET)
     public ResponseEntity<String> getAicZoneForPnf(@PathVariable("globalCustomerId") String globalCustomerId ,@PathVariable("serviceType") String serviceType , @PathVariable("serviceId") String serviceId ,HttpServletRequest request) throws JsonGenerationException, JsonMappingException, IOException {
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== getAicZoneForPnf controller start");
@@ -602,9 +602,38 @@ public class AaiController extends RestrictedBaseController {
         File certiPath = GetCertificatesPath();
 
         Response resp = doAaiPost(certiPath.getAbsolutePath(), "search/named-query", componentListPayload, false);
+//        //mock adds configuration to view/edit response
+//        String res = "";
+//        try {
+//            res = resp.readEntity(String.class);
+//            InputStream aaiConfigInstanceFile = AaiController.class.getClassLoader().getResourceAsStream("aai_config_instance_view_edit.json");
+//            res = res.substring(0, res.length() - 5) + "," + convertStreamToString(aaiConfigInstanceFile) + "]}}]}";
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<>(res, HttpStatus.OK);
         return convertResponseToResponseEntity(resp);
     }
 
+//    public String convertStreamToString(InputStream is) throws IOException {
+//        if (is != null) {
+//            Writer writer = new StringWriter();
+//
+//            char[] buffer = new char[1024];
+//            try {
+//                Reader reader = new BufferedReader(
+//                        new InputStreamReader(is, "UTF-8"));
+//                int n;
+//                while ((n = reader.read(buffer)) != -1) {
+//                    writer.write(buffer, 0, n);
+//                }
+//            } finally {
+//                is.close();
+//            }
+//            return writer.toString();
+//        }
+//        return "";
+//    }
 
     @RequestMapping(value = "/aai_get_vnf_data/{globalCustomerId}/{serviceType}/{serviceInstanceId}", method = RequestMethod.GET)
     public AaiResponse<String> getVnfData(
@@ -641,6 +670,40 @@ public class AaiController extends RestrictedBaseController {
         File certiPath = GetCertificatesPath();
 
         Response resp = doAaiPost(certiPath.getAbsolutePath(), "search/named-query", componentListPayload, false);
+        return convertResponseToResponseEntity(resp);
+    }
+
+    @RequestMapping(value = "/aai_get_vnf_instances/{globalCustomerId}/{serviceType}/{modelVersionId}/{modelInvariantId}/{cloudRegion}", method = RequestMethod.GET)
+    public ResponseEntity<String> getNodeTemplateInstances(
+            @PathVariable("globalCustomerId") String globalCustomerId,
+            @PathVariable("serviceType") String serviceType,
+            @PathVariable("modelVersionId") String modelVersionId,
+            @PathVariable("modelInvariantId") String modelInvariantId,
+            @PathVariable("cloudRegion") String cloudRegion) {
+
+        AaiResponse<String> resp = aaiService.getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
+        return new ResponseEntity<String>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
+    }
+
+    @RequestMapping(value = "/aai_get_by_uri/**", method = RequestMethod.GET)
+    public ResponseEntity<String> getByUri(HttpServletRequest request) {
+        File certiPath = GetCertificatesPath();
+
+        String restOfTheUrl = (String) request.getAttribute(
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        String formattedUri = restOfTheUrl.replaceFirst("/aai_get_by_uri/", "").replaceFirst("^aai/v[\\d]+/", "");
+
+        Response resp = doAaiGet(certiPath.getAbsolutePath(), formattedUri, false);
+
+        return convertResponseToResponseEntity(resp);
+    }
+
+    @RequestMapping(value = "/aai_get_configuration/{configuration_id}", method = RequestMethod.GET)
+    public ResponseEntity<String> getSpecificConfiguration(@PathVariable("configuration_id") String configurationId) {
+        File certiPath = GetCertificatesPath();
+
+        Response resp = doAaiGet(certiPath.getAbsolutePath(), "network/configurations/configuration/"+configurationId, false);
+
         return convertResponseToResponseEntity(resp);
     }
 

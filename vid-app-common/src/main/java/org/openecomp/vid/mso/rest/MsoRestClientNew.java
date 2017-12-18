@@ -70,6 +70,14 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
+    public MsoResponseWrapper createConfigurationInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+        String methodName = "createConfigurationInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        return createInstance(requestDetails, endpoint);
+    }
+
+    @Override
     public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception {
         String methodName = "deleteSvcInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -237,6 +245,60 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
         return replaceInstance(requestDetails, endpoint);
+    }
+
+    @Override
+    public MsoResponseWrapper deleteConfiguration(RequestDetails requestDetails, String pmc_endpoint)
+            throws Exception {
+        String methodName = "deleteConfiguration";
+        logger.debug(EELFLoggerDelegate.debugLogger,
+                dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        return deleteInstance(requestDetails, pmc_endpoint);
+    }
+
+    @Override
+    public MsoResponseWrapper setConfigurationActiveStatus(RequestDetails request, String path) throws Exception {
+        String methodName = "setConfigurationActiveStatus";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        try {
+            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling change configuration active status, path =[" + path + "]");
+
+            RestObject<String> restObjStr = new RestObject<String>();
+            String str = new String();
+            restObjStr.set(str);
+            Post(str, request, "", path, restObjStr);
+            MsoResponseWrapper msoResponseWrapperObject = MsoUtil.wrapResponse(restObjStr);
+
+            return msoResponseWrapperObject;
+        } catch (Exception e) {
+            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            throw e;
+        }
+    }
+
+    @Override
+    public MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails request, String path) throws Exception {
+        String methodName = "setPortOnConfigurationStatus";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        try {
+            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling change port configuration status, path =[" + path + "]");
+
+            RestObject<String> restObjStr = new RestObject<String>();
+            String str = new String();
+            restObjStr.set(str);
+            Post(str, request, "", path, restObjStr);
+            MsoResponseWrapper msoResponseWrapperObject = MsoUtil.wrapResponse(restObjStr);
+
+            return msoResponseWrapperObject;
+        } catch (Exception e) {
+            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            throw e;
+        }
     }
 
     public MsoResponseWrapper replaceInstance(org.openecomp.vid.changeManagement.RequestDetails request, String path) throws Exception {

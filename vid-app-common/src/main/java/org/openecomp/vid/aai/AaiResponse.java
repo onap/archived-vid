@@ -1,5 +1,6 @@
 package org.openecomp.vid.aai;
 
+import com.google.common.base.MoreObjects;
 import org.openecomp.vid.model.ProxyResponse;
 
 /**
@@ -17,5 +18,14 @@ public class AaiResponse<T> extends ProxyResponse{
 
     public T getT() {
         return t;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("httpCode", httpCode)
+                .add("errorMessage", errorMessage)
+                .add("t", t)
+                .toString();
     }
 }

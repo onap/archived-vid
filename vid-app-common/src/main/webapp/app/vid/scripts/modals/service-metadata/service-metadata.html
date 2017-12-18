@@ -1,0 +1,12 @@
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/service-metadata/service-metadata.css"/>
+<div class="top">
+    <span class="title">{{selectedMetadata[0].value}}</span>
+    <span class="top-btn sprite modal-x" data-ng-click="cancel()"></span>
+</div>
+
+<div class="meatadata-modal-body" id="modal-body">
+    <service-metadata service-metadata-fields="selectedMetadata"></service-metadata>
+</div>
+<div class="modal-footer">
+    <button class="cancel-btn grey" data-tests-id="cancel" data-ng-click="cancel()">Close</button>
+</div>

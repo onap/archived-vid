@@ -88,6 +88,11 @@ public class MsoLocalClientNew implements MsoInterface {
     }
 
     @Override
+    public MsoResponseWrapper createConfigurationInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+        return createInstance(requestDetails, endpoint);
+    }
+
+    @Override
     public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception {
         return null;
     }
@@ -205,9 +210,23 @@ public class MsoLocalClientNew implements MsoInterface {
         throw new NotImplementedException("Function was not implemented at this point.");
 	}
 
+    @Override
+    public MsoResponseWrapper deleteConfiguration(RequestDetails requestDetails, String pmc_endpoint) {
+        return null;
+    }
+
+    @Override
+    public MsoResponseWrapper setConfigurationActiveStatus(RequestDetails requestDetails, String endpoint) {
+        return null;
+    }
+
+    @Override
+    public MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails requestDetails, String endpoint) {
+        return null;
+    }
 
 
-	@Override
+    @Override
 	public MsoResponseWrapper updateVnf(org.openecomp.vid.changeManagement.RequestDetails requestDetails,
 			String vnf_endpoint) {
         // TODO Auto-generated method stub

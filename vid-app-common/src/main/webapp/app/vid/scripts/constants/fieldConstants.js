@@ -129,7 +129,16 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         SUPPLEMENTORY_DATA_FILE: "supplementoryDataFile",
         ZONE_ID: "zone-id",
         ZONE_NAME: "zone-name",
-
+        GENERIC_CONFIGURATION: "configuration",
+        CONFIGURATIONS: "configurations",
+        CONFIGURATION: "configuration",
+        CONFIGURATION_NAME: "configuration-name",
+        CONFIGURATION_TYPE: "configuration-type",
+        CONFIGURATION_ID: "configuration-id",
+        PORT: "l-interface",
+        PORT_ID: "interface-id",
+        PORT_NAME: "interface-name",
+        PORT_MIRRORED: "is-port-mirrored"
     };
 
     var KEY = {
@@ -244,7 +253,11 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         SUBMITTING_REQUEST: "Submitting Request",
         SUCCESS_VNF_PROV_STATUS: "Successfully set the VNF's Prov_Status to ",
         UNLOCKED: "Unlocked",
-
+        AAI_ACTIVE: "Active",
+        AAI_INACTIVE: "Inactive",
+        AAI_CREATED: "Created",
+        AAI_ENABLED: "Enabled",
+        AAI_DISABLED: "Disabled"
     };
 
     var STYLE = {
@@ -416,8 +429,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
             id: ID.SUBSCRIBER_NAME,
             type: PARAMETER.SELECT,
             prompt: PROMPT.SUBSCRIBER_NAME,
-		isRequired : true,
-		isSingleOptionAutoSelected : false
+            isRequired: true
         },
         TENANT_DISABLED: {
             name: NAME.TENANT,

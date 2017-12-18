@@ -67,6 +67,9 @@ public class Node {
 	
 	/** The get_input or other constructs from node template properties. */
 	private Map<String, String> properties;
+
+	/** Type from Metadata */
+	private String type;
 	/**
 	 * Instantiates a new node.
 	 */
@@ -229,6 +232,24 @@ public class Node {
 	public void setProperties( Map<String, String>p) {
 		properties = p;
 	}
+
+
+	/**
+	 * @return metadata type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * Set metadata type
+	 *
+	 * @param type e.g. VF/CP/SERVICE_PROXY
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	/**
 	 * Extract node.
 	 *

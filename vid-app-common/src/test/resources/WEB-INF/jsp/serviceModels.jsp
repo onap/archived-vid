@@ -34,7 +34,7 @@
 <script src="app/vid/scripts/modals/new-change-management/new-change-management.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
-<script src="app/vid/scripts/controller/deletionDialogController.js"></script>
+<script src="app/vid/scripts/controller/deleteResumeDialogController.js"></script>
 <script src="app/vid/scripts/controller/detailsDialogController.js"></script>
 <script src="app/vid/scripts/controller/statusDialogController.js"></script>
 <script src="app/vid/scripts/controller/InstantiationController.js"></script>
@@ -43,6 +43,8 @@
 <script src="app/vid/scripts/controller/previousVersionDialogController.js"></script>
 <script src="app/vid/scripts/controller/previousVersionContoller.js"></script>
 <script src="app/vid/scripts/controller/change-management.controller.js"></script>
+<script src="app/vid/scripts/controller/msoCommitModalController.js"></script>
+
 
 <script src="app/vid/scripts/directives/extensionsDirective.js"></script>
 <script src="app/vid/scripts/directives/parameterBlockDirective.js"></script>
@@ -53,7 +55,7 @@
 <script src="app/vid/scripts/services/componentService.js"></script>
 <script src="app/vid/scripts/services/creationService.js"></script>
 <script src="app/vid/scripts/services/dataService.js"></script>
-<script src="app/vid/scripts/services/deletionService.js"></script>
+<script src="app/vid/scripts/services/deleteResumeService.js"></script>
 <script src="app/vid/scripts/services/detailsService.js"></script>
 <script src="app/vid/scripts/services/statusService.js"></script>
 <script src="app/vid/scripts/services/msoService.js"></script>
@@ -75,18 +77,20 @@
 	<div ng-view></div>
 </div>
 <!--  Temporary solution for footer overlapping the men after talking to EComp SDK developer on 06/16/2016 -->
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="temporary-solution">
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+</div>

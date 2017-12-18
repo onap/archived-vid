@@ -101,6 +101,11 @@ public class MsoController extends RestrictedBaseController {
     public final static String REQUEST_TYPE = "<request_type>";
 
     /**
+     * The Constant CONFIGURATION_ID
+     */
+    public final static String CONFIGURATION_ID = "<configuration_id>";
+
+    /**
      * The Constant VNF_INSTANCE_ID.
      */
     public final static String VNF_INSTANCE_ID = "<vnf_instance_id>";
@@ -300,6 +305,29 @@ public class MsoController extends RestrictedBaseController {
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
     }
 
+    /**
+     * Creates a configuration instance.
+     *
+     * @param serviceInstanceId the service instance id
+     * @param request           the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "/mso_create_configuration_instance/{serviceInstanceId}/configurations/", method = RequestMethod.POST)
+    public ResponseEntity<String> createConfigurationInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
+                                                         HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+        String methodName = "createConfigurationInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.createConfigurationInstance(mso_request, serviceInstanceId);
+
+        // always return OK, the MSO status code is embedded in the body
+
+        return (new ResponseEntity<>(w.getResponse(), HttpStatus.OK));
+    }
+
 	/**
 	 * Creates the instance.
 	 *
@@ -382,6 +410,123 @@ public class MsoController extends RestrictedBaseController {
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
 
+    }
+
+    /**
+     * Delete configuration instance
+     * @param serviceInstanceId the service instance id
+     * @param configurationId the configuration id
+     * @param mso_request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "mso_delete_configuration/{serviceInstanceId}/configurations/{configurationId}",
+            method = RequestMethod.POST)
+    public ResponseEntity<String> deleteConfiguration(
+            @PathVariable("serviceInstanceId") String serviceInstanceId,
+            @PathVariable ("configurationId") String configurationId,
+            @RequestBody RequestDetails mso_request) throws Exception {
+
+        String methodName = "deleteConfiguration";
+        logger.debug(EELFLoggerDelegate.debugLogger,
+                dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.deleteConfiguration(mso_request, serviceInstanceId, configurationId);
+
+        // always return OK, the MSO status code is embedded in the body
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+    }
+
+    /**
+     * Activate configuration instance
+     * @param serviceInstanceId the service instace id
+     * @param configurationId the configuration id
+     * @param mso_request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "mso_activate_configuration/{serviceInstanceId}/configurations/{configurationId}",
+            method = RequestMethod.POST)
+    public ResponseEntity<String> activateConfiguration(
+            @PathVariable("serviceInstanceId") String serviceInstanceId,
+            @PathVariable("configurationId") String configurationId,
+            @RequestBody RequestDetails mso_request) throws Exception {
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.setConfigurationActiveStatus(mso_request, serviceInstanceId, configurationId, true);
+
+        // always return OK, the MSO status code is embedded in the body
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+    }
+
+    /**
+     * Deactivate configuration instance
+     * @param serviceInstanceId the service instace id
+     * @param configurationId the configuration id
+     * @param mso_request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "mso_deactivate_configuration/{serviceInstanceId}/configurations/{configurationId}",
+            method = RequestMethod.POST)
+    public ResponseEntity<String> deactivateConfiguration(
+            @PathVariable("serviceInstanceId") String serviceInstanceId,
+            @PathVariable("configurationId") String configurationId,
+            @RequestBody RequestDetails mso_request) throws Exception {
+
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.setConfigurationActiveStatus(mso_request, serviceInstanceId, configurationId, false);
+
+        // always return OK, the MSO status code is embedded in the body
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+    }
+
+    /**
+     * Disable port on configuration instance
+     * @param serviceInstanceId the service instance id
+     * @param configurationId the configuration instance id
+     * @param mso_request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "mso_disable_port_configuration/{serviceInstanceId}/configurations/{configurationId}",
+            method = RequestMethod.POST)
+    public ResponseEntity<String> disablePortOnConfiguration(
+            @PathVariable("serviceInstanceId") String serviceInstanceId,
+            @PathVariable("configurationId") String configurationId,
+            @RequestBody RequestDetails mso_request) throws Exception {
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.setPortOnConfigurationStatus(mso_request, serviceInstanceId, configurationId, false);
+
+        // always return OK, the MSO status code is embedded in the body
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+    }
+
+    /**
+     * Enable port on configuration instance
+     * @param serviceInstanceId the service instance id
+     * @param configurationId the configuration instance id
+     * @param mso_request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "mso_enable_port_configuration/{serviceInstanceId}/configurations/{configurationId}",
+            method = RequestMethod.POST)
+    public ResponseEntity<String> enablePortOnConfiguration(
+            @PathVariable("serviceInstanceId") String serviceInstanceId,
+            @PathVariable("configurationId") String configurationId,
+            @RequestBody RequestDetails mso_request) throws Exception {
+        MsoBusinessLogic mbl = new MsoBusinessLogic();
+
+        MsoResponseWrapper w = mbl.setPortOnConfigurationStatus(mso_request, serviceInstanceId, configurationId, true);
+
+        // always return OK, the MSO status code is embedded in the body
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
     }
 
     /**

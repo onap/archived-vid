@@ -1,6 +1,7 @@
 package org.openecomp.vid.aai;
 
 import com.fasterxml.jackson.annotation.*;
+import com.google.common.base.MoreObjects;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,5 +25,13 @@ public class AaiGetVnfResponse {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("results", results)
+                .add("additionalProperties", additionalProperties)
+                .toString();
     }
 }

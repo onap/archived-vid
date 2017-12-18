@@ -4,17 +4,18 @@ import org.openecomp.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.openecomp.sdc.tosca.parser.impl.FilterType;
 import org.openecomp.sdc.tosca.parser.impl.SdcToscaParserFactory;
-import org.openecomp.sdc.toscaparser.api.Group;
-import org.openecomp.sdc.toscaparser.api.NodeTemplate;
-import org.openecomp.sdc.toscaparser.api.Property;
+import org.openecomp.sdc.tosca.parser.impl.SdcTypes;
+import org.openecomp.sdc.toscaparser.api.*;
 import org.openecomp.sdc.toscaparser.api.parameters.Input;
 import org.openecomp.vid.asdc.beans.Service;
 import org.openecomp.vid.model.*;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ToscaParserImpl2 {
 
@@ -47,11 +48,13 @@ public class ToscaParserImpl2 {
     public ServiceModel makeServiceModel(Path path, Service asdcServiceMetadata) throws Exception {
         ServiceModel serviceModel = new ServiceModel();
         SdcToscaParserFactory factory = SdcToscaParserFactory.getInstance();
-        ISdcCsarHelper sdcCsarHelper = factory.getSdcCsarHelper(path.toFile().getAbsolutePath()); //, false);
+        ISdcCsarHelper sdcCsarHelper = factory.getSdcCsarHelper(path.toFile().getAbsolutePath());
         serviceModel.setService(extractServiceFromCsar(asdcServiceMetadata, sdcCsarHelper));
         serviceModel.setVolumeGroups(extractVolumeGroups(sdcCsarHelper));
         serviceModel.setVfModules(extractVfModuleFromCsar(sdcCsarHelper));
         serviceModel.setVnfs(extractVnfsFromCsar(serviceModel,sdcCsarHelper));
+        serviceModel.setConfigurations(extractPortMirroringConfigFromCsar(sdcCsarHelper));
+        serviceModel.setServiceProxies(extractServiceProxyFromCsar(sdcCsarHelper));
         serviceModel.setNetworks(extractNetworksFromCsar(sdcCsarHelper));
         return serviceModel;
     }
@@ -91,6 +94,62 @@ public class ToscaParserImpl2 {
             vnfsMaps.put(nodeTemplate.getName(), vnf);
         }
         return vnfsMaps;
+    }
+
+    private Map<String, PortMirroringConfig> extractPortMirroringConfigFromCsar(ISdcCsarHelper csarHelper) {
+        List<NodeTemplate> nodeTemplates = csarHelper.getServiceNodeTemplateBySdcType(SdcTypes.CONFIGURATION);
+        Map<String, PortMirroringConfig> configMaps = new HashMap<>();
+
+        for (NodeTemplate nodeTemplate : nodeTemplates) {
+            PortMirroringConfig pmConfig = new PortMirroringConfig();
+            populateNodeFromNodeTemplate(nodeTemplate, csarHelper, pmConfig);
+
+            pmConfig.setModelCustomizationName(nodeTemplate.getName());
+            pmConfig.setRequirementAssignments(nodeTemplate.getRequirements());
+            setSourceAndCollectorProxyNodes(csarHelper, pmConfig, nodeTemplate);
+
+            configMaps.put(nodeTemplate.getName(), pmConfig);
+        }
+
+        return configMaps;
+	}
+
+    private Map<String, ServiceProxy> extractServiceProxyFromCsar(ISdcCsarHelper csarHelper) {
+        List<NodeTemplate> nodeTemplates = csarHelper.getServiceNodeTemplateBySdcType(SdcTypes.SERVICE_PROXY);
+        Map<String, ServiceProxy> serviceProxies = new HashMap<>();
+        for (NodeTemplate nodeTemplate: nodeTemplates) {
+            ServiceProxy serviceProxy = new ServiceProxy();
+            populateNodeFromNodeTemplate(nodeTemplate, csarHelper, serviceProxy);
+
+            Map<String, String> metadata = nodeTemplate.getMetaData().getAllProperties();
+            serviceProxy.setSourceModelUuid(metadata.get("sourceModelUuid"));
+            serviceProxy.setSourceModelInvariant(metadata.get("sourceModelInvariant"));
+            serviceProxy.setSourceModelName(metadata.get("sourceModelName"));
+
+            serviceProxies.put(nodeTemplate.getName(), serviceProxy);
+        }
+
+        return serviceProxies;
+    }
+
+	private void setSourceAndCollectorProxyNodes(ISdcCsarHelper csarHelper, PortMirroringConfig portMirroringConfig, NodeTemplate nodeTemplate) {
+	    RequirementAssignments requirementAssignments = nodeTemplate.getRequirements();
+
+        List<String> sourceNodes = getRequirementsNodesNames(requirementAssignments.getRequirementsByName("source").getAll());
+        portMirroringConfig.setSourceNodes(sourceNodes);
+
+        List<String> collectorNodes = getRequirementsNodesNames(requirementAssignments.getRequirementsByName("collector").getAll());
+        portMirroringConfig.setCollectorNodes(collectorNodes);
+    }
+
+    private List<String> getRequirementsNodesNames(List<RequirementAssignment> requirements) {
+
+        List<String> requirementsNodes = new ArrayList<>();
+        if (requirements != null && requirements.size() > 0) {
+            requirementsNodes =  requirements.stream().map(RequirementAssignment::getNodeTemplateName).collect(Collectors.toList());
+        }
+
+        return requirementsNodes;
     }
 
     private Map<String, VfModule> getVfModulesFromVF(ISdcCsarHelper csarHelper, String vfUuid) {
@@ -164,6 +223,7 @@ public class ToscaParserImpl2 {
         newNode.setName(nodeTemplate.getMetaData().getValue(Constants.name));
         newNode.setVersion(nodeTemplate.getMetaData().getValue(Constants.version));
         newNode.setInputs(extractInputsAndCommandsForNodeTemplate(nodeTemplate, csarHelper, newNode));
+        newNode.setType(nodeTemplate.getMetaData().getValue("type"));
         Map<String, String> propertiesMap = setPropertiesOfVnf(nodeTemplate.getPropertiesObjects());
         newNode.setProperties(propertiesMap);
         return newNode;

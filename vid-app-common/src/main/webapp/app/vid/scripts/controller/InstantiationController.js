@@ -26,14 +26,16 @@
 	"use strict";
 
 	appDS2.requires.push('ui.tree');
-	
+
 	appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService) {
-		
+
 		$scope.popup = new Object();
 		$scope.defaultBaseUrl = "";
 		$scope.responseTimeoutMsec = 60000;
 		$scope.properties = UtilityService.getProperties();
+        $scope.resumeStatus = COMPONENT.RESUME_STATUS;
 		$scope.isPermitted = $location.search().isPermitted;
+		$scope.STATUS_CONSTANTS = FIELD.STATUS;
 
         $scope.init = function() {
             /*
@@ -213,9 +215,10 @@
 			DataService.setServiceUuid($scope.service.model.service.uuid);
 			DataService.setNetworkInstanceId(network.object[FIELD.ID.NETWORK_ID]);
 			
-			$scope.$broadcast(COMPONENT.DELETE_COMPONENT, {
+			$scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
 			    componentId : COMPONENT.NETWORK,
-			    callbackFunction : deleteCallbackFunction
+			    callbackFunction : deleteOrResumeCallback,
+				dialogMethod: COMPONENT.DELETE
 			});
 		};
 
@@ -233,14 +236,8 @@
 				}
 			DataService.setMacro($scope.isMacro());
 			DataService.setInventoryItem(serviceInstance);
-			
-			DataService.setModelInfo(COMPONENT.SERVICE, {
-				"modelInvariantId": $scope.service.model.service.invariantUuid,
-				"modelVersion": $scope.service.model.service.version,
-				"modelNameVersionId": $scope.service.model.service.uuid,
-				"modelName": $scope.service.model.service.name,
-				"inputs": ""
-			});
+			setCurrentServiceModelInfoFromScope();
+
 			
 			DataService.setSubscriberName(serviceObject[FIELD.ID.SUBSCRIBER_NAME]);
 			DataService.setServiceType(serviceObject[COMPONENT.SERVICE_TYPE]);
@@ -253,105 +250,150 @@
 			
 			DataService.setServiceUuid($scope.service.model.service.uuid);
 			
-			$scope.$broadcast(COMPONENT.DELETE_COMPONENT, {
+			$scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
 			    componentId : COMPONENT.SERVICE,
-			    callbackFunction : deleteServiceInstanceCallbackFunction
+			    callbackFunction : deleteServiceInstanceCallbackFunction,
+                dialogMethod: COMPONENT.DELETE
 			});
 		
 		};
 
+		function populate_popup_vfModule(serviceObject, vfModule, vnf){
+            var serviceInstance = serviceObject.object;
+
+            DataService.setInventoryItem(vfModule.object);
+
+            var svcModel = $scope.service.convertedModel;
+
+            //var vnfModelInvariantUuid = vnf.object[FIELD.ID.MODEL_INVAR_ID];
+            var vnfModelVersionId = vnf.object[FIELD.ID.MODEL_VERSION_ID];
+            var vnfModelCustomizationUuid = vnf.object[FIELD.ID.MODEL_CUSTOMIZATION_ID];;
+            var vfModuleInstanceID = vfModule.object[FIELD.ID.VF_MODULE_ID];
+            if (vfModuleInstanceID == null) {
+                vfModuleInstanceID = "";
+            }
+
+            var vnfModel = null;
+            var vfModuleModel = null;
+
+            DataService.setModelInfo(COMPONENT.VF_MODULE, {
+                "modelInvariantId": "",
+                "modelVersion": "",
+                "modelNameVersionId": "",
+                "modelCustomizationName": "",
+                "customizationUuid": "",
+                "modelName": "",
+                "inputs": ""
+            });
+
+            if ( (!($scope.isObjectEmpty(svcModel))) && ( !($scope.isObjectEmpty(svcModel.vnfs) ) ) ) {
+                if ( (svcModel.isNewFlow) && (vnfModelCustomizationUuid != null ) ) {
+                    vnfModel = svcModel.vnfs[vnfModelCustomizationUuid];
+
+                    var vfModuleCustomizationUuid = vfModule.object[FIELD.ID.MODEL_CUSTOMIZATION_ID];
+                    if ( !($scope.isObjectEmpty(vnfModel.vfModules) ) && UtilityService.hasContents(vfModuleCustomizationUuid) ) {
+
+                        vfModuleModel = vnfModel.vfModules[vfModuleCustomizationUuid];
+
+                    }
+                }
+                else {
+                    // old flow
+                    if (vnfModelVersionId != null ) {
+                        vnfModel = svcModel.vnfs[vnfModelVersionId];
+                    }
+                    //var vfModuleInvariantUuid = vfModule.object[FIELD.ID.MODEL_INVAR_ID];
+                    var vfModuleModelVersionId = vfModule.object[FIELD.ID.MODEL_VERSION_ID];
+                    if ( (!($scope.isObjectEmpty(vnfModel))) && (!($scope.isObjectEmpty(vnfModel.vfModules))) &&
+                        UtilityService.hasContents(vfModuleModelVersionId) ) {
+                        vfModuleModel = vnfModel.vfModules[vfModuleModelVersionId];
+                    }
+                }
+                if ( !($scope.isObjectEmpty(vfModuleModel)) ) {
+                    DataService.setModelInfo(COMPONENT.VF_MODULE, {
+                        "modelInvariantId": vfModuleModel.invariantUuid,
+                        "modelVersion": vfModuleModel.version,
+                        "modelNameVersionId": vfModuleModel.uuid,
+                        "modelCustomizationName": vfModuleModel.modelCustomizationName,
+                        "customizationUuid": vfModuleModel.customizationUuid,
+                        "modelName": vfModuleModel.name,
+                        "inputs": ""
+                    });
+                }
+            }
+
+            DataService.setVnfInstanceId(vnf.object[FIELD.ID.VNF_ID]);
+            DataService.setVfModuleInstanceId(vfModuleInstanceID);
+
+            DataService.setSubscriberName(serviceObject[COMPONENT.SUBSCRIBER_NAME]);
+            DataService.setServiceType(serviceObject[COMPONENT.SERVICE_TYPE]);
+            DataService.setServiceInstanceId(serviceInstance[FIELD.ID.SERVICE_INSTANCE_ID]);
+
+            DataService.setGlobalCustomerId(serviceObject[FIELD.ID.GLOBAL_CUST_ID]);
+            DataService.setServiceInstanceName($scope.service.instance.name);
+
+            DataService.setServiceName($scope.service.model.service.name);
+
+            DataService.setServiceUuid($scope.service.model.service.uuid);
+		}
+
 		$scope.deleteVfModule = function(serviceObject, vfModule, vnf) {
 
 			console.log("Removing VF-Module " + vfModule.name);
-			
-            var serviceInstance = serviceObject.object;
 
-			DataService.setInventoryItem(vfModule.object);
+            populate_popup_vfModule(serviceObject, vfModule, vnf);
 			
-			var svcModel = $scope.service.convertedModel;
-
-			//var vnfModelInvariantUuid = vnf.object[FIELD.ID.MODEL_INVAR_ID];
-			var vnfModelVersionId = vnf.object[FIELD.ID.MODEL_VERSION_ID];
-			var vnfModelCustomizationUuid = vnf.object[FIELD.ID.MODEL_CUSTOMIZATION_ID];;		
-			var vfModuleInstanceID = vfModule.object[FIELD.ID.VF_MODULE_ID];
-			if (vfModuleInstanceID == null) {
-				vfModuleInstanceID = "";
-			}
-			
-			var vnfModel = null;
-			var vfModuleModel = null;
-			
-			DataService.setModelInfo(COMPONENT.VF_MODULE, {
-				"modelInvariantId": "",
-				"modelVersion": "",
-				"modelNameVersionId": "",
-				"modelCustomizationName": "",
-				"customizationUuid": "",
-				"modelName": "",
-				"inputs": ""
-			});
-			
-			if ( (!($scope.isObjectEmpty(svcModel))) && ( !($scope.isObjectEmpty(svcModel.vnfs) ) ) ) {
-				if ( (svcModel.isNewFlow) && (vnfModelCustomizationUuid != null ) ) {
-					vnfModel = svcModel.vnfs[vnfModelCustomizationUuid];
-					
-					var vfModuleCustomizationUuid = vfModule.object[FIELD.ID.MODEL_CUSTOMIZATION_ID];
-					if ( !($scope.isObjectEmpty(vnfModel.vfModules) ) && UtilityService.hasContents(vfModuleCustomizationUuid) ) {
-						
-						vfModuleModel = vnfModel.vfModules[vfModuleCustomizationUuid];
-						
-					}
-				}
-				else {
-					// old flow
-					if (vnfModelVersionId != null ) {
-						vnfModel = svcModel.vnfs[vnfModelVersionId];
-					}
-					//var vfModuleInvariantUuid = vfModule.object[FIELD.ID.MODEL_INVAR_ID];
-					var vfModuleModelVersionId = vfModule.object[FIELD.ID.MODEL_VERSION_ID];
-					if ( (!($scope.isObjectEmpty(vnfModel))) && (!($scope.isObjectEmpty(vnfModel.vfModules))) && 
-							  UtilityService.hasContents(vfModuleModelVersionId) ) {
-						vfModuleModel = vnfModel.vfModules[vfModuleModelVersionId];
-					}
-				}
-				if ( !($scope.isObjectEmpty(vfModuleModel)) ) {
-					DataService.setModelInfo(COMPONENT.VF_MODULE, {
-						"modelInvariantId": vfModuleModel.invariantUuid,
-						"modelVersion": vfModuleModel.version,
-						"modelNameVersionId": vfModuleModel.uuid,
-						"modelCustomizationName": vfModuleModel.modelCustomizationName,
-						"customizationUuid": vfModuleModel.customizationUuid,
-						"modelName": vfModuleModel.name,
-						"inputs": ""
-					});
-				}
-			}
-
-			DataService.setVnfInstanceId(vnf.object[FIELD.ID.VNF_ID]);
-			DataService.setVfModuleInstanceId(vfModuleInstanceID);
-			
-			DataService.setSubscriberName(serviceObject[COMPONENT.SUBSCRIBER_NAME]);
-			DataService.setServiceType(serviceObject[COMPONENT.SERVICE_TYPE]);
-			DataService.setServiceInstanceId(serviceInstance[FIELD.ID.SERVICE_INSTANCE_ID]);
-	
-			DataService.setGlobalCustomerId(serviceObject[FIELD.ID.GLOBAL_CUST_ID]);
-			DataService.setServiceInstanceName($scope.service.instance.name);
-			
-			DataService.setServiceName($scope.service.model.service.name);
-			
-			DataService.setServiceUuid($scope.service.model.service.uuid);
-			
-			$scope.$broadcast(COMPONENT.DELETE_COMPONENT, {
+			$scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
 			    componentId : COMPONENT.VF_MODULE,
-			    callbackFunction : deleteCallbackFunction
+			    callbackFunction : deleteOrResumeCallback,
+                dialogMethod: COMPONENT.DELETE
 			});
 			
 			return;
 
 		};
 
-		$scope.deleteVnf = function(serviceObject, vnf) {
+		function setCurrentServiceModelInfoFromScope(){
+            DataService.setModelInfo(COMPONENT.SERVICE, {
+                "modelInvariantId": $scope.service.model.service.invariantUuid,
+                "modelVersion": $scope.service.model.service.version,
+                "modelNameVersionId": $scope.service.model.service.uuid,
+                "modelName": $scope.service.model.service.name,
+                "inputs": ""
+            });
+		};
 
+		function setCurrentVNFModelInfo(vnf){
+            var svcModel = $scope.service.convertedModel;
+            var vnfModel;
+            var vnfModelCustomizationUuid = vnf.object[FIELD.ID.MODEL_CUSTOMIZATION_ID];
+            var vnfModelVersionId = vnf.object[FIELD.ID.MODEL_VERSION_ID];
+            if ( (!($scope.isObjectEmpty(svcModel))) && ( !($scope.isObjectEmpty(svcModel.vnfs) ) ) ) {
+                if ( (svcModel.isNewFlow) && (vnfModelCustomizationUuid != null ) ) {
+                     vnfModel = svcModel.vnfs[vnfModelCustomizationUuid];
+                }
+                else {
+                     vnfModel = svcModel.vnfs[vnfModelVersionId];
+                }
+                if ( !($scope.isObjectEmpty(vnfModel) ) ) {
+
+                    DataService.setModelInfo(COMPONENT.VNF, {
+                        "modelInvariantId": vnfModel.invariantUuid,
+                        "modelVersion": vnfModel.version,
+                        "modelNameVersionId": vnfModel.uuid,
+                        "modelCustomizationName": vnfModel.modelCustomizationName,
+                        "customizationUuid": vnfModel.customizationUuid,
+                        "modelName": vnfModel.name,
+                        "inputs": ""
+                    });
+                }
+            }
+
+
+
+		}
+
+		$scope.deleteVnf = function(serviceObject, vnf) {
 			console.log("Removing VNF " + vnf.name);
 			
 			var serviceInstance = serviceObject.object;
@@ -424,9 +466,10 @@
 			
 			DataService.setServiceUuid($scope.service.model.service.uuid);
 			
-			$scope.$broadcast(COMPONENT.DELETE_COMPONENT, {
+			$scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
 			    componentId : COMPONENT.VNF,
-			    callbackFunction : deleteCallbackFunction
+			    callbackFunction : deleteOrResumeCallback,
+                dialogMethod: COMPONENT.DELETE
 			});
 		
 		};
@@ -517,8 +560,9 @@
 			DataService.setVnfInstanceId(vnf.nodeId);
 			DataService.setVolumeGroupInstanceId(volumeGroup.nodeId);
 			
-			$scope.$broadcast(COMPONENT.DELETE_COMPONENT, {
+			$scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
 			    componentId : COMPONENT.VOLUME_GROUP,
+                dialogMethod: COMPONENT.DELETE
 			});
 		};
 		
@@ -585,10 +629,11 @@
 			DataService.setVnfInstanceId(vnf.nodeId);
 			DataService.setVolumeGroupInstanceId(volumeGroup.nodeId);
 		
-			$scope.$broadcast(COMPONENT.DELETE_COMPONENT, {
-			    componentId : COMPONENT.VOLUME_GROUP,
-			    callbackFunction : deleteCallbackFunction
-			});
+			$scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
+                componentId : COMPONENT.VOLUME_GROUP,
+                callbackFunction : deleteOrResumeCallback,
+                dialogMethod: COMPONENT.DELETE
+            });
 		};
 
 		$scope.describeNetwork = function(serviceObject, networkObject) {
@@ -783,14 +828,8 @@
 				"inputs": "",
 				"displayInputs": netModel.displayInputs
 			});
-			
-			DataService.setModelInfo(COMPONENT.SERVICE, {
-				"modelInvariantId": $scope.service.model.service.invariantUuid, 
-				"modelVersion": $scope.service.model.service.version,
-				"modelNameVersionId": $scope.service.model.service.uuid,
-				"modelName": $scope.service.model.service.name,
-				"inputs": ""
-			});
+			setCurrentServiceModelInfoFromScope();
+
 			
 			$scope.$broadcast(COMPONENT.CREATE_COMPONENT, {
 			    componentId : COMPONENT.NETWORK,
@@ -849,19 +888,20 @@
 			});
 			
 			DataService.setModelInstanceName($scope.service.model.service.name);
-			
-			DataService.setModelInfo(COMPONENT.SERVICE, {
-				"modelInvariantId": $scope.service.model.service.invariantUuid, 
-				"modelVersion": $scope.service.model.service.version,
-				"modelNameVersionId": $scope.service.model.service.uuid,
-				"modelName": $scope.service.model.service.name,
-				"inputs": ""
-			});
-			
-			$scope.$broadcast(COMPONENT.CREATE_COMPONENT, {
-			    componentId : COMPONENT.VNF,
-			    callbackFunction : createVnfCallbackFunction
-			});		
+			setCurrentServiceModelInfoFromScope();
+
+			if (vnf.isConfig) {
+                DataService.setServiceProxies($scope.service.model.serviceProxies);
+                DataService.setSourceServiceProxies(vnf.sourceNodes);
+                DataService.setCollectorServiceProxies(vnf.collectorNodes);
+                $location.path("/addNetworkNode");
+            }
+            else {
+                $scope.$broadcast(COMPONENT.CREATE_COMPONENT, {
+                    componentId: COMPONENT.VNF,
+                    callbackFunction: createVnfCallbackFunction
+                });
+            }
 		};
 
 		$scope.addVfModuleInstance = function(vnfInstance, vfModuleModel) {
@@ -901,17 +941,10 @@
 			if (vfModuleModel.volumeGroupAllowed) {
 				DataService.setAvailableVolumeGroupList(availableVolumeGroupList);
 			}
-			
-			DataService.setModelInfo(COMPONENT.SERVICE, {
-				"modelInvariantId": $scope.service.model.service.invariantUuid,
-				"modelVersion": $scope.service.model.service.version,
-				"modelNameVersionId": $scope.service.model.service.uuid,
-				"modelName": $scope.service.model.service.name,
-				"inputs": ""
-			});
+			setCurrentServiceModelInfoFromScope();
 
 			DataService.setVnfInstanceId(vnfInstance.object[FIELD.ID.VNF_ID]);
-			
+
 			DataService.setModelInfo(COMPONENT.VNF, {
 				"modelInvariantId": vnfModel.invariantUuid,
 				"modelVersion": vnfModel.version,
@@ -954,6 +987,7 @@
 			DataService.setServiceInstanceName($scope.service.instance.name);
 			DataService.setServiceInstanceId($scope.service.instance.id);
 			DataService.setServiceName($scope.service.model.service.name);
+			setCurrentServiceModelInfoFromScope();
 
 			DataService.setModelInfo(COMPONENT.SERVICE, {
 				"modelInvariantId": $scope.service.model.service.invariantUuid,
@@ -976,7 +1010,7 @@
 			else {
 				vnfModel = svcModel.vnfs[vnfModelVersionId];
 			}
-			
+
 			DataService.setModelInfo(COMPONENT.VNF, {
 				"modelInvariantId": vnfModel.invariantUuid,
 				"modelVersion": vnfModel.version,
@@ -1002,6 +1036,75 @@
 			    callbackFunction : createVolumeGroupCallbackFunction
 			});
 		};
+
+        $scope.resume = function(serviceObject, vfModule, vnfModel) {
+            populate_popup_vfModule(serviceObject, vfModule, vnfModel);
+			setCurrentVNFModelInfo(vnfModel);
+			setCurrentServiceModelInfoFromScope();
+            $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
+                componentId : COMPONENT.VF_MODULE,
+                callbackFunction : deleteOrResumeCallback,
+                dialogMethod: COMPONENT.RESUME
+            });
+        };
+
+		$scope.deleteConfiguration = function (serviceObject, configuration) {
+            console.log("Deleting Configuration " + configuration.name);
+
+            var serviceInstance = serviceObject.object;
+            var svcModel = $scope.service.convertedModel;
+            var configModel;
+            DataService.setInventoryItem(configuration.object);
+            // set model default and override later if found
+            DataService.setModelInfo(COMPONENT.CONFIGURATION, {});
+
+            if ( configuration.object != null ) {
+
+                //var netModelInvariantUuid = network.object[FIELD.ID.MODEL_INVAR_ID];
+                var configModelVersionId = configuration.object[FIELD.ID.MODEL_VERSION_ID]; // model uuid
+                var configModelCustomizationUuid = configuration.object[FIELD.ID.MODEL_CUSTOMIZATION_ID];
+
+                //configurations added to vnfs list, in order to be part of the "Add VNF" drop-down list
+                if ( (!($scope.isObjectEmpty(svcModel))) && ( !($scope.isObjectEmpty(svcModel.vnfs) ) ) ) {
+                    if ( (svcModel.isNewFlow) && (UtilityService.hasContents(configModelCustomizationUuid) ) ) {
+                        configModel = svcModel.vnfs[configModelCustomizationUuid];
+                    }
+                    else {
+
+                        if ( UtilityService.hasContents(configModelVersionId) ) {
+                            configModel = svcModel.vnfs[configModelVersionId];
+                        }
+
+                    }
+                }
+            }
+            if (!($scope.isObjectEmpty(configModel) ) ) {
+                DataService.setModelInfo(COMPONENT.CONFIGURATION, {
+                    "modelInvariantId": configModel.invariantUuid,
+                    "modelVersion": configModel.version,
+                    "modelNameVersionId": configModel.uuid,
+                    "modelCustomizationName": configModel.modelCustomizationName,
+                    "customizationUuid": configModel.customizationUuid,
+                    "modelName": configModel.name,
+                    "inputs": ""
+                });
+            }
+
+            DataService.setSubscriberName(serviceObject[COMPONENT.SUBSCRIBER_NAME]);
+            DataService.setServiceType(serviceObject[COMPONENT.SERVICE_TYPE]);
+            DataService.setServiceInstanceId(serviceInstance[FIELD.ID.SERVICE_INSTANCE_ID]);
+
+            DataService.setGlobalCustomerId(serviceObject[FIELD.ID.GLOBAL_CUST_ID]);
+            DataService.setServiceInstanceName($scope.service.instance.name);
+            DataService.setServiceName($scope.service.model.service.name);
+            DataService.setServiceUuid($scope.service.model.service.uuid);
+            DataService.setConfigurationInstanceId(configuration.object[FIELD.ID.CONFIGURATION_ID]);
+
+            $scope.$broadcast(COMPONENT.DELETE_COMPONENT, {
+                componentId : COMPONENT.CONFIGURATION,
+                callbackFunction : deleteCallbackFunction
+            });
+        };
 
 		$scope.resetProgress = function() {
 			$scope.percentProgress = 0;
@@ -1112,7 +1215,7 @@
 			
 		};
 		
-		var deleteCallbackFunction = function(response) {
+		var deleteOrResumeCallback = function(response) {
 			$scope.callbackResults = "";
 			var color = FIELD.ID.COLOR_NONE;
 			$scope.callbackStyle = {

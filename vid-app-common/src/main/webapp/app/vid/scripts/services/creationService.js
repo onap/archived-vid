@@ -485,6 +485,11 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 			value : value
 		});
 	};
+	var setInventoryInfo = function(){
+        var inventoryItem = DataService.getInventoryItem();
+        var inventoryInfo = ComponentService.getInventoryInfo(
+            _this.componentId, inventoryItem);
+	}
 
 	/*
 	 * The "*Mso*" functions return URL and request details that can be passed
@@ -906,8 +911,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
 	var getLcpRegion = function() {
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
-		console.log ( "cloudRegionTenantList=");
-		console.log ( JSON.stringify (cloudRegionTenantList, null, 4 ));
+		console.log ("cloudRegionTenantList");
+		console.log (cloudRegionTenantList);
 
 		var parameter = FIELD.PARAMETER.LCP_REGION;
 		if ( UtilityService.hasContents (cloudRegionTenantList) ) {
@@ -1089,7 +1094,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 		},
 		updateUserParameterList : updateUserParameterList,
 		getMsoRequestDetails : getMsoRequestDetails,
-		getMsoUrl : getMsoUrl
+		getMsoUrl : getMsoUrl,
+		setInventoryInfo: setInventoryInfo
 	}
 }
 

@@ -293,8 +293,62 @@ var DataService = function($log, DataService) {
 		},
 		getHideServiceFields:function(){
 			return _this.hideServiceFields;
-		}
+		},
+		getServiceProxies:function(){
+            return _this.serviceProxies;
+        },
+        setServiceProxies:function(serviceProxies){
+             _this.serviceProxies = serviceProxies;
+        },
+        getSourceServiceProxies:function(){
+            return _this.sourceServiceProxies;
+        },
+        setSourceServiceProxies:function(sourceServiceProxies){
+            _this.sourceServiceProxies = sourceServiceProxies;
+        },
+        getCollectorServiceProxies:function(){
+            return _this.collectorServiceProxies;
+        },
+        setCollectorServiceProxies:function(collectorServiceProxies){
+            _this.collectorServiceProxies = collectorServiceProxies;
+        },
+        getSuppressRollback:function(){
+            return _this.suppressRollback;
+        },
+        setSuppressRollback:function(suppressRollback){
+            _this.suppressRollback = suppressRollback;
+        },
+        getPortMirroningConfigFields:function(){
+            return _this.portMirroningConfigFields;
+        },
+        setPortMirroningConfigFields:function(portMirroningConfigFields){
+            _this.portMirroningConfigFields = portMirroningConfigFields;
+        },
+        getConfigurationInstanceId : function() {
+            return _this.configurationInstanceId;
+        },
+        setConfigurationInstanceId : function(configurationInstanceId) {
+            _this.configurationInstanceId = configurationInstanceId;
+        },
+		getConfigurationStatus: function () {
+			return _this.configurationStatus;
+        },
+        setConfigurationStatus: function (configurationStatus) {
+			_this.configurationStatus = configurationStatus;
+        },
+        getPortStatus: function () {
+            return _this.portStatus;
+        },
+        setPortStatus: function (portStatus) {
+            _this.portStatus = portStatus;
+        },
+        getPortId: function () {
+            return _this.portId;
+        },
+        setPortId: function (portId) {
+            _this.portId = portId;
+        }
 	}
-}
+};
 
 appDS2.factory("DataService", [ "$log", DataService ]);

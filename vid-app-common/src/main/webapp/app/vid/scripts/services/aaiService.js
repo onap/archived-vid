@@ -459,6 +459,29 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             return deferred.promise;
         },
 
+        getVnfVersionsByInvariantId: function(modelInvariantId){
+            var deferred = $q.defer();
+
+            if (UtilityService.hasContents(modelInvariantId)) {
+                var body = {"versions" : modelInvariantId}
+                $http.post((COMPONENT.AAI_GET_VERSION_BY_INVARIANT_ID),body)
+
+                    .success(function (response) {
+                        if(response) {
+                            deferred.resolve({data: response});
+                        } else {
+                            deferred.resolve({data: []});
+                        }
+                    }).error(function (data, status, headers, config) {
+                    deferred.reject({message: data, status: status});
+                });
+            }
+
+            return deferred.promise;
+        },
+
+
+
         getSubscriberServiceTypes: function(subscriberUuid) {
             var deferred = $q.defer();
             $log.debug("AaiService:getSubscriberServiceTypes: subscriberUuid: " + subscriberUuid);
@@ -475,6 +498,45 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     deferred.reject({message: data, status: status});
                 });
             }
+
+            return deferred.promise;
+        },
+        getServiceProxyInstanceList: function(globalSubscriberId, serviceType, modelVersionId ,modelInvariantId, cloudRegionId)  {
+            var deferred = $q.defer();
+            $http.get(COMPONENT.AAI_POST_SERVICE_PROXY_INSTANCE_DATA_PATH + COMPONENT.FORWARD_SLASH +
+                    globalSubscriberId + COMPONENT.FORWARD_SLASH +
+                    serviceType +  COMPONENT.FORWARD_SLASH +
+                    modelVersionId +  COMPONENT.FORWARD_SLASH +
+                    modelInvariantId +  COMPONENT.FORWARD_SLASH +
+                    cloudRegionId)
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (data, status) {
+                    deferred.reject({message: data, status: status});
+            });
+            return deferred.promise;
+        },
+        getByUri: function(uri)  {
+            var deferred = $q.defer();
+
+            $http.get(COMPONENT.AAI_GET_BY_URI + uri)
+                .success(function (response) {
+                    deferred.resolve({data: []});
+                }).error(function (data, status, headers, config) {
+                    deferred.reject({message: data, status: status});
+                });
+
+            return deferred.promise;
+        },
+        getConfiguration: function(configurationId)  {
+            var deferred = $q.defer();
+
+            $http.get(COMPONENT.AAI_GET_CONFIGURATION + configurationId)
+                .success(function (response) {
+                    deferred.resolve({data: []});
+                }).error(function (data, status, headers, config) {
+                deferred.reject({message: data, status: status});
+            });
 
             return deferred.promise;
         }

@@ -25,22 +25,26 @@ var ComponentService = function($log, COMPONENT, UtilityService) {
     var _this = this;
 
     var componentList = [ {
-	id : COMPONENT.NETWORK,
-	displayName : "Network"
+		id : COMPONENT.NETWORK,
+		displayName : "Network"
     }, {
-	id : COMPONENT.SERVICE,
-	displayName : "Service Instance"
-    }, {id : COMPONENT.OLDVERSION,
-	displayName : "Previous Version"
+		id : COMPONENT.SERVICE,
+		displayName : "Service Instance"
+    }, {
+    	id : COMPONENT.OLDVERSION,
+		displayName : "Previous Version"
 	}, {
-	id : COMPONENT.VNF,
-	displayName : "Virtual Network Function"
+		id : COMPONENT.VNF,
+		displayName : "Virtual Network Function"
     }, {
-	id : COMPONENT.VF_MODULE,
-	displayName : "VF Module"
+		id : COMPONENT.VF_MODULE,
+		displayName : "VF Module"
     }, {
-	id : COMPONENT.VOLUME_GROUP,
-	displayName : "Volume Group"
+        id: COMPONENT.VOLUME_GROUP,
+        displayName: "Volume Group"
+    }, {
+        id : COMPONENT.CONFIGURATION,
+        displayName : "Port Mirroring Configuration"
     } ];
 
     var getInventoryInfo = function(suffix, inventoryItem) {

@@ -18,8 +18,8 @@
   ============LICENSE_END=========================================================
   -->
 
-<div ng-controller="msoCommitController" ng-show="isViewVisible">
-
+<div ng-controller="msoCommitController" ng-show="isViewVisible" >
+<div ng-if="isViewVisible">
 	<div class="statusLine">
 		<img src="app/vid/images/spinner.gif"
 			ngx-visible="{{isSpinnerVisible}}"> </img> <label>Status:</label><span
@@ -44,4 +44,5 @@
 		<button data-tests-id="msoCommitDialogCloseButton" ngx-enabled="{{isCloseEnabled}}" att-button size="small"
 			ng-click="close();">Close</button>
 	</div>
+</div>
 </div>

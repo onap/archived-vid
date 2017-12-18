@@ -1,5 +1,7 @@
 package org.openecomp.vid.model;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created by Oren on 7/10/17.
  */
@@ -18,4 +20,11 @@ public class ProxyResponse {
         return httpCode;
     }
 
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("httpCode", httpCode)
+                .add("errorMessage", errorMessage)
+                .toString();
+    }
 }

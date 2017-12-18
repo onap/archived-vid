@@ -95,7 +95,11 @@ public class MsoProperties extends SystemProperties {
 
 	/** The Constant MSO_REST_API_VOLUME_GROUP_INSTANCE. */
 	public static final String MSO_REST_API_VOLUME_GROUP_INSTANCE = "mso.restapi.volume.group.instance"; //serviceInstances/v2/{serviceInstanceId}/volumeGroups
-	
+
+	/** The Constant MSO_REST_API_CONFIGURATION_INSTANCE. */
+	public static final String MSO_REST_API_CONFIGURATIONS = "mso.restapi.configurations"; //serviceInstances/v5/{serviceInstanceId}/configurations/
+	public static final String MSO_REST_API_CONFIGURATION_INSTANCE = "mso.restapi.configuration.instance"; //serviceInstances/v5/{serviceInstanceId}/configurations/{configurationId}
+
 	/** The logger. */
 	public EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoProperties.class);
 	

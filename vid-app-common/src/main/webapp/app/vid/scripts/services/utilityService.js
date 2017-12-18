@@ -100,6 +100,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				"service": serviceModel.service,
 				"networks": {},
 				"vnfs": {},
+				"serviceProxies": serviceModel.serviceProxies,
 				"completeDisplayInputs": {},
 				"isNewFlow": true
 			};
@@ -164,9 +165,15 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				
 			}
 		}
-		
-		for (var vnfCustomizationName in serviceModel.vnfs) {
-			var vnfModel = serviceModel.vnfs[vnfCustomizationName];
+
+        var configurations = _.map(serviceModel.configurations, function(element) {
+            return _.extend({}, element, {isConfig: true});
+        });
+
+        var mergedVnfs = Object.assign(serviceModel.vnfs, configurations);
+
+		for (var vnfCustomizationName in mergedVnfs) {
+			var vnfModel = mergedVnfs[vnfCustomizationName];
 			var vnfCustomizationUuid = vnfModel.customizationUuid;
 			convertedAsdcModel.vnfs[vnfModel.customizationUuid] = {
 					"uuid": vnfModel.uuid,
@@ -183,8 +190,11 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"displayInputs": {},
 					"properties": {},
 					"nfRole": "",
-					"nfType": ""
-			}
+					"nfType": "",
+					"sourceNodes": vnfModel.sourceNodes,
+					"collectorNodes": vnfModel.collectorNodes,
+                	"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false
+			};
 			
 			resource = {
 					"name": vnfModel.modelCustomizationName,
@@ -278,8 +288,8 @@ var UtilityService = function($log, DataService, PARAMETER) {
 		convertedAsdcModel.completeDisplayInputs = completeDisplayInputs;
 		// Need to collect all the model customization names (node template tag) and descriptions
 		DataService.setResources (completeResources);
-		
-		console.log ("convertedAsdcModel: "); console.log (JSON.stringify ( convertedAsdcModel, null, 4 ));
+
+        $log.debug ("convertedAsdcModel: ", convertedAsdcModel);
 		return (convertedAsdcModel);
     };
     
@@ -290,6 +300,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				"service": serviceModel.service,
 				"networks": {},
 				"vnfs": {},
+            	"serviceProxies": serviceModel.serviceProxies,
 				"completeDisplayInputs": {},
 				"isNewFlow": false
 			};
@@ -356,9 +367,16 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				convertedAsdcModel.networks[networkModel.uuid].displayInputs=networkModelDisplayInputs;
 			}
 		}
-		
-		for (var vnfCustomizationName in serviceModel.vnfs) {
-			var vnfModel = serviceModel.vnfs[vnfCustomizationName];
+
+
+        var configurations = _.map(serviceModel.configurations, function(element) {
+            return _.extend({}, element, {isConfig: true});
+        });
+
+        var mergedVnfs = Object.assign(serviceModel.vnfs, configurations);
+
+		for (var vnfCustomizationName in mergedVnfs) {
+			var vnfModel = mergedVnfs[vnfCustomizationName];
 			convertedAsdcModel.vnfs[vnfModel.uuid] = {
 					"uuid": vnfModel.uuid,
 					"invariantUuid": vnfModel.invariantUuid,
@@ -371,8 +389,11 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"vfModules": {},
 					"volumeGroups": {},
 					"commands": {},
-					"displayInputs": {}
-			}
+					"displayInputs": {},
+					"sourceNodes": vnfModel.sourceNodes,
+					"collectorNodes": vnfModel.collectorNodes,
+					"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false
+			};
 			resource = {
 					"name": vnfModel.modelCustomizationName,
 					"description": vnfModel.description
@@ -441,7 +462,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
 		convertedAsdcModel.completeDisplayInputs = completeDisplayInputs;
 		// Need to collect all the model customization names (node template tag) and descriptions
 		DataService.setResources (completeResources);
-		console.log ("convertedAsdcModel: "); console.log (JSON.stringify ( convertedAsdcModel, null, 4 ));
+		$log.debug ("convertedAsdcModel: ", convertedAsdcModel);
 		return (convertedAsdcModel);
     };
     

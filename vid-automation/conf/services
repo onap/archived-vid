@@ -1,0 +1,22 @@
+{ "services": {
+  "c079d859-4d81-4add-a9c3-94551f96e2b0": {
+    "type":"vnf",
+    "uuid": "c079d859-4d81-4add-a9c3-94551f96e2b0",
+    "invariantUuid": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+    "name": "1707vidnf",
+    "version": "8.0",
+    "category": "Mobility",
+    "description": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code.",
+    "serviceRole" : "pnf"
+  },
+  "f39389e4-2a9c-4085-8ac3-04aea9c651be": {
+    "type" : "pnf",
+    "uuid": "f39389e4-2a9c-4085-8ac3-04aea9c651be",
+    "invariantUuid": "ec0c4bab-c272-4dab-b087-875031bb0c9f",
+    "name": "Dev2DevPnfService",
+    "version": "1.0",
+    "category": "Network L1-3",
+    "description": "macro model",
+    "serviceRole": "pnf"
+  }}
+}

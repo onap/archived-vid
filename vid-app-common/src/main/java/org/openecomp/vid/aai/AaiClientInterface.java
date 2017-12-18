@@ -20,7 +20,7 @@ public interface AaiClientInterface {
     AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType);
     
     AaiResponse getAllAicZones();
-    
+
     AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId);
 
 	AaiResponse getVNFData();
@@ -28,6 +28,8 @@ public interface AaiClientInterface {
     Response getVNFData(String globalSubscriberId, String serviceType);
 
     AaiResponse getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId);
+
+    AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion);
 
     Response getVersionByInvariantId(List<String> modelInvariantId);
 }

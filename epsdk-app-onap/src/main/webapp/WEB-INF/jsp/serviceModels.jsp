@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="app/vid/external/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/aaiGetSubs.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/aaiSubDetails.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/aaiSubViewEdit.css" />
@@ -6,9 +7,6 @@
 <link rel="stylesheet" type="text/css" href="app/vid/styles/instantiate.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/vidTree.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/dialogs.css" />
-<link rel="stylesheet" type="text/css" href="app/vid/styles/angularjs-datetime-picker.css"></link>
-<link rel="stylesheet" type="text/css" href="app/vid/external/bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="app/vid/styles/common.css" />
 
 	
 	<script>
@@ -31,35 +29,35 @@
 <script src="app/vid/scripts/constants/parameterConstants.js"></script>
 <script src="app/vid/scripts/filters/change-managements-by-statuses.filter.js"></script>
 <script src="app/vid/scripts/filters/date.filter.js"></script>
-<script src="app/vid/scripts/modals/change-management-manual-tasks-controller/change-management-manual-tasks.controller.js"></script>
 <script src="app/vid/scripts/modals/new-change-management/new-change-management.controller.js"></script>
-<script src="app/vid/scripts/modals/new-scheduler/new-scheduler.controller.js"></script>
+<script src="app/vid/scripts/modals/failed-change-management/failed-change-management.controller.js"></script>
+<script src="app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.controller.js"></script>
+<script src="app/vid/scripts/modals/alert-change-management/alert-change-management.controller.js"></script>
+<script src="app/vid/scripts/modals/pending-change-management/pending-change-management.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
-<script src="app/vid/scripts/controller/deletionDialogController.js"></script>
+<script src="app/vid/scripts/controller/deleteResumeDialogController.js"></script>
 <script src="app/vid/scripts/controller/detailsDialogController.js"></script>
 <script src="app/vid/scripts/controller/statusDialogController.js"></script>
 <script src="app/vid/scripts/controller/InstantiationController.js"></script>
 <script src="app/vid/scripts/controller/msoCommitController.js"></script>
 <script src="app/vid/scripts/controller/ServiceModelController.js"></script>
+<script src="app/vid/scripts/controller/change-management.controller.js"></script>
+<script src="app/vid/scripts/controller/AddNetworkNodeController.js"></script>
+<script src="app/vid/scripts/controller/ServiceProxyConfig.js"></script>
 <script src="app/vid/scripts/controller/previousVersionDialogController.js"></script>
 <script src="app/vid/scripts/controller/previousVersionContoller.js"></script>
-<script src="app/vid/scripts/controller/change-management.controller.js"></script>
-
-<script src="app/vid/scripts/directives/angularjs-datetime-picker.js"></script>
-
-
 <script src="app/vid/scripts/directives/extensionsDirective.js"></script>
 <script src="app/vid/scripts/directives/parameterBlockDirective.js"></script>
 <script src="app/vid/scripts/directives/popupWindowDirective.js"></script>
 <script src="app/vid/scripts/directives/progressBarDirective.js"></script>
+<script src="app/vid/scripts/directives/serviceMetadata.js"></script>
 <script src="app/vid/scripts/services/aaiService.js"></script>
-<script src="app/vid/scripts/services/schedulerService.js"></script>
 <script src="app/vid/scripts/services/asdcService.js"></script>
 <script src="app/vid/scripts/services/componentService.js"></script>
 <script src="app/vid/scripts/services/creationService.js"></script>
 <script src="app/vid/scripts/services/dataService.js"></script>
-<script src="app/vid/scripts/services/deletionService.js"></script>
+<script src="app/vid/scripts/services/deleteResumeService.js"></script>
 <script src="app/vid/scripts/services/detailsService.js"></script>
 <script src="app/vid/scripts/services/statusService.js"></script>
 <script src="app/vid/scripts/services/msoService.js"></script>

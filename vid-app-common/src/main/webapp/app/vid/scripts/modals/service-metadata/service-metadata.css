@@ -1,0 +1,34 @@
+.modal-dialog * {
+    font-family: OpenSans-Regular, sans-serif;
+}
+.modal-dialog {
+    width: 540px;
+}
+.modal-dialog service-metadata{
+    background: white;
+}
+.modal-dialog .modal-footer {
+    background: #F8F8F8;
+    border-radius: 0 0 8px 8px;
+}
+.modal-dialog .cancel-btn {
+    width: 120px;
+}
+.modal-dialog .title {
+    font-size: 22px;
+    color: #000000;
+}
+.modal-dialog .top {
+    margin: 15px 20px;
+    border-bottom: 3px solid #009FDB;
+    padding-bottom: 15px;
+}
+.modal-dialog .modal-x {
+    float: right;
+    margin-top: 10px;
+    height: 15px;
+    cursor:pointer;
+}
+.modal-dialog service-metadata .field {
+    margin-top: 10px;
+}

@@ -1,0 +1,10 @@
+<link rel="stylesheet" type="text/css" href="app/vid/styles/serviceMetadata.css"/>
+<div class="header-title" ng-if="titleTxt">
+    {{titleTxt}}
+</div>
+<div class="metadata-content">
+    <div class="field" ng-repeat="field in serviceMetadataFields">
+        <label>{{field.name}}</label>
+        <div class="value">{{field.value}}</div>
+    </div>
+</div>

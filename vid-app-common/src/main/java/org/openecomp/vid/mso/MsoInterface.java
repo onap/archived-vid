@@ -47,6 +47,8 @@ public interface MsoInterface {
      */
     MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String endpoint) throws Exception;
 
+    MsoResponseWrapper createConfigurationInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+
     MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception;
 
     MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String endpoint) throws Exception;
@@ -69,7 +71,11 @@ public interface MsoInterface {
 
 	MsoResponseWrapper replaceVnf(org.openecomp.vid.changeManagement.RequestDetails requestDetails, String vnf_endpoint)  throws Exception;
 
+    MsoResponseWrapper deleteConfiguration(RequestDetails requestDetails, String pmc_endpoint) throws Exception;
+
+    MsoResponseWrapper setConfigurationActiveStatus(RequestDetails requestDetails, String endpoint) throws Exception;
+
+    MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails requestDetails, String endpoint) throws Exception;
 
     void activateServiceInstance(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception;
-
 }

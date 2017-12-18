@@ -51,7 +51,13 @@ public class ServiceModel {
 	/** The networks. */
 	private Map<String, Network> networks;
 
-	/** 
+	/** Port Mirroring Configuration node templates */
+	private Map<String, PortMirroringConfig> configurations;
+
+	/** Service Proxy Nodes */
+	private Map<String, ServiceProxy> serviceProxies;
+
+	/**
 	 * The vf modules. The VNF also has vfmodules but the vfmodules at the service level may have additional info
 	 * that is not present in the VNF, like the vf module customization String 
 	 */
@@ -93,6 +99,25 @@ public class ServiceModel {
 		return networks;
 	}
 
+
+	/**
+	 * Gets the Configuration Node Templates
+	 *
+	 * @return the configuration type node templates
+	 */
+	public Map<String, PortMirroringConfig> getConfigurations() {
+		return configurations;
+	}
+
+	/**
+	 * Gets the Service Proxy Node Templates
+	 *
+	 * @return the Service Proxy type node templates
+	 */
+	public Map<String, ServiceProxy> getServiceProxies() {
+		return serviceProxies;
+	}
+
 	/**
 	 * Sets the service.
 	 *
@@ -119,6 +144,25 @@ public class ServiceModel {
 	public void setNetworks(Map<String, Network> networks) {
 		this.networks = networks;
 	}
+
+	/**
+	 * Sets the configuraion node templates.
+	 *
+	 * @param configurations
+	 */
+	public void setConfigurations(Map<String, PortMirroringConfig> configurations) {
+		this.configurations = configurations;
+	}
+
+	/**
+	 * Sets the service proxy node templates.
+	 *
+	 * @param serviceProxies
+	 */
+	public void setServiceProxies(Map<String, ServiceProxy> serviceProxies) {
+		this.serviceProxies = serviceProxies;
+	}
+
 	/**
 	 * Gets the vf modules.
 	 *
@@ -171,8 +215,8 @@ public class ServiceModel {
 		service.setInputs(serviceToscaModel.gettopology_template().getInputs());
 		//FIXME: SDC is not sending the Version with the Tosca Model for 1610 - they should send it in 1702
 		//THIS IS A TEMPORARY FIX, AT SOME POINT UNCOMMENT ME
-		service.setVersion(serviceToscaModel.getMetadata().getVersion());
-		//service.setVersion(asdcServiceMetadata.getVersion());
+		//service.setVersion(serviceToscaModel.getMetadata().getVersion());
+		service.setVersion(asdcServiceMetadata.getVersion());
 
 		return service;
 	}

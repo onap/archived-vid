@@ -20,7 +20,7 @@
 
 "use strict";
 
-var MsoService = function($http, $log, PropertyService, AaiService, UtilityService, COMPONENT, FIELD, $q) {
+var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityService, COMPONENT, FIELD) {
 
     var _this = this;
 
@@ -251,9 +251,196 @@ var MsoService = function($http, $log, PropertyService, AaiService, UtilityServi
                     showFunction(FIELD.ERROR.SYSTEM_FAILURE);
             }
         },
-        activateInstance: activateInstance
+        activateInstance: activateInstance,
+
+
+
+        createConfigurationInstance: function(configurationModelInfo,
+                                              portMirroringConfigFields, attuuid,
+                                              relatedTopModelsInfo, topServiceInstanceId)  {
+
+            const modelInfoOf = function (instance) {
+                const modelInfo = {
+                    "modelType": "vnf",
+                    "modelInvariantId": instance.properties['model-invariant-id'],
+                    "modelVersionId": instance.properties['model-version-id'],
+                    "modelName": instance.properties['vnf-name'],
+                    "modelVersion": instance.properties['model-version'],
+                    "modelCustomizationId": instance.properties['model-customization-id']
+                };
+
+                $log.debug("model info from instance", instance);
+                $log.debug("model info to model", modelInfo);
+
+                return modelInfo
+            };
+
+            var payload = {
+                "requestDetails": {
+                    "modelInfo": {
+                        "modelType": "configuration",
+                        "modelInvariantId": configurationModelInfo.modelInvariantId,
+                        "modelVersionId": configurationModelInfo.modelNameVersionId,
+                        "modelName": configurationModelInfo.modelName, // "Port Mirroring Configuration"
+                        "modelVersion": configurationModelInfo.modelVersion,
+                        "modelCustomizationId": configurationModelInfo.customizationUuid,
+                        "modelCustomizationName": configurationModelInfo.modelCustomizationName
+                    },
+                    "cloudConfiguration": {
+                        // "tenantId": ????
+                        "lcpCloudRegionId": portMirroringConfigFields.lcpRegion.value
+                    },
+                    "requestInfo": {
+                        "instanceName": portMirroringConfigFields.instanceName.value,
+                        "source": "VID",
+                        "requestorId": attuuid
+                    },
+                    "relatedInstanceList": [
+                        {
+                            "relatedInstance": {
+                                "instanceId": topServiceInstanceId,
+                                "modelInfo": {
+                                    "modelType": "service", // relatedTopModelsInfo.modelType
+                                    "modelInvariantId": relatedTopModelsInfo.modelInvariantId,
+                                    "modelVersionId": relatedTopModelsInfo.modelNameVersionId,
+                                    "modelName": relatedTopModelsInfo.modelName,
+                                    "modelVersion": relatedTopModelsInfo.modelVersion
+                                }
+                            }
+                        },
+                        {
+                            "relatedInstance": {
+                                "instanceId": portMirroringConfigFields.sourceInstance.properties['vnf-id'],
+                                "instanceDirection": "source",
+                                "modelInfo": modelInfoOf(portMirroringConfigFields.sourceInstance)
+                            }
+                        },
+                        {
+                            "relatedInstance": {
+                                "instanceId": portMirroringConfigFields.destinationInstance.properties['vnf-id'],
+                                "instanceDirection": "destination",
+                                "modelInfo": modelInfoOf(portMirroringConfigFields.destinationInstance)
+                            }
+                        }
+                    ],
+                    "requestParameters": {
+                        "userParams": []
+                    }
+                }
+            };
+
+            $log.debug("payload", payload);
+
+            var deferred = $q.defer();
+            $http.post([
+                'mso','mso_create_configuration_instance',
+                topServiceInstanceId,
+                'configurations',''
+            ].join(COMPONENT.FORWARD_SLASH),
+                payload)
+                .success(function (response) {
+                    deferred.resolve({data : response});
+                }).error(function (data, status) {
+                deferred.reject({message: data, status: status});
+            });
+            return deferred.promise;
+        },
+
+        toggleConfigurationStatus: function(serviceInstanceId, configurationId, configStatus, serviceModel, configurationModel) {
+
+            var requestDetails = {
+                "modelInfo": configurationModel,
+                "cloudConfiguration": {
+                    "lcpCloudRegionId": "mdt1"
+                },
+                "requestInfo": {
+                    "source": "VID",
+                    "requestorId": "az2016"
+                },
+                "relatedInstanceList": [{
+                    "relatedInstance": {
+                        "instanceId": serviceInstanceId,
+                        "modelInfo": serviceModel
+                    }
+                }],
+                "requestParameters": {
+                    "userParams": []
+                }
+            };
+
+            var url;
+            switch (configStatus) {
+                case FIELD.STATUS.AAI_CREATED:
+                case FIELD.STATUS.AAI_INACTIVE:
+                    url = "mso/mso_activate_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    break;
+                case FIELD.STATUS.AAI_ACTIVE:
+                    url = "mso/mso_deactivate_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    break;
+            }
+
+            return this.sendPostRequest(url, requestDetails);
+        },
+
+        togglePortStatus: function(serviceInstanceId, configurationId, portId, portStatus, serviceModel, configurationModel) {
+            var requestDetails = {
+                "modelInfo": configurationModel,
+                "cloudConfiguration": {
+                    "lcpCloudRegionId": "mdt1"
+                },
+                "requestInfo": {
+                    "source": "VID",
+                    "requestorId": "az2016"
+                },
+                "relatedInstanceList": [
+                    {
+                        "relatedInstance": {
+                            "instanceId": serviceInstanceId,
+                            "modelInfo": serviceModel
+                        }
+                    },
+                    {
+                        "relatedInstance": {
+                            "instanceId": portId,
+                            "instanceDirection": "source",
+                            "modelInfo": {
+                                "modelType": "connectionPoint"
+                            }
+                        }
+                    }
+                ]
+            };
+
+            var url;
+            switch (portStatus) {
+                case FIELD.STATUS.AAI_ENABLED:
+                    url = "mso/mso_disable_port_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    break;
+                case FIELD.STATUS.AAI_DISABLED:
+                    url = "mso/mso_enable_port_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    break;
+            }
+
+            return this.sendPostRequest(url, requestDetails);
+        },
+
+        sendPostRequest: function(url, requestDetails) {
+            var deferred = $q.defer();
+            if (url) {
+                $http.post(url, {
+                    requestDetails: requestDetails
+                }, {
+                    timeout: PropertyService.getServerResponseTimeoutMsec()
+                }).success(function (response) {
+                    deferred.resolve({data: response});
+                }).error(function (data, status) {
+                    deferred.reject({message: data, status: status});
+                });
+            }
+
+            return deferred.promise;
+        }
     }
 };
 
-appDS2.factory("MsoService", [ "$http", "$log", "PropertyService",
-    "AaiService", "UtilityService", "COMPONENT", "FIELD", "$q", MsoService ]);
+appDS2.factory("MsoService", MsoService );

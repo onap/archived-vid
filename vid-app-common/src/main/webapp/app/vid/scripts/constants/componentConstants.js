@@ -28,7 +28,9 @@ appDS2
     CLOUD_REGION_ID : "cloudRegionID",
     COMPONENT_STATUS : "ComponentStatus",
     CREATE_COMPONENT : "createComponent",
-    DELETE_COMPONENT : "deleteComponent",
+    DELETE_RESUME_COMPONENT : "deleteResumeComponent",
+	DELETE:"Delete",
+	RESUME:"Resume",
     ENTITY : "entity",
     GET_COMPONENT_LIST : "getComponentList",
     GET_SUBS : "getSubs",
@@ -43,8 +45,11 @@ appDS2
 	MODEL_VERSION_1 : "1",
 	MSO_CREATE_REQ : "createInstance",
 	MSO_DELETE_REQ : "deleteInstance",
+	MSO_CHANGE_STATUS_REQ: "changeStatus",
     NAME : "name",
 	NETWORK : "network",
+	CONFIGURATION : "configuration",
+	PORT: "port",
 	NETWORKS : "networks",
 	PRODUCT_NAME_TRINITY : "Trinity",
 	QUERY_SERVICE_INSTANCE : "queryServiceInstance",
@@ -69,7 +74,7 @@ appDS2
 	VNF_TYPE : "vnfType",
 	VOLUME_GROUP : "volumeGroup",
     IS_PERMITTED: "is-permitted",
-
+    RESUME_STATUS: "PendingResume",
 
         // IDs
 	CIDR_MASK_1 : "255.255.255.000",
@@ -113,6 +118,9 @@ appDS2
 	AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE: "get_vnf_data_by_globalid_and_service_type/",
 	AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
 	AAI_GET_VNF_INFO : "aai_get_vnf_information",
+	AAI_POST_SERVICE_PROXY_INSTANCE_DATA_PATH: "aai_get_vnf_instances",
+	AAI_GET_BY_URI: "aai_get_by_uri/",
+	AAI_GET_CONFIGURATION: "aai_get_configuration/",
 	ASDC_GETMODEL_PATH : "asdc/getModel/",
 	CREATE_INSTANCE_PATH : "/models/services/createInstance", 
 	//1710 scheduler contants
