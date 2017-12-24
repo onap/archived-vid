@@ -26,6 +26,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,10 +34,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import org.openecomp.portalsdk.core.controller.RestrictedBaseController;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.openecomp.vid.services.CategoryParameterService;
 
 /**
  * The Class PropertyController.
@@ -44,6 +45,7 @@ import org.openecomp.portalsdk.core.util.SystemProperties;
 @RestController
 public class PropertyController extends RestrictedBaseController{
 	
+
 	/** The view name. */
 	String viewName;
 	
@@ -51,7 +53,11 @@ public class PropertyController extends RestrictedBaseController{
 	EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(PropertyController.class);
 	
 	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+	final protected static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+
+	@Autowired
+	protected CategoryParameterService categoryParameterService;
+
 	
 	/**
 	 * Welcome.
@@ -118,5 +124,26 @@ public class PropertyController extends RestrictedBaseController{
 		logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " returning " + pvalue);
   		return ( resp );
 	}
+	
+	/**
+	 * Gets the owning entity properties.
+	 * @param request the request
+	 * @return the property
+	 * @throws Exception the exception
+	 */
+	@RequestMapping(value = "/category_parameter", method = RequestMethod.GET)
+	public ResponseEntity getCategoryParameter(HttpServletRequest request) throws Exception {
+		String methodName = "getCategoryParameter";
+		logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+		try {
+            return new ResponseEntity<>(categoryParameterService.getCategoryParameters(), HttpStatus.OK);
+        }
+        catch (Exception exception) {
+            logger.error("failed to retrieve category parameter list from DB.", exception);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+	}
+	
+	
 
 }

@@ -38,5 +38,7 @@ public class ModelConstants {
 	public final static String VF_MODULE = "groups.VfModule";
 	public final static String VNF = "resource.vf";
 	public final static String NETWORK = "resource.vl";
+
+	public final static String ROLE_DELIMITER = "___";
 	
 }

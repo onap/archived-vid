@@ -1,8 +1,11 @@
 package org.openecomp.vid.aai.model;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+
+
 
 public class Relationship {
 	

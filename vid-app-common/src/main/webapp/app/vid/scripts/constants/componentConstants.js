@@ -29,8 +29,8 @@ appDS2
     COMPONENT_STATUS : "ComponentStatus",
     CREATE_COMPONENT : "createComponent",
     DELETE_RESUME_COMPONENT : "deleteResumeComponent",
-	DELETE:"Delete",
-	RESUME:"Resume",
+    DELETE:"Delete",
+    RESUME:"Resume",
     ENTITY : "entity",
     GET_COMPONENT_LIST : "getComponentList",
     GET_SUBS : "getSubs",
@@ -100,9 +100,9 @@ appDS2
 	SUBSCRIBER_NAME_GED12 : "General Electric Division 12",
 	VNF_INSTANCE_ID : "VNF_INSTANCE_ID_12345",
 	VPN_ID_1 : "1a2b3c4d5e6f",
-	
+
 	// PATHS
-	GET_WORKFLOW: "change-management/workflow?vnfs=@vnfs",
+	GET_WORKFLOW: "change-management/get_vnf_workflow_relation",
 	GET_MSO_WORKFLOWS: "change-management/mso",
 	GET_SCHEDULER_CHANGE_MANAGEMENTS: "change-management/scheduler",
 	ASSIGN : "?r=",
@@ -113,19 +113,23 @@ appDS2
     AAI_GET_SERVICES_BY_TYPE : "aai_get_models_by_service_type",
 	AAI_GET_TENANTS : "aai_get_tenants/",
 	AAI_SUB_DETAILS_PATH : "aai_sub_details/",
-	AAI_GET_VERSION_BY_INVARIANT_ID:"aai_get_version_by_invariant_id/",
-	AAI_GET_VNF_DATA_PATH: "aai_get_vnf_data/",
-	AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE: "get_vnf_data_by_globalid_and_service_type/",
-	AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
+    AAI_GET_VERSION_BY_INVARIANT_ID:"aai_get_version_by_invariant_id/",
+    SEARCH_SERVICE_INSTANCES:"search_service_instances",
+    AAI_GET_VNF_DATA_PATH: "aai_get_vnf_data/",
+    AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE: "get_vnf_data_by_globalid_and_service_type/",
+    AAI_GET_SERVICES_BY_OWNING_ENTITY_ID: 'aai_get_services_by_owning_entity_id',
+    AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
 	AAI_GET_VNF_INFO : "aai_get_vnf_information",
 	AAI_POST_SERVICE_PROXY_INSTANCE_DATA_PATH: "aai_get_vnf_instances",
 	AAI_GET_BY_URI: "aai_get_by_uri/",
 	AAI_GET_CONFIGURATION: "aai_get_configuration/",
+    GET_CATEGORY_PARAMETERS : "category_parameter",
 	ASDC_GETMODEL_PATH : "asdc/getModel/",
 	CREATE_INSTANCE_PATH : "/models/services/createInstance", 
 	//1710 scheduler contants
 	POST_CREATE_NEW_VNF_CHANGE:"post_create_new_vnf_change",
 	GET_POLICY:"get_policy",
+	WORKFLOW: "workflow",
 	GET_TIME_SLOTS:"get_time_slots",
 	SUBMIT_VNF_CHANGE_TIMESLOTS:"submit_vnf_change_timeslots",
 	
@@ -140,11 +144,12 @@ appDS2
 	MSO_CREATE_NW_INSTANCE_PATH : "mso_create_nw_instance/",
 	MSO_CREATE_SVC_INSTANCE : "mso_create_svc_instance",
 	MSO_DELETE_SVC_INSTANCE_PATH : "mso_delete_svc_instance/",
-	MSO_ACTIVATE_INSTANCE: "mso/mso_activate_service_instance/@serviceInstanceId",
-	SELECTED_SERVICE_SUB_PATH : "#/instances/subdetails?selectedServiceSubscription=",
-	SELECTED_SUB_PATH : "#/instances/subdetails?selectedSubscriber=",
-	SELECTEDSERVICEINSTANCE_SUB_PATH : "&selectedServiceInstance=",
-	SELECTEDSUBSCRIBER_SUB_PATH : "&selectedSubscriber=",
+    MSO_ACTIVATE_INSTANCE: "mso/mso_activate_service_instance/@serviceInstanceId",
+    SELECTED_SERVICE_SUB_PATH : "#/instances/subdetails?",
+	SELECTED_SERVICE_INSTANCE_SUB_PATH : "serviceInstanceIdentifier=",
+	SELECTED_SUBSCRIBER_SUB_PATH : "subscriberId=",
+	OWNING_ENTITY_SUB_PATH : "owningEntity=",
+	PROJECT_SUB_PATH : "project=",
 	SERVICE_TYPE_LIST_PATH : "#/instances/serviceTypes?serviceTypeList=",
 	SERVICE_MODLES_INSTANCES_SUBSCRIBERS_PATH : 'serviceModels.htm#/instances/subscribers',
 	SERVICES_DIST_STATUS_PATH : "rest/models/services?distributionStatus=",
@@ -166,9 +171,9 @@ appDS2
 	CREATE_INSTANCE_SERVICE_MODELS_URL : "app/vid/scripts/view-models/createInstanceServiceModels.htm",
 	INSTANTIATE_URL : "app/vid/scripts/view-models/instantiate.htm",
 	SERVICE_MODELS : "app/vid/scripts/view-models/serviceModels.htm",
-	
-	
-	
+
+
+
 	FULL_NAME_MAP : {
 	    "model-invariant-id" : "Model ID",
 	    "model-version-id" : "Model Version ID"
@@ -182,11 +187,11 @@ appDS2
 	},
 
 	MANUAL_TASKS: {
-    	"retry": "retry",
-    	"rollback": "rollback",
-    	"abort": "abort",
-    	"skip": "skip"
+        "retry": "retry",
+        "rollback": "rollback",
+        "abort": "abort",
+        "skip": "skip"
 	}
-	
+
     };
 })())

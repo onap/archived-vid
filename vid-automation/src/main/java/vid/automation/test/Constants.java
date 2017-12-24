@@ -29,6 +29,7 @@ public class Constants {
     public static final String VIEW_EDIT_BUTTON_TEXT = "View/Edit";
     public static final String VIEW_EDIT_TEST_ID_PREFIX = "view/edit-test-data-id-";
     public static final String INSTANCE_ID_FOR_NAME_TEST_ID_PREFIX = "instance-id-for-name-";
+    public static final String MULTI_SELECT_UNSELECTED_CLASS = "item-unselected";
 
     public static final String PNF_SERVICE_TYPE = "pnf";
 
@@ -56,7 +57,6 @@ public class Constants {
         public static final String newModalVNFTypeInputId = "vnfType";
         public static final String newModalFromVNFVersionInputId = "fromVNFVersion";
         public static final String newModalVNFNameInputId = "vnfName";
-        public static final String newModalVNFNameInputFirstElementClass = "item-unselected";
         public static final String newModalWorkFlowInputId = "workflow";
 
 
@@ -134,6 +134,8 @@ public class Constants {
         public static final String SERVICE_INSTANCE_ID = "Service Instance Id";
         public static final String SERVICE_INSTANCE_NAME = "Service Instance Name";
         public static final String SEARCH_FOR_EXISTING_INSTANCES_INPUT = "searchForExistingInstancesText";
+        public static final String SELECT_OWNING_ENTITY_ID = "selectOwningEntity";
+        public static final String SELECT_PROJECT_ID = "selectProject";
 
         public static final String DELETE_VNF_BTN = "delete-vnf-btn";
         public static final String ADD_VNF_MODULE_DROPDOWN = "add-vnf-module-dropdown";
@@ -184,6 +186,9 @@ public class Constants {
 
     public class OwningEntity {
         public static final String PROJECT_SELECT_TEST_ID = "project";
+        public static final String OWNING_ENTITY_SELECT_TEST_ID = "owningEntity";
+        public static final String PLATFORM_SELECT_TEST_ID = "platform";
+        public static final String LOB_SELECT_TEST_ID = "lineOfBusiness";
     }
 
     public class Users {

@@ -1,7 +1,8 @@
 package org.openecomp.vid.aai;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.MoreObjects;
+import org.codehaus.jackson.annotate.*;
 
 import java.util.HashMap;
 import java.util.List;

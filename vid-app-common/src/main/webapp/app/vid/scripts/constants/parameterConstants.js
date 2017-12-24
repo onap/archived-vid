@@ -24,6 +24,7 @@ appDS2.constant("PARAMETER", (function() {
     return {
 		BOOLEAN : "boolean",
 		SELECT : "select",
+		MULTI_SELECT : "multi_select",
 		STRING : "string",
 		NUMBER : "number",
 		VALID_VALUES : "valid_values",

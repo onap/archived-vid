@@ -1,0 +1,17 @@
+{
+	"owningEntityProperties" : {
+		"platform": {
+			"Platform-name": "Platform-name"
+		},
+		"project": {
+			"Project-name": "Project-name"
+		},
+		"lineOfBusiness": {
+			"Line-of-business-name": "Line-of-business-name"
+		},		
+		"owningEntity": {
+			"Owning-entity-id": "Owning-entity-name"
+		}	
+	}			
+}
+	

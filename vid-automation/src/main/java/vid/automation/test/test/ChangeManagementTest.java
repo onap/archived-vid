@@ -59,7 +59,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Click.onFirstSelectOptionById(Constants.ChangeManagement.newModalFromVNFVersionInputId);
         Wait.angularHttpRequestsLoaded();
         Click.byId(Constants.ChangeManagement.newModalVNFNameInputId);
-        Click.byClass(Constants.ChangeManagement.newModalVNFNameInputFirstElementClass);
+        Click.byClass(Constants.MULTI_SELECT_UNSELECTED_CLASS);
         Wait.angularHttpRequestsLoaded();
         Click.onFirstSelectOptionById(Constants.ChangeManagement.newModalWorkFlowInputId);
 
@@ -81,7 +81,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalFromVNFVersionInputId, vnfVersion);
         Wait.angularHttpRequestsLoaded();
         Click.byId(Constants.ChangeManagement.newModalVNFNameInputId);
-        Click.byClass(Constants.ChangeManagement.newModalVNFNameInputFirstElementClass);
+        Click.byClass(Constants.MULTI_SELECT_UNSELECTED_CLASS);
         Wait.angularHttpRequestsLoaded();
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalWorkFlowInputId, workflow);
 

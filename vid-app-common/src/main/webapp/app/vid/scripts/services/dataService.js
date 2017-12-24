@@ -347,7 +347,14 @@ var DataService = function($log, DataService) {
         },
         setPortId: function (portId) {
             _this.portId = portId;
+        },
+        getOwningEntityProperties: function () {
+            return _this.owningEntityProperties;
+        },
+        setOwningEntityProperties: function (properties) {
+            _this.owningEntityProperties = properties;
         }
+
 	}
 };
 

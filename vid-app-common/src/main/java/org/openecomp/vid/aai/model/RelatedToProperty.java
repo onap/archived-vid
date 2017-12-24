@@ -1,5 +1,6 @@
 package org.openecomp.vid.aai.model;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class RelatedToProperty {

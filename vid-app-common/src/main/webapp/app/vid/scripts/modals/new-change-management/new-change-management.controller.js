@@ -135,7 +135,6 @@
 
         vm.loadServiceTypes = function () {
             vm.serviceTypes = [];
-
             AaiService.getSubscriberServiceTypes(vm.changeManagement.subscriberId)
                 .then(function (response) {
                     vm.serviceTypes = response.data;
@@ -204,9 +203,9 @@
             _.forEach(vm.vnfs, function (vnf) {
                 if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']) {
 
-                vm.serviceInstancesToGetVersions.push(vnf);
+                    vm.serviceInstancesToGetVersions.push(vnf);
 
-                versions.push(vnf.properties["model-invariant-id"]);
+                    versions.push(vnf.properties["model-invariant-id"]);
 
 
                 }
@@ -283,7 +282,6 @@
 
         vm.loadVNFNames = function () {
             vm.vnfNames = [];
-
             _.forEach(vm.vnfs, function (vnf) {
 
                 if (vnf.properties['nf-role'] === vm.changeManagement.vnfType) {
@@ -325,23 +323,14 @@
         };
 
         vm.loadWorkFlows = function () {
-            var vnfs = [];
-            angular.forEach(vm.changeManagement.vnfNames, function (vnfName) {
-                vnfs.push(vnfName.name)
-            });
-
-            //TODO: When we'll have the mappings, use the backend call to get the workflows
-            // changeManagementService.getWorkflows(vnfs)
-            // .then(function(response) {
-            //     vm.workflows = response.data;
-            // })
-            // .catch(function(error) {
-            //     $log.error(error);
-            // });
-
-            vm.workflows = ["Update", "Replace"];
+            changeManagementService.getWorkflows(vm.changeManagement.vnfNames)
+                .then(function(response) {
+                    vm.workflows = response.data.workflows;
+                })
+                .catch(function(error) {
+                    $log.error(error);
+                });
         };
-
         //Must be $scope because we bind to the onchange of the html (cannot attached to vm variable).
         $scope.selectFileForVNFName = function (fileInput) {
             if (fileInput && fileInput.id) {

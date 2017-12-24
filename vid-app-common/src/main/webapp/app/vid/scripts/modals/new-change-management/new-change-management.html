@@ -9,12 +9,12 @@
             <label class="control-label">Subscriber</label>
             <select class="form-control" ng-model="vm.changeManagement.subscriberId" ng-change="vm.loadServiceTypes()" name="subscriber" id="subscriber" data-tests-id="subscriberName" required>
                 <option value="" disabled>Select subscriber</option>
-                <option data-tests-id="subscriberNameOption" ng-repeat="item in vm.subscribers" ng-value="item['global-customer-id']">{{item['subscriber-name']}}</option>
+                <option data-tests-id="subscriberNameOption" class="subscriberNameOption" ng-repeat="item in vm.subscribers" ng-value="item['global-customer-id']" ng-disabled="!(item['is-permitted'])">{{item['subscriber-name']}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="control-label">Service type</label>
-            <select class="form-control" ng-model="vm.changeManagement.serviceType" ng-change="vm.loadVNFTypes()" name="serviceType" id="serviceType" ng-options="item['service-type'] for item in vm.serviceTypes" required data-ng-disabled="newChangeManagement.subscriber.$pristine">
+            <select class="form-control" ng-model="vm.changeManagement.serviceType" ng-change="vm.loadVNFTypes()" name="serviceType" id="serviceType" ng-options="item['service-type'] disable when !(item['is-permitted']) for item in vm.serviceTypes" required data-ng-disabled="newChangeManagement.subscriber.$pristine" data-tests-id="serviceType">
                 <option value="" disabled>Select service type</option>
             </select>
         </div>

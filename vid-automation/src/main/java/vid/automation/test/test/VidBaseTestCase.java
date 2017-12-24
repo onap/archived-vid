@@ -9,6 +9,8 @@ import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.*;
 import vid.automation.test.sections.LoginExternalPage;
 import vid.automation.test.sections.SearchExistingPage;
@@ -121,12 +123,12 @@ public class VidBaseTestCase extends SetupCDTest {
 
     protected void assertViewEditButtonState(String expectedButtonText, String UUID) {
         WebElement viewEditWebElement = GeneralUIUtils.getWebElementByTestID(Constants.VIEW_EDIT_TEST_ID_PREFIX + UUID, 30);
-        Assert.assertEquals(viewEditWebElement.getText(), expectedButtonText);
+        Assert.assertEquals(expectedButtonText, viewEditWebElement.getText());
         GeneralUIUtils.ultimateWait();
     }
 
     protected void addVNF(String name, String lcpRegion, String tenant, String suppressRollback,
-                          String legacyRegion, String productFamily, ArrayList<String> permittedTenants) {
+                          String legacyRegion, String productFamily, ArrayList<String> permittedTenants) throws InterruptedException {
         ViewEditPage viewEditPage = new ViewEditPage();
 
         viewEditPage.selectVNFToAdd(name);
@@ -136,6 +138,9 @@ public class VidBaseTestCase extends SetupCDTest {
 
         assertDropdownPermittedItemsByValue(permittedTenants, Constants.ViewEdit.TENANT_OPTION_CLASS);
         viewEditPage.selectTenant(tenant);
+
+        Click.onFirstSelectOptionById(Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
+        SelectOption.selectFirstTwoOptionsFromMultiselectById(Constants.OwningEntity.LOB_SELECT_TEST_ID);
 
         viewEditPage.selectSuppressRollback(suppressRollback);
 

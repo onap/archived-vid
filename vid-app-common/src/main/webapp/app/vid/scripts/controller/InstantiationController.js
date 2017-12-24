@@ -34,7 +34,8 @@
 		$scope.responseTimeoutMsec = 60000;
 		$scope.properties = UtilityService.getProperties();
         $scope.resumeStatus = COMPONENT.RESUME_STATUS;
-		$scope.isPermitted = $location.search().isPermitted;
+        //isPermitted - returned as string from url and converted into boolean
+		$scope.isPermitted = $location.search().isPermitted == "true";
 		$scope.STATUS_CONSTANTS = FIELD.STATUS;
 
         $scope.init = function() {

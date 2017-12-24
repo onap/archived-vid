@@ -1,10 +1,10 @@
 { "services": {
   "c079d859-4d81-4add-a9c3-94551f96e2b0": {
     "type":"vnf",
-    "uuid": "c079d859-4d81-4add-a9c3-94551f96e2b0",
+    "uuid": "418f32e5-484a-4073-8fa9-fab7d497459f",
     "invariantUuid": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
     "name": "1707vidnf",
-    "version": "8.0",
+    "version": "9.0",
     "category": "Mobility",
     "description": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code.",
     "serviceRole" : "pnf"

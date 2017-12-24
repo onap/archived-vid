@@ -54,7 +54,7 @@
 							<tr>
 								 <td att-table-body>
 									<div>
-										<a alt="View/Edit" ng-click="getAsdcModel(disData);" data-tests-id="{{'view/edit-test-data-id-' + disData['serviceInstanceId']}}" ng-bind="disData.isPermitted ? 'View/Edit' : 'View'"></a>
+										<a alt="View/Edit" ng-click="onViewEditClick(disData);" data-tests-id="{{'view/edit-test-data-id-' + disData['serviceInstanceId']}}" ng-bind="disData.isPermitted ? 'View/Edit' : 'View'"></a>
 									</div>
 								</td>
 								<td att-table-body ng-bind="disData['globalCustomerId']"></td>

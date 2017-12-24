@@ -28,13 +28,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openecomp.aai.util.AAIRestInterface;
 import org.openecomp.portalsdk.core.controller.RestrictedBaseController;
-import org.openecomp.portalsdk.core.domain.User;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.openecomp.vid.aai.AaiResponse;
+import org.openecomp.vid.aai.ServiceInstancesSearchResults;
 import org.openecomp.vid.aai.SubscriberData;
 import org.openecomp.vid.aai.SubscriberFilteredResults;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.openecomp.vid.model.ServiceInstanceSearchResult;
 import org.openecomp.vid.model.VersionByInvariantIdsRequest;
 import org.openecomp.vid.roles.Role;
 import org.openecomp.vid.roles.RoleProvider;
@@ -50,7 +51,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -98,6 +98,9 @@ public class AaiController extends RestrictedBaseController {
      */
     @Autowired
     private AaiService aaiService;
+    @Autowired
+    private RoleProvider roleProvider;
+
     public AaiController() {
 
     }
@@ -374,17 +377,7 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = {"/getuserID"}, method = RequestMethod.GET)
     public ResponseEntity<String> getUserID(HttpServletRequest request) throws IOException, InterruptedException {
 
-        String userId = "";
-        HttpSession session = request.getSession();
-        if (session != null) {
-            User user = (User) session.getAttribute(SystemProperties.getProperty(SystemProperties.USER_ATTRIBUTE_NAME));
-            if (user != null) {
-                //userId = user.getHrid();
-                userId = user.getLoginId();
-                if (userId == null)
-                    userId = user.getOrgUserId();
-            }
-        }
+        String userId = ControllersUtils.extractUserId(request);
 
         return new ResponseEntity<String>(userId, HttpStatus.OK);
     }
@@ -398,8 +391,7 @@ public class AaiController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/aai_get_services", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetServices(HttpServletRequest request) throws IOException, InterruptedException {
-
-        RoleValidator roleValidator = new RoleValidator(new RoleProvider().getUserRoles(request));
+        RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
 
         AaiResponse subscriberList = aaiService.getServices(roleValidator);
         ResponseEntity<String> responseEntity = aaiResponseToResponseEntity(subscriberList);
@@ -512,7 +504,7 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> getFullSubscriberList(HttpServletRequest request) throws IOException, InterruptedException {
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity<String> responseEntity;
-        RoleValidator roleValidator = new RoleValidator(new RoleProvider().getUserRoles(request));
+        RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
         SubscriberFilteredResults subscriberList = aaiService.getFullSubscriberList(roleValidator);
         if (subscriberList.getHttpCode() == 200) {
             responseEntity = new ResponseEntity<String>(objectMapper.writeValueAsString(subscriberList.getSubscriberList()), HttpStatus.OK);
@@ -571,7 +563,7 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> GetSubscriberDetails(HttpServletRequest request, @PathVariable("subscriberId") String subscriberId) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity responseEntity;
-        List<Role> roles = new RoleProvider().getUserRoles(request);
+        List<Role> roles = roleProvider.getUserRoles(request);
         RoleValidator roleValidator = new RoleValidator(roles);
         AaiResponse<SubscriberData> subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator);
         String httpMessage = subscriberData.getT() != null ?
@@ -581,6 +573,46 @@ public class AaiController extends RestrictedBaseController {
         responseEntity = new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(subscriberData.getHttpCode()));
         return responseEntity;
     }
+
+    /**
+     * Get service instances that match the query from a&ai.
+     *
+     * @param subscriberId the subscriber id
+     * @param instanceIdentifier the service instance name or id.
+     * @param projects the projects that are related to the instance
+     * @param owningEntities the owningEntities that are related to the instance
+     * @return ResponseEntity The response entity
+     */
+    @RequestMapping(value = "/search_service_instances", method = RequestMethod.GET)
+    public ResponseEntity<String> SearchServiceInstances(HttpServletRequest request,
+                                                         @RequestParam(value="subscriberId", required = false) String subscriberId,
+                                                         @RequestParam(value="serviceInstanceIdentifier", required = false) String instanceIdentifier,
+                                                         @RequestParam(value="project", required = false) List<String> projects,
+                                                         @RequestParam(value="owningEntity", required = false) List<String> owningEntities) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseEntity responseEntity;
+
+        List<Role> roles = roleProvider.getUserRoles(request);
+        RoleValidator roleValidator = new RoleValidator(roles);
+
+        AaiResponse<ServiceInstancesSearchResults> searchResult = aaiService.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator, owningEntities, projects);
+
+        String httpMessage = searchResult.getT() != null ?
+                objectMapper.writeValueAsString(searchResult.getT()) :
+                searchResult.getErrorMessage();
+
+
+        if(searchResult.getT().serviceInstances.size() == 0){
+            responseEntity = new ResponseEntity<String>(httpMessage, HttpStatus.NOT_FOUND);
+
+        } else {
+            responseEntity = new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(searchResult.getHttpCode()));
+
+        }
+        return responseEntity;
+    }
+
+
 
     /**
      * Issue a named query to a&ai.
@@ -765,7 +797,7 @@ public class AaiController extends RestrictedBaseController {
         ResponseEntity responseEntity;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Role> roles = new RoleProvider().getUserRoles(request);
+            List<Role> roles = roleProvider.getUserRoles(request);
             RoleValidator roleValidator = new RoleValidator(roles);
             AaiResponse<GetTenantsResponse[]> response = aaiService.getTenants(globalCustomerId, serviceType, roleValidator);
             if (response.getHttpCode() == 200) {

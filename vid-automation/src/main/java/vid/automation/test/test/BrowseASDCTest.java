@@ -1,9 +1,13 @@
 package vid.automation.test.test;
 
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
 import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.*;
 import vid.automation.test.sections.BrowseASDCPage;
@@ -13,6 +17,7 @@ import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.UsersService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     private UsersService usersService = new UsersService();
@@ -59,7 +64,8 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertAllIsPermitted(Constants.BrowseASDC.AIC_OPTION_CLASS);
         browseASDCPage.selectAicZone("NFT1");
 
-        SelectOption.byTestIdAndVisibleText("Project-name", Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
+        Click.onFirstSelectOptionById(Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
+        Click.onFirstSelectOptionById(Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
 
         browseASDCPage.clickConfirmButton();
 
@@ -95,7 +101,8 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertDropdownPermittedItemsByValue(user.serviceTypes, Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS);
         browseASDCPage.selectServiceTypeByName(serviceType);
 
-        SelectOption.byTestIdAndVisibleText("Project-name", Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
+        Click.onFirstSelectOptionById(Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
+        Click.onFirstSelectOptionById(Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
 
         browseASDCPage.selectSuppressRollback("false");
 
@@ -115,7 +122,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
-    private void testProjectDropdownsExistsInCreationDialog() throws Exception {
+    private void testCategoryParamsDropdownsExistsInCreationDialog() throws Exception {
         User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
         relogin(user.credentials);
 
@@ -128,5 +135,93 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertThatServiceCreationDialogIsVisible();
 
         GeneralUIUtils.clickOnElementByTestId(Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
+        GeneralUIUtils.clickOnElementByTestId(Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
+    }
+
+    @Test
+    private void testOwningEntityRequiredAndProjectOptional() throws Exception {
+        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        relogin(user.credentials);
+
+        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
+        SideMenu.navigateToBrowseASDCPage();
+
+        Service service = servicesService.getService("c079d859-4d81-4add-a9c3-94551f96e2b0");
+
+        browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
+        validateServiceCreationDialog(service);
+
+        browseASDCPage.setInstanceName(browseASDCPage.generateInstanceName());
+
+        assertDropdownPermittedItemsByValue(user.subscribers, Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
+        browseASDCPage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
+
+        String serviceType = "VIRTUAL USP";
+        GeneralUIUtils.findAndWaitByText(serviceType, 30);
+
+        assertDropdownPermittedItemsByValue(user.serviceTypes, Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS);
+        browseASDCPage.selectServiceTypeByName(serviceType);
+
+        browseASDCPage.clickConfirmButton();
+
+        GeneralUIUtils.findAndWaitByText("Missing data", 5);
+
+        Click.onFirstSelectOptionById(Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
+
+        browseASDCPage.clickConfirmButton();
+        assertSuccessfulServiceInstanceCreation();
+    }
+
+    @Test
+    protected void testLineOfBusinessOptionalAndPlatformRequired() throws Exception {
+
+        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        relogin(user.credentials);
+
+        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
+        SideMenu.navigateToBrowseASDCPage();
+
+        Service service = servicesService.getService("c079d859-4d81-4add-a9c3-94551f96e2b0");
+
+        browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
+        validateServiceCreationDialog(service);
+
+        browseASDCPage.setInstanceName(browseASDCPage.generateInstanceName());
+
+        assertDropdownPermittedItemsByValue(user.subscribers, Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
+        browseASDCPage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
+
+        String serviceType = "VIRTUAL USP";
+        GeneralUIUtils.findAndWaitByText(serviceType, 30);
+
+        assertDropdownPermittedItemsByValue(user.serviceTypes, Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS);
+        browseASDCPage.selectServiceTypeByName(serviceType);
+
+        Click.onFirstSelectOptionById(Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
+
+        browseASDCPage.clickConfirmButton();
+        assertSuccessfulServiceInstanceCreation();
+
+        browseASDCPage.clickCloseButton();
+        GeneralUIUtils.ultimateWait();
+
+        //now add the VNF
+        ViewEditPage viewEditPage = new ViewEditPage();
+
+        viewEditPage.selectVNFToAdd("VID-PCRF-05-15-17 0");
+        viewEditPage.generateAndSetInstanceName(Constants.ViewEdit.VNF_INSTANCE_NAME_PREFIX);
+        viewEditPage.selectProductFamily("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
+        viewEditPage.selectLCPRegion("AAIAIC25");
+        viewEditPage.selectTenant("092eb9e8e4b7412e8787dd091bc58e86");
+        viewEditPage.setLegacyRegion("llkjhlkjhlkjh");
+
+        browseASDCPage.clickConfirmButton();
+
+        GeneralUIUtils.findAndWaitByText("Missing data", 5);
+
+        Click.onFirstSelectOptionById(Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
+
+        viewEditPage.clickConfirmButton();
+        assertSuccessfulVNFCreation();
     }
 }

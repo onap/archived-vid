@@ -8,6 +8,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openecomp.aai.util.AAIRestInterface;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.openecomp.vid.aai.model.OwningEntityResponse;
+import org.openecomp.vid.aai.model.Project;
+import org.openecomp.vid.aai.model.ProjectResponse;
 import org.openecomp.vid.aai.model.ServiceRelationships;
 import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -15,20 +18,17 @@ import org.openecomp.vid.model.SubscriberList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.UriUtils;
 
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -67,6 +67,39 @@ public class AaiClient implements AaiClientInterface {
             return "";
 
     }
+
+    @Override
+    public AaiResponse getServicesByOwningEntityId(List<String> owningEntityIds){
+        File certiPath = getCertificatesFile();
+        Response resp = doAaiGet(certiPath.getAbsolutePath(), getUrlFromLIst("business/owning-entities?", "owning-entity-id=", owningEntityIds), false);
+        AaiResponse aaiResponse = proccessAaiResponse(resp, OwningEntityResponse.class, null);
+
+        return aaiResponse;
+    }
+
+    @Override
+    public AaiResponse getServicesByProjectNames(List<String> projectNames){
+        File certiPath = getCertificatesFile();
+        Response resp = doAaiGet(certiPath.getAbsolutePath(), getUrlFromLIst("business/projects?", "project-name=", projectNames), false);
+        AaiResponse aaiResponse = proccessAaiResponse(resp, ProjectResponse.class, null);
+
+        return aaiResponse;
+    }
+
+    private String getUrlFromLIst(String url, String paramKey, List<String> params){
+        url.concat(paramKey);
+        int i = 0;
+        for(String param: params){
+            i ++;
+            url = url.concat(paramKey);
+            url = url.concat(param);
+            if(i != params.size()){
+                url = url.concat("&");
+            }
+        }
+        return url;
+    }
+
 
     @Override
     public AaiResponse<SubscriberList> getAllSubscribers() {
@@ -164,9 +197,15 @@ public class AaiClient implements AaiClientInterface {
 
         Response resp = doAaiGet(certiPath.getAbsolutePath(), url, false);
         String responseAsString = parseForTenantsByServiceSubscription(resp.readEntity(String.class));
+        if (responseAsString.equals("")){
+            AaiResponse aaiResponse = new AaiResponse<>(null, String.format("{\"statusText\":\" A&AI has no LCP Region & Tenants associated to subscriber '%s' and service type '%s'\"}", globalCustomerId, serviceType), HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return  aaiResponse;
+        }
+        else {
+                AaiResponse<GetTenantsResponse[]> getTenantsResponse = proccessAaiResponse(resp, GetTenantsResponse[].class, responseAsString);
+                return getTenantsResponse;
+        }
 
-        AaiResponse<GetTenantsResponse[]> getTenantsResponse = proccessAaiResponse(resp, GetTenantsResponse[].class, responseAsString);
-        return getTenantsResponse;
     }
 
     @Override
@@ -183,7 +222,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     private AaiResponse proccessAaiResponse(Response resp, Class classType, String responseBody) {
-        AaiResponse subscriberDataResponse;
+        AaiResponse subscriberDataResponse = null;
         if (resp == null) {
             subscriberDataResponse = new AaiResponse<>(null, null, HttpStatus.SC_INTERNAL_SERVER_ERROR);
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "Invalid response from AAI");
@@ -205,6 +244,9 @@ public class AaiClient implements AaiClientInterface {
 
                 } catch (IOException e) {
                     subscriberDataResponse = new AaiResponse<>(null, null, HttpStatus.SC_INTERNAL_SERVER_ERROR);
+                }
+                catch(Exception e){
+                	e.printStackTrace();
                 }
 
             }

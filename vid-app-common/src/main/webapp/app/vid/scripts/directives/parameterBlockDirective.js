@@ -20,7 +20,7 @@
 
 "use strict";
 
-var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
+var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile) {
     /*
      * If "IS_SINGLE_OPTION_AUTO_SELECTED" is set to "true" ...
      * 
@@ -221,6 +221,9 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
                     + additionalStyle + "'>" + getOptionListHtml(parameter)
                     + "</select>";
                 break;
+            case PARAMETER.MULTI_SELECT:
+                return '<multiselect id="' + parameter.id + '"' + attributeString + ' ng-model="multiselectModel.' + parameter.id + '" options="getOptionsList(\'' + parameter.id + '\')" display-prop="name" id-prop="id"></multiselect>';
+                break;
             case PARAMETER.STRING:
             default:
                 var value = "";
@@ -298,7 +301,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
 
     var getParameter = function(element, expectedId) {
         var id = $(element).attr("parameter-id");
-        if (expectedId !== undefined && expectedId !== id) {
+        if (!id || (expectedId !== undefined && expectedId !== id)) {
             return undefined;
         }
         var parameter = {
@@ -354,13 +357,19 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
         link : function(scope, element, attrs) {
 
             var control = scope.control || {};
+            scope.multiselectModel = {};
 
+            scope.getOptionsList = function (parameterId) {
+                return _.find(scope.parameterList, {'id': parameterId})["optionList"];
+            };
             control.setList = function(parameterList) {
+                scope.parameterList = parameterList;
                 var html = "";
                 for (var i = 0; i < parameterList.length; i++) {
                     html += getParameterHtml(parameterList[i], attrs.editable);
                 }
-                element.html(html);
+                element.replaceWith($compile(element.html(html))(scope));
+
                 element.find("input, select").bind("change", function() {
                     callback(this, scope);
                 });
@@ -390,6 +399,9 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
                         parameterList.push(parameter);
                     }
                 });
+                angular.forEach(scope.multiselectModel, function(value, key) {
+                    parameterList.push({id: key, value: value});
+                });
                 return parameterList;
             }
 
@@ -418,7 +430,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService) {
     }
 }
 
-appDS2.directive('parameterBlock', [ "$log", "PARAMETER", "UtilityService",
+appDS2.directive('parameterBlock', [ "$log", "PARAMETER", "UtilityService", "$compile",
     parameterBlockDirective ]);
 
 

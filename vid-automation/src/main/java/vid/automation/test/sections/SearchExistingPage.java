@@ -34,10 +34,10 @@ public class SearchExistingPage extends VidBasePage {
 
     public void searchForInstanceByUuid(String uuid) {
         selectSearchById();
-        startSearch(uuid);
+        startSearchByInstanceIdentifier(uuid);
     }
 
-    private void startSearch(String text) {
+    private void startSearchByInstanceIdentifier(String text) {
         WebElement textInputWebElement = GeneralUIUtils.getWebElementByTestID(Constants.EditExistingInstance.SEARCH_FOR_EXISTING_INSTANCES_INPUT, 30);
         Assert.assertTrue(textInputWebElement != null);
         textInputWebElement.sendKeys(text);
@@ -46,7 +46,7 @@ public class SearchExistingPage extends VidBasePage {
 
     public void searchForInstanceByName(String name) {
         selectSearchByName();
-        startSearch(name);
+        startSearchByInstanceIdentifier(name);
     }
 
     public void checkForEditButtons() {

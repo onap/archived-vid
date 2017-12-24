@@ -3,6 +3,7 @@ package vid.automation.test.infra;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import vid.automation.test.Constants;
 import vid.automation.test.sections.VidBasePage;
 
 /**
@@ -27,4 +28,11 @@ public class SelectOption {
         GeneralUIUtils.getSelectList(displayName, selectDataTestId);
     }
 
+    public static void selectFirstTwoOptionsFromMultiselectById(String multiSelectId) throws InterruptedException {
+        Click.byId(multiSelectId);
+        Thread.sleep(1000);
+        Click.byClass(Constants.MULTI_SELECT_UNSELECTED_CLASS);
+        Click.byClass(Constants.MULTI_SELECT_UNSELECTED_CLASS);
+
+    }
 }
