@@ -69,7 +69,7 @@ public interface RestInterface {
      *
      * @param r the r
      */
-    public void logRequest ( RequestDetails r  );
+    public void logRequest ( Object r  );
     /***
      * Log request.
      *

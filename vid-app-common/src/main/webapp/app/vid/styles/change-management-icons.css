@@ -51,8 +51,13 @@
     color: #5a5a5a;
 }
 .icon-pending:before {
+     content: "\e905";
+     color: #00aeef;
+     cursor: pointer;
+ }
+.icon-deleted:before {
     content: "\e905";
-    color: #00aeef;
+    color: #cf2a2a;
     cursor: pointer;
 }
 .icon-plus:before {
@@ -79,4 +84,50 @@
     color: #cf2a2a;
     font-size: 12px;
     cursor: pointer;
+}
+.icon-search-in:before {
+    content: "\e90d";
+    color: #009FDB;
+    font-size: 17px;
+    cursor: pointer;
+}
+.expand-icon{
+    margin-right: 10px;
+    position: relative;
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Vertical line */
+.expand-icon:before{
+    content: "";
+    position: absolute;
+    background-color: #5a5a5a;
+    transition: transform 0.25s ease-out;
+    right: 40%;
+    width: 2px;
+    height: 100%;
+    margin-left: 5px;
+}
+
+/* horizontal line */
+.expand-icon:after{
+    content: "";
+    position: absolute;
+    background-color: #5a5a5a;
+    transition: transform 0.25s ease-out;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+}
+.collapse-icon{
+    margin-right: 10px;
+    cursor: pointer;
+    display: inline-block;
+    width: 10px;
+    border-top: 1.6px solid #5a5a5a;
+    padding: 2.6px;
 }

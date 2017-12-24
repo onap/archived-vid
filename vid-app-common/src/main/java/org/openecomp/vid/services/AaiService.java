@@ -4,6 +4,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.openecomp.vid.aai.AaiResponse;
 import org.openecomp.vid.aai.SubscriberFilteredResults;
+import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
+import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.openecomp.vid.model.ServiceInstanceSearchResult;
 import org.openecomp.vid.model.SubscriberList;
@@ -31,6 +33,8 @@ public interface AaiService {
     AaiResponse getServices(RoleValidator roleValidator);
     
     AaiResponse getAaiZones();
+
+    AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus);
 
     AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId);
 

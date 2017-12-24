@@ -21,6 +21,7 @@ public class VnfResult {
 
     @JsonProperty("id")
     public String id;
+    @com.fasterxml.jackson.annotation.JsonProperty("node-type")
     @JsonProperty("node-type")
     public String nodeType;
     @JsonProperty("url")
@@ -28,6 +29,7 @@ public class VnfResult {
     @JsonProperty("properties")
     public ServiceProperties properties;
     @JsonProperty("related-to")
+    @com.fasterxml.jackson.annotation.JsonProperty("related-to")
     public List<RelatedTo> relatedTo = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();

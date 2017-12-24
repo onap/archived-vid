@@ -41,7 +41,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
             case COMPONENT.SERVICE:
                 return [ getSubscribers, getServices, getAicZones, getOwningEntityProperties ];
             case COMPONENT.NETWORK:
-                return [ getLcpCloudRegionTenantList ];
+                return [ getLcpCloudRegionTenantList, getOwningEntityProperties ];
             case COMPONENT.VNF:
                 return [ getLcpCloudRegionTenantList, getOwningEntityProperties ];
             case COMPONENT.VF_MODULE:

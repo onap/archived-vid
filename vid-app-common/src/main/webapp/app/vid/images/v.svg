@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Combined Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="**POPUPS-" transform="translate(-790.000000, -457.000000)" fill="#191919">
+            <g id="popup-medium-2" transform="translate(772.000000, 325.000000)">
+                <path d="M26.5,149 C21.8055796,149 18,145.19442 18,140.5 C18,135.80558 21.8055796,132 26.5,132 C31.1944204,132 35,135.80558 35,140.5 C35,145.19442 31.1944204,149 26.5,149 Z M23.8535534,140.549776 C23.6582912,140.354514 23.3417088,140.354514 23.1464466,140.549776 C22.9511845,140.745038 22.9511845,141.061621 23.1464466,141.256883 L25.7146903,143.825127 C25.9311409,144.041577 26.2895239,144.01447 26.4709545,143.767924 L30.8653572,137.796384 C31.0290275,137.573973 30.9814087,137.260993 30.7589977,137.097322 C30.5365867,136.933652 30.223606,136.981271 30.0599357,137.203682 L26.0103833,142.706606 L23.8535534,140.549776 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

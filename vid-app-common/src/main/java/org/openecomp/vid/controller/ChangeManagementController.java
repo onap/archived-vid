@@ -1,6 +1,8 @@
 package org.openecomp.vid.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fj.data.Either;
+import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONArray;
 import org.openecomp.portalsdk.core.controller.UnRestrictedBaseController;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -36,6 +38,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     public static final String VNF_WORKFLOW_RELATION = "vnf_workflow_relation";
     public static final String CHANGE_MANAGEMENT = "change-management";
     public static final String GET_VNF_WORKFLOW_RELATION = "get_vnf_workflow_relation";
+    public static final String SCHEDULER_BY_SCHEDULE_ID = "/scheduler/schedules/{scheduleId}";
     private EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ChangeManagementController.class);
     private String fromAppId;
     private final WorkflowService workflowService;
@@ -77,6 +80,13 @@ public class ChangeManagementController extends UnRestrictedBaseController {
         JSONArray result = this.changeManagementService.getSchedulerChangeManagements();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @RequestMapping(value = {SCHEDULER_BY_SCHEDULE_ID}, method = RequestMethod.DELETE)
+    public ResponseEntity deleteSchedule(@PathVariable("scheduleId") String scheduleId) throws IOException, InterruptedException {
+        Pair<String, Integer> result = this.changeManagementService.deleteSchedule(scheduleId);
+        return ResponseEntity.status(result.getRight()).build();
+    }
+
     
     @RequestMapping(value = {GET_VNF_WORKFLOW_RELATION}, method = RequestMethod.POST)
     public ResponseEntity getWorkflows(@RequestBody GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest) throws IOException, InterruptedException {

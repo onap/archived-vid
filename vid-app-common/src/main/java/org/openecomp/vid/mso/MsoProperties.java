@@ -20,11 +20,11 @@
 
 package org.openecomp.vid.mso;
 
+import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.util.SystemProperties;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 /**
  * The Class MsoProperties.
@@ -99,6 +99,16 @@ public class MsoProperties extends SystemProperties {
 	/** The Constant MSO_REST_API_CONFIGURATION_INSTANCE. */
 	public static final String MSO_REST_API_CONFIGURATIONS = "mso.restapi.configurations"; //serviceInstances/v5/{serviceInstanceId}/configurations/
 	public static final String MSO_REST_API_CONFIGURATION_INSTANCE = "mso.restapi.configuration.instance"; //serviceInstances/v5/{serviceInstanceId}/configurations/{configurationId}
+
+	/** The Constant MSO_REST_API_OPERATIONAL_ENVIRONMENT */
+	public static final String MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE = "mso.restapi.operationalEnvironment.activate";
+	public static final String MSO_REST_API_OPERATIONAL_ENVIRONMENT_DEACTIVATE = "mso.restapi.operationalEnvironment.deactivate";
+
+	/** The Constant MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE */
+	public static final String MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE = "mso.restapi.operationalEnvironment.create";
+
+	/** The Constant MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS */
+	public static final String MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS = "mso.restapi.operationalEnvironment.cloudResourcesRequests.status";
 
 	/** The logger. */
 	public EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoProperties.class);

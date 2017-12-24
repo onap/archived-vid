@@ -10,6 +10,9 @@ public class AaiResponse<T> extends ProxyResponse{
 
     T t;
 
+    public AaiResponse() {
+    }
+
     public AaiResponse(T t, String errorMessage, int aaiHttpCode) {
         this.t = t;
         this.errorMessage = errorMessage;

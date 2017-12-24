@@ -1,0 +1,25 @@
+<link rel="stylesheet" type="text/css"
+      href="app/vid/scripts/modals/attach-test-env-manifest/attach-test-env-manifest.css"/>
+<div class="modal-header">
+    <h3 id="modal-title">Attach Manifest</h3>
+    <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+</div>
+<form name="Attach Manifest" ng-submit="vm.submit()">
+    <div class="modal-body">
+        <label id="manifestName"  class="manifestName">Manifest Name</label>
+        <input onchange="angular.element(this).scope().selectAttachmentManifest(this)" type="file"
+               id="testEnvManifestFileInput" class="inputfile" accept=".json"/>
+        <label id="manifestFileName"  class="manifestFileName">{{vm.filename}}</label><label for="testEnvManifestFileInput" class="labelForImage" >
+            <img id="elipsisImg" src="app/vid/images/elipsis_menu_icon.svg" class="elipsisImg"/>
+        </label><label id="errorLabel" class="errorLabel">{{vm.error}}</label>
+
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button type="submit" id="submit" name="submit" class="btn btn-primary"
+                   ng-disabled="vm.isSubmitDisabled()">Attach
+            </button>
+            <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
+        </div>
+    </div>
+</form>

@@ -1,32 +1,40 @@
 package org.openecomp.vid.services;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.hibernate.NonUniqueObjectException;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.service.DataAccessService;
+import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.openecomp.vid.changeManagement.*;
 import org.openecomp.vid.exceptions.NotFoundException;
 import org.openecomp.vid.model.VNFDao;
 import org.openecomp.vid.model.VidWorkflow;
 import org.openecomp.vid.mso.MsoBusinessLogic;
 import org.openecomp.vid.mso.MsoResponseWrapper;
-import org.openecomp.portalsdk.core.util.SystemProperties;
-import org.openecomp.vid.scheduler.*;
-
+import org.openecomp.vid.mso.rest.Request;
+import org.openecomp.vid.scheduler.SchedulerProperties;
+import org.openecomp.vid.scheduler.SchedulerRestInterfaceFactory;
+import org.openecomp.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.openecomp.vid.mso.rest.Request;
 import org.springframework.stereotype.Service;
-import org.hibernate.NonUniqueObjectException;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @Service
 public class ChangeManagementServiceImpl implements ChangeManagementService {
 
+	private EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ChangeManagementServiceImpl.class);
 	private final DataAccessService dataAccessService;
 
     @Autowired
@@ -115,6 +123,23 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
 
         return result;
     }
+
+	@Override
+	public Pair<String, Integer> deleteSchedule(String scheduleId) {
+		try {
+			String path = String.format(SystemProperties.getProperty(SchedulerProperties.SCHEDULER_DELETE_SCHEDULE), scheduleId);
+			org.openecomp.vid.scheduler.RestObject<String> restObject = new org.openecomp.vid.scheduler.RestObject<>();
+			SchedulerRestInterfaceIfc restClient = SchedulerRestInterfaceFactory.getInstance();
+			String str = new String();
+			restObject.set(str);
+			restClient.Delete(str, "", path, restObject);
+			String restCallResult = restObject.get();
+			return new ImmutablePair<>(restCallResult, restObject.getStatusCode());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return new ImmutablePair<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+	}
 
 	@Override
 	public VnfWorkflowRelationResponse addVnfWorkflowRelation(VnfWorkflowRelationRequest vnfWorkflowRelationRequest) {

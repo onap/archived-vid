@@ -2,6 +2,7 @@ package org.openecomp.vid.aai;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.openecomp.vid.model.SubscriberList;
@@ -25,7 +26,9 @@ public interface AaiClientInterface {
     AaiResponse getServicesByOwningEntityId(List<String> owningEntityIds);
 
     AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType);
-    
+
+    AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus);
+
     AaiResponse getAllAicZones();
 
     AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId);

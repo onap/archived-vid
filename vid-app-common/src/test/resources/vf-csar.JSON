@@ -4,8 +4,8 @@
   "service": {
     "category": "Mobility",
     "description": "Bla bla",
-    "serviceRole":"null",
-    "serviceType":"null",
+    "serviceRole":null,
+    "serviceType":null,
     
     "inputs": {
       "greatdefect0_availability_zone_max_count": {
@@ -41,10 +41,12 @@
     "serviceEcompNaming": "true",
     "toscaModelURL": null,
     "uuid": "48a52540-8772-4368-9cdb-1f124ea5c931",
-    "version": "0.1"
+    "version": "1.0"
   },
   "vfModules": {
     "greatdefect0..Greatdefect..base_ixla..module-0": {
+
+
       "commands": {
       },
       "customizationUuid": "316e323d-611d-4007-a647-b1d2ecdaee9e",
@@ -100,6 +102,8 @@
           "inputName": "greatdefect0_vf_module_id"
         }
       },
+      "type":"VF",
+
       "customizationUuid": "9123ced3-fbcd-42f7-b103-5965c54bbd66",
       "description": "checl-IdanWithSecondFix",
       "inputs": {
@@ -146,11 +150,46 @@
       "uuid": "3b25707a-d345-4a80-8744-73adf8f2e67b",
       "version": "3.0",
       "vfModules": {
+        "greatdefect0..Greatdefect..module_1_ixla..module-2": {
+          "uuid": "6f09e053-56a6-4fbb-8299-e1de616825cc",
+          "invariantUuid": "e0297a51-c670-452e-b31c-c5b37c6ad40f",
+          "customizationUuid": "1106fca3-235a-4f92-8d5a-960a7336b32f",
+          "description": null,
+          "name": "Greatdefect..module_1_ixla..module-2",
+          "version": "3",
+          "volumeGroupAllowed": false,
+          "commands": {},
+          "modelCustomizationName": "Greatdefect..module_1_ixla..module-2"
+        },
+        "greatdefect0..Greatdefect..base_ixla..module-0": {
+          "uuid": "01166434-ef34-4969-aaf2-626203d72e48",
+          "invariantUuid": "80ff85fb-cb11-42cb-9737-e47095d42756",
+          "customizationUuid": "316e323d-611d-4007-a647-b1d2ecdaee9e",
+          "description": null,
+          "name": "Greatdefect..base_ixla..module-0",
+          "version": "3",
+          "volumeGroupAllowed": false,
+          "commands": {},
+          "modelCustomizationName": "Greatdefect..base_ixla..module-0"
+        },
+        "greatdefect0..Greatdefect..module_2_ixla..module-1": {
+          "uuid": "dea8e41f-c996-4557-b521-263210d96baa",
+          "invariantUuid": "23befc6e-aa97-4004-b215-4979c3f84913",
+          "customizationUuid": "b52c1fda-fbbf-4de3-ad9b-190d4a14990c",
+          "description": null,
+          "name": "Greatdefect..module_2_ixla..module-1",
+          "version": "3",
+          "volumeGroupAllowed": false,
+          "commands": {},
+          "modelCustomizationName": "Greatdefect..module_2_ixla..module-1"
+        }
       },
       "volumeGroups": {
       }
     }
   },
-  "volumeGroups": {
-  }
+  "volumeGroups": {},
+  "configurations":{},
+  "serviceProxies":{}
+
 }

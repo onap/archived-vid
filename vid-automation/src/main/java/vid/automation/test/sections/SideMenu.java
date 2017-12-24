@@ -17,6 +17,10 @@ public class SideMenu {
         navigateToPage(Constants.SideMenu.CREATE_NEW_SERVICE);
     }
 
+    public static void navigateToTestEnvironmentsPage() {
+        navigateToPage(Constants.SideMenu.TEST_ENVIRONMENTS);
+    }
+
     private static void navigateToPage(String PageName) {
         boolean findAndWaitByText = GeneralUIUtils.findAndWaitByText(PageName, 30);
         Assert.assertTrue(findAndWaitByText);

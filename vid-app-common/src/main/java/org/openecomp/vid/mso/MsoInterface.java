@@ -1,10 +1,6 @@
 package org.openecomp.vid.mso;
 
-import org.openecomp.vid.mso.rest.Request;
 import org.openecomp.vid.mso.rest.RequestDetails;
-import org.openecomp.vid.mso.rest.Task;
-
-import java.util.List;
 
 /**
  * Created by pickjonathan on 21/06/2017.
@@ -79,3 +75,4 @@ public interface MsoInterface {
 
     void activateServiceInstance(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception;
 }
+

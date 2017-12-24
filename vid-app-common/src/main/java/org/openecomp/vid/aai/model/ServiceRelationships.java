@@ -10,6 +10,18 @@ public class ServiceRelationships {
 	@JsonProperty("service-instance-name")
 	public String serviceInstanceName;
 
+	@JsonProperty("service-type")
+	public String serviceType;
+
+	@JsonProperty("service-role")
+	public String serviceRole;
+
+	@JsonProperty("environment-context")
+	public String environmentContext;
+
+	@JsonProperty("workload-context")
+	public String workloadContext;
+
 	@JsonProperty("model-invariant-id")
 	public String modelInvariantId;
 	

@@ -3,8 +3,6 @@ package vid.automation.test.test;
 
 //import com.sun.tools.internal.jxc.ap.Const;
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
@@ -239,4 +237,27 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Click.byClass(Constants.generalCloseModalButtonClass);
         Wait.modalToDisappear();
     }
+
+    @Test
+    public void testSuccessCancelPendingWorkflow() {
+        ChangeManagementPage.openChangeManagementPage();
+        Wait.angularHttpRequestsLoaded();
+
+        Click.byClass(Constants.ChangeManagement.cancelPendingButtonClass); //cancel pending workflow modal
+        Wait.modalToBeDisplayed();
+        Assert.assertTrue(Exists.modal());
+        Assert.assertTrue(Exists.byId(Constants.ChangeManagement.pendingModalHeaderId));
+        Assert.assertTrue(Exists.byClass(Constants.ChangeManagement.pendingModalCancelWorkflowButtonClass));
+        Click.byClass(Constants.ChangeManagement.pendingModalCancelWorkflowButtonClass);
+        Wait.angularHttpRequestsLoaded();
+
+        Wait.modalToBeDisplayed(); //success alert modal should appear
+        Assert.assertTrue(Exists.modal());
+        Assert.assertTrue(Exists.byId(Constants.ChangeManagement.alertModalHeaderId));
+        Assert.assertTrue(Exists.byClassAndText(Constants.generalModalTitleClass, "Success"));
+        Click.byClass(Constants.generalCloseModalButtonClass);
+        Wait.modalToDisappear();
+        //TODO check the workflow deleted from table/changed to deleted action
+    }
+
 }

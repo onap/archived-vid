@@ -1,0 +1,14 @@
+<link rel="stylesheet" type="text/css" href="app/vid/styles/modals.css">
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/cancel-pending-workflow/cancel-pending-workflow.css"/>
+<div class="modal-header">
+    <span class="modal-title" id="pending-modal-header">Pending</span>
+    <span id="cancel" ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+</div>
+<div class="modal-body" id="modal-body">
+    Are you sure you want to delete workflow
+    <br/>
+    {{vm.workflow.scheduleRequest.scheduleName}}?
+</div>
+<div class="modal-footer">
+    <button class="btn btn-cancel-workflow" data-tests-id="cancel" ng-click="vm.ok()">Cancel Workflow</button>
+</div>

@@ -61,10 +61,9 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
         AaiService.getLoggedInUserID(function (response) {
             var userID = response.data;
 
-            AaiService.getAicZoneForPNF(instance.globalCustomerId, model.service.serviceType, instance.serviceInstanceId, function (aicZone) {
+            AaiService.getAicZoneForPNF(instance.globalCustomerId, instance.serviceType, instance.serviceInstanceId, function (aicZone) {
 
                 var requestDetails = {
-                    "modelInstanceId": serviceInstanceId,
                     "requestDetails": {
                         "modelInfo": {
                             "modelType": "service",
@@ -78,18 +77,18 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                             "requestorId": userID
                         },
                         "requestParameters": {
-                            "userParams": {
+                            "userParams": [{
                                 "name": "aic_zone",
                                 "value": aicZone
-                            }
+                            }]
                         }
                     }
                 };
 
                 console.log("requestDetails", requestDetails);
 
-                $http.post(COMPONENT.MSO_ACTIVATE_INSTANCE.replace('@serviceInstanceId', requestDetails.modelInstanceId),
-                    requestDetails.requestDetails)
+                $http.post(COMPONENT.MSO_ACTIVATE_INSTANCE.replace('@serviceInstanceId', instance.serviceInstanceId),
+                    requestDetails)
                     .success(function (response) {
                         deferred.resolve({data: response});
                     })
@@ -105,6 +104,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
     return {
         createInstance : requestInstanceUpdate,
         deleteInstance : requestInstanceUpdate,
+        createEnvironmentInstance: requestInstanceUpdate,
         getOrchestrationRequest : function(requestId, successCallbackFunction) {
             $log.debug("MsoService:getOrchestrationRequest: requestId: "
                 + requestId);

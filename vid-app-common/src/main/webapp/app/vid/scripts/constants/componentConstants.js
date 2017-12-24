@@ -46,6 +46,9 @@ appDS2
 	MSO_CREATE_REQ : "createInstance",
 	MSO_DELETE_REQ : "deleteInstance",
 	MSO_CHANGE_STATUS_REQ: "changeStatus",
+	MSO_CREATE_ENVIRONMENT: "createEnvironmentInstance",
+	MSO_DEACTIVATE_ENVIRONMENT: "deactivateEnvironmentInstance",
+	MSO_ACTIVATE_ENVIRONMENT: "activateEnvironmentInstance",
     NAME : "name",
 	NETWORK : "network",
 	CONFIGURATION : "configuration",
@@ -105,6 +108,7 @@ appDS2
 	GET_WORKFLOW: "change-management/get_vnf_workflow_relation",
 	GET_MSO_WORKFLOWS: "change-management/mso",
 	GET_SCHEDULER_CHANGE_MANAGEMENTS: "change-management/scheduler",
+	CANCEL_SCHEDULE_REQUEST: "change-management/scheduler/schedules",
 	ASSIGN : "?r=",
 	AAI_GET_SERVICE_INSTANCE_PATH : "aai_get_service_instance/",
 	AAI_GET_SERVICES : "aai_get_services",
@@ -123,6 +127,7 @@ appDS2
 	AAI_POST_SERVICE_PROXY_INSTANCE_DATA_PATH: "aai_get_vnf_instances",
 	AAI_GET_BY_URI: "aai_get_by_uri/",
 	AAI_GET_CONFIGURATION: "aai_get_configuration/",
+    AAI_GET_TEST_ENVIRONMENTS: "get_operational_environments",
     GET_CATEGORY_PARAMETERS : "category_parameter",
 	ASDC_GETMODEL_PATH : "asdc/getModel/",
 	CREATE_INSTANCE_PATH : "/models/services/createInstance", 
@@ -162,6 +167,11 @@ appDS2
 	SUBSCRIBERNAME_SUB_PATH : "&subscriberName=",
 	WELCOME_PATH : "welcome.htm",
     IS_PERMITTED_SUB_PATH: "&isPermitted=",
+
+    //Test Environment Urls:
+	OPERATIONAL_ENVIRONMENT_DEACTIVATE : "operationalEnvironment/deactivate?operationalEnvironment=",
+	OPERATIONAL_ENVIRONMENT_ACTIVATE : "operationalEnvironment/activate?operationalEnvironment=",
+	OPERATIONAL_ENVIRONMENT_STATUS : "operationalEnvironment/requestStatus?requestId=",
 
     //Template Urls
 	AAI_GET_SUBS_URL : "app/vid/scripts/view-models/aaiGetSubs.htm",

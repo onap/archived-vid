@@ -1,18 +1,14 @@
 package org.openecomp.vid.mso;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.vid.mso.rest.*;
+import org.openecomp.vid.mso.rest.RequestDetails;
 
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by pickjonathan on 21/06/2017.
@@ -159,7 +155,6 @@ public class MsoLocalClientNew implements MsoInterface {
             throw e;
         }
     }
-
 
     @Override
     public MsoResponseWrapper getManualTasksByRequestId(String t, String sourceId, String endpoint, RestObject restObject) throws Exception {

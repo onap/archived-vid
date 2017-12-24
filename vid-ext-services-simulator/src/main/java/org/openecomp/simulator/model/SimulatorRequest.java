@@ -2,12 +2,24 @@ package org.openecomp.simulator.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SimulatorRequest {
     private String id;
     private String method;
     private String path;
     private String body;
+    private Map<String, List<String>> queryParams;
+
+    public Map<String, List<String>> getQueryParams() {
+        return queryParams;
+    }
+
+    public void setQueryParams(Map<String, List<String>> queryParams) {
+        this.queryParams = queryParams;
+    }
 
     public String getId() {
         return id;
@@ -48,6 +60,7 @@ public class SimulatorRequest {
                 ", method='" + method + '\'' +
                 ", path='" + path + '\'' +
                 ", body='" + body + '\'' +
+                ", queryParams=" + queryParams +
                 '}';
     }
 }

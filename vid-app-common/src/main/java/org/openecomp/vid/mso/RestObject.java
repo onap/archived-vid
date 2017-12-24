@@ -20,6 +20,8 @@
 
 package org.openecomp.vid.mso;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * The Class RestObject.
  *
@@ -34,6 +36,9 @@ public class RestObject<T> {
     // T stands for "Type"
     private T t;
     
+    // The string source of t, if available
+    private String rawT;
+
     /** The status code. */
     private int statusCode= 0;
     
@@ -64,5 +69,22 @@ public class RestObject<T> {
      * @return the status code
      */
     public int getStatusCode() { return this.statusCode; }
+
+    public String getRaw() {
+        return rawT;
+    }
+
+    public void setRaw(String rawT) {
+        this.rawT = rawT;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("t", t)
+                .add("rawT", rawT)
+                .add("statusCode", statusCode)
+                .toString();
+    }
 }
 

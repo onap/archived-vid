@@ -18,28 +18,29 @@
             <div class="col-md-12">
                 <uib-tabset active="activeJustified" justified="true">
                     <uib-tab index="0" heading="Active" id="active-tab">
+                        <div class="table-wrapper">
                         <table class="table table-bordered" id="active-table">
-                            <thead class="thead-default">
-                                <tr>
-                                    <th class="col-md-5">VNF Name</th>
-                                    <th class="col-md-2">Type</th>
-                                    <th class="col-md-2">Flow</th>
-                                    <th class="col-md-2">Start time</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                            <thead class="thead-default" ng-click="collapseInProgress=!collapseInProgress">
                                 <tr class="table-headline-row">
-                                    <th>
+                                    <th >
+                                        <span ng-class="{'collapse-icon':!collapseInProgress,'expand-icon':collapseInProgress }"></span>
                                         <span id="in-progress-table-head">IN PROGRESS</span>
                                     </th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
+                                <tr ng-show="!collapseInProgress">
+                                    <th class="col-md-5">VNF Name</th>
+                                    <th class="col-md-2">Type</th>
+                                    <th class="col-md-2">Flow</th>
+                                    <th class="col-md-2">Start time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-show="!collapseInProgress">
+
                                 <tr ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['FAILED', 'INPROGRESS', 'PENDING']}">
                                     <th scope="row">{{changeManagement.instanceReferences.vnfInstanceName || 'No-Instance-Name'}}</th>
                                     <td>{{changeManagement.requestScope}}</td>
@@ -48,28 +49,54 @@
                                     <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'FAILED'"><span class="icon-x" ng-click="vm.openFailedModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
                                     <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'INPROGRESS'"><span class="icon-process" ng-click="vm.openInProgressModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
                                     <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'PENDING'"><span class="icon-alert" ng-click="vm.openAlertModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
-                                    <td class="centered"><span class="icon-view"></span></td>
-                                </tr>
-                                <tr class="table-headline-row">
-                                    <th>
-                                        <span id="pending-table-head">PENDING</span>
-                                    </th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                <tr ng-repeat="changeManagement in vm.pendingChangeManagements">
-                                    <th scope="row">{{changeManagement.vnfName}}</th>
-                                    <td>{{changeManagement.scheduleRequest.scheduleName}}</td>
-                                    <td>{{changeManagement.workflow}}</td>
-                                    <td>{{changeManagement.startTime}}</td>
-                                    <td class="centered"><span class="icon-pending" ng-click="vm.openPendingModal({details: 'change management is pending in scheduler and waiting to be deployed'})"></span></td>
-                                    <td class="centered"><span class="icon-view"></span></td>
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
+                        <div class="table-wrapper">
+                        <table class="table table-bordered" id="pending-table">
+                            <thead ng-click="collapsePending=!collapsePending">
+                            <tr class="table-headline-row">
+                                <th class="col-md-6">
+                                    <span ng-class="{'collapse-icon':!collapsePending,'expand-icon':collapsePending }"></span>
+                                    <span id="pending-table-head">PENDING</span>
+                                </th>
+
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr class="thead-default" ng-show="!collapsePending">
+                                <th class="col-md-2">Schedule ID</th>
+                                <th class="col-md-2">CM ticket</th>
+                                <th class="col-md-1">VNF name</th>
+                                <th class="col-md-1">VNF status</th>
+                                <th class="col-md-2">Workflow</th>
+                                <th class="col-md-2">Start time</th>
+                                <th class="col-md-2">Schedule status</th>
+                                <th class="col-md-1">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody ng-show="!collapsePending">
+
+                                <tr ng-repeat="changeManagement in vm.pendingChangeManagements">
+                                    <th scope="row">{{changeManagement.scheduleRequest.scheduleId}}</th>
+                                    <td>{{changeManagement.aotsChangeId}}</td>
+                                    <td>{{changeManagement.vnfName}}</td>
+                                    <td>{{changeManagement.status}}</td>
+                                    <td>{{changeManagement.scheduleRequest.domainData[1].value}}</td>
+                                    <td>{{changeManagement.scheduleRequest.createDateTime }}</td><!--| date:"MM/dd/yyyy HH:mm:ss"-->
+                                    <td>{{changeManagement.scheduleRequest.status}}</td>
+                                    <td class="centered"><span class="cancel-action" ng-class="{'icon-pending':changeManagement.scheduleRequest.status!=='Deleted', 'icon-deleted': changeManagement.scheduleRequest.status=='Deleted'}"
+                                                                ng-click="vm.openPendingModal($event, changeManagement)"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
                     </uib-tab>
                     <uib-tab index="1" heading="Finished" id="finished-tab">
                         <table class="table table-bordered" id="finished-table">

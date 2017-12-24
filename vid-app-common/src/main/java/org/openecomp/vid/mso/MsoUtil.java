@@ -19,15 +19,17 @@
  */
 
 package org.openecomp.vid.mso;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.client.ClientResponse;
-
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.controller.MsoController;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import static org.openecomp.vid.utils.Logging.getMethodName;
 
 /**
  * The Class MsoUtil.
@@ -55,7 +57,23 @@ public class MsoUtil {
 		
 		return w;
 	}
-	
+
+	/**
+	 * Wrap response.
+	 *
+	 * @param body the body
+	 * @param statusCode the status code
+	 * @return the mso response wrapper
+	 */
+	public static <T> MsoResponseWrapper wrapResponse ( T body, String fallback, int statusCode ) {
+
+		MsoResponseWrapper w = new MsoResponseWrapper();
+		w.setStatus (statusCode);
+		w.setEntity(body != null ? convertPojoToString(body) : fallback);
+
+		return w;
+	}
+
 	/**
 	 * Wrap response.
 	 *
@@ -78,14 +96,16 @@ public class MsoUtil {
 	 * @param rs the rs
 	 * @return the mso response wrapper
 	 */
-	public static MsoResponseWrapper wrapResponse (RestObject<String> rs) {	
-		String resp_str = "";
+	public static <T> MsoResponseWrapper wrapResponse (RestObject<T> rs) {
+		T resp = null;
 		int status = 0;
+		String fallback = null;
 		if ( rs != null ) {
-			resp_str = rs.get();
+			resp = rs.get();
 			status = rs.getStatusCode();
+			fallback = rs.getRaw();
 		}
-		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp_str, status );
+		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp, fallback, status );
 		return (w);
 	}	
 	
@@ -97,7 +117,7 @@ public class MsoUtil {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	public static <T> String convertPojoToString ( T t ) throws com.fasterxml.jackson.core.JsonProcessingException {
+	public static <T> String convertPojoToString ( T t ) {
 		
 		String methodName = "convertPojoToString";
 		ObjectMapper mapper = new ObjectMapper();
@@ -107,7 +127,7 @@ public class MsoUtil {
 		    	r_json_str = mapper.writeValueAsString(t);
 		    }
 		    catch ( com.fasterxml.jackson.core.JsonProcessingException j ) {
-		    	logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " Unable to parse object as json");
+		    	logger.debug(EELFLoggerDelegate.debugLogger,getMethodName() + " Unable to parse object of type " + t.getClass().getName() + " as json", j);
 		    }
 	    }
 	    return (r_json_str);

@@ -1,0 +1,13 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/cloudResources/v1/operationalEnvironments/UUID/deactivate"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 500,
+    "responseHeaders": {
+      "Content-Type": "text/html"
+    },
+    "body": "ERROR_PAYLOAD"
+  }
+}

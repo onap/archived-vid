@@ -30,6 +30,7 @@
 <script src="app/vid/scripts/filters/change-managements-by-statuses.filter.js"></script>
 <script src="app/vid/scripts/filters/date.filter.js"></script>
 <script src="app/vid/scripts/modals/new-change-management/new-change-management.controller.js"></script>
+<script src="app/vid/scripts/modals/new-test-environment/new-test-environment.controller.js"></script>
 <script src="app/vid/scripts/modals/failed-change-management/failed-change-management.controller.js"></script>
 <script src="app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.controller.js"></script>
 <script src="app/vid/scripts/modals/alert-change-management/alert-change-management.controller.js"></script>
@@ -43,6 +44,7 @@
 <script src="app/vid/scripts/controller/msoCommitController.js"></script>
 <script src="app/vid/scripts/controller/ServiceModelController.js"></script>
 <script src="app/vid/scripts/controller/change-management.controller.js"></script>
+<script src="app/vid/scripts/controller/testEnvironmentsController.js"></script>
 <script src="app/vid/scripts/controller/AddNetworkNodeController.js"></script>
 <script src="app/vid/scripts/controller/ServiceProxyConfig.js"></script>
 <script src="app/vid/scripts/controller/previousVersionDialogController.js"></script>
@@ -52,6 +54,7 @@
 <script src="app/vid/scripts/directives/popupWindowDirective.js"></script>
 <script src="app/vid/scripts/directives/progressBarDirective.js"></script>
 <script src="app/vid/scripts/directives/serviceMetadata.js"></script>
+<script src="app/vid/scripts/directives/search.js"></script>
 <script src="app/vid/scripts/services/aaiService.js"></script>
 <script src="app/vid/scripts/services/asdcService.js"></script>
 <script src="app/vid/scripts/services/componentService.js"></script>
@@ -65,6 +68,7 @@
 <script src="app/vid/scripts/services/utilityService.js"></script>
 <script src="app/vid/scripts/services/vnfService.js"></script>
 <script src="app/vid/scripts/services/change-management.service.js"></script>
+<script src="app/vid/scripts/services/testEnvironmentsService.js"></script>
 
 <%@ page import="org.openecomp.vid.mso.*"%>
 <%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>

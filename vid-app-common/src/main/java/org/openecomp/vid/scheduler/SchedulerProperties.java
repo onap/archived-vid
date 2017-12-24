@@ -19,6 +19,8 @@ public class SchedulerProperties extends SystemProperties {
 
 	public static final String SCHEDULER_GET_SCHEDULES = "scheduler.get.schedules";
 
+	public static final String SCHEDULER_DELETE_SCHEDULE = "scheduler.delete.schedule";
+
 	public static final String GET_VERSION_BY_INVARIANT_ID = "aai_get_version_by_invariant_id";
 
 }

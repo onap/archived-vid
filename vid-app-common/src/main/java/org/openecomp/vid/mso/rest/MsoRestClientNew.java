@@ -4,10 +4,10 @@ import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.changeManagement.MsoRequestDetails;
 import org.openecomp.vid.changeManagement.RequestDetailsWrapper;
 import org.openecomp.vid.mso.*;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 
 /**
  * Created by pickjonathan on 21/06/2017.

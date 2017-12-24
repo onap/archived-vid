@@ -13,38 +13,29 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.ResponseErrorHandler;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.View;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
-import static org.mockserver.model.HttpRequest.request;
-import static org.mockserver.model.HttpResponse.response;
 
 @RestController
 @Component
-public class SimulatorController implements ServletContextListener {
-
-   /* @Autowired
-    private TranslatorService translatorService;*/
+public class SimulatorController {
 
     private ClientAndServer mockServer;
     private String mockServerProtocol;
@@ -54,6 +45,21 @@ public class SimulatorController implements ServletContextListener {
 
 
     Logger logger = LoggerFactory.getLogger(SimulatorController.class);
+
+    @PostConstruct
+    public void init(){
+        logger.info("Starting VID Simulator....");
+        setProperties();
+        mockServer = startClientAndServer(mockServerPort);
+        presetRegister();
+    }
+
+    @PreDestroy
+    public void tearDown(){
+        logger.info("Stopping VID Simulator....");
+        mockServer.stop();
+    }
+
 
     private void presetRegister() {
         //Checking if set
@@ -134,19 +140,26 @@ public class SimulatorController implements ServletContextListener {
 
     @RequestMapping(value = {"/**"})
     public String redirectToMockServer(HttpServletRequest request, HttpServletResponse response) {
-
         //Currently, the easiest logic is redirecting
-        String restOfTheUrl = (String) request.getAttribute(
-                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
         //This is needed to allow POST redirect - see http://www.baeldung.com/spring-redirect-and-forward
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        String redirectUrl = mockServerProtocol+"://"+mockServerHost+":"+mockServerPort+"/"+restOfTheUrl;
+
+        //Building the redirect URL
+        String restOfTheUrl = (String) request.getAttribute(
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        StringBuilder sb = new StringBuilder();
+        sb.append(mockServerProtocol+"://"+mockServerHost+":"+mockServerPort+"/"+restOfTheUrl);
+        String queryString = request.getQueryString();
+        if (queryString != null){
+            sb.append("?").append(queryString);
+        }
+        String redirectUrl = sb.toString();
         logger.info("Redirecting the request to : {}", redirectUrl);
         return ("redirect:"+redirectUrl);
 
         //This was a try to setup a proxy instead of redirect
-        // Stuck when trying to return the original HTTP error code which was registered to mock server,  instead of wrapped up HTTP 500.
+        //Abandoned this direction when trying to return the original HTTP error code which was registered to mock server,  instead of wrapped up HTTP 500.
 
        /* String restOfTheUrl = "/"+(String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
@@ -192,6 +205,15 @@ public class SimulatorController implements ServletContextListener {
             request.withBody(body);
         }
 
+        //Queryparams
+        final Map<String, List<String>> queryParams = expectationModel.getSimulatorRequest().getQueryParams();
+        if (queryParams != null){
+            String[] arr = new String[0];
+            queryParams.entrySet().stream().forEach(x -> {
+                request.withQueryStringParameter(x.getKey(), x.getValue().toArray(arr));
+            });
+        }
+
         //Setting response according to what is passed
         HttpResponse response = HttpResponse.response();
         Integer responseCode = expectationModel.getSimulatorResponse().getResponseCode();
@@ -207,21 +229,14 @@ public class SimulatorController implements ServletContextListener {
             response.withBody(respBody);
         }
 
+        Map<String, String> responseHeaders = expectationModel.getSimulatorResponse().getResponseHeaders();
+        if (responseHeaders != null) {
+            responseHeaders.forEach(response::withHeader);
+        }
+
+        logger.info("Unregistering request expectation, if previously set, request: {}", expectationModel.getSimulatorRequest());
+        mockServer.clear(request);
         mockServer
                 .when(request).respond(response);
-    }
-
-    @Override
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
-        logger.info("Starting VID Simulator....");
-        setProperties();
-        mockServer = startClientAndServer(mockServerPort);
-        presetRegister();
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        logger.info("Stopping VID Simulator....");
-        mockServer.stop();
     }
 }

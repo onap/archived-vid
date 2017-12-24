@@ -43,11 +43,11 @@
       "resources": null
     },
     {
-      "uuid": "240376de-870e-48df-915a-31f140eedd2c",
-      "invariantUUID": "5036c237-b69d-48a0-8ac6-d39275eb01f9",
-      "name": "David",
+      "uuid": "32671332-a7ee-4df6-9609-db50ce5eaee7",
+      "invariantUUID": "598e3f9e-3244-4d8f-a8e0-0e5d7a29eda9",
+      "name": "ADIOD vMX vPE_BV Service 488",
       "version": "1.0",
-      "toscaModelURL": "./service-DemoService1-csar.csar",
+      "toscaModelURL": "./adiod.zip",
       "category": "Mobility",
       "lifecycleState": "CERTIFIED",
       "lastUpdaterUserId": "rg276b",

@@ -1,0 +1,15 @@
+<link rel="stylesheet" type="text/css" href="app/vid/styles/modals.css">
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/alert-modal/alert-modal.css" />
+<div class="modal-header" ng-class="vm.mode">
+    <span class="modal-title"  id="alert-modal-header">{{vm.Header}}</span>
+    <span id="cancel" ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+</div>
+<div class="modal-body">
+    <span id="failed-modal-content">{{vm.content}}</span>
+</div>
+<div class="modal-footer">
+    <div class="pull-right">
+        <button data-tests-id="ok" id="ok-button" name="ok" class="btn"
+                ng-click="vm.close()">OK</button>
+    </div>
+</div>

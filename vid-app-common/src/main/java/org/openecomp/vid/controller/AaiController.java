@@ -34,8 +34,8 @@ import org.openecomp.vid.aai.AaiResponse;
 import org.openecomp.vid.aai.ServiceInstancesSearchResults;
 import org.openecomp.vid.aai.SubscriberData;
 import org.openecomp.vid.aai.SubscriberFilteredResults;
+import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
-import org.openecomp.vid.model.ServiceInstanceSearchResult;
 import org.openecomp.vid.model.VersionByInvariantIdsRequest;
 import org.openecomp.vid.roles.Role;
 import org.openecomp.vid.roles.RoleProvider;
@@ -56,10 +56,13 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.openecomp.vid.utils.Logging.getMethodName;
 
 /**
  * Controller to handle a&ai requests.
@@ -67,7 +70,6 @@ import java.util.*;
 
 @RestController
 public class AaiController extends RestrictedBaseController {
-
     /**
      * The Constant dateFormat.
      */
@@ -490,6 +492,23 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> getTargetProvStatus() throws IOException, InterruptedException {
         String p = SystemProperties.getProperty("aai.vnf.provstatus");
         return new ResponseEntity<String>(p, HttpStatus.OK);
+    }
+
+
+    /**
+     * Obtain the Target Prov Status from the System.Properties file.
+     *
+     * @return ResponseEntity The response entity
+     * @throws IOException          Signals that an I/O exception has occurred.
+     * @throws InterruptedException the interrupted exception
+     */
+    @RequestMapping(value = "/get_operational_environments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(@RequestParam(value="operationalEnvironmentType", required = false) String operationalEnvironmentType,
+                                                           @RequestParam(value="operationalEnvironmentStatus", required = false) String operationalEnvironmentStatus) throws IOException, InterruptedException {
+       logger.debug(EELFLoggerDelegate.debugLogger, "start {}({}, {})", getMethodName(), operationalEnvironmentType, operationalEnvironmentStatus);
+       AaiResponse<OperationalEnvironmentList> response = aaiService.getOperationalEnvironments(operationalEnvironmentType,operationalEnvironmentStatus);
+       logger.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), response);
+       return response;
     }
 
     /**

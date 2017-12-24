@@ -51,7 +51,12 @@
               templateUrl : "app/vid/scripts/view-models/change-management.html",
               controller : "changeManagementController",
 			  controllerAs: 'vm'
-          })
+		})
+		.when('/testEnvironments', {
+              templateUrl : "app/vid/scripts/view-models/testEnvironments.htm",
+              controller : "testEnvironmentsController",
+              controllerAs: 'vm'
+		})
         .when('/instantiate', {
           controller: 'InstantiationController',
           templateUrl: 'app/vid/scripts/view-models/instantiate.htm'

@@ -135,6 +135,7 @@
 
         vm.loadServiceTypes = function () {
             vm.serviceTypes = [];
+
             AaiService.getSubscriberServiceTypes(vm.changeManagement.subscriberId)
                 .then(function (response) {
                     vm.serviceTypes = response.data;
@@ -164,11 +165,11 @@
                             if (vnfsData[i]) {
                                 const nodeType = vnfsData[i]['node-type'];
                                 if (nodeType === "generic-vnf") {
-                                    _.forEach(vnfsData[i]['related-to'], function (node) {
-                                        if (node['node-type'] === 'vserver') {
-                                            vm.vnfs.push(vnfsData[i]);
-                                        }
-                                    })
+                                    if (_.find(vnfsData[i]['related-to'], function (node) {
+                                            return node['node-type'] === 'vserver'
+                                        }) !== undefined) {
+                                        vm.vnfs.push(vnfsData[i]);
+                                    }
                                 } else if (nodeType === "service-instance") {
                                     vm.serviceInstances.push(vnfsData[i]);
                                 }
@@ -196,63 +197,50 @@
             );
         };
 
+        var fromVNFVersions = [];
+
         vm.loadVNFVersions = function () {
-            vm.fromVNFVersions = [];
+            fromVNFVersions = [];
             vm.serviceInstancesToGetVersions = [];
             var versions = [];
             _.forEach(vm.vnfs, function (vnf) {
                 if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']) {
 
-                    vm.serviceInstancesToGetVersions.push(vnf);
+                    vm.serviceInstancesToGetVersions.push({
+                        "model-invariant-id": vnf.properties["model-invariant-id"],
+                        "model-version-id": vnf.properties["model-version-id"] }
+                    );
 
                     versions.push(vnf.properties["model-invariant-id"]);
-
-
                 }
             });
 
-            AaiService.getVnfVersionsByInvariantId(versions).then(function (response) {
-                if (response.data) {
-                    var key = response.data.model["0"]["model-invariant-id"];
-                    var value = response.data.model["0"]["model-vers"]["model-ver"]["0"]["model-version"];
-                    var element = {"key": key, "value": value};
-                    vm.fromVNFVersions.push(element);
-                }
-                //TODO promise all and call the new api to get the versions.
-                // vm.fromVNFVersions.push(response.data.model["0"]["model-vers"]["model-ver"]["0"]["model-version"]);
-                // if(vm.serviceInstancesToGetVersions.length > 0){
-                //
-                // var promiseArrOfGetVnfs = preparePromiseArrOfGetVersions('a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb');
-                //
-                // Promise.all(promiseArrOfGetVnfs).then(function (allData) {
-                //     vm.vnfs = _.flattenDeep(_.without(allData, null));
-                //     var filteredVnfs = _.sortedUniqBy(vm.vnfs, function (vnf) {
-                //         return vnf.properties.vnfType;
-                //     });
-                //
-                //     _.forEach(filteredVnfs, function (vnf) {
-                //         vm.vnfTypes.push(vnf.properties.vnfType)
-                //     });
-                //
-                // }).catch(function (error) {
-                //     $log(error);
-                // });
-                // }
-            })
-            // debugger;
+            if (versions.length > 0) {
+                AaiService.getVnfVersionsByInvariantId(versions).then(function (response) {
+                    if (response.data) {
 
+                        $log.debug("getVnfVersionsByInvariantId: response", response);
+
+                        fromVNFVersions = vm.serviceInstancesToGetVersions
+                            .map(function (serviceInstanceToGetVersion) {
+                                const model = _.find(response.data.model, {'model-invariant-id': serviceInstanceToGetVersion['model-invariant-id']});
+                                $log.debug("getVnfVersionsByInvariantId: model", model);
+
+                                const modelVer = _.find(model["model-vers"]["model-ver"], {'model-version-id': serviceInstanceToGetVersion['model-version-id']});
+                                $log.debug("getVnfVersionsByInvariantId: modelVer", modelVer);
+
+                                var modelVersionId = serviceInstanceToGetVersion["model-version-id"];
+                                var modelVersion = modelVer["model-version"];
+
+                                return {"key": modelVersionId, "value": modelVersion};
+                            });
+
+                        vm.fromVNFVersions = _.uniqBy(fromVNFVersions, 'value');
+                    }
+                })
+            }
         };
 
-        // function preparePromiseArrOfGetVersions(serviceInstances) {
-        //     var promiseArr = [];
-        //     for (var i = 0; i < serviceInstances.length; i++) {
-        //         var modelInvariantId = serviceInstances[i].properties["model-invariant-id"];
-        //         promiseArr.push(
-        //             getVnfs(modelInvariantId)
-        //         );
-        //     }
-        //     return promiseArr;
-        // }
 
         function getVnfs(modelInvariantId) {
             return new Promise(function (resolve, reject) {
@@ -280,11 +268,20 @@
             });
         }
 
+        var getVersionNameForId = function(versionId) {
+            var version = _.find(fromVNFVersions, {"key": versionId});
+            return version.value;
+        };
+
         vm.loadVNFNames = function () {
             vm.vnfNames = [];
             _.forEach(vm.vnfs, function (vnf) {
 
-                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType) {
+                var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
+                var vnfVersionNumber = getVersionNameForId(vnf.properties["model-version-id"]);
+
+                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType &&
+                    selectedVersionNumber === vnfVersionNumber) {
                     var vServer = {};
 
                     _.forEach(vnf['related-to'], function (node) {
@@ -293,11 +290,27 @@
                         }
                     });
 
+                    var serviceInstancesIds =
+                        _.filter(vnf['related-to'], {'node-type': 'service-instance'})
+                            .map(function (serviceInstance) { return serviceInstance.id });
+
+                    var serviceInstances = _.filter(vm.serviceInstances, function(serviceInstance) {
+                        return _.includes(serviceInstancesIds, serviceInstance.id);
+                    });
+
+                    // logging only
+                    if (serviceInstancesIds.length === 0) {
+                        $log.error("loadVNFNames: no serviceInstancesIds for vnf", vnf);
+                    } else {
+                        $log.debug("loadVNFNames: serviceInstancesIds", serviceInstancesIds);
+                        $log.debug("loadVNFNames: serviceInstances", serviceInstances);
+                    }
+
                     vm.vnfNames.push({
                         "id": vnf.properties["vnf-id"],
                         "name": vnf.properties["vnf-name"],
                         "invariant-id": vnf.properties["model-invariant-id"],
-                        "service-instance-node": _.filter(vm.serviceInstances, {id: vnf["related-to"][0].id}),
+                        "service-instance-node": serviceInstances,
                         "modelVersionId": vnf.properties["model-version-id"],
                         "properties": vnf.properties,
                         'cloudConfiguration': vServer,
@@ -314,10 +327,20 @@
                 tenantId: ''
             };
 
-            var splitedUrlByDash = _.split(url, '/', 100);
+            /*
+             e.g., in both URLs below -
+               - lcpCloudRegionId == 'rdm5b'
+               - tenantId == '0675e0709bd7444a9e13eba8b40edb3c'
 
-            cloudConfiguration.lcpCloudRegionId = splitedUrlByDash[7];
-            cloudConfiguration.tenantId = splitedUrlByDash[10];
+             "url": "https://aai-conexus-e2e.ecomp.cci.att.com:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
+             "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
+             */
+
+            var cloudRegionMatch = url.match(/\/cloud-regions\/cloud-region\/[^\/]+\/([^\/]+)/);
+            var tenantMatch = url.match(/\/tenants\/tenant\/([^\/]+)/);
+
+            cloudConfiguration.lcpCloudRegionId = cloudRegionMatch[1];
+            cloudConfiguration.tenantId = tenantMatch[1];
 
             return cloudConfiguration;
         };
@@ -331,6 +354,7 @@
                     $log.error(error);
                 });
         };
+
         //Must be $scope because we bind to the onchange of the html (cannot attached to vm variable).
         $scope.selectFileForVNFName = function (fileInput) {
             if (fileInput && fileInput.id) {

@@ -11,8 +11,4 @@
         <servlet-name>rest</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
-
-    <listener>
-        <listener-class>org.openecomp.simulator.controller.SimulatorController</listener-class>
-    </listener>
 </web-app>

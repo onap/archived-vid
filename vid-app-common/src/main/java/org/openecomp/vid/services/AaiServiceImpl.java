@@ -7,6 +7,7 @@ import org.openecomp.vid.aai.ServiceInstance;
 import org.openecomp.vid.aai.ServiceSubscription;
 import org.openecomp.vid.aai.Services;
 import org.openecomp.vid.aai.model.*;
+import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.*;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.openecomp.vid.model.*;
@@ -108,10 +109,6 @@ public class AaiServiceImpl implements AaiService {
             }
         }
     }
-    
-
-
-
 
     @Override
     public SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator) {
@@ -123,7 +120,11 @@ public class AaiServiceImpl implements AaiService {
 
         return subscriberFilteredResults;
     }
-
+    @Override
+    public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus) {
+        AaiResponse<OperationalEnvironmentList> subscriberResponse = aaiClient.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
+        return subscriberResponse;
+    }
     @Override
     public AaiResponse<SubscriberList> getFullSubscriberList() {
         AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();

@@ -143,16 +143,16 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
         angular.forEach(serviceProxiesObj, function(service, index) {
             //TODO : Change the loop to support more than 1 item
             for(var i = 0; i < 1 ; i++)  {
-                var modelVersionId = serviceProxiesList[(service.serviceList)[i]].version;
-                var modelInvariantId  = serviceProxiesList[(service.serviceList)[i]].invariantUuid;
+                var sourceModelUuid = serviceProxiesList[(service.serviceList)[i]].sourceModelUuid;
+                var sourceModelInvariant  = serviceProxiesList[(service.serviceList)[i]].sourceModelInvariant;
                 $scope[service.name] = serviceProxiesList[(service.serviceList)[i]].name;
 
                 $scope[service.metadata] = [
                     {"name" :"Name" ,"value" : serviceProxiesList[(service.serviceList)[i]].name},
-                    {"name" :"Version",value : modelVersionId},
+                    {"name" :"Version",value : serviceProxiesList[(service.serviceList)[i]].version},
                     {"name" :"Description", value : serviceProxiesList[(service.serviceList)[i]].description},
                     {"name" :"Type", value : serviceProxiesList[(service.serviceList)[i]].type},
-                    {"name" :"Invariant UUID", value : modelInvariantId},
+                    {"name" :"Invariant UUID", value : serviceProxiesList[(service.serviceList)[i]].invariantUuid},
                     {"name" :"UUID", value : serviceProxiesList[(service.serviceList)[i]].uuid},
                     {"name" :"Customization UUID", value : serviceProxiesList[(service.serviceList)[i]].customizationUuid},
                     {"name" :"Source Model Uuid", value : serviceProxiesList[(service.serviceList)[i]].sourceModelUuid},
@@ -164,8 +164,8 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                 AaiService.getServiceProxyInstanceList(
                     DataService.getGlobalCustomerId(),
                     DataService.getServiceType(),
-                    modelVersionId,
-                    modelInvariantId,
+                    sourceModelUuid,
+                    sourceModelInvariant,
                     configNodeTemplateFields.lcpRegion.value
                 )
                 .then(function (response) {

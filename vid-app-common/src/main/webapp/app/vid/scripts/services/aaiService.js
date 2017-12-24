@@ -339,12 +339,6 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 var lcpCloudRegionTenants = [];
                 var aaiLcpCloudRegionTenants = response.data;
 
-                lcpCloudRegionTenants.push({
-                    "cloudRegionId": "",
-                    "tenantName": FIELD.PROMPT.REGION,
-                    "tenantId": ""
-                });
-
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
                     lcpCloudRegionTenants.push({
                         "cloudRegionId": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID],
@@ -546,6 +540,8 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
 
             return deferred.promise;
         },
+
+
 
         getSubscriberServiceTypes: function(subscriberUuid) {
             var deferred = $q.defer();

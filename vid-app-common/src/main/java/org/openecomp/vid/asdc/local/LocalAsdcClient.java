@@ -22,7 +22,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.UUID;
 import java.util.zip.ZipFile;
 
 /**
@@ -42,66 +45,11 @@ public class LocalAsdcClient implements AsdcClient {
     private final ObjectMapper mapper;
 
     /**
-     * The Class Builder.
-     */
-    public static class Builder {
-
-        /**
-         * The catalog.
-         */
-        private JSONObject catalog = new JSONObject()
-                .put("resources", new JSONObject())
-                .put("services", new JSONObject());
-
-        /**
-         * The mapper.
-         */
-        private ObjectMapper mapper = new ObjectMapper();
-
-        /**
-         * Instantiates a new builder.
-         */
-        public Builder() {
-        }
-
-        /**
-         * Catalog.
-         *
-         * @param catalog the catalog
-         * @return the builder
-         */
-        public org.openecomp.vid.asdc.local.LocalAsdcClient.Builder catalog(JSONObject catalog) {
-            this.catalog = catalog;
-            return this;
-        }
-
-        /**
-         * Mapper.
-         *
-         * @param mapper the mapper
-         * @return the builder
-         */
-        public org.openecomp.vid.asdc.local.LocalAsdcClient.Builder mapper(ObjectMapper mapper) {
-            this.mapper = mapper;
-            return this;
-        }
-
-        /**
-         * Builds the.
-         *
-         * @return the in local sdc client
-         */
-        public org.openecomp.vid.asdc.local.LocalAsdcClient build() {
-            return new org.openecomp.vid.asdc.local.LocalAsdcClient(this);
-        }
-    }
-
-    /**
      * Instantiates a new in local sdc client.
      *
      * @param builder the builder
      */
-    private LocalAsdcClient(org.openecomp.vid.asdc.local.LocalAsdcClient.Builder builder) {
+    public LocalAsdcClient(org.openecomp.vid.asdc.local.LocalAsdcClient.Builder builder) {
         catalog = builder.catalog;
         mapper = builder.mapper;
     }
@@ -203,7 +151,7 @@ public class LocalAsdcClient implements AsdcClient {
         JSONObject serviceJsonObject = null;
         final JSONArray categoryJsonArray = getCatalog().getJSONArray("services");
 
-        for (int i = 0; i < categoryJsonArray.length() ; i++) {
+        for (int i = 0; i < categoryJsonArray.length(); i++) {
             JSONObject jsonServiceObject = categoryJsonArray.getJSONObject(i);
             if (jsonServiceObject.get("uuid").equals(uuid.toString())) {
                 serviceJsonObject = jsonServiceObject;
@@ -264,7 +212,7 @@ public class LocalAsdcClient implements AsdcClient {
      * @see org.openecomp.vid.asdc.AsdcClient#getResourceArtifact(java.util.UUID, java.util.UUID)
      */
     public Artifact getResourceArtifact(UUID resourceUuid, UUID artifactUuid) throws AsdcCatalogException {
-        final  JSONArray artifacts = getCatalog().getJSONObject("resources")
+        final JSONArray artifacts = getCatalog().getJSONObject("resources")
                 .getJSONObject(resourceUuid.toString())
                 .getJSONArray("artifacts");
 
@@ -323,19 +271,16 @@ public class LocalAsdcClient implements AsdcClient {
 
         final JSONArray categoryJsonArray = getCatalog().getJSONArray("services");
 
-        for (int i = 0; i < categoryJsonArray.length() ; i++) {
+        for (int i = 0; i < categoryJsonArray.length(); i++) {
 
             JSONObject jsonServiceObject = categoryJsonArray.getJSONObject(i);
             if (jsonServiceObject.get("uuid").equals(serviceUuid.toString())) {
                 toscaModelURL = jsonServiceObject.getString("toscaModelURL");
-                break;
             }
         }
-
-        if (toscaModelURL==null){
+        if (toscaModelURL == null) {
             return null;
         }
-        
         final InputStream toscaModelStream = getClass().getClassLoader().getResourceAsStream(toscaModelURL);
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -387,6 +332,61 @@ public class LocalAsdcClient implements AsdcClient {
             return csarBuilder.build();
         } catch (IOException e) {
             throw new AsdcCatalogException("Caught IOException while processing CSAR", e);
+        }
+    }
+
+    /**
+     * The Class Builder.
+     */
+    public static class Builder {
+
+        /**
+         * The catalog.
+         */
+        private JSONObject catalog = new JSONObject()
+                .put("resources", new JSONObject())
+                .put("services", new JSONObject());
+
+        /**
+         * The mapper.
+         */
+        private ObjectMapper mapper = new ObjectMapper();
+
+        /**
+         * Instantiates a new builder.
+         */
+        public Builder() {
+        }
+
+        /**
+         * Catalog.
+         *
+         * @param catalog the catalog
+         * @return the builder
+         */
+        public org.openecomp.vid.asdc.local.LocalAsdcClient.Builder catalog(JSONObject catalog) {
+            this.catalog = catalog;
+            return this;
+        }
+
+        /**
+         * Mapper.
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
+        public org.openecomp.vid.asdc.local.LocalAsdcClient.Builder mapper(ObjectMapper mapper) {
+            this.mapper = mapper;
+            return this;
+        }
+
+        /**
+         * Builds the.
+         *
+         * @return the in local sdc client
+         */
+        public org.openecomp.vid.asdc.local.LocalAsdcClient build() {
+            return new org.openecomp.vid.asdc.local.LocalAsdcClient(this);
         }
     }
 

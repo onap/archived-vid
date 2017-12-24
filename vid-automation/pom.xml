@@ -8,6 +8,18 @@
     <artifactId>automationTest</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <springframework.version>4.2.0.RELEASE</springframework.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <!-- Snapshots repository has ECOMP snapshot artifacts -->
+            <id>att-mavencentral-ecomp-snapshots-repo</id>
+            <name>ATT Maven Central - Snapshots</name>
+            <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/att-repository-snapshots/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.openecomp.sdc</groupId>
@@ -25,10 +37,39 @@
             <artifactId>testng</artifactId>
             <version>6.9.10</version>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${springframework.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
 
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

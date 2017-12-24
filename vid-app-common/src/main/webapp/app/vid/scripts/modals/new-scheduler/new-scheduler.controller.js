@@ -20,7 +20,7 @@
                 userId: '',
                 domainData: [{
                     'WorkflowName': vm.scheduler.policy,
-                    'CallbackUrl': 'http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid',
+                    'CallbackUrl': '',
                     'CallbackData': callbackData
                 }],
 
@@ -163,6 +163,7 @@
             SchedulerService.getSubmitForapprovedTimeslots(approvalObj, function (response) {
                 if (response.status == 200) {
                     openConfirmationModal("Successfully Sent for Approval");
+                    vm.close();
                 }
 
             });
@@ -181,6 +182,7 @@
             SchedulerService.getSubmitForapprovedTimeslots(approvalObj, function (response) {
                 if (response.status == 200) {
                     openConfirmationModal("Successfully sent for Rejection");
+                    vm.close();
                 }
 
             });
@@ -201,19 +203,31 @@
                 endTime: ''
             }];
             vm.timeSlots = [];
+            var vnfcollection=[];
+            
+            vnfcollection=getVnfData(changeManagement.vnfNames);
             var fromDate = $filter('date')(new Date(vm.fromDate), "yyyy-MM-ddTHH:mmZ", "UTC");
             var toDate = $filter('date')(new Date(vm.toDate), "yyyy-MM-ddTHH:mmZ", "UTC");
 
             changeWindow[0].startTime = fromDate;
             changeWindow[0].endTime = toDate;
             vm.schedulerObj.userId = vm.userID;
-            vm.schedulerObj.domainData[0].WorkflowName = changeManagement.workflow;
+          
+            if(changeManagement.workflow=='Update'){
+            	vm.schedulerObj.domainData[0].WorkflowName ="UpdateVnfInfra"
+            }
+            else if(changeManagement.workflow=='Replace'){
+            	vm.schedulerObj.domainData[0].WorkflowName ="ReplaceVnfInfra"
+            }
+           
             vm.schedulerObj.schedulingInfo.normalDurationInSeconds = convertToSecs(vm.scheduler.duration);
             vm.schedulerObj.schedulingInfo.additionalDurationInSeconds = convertToSecs(vm.scheduler.fallbackDuration);
             vm.schedulerObj.schedulingInfo.concurrencyLimit = vm.scheduler.concurrency;
             vm.schedulerObj.schedulingInfo.policyId = vm.scheduler.policy.policyName;
             vm.schedulerObj.schedulingInfo['vnfDetails'][0].groupId = 'groupId';
-            vm.schedulerObj.schedulingInfo['vnfDetails'][0].node = getVnfData(changeManagement.vnfNames);
+           
+            vm.schedulerObj.schedulingInfo['vnfDetails'][0].node = vnfcollection;
+            vm.schedulerObj.domainData[0].CallbackUrl="https://vid-web-ete.ecomp.cci.att.com:8000/vid/workflow/";
 
             vm.schedulerObj.schedulingInfo['vnfDetails'][0].changeWindow = changeWindow;
             if (vm.checkboxSelection == "true") {               //When Scheduled now we remove the changeWindow
@@ -282,7 +296,7 @@
 
         function openConfirmationModal(jobInfo) {
             var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/alert-new-scheduler/alert-new-scheduler.html',
+                templateUrl: 'app/vid/scripts/modals/alert-new-scheduler/alert-modal.html',
                 controller: 'alertNewSchedulerController',
                 controllerAs: 'vm',
                 resolve: {

@@ -99,6 +99,7 @@ Registration body JSON specification (see and copy/paste examples below):
             "id" - String, will be expected as a value in an X-header with a key "x-simulator-id"
             "method" - String, HTTP method of the request.
             "path" - String, relative path of the request, MUST be WITH leading slash and WITHOUT trailing slash.
+            "queryParams" - Map<String, List<String>>, query params of key-->list of values.
             "body" - String, body of the request in case of POST/PUT.
                      Note that JSON String should be properly escaped.
 
@@ -107,6 +108,7 @@ Registration body JSON specification (see and copy/paste examples below):
            Note that from the below fields, it's mandatory to populate at least "responseCode".
 
               "responseCode" - integer, HTTP response code.
+              "responseHeaders" - Dictionary Object with HTTP headers and values.
               "body" - String, body of the response.
                                Note that JSON String should be properly escaped.
 
@@ -158,6 +160,9 @@ Registration:
       } ,
       "simulatorResponse": {
             "responseCode": 200,
+            "responseHeaders": {
+              "Content-Type": "application/json"
+            },
             "body": "{\"value1\": \"kuku\",\"value2\": \"shmuku\"}"
       }
     }
@@ -211,6 +216,9 @@ Registration:
       } ,
       "simulatorResponse": {
     		"responseCode": 200,
+            "responseHeaders": {
+              "Content-Type": "application/json"
+            },
     		"body": "{\"value1\": \"kukuResponse\",\"value2\": \"shmukuResponse\"}"
       }
     }
@@ -310,3 +318,55 @@ Running:
    Response:
 
    417 Expectation Failed.
+
+
+********************************************************************************
+4) Query params
+********************************************************************************
+
+Registration:
+-------------
+
+    Request:
+
+    POST /vidSimulator/registerToVidSimulator HTTP/1.1
+    Host: localhost:7080
+    Content-Type: application/json
+    Cache-Control: no-cache
+    Postman-Token: 0bbfeb0f-b8b6-368e-6fbd-38a90fc544b4
+
+    {
+      "simulatorRequest": {
+    	    "method": "GET",
+    		"path": "/cloudResourcesRequests/v1",
+    		"queryParams": {
+    			"requestId" : ["3212b08c-0dcd-4d20-8c84-51e4f325c14a", "3212b08c-0dcd-4d20-8c84-51e4f325c14b"]
+    		}
+      } ,
+      "simulatorResponse": {
+    		"responseCode": 200,
+    		"body": "{\"requestId1\": \"3212b08c-0dcd-4d20-8c84-51e4f325c14a\",\"requestId2\": \"3212b08c-0dcd-4d20-8c84-51e4f325c14b\"}"
+      }
+    }
+
+    Response:
+
+    200 OK
+    Registration successful!
+
+Running:
+-----------
+
+   Request:
+
+  GET /vidSimulator/cloudResourcesRequests/v1?requestId=3212b08c-0dcd-4d20-8c84-51e4f325c14b&amp;requestId=3212b08c-0dcd-4d20-8c84-51e4f325c14a HTTP/1.1
+  Host: 127.0.0.1:7080
+  Accept: application/json
+  Cache-Control: no-cache
+  Postman-Token: 9ef5d9d2-77f4-7631-7e9f-4404df10acb6
+
+
+   Response:
+
+    200 OK
+   {"requestId1": "3212b08c-0dcd-4d20-8c84-51e4f325c14a","requestId2": "3212b08c-0dcd-4d20-8c84-51e4f325c14b"}

@@ -1,6 +1,8 @@
 package org.openecomp.vid.aai;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.utils.URIBuilder;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.ecomp.aai.model.AaiAICZones.AicZones;
 import org.json.simple.JSONArray;
@@ -8,9 +10,17 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openecomp.aai.util.AAIRestInterface;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
+import org.openecomp.vid.aai.model.Relationship;
+import org.openecomp.vid.aai.model.RelationshipData;
+import org.openecomp.vid.aai.model.RelationshipList;
+
 import org.openecomp.vid.aai.model.OwningEntityResponse;
 import org.openecomp.vid.aai.model.Project;
 import org.openecomp.vid.aai.model.ProjectResponse;
+import org.openecomp.vid.aai.model.Relationship;
+import org.openecomp.vid.aai.model.RelationshipData;
+import org.openecomp.vid.aai.model.RelationshipList;
 import org.openecomp.vid.aai.model.ServiceRelationships;
 import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -26,9 +36,13 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -126,8 +140,11 @@ public class AaiClient implements AaiClientInterface {
 		Response resp = doAaiGet(certiPath , aicZonePath , false);
 		AaiResponse<ServiceRelationships> aaiResponse = proccessAaiResponse(resp , ServiceRelationships.class , null);
 		ServiceRelationships serviceRelationships = (ServiceRelationships)aaiResponse.getT();
-		String aicZone = serviceRelationships.getRelationshipList().getRelationship().get(0).getRelatedToPropertyList().get(0).getPropertyValue();
-		AaiResponse<String> aaiAicZonaForPnfResponse = new AaiResponse(aicZone , null ,HttpStatus.SC_OK);
+        RelationshipList relationshipList = serviceRelationships.getRelationshipList();
+        Relationship relationship = relationshipList.getRelationship().get(0);
+		RelationshipData relationshipData=  relationship.getRelationDataList().get(0);
+        String aicZone = relationshipData.getRelationshipValue();
+	    AaiResponse<String> aaiAicZonaForPnfResponse = new AaiResponse(aicZone , null ,HttpStatus.SC_OK);
 		return  aaiAicZonaForPnfResponse;
 	}
 
@@ -191,6 +208,22 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
+    public AaiResponse getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus) {
+        File certiPath = getCertificatesFile();
+        String url = "aai/cloud-infrastructure/operational-environments";
+        URIBuilder urlBuilder  = new URIBuilder();
+        if (operationalEnvironmentType != null)
+            urlBuilder.addParameter("operational-environment-type", operationalEnvironmentType);
+        if (operationalEnvironmentStatus != null)
+            urlBuilder.addParameter("operational-environment-status", operationalEnvironmentStatus);
+        url += urlBuilder.toString();
+        Response resp = doAaiGet(certiPath.getAbsolutePath(), url, false);
+        AaiResponse<OperationalEnvironmentList> getOperationalEnvironmentsResponse = proccessAaiResponse(resp, OperationalEnvironmentList.class, null);
+            return getOperationalEnvironmentsResponse;
+
+    }
+
+    @Override
     public AaiResponse getTenants(String globalCustomerId, String serviceType) {
         File certiPath = getCertificatesFile();
         String url = "business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/" + serviceType;
@@ -212,13 +245,52 @@ public class AaiClient implements AaiClientInterface {
     public AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion) {
 
         String certiPath = getCertificatesFile().getAbsolutePath();
-        String payload = "{\"start\": [\"" +
-                "/network/generic-vnfs?model-version-id=" + modelVersionId +
+
+        String payload1 = "{\"start\": [\"/business/customers/customer/" + globalCustomerId +
+                "/service-subscriptions/service-subscription/" + serviceType +
+                "/service-instances?model-version-id=" + modelVersionId +
                 "&model-invariant-id="+modelInvariantId + "\"],	" +
                 "\"query\": \"query/vnfFromModelbyRegion?cloudRegionId="+cloudRegion+"\"}";
 
-        Response resp = doAaiPut(certiPath, "query?format=simple", payload, false);
-        return proccessAaiResponse(resp, Object.class, null);
+        Response resp1 = doAaiPut(certiPath, "query?format=simple", payload1, false);
+        AaiResponse aaiResponse1 = proccessAaiResponse(resp1, AaiGetVnfResponse.class, null);
+
+        if (aaiResponse1.getHttpCode() != HttpStatus.SC_OK) {
+            // return error
+            return aaiResponse1;
+        }
+
+        AaiGetVnfResponse response1T = (AaiGetVnfResponse) aaiResponse1.getT();
+        if (response1T.results.size() > 0) {
+
+            String payload2 = "{\"start\": [\"" +
+                    "/network/generic-vnfs\"],	" +
+                    "\"query\": \"query/vnfFromModelbyRegion?cloudRegionId=" + cloudRegion + "\"}";
+
+            Response resp2 = doAaiPut(certiPath, "query?format=simple", payload2, false);
+            AaiResponse aaiResponse2 = proccessAaiResponse(resp2, AaiGetVnfResponse.class, null);
+
+            if (aaiResponse2.getHttpCode() != HttpStatus.SC_OK) {
+                // return error
+                return aaiResponse2;
+            }
+
+            AaiGetVnfResponse response2T = (AaiGetVnfResponse) aaiResponse2.getT();
+            Map<String, VnfResult> genericVnfResultMap = response2T.results.stream().collect(Collectors.toMap(vnf -> vnf.id, vnf -> vnf));
+
+            List<VnfResult> filteredGenericVnfResultMap = response1T.results.stream()
+                    .flatMap(vnf -> vnf.relatedTo.stream())          // check all the 'related-to'
+                    .filter(o -> "generic-vnf".equals(o.nodeType))
+                    .map(o -> o.id)                                  // take only the 'id' of any 'generic vnf'
+                    .filter(genericVnfResultMap::containsKey)        // lookup for the id in the whole list of vnfs
+                    .map(genericVnfResultMap::get)
+                    .collect(Collectors.toList());
+
+            return new AaiResponse<>(ImmutableMap.of("results", filteredGenericVnfResultMap), null, HttpStatus.SC_OK);
+        } else {
+            // empty list as result
+            return new AaiResponse<>(ImmutableMap.of("results", new VnfResult[]{}), null, HttpStatus.SC_OK);
+        }
     }
 
     private AaiResponse proccessAaiResponse(Response resp, Class classType, String responseBody) {

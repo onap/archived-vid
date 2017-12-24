@@ -87,7 +87,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         NETWORKS: "networks",
         OPERATIONAL_STATUS: "operational-status",
         ORCHESTRATION_STATUS: "orchestration-status",
-        PERCENT_PROGRESS: "precentProgress",
+        PERCENT_PROGRESS: "percentProgress",
         PERSONA_MODEL_ID: "persona-model-id",
         PERSONA_MODEL_VERSION: "persona-model-version",
         PERSONA_MODEL_CUSTOMIZATION_ID: "persona-model-customization-id",

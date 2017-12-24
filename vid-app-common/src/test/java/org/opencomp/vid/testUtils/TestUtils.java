@@ -1,9 +1,15 @@
 package org.opencomp.vid.testUtils;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.springframework.http.HttpStatus;
+import org.codehaus.jackson.map.SerializationConfig;
 
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.Iterator;
 
 import static fj.parser.Parser.fail;
@@ -12,6 +18,8 @@ import static fj.parser.Parser.fail;
  * Created by Oren on 6/7/17.
  */
 public class TestUtils {
+
+    protected static ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * The method compares between two jsons. the function assert that the actual object does not reduce or change the functionallity/parsing of the expected json.
@@ -61,5 +69,20 @@ public class TestUtils {
                 Assert.assertEquals(expectedValue, actualValue);
             }
         }
+    }
+
+    public static void assertStatusOK(Object request, WebTarget webTarget, Response response) throws IOException {
+        assertHttpStatus(request, webTarget, response, HttpStatus.OK);
+    }
+
+    public static void assertHttpStatus(Object request, WebTarget webTarget, Response response, HttpStatus exceptedHttpStatus) throws IOException {
+        objectMapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+
+        org.testng.Assert.assertEquals(response.getStatus(), exceptedHttpStatus.value(),
+                String.format("Failed post URI: %s with request %s. Got Status:%d and body: %s",
+                        webTarget.getUri(),
+                        objectMapper.writeValueAsString(request),
+                        response.getStatus(),
+                        objectMapper.writeValueAsString(response.getEntity())));
     }
 }

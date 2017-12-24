@@ -1,0 +1,13 @@
+.modal-header  {
+    border-bottom-color:  #ffb81c;
+}
+.modal-header.success {
+    border-bottom: 3px solid #4ca90c;
+}
+.modal-header.failed {
+    border-bottom: 3px solid #cf2a2a;
+}
+
+.modal-footer {
+    border-radius: 0 0 6px 6px;
+}

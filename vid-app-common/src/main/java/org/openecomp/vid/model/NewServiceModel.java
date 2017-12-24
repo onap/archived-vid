@@ -33,6 +33,7 @@ import org.openecomp.vid.properties.VidProperties;
 /**
  * The Class ServiceModel.
  */
+
 public class NewServiceModel {
 
 	/** The Constant LOG. */
@@ -59,6 +60,12 @@ public class NewServiceModel {
 	 * for newer models
 	 */
 	private Map<String, VolumeGroup> volumeGroups;
+
+	private Map<String, PortMirroringConfig> configurations;
+
+	private Map<String, ServiceProxy> serviceProxies;
+
+
 	/**
 	 * Instantiates a new service model.
 	 */
@@ -133,11 +140,22 @@ public class NewServiceModel {
 	public Map<String, VolumeGroup> getVolumeGroups() {
 		return volumeGroups;
 	}
+
+	public Map<String, PortMirroringConfig> getConfigurations() {
+		return configurations;
+	}
+
+	public Map<String, ServiceProxy> getServiceProxies() {
+		return serviceProxies;
+	}
+
 	/**
 	 * Sets the vf modules.
 	 *
 	 * @param vfModules the vf modules
 	 */
+
+
 	public void setVfModules(Map<String, VfModule> vfModules) {
 		this.vfModules = vfModules;
 	}

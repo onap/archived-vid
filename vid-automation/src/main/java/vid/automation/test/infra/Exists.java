@@ -12,11 +12,19 @@ public class Exists {
         return Get.byClass(className) != null;
     }
 
+    public static boolean byClassAndText(String className, String text) {
+        return Get.byClassAndText(className, text) != null;
+    }
+
     public static boolean modal() {
         try {
             return Get.byCssSelector(Constants.Modals.modalClass) != null;
         } catch (NoSuchElementException exception) {
             return false;
         }
+    }
+
+    public static boolean tableContent(String tableId) {
+       return Get.byTableId(tableId) != null;
     }
 }

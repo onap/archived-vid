@@ -1,19 +1,31 @@
 package org.openecomp.vid.mso;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.collect.ImmutableMap;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.openecomp.vid.controller.MsoController;
+import org.openecomp.vid.domain.mso.RequestInfo;
+import org.openecomp.vid.domain.mso.RequestParameters;
+import org.openecomp.vid.mso.model.OperationalEnvironmentActivateInfo;
+import org.openecomp.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.openecomp.vid.mso.rest.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import static org.openecomp.vid.controller.MsoController.*;
+import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS;
+import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE;
+import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE;
+import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_DEACTIVATE;
 
 /**
  * Created by pickjonathan on 19/06/2017.
@@ -367,13 +379,14 @@ public class MsoBusinessLogic {
         String methodName = "activateServiceInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
         try {
-            String path ="/" + serviceInstanceId  + "/activate";
+            String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+            String activateServicePath = serviceEndpoint + "/" + serviceInstanceId  + "/activate";
 
             RestObject<String> restObjStr = new RestObject<>();
             String str = "";
             restObjStr.set(str);
 
-            msoClientInterface.activateServiceInstance(requestDetails , str, "", path, restObjStr);
+            msoClientInterface.activateServiceInstance(requestDetails , str, "", activateServicePath, restObjStr);
 
             return MsoUtil.wrapResponse(restObjStr);
 
@@ -387,10 +400,10 @@ public class MsoBusinessLogic {
 
 
 
-    private String validateEndpointPath(String endpointEnvVariable) throws Exception {
+    public static String validateEndpointPath(String endpointEnvVariable) {
         String endpoint = SystemProperties.getProperty(endpointEnvVariable);
         if (endpoint == null || endpoint.isEmpty()) {
-            throw new Exception(endpointEnvVariable + " env variable is not defined");
+            throw new RuntimeException(endpointEnvVariable + " env variable is not defined");
         }
         return endpoint;
     }
@@ -477,4 +490,87 @@ public class MsoBusinessLogic {
 
         return msoClientInterface.setPortOnConfigurationStatus(requestDetails, endpoint);
     }
+
+
+    public RequestDetails createOperationalEnvironmentActivationRequestDetails(OperationalEnvironmentActivateInfo details) {
+        RequestDetails requestDetails = new RequestDetails();
+
+        RequestInfo requestInfo = new RequestInfo();
+        requestInfo.setAdditionalProperty("resourceType", "operationalEnvironment");
+        requestInfo.setSource("VID");
+        requestInfo.setRequestorId(details.getUserId());
+        requestDetails.setRequestInfo(requestInfo);
+
+        org.openecomp.vid.domain.mso.RelatedInstance relatedInstance = new org.openecomp.vid.domain.mso.RelatedInstance();
+        relatedInstance.setAdditionalProperty("resourceType", "operationalEnvironment");
+        relatedInstance.setInstanceId(details.getRelatedInstanceId());
+        relatedInstance.setInstanceName(details.getRelatedInstanceName());
+        requestDetails.setAdditionalProperty("relatedInstanceList", Collections.singletonList(ImmutableMap.of("relatedInstance", relatedInstance)));
+
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setAdditionalProperty("operationalEnvironmentType", "VNF");
+        requestParameters.setAdditionalProperty("workloadContext", details.getWorkloadContext());
+        requestParameters.setAdditionalProperty("manifest", details.getManifest());
+        requestDetails.setRequestParameters(requestParameters);
+
+        debugRequestDetails(requestDetails);
+
+        return requestDetails;
+    }
+
+    public String getOperationalEnvironmentActivationPath(OperationalEnvironmentActivateInfo details) {
+        String path = validateEndpointPath(MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE);
+        path = path.replace("<operational_environment_id>", details.getOperationalEnvironmentId());
+        return path;
+    }
+
+    public RequestDetails createOperationalEnvironmentDeactivationRequestDetails(OperationalEnvironmentDeactivateInfo details) {
+        RequestDetails requestDetails = new RequestDetails();
+
+        RequestInfo requestInfo = new RequestInfo();
+        requestInfo.setAdditionalProperty("resourceType", "operationalEnvironment");
+        requestInfo.setSource("VID");
+        requestInfo.setRequestorId(details.getUserId());
+        requestDetails.setRequestInfo(requestInfo);
+
+        RequestParameters requestParameters = new RequestParameters();
+        requestInfo.setAdditionalProperty("operationalEnvironmentType", "VNF");
+        requestDetails.setRequestParameters(requestParameters);
+
+        debugRequestDetails(requestDetails);
+
+        return requestDetails;
+    }
+
+    public String getCloudResourcesRequestsStatusPath(String requestId) {
+        String path = validateEndpointPath(MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS);
+        path = path.replace("<request_id>", requestId);
+        return path;
+    }
+
+    public String getOperationalEnvironmentDeactivationPath(OperationalEnvironmentDeactivateInfo details) {
+        String path = validateEndpointPath(MSO_REST_API_OPERATIONAL_ENVIRONMENT_DEACTIVATE);
+        path = path.replace("<operational_environment_id>", details.getOperationalEnvironmentId());
+        return path;
+    }
+
+    private void debugRequestDetails(RequestDetails requestDetails) {
+        if (logger.isDebugEnabled()) {
+            String requestDetailsAsString;
+            try {
+                requestDetailsAsString = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(ImmutableMap.of("requestDetails", requestDetails));
+            } catch (JsonProcessingException e) {
+                requestDetailsAsString = "error: cannot stringify ActivationRequestDetails";
+            }
+            logger.debug(EELFLoggerDelegate.debugLogger, "requestDetailsAsString: {}", requestDetailsAsString);
+        }
+    }
+
+    public String getOperationalEnvironmentCreationPath() {
+        String path = validateEndpointPath(MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE);
+        return path;
+    }
+
+
+
 }

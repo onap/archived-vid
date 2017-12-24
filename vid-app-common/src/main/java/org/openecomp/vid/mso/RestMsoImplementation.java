@@ -5,7 +5,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.util.SystemProperties;
-import org.openecomp.vid.changeManagement.MsoRequestDetails;
 import org.openecomp.vid.client.HttpBasicClient;
 import org.openecomp.vid.client.HttpsBasicClient;
 import org.openecomp.vid.mso.rest.RequestDetails;
@@ -20,6 +19,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+
+import static org.openecomp.vid.utils.Logging.getMethodCallerName;
+import static org.openecomp.vid.utils.Logging.getMethodName;
 
 /**
  * Created by pickjonathan on 26/06/2017.
@@ -127,6 +129,35 @@ public class RestMsoImplementation implements RestInterface {
         return;
     }
 
+    public <T> RestObject<T> GetForObject(String sourceID, String path, Class<T> clazz) throws Exception {
+        final String methodName = getMethodName();
+        logger.debug(EELFLoggerDelegate.debugLogger, "start {}->{}({}, {}, {})", getMethodCallerName(), methodName, sourceID, path, clazz);
+
+        String url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
+
+        initMsoClient();
+
+        final Response cres = client.target(url)
+                .request()
+                .accept("application/json")
+                .headers(commonHeaders)
+                .get();
+
+        final RestObject<T> restObject = cresToRestObject(cres, clazz);
+        int status = cres.getStatus();
+
+        if (status == 200 || status == 202) {
+            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " REST api was successfull!");
+        } else {
+            logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " with status="+status+", url="+url);
+        }
+
+        logger.debug(EELFLoggerDelegate.debugLogger,methodName + " received status=" + status );
+
+        return restObject;
+    }
+
     @Override
     public <T> void Delete(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) {
 
@@ -186,15 +217,27 @@ public class RestMsoImplementation implements RestInterface {
 
         }
     }
-    
+
+    public <T> RestObject<T> PostForObject(Object requestDetails, String sourceID, String path, Class<T> clazz) throws RuntimeException {
+        logger.debug(EELFLoggerDelegate.debugLogger, "start {}->{}({}, {}, {}, {})", getMethodCallerName(), getMethodName(), requestDetails, sourceID, path, clazz);
+        RestObject<T> restObject = new RestObject<>();
+        Post(clazz, requestDetails, sourceID, path, restObject);
+        return restObject;
+    }
+
     @Override
-    public <T> void Post(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) throws Exception {
+    public <T> void Post(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) throws RuntimeException {
+        logger.debug(EELFLoggerDelegate.debugLogger, "start {}->{}({}, {}, {}, {})", getMethodCallerName(), getMethodName(), t.getClass(), r, sourceID, path);
+        Post(t.getClass(), r, sourceID, path, restObject);
+    }
+
+
+
+    private <T> void Post(Class<?> tClass, Object requestDetails, String sourceID, String path, RestObject<T> restObject) throws RuntimeException {
         String methodName = "Post";
         String url="";
 
-        logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " start");
-
-        logRequest (r);
+        logRequest (requestDetails);
         try {
 
             initMsoClient();
@@ -208,20 +251,14 @@ public class RestMsoImplementation implements RestInterface {
                     .headers(commonHeaders)
                     //.header("content-length", 201)
                     //.header("X-FromAppId",  sourceID)
-                    .post(Entity.entity(r, MediaType.APPLICATION_JSON));
+                    .post(Entity.entity(requestDetails, MediaType.APPLICATION_JSON));
 
-            try {
-                t = (T) cres.readEntity(t.getClass());
-                restObject.set(t);
-            }
-            catch ( Exception e ) {
-                logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " No response entity, this is probably ok, e="
-                        + e.getMessage());
-            }
+            final RestObject<T> cresToRestObject = cresToRestObject(cres, tClass);
+            restObject.set(cresToRestObject.get());
+            restObject.setStatusCode(cresToRestObject.getStatusCode());
+            restObject.setRaw(cresToRestObject.getRaw());
 
             int status = cres.getStatus();
-            restObject.setStatusCode (status);
-
             if ( status >= 200 && status <= 299 ) {
                 logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
                 logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
@@ -236,17 +273,46 @@ public class RestMsoImplementation implements RestInterface {
             throw e;
 
         }
+
+        logger.debug(EELFLoggerDelegate.debugLogger, "end {}() => ({}){}", getMethodName(), tClass, restObject);
+    }
+
+    private <T> RestObject<T> cresToRestObject(Response cres, Class<?> tClass) {
+        RestObject<T> restObject = new RestObject<>();
+
+        try {
+            cres.bufferEntity();
+            T t = (T) cres.readEntity(tClass);
+            restObject.set(t);
+        }
+        catch ( Exception e ) {
+            try {
+                String entity = cres.readEntity(String.class);
+                restObject.setRaw(entity);
+                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " Error reading response entity as " + tClass + ": , e="
+                        + e.getMessage() + ", Entity=" + entity);
+            } catch (Exception e2) {
+                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " No response entity, this is probably ok, e="
+                        + e.getMessage());
+            }
+        }
+
+        int status = cres.getStatus();
+        restObject.setStatusCode (status);
+
+        return restObject;
+
     }
 
     @Override
-    public void logRequest(RequestDetails r) {
+    public void logRequest(Object requestDetails) {
         String methodName = "logRequest";
         ObjectMapper mapper = new ObjectMapper();
         String r_json_str = "";
-        if ( r != null ) {
-            r_json_str = r.toString();
+        if ( requestDetails != null ) {
+            r_json_str = requestDetails.toString();
             try {
-                r_json_str = mapper.writeValueAsString(r);
+                r_json_str = mapper.writeValueAsString(requestDetails);
             }
             catch ( com.fasterxml.jackson.core.JsonProcessingException j ) {
                 logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " Unable to parse request as json");

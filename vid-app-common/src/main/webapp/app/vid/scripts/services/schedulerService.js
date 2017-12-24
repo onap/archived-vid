@@ -23,80 +23,95 @@
 var SchedulerService = function($http, $log, PropertyService, UtilityService, COMPONENT, FIELD) {
     return {
     
-    	getStatusSchedulerId : function(schedulerInfo,successCallbackFunction) {
-		$log
-		.debug("SchedulerService:getSchedulerStatusAndSchedulerId");
-		var url =   COMPONENT.POST_CREATE_NEW_VNF_CHANGE+COMPONENT.ASSIGN + Math.random();
+		getStatusSchedulerId : function(schedulerInfo,successCallbackFunction) {
+			$log.debug("SchedulerService:getSchedulerStatusAndSchedulerId");
+			var url =   COMPONENT.POST_CREATE_NEW_VNF_CHANGE+COMPONENT.ASSIGN + Math.random();
 
-		$http.post(url,	schedulerInfo,
-				{
-			timeout : PropertyService
-			.getServerResponseTimeoutMsec()
-				}).then(function(response) {
-					if (response.data) {
-						successCallbackFunction(response);
-					} else {
-						successCallbackFunction([]);
-					}
-				})["catch"]
-		(UtilityService.runHttpErrorHandler);
-	},
+			$http.post(url,	schedulerInfo,
+					{
+				timeout : PropertyService
+				.getServerResponseTimeoutMsec()
+					}).then(function(response) {
+						if (response.data) {
+							successCallbackFunction(response);
+						} else {
+							successCallbackFunction([]);
+						}
+					})["catch"]
+			(UtilityService.runHttpErrorHandler);
+		},
 
-	getTimeSotsForSchedulerId:function(schedulerID,successCallbackFunction){
-    	$log
-		.debug("SchedulerService:getTimeSlotsForSchedulerID");
-		var url =   COMPONENT.GET_TIME_SLOTS+COMPONENT.FORWARD_SLASH +schedulerID+COMPONENT.ASSIGN;
+		getTimeSotsForSchedulerId:function(schedulerID,successCallbackFunction){
+			$log.debug("SchedulerService:getTimeSlotsForSchedulerID");
+			var url =   COMPONENT.GET_TIME_SLOTS+COMPONENT.FORWARD_SLASH +schedulerID+COMPONENT.ASSIGN;
 
-		$http.get(url,
-				{
-			timeout : PropertyService
-			.getServerResponseTimeoutMsec()
-				}).then(function(response) {
-					if (response.data) {
-						successCallbackFunction(response);
-					} else {
-						successCallbackFunction([]);
-					}
-				})["catch"]
+			$http.get(url,
+					{
+				timeout : PropertyService
+				.getServerResponseTimeoutMsec()
+					}).then(function(response) {
+						if (response.data) {
+							successCallbackFunction(response);
+						} else {
+							successCallbackFunction([]);
+						}
+					})["catch"]
 
-		(UtilityService.runHttpErrorHandler);
-    },
-    getSubmitForapprovedTimeslots: function(ApprovedTimeSlotsObj,successCallbackFunction) {
-		$log
-		.debug("SchedulerService:getSchedulerStatusAndSchedulerId");
-		var url =   COMPONENT.SUBMIT_VNF_CHANGE_TIMESLOTS+COMPONENT.ASSIGN + Math.random();
+			(UtilityService.runHttpErrorHandler);
+		},
+		getSubmitForapprovedTimeslots: function(ApprovedTimeSlotsObj,successCallbackFunction) {
+			$log.debug("SchedulerService:getSchedulerStatusAndSchedulerId");
+			var url =   COMPONENT.SUBMIT_VNF_CHANGE_TIMESLOTS+COMPONENT.ASSIGN + Math.random();
 
-		$http.post(url,	ApprovedTimeSlotsObj,
-				{
-			timeout : PropertyService
-			.getServerResponseTimeoutMsec()
-				}).then(function(response) {
-					if (response.data) {
-						successCallbackFunction(response);
-					} else {
-						successCallbackFunction([]);
-					}
-				})["catch"]
-		(UtilityService.runHttpErrorHandler);
-	},
-	getPolicyInfo:function(policyName,successCallbackFunction){
-    	$log
-		.debug("SchedulerService:getPolicyInfo");
-		var url =   COMPONENT.GET_POLICY +COMPONENT.ASSIGN + Math.random();
-		
-		$http.post(url,	policyName,
-				{
-			timeout : PropertyService
-			.getServerResponseTimeoutMsec()
-				}).then(function(response) {
-					if (response.data) {
-						successCallbackFunction(response);
-					} else {
-						successCallbackFunction([]);
-					}
-				})["catch"]
-		(UtilityService.runHttpErrorHandler);
-    }
+			$http.post(url,	ApprovedTimeSlotsObj,
+					{
+				timeout : PropertyService
+				.getServerResponseTimeoutMsec()
+					}).then(function(response) {
+						if (response.data) {
+							successCallbackFunction(response);
+						} else {
+							successCallbackFunction([]);
+						}
+					})["catch"]
+			(UtilityService.runHttpErrorHandler);
+		},
+		getPolicyInfo:function(policyName,successCallbackFunction){
+			$log.debug("SchedulerService:getPolicyInfo");
+			var url =   COMPONENT.GET_POLICY +COMPONENT.ASSIGN + Math.random();
+
+			$http.post(url,	policyName,
+					{
+				timeout : PropertyService
+				.getServerResponseTimeoutMsec()
+					}).then(function(response) {
+						if (response.data) {
+							successCallbackFunction(response);
+						} else {
+							successCallbackFunction([]);
+						}
+					})["catch"]
+			(UtilityService.runHttpErrorHandler);
+		},
+
+		cancelScheduleRequest: function(schedulerID, successCallbackFunction, errorCallbackFunction) {
+            $log.debug("SchedulerService:cancelPendingBySchedulerId");
+            var url =   COMPONENT.CANCEL_SCHEDULE_REQUEST + COMPONENT.FORWARD_SLASH + schedulerID + COMPONENT.ASSIGN;
+
+            $http.delete(url,
+			{
+				timeout : PropertyService
+					.getServerResponseTimeoutMsec()
+			}).then(function(response) {
+                if (response.data) {
+                    successCallbackFunction(response);
+                } else {
+                    successCallbackFunction([]);
+                }
+            }).catch(function(error) {
+            	errorCallbackFunction(error);
+			});
+		}
     }
 }
 

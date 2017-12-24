@@ -121,7 +121,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
             DataService.setSubscribers($scope.custSubList);
 
-            if (selectedServicetype !== "" && selectedServicetype !== 'undefined') {
+            if (selectedServicetype !== "" && selectedServicetype !== 'undefined'&& selectedServicetype !== undefined) {
                 $location.path(COMPONENT.CREATE_INSTANCE_PATH);
             }
         };
@@ -245,6 +245,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                             "createSubscriberName": serviceModel.service.createSubscriberName,
                             "serviceType": serviceModel.service.serviceType,
                             "serviceRole": serviceModel.service.serviceRole
+
                         });
                     }
                     ;
@@ -322,7 +323,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 for (var i = 0; i < arr.length; i++) {
                     if (arr[i]['extra-properties']['extra-property'] && (arr[i]['extra-properties']['extra-property'][2]['property-value'] == obj['extra-properties']['extra-property'][2]['property-value'])
                         && (arr[i]['extra-properties']['extra-property'][4]['property-value'] == obj['extra-properties']['extra-property'][4]['property-value'] )
-                        && (arr[i]['extra-properties']['extra-property'][6]['property-value'] < obj['extra-properties']['extra-property'][6]['property-value'])) {
+                        && (parseFloat(arr[i]['extra-properties']['extra-property'][6]['property-value']) < parseFloat(obj['extra-properties']['extra-property'][6]['property-value']))) {
                         isNotMatched = false;
                         returnObj = {
                             isHigher: true,
@@ -370,7 +371,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             window.location.href = COMPONENT.SERVICE_MODLES_INSTANCES_SUBSCRIBERS_PATH;
 
         }
-
+        
         $scope.fetchServices = function () {
             var serviceIdList = [];
 

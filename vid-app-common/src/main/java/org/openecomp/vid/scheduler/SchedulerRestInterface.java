@@ -164,7 +164,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
 	public void logRequest(JSONObject requestDetails) {}
 
 	@SuppressWarnings("unchecked")
-   	public <T> void Delete(T t, JSONObject requestDetails, String sourceID, String path, RestObject<T> restObject) {
+   	public <T> void Delete(T t, String sourceID, String path, org.openecomp.vid.scheduler.RestObject<T> restObject) {
 	 
 		String url="";
 		Response cres = null;
@@ -179,7 +179,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
 			         .accept("application/json")
 	        		 .headers(commonHeaders)
 			         //.entity(r)
-			         .build("DELETE", Entity.entity(requestDetails, MediaType.APPLICATION_JSON)).invoke();
+			         .delete();
 			       //  .method("DELETE", Entity.entity(r, MediaType.APPLICATION_JSON));
 			         //.delete(Entity.entity(r, MediaType.APPLICATION_JSON));
 			

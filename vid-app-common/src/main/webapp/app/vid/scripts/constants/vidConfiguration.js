@@ -64,6 +64,12 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 				"orchestrationStatus": "active",
 				"inMaint": false,
 				"operationalStatus": "out-of-service-path"
+			},
+			{
+				"provStatus": "prov",
+				"orchestrationStatus": "activated",
+				"inMaint": false,
+				"operationalStatus": "out-of-service-path"
 			}
 	];
 	/* 

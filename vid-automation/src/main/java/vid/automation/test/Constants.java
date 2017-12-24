@@ -15,6 +15,7 @@ public class Constants {
     public static final String generalSubmitButtonId = "submit";
     public static final String generalCancelButtonId = "cancel";
     public static final String generalCloseModalButtonClass = "modal-close";
+    public static final String generalModalTitleClass = "modal-title";
     public static final String DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE = "Dropdown permitted options are not according to user permissions.";
     public static final String CONFIRM_BUTTON_TESTS_ID = "confirmButton";
     public static final String CLOSE_BUTTON_TEXT = "Close";
@@ -34,12 +35,13 @@ public class Constants {
     public static final String PNF_SERVICE_TYPE = "pnf";
 
     public class SideMenu {
-        public static final int numOfButtons = 5;
+        public static final int numOfButtons = 7;
         public static final String buttonClass = "att-accordion__group";
         public static final String SEARCH_EXISTING_SERVICE = "Search for Existing Service Instances";
         public static final String BROWSE_ASDC_SERVICE_MODELS = "Browse ASDC Service Models";
         public static final String CREATE_NEW_SERVICE = "Create New Service Instance";
         public static final String VNF_CHANGES = "VNF Changes";
+        public static final String TEST_ENVIRONMENTS = "Test Environments";
     }
 
     public class ChangeManagement {
@@ -88,6 +90,8 @@ public class Constants {
         public static final String alertIconClass = "icon-alert";
         public static final String pendingIconClass = "icon-pending";
         public static final String viewIconClass = "icon-view";
+        public static final String pendingTableId = "pending-table";
+        public static final String cancelPendingButtonClass = "cancel-action";
 
         //failed change management modal constants:
         public static final String failedModalHeaderId = "failed-modal-header";
@@ -112,6 +116,20 @@ public class Constants {
         public static final String pendingModalContentId = "pending-modal-content";
         public static final String pendingModalRescheduleButtonId = "pending-reschedule-button";
         public static final String pendingModalRollbackButtonId = "pending-rollback-button";
+        public static final String pendingModalCancelWorkflowButtonClass = "btn-cancel-workflow";
+    }
+
+    public class TestEnvironments {
+        //general constants:
+        public static final String pageHeadlineId = "test-environments-headline";
+
+        //headline bar constants:
+        public static final String headlineNewButtonId = "test-environments-new-button";
+        public static final String headlineSearchInputId = "test-environments-search";
+
+        public static final String refreshButtonId = "test-environments-refresh";
+        public static final String noDataMessage = "test-environments-no-data";
+        public static final String environmentsTable = "test-environments-table";
     }
 
     public class Modals {

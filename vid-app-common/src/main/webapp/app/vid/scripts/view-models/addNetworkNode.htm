@@ -33,7 +33,7 @@ limitations under the License.
             <form name="networkNodeForm" class="form-wrapper">
                 <div class="instance-field {{field.id}}" ng-repeat="(key, field) in nodeTemplateFields">
                     <input id="{{field.id}}" ng-if="key === 'suppressRollback'" type="checkbox" ng-model="field.value"/>
-                    <label for="{{field.id}}"class="title">
+                    <label for="{{field.id}}"class="title" ng-if="key !== 'lineOfBusiness' && key !== 'platform'">
                         {{field.name}}
                     </label>
                     <div class="" ng-if="key === 'instanceName'">

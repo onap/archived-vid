@@ -2,6 +2,7 @@ package vid.automation.test.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.openecomp.sdc.ci.tests.datatypes.Configuration;
 import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
 import org.openecomp.sdc.ci.tests.execute.setup.SetupCDTest;
 import org.openecomp.sdc.ci.tests.utilities.FileHandling;
@@ -52,7 +53,10 @@ public class VidBaseTestCase extends SetupCDTest {
         try {
             String envUrl = System.getProperty("ENV_URL");
             boolean isCustomLogin = Boolean.valueOf(System.getProperty("CUSTOM_LOGIN"));
-            return new org.openecomp.sdc.ci.tests.datatypes.Configuration(envUrl, isCustomLogin);
+            Configuration configuration = new org.openecomp.sdc.ci.tests.datatypes.Configuration(envUrl, isCustomLogin);
+            //configuration.setBrowser("chorme");
+            return configuration;
+            //return new org.openecomp.sdc.ci.tests.datatypes.Configuration(envUrl, isCustomLogin);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

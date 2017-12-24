@@ -1,111 +1,102 @@
 {
-    "networks": {
-        "ExtVL 0": {
-            "commands": {
-                "exVL_naming#naming_policy": {
-                    "command": "get_input",
-                    "displayName": "exVL_naming#naming_policy",
-                    "inputName": "extvl0_exVL_naming_naming_policy"
-                },
-                "network_role": {
-                    "command": "get_input",
-                    "displayName": "network_role",
-                    "inputName": "extvl0_network_role"
-                },
-                "network_scope": {
-                    "command": "get_input",
-                    "displayName": "network_scope",
-                    "inputName": "extvl0_network_scope"
-                }
-            },
-            "customizationUuid": "664f8aa7-3989-46ac-81c0-dd72a8a63f26",
-            "description": "ECOMP generic virtual link (network) base type for all other service-level and global networks",
-            "inputs": {
-                "exVL_naming#naming_policy": {
-                    "constraints": [
-                    ],
-                    "default": null,
-                    "description": "Reference to naming policy that ECOMP will use when the name is auto-generated",
-                    "entry_schema": null,
-                    "required": true,
-                    "type": "string"
-                },
-                "network_role": {
-                    "constraints": [
-                    ],
-                    "default": null,
-                    "description": "Unique label that defines the role that this network performs.   example: vce oam network, vnat sr-iov1 network\n",
-                    "entry_schema": null,
-                    "required": true,
-                    "type": "string"
-                },
-                "network_scope": {
-                    "constraints": [
-                    ],
-                    "default": null,
-                    "description": "Uniquely identifies the network scope. Valid values for the network scope   includes: VF - VF-level network. Intra-VF network which connects the VFCs (VMs) inside the VF. SERVICE - Service-level network. Intra-Service network which connects  the VFs within the service GLOBAL - Global network which can be shared by multiple services\n",
-                    "entry_schema": null,
-                    "required": true,
-                    "type": "string"
-                }
-            },
-            "invariantUuid": "379f816b-a7aa-422f-be30-17114ff50b7c",
-            "modelCustomizationName": "ExtVL 0",
-            "name": "ExtVL",
-            "properties": {
-                "exVL_naming": "{naming_policy={get_input=extvl0_exVL_naming_naming_policy}}",
-                "network_role": "get_input:extvl0_network_role",
-                "network_scope": "get_input:extvl0_network_scope"
-            },
-            "uuid": "af584529-d7f0-420e-a6f3-c38b689c030f",
-            "version": "4.0"
-        }
-    },
-    "service": {
-        "category": "Network L1-3",
-        "description": "dsfg",
-          "serviceRole":"null",
-    	"serviceType":"null",
-        "inputs": {
-            "extvl0_exVL_naming_naming_policy": {
-                "constraints": [
-                ],
-                "default": null,
-                "description": "Reference to naming policy that ECOMP will use when the name is auto-generated",
-                "entry_schema": null,
-                "required": true,
-                "type": "string"
-            },
-            "extvl0_network_role": {
-                "constraints": [
-                ],
-                "default": null,
-                "description": "Unique label that defines the role that this network performs.   example: vce oam network, vnat sr-iov1 network\n",
-                "entry_schema": null,
-                "required": true,
-                "type": "string"
-            },
-            "extvl0_network_scope": {
-                "constraints": [
-                ],
-                "default": null,
-                "description": "Uniquely identifies the network scope. Valid values for the network scope   includes: VF - VF-level network. Intra-VF network which connects the VFCs (VMs) inside the VF. SERVICE - Service-level network. Intra-Service network which connects  the VFs within the service GLOBAL - Global network which can be shared by multiple services\n",
-                "entry_schema": null,
-                "required": true,
-                "type": "string"
-            }
+  "networks": {
+    "ExtVL 0": {
+      "type":"VL",
+      "commands": {
+
+        "network_role": {
+          "command": "get_input",
+          "displayName": "network_role",
+          "inputName": "extvl0_network_role"
         },
-        "invariantUuid": "d752a44c-ac7b-4bda-8111-fb52312d101e",
-        "name": "Macro_flow_test",
-        "serviceEcompNaming": "true",
-        "toscaModelURL": null,
-        "uuid": "68101369-6f08-4e99-9a28-fa6327d344f3",
-        "version": "0.1"
-    },
-    "vfModules": {
-    },
-    "vnfs": {
-    },
-    "volumeGroups": {
+        "network_scope": {
+          "command": "get_input",
+          "displayName": "network_scope",
+          "inputName": "extvl0_network_scope"
+        }
+      },
+      "customizationUuid": "664f8aa7-3989-46ac-81c0-dd72a8a63f26",
+      "description": "ECOMP generic virtual link (network) base type for all other service-level and global networks",
+      "inputs": {
+
+        "network_role": {
+          "constraints": [
+          ],
+          "default": null,
+          "description": "Unique label that defines the role that this network performs.   example: vce oam network, vnat sr-iov1 network\n",
+          "entry_schema": null,
+          "required": true,
+          "type": "string"
+        },
+        "network_scope": {
+          "constraints": [
+          ],
+          "default": null,
+          "description": "Uniquely identifies the network scope. Valid values for the network scope   includes: VF - VF-level network. Intra-VF network which connects the VFCs (VMs) inside the VF. SERVICE - Service-level network. Intra-Service network which connects  the VFs within the service GLOBAL - Global network which can be shared by multiple services\n",
+          "entry_schema": null,
+          "required": true,
+          "type": "string"
+        }
+      },
+      "invariantUuid": "379f816b-a7aa-422f-be30-17114ff50b7c",
+      "modelCustomizationName": "ExtVL 0",
+      "name": "ExtVL",
+      "properties": {
+        "exVL_naming": "{naming_policy={get_input=extvl0_exVL_naming_naming_policy}}",
+        "network_role": "get_input:extvl0_network_role",
+        "network_scope": "get_input:extvl0_network_scope"
+      },
+      "uuid": "af584529-d7f0-420e-a6f3-c38b689c030f",
+      "version": "4.0"
     }
+  },
+  "service": {
+    "category": "Network L1-3",
+    "description": "dsfg",
+    "serviceRole": null,
+    "serviceType": null,
+    "inputs": {
+      "extvl0_exVL_naming_naming_policy": {
+        "constraints": [
+        ],
+        "default": null,
+        "description": "Reference to naming policy that ECOMP will use when the name is auto-generated",
+        "entry_schema": null,
+        "required": true,
+        "type": "string"
+      },
+      "extvl0_network_role": {
+        "constraints": [
+        ],
+        "default": null,
+        "description": "Unique label that defines the role that this network performs.   example: vce oam network, vnat sr-iov1 network\n",
+        "entry_schema": null,
+        "required": true,
+        "type": "string"
+      },
+      "extvl0_network_scope": {
+        "constraints": [
+        ],
+        "default": null,
+        "description": "Uniquely identifies the network scope. Valid values for the network scope   includes: VF - VF-level network. Intra-VF network which connects the VFCs (VMs) inside the VF. SERVICE - Service-level network. Intra-Service network which connects  the VFs within the service GLOBAL - Global network which can be shared by multiple services\n",
+        "entry_schema": null,
+        "required": true,
+        "type": "string"
+      }
+    },
+    "invariantUuid": "d752a44c-ac7b-4bda-8111-fb52312d101e",
+    "name": "Macro_flow_test",
+    "serviceEcompNaming": "true",
+    "toscaModelURL": null,
+    "uuid": "68101369-6f08-4e99-9a28-fa6327d344f3",
+    "version": "1.0"
+  },
+  "vfModules": {
+  },
+  "vnfs": {
+  },
+  "volumeGroups": {
+  },
+  "configurations":{},
+  "serviceProxies":{}
 }

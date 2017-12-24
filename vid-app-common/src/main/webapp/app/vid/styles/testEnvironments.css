@@ -1,0 +1,161 @@
+.body-content-jsp {
+    margin-top: 35px;
+    min-height: 500px;
+    margin-left: 201px;
+    margin-right: 0px;
+    background-color: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+}
+
+.temporary-solution {
+    display: none;
+}
+
+.body-content-jsp > div.ng-scope {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.body-content-jsp > div.ng-scope > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.test-environments {
+    background: white;
+    font-family: "OpenSans-Regular";
+    color: #797979;
+    flex:1;
+}
+
+.test-environments .header {
+    height: 70px;
+    padding: 15px;
+    background: #F8F8F8;
+}
+.test-environments .header .header-left {
+    display: inline-flex;
+    align-items: center;
+}
+
+.test-environments .headline {
+    color: #5A5A5A;
+    font-size: 22px;
+    text-align: left;
+}
+
+.test-environments .separator {
+    height: 40px;
+    border-left: 1px solid #D2D2D2;
+    margin: 0px 20px;
+}
+
+.test-environments .header .button-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.test-environments .button-container svg {
+    fill: #009FDB;
+}
+
+.test-environments .button-container .button-text{
+    color: #5A5A5A;
+    padding-left: 10px;
+}
+
+.test-environments .search-container {
+    float: right;
+    margin-right: 40px;
+}
+
+.test-environments .refresh {
+    float: right;
+    width: 20px;
+    height: 20px;
+    border: 1px solid;
+    background: none;
+    padding: 0;
+}
+
+.test-environments .refresh svg{
+    height: 16px;
+    width: 16px;
+}
+
+.test-environments .refresh svg path {
+    fill: #5A5A5A;
+}
+
+.test-environments .refresh:hover path {
+    fill: #009FDB;
+}
+
+.test-environments .error {
+    text-align: center;
+    color: red;
+}
+
+.test-environments .environments-table {
+    margin: 40px;
+}
+
+.test-environments .environments-table .tablesorter-default {
+    cursor: default;
+}
+
+.test-environments .environments-table .tablesorter-default thead .tablesorter-header .tablesorter-header-inner {
+    background-image: none;
+    background-size: 8px;
+}
+
+.test-environments .environments-table .tablesorter-default thead .tablesorter-headerAsc .tablesorter-header-inner {
+    background-image: url('../images/sort_up.svg');
+}
+
+.test-environments .environments-table .tablesorter-default thead .tablesorter-headerDesc .tablesorter-header-inner {
+    background-image: url('../images/sort_down.svg');
+}
+
+.test-environments .environments-table .thead-default tr th {
+    background: #D2D2D2;
+    color: #191919;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.test-environments .environments-table .tablesorter-header-inner {
+    padding: 0;
+    width: 100%;
+}
+
+.test-environments .environments-table .tablesorter-default tbody td {
+    background: white;
+    font-size: 14px;
+    padding: 12px 8px;
+}
+
+.test-environments .environments-table .tablesorter-default tbody tr:focus td {
+    background: #E6F6FB;
+}
+
+.test-environments .environments-table .tablesorter-default tbody tr:focus {
+    border: none;
+    outline: none;
+}
+
+.envActionBtn {
+    font-family: "OpenSans-Semibold";
+    border-radius: 5px;
+    border: 1px solid #0091c8;
+    background-color:  #009FDB;
+    width: 94px;
+    height: 30px;
+    color:  #ffffff;
+    font-size: 13px;
+    font-weight: 400;
+}

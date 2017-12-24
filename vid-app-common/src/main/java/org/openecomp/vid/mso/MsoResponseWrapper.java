@@ -34,7 +34,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 	    "entity"
 })
 
-public class MsoResponseWrapper  {
+public class MsoResponseWrapper {
 	
 	/** The status. */
 	@JsonProperty("status")
@@ -43,7 +43,7 @@ public class MsoResponseWrapper  {
 	/** The entity. */
 	@JsonProperty("entity")
 	private String entity;
-	
+
 	/**
 	 * Gets the entity.
 	 *

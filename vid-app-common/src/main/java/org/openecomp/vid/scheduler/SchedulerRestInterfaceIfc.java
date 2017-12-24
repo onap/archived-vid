@@ -12,10 +12,12 @@ public interface SchedulerRestInterfaceIfc {
 
 	public <T> void Get (T t, String sourceId, String path, org.openecomp.vid.scheduler.RestObject<T> restObject ) throws Exception;
 
-	public <T> void Delete(T t, JSONObject requestDetails, String sourceID, String path, RestObject<T> restObject)
+	public <T> void Delete(T t, String sourceID, String path, org.openecomp.vid.scheduler.RestObject<T> restObject)
 			throws Exception;
 
 	public <T> void Post(T t, JSONObject r, String path, RestObject<T> restObject) throws Exception;
 
 	public void logRequest(JSONObject requestDetails);
 }
+
+
