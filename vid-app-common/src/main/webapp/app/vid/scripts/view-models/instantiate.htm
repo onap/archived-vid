@@ -35,7 +35,7 @@
 
 		<div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
 
-		<h1 class="heading1" style="margin-top: 20px;">{{isPermitted == "true" ? "View/Edit" : "View"}} Service Instance</h1>
+		<h1 class="heading1" style="margin-top: 20px;">{{isPermitted ? "View/Edit" : "View"}} Service Instance</h1>
 		<a class="btn btn-primary btn-xs pull-right" ng-click="reloadRoute();" ><span class="glyphicon glyphicon-refresh"></span></a>
 
 		<br>
@@ -64,16 +64,16 @@
 			<ol ui-tree-nodes="" ng-model="service"  >
 				<li ng-repeat="aService in [service]" ui-tree-node>
 					<div ui-tree-handle class="tree-node tree-node-content">
-						<a class="btn btn-success btn-xs" ng-if="(aService.instance.vnfs && aService.instance.vnfs.length > 0) || (aService.instance.networks && aService.instance.networks.length > 0)" data-nodrag ng-click="this.toggle()">
+						<a class="btn btn-success btn-xs" ng-if="(aService.instance.vnfs && aService.instance.vnfs.length > 0) ||(aService.instance.pnfs && aService.instance.pnfs.length > 0) || (aService.instance.networks && aService.instance.networks.length > 0)" data-nodrag ng-click="this.toggle()">
 							<span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
 						</a>
-						SERVICE INSTANCE: {{aService.instance.name}}
-						<a ng-if="((isMacro()) ||  (isObjectEmpty(aService.instance.vnfs) && isObjectEmpty(aService.instance.networks))) && isPermitted" data-tests-id="deleteServiceButton" class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteService(aService.instance);">
+						SERVICE INSTANCE: {{aService.instance.name}} | ORCH STATUS: {{serviceOrchestrationStatus}}
+						<a ng-if="((isMacro()) ||  (isObjectEmpty(aService.instance.vnfs) && isObjectEmpty(aService.instance.networks) && isObjectEmpty(aService.instance.pnfs))) && isPermitted" data-tests-id="deleteServiceButton" class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteService(aService.instance);">
 							<span class="glyphicon glyphicon-remove"></span>
 						</a>
-						<div class="pull-right btn-group" ng-if="aService.convertedModel.vnfs && !isObjectEmpty(aService.convertedModel.vnfs) && !aService.convertedModel.isNewFlow && isPermitted">
+						<div class="pull-right btn-group" ng-if="(aService.convertedModel.vnfs||aService.convertedModel.vnfs) &&(!isObjectEmpty(aService.convertedModel.pnfs)||!isObjectEmpty(aService.convertedModel.pnfs))  && !aService.convertedModel.isNewFlow && isPermitted">
 							<button type="button" data-tests-id="addVNFButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Add VNF<span class="caret"></span>
+								Add node instance<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" ng-model="aService.convertedModel.vnfs">
 								<a role="menuitem" ng-repeat="(vnfUuid, vnf) in aService.convertedModel.vnfs" data-tests-id="addVNFOption-{{vnf.modelCustomizationName}}" ng-click="addVnfInstance(vnf, aService.instance.vnfs)">{{vnf.modelCustomizationName}}</a>
@@ -82,7 +82,7 @@
 						</div>
 						<div class="pull-right btn-group" ng-if="aService.convertedModel.vnfs && !isObjectEmpty(aService.convertedModel.vnfs) && aService.convertedModel.isNewFlow && isPermitted">
 							<button type="button" data-tests-id="addVNFButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Add VNF<span class="caret"></span>
+								Add node instance<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" ng-model="aService.convertedModel.vnfs" data-tests-id="addVnfsDropdown">
 								<li role="menuitem" ng-repeat="(vnfUuid, vnf) in aService.convertedModel.vnfs">
@@ -91,7 +91,7 @@
 							</ul>
 						</div>
 						<!--  <div class="pull-right btn-group" ng-if="aService.model.networks && !equals(aService.model.networks, {})">-->
-						<div class="pull-right btn-group" ng-if="aService.convertedModel.networks && (!(isObjectEmpty(aService.convertedModel.networks)))">
+						<div class="pull-right btn-group" ng-if="aService.convertedModel.networks && (!(isObjectEmpty(aService.convertedModel.networks))) && isPermitted">
 							<!--<div class="pull-right btn-group" ng-if="aService.model.networks">-->
 							<button type="button" data-tests-id="addNetworkButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Add Network<span class="caret"></span>
@@ -105,7 +105,10 @@
 						<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeService(aService.instance)" style="margin-right: 8px;">
 							<span class="glyphicon glyphicon-info-sign"></span>
 						</a>
-						<a data-tests-id="activateButton" class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="activateMSOInstance()" style="margin-right: 8px;">
+						<a data-tests-id="deactivateButton" ng-disabled="!isActivateDeactivateEnabled('deactivate')" class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="deactivateMSOInstance()" style="margin-right: 8px;">
+							Deactivate
+						</a>
+						<a data-tests-id="activateButton" ng-disabled="!isActivateDeactivateEnabled('activate')" class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="activateMSOInstance()" style="margin-right: 8px;">
 							Activate
 						</a>
 					</div>
@@ -233,6 +236,7 @@
 							</ol>
 						</li>
 					</ol>
+
 					<ol ui-tree-nodes="" ng-model="aService.instance.networks" ng-class="{hidden: collapsed}">
 						<li ng-repeat="network in aService.instance.networks" ui-tree-node>
 							<div ui-tree-handle class="tree-node tree-node-content">
@@ -279,6 +283,18 @@
 									</div>
 								</li>
 							</ol>
+						</li>
+					</ol>
+
+					<ol id="pnfs-tree" ui-tree-nodes="" ng-model="pnfs" ng-class="{hidden: collapsed || pnf.length === 0}">
+						<li ng-repeat="pnf in pnfs" ui-tree-node>
+							<div ui-tree-handle class="tree-node tree-node-content">
+								PNF: {{pnf}}
+
+								<a class="dissociate-pnf pull-right btn btn-primary btn-xs" data-nodrag ng-click="dissociatePnf(pnf)" style="margin-right: 8px;">
+									<span>Dissociate</span>
+								</a>
+							</div>
 						</li>
 					</ol>
 				</li>

@@ -1,37 +1,40 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v11/aai/cloud-infrastructure/operational-environments"
+    "path": "/aai/v12/cloud-infrastructure/operational-environments"
   } ,
   "simulatorResponse": {
     "responseCode": 200,
     "body": {
-      "results":[{
-        "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ea",
-        "operational-environment-name": "Op Env Name",
-        "operational-environment-type": "VNF",
-        "operational-environment-status": "Activate",
-        "tenant-context": "Test",
-        "workload-context": "VNF_Development",
-        "resource-version": "1505228226913",
-        "relationship-list": [
-          {
-            "related-to": "operational-environment",
-            "related-link": "string",
-            "relationship-data": [
+      "operational-environment":[
+        {
+          "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ea",
+          "operational-environment-name": "Op Env Name",
+          "operational-environment-type": "VNF",
+          "operational-environment-status": "Activate",
+          "tenant-context": "Test",
+          "workload-context": "VNF_Development",
+          "resource-version": "1505228226913",
+          "relationship-list": {
+            "relationship": [
               {
-                "relationship-key": "operational-environment.operational-environment-id",
-                "relationship-value": "UUID of the ECOMP Operational Environment"
-              }
-            ],
-            "related-to-property": [
-              {
-                "property-key": "operational-environment.operational-name",
-                "property-value": "Name of the ECOMP Operational Environment"
+                "related-to": "operational-environment",
+                "related-link": "string",
+                "relationship-data": [
+                  {
+                    "relationship-key": "operational-environment.operational-environment-id",
+                    "relationship-value": "UUID of the ECOMP Operational Environment"
+                  }
+                ],
+                "related-to-property": [
+                  {
+                    "property-key": "operational-environment.operational-name",
+                    "property-value": "Name of the ECOMP Operational Environment"
+                  }
+                ]
               }
             ]
           }
-        ]
       },
       {
         "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974eb",
@@ -41,7 +44,8 @@
         "tenant-context": "Test",
         "workload-context": "VNF_Development",
         "resource-version": "1505228226913",
-        "relationship-list": [
+        "relationship-list": {
+        "relationship":[
           {
             "related-to": "operational-environment",
             "related-link": "string",
@@ -59,6 +63,7 @@
             ]
           }
         ]
+        }
       },
       {
         "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ec",

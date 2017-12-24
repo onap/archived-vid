@@ -1,0 +1,15 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/ecomp/mso/infra/serviceInstances/v6/3f93c7cb-2fd0-4557-9514-e189b7b04f9d/removeRelationships"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "requestReferences": {
+        "instanceId": "3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+        "requestId": "311cc766-b673-4a50-b9c5-471f68914581"
+      }
+    }
+  }
+}

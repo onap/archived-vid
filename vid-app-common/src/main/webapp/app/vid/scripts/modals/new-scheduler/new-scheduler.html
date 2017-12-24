@@ -39,12 +39,12 @@
         <div class="row">
         <div class="form-group col-md-6 col-xs-12">
          <label class="control-label">Duration</label>
-          <input  type="number" style="font-size: 1em;" data-tests-id="durationInput" name="durationinput" ng-model="vm.scheduler.duration" ng-required="true">
+          <input  type="number" style="font-size: 1em;" data-tests-id="durationInput" min="1" name="durationinput" ng-model="vm.scheduler.duration" ng-required="true">
         
         </div>
         <div class="form-group col-md-6 col-xs-12"  >
          <label class="control-label">Fallback Duration</label>
-          <input  type="number" style="font-size: 1em;" name="fallbackinput" data-tests-id="fallbackInput" ng-model="vm.scheduler.fallbackDuration"  ng-required="true">
+          <input  type="number" style="font-size: 1em;" name="fallbackinput" min="1" data-tests-id="fallbackInput" ng-model="vm.scheduler.fallbackDuration"  ng-required="true">
          
          
         </div>
@@ -88,11 +88,16 @@
 			   </tbody>
          </table>
         </div>
-			
+
+        <div class="form-group" style="display:none;">
+            <label class="control-label">callbackData</label>
+            <textarea ng-disabled="true" ng-model="vm.callbackData" ng-required="false" type="text" data-tests-id="vidToMsoCallbackData"/>
+        </div>
+
     </div>
     <div class="modal-footer">
         <div class="pull-right">
-            <button type="button" id="btn" name="submit" class="btn btn-primary" ng-click="vm.submit()">Schedule</button>
+            <button type="button" id="btn" name="submit" class="btn btn-primary" ng-disabled="!vm.isScheduleReady" ng-click="vm.submit()">Schedule</button>
             <button type="button" id="btn" name="submit" class="btn btn-primary" ng-click="vm.reject()">Reject</button>
             <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
         </div>

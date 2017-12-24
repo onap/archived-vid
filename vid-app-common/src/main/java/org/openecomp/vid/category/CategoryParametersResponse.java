@@ -9,6 +9,9 @@ public class CategoryParametersResponse {
 
 	private Map<String, List<CategoryParameterOptionRep>> categoryParameters;
 
+	public CategoryParametersResponse() {
+	}
+
 	public CategoryParametersResponse(Map<String, List<CategoryParameterOptionRep>> categoryParameters) {
 		this.categoryParameters = categoryParameters;
 	}

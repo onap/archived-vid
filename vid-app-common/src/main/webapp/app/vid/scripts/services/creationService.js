@@ -542,7 +542,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         var requestDetails = {
             requestInfo : {
                 instanceName : getValueFromList(FIELD.ID.INSTANCE_NAME,
-                    parameterList),
+                    parameterList) || DataService.getVfModuleInstanceName(),
                 source : FIELD.ID.VID,
                 suppressRollback : isSupRollback,
                 requestorId: requestorloggedInId

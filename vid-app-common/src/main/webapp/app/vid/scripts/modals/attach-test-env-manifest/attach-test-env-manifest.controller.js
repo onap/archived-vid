@@ -45,7 +45,7 @@
                         vm.manifest = JSON.parse(lines);
                     } catch (error) {
                         $log.error(error);
-                        vm.error = vm.filename + " is not a valid JSON file"
+                        vm.error = "file: " + vm.filename + " is not a valid JSON"
                     }
                     $scope.$apply();
                 };

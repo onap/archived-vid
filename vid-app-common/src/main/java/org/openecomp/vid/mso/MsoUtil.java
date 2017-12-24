@@ -61,22 +61,6 @@ public class MsoUtil {
 	/**
 	 * Wrap response.
 	 *
-	 * @param body the body
-	 * @param statusCode the status code
-	 * @return the mso response wrapper
-	 */
-	public static <T> MsoResponseWrapper wrapResponse ( T body, String fallback, int statusCode ) {
-
-		MsoResponseWrapper w = new MsoResponseWrapper();
-		w.setStatus (statusCode);
-		w.setEntity(body != null ? convertPojoToString(body) : fallback);
-
-		return w;
-	}
-
-	/**
-	 * Wrap response.
-	 *
 	 * @param cres the cres
 	 * @return the mso response wrapper
 	 */
@@ -96,16 +80,14 @@ public class MsoUtil {
 	 * @param rs the rs
 	 * @return the mso response wrapper
 	 */
-	public static <T> MsoResponseWrapper wrapResponse (RestObject<T> rs) {
-		T resp = null;
+	public static MsoResponseWrapper wrapResponse (RestObject<String> rs) {
+		String resp_str = null;
 		int status = 0;
-		String fallback = null;
 		if ( rs != null ) {
-			resp = rs.get();
+			resp_str = rs.get() != null ? rs.get() : rs.getRaw();
 			status = rs.getStatusCode();
-			fallback = rs.getRaw();
 		}
-		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp, fallback, status );
+		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp_str, status );
 		return (w);
 	}	
 	

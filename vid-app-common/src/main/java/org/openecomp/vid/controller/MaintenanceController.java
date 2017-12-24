@@ -1,11 +1,13 @@
 package org.openecomp.vid.controller;
 
+
 import org.openecomp.portalsdk.core.controller.UnRestrictedBaseController;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.category.AddCategoryOptionResponse;
 import org.openecomp.vid.category.AddCategoryOptionsRequest;
 import org.openecomp.vid.category.CategoryParameterOptionRep;
 
+import org.openecomp.vid.category.CategoryParametersResponse;
 import org.openecomp.vid.model.CategoryParameterOption;
 
 import org.openecomp.vid.services.CategoryParameterService;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ForbiddenException;
 import java.util.Arrays;
 import java.util.Collections;
+import org.openecomp.vid.model.CategoryParameter.Family;
+import static org.openecomp.vid.utils.Logging.getMethodName;
 
 /**
  * Controler for APIs that are used only by vid operators
@@ -43,9 +47,11 @@ public class MaintenanceController extends UnRestrictedBaseController {
     @RequestMapping(value = "/category_parameter/{categoryName}", method = RequestMethod.POST)
     public ResponseEntity addCategoryOptions (
             HttpServletRequest request, @PathVariable String categoryName, @RequestBody AddCategoryOptionsRequest option) throws Exception {
+        logger.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName());
         try {
             AddCategoryOptionResponse response = categoryParameterService.createCategoryParameterOptions(categoryName, option);
             HttpStatus httpStatus = response.getErrors().size()>0 ? HttpStatus.MULTI_STATUS : HttpStatus.OK;
+            logger.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), response);
             return new ResponseEntity<>(response, httpStatus);
         }
         catch (CategoryParameterServiceImpl.UnfoundedCategoryException exception) {
@@ -60,9 +66,11 @@ public class MaintenanceController extends UnRestrictedBaseController {
     @RequestMapping(value = "/category_parameter/{categoryName}", method = RequestMethod.PUT)
     public ResponseEntity updateNameForOption (
             HttpServletRequest request, @PathVariable String categoryName, @RequestBody CategoryParameterOptionRep option) throws Exception {
+        logger.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName());
         try {
             AddCategoryOptionResponse response = categoryParameterService.updateCategoryParameterOption(categoryName, option);
             HttpStatus httpStatus = response.getErrors().size()>0 ? HttpStatus.MULTI_STATUS : HttpStatus.OK;
+            logger.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), response);
             return new ResponseEntity<>(response, httpStatus);
         }
         catch (ForbiddenException exception) {
@@ -87,9 +95,12 @@ public class MaintenanceController extends UnRestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/category_parameter", method = RequestMethod.GET)
-    public ResponseEntity getCategoryParameter(HttpServletRequest request) throws Exception {
+    public ResponseEntity getCategoryParameter(HttpServletRequest request, @RequestParam(value="familyName", required = true) Family familyName) throws Exception {
+        logger.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName());
         try {
-            return new ResponseEntity<>(categoryParameterService.getCategoryParameters(), HttpStatus.OK);
+            CategoryParametersResponse response = categoryParameterService.getCategoryParameters(familyName);
+            logger.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), response);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
         catch (Exception exception) {
             logger.error("failed to retrieve category parameter list from DB.", exception);
@@ -106,10 +117,11 @@ public class MaintenanceController extends UnRestrictedBaseController {
     @RequestMapping(value = "/delete_category_parameter/{categoryName}", method = RequestMethod.POST)
     public ResponseEntity deleteCategoryOption (
             HttpServletRequest request, @PathVariable String categoryName, @RequestBody CategoryParameterOption option) throws Exception {
-        String methodName = "deleteOwningEntityProperty";
+        logger.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName());
 
         try {
             categoryParameterService.deleteCategoryOption(categoryName, option);
+            logger.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), HttpStatus.OK);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (CategoryParameterServiceImpl.UnfoundedCategoryException exception) {
@@ -120,6 +132,5 @@ public class MaintenanceController extends UnRestrictedBaseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

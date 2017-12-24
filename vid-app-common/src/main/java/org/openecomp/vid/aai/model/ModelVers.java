@@ -1,5 +1,6 @@
 package org.openecomp.vid.aai.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 /**
  * Created by moriya1 on 15/10/2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelVers {
 
     @JsonProperty("model-ver")

@@ -2,6 +2,7 @@ package org.openecomp.vid.model;
 
 //import org.hibernate.annotations.Table;
 import org.openecomp.portalsdk.core.domain.support.DomainVo;
+import org.openecomp.vid.controller.MaintenanceController;
 
 //import javax.persistence.*;
 import javax.persistence.*;
@@ -14,8 +15,26 @@ import java.util.Set;
 @Table(name = "vid_category_parameter", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class CategoryParameter extends DomainVo {
 
+    public enum Family {
+        PARAMETER_STANDARDIZATION,
+        TENANT_ISOLATION
+    }
+
     private String name;
     private boolean idSupported;
+
+    @Column(name = "FAMILY")
+    @Enumerated(EnumType.STRING)
+    private String family;
+
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
     private Set<CategoryParameterOption> options = new HashSet<>(0);
 
     @Override

@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/cloudResources/v1/operationalEnvironments"
+    "path": "/mso/cloudResources/v1/operationalEnvironments"
   } ,
   "simulatorResponse": {
     "responseCode": 202,
@@ -10,8 +10,8 @@
     },
     "body":{
       "requestReferences": {
-        "instanceId": "bc305d54-75b4-431b-adb2-eb6b9e546014",
-        "requestId": "rq1234d1-5a33-55df-13ab-12abad84e331"
+        "instanceId": "UUID",
+        "requestId": "dbe54591-c8ed-46d3-abc7-d3a24873dfbd"
       }
     }
   }

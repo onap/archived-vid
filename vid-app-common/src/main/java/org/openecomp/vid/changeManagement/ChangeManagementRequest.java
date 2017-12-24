@@ -15,8 +15,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 
 public class ChangeManagementRequest {
-	
-    public ChangeManagementRequest() {}
+
+	public final static String VNF_IN_PLACE_SOFTWARE_UPDATE = "VNF In Place Software Update";
+	public static final String UPDATE = "update";
+	public static final String REPLACE = "replace";
 
 	@JsonProperty("requestDetails")
     private List<RequestDetails> requestDetails;

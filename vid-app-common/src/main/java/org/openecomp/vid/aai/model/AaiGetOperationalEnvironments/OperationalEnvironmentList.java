@@ -9,12 +9,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OperationalEnvironmentList {
 
-    @JsonProperty("results")
+    @JsonProperty("operational-environment")
     public List<OperationalEnvironment> getOperationalEnvironment() {
         return operationalEnvironment;
     }
 
-    @JsonProperty("results")
+    @JsonProperty("operational-environment")
     public void setOperationalEnvironment(List<OperationalEnvironment> operationalEnvironment) {
         this.operationalEnvironment = operationalEnvironment;
     }

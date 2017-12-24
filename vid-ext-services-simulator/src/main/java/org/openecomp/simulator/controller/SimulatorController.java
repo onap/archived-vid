@@ -6,6 +6,9 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
+import static org.mockserver.model.HttpRequest.request;
+import static org.mockserver.model.HttpResponse.response;
+
 import org.openecomp.simulator.errorHandling.VidSimulatorException;
 import org.openecomp.simulator.model.SimulatorRequestResponseExpectation;
 import org.slf4j.Logger;
@@ -26,14 +29,16 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Properties;
 import java.util.Scanner;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
+import static org.mockserver.matchers.Times.exactly;
 
 @RestController
 @Component
@@ -99,6 +104,8 @@ public class SimulatorController {
             }
         }
     }
+
+
 
     private void setProperties() {
         Resource resource = new ClassPathResource("simulator.properties");
@@ -170,6 +177,15 @@ public class SimulatorController {
         //Building the redirect URL
         String restOfTheUrl = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+
+        //TODO encode only characters like spaces, not slashes
+        try {
+            restOfTheUrl = URLEncoder.encode(restOfTheUrl, "UTF-8");
+            restOfTheUrl = restOfTheUrl.replaceAll("%2F", "/");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append(mockServerProtocol+"://"+mockServerHost+":"+mockServerPort+"/"+restOfTheUrl);
         String queryString = request.getQueryString();
@@ -251,6 +267,11 @@ public class SimulatorController {
             response.withBody(respBody);
         }
 
+        String file = expectationModel.getSimulatorResponse().getFile();
+        if (file != null) {
+            response.withBody(loadFileString(file));
+        }
+
         Map<String, String> responseHeaders = expectationModel.getSimulatorResponse().getResponseHeaders();
         if (responseHeaders != null) {
             responseHeaders.forEach(response::withHeader);
@@ -267,13 +288,34 @@ public class SimulatorController {
                 .when(request, numberOfTimes).respond(response);
     }
 
+
+    private byte[] loadFileString(String filePath) {
+        byte[] bytes = null;
+        try {
+            File file = new ClassPathResource("download_files/" + filePath).getFile();
+            bytes = new byte[(int)file.length()];
+            DataInputStream dataInputStream = null;
+
+            dataInputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file.getPath())));
+            dataInputStream.readFully(bytes);
+            dataInputStream.close();
+        } catch (FileNotFoundException e) {
+            logger.error("File not found for file:" + filePath);
+            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Error reading file:" + filePath);
+            e.printStackTrace();
+        }
+
+        return bytes;
+    }
     private Times getExpectationNumberOfTimes(SimulatorRequestResponseExpectation expectationModel) {
         Integer expectationModelNumberOfTimes = expectationModel.getMisc().getNumberOfTimes();
         Times effectiveNumberOfTimes;
         if (expectationModelNumberOfTimes == null || expectationModelNumberOfTimes < 0) {
             effectiveNumberOfTimes = DEFAULT_NUMBER_OF_TIMES;
         } else {
-            effectiveNumberOfTimes = Times.exactly(expectationModelNumberOfTimes);
+            effectiveNumberOfTimes = exactly(expectationModelNumberOfTimes);
         }
         return effectiveNumberOfTimes;
     }

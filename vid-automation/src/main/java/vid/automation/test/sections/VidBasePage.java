@@ -1,9 +1,12 @@
 package vid.automation.test.sections;
 
+import org.junit.Assert;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
 import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -62,7 +65,7 @@ public class VidBasePage {
 
     public VidBasePage clickEditViewByInstanceId(String instanceId) {
         String elementTestId = Constants.VIEW_EDIT_TEST_ID_PREFIX + instanceId;
-        GeneralUIUtils.clickOnElementByTestId(elementTestId, 30);
+        GeneralUIUtils.clickOnElementByTestId(elementTestId, 100);
         GeneralUIUtils.ultimateWait();
         return this;
     }
@@ -71,6 +74,12 @@ public class VidBasePage {
         GeneralUIUtils.clickOnElementByText(Constants.SUBMIT_BUTTON_TEXT, 30);
         return this;
     }
+
+    public VidBasePage clickCancelButton() {
+        Click.byId(Constants.generalCancelButtonId);
+        return this;
+    }
+
 
     public VidBasePage clickConfirmButton() {
         GeneralUIUtils.clickOnElementByTestId(Constants.CONFIRM_BUTTON_TESTS_ID, 30);
@@ -96,4 +105,28 @@ public class VidBasePage {
         SelectOption.byValue(aicZone, Constants.ViewEdit.AIC_ZONE_TEST_ID);
         return this;
     }
+
+    public void assertButtonState(String dataTestId, boolean shouldBeEnabled) {
+        GeneralUIUtils.ultimateWait();
+        WebElement webElement = GeneralUIUtils.getWebElementByTestID(dataTestId, 60);
+        boolean enabledElement= webElement.getAttribute("disabled")==null?true:false;
+        if(shouldBeEnabled) {
+            Assert.assertTrue(String.format(Constants.ViewEdit.ENABLE_ERROR_MESSAGE,dataTestId), enabledElement);
+        }else{
+            Assert.assertFalse(String.format(Constants.ViewEdit.DISABLE_ERROR_MESSAGE,dataTestId),enabledElement);
+        }
+
+    }
+    public VidBasePage assertMsoRequestModal(String statusMsg) {
+        boolean waitForTextResult = Wait.waitByClassAndText("status", statusMsg, 60);
+        Assert.assertTrue(statusMsg + " message didn't appear on time", waitForTextResult);
+
+        return this;
+    }
+
+    public VidBasePage refreshPage() {
+        GeneralUIUtils.getDriver().navigate().refresh();
+        return this;
+    }
+
 }

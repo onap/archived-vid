@@ -20,6 +20,10 @@ public class Exists {
         return Get.byClassAndText(className, text) != null;
     }
 
+    public static boolean byCssSelectorAndText(String css, String text) {
+        return Get.byCssSelectorAndText(css, text) != null;
+    }
+
     public static boolean modal() {
         try {
             return Get.byCssSelector(Constants.Modals.modalClass) != null;

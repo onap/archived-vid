@@ -131,3 +131,9 @@
     border-top: 1.6px solid #5a5a5a;
     padding: 2.6px;
 }
+.icon-search2:before {
+    content: "\e90d";
+    color: #009FDB;
+    font-size: 40px;
+    cursor: pointer;
+}

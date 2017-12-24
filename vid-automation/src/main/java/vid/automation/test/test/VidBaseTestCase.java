@@ -13,13 +13,9 @@ import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
 import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.*;
-import vid.automation.test.sections.LoginExternalPage;
-import vid.automation.test.sections.SearchExistingPage;
-import vid.automation.test.sections.SideMenu;
-import vid.automation.test.sections.ViewEditPage;
+import vid.automation.test.sections.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +122,7 @@ public class VidBaseTestCase extends SetupCDTest {
     }
 
     protected void assertViewEditButtonState(String expectedButtonText, String UUID) {
-        WebElement viewEditWebElement = GeneralUIUtils.getWebElementByTestID(Constants.VIEW_EDIT_TEST_ID_PREFIX + UUID, 30);
+        WebElement viewEditWebElement = GeneralUIUtils.getWebElementByTestID(Constants.VIEW_EDIT_TEST_ID_PREFIX + UUID, 100);
         Assert.assertEquals(expectedButtonText, viewEditWebElement.getText());
         GeneralUIUtils.ultimateWait();
     }
@@ -135,7 +131,7 @@ public class VidBaseTestCase extends SetupCDTest {
                           String legacyRegion, String productFamily, ArrayList<String> permittedTenants) throws InterruptedException {
         ViewEditPage viewEditPage = new ViewEditPage();
 
-        viewEditPage.selectVNFToAdd(name);
+        viewEditPage.selectNodeInstanceToAdd(name);
         viewEditPage.generateAndSetInstanceName(Constants.ViewEdit.VNF_INSTANCE_NAME_PREFIX);
         viewEditPage.selectProductFamily(productFamily);
         viewEditPage.selectLCPRegion(lcpRegion);
@@ -203,6 +199,11 @@ public class VidBaseTestCase extends SetupCDTest {
         Assert.assertTrue(Constants.ViewEdit.VNF_CREATION_FAILED_MESSAGE, byText);
     }
 
+    void assertSuccessfulPNFAssociation() {
+        //TODO
+        boolean byText = GeneralUIUtils.findAndWaitByText(Constants.PnfAssociation.PNF_ASSOCIATED_SUCCESSFULLY_TEXT, 100);
+        Assert.assertTrue(Constants.PnfAssociation.PNF_ASSOCIATED_FAILED_MESSAGE, byText);
+    }
     void assertSuccessfulVolumeGroupCreation() {
         boolean byText = GeneralUIUtils.findAndWaitByText(Constants.ViewEdit.VOLUME_GROUP_CREATED_SUCCESSFULLY_TEXT, 100);
         Assert.assertTrue(Constants.ViewEdit.VOLUME_GROUP_CREATION_FAILED_MESSAGE, byText);

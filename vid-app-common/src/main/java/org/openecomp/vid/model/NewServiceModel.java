@@ -65,6 +65,7 @@ public class NewServiceModel {
 
 	private Map<String, ServiceProxy> serviceProxies;
 
+	private Map<String, Node> pnfs;
 
 	/**
 	 * Instantiates a new service model.
@@ -167,6 +168,16 @@ public class NewServiceModel {
 	public void setVolumeGroups(Map<String, VolumeGroup> volumeGroups) {
 		this.volumeGroups = volumeGroups;
 	}
+
+
+	public Map<String, Node> getPnfs() {
+		return pnfs;
+	}
+
+	public void setPnfs(Map<String, Node> pnfs) {
+		this.pnfs = pnfs;
+	}
+
 	/**
 	 * Extract service.
 	 *

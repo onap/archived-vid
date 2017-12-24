@@ -591,6 +591,20 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             });
         }
 
+        function returnMatchingServiceSubscription(serviceSubs, serviceId){
+            var orchStatus;
+            serviceSubs.forEach(function(item){
+                if (item[FIELD.ID.SERVICE_INSTANCES] != null) {
+                    item[FIELD.ID.SERVICE_INSTANCES][FIELD.ID.SERVICE_INSTANCE].forEach(function (service) {
+                        if (service[FIELD.ID.SERVICE_INSTANCE_ID] === serviceId) {
+                            orchStatus = service['orchestration-status']
+                        }
+                    })
+                }
+            });
+            return orchStatus;
+        }
+
         $scope.getTenants = function (globalCustomerId) {
             $http.get(FIELD.ID.AAI_GET_TENTANTS + globalCustomerId)
                 .then(function successCallback(response) {
@@ -600,6 +614,22 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     //TODO
                 });
         }
+
+        $scope.isActivateDeactivateEnabled = function(btnType) {
+            if ($scope.serviceOrchestrationStatus && $scope.service.model.service.serviceType.toLowerCase().indexOf('transport') != -1) {
+                switch (btnType) {
+                    case "activate":
+                        return $scope.serviceOrchestrationStatus === 'Created' ||
+                            $scope.serviceOrchestrationStatus.toLowerCase() === 'pendingdelete' || $scope.serviceOrchestrationStatus.toLowerCase() === 'pending-delete';
+                        break;
+                    case "deactivate":
+                        return $scope.serviceOrchestrationStatus === 'Active';
+                        break;
+                }
+            }
+
+            return false;
+        };
 
         $scope.handleInitialResponseInventoryItems = function (response) {
 
@@ -614,8 +644,9 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.subscriberName = "";
             // just look up the subscriber name in A&AI here...
             AaiService.getSubscriberName($scope.globalCustomerId, function (response) {
-                $scope.subscriberName = response;
+                $scope.subscriberName = response.subscriberName;
                 DataService.setSubscriberName($scope.subscriberName);
+                $scope.serviceOrchestrationStatus = returnMatchingServiceSubscription(response.serviceSubscriptions[FIELD.ID.SERVICE_SUBSCRIPTION], $scope.serviceInstanceId);
 
                 angular.forEach($scope.inventoryResponseItemList, function (inventoryResponseItem, key) {
 
@@ -969,70 +1000,151 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.currentPage--;
         }
 
-        $scope.activateMSOInstance = function() {
-            MsoService.activateInstance($scope.service.instance, $scope.service.model)
-                .then(function(response) {
-                    alert("Activation succeeded");
-                })
-                .catch(function (error) {
-                    $log.error(error);
+        var getAicZoneAndSendToMso = function (msoType, requestParams) {
+            AaiService.getAicZoneForPNF(
+                $scope.service.instance.globalCustomerId,
+                $scope.service.instance.serviceType,
+                $scope.service.instance.serviceInstanceId, function (aicZone) {
+
+                    requestParams.aicZone = aicZone;
+
+                    openMsoModal(msoType, requestParams);
                 });
+        };
+
+        var activateDeactivateServiceInstance = function(msoType) {
+            var requestParams = {
+                model: $scope.service.model,
+                instance: $scope.service.instance
+            };
+
+            if (DataService.getLoggedInUserId()) {
+                requestParams.userId = DataService.getLoggedInUserId();
+                getAicZoneAndSendToMso(msoType)
+            } else {
+                AaiService.getLoggedInUserID(function (response) {
+                    var userID = response.data;
+                    DataService.setLoggedInUserId(userID);
+                    requestParams.userId = userID;
+
+                    getAicZoneAndSendToMso(msoType, requestParams);
+                });
+            }
+        };
+
+        $scope.activateMSOInstance = function() {
+
+            activateDeactivateServiceInstance(COMPONENT.MSO_ACTIVATE_SERVICE_REQ);
+        };
+
+        $scope.deactivateMSOInstance = function() {
+
+            activateDeactivateServiceInstance(COMPONENT.MSO_DEACTIVATE_SERVICE_REQ);
         };
 
         $scope.toggleConfigurationStatus = function (serviceObject, configuration) {
 
-            var serviceModelInfo =  {
-                "modelType": "service",
-                "modelInvariantId": serviceObject.model.service.invariantUuid,
-                "modelVersionId": "uuid",
-                "modelName": serviceObject.model.service.name,
-                "modelVersion": serviceObject.model.service.version
+            var requestParams = {
+                serviceModel: {
+                    "modelType": "service",
+                    "modelInvariantId": serviceObject.model.service.invariantUuid,
+                    "modelVersionId": "uuid",
+                    "modelName": serviceObject.model.service.name,
+                    "modelVersion": serviceObject.model.service.version
+                },
+                configurationModel: {
+                    "modelType": "configuration",
+                    "modelInvariantId": configuration.modelInvariantId,
+                    "modelVersionId": configuration.modelVersionId,
+                    "modelCustomizationId": configuration.modelCustomizationId
+                },
+                serviceInstanceId: serviceObject.instance.serviceInstanceId,
+                configurationId: configuration.nodeId,
+                configStatus: configuration.nodeStatus,
+                userId: DataService.getLoggedInUserId()
             };
 
-            var configurationModelInfo = {
-                "modelType": "configuration",
-                "modelInvariantId": configuration.modelInvariantId,
-                "modelVersionId": configuration.modelVersionId,
-                "modelCustomizationId": configuration.modelCustomizationId
-            };
-
-            DataService.setServiceInstanceId(serviceObject.instance.serviceInstanceId);
-            DataService.setConfigurationInstanceId(configuration.nodeId);
-            DataService.setConfigurationStatus(configuration.nodeStatus);
-            DataService.setModelInfo(COMPONENT.SERVICE, serviceModelInfo);
-            DataService.setModelInfo(COMPONENT.CONFIGURATION, configurationModelInfo);
-
-            openMsoModal(COMPONENT.MSO_CHANGE_STATUS_REQ, COMPONENT.CONFIGURATION);
+            openMsoModal(COMPONENT.MSO_CHANGE_CONFIG_STATUS_REQ, requestParams);
         };
 
         $scope.togglePortStatus = function(serviceObject, configuration, port) {
 
-            var serviceModelInfo =  {
-                "modelType": "service",
-                "modelInvariantId": serviceObject.model.service.invariantUuid,
-                "modelVersionId": "uuid",
-                "modelName": serviceObject.model.service.name,
-                "modelVersion": serviceObject.model.service.version
+            var requestParams = {
+                serviceInstanceId: serviceObject.instance.serviceInstanceId,
+                configurationId: configuration.nodeId,
+                portId: port.portId,
+                portStatus: port.portStatus,
+                serviceModel: {
+                    "modelType": "service",
+                    "modelInvariantId": serviceObject.model.service.invariantUuid,
+                    "modelVersionId": "uuid",
+                    "modelName": serviceObject.model.service.name,
+                    "modelVersion": serviceObject.model.service.version
+                },
+                configurationModel: {
+                    "modelType": "configuration",
+                    "modelInvariantId": configuration.modelInvariantId,
+                    "modelVersionId": configuration.modelVersionId,
+                    "modelCustomizationId": configuration.modelCustomizationId
+                },
+                userId: DataService.getLoggedInUserId()
             };
 
-            var configurationModelInfo = {
-                "modelType": "configuration",
-                "modelInvariantId": configuration.modelInvariantId,
-                "modelVersionId": configuration.modelVersionId,
-                "modelCustomizationId": configuration.modelCustomizationId
-            };
-
-            DataService.setServiceInstanceId(serviceObject.instance.serviceInstanceId);
-            DataService.setConfigurationInstanceId(configuration.nodeId);
-            DataService.setPortId(port.portId);
-            DataService.setPortStatus(port.portStatus);
-            DataService.setModelInfo(COMPONENT.SERVICE, serviceModelInfo);
-            DataService.setModelInfo(COMPONENT.CONFIGURATION, configurationModelInfo);
-
-            openMsoModal(COMPONENT.MSO_CHANGE_STATUS_REQ, COMPONENT.PORT);
+            openMsoModal(COMPONENT.MSO_CHANGE_PORT_STATUS_REQ, requestParams);
         };
 
-        var openMsoModal = function (msoType, componentId) {
+        $scope.dissociatePnf = function(pnfName) {
+
+            var jobInfo = {
+                status: "confirm",
+                message: "Are you sure you would like to dissociate " + pnfName + " from the service instance?"
+            };
+
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/alert-modal/alert-modal.html',
+                controller: 'alertModalController',
+                controllerAs: 'vm',
+                appendTo: angular.element("#pnfs-tree"),
+                resolve: {
+                    jobInfo: function () {
+                        return jobInfo;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (result) {
+                console.log("This is the result of the alert modal.", result);
+
+                if (result) {
+                    var requestParams = {
+                        pnf: pnfName,
+                        serviceModelInfo: {
+                            invariantUuid: $scope.service.model.service.invariantUuid,
+                            uuid: $scope.service.model.service.uuid,
+                            version: $scope.service.model.service.version,
+                            name: $scope.service.model.service.name
+                        },
+                        serviceInstanceId: $scope.service.instance.serviceInstanceId
+                    };
+
+                    if (DataService.getLoggedInUserId()) {
+                        requestParams.attuuid = DataService.getLoggedInUserId();
+                        openMsoModal(COMPONENT.MSO_REMOVE_RELATIONSHIP, requestParams);
+                    } else {
+                        AaiService.getLoggedInUserID(function (response) {
+                            DataService.setLoggedInUserId(response.data);
+
+                            requestParams.attuuid = response.data;
+                            openMsoModal(COMPONENT.MSO_REMOVE_RELATIONSHIP, requestParams);
+                        });
+                    }
+                }
+            });
+
+
+        };
+
+        var openMsoModal = function (msoType, requestParams) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/mso-commit/mso-commit.html',
                 controller : "msoCommitModalController",
@@ -1041,11 +1153,38 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     msoType: function () {
                         return msoType;
                     },
-                    componentId: function () {
-                        return componentId;
+                    requestParams: function() {
+                        requestParams.callbackFunction = updateViewCallbackFunction;
+                        return requestParams;
                     }
                 }
             });
+        };
+
+        var updateViewCallbackFunction = function(response) {
+            $scope.callbackResults = "";
+            var color = FIELD.ID.COLOR_NONE;
+            $scope.callbackStyle = {
+                "background-color" : color
+            };
+
+            /*
+             * This 1/2 delay was only added to visually highlight the status
+             * change. Probably not needed in the real application code.
+             */
+            $timeout(function() {
+                $scope.callbackResults = UtilityService.getCurrentTime()
+                    + FIELD.STATUS.IS_SUCCESSFUL + response.isSuccessful;
+                if (response.isSuccessful) {
+                    color = FIELD.ID.COLOR_8F8;
+                    $scope.reloadRoute();
+                } else {
+                    color = FIELD.ID.COLOR_F88;
+                }
+                $scope.callbackStyle = {
+                    "background-color" : color
+                };
+            }, 500);
         };
 
         $scope.nextPage = function () {

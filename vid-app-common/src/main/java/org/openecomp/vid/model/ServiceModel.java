@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.openecomp.vid.asdc.beans.tosca.Group;
+import org.openecomp.vid.asdc.beans.tosca.NodeTemplate;
 import org.openecomp.vid.asdc.beans.tosca.ToscaModel;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.properties.VidProperties;
@@ -67,6 +68,9 @@ public class ServiceModel {
 	 * for newer models 
 	 */
 	private Map<String, VolumeGroup> volumeGroups;
+
+	/** The pnfs. */
+	private Map<String, Node> pnfs;
 	/**
 	 * Instantiates a new service model.
 	 */
@@ -97,6 +101,16 @@ public class ServiceModel {
 	 */
 	public Map<String, Network> getNetworks() {
 		return networks;
+	}
+
+
+	/**
+	 * Gets the pnfs.
+	 *
+	 * @return the pnfs
+	 */
+	public Map<String, Node> getPnfs() {
+		return pnfs;
 	}
 
 
@@ -171,6 +185,8 @@ public class ServiceModel {
 	public Map<String, VfModule> getVfModules() {
 		return vfModules;
 	}
+
+
 	/**
 	 * Gets the volume groups.
 	 *
@@ -195,6 +211,13 @@ public class ServiceModel {
 	public void setVolumeGroups(Map<String, VolumeGroup> volumeGroups) {
 		this.volumeGroups = volumeGroups;
 	}
+	/**
+	 * Sets the pnfs.
+	 *
+	 * @param pnfs the pnfs
+	 */
+	public void setPnfs(Map<String,Node> pnfs) {this.pnfs = pnfs;}
+
 	/**
 	 * Extract service.
 	 *
@@ -302,4 +325,6 @@ public class ServiceModel {
 		}
 		
 	}
+
+
 }

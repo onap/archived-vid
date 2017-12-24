@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/cloudResources/v1/operationalEnvironments"
+    "path": "/mso/cloudResources/v1/operationalEnvironments"
 } ,
   "simulatorResponse": {
     "responseCode": 202,

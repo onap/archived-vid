@@ -73,6 +73,12 @@ public interface MsoInterface {
 
     MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails requestDetails, String endpoint) throws Exception;
 
-    void activateServiceInstance(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception;
+    void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception;
+
+    MsoResponseWrapperInterface updateVnfSoftware(org.openecomp.vid.changeManagement.RequestDetails requestDetails, String endpoint) throws Exception;
+
+    MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+
+    MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath) throws Exception;
 }
 

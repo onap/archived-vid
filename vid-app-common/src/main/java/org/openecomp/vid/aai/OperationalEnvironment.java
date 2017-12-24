@@ -17,12 +17,12 @@ public class OperationalEnvironment {
     private String tenantContext;
     private String workloadContext;
     private String resourceVersion;
-    private List<Relationship> relationshipList;
+    private RelationshipList relationshipList;
 
     public OperationalEnvironment() {
     }
 
-    public OperationalEnvironment(String operationalEnvironmentId, String operationalEnvironmentName, String operationalEnvironmentType, String operationalEnvironmentStatus, String tenantContext, String workloadContext, String resourceVersion, List<Relationship> relationshipList) {
+    public OperationalEnvironment(String operationalEnvironmentId, String operationalEnvironmentName, String operationalEnvironmentType, String operationalEnvironmentStatus, String tenantContext, String workloadContext, String resourceVersion, RelationshipList relationshipList) {
         this.operationalEnvironmentId = operationalEnvironmentId;
         this.operationalEnvironmentName = operationalEnvironmentName;
         this.operationalEnvironmentType = operationalEnvironmentType;
@@ -97,11 +97,11 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("relationship-list")
-    public List<Relationship> getRelationshipList() {
+    public RelationshipList getRelationshipList() {
         return relationshipList;
     }
 
-    public void setRelationshipList(List<Relationship> relationshipList) {
+    public void setRelationshipList(RelationshipList relationshipList) {
         this.relationshipList = relationshipList;
     }
 }

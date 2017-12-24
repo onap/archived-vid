@@ -1,24 +1,23 @@
 {
-    "headers": ["Environment ID", "Environment Name", "ECOMP Environment ID", "ECOMP Environment Name", "Tenant Context", "Environment Type", "Workload Context", "Status", "Action"],
+    "headers": ["Environment ID", "Environment Name", "ECOMP Environment ID", "ECOMP Environment Name", "Tenant Context", "Environment Type", "Workload Context", "Status", "Action", "Attach Manifest"],
     "basicList": [
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ea", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ec", "ECOMP Env Name", "", "", "ECOMP Test", "ECOMP", "ECOMP_Development", "Active", "Deactivate"]
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ea", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""],
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""],
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ec", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""]
     ],
     "fullList": [
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ea", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ec", "ECOMP Env Name", "", "", "ECOMP Test", "ECOMP", "ECOMP_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ed", "ECOMP Env Name", "", "", "ECOMP Test", "ECOMP", "ECOMP_Development", "Active", "Deactivate"]
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ea", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""],
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""],
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ec", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""],
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ef", "New VNF Environment", "f07ca256-96dd-40ad-b4d2-7a77e2a974ed", "ECOMP Env Name", "ECOMP Test", "VNF", "VNF_Test", "Inactive", "Activate", ""]
     ],
     "sortedList": [
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ed", "ECOMP Env Name", "", "", "ECOMP Test", "ECOMP", "ECOMP_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ec", "ECOMP Env Name", "", "", "ECOMP Test", "ECOMP", "ECOMP_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate"],
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ea", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate"]
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ec", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""],
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""],
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974ea", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""]
 
     ],
     "filteredList": [
-        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate"]
+        ["f07ca256-96dd-40ad-b4d2-7a77e2a974eb", "Op Env Name", "UUID of the ECOMP Operational Environment", "Name of the ECOMP Operational Environment", "Test", "VNF", "VNF_Development", "Active", "Deactivate", ""]
     ]
 }

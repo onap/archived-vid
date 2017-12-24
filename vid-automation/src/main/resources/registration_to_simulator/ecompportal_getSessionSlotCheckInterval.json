@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/ecompportal_att/auxapi//getSessionSlotCheckInterval"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": "300000"
+  }
+}

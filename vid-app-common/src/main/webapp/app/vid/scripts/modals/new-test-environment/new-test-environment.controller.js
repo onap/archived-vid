@@ -1,18 +1,17 @@
 (function () {
     'use strict';
 
-    appDS2.controller("newTestEnvironmentModalController", ["$uibModalInstance", "$uibModal", "AaiService", "TestEnvironmentsService",
+    appDS2.controller("newTestEnvironmentModalController", ["$uibModalInstance", "$uibModal", "AaiService", "TestEnvironmentsService","OwningEntityService",
         "$log", "$scope", "_", "COMPONENT","$rootScope", newTestEnvironmentsModalController]);
 
-    function newTestEnvironmentsModalController($uibModalInstance, $uibModal, AaiService, TestEnvironmentsService, $log, $scope, _, COMPONENT, $rootScope) {
+    function newTestEnvironmentsModalController($uibModalInstance, $uibModal, AaiService, TestEnvironmentsService,OwningEntityService, $log, $scope, _, COMPONENT, $rootScope) {
         var vm = this;
         vm.newEnvironment = {};
 
         var init = function () {
             vm.newEnvironment.operationalEnvironmentType = "VNF";
+            loadCategoryParameters();
             loadEcompEnvironmentsList();
-            loadEnvironmentsTypesList();
-            loadWorkloadContextList();
         };
 
         var loadEcompEnvironmentsList = function () {
@@ -26,13 +25,15 @@
             });
         };
 
-        var loadEnvironmentsTypesList = function () {
-            vm.environmentsTypesList = TestEnvironmentsService.getEnvironmentsTypesList();
-        };
+        var loadCategoryParameters = function () {
+            OwningEntityService.getOwningEntityProperties(function(response){
+               vm.environmentsTypesList = response["operational-environment-type"].map(function (x){
+                    return x.name;});
+               vm.workloadContextList = response["workload-context"].map(function (x){
+                   return x.name;});
+            },COMPONENT.TENANT_ISOLATION_FAMILY);
+        }
 
-        var loadWorkloadContextList = function () {
-            vm.workloadContextList = TestEnvironmentsService.getWorkloadContextList();
-        };
 
         vm.setEcompEnvironment = function (selectedIndex) {
             var ecompEnvironment = vm.environments[selectedIndex];

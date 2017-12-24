@@ -1,0 +1,18 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/cloudResources/v1/operationalEnvironments/ENV-UUID/deactivate"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 202,
+    "responseHeaders": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "requestReferences": {
+        "instanceId": "ENV-UUID",
+        "requestId": "dbe54591-c8ed-46d3-abc7-d3a24873dfbd"
+      }
+    }
+  }
+}

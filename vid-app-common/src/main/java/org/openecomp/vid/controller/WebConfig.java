@@ -46,6 +46,7 @@ public class WebConfig {
 
 
 
+
     @Bean
     public VidService vidService(AsdcClient asdcClient) {
         return new VidServiceImpl(asdcClient);

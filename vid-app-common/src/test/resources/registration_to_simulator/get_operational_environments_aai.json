@@ -1,12 +1,12 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v11/aai/cloud-infrastructure/operational-environments"
+    "path": "/aai/v../cloud-infrastructure/operational-environments"
   } ,
   "simulatorResponse": {
     "responseCode": 200,
     "body": {
-      "results":[{
+      "operational-environment":[{
         "operational-environment-id": "UUID_of_Operational_Environment",
         "operational-environment-name": "Op Env Name",
         "operational-environment-type": "VNF",
@@ -14,24 +14,26 @@
         "tenant-context": "Test",
         "workload-context": "VNF_Development",
         "resource-version": "1505228226913",
-        "relationship-list": [
-          {
-            "related-to": "operational-environment",
-            "related-link": "string",
-            "relationship-data": [
-              {
-                "relationship-key": "operational-environment.operational-environment-id",
-                "relationship-value": "UUID of the ECOMP Operational Environment"
-              }
-            ],
-            "related-to-property": [
-              {
-                "property-key": "operational-environment.operational-name",
-                "property-value": "Name of the ECOMP Operational Environment"
-              }
-            ]
-          }
-        ]
+        "relationship-list": {
+          "relationship": [
+            {
+              "related-to": "operational-environment",
+              "related-link": "string",
+              "relationship-data": [
+                {
+                  "relationship-key": "operational-environment.operational-environment-id",
+                  "relationship-value": "UUID of the ECOMP Operational Environment"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "operational-environment.operational-name",
+                  "property-value": "Name of the ECOMP Operational Environment"
+                }
+              ]
+            }
+          ]
+        }
       },
         {
           "operational-environment-id": "UUID of ECOMP Operational Environment",

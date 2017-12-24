@@ -24,7 +24,7 @@ public class SideMenu {
     private static void navigateToPage(String PageName) {
         boolean findAndWaitByText = GeneralUIUtils.findAndWaitByText(PageName, 30);
         Assert.assertTrue(findAndWaitByText);
-        GeneralUIUtils.clickOnElementByText(PageName, 30);
+        GeneralUIUtils.clickOnElementByText(PageName, 150);
         GeneralUIUtils.ultimateWait();
     }
 }

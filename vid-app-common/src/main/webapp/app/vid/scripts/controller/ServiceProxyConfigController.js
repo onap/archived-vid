@@ -99,6 +99,15 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                 })
 
                 .then(function () {
+                    var requestParams = {
+                        configurationModelInfo: DataService.getModelInfo(COMPONENT.VNF),
+                        relatedTopModelsInfo: DataService.getModelInfo(COMPONENT.SERVICE),
+                        portMirroringConfigFields: DataService.getPortMirroningConfigFields(),
+                        attuuid: DataService.getLoggedInUserId(),
+                        topServiceInstanceId: DataService.getServiceInstanceId(),
+                        callbackFunction: updateViewCallbackFunction
+                    };
+
                     modalInstance = $uibModal.open({
                         templateUrl: 'app/vid/scripts/modals/mso-commit/mso-commit.html',
                         controller : "msoCommitModalController",
@@ -107,9 +116,10 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                             msoType: function () {
                                 return COMPONENT.MSO_CREATE_REQ;
                             },
-                            componentId: function () {
-                                return COMPONENT.VNF;
-                            }}
+                            requestParams: function () {
+                                return requestParams;
+                            }
+                        }
                     });
                 })
                 .catch(function (error) {
@@ -130,6 +140,32 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
 
         $scope.cancel = function()  {
             modalInstance.dismiss('cancel');
+        };
+
+        var updateViewCallbackFunction = function(response) {
+            $scope.callbackResults = "";
+            var color = FIELD.ID.COLOR_NONE;
+            $scope.callbackStyle = {
+                "background-color" : color
+            };
+
+            /*
+             * This 1/2 delay was only added to visually highlight the status
+             * change. Probably not needed in the real application code.
+             */
+            $timeout(function() {
+                $scope.callbackResults = UtilityService.getCurrentTime()
+                    + FIELD.STATUS.IS_SUCCESSFUL + response.isSuccessful;
+                if (response.isSuccessful) {
+                    color = FIELD.ID.COLOR_8F8;
+                    $window.history.go(-2);
+                } else {
+                    color = FIELD.ID.COLOR_F88;
+                }
+                $scope.callbackStyle = {
+                    "background-color" : color
+                };
+            }, 500);
         };
 
         var sourceServiceProxies = DataService.getSourceServiceProxies();

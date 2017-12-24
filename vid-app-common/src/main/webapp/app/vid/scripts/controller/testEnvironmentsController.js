@@ -29,7 +29,7 @@
 
         function handleEnvActionComplete(result) {
             if (result.isSuccessful) {
-                vm.loadMSOTestEnvironments();
+                vm.loadAAIestEnvironments();
             }
             $scope.popup.isVisible = false;
         }
@@ -45,7 +45,7 @@
             modalInstance.result.then(function (result) {
                 if (result) {
 
-                    var relatedEcompEnv = _.find(testEnv.relationshipList, { relatedTo: "operational-environment" });
+                    var relatedEcompEnv = _.find(testEnv.relationshipList.relationship, { relatedTo: "operational-environment" });
 
                     var manifest = result;
                     var envId = testEnv.operationalEnvironmentId;

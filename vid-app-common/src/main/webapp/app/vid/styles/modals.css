@@ -1,14 +1,14 @@
 @font-face {
     font-family: OpenSans-Light;
-    src: url("/app/vid/styles/fonts/OpenSans/OpenSans-Light.ttf") format('truetype');
+    src: url("fonts/OpenSans/OpenSans-Light.ttf") format('truetype');
 }
 @font-face {
     font-family: OpenSans-Regular;
-    src: url("/app/vid/styles/fonts/OpenSans/OpenSans-Regular.ttf") format('truetype');
+    src: url("fonts/OpenSans/OpenSans-Regular.ttf") format('truetype');
 }
 @font-face {
     font-family: OpenSans-Semibold;
-    src: url("/app/vid/styles/fonts/OpenSans/OpenSans-Semibold.ttf") format('truetype');
+    src: url("fonts/OpenSans/OpenSans-Semibold.ttf") format('truetype');
 }
 
 .modal-header * {

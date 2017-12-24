@@ -31,6 +31,9 @@ public class Constants {
     public static final String VIEW_EDIT_TEST_ID_PREFIX = "view/edit-test-data-id-";
     public static final String INSTANCE_ID_FOR_NAME_TEST_ID_PREFIX = "instance-id-for-name-";
     public static final String MULTI_SELECT_UNSELECTED_CLASS = "item-unselected";
+    public static final String ACTIVE = "Active";
+    public static final String INACTIVE = "Inactive";
+
 
     public static final String PNF_SERVICE_TYPE = "pnf";
 
@@ -60,6 +63,7 @@ public class Constants {
         public static final String newModalFromVNFVersionInputId = "fromVNFVersion";
         public static final String newModalVNFNameInputId = "vnfName";
         public static final String newModalWorkFlowInputId = "workflow";
+        public static final String newModalTargetVersionInputsClass = "vnf-versions-select-as-text";
 
 
         //Scheduler
@@ -148,6 +152,7 @@ public class Constants {
         public static final String CANCEL_BUTTON = "cancel-button";
         public static final String MODAL_CLOSE_BUTTON_CLASS = "modal-close";
         public static final String POPUP_ERROR_MESSAGE = "test-new-environment-error";
+        public static final String environmentCreatedSuccesfullyMessage = "Operational Environment successfully created";
 
         // json content
         public static final String HEADERS_LIST = "headers";
@@ -162,6 +167,7 @@ public class Constants {
         public static final String activateButtonIdPrefix = "testEnvActivate-";
         public static final String deactivateButtonIdPrefix = "testEnvDeactivate-";
         public static final String environmentStatusIdPrefix = "testEnvStatus-";
+        public static final String attachButtonIdPrefix = "testEnvAttach-";
     }
 
     public class Modals {
@@ -231,7 +237,55 @@ public class Constants {
         public static final String DELETE_VF_MODULE_BUTTON_TEST_ID = "deleteVFModuleButton";
         public static final String DELETE_VNF_VOLUME_GROUP_BUTTON_TEST_ID = "deleteVNFVolumeGroupButton";
         public static final String ACTIVATE_BUTTON_TEST_ID = "activateButton";
+        public static final String OPTION_IN_DROPDOWN_NOT_EXISTS = "the option %s in dropdown %s not exists";
+        public static final String DISSOCIATE_BTN_CLASS = "dissociate-pnf";
+        public static final String DISSOCIATE_CONFIRM_MODAL_TEXT = "Are you sure you would like to dissociate %s from the service instance?";
+        public static final String DEACTIVATE_BUTTON_TEST_ID = "deactivateButton";
+        public static final String ENABLE_ERROR_MESSAGE = "The %s option should not be enabled";
+        public static final String DISABLE_ERROR_MESSAGE = "The %s option should be enabled";
+        public static final String DISSOCIATE_CONFIRM_MODAL_BTN_ID = "ok-button";
 
+    }
+    public class PnfAssociation {
+        public static final String PNF_NAME_TEST_ID = "pnfName";
+        public static final String SEARCH_PNF_TEST_ID = "searchPnf";
+        public static final String ASSOCIATE_PNF_TEST_ID = "associatePnf";
+        public static final String PNF_ENABLE_ASSOCIATE_ERROR_MESSAGE = "The Associate option not enabled";
+        public static final String PNF_DISABLE_ASSOCIATE_ERROR_MESSAGE = "The Associate option enabled when pnf is not found";
+        public static final String PNF_ASSOCIATED_SUCCESSFULLY_TEXT = "COMPLETE - PNF has been associated successfully.";
+        public static final String PNF_ASSOCIATED_FAILED_MESSAGE = "failed to associate PNF to service instance";
+        public static final String NOT_FOUND_ERROR_TEST_ID = "pnfNotFoundErrorMessage";
+        public static final String NOT_FOUND_ERROR_MESSAGE = "Errorn with the error messge not found PNF";
+
+        public static final String MSO_MODAL_TEST_ID = "msoPopup";
+        public static final String MSO_MODAL_STATUS_TEST_ID = "msoRequestStatus";
+        //pnf properties
+        public static final String PNF_INSTANCE_NAME_TEST_ID = "pnfInstancePnfName";
+        public static final String PNF_INSTANCE_NAME2_TEST_ID = "pnfInstancePnfName2";
+        public static final String PNF_INSTANCE_NAME2_SOURCE_TEST_ID = "pnfInstancePnfName2Source";
+        public static final String PNF_INSTANCE_ID_TEST_ID = "pnfInstancePnfId";
+        public static final String PNF_INSTANCE_EQUIP_TYPE_TEST_ID = "pnfInstanceEquipType";
+        public static final String PNF_INSTANCE_EQUIP_VENDOR_TEST_ID = "pnfInstanceEquipVendor";
+        public static final String PNF_INSTANCE_EQUIP_MODEL_TEST_ID = "pnfInstanceEquipModel";
+        public static final String PNF_INSTANCE_ERROR_MESSAGE = "The PNF Instance info %s does not match";
+
+    }
+    public class serviceModelInfo{
+        public static final String INFO_TEST_ID_PREFIX = "info-test-data-id-";
+        public static final String SERVIICE_NAME_KEY = "ServiceName";
+        public static final String SUBSCRIBER_NAME_KEY = "SubscriberName";
+        public static final String SERVICE_INSTANCE_NAME = "ServiceInstanceName";
+        public static final String MODEL_NAME = "ModelName";
+        public static final String MODEL_INVARIANT_UUID = "ModelInvariantUUID";
+        public static final String MODEL_VERSION = "ModelVersion";
+        public static final String MODEL_UUID = "ModelUUID";
+        public static final String MODEL_CUSTOMIZATION_UUID = "ModelCustomizationUUID";
+        public static final String RESOURCE_NAME = "ResourceName";
+        public static final String NF_TYPE = "NFType";
+        public static final String NF_ROLE = "NFRole";
+        public static final String NF_FUNCTION = "NFFunction";
+        public static final String NF_NAMING_CODE = "NFNamingCode";
+        public static final String METADETA_ERROR_MESSAGE = "The service model info %s does not match";
     }
 
     public class OwningEntity {
@@ -246,5 +300,44 @@ public class Constants {
         public static final String USP_VOICE_VIRTUAL_USP = "uspVoiceVirtualUsp";
         public static final String MOBILITY_MOBILITY = "mobilityMobility";
         public static final String SUPRE_USER = "su";
+    }
+
+    public class RegisterToSimulator {
+
+        //separated simulated json files according to pages
+        public class SearchForServiceInstance {
+            public static final String GET_FULL_SUBSCRIBERS = "search_for_service_instance/aai_get_full_subscribers.json";
+            public static final String GET_SERVICES = "search_for_service_instance/aai_get_services.json";
+            public static final String FILTER_SERVICE_INSTANCE_BY_ID = "search_for_service_instance/aai_filter_service_instance_by_id.json";
+            public static final String FILTER_SERVICE_INSTANCE_BY_ID_2 = "search_for_service_instance/aai_filter_service_instance_by_id_2.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER = "search_for_service_instance/aai_get_subscribers_for_customer.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_2 = "search_for_service_instance/aai_get_subscribers_for_customer_2.json";
+            public static final String NAMED_QUERY_VIEW_EDIT = "search_for_service_instance/aai_named_query_for_view_edit.json";
+            public static final String NAMED_QUERY_VIEW_EDIT_2 = "search_for_service_instance/aai_named_query_for_view_edit_2.json";
+        }
+
+        public class pProbe {
+            public static final String GET_SERVICE_INSTANCE_WITH_LOGICAL_LINKS = "pProbe/aai_get_service_instance_with_logical_links.json";
+            public static final String GET_LOGICAL_LINK = "pProbe/aai_get_logical_link.json";
+            public static final String GET_SPECIFIC_PNF = "pProbe/aai_get_specific_pnf.json";
+            public static final String GET_SPECIFIC_PNF_ERROR = "pProbe/aai_get_specific_pnf_error.json";
+            public static final String ADD_PNF_RELATIONSHIP = "pProbe/mso_add_pnf_relationship.json";
+            public static final String ADD_PNF_RELATIONSHIP_ERROR = "pProbe/mso_add_pnf_relationship_error.json";
+            public static final String GET_ADD_PNF_RELATIONSHIP_ORCH_REQ = "pProbe/mso_get_add_relationship_orch_req.json";
+            public static final String REMOVE_PNF_RELATIONSHIP = "pProbe/mso_remove_pnf_relationship.json";
+            public static final String GET_REMOVE_PNF_RELATIONSHIP_ORCH_REQ = "pProbe/mso_get_remove_relationship_orch_req.json";
+            public static final String REMOVE_PNF_RELATIONSHIP_ERROR = "pProbe/mso_remove_pnf_relationship_error.json";
+        }
+
+        public class activateDeactivate{
+            public static final String AAI_GET_SERVICE_INSTANCE = "activateDeactivate/aai_get_service_instance.json";
+            public static final String ACTIVATE_SERVICE_INSTANCE = "activateDeactivate/mso_activate_service_instance.json";
+            public static final String ACTIVATE_SERVICE_INSTANCE_ERROR = "activateDeactivate/mso_activate_service_instance_error.json";
+            public static final String ACTIVATE_SERVICE_INSTANCE_ORCH_REQUEST = "activateDeactivate/mso_activate_service_instance_orch_req.json";
+        }
+
+        public class genericRequest{
+            public static final String ECOMP_PORTAL_GET_SESSION_SLOT_CHECK_INTERVAL = "ecompportal_getSessionSlotCheckInterval.json";
+        }
     }
 }

@@ -1,0 +1,27 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/ecomp/mso/infra/orchestrationRequests/v5/b6dc9806-b094-42f7-9386-a48de8218ce8"
+  } ,
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "request": {
+          "requestId": "b6dc9806-b094-42f7-9386-a48de8218ce8",
+          "startTime": "Mon, 23 Oct 2017 23:28:39 GMT",
+          "requestScope": "service",
+          "requestType": "<ACTIVE_ACTION>",
+          "instanceReferences": {
+            "serviceInstanceId": "3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+            "requestorId": "1"
+          },
+          "requestStatus": {
+            "requestState": "COMPLETE",
+            "statusMessage": "Success",
+            "percentProgress": 100,
+            "finishTime": "Mon, 23 Oct 2017 23:28:39 GMT"
+          }
+        }
+      }
+    }
+  }

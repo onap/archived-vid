@@ -1,6 +1,5 @@
 package org.openecomp.vid.aai;
 
-import com.google.common.collect.ImmutableMap;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -16,8 +15,11 @@ import org.openecomp.vid.aai.model.Relationship;
 import org.openecomp.vid.aai.model.RelationshipData;
 import org.openecomp.vid.aai.model.RelationshipList;
 
+import org.openecomp.vid.aai.model.AaiGetPnfs.Pnf;
+import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
+import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.openecomp.vid.aai.model.LogicalLinkResponse;
 import org.openecomp.vid.aai.model.OwningEntityResponse;
-import org.openecomp.vid.aai.model.Project;
 import org.openecomp.vid.aai.model.ProjectResponse;
 import org.openecomp.vid.aai.model.Relationship;
 import org.openecomp.vid.aai.model.RelationshipData;
@@ -25,10 +27,10 @@ import org.openecomp.vid.aai.model.RelationshipList;
 import org.openecomp.vid.aai.model.ServiceRelationships;
 import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.openecomp.vid.aai.model.*;
 import org.openecomp.vid.model.SubscriberList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.UriUtils;
-
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.BadRequestException;
@@ -104,10 +106,33 @@ public class AaiClient implements AaiClientInterface {
     @Override
     public AaiResponse getServiceModelsByDistributionStatus() {
         File certiPath = getCertificatesFile();
-        Response resp = doAaiPut(certiPath.getAbsolutePath(), "service-design-and-creation/models", getServiceModelsResponseBody, false);
+        Response resp = doAaiPut(certiPath.getAbsolutePath(), "query?format=resource", getServiceModelsResponseBody, false);
         AaiResponse aaiResponse = proccessAaiResponse(resp, GetServiceModelsByDistributionStatusResponse.class, null);
 
         return aaiResponse;
+    }
+
+    @Override
+    public AaiResponse<Pnf> getSpecificPnf(String pnfId) {
+        File certiPath = getCertificatesFile();
+        Response resp = doAaiGet(certiPath.getAbsolutePath(), "network/pnfs/pnf/"+pnfId, false);
+        AaiResponse aaiResponse = proccessAaiResponse(resp, Pnf.class, null);
+
+        return aaiResponse;
+    }
+
+    public AaiResponse getServiceInstance(String globalCustomerId, String serviceType, String serviceInstanceId) {
+        String certiPath = getCertificatesFile().getAbsolutePath();
+        String getServiceInstancePath = "business/customers/customer/"+globalCustomerId+"/service-subscriptions/service-subscription/"+serviceType+"/service-instances/service-instance/"+serviceInstanceId;
+        Response resp = doAaiGet(certiPath , getServiceInstancePath , false);
+        return proccessAaiResponse(resp, ServiceRelationships.class, null);
+    }
+
+    @Override
+    public AaiResponse getLogicalLink(String link) {
+        String certiPath = getCertificatesFile().getAbsolutePath();
+        Response resp = doAaiGet(certiPath , "network/logical-links/logical-link/" + link , false);
+        return proccessAaiResponse(resp, LogicalLinkResponse.class, null);
     }
 
     private String getUrlFromLIst(String url, String paramKey, List<String> params){
@@ -211,7 +236,7 @@ public class AaiClient implements AaiClientInterface {
     @Override
     public AaiResponse getServices() {
         File certiPath = getCertificatesFile();
-        Response resp = doAaiPut(certiPath.getAbsolutePath(), "service-design-and-creation/services", getServiceModelsResponseBody,false);
+        Response resp = doAaiGet(certiPath.getAbsolutePath(), "service-design-and-creation/services", false);
         AaiResponse<GetServicesAAIRespone> getServicesResponse = proccessAaiResponse(resp, GetServicesAAIRespone.class, null);
 
         return getServicesResponse;
@@ -220,7 +245,7 @@ public class AaiClient implements AaiClientInterface {
     @Override
     public AaiResponse getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus) {
         File certiPath = getCertificatesFile();
-        String url = "aai/cloud-infrastructure/operational-environments";
+        String url = "cloud-infrastructure/operational-environments";
         URIBuilder urlBuilder  = new URIBuilder();
         if (operationalEnvironmentType != null)
             urlBuilder.addParameter("operational-environment-type", operationalEnvironmentType);
@@ -256,51 +281,16 @@ public class AaiClient implements AaiClientInterface {
 
         String certiPath = getCertificatesFile().getAbsolutePath();
 
-        String payload1 = "{\"start\": [\"/business/customers/customer/" + globalCustomerId +
+        String payload1 = "{\"start\": \"/business/customers/customer/" + globalCustomerId +
                 "/service-subscriptions/service-subscription/" + serviceType +
                 "/service-instances?model-version-id=" + modelVersionId +
-                "&model-invariant-id="+modelInvariantId + "\"],	" +
-                "\"query\": \"query/vnfFromModelbyRegion?cloudRegionId="+cloudRegion+"\"}";
+                "&model-invariant-id="+modelInvariantId + "\",	" +
+                "\"query\": \"query/queryvnfFromModelbyRegion?cloudRegionId="+cloudRegion+"\"}";
 
         Response resp1 = doAaiPut(certiPath, "query?format=simple", payload1, false);
         AaiResponse aaiResponse1 = proccessAaiResponse(resp1, AaiGetVnfResponse.class, null);
-
-        if (aaiResponse1.getHttpCode() != HttpStatus.SC_OK) {
-            // return error
-            return aaiResponse1;
-        }
-
-        AaiGetVnfResponse response1T = (AaiGetVnfResponse) aaiResponse1.getT();
-        if (response1T.results.size() > 0) {
-
-            String payload2 = "{\"start\": [\"" +
-                    "/network/generic-vnfs\"],	" +
-                    "\"query\": \"query/vnfFromModelbyRegion?cloudRegionId=" + cloudRegion + "\"}";
-
-            Response resp2 = doAaiPut(certiPath, "query?format=simple", payload2, false);
-            AaiResponse aaiResponse2 = proccessAaiResponse(resp2, AaiGetVnfResponse.class, null);
-
-            if (aaiResponse2.getHttpCode() != HttpStatus.SC_OK) {
-                // return error
-                return aaiResponse2;
-            }
-
-            AaiGetVnfResponse response2T = (AaiGetVnfResponse) aaiResponse2.getT();
-            Map<String, VnfResult> genericVnfResultMap = response2T.results.stream().collect(Collectors.toMap(vnf -> vnf.id, vnf -> vnf));
-
-            List<VnfResult> filteredGenericVnfResultMap = response1T.results.stream()
-                    .flatMap(vnf -> vnf.relatedTo.stream())          // check all the 'related-to'
-                    .filter(o -> "generic-vnf".equals(o.nodeType))
-                    .map(o -> o.id)                                  // take only the 'id' of any 'generic vnf'
-                    .filter(genericVnfResultMap::containsKey)        // lookup for the id in the whole list of vnfs
-                    .map(genericVnfResultMap::get)
-                    .collect(Collectors.toList());
-
-            return new AaiResponse<>(ImmutableMap.of("results", filteredGenericVnfResultMap), null, HttpStatus.SC_OK);
-        } else {
-            // empty list as result
-            return new AaiResponse<>(ImmutableMap.of("results", new VnfResult[]{}), null, HttpStatus.SC_OK);
-        }
+        logger.debug(EELFLoggerDelegate.debugLogger, "getNodeTemplateInstances AAI's response: {}", aaiResponse1);
+        return aaiResponse1;
     }
 
     private AaiResponse proccessAaiResponse(Response resp, Class classType, String responseBody) {
@@ -343,7 +333,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @SuppressWarnings("all")
-    protected Response doAaiGet(String certiPath, String uri, boolean xml) {
+    public Response doAaiGet(String certiPath, String uri, boolean xml) {
         String methodName = "doAaiGet";
         String transId = UUID.randomUUID().toString();
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");

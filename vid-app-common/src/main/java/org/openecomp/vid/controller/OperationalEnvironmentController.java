@@ -1,5 +1,8 @@
 package org.openecomp.vid.controller;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import org.apache.commons.lang3.StringUtils;
@@ -20,12 +23,21 @@ import org.openecomp.vid.mso.rest.RequestDetails;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.att.eelf.configuration.Configuration.MDC_KEY_REQUEST_ID;
 import static org.openecomp.vid.utils.Logging.getMethodCallerName;
@@ -39,6 +51,8 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
     private final static EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(OperationalEnvironmentController.class);
     private final RestMsoImplementation restMso;
     private final MsoBusinessLogic msoBusinessLogic;
+
+    private final static Pattern RECOVERY_ACTION_MESSAGE_PATTERN = Pattern.compile("String value \'(.*)\': value not");
 
 
     @Autowired
@@ -65,6 +79,11 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
                                         @RequestBody OperationalEnvironmentActivateBody activateRequest) throws Exception {
 
         verifyIsNotEmpty(operationalEnvironmentId, "operationalEnvironment");
+
+        //manifest is null in case of wrong manifest structure (deserialization failure of the manifest)
+        if (activateRequest.getManifest()==null || activateRequest.getManifest().getServiceModelList()==null) {
+            throw new BadManifestException("Manifest structure is wrong");
+        }
 
         String userId = ControllersUtils.extractUserId(request);
 
@@ -120,20 +139,13 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value=INTERNAL_SERVER_ERROR)
     private ExceptionResponse exceptionHandler(Exception e) {
-        LOGGER.error(EELFLoggerDelegate.errorLogger, "{}: {}", getMethodName(), ExceptionUtils.getMessage(e), e);
-
-        ExceptionResponse exceptionResponse = new ExceptionResponse();
-
-        exceptionResponse.setException(e.getClass().toString().replaceFirst("^.*\\.", ""));
-        exceptionResponse.setMessage(e.getMessage() + " (Request id: " + MDC.get(MDC_KEY_REQUEST_ID) + ")");
-
-        return exceptionResponse;
+        return ControllersUtils.handleException(e, LOGGER);
     }
 
 
     @ExceptionHandler({
-            org.springframework.http.converter.HttpMessageNotReadableException.class,
-            org.springframework.web.bind.MissingServletRequestParameterException.class
+            org.springframework.web.bind.MissingServletRequestParameterException.class,
+            BadManifestException.class
     })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ExceptionResponse clientDerivedExceptionAsBadRequest(Exception e) {
@@ -141,16 +153,100 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
         return exceptionHandler(e);
     }
 
+    @ExceptionHandler({
+            org.springframework.http.converter.HttpMessageNotReadableException.class,
+    })
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handlingHttpMessageNotReadableException(Exception e) {
+        LOGGER.error(EELFLoggerDelegate.errorLogger, "{}: {}", getMethodName(), ExceptionUtils.getMessage(e), e);
+        //in case of wrong value in manifest for RecoveryAction the message contains the class name.
+        //The wrong value is in also part of this messages
+        //within the pattern of: String value '<WRONG_VALUE>': value not
+        //so we use regex to find the wrong value
+        if (e.getMessage().contains(OperationalEnvironmentRecoveryAction.class.getName())) {
+
+            String message = "Wrong value for RecoveryAction in manifest. Allowed options are: "+OperationalEnvironmentRecoveryAction.options;
+
+            Matcher matcher = RECOVERY_ACTION_MESSAGE_PATTERN.matcher(e.getMessage());
+            if (matcher.find()) {
+                String wrongValue = matcher.group(1);
+                message = message+". Wrong value is: "+wrongValue;
+            }
+            return new ExceptionResponse(new BadManifestException(message));
+        }
+        return exceptionHandler(e);
+    }
+
+
+    public enum OperationalEnvironmentRecoveryAction {
+        abort,
+        retry,
+        skip;
+
+        public final static String options = Stream.of(OperationalEnvironmentRecoveryAction.values()).map(OperationalEnvironmentRecoveryAction::name).collect(Collectors.joining(", "));
+    }
+
+    public static class ActivateServiceModel {
+        private String serviceModelVersionId;
+        private OperationalEnvironmentRecoveryAction recoveryAction;
+
+        public ActivateServiceModel() {
+        }
+
+        public ActivateServiceModel(String serviceModelVersionId, OperationalEnvironmentRecoveryAction recoveryAction) {
+            this.serviceModelVersionId = serviceModelVersionId;
+            this.recoveryAction = recoveryAction;
+        }
+
+        public String getServiceModelVersionId() {
+            return serviceModelVersionId;
+        }
+
+        public void setServiceModelVersionId(String serviceModelVersionId) {
+            this.serviceModelVersionId = serviceModelVersionId;
+        }
+
+        public OperationalEnvironmentRecoveryAction getRecoveryAction() {
+            return recoveryAction;
+        }
+
+        public void setRecoveryAction(OperationalEnvironmentRecoveryAction recoveryAction) {
+            this.recoveryAction = recoveryAction;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class OperationalEnvironmentManifest {
+
+
+        private List<ActivateServiceModel> serviceModelList;
+
+        public OperationalEnvironmentManifest() {
+        }
+
+        public OperationalEnvironmentManifest(List<ActivateServiceModel> serviceModelList) {
+            this.serviceModelList = serviceModelList;
+        }
+
+        public List<ActivateServiceModel> getServiceModelList() {
+            return serviceModelList;
+        }
+
+        public void setServiceModelList(List<ActivateServiceModel> serviceModelList) {
+            this.serviceModelList = serviceModelList;
+        }
+    }
+
     public static class OperationalEnvironmentActivateBody {
         private final String relatedInstanceId;
         private final String relatedInstanceName;
         private final String workloadContext;
-        private final Object manifest;
+        private final OperationalEnvironmentManifest manifest;
 
         public OperationalEnvironmentActivateBody(@JsonProperty(value = "relatedInstanceId", required = true) String relatedInstanceId,
                                                   @JsonProperty(value = "relatedInstanceName", required = true) String relatedInstanceName,
                                                   @JsonProperty(value = "workloadContext", required = true) String workloadContext,
-                                                  @JsonProperty(value = "manifest", required = true) Object manifest) {
+                                                  @JsonProperty(value = "manifest", required = true) OperationalEnvironmentManifest manifest) {
             this.relatedInstanceId = relatedInstanceId;
             this.relatedInstanceName = relatedInstanceName;
             this.workloadContext = workloadContext;
@@ -170,7 +266,7 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
             return workloadContext;
         }
 
-        public Object getManifest() {
+        public OperationalEnvironmentManifest getManifest() {
             return manifest;
         }
 
@@ -255,6 +351,12 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
     private void verifyIsNotEmpty(String fieldValue, String fieldName) throws MissingServletRequestParameterException {
         if (StringUtils.isEmpty(fieldValue)) {
             throw new MissingServletRequestParameterException(fieldName, "String");
+        }
+    }
+
+    public static class BadManifestException extends RuntimeException {
+        public BadManifestException(String message) {
+            super(message);
         }
     }
 

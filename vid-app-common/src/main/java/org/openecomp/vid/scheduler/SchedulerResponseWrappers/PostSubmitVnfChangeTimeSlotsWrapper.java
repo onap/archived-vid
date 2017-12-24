@@ -29,10 +29,15 @@ public class PostSubmitVnfChangeTimeSlotsWrapper extends SchedulerResponseWrappe
         return ToStringBuilder.reflectionToString(this);
     }
 
-    public String getResponse () {
+public String getResponse () {
     	
     	StringBuilder b = new StringBuilder ("{ \"status\": ");
-    	b.append(getStatus()).append(", \"entity\": \" " ).append(this.getEntity()).append("\" ,\"uuid\": \"" ).append(this.getUuid()).append("\"}");
+    	
+    	if(this.getEntity().equals("") || this.getEntity() == "") {
+    		this.setEntity("null");//to keep json format when response arrive at UI
+    	}
+    	
+    	b.append(getStatus()).append(" ,\"uuid\": \"" ).append(this.getUuid()).append("\", \"entity\": " ).append(this.getEntity()).append("}");
     	return (b.toString());
-    }	
+    }
 }

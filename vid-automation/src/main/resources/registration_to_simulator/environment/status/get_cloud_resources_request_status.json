@@ -16,7 +16,7 @@
           "operationalEnvironmentInstanceId": "bc305d54-75b4-431b-adb2-eb6b9e546014"
         },
         "requestScope": "operationalEnvironment",
-        "requestType": "deactivate",
+        "requestType": "REQUEST-TYPE",
         "requestDetails": {
           "requestInfo": {
             "resourceType": "operationalEnvironment",

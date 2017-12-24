@@ -11,11 +11,10 @@ import org.openecomp.vid.asdc.beans.Service;
 import org.openecomp.vid.model.*;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 public class ToscaParserImpl2 {
 
@@ -56,6 +55,7 @@ public class ToscaParserImpl2 {
         serviceModel.setConfigurations(extractPortMirroringConfigFromCsar(sdcCsarHelper));
         serviceModel.setServiceProxies(extractServiceProxyFromCsar(sdcCsarHelper));
         serviceModel.setNetworks(extractNetworksFromCsar(sdcCsarHelper));
+        serviceModel.setPnfs(extractPnfsFromCsar(sdcCsarHelper));
         return serviceModel;
     }
 
@@ -139,7 +139,15 @@ public class ToscaParserImpl2 {
         portMirroringConfig.setSourceNodes(sourceNodes);
 
         List<String> collectorNodes = getRequirementsNodesNames(requirementAssignments.getRequirementsByName("collector").getAll());
-        portMirroringConfig.setCollectorNodes(collectorNodes);
+        if (!collectorNodes.isEmpty()) { // vprobe
+            portMirroringConfig.setCollectorNodes(collectorNodes);
+        } else { // pprobe - configuration by policy
+            String collectorNodeName = csarHelper.getNodeTemplatePropertyLeafValue(nodeTemplate, "collector_node");
+            if (collectorNodeName != null) {
+                portMirroringConfig.setCollectorNodes(Arrays.asList(collectorNodeName));
+                portMirroringConfig.setConfigurationByPolicy(true);
+            }
+        }
     }
 
     private List<String> getRequirementsNodesNames(List<RequirementAssignment> requirements) {
@@ -152,24 +160,22 @@ public class ToscaParserImpl2 {
         return requirementsNodes;
     }
 
-    private Map<String, VfModule> getVfModulesFromVF(ISdcCsarHelper csarHelper, String vfUuid) {
-        Map<String,VfModule> vfModuleHashMap = new HashMap<String,VfModule>();
-        for (Group group : csarHelper.getVfModulesByVf(vfUuid)) {
-            vfModuleHashMap.put(group.getName(), populateVfModuleFromGroup(group));
-        }
-        return vfModuleHashMap;
+    Map<String, VfModule> getVfModulesFromVF(ISdcCsarHelper csarHelper, String vfUuid) {
+        List<Group> vfModulesByVf = csarHelper.getVfModulesByVf(vfUuid);
+        return vfModulesByVf.stream()
+                .filter((group -> !isVolumeGroup(group)))
+                .collect(toMap(Group::getName, this::populateVfModuleFromGroup));
     }
 
-    private Map<String, VolumeGroup> getVolumeGroupsFromVF(ISdcCsarHelper csarHelper, String vfCustomizationUuid) {
-        Map<String,VolumeGroup> volumeGroupMap = new HashMap<String,VolumeGroup>();
-        List<Group> groups = csarHelper.getVfModulesByVf(vfCustomizationUuid);
-        for (Group group : groups) {
-            boolean isVolumeGroup = Boolean.valueOf(group.getPropertyValue(Constants.volume_group).toString());
-            if (isVolumeGroup) {
-                volumeGroupMap.put(group.getName(), populateVolumeGroupFromGroup(group));
-            }
-        }
-        return volumeGroupMap;
+    Map<String, VolumeGroup> getVolumeGroupsFromVF(ISdcCsarHelper csarHelper, String vfCustomizationUuid) {
+        List<Group> vfModulesByVf = csarHelper.getVfModulesByVf(vfCustomizationUuid);
+        return vfModulesByVf.stream()
+                .filter((group -> isVolumeGroup(group)))
+                .collect(toMap(Group::getName, this::populateVolumeGroupFromGroup));
+    }
+
+    private static Boolean isVolumeGroup(Group group) {
+        return Boolean.valueOf(group.getPropertyValue(Constants.volume_group).toString());
     }
 
     private Map<String, Network> extractNetworksFromCsar(ISdcCsarHelper csarHelper) {
@@ -183,6 +189,18 @@ public class ToscaParserImpl2 {
             networksMap.put(nodeTemplate.getName(), newNetwork);
         }
         return networksMap;
+	}
+
+	private Map<String,Node> extractPnfsFromCsar(ISdcCsarHelper csarHelper) {
+        List<NodeTemplate> nodeTemplates = csarHelper.getServiceNodeTemplateBySdcType(SdcTypes.PNF);
+        HashMap<String, Node> pnfHashMap = new HashMap<>();
+
+        for (NodeTemplate nodeTemplate : nodeTemplates) {
+            Node pnf = new Node();
+            populateNodeFromNodeTemplate(nodeTemplate, csarHelper, pnf);
+            pnfHashMap.put(nodeTemplate.getName(), pnf);
+        }
+        return pnfHashMap;
     }
 
     private Map<String, VfModule> extractVfModuleFromCsar(ISdcCsarHelper csarHelper) {
@@ -236,7 +254,7 @@ public class ToscaParserImpl2 {
         vfModule.setCustomizationUuid(group.getMetadata().getValue(Constants.vfModuleModelCustomizationUUID));
         vfModule.setModelCustomizationName(group.getMetadata().getValue(Constants.vfModuleModelName));
         vfModule.setName(group.getMetadata().getValue(Constants.vfModuleModelName));
-        vfModule.setVolumeGroupAllowed(Boolean.valueOf((group.getPropertyValue(Constants.volume_group)).toString()));
+        vfModule.setVolumeGroupAllowed(isVolumeGroup(group));
         vfModule.setDescription(group.getDescription());
         vfModule.setInvariantUuid(group.getMetadata().getValue(Constants.vfModuleModelInvariantUUID));
         vfModule.setUuid(group.getMetadata().getValue(Constants.vfModuleModelUUID));

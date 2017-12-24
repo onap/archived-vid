@@ -4,6 +4,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.openecomp.vid.aai.AaiResponse;
 import org.openecomp.vid.aai.SubscriberFilteredResults;
+import org.openecomp.vid.aai.model.AaiGetPnfs.Pnf;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,5 +53,9 @@ public interface AaiService {
     Response getVersionByInvariantId(List<String> modelInvariantId);
 
     Collection<Service> getServicesByDistributionStatus();
+
+    AaiResponse<Pnf> getSpecificPnf(String pnfId);
+
+    List<String> getServiceInstanceAssociatedPnfs(String globalCustomerId, String serviceType, String serviceInstanceId);
 
 }

@@ -1,0 +1,185 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v11/business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL+USP/service-instances/service-instance/3f93c7cb-2fd0-4557-9514-e189b7b04f9d"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "service-instance-id": "3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+      "service-instance-name": "vid-test-444",
+      "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+      "model-version-id": "240376de-870e-48df-915a-31f140eedd2c",
+      "resource-version": "1500789244673",
+      "orchestration-status": "Active",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/c015cc0f-0f37-4488-aabf-53795fd93cd3",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "c015cc0f-0f37-4488-aabf-53795fd93cd3"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "fsd"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/0846287b-65bf-45a6-88f6-6a1af4149fac",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "0846287b-65bf-45a6-88f6-6a1af4149fac"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "kjkjk"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/9908b762-136f-4b1f-8eb4-ef670ef58bb4",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "9908b762-136f-4b1f-8eb4-ef670ef58bb4"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "uiui"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/543931f5-e50e-45a2-a69f-ab727e4c7f2f",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "543931f5-e50e-45a2-a69f-ab727e4c7f2f"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "sdfsdfdsf"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/25e84884-22d5-44c9-8212-cb459f63e0ba",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "25e84884-22d5-44c9-8212-cb459f63e0ba"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "sdada"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/013fb0ba-977b-496c-9faa-7f8e5f083eec",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "013fb0ba-977b-496c-9faa-7f8e5f083eec"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "gvb"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/06914296-cb46-4b62-9453-329a706a6cbb",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "06914296-cb46-4b62-9453-329a706a6cbb"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "lkllll"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/c55da606-cf38-42c7-bc3c-be8e23b19299",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "c55da606-cf38-42c7-bc3c-be8e23b19299"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "ss"
+              }
+            ]
+          },
+          {
+            "related-to": "generic-vnf",
+            "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/27cc0914-70be-453e-b552-3df6b1d6cda9",
+            "relationship-data": [
+              {
+                "relationship-key": "generic-vnf.vnf-id",
+                "relationship-value": "27cc0914-70be-453e-b552-3df6b1d6cda9"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "generic-vnf.vnf-name",
+                "property-value": "yh"
+              }
+            ]
+          },
+          {
+            "related-to": "logical-link",
+            "related-link": "/aai/v11/network/logical-links/logical-link/tesai372ve2%3Aae10%7Ctesaaisdgrbclz1a1%3Apo100",
+            "relationship-data": [
+              {
+                "relationship-key": "logical-link.link-name",
+                "relationship-value": "tesai372ve2:ae10|tesaaisdgrbclz1a1:po100"
+              }
+            ]
+          },
+          {
+            "related-to": "logical-link",
+            "related-link": "/aai/v11/network/logical-links/logical-link/SANITY6758cce9%3ALAG1992%7CSANITY6785cce9%3ALAG1961",
+            "relationship-data": [
+              {
+                "relationship-key": "logical-link.link-name",
+                "relationship-value": "SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

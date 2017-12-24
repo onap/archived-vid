@@ -126,7 +126,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 			showError(FIELD.ERROR.SYSTEM_FAILURE, UtilityService
 					.getHttpErrorMessage(response));
 		});
-	}
+	};
 
 	var handleInitialResponse = function(response) {
 		try {

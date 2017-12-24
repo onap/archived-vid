@@ -19,12 +19,12 @@
   -->
 <link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/mso-commit/mso-commit.css"/>
 
-<div class="modal-wrapper popupContents">
+<div class="modal-wrapper popupContents" data-tests-id="msoPopup">
 
     <div class="statusLine">
         <img src="app/vid/images/spinner.gif"
              ngx-visible="{{isSpinnerVisible}}"> </img> <label>Status:</label><span
-            class="status">{{status}}</span>
+            class="status" data-tests-id="msoRequestStatus">{{status}}</span>
     </div>
 
     <div class="feedback">
@@ -42,7 +42,7 @@
     <pre class="log">{{log}}</pre>
 
     <div class="buttonRow">
-        <button data-tests-id="msoCommitModalDialogCloseButton" data-ng-disabled="isProgressVisible"
-                class="cancel-btn blue" ng-click="close();">Close</button>
+        <button data-tests-id="msoCommitDialogCloseButton" ngx-enabled="{{isCloseEnabled}}" att-button size="small"
+                ng-click="close();">Close</button>
     </div>
 </div>

@@ -35,6 +35,7 @@ import org.openecomp.vid.aai.ServiceInstancesSearchResults;
 import org.openecomp.vid.aai.SubscriberData;
 import org.openecomp.vid.aai.SubscriberFilteredResults;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
+import org.openecomp.vid.aai.model.AaiGetPnfs.Pnf;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.openecomp.vid.model.VersionByInvariantIdsRequest;
 import org.openecomp.vid.roles.Role;
@@ -758,6 +759,34 @@ AaiController extends RestrictedBaseController {
 
         return convertResponseToResponseEntity(resp);
     }
+
+    @RequestMapping(value = "/aai_get_service_instance_pnfs/{globalCustomerId}/{serviceType}/{serviceInstanceId}", method = RequestMethod.GET)
+    public List<String> getServiceInstanceAssociatedPnfs(
+            @PathVariable("globalCustomerId") String globalCustomerId,
+            @PathVariable("serviceType") String serviceType,
+            @PathVariable("serviceInstanceId") String serviceInstanceId) {
+
+        return aaiService.getServiceInstanceAssociatedPnfs(globalCustomerId, serviceType, serviceInstanceId);
+    }
+
+    /**
+     * PNF section
+     */
+    @RequestMapping(value = "/aai_get_pnfs/pnf/{pnf_id}", method = RequestMethod.GET)
+    public ResponseEntity getSpecificPnf(@PathVariable("pnf_id") String pnfId) {
+        //logger.trace(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName(), pnfId);
+        AaiResponse<Pnf> resp;
+        ResponseEntity<Pnf> re;
+        try {
+            resp = aaiService.getSpecificPnf(pnfId);
+            re = new ResponseEntity<Pnf>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
+        } catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        //logger.trace(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), resp.getHttpCode());
+        return re;
+    }
+
 
     /**
      * Parses the for tenants.

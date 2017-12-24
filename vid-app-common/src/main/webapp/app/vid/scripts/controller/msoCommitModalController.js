@@ -21,7 +21,7 @@
 "use strict";
 
 var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeout, $window, $log,
-		MsoService, PropertyService, UtilityService, DataService, $uibModalInstance, msoType, componentId, vidService) {
+		MsoService, PropertyService, UtilityService, DataService, $uibModalInstance, msoType, requestParams, vidService) {
 
     $scope.isSpinnerVisible = true;
     $scope.isProgressVisible = true;
@@ -29,9 +29,11 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
     $scope.error = "";
     $scope.log = "";
     $scope.progressBarControl = {};
+    $scope.isCloseEnabled = false;
 
     var _this = this;
     _this.pollAttempts = 0;
+    _this.callbackFunction = requestParams.callbackFunction;
     _this.isMsoError = false;
 
 
@@ -138,7 +140,7 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
     };
 
     var updateViewAfterInitialResponse = function(response) {
-
+        $scope.isCloseEnabled = true;
         updateLog(response);
 
         _this.requestId = UtilityService.checkUndefined(FIELD.ID.REQUEST_ID,
@@ -149,72 +151,24 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
         $scope.status = FIELD.STATUS.IN_PROGRESS;
     };
 
-    _this.msoRequestType = msoType;
-    _this.componentId = componentId;
-
-    if (msoType === COMPONENT.MSO_CREATE_REQ &&
-        componentId === COMPONENT.VNF)  {
-
-        var vnfModelInfo = DataService.getModelInfo(COMPONENT.VNF);
-        var serviceModelInfo = DataService.getModelInfo(COMPONENT.SERVICE);
-        var portMirroringConfigFields = DataService.getPortMirroningConfigFields();
-        var attuuid = DataService.getLoggedInUserId();
-        var serviceInstanceId = DataService.getServiceInstanceId();
-        var serviceModel = vidService.getModel().service;
-
-        $log.debug("getModelInfo VNF", vnfModelInfo);
-        $log.debug("getModelInfo SERVICE", serviceModelInfo);
-        $log.debug("getPortMirroningConfigFields", portMirroringConfigFields);
-        $log.debug("getLoggedInUserId", attuuid);
-        // $log.debug("sourceInstance", $scope.sourceInstance);
-        // $log.debug("collectorInstance", $scope.collectorInstance);
-        $log.debug("getServiceInstanceId", serviceInstanceId);
-        $log.debug("vidService.getModel()", serviceModel);
-        $log.debug("vidService.getInstance()", vidService.getInstance());
-
-        MsoService.createConfigurationInstance(
-            vnfModelInfo,
-            portMirroringConfigFields, attuuid,
-            serviceModelInfo, serviceInstanceId
-        )
-            .then(function (response) {
-                successCallbackFunction(response);
-            })
-            .catch(function (error) {
-                errorCallbackFunction(error);
-            });
-    } else if (msoType === COMPONENT.MSO_CHANGE_STATUS_REQ &&
-        componentId === COMPONENT.CONFIGURATION) {
-
-        MsoService.toggleConfigurationStatus(
-            DataService.getServiceInstanceId(),
-            DataService.getConfigurationInstanceId(),
-            DataService.getConfigurationStatus(),
-            DataService.getModelInfo(COMPONENT.SERVICE),
-            DataService.getModelInfo(COMPONENT.CONFIGURATION)
-        ).then(function (response) {
-                successCallbackFunction(response);
-            })
-            .catch(function (error) {
-                errorCallbackFunction(error);
-            });
-    } else if (msoType === COMPONENT.MSO_CHANGE_STATUS_REQ &&
-        componentId === COMPONENT.PORT) {
-
-        MsoService.togglePortStatus(
-            DataService.getServiceInstanceId(),
-            DataService.getConfigurationInstanceId(),
-            DataService.getPortId(),
-            DataService.getPortStatus(),
-            DataService.getModelInfo(COMPONENT.SERVICE),
-            DataService.getModelInfo(COMPONENT.CONFIGURATION)
-        ).then(function (response) {
-                successCallbackFunction(response);
-            })
-            .catch(function (error) {
-                errorCallbackFunction(error);
-            });
-    }
+    var init = function(msoType) {
+        switch(msoType) {
+            case COMPONENT.MSO_CREATE_REQ:
+                return MsoService.createConfigurationInstance(requestParams);
+            case  COMPONENT.MSO_CHANGE_CONFIG_STATUS_REQ:
+                return MsoService.toggleConfigurationStatus(requestParams);
+            case COMPONENT.MSO_CHANGE_PORT_STATUS_REQ:
+                return MsoService.togglePortStatus(requestParams);
+            case COMPONENT.MSO_CREATE_REALATIONSHIP:
+                return MsoService.associatePnf(requestParams);
+            case COMPONENT.MSO_REMOVE_RELATIONSHIP:
+                return MsoService.dissociatePnf(requestParams);
+            case COMPONENT.MSO_ACTIVATE_SERVICE_REQ:
+                return MsoService.activateInstance(requestParams);
+            case COMPONENT.MSO_DEACTIVATE_SERVICE_REQ:
+                return MsoService.deactivateInstance(requestParams);
+        }
+    };
 
     var successCallbackFunction = function(response) {
         try {
@@ -239,6 +193,7 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
 
     var errorCallbackFunction = function (error) {
         UtilityService.setHttpErrorHandler(function(error) {
+            $scope.isCloseEnabled = true;
             _this.isMsoError = true;
             showError(FIELD.ERROR.SYSTEM_FAILURE, UtilityService
                 .getHttpErrorMessage(error));
@@ -247,12 +202,36 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
 
     $scope.close = function() {
         $uibModalInstance.dismiss('cancel');
-        if (msoType === COMPONENT.MSO_CREATE_REQ) {
-            $window.history.go(-2);
+
+        if (_this.timer !== undefined) {
+            $timeout.cancel(_this.timer);
+        }
+
+        if (angular.isFunction(_this.callbackFunction)) {
+            if ($scope.error === "") {
+                _this.callbackFunction({
+                    isSuccessful : true,
+                    instanceId : $scope.instanceId
+                });
+            } else {
+                _this.callbackFunction({
+                    isSuccessful : false
+                });
+            }
         }
     };
+
+    _this.msoRequestType = msoType;
+
+    init(_this.msoRequestType)
+        .then(function (response) {
+            successCallbackFunction(response);
+        })
+        .catch(function (error) {
+            errorCallbackFunction(error);
+        });
 };
 
 appDS2.controller("msoCommitModalController", [ "COMPONENT", "FIELD", "$scope", "$http", "$timeout",
-		"$window", "$log", "MsoService", "PropertyService", "UtilityService", "DataService", "$uibModalInstance", "msoType", "componentId", "vidService",
+		"$window", "$log", "MsoService", "PropertyService", "UtilityService", "DataService", "$uibModalInstance", "msoType", "requestParams", "vidService",
     msoCommitModalController ]);

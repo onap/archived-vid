@@ -30,6 +30,8 @@ import org.openecomp.vid.model.ServiceModel;
 import org.openecomp.vid.roles.Role;
 import org.openecomp.vid.roles.RoleProvider;
 import org.openecomp.vid.roles.RoleValidator;
+import org.openecomp.vid.services.AaiService;
+import org.openecomp.vid.services.AaiServiceImpl;
 import org.openecomp.vid.services.VidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,8 @@ public class VidController extends RestrictedBaseController {
 
 		service = vidService;
 	}
+	@Autowired
+	private AaiService aaiService;
 //	
 	/**
 	 * Gets the services.

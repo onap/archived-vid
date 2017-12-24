@@ -66,58 +66,6 @@ public class SchedulerController extends RestrictedBaseController {
     private SchedulerRestInterface restController;
 
 	/*
-     *
-	 *	GET SCHEDULER CONTROLLERS
-	 *
-	 */
-
-    @RequestMapping(value = "/get_time_slots/{scheduler_request}", method = RequestMethod.GET)
-    public ResponseEntity<String> getTimeSlots(HttpServletRequest request, @PathVariable("scheduler_request") String scheduler_request) throws Exception {
-    	
-    	Date startingTime = new Date();
-    	String startTimeRequest = requestDateFormat.format(startingTime);
-    	 
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println(startTimeRequest + " | Controller Scheduler GET : /get_time_slots/{scheduler_request} \n");
-        System.out.println("Original Request : \n " + scheduler_request + '\n');
-
-        String path = SystemProperties.getProperty(SchedulerProperties.SCHEDULER_GET_TIME_SLOTS) + scheduler_request;
-
-        GetTimeSlotsWrapper schedulerResWrapper = getTimeSlots(scheduler_request, path, scheduler_request);
-        
-        Date endTime = new Date();
-    	String endTimeRequest = requestDateFormat.format(endTime);
-        System.out.println(endTimeRequest + " | Controller Scheduler - GET\n");
-
-        return (new ResponseEntity<String>(schedulerResWrapper.getResponse(), HttpStatus.OK));
-
-    }
-
-    protected GetTimeSlotsWrapper getTimeSlots(String request, String path, String uuid) throws Exception {
-
-        try {
-            //STARTING REST API CALL AS AN FACTORY INSTACE
-            System.out.println("<== Get Time Slots Request START \n");
-
-            GetTimeSlotsRestObject<String> restObjStr = new GetTimeSlotsRestObject<String>();
-            String str = new String();
-
-            restObjStr.set(str);
-
-            restController.<String>Get(str, uuid, path, restObjStr);
-            GetTimeSlotsWrapper schedulerRespWrapper = SchedulerUtil.getTimeSlotsWrapResponse(restObjStr);
-
-            System.out.println("<== Get Time Slots Request END : Response = " + schedulerRespWrapper.getResponse() + '\n');
-
-            return schedulerRespWrapper;
-
-        } catch (Exception e) {
-            System.out.println("<== Get Time Slots Request ERROR : " + e.toString() + '\n');
-            throw e;
-        }
-    }
-
-	/*
 	 *
 	 *	POST SCHEDULER CONTROLLERS
 	 *
@@ -132,12 +80,11 @@ public class SchedulerController extends RestrictedBaseController {
 
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.println(startTimeRequest + " | Controller Scheduler POST : post_create_new_vnf_change \n");
-
+        logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        logger.info(startTimeRequest + " | Controller Scheduler POST : post_create_new_vnf_change \n");
+        
         //Generating uuid
         String uuid = UUID.randomUUID().toString();
-
-        scheduler_request.put("scheduleId", uuid);
-        System.out.println("<== UUID : " + uuid + '\n');
 
         //adding uuid to the request payload
         scheduler_request.put("scheduleId", uuid);
@@ -145,6 +92,9 @@ public class SchedulerController extends RestrictedBaseController {
         System.out.println("<== UUID : " + uuid + '\n');
         System.out.println("Original Request : \n " + scheduler_request.toString() + '\n');
 
+        logger.info("<== UUID : " + uuid + '\n');
+        logger.info("Original Request : \n " + scheduler_request.toString() + '\n');
+        
         String path = SystemProperties.getProperty(SchedulerProperties.SCHEDULER_CREATE_NEW_VNF_CHANGE_INSTANCE_VAL) + uuid;
 
         PostCreateNewVnfWrapper responseWrapper = postSchedulingRequest(scheduler_request, path, uuid);
@@ -152,8 +102,13 @@ public class SchedulerController extends RestrictedBaseController {
         Date endTime = new Date();
     	String endTimeRequest = requestDateFormat.format(endTime);
         System.out.println(endTimeRequest + " | Controller Scheduler - POST\n");
-
-        return (new ResponseEntity<String>(responseWrapper.getResponse(), HttpStatus.OK));
+        
+        logger.info(endTimeRequest + " | Controller Scheduler - POST\n");
+        
+        if (responseWrapper.getStatus() <= 299 || responseWrapper.getStatus() >= 200 )
+        	return (new ResponseEntity<String>(responseWrapper.getResponse(), HttpStatus.OK));
+        else
+        	return (new ResponseEntity<String>(responseWrapper.getResponse(), HttpStatus.BAD_REQUEST));
     }
 
     protected PostCreateNewVnfWrapper postSchedulingRequest(JSONObject request, String path, String uuid) throws Exception {
@@ -161,7 +116,8 @@ public class SchedulerController extends RestrictedBaseController {
         try {
             //STARTING REST API CALL AS AN FACTORY INSTACE
             System.out.println("<== Post Create New Vnf Scheduling Request START \n");
-
+            logger.info("<== Post Create New Vnf Scheduling Request START \n");
+            
             PostCreateNewVnfRestObject<String> restObjStr = new PostCreateNewVnfRestObject<String>();
             String str = new String();
 
@@ -176,14 +132,86 @@ public class SchedulerController extends RestrictedBaseController {
             PostCreateNewVnfWrapper responseWrapper = SchedulerUtil.postCreateNewVnfWrapResponse(restObjStr);
 
             System.out.println("<== Post Create New Vnf Scheduling Request END : Response = " + responseWrapper.getResponse() + '\n');
-
+            logger.info("<== Post Create New Vnf Scheduling Request END : Response = " + responseWrapper.getResponse() + '\n');
+            
             return responseWrapper;
 
         } catch (Exception e) {
             System.out.println("<== Post Create New Vnf Scheduling Request ERROR : " + e.toString() + '\n');
+            logger.info("<== Post Create New Vnf Scheduling Request ERROR : " + e.toString() + '\n');
+            
             throw e;
         }
     }
+    
+    /*
+    *
+	 *	GET SCHEDULER CONTROLLERS
+	 *
+	 */
+
+   @RequestMapping(value = "/get_time_slots/{scheduler_request}", method = RequestMethod.GET)
+   public ResponseEntity<String> getTimeSlots(HttpServletRequest request, @PathVariable("scheduler_request") String scheduler_request) throws Exception {
+   	
+   	Date startingTime = new Date();
+   	String startTimeRequest = requestDateFormat.format(startingTime);
+   	 
+       System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+       System.out.println(startTimeRequest + " | Controller Scheduler GET : /get_time_slots/{scheduler_request} \n");
+       System.out.println("Original Request : \n " + scheduler_request + '\n');
+       
+       logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+       logger.info(startTimeRequest + " | Controller Scheduler GET : /get_time_slots/{scheduler_request} \n");
+       logger.info("Original Request : \n " + scheduler_request + '\n');
+       
+       String path = SystemProperties.getProperty(SchedulerProperties.SCHEDULER_GET_TIME_SLOTS) + scheduler_request;
+
+       GetTimeSlotsWrapper schedulerResWrapper = getTimeSlots(scheduler_request, path, scheduler_request);
+       
+       Date endTime = new Date();
+   	   String endTimeRequest = requestDateFormat.format(endTime);
+       System.out.println(endTimeRequest + " | Controller Scheduler - GET\n");
+       logger.info(endTimeRequest + " | Controller Scheduler - GET\n");
+       
+       if (schedulerResWrapper.getStatus() <= 299 || schedulerResWrapper.getStatus() >= 200 )
+    	   return (new ResponseEntity<String>(schedulerResWrapper.getResponse(), HttpStatus.OK));
+       else
+    	   return (new ResponseEntity<String>(schedulerResWrapper.getResponse(), HttpStatus.BAD_REQUEST));
+   }
+
+   protected GetTimeSlotsWrapper getTimeSlots(String request, String path, String uuid) throws Exception {
+
+       try {
+           //STARTING REST API CALL AS AN FACTORY INSTACE
+           System.out.println("<== Get Time Slots Request START \n");
+           logger.info("<== Get Time Slots Request START \n");
+           
+           GetTimeSlotsRestObject<String> restObjStr = new GetTimeSlotsRestObject<String>();
+           String str = new String();
+
+           restObjStr.set(str);
+
+           restController.<String>Get(str, uuid, path, restObjStr);
+           GetTimeSlotsWrapper schedulerRespWrapper = SchedulerUtil.getTimeSlotsWrapResponse(restObjStr);
+
+           System.out.println("<== Get Time Slots Request END : Response = " + schedulerRespWrapper.getResponse() + '\n');
+           logger.info("<== Get Time Slots Request END : Response = " + schedulerRespWrapper.getResponse() + '\n');
+           
+           return schedulerRespWrapper;
+
+       } catch (Exception e) {
+           System.out.println("<== Get Time Slots Request ERROR : " + e.toString() + '\n');
+           logger.info("<== Get Time Slots Request ERROR : " + e.toString() + '\n');
+           
+           throw e;
+       }
+   }
+   
+   /*
+   *
+	 *	SUBMIT VNF APPROVAL SCHEDULER CONTROLLER
+	 *
+	 */
 
     @RequestMapping(value = "/submit_vnf_change_timeslots", method = RequestMethod.POST)
     public ResponseEntity<String> postSubmitVnfChangeTimeslots(HttpServletRequest request, @RequestBody JSONObject scheduler_request) throws Exception {
@@ -193,13 +221,21 @@ public class SchedulerController extends RestrictedBaseController {
 
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.println(startTimeRequest + " | Controller Scheduler POST : submit_vnf_change_timeslots \n");
-
+        
+        logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        logger.info(startTimeRequest + " | Controller Scheduler POST : submit_vnf_change_timeslots \n");
+        
         //Generating uuid
         String uuid = (String) scheduler_request.get("scheduleId");
+        
+        //remove from body as is not part of the payload is part of a url parameter check line 240
         scheduler_request.remove("scheduleId");
-
+              
         System.out.println("<== UUID : " + uuid + '\n');
         System.out.println("Original Request : \n " + scheduler_request.toString() + '\n');
+        
+        logger.info("<== UUID : " + uuid + '\n');
+        logger.info("Original Request : \n " + scheduler_request.toString() + '\n');
 
         String path = SystemProperties.getProperty(SchedulerProperties.SCHEDULER_SUBMIT_NEW_VNF_CHANGE).replace("{scheduleId}", uuid);
 
@@ -208,8 +244,13 @@ public class SchedulerController extends RestrictedBaseController {
         Date endTime = new Date();
     	String endTimeRequest = requestDateFormat.format(endTime);
         System.out.println(endTimeRequest + " | Controller Scheduler - POST Submit\n");
+        
+        logger.info(endTimeRequest + " | Controller Scheduler - POST Submit\n");
 
-        return (new ResponseEntity<String>(responseWrapper.getResponse(), HttpStatus.OK));
+        if (responseWrapper.getStatus() <= 299 || responseWrapper.getStatus() >= 200 )
+        	return (new ResponseEntity<String>(responseWrapper.getResponse(), HttpStatus.OK));
+        else
+        	return (new ResponseEntity<String>(responseWrapper.getResponse(), HttpStatus.BAD_REQUEST));
     }
 
     protected PostSubmitVnfChangeTimeSlotsWrapper postSubmitSchedulingRequest(JSONObject request, String path, String uuid) throws Exception {
@@ -217,6 +258,7 @@ public class SchedulerController extends RestrictedBaseController {
         try {
             //STARTING REST API CALL AS AN FACTORY INSTACE
             System.out.println("<== Post Submit Scheduling Request START \n");
+            logger.info("<== Post Submit Scheduling Request START \n");
 
             PostSubmitVnfChangeRestObject<String> restObjStr = new PostSubmitVnfChangeRestObject<String>();
             String str = new String();
@@ -225,18 +267,19 @@ public class SchedulerController extends RestrictedBaseController {
             restController.<String>Post(str, request, path, restObjStr);
 
             int status = restObjStr.getStatusCode();
-            if (status >= 200 && status <= 299) {
-                restObjStr.setUUID(uuid);
-            }
-
+            restObjStr.setUUID(uuid);// always return back request id regardless of http status
+            
             PostSubmitVnfChangeTimeSlotsWrapper responseWrapper = SchedulerUtil.postSubmitNewVnfWrapResponse(restObjStr);
 
             System.out.println("<== Post Submit Scheduling Request END : Response = " + responseWrapper.getResponse() + '\n');
-
+            logger.info("<== Post Submit Scheduling Request END : Response = " + responseWrapper.getResponse() + '\n');
+            
             return responseWrapper;
 
         } catch (Exception e) {
             System.out.println("<== Post Submit Scheduling Request ERROR : " + e.toString() + '\n');
+            logger.info("<== Post Submit Scheduling Request ERROR : " + e.toString() + '\n');
+            
             throw e;
         }
     }

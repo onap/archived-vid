@@ -13,7 +13,7 @@ import org.openecomp.vid.exceptions.NotFoundException;
 import org.openecomp.vid.model.VNFDao;
 import org.openecomp.vid.model.VidWorkflow;
 import org.openecomp.vid.mso.MsoBusinessLogic;
-import org.openecomp.vid.mso.MsoResponseWrapper;
+import org.openecomp.vid.mso.MsoResponseWrapperInterface;
 import org.openecomp.vid.mso.rest.Request;
 import org.openecomp.vid.scheduler.SchedulerProperties;
 import org.openecomp.vid.scheduler.SchedulerRestInterfaceFactory;
@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.ws.rs.BadRequestException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,18 +35,20 @@ import java.util.stream.Collectors;
 @Service
 public class ChangeManagementServiceImpl implements ChangeManagementService {
 
-	private EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ChangeManagementServiceImpl.class);
+    private EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ChangeManagementServiceImpl.class);
 	private final DataAccessService dataAccessService;
 
+	private MsoBusinessLogic msoBusinessLogic;
+
     @Autowired
-    public ChangeManagementServiceImpl(DataAccessService dataAccessService) {
+    public ChangeManagementServiceImpl(DataAccessService dataAccessService, MsoBusinessLogic msoBusinessLogic) {
         this.dataAccessService = dataAccessService;
-    }
+		this.msoBusinessLogic = msoBusinessLogic;
+	}
 
     @Override
     public Collection<Request> getMSOChangeManagements() {
         Collection<Request> result = null;
-		MsoBusinessLogic msoBusinessLogic = new MsoBusinessLogic();
 		try {
             result = msoBusinessLogic.getOrchestrationRequestsForDashboard();
         } catch (Exception e) {
@@ -70,30 +73,34 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
 	}
 
 	@Override
-	public ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName) {
+	public ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName) throws Exception {
 		if (request == null)
 			return null;
 		ResponseEntity<String> response;
 		RequestDetails currentRequestDetails = findRequestByVnfName(request.getRequestDetails(), vnfName);
-		MsoResponseWrapper msoResponseWrapperObject = null;
+        MsoResponseWrapperInterface msoResponseWrapperObject = null;
 		if(currentRequestDetails != null){
-			MsoBusinessLogic msoBusinessLogicObject = new MsoBusinessLogic();
-			String serviceInstanceId = currentRequestDetails.getRelatedInstList().get(0).getRelatedInstance().getInstanceId();
-			String vnfInstanceId = currentRequestDetails.getVnfInstanceId();
-			try {
-				if (request.getRequestType().equalsIgnoreCase("update")) {
-					
-					 msoResponseWrapperObject = msoBusinessLogicObject.updateVnf(currentRequestDetails, serviceInstanceId, vnfInstanceId);
+
+            String serviceInstanceId = extractServiceInstanceId(currentRequestDetails, request.getRequestType());
+			String vnfInstanceId = extractVnfInstanceId(currentRequestDetails, request.getRequestType());
+
+            try {
+				if (request.getRequestType().equalsIgnoreCase(ChangeManagementRequest.UPDATE)) {
+					 msoResponseWrapperObject = msoBusinessLogic.updateVnf(currentRequestDetails, serviceInstanceId, vnfInstanceId);
 				}
-				else if (request.getRequestType().equalsIgnoreCase("replace"))
+				else if (request.getRequestType().equalsIgnoreCase(ChangeManagementRequest.REPLACE))
 				{
-					msoResponseWrapperObject = msoBusinessLogicObject.replaceVnf(currentRequestDetails, serviceInstanceId, vnfInstanceId);
-//					throw new NotImplementedException();
+					msoResponseWrapperObject = msoBusinessLogic.replaceVnf(currentRequestDetails, serviceInstanceId, vnfInstanceId);
+				}
+				else if (request.getRequestType().equalsIgnoreCase(ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE))
+				{
+					msoResponseWrapperObject = msoBusinessLogic.updateVnfSoftware(currentRequestDetails, serviceInstanceId, vnfInstanceId);
 				}
 				response = new ResponseEntity<String>(msoResponseWrapperObject.getResponse(), HttpStatus.OK);
 				return response;
 			} catch (Exception e) {
-				e.printStackTrace();
+                logger.error("Failure during doChangeManagement with request "+request.toString(), e);
+				throw e;
 			}
 
 		}
@@ -101,6 +108,26 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
 		// AH:TODO: return ChangeManagementResponse
 		return null;
 	}
+
+    private String extractVnfInstanceId(RequestDetails currentRequestDetails, String requestType) {
+        if (currentRequestDetails.getVnfInstanceId()==null) {
+            logger.error("Failed to extract vnfInstanceId");
+            throw new BadRequestException("No vnfInstanceId in request "+requestType);
+        }
+        return currentRequestDetails.getVnfInstanceId();
+    }
+
+    private String extractServiceInstanceId(RequestDetails currentRequestDetails, String requestType) {
+        try {
+            String serviceInstanceId =  currentRequestDetails.getRelatedInstList().get(0).getRelatedInstance().getInstanceId();
+            serviceInstanceId.toString(); //throw exception in case that serviceInstanceId is null...
+            return serviceInstanceId;
+        }
+        catch (Exception e) {
+            logger.error("Failed to extract serviceInstanceId");
+            throw new BadRequestException("No instanceId in request "+requestType);
+        }
+    }
 
     @Override
     public JSONArray getSchedulerChangeManagements() {

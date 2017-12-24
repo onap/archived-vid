@@ -1,0 +1,18 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/mso/cloudResourcesRequests/v1",
+    "queryParams": {
+      "requestId": [
+        "dbe54591-c8ed-46d3-abc7-d3a24873dfbd"
+      ]
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": "ERROR_CODE",
+    "responseHeaders": {
+      "Content-Type": "text/html"
+    },
+    "body": "ERROR_PAYLOAD"
+  }
+}

@@ -22,9 +22,10 @@
 
 var OwningEntityService = function ($http, $log, PropertyService, UtilityService, COMPONENT) {
     return {
-        getOwningEntityProperties: function (successCallbackFunction) {
+        getOwningEntityProperties: function ( successCallbackFunction, familyName) {
             $log.debug("OwningEntityService:getOwningEntityProperties");
-            var url = COMPONENT.GET_CATEGORY_PARAMETERS + COMPONENT.ASSIGN + Math.random();
+            familyName = familyName || COMPONENT.PARAMETER_STANDARDIZATION_FAMILY;
+            var url = COMPONENT.GET_CATEGORY_PARAMETERS+"?familyName=" + familyName+ "&r=" + Math.random();
             var config = { timeout: PropertyService.getServerResponseTimeoutMsec() };
 
             $http.get(url, config)

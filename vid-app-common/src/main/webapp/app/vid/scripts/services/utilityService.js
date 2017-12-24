@@ -100,6 +100,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				"service": serviceModel.service,
 				"networks": {},
 				"vnfs": {},
+				"pnfs": serviceModel.pnfs,
 				"serviceProxies": serviceModel.serviceProxies,
 				"completeDisplayInputs": {},
 				"isNewFlow": true
@@ -166,11 +167,14 @@ var UtilityService = function($log, DataService, PARAMETER) {
 			}
 		}
 
-        var configurations = _.map(serviceModel.configurations, function(element) {
-            return _.extend({}, element, {isConfig: true});
+        _.forEach(serviceModel.configurations, function(element, key) {
+            element.isConfig = true;
         });
-
-        var mergedVnfs = Object.assign(serviceModel.vnfs, configurations);
+        _.forEach(serviceModel.pnfs, function(element, key) {
+        	element.isPnf= true;
+        	element.modelCustomizationName= key;
+        });
+        var mergedVnfs = Object.assign(serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
 
 		for (var vnfCustomizationName in mergedVnfs) {
 			var vnfModel = mergedVnfs[vnfCustomizationName];
@@ -193,7 +197,8 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"nfType": "",
 					"sourceNodes": vnfModel.sourceNodes,
 					"collectorNodes": vnfModel.collectorNodes,
-                	"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false
+                	"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false,
+                	"isPnf": vnfModel.isPnf ? vnfModel.isPnf : false
 			};
 			
 			resource = {
@@ -300,6 +305,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				"service": serviceModel.service,
 				"networks": {},
 				"vnfs": {},
+            	"pnfs": serviceModel.pnfs,
             	"serviceProxies": serviceModel.serviceProxies,
 				"completeDisplayInputs": {},
 				"isNewFlow": false
@@ -368,12 +374,14 @@ var UtilityService = function($log, DataService, PARAMETER) {
 			}
 		}
 
-
-        var configurations = _.map(serviceModel.configurations, function(element) {
-            return _.extend({}, element, {isConfig: true});
+        _.forEach(serviceModel.configurations, function(element, key) {
+            element.isConfig = true;
         });
-
-        var mergedVnfs = Object.assign(serviceModel.vnfs, configurations);
+        _.forEach(serviceModel.pnfs, function(element, key) {
+            element.isPnf= true;
+            element.modelCustomizationName= key;
+        });
+        var mergedVnfs = Object.assign(serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
 
 		for (var vnfCustomizationName in mergedVnfs) {
 			var vnfModel = mergedVnfs[vnfCustomizationName];
@@ -392,7 +400,8 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"displayInputs": {},
 					"sourceNodes": vnfModel.sourceNodes,
 					"collectorNodes": vnfModel.collectorNodes,
-					"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false
+					"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false,
+                	"isPnf": vnfModel.isPnf ? vnfModel.isPnf : false
 			};
 			resource = {
 					"name": vnfModel.modelCustomizationName,
@@ -577,7 +586,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
         },
         getHttpErrorMessage : function(response) {
             var data = response.data;
-            if (response.status === 500 && hasContents(data.exception)) {
+            if ((response.status >= 400 && response.status < 600) && hasContents(data.exception)) {
                 var summary = "exception: " + data.exception;
                 if (hasContents(data.message)) {
                     summary += " message: " + data.message;

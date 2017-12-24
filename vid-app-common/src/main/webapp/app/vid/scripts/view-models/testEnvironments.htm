@@ -31,27 +31,28 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 test-environments-table-container">
                 <table data-tests-id="test-environments-table" att-table table-data="vm.environments" search-category="searchCategory" search-string="vm.searchString" class="table table-bordered"  id="environments-table">
                     <thead att-table-row type="header" class="thead-default">
                         <tr>
                             <th att-table-header default-sort="A" key="operationalEnvironmentId">Environment ID</th>
                             <th att-table-header key="operationalEnvironmentName">Environment Name</th>
-                            <th att-table-header key="relationshipList[0].relationshipData[0].relationshipValue">ECOMP Environment ID</th>
-                            <th att-table-header key="relationshipList[0].relatedToProperty[0].propertyValue">ECOMP Environment Name</th>
+                            <th att-table-header key="relationshipList.relationship[0].relationshipData[0].relationshipValue">ECOMP Environment ID</th>
+                            <th att-table-header key="relationshipList.relationship[0].relatedToProperty[0].propertyValue">ECOMP Environment Name</th>
                             <th att-table-header key="tenantContext">Tenant Context</th>
                             <th att-table-header key="operationalEnvironmentType">Environment Type</th>
                             <th att-table-header key="workloadContext">Workload Context</th>
                             <th att-table-header sortable="false">Status</th>
                             <th att-table-header sortable="false">Action</th>
+                            <th att-table-header sortable="false">Attach Manifest</th>
                         </tr>
                     </thead>
                     <tbody att-table-row type="body" row-repeat="environment in vm.environments">
-                        <tr >
+                        <tr>
                             <td att-table-body ng-bind="environment.operationalEnvironmentId"></td>
                             <td att-table-body ng-bind="environment.operationalEnvironmentName"></td>
-                            <td att-table-body ng-bind="environment.relationshipList[0].relationshipData? environment.relationshipList[0].relationshipData[0].relationshipValue: ''"></td>
-                            <td att-table-body ng-bind="environment.relationshipList[0].relatedToProperty? environment.relationshipList[0].relatedToProperty[0].propertyValue: ''"></td>
+                            <td att-table-body ng-bind="environment.relationshipList.relationship[0].relationshipData? environment.relationshipList.relationship[0].relationshipData[0].relationshipValue: ''"></td>
+                            <td att-table-body ng-bind="environment.relationshipList.relationship[0].relatedToProperty? environment.relationshipList.relationship[0].relatedToProperty[0].propertyValue: ''"></td>
                             <td att-table-body ng-bind="environment.tenantContext"></td>
                             <td att-table-body ng-bind="environment.operationalEnvironmentType"></td>
                             <td att-table-body ng-bind="environment.workloadContext"></td>
@@ -61,6 +62,12 @@
                                         ng-click="vm.onTestEnvActivateClick(environment)" ng-show="!vm.isEnvActive(environment)">Activate</button>
                                 <button id="testEnvDeactivate-{{environment.operationalEnvironmentId}}" type="button" class="blue envActionBtn"
                                         ng-click="vm.onTestEnvDeactivateClick(environment)" ng-show="vm.isEnvActive(environment)">Deactivate</button>
+                            </td>
+                            <td att-table-body>
+                                <button id="testEnvAttach-{{environment.operationalEnvironmentId}}" class="transparent attach-button"
+                                        ng-click="vm.onTestEnvActivateClick(environment)" ng-show="vm.isEnvActive(environment)">
+                                    <img src="app/vid/images/attach.svg">
+                                </button>
                             </td>
                         </tr>
                     </tbody>

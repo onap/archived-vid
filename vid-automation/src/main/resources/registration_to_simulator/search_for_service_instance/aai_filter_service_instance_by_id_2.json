@@ -1,0 +1,21 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v11/search/nodes-query",
+    "queryParams": {
+      "search-node-type": "service-instance",
+      "filter": "service-instance-id:EQUALS:f36f5734-e9df-4fbf-9f35-61be13f028a1"
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "result-data": [
+        {
+          "resource-type": "service-instance",
+          "resource-link": "/aai/v11/business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/AIM%20Transport/service-instances/service-instance/f36f5734-e9df-4fbf-9f35-61be13f028a1"
+        }
+      ]
+    }
+  }
+}

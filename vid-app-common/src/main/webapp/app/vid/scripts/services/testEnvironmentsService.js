@@ -1,15 +1,12 @@
 (function () {
     'use strict';
 
-    appDS2.service('TestEnvironmentsService', ['$q', '$http', '$log', 'COMPONENT', testEnvironmentsService]);
+    appDS2.service('TestEnvironmentsService', ['$q', '$http', '$log', 'COMPONENT', 'UtilityService', testEnvironmentsService]);
 
-    function testEnvironmentsService($q, $http, $log, COMPONENT) {
+    function testEnvironmentsService($q, $http, $log, COMPONENT, UtilityService) {
         this.loadAAIestEnvironments = function(type) {
             var deferred = $q.defer();
-            var params = {
-                operationalEnvironmentType: type
-            };
-            $http.get(COMPONENT.AAI_GET_TEST_ENVIRONMENTS, params)
+            $http.get(COMPONENT.AAI_GET_TEST_ENVIRONMENTS + type)
                 .success(function (response) {
                     if(response.httpCode == 200) {
                         deferred.resolve({operationalEnvironment: response.t.operationalEnvironment});
@@ -23,20 +20,6 @@
                 });
 
             return deferred.promise;
-        };
-
-        this.getEnvironmentsTypesList = function () {
-            return [
-                "VNF"
-            ];
-        };
-
-        this.getWorkloadContextList = function () {
-            return [
-                "ECOMP",
-                "DEV",
-                "Test"
-            ];
         };
 
         this.createApplicationEnv = function(request) {
@@ -76,10 +59,9 @@
                 }))
                 .success(function (response) {
                     deferred.resolve({data: response});
-                }).error(function (data, status) {
-                deferred.reject({message: data, status: status});
-            });
-
+                }).error(function (response, status) {
+                    UtilityService.runHttpErrorHandler({data:response, status:status});
+                });
             return deferred.promise;
         };
 

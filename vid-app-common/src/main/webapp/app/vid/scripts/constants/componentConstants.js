@@ -45,10 +45,13 @@ appDS2
 	MODEL_VERSION_1 : "1",
 	MSO_CREATE_REQ : "createInstance",
 	MSO_DELETE_REQ : "deleteInstance",
-	MSO_CHANGE_STATUS_REQ: "changeStatus",
+	MSO_CHANGE_CONFIG_STATUS_REQ: "changeConfigurationStatus",
+	MSO_CHANGE_PORT_STATUS_REQ: "changePortStatus",
 	MSO_CREATE_ENVIRONMENT: "createEnvironmentInstance",
 	MSO_DEACTIVATE_ENVIRONMENT: "deactivateEnvironmentInstance",
 	MSO_ACTIVATE_ENVIRONMENT: "activateEnvironmentInstance",
+	MSO_ACTIVATE_SERVICE_REQ: "activateServiceInstance",
+	MSO_DEACTIVATE_SERVICE_REQ: "deactivateServiceInstance",
     NAME : "name",
 	NETWORK : "network",
 	CONFIGURATION : "configuration",
@@ -77,8 +80,8 @@ appDS2
 	VNF_TYPE : "vnfType",
 	VOLUME_GROUP : "volumeGroup",
     IS_PERMITTED: "is-permitted",
-    RESUME_STATUS: "PendingResume",
-
+    RESUME_STATUS: "PendingActivation",
+    PNF : "pnf",
         // IDs
 	CIDR_MASK_1 : "255.255.255.000",
 	//COMPONENT_LIST_NAMED_QUERY_ID : "ed0a0f5b-cf79-4784-88b2-911cd726cd3d",
@@ -124,20 +127,23 @@ appDS2
     AAI_GET_SERVICES_BY_OWNING_ENTITY_ID: 'aai_get_services_by_owning_entity_id',
     AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
 	AAI_GET_VNF_INFO : "aai_get_vnf_information",
+	AAI_GET_PNF_INSTANCE: "aai_get_service_instance_pnfs",
 	AAI_POST_SERVICE_PROXY_INSTANCE_DATA_PATH: "aai_get_vnf_instances",
 	AAI_GET_BY_URI: "aai_get_by_uri/",
 	AAI_GET_CONFIGURATION: "aai_get_configuration/",
-    AAI_GET_TEST_ENVIRONMENTS: "get_operational_environments",
+    AAI_GET_TEST_ENVIRONMENTS: "get_operational_environments?operationalEnvironmentType=",
     GET_CATEGORY_PARAMETERS : "category_parameter",
+	PARAMETER_STANDARDIZATION_FAMILY: "PARAMETER_STANDARDIZATION",
+    TENANT_ISOLATION_FAMILY: "TENANT_ISOLATION",
 	ASDC_GETMODEL_PATH : "asdc/getModel/",
-	CREATE_INSTANCE_PATH : "/models/services/createInstance", 
+	CREATE_INSTANCE_PATH : "/models/services/createInstance", AAI_GET_PNF_BY_NAME : "aai_get_pnfs/pnf/",
 	//1710 scheduler contants
 	POST_CREATE_NEW_VNF_CHANGE:"post_create_new_vnf_change",
 	GET_POLICY:"get_policy",
 	WORKFLOW: "workflow",
 	GET_TIME_SLOTS:"get_time_slots",
 	SUBMIT_VNF_CHANGE_TIMESLOTS:"submit_vnf_change_timeslots",
-	
+
 	FORWARD_SLASH : "/",
 	GET_SYSTEM_PROP_VNF_PROV_STATUS_PATH : "get_system_prop_vnf_prov_status",
 	GET_USER_ID : "getuserID",
@@ -145,12 +151,16 @@ appDS2
 	INSTANTIATE_PATH : "/instantiate",
 	INVALID_STRING : "/INVALID_STRING/",
 	INVALID_STRING_MSO_CREATE_SVC_INSTANCE : "INVALID_STRING_mso_create_svc_instance",
+	MSO: "mso",
 	MSO_CREATE_NW_INSTANCE : "mso_create_nw_instance",
 	MSO_CREATE_NW_INSTANCE_PATH : "mso_create_nw_instance/",
 	MSO_CREATE_SVC_INSTANCE : "mso_create_svc_instance",
 	MSO_DELETE_SVC_INSTANCE_PATH : "mso_delete_svc_instance/",
     MSO_ACTIVATE_INSTANCE: "mso/mso_activate_service_instance/@serviceInstanceId",
-    SELECTED_SERVICE_SUB_PATH : "#/instances/subdetails?",
+    MSO_DEACTIVATE_INSTANCE: "mso/mso_deactivate_service_instance/@serviceInstanceId",
+    MSO_CREATE_REALATIONSHIP : "mso_add_relationship",
+	MSO_REMOVE_RELATIONSHIP: "mso_remove_relationship",
+	SELECTED_SERVICE_SUB_PATH : "#/instances/subdetails?",
 	SELECTED_SERVICE_INSTANCE_SUB_PATH : "serviceInstanceIdentifier=",
 	SELECTED_SUBSCRIBER_SUB_PATH : "subscriberId=",
 	OWNING_ENTITY_SUB_PATH : "owningEntity=",
@@ -202,6 +212,12 @@ appDS2
         "rollback": "rollback",
         "abort": "abort",
         "skip": "skip"
+	},
+
+	WORKFLOWS: {
+    	vnfInPlace: "VNF In Place Software Update",
+		update: "update",
+		replace: "replace"
 	}
 
     };

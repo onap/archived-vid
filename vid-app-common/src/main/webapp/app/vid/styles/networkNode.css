@@ -229,7 +229,8 @@ input[type=checkbox]:disabled + label::after.checkbox-disabled {
     display: flex;
 }
 .network-wrapper-config .content-wrapper .sidebar-right {
-    width: 400px;
+    width: 25%;
+    min-width: 400px;
     background-color: #F8F8F8;
 }
 .network-wrapper-config .content-wrapper .content {

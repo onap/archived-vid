@@ -2,9 +2,10 @@
     'use strict';
 
     appDS2.controller("newSchedulerController", ["$scope", "$uibModal", "$uibModalInstance", "AaiService", "SchedulerService", "_",
-        "$log", "changeManagement", "$timeout", "$interval", "$filter", "VIDCONFIGURATION", "changeManagementService", newSchedulerController]);
+        "$log", "changeManagement", "$timeout", "$interval", "$filter", "VIDCONFIGURATION", "changeManagementService", "UtilityService", "COMPONENT", newSchedulerController]);
 
-    function newSchedulerController($scope, $uibModal, $uibModalInstance, AaiService, SchedulerService, _, $log, changeManagement, $timeout, $interval, $filter, VIDCONFIGURATION, changeManagementService) {
+    function newSchedulerController($scope, $uibModal, $uibModalInstance, AaiService, SchedulerService, _, $log,
+                                    changeManagement, $timeout, $interval, $filter, VIDCONFIGURATION, changeManagementService, UtilityService, COMPONENT) {
         var vm = this;
         var pollpromise;
 
@@ -12,6 +13,7 @@
             vm.scheduler = {};
             vm.schedulingInfo = {};
             var callbackData = extractChangeManagementCallbackDataStr(changeManagement);
+            vm.callbackData = callbackData;
             vm.vnfObject = changeManagement;
             vm.schedulerObj = {
                 domain: 'ChangeManagement',
@@ -43,36 +45,37 @@
                 },
 
             }
-            vm.schedulerObj1 = {
-                "domain": "ChangeManagement",
-                "scheduleName": "VnfUpgrade/DWF",
-                "userId": "su7376",
-                "domainData": [
-                    {
-                        "WorkflowName": "HEAT Stack Software Update for vNFs",
-                        "CallbackUrl": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid",
-                        "CallbackData": "testing"
-                    }
-                ],
-                "schedulingInfo": {
-                    "normalDurationInSeconds": 60,
-                    "additionalDurationInSeconds": 60,
-                    "concurrencyLimit": 60,
-                    "policyId": "SNIRO_CM_1707.Config_MS_Demo_TimeLimitAndVerticalTopology_zone_localTime.1.xml",
-                    "vnfDetails": [
-                        {
-                            "groupId": "group1",
-                            "node": ["satmo415vbc", "satmo455vbc"],
-                            "changeWindow": [
-                                {
-                                    "startTime": "2017-08-08T16:37:30.521Z",
-                                    "endTime": "2017-08-08T16:37:30.521Z"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            };
+            // Hardcoded payload for testing
+//            vm.schedulerObj1 = {
+//                "domain": "ChangeManagement",
+//                "scheduleName": "VnfUpgrade/DWF",
+//                "userId": "su7376",
+//                "domainData": [
+//                    {
+//                        "WorkflowName": "UpdateVnfInfra",
+//                        "CallbackUrl": '',
+//                        "CallbackData": callbackData
+//                    }
+//                ],
+//                "schedulingInfo": {
+//                    "normalDurationInSeconds": 60,
+//                    "additionalDurationInSeconds": 60,
+//                    "concurrencyLimit": 60,
+//                    "policyId": "SNIRO_CM_1710.Config_MS_TimeLimitAndVerticalTopology_v2_split_1",
+//                    "vnfDetails": [
+//                        {
+//                            "groupId": "group1",
+//                            "node": ["satmo415vbc", "satmo455vbc"],
+//                            "changeWindow": [
+//                                {
+//                                    "startTime": "2017-12-08T16:37:30.521Z",
+//                                    "endTime": "2017-12-12T16:37:30.521Z"
+//                                }
+//                            ]
+//                        }
+//                    ]
+//                }
+//            };
 
 
             vm.format = 'yyyy/MM/dd';
@@ -80,6 +83,7 @@
             vm.checkboxSelection = 'false';
             vm.fromDate = '';
             vm.toDate = '';
+            vm.isScheduleReady=false;
             vm.timeSlots = [];
 
             vm.changeManagement = {};
@@ -115,10 +119,7 @@
             vm.policys = [];
 
             var policyName = JSON.stringify({
-                policyName: "SNIRO_1710.*",
-                configAttributes: {
-                    service: "PlacementOptimizationPolicy"
-                }
+                policyName: "SNIRO_1710.*"
             });
             SchedulerService.getPolicyInfo(policyName, function (response) {
                 vm.policys = response.data.entity;
@@ -153,17 +154,20 @@
         vm.submit = function () {
             vm.schedulingInfo = {
                 scheduleId: vm.schedulerID,
-                approvalDateTime: '2017-08-08T16:37:30.521Z',
-                approvalUserId: "sy6266",
+                approvalDateTime: '',
+                approvalUserId: vm.userID,
                 approvalStatus: 'Accepted',
                 approvalType: 'Tier 2'
             };
 
             var approvalObj = JSON.stringify(vm.schedulingInfo);
             SchedulerService.getSubmitForapprovedTimeslots(approvalObj, function (response) {
-                if (response.status == 200) {
-                    openConfirmationModal("Successfully Sent for Approval");
+                if (response.data.status == 200) {
+                    openConfirmationModal("Successfully Sent for Approval" + "\n Request Id : " + response.data.uuid);
                     vm.close();
+                }
+                else{
+                	openConfirmationModal("ERROR : " +  response.data.entity.requestError.text  + "\n Request Id : " + response.data.uuid);
                 }
 
             });
@@ -172,23 +176,27 @@
         vm.reject = function () {
             vm.schedulingInfo = {
                 scheduleId: vm.schedulerID,
-                approvalDateTime: '2017-08-08T16:37:30.521Z',
-                approvalUserId: "sy6266",
+                approvalDateTime: '',
+                approvalUserId: vm.userID,
                 approvalStatus: 'Rejected',
                 approvalType: 'Tier 2'
             }
 
             var approvalObj = JSON.stringify(vm.schedulingInfo)
             SchedulerService.getSubmitForapprovedTimeslots(approvalObj, function (response) {
-                if (response.status == 200) {
-                    openConfirmationModal("Successfully sent for Rejection");
+            	if (response.data.status == 200) {
+                    openConfirmationModal("Successfully sent for Rejection"  + "\n Request Id : " + response.data.uuid);
                     vm.close();
+                }
+                else{
+                	openConfirmationModal("ERROR : " +  response.data.entity.requestError.text  + "\n Request Id : " + response.data.uuid);
                 }
 
             });
         };
 
         vm.schedule = function (myForm) {
+        	vm.isScheduleReady=false;
             $scope.$watch('fromDate', validateDates(myForm));
             $scope.$watch('toDate', validateDates(myForm));
             if (myForm.$valid) {
@@ -204,7 +212,7 @@
             }];
             vm.timeSlots = [];
             var vnfcollection=[];
-            
+
             vnfcollection=getVnfData(changeManagement.vnfNames);
             var fromDate = $filter('date')(new Date(vm.fromDate), "yyyy-MM-ddTHH:mmZ", "UTC");
             var toDate = $filter('date')(new Date(vm.toDate), "yyyy-MM-ddTHH:mmZ", "UTC");
@@ -212,38 +220,46 @@
             changeWindow[0].startTime = fromDate;
             changeWindow[0].endTime = toDate;
             vm.schedulerObj.userId = vm.userID;
-          
+
             if(changeManagement.workflow=='Update'){
-            	vm.schedulerObj.domainData[0].WorkflowName ="UpdateVnfInfra"
+                vm.schedulerObj.domainData[0].WorkflowName ="UpdateVnfInfra"
             }
             else if(changeManagement.workflow=='Replace'){
-            	vm.schedulerObj.domainData[0].WorkflowName ="ReplaceVnfInfra"
+                vm.schedulerObj.domainData[0].WorkflowName ="ReplaceVnfInfra"
             }
-           
+
             vm.schedulerObj.schedulingInfo.normalDurationInSeconds = convertToSecs(vm.scheduler.duration);
             vm.schedulerObj.schedulingInfo.additionalDurationInSeconds = convertToSecs(vm.scheduler.fallbackDuration);
             vm.schedulerObj.schedulingInfo.concurrencyLimit = vm.scheduler.concurrency;
+            
+            var policyConfigObj = JSON.parse(vm.scheduler.policy.config);
+            console.log(policyConfigObj);
+            vm.schedulerObj.schedulingInfo.policyId = policyConfigObj.policyName;
+            
             vm.schedulerObj.schedulingInfo.policyId = vm.scheduler.policy.policyName;
             vm.schedulerObj.schedulingInfo['vnfDetails'][0].groupId = 'groupId';
-           
+
             vm.schedulerObj.schedulingInfo['vnfDetails'][0].node = vnfcollection;
-            vm.schedulerObj.domainData[0].CallbackUrl="https://vid-web-ete.ecomp.cci.att.com:8000/vid/workflow/";
+            vm.schedulerObj.domainData[0].CallbackUrl = VIDCONFIGURATION.SCHEDULER_CALLBACK_URL;
 
             vm.schedulerObj.schedulingInfo['vnfDetails'][0].changeWindow = changeWindow;
             if (vm.checkboxSelection == "true") {               //When Scheduled now we remove the changeWindow
                 delete vm.schedulerObj.schedulingInfo['vnfDetails'][0].changeWindow;
             }
-            vm.schedulerObj.schedulingInfo['vnfDetails'][0].changeWindow = changeWindow;
-            delete vm.schedulerObj.schedulingInfo['vnfDetails'][0].changeWindow;
-
+            
             var requestScheduler = JSON.stringify(vm.schedulerObj);
             console.log(requestScheduler);
+            vm.isSpinnerVisible = true;
             SchedulerService.getStatusSchedulerId(requestScheduler, function (response) {
                 vm.schedulerID = response.data.uuid;
-                vm.isSpinnerVisible = true;
-                if (vm.schedulerID) {
+                
+                if (vm.schedulerID && response.data.status == 202) {
+                	
                     var scheduledID = JSON.stringify({scheduleId: vm.schedulerID});
                     seviceCallToGetTimeSlots();
+                }
+                else{
+                	openConfirmationModal("ERROR : " +  response.data.entity.requestError.text);
                 }
             });
         }
@@ -259,6 +275,7 @@
                             vm.isSpinnerVisible = false;
                             hasvaluereturnd = false;
                             $scope.stopPoll();
+                            vm.isScheduleReady=true;
                             openConfirmationModal(response.data.entity.scheduleId + " Successfully Returned TimeSlots.");
                         }
 
@@ -286,6 +303,7 @@
                 else {
                     if (response.data.entity) {
                         vm.isSpinnerVisible = false;
+                        vm.isScheduleReady=true;
                         openConfirmationModal(response.data.entity.scheduleId + " Successfully Ready for Schedule.")
                     }
                 }
@@ -296,7 +314,7 @@
 
         function openConfirmationModal(jobInfo) {
             var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/alert-new-scheduler/alert-modal.html',
+                templateUrl: 'app/vid/scripts/modals/alert-new-scheduler/alert-new-scheduler.html',
                 controller: 'alertNewSchedulerController',
                 controllerAs: 'vm',
                 resolve: {
@@ -359,12 +377,23 @@
             }
         }
 
+        function getVnfInPlaceUpdatePayload(changeManagement) {
+            if (changeManagement.existingSoftwareVersion) {
+                var vnfInPlaceUpdatePayload = {
+                    "existing-software-version": changeManagement.existingSoftwareVersion,
+                    "new-software-version": changeManagement.newSoftwareVersion,
+                    "operation-timeout": changeManagement.operationTimeout
+                };
+                return JSON.stringify(vnfInPlaceUpdatePayload);
+            }
+        }
 
         function extractChangeManagementCallbackDataStr(changeManagement) {
             var result = {};
 
             result.requestType = changeManagement.workflow;
             result.requestDetails = [];
+            var vnfInPlaceUpdatePayload = getVnfInPlaceUpdatePayload(changeManagement);
 
             _.forEach(changeManagement.vnfNames, function (vnf) {
 
@@ -381,8 +410,8 @@
                             modelCustomizationId: vnf.properties['model-customization-id']
                         },
                         cloudConfiguration: {
-                            lcpCloudRegionId: vnf.availableVersions[0].cloudConfiguration.lcpCloudRegionId,
-                            tenantId: vnf.availableVersions[0].cloudConfiguration.tenantId
+                            lcpCloudRegionId: vnf.cloudConfiguration.lcpCloudRegionId,
+                            tenantId: vnf.cloudConfiguration.tenantId
                         },
                         requestInfo: {
                             source: vnf.availableVersions[0].requestInfo.source,
@@ -391,9 +420,13 @@
                         },
                         relatedInstanceList: [],
                         requestParameters: {
-                            usePreload: vnf.availableVersions[0].requestParameters.usePreload
+                            usePreload: true
                         }
                     };
+
+                    if (changeManagement.workflow === COMPONENT.WORKFLOWS.vnfInPlace) {
+                        data.requestParameters.payload = vnfInPlaceUpdatePayload;
+                    }
 
                     var serviceInstanceId = '';
                     _.forEach(vnf['service-instance-node'], function (instanceNode) {

@@ -23,12 +23,11 @@ package org.openecomp.vid.mso.rest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-//import javax.annotation.Generated;
 
 import org.openecomp.vid.domain.mso.CloudConfiguration;
 import org.openecomp.vid.domain.mso.ModelInfo;
 import org.openecomp.vid.domain.mso.RequestInfo;
-import org.openecomp.vid.domain.mso.RequestParameters;
+import org.openecomp.vid.changeManagement.RequestParameters;
 import org.openecomp.vid.domain.mso.SubscriberInfo;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -53,7 +52,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     "subscriberInfo",
     "requestParameters"
 })
-public class RequestDetails extends org.openecomp.vid.domain.mso.RequestDetails {
+public class RequestDetails {
 
     /** The cloud configuration. */
     @JsonProperty("cloudConfiguration")
@@ -180,6 +179,15 @@ public class RequestDetails extends org.openecomp.vid.domain.mso.RequestDetails 
     @JsonProperty("subscriberInfo")
     public void setSubscriberInfo(SubscriberInfo subscriberInfo) {
         this.subscriberInfo = subscriberInfo;
+    }
+
+    @JsonProperty("requestParameters")
+    public RequestParameters getRequestParameters() {
+        return requestParameters;
+    }
+
+    public void setRequestParameters(RequestParameters requestParameters) {
+        this.requestParameters = requestParameters;
     }
 
     /* (non-Javadoc)

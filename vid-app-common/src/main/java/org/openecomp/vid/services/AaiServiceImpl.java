@@ -2,12 +2,16 @@ package org.openecomp.vid.services;
 
 import org.apache.http.HttpStatus;
 import org.ecomp.aai.model.AaiAICZones.AicZones;
+import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.aai.*;
 import org.openecomp.vid.aai.ServiceInstance;
 import org.openecomp.vid.aai.ServiceSubscription;
 import org.openecomp.vid.aai.Services;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
+import org.openecomp.vid.aai.model.*;
+import org.openecomp.vid.aai.model.AaiGetPnfs.Pnf;
+import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.*;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.openecomp.vid.aai.model.*;
 import org.openecomp.vid.asdc.beans.Service;
@@ -18,10 +22,15 @@ import org.openecomp.vid.utils.Intersection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Oren on 7/4/17.
@@ -36,6 +45,7 @@ public class AaiServiceImpl implements AaiService {
     @Autowired
     private AaiClientInterface aaiClient;
 
+    EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
 
     private Service convertModelToService(Model model) {
         Service service = new Service();
@@ -239,6 +249,10 @@ public class AaiServiceImpl implements AaiService {
         return null;
     }
 
+    @Override
+    public AaiResponse<Pnf> getSpecificPnf(String pnfId) {
+        return aaiClient.getSpecificPnf(pnfId);
+    }
 
     @Override
     public AaiResponse getServices(RoleValidator roleValidator) {
@@ -282,8 +296,27 @@ public class AaiServiceImpl implements AaiService {
 
     @Override
     public AaiResponse getAicZoneForPnf(String globalCustomerId, String serviceType, String serviceId) {
-        AaiResponse<AicZones> response = aaiClient.getAicZoneForPnf(globalCustomerId, serviceType, serviceId);
-        return response;
+        String aicZone = "";
+
+        AaiResponse<ServiceRelationships> serviceInstanceResp = aaiClient.getServiceInstance(globalCustomerId, serviceType, serviceId);
+        if (serviceInstanceResp.getT() != null) {
+            List<String> aicZoneList = getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "zone", "zone.zone-id");
+            if (aicZoneList.size() > 0) {
+                aicZone = aicZoneList.get(0);
+            } else {
+                logger.warn("aic zone not found for service instance " + serviceInstanceId);
+            }
+        } else {
+            if (serviceInstanceResp.getErrorMessage() != null) {
+                logger.error("get service instance " + serviceInstanceId + " return error", serviceInstanceResp.getErrorMessage());
+                return new AaiResponse(aicZone , serviceInstanceResp.getErrorMessage() ,serviceInstanceResp.getHttpCode());
+            } else {
+                logger.warn("get service instance " + serviceInstanceId + " return empty body");
+                return new AaiResponse(aicZone , "get service instance " + serviceInstanceId + " return empty body" ,serviceInstanceResp.getHttpCode());
+            }
+        }
+
+        return new AaiResponse(aicZone , null ,HttpStatus.SC_OK);
     }
 
     @Override
@@ -294,7 +327,7 @@ public class AaiServiceImpl implements AaiService {
     @Override
     public Collection<Service> getServicesByDistributionStatus() {
         AaiResponse<GetServiceModelsByDistributionStatusResponse> serviceModelsByDistributionStatusResponse = aaiClient.getServiceModelsByDistributionStatus();
-        Collection<Service> services = new HashSet<>();
+        Collection<Service> services = new ArrayList<>();
         if (serviceModelsByDistributionStatusResponse.getT() != null) {
             List<Result> results = serviceModelsByDistributionStatusResponse.getT().getResults();
             for (Result result : results) {
@@ -302,5 +335,63 @@ public class AaiServiceImpl implements AaiService {
             }
         }
         return services;
+    }
+
+    @Override
+    public List<String> getServiceInstanceAssociatedPnfs(String globalCustomerId, String serviceType, String serviceInstanceId) {
+        List<String> pnfs = new ArrayList<>();
+
+        AaiResponse<ServiceRelationships> serviceInstanceResp = aaiClient.getServiceInstance(globalCustomerId, serviceType, serviceInstanceId);
+        if (serviceInstanceResp.getT() != null) {
+            List<String> logicalLinks = getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "logical-link", "logical-link.link-name");
+            for (String logicalLink : logicalLinks) {
+                String link = "";
+                try {
+                    link = URLEncoder.encode(logicalLink, "UTF-8");
+                    AaiResponse<LogicalLinkResponse> logicalLinkResp = aaiClient.getLogicalLink(link);
+                    if (logicalLinkResp.getT() != null) {
+                        //lag-interface is the key for pnf - approved by Bracha
+                        List<String> linkPnfs = getRelationshipDataByType(logicalLinkResp.getT().getRelationshipList(), "lag-interface", "pnf.pnf-name");
+                        if (linkPnfs.size() > 0) {
+                            pnfs.addAll(linkPnfs);
+                        } else {
+                            logger.warn("no pnf found for logical link " + logicalLink);
+                        }
+                    } else {
+                        if (logicalLinkResp.getErrorMessage() != null) {
+                            logger.error("get logical link " + logicalLink + " return error", logicalLinkResp.getErrorMessage());
+                        } else {
+                            logger.warn("get logical link " + logicalLink + " return empty body");
+                        }
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    logger.error("Failed to encode logical link: " + logicalLink, e.getMessage());
+                }
+            }
+        } else {
+            if (serviceInstanceResp.getErrorMessage() != null) {
+                logger.error("get service instance " + serviceInstanceId + " return error", serviceInstanceResp.getErrorMessage());
+            } else {
+                logger.warn("get service instance " + serviceInstanceId + " return empty body");
+            }
+        }
+
+        return pnfs.stream().distinct().collect(Collectors.toList());
+    }
+
+    private List<String> getRelationshipDataByType(RelationshipList relationshipList, String relationshipType, String relationshipDataKey) {
+        List<String> relationshipValues = new ArrayList<>();
+        for (Relationship relationship : relationshipList.getRelationship()) {
+            if (relationship.getRelatedTo().equals(relationshipType)) {
+                relationshipValues.addAll( relationship.getRelationDataList().stream()
+                        .filter(rel -> rel.getRelationshipKey().equals(relationshipDataKey))
+                        .map(RelationshipData::getRelationshipValue)
+                        .collect(Collectors.toList())
+                );
+            }
+        }
+
+
+        return relationshipValues;
     }
 }

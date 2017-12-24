@@ -1,0 +1,86 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v11/network/logical-links/logical-link/SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "link-name": "SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961",
+      "in-maint": false,
+      "link-type": "LAG",
+      "resource-version": "1508959992399",
+      "purpose": "test1",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "lag-interface",
+            "related-link": "/aai/v11/network/pnfs/pnf/SANITY6785cce9/lag-interfaces/lag-interface/LAG1961",
+            "relationship-data": [
+              {
+                "relationship-key": "pnf.pnf-name",
+                "relationship-value": "SANITY6785cce9"
+              },
+              {
+                "relationship-key": "lag-interface.interface-name",
+                "relationship-value": "LAG1961"
+              }
+            ]
+          },
+          {
+            "related-to": "service-instance",
+            "related-link": "/aai/v11/business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/AIM%20Transport/service-instances/service-instance/f36f5734-e9df-4fbf-9f35-61be13f028a1",
+            "relationship-data": [
+              {
+                "relationship-key": "customer.global-customer-id",
+                "relationship-value": "31739f3e-526b-11e6-beb8-9e71128cae77"
+              },
+              {
+                "relationship-key": "service-subscription.service-type",
+                "relationship-value": "AIM Transport"
+              },
+              {
+                "relationship-key": "service-instance.service-instance-id",
+                "relationship-value": "f36f5734-e9df-4fbf-9f35-61be13f028a1"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "service-instance.service-instance-name",
+                "property-value": "AIM_TRANSPORT_00004"
+              }
+            ]
+          },
+          {
+            "related-to": "lag-interface",
+            "related-link": "/aai/v11/cloud-infrastructure/pservers/pserver/SANITY6758cce9/lag-interfaces/lag-interface/LAG1992",
+            "relationship-data": [
+              {
+                "relationship-key": "pserver.hostname",
+                "relationship-value": "SANITY6758cce9"
+              },
+              {
+                "relationship-key": "lag-interface.interface-name",
+                "relationship-value": "LAG1992"
+              }
+            ]
+          },
+          {
+            "related-to": "lag-interface",
+            "related-link": "/aai/v11/network/pnfs/pnf/tesai371ve2/lag-interfaces/lag-interface/ae10",
+            "relationship-data": [
+              {
+                "relationship-key": "pnf.pnf-name",
+                "relationship-value": "tesai371ve2"
+              },
+              {
+                "relationship-key": "lag-interface.interface-name",
+                "relationship-value": "ae10"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

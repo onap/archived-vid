@@ -2,23 +2,23 @@ package org.openecomp.vid.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fj.data.Either;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONArray;
 import org.openecomp.portalsdk.core.controller.UnRestrictedBaseController;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.changeManagement.*;
 import org.openecomp.vid.exceptions.NotFoundException;
+import org.openecomp.vid.model.ExceptionResponse;
+import org.openecomp.vid.model.MsoExceptionResponse;
+import org.openecomp.vid.mso.MsoResponseWrapper2;
+import org.openecomp.vid.mso.MsoResponseWrapperInterface;
 import org.openecomp.vid.services.ChangeManagementService;
 import org.openecomp.vid.services.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.openecomp.vid.mso.rest.Request;
 
@@ -27,6 +27,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static org.openecomp.vid.utils.Logging.getMethodName;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Controller to handle ChangeManagement feature requests.
@@ -57,13 +60,13 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     @RequestMapping(value = {"/workflow"}, method = RequestMethod.GET)
     public ResponseEntity<Collection<String>> getWorkflow(@RequestParam("vnfs") Collection<String> vnfs) throws IOException, InterruptedException {
         Collection<String> result = this.workflowService.getWorkflowsForVNFs(vnfs);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, OK);
     }
 
     @RequestMapping(value = {"/mso"}, method = RequestMethod.GET)
     public ResponseEntity<Collection<Request>> getMSOChangeManagements() throws IOException, InterruptedException {
         Collection<Request> result = this.changeManagementService.getMSOChangeManagements();
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, OK);
     }
 
     @RequestMapping(value = "/workflow/{vnfName}", method = RequestMethod.POST)
@@ -78,7 +81,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public ResponseEntity<JSONArray> getSchedulerChangeManagements() throws IOException, InterruptedException {
         JSONArray result = this.changeManagementService.getSchedulerChangeManagements();
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, OK);
     }
 
     @RequestMapping(value = {SCHEDULER_BY_SCHEDULE_ID}, method = RequestMethod.DELETE)
@@ -92,7 +95,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     public ResponseEntity getWorkflows(@RequestBody GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest) throws IOException, InterruptedException {
         try {
             GetWorkflowsResponse response = new GetWorkflowsResponse(changeManagementService.getWorkflowsForVnf(getVnfWorkflowRelationRequest));
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(OK).body(response);
         }
         catch (NotFoundException exception) {
             logger.error(exception.getMessage(), exception);
@@ -113,7 +116,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
             return handleException(exception, "Failed to add vnf to workflow relation");
         }
         
-        return new ResponseEntity<>(vnfWorkflowRelationResponse, HttpStatus.OK);
+        return new ResponseEntity<>(vnfWorkflowRelationResponse, OK);
     }
 
     @RequestMapping(value = {VNF_WORKFLOW_RELATION}, method = RequestMethod.GET)
@@ -121,7 +124,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
 
         try {
             VnfWorkflowRelationAllResponse vnfWorkflowRelationAllResponse = changeManagementService.getAllVnfWorkflowRelations();
-            return new ResponseEntity<>(vnfWorkflowRelationAllResponse, HttpStatus.OK);
+            return new ResponseEntity<>(vnfWorkflowRelationAllResponse, OK);
         }
         catch (Exception exception) {
             return handleException(exception, "Failed to get all vnf to workflow relations");
@@ -138,7 +141,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
             return handleException(exception, "Failed to delete vnf from workflow relation");
         }
 
-        return new ResponseEntity<>(vnfWorkflowRelationResponse, HttpStatus.OK);
+        return new ResponseEntity<>(vnfWorkflowRelationResponse, OK);
     }
 
     private ResponseEntity handleException(Exception exception, String msg) {
@@ -146,5 +149,25 @@ public class ChangeManagementController extends UnRestrictedBaseController {
         return new ResponseEntity<>(new VnfWorkflowRelationResponse(Collections.singletonList(msg)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value=OK) //return 200 for Backwards compatibility with the previous responses to scheduler
+    private MsoResponseWrapperInterface exceptionHandler(Exception e) {
+        return exceptionHandler(e, INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({
+            javax.ws.rs.BadRequestException.class,
+    })
+    @ResponseStatus(value = OK) //return 200 for Backwards compatibility with the previous responses to scheduler
+    public MsoResponseWrapperInterface clientDerivedExceptionAsBadRequest(Exception e) {
+        // same handler, different HTTP Code
+        return exceptionHandler(e, BAD_REQUEST);
+    }
+
+    private MsoResponseWrapperInterface exceptionHandler(Exception e, HttpStatus httpStatus) {
+        logger.error(EELFLoggerDelegate.errorLogger, "{}: {}", getMethodName(), ExceptionUtils.getMessage(e), e);
+        MsoResponseWrapper2<MsoExceptionResponse> responseWrapper2 = new MsoResponseWrapper2<>(httpStatus.value(), new MsoExceptionResponse(e));
+        return responseWrapper2;
+    }
 
 }

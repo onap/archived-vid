@@ -14,6 +14,7 @@ import org.openecomp.vid.category.AddCategoryOptionsRequest;
 import org.openecomp.vid.category.CategoryParametersResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.openecomp.vid.model.CategoryParameter.Family;
 
 import javax.ws.rs.ForbiddenException;
 
@@ -47,8 +48,8 @@ public class CategoryParameterServiceImpl implements CategoryParameterService {
     }
 
     @Override
-    public CategoryParametersResponse getCategoryParameters() throws IOException {
-        List<CategoryParameter> categoryParameters = dataAccessService.getList(CategoryParameter.class, null);
+    public CategoryParametersResponse getCategoryParameters(Family familyName) throws IOException {
+        List<CategoryParameter> categoryParameters = dataAccessService.getList(CategoryParameter.class, String.format(" where family = '%s' ",familyName), null, null);
         return convertToCategoryParametersResponse(categoryParameters);
     }
 
@@ -78,8 +79,8 @@ public class CategoryParameterServiceImpl implements CategoryParameterService {
         return response;
     }
 
-    private CategoryParameter getCategoryParameter(String categoryName) {
-          List<CategoryParameter> categoryParameters = dataAccessService.getList(CategoryParameter.class, String.format(" where name = '%s'", categoryName), null, null);
+    private CategoryParameter getCategoryParameter( String categoryName) {
+        List<CategoryParameter> categoryParameters = dataAccessService.getList(CategoryParameter.class, String.format(" where name = '%s' ", categoryName), null, null);
         if (categoryParameters.size() != 1) {
             String msg = "There is no category parameter with name " + categoryName;
             LOG.debug(msg);

@@ -1,6 +1,7 @@
 package org.openecomp.simulator.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 import java.util.Map;
@@ -49,8 +50,8 @@ public class SimulatorRequest {
         return body;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setBody(JsonNode body) {
+        this.body = body.isTextual() ? body.textValue() : body.toString();
     }
 
     @Override

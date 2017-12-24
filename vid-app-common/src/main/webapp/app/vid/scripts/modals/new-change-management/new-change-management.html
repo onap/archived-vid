@@ -19,33 +19,33 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="control-label">VNF type</label>
+            <label class="control-label">NF Role</label>
             <select class="form-control" ng-model="vm.changeManagement.vnfType" ng-change="vm.loadVNFVersions()" name="vnfType" id="vnfType" ng-options="item for item in vm.vnfTypes" required data-ng-disabled="newChangeManagement.serviceType.$pristine">
-                <option value="" disabled>Select VNF type</option>
+                <option value="" disabled>NF Role</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="control-label">Source Version</label>
+            <label class="control-label">Source VNF Model Version</label>
             <select class="form-control" ng-model="vm.changeManagement.fromVNFVersion" ng-change="vm.loadVNFNames()" name="fromVNFVersion" id="fromVNFVersion" ng-options="item.key as item.value for item in vm.fromVNFVersions" required data-ng-disabled="newChangeManagement.vnfType.$pristine">
-                <option value="" disabled>Select from VNF version</option>
+                <option value="" disabled>Select VNF Model Version</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="control-label">VNF name</label>
+            <label class="control-label">Available VNF</label>
             <multiselect ng-model="vm.changeManagement.vnfNames" ng-change="vm.loadWorkFlows()" name="vnfName" id="vnfName" options="vm.vnfNames" display-prop="name" id-prop="id" required data-ng-disabled="newChangeManagement.fromVNFVersion.$pristine"></multiselect>
         </div>
         <div ng-show="vm.changeManagement.vnfNames && vm.changeManagement.vnfNames.length > 0" class="form-group vnf-versions-container">
             <table class="table table-bordered">
                 <tbody>
                 <tr ng-repeat="vnfName in vm.changeManagement.vnfNames">
-                    <td class="col-md-6"><span class="vnf-versions-name">{{vnfName.name}}</span></td>
-                    <td class="col-md-3">
-                        <select ng-model="vnfName.version" ng-change="vm.selectVersionForVNFName(vnfName)" class="vnf-versions-select-as-text">
-                            <option value="" disabled="" selected="selected">Select Target Version</option>
+                    <td class="col-md-2"><span class="vnf-versions-name">{{vnfName.name}}</span></td>
+                    <td class="col-md-2">
+                        <select ng-model="vnfName.version" ng-change="vm.selectVersionForVNFName(vnfName)" class="vnf-versions-select-as-text" id="{{vnfName['invariant-id']}}-target-version-select">
+                            <option value="" disabled="" selected="selected">Select Target VNF Model Version</option>
                             <option ng-repeat="version in vnfName.availableVersions">{{version.modelInfo.modelVersion}}</option>
                         </select>
                     </td>
-                    <td class="col-md-3 vnf-versions-name">
+                    <td class="col-md-1 vnf-versions-name">
                         <input ng-model="vnfName.filePath" onchange="angular.element(this).scope().selectFileForVNFName(this)" type="file" id="{{vnfName['invariant-id']}}" class="vnf-files-select" />
                         <span class="vnf-versions-name">Select File<span class="caret"></span></span></td>
                 </tr>
@@ -58,6 +58,22 @@
                 <option value="" disabled>Select workflow</option>
             </select>
         </div>
+        <div ng-if="vm.shouldShowVnfInPlaceFields()">
+            <div class="form-group">
+                <label class="control-label">operations-timeout</label>
+                <input class="form-control" ng-model="vm.changeManagement.operationTimeout" name="operationTimeout" type="text" id="operations-timeout" pattern="[0-9]+" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">existing-software-version</label>
+                <input class="form-control" ng-model="vm.changeManagement.existingSoftwareVersion" name="existingSoftwareVersion" type="text" id="existing-software-version" pattern="{{vm.softwareVersionRegex}}" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">new-software-version</label>
+                <input class="form-control" ng-model="vm.changeManagement.newSoftwareVersion" name="newSoftwareVersion" type="text" id="new-software-version" pattern="{{vm.softwareVersionRegex}}" required>
+            </div>
+
+        </div>
+
     </div>
     <div class="modal-footer">
         <div class="pull-right">

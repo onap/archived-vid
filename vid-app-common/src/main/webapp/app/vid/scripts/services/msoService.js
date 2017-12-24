@@ -55,48 +55,62 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
         }
     };
 
-    var activateInstance = function(instance, model) {
+    var buildPayloadForServiceActivateDeactivate = function (model, userId, aicZone) {
+        var requestDetails = {
+            "requestDetails": {
+                "modelInfo": {
+                    "modelType": "service",
+                    "modelInvariantId": model.service.invariantUuid,
+                    "modelVersionId": model.service.uuid,
+                    "modelName": model.service.name,
+                    "modelVersion": model.service.version
+                },
+                "requestInfo": {
+                    "source": "VID",
+                    "requestorId": userId
+                },
+                "requestParameters": {
+                    "userParams": [{
+                        "name": "aic_zone",
+                        "value": aicZone
+                    }]
+                }
+            }
+        };
+
+        $log.debug("Service Activate/Deactivate payload", requestDetails);
+
+        return requestDetails;
+
+    };
+
+    var activateInstance = function(requestParams) {
+        var requestDetails = buildPayloadForServiceActivateDeactivate(requestParams.model, requestParams.userId, requestParams.aicZone);
+
+        return sendPostRequest(COMPONENT.MSO_ACTIVATE_INSTANCE.replace('@serviceInstanceId', requestParams.instance.serviceInstanceId),
+            requestDetails);
+    };
+
+    var deactivateInstance = function(requestParams) {
+        var requestDetails = buildPayloadForServiceActivateDeactivate(requestParams.model, requestParams.userId, requestParams.aicZone);
+
+        return sendPostRequest(COMPONENT.MSO_DEACTIVATE_INSTANCE.replace('@serviceInstanceId', requestParams.instance.serviceInstanceId),
+            requestDetails);
+    };
+
+    var sendPostRequest = function(url, requestDetails) {
         var deferred = $q.defer();
-
-        AaiService.getLoggedInUserID(function (response) {
-            var userID = response.data;
-
-            AaiService.getAicZoneForPNF(instance.globalCustomerId, instance.serviceType, instance.serviceInstanceId, function (aicZone) {
-
-                var requestDetails = {
-                    "requestDetails": {
-                        "modelInfo": {
-                            "modelType": "service",
-                            "modelInvariantId": model.service.invariantUuid,
-                            "modelVersionId": model.service.uuid,
-                            "modelName": model.service.name,
-                            "modelVersion": model.service.version
-                        },
-                        "requestInfo": {
-                            "source": "VID",
-                            "requestorId": userID
-                        },
-                        "requestParameters": {
-                            "userParams": [{
-                                "name": "aic_zone",
-                                "value": aicZone
-                            }]
-                        }
-                    }
-                };
-
-                console.log("requestDetails", requestDetails);
-
-                $http.post(COMPONENT.MSO_ACTIVATE_INSTANCE.replace('@serviceInstanceId', instance.serviceInstanceId),
-                    requestDetails)
-                    .success(function (response) {
-                        deferred.resolve({data: response});
-                    })
-                    .error(function(data, status, headers, config) {
-                        deferred.reject({message: data, status: status});
-                    });
+        if (url) {
+            $http.post(url, {
+                requestDetails: requestDetails
+            }, {
+                timeout: PropertyService.getServerResponseTimeoutMsec()
+            }).success(function (response) {
+                deferred.resolve({data: response});
+            }).error(function (data, status) {
+                deferred.reject({message: data, status: status});
             });
-        });
+        }
 
         return deferred.promise;
     };
@@ -176,9 +190,12 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
         getFormattedSingleGetOrchestrationRequestResponse : function (response) {
             UtilityService.checkUndefined(COMPONENT.ENTITY, response.data.entity);
             UtilityService.checkUndefined(COMPONENT.STATUS, response.data.status);
-            checkValidStatus(response);
+            //checkValidStatus(response);
 
             var message = "";
+            if (! (response && response.data && response.data.entity)) {
+                return message;
+            }
             if ( UtilityService.hasContents (response.data.entity.request) ) {
                 var request = response.data.entity.request;
                 message += addListEntry(FIELD.ID.REQUEST_ID, request.requestId) + ",\n";
@@ -198,6 +215,11 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                     message += addListEntry(FIELD.ID.PERCENT_PROGRESS,
                             status.percentProgress)
                         + "\n\n";
+                }
+            }
+            else {
+                if (UtilityService.hasContents(response.data.status) && UtilityService.hasContents(response.data.entity)) {
+                    message = this.getFormattedCommonResponse(response) + "\n";
                 }
             }
             return message;
@@ -251,12 +273,10 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             }
         },
         activateInstance: activateInstance,
+        deactivateInstance: deactivateInstance,
 
 
-
-        createConfigurationInstance: function(configurationModelInfo,
-                                              portMirroringConfigFields, attuuid,
-                                              relatedTopModelsInfo, topServiceInstanceId)  {
+        createConfigurationInstance: function(requestParams) {
 
             const modelInfoOf = function (instance) {
                 const modelInfo = {
@@ -278,47 +298,47 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                 "requestDetails": {
                     "modelInfo": {
                         "modelType": "configuration",
-                        "modelInvariantId": configurationModelInfo.modelInvariantId,
-                        "modelVersionId": configurationModelInfo.modelNameVersionId,
-                        "modelName": configurationModelInfo.modelName, // "Port Mirroring Configuration"
-                        "modelVersion": configurationModelInfo.modelVersion,
-                        "modelCustomizationId": configurationModelInfo.customizationUuid,
-                        "modelCustomizationName": configurationModelInfo.modelCustomizationName
+                        "modelInvariantId": requestParams.configurationModelInfo.modelInvariantId,
+                        "modelVersionId": requestParams.configurationModelInfo.modelNameVersionId,
+                        "modelName": requestParams.configurationModelInfo.modelName, // "Port Mirroring Configuration"
+                        "modelVersion": requestParams.configurationModelInfo.modelVersion,
+                        "modelCustomizationId": requestParams.configurationModelInfo.customizationUuid,
+                        "modelCustomizationName": requestParams.configurationModelInfo.modelCustomizationName
                     },
                     "cloudConfiguration": {
                         // "tenantId": ????
-                        "lcpCloudRegionId": portMirroringConfigFields.lcpRegion.value
+                        "lcpCloudRegionId": requestParams.portMirroringConfigFields.lcpRegion.value
                     },
                     "requestInfo": {
-                        "instanceName": portMirroringConfigFields.instanceName.value,
+                        "instanceName": requestParams.portMirroringConfigFields.instanceName.value,
                         "source": "VID",
-                        "requestorId": attuuid
+                        "requestorId": requestParams.attuuid
                     },
                     "relatedInstanceList": [
                         {
                             "relatedInstance": {
-                                "instanceId": topServiceInstanceId,
+                                "instanceId": requestParams.topServiceInstanceId,
                                 "modelInfo": {
                                     "modelType": "service", // relatedTopModelsInfo.modelType
-                                    "modelInvariantId": relatedTopModelsInfo.modelInvariantId,
-                                    "modelVersionId": relatedTopModelsInfo.modelNameVersionId,
-                                    "modelName": relatedTopModelsInfo.modelName,
-                                    "modelVersion": relatedTopModelsInfo.modelVersion
+                                    "modelInvariantId": requestParams.relatedTopModelsInfo.modelInvariantId,
+                                    "modelVersionId": requestParams.relatedTopModelsInfo.modelNameVersionId,
+                                    "modelName": requestParams.relatedTopModelsInfo.modelName,
+                                    "modelVersion": requestParams.relatedTopModelsInfo.modelVersion
                                 }
                             }
                         },
                         {
                             "relatedInstance": {
-                                "instanceId": portMirroringConfigFields.sourceInstance.properties['vnf-id'],
+                                "instanceId": requestParams.portMirroringConfigFields.sourceInstance.properties['vnf-id'],
                                 "instanceDirection": "source",
-                                "modelInfo": modelInfoOf(portMirroringConfigFields.sourceInstance)
+                                "modelInfo": modelInfoOf(requestParams.portMirroringConfigFields.sourceInstance)
                             }
                         },
                         {
                             "relatedInstance": {
-                                "instanceId": portMirroringConfigFields.destinationInstance.properties['vnf-id'],
+                                "instanceId": requestParams.portMirroringConfigFields.destinationInstance.properties['vnf-id'],
                                 "instanceDirection": "destination",
-                                "modelInfo": modelInfoOf(portMirroringConfigFields.destinationInstance)
+                                "modelInfo": modelInfoOf(requestParams.portMirroringConfigFields.destinationInstance)
                             }
                         }
                     ],
@@ -333,7 +353,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             var deferred = $q.defer();
             $http.post([
                 'mso','mso_create_configuration_instance',
-                topServiceInstanceId,
+                requestParams.topServiceInstanceId,
                 'configurations',''
             ].join(COMPONENT.FORWARD_SLASH),
                 payload)
@@ -345,21 +365,21 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             return deferred.promise;
         },
 
-        toggleConfigurationStatus: function(serviceInstanceId, configurationId, configStatus, serviceModel, configurationModel) {
+        toggleConfigurationStatus: function(requestParams) {
 
             var requestDetails = {
-                "modelInfo": configurationModel,
+                "modelInfo": requestParams.configurationModel,
                 "cloudConfiguration": {
                     "lcpCloudRegionId": "mdt1"
                 },
                 "requestInfo": {
                     "source": "VID",
-                    "requestorId": "az2016"
+                    "requestorId": requestParams.userId
                 },
                 "relatedInstanceList": [{
                     "relatedInstance": {
-                        "instanceId": serviceInstanceId,
-                        "modelInfo": serviceModel
+                        "instanceId": requestParams.serviceInstanceId,
+                        "modelInfo": requestParams.serviceModel
                     }
                 }],
                 "requestParameters": {
@@ -368,39 +388,39 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             };
 
             var url;
-            switch (configStatus) {
+            switch (requestParams.configStatus) {
                 case FIELD.STATUS.AAI_CREATED:
                 case FIELD.STATUS.AAI_INACTIVE:
-                    url = "mso/mso_activate_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    url = "mso/mso_activate_configuration/"+requestParams.serviceInstanceId+"/configurations/"+requestParams.configurationId;
                     break;
                 case FIELD.STATUS.AAI_ACTIVE:
-                    url = "mso/mso_deactivate_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    url = "mso/mso_deactivate_configuration/"+requestParams.serviceInstanceId+"/configurations/"+requestParams.configurationId;
                     break;
             }
 
-            return this.sendPostRequest(url, requestDetails);
+            return sendPostRequest(url, requestDetails);
         },
 
-        togglePortStatus: function(serviceInstanceId, configurationId, portId, portStatus, serviceModel, configurationModel) {
+        togglePortStatus: function(requestParams) {
             var requestDetails = {
-                "modelInfo": configurationModel,
+                "modelInfo": requestParams.configurationModel,
                 "cloudConfiguration": {
                     "lcpCloudRegionId": "mdt1"
                 },
                 "requestInfo": {
                     "source": "VID",
-                    "requestorId": "az2016"
+                    "requestorId": requestParams.userId
                 },
                 "relatedInstanceList": [
                     {
                         "relatedInstance": {
-                            "instanceId": serviceInstanceId,
-                            "modelInfo": serviceModel
+                            "instanceId": requestParams.serviceInstanceId,
+                            "modelInfo": requestParams.serviceModel
                         }
                     },
                     {
                         "relatedInstance": {
-                            "instanceId": portId,
+                            "instanceId": requestParams.portId,
                             "instanceDirection": "source",
                             "modelInfo": {
                                 "modelType": "connectionPoint"
@@ -411,33 +431,69 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             };
 
             var url;
-            switch (portStatus) {
+            switch (requestParams.portStatus) {
                 case FIELD.STATUS.AAI_ENABLED:
-                    url = "mso/mso_disable_port_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    url = "mso/mso_disable_port_configuration/"+requestParams.serviceInstanceId+"/configurations/"+requestParams.configurationId;
                     break;
                 case FIELD.STATUS.AAI_DISABLED:
-                    url = "mso/mso_enable_port_configuration/"+serviceInstanceId+"/configurations/"+configurationId;
+                    url = "mso/mso_enable_port_configuration/"+requestParams.serviceInstanceId+"/configurations/"+requestParams.configurationId;
                     break;
             }
 
-            return this.sendPostRequest(url, requestDetails);
+            return sendPostRequest(url, requestDetails);
         },
 
-        sendPostRequest: function(url, requestDetails) {
-            var deferred = $q.defer();
-            if (url) {
-                $http.post(url, {
-                    requestDetails: requestDetails
-                }, {
-                    timeout: PropertyService.getServerResponseTimeoutMsec()
-                }).success(function (response) {
-                    deferred.resolve({data: response});
-                }).error(function (data, status) {
-                    deferred.reject({message: data, status: status});
-                });
-            }
+        buildPayloadForAssociateDissociate: function(serviceModelInfo, attuuid, instanceId, pnf) {
+            var payload = {
+                "requestDetails": {
+                    "modelInfo": {
+                        "modelType": "service",
+                        "modelInvariantId": serviceModelInfo.invariantUuid,
+                        "modelVersionId": serviceModelInfo.uuid,
+                        "modelName": serviceModelInfo.name,
+                        "modelVersion": serviceModelInfo.version
+                    },
+                    "requestInfo": {
+                        "source": "VID",
+                        "requestorId": attuuid
+                    },
+                    "relatedInstanceList": [
+                        {
+                            "relatedInstance": {
+                                "instanceName": pnf,
+                                "modelInfo": {
+                                    "modelType": "pnf"
+                                }
+                            }
+                        }],
+                    "requestParameters": {
+                        "aLaCarte": true
+                    }
+                }
+            };
 
-            return deferred.promise;
+            $log.debug("payload", payload);
+
+            return payload;
+        },
+        associatePnf: function(requestParams) {
+
+            var payload = this.buildPayloadForAssociateDissociate(requestParams.serviceModelInfo, requestParams.attuuid, requestParams.instanceId, requestParams.pnf);
+            return sendPostRequest([
+                    COMPONENT.MSO, COMPONENT.MSO_CREATE_REALATIONSHIP,
+                    requestParams.instanceId,
+                    ''
+                ].join(COMPONENT.FORWARD_SLASH), payload);
+        },
+        dissociatePnf: function(requestParams) {
+
+            var payload = this.buildPayloadForAssociateDissociate(requestParams.serviceModelInfo, requestParams.attuuid, requestParams.serviceInstanceId, requestParams.pnf);
+
+            return sendPostRequest([
+                COMPONENT.MSO, COMPONENT.MSO_REMOVE_RELATIONSHIP,
+                requestParams.serviceModelInfo.instanceId,
+                ''
+            ].join(COMPONENT.FORWARD_SLASH), payload);
         }
     }
 };

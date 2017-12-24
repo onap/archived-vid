@@ -1,0 +1,22 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/ecompportal_att/auxapi//getSessionSlotCheckInterval"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": "300000"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "POST",
+      "path": "/ecompportal_att/auxapi//extendSessionTimeOuts"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": "300000"
+    }
+  }
+]

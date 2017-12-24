@@ -115,6 +115,8 @@ Registration body JSON specification (see and copy/paste examples below):
               "responseHeaders" - Dictionary Object with HTTP headers and values.
               "body" - String, body of the response.
                                Note that JSON String should be properly escaped.
+              "file" - String, a filename of the file sitting in "vid-ext-services-simulator\src\main\resources\download_files"
+                                Used for simulating file download requests.
 
     "misc" - optional configurations.
               "numberOfTimes" - Integer. Limit this expectation to fire only a
@@ -383,3 +385,52 @@ Running:
 
     200 OK
    {"requestId1": "3212b08c-0dcd-4d20-8c84-51e4f325c14a","requestId2": "3212b08c-0dcd-4d20-8c84-51e4f325c14b"}
+
+
+
+********************************************************************************
+5) File Download
+********************************************************************************
+
+Registration:
+-------------
+
+    Request:
+
+    POST /vidSimulator/registerToVidSimulator HTTP/1.1
+    Host: localhost:7080
+    Content-Type: application/json
+    Cache-Control: no-cache
+    Postman-Token: 0bbfeb0f-b8b6-368e-6fbd-38a90fc544b4
+
+    {
+      "simulatorRequest": {
+        "method": "GET",
+        "path": "/vidSimulator/getSomeFile"
+    } ,
+      "simulatorResponse": {
+        "responseCode": 200,
+        "file": "csar3933948645405128424.zip"
+      }
+    }
+
+    Response:
+
+    200 OK
+    Registration successful!
+
+Running:
+-----------
+
+   Request:
+
+  GET /vidSimulator/getSomeFile HTTP/1.1
+  Host: 127.0.0.1:7080
+  Cache-Control: no-cache
+  Postman-Token: 9ef5d9d2-77f4-7631-7e9f-4404df10acb6
+
+
+   Response:
+
+    200 OK
+    File for download.

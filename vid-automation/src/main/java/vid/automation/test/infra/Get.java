@@ -16,13 +16,15 @@ public class Get {
         }
     }
 
-    public static WebElement byTestId(String testId) {
+    public static WebElement byTestId(String dataTestId) {
         try {
-            return GeneralUIUtils.getWebElementByTestID(testId);
+            return GeneralUIUtils.getDriver().findElement(By.xpath("//*[@data-tests-id='" + dataTestId + "']"));
         } catch (Exception var2) {
             return null;
         }
     }
+
+
 
     public static WebElement byClassAndText(String className, String text) {
         WebElement result = null;
@@ -36,6 +38,16 @@ public class Get {
         }
 
         return result;
+    }
+
+    public static WebElement byCssSelectorAndText(String css, String text) {
+        WebElement element = GeneralUIUtils.getDriver().findElement(By.cssSelector(css));
+
+        if (element != null && element.getText().contains(text)) {
+            return element;
+        }
+
+        return null;
     }
 
     public static String selectedOptionText(String dataTestId) {

@@ -19,6 +19,8 @@
   -->
 
 <link rel="stylesheet" type="text/css" href="app/vid/styles/serviceModels.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/buttons.css" />
+
 <div popup-window class="popupContents" ngx-show="{{popup.isTablePopUpVisible}}" ng-cloak>
 	<div ng-include="'app/vid/scripts/view-models/previousVersion.htm'"/>
 </div>
@@ -100,9 +102,10 @@
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][4]['property-value']"></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][6]['property-value']"></td>
 	            	<td att-table-body ng-show="service['extra-properties']['extra-property'][6]['property-value'] > '1.0' ">
-	            		<button type=button ng-click="loadPreviousVersionData(service['extra-properties']['extra-property'][6]['property-value'],service['extra-properties']['extra-property'][4]['property-value'])" att-button btn-type="primary" size="small">
+	            		<div class="clickable-text previous-versions-button"
+						   ng-click="loadPreviousVersionData(service['extra-properties']['extra-property'][6]['property-value'],service['extra-properties']['extra-property'][4]['property-value'])">
 	            			Previous Versions
-	            		</button>
+	            		</div>
 	            	</td>
 	            	<td att-table-body ng-show="service['extra-properties']['extra-property'][6]['property-value'] <= '1.0' ">&nbsp;</td>
 		        </tr>

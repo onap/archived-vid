@@ -190,6 +190,7 @@
   },
   "volumeGroups": {},
   "configurations":{},
-  "serviceProxies":{}
+  "serviceProxies":{},
+  "pnfs":{}
 
 }

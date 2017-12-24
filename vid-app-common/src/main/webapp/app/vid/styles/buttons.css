@@ -22,3 +22,37 @@ button.blue[disabled] {
     background-color: rgba(5, 104, 174, 0.3);
     border-color: rgba(4, 113, 168, 0.3);
 }
+
+
+button.transparent {
+    border: 0;
+    background-color: transparent;
+    outline: none;
+}
+button.transparent:hover {
+    background-color: transparent;
+}
+button.transparent:active {
+    background-color: transparent;
+}
+button.transparent[disabled] {
+    background-color: transparent;
+}
+
+.clickable-text {
+    font-size: 12px !important;
+    color: #337ab7; !important;
+    text-decoration: none;
+    text-decoration-line: none !important;
+}
+.clickable-text:hover {
+    color: #23527c !important;
+    text-decoration: none;
+    text-decoration-line: none !important;
+}
+.clickable-text:active {
+    color: #0091c7 !important;
+}
+.clickable-text[disabled] {
+    color: rgba(5, 104, 174, 0.3) !important;
+}

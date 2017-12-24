@@ -26,18 +26,21 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.openecomp.vid.category.CategoryParametersResponse;
+import org.openecomp.vid.model.CategoryParameter.Family;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.openecomp.portalsdk.core.controller.RestrictedBaseController;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.openecomp.vid.services.CategoryParameterService;
+
+import static org.openecomp.vid.utils.Logging.getMethodName;
 
 /**
  * The Class PropertyController.
@@ -124,7 +127,7 @@ public class PropertyController extends RestrictedBaseController{
 		logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " returning " + pvalue);
   		return ( resp );
 	}
-	
+
 	/**
 	 * Gets the owning entity properties.
 	 * @param request the request
@@ -132,18 +135,18 @@ public class PropertyController extends RestrictedBaseController{
 	 * @throws Exception the exception
 	 */
 	@RequestMapping(value = "/category_parameter", method = RequestMethod.GET)
-	public ResponseEntity getCategoryParameter(HttpServletRequest request) throws Exception {
-		String methodName = "getCategoryParameter";
-		logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+	public ResponseEntity getCategoryParameter(HttpServletRequest request, @RequestParam(value="familyName", required = true) Family familyName) throws Exception {
+		logger.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName());
 		try {
-            return new ResponseEntity<>(categoryParameterService.getCategoryParameters(), HttpStatus.OK);
-        }
-        catch (Exception exception) {
-            logger.error("failed to retrieve category parameter list from DB.", exception);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+			CategoryParametersResponse response = categoryParameterService.getCategoryParameters(familyName);
+			logger.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), response);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		catch (Exception exception) {
+			logger.error("failed to retrieve category parameter list from DB.", exception);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
-	
-	
+
 
 }

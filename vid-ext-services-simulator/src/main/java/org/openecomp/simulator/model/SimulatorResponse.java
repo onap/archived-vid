@@ -10,6 +10,7 @@ public class SimulatorResponse {
     private int responseCode;
     private Map<String, String> responseHeaders;
     private String body;
+    private String file;
 
     public int getResponseCode() {
         return responseCode;
@@ -35,11 +36,20 @@ public class SimulatorResponse {
         this.responseHeaders = responseHeaders;
     }
 
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
     @Override
     public String toString() {
         return "SimulatorResponse{" +
                 "responseCode=" + responseCode +
                 ", body='" + body + '\'' +
+                ", file='" + file + '\'' +
                 ", responseHeaders='" + responseHeaders + '\'' +
                 '}';
     }

@@ -7,7 +7,7 @@
         this.getWorkflows = function (vnfs) {
             var requestVnfs = _.map(vnfs, function (vnf) {
                 return {
-                    UUID: vnf.id,
+                    UUID: vnf["modelVersionId"],
                     invariantUUID: vnf["invariant-id"]
                 };
             });

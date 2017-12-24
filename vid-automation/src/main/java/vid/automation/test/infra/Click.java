@@ -41,4 +41,14 @@ public class Click {
             selectlist.selectByIndex(1);
         }
     }
+
+    public static void onFirstSelectOptionByClass(String className) {
+        final List<WebElement> webElements = Get.byClass(className);
+        webElements.forEach(webElement -> {
+            Select selectlist = new Select(webElement);
+            if (selectlist.getOptions().size() > 1) {
+                selectlist.selectByIndex(1);
+            }
+        });
+    }
 }

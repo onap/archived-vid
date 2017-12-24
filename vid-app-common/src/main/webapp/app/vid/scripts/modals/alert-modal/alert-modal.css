@@ -7,7 +7,9 @@
 .modal-header.failed {
     border-bottom: 3px solid #cf2a2a;
 }
-
+.modal-header.confirm {
+    border-bottom: 3px solid #009FDB;
+}
 .modal-footer {
     border-radius: 0 0 6px 6px;
 }

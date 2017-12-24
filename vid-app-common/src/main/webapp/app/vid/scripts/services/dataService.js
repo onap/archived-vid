@@ -100,6 +100,12 @@ var DataService = function($log, DataService) {
 		getAicZones : function(){
 			return _this.aicZones;
 		},
+        setAicZoneForPNF: function(aicZone) {
+            _this.aicZone = aicZone;
+        },
+        getAicZoneForPNF : function(){
+            return _this.aicZone;
+        },
 		getServiceInstanceId : function() {
 			return _this.serviceInstanceId;
 		},
@@ -214,6 +220,12 @@ var DataService = function($log, DataService) {
 		setVnfInstanceId : function(vnfInstanceId) {
 			_this.vnfInstanceId = vnfInstanceId;
 		},
+        getVfModuleInstanceName : function() {
+            return _this.vfModuleInstanceName;
+        },
+        setVfModuleInstanceName : function(vfModuleInstanceName) {
+            _this.vfModuleInstanceName = vfModuleInstanceName;
+        },
 		getVolumeGroupInstanceId : function() {
 			return _this.volumeGroupInstanceId;
 		},
@@ -347,6 +359,12 @@ var DataService = function($log, DataService) {
         },
         setPortId: function (portId) {
             _this.portId = portId;
+        },
+        getPnf: function () {
+            return _this.pnf;
+        },
+        setPnf: function (pnf) {
+            _this.pnf = pnf;
         },
         getOwningEntityProperties: function () {
             return _this.owningEntityProperties;

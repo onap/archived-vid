@@ -1,0 +1,25 @@
+{
+  "requestDetails": {
+    "requestInfo": {
+      "resourceType": "operationalEnvironment",
+      "source": "VID",
+      "requestorId": "<userId>"
+    },
+    "relatedInstanceList": [
+      {
+        "relatedInstance": {
+          "resourceType": "operationalEnvironment",
+          "instanceId": "<relatedInstanceId>",
+          "instanceName": "<relatedInstanceName>"
+        }
+      }
+    ],
+    "requestParameters": {
+      "operationalEnvironmentType": "VNF",
+      "workloadContext": "<workloadContext>",
+      "manifest": <manifest>,
+      "userParams" : [
+      ]
+    }
+  }
+}

@@ -27,7 +27,7 @@
 
 	appDS2.requires.push('ui.tree');
 
-	appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService) {
+	appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService, AaiService,PnfService, $q) {
 
 		$scope.popup = new Object();
 		$scope.defaultBaseUrl = "";
@@ -37,6 +37,7 @@
         //isPermitted - returned as string from url and converted into boolean
 		$scope.isPermitted = $location.search().isPermitted == "true";
 		$scope.STATUS_CONSTANTS = FIELD.STATUS;
+        $scope.pnfs = [];// PNF data init;
 
         $scope.init = function() {
             /*
@@ -66,8 +67,9 @@
 //            DataService.setServiceInstanceId("mmsc-test-service-instance");
 //            DataService.setServiceUuid("XXXX-YYYY-ZZZZ");
 //            DataService.setUserServiceInstanceName("USER_SERVICE_INSTANCE_NAME");
+
         }
-        
+
         //PropertyService.setMsoBaseUrl("testmso");
 
 		$scope.convertModel = function(asdcModel) {
@@ -81,7 +83,23 @@
 			"convertedModel": $scope.convertModel(vidService.getModel()),
 			"instance": vidService.getInstance()
 		};
-		
+
+		preparePnfs();
+
+
+        function preparePnfs(){
+        	var serviceInstance = {
+                globalCustomerId: $location.search().subscriberId,
+                serviceType: $location.search().serviceType,
+                serviceInstanceId: $location.search().serviceInstanceId
+        	};
+
+            _setPnf(serviceInstance).then(function(data){
+                $scope.pnfs = data;
+            });
+		}
+
+
 		$scope.returnVfModules = function (vnfInstance) {
 			
 			var svcModel = $scope.service.convertedModel;
@@ -854,6 +872,8 @@
 			DataService.setServiceInstanceId($scope.service.instance.id);
 			DataService.setServiceName($scope.service.model.service.name);
 			
+			console.log ( "existingVnfs: " );
+			console.log (JSON.stringify ( existingVnfs, null, 4));
 			console.log ( "existingVnfs: " ); console.log (JSON.stringify ( existingVnfs, null, 4));
 			var vnf_type = "";
 			var vnf_role = "";
@@ -873,7 +893,7 @@
 				vnf_code = vnf.nfCode;
 			}
 			DataService.setModelInfo(COMPONENT.VNF, {
-				"modelType": "vnf",
+				"modelType": vnf.isPnf ? "pnf" : "vnf",
 				"modelInvariantId": vnf.invariantUuid,
 				"modelVersion": vnf.version,
 				"modelNameVersionId": vnf.uuid,
@@ -896,8 +916,9 @@
                 DataService.setSourceServiceProxies(vnf.sourceNodes);
                 DataService.setCollectorServiceProxies(vnf.collectorNodes);
                 $location.path("/addNetworkNode");
-            }
-            else {
+            } else if(vnf.isPnf){
+                $location.path("/pnfSearchAssociation");
+            } else {
                 $scope.$broadcast(COMPONENT.CREATE_COMPONENT, {
                     componentId: COMPONENT.VNF,
                     callbackFunction: createVnfCallbackFunction
@@ -1041,6 +1062,7 @@
         $scope.resume = function(serviceObject, vfModule, vnfModel) {
             populate_popup_vfModule(serviceObject, vfModule, vnfModel);
 			setCurrentVNFModelInfo(vnfModel);
+			DataService.setVfModuleInstanceName(vfModule.object[FIELD.ID.VF_MODULE_NAME]);
 			setCurrentServiceModelInfoFromScope();
             $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
                 componentId : COMPONENT.VF_MODULE,
@@ -1159,7 +1181,35 @@
 		$scope.reloadRoute = function() {
 			$route.reload();
 		}
-		
+
+
+
+           		/*
+		Private metthods
+		 */
+
+		/*
+		setPnf
+		* set the controller pnf param using api call
+		* return: void
+		 */
+        function _setPnf(data){ // data is the $scope.service.instance object
+ 		 return PnfService.getPnfs(data)
+                .then(
+					function success(response){
+						return response.data;
+						// * can add here changes on the data that are needed to the view ( filter, ect..)
+					},
+					function error(error){
+						console.error(error);
+					}
+            	);
+        }
+
+        /*
+        Callbaks functions
+
+         */
 		var updateProvStatusVnfCallbackFunction = function(response) {
 			$scope.callbackResults = "";
 			var color = FIELD.ID.COLOR_NONE;

@@ -17,13 +17,14 @@ public class MsoRequestDetails {
 
     public List<RelatedInstanceList> relatedInstanceList;
 
-    public RequestParameters requestParameters;
+    public Object requestParameters;
 
     public MsoRequestDetails(RequestDetails r) {
         this.modelInfo = new ModelInfo(r.getModelInfo());
         this.cloudConfiguration = new LeanCloudConfiguration(r.getCloudConfiguration());
         this.requestInfo = new UpdateRequestInfo(r.getRequestInfo());
         this.relatedInstanceList = new ArrayList<>();
+        this.requestParameters = r.getRequestParameters();
         relatedInstanceList = r.getRelatedInstList();
 
 

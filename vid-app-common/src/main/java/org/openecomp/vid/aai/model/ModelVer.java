@@ -1,7 +1,9 @@
 package org.openecomp.vid.aai.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelVer {
 
     @JsonProperty("model-version-id")
@@ -14,6 +16,9 @@ public class ModelVer {
     private String distributionStatus;
     @JsonProperty("resource-version")
     private String resourceVersion;
+    @JsonProperty("model-description")
+    private String modelDescription;
+
 
 
     @JsonProperty("model-version-id")
@@ -65,4 +70,15 @@ public class ModelVer {
     public void setResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
+
+    @JsonProperty("model-description")
+    public String getModelDescription() {
+        return modelDescription;
+    }
+
+    @JsonProperty("model-description")
+    public void setModelDescription(String modelDescription) {
+        this.modelDescription = modelDescription;
+    }
+
 }

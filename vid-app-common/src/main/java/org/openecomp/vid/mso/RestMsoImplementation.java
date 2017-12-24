@@ -12,6 +12,7 @@ import org.openecomp.vid.mso.rest.RestInterface;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
@@ -42,13 +43,14 @@ public class RestMsoImplementation implements RestInterface {
     private static Client client = null;
 
     /** The common headers. */
-    private MultivaluedHashMap<String, Object> commonHeaders;
+    //private MultivaluedHashMap<String, Object> commonHeaders;
     /**
      * Instantiates a new mso rest interface.
      */
 
+    @SuppressWarnings("Duplicates")
     @Override
-    public void initMsoClient()
+    public MultivaluedHashMap<String, Object> initMsoClient()
     {
         final String methodname = "initRestClient()";
 
@@ -62,8 +64,8 @@ public class RestMsoImplementation implements RestInterface {
         byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
         String authStringEnc = new String(authEncBytes);
 
-        commonHeaders = new MultivaluedHashMap<String, Object>();
-        commonHeaders.put("Authorization",  Collections.singletonList((Object) ("Basic " + authStringEnc)));
+        MultivaluedHashMap<String, Object> commonHeaders = new MultivaluedHashMap();
+        commonHeaders.put("Authorization",  Collections.singletonList(("Basic " + authStringEnc)));
 
         boolean use_ssl = true;
         if ( (mso_url != null) && ( !(mso_url.isEmpty()) ) ) {
@@ -91,6 +93,8 @@ public class RestMsoImplementation implements RestInterface {
                 logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) +  methodname + " Unable to get the SSL client");
             }
         }
+
+        return commonHeaders;
     }
 
     public <T> void  Get (T t, String sourceId, String path, RestObject<T> restObject ) throws Exception {
@@ -104,7 +108,7 @@ public class RestMsoImplementation implements RestInterface {
         url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
 
-        initMsoClient();
+        MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
         final Response cres = client.target(url)
                 .request()
@@ -136,7 +140,7 @@ public class RestMsoImplementation implements RestInterface {
         String url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
 
-        initMsoClient();
+        MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
         final Response cres = client.target(url)
                 .request()
@@ -169,7 +173,7 @@ public class RestMsoImplementation implements RestInterface {
         logRequest (r);
 
         try {
-            initMsoClient();
+            MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
             url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
             logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + " methodName sending request to: " + url);
@@ -226,21 +230,33 @@ public class RestMsoImplementation implements RestInterface {
     }
 
     @Override
-    public <T> void Post(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) throws RuntimeException {
+    public <T> void Post(T t, Object r, String sourceID, String path, RestObject<T> restObject) throws RuntimeException {
         logger.debug(EELFLoggerDelegate.debugLogger, "start {}->{}({}, {}, {}, {})", getMethodCallerName(), getMethodName(), t.getClass(), r, sourceID, path);
         Post(t.getClass(), r, sourceID, path, restObject);
     }
 
+    public Invocation.Builder prepareClient(String path, String methodName) {
+        MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
+
+        String url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+        logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
+        // Change the content length
+        return client.target(url)
+                .request()
+                .accept("application/json")
+                .headers(commonHeaders);
+    }
 
 
-    private <T> void Post(Class<?> tClass, Object requestDetails, String sourceID, String path, RestObject<T> restObject) throws RuntimeException {
+
+    public <T> void Post(Class<?> tClass, Object requestDetails, String sourceID, String path, RestObject<T> restObject) throws RuntimeException {
         String methodName = "Post";
         String url="";
 
         logRequest (requestDetails);
         try {
 
-            initMsoClient();
+            MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
             url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
             logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
@@ -259,6 +275,8 @@ public class RestMsoImplementation implements RestInterface {
             restObject.setRaw(cresToRestObject.getRaw());
 
             int status = cres.getStatus();
+            restObject.setStatusCode (status);
+
             if ( status >= 200 && status <= 299 ) {
                 logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
                 logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " REST api POST was successful!");
@@ -321,27 +339,11 @@ public class RestMsoImplementation implements RestInterface {
         }
         logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " Request=(" + r_json_str + ")");
     }
-    
-    @Override
-    public void logRequest(org.openecomp.vid.changeManagement.RequestDetails r) {
-        String methodName = "logRequest";
-        ObjectMapper mapper = new ObjectMapper();
-        String r_json_str = "";
-        if ( r != null ) {
-            r_json_str = r.toString();
-            try {
-                r_json_str = mapper.writeValueAsString(r);
-            }
-            catch ( com.fasterxml.jackson.core.JsonProcessingException j ) {
-                logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " Unable to parse request as json");
-            }
-        }
-        logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " Request=(" + r_json_str + ")");
-    }
+
 
 	@Override
 	public <T> void Put(T t, org.openecomp.vid.changeManagement.RequestDetailsWrapper r, String sourceID, String path, RestObject<T> restObject) throws Exception {
-		
+
 	     String methodName = "Put";
 	        String url="";
 
@@ -350,7 +352,7 @@ public class RestMsoImplementation implements RestInterface {
 //	        logRequest (r);
 	        try {
 
-	            initMsoClient();
+                MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
 	            url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
 	            logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " +  methodName + " sending request to url= " + url);
@@ -388,6 +390,6 @@ public class RestMsoImplementation implements RestInterface {
 	            logger.debug(EELFLoggerDelegate.debugLogger,dateFormat.format(new Date()) + "<== " + methodName + " with url="+url+ ", Exception: " + e.toString());
 	            throw e;
 
-	        }		
+	        }
 	}
 }

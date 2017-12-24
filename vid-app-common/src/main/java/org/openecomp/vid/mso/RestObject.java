@@ -20,7 +20,16 @@
 
 package org.openecomp.vid.mso;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
+import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+
+import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static org.openecomp.vid.utils.Logging.getMethodCallerName;
 
 /**
  * The Class RestObject.
@@ -28,6 +37,10 @@ import com.google.common.base.MoreObjects;
  * @param <T> the generic type
  */
 public class RestObject<T> {
+
+    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+
+    final static ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
 	 * Generic version of the RestObject class.
@@ -41,7 +54,35 @@ public class RestObject<T> {
 
     /** The status code. */
     private int statusCode= 0;
-    
+
+    public RestObject() {
+    }
+
+    public RestObject(Response cres, Class<?> tClass, EELFLoggerDelegate logger) {
+
+        String rawEntity = null;
+        try {
+            cres.bufferEntity();
+            rawEntity = cres.readEntity(String.class);
+            T t = (T) objectMapper.readValue(rawEntity, tClass);
+            this.set(t);
+        }
+        catch ( Exception e ) {
+            try {
+                this.setRaw(rawEntity);
+                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " Error reading response entity as " + tClass + ": , e="
+                        + e.getMessage() + ", Entity=" + rawEntity);
+            } catch (Exception e2) {
+                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " No response entity, this is probably ok, e="
+                        + e.getMessage());
+            }
+        }
+
+        int status = cres.getStatus();
+        this.setStatusCode (status);
+    }
+
+
     /**
      * Sets the.
      *

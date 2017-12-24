@@ -160,18 +160,21 @@ public class AAIRestInterface {
 		}
 		String url = "";
 		logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-	
+
 		url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL) + requestUri;
-		
-	    try {
-	    	// what is the point of this, just to check syntax??
-		    URL urlObj= new URL(url);
-			URI uri = new URI(urlObj.getProtocol(), urlObj.getUserInfo(), urlObj.getHost(), urlObj.getPort(), urlObj.getPath(), urlObj.getQuery(), urlObj.getRef());
-			url = uri.toASCIIString();
-	    } catch (URISyntaxException | MalformedURLException e) {
-	    	 logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " bad URL");
-	    	 return null;
-		}
+
+
+		// commented out due to encoding problem for logical links - colon are not encoded
+
+//	    try {
+//	    	// what is the point of this, just to check syntax??
+//		    URL urlObj= new URL(url);
+//			URI uri = new URI(urlObj.getProtocol(), urlObj.getUserInfo(), urlObj.getHost(), urlObj.getPort(), urlObj.getPath(), urlObj.getQuery(), urlObj.getRef());
+//			url = uri.toASCIIString();
+//	    } catch (URISyntaxException | MalformedURLException e) {
+//	    	 logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " bad URL");
+//	    	 return null;
+//		}
 	    logger.debug(dateFormat.format(new Date()) + "<== " + url + " for the get REST API");
 
 	    final Response cres;

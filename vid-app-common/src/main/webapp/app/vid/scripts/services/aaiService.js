@@ -30,6 +30,23 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         });
     }
 
+    function getPnfByName(pnfName) {
+        var deferred = $q.defer();
+        var url = COMPONENT.AAI_GET_PNF_BY_NAME+ encodeURIComponent(pnfName)  ;
+        var config = { timeout: PropertyService.getServerResponseTimeoutMsec() };
+
+        $http.get(url, config)
+            .success(function (response) {
+                deferred.resolve({data: response});
+            })
+            .error(function(data, status, headers, config) {
+                deferred.reject({message: data, status: status});
+            });
+
+        return deferred.promise;
+    };
+
+
     function getGlobalCustomerIdFromServiceInstanceResponse(response) {
         var globalCustomerId = "";
         if (angular.isArray(response.data[FIELD.ID.RESULT_DATA])) {
@@ -81,15 +98,15 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     timeout : PropertyService
                         .getServerResponseTimeoutMsec()
                 }).then(function(response) {
-                var subName = "";
+                var result = {};
                 if (response.data) {
-                    subName = response.data[FIELD.ID.SUBNAME];
+                    result.subscriberName = response.data[FIELD.ID.SUBNAME];
+                    result.serviceSubscriptions = response.data[FIELD.ID.SERVICE_SUBSCRIPTIONS];
                 }
-                successCallbackFunction(subName);
+                successCallbackFunction(result);
             })["catch"]
             (UtilityService.runHttpErrorHandler);
         },
-
 
         runNamedQuery : function (namedQueryId, globalCustomerId, serviceType, serviceInstanceId, successCallback, errorCallback) {
 
@@ -117,6 +134,25 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         getVNFInformationByServiceTypeAndId : function (globalCustomerId, serviceType, serviceInstanceId, successCallback, errorCallback) {
 
             var url = COMPONENT.AAI_GET_VNF_INFO +
+                COMPONENT.FORWARD_SLASH + encodeURIComponent(globalCustomerId) +
+                COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceType) +
+                COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceInstanceId);
+            $http.get(url, {}, {
+                timeout : PropertyService.getServerResponseTimeoutMsec()
+            }).then(function(response) {
+                if (response.data != null) {
+                    successCallback(response);
+                } else {
+                    errorCallback(response);
+                }
+            }, function(response) {
+                errorCallback(response);
+            });
+        },
+
+        getPNFInformationByServiceTypeAndId : function (globalCustomerId, serviceType, serviceInstanceId, successCallback, errorCallback) {
+
+            var url = COMPONENT.AAI_GET_PNF_INSTANCE +
                 COMPONENT.FORWARD_SLASH + encodeURIComponent(globalCustomerId) +
                 COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceType) +
                 COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceInstanceId);
@@ -247,6 +283,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         },
 
         getServiceInstance : getServiceInstance,
+        getPnfByName : getPnfByName,
 
         getGlobalCustomerIdByInstanceIdentifier : function(serviceInstanceIdentifier, findBy) {
             serviceInstanceIdentifier.trim();
@@ -338,6 +375,12 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 }).then(function(response) {
                 var lcpCloudRegionTenants = [];
                 var aaiLcpCloudRegionTenants = response.data;
+
+                lcpCloudRegionTenants.push({
+                    "cloudRegionId": "",
+                    "tenantName": FIELD.PROMPT.REGION,
+                    "tenantId": ""
+                });
 
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
                     lcpCloudRegionTenants.push({

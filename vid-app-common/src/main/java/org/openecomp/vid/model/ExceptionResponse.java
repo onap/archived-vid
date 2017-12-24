@@ -20,6 +20,11 @@
 
 package org.openecomp.vid.model;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.MDC;
+
+import static com.att.eelf.configuration.Configuration.MDC_KEY_REQUEST_ID;
+
 /**
  * The Class ExceptionResponse.
  */
@@ -30,6 +35,18 @@ public class ExceptionResponse {
 	
 	/** The message. */
 	private String message;
+
+	public ExceptionResponse() {
+	}
+
+	public ExceptionResponse(String exception, String message) {
+		this.exception = exception;
+		this.message = message;
+	}
+
+	public ExceptionResponse(Exception exception) {
+		setException(exception);
+	}
 
 	/**
 	 * Gets the exception.
@@ -47,6 +64,11 @@ public class ExceptionResponse {
 	 */
 	public void setException(String exception) {
 		this.exception = exception;
+	}
+
+	public void setException(Exception exception) {
+		setException(exception.getClass().toString().replaceFirst("^.*[\\.$]", ""));
+		setMessage(exception.getMessage() + " (Request id: " + MDC.get(MDC_KEY_REQUEST_ID) + ")");
 	}
 
 	/**

@@ -2,10 +2,12 @@
     'use strict';
 
     appDS2.controller("newChangeManagementModalController", ["$uibModalInstance", "$uibModal", "AaiService", "changeManagementService",
-        "$log", "$scope", "_", newChangeManagementModalController]);
+        "$log", "$scope", "_", "COMPONENT", newChangeManagementModalController]);
 
-    function newChangeManagementModalController($uibModalInstance, $uibModal, AaiService, changeManagementService, $log, $scope, _) {
+    function newChangeManagementModalController($uibModalInstance, $uibModal, AaiService, changeManagementService, $log, $scope, _, COMPONENT) {
         var vm = this;
+
+        vm.softwareVersionRegex = "[-a-zA-Z0-9\.]+";
 
         var init = function () {
             vm.changeManagement = {};
@@ -46,8 +48,8 @@
                                             availableVersions.push(extractVNFModel(vnf, response.data.service, newVNFName));
                                         }
                                     });
-                                    var versions = _.uniqBy(availableVersions, ['modelInfo.modelVersion']);
-                                    newVNFName.availableVersions = _.uniq(versions, response.data.service, true);
+                                    var versions = _.uniqBy(availableVersions, 'modelInfo.modelVersion');
+                                    newVNFName.availableVersions = _.sortBy(_.uniq(versions, response.data.service, true),"modelInfo.modelVersion");
                                 }).catch(function (error) {
                                 $log.error(error);
                             });
@@ -224,10 +226,10 @@
                         fromVNFVersions = vm.serviceInstancesToGetVersions
                             .map(function (serviceInstanceToGetVersion) {
                                 const model = _.find(response.data.model, {'model-invariant-id': serviceInstanceToGetVersion['model-invariant-id']});
-                                $log.debug("getVnfVersionsByInvariantId: model", model);
+                                $log.debug("getVnfVersionsByInvariantId: model for " + serviceInstanceToGetVersion['model-invariant-id'], model);
 
                                 const modelVer = _.find(model["model-vers"]["model-ver"], {'model-version-id': serviceInstanceToGetVersion['model-version-id']});
-                                $log.debug("getVnfVersionsByInvariantId: modelVer", modelVer);
+                                $log.debug("getVnfVersionsByInvariantId: modelVer for " + serviceInstanceToGetVersion['model-version-id'], modelVer);
 
                                 var modelVersionId = serviceInstanceToGetVersion["model-version-id"];
                                 var modelVersion = modelVer["model-version"];
@@ -275,13 +277,13 @@
 
         vm.loadVNFNames = function () {
             vm.vnfNames = [];
-            _.forEach(vm.vnfs, function (vnf) {
+            const vnfs = vm.changeManagement.fromVNFVersion ? vm.vnfs : [];
+            _.forEach(vnfs, function (vnf) {
 
                 var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
-                var vnfVersionNumber = getVersionNameForId(vnf.properties["model-version-id"]);
 
                 if (vnf.properties['nf-role'] === vm.changeManagement.vnfType &&
-                    selectedVersionNumber === vnfVersionNumber) {
+                    selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
                     _.forEach(vnf['related-to'], function (node) {
@@ -375,6 +377,10 @@
 
         vm.selectVersionForVNFName = function (vnfName) {
             console.log("Will add version for selected vnf name: " + vnfName.name);
+        };
+
+        vm.shouldShowVnfInPlaceFields = function () {
+            return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfInPlace;
         };
 
         init();

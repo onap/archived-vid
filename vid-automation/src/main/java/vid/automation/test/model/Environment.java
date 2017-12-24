@@ -1,6 +1,7 @@
 package vid.automation.test.model;
 
 public class Environment {
+    public String operationalEnvironmentId;
     public String operationalEnvironmentName;
     public String operationalEnvironmentType;
     public String EcompEnvironmentId;

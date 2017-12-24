@@ -65,6 +65,10 @@
 		  controller: 'AddNetworkNodeController',
 		  templateUrl: 'app/vid/scripts/view-models/addNetworkNode.htm'
 		})
+        .when('/pnfSearchAssociation', {
+			controller: 'pnfSearchAssociationController',
+			templateUrl: 'app/vid/scripts/view-models/pnfSearchAssociation.htm'
+         })
 	    .when('/serviceProxyConfig', {
 		  controller: 'ServiceProxyConfigController',
 		  templateUrl: 'app/vid/scripts/view-models/serviceProxyConfig.htm'

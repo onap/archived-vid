@@ -9,6 +9,9 @@ appDS2.directive('messageViewer', function() {
             icon:'@',
             secondaryMessage:'@',
             tryAgain:'&'
+        },
+        link: function(scope, elem, attrs) {
+            scope.showTryAgain = angular.isDefined(attrs.tryAgain);
         }
     }
 });

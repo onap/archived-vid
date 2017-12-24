@@ -4,7 +4,8 @@ import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import vid.automation.test.Constants;
-import vid.automation.test.sections.VidBasePage;
+
+import java.util.List;
 
 /**
  * Created by itzikliderman on 18/07/2017.
@@ -22,6 +23,14 @@ public class SelectOption {
     public static void byIdAndVisibleText(String id, String text) {
         Select selectlist = new Select(Get.byId(id));
         selectlist.selectByVisibleText(text);
+    }
+
+    public static void byClassAndVisibleText(String className, String text) {
+        final List<WebElement> webElements = Get.byClass(className);
+        webElements.forEach(webElement -> {
+            final String id = webElement.getAttribute("id");
+            byIdAndVisibleText(id, text);
+        });
     }
 
     public static void byTestIdAndVisibleText(String displayName, String selectDataTestId) {

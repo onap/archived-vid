@@ -2,6 +2,7 @@ package org.openecomp.vid.aai;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.openecomp.vid.aai.model.AaiGetPnfs.Pnf;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -46,4 +47,10 @@ public interface AaiClientInterface {
 	AaiResponse getServicesByProjectNames(List<String> projectNames);
 
 	AaiResponse getServiceModelsByDistributionStatus();
+
+    AaiResponse<Pnf> getSpecificPnf(String pnfId);
+
+    AaiResponse getServiceInstance(String globalCustomerId, String serviceType, String serviceInstanceId);
+
+    AaiResponse getLogicalLink(String link);
 }

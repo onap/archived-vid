@@ -1,14 +1,9 @@
 package vid.automation.test.test;
 
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
-import vid.automation.test.infra.Exists;
-import vid.automation.test.infra.Get;
-import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.*;
 import vid.automation.test.sections.BrowseASDCPage;
 import vid.automation.test.sections.SideMenu;
@@ -17,7 +12,6 @@ import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.UsersService;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     private UsersService usersService = new UsersService();
@@ -208,7 +202,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         //now add the VNF
         ViewEditPage viewEditPage = new ViewEditPage();
 
-        viewEditPage.selectVNFToAdd("VID-PCRF-05-15-17 0");
+        viewEditPage.selectNodeInstanceToAdd("VID-PCRF-05-15-17 0");
         viewEditPage.generateAndSetInstanceName(Constants.ViewEdit.VNF_INSTANCE_NAME_PREFIX);
         viewEditPage.selectProductFamily("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
         viewEditPage.selectLCPRegion("AAIAIC25");

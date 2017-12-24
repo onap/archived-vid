@@ -107,6 +107,7 @@
     border: none;
     background: none;
     padding: 0;
+    margin-bottom: 15px;
 }
 
 .test-environments .refresh svg{
@@ -192,7 +193,23 @@
     outline: none;
 }
 
+.attach-button {
+    margin-left: 35px;
+}
+
 .envActionBtn {
     width: 94px;
     height: 30px;
+}
+
+#environments-table {
+    margin-top: 0;
+}
+
+.test-environments-table-container {
+    overflow: auto;
+    max-height: 50vh;
+    width: 98%;
+    margin-left: 15px;
+    padding-left: 0;
 }

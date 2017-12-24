@@ -25,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.ws.rs.core.Response;
+
 /**
  * This wrapper encapsulates the MSO response in the format expected by the pages.
  */
@@ -34,9 +36,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 	    "entity"
 })
 
-public class MsoResponseWrapper {
-	
-	/** The status. */
+public class MsoResponseWrapper implements MsoResponseWrapperInterface {
+
+
+    public MsoResponseWrapper() {
+    }
+
+    public MsoResponseWrapper(Response response) {
+        setEntity(response.readEntity(String.class));
+        setStatus(response.getStatus());
+    }
+
+
+    /** The status. */
 	@JsonProperty("status")
 	private int status;
 	
@@ -49,6 +61,7 @@ public class MsoResponseWrapper {
 	 *
 	 * @return the entity
 	 */
+	@Override
 	@JsonProperty("entity")
     public String getEntity() {
         return entity;
@@ -59,6 +72,7 @@ public class MsoResponseWrapper {
 	 *
 	 * @return the status
 	 */
+	@Override
 	@JsonProperty("status")
     public int getStatus() {
         return status;
@@ -102,7 +116,13 @@ public class MsoResponseWrapper {
     public String getResponse () {
     	
     	StringBuilder b = new StringBuilder ("{ \"status\": ");
-        b.append(getStatus()).append(", \"entity\": " ).append(this.getEntity()).append("}");
+        b.append(getStatus()).append(", \"entity\": " );
+        if (this.getEntity() == null || this.getEntity().isEmpty()) {
+        	b.append("\"\"");
+		} else {
+			b.append(this.getEntity());
+		}
+        b.append("}");
         return (b.toString());
     }
     

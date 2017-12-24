@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ChangeManagementService {
     Collection<Request> getMSOChangeManagements();
-	ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName);
+	ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName) throws Exception;
     JSONArray getSchedulerChangeManagements();
 
     /**

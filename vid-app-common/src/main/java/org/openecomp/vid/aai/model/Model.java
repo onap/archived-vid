@@ -1,12 +1,13 @@
 package org.openecomp.vid.aai.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Created by moriya1 on 15/10/2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Model {
-
 
         @JsonProperty("model-invariant-id")
         private String modelInvariantId;

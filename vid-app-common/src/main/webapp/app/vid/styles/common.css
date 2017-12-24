@@ -55,3 +55,8 @@ html, body {
 .button--inactive {
     border: none !important;
 }
+
+input:focus:invalid {
+    border-color: Tomato;
+    box-shadow: none;
+}
