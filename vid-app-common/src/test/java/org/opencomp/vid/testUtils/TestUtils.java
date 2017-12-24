@@ -1,16 +1,24 @@
 package org.opencomp.vid.testUtils;
 
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.opencomp.vid.api.pProbeMsoApiTest;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.http.HttpStatus;
 import org.codehaus.jackson.map.SerializationConfig;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Scanner;
 
 import static fj.parser.Parser.fail;
 
@@ -84,5 +92,52 @@ public class TestUtils {
                         objectMapper.writeValueAsString(request),
                         response.getStatus(),
                         objectMapper.writeValueAsString(response.getEntity())));
+    }
+
+    public static String convertRequest(ObjectMapper objectMapper, String msoRequestDetailsFileName) throws IOException {
+
+        ClassLoader cl = pProbeMsoApiTest.class.getClassLoader();
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
+        Resource[] resources;
+        try {
+            resources = resolver.getResources(msoRequestDetailsFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        String content;
+        try {
+            File file = resources[0].getFile();
+            content = new Scanner(file).useDelimiter("\\Z").next();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        objectMapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+        return objectMapper.writeValueAsString(objectMapper.readValue(content, Object.class));
+    }
+
+    public static String getNestedPropertyInMap(Object item, String path) {
+        return getNestedPropertyInMap(item, path, String.class, "/");
+    }
+
+    public static <T> T getNestedPropertyInMap(Object item, String path, Class<T> valueType) {
+        return getNestedPropertyInMap(item, path, valueType, "/");
+    }
+
+    /*
+    Use this method to extract item from Map that represent Json hierarchy (Map<String,Map>)
+     */
+    public static <T> T getNestedPropertyInMap(Object item, String path, Class<T> valueType, String delimeter) {
+        String[] pathes  = path.split(delimeter);
+        return valueType.cast(getNestedPropertyInMap(item,pathes,0));
+    }
+
+    private static Object getNestedPropertyInMap(Object item, String[] pathes, int index) {
+        if (index==pathes.length) {
+            return item;
+        }
+        return getNestedPropertyInMap(((Map<String,Object>)item).get(pathes[index]), pathes, ++index);
     }
 }

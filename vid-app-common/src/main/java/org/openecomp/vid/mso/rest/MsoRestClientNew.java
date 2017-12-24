@@ -3,18 +3,12 @@ package org.openecomp.vid.mso.rest;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.vid.changeManagement.MsoRequestDetails;
 import org.openecomp.vid.changeManagement.RequestDetailsWrapper;
-import org.openecomp.vid.changeManagement.InPlaceSoftwareUpdateRequest;
 import org.openecomp.vid.model.RequestReferencesContainer;
 import org.openecomp.vid.mso.*;
-import org.springframework.http.HttpMethod;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.core.Response;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.function.Function;
 
 
 /**
@@ -23,17 +17,14 @@ import java.util.function.Function;
 public class MsoRestClientNew extends RestMsoImplementation implements MsoInterface {
 
     /**
-     * The logger.
-     */
-    EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
-
-    /**
      * The Constant dateFormat.
      */
     final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-
     private final String ORIGINAL_REQUEST_ID = "originalRequestId";
-
+    /**
+     * The logger.
+     */
+    EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
 
     @Override
     public MsoResponseWrapper createSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception {
@@ -190,7 +181,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
     }
 
-    public MsoResponseWrapper getOrchestrationRequestsForDashboard(String t, String sourceId, String endpoint, RestObject restObject) throws Exception{
+    public MsoResponseWrapper getOrchestrationRequestsForDashboard(String t, String sourceId, String endpoint, RestObject restObject) throws Exception {
         String methodName = "getOrchestrationRequestsForDashboard";
         logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
 
@@ -201,31 +192,30 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
             return w;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
             throw e;
         }
     }
 
-    public MsoResponseWrapper getManualTasksByRequestId(String t , String sourceId , String endpoint , RestObject restObject) throws Exception{
+    public MsoResponseWrapper getManualTasksByRequestId(String t, String sourceId, String endpoint, RestObject restObject) throws Exception {
         String methodName = "getManualTasksByRequestId";
         logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
 
         try {
-            getManualTasks(t , sourceId , endpoint , restObject);
+            getManualTasks(t, sourceId, endpoint, restObject);
             MsoResponseWrapper w = MsoUtil.wrapResponse(restObject);
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
 
             return MsoUtil.wrapResponse(restObject);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
             throw e;
         }
     }
-
 
 
     @Override
@@ -234,7 +224,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Complete ");
         try {
 
-            Post(t, requestDetails , sourceId, endpoint, restObject);
+            Post(t, requestDetails, sourceId, endpoint, restObject);
             MsoResponseWrapper w = MsoUtil.wrapResponse(restObject);
 
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
@@ -308,13 +298,21 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         }
     }
 
+    @Override
+    public MsoResponseWrapperInterface updateVnfSoftware(RequestDetailsWrapper requestDetails, String endpoint) throws Exception {
+
+        RestObject<RequestReferencesContainer> msoResponse = PostForObject(requestDetails, "", endpoint, RequestReferencesContainer.class);
+        return new MsoResponseWrapper2<>(msoResponse);
+    }
+
     public MsoResponseWrapper replaceInstance(org.openecomp.vid.changeManagement.RequestDetails request, String path) throws Exception {
         String methodName = "replaceInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
         try {
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Replace VNF, path =[" + path + "]");
 
+
+            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Replace VNF, path =[" + path + "]");
             RestObject<String> restObjStr = new RestObject<String>();
             String str = new String();
             restObjStr.set(str);
@@ -324,15 +322,14 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             Post(str, requestDetailsWrapper, "", path, restObjStr);
             MsoResponseWrapper msoResponseWrapperObject = MsoUtil.wrapResponse(restObjStr);
             int status = msoResponseWrapperObject.getStatus();
-            if (status == 202){
-	            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName +
-	            		",post succeeded, msoResponseWrapperObject response:" + msoResponseWrapperObject.getResponse());
-            }
-            else {
-            		logger.error(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName +
-            				": post failed, msoResponseWrapperObject status" + status + ", response:" + msoResponseWrapperObject.getResponse());
+            if (status == 202) {
+                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName +
+                        ",post succeeded, msoResponseWrapperObject response:" + msoResponseWrapperObject.getResponse());
+            } else {
+                logger.error(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName +
+                        ": post failed, msoResponseWrapperObject status" + status + ", response:" + msoResponseWrapperObject.getResponse());
 
-            		// TODO
+                // TODO
             }
             return msoResponseWrapperObject;
 
@@ -344,12 +341,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
     }
 
-    @Override
-    public MsoResponseWrapperInterface updateVnfSoftware(org.openecomp.vid.changeManagement.RequestDetails requestDetails, String endpoint) throws Exception{
-        InPlaceSoftwareUpdateRequest inPlaceSoftwareUpdateRequest = new InPlaceSoftwareUpdateRequest(new InPlaceSoftwareUpdateRequest.RequestDetails(requestDetails));
-        RestObject<RequestReferencesContainer> msoResponse = PostForObject(inPlaceSoftwareUpdateRequest, "", endpoint, RequestReferencesContainer.class);
-        return new MsoResponseWrapper2<>(msoResponse);
-    }
+
 
     @Override
     public MsoResponseWrapper updateVnf(org.openecomp.vid.changeManagement.RequestDetails requestDetails, String endpoint) throws Exception {
@@ -366,15 +358,11 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Delete, path =[" + path + "]");
-
             RestObject<String> restObjStr = new RestObject<String>();
             String str = new String();
             restObjStr.set(str);
             RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
             requestDetailsWrapper.requestDetails = new MsoRequestDetails(request);
-
-
-
             Put(str, requestDetailsWrapper, "", path, restObjStr);
             MsoResponseWrapper w = MsoUtil.wrapResponse(restObjStr);
 
@@ -389,12 +377,12 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
     }
 
-    public void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception{
+    public void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception {
         String methodName = "activateServiceInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start ");
         try {
 
-            Post(t, requestDetails , sourceId, endpoint, restObject);
+            Post(t, requestDetails, sourceId, endpoint, restObject);
             MsoResponseWrapper w = MsoUtil.wrapResponse(restObject);
 
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w =" + w.getResponse());

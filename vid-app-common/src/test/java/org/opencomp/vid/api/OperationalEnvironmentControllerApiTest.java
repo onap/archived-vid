@@ -4,16 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.text.StringEscapeUtils;
 import org.opencomp.vid.api.simulator.SimulatorApi;
-import org.openecomp.vid.mso.MsoResponseWrapper;
+import org.opencomp.vid.api.simulator.SimulatorApi.RegistrationStrategy;
 import org.openecomp.vid.utils.Streams;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -25,18 +22,15 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.singletonList;
-import static org.apache.commons.text.StringEscapeUtils.unescapeJson;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 
-public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
+public class OperationalEnvironmentControllerApiTest extends BaseMsoApiTest {
     private static final String UUID = "927befca-e32c-4f7d-be8d-b4107e0ac31e";
     private static final String GET_STATUS_REQUEST_UUID = "3212b08c-0dcd-4d20-8c84-51e4f325c14a";
-    private final RestTemplate restTemplate = new RestTemplate();
     private static final String BASIC_DEACTIVATE_REQUEST_BODY = "{}";
     private static final String BASIC_ACTIVATE_REQUEST_BODY = "" +
             "{" +
@@ -56,17 +50,14 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
             "        ]" +
             "      }" +
             "}";
+    private static final String BASIC_CREATE_REQUEST_BODY = "{\r\n  \"instanceName\": \"my op env\",\r\n  \"ecompInstanceId\": \"aa345d54-75b4-431b-adb2-eb6b9e546014\",\r\n  \"ecompInstanceName\":\"My Operational Environment\",\r\n  \"operationalEnvironmentType\": \"VNF\",\r\n  \"tenantContext\": \"Test\",\r\n  \"workloadContext\": \"VNF_E2E-IST\"\r\n}";
     private final String MSO_OK_RESPONSE_FOR_DEACTIVATE = "mso_ok_response_for_deactivate.json";
     private final String GET_CLOUD_RESOURCES_REQUEST_STATUS = "get_cloud_resources_request_status.json";
     private final String MSO_ERROR_RESPONSE_FOR_DEACTIVATE = "mso_error_response_for_deactivate.json";
     private final String MSO_ERROR_RESPONSE_FOR_STATUS = "mso_error_response_for_status.json";
     private final String MSO_OK_RESPONSE_FOR_POST_OPERATIONAL_ENVIRONMENT = "mso_ok_response_for_post_operational_environmnet.json";
+    private final String MSO_ERROR_RESPONSE_FOR_POST_OPERATIONAL_ENVIRONMENT = "mso_error_response_for_post_operational_environmnet.json";
     private final String missingParamErrorText = "Required String parameter 'operationalEnvironment' is not present";
-
-    @BeforeClass
-    public void login() {
-        restTemplate.setInterceptors(singletonList(new CookieAndJsonHttpHeadersInterceptor()));
-    }
 
     /*
     # DEACTIVATION
@@ -77,67 +68,26 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
     [x]      -  missing param
     [x]      -  missing body
     [x]      -  operationalEnvironment value is empty
-    [ ]  -  Simulate MSO responses (status and body); verify all are propagated inside a VID's 200 OK
+         -  Simulate MSO responses (status and body); verify all are propagated inside a VID's 200 OK
     [x]      -  [ 200, 202, 400, 404, 500 ]
 
-    [ ]  -  Positive cases
+         -  Positive cases
     [x]      - Request body is just '{}'
     [x]      - Request body is with some fields
     [x]      - URI with more query params
 
     ### Always verify
-    [ ]  -  Payload to MSO is the valid schema and values
+    [x]  -  Payload to MSO is the valid schema and values
     [ ]  -  RequestorId is ok
 
-    ## Reference payloads
-
-    ### UI -> VID
-    POST /vid/operationalEnvironment/deactivate?operationalEnvironment=bc305d54-75b4-431b-adb2-eb6b9e546014
-    {
-    }
-
-    ### VID -> MSO
-    ```
-    POST  /cloudResources/v1/operationalEnvironments/bc305d54-75b4-431b-adb2-eb6b9e546014/deactivate HTTPS/1.1
-    {
-      "requestDetails": {
-        "requestInfo": {
-          "resourceType": "operationalEnvironment",
-          "source": "VID",
-          "requestorId": "az2017"
-        },
-        "requestParameters": {
-          "operationalEnvironmentType": "VNF"
-        },
-//        optional relatedInstanceList: [
-//            {
-//                "resourceType": "",
-//                optional "instanceName": "",
-//                "instanceId": ""
-//            }
-//        ]
-      }
-    }
-    ```
-    ### MSO -> VID
-    ```
-    {
-      "requestReferences": {
-        "instanceId": "bc305d54-75b4-431b-adb2-eb6b9e546014",
-        "requestId": "3212b08c-0dcd-4d20-8c84-51e4f325c14a"
-      }
-    }
-    ```
-
-    ### VID -> UI
-    ```
-    {
-        "status": MSO's status
-        "entity": MSO's body as object
-    }
-    ```
-
      */
+
+    @Override
+    @BeforeClass
+    public void login() {
+        super.login();
+    }
+
 
     @Test(dataProvider = "wrongHttpMethodsForAllUris")
     public void tryAllWrongMethods(HttpMethod httpMethod, String uri) throws IOException {
@@ -191,18 +141,8 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
         doWithFineRequest(requestBody, getDeactivationTargetUri(ACTIVATION_URI_UUID_MODE.OK), "/deactivate\"");
     }
 
+
     private void doWithFineRequest(String requestBody, String targetUri, String v1) throws IOException {
-
-        try {
-            SimulatorApi.registerExpectation(MSO_OK_RESPONSE_FOR_DEACTIVATE, ImmutableMap.of(
-                    "/deactivate\"", v1,
-                    "UUID", UUID));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        MsoResponseWrapper responseWrapper = restTemplate.postForObject(targetUri, requestBody, MsoResponseWrapper.class);
-
         final String expectedResult = "" +
                 "{" +
                 "  \"requestReferences\": {" +
@@ -210,10 +150,11 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
                 "     \"instanceId\": \"" + UUID + "\"" +
                 "  }" +
                 "}";
-
-        assertThat("Wrong propagated status from MSO", responseWrapper.getStatus(), is(HttpStatus.ACCEPTED.value()));
-        JSONAssert.assertEquals("Wrong propagated body from MSO", expectedResult, getCleanJsonString(responseWrapper.getEntity()), JSONCompareMode.NON_EXTENSIBLE);
-    }
+        callMsoWithFineRequest(MSO_OK_RESPONSE_FOR_DEACTIVATE, ImmutableMap.of(
+                    "/deactivate\"", v1,
+                    "UUID", UUID)
+                ,targetUri,requestBody,HttpStatus.ACCEPTED.value(),expectedResult, HttpMethod.POST);
+       }
 
     @Test(dataProvider = "errorCodes")
     public void deactivateWithErrorResponse(int errorCode) throws IOException {
@@ -226,40 +167,19 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
     }
 
     @Test(dataProvider = "errorCodes")
-    public void statusWithErrorResponse(int errorCode) throws IOException {
+    public void testStatusWithErrorResponse(int errorCode) throws IOException {
         doWithSimulatedErrorResponse(errorCode, getStatusTargetUri(STATUS_URI_UUID_MODE.OK), "", "", MSO_ERROR_RESPONSE_FOR_STATUS, HttpMethod.GET);
     }
 
     private void doWithSimulatedErrorResponse(int errorCode, String targetUri, String basicRequestBody, String msoPathSuffix, String expectationTemplateFilename, HttpMethod method) throws IOException {
-
         final String expectedResult = "" +
                 "<head>Huston, you have a problem<head>";
-
-        try {
-            SimulatorApi.registerExpectation(expectationTemplateFilename, ImmutableMap.of(
+        callMsoWithSimulatedErrorResponse(expectationTemplateFilename, ImmutableMap.of(
                     "/deactivate\"", msoPathSuffix,
                     "UUID", UUID,
                     "500", errorCode,
                     "ERROR_PAYLOAD", StringEscapeUtils.escapeJson(expectedResult)
-                    )
-            );
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        MsoResponseWrapper responseWrapper;
-        switch (method) {
-            case POST:
-                responseWrapper = restTemplate.postForObject(targetUri, basicRequestBody, MsoResponseWrapper.class);
-                break;
-            case GET:
-            default:
-                responseWrapper = restTemplate.getForObject(targetUri, MsoResponseWrapper.class);
-                break;
-        }
-
-        assertThat("Wrong propagated status from MSO", responseWrapper.getStatus(), is(errorCode));
-        assertThat("Wrong propagated body from MSO", getCleanJsonString(responseWrapper.getEntity()), is(expectedResult));
+                    ),targetUri,basicRequestBody,errorCode, expectedResult, method);
     }
 
     @Test(
@@ -287,11 +207,7 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
     }
 
     private void doWithBadRequest(String requestBody, String httpMessageNotReadableException, String targetUri) throws IOException {
-        try {
-            SimulatorApi.registerExpectation(MSO_OK_RESPONSE_FOR_DEACTIVATE, ImmutableMap.of("UUID", UUID));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        SimulatorApi.registerExpectation(MSO_OK_RESPONSE_FOR_DEACTIVATE, ImmutableMap.of("UUID", UUID), RegistrationStrategy.CLEAR_THEN_SET);
 
         try {
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUri, requestBody, String.class);
@@ -433,44 +349,41 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
         return uri.toASCIIString() + "/operationalEnvironment/requestStatus" + uriUuidMode.val;
     }
 
-    private String getCreateOperationEnvironmentUri()
-    {
+    private String getCreateOperationEnvironmentUri() {
         return uri.toASCIIString() + "/operationalEnvironment/create";
-    }
-
-    private String getCleanJsonString(String jsonString) {
-        // remove leading/trainling double-quotes and unescape
-        String res = unescapeJson(jsonString.replaceAll("^\"|\"$", ""));
-        System.out.println("getCleanJsonString: " + jsonString  + " ==> " + res);
-        return res;
     }
 
     @Test
     public void createWithSimplestBody()throws IOException {
-        MsoResponseWrapper responseWrapper = restTemplate.postForObject(getCreateOperationEnvironmentUri(), "{\r\n  \"instanceName\": \"my op env\",\r\n  \"ecompInstanceId\": \"aa345d54-75b4-431b-adb2-eb6b9e546014\",\r\n  \"ecompInstanceName\":\"My Operational Environment\",\r\n  \"operationalEnvironmentType\": \"VNF\",\r\n  \"tenantContext\": \"Test\",\r\n  \"workloadContext\": \"VNF_E2E-IST\"\r\n}", MsoResponseWrapper.class);
+
         final String expectedResult = "" +
                 "{" +
                 "  \"requestReferences\": {" +
-                "     \"requestId\": \"rq1234d1-5a33-55df-13ab-12abad84e331\"," +
-                "     \"instanceId\": \"bc305d54-75b4-431b-adb2-eb6b9e546014\"" +
+                "     \"requestId\": \"dbe54591-c8ed-46d3-abc7-d3a24873dfbd\","+
+                "     \"instanceId\": \"" + UUID + "\"" +
                 "  }" +
                 "}";
-        assertThat("Wrong propagated status from MSO", responseWrapper.getStatus(), is(HttpStatus.ACCEPTED.value()));
-        JSONAssert.assertEquals("Wrong propagated body from MSO", expectedResult, getCleanJsonString(responseWrapper.getEntity()), JSONCompareMode.NON_EXTENSIBLE);
+        callMsoWithFineRequest(MSO_OK_RESPONSE_FOR_POST_OPERATIONAL_ENVIRONMENT, ImmutableMap.of(
+                "UUID", UUID),getCreateOperationEnvironmentUri(),BASIC_CREATE_REQUEST_BODY,HttpStatus.ACCEPTED.value(),expectedResult, HttpMethod.POST);
+   }
+
+    @Test(dataProvider = "errorCodes")
+    public void createWithErrorResponse(int errorCode) throws IOException {
+        final String expectedResult = "" +
+                "<head>Huston, you have a problem<head>";
+        callMsoWithSimulatedErrorResponse(MSO_ERROR_RESPONSE_FOR_POST_OPERATIONAL_ENVIRONMENT,ImmutableMap.of(
+                "500", errorCode,
+                "ERROR_PAYLOAD", StringEscapeUtils.escapeJson(expectedResult)
+        ),  getCreateOperationEnvironmentUri(), BASIC_CREATE_REQUEST_BODY, errorCode,expectedResult, HttpMethod.POST);
     }
 
 
+
+
     @Test(dataProvider = "statusLegitUri")
-    public void testGetCloudResourcesRequestStatus(STATUS_URI_UUID_MODE statusUriMode) throws IOException {
+    public void testStatusWithLegitUri(STATUS_URI_UUID_MODE statusUriMode) throws IOException {
 
-        try {
-            SimulatorApi.registerExpectation(GET_CLOUD_RESOURCES_REQUEST_STATUS);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         String uri = getStatusTargetUri(statusUriMode);
-
-        MsoResponseWrapper response = restTemplate.getForObject(uri, MsoResponseWrapper.class);
 
         final String expectedResult = "" +
                 "{" +
@@ -501,23 +414,19 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
                 "  }" +
                 "}";
 
-        assertThat("Wrong propagated status from MSO", response.getStatus(), is(HttpStatus.OK.value()));
-        JSONAssert.assertEquals("Wrong propagated body from MSO", expectedResult, getCleanJsonString(response.getEntity()), JSONCompareMode.NON_EXTENSIBLE);
+        callMsoWithFineRequest(GET_CLOUD_RESOURCES_REQUEST_STATUS, ImmutableMap.of()
+                ,uri,"",HttpStatus.OK.value(),expectedResult, HttpMethod.GET);
+
     }
 
     @Test(
             expectedExceptions = {HttpClientErrorException.class},
             dataProvider = "statusNotLegitUri"
     )
-    public void testGetCloudResourcesRequestStatusBadRequest(STATUS_URI_UUID_MODE statusUriMode) throws IOException {
-        try {
-            SimulatorApi.registerExpectation(GET_CLOUD_RESOURCES_REQUEST_STATUS);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void testStatusWithBadRequest(STATUS_URI_UUID_MODE statusUriMode) throws IOException {
+        SimulatorApi.registerExpectation(GET_CLOUD_RESOURCES_REQUEST_STATUS, RegistrationStrategy.CLEAR_THEN_SET);
 
         String uri = getStatusTargetUri(statusUriMode);
-
 
         try {
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
@@ -529,20 +438,12 @@ public class OperationalEnvironmentControllerApiTest extends BaseApiTest {
     }
 
     @Test
-    public void testGetCloudResourcesRequestStatusWrongMethodPost() throws IOException {
-        try {
-            SimulatorApi.registerExpectation(GET_CLOUD_RESOURCES_REQUEST_STATUS);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void testStatusWithWrongMethodPost() throws IOException {
+        SimulatorApi.registerExpectation(GET_CLOUD_RESOURCES_REQUEST_STATUS, RegistrationStrategy.CLEAR_THEN_SET);
 
         String myUri = getStatusTargetUri(STATUS_URI_UUID_MODE.OK);
 
-        try {
-            String response = restTemplate.postForObject(myUri, "", String.class);
-            assertThat("Response should be method not allowed => " + response, response, containsString("Request method '" + HttpMethod.POST + "' not supported"));
-        } catch (HttpClientErrorException e) {
-            throw e;
-        }
+        String response = restTemplate.postForObject(myUri, "", String.class);
+        assertThat("Response should be method not allowed => " + response, response, containsString("Request method '" + HttpMethod.POST + "' not supported"));
     }
 }

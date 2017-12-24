@@ -5,5 +5,5 @@ package org.openecomp.vid.changeManagement;
  */
 public class RequestDetailsWrapper {
 
-    public MsoRequestDetails requestDetails;
+    public Object requestDetails;
 }

@@ -14,9 +14,9 @@ public class Role {
 
     private String tenant;
 
-    public Role(EcompRole ecompRole, String serviceName, String serviceType, String tenant) {
+    public Role(EcompRole ecompRole, String subscribeName, String serviceType, String tenant) {
         this.ecompRole = ecompRole;
-        this.subscribeName = serviceName;
+        this.subscribeName = subscribeName;
         this.serviceType = serviceType;
         this.tenant = tenant;
     }

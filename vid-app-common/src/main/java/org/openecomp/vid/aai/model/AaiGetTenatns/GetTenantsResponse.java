@@ -21,6 +21,13 @@ public class GetTenantsResponse {
     @JsonProperty("is-permitted")
     public boolean isPermitted;
 
+    public GetTenantsResponse() {
+    }
 
-
+    public GetTenantsResponse(String cloudRegionId, String tenantName, String tenantID, boolean isPermitted) {
+        this.cloudRegionId = cloudRegionId;
+        this.tenantName = tenantName;
+        this.tenantID = tenantID;
+        this.isPermitted = isPermitted;
+    }
 }

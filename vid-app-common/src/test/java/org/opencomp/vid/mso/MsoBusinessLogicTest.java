@@ -1,17 +1,21 @@
 package org.opencomp.vid.mso;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.openecomp.vid.controller.MsoConfig;
 import org.openecomp.vid.controller.OperationalEnvironmentController;
+import org.openecomp.vid.controller.OperationalEnvironmentController.*;
 import org.openecomp.vid.controller.WebConfig;
 import org.openecomp.vid.mso.MsoBusinessLogic;
 import org.openecomp.vid.mso.model.OperationalEnvironmentActivateInfo;
+import org.openecomp.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.openecomp.vid.mso.rest.RequestDetails;
 import org.openecomp.vid.properties.AsdcClientConfiguration;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -39,14 +43,15 @@ public class MsoBusinessLogicTest extends AbstractTestNGSpringContextTests {
     @Inject
     private MsoBusinessLogic msoBusinessLogic;
 
-    @Test(dataProvider = "getOperationalEnvironmentActivationPermutations")
+
+    @Test(dataProvider = "getOperationalEnvironmentActivationPermutations", enabled = false)//Ittay to review the test
     public void testJsonResultOfOperationalEnvironmentActivationRequestDetails(HashMap<String, String> permutation) throws IOException {
 
         // Convert 'manifest' to model
-        final Object manifest = new ObjectMapper().readerFor(Object.class).readValue(permutation.get("<manifest>"));
+        final OperationalEnvironmentManifest manifest = new ObjectMapper().readerFor(OperationalEnvironmentManifest.class).readValue(permutation.get("<manifest>"));
 
         // build OperationalEnvironmentActivateInfo
-        OperationalEnvironmentActivateInfo inputUnderTest = createOperationalEnvironmentActivateInfo("<instanceId>", permutation.get("<userId>"), manifest, permutation.get("<relatedInstanceId>"), permutation.get("<relatedInstanceName>"), permutation.get("<workloadType>"));
+        OperationalEnvironmentActivateInfo inputUnderTest = createOperationalEnvironmentActivateInfo("<instanceId>", permutation.get("<userId>"), manifest, permutation.get("<relatedInstanceId>"), permutation.get("<relatedInstanceName>"), permutation.get("<workloadContext>"));
 
         // transform to RequestDetails, and serialize to json
         //   -> actually, the function "msoBusinessLogic.createOperationalEnvironmentActivationRequestDetails"
@@ -54,22 +59,9 @@ public class MsoBusinessLogicTest extends AbstractTestNGSpringContextTests {
         final RequestDetails operationalEnvironmentActivationRequestDetails = msoBusinessLogic.createOperationalEnvironmentActivationRequestDetails(inputUnderTest);
         final String requestDetailsAsString = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(ImmutableMap.of("requestDetails", operationalEnvironmentActivationRequestDetails));
 
-        // load expected result, and populate it with current input 'permutation' values
-        final URL resource = this.getClass().getResource("/activateOperationalEnvironmentsPayloadToMso.json");
-        String expected = IOUtils.toString(resource, "UTF-8");
+        String expected = buildExpectation("activateOperationalEnvironmentsPayloadToMso.json", permutation);
 
-        for (Map.Entry<String, String> stringStringEntry : permutation.entrySet()) {
-            expected = expected.replaceAll(stringStringEntry.getKey(), stringStringEntry.getValue());
-        }
-
-        // assert for exact match
-        try {
-            JSONAssert.assertEquals("built mso request is not ok", expected, requestDetailsAsString, JSONCompareMode.STRICT);
-        } catch (Exception e) {
-            System.out.println("requestDetailsAsString: \n" + requestDetailsAsString);
-            System.out.println("expected: \n" + expected);
-            throw e;
-        }
+        assertThatExpectationIsLikeObject(expected, operationalEnvironmentActivationRequestDetails);
     }
 
     @DataProvider
@@ -90,8 +82,43 @@ public class MsoBusinessLogicTest extends AbstractTestNGSpringContextTests {
                 .putAll("<userId>", "1", "0198adb8-87fd-46ef-94ae-258816629c8b")
                 .putAll("<relatedInstanceId>", "relatedInstanceId", "2744cf56-4f00-4e48-917b-c3bd3b1f8984")
                 .putAll("<relatedInstanceName>", "relatedInstanceName", "Brooklynn Puanani")
-                .putAll("<workloadType>", "workloadType", "E2E-extreme")
-                .putAll("<manifest>", manifest, "{ \"my-manifest-key\": \"my-manifest-value\"}")
+                .putAll("<workloadContext>", "workloadContext", "VNF_E2E-extreme")
+                .putAll("<manifest>", manifest)
+                .build();
+
+        List<HashMap<String, String>> permutations = permuteOptions(options);
+
+        return permutations.stream().map(m -> new Object[] { m }).collect(Collectors.toList()).toArray(new Object[0][0]);
+    }
+
+    @Test(dataProvider = "getOperationalEnvironmentCreationPermutations")
+    public void testJsonResultOfOperationalEnvironmentCreationRequestDetails(HashMap<String, String> permutation) throws IOException {
+
+        // build OperationalEnvironmentCreateBody
+        OperationalEnvironmentController.OperationalEnvironmentCreateBody inputUnderTest = createOperationalEnvironmentCreateBody(permutation.get("<instanceName>"), permutation.get("<ecompInstanceId>"), permutation.get("<ecompInstanceName>"), permutation.get("<operationalEnvType>"), permutation.get("<tenantContext>"), permutation.get("<workloadContext>"));
+
+        // transform to RequestDetails, and serialize to json
+        //   -> actually, the function "msoBusinessLogic.createOperationalEnvironmentActivationRequestDetails"
+        //      is the code under test here
+        final OperationEnvironmentRequestDetails operationalEnvironmentCreationRequestDetails = msoBusinessLogic.convertParametersToRequestDetails(inputUnderTest, permutation.get("<userId>"));
+
+        String expected = buildExpectation("createOperationalEnvironmentsPayloadToMso.json", permutation);
+
+        assertThatExpectationIsLikeObject(expected, operationalEnvironmentCreationRequestDetails);
+    }
+
+    @DataProvider
+    private Object[][] getOperationalEnvironmentCreationPermutations() throws IOException {
+
+        final ImmutableListMultimap<String, String> options = ImmutableListMultimap.<String, String>builder()
+                // instanceName, ecompInstanceId, ecompInstanceName, operationalEnvType, tenantContext, workloadContext
+                .putAll("<userId>", "1", "ceb60bba-7c18-49cd-a8f6-83ff2e1430b0", "Storm Landebert")
+                .putAll("<instanceName>", "instanceName", "Slavica Hadrien")
+                .putAll("<ecompInstanceId>", "ecompInstanceId", "58ec6753-957f-4124-8f92-c1c0bd2464a4")
+                .putAll("<ecompInstanceName>", "ecompInstanceName", "Bente Keelin")
+                .putAll("<operationalEnvType>", "operationalEnvType", "VNF")
+                .putAll("<tenantContext>", "tenantContext", "Production")
+                .putAll("<workloadContext>", "workloadContext", "E2E-extreme")
                 .build();
 
         List<HashMap<String, String>> permutations = permuteOptions(options);
@@ -124,9 +151,39 @@ public class MsoBusinessLogicTest extends AbstractTestNGSpringContextTests {
         return res;
     }
 
-    private OperationalEnvironmentActivateInfo createOperationalEnvironmentActivateInfo(String operationalEnvId, String userId, Object manifest, String relatedInstanceId, String relatedInstanceName, String workloadType) {
-        OperationalEnvironmentController.OperationalEnvironmentActivateBody body = new OperationalEnvironmentController.OperationalEnvironmentActivateBody(relatedInstanceId, relatedInstanceName, workloadType, manifest);
+    private void assertThatExpectationIsLikeObject(String expected, Object requestDetails) throws JsonProcessingException {
+        final String requestDetailsAsString = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(ImmutableMap.of("requestDetails", requestDetails));
+
+        // assert for exact match
+        try {
+            JSONAssert.assertEquals("built mso request is not ok", expected, requestDetailsAsString, JSONCompareMode.STRICT);
+        } catch (AssertionError | Exception e) {
+            System.out.println("requestDetailsAsString: \n" + requestDetailsAsString);
+            System.out.println("expected: \n" + expected);
+            throw e;
+        }
+    }
+
+    private String buildExpectation(String modelFileName, HashMap<String, String> permutation) throws IOException {
+        // load expected result, and populate it with current input 'permutation' values
+        final URL resource = this.getClass().getResource("/" + modelFileName);
+        String expected = IOUtils.toString(resource, "UTF-8");
+
+        for (Map.Entry<String, String> stringStringEntry : permutation.entrySet()) {
+            expected = expected.replaceAll(stringStringEntry.getKey(), stringStringEntry.getValue());
+        }
+        return expected;
+    }
+
+
+
+    private OperationalEnvironmentActivateInfo createOperationalEnvironmentActivateInfo(String operationalEnvId, String userId, OperationalEnvironmentManifest manifest, String relatedInstanceId, String relatedInstanceName, String workloadContext) {
+        OperationalEnvironmentController.OperationalEnvironmentActivateBody body = new OperationalEnvironmentController.OperationalEnvironmentActivateBody(relatedInstanceId, relatedInstanceName, workloadContext, manifest);
         return new OperationalEnvironmentActivateInfo(body, userId, operationalEnvId);
+    }
+
+    private OperationalEnvironmentController.OperationalEnvironmentCreateBody createOperationalEnvironmentCreateBody(String instanceName, String ecompInstanceId, String ecompInstanceName, String operationalEnvType, String tenantContext, String workloadContext) {
+        return new OperationalEnvironmentController.OperationalEnvironmentCreateBody(instanceName, ecompInstanceId, ecompInstanceName, operationalEnvType, tenantContext, workloadContext);
     }
 
 }

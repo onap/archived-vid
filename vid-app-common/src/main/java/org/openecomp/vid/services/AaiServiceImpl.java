@@ -49,11 +49,27 @@ public class AaiServiceImpl implements AaiService {
 
     private Service convertModelToService(Model model) {
         Service service = new Service();
-        service.setInvariantUUID(model.getModelInvariantId());
-        service.setUuid(model.getModelVers().getModelVer().get(0).getModelVersionId());
-        service.setVersion(model.getModelVers().getModelVer().get(0).getModelVersion());
-        service.setName(model.getModelVers().getModelVer().get(0).getModelName());
+        if(validateModel(model)){
+            service.setUuid(model.getModelVers().getModelVer().get(0).getModelVersionId());
+        } else {
+            return null;
+        }
+        if(model.getModelInvariantId() != null)
+            service.setInvariantUUID(model.getModelInvariantId());
+        if(model.getModelVers().getModelVer().get(0).getModelVersion() != null)
+            service.setVersion(model.getModelVers().getModelVer().get(0).getModelVersion());
+        if(model.getModelVers().getModelVer().get(0).getModelName() != null)
+            service.setName(model.getModelVers().getModelVer().get(0).getModelName());
         return service;
+    }
+
+    private boolean validateModel(Model model){
+        if(model != null){
+            if(model.getModelVers() != null && model.getModelVers().getModelVer() != null && model.getModelVers().getModelVer().get(0).getModelVersionId() != null){
+                return true;
+            }
+        }
+        return false;
     }
 
     private List<ServiceInstanceSearchResult> getServicesByOwningEntityId(List<String> owningEntities, RoleValidator roleValidator) {
@@ -270,7 +286,7 @@ public class AaiServiceImpl implements AaiService {
         GetTenantsResponse[] tenants = aaiGetTenantsResponse.getT();
         if (tenants != null) {
             for (int i = 0; i < tenants.length; i++) {
-                tenants[i].isPermitted = roleValidator.isTenantPermitted(globalCustomerId, serviceType, tenants[i].tenantID);
+                tenants[i].isPermitted = roleValidator.isTenantPermitted(globalCustomerId, serviceType, tenants[i].tenantName);
             }
         }
         return aaiGetTenantsResponse;
@@ -331,7 +347,12 @@ public class AaiServiceImpl implements AaiService {
         if (serviceModelsByDistributionStatusResponse.getT() != null) {
             List<Result> results = serviceModelsByDistributionStatusResponse.getT().getResults();
             for (Result result : results) {
-                services.add(convertModelToService(result.getModel()));
+                if(result.getModel() != null) {
+                    Service service = convertModelToService(result.getModel());
+                    if (service != null) {
+                        services.add(service);
+                    }
+                }
             }
         }
         return services;

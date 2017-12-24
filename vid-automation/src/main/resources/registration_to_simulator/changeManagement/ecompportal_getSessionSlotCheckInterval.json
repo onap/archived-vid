@@ -18,5 +18,16 @@
       "responseCode": 200,
       "body": "300000"
     }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/ecompportal_att/auxapi/context/get_user"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": [
+      ]
+    }
   }
 ]

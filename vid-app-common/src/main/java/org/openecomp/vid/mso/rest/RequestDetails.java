@@ -27,7 +27,7 @@ import java.util.List;
 import org.openecomp.vid.domain.mso.CloudConfiguration;
 import org.openecomp.vid.domain.mso.ModelInfo;
 import org.openecomp.vid.domain.mso.RequestInfo;
-import org.openecomp.vid.changeManagement.RequestParameters;
+import org.openecomp.vid.domain.mso.RequestParameters;
 import org.openecomp.vid.domain.mso.SubscriberInfo;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -45,39 +45,39 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloudConfiguration",
-    "modelInfo",
-    "relatedModelList",
-    "requestInfo",
-    "subscriberInfo",
-    "requestParameters"
+        "cloudConfiguration",
+        "modelInfo",
+        "relatedModelList",
+        "requestInfo",
+        "subscriberInfo",
+        "requestParameters"
 })
-public class RequestDetails {
+public class RequestDetails{
 
     /** The cloud configuration. */
     @JsonProperty("cloudConfiguration")
     private CloudConfiguration cloudConfiguration;
-    
+
     /** The model info. */
     @JsonProperty("modelInfo")
     private ModelInfo modelInfo;
-    
+
     /** The related model list. */
     @JsonProperty("relatedModelList")
     private List<RelatedModel> relatedInstanceList;
-    
+
     /** The request info. */
     @JsonProperty("requestInfo")
     private RequestInfo requestInfo;
-    
+
     /** The subscriber info. */
     @JsonProperty("subscriberInfo")
     private SubscriberInfo subscriberInfo;
-    
+
     /** The request parameters. */
     @JsonProperty("requestParameters")
     private RequestParameters requestParameters;
-    
+
     /** The additional properties. */
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -160,7 +160,7 @@ public class RequestDetails {
     public void setRequestInfo(RequestInfo requestInfo) {
         this.requestInfo = requestInfo;
     }
-    
+
     /**
      * Gets the subscriber info.
      *
@@ -179,15 +179,6 @@ public class RequestDetails {
     @JsonProperty("subscriberInfo")
     public void setSubscriberInfo(SubscriberInfo subscriberInfo) {
         this.subscriberInfo = subscriberInfo;
-    }
-
-    @JsonProperty("requestParameters")
-    public RequestParameters getRequestParameters() {
-        return requestParameters;
-    }
-
-    public void setRequestParameters(RequestParameters requestParameters) {
-        this.requestParameters = requestParameters;
     }
 
     /* (non-Javadoc)
@@ -237,4 +228,11 @@ public class RequestDetails {
         return new EqualsBuilder().append(cloudConfiguration, rhs.cloudConfiguration).append(modelInfo, rhs.modelInfo).append(relatedInstanceList, rhs.relatedInstanceList).append(requestInfo, rhs.requestInfo).append(getRequestParameters(), rhs.getRequestParameters()).append(subscriberInfo, rhs.subscriberInfo).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
+    public RequestParameters getRequestParameters() {
+        return requestParameters;
+    }
+
+    public void setRequestParameters(RequestParameters requestParameters) {
+        this.requestParameters = requestParameters;
+    }
 }

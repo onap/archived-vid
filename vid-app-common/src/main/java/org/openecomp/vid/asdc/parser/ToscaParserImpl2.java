@@ -11,7 +11,10 @@ import org.openecomp.vid.asdc.beans.Service;
 import org.openecomp.vid.model.*;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
@@ -139,15 +142,7 @@ public class ToscaParserImpl2 {
         portMirroringConfig.setSourceNodes(sourceNodes);
 
         List<String> collectorNodes = getRequirementsNodesNames(requirementAssignments.getRequirementsByName("collector").getAll());
-        if (!collectorNodes.isEmpty()) { // vprobe
-            portMirroringConfig.setCollectorNodes(collectorNodes);
-        } else { // pprobe - configuration by policy
-            String collectorNodeName = csarHelper.getNodeTemplatePropertyLeafValue(nodeTemplate, "collector_node");
-            if (collectorNodeName != null) {
-                portMirroringConfig.setCollectorNodes(Arrays.asList(collectorNodeName));
-                portMirroringConfig.setConfigurationByPolicy(true);
-            }
-        }
+        portMirroringConfig.setCollectorNodes(collectorNodes);
     }
 
     private List<String> getRequirementsNodesNames(List<RequirementAssignment> requirements) {

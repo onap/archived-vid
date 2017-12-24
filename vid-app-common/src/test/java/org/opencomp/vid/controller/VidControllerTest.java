@@ -70,7 +70,9 @@ public class VidControllerTest extends AbstractTestNGSpringContextTests {
     @Test
     public void assertEqualBetweenObjects() throws Exception {
         for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-            ServiceModel actualServiceModel = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid()));
+            final Path csarPath = getCsarPath(mockHelper.getUuid());
+            System.out.println("Comparing for csar "+csarPath);
+            ServiceModel actualServiceModel = p2.makeServiceModel(csarPath, getServiceByUuid(mockHelper.getUuid()));
             JsonAssert.assertJsonEquals(mockHelper.getNewServiceModel(), actualServiceModel);
         }
     }

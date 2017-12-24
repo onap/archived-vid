@@ -1,5 +1,6 @@
 package org.openecomp.vid.mso;
 
+import org.openecomp.vid.changeManagement.RequestDetailsWrapper;
 import org.openecomp.vid.mso.rest.RequestDetails;
 
 /**
@@ -75,7 +76,7 @@ public interface MsoInterface {
 
     void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception;
 
-    MsoResponseWrapperInterface updateVnfSoftware(org.openecomp.vid.changeManagement.RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapperInterface updateVnfSoftware(RequestDetailsWrapper requestDetails, String endpoint) throws Exception;
 
     MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint) throws Exception;
 

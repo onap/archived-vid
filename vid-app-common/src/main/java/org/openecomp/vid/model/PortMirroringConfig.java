@@ -1,6 +1,5 @@
 package org.openecomp.vid.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.sdc.toscaparser.api.NodeTemplate;
 import org.openecomp.sdc.toscaparser.api.RequirementAssignments;
@@ -21,18 +20,14 @@ public class PortMirroringConfig extends Node {
     private String modelCustomizationName;
 
     /** The port miroring requirements for source/collector */
-    @JsonIgnore
     private RequirementAssignments requirementAssignments;
 
     private List<String> sourceNodes;
 
     private List<String> collectorNodes;
 
-    private boolean configurationByPolicy;
-
     public PortMirroringConfig() {
         super();
-        this.configurationByPolicy = false;
     }
 
     public String getModelCustomizationName() {
@@ -65,13 +60,5 @@ public class PortMirroringConfig extends Node {
 
     public void setCollectorNodes(List<String> collectorNodes) {
         this.collectorNodes = collectorNodes;
-    }
-
-    public void setConfigurationByPolicy(boolean configurationByPolicy) {
-        this.configurationByPolicy = configurationByPolicy;
-    }
-
-    public boolean isConfigurationByPolicy() {
-        return configurationByPolicy;
     }
 }

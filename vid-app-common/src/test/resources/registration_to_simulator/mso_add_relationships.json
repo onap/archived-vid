@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/ecomp/mso/infra/serviceInstances/v6/f36f5734-e9df-4fbf-9f35-61be13f028a1/addRelationships"
+    "path": "/mso/serviceInstances/v6/f36f5734-e9df-4fbf-9f35-61be13f028a1/addRelationships"
   } ,
   "simulatorResponse": {
     "responseCode": 202,

@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/network/pnfs/pnf/DEAAI78"
+    "path": "/aai/v11/network/pnfs/pnf/DEAAI78"
   } ,
   "simulatorResponse": {
     "responseCode": 200,

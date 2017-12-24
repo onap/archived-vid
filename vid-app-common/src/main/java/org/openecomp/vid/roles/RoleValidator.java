@@ -52,13 +52,13 @@ public class RoleValidator {
 //        return false;
     }
 
-    public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenant) {
+    public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName) {
     	if(this.disableRoles) return true;
     	
         for (Role role : userRoles) {
             if (role.getSubscribeName().equals(globalCustomerId)
                     && role.getServiceType().equals(serviceType)
-                    && (role.getTenant() == null || role.getTenant().equals(tenant))) {
+                    && (role.getTenant() == null || role.getTenant().equalsIgnoreCase(tenantName))) {
                 return true;
             }
         }

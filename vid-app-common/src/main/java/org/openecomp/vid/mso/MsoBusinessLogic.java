@@ -1,5 +1,6 @@
 package org.openecomp.vid.mso;
 
+import org.openecomp.vid.changeManagement.RequestDetailsWrapper;
 import org.openecomp.vid.controller.OperationalEnvironmentController;
 import org.openecomp.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.openecomp.vid.mso.model.OperationalEnvironmentDeactivateInfo;
@@ -90,4 +91,5 @@ public interface MsoBusinessLogic {
 
     MsoResponseWrapper setServiceInstanceStatus(RequestDetails requestDetails , String serviceInstanceId, boolean isActivate)throws Exception;
 
-    }
+    RequestDetailsWrapper generateInPlaceMsoRequest(org.openecomp.vid.changeManagement.RequestDetails requestDetails) throws Exception;
+}
