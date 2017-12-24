@@ -81,14 +81,14 @@
             <name>OpenECOMP - Snapshot Repository</name>
             <url>${nexusproxy}/${snapshotNexusPath}</url>
         </repository>
-        <repository>
+        <!--repository>
             <id>ecomp-public</id>
             <name>ecomp onap public Repository</name>
             <url>https://nexus.onap.org/content/groups/public</url>
-        </repository>
+        </repository-->
     </repositories>
 
-    <distributionManagement>
+    <!--distributionManagement>
         <repository>
             <id>vid-releases</id>
             <name>VID Release Repository</name>
@@ -100,7 +100,7 @@
             <name>VID Snapshot Repository</name>
             <url>https://162.242.254.138:8443/repository/maven-snapshots</url>
         </snapshotRepository>
-    </distributionManagement>
+    </distributionManagement-->
 
 
     <profiles>
@@ -388,6 +388,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

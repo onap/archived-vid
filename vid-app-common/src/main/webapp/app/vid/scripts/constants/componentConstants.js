@@ -169,6 +169,7 @@ appDS2
     IS_PERMITTED_SUB_PATH: "&isPermitted=",
 
     //Test Environment Urls:
+	OPERATIONAL_ENVIRONMENT_CREATE : "operationalEnvironment/create",
 	OPERATIONAL_ENVIRONMENT_DEACTIVATE : "operationalEnvironment/deactivate?operationalEnvironment=",
 	OPERATIONAL_ENVIRONMENT_ACTIVATE : "operationalEnvironment/activate?operationalEnvironment=",
 	OPERATIONAL_ENVIRONMENT_STATUS : "operationalEnvironment/requestStatus?requestId=",

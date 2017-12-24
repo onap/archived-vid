@@ -10,31 +10,32 @@
 
         var init = function () {
             vm.newEnvironment.operationalEnvironmentType = "VNF";
-            getEnvironmentsIDsList();
-            getEnvironmentsTypesList();
-            getWorkloadContextList();
+            loadEcompEnvironmentsList();
+            loadEnvironmentsTypesList();
+            loadWorkloadContextList();
         };
 
-        var getEnvironmentsIDsList = function () {
-            TestEnvironmentsService.loadMSOTestEnvironments("ECOMP")
+        var loadEcompEnvironmentsList = function () {
+            TestEnvironmentsService.loadAAIestEnvironments("ECOMP")
             .then(function(response) {
                 vm.environments = response.operationalEnvironment;
             })
             .catch(function (error) {
+                vm.aaiConnectError = error.message;
                 $log.error(error);
             });
         };
 
-        var getEnvironmentsTypesList = function () {
+        var loadEnvironmentsTypesList = function () {
             vm.environmentsTypesList = TestEnvironmentsService.getEnvironmentsTypesList();
         };
 
-        var getWorkloadContextList = function () {
+        var loadWorkloadContextList = function () {
             vm.workloadContextList = TestEnvironmentsService.getWorkloadContextList();
         };
 
-        vm.setEcompEnvironment = function () {
-            var ecompEnvironment = vm.environments[vm.selectedIndex];
+        vm.setEcompEnvironment = function (selectedIndex) {
+            var ecompEnvironment = vm.environments[selectedIndex];
             vm.newEnvironment.ecompInstanceId = ecompEnvironment.operationalEnvironmentId;
             vm.newEnvironment.ecompInstanceName = ecompEnvironment.operationalEnvironmentName;
             vm.newEnvironment.tenantContext = ecompEnvironment.tenantContext;
@@ -46,9 +47,10 @@
 
         vm.createEnvironment = function () {
             if($scope.newTestEnvironment.$valid) {
+                vm.newEnvironment.workloadContext = vm.newEnvironment.operationalEnvironmentType + '_' + vm.newEnvironment.workloadContext;
                 var requestDetails = vm.newEnvironment;
                 $rootScope.$broadcast(COMPONENT.MSO_CREATE_ENVIRONMENT, {
-                    url : COMPONENT.MSO_CREATE_ENVIRONMENT,
+                    url : COMPONENT.OPERATIONAL_ENVIRONMENT_CREATE,
                     requestDetails : requestDetails
                 });
                 vm.close();

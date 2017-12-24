@@ -12,6 +12,7 @@
     padding: 10px;
     display: inline-block;
     width: 458px;
+    font-style: italic;
 }
 
 .search-container .search-input::placeholder {

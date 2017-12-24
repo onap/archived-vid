@@ -7,6 +7,7 @@ import org.openecomp.vid.aai.SubscriberFilteredResults;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.openecomp.vid.asdc.beans.Service;
 import org.openecomp.vid.model.ServiceInstanceSearchResult;
 import org.openecomp.vid.model.SubscriberList;
 import org.openecomp.vid.roles.RoleValidator;
@@ -14,6 +15,7 @@ import org.openecomp.vid.roles.RoleValidator;
 import javax.ws.rs.core.Response;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,5 +49,7 @@ public interface AaiService {
     AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion);
 
     Response getVersionByInvariantId(List<String> modelInvariantId);
+
+    Collection<Service> getServicesByDistributionStatus();
 
 }

@@ -120,16 +120,48 @@ public class Constants {
     }
 
     public class TestEnvironments {
-        //general constants:
-        public static final String pageHeadlineId = "test-environments-headline";
+        // general constants:
+        public static final String PAGE_HEADLINE = "test-environments-headline";
 
-        //headline bar constants:
-        public static final String headlineNewButtonId = "test-environments-new-button";
-        public static final String headlineSearchInputId = "test-environments-search";
+        // headline bar constants:
+        public static final String HEADLINE_NEW_BUTTON = "test-environments-new-button";
+        public static final String HEADLINE_SEARCH_INPUT = "test-environments-search";
+        public static final String SEARCH_INPUT = "test-search-input";
+        public static final String TEXT_TO_FILTER = "4eb";
 
-        public static final String refreshButtonId = "test-environments-refresh";
-        public static final String noDataMessage = "test-environments-no-data";
-        public static final String environmentsTable = "test-environments-table";
+        public static final String REFRESH_BUTTON = "test-environments-refresh";
+        public static final String NO_DATA_MESSAGE = "test-environments-no-data";
+        public static final String ERROR_MESSAGE = "test-environments-error";
+        public static final String TRY_AGAIN_BUTTON = "try-again";
+        public static final String ENVIRONMENTS_TABLE = "test-environments-table";
+        public static final String TABLE_HEADER_ASC = "tablesorter-headerAsc";
+
+        // new popup
+        public static final String NEW_ENVIRONMENT_FORM = "test-new-environment-form";
+        public static final String INSTANCE_NAME_INPUT = "environment-name";
+        public static final String ECOMP_ID_DROP_DOWN = "ecomp-instance-id";
+        public static final String ECOMP_NAME_INPUT = "ecomp-instance-name";
+        public static final String TENANT_CONTEXT_INPUT = "tenant-context";
+        public static final String ENVIRONMENT_TYPE_DROP_DOWN = "operational-environment-type";
+        public static final String WORKLOAD_CONTEXT_DROP_DOWN = "workload-context";
+        public static final String SUBMIT_BUTTON = "submit-button";
+        public static final String CANCEL_BUTTON = "cancel-button";
+        public static final String MODAL_CLOSE_BUTTON_CLASS = "modal-close";
+        public static final String POPUP_ERROR_MESSAGE = "test-new-environment-error";
+
+        // json content
+        public static final String HEADERS_LIST = "headers";
+        public static final String BASIC_LIST = "basicList";
+        public static final String FULL_LIST = "fullList";
+        public static final String FILTERED_LIST = "filteredList";
+        public static final String SORTED_LIST = "sortedList";
+
+        // activate
+        public static final String environmentActivatedSuccesfullyMessage = "Operational Environment successfully activated";
+        public static final String environmentDeactivatedSuccesfullyMessage = "Operational Environment successfully deactivated";
+        public static final String activateButtonIdPrefix = "testEnvActivate-";
+        public static final String deactivateButtonIdPrefix = "testEnvDeactivate-";
+        public static final String environmentStatusIdPrefix = "testEnvStatus-";
     }
 
     public class Modals {

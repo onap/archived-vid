@@ -76,13 +76,11 @@ public class VidController extends RestrictedBaseController {
 			//Disable roles until AAF integration finishes
 			//secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
 			return secureServices;
-		} catch (AsdcCatalogException e) {
-			LOG.error("Failed to retrieve service definitions from SDC", e);
-			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
-		} catch (Throwable t) {
-			LOG.debug("Unexpected error while retrieving service definitions from SDC: " + t.getMessage() + ":", t);
+		}
+		catch (Throwable t) {
+			LOG.debug("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage() + ":", t);
 			t.printStackTrace();
-			throw new VidServiceUnavailableException("Unexpected error while retrieving service definitions from SDC: " + t.getMessage(), t);
+			throw new VidServiceUnavailableException("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage(), t);
 		}
 	}
 	

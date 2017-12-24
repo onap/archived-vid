@@ -10,7 +10,12 @@
 }
 
 .modal-content .modal-body {
-    padding: 15px 35px;
+    padding: 15px 35px 5px 35px;
+}
+
+.modal-body .connect-error {
+    color: red;
+    font-size: 14px;
 }
 
 .modal-header {
@@ -42,11 +47,19 @@
     color: #191919;
 }
 
+select {
+    background: url(../images/chevron.png) no-repeat 98% 10px !important;
+}
+
 input::placeholder {
     text-align: left;
     font-family: OpenSans-Regular;
     font-size: 14px;
     color: #a9a9a9;
+}
+
+.form-group .connect-error {
+    border: 1.5px solid red;
 }
 
 .form-group .grayedOut {
@@ -118,32 +131,32 @@ a.item-unselected:before {
     cursor: pointer;
     height:100%;
 }
-.modal-footer .btn-white,
-.modal-footer .btn-white:hover {
-    font-family: "OpenSans-Semibold";
-    border-radius: 5px;
-    border: 1px solid #009FDB;
-    background-color:  #FFFFFF;
-    width: 120px;
-    height: 36px;
-    color:  #009FDB;
-    font-size: 13px;
-    line-height: 30px;
-    text-align: center;
-    padding: 4px 12px !important;
+
+.form-create .modal-footer {
+    margin-top: 0;
 }
 
-.modal-footer .btn-primary,
-.modal-footer .btn-primary:hover{
+.form-create .modal-footer .btn,
+.form-create .modal-footer .btn:hover {
     font-family: "OpenSans-Semibold";
     border-radius: 5px;
     border: 1px solid #009FDB;
-    background-color:  #009FDB;
-    width: 120px;
-    height: 36px;
-    color:  #FFFFFF;
     font-size: 13px;
     line-height: 30px;
     text-align: center;
     padding: 4px 12px !important;
+    width: 120px;
+    height: 36px;
+}
+
+.form-create .modal-footer .btn-white,
+.form-create .modal-footer .btn-white:hover {
+    background-color:  #FFFFFF;
+    color:  #009FDB;
+}
+
+.form-create .modal-footer .btn-primary,
+.form-create .modal-footer .btn-primary:hover{
+    background-color:  #009FDB;
+    color:  #FFFFFF;
 }

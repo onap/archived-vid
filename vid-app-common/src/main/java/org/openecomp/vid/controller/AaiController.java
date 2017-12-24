@@ -69,7 +69,8 @@ import static org.openecomp.vid.utils.Logging.getMethodName;
  */
 
 @RestController
-public class AaiController extends RestrictedBaseController {
+public class
+AaiController extends RestrictedBaseController {
     /**
      * The Constant dateFormat.
      */

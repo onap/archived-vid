@@ -44,4 +44,6 @@ public interface AaiClientInterface {
     Response getVersionByInvariantId(List<String> modelInvariantId);
 
 	AaiResponse getServicesByProjectNames(List<String> projectNames);
+
+	AaiResponse getServiceModelsByDistributionStatus();
 }

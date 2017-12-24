@@ -83,8 +83,8 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 	});
 
     $scope.$on(COMPONENT.MSO_CREATE_ENVIRONMENT, function(event, request) {
-        init(request, COMPONENT.MSO_CREATE_ENVIRONMENT);
-        // MsoService.createEnvironmentInstance(request, handleInitialResponse);
+        init(request, COMPONENT.MSO_CREATE_ENVIRONMENT, getCloudResourcesRequestStatus);
+        TestEnvironmentsService.createApplicationEnv(request).then(handleInitialResponse);
     });
 
     $scope.$on(COMPONENT.MSO_DEACTIVATE_ENVIRONMENT, function(event, request) {

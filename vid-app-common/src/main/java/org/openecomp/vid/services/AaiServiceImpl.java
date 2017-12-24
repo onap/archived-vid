@@ -6,20 +6,22 @@ import org.openecomp.vid.aai.*;
 import org.openecomp.vid.aai.ServiceInstance;
 import org.openecomp.vid.aai.ServiceSubscription;
 import org.openecomp.vid.aai.Services;
-import org.openecomp.vid.aai.model.*;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
-import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.*;
+import org.openecomp.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.openecomp.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
-import org.openecomp.vid.model.*;
+import org.openecomp.vid.aai.model.*;
+import org.openecomp.vid.asdc.beans.Service;
+import org.openecomp.vid.model.ServiceInstanceSearchResult;
+import org.openecomp.vid.model.SubscriberList;
 import org.openecomp.vid.roles.RoleValidator;
 import org.openecomp.vid.utils.Intersection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
-
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Oren on 7/4/17.
@@ -35,12 +37,21 @@ public class AaiServiceImpl implements AaiService {
     private AaiClientInterface aaiClient;
 
 
-    private List<ServiceInstanceSearchResult> getServicesByOwningEntityId(List<String> owningEntities, RoleValidator roleValidator){
+    private Service convertModelToService(Model model) {
+        Service service = new Service();
+        service.setInvariantUUID(model.getModelInvariantId());
+        service.setUuid(model.getModelVers().getModelVer().get(0).getModelVersionId());
+        service.setVersion(model.getModelVers().getModelVer().get(0).getModelVersion());
+        service.setName(model.getModelVers().getModelVer().get(0).getModelName());
+        return service;
+    }
+
+    private List<ServiceInstanceSearchResult> getServicesByOwningEntityId(List<String> owningEntities, RoleValidator roleValidator) {
         AaiResponse<OwningEntityResponse> owningEntityResponse = aaiClient.getServicesByOwningEntityId(owningEntities);
         List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
-        if(owningEntityResponse.getT() != null) {
+        if (owningEntityResponse.getT() != null) {
             for (OwningEntity owningEntity : owningEntityResponse.getT().getOwningEntity()) {
-                if(owningEntity.getRelationshipList() != null){
+                if (owningEntity.getRelationshipList() != null) {
                     serviceInstanceSearchResultList = convertRelationshipToSearchResult(owningEntity, serviceInstanceSearchResultList, roleValidator);
                 }
             }
@@ -48,20 +59,20 @@ public class AaiServiceImpl implements AaiService {
         return serviceInstanceSearchResultList;
     }
 
-    private List<ServiceInstanceSearchResult> getServicesByProjectNames(List<String> projectNames, RoleValidator roleValidator){
+    private List<ServiceInstanceSearchResult> getServicesByProjectNames(List<String> projectNames, RoleValidator roleValidator) {
         AaiResponse<ProjectResponse> projectByIdResponse = aaiClient.getServicesByProjectNames(projectNames);
         List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
-        if(projectByIdResponse.getT() != null) {
+        if (projectByIdResponse.getT() != null) {
             for (Project project : projectByIdResponse.getT().getProject()) {
-                if(project.getRelationshipList() != null)
+                if (project.getRelationshipList() != null)
                     serviceInstanceSearchResultList = convertRelationshipToSearchResult(project, serviceInstanceSearchResultList, roleValidator);
             }
         }
         return serviceInstanceSearchResultList;
     }
 
-    private List<ServiceInstanceSearchResult> convertRelationshipToSearchResult(AaiRelationResponse owningEntityResponse, List<ServiceInstanceSearchResult> serviceInstanceSearchResultList, RoleValidator roleValidator){
-        if(owningEntityResponse.getRelationshipList().getRelationship() != null) {
+    private List<ServiceInstanceSearchResult> convertRelationshipToSearchResult(AaiRelationResponse owningEntityResponse, List<ServiceInstanceSearchResult> serviceInstanceSearchResultList, RoleValidator roleValidator) {
+        if (owningEntityResponse.getRelationshipList().getRelationship() != null) {
             List<Relationship> relationshipList = owningEntityResponse.getRelationshipList().getRelationship();
             for (Relationship relationship : relationshipList) {
                 ServiceInstanceSearchResult serviceInstanceSearchResult = new ServiceInstanceSearchResult();
@@ -73,9 +84,9 @@ public class AaiServiceImpl implements AaiService {
         return serviceInstanceSearchResultList;
     }
 
-    private void extractRelationshipData(Relationship relationship, ServiceInstanceSearchResult serviceInstanceSearchResult, RoleValidator roleValidator){
+    private void extractRelationshipData(Relationship relationship, ServiceInstanceSearchResult serviceInstanceSearchResult, RoleValidator roleValidator) {
         List<RelationshipData> relationshipDataList = relationship.getRelationDataList();
-        if(relationshipDataList != null) {
+        if (relationshipDataList != null) {
             setSubscriberName(relationship, serviceInstanceSearchResult);
             for (RelationshipData relationshipData : relationshipDataList) {
                 String key = relationshipData.getRelationshipKey();
@@ -93,17 +104,17 @@ public class AaiServiceImpl implements AaiService {
         }
     }
 
-    private void setSubscriberName(Relationship relationship, ServiceInstanceSearchResult serviceInstanceSearchResult){
+    private void setSubscriberName(Relationship relationship, ServiceInstanceSearchResult serviceInstanceSearchResult) {
         String relatedLink = relationship.getRelatedLink();
-        String [] subsciber = relatedLink.split("/");
+        String[] subsciber = relatedLink.split("/");
         serviceInstanceSearchResult.setSubscriberName(subsciber[indexOfSubscriberName]);
     }
 
-    private void extractRelatedToProperty(Relationship relationship, ServiceInstanceSearchResult serviceInstanceSearchResult){
+    private void extractRelatedToProperty(Relationship relationship, ServiceInstanceSearchResult serviceInstanceSearchResult) {
         List<RelatedToProperty> relatedToPropertyList = relationship.getRelatedToPropertyList();
-        if(relatedToPropertyList != null){
-            for(RelatedToProperty relatedToProperty: relatedToPropertyList){
-                if(relatedToProperty.getPropertyKey().equals(serviceInstanceName)){
+        if (relatedToPropertyList != null) {
+            for (RelatedToProperty relatedToProperty : relatedToPropertyList) {
+                if (relatedToProperty.getPropertyKey().equals(serviceInstanceName)) {
                     serviceInstanceSearchResult.setServiceInstanceName(relatedToProperty.getPropertyValue());
                 }
             }
@@ -114,17 +125,19 @@ public class AaiServiceImpl implements AaiService {
     public SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator) {
         AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();
         SubscriberFilteredResults subscriberFilteredResults =
-                new SubscriberFilteredResults(roleValidator,subscriberResponse.getT(),
+                new SubscriberFilteredResults(roleValidator, subscriberResponse.getT(),
                         subscriberResponse.getErrorMessage(),
                         subscriberResponse.getHttpCode());
 
         return subscriberFilteredResults;
     }
+
     @Override
     public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus) {
         AaiResponse<OperationalEnvironmentList> subscriberResponse = aaiClient.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
         return subscriberResponse;
     }
+
     @Override
     public AaiResponse<SubscriberList> getFullSubscriberList() {
         AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();
@@ -137,7 +150,7 @@ public class AaiServiceImpl implements AaiService {
         String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
         for (ServiceSubscription serviceSubscription : subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
             String serviceType = serviceSubscription.serviceType;
-            serviceSubscription.isPermitted = roleValidator.isServicePermitted(subscriberGlobalId,serviceType);
+            serviceSubscription.isPermitted = roleValidator.isServicePermitted(subscriberGlobalId, serviceType);
         }
         return subscriberResponse;
 
@@ -148,16 +161,16 @@ public class AaiServiceImpl implements AaiService {
         List<List<ServiceInstanceSearchResult>> resultList = new ArrayList<>();
         ServiceInstancesSearchResults serviceInstancesSearchResults = new ServiceInstancesSearchResults();
 
-        if(subscriberId != null || instanceIdentifier != null) {
+        if (subscriberId != null || instanceIdentifier != null) {
             resultList.add(getServicesBySubscriber(subscriberId, instanceIdentifier, roleValidator));
         }
-        if(owningEntities != null) {
+        if (owningEntities != null) {
             resultList.add(getServicesByOwningEntityId(owningEntities, roleValidator));
         }
-        if(projects != null) {
-           resultList.add(getServicesByProjectNames(projects, roleValidator));
+        if (projects != null) {
+            resultList.add(getServicesByProjectNames(projects, roleValidator));
         }
-        if(resultList.size() > 0) {
+        if (resultList.size() > 0) {
             Intersection<ServiceInstanceSearchResult> intersection = new Intersection<>();
             serviceInstancesSearchResults.serviceInstances = intersection.intersectMultipileArray(resultList);
         }
@@ -166,7 +179,7 @@ public class AaiServiceImpl implements AaiService {
     }
 
 
-    private List<ServiceInstanceSearchResult> getServicesBySubscriber(String subscriberId, String instanceIdentifier, RoleValidator roleValidator){
+    private List<ServiceInstanceSearchResult> getServicesBySubscriber(String subscriberId, String instanceIdentifier, RoleValidator roleValidator) {
         AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId);
         String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
         String subscriberName = subscriberResponse.getT().subscriberName;
@@ -220,24 +233,26 @@ public class AaiServiceImpl implements AaiService {
     public Response getVersionByInvariantId(List<String> modelInvariantId) {
         try {
             return aaiClient.getVersionByInvariantId(modelInvariantId);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
+
     @Override
     public AaiResponse getServices(RoleValidator roleValidator) {
         AaiResponse<GetServicesAAIRespone> subscriberResponse = aaiClient.getServices();
-        for (org.openecomp.vid.aai.model.AaiGetServicesRequestModel.Service service :subscriberResponse.getT().service){
-            service.isPermitted = true;
-        }
+        if (subscriberResponse.getT() != null)
+            for (org.openecomp.vid.aai.model.AaiGetServicesRequestModel.Service service : subscriberResponse.getT().service) {
+                service.isPermitted = true;
+            }
         return subscriberResponse;
     }
 
     @Override
     public AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType, RoleValidator roleValidator) {
-        AaiResponse<GetTenantsResponse[]> aaiGetTenantsResponse = aaiClient.getTenants(globalCustomerId,serviceType);
+        AaiResponse<GetTenantsResponse[]> aaiGetTenantsResponse = aaiClient.getTenants(globalCustomerId, serviceType);
         GetTenantsResponse[] tenants = aaiGetTenantsResponse.getT();
         if (tenants != null) {
             for (int i = 0; i < tenants.length; i++) {
@@ -251,28 +266,41 @@ public class AaiServiceImpl implements AaiService {
 
     @Override
     public AaiResponse getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId) {
-        return aaiClient.getVNFData(globalSubscriberId,serviceType,serviceInstanceId);
+        return aaiClient.getVNFData(globalSubscriberId, serviceType, serviceInstanceId);
     }
 
     @Override
     public Response getVNFData(String globalSubscriberId, String serviceType) {
-        return aaiClient.getVNFData(globalSubscriberId,serviceType);
+        return aaiClient.getVNFData(globalSubscriberId, serviceType);
     }
 
     @Override
-	public AaiResponse getAaiZones() {
-		AaiResponse<AicZones> response = aaiClient.getAllAicZones();
-		return response;
-	}
+    public AaiResponse getAaiZones() {
+        AaiResponse<AicZones> response = aaiClient.getAllAicZones();
+        return response;
+    }
 
-	@Override
-	public AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId) {
-		AaiResponse<AicZones> response = aaiClient.getAicZoneForPnf(globalCustomerId , serviceType , serviceId);
-		return response;
-	}
+    @Override
+    public AaiResponse getAicZoneForPnf(String globalCustomerId, String serviceType, String serviceId) {
+        AaiResponse<AicZones> response = aaiClient.getAicZoneForPnf(globalCustomerId, serviceType, serviceId);
+        return response;
+    }
 
-	@Override
-	public AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion) {
+    @Override
+    public AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion) {
         return aaiClient.getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
+    }
+
+    @Override
+    public Collection<Service> getServicesByDistributionStatus() {
+        AaiResponse<GetServiceModelsByDistributionStatusResponse> serviceModelsByDistributionStatusResponse = aaiClient.getServiceModelsByDistributionStatus();
+        Collection<Service> services = new HashSet<>();
+        if (serviceModelsByDistributionStatusResponse.getT() != null) {
+            List<Result> results = serviceModelsByDistributionStatusResponse.getT().getResults();
+            for (Result result : results) {
+                services.add(convertModelToService(result.getModel()));
+            }
+        }
+        return services;
     }
 }

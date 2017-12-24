@@ -16,6 +16,14 @@ public class Get {
         }
     }
 
+    public static WebElement byTestId(String testId) {
+        try {
+            return GeneralUIUtils.getWebElementByTestID(testId);
+        } catch (Exception var2) {
+            return null;
+        }
+    }
+
     public static WebElement byClassAndText(String className, String text) {
         WebElement result = null;
         List<WebElement> elements = GeneralUIUtils.getWebElementsListByContainsClassName(className);
@@ -30,6 +38,10 @@ public class Get {
         return result;
     }
 
+    public static String selectedOptionText(String dataTestId) {
+        return GeneralUIUtils.getSelectedElementFromDropDown(dataTestId).getText();
+    }
+
     public static List<WebElement> byClass(String className) {
         return GeneralUIUtils.getWebElementsListByContainsClassName(className);
     }
@@ -38,18 +50,31 @@ public class Get {
         return GeneralUIUtils.getDriver().findElement(By.cssSelector(css));
     }
 
-    public static List<WebElement> byTableId(String tableId) {
+    public static List<String> tableHeaderValuesByTestId(String tableId) {
+        return tableValuesById(tableId, "thead", "th").get(0);
+    }
+
+    public static List<List<String>> tableBodyValuesByTestId(String tableId) {
+        return tableValuesById(tableId, "tbody", "td");
+    }
+
+    private static List<WebElement> rowsByTableId(String tableId,String section, String column) {
         try {
-            return GeneralUIUtils.getElemenetsFromTable(By.xpath("//table[@data-test-id=\"" + tableId + "\"]/tbody/tr/td"));
+            return GeneralUIUtils.getElemenetsFromTable(By.xpath("//table[@data-tests-id=\"" + tableId + "\"]/" + section + "/tr"));
         } catch (Exception var2) {
             return null;
         }
     }
 
-    public static List<String> tableValuesById(String tableId) {
-        List<WebElement> elements = byTableId(tableId);
-        if(elements != null) {
-            return GeneralUIUtils.getWebElementListText(elements);
+    private static List<List<String>> tableValuesById(String tableId, String section, String column) {
+        List<WebElement> rows = rowsByTableId(tableId, section, column);
+        if(rows != null) {
+            List<List<String>> tableContent = new ArrayList<List<String>>();
+            for(WebElement row:rows) {
+                List<WebElement> columns = row.findElements(By.xpath(column));
+                tableContent.add(GeneralUIUtils.getWebElementListText(columns));
+            }
+            return tableContent;
         }
         else {
             return null;

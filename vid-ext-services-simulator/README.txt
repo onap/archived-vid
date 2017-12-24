@@ -85,6 +85,10 @@ If you need dynamic registration, register API for dynamic registration:
 
 POST {protocol}://{Tomcat host}:{Tomcat port}/vidSimulator/registerToVidSimulator
 
+To unregister and clear *all* expectations, use DELETE action:
+
+DELETE {protocol}://{Tomcat host}:{Tomcat port}/vidSimulator/registerToVidSimulator
+
 
 ***********************************************************************************
 Registration body JSON specification (see and copy/paste examples below):
@@ -103,7 +107,7 @@ Registration body JSON specification (see and copy/paste examples below):
             "body" - String, body of the request in case of POST/PUT.
                      Note that JSON String should be properly escaped.
 
-    "simulatorRequest" - response wrapper.
+    "simulatorResponse" - response wrapper.
 
            Note that from the below fields, it's mandatory to populate at least "responseCode".
 
@@ -112,6 +116,15 @@ Registration body JSON specification (see and copy/paste examples below):
               "body" - String, body of the response.
                                Note that JSON String should be properly escaped.
 
+    "misc" - optional configurations.
+              "numberOfTimes" - Integer. Limit this expectation to fire only a
+                                given amount of times. Values like -1 or less are
+                                treated as "unlimited". Default is unlimited.
+              "replace" - Boolean. If there is already a registered expectation with
+                          same simulatorRequest, remove the old registered expectation.
+                          If set to 'False' -- the result will be appended to fire
+                          after the old registered expectation(s) will fulfill their
+                          numberOfTimes. Default is 'True'.
 
 ************************************************************************************
 Usage:

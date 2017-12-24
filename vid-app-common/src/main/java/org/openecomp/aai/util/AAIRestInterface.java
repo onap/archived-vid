@@ -265,7 +265,7 @@ public class AAIRestInterface {
      * @return the string
      */
     public Response RestPut(String fromAppId,  String transId,  String path, String payload, boolean xml) {
-        String methodName = "RestPost";
+        String methodName = "RestPut";
         String url="";
         transId = UUID.randomUUID().toString();
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + " start");       
@@ -278,7 +278,7 @@ public class AAIRestInterface {
         	   
             initRestClient();    
     
-            url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL) + path;
+            url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL_BASE) + path;
 
             final Response cres = client.target(url)
                  .request()

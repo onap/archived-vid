@@ -29,6 +29,8 @@
     font-family: "OpenSans-Regular";
     color: #797979;
     flex:1;
+    display: flex;
+    flex-direction: column;
 }
 
 .test-environments .header {
@@ -59,6 +61,27 @@
     cursor: pointer;
 }
 
+.test-environments .error-messages {
+    margin: auto;
+}
+
+.test-environments .error-messages .no-data svg path {
+    fill: #D2D2D2;
+}
+
+.test-environments .error-messages .no-data .secondaryMessage,
+.test-environments .error-messages .connect-error .secondaryMessage {
+    color: #D2D2D2;
+}
+
+.test-environments .error-messages .connect-error svg path {
+    fill: red;
+}
+
+.test-environments .error-messages .connect-error .primaryMessage {
+    color: red;
+}
+
 .test-environments .button-container svg {
     fill: #009FDB;
 }
@@ -73,18 +96,22 @@
     margin-right: 40px;
 }
 
+.test-environments .refresh:focus {
+    outline: none;
+}
+
 .test-environments .refresh {
     float: right;
     width: 20px;
     height: 20px;
-    border: 1px solid;
+    border: none;
     background: none;
     padding: 0;
 }
 
 .test-environments .refresh svg{
-    height: 16px;
-    width: 16px;
+    height: 20px;
+    width: 20px;
 }
 
 .test-environments .refresh svg path {
@@ -114,19 +141,36 @@
 }
 
 .test-environments .environments-table .tablesorter-default thead .tablesorter-headerAsc .tablesorter-header-inner {
-    background-image: url('../images/sort_up.svg');
-}
-
-.test-environments .environments-table .tablesorter-default thead .tablesorter-headerDesc .tablesorter-header-inner {
     background-image: url('../images/sort_down.svg');
 }
 
+.test-environments .environments-table .tablesorter-default thead .tablesorter-headerDesc .tablesorter-header-inner {
+    background-image: url('../images/sort_up.svg');
+}
+
 .test-environments .environments-table .thead-default tr th {
-    background: #D2D2D2;
+    background: #EAEAEA;
     color: #191919;
     font-size: 13px;
     font-weight: 600;
+    vertical-align: middle;
 }
+
+.test-environments .environments-table .thead-default tr th .tablesorter-header-inner {
+    padding-right: 10px;
+}
+
+.test-environments .environments-table .thead-default tr th span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.test-environments .environments-table .thead-default tr th:first-child {
+    min-width: 150px;
+}
+
+/*.test-environments .environments-table .thead-default tr th:*/
 
 .test-environments .environments-table .tablesorter-header-inner {
     padding: 0;
@@ -149,13 +193,6 @@
 }
 
 .envActionBtn {
-    font-family: "OpenSans-Semibold";
-    border-radius: 5px;
-    border: 1px solid #0091c8;
-    background-color:  #009FDB;
     width: 94px;
     height: 30px;
-    color:  #ffffff;
-    font-size: 13px;
-    font-weight: 400;
 }

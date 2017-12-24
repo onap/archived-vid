@@ -36,7 +36,7 @@ if [ ${OPERATION} = 'GET' ]; then
        echo "Failed to get vnf to workflows relations"
     fi
 else
-    BODY=$(cat ${FILE} | awk '  BEGIN {  FS=","; print " {\"workflowsDetails\" : [ "}   {  gsub(/ /, "", $0) ; printf "%s{\"vnfDetails\":{\"UUID\":\"%s\",\"invariantUUID\":\"%s\"},\"workflowName\":\"%s\"}",separator,$1,$2,$3 ;separator = ", ";} END { printf " ]} "}')
+    BODY=$(cat ${FILE} | awk '  BEGIN {  FS=","; print " {\"workflowsDetails\" : [ "}   {  gsub(/ /, "", $1) ; gsub(/ /, "", $2) ; gsub(/^[ \t]+/,"",$3); gsub(/[ \t]+$/,"",$3); printf "%s{\"vnfDetails\":{\"UUID\":\"%s\",\"invariantUUID\":\"%s\"},\"workflowName\":\"%s\"}",separator,$1,$2,$3 ;separator = ", ";} END { printf " ]} "}')
     echo "Sending request: ${OPERATION} ${BODY}"
     echo -e "------------------------\nwget output:"
     wget --method="${OPERATION}" --body-data="${BODY}" --header=Content-Type:application/json --content-on-error -nv -O - "${URL}"

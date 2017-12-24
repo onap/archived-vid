@@ -104,7 +104,6 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
     return {
         createInstance : requestInstanceUpdate,
         deleteInstance : requestInstanceUpdate,
-        createEnvironmentInstance: requestInstanceUpdate,
         getOrchestrationRequest : function(requestId, successCallbackFunction) {
             $log.debug("MsoService:getOrchestrationRequest: requestId: "
                 + requestId);

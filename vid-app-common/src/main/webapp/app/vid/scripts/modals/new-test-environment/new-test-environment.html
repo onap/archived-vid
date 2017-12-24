@@ -1,48 +1,49 @@
-<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/new-change-management/new-change-management.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/modal-create-new.css" />
 <div class="modal-header">
     <h3 class="modal-title" id="modal-title">New Test Environment</h3>
     <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
 </div>
-<form name="newTestEnvironment" ng-submit="vm.createEnvironment()">
+<form class="form-create" data-tests-id="test-new-environment-form" name="newTestEnvironment" ng-submit="vm.createEnvironment()">
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="environmentName">Environment Name</label>
-            <input id="environmentName" class="form-control" ng-model="vm.newEnvironment.instanceName" name="instanceName" data-tests-id="environmentName" placeholder="Enter environment name" required>
+            <input id="environmentName" class="form-control" ng-model="vm.newEnvironment.instanceName" name="instanceName" data-tests-id="environment-name" placeholder="Enter environment name" required>
         </div>
         <div class="form-group">
             <label class="control-label" for="ecompInstanceId">ECOMP Environment ID</label>
-            <select class="form-control" ng-class="{'grayedOut': !vm.selectedIndex}" ng-model="vm.selectedIndex" name="ecompInstanceId" id="ecompInstanceId" data-tests-id="ecompInstanceId" required ng-change="vm.setEcompEnvironment()">
+            <select class="form-control" ng-class="{'grayedOut': !selectedIndex, 'connect-error': vm.aaiConnectError}" ng-model="selectedIndex" name="ecompInstanceId" id="ecompInstanceId" data-tests-id="ecomp-instance-id" required ng-change="vm.setEcompEnvironment(selectedIndex)">
                 <option value="" disabled selected hidden>Select environment ID</option>
-                <option data-tests-id="environmentIdOption" class="environmentIdOption" ng-repeat="item in vm.environments" ng-value="$index">{{item.operationalEnvironmentId}}</option>
+                <option data-tests-id="environment-id-option" class="environmentIdOption" ng-repeat="item in vm.environments" ng-value="$index">{{item.operationalEnvironmentId}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="control-label" for="ecompInstanceName">ECOMP Environment Name</label>
-            <input id="ecompInstanceName" class="form-control" ng-model="vm.newEnvironment.ecompInstanceName" name="ecompInstanceName" data-tests-id="ecompInstanceName" required disabled>
+            <input id="ecompInstanceName" class="form-control" ng-model="vm.newEnvironment.ecompInstanceName" name="ecompInstanceName" data-tests-id="ecomp-instance-name" required disabled>
         </div>
         <div class="form-group">
             <label class="control-label" for="tenantContext">Select VSP</label>
-            <input id="tenantContext" class="form-control" ng-model="vm.newEnvironment.tenantContext" name="tenantContext" data-tests-id="tenantContext" required disabled>
+            <input id="tenantContext" class="form-control" ng-model="vm.newEnvironment.tenantContext" name="tenantContext" data-tests-id="tenant-context" required disabled>
         </div>
         <div class="form-group">
             <label class="control-label" for="operationalEnvironmentType">Environment Type</label>
-            <select class="form-control" ng-class="{'grayedOut': !vm.newEnvironment.operationalEnvironmentType}"  ng-model="vm.newEnvironment.operationalEnvironmentType" name="operationalEnvironmentType" id="operationalEnvironmentType" data-tests-id="operationalEnvironmentType" required>
+            <select class="form-control" ng-class="{'grayedOut': !vm.newEnvironment.operationalEnvironmentType}"  ng-model="vm.newEnvironment.operationalEnvironmentType" name="operationalEnvironmentType" id="operationalEnvironmentType" data-tests-id="operational-environment-type" required>
                 <option value="" disabled selected hidden>Enter environment type</option>
-                <option data-tests-id="environmentTypeOption" class="environmentTypeOption" ng-repeat="item in vm.environmentsTypesList" ng-value="item">{{item}}</option>
+                <option data-tests-id="environment-type-option" class="environmentTypeOption" ng-repeat="item in vm.environmentsTypesList" ng-value="item">{{item}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="control-label" for="workloadContext">Workload Context</label>
-            <select class="form-control" ng-class="{'grayedOut': !vm.newEnvironment.workloadContext}" ng-model="vm.newEnvironment.workloadContext" name="workloadContext" id="workloadContext" data-tests-id="workloadContext" required>
+            <select class="form-control" ng-class="{'grayedOut': !vm.newEnvironment.workloadContext}" ng-model="vm.newEnvironment.workloadContext" name="workloadContext" id="workloadContext" data-tests-id="workload-context" required>
                 <option value="" disabled selected hidden>Select workload context</option>
-                <option data-tests-id="workloadContextOption" class="workloadContextOption" ng-repeat="item in vm.workloadContextList" ng-value="item">{{vm.newEnvironment.operationalEnvironmentType + '_' + item}}</option>
+                <option data-tests-id="workload-context-option" class="workloadContextOption" ng-repeat="item in vm.workloadContextList" ng-value="item">{{vm.newEnvironment.operationalEnvironmentType + '_' + item}}</option>
             </select>
         </div>
+        <div data-tests-id="test-new-environment-error" class="connect-error" ng-if="vm.aaiConnectError">{{vm.aaiConnectError}}</div>
     </div>
     <div class="modal-footer">
         <div class="pull-right">
-            <button type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newTestEnvironment.$invalid">Create</button>
-            <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
+            <button data-tests-id="submit-button" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newTestEnvironment.$invalid">Create</button>
+            <button data-tests-id="cancel-button" type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
         </div>
     </div>
 </form>

@@ -165,6 +165,7 @@
 					</includes>
 					<excludes>
 						<exclude>**/selenium/*.java</exclude>
+						<exclude>**/integrationTest/*.java</exclude>
 					</excludes>
 					<additionalClasspathElements>
 						<additionalClasspathElement>${basedir}/war</additionalClasspathElement>

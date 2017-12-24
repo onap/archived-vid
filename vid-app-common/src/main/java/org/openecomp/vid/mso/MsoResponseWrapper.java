@@ -97,6 +97,8 @@ public class MsoResponseWrapper {
      *
      * @return the response
      */
+    @org.codehaus.jackson.annotate.JsonIgnore
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public String getResponse () {
     	
     	StringBuilder b = new StringBuilder ("{ \"status\": ");

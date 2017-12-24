@@ -280,17 +280,18 @@ public class RestMsoImplementation implements RestInterface {
     private <T> RestObject<T> cresToRestObject(Response cres, Class<?> tClass) {
         RestObject<T> restObject = new RestObject<>();
 
+        String rawEntity = null;
         try {
             cres.bufferEntity();
-            T t = (T) cres.readEntity(tClass);
+            rawEntity = cres.readEntity(String.class);
+            T t = (T) new ObjectMapper().readValue(rawEntity, tClass);
             restObject.set(t);
         }
         catch ( Exception e ) {
             try {
-                String entity = cres.readEntity(String.class);
-                restObject.setRaw(entity);
+                restObject.setRaw(rawEntity);
                 logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " Error reading response entity as " + tClass + ": , e="
-                        + e.getMessage() + ", Entity=" + entity);
+                        + e.getMessage() + ", Entity=" + rawEntity);
             } catch (Exception e2) {
                 logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " No response entity, this is probably ok, e="
                         + e.getMessage());

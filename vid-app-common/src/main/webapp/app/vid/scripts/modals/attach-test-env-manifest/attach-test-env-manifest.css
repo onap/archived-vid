@@ -1,25 +1,54 @@
-body .btn-white {
-    font-family: "OpenSans-Semibold";
-    border-radius: 5px;
-    border: 1px solid #009FDB;
-    background:  #ffffff;
-    width: 94px;
-    height: 30px;
-    color: #009FDB;
-    font-size: 13px;
-    font-weight: 400;
+@font-face {
+    font-family: 'icomoon';
+    src:  url('../../../styles/fonts/icomoon.eot?4cilop');
+    src:  url('../../../styles/fonts/icomoon.eot?4cilop#iefix') format('embedded-opentype'),
+    url('../../../styles/fonts/icomoon.ttf?4cilop') format('truetype'),
+    url('../../../styles/fonts/icomoon.woff?4cilop') format('woff'),
+    url('../../../styles/fonts/icomoon.svg?4cilop#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
-body .btn-primary {
-    font-family: "OpenSans-Semibold";
-    border-radius: 5px;
-    border: 1px solid #0091c8;
-    background-color:  #009FDB;
-    width: 94px;
-    height: 30px;
-    color:  #ffffff;
-    font-size: 13px;
-    font-weight: 400;
+.modal-body [class^="icon-"],.modal-body [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-browse:before {
+    content: "\e90d";
+    color: #5A5A5A;
+    font-size: 4px;
+    cursor: pointer;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    background: #F2F2F2;
+    border: 1px solid #D2D2D2;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 2px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.icon-browse:hover::before {
+    background-color: #E6F6FB;
+    color: #009FDB;
+}
+.icon-browse:active::before {
+    background-color: #E6F6FB;
+    color: #009FDB;
 }
 
 .modal-header {
@@ -51,7 +80,7 @@ body .btn-primary {
 
 .modal-content {
     width: 468px;
-    height: 227px;
+    height: 242px;
     border-radius: 8px;
     background-color:  #ffffff;
 }
@@ -61,10 +90,13 @@ body .modal-body {
     padding-top: 0;
     padding-left: 20px;
     padding-right: 20px;
+    width: 468px;
+    height: 91px;
 }
 
 .modal-footer {
     margin-top: 0;
+    background-color: #fff;
 }
 
 

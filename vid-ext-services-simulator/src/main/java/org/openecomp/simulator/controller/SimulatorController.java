@@ -1,7 +1,9 @@
 package org.openecomp.simulator.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockserver.integration.ClientAndServer;
+import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.openecomp.simulator.errorHandling.VidSimulatorException;
@@ -37,6 +39,7 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 @Component
 public class SimulatorController {
 
+    private static final Times DEFAULT_NUMBER_OF_TIMES = Times.unlimited();
     private ClientAndServer mockServer;
     private String mockServerProtocol;
     private String mockServerHost;
@@ -119,22 +122,41 @@ public class SimulatorController {
         try {
             register(expectation);
         } catch (VidSimulatorException e) {
-            return new ResponseEntity("Registration failure! Error: "+e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Registration failure! Error: "+e.getMessage(),HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity("Registration successful!",HttpStatus.OK);
+        return new ResponseEntity<>("Registration successful!",HttpStatus.OK);
+    }
+
+//    @RequestMapping(value = {"/registerToVidSimulator"}, method = RequestMethod.GET)
+//    public ResponseEntity<String> getAllRegisteredRequests() throws JsonProcessingException {
+//        final Expectation[] expectations = mockServer.retrieveExistingExpectations(null);
+//        return new ResponseEntity<>(new ObjectMapper()
+//                .configure(SerializationFeature.INDENT_OUTPUT, true)
+//                .writeValueAsString(expectations), HttpStatus.OK);
+//    }
+
+    @RequestMapping(value = {"/registerToVidSimulator"}, method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void wipeOutAllExpectations() {
+        mockServer.reset();
     }
 
     private void register(String expectation) throws VidSimulatorException{
-        ObjectMapper mapper = new ObjectMapper();
-        SimulatorRequestResponseExpectation expectationModel = null;
+        ObjectMapper mapper = new ObjectMapper()
+                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+        SimulatorRequestResponseExpectation[] expectationModels;
         try {
-            expectationModel = mapper.readValue(expectation, SimulatorRequestResponseExpectation.class);
+            expectationModels = mapper.readValue(expectation, SimulatorRequestResponseExpectation[].class);
         } catch (IOException e) {
             logger.error("Couldn't deserialize register expectation {}, error:", expectation, e);
             throw new VidSimulatorException(e.getMessage());
         }
-        logger.info("Proceeding registration request: {}", expectationModel);
-        register(expectationModel);
+
+        for (SimulatorRequestResponseExpectation expectationModel : expectationModels) {
+            logger.info("Proceeding registration request: {}", expectationModel);
+            register(expectationModel);
+        }
     }
 
 
@@ -234,9 +256,25 @@ public class SimulatorController {
             responseHeaders.forEach(response::withHeader);
         }
 
-        logger.info("Unregistering request expectation, if previously set, request: {}", expectationModel.getSimulatorRequest());
-        mockServer.clear(request);
+        Times numberOfTimes = getExpectationNumberOfTimes(expectationModel);
+
+        if (expectationModel.getMisc().getReplace()) {
+            logger.info("Unregistering request expectation, if previously set, request: {}", expectationModel.getSimulatorRequest());
+            mockServer.clear(request);
+        }
+
         mockServer
-                .when(request).respond(response);
+                .when(request, numberOfTimes).respond(response);
+    }
+
+    private Times getExpectationNumberOfTimes(SimulatorRequestResponseExpectation expectationModel) {
+        Integer expectationModelNumberOfTimes = expectationModel.getMisc().getNumberOfTimes();
+        Times effectiveNumberOfTimes;
+        if (expectationModelNumberOfTimes == null || expectationModelNumberOfTimes < 0) {
+            effectiveNumberOfTimes = DEFAULT_NUMBER_OF_TIMES;
+        } else {
+            effectiveNumberOfTimes = Times.exactly(expectationModelNumberOfTimes);
+        }
+        return effectiveNumberOfTimes;
     }
 }

@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openecomp.aai.util.AAIRestInterface;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.openecomp.vid.aai.model.*;
 import org.openecomp.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.openecomp.vid.aai.model.Relationship;
 import org.openecomp.vid.aai.model.RelationshipData;
@@ -62,7 +63,7 @@ public class AaiClient implements AaiClientInterface {
      */
 
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AaiClient.class);
-
+    private final String getServiceModelsResponseBody = "{\"start\" : \"service-design-and-creation/models/\", \"query\" : \"query/servceModelsbyDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}";
 
     public AaiClient() {
         //        certiPath = getCertificatesFile().getAbsolutePath();
@@ -96,6 +97,15 @@ public class AaiClient implements AaiClientInterface {
         File certiPath = getCertificatesFile();
         Response resp = doAaiGet(certiPath.getAbsolutePath(), getUrlFromLIst("business/projects?", "project-name=", projectNames), false);
         AaiResponse aaiResponse = proccessAaiResponse(resp, ProjectResponse.class, null);
+
+        return aaiResponse;
+    }
+
+    @Override
+    public AaiResponse getServiceModelsByDistributionStatus() {
+        File certiPath = getCertificatesFile();
+        Response resp = doAaiPut(certiPath.getAbsolutePath(), "service-design-and-creation/models", getServiceModelsResponseBody, false);
+        AaiResponse aaiResponse = proccessAaiResponse(resp, GetServiceModelsByDistributionStatusResponse.class, null);
 
         return aaiResponse;
     }
@@ -201,7 +211,7 @@ public class AaiClient implements AaiClientInterface {
     @Override
     public AaiResponse getServices() {
         File certiPath = getCertificatesFile();
-        Response resp = doAaiGet(certiPath.getAbsolutePath(), "service-design-and-creation/services", false);
+        Response resp = doAaiPut(certiPath.getAbsolutePath(), "service-design-and-creation/services", getServiceModelsResponseBody,false);
         AaiResponse<GetServicesAAIRespone> getServicesResponse = proccessAaiResponse(resp, GetServicesAAIRespone.class, null);
 
         return getServicesResponse;

@@ -8,6 +8,10 @@ public class Exists {
         return Get.byId(id) != null;
     }
 
+    public static boolean byTestId(String testId) {
+        return Get.byTestId(testId) != null;
+    }
+
     public static boolean byClass(String className) {
         return Get.byClass(className) != null;
     }
@@ -22,9 +26,5 @@ public class Exists {
         } catch (NoSuchElementException exception) {
             return false;
         }
-    }
-
-    public static boolean tableContent(String tableId) {
-       return Get.byTableId(tableId) != null;
     }
 }

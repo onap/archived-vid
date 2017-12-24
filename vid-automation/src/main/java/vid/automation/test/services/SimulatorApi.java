@@ -19,8 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 import java.util.Scanner;
-
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
 public class SimulatorApi {
 

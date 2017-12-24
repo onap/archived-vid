@@ -1,0 +1,8 @@
+{
+  "operationalEnvironmentName": "New VNF Environment",
+  "operationalEnvironmentType": "VNF",
+  "EcompEnvironmentId": "f07ca256-96dd-40ad-b4d2-7a77e2a974ed",
+  "EcompEnvironmentName": "ECOMP Env Name",
+  "tenantContext": "ECOMP Test",
+  "workloadContext": "VNF_ECOMP"
+}

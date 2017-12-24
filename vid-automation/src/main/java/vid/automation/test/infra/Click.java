@@ -22,6 +22,12 @@ public class Click {
         element.click();
     }
 
+    public static void byTestId(String testId) {
+        WebElement element = Get.byTestId(testId);
+        Assert.assertTrue(element != null);
+        element.click();
+    }
+
     public static void byClass(String className) {
         List<WebElement> elements = Get.byClass(className);
         Assert.assertTrue(elements != null && elements.size() > 0);

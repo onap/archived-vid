@@ -14,6 +14,11 @@ public class Input {
         inputElement.sendKeys(text);
     }
 
+    public static String getValueByTestId(String testId) {
+        WebElement input = GeneralUIUtils.getInputElement(testId);
+        return input.getAttribute("value");
+    }
+
     /*
         Get relative path to resource and id of file input element,
         and send the resource full path to the input element
@@ -30,5 +35,4 @@ public class Input {
         WebElement inputElement = Get.byId(inputId);
         inputElement.sendKeys(path);
     }
-
 }

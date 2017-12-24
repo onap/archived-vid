@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="app/vid/styles/modal-buttons.css">
 <link rel="stylesheet" type="text/css"
       href="app/vid/scripts/modals/attach-test-env-manifest/attach-test-env-manifest.css"/>
 <div class="modal-header">
@@ -10,7 +11,7 @@
         <input onchange="angular.element(this).scope().selectAttachmentManifest(this)" type="file"
                id="testEnvManifestFileInput" class="inputfile" accept=".json"/>
         <label id="manifestFileName"  class="manifestFileName">{{vm.filename}}</label><label for="testEnvManifestFileInput" class="labelForImage" >
-            <img id="elipsisImg" src="app/vid/images/elipsis_menu_icon.svg" class="elipsisImg"/>
+            <span class="icon-browse"></span>
         </label><label id="errorLabel" class="errorLabel">{{vm.error}}</label>
 
     </div>

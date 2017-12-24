@@ -1,0 +1,11 @@
+{
+  "simulatorRequest": {
+    "method": "PUT",
+    "path": "/aai/service-design-and-creation/models",
+    "body" : "{\"start\" : \"service-design-and-creation/models/\", \"query\" : \"query/servceModelsbyDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": "{\"results\": [{  \"model\": {\"model-invariant-id\": \"9551346c-7d8b-4daf-9926-b93e96e2344a\",\"model-type\": \"widget\",\"resource-version\": \"1500138206526\",\"model-vers\": {\"model-ver\": [{\"model-version-id\": \"2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd\",\"model-name\": \"action-data\",\"model-version\": \"1.0\",\"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\"resource-version\": \"1500137463984\"}]}}},{\"model\": {\"model-invariant-id\": \"ea78c9e3-514d-4a0a-9162-13837fa54c35\",\"model-type\": \"widget\",\"resource-version\": \"1500137034452\",\"model-vers\": {\"model-ver\": [{\"model-version-id\": \"666a06ee-4b57-46df-bacf-908da8f10c3f\",\"model-name\": \"multicast-configuration\",\"model-version\": \"1.0\",\"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\"resource-version\": \"1500136282691\"}]}}}]}"
+  }
+}

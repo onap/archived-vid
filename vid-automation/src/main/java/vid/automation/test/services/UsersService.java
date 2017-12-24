@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openecomp.sdc.ci.tests.utilities.FileHandling;
 import vid.automation.test.model.User;
 import vid.automation.test.model.UsersObject;
+import vid.automation.test.utils.ReadFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,28 +18,11 @@ public class UsersService {
 
     public UsersService() throws IOException {
         users = getUsersFromJson();
-
     }
 
     HashMap<String, User> getUsersFromJson() throws IOException {
-        String fileName = "users";
-        ObjectMapper mapper = new ObjectMapper();
-        UsersObject usersObject;
-        try {
-            File testCaseFile = FileHandling.getConfigFile(fileName);
-            if(!testCaseFile.exists()) {
-                String basePath = System.getProperty("BASE_PATH");
-                testCaseFile = new File( basePath + File.separator + "conf" + File.separator + fileName);
-            }
-            usersObject = mapper.readValue(testCaseFile, UsersObject.class);
-            return usersObject.users;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        UsersObject usersObject = ReadFile.getJsonFile("users", UsersObject.class);
+        return usersObject.users;
     }
 
     public User getUser(String userId) {

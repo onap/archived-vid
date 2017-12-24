@@ -1,11 +1,6 @@
 package org.openecomp.simulator.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.openecomp.simulator.errorHandling.VidSimulatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +11,7 @@ public class SimulatorRequestResponseExpectation {
 
     private SimulatorRequest simulatorRequest;
     private SimulatorResponse simulatorResponse;
+    private Misc misc;
 
     public SimulatorRequest getSimulatorRequest() {
         return simulatorRequest;
@@ -33,11 +29,20 @@ public class SimulatorRequestResponseExpectation {
         this.simulatorResponse = simulatorResponse;
     }
 
+    public Misc getMisc() {
+        return misc == null ? new Misc() : misc;
+    }
+
+    public void setMisc(Misc misc) {
+        this.misc = misc;
+    }
+
     @Override
     public String toString() {
         return "ExpectationModel{" +
                 "simulatorRequest=" + simulatorRequest +
                 ", simulatorResponse=" + simulatorResponse +
+                ", misc=" + misc +
                 '}';
     }
 }

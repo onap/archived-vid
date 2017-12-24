@@ -11,18 +11,22 @@ import java.util.List;
 
 public class TestEnvironmentPage extends VidBasePage {
 
-    public static void openTestEnvironmentPage() {
-        Click.byText(Constants.SideMenu.TEST_ENVIRONMENTS);
-        GeneralUIUtils.ultimateWait();
-    }
-
     public static void clickTestEnvironmentActivate(String envId) {
         getTestEnvironmentActivationButton(envId).click();
     }
 
+    public static void clickTestEnvironmentDeactivate(String envId) {
+        getTestEnvironmentDeactivationButton(envId).click();
+    }
+
     public static WebElement getTestEnvironmentActivationButton(String envId) {
-        TestEnvironmentPage.openTestEnvironmentPage();
-        WebElement webElement = Get.byId("testEnvActivate-"+envId);
+        WebElement webElement = Get.byId(Constants.TestEnvironments.activateButtonIdPrefix + envId);
         return webElement;
     }
+
+    public static WebElement getTestEnvironmentDeactivationButton(String envId) {
+        WebElement webElement = Get.byId(Constants.TestEnvironments.deactivateButtonIdPrefix + envId);
+        return webElement;
+    }
+
 }

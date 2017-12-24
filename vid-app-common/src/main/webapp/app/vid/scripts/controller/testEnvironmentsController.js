@@ -1,33 +1,38 @@
 (function () {
     'use strict';
 
-    appDS2.controller("testEnvironmentsController", ["$uibModal", "TestEnvironmentsService", "$log", "$rootScope", "COMPONENT", testEnvironmentsController]);
+    appDS2.controller("testEnvironmentsController", ["$uibModal", "TestEnvironmentsService", "$log", "$rootScope", "$scope", "COMPONENT", testEnvironmentsController]);
 
-    function testEnvironmentsController($uibModal, TestEnvironmentsService, $log, $rootScope, COMPONENT) {
+    function testEnvironmentsController($uibModal, TestEnvironmentsService, $log, $rootScope, $scope, COMPONENT) {
         var vm = this;
 
         var toggleValue;
 
         var init = function() {
-            vm.loadMSOTestEnvironments();
+            vm.loadAAIestEnvironments();
         };
 
-        vm.loadMSOTestEnvironments = function() {
-            TestEnvironmentsService.loadMSOTestEnvironments("VNF")
+        vm.loadAAIestEnvironments = function() {
+            TestEnvironmentsService.loadAAIestEnvironments("VNF")
                 .then(function(response) {
                     vm.environments = response.operationalEnvironment;
+                    vm.connectError = false;
                     if(!vm.environments.length) {
-                        vm.noData = true;
+                        vm.emptyData = true;
                     }
                 })
                 .catch(function (error) {
+                    vm.connectError = error.message || "Unknown error";
                     $log.error(error);
                 });
         };
 
-        vm.operationButton = function(testEnv) {
-            return this.isEnvActive(testEnv) ? this.deactivation(testEnv) : this.activation(testEnv);
-        };
+        function handleEnvActionComplete(result) {
+            if (result.isSuccessful) {
+                vm.loadMSOTestEnvironments();
+            }
+            $scope.popup.isVisible = false;
+        }
 
         vm.onTestEnvActivateClick = function(testEnv) {
             var modalInstance = $uibModal.open({
@@ -58,7 +63,8 @@
                         relatedInstanceId: relatedInstanceId,
                         relatedInstanceName: relatedInstanceName,
                         workloadContext: workloadContext,
-                        manifest: manifest
+                        manifest: manifest,
+                        callbackFunction: handleEnvActionComplete
                     });
 
                 }
@@ -69,12 +75,17 @@
             var envId = testEnv.operationalEnvironmentId;
             $rootScope.$broadcast(COMPONENT.MSO_DEACTIVATE_ENVIRONMENT, {
                 url : COMPONENT.MSO_DEACTIVATE_ENVIRONMENT,
-                envId : envId
+                envId : envId,
+                callbackFunction: handleEnvActionComplete
             });
         };
 
         vm.isEnvActive = function(testEnv) {
-            return testEnv.operationalEnvironmentStatus=='Activate';
+            return testEnv.operationalEnvironmentStatus==='Activate';
+        };
+
+        vm.getEnvStatus = function (testEnv) {
+            return this.isEnvActive(testEnv) ? "Active" : "Inactive";
         };
 
         vm.createNewTestEnvironment = function() {

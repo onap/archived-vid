@@ -8,10 +8,12 @@ import com.google.common.collect.ImmutableMap;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.openecomp.vid.controller.MsoController;
+import org.openecomp.vid.controller.OperationalEnvironmentController;
 import org.openecomp.vid.domain.mso.RequestInfo;
 import org.openecomp.vid.domain.mso.RequestParameters;
 import org.openecomp.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.openecomp.vid.mso.model.OperationalEnvironmentDeactivateInfo;
+import org.openecomp.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.openecomp.vid.mso.rest.*;
 
 import java.text.DateFormat;
@@ -22,10 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.openecomp.vid.controller.MsoController.*;
-import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS;
-import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE;
-import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE;
-import static org.openecomp.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_DEACTIVATE;
+import static org.openecomp.vid.mso.MsoProperties.*;
 
 /**
  * Created by pickjonathan on 19/06/2017.
@@ -36,6 +35,8 @@ public class MsoBusinessLogic {
     private static final String DEACTIVATE = "/deactivate";
     private static final String ENABLE_PORT = "/enablePort";
     private static final String DISABLE_PORT = "/disablePort";
+    private final static String RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT = "operationalEnvironment";
+    private final static String SOURCE_OPERATIONAL_ENVIRONMENT = "VID";
 
     /**
      * The Mso REST client
@@ -496,13 +497,13 @@ public class MsoBusinessLogic {
         RequestDetails requestDetails = new RequestDetails();
 
         RequestInfo requestInfo = new RequestInfo();
-        requestInfo.setAdditionalProperty("resourceType", "operationalEnvironment");
-        requestInfo.setSource("VID");
+        requestInfo.setAdditionalProperty("resourceType", RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT);
+        requestInfo.setSource(SOURCE_OPERATIONAL_ENVIRONMENT);
         requestInfo.setRequestorId(details.getUserId());
         requestDetails.setRequestInfo(requestInfo);
 
         org.openecomp.vid.domain.mso.RelatedInstance relatedInstance = new org.openecomp.vid.domain.mso.RelatedInstance();
-        relatedInstance.setAdditionalProperty("resourceType", "operationalEnvironment");
+        relatedInstance.setAdditionalProperty("resourceType", RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT);
         relatedInstance.setInstanceId(details.getRelatedInstanceId());
         relatedInstance.setInstanceName(details.getRelatedInstanceName());
         requestDetails.setAdditionalProperty("relatedInstanceList", Collections.singletonList(ImmutableMap.of("relatedInstance", relatedInstance)));
@@ -528,8 +529,8 @@ public class MsoBusinessLogic {
         RequestDetails requestDetails = new RequestDetails();
 
         RequestInfo requestInfo = new RequestInfo();
-        requestInfo.setAdditionalProperty("resourceType", "operationalEnvironment");
-        requestInfo.setSource("VID");
+        requestInfo.setAdditionalProperty("resourceType", RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT);
+        requestInfo.setSource(SOURCE_OPERATIONAL_ENVIRONMENT);
         requestInfo.setRequestorId(details.getUserId());
         requestDetails.setRequestInfo(requestInfo);
 
@@ -554,13 +555,13 @@ public class MsoBusinessLogic {
         return path;
     }
 
-    private void debugRequestDetails(RequestDetails requestDetails) {
+    private void debugRequestDetails(Object requestDetails) {
         if (logger.isDebugEnabled()) {
             String requestDetailsAsString;
             try {
                 requestDetailsAsString = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(ImmutableMap.of("requestDetails", requestDetails));
             } catch (JsonProcessingException e) {
-                requestDetailsAsString = "error: cannot stringify ActivationRequestDetails";
+                requestDetailsAsString = "error: cannot stringify RequestDetails";
             }
             logger.debug(EELFLoggerDelegate.debugLogger, "requestDetailsAsString: {}", requestDetailsAsString);
         }
@@ -570,6 +571,32 @@ public class MsoBusinessLogic {
         String path = validateEndpointPath(MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE);
         return path;
     }
+
+    public OperationEnvironmentRequestDetails convertParametersToRequestDetails(OperationalEnvironmentController.OperationalEnvironmentCreateBody input, String userId){
+        OperationEnvironmentRequestDetails.RequestInfo requestInfo = new OperationEnvironmentRequestDetails.RequestInfo(
+                RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT,
+                input.getInstanceName(),
+                SOURCE_OPERATIONAL_ENVIRONMENT,
+                userId);
+
+        OperationEnvironmentRequestDetails.RelatedInstance relatedInstance = new OperationEnvironmentRequestDetails.RelatedInstance(
+                RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT,
+                input.getEcompInstanceId(),
+                input.getEcompInstanceName());
+
+        List<OperationEnvironmentRequestDetails.RelatedInstance> relatedInstanceList = Collections.singletonList((relatedInstance));
+
+        OperationEnvironmentRequestDetails.RequestParameters requestParameters = new OperationEnvironmentRequestDetails.RequestParameters(
+                input.getOperationalEnvironmentType(),
+                input.getTenantContext(),
+                input.getWorkloadContext());
+
+        OperationEnvironmentRequestDetails requestDetails = new OperationEnvironmentRequestDetails(requestInfo, relatedInstanceList, requestParameters);
+
+        debugRequestDetails(requestDetails);
+        return requestDetails;
+    }
+
 
 
 
