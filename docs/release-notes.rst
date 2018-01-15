@@ -3,10 +3,10 @@
 VID Release Notes
 =================
 
-Version: 1.1.1
+Version: 1.1.2
 --------------
 
-:Release Date: 2017-11-16
+:Release Date: 2018-01-18
 
 New Features
 ------------
@@ -60,6 +60,8 @@ Bug Fixes
 -  [`VID-79`_] - Not able to create service instance using VID portal
 -  [`VID-82`_] - Create VF module with SDNC preload is throwing
    exception
+-  [`VID-95`_] - Unable to delete a VFModule
+-  [`VID-96`_] - Failure to delete vf-module off VNF in the UI
 
 .. _VID-20: https://jira.onap.org/browse/VID-20
 .. _VID-59: https://jira.onap.org/browse/VID-59
@@ -67,6 +69,8 @@ Bug Fixes
 .. _VID-64: https://jira.onap.org/browse/VID-64
 .. _VID-79: https://jira.onap.org/browse/VID-79
 .. _VID-82: https://jira.onap.org/browse/VID-82
+.. _VID-95: https://jira.onap.org/browse/VID-95
+.. _VID-96: https://jira.onap.org/browse/VID-96
 
 
 **Known Issues**
