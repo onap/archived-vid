@@ -8,8 +8,22 @@ Version: 1.1.2
 
 :Release Date: 2018-01-18
 
-New Features
-------------
+**Bug Fixes**
+
+-  [`VID-95`_] - Unable to delete a VFModule
+-  [`VID-96`_] - Failure to delete vf-module off VNF in the UI
+
+.. _VID-95: https://jira.onap.org/browse/VID-95
+.. _VID-96: https://jira.onap.org/browse/VID-96
+
+
+Version: 1.1.1
+--------------
+
+:Release Date: 2017-11-16
+
+
+**New Features**
 
 1. Improved TOSCA parser.
 2. Change Management - Provides the Operators a single tool for installing and maintaining the services as a self service activity. Provides the ability to schedule and execute change management workflows, Maintenance activities for vNFs that are already installed .
@@ -50,8 +64,7 @@ New Features
 .. _VID-52: https://jira.onap.org/browse/VID-52
 
 
-Bug Fixes
-----------
+**Bug Fixes**
 
 -  [`VID-20`_] - Failed to get service models from ASDC in VID
 -  [`VID-59`_] - VID Fails Robot Health Check
@@ -60,8 +73,7 @@ Bug Fixes
 -  [`VID-79`_] - Not able to create service instance using VID portal
 -  [`VID-82`_] - Create VF module with SDNC preload is throwing
    exception
--  [`VID-95`_] - Unable to delete a VFModule
--  [`VID-96`_] - Failure to delete vf-module off VNF in the UI
+
 
 .. _VID-20: https://jira.onap.org/browse/VID-20
 .. _VID-59: https://jira.onap.org/browse/VID-59
@@ -69,8 +81,7 @@ Bug Fixes
 .. _VID-64: https://jira.onap.org/browse/VID-64
 .. _VID-79: https://jira.onap.org/browse/VID-79
 .. _VID-82: https://jira.onap.org/browse/VID-82
-.. _VID-95: https://jira.onap.org/browse/VID-95
-.. _VID-96: https://jira.onap.org/browse/VID-96
+
 
 
 **Known Issues**
