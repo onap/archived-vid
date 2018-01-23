@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 
-{ MsoRestIntTest.class, MsoUtilTest.class, MsoRestInterfaceTest.class, MsoLocalClientNewTest.class,
+{ MsoUtilTest.class,
 		RestMsoImplementationTest.class, org.openecomp.vid.mso.rest.TestSuite.class })
 public class TestSuite { // nothing
 }

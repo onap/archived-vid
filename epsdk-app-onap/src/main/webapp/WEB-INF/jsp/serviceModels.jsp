@@ -7,12 +7,16 @@
 <link rel="stylesheet" type="text/css" href="app/vid/styles/instantiate.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/vidTree.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/dialogs.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/angularjs-datetime-picker.css"></link>
+<link rel="stylesheet" type="text/css" href="app/vid/styles/common.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/messageViewer.css" />
 
 	
 	<script>
 	
 	var appDS2 = app;
 </script>
+
 	<script src="app/vid/scripts/controller/VidApp.js"></script>
 	
 <!-- Latest compiled and minified JavaScript -->
@@ -29,12 +33,13 @@
 <script src="app/vid/scripts/constants/parameterConstants.js"></script>
 <script src="app/vid/scripts/filters/change-managements-by-statuses.filter.js"></script>
 <script src="app/vid/scripts/filters/date.filter.js"></script>
+<script src="app/vid/scripts/modals/change-management-manual-tasks-controller/change-management-manual-tasks.controller.js"></script>
 <script src="app/vid/scripts/modals/new-change-management/new-change-management.controller.js"></script>
+<script src="app/vid/scripts/modals/alert-new-scheduler/alert-new-scheduler.controller.js"></script>
+
 <script src="app/vid/scripts/modals/new-test-environment/new-test-environment.controller.js"></script>
-<script src="app/vid/scripts/modals/failed-change-management/failed-change-management.controller.js"></script>
-<script src="app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.controller.js"></script>
-<script src="app/vid/scripts/modals/alert-change-management/alert-change-management.controller.js"></script>
-<script src="app/vid/scripts/modals/pending-change-management/pending-change-management.controller.js"></script>
+<script src="app/vid/scripts/modals/new-scheduler/new-scheduler.controller.js"></script>
+<script src="app/vid/scripts/modals/alert-modal/alert-modal.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
 <script src="app/vid/scripts/controller/deleteResumeDialogController.js"></script>
@@ -42,13 +47,20 @@
 <script src="app/vid/scripts/controller/statusDialogController.js"></script>
 <script src="app/vid/scripts/controller/InstantiationController.js"></script>
 <script src="app/vid/scripts/controller/msoCommitController.js"></script>
+<script src="app/vid/scripts/controller/pnfSearchAssociationController.js"></script>
 <script src="app/vid/scripts/controller/ServiceModelController.js"></script>
-<script src="app/vid/scripts/controller/change-management.controller.js"></script>
-<script src="app/vid/scripts/controller/testEnvironmentsController.js"></script>
-<script src="app/vid/scripts/controller/AddNetworkNodeController.js"></script>
-<script src="app/vid/scripts/controller/ServiceProxyConfig.js"></script>
 <script src="app/vid/scripts/controller/previousVersionDialogController.js"></script>
 <script src="app/vid/scripts/controller/previousVersionContoller.js"></script>
+<script src="app/vid/scripts/controller/AddNetworkNodeController.js"></script>
+<script src="app/vid/scripts/controller/change-management.controller.js"></script>
+<script src="app/vid/scripts/controller/testEnvironmentsController.js"></script>
+<script src="app/vid/scripts/modals/attach-test-env-manifest/attach-test-env-manifest.controller.js"></script>
+<script src="app/vid/scripts/controller/ServiceProxyConfigController.js"></script>
+
+<script src="app/vid/scripts/directives/angularjs-datetime-picker.js"></script>
+<script src="app/vid/scripts/controller/msoCommitModalController.js"></script>
+
+<script src="app/vid/scripts/directives/messageViewer.js"></script>
 <script src="app/vid/scripts/directives/extensionsDirective.js"></script>
 <script src="app/vid/scripts/directives/parameterBlockDirective.js"></script>
 <script src="app/vid/scripts/directives/popupWindowDirective.js"></script>
@@ -56,6 +68,7 @@
 <script src="app/vid/scripts/directives/serviceMetadata.js"></script>
 <script src="app/vid/scripts/directives/search.js"></script>
 <script src="app/vid/scripts/services/aaiService.js"></script>
+<script src="app/vid/scripts/services/schedulerService.js"></script>
 <script src="app/vid/scripts/services/asdcService.js"></script>
 <script src="app/vid/scripts/services/componentService.js"></script>
 <script src="app/vid/scripts/services/creationService.js"></script>
@@ -67,8 +80,13 @@
 <script src="app/vid/scripts/services/propertyService.js"></script>
 <script src="app/vid/scripts/services/utilityService.js"></script>
 <script src="app/vid/scripts/services/vnfService.js"></script>
+<script src="app/vid/scripts/services/pnfService.js"></script>
 <script src="app/vid/scripts/services/change-management.service.js"></script>
+<script src="app/vid/scripts/modals/cancel-pending-workflow/cancel-pending-workflow.controller.js"></script>
+<script src="app/vid/scripts/services/OwningEntityService.js"></script>
 <script src="app/vid/scripts/services/testEnvironmentsService.js"></script>
+
+
 
 <%@ page import="org.openecomp.vid.mso.*"%>
 <%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
@@ -83,18 +101,20 @@
 	<div ng-view></div>
 </div>
 <!--  Temporary solution for footer overlapping the men after talking to EComp SDK developer on 06/16/2016 -->
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="temporary-solution">
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+</div>
