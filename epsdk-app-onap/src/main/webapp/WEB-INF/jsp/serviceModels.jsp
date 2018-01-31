@@ -21,8 +21,9 @@
 	
 <!-- Latest compiled and minified JavaScript -->
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="app/vid/external/bootstrap/js/bootstrap.min.js"></script>
 <script src="app/vid/external/multiselect/angular-bootstrap-multiselect.min.js"></script>
+<script src="app/vid/external/upload-file/ng-file-upload.min.js"></script>
 
 <script src="app/vid/scripts/angular-ui-tree.js"></script>
 
@@ -35,10 +36,8 @@
 <script src="app/vid/scripts/filters/date.filter.js"></script>
 <script src="app/vid/scripts/modals/change-management-manual-tasks-controller/change-management-manual-tasks.controller.js"></script>
 <script src="app/vid/scripts/modals/new-change-management/new-change-management.controller.js"></script>
-<script src="app/vid/scripts/modals/alert-new-scheduler/alert-new-scheduler.controller.js"></script>
 
 <script src="app/vid/scripts/modals/new-test-environment/new-test-environment.controller.js"></script>
-<script src="app/vid/scripts/modals/new-scheduler/new-scheduler.controller.js"></script>
 <script src="app/vid/scripts/modals/alert-modal/alert-modal.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>

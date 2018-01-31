@@ -20,37 +20,21 @@
 
 "use strict";
 
-var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCONFIGURATION) {
+var AsdcService = function($http, $log, PropertyService, UtilityService) {
     return {
-        getModel: function (modelId, successCallbackFunction) {
-            $log.debug("AsdcService:getModel: modelId: " + modelId);
-            $http.get(
-                "asdc/getModel/" + modelId
-                + "?r=" + Math.random(),
-                {
-                    timeout: PropertyService
-                        .getServerResponseTimeoutMsec()
-                }).then(successCallbackFunction)["catch"]
-            (UtilityService.runHttpErrorHandler);
-        },
-
-        isMacro: function (serviceModel) {
-            switch (serviceModel.service.instantiationType) {
-                case 'Macro':
-                case 'Both':
-                    return true;
-                case 'A-La-Carte':
-                    return false;
-                case 'ClientConfig':
-                    console.debug("Looking for " + serviceModel.service.invariantUuid + " by Client Config");
-                    return UtilityService.arrayContains(VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid);
-                default:
-                    console.debug("Unexpected serviceModel.service.instantiationType: " + serviceModel.service.instantiationType);
-                    return true;
-            }
-        }
+	getModel : function(modelId, successCallbackFunction) {
+	    $log.debug("AsdcService:getModel: modelId: " + modelId);
+	    $http.get(
+		     "asdc/getModel/" + modelId
+			    + "?r=" + Math.random(),
+		    {
+			timeout : PropertyService
+				.getServerResponseTimeoutMsec()
+		    }).then(successCallbackFunction)["catch"]
+		    (UtilityService.runHttpErrorHandler);
+	}
     }
 }
 
-appDS2.factory("AsdcService", ["$http", "$log", "PropertyService",
-    "UtilityService", "VIDCONFIGURATION", AsdcService]);
+appDS2.factory("AsdcService", [ "$http", "$log", "PropertyService",
+	"UtilityService", AsdcService ]);

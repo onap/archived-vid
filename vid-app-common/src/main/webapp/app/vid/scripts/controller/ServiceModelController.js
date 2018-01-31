@@ -22,7 +22,7 @@
 	'use strict';
 
 	appDS2.controller("ServiceModelController", function ($scope, $http, $location, COMPONENT, VIDCONFIGURATION, FIELD, DataService, vidService,
-			PropertyService, UtilityService, AsdcService) {
+			PropertyService, UtilityService) {
 
 		$scope.popup = {};
 		
@@ -134,8 +134,8 @@
 					DataService.setALaCarte (true);
 					$scope.createType = COMPONENT.A_LA_CARTE;
 					var broadcastType = COMPONENT.CREATE_COMPONENT;
-
-                    if (AsdcService.isMacro(serviceModel)) {
+					
+					if (UtilityService.arrayContains (VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid )) {
 						DataService.setALaCarte (false);
 						$scope.createType = COMPONENT.MACRO;
 						var convertedAsdcModel = UtilityService.convertModel(serviceModel);

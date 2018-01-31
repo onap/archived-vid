@@ -26,4 +26,4 @@
       <h3>MSO polling interval (msecs):</h3><p>"<%= max_polling_interval_msecs %>"</p>
   <a href="<%= request.getRequestURI() %>"><h3>Try Again</h3></a>
 </body>
-</html>s
+</html>

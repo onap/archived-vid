@@ -20,8 +20,8 @@
 
 "use strict";
 
-appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService", "OwningEntityService", "AsdcService", "$q",
-    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, AsdcService, $q) {
+appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService", "OwningEntityService", "$q",
+    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, $q) {
 
         $scope.showVnfDetails = function (vnf) {
             console.log("showVnfDetails");
@@ -223,7 +223,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     $scope.createType = "a la carte";
                     var broadcastType = "createComponent";
 
-                    if (AsdcService.isMacro(serviceModel)) {
+                    if (UtilityService.arrayContains(VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid)) {
                         DataService.setALaCarte(false);
                         $scope.createType = "Macro";
                         var convertedAsdcModel = UtilityService.convertModel(serviceModel);
@@ -1009,27 +1009,32 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
         $scope.toggleConfigurationStatus = function (serviceObject, configuration) {
 
-            var requestParams = {
-                serviceModel: {
-                    "modelType": "service",
-                    "modelInvariantId": serviceObject.model.service.invariantUuid,
-                    "modelVersionId": "uuid",
-                    "modelName": serviceObject.model.service.name,
-                    "modelVersion": serviceObject.model.service.version
-                },
-                configurationModel: {
-                    "modelType": "configuration",
-                    "modelInvariantId": configuration.modelInvariantId,
-                    "modelVersionId": configuration.modelVersionId,
-                    "modelCustomizationId": configuration.modelCustomizationId
-                },
-                serviceInstanceId: serviceObject.instance.serviceInstanceId,
-                configurationId: configuration.nodeId,
-                configStatus: configuration.nodeStatus,
-                userId: DataService.getLoggedInUserId()
-            };
 
-            openMsoModal(COMPONENT.MSO_CHANGE_CONFIG_STATUS_REQ, requestParams);
+            AaiService.getLoggedInUserID(function (response) {
+                    DataService.setLoggedInUserId(response.data);
+                    var requestParams = {
+                        serviceModel: {
+                            "modelType": "service",
+                            "modelInvariantId": serviceObject.model.service.invariantUuid,
+                            "modelVersionId": "uuid",
+                            "modelName": serviceObject.model.service.name,
+                            "modelVersion": serviceObject.model.service.version
+                        },
+                        configurationModel: {
+                            "modelType": "configuration",
+                            "modelInvariantId": configuration.modelInvariantId,
+                            "modelVersionId": configuration.modelVersionId,
+                            "modelCustomizationId": configuration.modelCustomizationId
+                        },
+                        serviceInstanceId: serviceObject.instance.serviceInstanceId,
+                        configurationId: configuration.nodeId,
+                        configStatus: configuration.nodeStatus,
+                        userId: DataService.getLoggedInUserId()
+                    };
+
+                    openMsoModal(COMPONENT.MSO_CHANGE_CONFIG_STATUS_REQ, requestParams);
+             });
+
         };
 
         $scope.togglePortStatus = function(serviceObject, configuration, port) {

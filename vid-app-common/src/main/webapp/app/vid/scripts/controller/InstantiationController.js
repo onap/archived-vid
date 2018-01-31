@@ -27,7 +27,7 @@
 
 	appDS2.requires.push('ui.tree');
 
-	appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService, AaiService,PnfService, AsdcService, $q) {
+	appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService, AaiService,PnfService, $q) {
 
 		$scope.popup = new Object();
 		$scope.defaultBaseUrl = "";
@@ -1170,7 +1170,13 @@
 			}
 		}
 		$scope.isMacro = function() {
-			return AsdcService.isMacro($scope.service.model);
+			if (UtilityService.arrayContains (VIDCONFIGURATION.MACRO_SERVICES, $scope.service.model.service.invariantUuid )) {
+				return(true);
+				
+			}
+			else {
+				return (false);
+			}
 		}
 		$scope.reloadRoute = function() {
 			$route.reload();

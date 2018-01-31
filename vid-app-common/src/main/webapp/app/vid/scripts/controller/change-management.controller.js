@@ -67,7 +67,7 @@
         vm.openFailedModal = function(jobInfo) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/failed-change-management/failed-change-management.html',
-                controller: 'ChangeManagementManualTasksController',
+                controller: 'changeManagementManualTasksController',
                 controllerAs: 'vm',
                 resolve: {
                     jobInfo: function () {
@@ -85,7 +85,7 @@
         vm.openInProgressModal = function(jobInfo) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.html',
-                controller: 'ChangeManagementManualTasksController',
+                controller: 'changeManagementManualTasksController',
                 controllerAs: 'vm',
                 resolve: {
                     jobInfo: function () {
@@ -102,7 +102,7 @@
         vm.openAlertModal = function(jobInfo) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/alert-change-management/alert-change-management.html',
-                controller: 'ChangeManagementManualTasksController',
+                controller: 'changeManagementManualTasksController',
                 controllerAs: 'vm',
                 resolve: {
                     jobInfo: function () {
