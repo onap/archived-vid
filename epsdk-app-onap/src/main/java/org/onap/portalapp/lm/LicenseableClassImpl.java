@@ -17,7 +17,7 @@
  * limitations under the License.
  * ================================================================================
  */
-package org.openecomp.portalapp.lm;
+package org.onap.portalapp.lm;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

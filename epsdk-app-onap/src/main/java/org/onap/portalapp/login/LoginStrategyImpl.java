@@ -1,4 +1,4 @@
-package org.openecomp.portalapp.login;
+package org.onap.portalapp.login;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

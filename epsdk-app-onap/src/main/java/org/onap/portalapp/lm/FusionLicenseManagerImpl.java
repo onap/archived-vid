@@ -1,4 +1,4 @@
-package org.openecomp.portalapp.lm;
+package org.onap.portalapp.lm;
 
 import java.util.Date;
 import java.util.List;
