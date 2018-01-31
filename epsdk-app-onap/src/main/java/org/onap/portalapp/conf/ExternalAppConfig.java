@@ -17,16 +17,15 @@
  * limitations under the License.
  * ================================================================================
  */
-package org.openecomp.portalapp.conf;
+package org.onap.portalapp.conf;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-//import org.openecomp.portalapp.lm.FusionLicenseManagerImpl;
-import org.openecomp.portalapp.login.LoginStrategyImpl;
-import org.openecomp.portalapp.scheduler.RegistryAdapter;
+import org.onap.portalapp.login.LoginStrategyImpl;
+import org.onap.portalapp.scheduler.RegistryAdapter;
 import org.openecomp.portalsdk.core.auth.LoginStrategy;
 import org.openecomp.portalsdk.core.conf.AppConfig;
 import org.openecomp.portalsdk.core.conf.Configurable;

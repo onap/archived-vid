@@ -17,10 +17,11 @@
  * limitations under the License.
  * ================================================================================
  */
-package org.openecomp.portalapp.service;
+package org.onap.portalapp.service;
 
 import java.util.Set;
 
+import org.openecomp.portalapp.service.IAdminAuthExtension;
 import org.openecomp.portalsdk.core.domain.Role;
 import org.openecomp.portalsdk.core.domain.User;
 import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;

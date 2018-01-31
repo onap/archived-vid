@@ -17,41 +17,31 @@
  * limitations under the License.
  * ================================================================================
  */
-package org.openecomp.portalapp.conf;
+package org.onap.portalapp.conf;
 
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
+import org.openecomp.portalsdk.core.conf.AppInitializer;
 
-import org.openecomp.portalsdk.core.conf.HibernateMappingLocatable;
+public class ExternalAppInitializer extends AppInitializer {
 
-@Component
-@Profile("src")
-public class HibernateMappingLocations implements HibernateMappingLocatable {
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.openecomp.portalsdk.core.conf.HibernateMappingLocatable#
-	 * getMappingLocations()
-	 */
 	@Override
-	public Resource[] getMappingLocations() {
-		return new Resource[] { new ClassPathResource("../fusion/orm/Fusion.hbm.xml"),
-				new ClassPathResource("../fusion/orm/Workflow.hbm.xml"),
-				new ClassPathResource("../fusion/orm/RNoteBookIntegration.hbm.xml") };
+	protected Class<?>[] getRootConfigClasses() {
+		return super.getRootConfigClasses();
+	}
+
+	@Override
+	protected Class<?>[] getServletConfigClasses() {
+		Class<?> appConfigClass = ExternalAppConfig.class;
+		// Show something on stdout to indicate the app is starting.
+		System.out.println("ExternalAppInitializer: servlet configuration class is " + appConfigClass.getName());
+		return new Class[] { appConfigClass };
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.openecomp.portalsdk.core.conf.HibernateMappingLocatable#
-	 * getPackagesToScan()
+	 * URL request will direct to the Spring dispatcher for processing
 	 */
 	@Override
-	public String[] getPackagesToScan() {
-		return new String[] { "org.openecomp" };
+	protected String[] getServletMappings() {
+		return super.getServletMappings();
 	}
 
 }

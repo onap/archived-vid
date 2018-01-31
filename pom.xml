@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.openecomp.vid</groupId>
+	<groupId>org.onap.vid</groupId>
 	<artifactId>vid-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>vid</name>
@@ -17,7 +17,7 @@
 			<modules>
 				<module>vid-app-common</module>
 				<module>epsdk-app-onap</module>
-				<module>vid-automation</module>
+				<!--module>vid-automation</module-->
 			</modules>
 
 			<repositories>
@@ -82,7 +82,7 @@
 		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
 		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
 		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
-		<sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
+		<sitePath>/content/sites/site/org/onap/vid/${project.version}</sitePath>
 	</properties>
 
 	<build>
