@@ -24,16 +24,16 @@ public class RoleProviderTest {
 	}
 
 	
-	@Test
-	public void testGetUserRoles() throws Exception {
-		RoleProvider testSubject;
-		HttpServletRequest request = null;
-		List<Role> result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getUserRoles(request);
-	}
+//	@Test
+//	public void testGetUserRoles() throws Exception {
+//		RoleProvider testSubject;
+//		HttpServletRequest request = null;
+//		List<Role> result;
+//
+//		// default test
+//		testSubject = createTestSubject();
+//		result = testSubject.getUserRoles(request);
+//	}
 
 	
 	@Test

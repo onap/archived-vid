@@ -14,24 +14,6 @@ public class AaiControllerTest {
 	}
 
 	@Test
-	public void testParseCustomerObjectForTenants() throws Exception {
-		JSONObject jsonObject = null;
-		String result;
-
-		// default test
-		result = AaiController.parseCustomerObjectForTenants(jsonObject);
-	}
-
-	@Test
-	public void testParseServiceSubscriptionObjectForTenants() throws Exception {
-		JSONObject jsonObject = null;
-		String result;
-
-		// default test
-		result = AaiController.parseServiceSubscriptionObjectForTenants(jsonObject);
-	}
-
-	@Test
 	public void testWelcome() throws Exception {
 		AaiController testSubject;
 		HttpServletRequest request = null;
@@ -42,25 +24,6 @@ public class AaiControllerTest {
 		result = testSubject.welcome(request);
 	}
 
-	@Test
-	public void testGetViewName() throws Exception {
-		AaiController testSubject;
-		String result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getViewName();
-	}
-
-	@Test
-	public void testSetViewName() throws Exception {
-		AaiController testSubject;
-		String viewName = "";
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setViewName(viewName);
-	}
 
 	@Test
 	public void testGetTargetProvStatus() throws Exception {

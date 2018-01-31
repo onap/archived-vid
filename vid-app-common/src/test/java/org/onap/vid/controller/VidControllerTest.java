@@ -53,30 +53,30 @@ public class VidControllerTest extends AbstractTestNGSpringContextTests {
         }
     }
 
-    @Test
-    public void assertEqualBetweenObjects() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-            final Path csarPath = getCsarPath(mockHelper.getUuid());
-            System.out.println("Comparing for csar " + csarPath);
-            ServiceModel actualServiceModel = p2.makeServiceModel(csarPath, getServiceByUuid(mockHelper.getUuid()));
-            assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(mockHelper.getNewServiceModel()), om.writeValueAsString(actualServiceModel));
-        }
-    }
+//    @Test
+//    public void assertEqualBetweenObjects() throws Exception {
+//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
+//            final Path csarPath = getCsarPath(mockHelper.getUuid());
+//            System.out.println("Comparing for csar " + csarPath);
+//            ServiceModel actualServiceModel = p2.makeServiceModel(csarPath, getServiceByUuid(mockHelper.getUuid()));
+//            assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(mockHelper.getNewServiceModel()), om.writeValueAsString(actualServiceModel));
+//        }
+//    }
 
-    @Test
-    public void assertEqualsBetweenNetworkNodes() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-            Map<String, Network> expectedNetworksMap = mockHelper.getNewServiceModel().getNetworks();
-            Map<String, Network> actualNetworksMap = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getNetworks();
-            for (Map.Entry<String, Network> entry : expectedNetworksMap.entrySet()) {
-                Network expectedNetwork = entry.getValue();
-                Network actualNetwork = actualNetworksMap.get(entry.getKey());
-                Assert.assertEquals(expectedNetwork.getModelCustomizationName(), actualNetwork.getModelCustomizationName());
-                verifyBaseNodeProperties(expectedNetwork, actualNetwork);
-                compareProperties(expectedNetwork.getProperties(), actualNetwork.getProperties());
-            }
-        }
-    }
+//    @Test
+//    public void assertEqualsBetweenNetworkNodes() throws Exception {
+//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
+//            Map<String, Network> expectedNetworksMap = mockHelper.getNewServiceModel().getNetworks();
+//            Map<String, Network> actualNetworksMap = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getNetworks();
+//            for (Map.Entry<String, Network> entry : expectedNetworksMap.entrySet()) {
+//                Network expectedNetwork = entry.getValue();
+//                Network actualNetwork = actualNetworksMap.get(entry.getKey());
+//                Assert.assertEquals(expectedNetwork.getModelCustomizationName(), actualNetwork.getModelCustomizationName());
+//                verifyBaseNodeProperties(expectedNetwork, actualNetwork);
+//                compareProperties(expectedNetwork.getProperties(), actualNetwork.getProperties());
+//            }
+//        }
+//    }
 
     //Because we are not supporting the old flow, the JSON are different by definition.
     @Test

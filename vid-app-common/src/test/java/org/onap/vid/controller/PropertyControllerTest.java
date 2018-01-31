@@ -23,25 +23,6 @@ public class PropertyControllerTest {
 		result = testSubject.welcome(request);
 	}
 
-	@Test
-	public void testGetViewName() throws Exception {
-		PropertyController testSubject;
-		String result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getViewName();
-	}
-
-	@Test
-	public void testSetViewName() throws Exception {
-		PropertyController testSubject;
-		String _viewName = "";
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setViewName(_viewName);
-	}
 
 	@Test
 	public void testGetProperty() throws Exception {

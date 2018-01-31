@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import org.apache.commons.io.IOUtils;
-import org.onap.portalsdk.core.util.SystemProperties;
+import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.controller.MsoConfig;
 import org.onap.vid.controller.OperationalEnvironmentController;

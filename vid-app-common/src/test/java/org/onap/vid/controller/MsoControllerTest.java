@@ -1,7 +1,7 @@
 package org.onap.vid.controller;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.onap.portalsdk.core.util.SystemProperties;
+import org.openecomp.portalsdk.core.util.SystemProperties;
 import org.onap.vid.controller.MsoConfig;
 import org.onap.vid.controller.MsoController;
 import org.onap.vid.domain.mso.RequestInfo;

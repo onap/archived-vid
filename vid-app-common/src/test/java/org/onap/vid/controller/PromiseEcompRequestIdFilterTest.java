@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-import org.onap.portalsdk.core.web.support.UserUtils;
+import org.openecomp.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.controller.filter.PromiseEcompRequestIdFilter;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.annotations.Test;
@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
-import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
+import static org.openecomp.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
 
 @Test
 public class PromiseEcompRequestIdFilterTest {
