@@ -13,13 +13,18 @@
 
         <input type="search" id="change-management-search" class="search-changes" ng-change="vm.searchChanges()" ng-model-options="{debounce: 300}" ng-model="vm.searchChangesTerm" placeholder="Type to search">
     </div>
+    <span class="refresh-cm">
+        Last updated at:
+        <span class="last-time-updated">{{ vm.lastTimeUpdated }}</span>
+        <i class="icon-sync" data-tests-id="refresh-cm" ng-click="vm.init()"></i>
+    </span>
     <div class="jobs-table">
         <div class="row">
             <div class="col-md-12">
                 <uib-tabset active="activeJustified" justified="true">
                     <uib-tab index="0" heading="Active" id="active-tab">
                         <div class="table-wrapper">
-                        <table class="table table-bordered" id="active-table">
+                        <table class="table table-bordered"  data-tests-id="active-table-cm" id="active-table">
                             <thead class="thead-default" ng-click="collapseInProgress=!collapseInProgress">
                                 <tr class="table-headline-row">
                                     <th >
@@ -41,20 +46,20 @@
                             </thead>
                             <tbody ng-show="!collapseInProgress">
 
-                                <tr ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['FAILED', 'INPROGRESS', 'PENDING']}">
+                                <tr  data-tests-id="active-table-cm-row" ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['FAILED', 'IN_PROGRESS', 'PENDING']}">
                                     <th scope="row">{{changeManagement.instanceReferences.vnfInstanceName || 'No-Instance-Name'}}</th>
                                     <td>{{changeManagement.requestScope}}</td>
                                     <td>{{changeManagement.requestType}}</td>
                                     <td>{{changeManagement.startTime}}</td>
                                     <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'FAILED'"><span class="icon-x" ng-click="vm.openFailedModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
-                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'INPROGRESS'"><span class="icon-process" ng-click="vm.openInProgressModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'IN_PROGRESS'"><span class="icon-process" ng-click="vm.openInProgressModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
                                     <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'PENDING'"><span class="icon-alert" ng-click="vm.openAlertModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
                                 </tr>
                             </tbody>
                         </table>
                         </div>
                         <div class="table-wrapper">
-                        <table class="table table-bordered" id="pending-table">
+                        <table class="table table-bordered"  data-tests-id="pending-table-cm" id="pending-table">
                             <thead ng-click="collapsePending=!collapsePending">
                             <tr class="table-headline-row">
                                 <th class="col-md-6">
@@ -83,7 +88,7 @@
                             </thead>
                             <tbody ng-show="!collapsePending">
 
-                                <tr ng-repeat="changeManagement in vm.pendingChangeManagements">
+                                <tr data-tests-id="pending-table-cm-row" ng-repeat="changeManagement in vm.pendingChangeManagements">
                                     <th scope="row">{{changeManagement.scheduleRequest.scheduleId}}</th>
                                     <td>{{changeManagement.aotsChangeId}}</td>
                                     <td>{{changeManagement.vnfName}}</td>

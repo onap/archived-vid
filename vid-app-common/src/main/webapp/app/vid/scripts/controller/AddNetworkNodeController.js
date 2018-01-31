@@ -31,16 +31,21 @@ appDS2.controller("AddNetworkNodeController", ["COMPONENT", "FIELD", "PARAMETER"
         $scope.serviceMetadataFields = [];
         $scope.tenantList = [];
         $scope.nodeTemplateFields = {};
-
-
+        
         $scope.regexInstanceName = /^([a-z])+([0-9a-z\-_\.]*)$/i;
         $scope.errorMsg = FIELD.ERROR.INSTANCE_NAME_VALIDATE;
 
         var handleGetParametersResponse = function(parameters) {
             $scope.serviceMetadataFields = parameters.summaryList;
             $scope.tenantList = DataService.getCloudRegionTenantList();
-            $scope.nodeTemplateFields = _.keyBy(parameters.userProvidedList, 'id');
-            $scope.modelName = DataService.getModelInfo(COMPONENT.VNF).modelCustomizationName;
+
+        if(DataService.getPortMirroningConfigFields()){
+            $scope.nodeTemplateFields =DataService.getPortMirroningConfigFields();
+        }else {
+            $scope.nodeTemplateFields = angular.copy(_.keyBy(parameters.userProvidedList, 'id'));
+        }
+
+           $scope.modelName = DataService.getModelInfo(COMPONENT.VNF).modelCustomizationName;
         };
 
         CreationService.initializeComponent(COMPONENT.VNF);
@@ -64,4 +69,10 @@ appDS2.controller("AddNetworkNodeController", ["COMPONENT", "FIELD", "PARAMETER"
             DataService.setPortMirroningConfigFields($scope.nodeTemplateFields);
             $location.path("/serviceProxyConfig");
         };
+
+        $scope.$on('$routeChangeStart', function (event, next, current) {
+            if(next.$$route.originalPath !=="/serviceProxyConfig"){
+                DataService.setPortMirroningConfigFields(null);
+            }
+        });
     }]);

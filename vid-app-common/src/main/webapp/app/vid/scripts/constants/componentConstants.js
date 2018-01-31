@@ -128,7 +128,8 @@ appDS2
     AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
 	AAI_GET_VNF_INFO : "aai_get_vnf_information",
 	AAI_GET_PNF_INSTANCE: "aai_get_service_instance_pnfs",
-	AAI_POST_SERVICE_PROXY_INSTANCE_DATA_PATH: "aai_get_vnf_instances",
+	AAI_GET_VNF_INSTANCES_LIST: "aai_get_vnf_instances",
+	AAI_GET_PNF_INSTANCES_LIST: "aai_get_pnf_instances",
 	AAI_GET_BY_URI: "aai_get_by_uri/",
 	AAI_GET_CONFIGURATION: "aai_get_configuration/",
     AAI_GET_TEST_ENVIRONMENTS: "get_operational_environments?operationalEnvironmentType=",
@@ -215,7 +216,8 @@ appDS2
 	},
 
 	WORKFLOWS: {
-    	vnfInPlace: "VNF In Place Software Update",
+    	vnfConfigUpdate: "VNF Config Update",
+		vnfInPlace: "VNF In Place Software Update",
 		update: "update",
 		replace: "replace"
 	}

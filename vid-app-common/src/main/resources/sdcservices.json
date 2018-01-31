@@ -97,6 +97,20 @@
       "distributionStatus": "DISTRIBUTED",
       "artifacts": null,
       "resources": null
+    },
+    {
+      "uuid": "ee6d61be-4841-4f98-8f23-5de9da846ca7",
+      "invariantUUID": "b7d923c9-6175-41f1-91ba-4565c4953408",
+      "name": "Multiple pProbes",
+      "version": "1.0",
+      "toscaModelURL": "./service-Servicecontainermultiplepprobes-csar.csar",
+      "category": "Mobility",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "rg276b",
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTED",
+      "artifacts": null,
+      "resources": null
     }
   ]
 }

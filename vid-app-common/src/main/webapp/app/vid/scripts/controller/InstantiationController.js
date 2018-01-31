@@ -27,7 +27,7 @@
 
 	appDS2.requires.push('ui.tree');
 
-	appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService, AaiService,PnfService, $q) {
+	appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService, AaiService,PnfService, AsdcService, $q) {
 
 		$scope.popup = new Object();
 		$scope.defaultBaseUrl = "";
@@ -905,7 +905,8 @@
 				"vnfType": vnf_type,
 				"vnfRole": vnf_role,
 				"vnfFunction": vnf_function,
-				"vnfCode": vnf_code
+				"vnfCode": vnf_code,
+				"properties": vnf.properties
 			});
 			
 			DataService.setModelInstanceName($scope.service.model.service.name);
@@ -915,6 +916,7 @@
                 DataService.setServiceProxies($scope.service.model.serviceProxies);
                 DataService.setSourceServiceProxies(vnf.sourceNodes);
                 DataService.setCollectorServiceProxies(vnf.collectorNodes);
+                DataService.setConfigurationByPolicy(vnf.isConfigurationByPolicy);
                 $location.path("/addNetworkNode");
             } else if(vnf.isPnf){
                 $location.path("/pnfSearchAssociation");
@@ -960,9 +962,7 @@
 				availableVolumeGroupList.push({"instance": volumeGroupInstance});
 			});
 			
-			if (vfModuleModel.volumeGroupAllowed) {
-				DataService.setAvailableVolumeGroupList(availableVolumeGroupList);
-			}
+			DataService.setAvailableVolumeGroupList(availableVolumeGroupList);
 			setCurrentServiceModelInfoFromScope();
 
 			DataService.setVnfInstanceId(vnfInstance.object[FIELD.ID.VNF_ID]);
@@ -1170,13 +1170,7 @@
 			}
 		}
 		$scope.isMacro = function() {
-			if (UtilityService.arrayContains (VIDCONFIGURATION.MACRO_SERVICES, $scope.service.model.service.invariantUuid )) {
-				return(true);
-				
-			}
-			else {
-				return (false);
-			}
+			return AsdcService.isMacro($scope.service.model);
 		}
 		$scope.reloadRoute = function() {
 			$route.reload();

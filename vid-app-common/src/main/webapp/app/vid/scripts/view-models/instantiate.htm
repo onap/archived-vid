@@ -47,7 +47,7 @@
 						{{service.instance.subscriberName}}</th>
 					<th style="text-align: center" width="34%">SERVICE TYPE:
 						{{service.instance.serviceType}}</th>
-					<th style="text-align: center" width="33%">SERVICE INSTANCE
+					<th data-tests-id="service-instanceId-th-id" style="text-align: center" width="33%">SERVICE INSTANCE
 						ID: {{service.instance.serviceInstanceId}}</th>
 				<tr>
 				<tr>
@@ -98,7 +98,7 @@
 							</button>
 							<ul class="dropdown-menu" ng-model="aService.convertedModel.networks">
 								<li ng-repeat="(networkUuid, network) in aService.convertedModel.networks">
-									<a ng-click="addNetworkInstance(network, aService.instance.vnfs)">{{network.modelCustomizationName}}</a>
+									<a data-tests-id="addNetworkOption-{{network.modelCustomizationName}}" ng-click="addNetworkInstance(network, aService.instance.vnfs)">{{network.modelCustomizationName}}</a>
 								</li>
 							</ul>
 						</div>

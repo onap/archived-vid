@@ -79,7 +79,7 @@
 	<!-- <h1 class="heading1" style="margin-top:20px;">Browse SDC Service Models</h1> -->
 	<div style="margin-top:30px" ng-init="getAaiServiceModelsList();">
 		
-		<table att-table table-data="services" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		<table data-tests-id="services-list" att-table table-data="services" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
 		    <thead  att-table-row type="header">
 				<tr>
 					<th att-table-header key="action">Action</th>

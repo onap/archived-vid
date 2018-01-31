@@ -7,15 +7,25 @@
     width: 587px;
     border-radius: 8px;
     background-color:  #ffffff;
+    font-family: "OpenSans-Regular";
 }
 
 .modal-content .modal-body {
     padding: 15px 35px 5px 35px;
 }
 
-.modal-body .connect-error {
-    color: red;
+.modal-body .connect-error,
+.modal-body .icon-alert.error {
+    font-family: OpenSans-Regular !important;
+    color: #CF2A2A;
     font-size: 14px;
+}
+
+.modal-body .icon-alert:before {
+    color: #CF2A2A;
+    cursor: default;
+    font-family: 'icomoon' !important;
+    padding-right: 5px;
 }
 
 .modal-header {
@@ -59,7 +69,7 @@ input::placeholder {
 }
 
 .form-group .connect-error {
-    border: 1.5px solid red;
+    border: 1.5px solid #CF2A2A;
 }
 
 .form-group .grayedOut {
@@ -98,40 +108,6 @@ a.item-unselected:before {
     color: #4ca90c;
 }
 
-.vnf-versions-container .table {
-    position: relative;
-    background-color: #f8f8f8;
-    background-clip: padding-box;
-    border-radius: 6px;
-    outline: 0;
-}
-
-.vnf-versions-name {
-    padding-top: 6px;
-    font-family: "OpenSans-Regular";
-    position: absolute;
-}
-
-.vnf-versions-select-as-text {
-    font-family: "OpenSans-Regular";
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: none;
-    overflow:hidden;
-    background-color: #f8f8f8;
-    height: 31px;
-}
-
-.vnf-files-select {
-    z-index: 999;
-    opacity: 0.0;
-    position: absolute;
-    width: 23%;
-    cursor: pointer;
-    height:100%;
-}
-
 .form-create .modal-footer {
     margin-top: 0;
 }
@@ -159,4 +135,62 @@ a.item-unselected:before {
 .form-create .modal-footer .btn-primary:hover{
     background-color:  #009FDB;
     color:  #FFFFFF;
+}
+
+.vnf-versions-container .table {
+    position: relative;
+    background-color: #f8f8f8;
+    background-clip: padding-box;
+    border-radius: 6px;
+    outline: 0;
+}
+
+.file-wrapper {
+    display: flex;
+}
+
+.file-input {
+    display: inline-block !important;
+    width: 0.1px;
+}
+
+.file-input-label {
+    width: 389px;
+    height: 37px;
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    border-radius: 2px;
+    display: inline-block;
+    line-height: 37px;
+    font-weight: normal !important;
+    padding-left: 12px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    flex: 1;
+}
+
+.vnf-versions-name {
+    padding-top: 6px;
+    font-family: "OpenSans-Regular";
+    position: absolute;
+}
+
+.vnf-versions-select-as-text {
+    font-family: "OpenSans-Regular";
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    overflow:hidden;
+    background-color: #f8f8f8;
+    height: 31px;
+}
+
+.vnf-files-select {
+    z-index: 999;
+    opacity: 0.0;
+    position: absolute;
+    width: 23%;
+    cursor: pointer;
+    height:100%;
 }

@@ -137,3 +137,11 @@
     font-size: 40px;
     cursor: pointer;
 }
+.icon-sync:before {
+    content: "\e90f";
+    font-size: 20px;
+    cursor: pointer;
+}
+.icon-sync:hover:before {
+    color: #009FDB;
+}

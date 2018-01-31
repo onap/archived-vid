@@ -4,7 +4,7 @@
 		<div class="titleLine">
 			<img src="app/vid/images/spinner.gif"
 				ngx-visible="{{isSpinnerVisible}}"></img>
-			<h3>Create {{componentName}} -- {{createType}}</h3>
+			<h3 data-tests-id="create-modal-title">Create {{componentName}} -- {{createType}}</h3>
 		</div>
 
 		<div class="error" ng-show="isErrorVisible">
@@ -33,7 +33,7 @@
 		<div class="buttonRow">
 			<button data-tests-id="confirmButton" ngx-enabled="{{isConfirmEnabled}}" att-button size="small"
 				ng-click="confirm();">Confirm</button>
-			<button type="button" ng-click="cancel();" att-button
+			<button type="button" data-tests-id="cancelButton" ng-click="cancel();" att-button
 				btn-type="primary" size="small">Cancel</button>
 		</div>
 	</div>

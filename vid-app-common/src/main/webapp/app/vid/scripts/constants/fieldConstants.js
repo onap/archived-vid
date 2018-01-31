@@ -87,7 +87,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         NETWORKS: "networks",
         OPERATIONAL_STATUS: "operational-status",
         ORCHESTRATION_STATUS: "orchestration-status",
-        PERCENT_PROGRESS: "percentProgress",
+        PERCENT_PROGRESS: "percent-progress",
         PERSONA_MODEL_ID: "persona-model-id",
         PERSONA_MODEL_VERSION: "persona-model-version",
         PERSONA_MODEL_CUSTOMIZATION_ID: "persona-model-customization-id",
@@ -441,7 +441,8 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
             id: ID.SUBSCRIBER_NAME,
             type: PARAMETER.SELECT,
             prompt: PROMPT.SUBSCRIBER_NAME,
-            isRequired: true
+            isRequired: true,
+			isSingleOptionAutoSelected : false
         },
         TENANT_DISABLED: {
             name: NAME.TENANT,

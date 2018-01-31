@@ -52,7 +52,7 @@
                         <!--<select name="selectedCustomer" ng-model="selectedCustomer">-->
                         <!--<option ng-repeat="item in customerList" value="{{item.globalCustomerId}}" ng-disabled="getPermitted(item)">{{item.subscriberName}}</option>-->
                         <!--</select>-->
-                        <select ng-model="selectedCustomer"
+                        <select ng-model="selectedCustomer" id="selectSubscriber"
                                 ng-options="item.globalCustomerId as item.subscriberName for item in customerList | orderBy:'subscriberName'">
                             <option value="">Select a subscriber</option>
                         </select>
@@ -106,7 +106,7 @@
             <tr>
                 <td style="width:30%">
                     <div class="fn-ebz-container">
-                        <label class="fn-ebz-text-label">Project entity Name:</label>
+                        <label class="fn-ebz-text-label">Project Name:</label>
                     </div>
                 </td>
                 <td style="width:30%" nowrap>

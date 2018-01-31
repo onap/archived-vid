@@ -25,8 +25,8 @@
 
 "use strict";
 
-appDS2.controller("pnfSearchAssociationController", ["COMPONENT", "$log", "FIELD", "PARAMETER", "DataService", "CreationService", "$scope", "$window", "$location", "AaiService", "$uibModal", "UtilityService", "vidService",
-    function (COMPONENT, $log, FIELD, PARAMETER, DataService, CreationService, $scope, $window, $location, AaiService, $uibModal, UtilityService, vidService) {
+appDS2.controller("pnfSearchAssociationController", ["COMPONENT", "$log", "FIELD", "PARAMETER", "DataService", "CreationService", "$scope", "$window", "$location", "AaiService", "$uibModal", "UtilityService", "vidService", "$timeout",
+    function (COMPONENT, $log, FIELD, PARAMETER, DataService, CreationService, $scope, $window, $location, AaiService, $uibModal, UtilityService, vidService, $timeout) {
 
         var requestParams = {};
 

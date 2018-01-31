@@ -35,8 +35,11 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
     var _this = this;
 
     var getAsyncOperationList = function() {
-        if (DataService.getLoggedInUserId() == null)
+        if (DataService.getLoggedInUserId() == null) {
             getLoggedInUserID();
+        } else {
+            UtilityService.startNextAsyncOperation();
+        }
         switch (_this.componentId) {
             case COMPONENT.SERVICE:
                 return [ getSubscribers, getServices, getAicZones, getOwningEntityProperties ];
@@ -636,7 +639,19 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
             case COMPONENT.NETWORK:
                 requestDetails.requestInfo.productFamilyId = getValueFromList(
                     FIELD.ID.PRODUCT_FAMILY, parameterList);
+                var lineOfBusiness = getValueFromList(FIELD.ID.LINE_OF_BUSINESS, parameterList);
 
+                if(lineOfBusiness) {
+                    var lineOfBusinessNamesString = _.map(lineOfBusiness, "name").join(", ");
+
+                    requestDetails.lineOfBusiness = {
+                        lineOfBusinessName: lineOfBusinessNamesString
+                    }
+                }
+
+                requestDetails.platform = {
+                    platformName: getValueFromList(FIELD.ID.PLATFORM, parameterList)
+                };
                 break;
             case COMPONENT.VF_MODULE:
                 requestDetails.requestParameters.usePreload = getValueFromList(

@@ -19,12 +19,12 @@ limitations under the License.
 -->
 <link rel="stylesheet" type="text/css" href="app/vid/styles/networkNode.css"/>
 <link rel="stylesheet" type="text/css" href="app/vid/styles/serviceProxyConfig.css"/>
-<div ng-controller="ServiceProxyConfigController" class="service-wrapper-config network-wrapper-config">
+<div class="service-wrapper-config network-wrapper-config">
     <div class="head">
         <div class="title">Config {{modelName}}</div>
         <div class="btn-wrapper">
-            <button class="cancel-btn grey" data-tests-id="back" data-ng-click="back()">Back</button>
-            <button class="create-btn blue" data-tests-id="create" data-ng-disabled="proxiesInstanceName.$invalid" data-ng-click="create()">Create</button>
+            <button class="cancel-btn grey" data-tests-id="backButton" data-ng-click="back()">Back</button>
+            <button class="create-btn blue" data-tests-id="createButton" data-ng-disabled="proxiesInstanceName.$invalid|| disableCreate" data-ng-click="create()">Create</button>
         </div>
     </div>
 
@@ -36,13 +36,13 @@ limitations under the License.
                         <span class="text">Source<br>Service proxy</span>
                     </div>
                     <div class="dotted-line" data-ng-class="{'checked': sourceInstance, 'unchecked': !sourceInstance}">
-                        <span class="conn-circle sprite" data-ng-class="{'valid-large': sourceInstance}"></span>
+                        <span class="conn-circle sprite" data-tests-id="sourceInstanceSelectedIcon" data-ng-class="{'valid-large': sourceInstance}"></span>
                     </div>
                     <div class="circle config-circle">
                         <span class="line"></span>
                     </div>
                     <div class="dotted-line" data-ng-class="{'checked': collectorInstance, 'unchecked': !collectorInstance}">
-                        <span class="conn-circle sprite" data-ng-class="{'valid-large': collectorInstance}"></span>
+                        <span class="conn-circle sprite" data-tests-id="collectorInstanceSelectedIcon" data-ng-class="{'valid-large': collectorInstance}"></span>
                     </div>
                     <div class="circle service-circle">
                         <span class="text">Collector<br>Service proxy</span>
@@ -50,34 +50,53 @@ limitations under the License.
                 </div>
                 <div class="element-name-wrapper">
                     <div class="element-name service" data-ng-click="openMetadataModal('sourceMetadata')">
-                        <span class="label-txt">{{sourceInstanceName}} <span class="info">i</span></span>
+                        <span class="label-txt" data-tests-id="sourceInstanceName">{{sourceInstanceName}} <span class="info" data-tests-id="sourceInfoButton">i</span></span>
 
                     </div>
                     <div class="element-name config">
-                        <span class="label-txt">{{modelName}}</span>
+                        <span class="label-txt" data-tests-id="modelName">{{modelName}}</span>
                     </div>
                     <div class="element-name  service"  data-ng-click="openMetadataModal('collectorMetadata')">
-                        <span class="label-txt">{{collectorInstanceName}}<span class="info">i</span></span>
+                        <span class="label-txt" data-tests-id="collectorInstanceName">{{collectorInstanceName}}<span class="info" data-tests-id="collectorInfoButton">i</span></span>
 
                     </div>
                 </div>
             </div>
             <form name="proxiesInstanceName" class="bottom">
-                <div class="wrapper-list">
-                    <div class="title-txt">VNF providing <b>source</b> requirements</div>
-                    <select ng-model="sourceInstance" name="source" required>
+                <div class="wrapper-list source-vnf">
+                    <div class="title-txt"><b>Source</b> Service Type</div>
+                    <select ng-model="sourceServiceType"
+                            ng-change="onSourceServiceTypeSelected()" name="sourceServiceType" id="sourceServiceType"
+                            ng-options="item['service-type'] disable when !(item['is-permitted']) for item in serviceTypes"
+                            required data-tests-id="sourceServiceType">
+                        <option value="" disabled>Select service type</option>
+                    </select>
+
+                    <div class="title-txt select-vnf-title">VNF providing <b>source</b> requirements</div>
+                    <select ng-model="sourceInstance" name="source" ng-disabled="sourceInstanceList === null" required  data-tests-id="sourceDropDown">
                         <option value="" selected>Type/Select VNF name</option>
-                        <option ng-repeat="option in sourceInstanceList.results"
+                        <option ng-repeat="option in sourceInstanceList" data-tests-id="{{'source-' + option.id}}"
                                 value="{{option.id}}">{{option['properties']['vnf-name']}}</option>
                     </select>
+                    <span class="no-results" data-tests-id="sourceNoResults" ng-show="sourceNoResults">No vnf instances found.</span>
                 </div>
-                <div class="wrapper-list">
-                    <div class="title-txt">VNF providing <b>collector</b> requirements</div>
-                    <select ng-model="collectorInstance" name="collector" required>
-                        <option value="" selected>Type/Select VNF name</option>
-                        <option ng-repeat="option in collectorInstanceList.results"
-                                value="{{option.id}}"> {{option['properties']['vnf-name']}}</option>
+
+                <div class="wrapper-list collector-{{collectorType}}">
+                    <div class="title-txt ng-hide-keep-block" ng-hide="collectorType==='pnf'"><b>Collector</b> Service Type</div>
+                    <select ng-model="collectorServiceType" ng-hide="collectorType==='pnf'" class="ng-hide-keep-block"
+                            ng-change="onCollectorServiceTypeSelected()" name="collectorServiceType" id="collectorServiceType"
+                            ng-options="item['service-type'] disable when !(item['is-permitted']) for item in serviceTypes"
+                            required data-tests-id="collectorServiceType">
+                        <option value="" disabled>Select service type</option>
                     </select>
+
+                    <div class="title-txt select-vnf-title">{{collectorType.toUpperCase()}} providing <b>collector</b> requirements</div>
+                    <select ng-model="collectorInstance" name="collector" ng-disabled="collectorInstanceList === null" required data-tests-id="collectorDropDown">
+                        <option value="" selected>Type/Select {{collectorType.toUpperCase()}} name</option>
+                        <option ng-repeat="option in collectorInstanceList" data-tests-id="{{'collector-' + option.id}}"
+                                value="{{option.id}}">{{option['properties'][collectorType=='vnf' ? 'vnf-name' : 'pnfName']}}</option>
+                    </select>
+                    <span class="no-results" data-tests-id="collectorNoResults" ng-show="collectorNoResults">No {{collectorType}} instances found.</span>
                 </div>
             </form>
         </div>

@@ -258,9 +258,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
         }
 
         if (UtilityService.hasContents(parameter.prompt)) {
-            if (!(IS_SINGLE_OPTION_AUTO_SELECTED && parameter.optionList.length === 1)) {
                 html += "<option value=''>" + parameter.prompt + "</option>";
-            }
         }
 
         for (var i = 0; i < parameter.optionList.length; i++) {
@@ -330,14 +328,20 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
     };
 
     var getRequiredField = function(element) {
-        if ($(element).prop("type") === "text") {
-            $(element).val($(element).val().trim());
+        if($(element).is("multiselect")) {
+            if(!$(element).find(".active").text().trim()) {
+                return '"' + $(element).attr("parameter-name") + '"';
+            }
         }
-        if ($(element).val() === "" || $(element).val() === null) {
-            return '"' + $(element).attr("parameter-name") + '"';
-        } else {
-            return "";
+        else {
+            if ($(element).prop("type") === "text") {
+                $(element).val($(element).val().trim());
+            }
+            if ($(element).val() === "" || $(element).val() === null) {
+                return '"' + $(element).attr("parameter-name") + '"';
+            }
         }
+        return "";
     };
 
     var callback = function(element, scope) {
@@ -364,6 +368,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
             };
             control.setList = function(parameterList) {
                 scope.parameterList = parameterList;
+                scope.multiselectModel = {};
                 var html = "";
                 for (var i = 0; i < parameterList.length; i++) {
                     html += getParameterHtml(parameterList[i], attrs.editable);
@@ -408,7 +413,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
             control.getRequiredFields = function() {
                 var requiredFields = "";
                 var count = 0;
-                element.find("input, select").each(function() {
+                element.find("input, select, multiselect").each(function() {
                     if ($(this).attr("is-required") === "true") {
                         var requiredField = getRequiredField(this);
                         if (requiredField !== "") {

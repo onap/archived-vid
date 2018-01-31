@@ -19,12 +19,12 @@ limitations under the License.
 -->
 <link rel="stylesheet" type="text/css" href="app/vid/styles/networkNode.css"/>
 
-<div ng-controller="AddNetworkNodeController" class="network-wrapper-config">
+<div class="network-wrapper-config">
     <div class="head">
         <div class="title">Config {{modelName}}</div>
         <div class="btn-wrapper">
-            <button class="cancel-btn grey" data-tests-id="cancel" data-ng-click="cancel()">Cancel</button>
-            <button class="next-btn blue" data-tests-id="next" data-ng-disabled="networkNodeForm.$invalid" data-ng-click="next()">Next</button>
+            <button class="cancel-btn grey" data-tests-id="cancelButton" data-ng-click="cancel()">Cancel</button>
+            <button class="next-btn blue" data-tests-id="nextButton" data-ng-disabled="networkNodeForm.$invalid" data-ng-click="next()">Next</button>
         </div>
     </div>
 
@@ -32,22 +32,22 @@ limitations under the License.
         <div class="content">
             <form name="networkNodeForm" class="form-wrapper">
                 <div class="instance-field {{field.id}}" ng-repeat="(key, field) in nodeTemplateFields">
-                    <input id="{{field.id}}" ng-if="key === 'suppressRollback'" type="checkbox" ng-model="field.value"/>
+                    <input id="{{field.id}}" data-tests-id="suppressRollbackInput" ng-if="key === 'suppressRollback'" type="checkbox" ng-model="field.value"/>
                     <label for="{{field.id}}"class="title" ng-if="key !== 'lineOfBusiness' && key !== 'platform'">
                         {{field.name}}
                     </label>
                     <div class="" ng-if="key === 'instanceName'">
-                        <input name="{{field.id}}" id="{{field.id}}" type="text" required ng-model="field.value" ng-pattern="regexInstanceName">
+                        <input data-tests-id="instanceNameInput" name="{{field.id}}" id="{{field.id}}" type="text" required ng-model="field.value" ng-pattern="regexInstanceName">
                         <span class="error" data-ng-show="!networkNodeForm.instanceName.$error.required && networkNodeForm.instanceName.$dirty && networkNodeForm.instanceName.$invalid">{{errorMsg}}</span>
                     </div>
-                    <select id="{{field.id}}" ng-if="key === 'lcpRegion'" required ng-model="field.value"
+                    <select id="{{field.id}}" data-tests-id="regionDropDown" ng-if="key === 'lcpRegion'" required ng-model="field.value"
                             placeholder="Choose {{field.name}}"
                             data-ng-change="setTenant(field)">
                         <option value="" selected>LCP region</option>
                         <option data-ng-disabled="!option.isPermitted" ng-repeat="option in field.optionList"
-                                value="{{option.id}}">{{option.id}}</option>
+                                value="{{option.id}}" data-tests-id="{{'region-' + option.id}}">{{option.id}}</option>
                     </select>
-                    <select id="{{field.id}}" ng-if="key === 'tenant'" required ng-model="field.value"
+                    <select id="{{field.id}}" data-tests-id="tenantDropDown" ng-if="key === 'tenant'" required ng-model="field.value"
                             data-ng-options="option.tenantName for option in field.optionList" placeholder="Choose {{field.name}}"
                             data-ng-disabled="!field.optionList || !field.optionList.length">
                         <option value="" selected>Tenant name</option>

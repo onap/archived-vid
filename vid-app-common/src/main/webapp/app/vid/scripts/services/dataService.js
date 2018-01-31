@@ -324,6 +324,12 @@ var DataService = function($log, DataService) {
         setCollectorServiceProxies:function(collectorServiceProxies){
             _this.collectorServiceProxies = collectorServiceProxies;
         },
+		getConfigurationByPolicy:function() {
+        	return _this.configurationByPolicy;
+		},
+        setConfigurationByPolicy:function (configurationByPolicy) {
+			_this.configurationByPolicy = configurationByPolicy;
+        },
         getSuppressRollback:function(){
             return _this.suppressRollback;
         },

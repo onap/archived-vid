@@ -158,3 +158,20 @@
 .table-wrapper{
 }
 
+.refresh-cm {
+    float: right;
+    position: relative;
+    right: 45px;
+    top: 50px;
+    z-index: 900;
+    color: #191919;
+    font-size: 14px;
+}
+.refresh-cm .last-time-updated {
+    color: #5A5A5A;
+}
+.refresh-cm i.icon-sync {
+    padding-left: 10px;
+    top: 3px;
+    position: relative;
+}

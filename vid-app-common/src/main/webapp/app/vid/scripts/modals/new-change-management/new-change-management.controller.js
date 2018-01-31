@@ -1,11 +1,14 @@
 (function () {
     'use strict';
 
-    appDS2.controller("newChangeManagementModalController", ["$uibModalInstance", "$uibModal", "AaiService", "changeManagementService",
-        "$log", "$scope", "_", "COMPONENT", newChangeManagementModalController]);
+    appDS2.controller("newChangeManagementModalController", ["$uibModalInstance", "$uibModal",'$q', "AaiService", "changeManagementService", "Upload",
+        "$log", "$scope", "_", "COMPONENT", "VIDCONFIGURATION", newChangeManagementModalController]);
 
-    function newChangeManagementModalController($uibModalInstance, $uibModal, AaiService, changeManagementService, $log, $scope, _, COMPONENT) {
+    function newChangeManagementModalController($uibModalInstance, $uibModal,$q, AaiService, changeManagementService, Upload, $log, $scope, _, COMPONENT, VIDCONFIGURATION) {
+
         var vm = this;
+        vm.configUpdatePatternError = "Invalid file type. Please select a file with a CSV extension.";
+        vm.configUpdateContentError = "Invalid file structure.";
 
         vm.softwareVersionRegex = "[-a-zA-Z0-9\.]+";
 
@@ -109,23 +112,41 @@
             $uibModalInstance.close();
         };
 
-        vm.schedule = function () {
-            $uibModalInstance.close(vm.changeManagement);
-
-            var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/new-scheduler/new-scheduler.html',
-                controller: 'newSchedulerController',
-                controllerAs: 'vm',
-                resolve: {
-                    changeManagement: function () {
-                        return vm.changeManagement;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function (result) {
-                console.log("This is the result of the new change management modal.", result);
+        vm.uploadConfigFile = function (file) {
+            var defer = $q.defer();
+            Upload.upload({
+                url: "change-management/uploadConfigUpdateFile",
+                file: file,
+                transformResponse: [function (data) {
+                    return data;
+                }]
             })
+            .then(function (configUpdateResponse) {
+                vm.changeManagement.configUpdateFile = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
+                defer.resolve(true);
+            })
+            .catch(function (error) {
+                defer.resolve(false);
+            });
+            return defer.promise;
+        };
+
+
+        vm.openModal = function () {
+            $scope.widgetParameter = ""; // needed by the scheduler?
+
+            // properties needed by the scheduler so it knows whether to show
+            // policy or sniro related features on the scheduler UI or not.
+            vm.changeManagement.policyYN = "Y";
+            vm.changeManagement.sniroYN = "Y";
+
+            var data = {
+                widgetName: 'Portal-Common-Scheduler',
+                widgetData: vm.changeManagement,
+                widgetParameter: $scope.widgetParameter
+            };
+
+            window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
         };
 
         vm.loadSubscribers = function () {
@@ -378,6 +399,10 @@
         vm.selectVersionForVNFName = function (vnfName) {
             console.log("Will add version for selected vnf name: " + vnfName.name);
         };
+
+        vm.isConfigUpdate = function () {
+            return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfConfigUpdate;
+        }
 
         vm.shouldShowVnfInPlaceFields = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfInPlace;

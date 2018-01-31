@@ -57,7 +57,6 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
 
     var buildPayloadForServiceActivateDeactivate = function (model, userId, aicZone) {
         var requestDetails = {
-            "requestDetails": {
                 "modelInfo": {
                     "modelType": "service",
                     "modelInvariantId": model.service.invariantUuid,
@@ -75,7 +74,6 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                         "value": aicZone
                     }]
                 }
-            }
         };
 
         $log.debug("Service Activate/Deactivate payload", requestDetails);
@@ -236,29 +234,37 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                 .catch(UtilityService.runHttpErrorHandler);
         },
         completeTask: function(taskId, taskToComplete) {
-            $log.debug("MsoService:completeTask: taskId: "
-                + taskId);
-            AaiService.getLoggedInUserID(function (response) {
-                var attuid = response.data;
-                var source = "VID";
-                var data = {
-                    requestDetails: {
-                        requestInfo: {
-                            source: source,
-                            responseValue: taskToComplete,
-                            requestorId: attuid
+            var promise = new Promise(function (resolve, reject) {
+                $log.debug("MsoService:completeTask: taskId: "
+                    + taskId);
+                AaiService.getLoggedInUserID(function (response) {
+                    var attuid = response.data;
+                    var source = "VID";
+                    var data = {
+                        requestDetails: {
+                            requestInfo: {
+                                source: source,
+                                responseValue: taskToComplete,
+                                requestorId: attuid
+                            }
                         }
-                    }
-                };
+                    };
 
-                return $http.post(
-                    "mso/mso_post_man_task/" + taskId, data,
-                    {
-                        timeout: PropertyService
-                            .getServerResponseTimeoutMsec()
+                    return $http.post(
+                        "mso/mso_post_man_task/" + taskId, data,
+                        {
+                            timeout: PropertyService
+                                .getServerResponseTimeoutMsec()
+                        }).then(function (response) {
+                            resolve(response);
                     })
-                    .catch(UtilityService.runHttpErrorHandler);
+                        .catch(UtilityService.runHttpErrorHandler);
+                }, function () {
+                    reject();
+                });
             });
+
+            return promise;
         },
         showResponseContentError : function(error, showFunction) {
             switch (error.type) {
@@ -283,7 +289,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                     "modelType": "vnf",
                     "modelInvariantId": instance.properties['model-invariant-id'],
                     "modelVersionId": instance.properties['model-version-id'],
-                    "modelName": instance.properties['vnf-name'],
+                    "modelName": instance.properties['model-name'],
                     "modelVersion": instance.properties['model-version'],
                     "modelCustomizationId": instance.properties['model-customization-id']
                 };
@@ -336,9 +342,14 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                         },
                         {
                             "relatedInstance": {
-                                "instanceId": requestParams.portMirroringConfigFields.destinationInstance.properties['vnf-id'],
+                                "instanceId": requestParams.configurationByPolicy ?
+                                    requestParams.portMirroringConfigFields.destinationInstance.properties['pnfName']:
+                                    requestParams.portMirroringConfigFields.destinationInstance.properties['vnf-id'],
                                 "instanceDirection": "destination",
-                                "modelInfo": modelInfoOf(requestParams.portMirroringConfigFields.destinationInstance)
+                                "modelInfo":
+                                    requestParams.configurationByPolicy ?
+                                        {"modelType": "pnf"} :
+                                        modelInfoOf(requestParams.portMirroringConfigFields.destinationInstance)
                             }
                         }
                     ],
@@ -445,7 +456,6 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
 
         buildPayloadForAssociateDissociate: function(serviceModelInfo, attuuid, instanceId, pnf) {
             var payload = {
-                "requestDetails": {
                     "modelInfo": {
                         "modelType": "service",
                         "modelInvariantId": serviceModelInfo.invariantUuid,
@@ -469,7 +479,6 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                     "requestParameters": {
                         "aLaCarte": true
                     }
-                }
             };
 
             $log.debug("payload", payload);
@@ -491,7 +500,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
 
             return sendPostRequest([
                 COMPONENT.MSO, COMPONENT.MSO_REMOVE_RELATIONSHIP,
-                requestParams.serviceModelInfo.instanceId,
+                requestParams.serviceInstanceId,
                 ''
             ].join(COMPONENT.FORWARD_SLASH), payload);
         }

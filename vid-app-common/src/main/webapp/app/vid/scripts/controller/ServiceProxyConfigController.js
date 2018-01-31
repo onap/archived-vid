@@ -25,31 +25,57 @@
 
 "use strict";
 
-appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD", "PARAMETER", "DataService", "CreationService", "$scope", "$window", "$location", "AaiService", "$uibModal", "UtilityService",
-    function (COMPONENT, $log, FIELD, PARAMETER, DataService, CreationService, $scope, $window, $location, AaiService, $uibModal, UtilityService) {
+appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD", "PARAMETER", "DataService", "CreationService", "$scope", "$window", "$location", "AaiService", "$uibModal", "UtilityService", "$timeout",
+    function (COMPONENT, $log, FIELD, PARAMETER, DataService, CreationService, $scope, $window, $location, AaiService, $uibModal, UtilityService, $timeout) {
 
         $scope.selectedMetadata = {};
 
         $scope.serviceMetadataFields = [];
         $scope.nodeTemplateFields = {};
 
+        $scope.configurationByPolicy = DataService.getConfigurationByPolicy();
+
+        $scope.collectorType = $scope.configurationByPolicy ? 'pnf' : 'vnf'; //default
         $scope.collectorInstance;
         $scope.collectorInstanceName = "";
-        $scope.collectorInstanceList = [];
+        $scope.collectorInstanceList = null;
         $scope.collectorMetadata = [];
+        $scope.collectorNoResults = false;
 
         $scope.sourceInstance;
         $scope.sourceInstanceName = "";
-        $scope.sourceInstanceList = [];
+        $scope.sourceInstanceList = null;
         $scope.sourceMetadata = [];
+        $scope.sourceNoResults = false;
 
         $scope.errorMsg = FIELD.ERROR.INSTANCE_NAME_VALIDATE;
 
         $scope.modelName = DataService.getModelInfo(COMPONENT.VNF).modelCustomizationName;
 
+        $scope.serviceTypes = [];
+
+        function init() {
+            loadServiceTypes();
+
+            generateMetadata(sourceServiceProxy);
+            generateMetadata(collectorServiceProxy);
+
+        }
+
+        function setDefaultCollectorServiceType() {
+            const configServiceType = DataService.getServiceType();
+            $scope.collectorServiceType = mustFind($scope.serviceTypes, {"service-type": configServiceType});
+            loadCollectorProxies();
+        }
+
+        function handleGetServiceTypesResponse(response) {
+            $scope.serviceTypes = response.data;
+            setDefaultCollectorServiceType();
+        }
+
         var handleGetParametersResponse = function(parameters) {
             $scope.serviceMetadataFields = parameters.summaryList;
-            $scope.nodeTemplateFields = _.keyBy(parameters.userProvidedList, 'id');
+            $scope.nodeTemplateFields =  DataService.getPortMirroningConfigFields();
         };
 
         var mustFind = function (collection, predicate) {
@@ -60,40 +86,58 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
             return result;
         };
 
-            // CreationService.initializeComponent(COMPONENT.CONFIGURATION);
-        CreationService.initializeComponent(COMPONENT.VNF);
-        CreationService.initializeComponent(COMPONENT.SERVICE);
-
-        CreationService.getParameters(handleGetParametersResponse);
 
         $scope.back = function()  {
             $window.history.back();
         };
 
+
+        function loadServiceTypes() {
+            const subscriberId = DataService.getGlobalCustomerId();
+            AaiService.getSubscriberServiceTypes(subscriberId)
+                .then(handleGetServiceTypesResponse)
+                .catch(function (error) {
+                    $log.error(error);
+                });
+        }
+
         var modalInstance;
 
         $scope.create = function()  {
+            $scope.disableCreate= true;
             var portMirroringConfigFields = DataService.getPortMirroningConfigFields();
-            portMirroringConfigFields.sourceInstance =  mustFind($scope.sourceInstanceList.results, {'id': $scope.sourceInstance});
-            portMirroringConfigFields.destinationInstance = mustFind($scope.collectorInstanceList.results, {'id': $scope.collectorInstance});
+            portMirroringConfigFields.sourceInstance = mustFind($scope.sourceInstanceList, {'id': $scope.sourceInstance});
+            portMirroringConfigFields.destinationInstance = mustFind($scope.collectorInstanceList, {'id': $scope.collectorInstance});
+
+            var selectedVnfsList;
+
+            if ($scope.configurationByPolicy) {
+                selectedVnfsList = [
+                    portMirroringConfigFields.sourceInstance.properties
+                ];
+            } else {
+                selectedVnfsList = [
+                    portMirroringConfigFields.sourceInstance.properties,
+                    portMirroringConfigFields.destinationInstance.properties
+                ];
+            }
 
             AaiService.getVnfVersionsByInvariantId(
-                [
-                    UtilityService.checkUndefined("sourceInstance model-invariant-id", portMirroringConfigFields.sourceInstance.properties['model-invariant-id']),
-                    UtilityService.checkUndefined("destinationInstance model-invariant-id", portMirroringConfigFields.destinationInstance.properties['model-invariant-id'])
-                ]
-            )
+                selectedVnfsList.map(function(x) {
+                    return UtilityService.checkUndefined("model-invariant-id", x['model-invariant-id']);
+                })
+                )
                 .then(function (response) {
                     $log.debug("getVnfVersionsByInvariantId: response", response);
 
-                    [ portMirroringConfigFields.sourceInstance.properties,
-                        portMirroringConfigFields.destinationInstance.properties ]
+                    selectedVnfsList
                         .map(function (inOutProperties) {
                             const model = mustFind(response.data.model, {'model-invariant-id': inOutProperties['model-invariant-id']});
 
                             const modelVer = mustFind(model["model-vers"]["model-ver"], {'model-version-id': inOutProperties['model-version-id']});
 
                             inOutProperties['model-version'] = modelVer['model-version'];
+                            inOutProperties['model-name'] = modelVer['model-name'];
                             UtilityService.checkUndefined("model-version", modelVer);
                         });
                 })
@@ -102,16 +146,17 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                     var requestParams = {
                         configurationModelInfo: DataService.getModelInfo(COMPONENT.VNF),
                         relatedTopModelsInfo: DataService.getModelInfo(COMPONENT.SERVICE),
-                        portMirroringConfigFields: DataService.getPortMirroningConfigFields(),
+                        portMirroringConfigFields:portMirroringConfigFields,
                         attuuid: DataService.getLoggedInUserId(),
                         topServiceInstanceId: DataService.getServiceInstanceId(),
+                        configurationByPolicy: $scope.configurationByPolicy,
                         callbackFunction: updateViewCallbackFunction
                     };
 
                     modalInstance = $uibModal.open({
                         templateUrl: 'app/vid/scripts/modals/mso-commit/mso-commit.html',
                         controller : "msoCommitModalController",
-                        backdrop: false,
+                        backdrop: true,
                         resolve: {
                             msoType: function () {
                                 return COMPONENT.MSO_CREATE_REQ;
@@ -124,6 +169,7 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                 })
                 .catch(function (error) {
                     $log.error("error while configuration create", error);
+                    $scope.disableCreate= false;
                 });
         };
 
@@ -160,6 +206,7 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                     color = FIELD.ID.COLOR_8F8;
                     $window.history.go(-2);
                 } else {
+                    $scope.disableCreate=false;
                     color = FIELD.ID.COLOR_F88;
                 }
                 $scope.callbackStyle = {
@@ -168,48 +215,126 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
             }, 500);
         };
 
+        CreationService.initializeComponent(COMPONENT.VNF);
+        CreationService.initializeComponent(COMPONENT.SERVICE);
+        CreationService.getParameters(handleGetParametersResponse);
+
         var sourceServiceProxies = DataService.getSourceServiceProxies();
         var collectorServiceProxies = DataService.getCollectorServiceProxies();
         var serviceProxiesList = DataService.getServiceProxies();
 
-        var serviceProxiesObj = [{serviceList : sourceServiceProxies, scopePropertyName : "sourceInstanceList", name : "sourceInstanceName", metadata: "sourceMetadata"},
-            {serviceList : collectorServiceProxies, scopePropertyName : "collectorInstanceList", name: "collectorInstanceName", metadata: "collectorMetadata"}];
+        var sourceServiceProxy = {
+            serviceList: sourceServiceProxies,
+            instanceListScopePropertyName: "sourceInstanceList",
+            name: "sourceInstanceName",
+            metadata: "sourceMetadata",
+            noResults: "sourceNoResults"
+        };
 
-        //Loop over source and collector service proxies ang get the list of instances from A&AI
-        angular.forEach(serviceProxiesObj, function(service, index) {
-            //TODO : Change the loop to support more than 1 item
-            for(var i = 0; i < 1 ; i++)  {
-                var sourceModelUuid = serviceProxiesList[(service.serviceList)[i]].sourceModelUuid;
-                var sourceModelInvariant  = serviceProxiesList[(service.serviceList)[i]].sourceModelInvariant;
-                $scope[service.name] = serviceProxiesList[(service.serviceList)[i]].name;
+        var collectorServiceProxy = {
+            serviceList: collectorServiceProxies,
+            instanceListScopePropertyName: "collectorInstanceList",
+            name: "collectorInstanceName",
+            metadata: "collectorMetadata",
+            noResults: "collectorNoResults"
+        };
 
-                $scope[service.metadata] = [
-                    {"name" :"Name" ,"value" : serviceProxiesList[(service.serviceList)[i]].name},
-                    {"name" :"Version",value : serviceProxiesList[(service.serviceList)[i]].version},
-                    {"name" :"Description", value : serviceProxiesList[(service.serviceList)[i]].description},
-                    {"name" :"Type", value : serviceProxiesList[(service.serviceList)[i]].type},
-                    {"name" :"Invariant UUID", value : serviceProxiesList[(service.serviceList)[i]].invariantUuid},
-                    {"name" :"UUID", value : serviceProxiesList[(service.serviceList)[i]].uuid},
-                    {"name" :"Customization UUID", value : serviceProxiesList[(service.serviceList)[i]].customizationUuid},
-                    {"name" :"Source Model Uuid", value : serviceProxiesList[(service.serviceList)[i]].sourceModelUuid},
-                    {"name" :"Source Model Invariant", value : serviceProxiesList[(service.serviceList)[i]].sourceModelInvariant},
-                    {"name" :"Source Model Name", value : serviceProxiesList[(service.serviceList)[i]].sourceModelName}
-                ];
+        $scope.onSourceServiceTypeSelected = function() {
+            clearSourceProxySelection();
+            loadSourceProxies();
+        };
 
-                var configNodeTemplateFields = DataService.getPortMirroningConfigFields();
-                AaiService.getServiceProxyInstanceList(
+        $scope.onCollectorServiceTypeSelected = function() {
+            clearCollectorProxySelection();
+            loadCollectorProxies();
+        };
+
+        function clearSourceProxySelection() {
+            $scope.sourceInstance = undefined;
+        }
+
+        function clearCollectorProxySelection() {
+            $scope.collectorInstance = undefined;
+        }
+
+        function loadSourceProxies() {
+            var serviceProxy = serviceProxiesList[(sourceServiceProxy.serviceList)[0]];
+            var selectedServiceType = $scope.sourceServiceType['service-type'];
+            loadProxyInstances(sourceServiceProxy, selectedServiceType, serviceProxy);
+        }
+
+        function loadCollectorProxies() {
+            var serviceProxy = serviceProxiesList[(collectorServiceProxy.serviceList)[0]];
+            var selectedServiceType = $scope.collectorServiceType['service-type'];
+            loadProxyInstances(collectorServiceProxy, selectedServiceType, serviceProxy);
+        }
+
+        function loadProxyInstances(service, serviceType, serviceProxy) {
+            $scope[service.instanceListScopePropertyName] = null;
+            // $scope.collectorType = $scope.configurationByPolicy ? 'pnf' : 'vnf';
+            var configNodeTemplateFields = DataService.getPortMirroningConfigFields();
+            if (service.name == "collectorInstanceName" && $scope.configurationByPolicy) {
+                var configurationModel = DataService.getModelInfo(COMPONENT.VNF);
+                AaiService.getPnfInstancesList(
                     DataService.getGlobalCustomerId(),
-                    DataService.getServiceType(),
-                    sourceModelUuid,
-                    sourceModelInvariant,
+                    serviceType,
+                    serviceProxy.sourceModelUuid,
+                    serviceProxy.sourceModelInvariant,
+                    configNodeTemplateFields.lcpRegion.value,
+                    configurationModel.properties.equip_vendor,
+                    configurationModel.properties.equip_model
+                )
+                    .then(function (response) {
+                        var results = response.results || [];
+                        $scope[service.instanceListScopePropertyName] = results;
+                        $scope[service.noResults] = (results.length === 0);
+                    })
+                    .catch(function (error) {
+                        $scope[service.noResults] = true;
+                        $log.error("No pnf instance found for " + service.name, error);
+                    });
+            } else {
+                AaiService.getVnfInstancesList(
+                    DataService.getGlobalCustomerId(),
+                    serviceType,
+                    serviceProxy.sourceModelUuid,
+                    serviceProxy.sourceModelInvariant,
                     configNodeTemplateFields.lcpRegion.value
                 )
-                .then(function (response) {
-                    $scope[service.scopePropertyName] = response;
-                })
-                .catch(function (error) {
+                    .then(function (response) {
+                        var results = response.results || [];
+                        $scope[service.instanceListScopePropertyName] = results;
+                        $scope[service.noResults] = (results.length === 0);
+                    })
+                    .catch(function (error) {
+                        $scope[service.noResults] = true;
+                        $log.error("No vnf instance found for " + service.name, error);
+                    });
+            }
+        }
 
-                });
+        function generateMetadata(service) {
+            const serviceProxy = serviceProxiesList[(service.serviceList)[0]];
+            $scope[service.name] = serviceProxy.name;
+
+            $scope[service.metadata] = [
+                {"name" :"Name" ,"value" : serviceProxy.name},
+                {"name" :"Version",value : serviceProxy.version},
+                {"name" :"Description", value : serviceProxy.description},
+                {"name" :"Type", value : serviceProxy.type},
+                {"name" :"Invariant UUID", value : serviceProxy.invariantUuid},
+                {"name" :"UUID", value : serviceProxy.uuid},
+                {"name" :"Customization UUID", value : serviceProxy.customizationUuid},
+                {"name" :"Source Model Uuid", value : serviceProxy.sourceModelUuid},
+                {"name" :"Source Model Invariant", value : serviceProxy.sourceModelInvariant},
+                {"name" :"Source Model Name", value : serviceProxy.sourceModelName}
+            ];
+        }
+
+        init();
+        $scope.$on('$routeChangeStart', function (event, next, current) {
+            if(next.$$route.originalPath!=="/addNetworkNode"){
+                DataService.setPortMirroningConfigFields(null);
             }
         });
     }]);

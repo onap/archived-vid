@@ -5,6 +5,6 @@
 <div class="metadata-content">
     <div class="field" ng-repeat="field in serviceMetadataFields">
         <label>{{field.name}}</label>
-        <div class="value" data-tests-id="{{'info-test-data-id-' + field.key}}">{{field.value}}</div>
+        <div class="value" data-tests-id="{{'info-test-data-id-' + field.name.split(' ').join('')}}">{{field.value}}</div>
     </div>
 </div>

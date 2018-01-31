@@ -20,8 +20,8 @@
 
 "use strict";
 
-appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService", "OwningEntityService", "$q",
-    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, $q) {
+appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService", "OwningEntityService", "AsdcService", "$q",
+    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, AsdcService, $q) {
 
         $scope.showVnfDetails = function (vnf) {
             console.log("showVnfDetails");
@@ -157,7 +157,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             var namedQueryId = '6e806bc2-8f9b-4534-bb68-be91267ff6c8';
             AaiService.getServiceModelsByServiceType(namedQueryId, globalCustomerId, $scope.serviceTypeName, function (response) { // success
                 $scope.services = [];
-                if (angular.isArray(response.data['inventory-response-item'])) {
+                if (angular.isArray(response.data['inventory-response-item']) && response.data['inventory-response-item'].length > 0 && response.data['inventory-response-item'][0]['inventory-response-items']) {
                     wholeData = response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item'];
                     $scope.services = $scope.filterDataWithHigerVersion(response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item']);
                     $scope.serviceType = response.data['inventory-response-item'][0]['service-subscription']['service-type'];
@@ -223,7 +223,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     $scope.createType = "a la carte";
                     var broadcastType = "createComponent";
 
-                    if (UtilityService.arrayContains(VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid)) {
+                    if (AsdcService.isMacro(serviceModel)) {
                         DataService.setALaCarte(false);
                         $scope.createType = "Macro";
                         var convertedAsdcModel = UtilityService.convertModel(serviceModel);
@@ -245,7 +245,6 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                             "createSubscriberName": serviceModel.service.createSubscriberName,
                             "serviceType": serviceModel.service.serviceType,
                             "serviceRole": serviceModel.service.serviceRole
-
                         });
                     }
                     ;
@@ -280,71 +279,31 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     $log.error("Error: ", response);
                 });
         };
-        $scope.isFiltered=function(arr,obj){
-            var filtered = false;
-            if(arr.length>0){
-                for(var i=0;i<arr.length;i++){
-                    if(obj['extra-properties']['extra-property'] && (obj['extra-properties']['extra-property'][2]['property-value'] == arr[i]['extra-properties']['extra-property'][2]['property-value'])
-                        && (obj['extra-properties']['extra-property'][4]['property-value'] == arr[i]['extra-properties']['extra-property'][4]['property-value'])){
-                        filtered = true;
-                    }
-                }
-            }
-            return filtered;
-        }
-        var wholeData=[];
-        $scope.filterDataWithHigerVersion = function(serviceData){
-            var fiterDataServices = [];
-            for(var i=0;i<serviceData.length;i++){
-                var higherVersion = serviceData[i];
-                if(!$scope.isFiltered(fiterDataServices,serviceData[i])){
-                    for(var j=i;j<serviceData.length;j++){
-                        if(serviceData[i]['extra-properties']['extra-property'] && serviceData[j]['extra-properties']['extra-property'] && (serviceData[i]['extra-properties']['extra-property'][4]['property-value'] == serviceData[j]['extra-properties']['extra-property'][4]['property-value'])
-                            && (serviceData[i]['extra-properties']['extra-property'][2]['property-value'] == serviceData[j]['extra-properties']['extra-property'][2]['property-value'])
-                            && (parseFloat(serviceData[j]['extra-properties']['extra-property'][6]['property-value'])>=parseFloat(serviceData[i]['extra-properties']['extra-property'][6]['property-value']))){
-                            var data = $scope.isThisHigher(fiterDataServices,serviceData[j]);
-                            if(data.isHigher){
-                                fiterDataServices[data.index] = serviceData[j];
-                            }
-                        }
-                    }
-                }
-            }
-            return fiterDataServices;
-        }
 
-        $scope.isThisHigher = function (arr, obj) {
-            var returnObj = {
-                isHigher: false,
-                index: 0
-            };
-            if (arr.length > 0) {
-                var isNotMatched = true;
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i]['extra-properties']['extra-property'] && (arr[i]['extra-properties']['extra-property'][2]['property-value'] == obj['extra-properties']['extra-property'][2]['property-value'])
-                        && (arr[i]['extra-properties']['extra-property'][4]['property-value'] == obj['extra-properties']['extra-property'][4]['property-value'] )
-                        && (parseFloat(arr[i]['extra-properties']['extra-property'][6]['property-value']) < parseFloat(obj['extra-properties']['extra-property'][6]['property-value']))) {
-                        isNotMatched = false;
-                        returnObj = {
-                            isHigher: true,
-                            index: i
-                        };
+        var wholeData=[];
+        //extract all models from service instances properties and filter by the higher model version
+        $scope.filterDataWithHigerVersion = function(serviceData){
+
+            //get all service instances & models collected into array. key = model invariant id
+            var servicesByModelInvariant = _.reduce(serviceData, function(result, item) {
+                if (item['extra-properties']['extra-property']) {
+                    var invariantId = item['extra-properties']['extra-property'][4];
+                    if (invariantId) {
+                        (result[invariantId["property-value"]] || (result[invariantId["property-value"]] = [])).push(item);
                     }
                 }
-                if (isNotMatched && !$scope.isFiltered(arr, obj)) {
-                    returnObj = {
-                        isHigher: true,
-                        index: arr.length
-                    };
-                }
-            } else {
-                returnObj = {
-                    isHigher: true,
-                    index: 0
-                }
-            }
-            return returnObj;
-        }
+                return result;
+            }, {});
+
+            //iterate over the array and get the highest model version for each group of services
+            var filterDataServicesByVersion = [];
+            _.forEach(servicesByModelInvariant, function(items) {
+                var maxVersionItem = _.maxBy(items, function(item) { return parseFloat(item['extra-properties']['extra-property'][6]["property-value"]); });
+                filterDataServicesByVersion.push(maxVersionItem);
+            });
+
+            return filterDataServicesByVersion;
+        };
 
         $scope.tableData = [];
         var oldData = [];
@@ -371,7 +330,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             window.location.href = COMPONENT.SERVICE_MODLES_INSTANCES_SUBSCRIBERS_PATH;
 
         }
-        
+
         $scope.fetchServices = function () {
             var serviceIdList = [];
 
@@ -424,7 +383,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         $scope.getSubDetails = function () {
 
             $scope.init();
-            // $scope.selectedSubscriber = $location.search().selectedSubscriber;
+            //$scope.selectedSubscriber = $location.search().selectedSubscriber;
             // $scope.selectedServiceInstance = $location.search().selectedServiceInstance;
             $scope.status = FIELD.STATUS.FETCHING_SUB_DETAILS + $scope.selectedSubscriber;
             var query = $location.url().replace($location.path(),'');
@@ -432,6 +391,12 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.displayData = [];
             AaiService.searchServiceInstances(query).then(function (response) {
                 $scope.displayData = response.displayData;
+                if (response.displayData.length)
+                {
+                    var first = response.displayData[0];
+                    $scope.selectedSubscriberId = first.globalCustomerId;
+                    $scope.selectedSubscriberName = first.subscriberName;
+                }
                 $scope.viewPerPage = 10;
                 $scope.totalPage = $scope.displayData.length / $scope.viewPerPage;
                 $scope.scrollViewPerPage = 2;
@@ -443,7 +408,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 $scope.setProgress(100); // done
                 $scope.status = FIELD.STATUS.DONE;
                 $scope.isSpinnerVisible = false;
-                $scope.subscriberName = response.subscriberName;
+
             }).catch(function (response) {
                 $scope.showError(FIELD.ERROR.AAI);
                 $scope.errorMsg = FIELD.ERROR.AAI_FETCHING_CUST_DATA + response.status;
@@ -1020,7 +985,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
             if (DataService.getLoggedInUserId()) {
                 requestParams.userId = DataService.getLoggedInUserId();
-                getAicZoneAndSendToMso(msoType)
+                getAicZoneAndSendToMso(msoType, requestParams)
             } else {
                 AaiService.getLoggedInUserID(function (response) {
                     var userID = response.data;
@@ -1198,7 +1163,6 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             var owningEntityQuery = AaiService.getMultipleValueParamQueryString(_.map(selectedOwningEntities, 'id'), COMPONENT.OWNING_ENTITY_SUB_PATH);
             var globalCustomerIdQuery = globalCustomerId ? COMPONENT.SELECTED_SUBSCRIBER_SUB_PATH + globalCustomerId : null;
             var serviceInstanceQuery = selectedServiceInstance ? COMPONENT.SELECTED_SERVICE_INSTANCE_SUB_PATH + selectedServiceInstance : null;
-
             var query = AaiService.getJoinedQueryString([projectQuery, owningEntityQuery, globalCustomerIdQuery, serviceInstanceQuery]);
 
             window.location.href = COMPONENT.SELECTED_SERVICE_SUB_PATH + query;

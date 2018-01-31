@@ -133,7 +133,22 @@
     font-size: 13px;
     margin-bottom: 10px;
 }
+
+.service-wrapper-config .select-vnf-title {
+    margin-top: 20px;
+}
+
+.ng-hide-keep-block.ng-hide:not(.ng-hide-animate) {
+    display: block!important;
+    visibility: hidden;
+}
+
 .service-wrapper-config select {
     border-color: #D2D2D2;
     background-position: 100% 4px;
+}
+.no-results {
+    margin-top: 10px;
+    text-align: center;
+    display: block;
 }

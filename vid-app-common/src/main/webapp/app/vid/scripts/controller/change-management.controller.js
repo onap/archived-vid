@@ -1,12 +1,15 @@
 (function () {
     'use strict';
 
-    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log",  "SchedulerService", changeManagementController]);
+    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log",  "SchedulerService", "$filter", changeManagementController]);
 
-    function changeManagementController($uibModal, changeManagementService, _, $log, SchedulerService) {
+    function changeManagementController($uibModal, changeManagementService, _, $log, SchedulerService, $filter) {
         var vm = this;
 
-        var init = function() {
+        vm.lastTimeUpdated = "";
+
+        vm.init = function() {
+            vm.lastTimeUpdated = $filter('date')(new Date(), "MM/dd/yyyy | HH:mm:ss");
             loadMSOChangeManagements();
             loadSchedulerChangeManagements();
         };
@@ -57,10 +60,6 @@
             });
         };
 
-        vm.openScheduler = function() {
-            console.log("function for opening the scheduler app")
-        };
-
         vm.searchChanges = function() {
             console.log("function for searching changes: " + vm.searchChangesTerm)
         };
@@ -68,7 +67,7 @@
         vm.openFailedModal = function(jobInfo) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/failed-change-management/failed-change-management.html',
-                controller: 'changeManagementManualTasksController',
+                controller: 'ChangeManagementManualTasksController',
                 controllerAs: 'vm',
                 resolve: {
                     jobInfo: function () {
@@ -86,7 +85,7 @@
         vm.openInProgressModal = function(jobInfo) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.html',
-                controller: 'changeManagementManualTasksController',
+                controller: 'ChangeManagementManualTasksController',
                 controllerAs: 'vm',
                 resolve: {
                     jobInfo: function () {
@@ -103,7 +102,7 @@
         vm.openAlertModal = function(jobInfo) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/alert-change-management/alert-change-management.html',
-                controller: 'changeManagementManualTasksController',
+                controller: 'ChangeManagementManualTasksController',
                 controllerAs: 'vm',
                 resolve: {
                     jobInfo: function () {
@@ -175,6 +174,6 @@
         };
 
 
-        init();
+        vm.init();
     }
 })();

@@ -376,12 +376,6 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 var lcpCloudRegionTenants = [];
                 var aaiLcpCloudRegionTenants = response.data;
 
-                lcpCloudRegionTenants.push({
-                    "cloudRegionId": "",
-                    "tenantName": FIELD.PROMPT.REGION,
-                    "tenantId": ""
-                });
-
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
                     lcpCloudRegionTenants.push({
                         "cloudRegionId": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID],
@@ -431,7 +425,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             })["catch"]
             (UtilityService.runHttpErrorHandler);
         },
-        getLoggedInUserID : function(successCallbackFunction) {
+        getLoggedInUserID : function(successCallbackFunction, catchCallbackFunction) {
             $log
                 .debug("AaiService:getLoggedInUserID");
             var url = COMPONENT.GET_USER_ID;
@@ -450,6 +444,9 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     successCallbackFunction([]);
                 }
             },function(failure){console.log("failure")})["catch"]
+                if(catchCallbackFunction) {
+                    catchCallbackFunction();
+                }
             (UtilityService.runHttpErrorHandler);
         },
         getServices : function(successCallbackFunction) {
@@ -605,18 +602,34 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
 
             return deferred.promise;
         },
-        getServiceProxyInstanceList: function(globalSubscriberId, serviceType, modelVersionId ,modelInvariantId, cloudRegionId)  {
+        getVnfInstancesList: function(globalSubscriberId, serviceType, modelVersionId ,modelInvariantId, cloudRegionId)  {
             var deferred = $q.defer();
-            $http.get(COMPONENT.AAI_POST_SERVICE_PROXY_INSTANCE_DATA_PATH + COMPONENT.FORWARD_SLASH +
-                    globalSubscriberId + COMPONENT.FORWARD_SLASH +
-                    serviceType +  COMPONENT.FORWARD_SLASH +
-                    modelVersionId +  COMPONENT.FORWARD_SLASH +
-                    modelInvariantId +  COMPONENT.FORWARD_SLASH +
-                    cloudRegionId)
+            $http.get([COMPONENT.AAI_GET_VNF_INSTANCES_LIST,
+                    globalSubscriberId,
+                    serviceType,
+                    modelVersionId,
+                    modelInvariantId,
+                    cloudRegionId]
+                .join(COMPONENT.FORWARD_SLASH))
                 .success(function (response) {
                     deferred.resolve(response);
                 }).error(function (data, status) {
                     deferred.reject({message: data, status: status});
+            });
+            return deferred.promise;
+        },
+        getPnfInstancesList: function (globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegionId, equipVendor, equipModel) {
+            var deferred = $q.defer();
+            $http.get([COMPONENT.AAI_GET_PNF_INSTANCES_LIST,
+                    globalCustomerId, serviceType,
+                    modelVersionId, modelInvariantId,
+                    cloudRegionId,
+                    equipVendor, equipModel
+                ].join(COMPONENT.FORWARD_SLASH))
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (data, status) {
+                deferred.reject({message: data, status: status});
             });
             return deferred.promise;
         },

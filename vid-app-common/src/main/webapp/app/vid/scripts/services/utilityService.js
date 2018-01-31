@@ -197,6 +197,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"nfType": "",
 					"sourceNodes": vnfModel.sourceNodes,
 					"collectorNodes": vnfModel.collectorNodes,
+	                "isConfigurationByPolicy": vnfModel.configurationByPolicy ? vnfModel.configurationByPolicy : false,
                 	"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false,
                 	"isPnf": vnfModel.isPnf ? vnfModel.isPnf : false
 			};
@@ -400,6 +401,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"displayInputs": {},
 					"sourceNodes": vnfModel.sourceNodes,
 					"collectorNodes": vnfModel.collectorNodes,
+					"isConfigurationByPolicy": vnfModel.configurationByPolicy ? vnfModel.configurationByPolicy : false,
 					"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false,
                 	"isPnf": vnfModel.isPnf ? vnfModel.isPnf : false
 			};

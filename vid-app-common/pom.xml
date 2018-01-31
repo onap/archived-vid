@@ -7,7 +7,7 @@
 	<!-- This is the Maven project object model (POM) file for VID web application 
 		based on the ECOMP SDK distribution. This file stands alone; it does not 
 		inherit from a parent maven module. -->
-	<groupId>org.openecomp.vid</groupId>
+	<groupId>org.onap.vid</groupId>
 	<artifactId>vid-app-common</artifactId>
 	<version>1.1.1-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -130,7 +130,7 @@
 				<version>0.4.23</version>
 				<configuration>
 					<sourceDirectory>${basedir}/src/main/resources/json/mso</sourceDirectory>
-					<targetPackage>org.openecomp.vid.domain.mso</targetPackage>
+					<targetPackage>org.onap.vid.domain.mso</targetPackage>
 					<outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
 				</configuration>
 				<executions>

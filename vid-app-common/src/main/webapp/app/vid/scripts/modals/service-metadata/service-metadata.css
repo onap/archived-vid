@@ -29,6 +29,9 @@
     height: 15px;
     cursor:pointer;
 }
+.modal-dialog service-metadata label {
+    margin-bottom: 3px;
+}
 .modal-dialog service-metadata .field {
-    margin-top: 10px;
+    margin-top: 11px;
 }
