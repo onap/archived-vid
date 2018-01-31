@@ -101,7 +101,8 @@
         "serviceEcompNaming": "true",
         "toscaModelURL": null,
         "uuid": "68101369-6f08-4e99-9a28-fa6327d344f3",
-        "version": "1.0"
+        "version": "1.0",
+        "instantiationType" : "ClientConfig"
     },
     "vfModules": {
     },

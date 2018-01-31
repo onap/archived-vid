@@ -43,7 +43,7 @@
 <link rel="stylesheet" type="text/css" href="app/vid/styles/angular-ui-tree.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/vidTree.css" />
 
-<%@ page import="org.openecomp.vid.mso.*"%>
+<%@ page import="org.onap.vid.mso.*"%>
 <%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
 <%
 	String properties = "{msoMaxPolls:" + SystemProperties.getProperty(MsoProperties.MSO_MAX_POLLS)
