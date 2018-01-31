@@ -1,11 +1,16 @@
 (function () {
     'use strict';
 
-    appDS2.controller("newChangeManagementModalController", ["$uibModalInstance", "$uibModal", "AaiService", "changeManagementService",
-        "$log", "$scope", "_", newChangeManagementModalController]);
+    appDS2.controller("newChangeManagementModalController", ["$uibModalInstance", "$uibModal",'$q', "AaiService", "changeManagementService", "Upload",
+        "$log", "$scope", "_", "COMPONENT", "VIDCONFIGURATION", newChangeManagementModalController]);
 
-    function newChangeManagementModalController($uibModalInstance, $uibModal, AaiService, changeManagementService, $log, $scope, _) {
+    function newChangeManagementModalController($uibModalInstance, $uibModal,$q, AaiService, changeManagementService, Upload, $log, $scope, _, COMPONENT, VIDCONFIGURATION) {
+
         var vm = this;
+        vm.configUpdatePatternError = "Invalid file type. Please select a file with a CSV extension.";
+        vm.configUpdateContentError = "Invalid file structure.";
+
+        vm.softwareVersionRegex = "[-a-zA-Z0-9\.]+";
 
         var init = function () {
             vm.changeManagement = {};
@@ -46,8 +51,8 @@
                                             availableVersions.push(extractVNFModel(vnf, response.data.service, newVNFName));
                                         }
                                     });
-                                    var versions = _.uniqBy(availableVersions, ['modelInfo.modelVersion']);
-                                    newVNFName.availableVersions = _.uniq(versions, response.data.service, true);
+                                    var versions = _.uniqBy(availableVersions, 'modelInfo.modelVersion');
+                                    newVNFName.availableVersions = _.sortBy(_.uniq(versions, response.data.service, true),"modelInfo.modelVersion");
                                 }).catch(function (error) {
                                 $log.error(error);
                             });
@@ -107,23 +112,41 @@
             $uibModalInstance.close();
         };
 
-        vm.schedule = function () {
-            $uibModalInstance.close(vm.changeManagement);
-
-            var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/new-scheduler/new-scheduler.html',
-                controller: 'newSchedulerController',
-                controllerAs: 'vm',
-                resolve: {
-                    changeManagement: function () {
-                        return vm.changeManagement;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function (result) {
-                console.log("This is the result of the new change management modal.", result);
+        vm.uploadConfigFile = function (file) {
+            var defer = $q.defer();
+            Upload.upload({
+                url: "change-management/uploadConfigUpdateFile",
+                file: file,
+                transformResponse: [function (data) {
+                    return data;
+                }]
             })
+            .then(function (configUpdateResponse) {
+                vm.changeManagement.configUpdateFile = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
+                defer.resolve(true);
+            })
+            .catch(function (error) {
+                defer.resolve(false);
+            });
+            return defer.promise;
+        };
+
+
+        vm.openModal = function () {
+            $scope.widgetParameter = ""; // needed by the scheduler?
+
+            // properties needed by the scheduler so it knows whether to show
+            // policy or sniro related features on the scheduler UI or not.
+            vm.changeManagement.policyYN = "Y";
+            vm.changeManagement.sniroYN = "Y";
+
+            var data = {
+                widgetName: 'Portal-Common-Scheduler',
+                widgetData: vm.changeManagement,
+                widgetParameter: $scope.widgetParameter
+            };
+
+            window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
         };
 
         vm.loadSubscribers = function () {
@@ -165,11 +188,11 @@
                             if (vnfsData[i]) {
                                 const nodeType = vnfsData[i]['node-type'];
                                 if (nodeType === "generic-vnf") {
-                                    _.forEach(vnfsData[i]['related-to'], function (node) {
-                                        if (node['node-type'] === 'vserver') {
-                                            vm.vnfs.push(vnfsData[i]);
-                                        }
-                                    })
+                                    if (_.find(vnfsData[i]['related-to'], function (node) {
+                                            return node['node-type'] === 'vserver'
+                                        }) !== undefined) {
+                                        vm.vnfs.push(vnfsData[i]);
+                                    }
                                 } else if (nodeType === "service-instance") {
                                     vm.serviceInstances.push(vnfsData[i]);
                                 }
@@ -197,63 +220,50 @@
             );
         };
 
+        var fromVNFVersions = [];
+
         vm.loadVNFVersions = function () {
-            vm.fromVNFVersions = [];
+            fromVNFVersions = [];
             vm.serviceInstancesToGetVersions = [];
             var versions = [];
             _.forEach(vm.vnfs, function (vnf) {
                 if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']) {
 
-                vm.serviceInstancesToGetVersions.push(vnf);
+                    vm.serviceInstancesToGetVersions.push({
+                        "model-invariant-id": vnf.properties["model-invariant-id"],
+                        "model-version-id": vnf.properties["model-version-id"] }
+                    );
 
-                versions.push(vnf.properties["model-invariant-id"]);
-
-
+                    versions.push(vnf.properties["model-invariant-id"]);
                 }
             });
 
-            AaiService.getVnfVersionsByInvariantId(versions).then(function (response) {
-                if (response.data) {
-                    var key = response.data.model["0"]["model-invariant-id"];
-                    var value = response.data.model["0"]["model-vers"]["model-ver"]["0"]["model-version"];
-                    var element = {"key": key, "value": value};
-                    vm.fromVNFVersions.push(element);
-                }
-                //TODO promise all and call the new api to get the versions.
-                // vm.fromVNFVersions.push(response.data.model["0"]["model-vers"]["model-ver"]["0"]["model-version"]);
-                // if(vm.serviceInstancesToGetVersions.length > 0){
-                //
-                // var promiseArrOfGetVnfs = preparePromiseArrOfGetVersions('a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb');
-                //
-                // Promise.all(promiseArrOfGetVnfs).then(function (allData) {
-                //     vm.vnfs = _.flattenDeep(_.without(allData, null));
-                //     var filteredVnfs = _.sortedUniqBy(vm.vnfs, function (vnf) {
-                //         return vnf.properties.vnfType;
-                //     });
-                //
-                //     _.forEach(filteredVnfs, function (vnf) {
-                //         vm.vnfTypes.push(vnf.properties.vnfType)
-                //     });
-                //
-                // }).catch(function (error) {
-                //     $log(error);
-                // });
-                // }
-            })
-            // debugger;
+            if (versions.length > 0) {
+                AaiService.getVnfVersionsByInvariantId(versions).then(function (response) {
+                    if (response.data) {
 
+                        $log.debug("getVnfVersionsByInvariantId: response", response);
+
+                        fromVNFVersions = vm.serviceInstancesToGetVersions
+                            .map(function (serviceInstanceToGetVersion) {
+                                const model = _.find(response.data.model, {'model-invariant-id': serviceInstanceToGetVersion['model-invariant-id']});
+                                $log.debug("getVnfVersionsByInvariantId: model for " + serviceInstanceToGetVersion['model-invariant-id'], model);
+
+                                const modelVer = _.find(model["model-vers"]["model-ver"], {'model-version-id': serviceInstanceToGetVersion['model-version-id']});
+                                $log.debug("getVnfVersionsByInvariantId: modelVer for " + serviceInstanceToGetVersion['model-version-id'], modelVer);
+
+                                var modelVersionId = serviceInstanceToGetVersion["model-version-id"];
+                                var modelVersion = modelVer["model-version"];
+
+                                return {"key": modelVersionId, "value": modelVersion};
+                            });
+
+                        vm.fromVNFVersions = _.uniqBy(fromVNFVersions, 'value');
+                    }
+                })
+            }
         };
 
-        // function preparePromiseArrOfGetVersions(serviceInstances) {
-        //     var promiseArr = [];
-        //     for (var i = 0; i < serviceInstances.length; i++) {
-        //         var modelInvariantId = serviceInstances[i].properties["model-invariant-id"];
-        //         promiseArr.push(
-        //             getVnfs(modelInvariantId)
-        //         );
-        //     }
-        //     return promiseArr;
-        // }
 
         function getVnfs(modelInvariantId) {
             return new Promise(function (resolve, reject) {
@@ -281,12 +291,20 @@
             });
         }
 
+        var getVersionNameForId = function(versionId) {
+            var version = _.find(fromVNFVersions, {"key": versionId});
+            return version.value;
+        };
+
         vm.loadVNFNames = function () {
             vm.vnfNames = [];
+            const vnfs = vm.changeManagement.fromVNFVersion ? vm.vnfs : [];
+            _.forEach(vnfs, function (vnf) {
 
-            _.forEach(vm.vnfs, function (vnf) {
+                var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
 
-                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType) {
+                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType &&
+                    selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
                     _.forEach(vnf['related-to'], function (node) {
@@ -295,11 +313,27 @@
                         }
                     });
 
+                    var serviceInstancesIds =
+                        _.filter(vnf['related-to'], {'node-type': 'service-instance'})
+                            .map(function (serviceInstance) { return serviceInstance.id });
+
+                    var serviceInstances = _.filter(vm.serviceInstances, function(serviceInstance) {
+                        return _.includes(serviceInstancesIds, serviceInstance.id);
+                    });
+
+                    // logging only
+                    if (serviceInstancesIds.length === 0) {
+                        $log.error("loadVNFNames: no serviceInstancesIds for vnf", vnf);
+                    } else {
+                        $log.debug("loadVNFNames: serviceInstancesIds", serviceInstancesIds);
+                        $log.debug("loadVNFNames: serviceInstances", serviceInstances);
+                    }
+
                     vm.vnfNames.push({
                         "id": vnf.properties["vnf-id"],
                         "name": vnf.properties["vnf-name"],
                         "invariant-id": vnf.properties["model-invariant-id"],
-                        "service-instance-node": _.filter(vm.serviceInstances, {id: vnf["related-to"][0].id}),
+                        "service-instance-node": serviceInstances,
                         "modelVersionId": vnf.properties["model-version-id"],
                         "properties": vnf.properties,
                         'cloudConfiguration': vServer,
@@ -316,30 +350,32 @@
                 tenantId: ''
             };
 
-            var splitedUrlByDash = _.split(url, '/', 100);
+            /*
+             e.g., in both URLs below -
+               - lcpCloudRegionId == 'rdm5b'
+               - tenantId == '0675e0709bd7444a9e13eba8b40edb3c'
 
-            cloudConfiguration.lcpCloudRegionId = splitedUrlByDash[7];
-            cloudConfiguration.tenantId = splitedUrlByDash[10];
+             "url": "https://aai-conexus-e2e.ecomp.cci.att.com:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
+             "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
+             */
+
+            var cloudRegionMatch = url.match(/\/cloud-regions\/cloud-region\/[^\/]+\/([^\/]+)/);
+            var tenantMatch = url.match(/\/tenants\/tenant\/([^\/]+)/);
+
+            cloudConfiguration.lcpCloudRegionId = cloudRegionMatch[1];
+            cloudConfiguration.tenantId = tenantMatch[1];
 
             return cloudConfiguration;
         };
 
         vm.loadWorkFlows = function () {
-            var vnfs = [];
-            angular.forEach(vm.changeManagement.vnfNames, function (vnfName) {
-                vnfs.push(vnfName.name)
-            });
-
-            //TODO: When we'll have the mappings, use the backend call to get the workflows
-            // changeManagementService.getWorkflows(vnfs)
-            // .then(function(response) {
-            //     vm.workflows = response.data;
-            // })
-            // .catch(function(error) {
-            //     $log.error(error);
-            // });
-
-            vm.workflows = ["Update", "Replace"];
+            changeManagementService.getWorkflows(vm.changeManagement.vnfNames)
+                .then(function(response) {
+                    vm.workflows = response.data.workflows;
+                })
+                .catch(function(error) {
+                    $log.error(error);
+                });
         };
 
         //Must be $scope because we bind to the onchange of the html (cannot attached to vm variable).
@@ -362,6 +398,14 @@
 
         vm.selectVersionForVNFName = function (vnfName) {
             console.log("Will add version for selected vnf name: " + vnfName.name);
+        };
+
+        vm.isConfigUpdate = function () {
+            return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfConfigUpdate;
+        }
+
+        vm.shouldShowVnfInPlaceFields = function () {
+            return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfInPlace;
         };
 
         init();

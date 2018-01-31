@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite thread-count="1" verbose="1" name="VID Suite" annotations="JDK" parallel="tests">
+    <test name="test">
+        <packages>
+            <package name="vid.automation.test.test.*"/>
+        </packages>
+    </test>
+</suite>

@@ -1,0 +1,40 @@
+{
+    "payload":{
+        "request-parameters":{
+            "vm":[
+                {
+                    "vnfc":[
+                        {
+                            "ipaddress-v4-oam-vip":"135.21.166.39",
+                            "vnfc-name":"ibcx0001vm001dbg001",
+                            "vnfc-function-code":"dbg",
+                            "vnfc-type":"DBE-VM #1",
+                            "group-notation":"ibcx0001vm001dbg001pair"
+                        }
+                    ],
+                    "vm-name":"ibcx0001vm001"
+                },
+                {
+                    "vnfc":[
+                        {
+                            "vnfc-name":"ibcx0001vm002dbg001",
+                            "vnfc-function-code":"dbg",
+                            "vnfc-type":"DBE-VM #1",
+                            "group-notation":"ibcx0001vm001dbg001pair"
+                        }
+                    ],
+                    "vm-name":"ibcx0001vm002"
+                }
+            ],
+            "vnf-name":"ibcx0099v",
+            "template-name":"vdbe_template1"
+        },
+        "configuration":{
+            "configuration-json":"{\n   \"version\": \"15.1X49-D50.3\",\n   \"groups\": {\n      \"name\": \"node0\",\n      \"system\": {\n         \"host-name\": \"$node0_hostname\",\n         \"backup-router\": {\n            \"address\": \"$node0_backup_router_address\",\n            \"destination\": \"0.0.0.0/0\"\n         }\n      }\n   }\n}",
+            "configuration-string": "   <configuration xmlns=\"http://xml.juniper.net/xnm/1.1/xnm\" \n    xmlns:a=\"http://xml.juniper.net/junos/15.1X49/junos\" >\n            <version>15.1X49-D50.3<\/version>\n            <groups>\n                <name>node0<\/name>\n                <system>\n                    <host-name>$node0_hostname<\/host-name>\n                    <backup-router>\n                        <address>$node0_backup_router_address<\/address>\n                        <destination>0.0.0.0/0<\/destination>\n             <\/backup-router>\n                <\/system>\n     <\/groups>\n    <\/configuration>"
+        },
+        "configuration-parameters":{
+            "nat_source_sp_v6rogerssnat_address1":"2001:1890:fc45:f025:135:25:246:c806/128"
+        }
+    }
+}

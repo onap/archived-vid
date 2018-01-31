@@ -3,16 +3,16 @@
 <!-- This is a temporary test page. It will be removed from source control -->
 <body>
 <%@ page import="org.openecomp.portalsdk.core.util.SystemProperties" %>
-<%@ page import="org.openecomp.vid.controller.MsoController" %>
-<%@ page import="org.openecomp.vid.mso.rest.Request" %>
-<%@ page import="org.openecomp.vid.mso.rest.RequestDetails" %>
-<%@ page import="org.openecomp.vid.mso.rest.RelatedModel" %>
-<%@ page import="org.openecomp.vid.domain.mso.SubscriberInfo" %>
-<%@ page import="org.openecomp.vid.domain.mso.Response" %>
-<%@ page import="org.openecomp.vid.domain.mso.ModelInfo" %>
-<%@ page import="org.openecomp.vid.domain.mso.RequestInfo" %>
-<%@ page import="org.openecomp.vid.domain.mso.CloudConfiguration" %>
-<%@ page import="org.openecomp.vid.mso.MsoProperties" %>
+<%@ page import="org.onap.vid.controller.MsoController" %>
+<%@ page import="org.onap.vid.mso.rest.Request" %>
+<%@ page import="org.onap.vid.mso.rest.RequestDetails" %>
+<%@ page import="org.onap.vid.mso.rest.RelatedModel" %>
+<%@ page import="org.onap.vid.domain.mso.SubscriberInfo" %>
+<%@ page import="org.onap.vid.domain.mso.Response" %>
+<%@ page import="org.onap.vid.domain.mso.ModelInfo" %>
+<%@ page import="org.onap.vid.domain.mso.RequestInfo" %>
+<%@ page import="org.onap.vid.domain.mso.CloudConfiguration" %>
+<%@ page import="org.onap.vid.mso.MsoProperties" %>
 <%@ page import="java.net.URI" %>
 <%@ page import="com.sun.jersey.api.client.ClientResponse" %>
   <%

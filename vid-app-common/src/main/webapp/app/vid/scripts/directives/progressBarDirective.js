@@ -58,7 +58,7 @@
  * called immediately after HTML is rendered. This is due to a timing-related
  * behavior.
  * 
- * 3) The progress bar displays values of "0" and "100" if precentProgress is,
+ * 3) The progress bar displays values of "0" and "100" if percentProgress is,
  * respectively, less than 0 or greater than 100.
  * 
  * CUSTOM STYLING:

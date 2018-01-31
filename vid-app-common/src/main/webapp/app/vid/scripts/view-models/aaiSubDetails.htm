@@ -27,13 +27,13 @@
 				<label>Status:</label><span class="status">{{status}}</span>
 			</div>
 
-			<div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
+			<div data-tests-id="subDetailsErrMsg" ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
 	
-			 <h1 class="heading1"><center>Subscriber Details for {{selectedSubscriber}} ({{selectedSubscriberName}})</center></h1>
+			 <h1 class="heading1"><center>Subscriber Details for {{selectedSubscriberId}} ({{selectedSubscriberName}})</center></h1>
 	     		<br>
 		<div class="fn-ebz-container">
 		         Filter:
-		          <input class="fn-ebz-text" type="text" ng-model="searchString" size="20" style="width: 250px;">
+		          <input class="fn-ebz-text" type="text" ng-model="searchString" size="20" style="width: 250px;" data-tests-id="filter-subscriber-details">
 	    </div>
 			<div ng-init="getSubDetails();">
 				
@@ -54,13 +54,13 @@
 							<tr>
 								 <td att-table-body>
 									<div>
-										<a alt="View/Edit" ng-click="getAsdcModel(disData);" data-tests-id="{{'view/edit-test-data-id-' + disData['serviceInstanceId']}}" ng-bind="disData.isPermitted ? 'View/Edit' : 'View'"></a>
+										<a alt="View/Edit" ng-click="onViewEditClick(disData);" data-tests-id="{{'view/edit-test-data-id-' + disData['serviceInstanceId']}}" ng-bind="disData.isPermitted ? 'View/Edit' : 'View'"></a>
 									</div>
 								</td>
 								<td att-table-body ng-bind="disData['globalCustomerId']"></td>
-								<td att-table-body ng-bind="disData['subscriberName']"></td>
+								<td att-table-body ng-bind="disData['subscriberName']" data-tests-id="{{'subscriber-name-test-data-id-' + $index}}"></td>
 								<td att-table-body ng-bind="disData['serviceType']"></td>
-								<td att-table-body ng-bind="disData['serviceInstanceName']"></td>
+								<td att-table-body ng-bind="disData['serviceInstanceName']" data-tests-id="{{'service-name-test-data-id-' + $index}}"></td>
 								<td att-table-body data-tests-id="{{'instance-id-for-name-' + disData['serviceInstanceName']}}" ng-bind="disData['serviceInstanceId']"></td>
 							</tr>
 						</tbody>

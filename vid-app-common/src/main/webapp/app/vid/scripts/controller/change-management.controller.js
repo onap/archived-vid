@@ -1,12 +1,15 @@
 (function () {
     'use strict';
 
-    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log", changeManagementController]);
+    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log",  "SchedulerService", "$filter", changeManagementController]);
 
-    function changeManagementController($uibModal, changeManagementService, _, $log) {
+    function changeManagementController($uibModal, changeManagementService, _, $log, SchedulerService, $filter) {
         var vm = this;
 
-        var init = function() {
+        vm.lastTimeUpdated = "";
+
+        vm.init = function() {
+            vm.lastTimeUpdated = $filter('date')(new Date(), "MM/dd/yyyy | HH:mm:ss");
             loadMSOChangeManagements();
             loadSchedulerChangeManagements();
         };
@@ -26,16 +29,16 @@
                 .then(function(response) {
                     vm.pendingChangeManagements = response.data;
                     _.forEach(vm.pendingChangeManagements, function(changeManagement) {
-                        var callbackData = _.filter(changeManagement.scheduleRequest.domainData, {name: "CallbackData"});
+                        var callbackData = _.filter(changeManagement.scheduleRequest.domainData, {name: "WorkflowName"});
                         if(callbackData) {
                             var parsedModel = {};
                             try {
-                                parsedModel = JSON.parse(callbackData[0].value);
+                                parsedModel = callbackData[0].value;
                             } catch(exception) {
                                 $log.error(exception);
                             }
 
-                            changeManagement.workflow = parsedModel.requestType || 'No workflow';
+                            changeManagement.workflow = parsedModel;
                         }
                     });
                 })
@@ -57,10 +60,6 @@
             });
         };
 
-        vm.openScheduler = function() {
-            console.log("function for opening the scheduler app")
-        };
-
         vm.searchChanges = function() {
             console.log("function for searching changes: " + vm.searchChangesTerm)
         };
@@ -74,7 +73,8 @@
                     jobInfo: function () {
                         return jobInfo;
                     }
-                }
+                },
+
             });
 
             modalInstance.result.then(function (result) {
@@ -115,12 +115,12 @@
                 console.log("This is the result of the alert change management modal.", result);
             });
         };
-
-        vm.openPendingModal = function(jobInfo) {
+        vm.openBasicAlertModal = function(jobInfo) {
             var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/pending-change-management/pending-change-management.html',
-                controller: 'changeManagementManualTasksController',
+                templateUrl: 'app/vid/scripts/modals/alert-modal/alert-modal.html',
+                controller: 'alertModalController',
                 controllerAs: 'vm',
+                appendTo: angular.element(".jobs-table").eq(0),
                 resolve: {
                     jobInfo: function () {
                         return jobInfo;
@@ -129,10 +129,51 @@
             });
 
             modalInstance.result.then(function (result) {
-                console.log("This is the result of the pending change management modal.", result);
+                console.log("This is the result of the alert change management modal.", result);
             });
         };
+        vm.openPendingModal = function($event, changeManagement) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/cancel-pending-workflow/cancel-pending-workflow.html',
+                controller: 'cancelPendingWorkflowController',
+                controllerAs: 'vm',
+                backdrop: false,
+                animation: true,
+                appendTo: angular.element($event.currentTarget).parent(),
+                resolve: {
+                    changeManagement: function () {
+                        return changeManagement;
+                    }
+                }
+            });
 
-        init();
+            modalInstance.result.then(function (result) {
+                // send to service
+             if(result){
+                    SchedulerService.cancelScheduleRequest(changeManagement.scheduleRequest.scheduleId,
+                        function(response) {
+
+                            //success popup
+                            var jobInfo= {
+                                status:"success",
+                                message: "Cancel workflow "+changeManagement.scheduleRequest.scheduleName+" succeeded."};
+                            vm.openBasicAlertModal(jobInfo);
+
+                            return response;
+                        }, function(error) {
+
+                            //failed popup
+                            var jobInfo = {
+                                status:"failed",
+                                message: "Cancel workflow "+changeManagement.scheduleRequest.scheduleName+" failed due to an unexpected error."};
+                            vm.openBasicAlertModal(jobInfo);
+
+                        });
+            }});
+
+        };
+
+
+        vm.init();
     }
 })();

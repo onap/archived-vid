@@ -21,6 +21,70 @@
 "use strict";
 
 var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONENT, FIELD, $q) {
+
+    function getServiceInstance(serviceInstanceIdentifier, findBy) {
+        serviceInstanceIdentifier.trim();
+
+        return $http.get(COMPONENT.AAI_GET_SERVICE_INSTANCE_PATH + serviceInstanceIdentifier + "/" + findBy + "?r=" + Math.random(), {}, {
+            timeout: PropertyService.getServerResponseTimeoutMsec()
+        });
+    }
+
+    function getPnfByName(pnfName) {
+        var deferred = $q.defer();
+        var url = COMPONENT.AAI_GET_PNF_BY_NAME+ encodeURIComponent(pnfName)  ;
+        var config = { timeout: PropertyService.getServerResponseTimeoutMsec() };
+
+        $http.get(url, config)
+            .success(function (response) {
+                deferred.resolve({data: response});
+            })
+            .error(function(data, status, headers, config) {
+                deferred.reject({message: data, status: status});
+            });
+
+        return deferred.promise;
+    };
+
+
+    function getGlobalCustomerIdFromServiceInstanceResponse(response) {
+        var globalCustomerId = "";
+        if (angular.isArray(response.data[FIELD.ID.RESULT_DATA])) {
+            var customerIndex = 5;
+            var customerIdIndex = 6;
+            var itemIndex = 0;
+
+            var item = response.data[FIELD.ID.RESULT_DATA][itemIndex];
+            var url = item[FIELD.ID.RESOURCE_LINK];
+            var urlParts = url.split("/");
+            if (urlParts[customerIndex] === FIELD.ID.CUSTOMER) {
+                globalCustomerId = urlParts[customerIdIndex];
+            }
+        }
+        return globalCustomerId;
+    }
+
+    function searchServiceInstances(query) {
+        return $http.get( COMPONENT.SEARCH_SERVICE_INSTANCES  + query, {}, {
+            timeout : PropertyService.getServerResponseTimeoutMsec()
+        }).then(function (response) {
+            var displayData = response.data[FIELD.ID.SERVICE_INSTANCES];
+            if (!displayData.length) {
+                displayData = [{
+                    globalCustomerId 	: null,
+                    subscriberName   	: null,
+                    serviceType 		: FIELD.PROMPT.NO_SERVICE_SUB,
+                    serviceInstanceId 	: FIELD.PROMPT.NO_SERVICE_INSTANCE
+                }];
+            }
+            return {displayData: displayData};
+        })
+    }
+
+    function getJoinedQueryString(queries) {
+        return queries.filter(function (val) {return val;}).join("&");
+    }
+
     return {
         getSubscriberName : function(globalCustomerId,
                                      successCallbackFunction) {
@@ -34,15 +98,15 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     timeout : PropertyService
                         .getServerResponseTimeoutMsec()
                 }).then(function(response) {
-                var subName = "";
+                var result = {};
                 if (response.data) {
-                    subName = response.data[FIELD.ID.SUBNAME];
+                    result.subscriberName = response.data[FIELD.ID.SUBNAME];
+                    result.serviceSubscriptions = response.data[FIELD.ID.SERVICE_SUBSCRIPTIONS];
                 }
-                successCallbackFunction(subName);
+                successCallbackFunction(result);
             })["catch"]
             (UtilityService.runHttpErrorHandler);
         },
-
 
         runNamedQuery : function (namedQueryId, globalCustomerId, serviceType, serviceInstanceId, successCallback, errorCallback) {
 
@@ -86,6 +150,48 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             });
         },
 
+        getPNFInformationByServiceTypeAndId : function (globalCustomerId, serviceType, serviceInstanceId, successCallback, errorCallback) {
+
+            var url = COMPONENT.AAI_GET_PNF_INSTANCE +
+                COMPONENT.FORWARD_SLASH + encodeURIComponent(globalCustomerId) +
+                COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceType) +
+                COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceInstanceId);
+            $http.get(url, {}, {
+                timeout : PropertyService.getServerResponseTimeoutMsec()
+            }).then(function(response) {
+                if (response.data != null) {
+                    successCallback(response);
+                } else {
+                    errorCallback(response);
+                }
+            }, function(response) {
+                errorCallback(response);
+            });
+        },
+
+        searchServiceInstances: searchServiceInstances,
+
+        getModelVersionId: function (subscriberId, instanceId) {
+            var globalCustomerIdQuery = COMPONENT.SELECTED_SUBSCRIBER_SUB_PATH + subscriberId;
+            var serviceInstanceQuery = COMPONENT.SELECTED_SERVICE_INSTANCE_SUB_PATH + instanceId;
+
+            var query = "?" + getJoinedQueryString([globalCustomerIdQuery, serviceInstanceQuery]);
+
+            var deferred = $q.defer();
+
+            searchServiceInstances(query).then(function (response) {
+                var displayData = response.displayData;
+                if (displayData[0] && displayData[0].aaiModelVersionId) {
+                    deferred.resolve(displayData[0].aaiModelVersionId);
+                } else {
+                    deferred.reject(FIELD.ERROR.MODEL_VERSION_ID_MISSING);
+                }
+            }).catch(function (err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        },
 
         getSubDetails : function(selectedSubscriber, selectedServiceInstance, successCallback, errorCallback) {
             var subscriber;
@@ -124,9 +230,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                                 }
                             });
                         } else {
-                            if (serviceInstanceId == []) {
-                                serviceInstanceId = [ FIELD.PROMPT.NO_SERVICE_INSTANCE ];
-                            }
+                            serviceInstanceId = [ FIELD.PROMPT.NO_SERVICE_INSTANCE ];
                         }
                         angular.forEach(serviceInstanceId, function(subVal, subKey) {
                             displayData.push({
@@ -145,7 +249,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 } else {
                     displayData.push({
                         globalCustomerId 	: selectedSubscriber,
-                        subscriberName   	: selectedSubscriberName,
+                        subscriberName   	: subscriberName,
                         serviceType 		: FIELD.PROMPT.NO_SERVICE_SUB,
                         serviceInstanceId 	: FIELD.PROMPT.NO_SERVICE_INSTANCE
                     });
@@ -177,6 +281,26 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 errorCallback(response);
             });
         },
+
+        getServiceInstance : getServiceInstance,
+        getPnfByName : getPnfByName,
+
+        getGlobalCustomerIdByInstanceIdentifier : function(serviceInstanceIdentifier, findBy) {
+            serviceInstanceIdentifier.trim();
+
+            return getServiceInstance(serviceInstanceIdentifier, findBy)
+                .then(function (response) {
+                    return getGlobalCustomerIdFromServiceInstanceResponse(response);
+            });
+        },
+
+        getMultipleValueParamQueryString: function(values, paramSubPath) {
+            if (values.length) {
+                return paramSubPath + values.filter(function (val) {return val;}).join("&" + paramSubPath);
+            }
+        },
+
+        getJoinedQueryString: getJoinedQueryString,
 
         getServices2 : function(successCallback, errorCallback ) {
 
@@ -252,12 +376,6 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 var lcpCloudRegionTenants = [];
                 var aaiLcpCloudRegionTenants = response.data;
 
-                lcpCloudRegionTenants.push({
-                    "cloudRegionId": "",
-                    "tenantName": FIELD.PROMPT.REGION,
-                    "tenantId": ""
-                });
-
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
                     lcpCloudRegionTenants.push({
                         "cloudRegionId": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID],
@@ -267,8 +385,9 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 }
 
                 successCallbackFunction(lcpCloudRegionTenants);
-            })["catch"]
-            (UtilityService.runHttpErrorHandler);
+            }).catch(function(error) {
+                (UtilityService.runHttpErrorHandler(error.data, error.status));
+            })
         },
         getSubscribers : function(successCallbackFunction) {
             $log
@@ -306,7 +425,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             })["catch"]
             (UtilityService.runHttpErrorHandler);
         },
-        getLoggedInUserID : function(successCallbackFunction) {
+        getLoggedInUserID : function(successCallbackFunction, catchCallbackFunction) {
             $log
                 .debug("AaiService:getLoggedInUserID");
             var url = COMPONENT.GET_USER_ID;
@@ -325,6 +444,9 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     successCallbackFunction([]);
                 }
             },function(failure){console.log("failure")})["catch"]
+                if(catchCallbackFunction) {
+                    catchCallbackFunction();
+                }
             (UtilityService.runHttpErrorHandler);
         },
         getServices : function(successCallbackFunction) {
@@ -459,6 +581,8 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             return deferred.promise;
         },
 
+
+
         getSubscriberServiceTypes: function(subscriberUuid) {
             var deferred = $q.defer();
             $log.debug("AaiService:getSubscriberServiceTypes: subscriberUuid: " + subscriberUuid);
@@ -475,6 +599,61 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     deferred.reject({message: data, status: status});
                 });
             }
+
+            return deferred.promise;
+        },
+        getVnfInstancesList: function(globalSubscriberId, serviceType, modelVersionId ,modelInvariantId, cloudRegionId)  {
+            var deferred = $q.defer();
+            $http.get([COMPONENT.AAI_GET_VNF_INSTANCES_LIST,
+                    globalSubscriberId,
+                    serviceType,
+                    modelVersionId,
+                    modelInvariantId,
+                    cloudRegionId]
+                .join(COMPONENT.FORWARD_SLASH))
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (data, status) {
+                    deferred.reject({message: data, status: status});
+            });
+            return deferred.promise;
+        },
+        getPnfInstancesList: function (globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegionId, equipVendor, equipModel) {
+            var deferred = $q.defer();
+            $http.get([COMPONENT.AAI_GET_PNF_INSTANCES_LIST,
+                    globalCustomerId, serviceType,
+                    modelVersionId, modelInvariantId,
+                    cloudRegionId,
+                    equipVendor, equipModel
+                ].join(COMPONENT.FORWARD_SLASH))
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (data, status) {
+                deferred.reject({message: data, status: status});
+            });
+            return deferred.promise;
+        },
+        getByUri: function(uri)  {
+            var deferred = $q.defer();
+
+            $http.get(COMPONENT.AAI_GET_BY_URI + uri)
+                .success(function (response) {
+                    deferred.resolve({data: []});
+                }).error(function (data, status, headers, config) {
+                    deferred.reject({message: data, status: status});
+                });
+
+            return deferred.promise;
+        },
+        getConfiguration: function(configurationId)  {
+            var deferred = $q.defer();
+
+            $http.get(COMPONENT.AAI_GET_CONFIGURATION + configurationId)
+                .success(function (response) {
+                    deferred.resolve({data: []});
+                }).error(function (data, status, headers, config) {
+                deferred.reject({message: data, status: status});
+            });
 
             return deferred.promise;
         }

@@ -1,0 +1,31 @@
+{
+  "users": {
+    "readonly": {
+      "credentials": {
+        "userId": "2",
+        "password": "2"
+      },
+      "subscribers": null,
+      "serviceTypes": null,
+      "tenants": null
+    },
+    "uspVoiceVirtualUsp": {
+      "credentials": {
+        "userId": "1",
+        "password": "1"
+      },
+      "subscribers": ["e433710f-9217-458d-a79d-1c7aff376d89"],
+      "serviceTypes": ["VIRTUAL USP"],
+      "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
+    },
+    "mobilityMobility": {
+      "credentials": {
+        "userId": "3",
+        "password": "3"
+      },
+      "subscribers": ["a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"],
+      "serviceTypes": ["Mobility"],
+      "tenants": null
+    }
+  }
+}

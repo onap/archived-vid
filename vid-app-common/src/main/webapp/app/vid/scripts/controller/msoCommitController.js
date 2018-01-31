@@ -64,25 +64,42 @@
  */
 
 var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $window, $log,
-		MsoService, PropertyService, UtilityService, DataService) {
+		MsoService, PropertyService, UtilityService, TestEnvironmentsService) {
 
 	$scope.isViewVisible = false;
 	$scope.progressBarControl = {};
 	$scope.popupWindowControl = {};
-
+    var getRequestStatusFunc = getOrchestrationRequestStatus; //default
 	var _this = this;
 
 	$scope.$on("createInstance", function(event, request) {
-		init(request, COMPONENT.MSO_CREATE_REQ );
+		init(request, COMPONENT.MSO_CREATE_REQ, getOrchestrationRequestStatus );
 		MsoService.createInstance(request, handleInitialResponse);
 	});
 
 	$scope.$on("deleteInstance", function(event, request) {
-		init(request, COMPONENT.MSO_DELETE_REQ);
+        init(request, COMPONENT.MSO_DELETE_REQ, getOrchestrationRequestStatus);
 		MsoService.deleteInstance(request, handleInitialResponse);
 	});
 
-	var init = function(request, msoRequestType ) {
+    $scope.$on(COMPONENT.MSO_CREATE_ENVIRONMENT, function(event, request) {
+        init(request, COMPONENT.MSO_CREATE_ENVIRONMENT, getCloudResourcesRequestStatus);
+        TestEnvironmentsService.createApplicationEnv(request).then(handleInitialResponse);
+    });
+
+    $scope.$on(COMPONENT.MSO_DEACTIVATE_ENVIRONMENT, function(event, request) {
+        init(request, COMPONENT.MSO_DEACTIVATE_ENVIRONMENT, getCloudResourcesRequestStatus);
+        TestEnvironmentsService.deactivateApplicationEnv(request).then(handleInitialResponse)
+    });
+
+    $scope.$on(COMPONENT.MSO_ACTIVATE_ENVIRONMENT, function(event, request) {
+        init(request, COMPONENT.MSO_ACTIVATE_ENVIRONMENT, getCloudResourcesRequestStatus);
+        TestEnvironmentsService.activateApplicationEnv(request).then(handleInitialResponse)
+    });
+
+
+    var init = function(request, msoRequestType, getStatusRequest ) {
+    	getRequestStatusFunc = getStatusRequest;
 		$scope.status = FIELD.STATUS.SUBMITTING_REQUEST;
 		$scope.isSpinnerVisible = true;
 		$scope.isProgressVisible = true;
@@ -109,13 +126,13 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 			showError(FIELD.ERROR.SYSTEM_FAILURE, UtilityService
 					.getHttpErrorMessage(response));
 		});
-	}
+	};
 
 	var handleInitialResponse = function(response) {
 		try {
 			updateViewAfterInitialResponse(response);
 			
-			_this.timer = $timeout(getRequestStatus, PropertyService
+			_this.timer = $timeout(getRequestStatusFunc, PropertyService
 					.getMsoMaxPollingIntervalMsec());
 
 			$scope.instanceId = response.data.entity.instanceId;
@@ -133,11 +150,16 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 		}
 	}
 
-	var getRequestStatus = function() {
-		MsoService.getOrchestrationRequest(_this.requestId, handleGetResponse);
+	function getOrchestrationRequestStatus() {
+		MsoService.getOrchestrationRequest(_this.requestId, handleGetStatusResponse);
 	}
 
-	var handleGetResponse = function(response) {
+  	function getCloudResourcesRequestStatus() {
+        TestEnvironmentsService.getRequestStatus(_this.requestId, handleGetStatusResponse);
+    }
+
+
+    var handleGetStatusResponse = function(response) {
 		try {
 			if (isUpdateViewAfterGetResponseComplete(response)) {
 				return;
@@ -147,7 +169,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 				_this.isMsoError = true;
 				showError(FIELD.ERROR.MAX_POLLS_EXCEEDED);
 			} else {
-				_this.timer = $timeout(getRequestStatus, PropertyService
+				_this.timer = $timeout(getRequestStatusFunc, PropertyService
 						.getMsoMaxPollingIntervalMsec());
 			}
 		} catch (error) {
@@ -296,5 +318,5 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 }
 
 appDS2.controller("msoCommitController", [ "COMPONENT", "FIELD", "$scope", "$http", "$timeout",
-		"$window", "$log", "MsoService", "PropertyService", "UtilityService",
+		"$window", "$log", "MsoService", "PropertyService", "UtilityService", "TestEnvironmentsService",
 		msoCommitController ]);

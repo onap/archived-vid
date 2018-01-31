@@ -1,0 +1,6 @@
+<div class="message-viewer">
+    <div ng-include src="icon"></div>
+    <div class="primaryMessage">{{ primaryMessage }}</div>
+    <div class="secondaryMessage">{{ secondaryMessage }}</div>
+    <button data-tests-id="try-again" class="btn btn-primary" ng-if="showTryAgain" ng-click="tryAgain()">TRY AGAIN</button>
+</div>

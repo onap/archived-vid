@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="app/vid/styles/dialogs.css" />
 
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
-<script src="app/vid/scripts/controller/deletionDialogController.js"></script>
+<script src="app/vid/scripts/controller/deleteResumeDialogController.js"></script>
 <script src="app/vid/scripts/controller/detailsDialogController.js"></script>
 <script src="app/vid/scripts/controller/statusDialogController.js"></script>
 <script src="app/vid/scripts/controller/msoCommitController.js"></script>
@@ -16,7 +16,7 @@
 <script src="app/vid/scripts/services/asdcService.js"></script>
 <script src="app/vid/scripts/services/creationService.js"></script>
 <script src="app/vid/scripts/services/dataService.js"></script>
-<script src="app/vid/scripts/services/deletionService.js"></script>
+<script src="app/vid/scripts/services/deleteResumeService.js"></script>
 <script src="app/vid/scripts/services/detailsService.js"></script>
 <script src="app/vid/scripts/services/statusService.js"></script>
 <script src="app/vid/scripts/services/componentService.js"></script>
@@ -40,7 +40,7 @@
 	Consider / investigate replacing this approach with an alternative
 	REST / Angular mechanism.
 -->
-<%@ page import="org.openecomp.vid.mso.*"%>
+<%@ page import="org.onap.vid.mso.*"%>
 <%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
 <%
 	String properties = "{msoMaxPolls:" + SystemProperties.getProperty(MsoProperties.MSO_MAX_POLLS)
@@ -54,7 +54,7 @@
 	<div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
 		ng-cloak>
 		<div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"></div>
-		<div ng-include="'app/vid/scripts/view-models/deletionDialog.htm'"></div>
+		<div ng-include="'app/vid/scripts/view-models/deleteResumeDialog.htm'"></div>
 		<div ng-include="'app/vid/scripts/view-models/detailsDialog.htm'"
 			onload="autoStartTest();"></div>
 	</div>

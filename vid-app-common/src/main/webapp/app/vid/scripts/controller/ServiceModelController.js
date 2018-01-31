@@ -41,14 +41,13 @@
 				$scope.services = [];
 				if (response.data && angular.isArray(response.data.services)) {
 					wholeData = response.data.services;
-					$scope.services = $scope.filterDataWithHigerVersion(wholeData);
+					$scope.services = $scope.filterDataWithHigherVersion(wholeData);
 					$scope.viewPerPage=10;
 					$scope.totalPage=$scope.services.length/$scope.viewPerPage;
 					$scope.sortBy=COMPONENT.NAME;
 					$scope.scrollViewPerPage=2;
 					$scope.currentPage=1;
 					$scope.searchCategory;
-					$scope.searchString="";
 					$scope.currentPageNum=1;
 					$scope.isSpinnerVisible = false;
 					$scope.isProgressVisible = false;
@@ -61,67 +60,35 @@
 			}, function errorCallback(response) {
 				console.log("Error: " + response);
 			});
-		}
-		$scope.isFiltered=function(arr,obj){
-			var filtered = false;
-			if(arr.length>0){
-				for(var i=0;i<arr.length;i++){
-					if((arr[i].name == obj.name) && (obj.invariantUUID == arr[i].invariantUUID)){
-						filtered = true;
-					}
-				}
-			}
-			return filtered;
-		}
-		var wholeData=[];
-		$scope.filterDataWithHigerVersion = function(serviceData){
-			var fiterDataServices = [];
-			for(var i=0;i<serviceData.length;i++){
-				var higherVersion = serviceData[i];
-				if(!$scope.isFiltered(fiterDataServices,serviceData[i])){
-					for(var j=i;j<serviceData.length;j++){
-						if((serviceData[i].invariantUUID.trim() == serviceData[j].invariantUUID.trim()) && (serviceData[i].name.trim() == serviceData[j].name.trim()) && (parseFloat(serviceData[j].version.trim())>=parseFloat(serviceData[i].version.trim()))){
-							var data = $scope.isThisHigher(fiterDataServices,serviceData[j]);
-							if(data.isHigher){
-								fiterDataServices[data.index] = serviceData[j];
-							}
-						}
-					}
-				}
-			}
-			return fiterDataServices;
-		}
+		};
 
-		$scope.isThisHigher = function(arr,obj){
-			var returnObj = {
-					isHigher:false,
-					index:0
-			};
-			if(arr.length>0){
-				var isNotMatched = true;
-				for(var i=0;i<arr.length;i++){
-					if((arr[i].name == obj.name) && (arr[i].invariantUUID == obj.invariantUUID ) && (arr[i].version<obj.version) ){
-						isNotMatched = false;
-						returnObj = {
-								isHigher:true,
-								index:i
-						};
+		var wholeData=[];
+
+		$scope.filterDataWithHigherVersion = function(serviceData){
+			var delimiter = '$$';
+			var fiterDataServices = {};
+			for(var i=0;i<serviceData.length;i++) {
+				var index = serviceData[i].invariantUUID.trim() + delimiter + serviceData[i].name.trim();
+				if(!fiterDataServices[index]) {
+                    var hasPreviousVersion = false;
+                    fiterDataServices[index] = {
+                        service: serviceData[i],
+                        hasPreviousVersion: false
+                    };
+                }
+                else {
+                    fiterDataServices[index].hasPreviousVersion = true;
+                    if(parseFloat(serviceData[i].version.trim())>parseFloat(fiterDataServices[index].service.version.trim())) {
+                        fiterDataServices[index].service = serviceData[i];
 					}
 				}
-				if(isNotMatched && !$scope.isFiltered(arr,obj)){
-					returnObj = {
-							isHigher:true,
-							index:arr.length
-					};
-				}
-			}else{
-				returnObj = {
-						isHigher:true,
-						index:0
-				}
 			}
-			return returnObj;
-		}
+            return Object.keys(fiterDataServices).map(function(key) {
+            	var service = fiterDataServices[key].service;
+            	service.hasPreviousVersion = fiterDataServices[key].hasPreviousVersion;
+                return  service;
+            });
+		};
 
 		$scope.init = function() {
     		var msecs = PropertyService.retrieveMsoMaxPollingIntervalMsec();

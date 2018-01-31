@@ -1,0 +1,12 @@
+{
+  "serviceModelList": [
+    {
+      "serviceModelVersionId": "uuid1",
+      "recoveryAction": "abort"
+    },
+    {
+      "serviceModelVersionId": "uuid2",
+      "recoveryAction": "retry"
+    }
+  ]
+}

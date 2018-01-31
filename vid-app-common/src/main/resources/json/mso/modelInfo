@@ -33,6 +33,7 @@
 			"description": "short description of the entity being operated on",
 			"type": "string",
 			"enum": [
+			    "pnf",
 				"network",
 				"service",
 				"vfModule",

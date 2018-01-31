@@ -19,6 +19,8 @@
   -->
 
 <link rel="stylesheet" type="text/css" href="app/vid/styles/serviceModels.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/buttons.css" />
+
 <div popup-window class="popupContents" ngx-show="{{popup.isTablePopUpVisible}}" ng-cloak>
 	<div ng-include="'app/vid/scripts/view-models/previousVersion.htm'"/>
 </div>
@@ -36,7 +38,7 @@
 	<br><br>
 	
 	
-	<table> 
+	<table class="create-instance-service ">
 		
 		<tr>
 				<td >
@@ -77,7 +79,7 @@
 	<!-- <h1 class="heading1" style="margin-top:20px;">Browse SDC Service Models</h1> -->
 	<div style="margin-top:30px" ng-init="getAaiServiceModelsList();">
 		
-		<table att-table table-data="services" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		<table data-tests-id="services-list" att-table table-data="services" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
 		    <thead  att-table-row type="header">
 				<tr>
 					<th att-table-header key="action">Action</th>
@@ -100,9 +102,10 @@
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][4]['property-value']"></td>
 	            	<td att-table-body ng-bind="service['extra-properties']['extra-property'][6]['property-value']"></td>
 	            	<td att-table-body ng-show="service['extra-properties']['extra-property'][6]['property-value'] > '1.0' ">
-	            		<button type=button ng-click="loadPreviousVersionData(service['extra-properties']['extra-property'][6]['property-value'],service['extra-properties']['extra-property'][4]['property-value'])" att-button btn-type="primary" size="small">
+	            		<div class="clickable-text previous-versions-button"
+						   ng-click="loadPreviousVersionData(service['extra-properties']['extra-property'][6]['property-value'],service['extra-properties']['extra-property'][4]['property-value'])">
 	            			Previous Versions
-	            		</button>
+	            		</div>
 	            	</td>
 	            	<td att-table-body ng-show="service['extra-properties']['extra-property'][6]['property-value'] <= '1.0' ">&nbsp;</td>
 		        </tr>

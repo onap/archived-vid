@@ -1,0 +1,196 @@
+.modal-dialog {
+    width: 587px;
+    border-radius: 8px;
+}
+
+.modal-content {
+    width: 587px;
+    border-radius: 8px;
+    background-color:  #ffffff;
+    font-family: "OpenSans-Regular";
+}
+
+.modal-content .modal-body {
+    padding: 15px 35px 5px 35px;
+}
+
+.modal-body .connect-error,
+.modal-body .icon-alert.error {
+    font-family: OpenSans-Regular !important;
+    color: #CF2A2A;
+    font-size: 14px;
+}
+
+.modal-body .icon-alert:before {
+    color: #CF2A2A;
+    cursor: default;
+    font-family: 'icomoon' !important;
+    padding-right: 5px;
+}
+
+.modal-header {
+    border: none!important;
+    padding: 15px 35px 0px 35px!important;
+}
+
+.modal-header h3 {
+    font-family: "OpenSans-Regular";
+    color:  #191919;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 16px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #009fdb;
+
+}
+
+.modal-close {
+    margin: -40px 5px 0 0;
+    color: #5a5a5a;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.form-group .control-label {
+    font-family: OpenSans-Semibold;
+    font-size: 12px;
+    color: #191919;
+}
+
+select {
+    background: url(../images/chevron.png) no-repeat 98% 10px !important;
+}
+
+input::placeholder {
+    text-align: left;
+    font-family: OpenSans-Regular;
+    font-size: 14px;
+    color: #a9a9a9;
+}
+
+.form-group .connect-error {
+    border: 1.5px solid #CF2A2A;
+}
+
+.form-group .grayedOut {
+    font-family: OpenSans-Regular;
+    font-size: 14px;
+    color: #a9a9a9;
+    opacity: 0.54;
+}
+
+.form-group .grayedOut option {
+    font-family: OpenSans-Regular;
+    font-size: 14px;
+    color: #555;
+    opacity: 1;
+}
+
+button.dropdown-toggle {
+    text-align: left;
+}
+
+button[disabled].dropdown-toggle {
+    opacity: 1;
+    cursor: not-allowed;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    color: #a0a0a0;
+}
+
+multiselect[disabled] {
+    cursor: not-allowed;
+}
+
+a.item-unselected:before {
+    font-family: "icomoon"!important;
+    content: "\e90c";
+    color: #4ca90c;
+}
+
+.form-create .modal-footer {
+    margin-top: 0;
+}
+
+.form-create .modal-footer .btn,
+.form-create .modal-footer .btn:hover {
+    font-family: "OpenSans-Semibold";
+    border-radius: 5px;
+    border: 1px solid #009FDB;
+    font-size: 13px;
+    line-height: 30px;
+    text-align: center;
+    padding: 4px 12px !important;
+    width: 120px;
+    height: 36px;
+}
+
+.form-create .modal-footer .btn-white,
+.form-create .modal-footer .btn-white:hover {
+    background-color:  #FFFFFF;
+    color:  #009FDB;
+}
+
+.form-create .modal-footer .btn-primary,
+.form-create .modal-footer .btn-primary:hover{
+    background-color:  #009FDB;
+    color:  #FFFFFF;
+}
+
+.vnf-versions-container .table {
+    position: relative;
+    background-color: #f8f8f8;
+    background-clip: padding-box;
+    border-radius: 6px;
+    outline: 0;
+}
+
+.file-wrapper {
+    display: flex;
+}
+
+.file-input {
+    display: inline-block !important;
+    width: 0.1px;
+}
+
+.file-input-label {
+    width: 389px;
+    height: 37px;
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    border-radius: 2px;
+    display: inline-block;
+    line-height: 37px;
+    font-weight: normal !important;
+    padding-left: 12px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    flex: 1;
+}
+
+.vnf-versions-name {
+    padding-top: 6px;
+    font-family: "OpenSans-Regular";
+    position: absolute;
+}
+
+.vnf-versions-select-as-text {
+    font-family: "OpenSans-Regular";
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    overflow:hidden;
+    background-color: #f8f8f8;
+    height: 31px;
+}
+
+.vnf-files-select {
+    z-index: 999;
+    opacity: 0.0;
+    position: absolute;
+    width: 23%;
+    cursor: pointer;
+    height:100%;
+}

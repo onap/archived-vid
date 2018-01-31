@@ -5,16 +5,20 @@
 
     function changeManagementService($http, $q, COMPONENT, VIDCONFIGURATION) {
         this.getWorkflows = function (vnfs) {
-            var deferred = $q.defer();
-
-            $http.get(COMPONENT.GET_WORKFLOW.replace("@vnfs", vnfs))
-            .success(function (response) {
-                deferred.resolve({data: response});
-            }).error(function (data, status, headers, config) {
-                deferred.reject({message: data, status: status});
+            var requestVnfs = _.map(vnfs, function (vnf) {
+                return {
+                    UUID: vnf["modelVersionId"],
+                    invariantUUID: vnf["invariant-id"]
+                };
             });
-
-            return deferred.promise;
+            var requestDetails = {vnfsDetails: requestVnfs};
+            return $http.post(COMPONENT.GET_WORKFLOW, requestDetails)
+            .success(function (response) {
+                return {data: response};
+            })
+                .catch(function (err) {
+                    return {data: []};
+                });
         };
 
         this.getMSOChangeManagements = function() {

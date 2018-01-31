@@ -39,7 +39,8 @@
         <br>
         Please search by the Subscriber name or enter Service Instance Id or Service Instance Name below:&nbsp;<br><br>
 
-        <table>
+        <table ng-init="loadOwningEntity()">
+
             <tr>
                 <td style="width:30%">
                     <div class="fn-ebz-container">
@@ -51,7 +52,7 @@
                         <!--<select name="selectedCustomer" ng-model="selectedCustomer">-->
                         <!--<option ng-repeat="item in customerList" value="{{item.globalCustomerId}}" ng-disabled="getPermitted(item)">{{item.subscriberName}}</option>-->
                         <!--</select>-->
-                        <select ng-model="selectedCustomer"
+                        <select ng-model="selectedCustomer" id="selectSubscriber"
                                 ng-options="item.globalCustomerId as item.subscriberName for item in customerList | orderBy:'subscriberName'">
                             <option value="">Select a subscriber</option>
                         </select>
@@ -60,8 +61,9 @@
                             class="glyphicon glyphicon-refresh"></span></a>
                     </div>
                 </td>
-
             </tr>
+
+
             <tr>
                 <td style="width:30%">
                     <div class="fn-ebz-container">
@@ -72,8 +74,8 @@
                     </div>
                 </td>
                 <td style="width:60%">
-                    <div class="fn-ebz-container">
-                        <input type="text" style="width: 350px;" name="selectedServiceInstance"
+                    <div class="fn-ebz-container" style="width: 100%;">
+                        <input type="text" name="selectedServiceInstance"
                                ng-model="selectedServiceInstance"
                                data-tests-id="searchForExistingInstancesText"
                                restrict-input="{type : selectedserviceinstancetype}"/>
@@ -81,12 +83,51 @@
                 </td>
 
             </tr>
+
+            <tr>
+                <td style="width:30%">
+                    <div class="fn-ebz-container">
+                        <label class="fn-ebz-text-label">Owning entity Name:</label>
+                    </div>
+                </td>
+                <td style="width:30%" nowrap>
+                    <div class="fn-ebz-container" style="width: 100%;">
+                        <!--<select name="selectedCustomer" ng-model="selectedCustomer">-->
+                        <!--<option ng-repeat="item in customerList" value="{{item.globalCustomerId}}" ng-disabled="getPermitted(item)">{{item.subscriberName}}</option>-->
+                        <!--</select>-->
+                        <multiselect id="selectOwningEntity" ng-model="selectedEntity"
+                                     options="owningEntities"
+                                     display-prop="name" id-prop="id">
+                        </multiselect>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:30%">
+                    <div class="fn-ebz-container">
+                        <label class="fn-ebz-text-label">Project Name:</label>
+                    </div>
+                </td>
+                <td style="width:30%" nowrap>
+                    <div class="fn-ebz-container" style="width: 100%;">
+                        <!--<select name="selectedCustomer" ng-model="selectedCustomer">-->
+                        <!--<option ng-repeat="item in customerList" value="{{item.globalCustomerId}}" ng-disabled="getPermitted(item)">{{item.subscriberName}}</option>-->
+                        <!--</select>-->
+                        <multiselect id="selectProject" ng-model="selectedProject"
+                                     options="projects"
+                                     display-prop="name" id-prop="id">
+                        </multiselect>
+                    </div>
+                </td>
+            </tr>
+
             <tr>
                 <td>
                 <td style="width:30%">
                     <div>
                         <button type="submit" class="btn btn-primary" size="small"
-                                ng-click="getSubscriberDet(selectedCustomer,selectedserviceinstancetype,selectedServiceInstance);">
+                                ng-click="getServiceInstancesSearchResults(selectedCustomer,selectedserviceinstancetype,selectedServiceInstance, selectedProject, selectedEntity);">
                             Submit
                         </button>
                         </a>

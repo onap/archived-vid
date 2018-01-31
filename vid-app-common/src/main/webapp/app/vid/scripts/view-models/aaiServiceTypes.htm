@@ -31,7 +31,7 @@
 		<div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
 		<h2 class="heading2"><center>Create New Service Instance</center></h2>
 		
-		<table> 
+		<table class="create-instance-service ">
 		
 		<tr>
 				<td >
@@ -69,7 +69,7 @@
 				</td>
 				<td style="width:80%">
 					<div >	
-						<button type="submit" class="btn btn-primary"  size="small" ng-click="getAaiServiceModels(selectedServicetype,createSubscriberName);">Submit</button></a>
+						<button type="submit" class="btn btn-primary"  size="small" ng-click="getAaiServiceModels(selectedServicetype,createSubscriberName);" ng-disabled="!selectedServicetype" ng-class="{'button--inactive': !selectedServicetype}">Submit</button></a>
 						&nbsp;&nbsp;<button type="submit" class="btn btn-primary" size="small" ng-click="cancelCreateSIType()">Cancel</button></a>
 					</div>
 				</td>

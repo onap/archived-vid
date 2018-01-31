@@ -69,8 +69,8 @@
 	            	<td att-table-body ng-bind="service['distributionStatus']"></td>
 	            	<td att-table-body ng-bind="service['lastUpdaterUserId']"></td>
 	            	<td att-table-body ng-bind="service['toscaModelUrl']"></td>
-					<td att-table-body ng-show="service['version'] > '1.0' "><button type=button ng-click="loadPreviousVersionData(service['invariantUUID'],service['name'],service['version'])" att-button btn-type="primary" size="small">Previous Versions</button></td>
-	            	<td att-table-body ng-show="service['version'] <= '1.0' ">&nbsp;</td>
+					<td att-table-body ng-show="service.hasPreviousVersion"><button type=button ng-click="loadPreviousVersionData(service['invariantUUID'],service['name'],service['version'])" att-button btn-type="primary" size="small">Previous Versions</button></td>
+	            	<td att-table-body ng-show="!service.hasPreviousVersion">&nbsp;</td>
 		        </tr>     
 		    </tbody>	  
 		</table>

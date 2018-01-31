@@ -1,3 +1,116 @@
+@font-face {
+    font-family: OpenSans-Bold;
+    src: url("fonts/OpenSans/OpenSans-Bold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-BoldItlaic;
+    src: url("fonts/OpenSans/OpenSans-BoldItalic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-ExtraBold;
+    src: url("fonts/OpenSans/OpenSans-ExtraBold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-ExtraBoldItalic;
+    src: url("fonts/OpenSans/OpenSans-ExtraBoldItalic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-Italic;
+    src: url("fonts/OpenSans/OpenSans-Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-Light;
+    src: url("fonts/OpenSans/OpenSans-Light.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-LightItalic;
+    src: url("fonts/OpenSans/OpenSans-LightItalic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-Regular;
+    src: url("fonts/OpenSans/OpenSans-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-Semibold;
+    src: url("fonts/OpenSans/OpenSans-Semibold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: OpenSans-SemiboldItalic;
+    src: url("fonts/OpenSans/OpenSans-SemiboldItalic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'icomoon';
+    src:  url('fonts/icomoon.eot?4cilop');
+    src:  url('fonts/icomoon.eot?4cilop#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?4cilop') format('truetype'),
+    url('fonts/icomoon.woff?4cilop') format('woff'),
+    url('fonts/icomoon.svg?4cilop#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html, body {
     font-size:14px;
+}
+
+.button--inactive {
+    border: none !important;
+}
+
+.modal-body [class^="icon-"],.modal-body [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-browse:before {
+    content: "\e90e";
+    color: #5A5A5A;
+    font-size: 4px;
+    cursor: pointer;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    background: #F2F2F2;
+    border: 1px solid #D2D2D2;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 2px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.icon-browse:hover::before {
+    background-color: #E6F6FB;
+    color: #009FDB;
+}
+
+.icon-browse:active::before {
+    background-color: #E6F6FB;
+    color: #009FDB;
+}
+
+input:focus:invalid {
+    border-color: Tomato;
+    box-shadow: none;
 }

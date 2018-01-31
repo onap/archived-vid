@@ -67,31 +67,31 @@ var UtilityService = function($log, DataService, PARAMETER) {
 
     var _this = this;
     var convertModel = function (serviceModel) {
-		
-		var isNewFlow = false;
-		
-		for (var networkCustomizationName in serviceModel.networks) {
-			var networkModel = serviceModel.networks[networkCustomizationName];
-			if ( networkModel.customizationUuid != null ) {
-				isNewFlow = true;
-				break;
-			}
-		}
-		if ( !isNewFlow ) {
-			for (var vnfCustomizationName in serviceModel.vnfs) {
-				var vnfModel = serviceModel.vnfs[vnfCustomizationName];
-				if ( vnfModel.customizationUuid != null ) {
-					isNewFlow = true;
-					break;
-				}
-			}
-		}
-		if ( isNewFlow ) {
-			return (convertNewModel (serviceModel) );
-		}
-		else {
-			return (convertOldModel (serviceModel) );
-		}
+
+        var isNewFlow = false;
+
+        for (var networkCustomizationName in serviceModel.networks) {
+            var networkModel = serviceModel.networks[networkCustomizationName];
+            if ( networkModel.customizationUuid != null ) {
+                isNewFlow = true;
+                break;
+            }
+        }
+        if ( !isNewFlow ) {
+            for (var vnfCustomizationName in serviceModel.vnfs) {
+                var vnfModel = serviceModel.vnfs[vnfCustomizationName];
+                if ( vnfModel.customizationUuid != null ) {
+                    isNewFlow = true;
+                    break;
+                }
+            }
+        }
+        if ( isNewFlow ) {
+            return (convertNewModel (serviceModel) );
+        }
+        else {
+            return (convertOldModel (serviceModel) );
+        }
     };
     var convertNewModel = function (serviceModel ) {
     	var completeResources = new Array();
@@ -100,6 +100,8 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				"service": serviceModel.service,
 				"networks": {},
 				"vnfs": {},
+				"pnfs": serviceModel.pnfs,
+				"serviceProxies": serviceModel.serviceProxies,
 				"completeDisplayInputs": {},
 				"isNewFlow": true
 			};
@@ -164,9 +166,18 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				
 			}
 		}
-		
-		for (var vnfCustomizationName in serviceModel.vnfs) {
-			var vnfModel = serviceModel.vnfs[vnfCustomizationName];
+
+        _.forEach(serviceModel.configurations, function(element, key) {
+            element.isConfig = true;
+        });
+        _.forEach(serviceModel.pnfs, function(element, key) {
+        	element.isPnf= true;
+        	element.modelCustomizationName= key;
+        });
+        var mergedVnfs = Object.assign(serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
+
+		for (var vnfCustomizationName in mergedVnfs) {
+			var vnfModel = mergedVnfs[vnfCustomizationName];
 			var vnfCustomizationUuid = vnfModel.customizationUuid;
 			convertedAsdcModel.vnfs[vnfModel.customizationUuid] = {
 					"uuid": vnfModel.uuid,
@@ -183,8 +194,13 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"displayInputs": {},
 					"properties": {},
 					"nfRole": "",
-					"nfType": ""
-			}
+					"nfType": "",
+					"sourceNodes": vnfModel.sourceNodes,
+					"collectorNodes": vnfModel.collectorNodes,
+	                "isConfigurationByPolicy": vnfModel.configurationByPolicy ? vnfModel.configurationByPolicy : false,
+                	"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false,
+                	"isPnf": vnfModel.isPnf ? vnfModel.isPnf : false
+			};
 			
 			resource = {
 					"name": vnfModel.modelCustomizationName,
@@ -278,11 +294,11 @@ var UtilityService = function($log, DataService, PARAMETER) {
 		convertedAsdcModel.completeDisplayInputs = completeDisplayInputs;
 		// Need to collect all the model customization names (node template tag) and descriptions
 		DataService.setResources (completeResources);
-		
-		console.log ("convertedAsdcModel: "); console.log (JSON.stringify ( convertedAsdcModel, null, 4 ));
+
+        $log.debug ("convertedAsdcModel: ", convertedAsdcModel);
 		return (convertedAsdcModel);
     };
-    
+
     var convertOldModel = function (serviceModel ) {
     	
 		var resource = {};
@@ -290,6 +306,8 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				"service": serviceModel.service,
 				"networks": {},
 				"vnfs": {},
+            	"pnfs": serviceModel.pnfs,
+            	"serviceProxies": serviceModel.serviceProxies,
 				"completeDisplayInputs": {},
 				"isNewFlow": false
 			};
@@ -356,9 +374,18 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				convertedAsdcModel.networks[networkModel.uuid].displayInputs=networkModelDisplayInputs;
 			}
 		}
-		
-		for (var vnfCustomizationName in serviceModel.vnfs) {
-			var vnfModel = serviceModel.vnfs[vnfCustomizationName];
+
+        _.forEach(serviceModel.configurations, function(element, key) {
+            element.isConfig = true;
+        });
+        _.forEach(serviceModel.pnfs, function(element, key) {
+            element.isPnf= true;
+            element.modelCustomizationName= key;
+        });
+        var mergedVnfs = Object.assign(serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
+
+		for (var vnfCustomizationName in mergedVnfs) {
+			var vnfModel = mergedVnfs[vnfCustomizationName];
 			convertedAsdcModel.vnfs[vnfModel.uuid] = {
 					"uuid": vnfModel.uuid,
 					"invariantUuid": vnfModel.invariantUuid,
@@ -371,8 +398,13 @@ var UtilityService = function($log, DataService, PARAMETER) {
 					"vfModules": {},
 					"volumeGroups": {},
 					"commands": {},
-					"displayInputs": {}
-			}
+					"displayInputs": {},
+					"sourceNodes": vnfModel.sourceNodes,
+					"collectorNodes": vnfModel.collectorNodes,
+					"isConfigurationByPolicy": vnfModel.configurationByPolicy ? vnfModel.configurationByPolicy : false,
+					"isConfig": vnfModel.isConfig ? vnfModel.isConfig : false,
+                	"isPnf": vnfModel.isPnf ? vnfModel.isPnf : false
+			};
 			resource = {
 					"name": vnfModel.modelCustomizationName,
 					"description": vnfModel.description
@@ -441,203 +473,203 @@ var UtilityService = function($log, DataService, PARAMETER) {
 		convertedAsdcModel.completeDisplayInputs = completeDisplayInputs;
 		// Need to collect all the model customization names (node template tag) and descriptions
 		DataService.setResources (completeResources);
-		console.log ("convertedAsdcModel: "); console.log (JSON.stringify ( convertedAsdcModel, null, 4 ));
+		$log.debug ("convertedAsdcModel: ", convertedAsdcModel);
 		return (convertedAsdcModel);
     };
-    
+
     function hasContents(object) {
-	if (object === undefined || object === null || object === "") {
-	    return false;
-	}
-	return true;
+        if (object === undefined || object === null || object === "") {
+            return false;
+        }
+        return true;
     };
     function isObjectEmpty(o) {
-		var len = 0;
-		if (hasContents(o)){
-			var keys = Object.keys(o);
-			len = keys.length;
-			if ( len == 0 ) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-			return true;
-		}
+        var len = 0;
+        if (hasContents(o)){
+            var keys = Object.keys(o);
+            len = keys.length;
+            if ( len == 0 ) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
     };
     function padZero(number) {
-	if (number < 10) {
-	    return "0" + number;
-	} else {
-	    return "" + number;
-	}
+        if (number < 10) {
+            return "0" + number;
+        } else {
+            return "" + number;
+        }
     };
 
     var httpErrorHandler = function(response, status) {
-	$log.warn("UtilityService:httpErrorHandler: response:");
-	$log.warn(response);
-	$log.warn("UtilityService:httpErrorHandler: status:");
-	$log.warn(status);
-	if (angular.isFunction(_this.httpErrorHandler)) {
-	    _this.httpErrorHandler(response, status);
-	}
+        $log.warn("UtilityService:httpErrorHandler: response:");
+        $log.warn(response);
+        $log.warn("UtilityService:httpErrorHandler: status:");
+        $log.warn(status);
+        if (angular.isFunction(_this.httpErrorHandler)) {
+            _this.httpErrorHandler(response, status);
+        }
     };
 
     var startNextAsyncOperation = function() {
-	if (_this.asyncOperations.count < _this.asyncOperations.operationList.length) {
-	    _this.asyncOperations.operationList[_this.asyncOperations.count++]
-		    ();
-	} else {
-	    if (angular.isFunction(_this.asyncOperations.callbackFunction)) {
-		_this.asyncOperations.callbackFunction();
-	    }
-	}
+        if (_this.asyncOperations.count < _this.asyncOperations.operationList.length) {
+            _this.asyncOperations.operationList[_this.asyncOperations.count++]
+            ();
+        } else {
+            if (angular.isFunction(_this.asyncOperations.callbackFunction)) {
+                _this.asyncOperations.callbackFunction();
+            }
+        }
     };
 
     return {
-	setProperties : function(properties) {
-	    _this.properties = properties;
-	},
-	getProperties : function() {
-	    return _this.properties;
-	},
-	hasContents : hasContents,
-	checkUndefined : function(name, value) {
-	    if (value === undefined) {
-		throw {
-		    type : "undefinedObject",
-		    message : "undefined object: \"" + name + "\""
-		};
-	    }
-	    return value;
-	},
-	jsonConcat : function (o1, o2) {
-		 for (var key in o2) {
-		  o1[key] = o2[key];
-		 }
-		 return o1;
-   },
-	getCurrentTime : function() {
-	    var time = new Date();
-	    return padZero(time.getMonth() + 1) + "/"
-		    + padZero(time.getDate()) + "/"
-		    + (time.getFullYear() - 2000) + " "
-		    + padZero(time.getHours()) + ":"
-		    + padZero(time.getMinutes()) + ":"
-		    + padZero(time.getSeconds())
-	},
-	getHttpStatusText : function(statusCode) {
-	    var statusMap = {
-		"200" : "OK",
-		"201" : "Created",
-		"202" : "Accepted",
-		"400" : "Bad Request",
-		"401" : "Unauthorized",
-		"404" : "Not Found",
-		"405" : "Method Not Allowed",
-		"409" : "Locked",
-		"500" : "Internal Server Error",
-		"503" : "Service Unavailable",
-		"504" : "Gateway Timeout"
-	    }
+        setProperties : function(properties) {
+            _this.properties = properties;
+        },
+        getProperties : function() {
+            return _this.properties;
+        },
+        hasContents : hasContents,
+        checkUndefined : function(name, value) {
+            if (value === undefined) {
+                throw {
+                    type : "undefinedObject",
+                    message : "undefined object: \"" + name + "\""
+                };
+            }
+            return value;
+        },
+        jsonConcat : function (o1, o2) {
+            for (var key in o2) {
+                o1[key] = o2[key];
+            }
+            return o1;
+        },
+        getCurrentTime : function() {
+            var time = new Date();
+            return padZero(time.getMonth() + 1) + "/"
+                + padZero(time.getDate()) + "/"
+                + (time.getFullYear() - 2000) + " "
+                + padZero(time.getHours()) + ":"
+                + padZero(time.getMinutes()) + ":"
+                + padZero(time.getSeconds())
+        },
+        getHttpStatusText : function(statusCode) {
+            var statusMap = {
+                "200" : "OK",
+                "201" : "Created",
+                "202" : "Accepted",
+                "400" : "Bad Request",
+                "401" : "Unauthorized",
+                "404" : "Not Found",
+                "405" : "Method Not Allowed",
+                "409" : "Locked",
+                "500" : "Internal Server Error",
+                "503" : "Service Unavailable",
+                "504" : "Gateway Timeout"
+            }
 
-	    if (status === undefined) {
-		return "Undefined";
-	    }
+            if (status === undefined) {
+                return "Undefined";
+            }
 
-	    var statusText = statusMap[statusCode];
-	    if (statusText === undefined) {
-		statusText = "Unknown";
-	    }
+            var statusText = statusMap[statusCode];
+            if (statusText === undefined) {
+                statusText = "Unknown";
+            }
 
-	    return statusText + " (" + statusCode + ")";
-	},
-	getHttpErrorMessage : function(response) {
-	    var data = response.data;
-	    if (response.status === 500 && hasContents(data.exception)) {
-		var summary = "exception: " + data.exception;
-		if (hasContents(data.message)) {
-		    summary += " message: " + data.message;
-		}
-		return summary;
-	    }
-	    if (response.status === 0 && response.statusText === "") {
-		/*
-		 * This logic is somewhat "fuzzy". Potential (brainstorming)
-		 * enhancements if users find the message unreliable include:
-		 * 
-		 * A) SERVER TIMEOUT: perhaps a newer version of Angular can
-		 * reliably determine timeouts.
-		 * 
-		 * B) SERVER TIMEOUT: recording start / end times and using that
-		 * to determine if timeout occured
-		 * 
-		 * C) SESSION TIMEOUT "Potentially" examine cookies, although
-		 * that may not be feasible if cookies are set to "httponly".
-		 */
-		if (data === null) {
-		    //return "possible server timeout";
-			return "VID has timed out waiting for a response. To see status, close this popup and the screen will be refreshed automatically";
-		}
-		if (data === "") {
-		    return "Possible reasons include a session timeout or a server issue. "
-			    + "A session timeout might be resolved by refreshing the screen and re-logging in";
-		}
-	    }
-	    var summary = "";
-	    if (response.status !== undefined && response.status > 0) {
-		summary = "status: " + response.status;
-	    }
-	    if (hasContents(response.statusText)) {
-		if (summary !== "") {
-		    summary += " ";
-		}
-		summary += "message: " + response.statusText;
-	    }
-	    return summary;
-	},
-	setHttpErrorHandler : function(httpErrorHandler) {
-	    _this.httpErrorHandler = httpErrorHandler;
-	},
-	runHttpErrorHandler : function(response, status) {
-	    httpErrorHandler(response, status);
-	},
-	startAsyncOperations : function(operationList, callbackFunction) {
-	    for (var i = 0; i < operationList.length; i++) {
-		if (!angular.isFunction(operationList[i])) {
-		    throw "UtilityService:startAsyncOperations: invalid function: index: "
-			    + i;
-		}
-	    }
-	    _this.asyncOperations = {
-		operationList : operationList,
-		callbackFunction : callbackFunction,
-		count : 0
-	    };
-	    startNextAsyncOperation();
-	},
-	startNextAsyncOperation : startNextAsyncOperation,
-	stopAsyncOperations : function() {
-	    _this.asyncOperations.count = _this.asyncOperations.operationList.length;
-	},
-	isObjectEmpty : isObjectEmpty,
-	convertModel : convertModel,
-	convertNewModel : convertNewModel,
-	convertOldModel : convertOldModel,
-	arrayContains : function (a, obj) {
-	    var i = a.length;
-	    if ( i > 0 ) {
-		    while (i--) {
-		       if (a[i] === obj) {
-		           return true;
-		       }
-		    }
-	    }
-	    return false;
-	}
-	}
+            return statusText + " (" + statusCode + ")";
+        },
+        getHttpErrorMessage : function(response) {
+            var data = response.data;
+            if ((response.status >= 400 && response.status < 600) && hasContents(data.exception)) {
+                var summary = "exception: " + data.exception;
+                if (hasContents(data.message)) {
+                    summary += " message: " + data.message;
+                }
+                return summary;
+            }
+            if (response.status === 0 && response.statusText === "") {
+				/*
+				 * This logic is somewhat "fuzzy". Potential (brainstorming)
+				 * enhancements if users find the message unreliable include:
+				 *
+				 * A) SERVER TIMEOUT: perhaps a newer version of Angular can
+				 * reliably determine timeouts.
+				 *
+				 * B) SERVER TIMEOUT: recording start / end times and using that
+				 * to determine if timeout occured
+				 *
+				 * C) SESSION TIMEOUT "Potentially" examine cookies, although
+				 * that may not be feasible if cookies are set to "httponly".
+				 */
+                if (data === null) {
+                    //return "possible server timeout";
+                    return "VID has timed out waiting for a response. To see status, close this popup and the screen will be refreshed automatically";
+                }
+                if (data === "") {
+                    return "Possible reasons include a session timeout or a server issue. "
+                        + "A session timeout might be resolved by refreshing the screen and re-logging in";
+                }
+            }
+            var summary = "";
+            if (response.status !== undefined && response.status > 0) {
+                summary = "status: " + response.status;
+            }
+            if (hasContents(response.statusText)) {
+                if (summary !== "") {
+                    summary += " ";
+                }
+                summary += "message: " + response.statusText;
+            }
+            return summary;
+        },
+        setHttpErrorHandler : function(httpErrorHandler) {
+            _this.httpErrorHandler = httpErrorHandler;
+        },
+        runHttpErrorHandler : function(response, status) {
+            httpErrorHandler(response, status);
+        },
+        startAsyncOperations : function(operationList, callbackFunction) {
+            for (var i = 0; i < operationList.length; i++) {
+                if (!angular.isFunction(operationList[i])) {
+                    throw "UtilityService:startAsyncOperations: invalid function: index: "
+                    + i;
+                }
+            }
+            _this.asyncOperations = {
+                operationList : operationList,
+                callbackFunction : callbackFunction,
+                count : 0
+            };
+            startNextAsyncOperation();
+        },
+        startNextAsyncOperation : startNextAsyncOperation,
+        stopAsyncOperations : function() {
+            _this.asyncOperations.count = _this.asyncOperations.operationList.length;
+        },
+        isObjectEmpty : isObjectEmpty,
+        convertModel : convertModel,
+        convertNewModel : convertNewModel,
+        convertOldModel : convertOldModel,
+        arrayContains : function (a, obj) {
+            var i = a.length;
+            if ( i > 0 ) {
+                while (i--) {
+                    if (a[i] === obj) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
 }
 
 //app.factory("UtilityService", UtilityService);

@@ -1,0 +1,101 @@
+{"results": [
+  {
+    "id": "1976357096",
+    "node-type": "generic-vnf",
+    "url": "/aai/v11/network/generic-vnfs/generic-vnf/VNF-1-9887-jc689q",
+    "properties":       {
+      "vnf-id": "0846287b-65bf-45a6-88f6-6a1af4149fac",
+      "vnf-name": "vnf9887-1jc689q",
+      "vnf-name2": "notused",
+      "vnf-type": "VRR",
+      "service-id": "VRRaaS",
+      "regional-resource-zone": "notusedforMobility",
+      "prov-status": "PREPROV",
+      "operational-status": "",
+      "license-key": "novalue",
+      "equipment-role": "VRR",
+      "orchestration-status": "Created",
+      "heat-stack-id": "1234",
+      "mso-catalog-key": "msokey",
+      "ipv4-oam-address": "135.60.77.25",
+      "ipv4-loopback0-address": "12.60.77.25",
+      "nm-lan-v6-address": "2001:1890:1F8:2075::1:4",
+      "management-v6-address": "2001:1890:1F8:2075::1:5",
+      "in-maint": false,
+      "is-closed-loop-disabled": false,
+      "resource-version": "1505337418309",
+      "model-invariant-id": "96129eb9-f0de-4e05-8af2-73146473f766",
+      "model-version-id": "5761e0a7-c6df-4d8a-9ebd-b8f445054dec",
+      "widget-model-id": "78789",
+      "widget-model-version": "7",
+      "nf-function": "nf-function in ASDC",
+      "nf-role": "nf-role in ASDC",
+      "nf-naming-code": "code in ASDC",
+      "selflink": "pathToController"
+    },
+    "related-to":       [
+      {
+        "id": "1689710648",
+        "node-type": "service-instance",
+        "url": "/aai/v11/business/customers/customer/customer-9887-jc689q/service-subscriptions/service-subscription/VRR/service-instances/service-instance/SI-9887-jc689q"
+      },
+      {
+        "id": "1362120784",
+        "node-type": "vserver",
+        "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/cloudOwner-id-9887-jc689q/cloudRegion-id-9887-jc689q/tenants/tenant/tenant-id-9887-jc689q/vservers/vserver/vserver-id-2-9887-jc689q"
+      },
+      {
+        "id": "2017317104",
+        "node-type": "vserver",
+        "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/cloudOwner-id-9887-jc689q/cloudRegion-id-9887-jc689q/tenants/tenant/tenant-id-9887-jc689q/vservers/vserver/vserver-id-1-9887-jc689q"
+      }
+    ]
+  },
+  {
+    "id": "2362269792",
+    "node-type": "generic-vnf",
+    "url": "/aai/v11/network/generic-vnfs/generic-vnf/VNF-2-9887-jc689q",
+    "properties":       {
+      "vnf-id": "c187e9fe-40c3-4862-b73e-84ff056205f6",
+      "vnf-name": "vnf9887-2jc689q",
+      "vnf-name2": "notused",
+      "vnf-type": "VRR",
+      "service-id": "VRRaaS",
+      "regional-resource-zone": "notusedforMobility",
+      "prov-status": "PREPROV",
+      "operational-status": "",
+      "license-key": "novalue",
+      "equipment-role": "VRR",
+      "orchestration-status": "Created",
+      "heat-stack-id": "1234",
+      "mso-catalog-key": "msokey",
+      "ipv4-oam-address": "135.60.77.25",
+      "ipv4-loopback0-address": "12.60.77.25",
+      "nm-lan-v6-address": "2001:1890:1F8:2075::1:4",
+      "management-v6-address": "2001:1890:1F8:2075::1:5",
+      "in-maint": false,
+      "is-closed-loop-disabled": false,
+      "resource-version": "1505337418754",
+      "model-invariant-id": "96129eb9-f0de-4e05-8af2-73146473f766",
+      "model-version-id": "5761e0a7-c6df-4d8a-9ebd-b8f445054dec",
+      "widget-model-id": "78789",
+      "widget-model-version": "7",
+      "nf-function": "nf-function in ASDC",
+      "nf-role": "nf-role in ASDC",
+      "nf-naming-code": "code in ASDC",
+      "selflink": "pathToController"
+    },
+    "related-to":       [
+      {
+        "id": "1689710648",
+        "node-type": "service-instance",
+        "url": "/aai/v11/business/customers/customer/customer-9887-jc689q/service-subscriptions/service-subscription/VRR/service-instances/service-instance/SI-9887-jc689q"
+      },
+      {
+        "id": "1689706552",
+        "node-type": "vserver",
+        "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/cloudOwner-id-9887-jc689q/cloudRegion-id-9887-jc689q/tenants/tenant/tenant-id-9887-jc689q/vservers/vserver/vserver-id-3-9887-jc689q"
+      }
+    ]
+  }
+]}

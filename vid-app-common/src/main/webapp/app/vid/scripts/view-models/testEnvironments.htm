@@ -1,0 +1,82 @@
+<link rel="stylesheet" type="text/css" href="app/vid/styles/testEnvironments.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/buttons.css" />
+<div class="test-environments">
+    <div class="header">
+        <div class="header-left">
+            <span data-tests-id="test-environments-headline" class="headline">Test Environments {{vm.total}}</span>
+            <span class="separator"></span>
+            <div class="button-container" ng-click="vm.createNewTestEnvironment()">
+                <div class="icon-svg" data-tests-id="test-environments-new-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 55.47337 55.63023"><path class="icon-filling" d="M27.7367.07843A27.73669,27.73669,0,1,0,55.4734,27.81512,27.73757,27.73757,0,0,0,27.7367.07843ZM40.18824,29.6178H29.53938V40.26666a1.80267,1.80267,0,0,1-3.60535,0V29.6178H15.28516a1.80267,1.80267,0,0,1,0-3.60535H25.934V15.36359a1.80267,1.80267,0,0,1,3.60535,0V26.01245H40.18824a1.80267,1.80267,0,1,1,0,3.60535Z"/></svg>
+                </div>
+                <span class="button-text">Create New</span>
+            </div>
+            <span class="separator"></span>
+        </div>
+        <search-text data-tests-id="test-environments-search" search-string="vm.searchString"></search-text>
+    </div>
+    <div class="error-messages" ng-if="vm.emptyData || vm.connectError">
+        <message-viewer data-tests-id="test-environments-no-data" primary-message="No test environment was created yet" secondary-message="create new to start testing" icon="app/vid/images/emptyData.svg" class="no-data" ng-if="vm.emptyData">
+        </message-viewer>
+        <message-viewer data-tests-id="test-environments-error" primary-message="Something went wrong" secondary-message="{{vm.connectError}}" icon="app/vid/images/icon_noconnection.svg" try-again="vm.loadAAIestEnvironments()" class="connect-error" ng-if="vm.connectError">
+        </message-viewer>
+    </div>
+    <div class="environments-table" ng-if="vm.environments.length">
+        <div class="row">
+            <div class="col-md-12">
+                <button data-tests-id="test-environments-refresh" class="refresh" type="button" ng-click="vm.loadAAIestEnvironments()">
+                    <div ng-include src="'app/vid/images/refresh.svg'"></div>
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 test-environments-table-container">
+                <table data-tests-id="test-environments-table" att-table table-data="vm.environments" search-category="searchCategory" search-string="vm.searchString" class="table table-bordered"  id="environments-table">
+                    <thead att-table-row type="header" class="thead-default">
+                        <tr>
+                            <th att-table-header default-sort="A" key="operationalEnvironmentId">Environment ID</th>
+                            <th att-table-header key="operationalEnvironmentName">Environment Name</th>
+                            <th att-table-header key="relationshipList.relationship[0].relationshipData[0].relationshipValue">ECOMP Environment ID</th>
+                            <th att-table-header key="relationshipList.relationship[0].relatedToProperty[0].propertyValue">ECOMP Environment Name</th>
+                            <th att-table-header key="tenantContext">Tenant Context</th>
+                            <th att-table-header key="operationalEnvironmentType">Environment Type</th>
+                            <th att-table-header key="workloadContext">Workload Context</th>
+                            <th att-table-header sortable="false">Status</th>
+                            <th att-table-header sortable="false">Action</th>
+                            <th att-table-header sortable="false">Attach Manifest</th>
+                        </tr>
+                    </thead>
+                    <tbody att-table-row type="body" row-repeat="environment in vm.environments">
+                        <tr>
+                            <td att-table-body ng-bind="environment.operationalEnvironmentId"></td>
+                            <td att-table-body ng-bind="environment.operationalEnvironmentName"></td>
+                            <td att-table-body ng-bind="environment.relationshipList.relationship[0].relationshipData? environment.relationshipList.relationship[0].relationshipData[0].relationshipValue: ''"></td>
+                            <td att-table-body ng-bind="environment.relationshipList.relationship[0].relatedToProperty? environment.relationshipList.relationship[0].relatedToProperty[0].propertyValue: ''"></td>
+                            <td att-table-body ng-bind="environment.tenantContext"></td>
+                            <td att-table-body ng-bind="environment.operationalEnvironmentType"></td>
+                            <td att-table-body ng-bind="environment.workloadContext"></td>
+                            <td att-table-body ng-bind="vm.getEnvStatus(environment)" id="testEnvStatus-{{environment.operationalEnvironmentId}}"></td>
+                            <td att-table-body>
+                                <button id="testEnvActivate-{{environment.operationalEnvironmentId}}" type="button" class="blue envActionBtn"
+                                        ng-click="vm.onTestEnvActivateClick(environment)" ng-show="!vm.isEnvActive(environment)">Activate</button>
+                                <button id="testEnvDeactivate-{{environment.operationalEnvironmentId}}" type="button" class="blue envActionBtn"
+                                        ng-click="vm.onTestEnvDeactivateClick(environment)" ng-show="vm.isEnvActive(environment)">Deactivate</button>
+                            </td>
+                            <td att-table-body>
+                                <button id="testEnvAttach-{{environment.operationalEnvironmentId}}" class="transparent attach-button"
+                                        ng-click="vm.onTestEnvActivateClick(environment)" ng-show="vm.isEnvActive(environment)">
+                                    <img src="app/vid/images/attach.svg">
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
+     ng-cloak>
+    <div ng-include="'app/vid/scripts/view-models/msoCommit.htm'"></div>
+</div>

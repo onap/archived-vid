@@ -60,3 +60,11 @@ div[ng-controller=InstantiationController] .aaiHidden {
 div[ng-controller=InstantiationController] .aaiVisible {
 	visibility: visible;
 }
+
+div.resume {
+	display: inline;
+}
+
+a.button-margin {
+	margin-right: 8px;
+}

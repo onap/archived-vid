@@ -1,0 +1,340 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/scheduler/v1/ChangeManagement/schedules/scheduleDetails/?"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": [
+      {
+        "vnfName": "ctsf0002v",
+        "status": "Deleted",
+        "aotsChangeId": "CHG000004000643",
+        "aotsStatus": "Closed",
+        "aotsApprovalStatus": "Approved",
+        "groupId": "",
+        "dispatchTime": "2017-10-06T17:09:27Z",
+        "executionCompletedTime": "2017-10-06T17:09:37Z",
+        "msoRequestId": "1c74b28f-8914-4e8d-a23e-de036ccf88be",
+        "msoStatus": "COMPLETE",
+        "msoMessage": "Vf Module has been created successfully.",
+        "msoTime": "2017-10-06T17:09:37Z",
+        "scheduleRequest": {
+          "id": 506,
+          "createDateTime": "2017-10-06T17:09:11Z",
+          "optimizerAttemptsToSchedule": 0,
+          "optimizerTransactionId": "0226821c-3f32-4001-b236-a9dc34414fe3",
+          "scheduleId": "0226821c-3f32-4001-b236-a9dc34414fe3",
+          "scheduleName": "0226821c-3f32-4001-b236-a9dc34414fe3",
+          "status": "Deleted",
+          "userId": "su7376",
+          "domain": "ChangeManagement",
+          "deleteDateTime": "2017-10-06T17:10:37Z",
+          "domainData": [
+            {
+              "id": 1516,
+              "name": "CallbackData",
+              "value": "{\"requestDetails\": [{\"vnfInstanceId\": \"Test\", \"relatedInstanceList\": [{\"relatedInstance\": {\"instanceId\": \"{serviceInstanceId}\", \"modelInfo\": {\"modelName\": \"{parent service model name}\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff3514e3-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"service\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"9ebb1521-2e74-47a4-aac7-e71a79f73a79\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}}}], \"requestParameters\": {\"usePreload\": true}, \"requestInfo\": {\"source\": \"VID\", \"requestorId\": \"az2016\", \"suppressRollback\": false}, \"vnfName\": \"Name\", \"modelInfo\": {\"modelName\": \"vSAMP12\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff5256d1-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"vnf\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"254583ad-b38c-498b-bdbd-b8de5e07541b\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}, \"cloudConfiguration\": {\"tenantId\": \"88a6ca3ee0394ade9403f075db23167e\", \"lcpCloudRegionId\": \"mdt1\"}}]}"
+            },
+            {
+              "id": 1517,
+              "name": "WorkflowName",
+              "value": "ReplaceVnfInfra"
+            },
+            {
+              "id": 1518,
+              "name": "CallbackUrl",
+              "value": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid"
+            }
+          ],
+          "scheduleApprovals": []
+        },
+        "schedulesId": 0
+      },
+      {
+        "vnfName": "ZRDM1MMSC0450d9",
+        "vnfId": "",
+        "status": "Pending Approval",
+        "startTime": "2017-10-06T17:12:39Z",
+        "finishTime": "2017-10-06T17:14:29Z",
+        "groupId": "",
+        "lastInstanceStartTime": "2017-10-06T17:12:39Z",
+        "policyId": "SNIRO.TimeLimitAndVerticalTopology",
+        "scheduleRequest": {
+          "id": 508,
+          "createDateTime": "2017-10-06T17:11:39Z",
+          "optimizerDateTime": "2017-10-06T17:11:47Z",
+          "optimizerStatus": "Done.",
+          "optimizerAttemptsToSchedule": 0,
+          "optimizerReturnDateTime": "2017-10-06T17:11:47Z",
+          "optimizerTransactionId": "83aec7bf-602f-49eb-9788-bbc33ac550d9",
+          "schedule": "[{\"groupId\":\"\",\"startTime\":\"2017-10-06 17:12:39\",\"finishTime\":\"2017-10-06 17:14:29\",\"latestInstanceStartTime\":\"2017-10-06 17:12:39\",\"node\":[\"ZRDM1MMSC0450d9\"]}]",
+          "scheduleId": "83aec7bf-602f-49eb-9788-bbc33ac550d9",
+          "scheduleName": "83aec7bf-602f-49eb-9788-bbc33ac550d9",
+          "status": "Pending Approval",
+          "userId": "su7376",
+          "domain": "ChangeManagement",
+          "domainData": [
+            {
+              "id": 1522,
+              "name": "CallbackData",
+              "value": "{\"requestDetails\": [{\"vnfInstanceId\": \"Test\", \"relatedInstanceList\": [{\"relatedInstance\": {\"instanceId\": \"{serviceInstanceId}\", \"modelInfo\": {\"modelName\": \"{parent service model name}\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff3514e3-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"service\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"9ebb1521-2e74-47a4-aac7-e71a79f73a79\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}}}], \"requestParameters\": {\"usePreload\": true}, \"requestInfo\": {\"source\": \"VID\", \"requestorId\": \"az2016\", \"suppressRollback\": false}, \"vnfName\": \"Name\", \"modelInfo\": {\"modelName\": \"vSAMP12\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff5256d1-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"vnf\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"254583ad-b38c-498b-bdbd-b8de5e07541b\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}, \"cloudConfiguration\": {\"tenantId\": \"88a6ca3ee0394ade9403f075db23167e\", \"lcpCloudRegionId\": \"mdt1\"}}]}"
+            },
+            {
+              "id": 1523,
+              "name": "WorkflowName",
+              "value": "ReplaceVnfInfra"
+            },
+            {
+              "id": 1524,
+              "name": "CallbackUrl",
+              "value": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid"
+            }
+          ],
+          "scheduleApprovals": [
+            {
+              "approvalDateTime": "2017-10-06T17:11:50Z",
+              "status": "Rejected",
+              "userId": "jf9860",
+              "approvalTypeId": 1
+            }
+          ]
+        },
+        "schedulesId": 0
+      },
+      {
+        "vnfName": "VNFName22056",
+        "vnfId": "",
+        "status": "Deleted",
+        "aotsChangeId": "CHG000004000637",
+        "aotsApprovalStatus": "Approved",
+        "startTime": "2017-10-06T17:04:33Z",
+        "finishTime": "2017-10-06T17:06:23Z",
+        "groupId": "",
+        "lastInstanceStartTime": "2017-10-06T17:04:33Z",
+        "policyId": "SNIRO.TimeLimitAndVerticalTopology",
+        "statusMessage": "CM_TICKET_NOT_APPROVED Attempt to dispatch a change management event that has no AOTS Ticket approved. scheduleId=e23bf714-069c-43f5-97c9-870fee9b2056 VNF Name=VNFName22056 AOTS ChangeId=CHG000004000637 Status=Assigned Approval Status=Approval Required",
+        "scheduleRequest": {
+          "id": 504,
+          "createDateTime": "2017-10-06T17:03:33Z",
+          "optimizerDateTime": "2017-10-06T17:03:37Z",
+          "optimizerStatus": "Done.",
+          "optimizerAttemptsToSchedule": 0,
+          "optimizerReturnDateTime": "2017-10-06T17:03:37Z",
+          "optimizerTransactionId": "e23bf714-069c-43f5-97c9-870fee9b2056",
+          "schedule": "[{\"groupId\":\"\",\"startTime\":\"2017-10-06 17:04:33\",\"finishTime\":\"2017-10-06 17:06:23\",\"latestInstanceStartTime\":\"2017-10-06 17:04:33\",\"node\":[\"VNFName12056\",\"VNFName22056\",\"VNFName32056\"]}]",
+          "scheduleId": "e23bf714-069c-43f5-97c9-870fee9b2056",
+          "scheduleName": "e23bf714-069c-43f5-97c9-870fee9b2056",
+          "status": "Deleted",
+          "userId": "su7376",
+          "domain": "ChangeManagement",
+          "deleteDateTime": "2017-10-29T13:15:46Z",
+          "domainData": [
+            {
+              "id": 1510,
+              "name": "CallbackData",
+              "value": "{\"requestDetails\": [{\"vnfInstanceId\": \"Test\", \"relatedInstanceList\": [{\"relatedInstance\": {\"instanceId\": \"{serviceInstanceId}\", \"modelInfo\": {\"modelName\": \"{parent service model name}\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff3514e3-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"service\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"9ebb1521-2e74-47a4-aac7-e71a79f73a79\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}}}], \"requestParameters\": {\"usePreload\": true}, \"requestInfo\": {\"source\": \"VID\", \"requestorId\": \"az2016\", \"suppressRollback\": false}, \"vnfName\": \"Name\", \"modelInfo\": {\"modelName\": \"vSAMP12\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff5256d1-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"vnf\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"254583ad-b38c-498b-bdbd-b8de5e07541b\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}, \"cloudConfiguration\": {\"tenantId\": \"88a6ca3ee0394ade9403f075db23167e\", \"lcpCloudRegionId\": \"mdt1\"}}]}"
+            },
+            {
+              "id": 1511,
+              "name": "WorkflowName",
+              "value": "ReplaceVnfInfra"
+            },
+            {
+              "id": 1512,
+              "name": "CallbackUrl",
+              "value": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid"
+            }
+          ],
+          "scheduleApprovals": [
+            {
+              "approvalDateTime": "2017-10-06T17:03:39Z",
+              "status": "Accepted",
+              "userId": "jf9860",
+              "approvalTypeId": 1
+            }
+          ]
+        },
+        "schedulesId": 0
+      },
+      {
+        "vnfName": "VNFName244dd",
+        "vnfId": "",
+        "status": "Deleted",
+        "aotsChangeId": "CHG000000000001",
+        "aotsStatus": "Closed",
+        "aotsApprovalStatus": "Approved",
+        "startTime": "2017-10-02T19:28:00Z",
+        "finishTime": "2017-10-02T19:29:50Z",
+        "groupId": "Group1",
+        "lastInstanceStartTime": "2017-10-02T19:28:00Z",
+        "policyId": "SNIRO.TimeLimitAndVerticalTopology",
+        "dispatchTime": "2017-10-02T19:27:59Z",
+        "executionCompletedTime": "2017-10-02T19:28:09Z",
+        "msoRequestId": "1c74b28f-8914-4e8d-a23e-de036ccf88be",
+        "msoStatus": "COMPLETE",
+        "msoMessage": "Vf Module has been created successfully.",
+        "msoTime": "2017-10-02T19:28:09Z",
+        "scheduleRequest": {
+          "id": 425,
+          "createDateTime": "2017-10-02T19:27:00Z",
+          "optimizerDateTime": "2017-10-02T19:27:06Z",
+          "optimizerStatus": "Done.",
+          "optimizerAttemptsToSchedule": 0,
+          "optimizerReturnDateTime": "2017-10-02T19:27:06Z",
+          "optimizerTransactionId": "654e859a-02c1-4ad9-ad44-66f0b6d144dd",
+          "schedule": "[{\"groupId\":\"Group1\",\"startTime\":\"2017-10-02 19:28:00\",\"finishTime\":\"2017-10-02 19:29:50\",\"latestInstanceStartTime\":\"2017-10-02 19:28:00\",\"node\":[\"VNFName144dd\",\"VNFName244dd\",\"VNFName344dd\",\"VNFName444dd\"]}]",
+          "scheduleId": "654e859a-02c1-4ad9-ad44-66f0b6d144dd",
+          "scheduleName": "654e859a-02c1-4ad9-ad44-66f0b6d144dd",
+          "status": "Deleted",
+          "userId": "su7376",
+          "domain": "ChangeManagement",
+          "deleteDateTime": "2017-10-02T19:28:56Z",
+          "domainData": [
+            {
+              "id": 1273,
+              "name": "CallbackData",
+              "value": "{\"requestDetails\": [{\"vnfInstanceId\": \"Test\", \"relatedInstanceList\": [{\"relatedInstance\": {\"instanceId\": \"{serviceInstanceId}\", \"modelInfo\": {\"modelName\": \"{parent service model name}\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff3514e3-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"service\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"9ebb1521-2e74-47a4-aac7-e71a79f73a79\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}}}], \"requestParameters\": {\"usePreload\": true}, \"requestInfo\": {\"source\": \"VID\", \"requestorId\": \"az2016\", \"suppressRollback\": false}, \"vnfName\": \"Name\", \"modelInfo\": {\"modelName\": \"vSAMP12\", \"modelVersion\": \"2.0\", \"modelInvariantId\": \"ff5256d1-5a33-55df-13ab-12abad84e7ff\", \"modelType\": \"vnf\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"254583ad-b38c-498b-bdbd-b8de5e07541b\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}, \"cloudConfiguration\": {\"tenantId\": \"88a6ca3ee0394ade9403f075db23167e\", \"lcpCloudRegionId\": \"mdt1\"}}]}"
+            },
+            {
+              "id": 1274,
+              "name": "WorkflowName",
+              "value": "ReplaceVnfInfra"
+            },
+            {
+              "id": 1275,
+              "name": "CallbackUrl",
+              "value": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid"
+            }
+          ],
+          "scheduleApprovals": [
+            {
+              "approvalDateTime": "2017-10-02T19:27:11Z",
+              "status": "Accepted",
+              "userId": "jf9860",
+              "approvalTypeId": 1
+            }
+          ]
+        },
+        "schedulesId": 0
+      },
+      {
+        "vnfName": "satmo455vbc",
+        "status": "Scheduled",
+        "aotsChangeId": "CHG000004001141",
+        "aotsApprovalStatus": "Approved",
+        "groupId": "group1",
+        "scheduleRequest": {
+          "id": 529,
+          "createDateTime": "2017-10-11T21:06:51Z",
+          "optimizerAttemptsToSchedule": 0,
+          "optimizerTransactionId": "0b87fe60-50b0-4bac-a0a7-49e951b0ba9e",
+          "scheduleId": "0b87fe60-50b0-4bac-a0a7-49e951b0ba9e",
+          "scheduleName": "VnfUpgrade/DWF",
+          "status": "Scheduled",
+          "userId": "su7376",
+          "domain": "ChangeManagement",
+          "domainData": [
+            {
+              "id": 1585,
+              "name": "WorkflowName",
+              "value": "ReplaceVnfInfra"
+            },
+            {
+              "id": 1586,
+              "name": "CallbackUrl",
+              "value": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid"
+            },
+            {
+              "id": 1587,
+              "name": "CallbackData",
+              "value": "testing"
+            }
+          ],
+          "scheduleApprovals": []
+        },
+        "schedulesId": 0
+      },
+      {
+        "vnfName": "ZRDM1MMSC04482c",
+        "status": "Deleted",
+        "groupId": "",
+        "policyId": "SNIRO.Config_MS_Demo_TimeLimitAndVerticalTopology_zone",
+        "scheduleRequest": {
+          "id": 2,
+          "createDateTime": "2017-09-06T13:34:07Z",
+          "optimizerDateTime": "2017-09-06T13:34:09Z",
+          "optimizerMessage": "Error while processing request ID: CM-896de9fc-aa5f-446d-b8ea-801f2bb9c282 -- Failed Processing; cause: Traceback (most recent call last):\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 1122, in _do_get\n    return self._pool.get(wait, self._timeout)\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/util/queue.py\", line 145, in get\n    raise Empty\nsqlalchemy.util.queue.Empty\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/opt/app/sniro/sniroapp/sniro/optimizers/cmopt/rcscheduler/local_opt_processor.py\", line 15, in process_local_cm_scheduler_opt\n    full_process_local_cm_scheduler_opt(request_json, policies, sniro_config)\n  File \"/opt/app/sniro/sniroapp/sniro/optimizers/cmopt/rcscheduler/local_opt_processor.py\", line 38, in full_process_local_cm_scheduler_opt\n    json_req = create_cm_scheduler_request(request_json, policies, all_req_info)\n  File \"/opt/app/sniro/sniroapp/sniro/optimizers/cmopt/rcscheduler/request_builder.py\", line 16, in create_cm_scheduler_request\n    cm = vertical_topology.VerticalConflicts(request_json)  # TODO: rename + refactor\n  File \"/opt/app/sniro/sniroapp/sniro/datasources/aai/vertical_topology.py\", line 58, in __init__\n    self.v_p_topo, self.clli = vserver_pserver_topology(self.vnfs)\n  File \"/opt/app/sniro/sniroapp/sniro/datasources/aai/aai_vertica.py\", line 91, in vserver_pserver_topology\n    vertica = AAIVertica()\n  File \"/opt/app/sniro/sniroapp/sniro/datasources/aai/aai_vertica.py\", line 19, in __init__\n    self.fresh_connection()\n  File \"/opt/app/sniro/sniroapp/sniro/datasources/aai/aai_vertica.py\", line 23, in fresh_connection\n    self.conn, self.cursor = VerticaDB().connect()\n  File \"/opt/app/sniro/sniroapp/sniro/datasources/db_adapters/VerticaDB.py\", line 35, in connect\n    conn = self.connection_pool.connect()\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 387, in connect\n    return _ConnectionFairy._checkout(self)\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 766, in _checkout\n    fairy = _ConnectionRecord.checkout(pool)\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 516, in checkout\n    rec = pool._do_get()\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 1138, in _do_get\n    self._dec_overflow()\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/util/langhelpers.py\", line 66, in __exit__\n    compat.reraise(exc_type, exc_value, exc_tb)\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/util/compat.py\", line 187, in reraise\n    raise value\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 1135, in _do_get\n    return self._create_connection()\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 333, in _create_connection\n    return _ConnectionRecord(self)\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 461, in __init__\n    self.__connect(first_connect_check=True)\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 651, in __connect\n    connection = pool._invoke_creator(self)\n  File \"/usr/local/lib/python3.5/site-packages/sqlalchemy/pool.py\", line 294, in <lambda>\n    return lambda crec: creator()\n  File \"/opt/app/sniro/sniroapp/sniro/datasources/db_adapters/VerticaDB.py\", line 20, in get_connection\n    jars=[p['db_driver']]\n  File \"/usr/local/lib/python3.5/site-packages/jaydebeapi/__init__.py\", line 381, in connect\n    jconn = _jdbc_connect(jclassname, url, driver_args, jars, libs)\n  File \"/usr/local/lib/python3.5/site-packages/jaydebeapi/__init__.py\", line 199, in _jdbc_connect_jpype\n    return jpype.java.sql.DriverManager.getConnection(url, *dargs)\njpype._jexception.java.sql.SQLExceptionPyRaisable: java.sql.SQLException: [Vertica][VJDBC](2983) FATAL: Database \"PDWQ\" does not exist\n",
+          "optimizerStatus": "failed",
+          "optimizerAttemptsToSchedule": 0,
+          "optimizerReturnDateTime": "2017-09-06T13:34:10Z",
+          "optimizerTransactionId": "e12ee39a-6c9c-42a7-9a96-0cfc6eca482c",
+          "scheduleId": "e12ee39a-6c9c-42a7-9a96-0cfc6eca482c",
+          "scheduleName": "e12ee39a-6c9c-42a7-9a96-0cfc6eca482c",
+          "status": "Deleted",
+          "userId": "su7376",
+          "domain": "ChangeManagement",
+          "deleteDateTime": "2017-11-07T12:40:50Z",
+          "domainData": [
+            {
+              "id": 4,
+              "name": "CallbackData",
+              "value": "{\"requestDetails\": [{\"vnfInstanceId\": \"Test\", \"relatedInstanceList\": [{\"relatedInstance\": {\"instanceId\": \"{serviceInstanceId}\", \"modelInfo\": {\"modelName\": \"{parent service model name}\", \"modelVersion\": \"2.0\", \"modelType\": \"service\", \"modelInvariantId\": \"ff3514e3-5a33-55df-13ab-12abad84e7ff\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"9ebb1521-2e74-47a4-aac7-e71a79f73a79\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}}}], \"requestParameters\": {\"usePreload\": \"True\"}, \"requestInfo\": {\"source\": \"VID\", \"requestorId\": \"az2016\", \"suppressRollback\": \"False\"}, \"vnfName\": \"Name\", \"modelInfo\": {\"modelName\": \"vSAMP12\", \"modelVersion\": \"2.0\", \"modelType\": \"vnf\", \"modelInvariantId\": \"ff5256d1-5a33-55df-13ab-12abad84e7ff\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"254583ad-b38c-498b-bdbd-b8de5e07541b\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}, \"cloudConfiguration\": {\"lcpCloudRegionId\": \"mdt1\", \"tenantId\": \"88a6ca3ee0394ade9403f075db23167e\"}}]}"
+            },
+            {
+              "id": 5,
+              "name": "WorkflowName",
+              "value": "Build Software Upgrade for vNFs"
+            },
+            {
+              "id": 6,
+              "name": "CallbackUrl",
+              "value": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid"
+            }
+          ],
+          "scheduleApprovals": []
+        },
+        "schedulesId": 0
+      },
+      {
+        "vnfName": "StaticallyRegistered   ",
+        "status": "Pending Schedule",
+        "groupId": "",
+        "policyId": "SNIRO.Config_MS_Demo_TimeLimitAndVerticalTopology_zone",
+        "scheduleRequest": {
+          "id": 1,
+          "createDateTime": "2017-09-06T13:29:43Z",
+          "optimizerDateTime": "2017-09-06T13:29:55Z",
+          "optimizerMessage": "\n{\n  \"requestError\": {\n     \"serviceException\": {\n        \"messageId\": \"SVC0001\",\n        \"requestId\": \"CM-c098bd33-a51e-461b-8fd2-6c4d2666c706\",\n        \"text\": \"sniro.operation.exceptions.PolicyNotFoundException: Cannot fetch policy SNIRO.Config_MS_Demo_TimeLimitAndVerticalTopology_zone: : HTTPSConnectionPool(host='policypdp-conexus-ist.ecomp.cci.att.com', port=8081): Max retries exceeded with url: /pdp/getConfig (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x7f0ecc00d6d8>, 'Connection to policypdp-conexus-ist.ecomp.cci.att.com timed out. (connect timeout=6.5)'))\",\n        \"variables\": [\"severity\", 400]\n     }\n  }\n}",
+          "optimizerStatus": "HTTP Status: 400",
+          "optimizerAttemptsToSchedule": 1,
+          "optimizerTransactionId": "08fb4c32-ecb4-4d72-b618-a6156d3fc53a",
+          "scheduleId": "08fb4c32-ecb4-4d72-b618-a6156d3fc53a",
+          "scheduleName": "08fb4c32-ecb4-4d72-b618-a6156d3fc53a",
+          "status": "Schedule Failed",
+          "userId": "su7376",
+          "domain": "ChangeManagement",
+          "domainData": [
+            {
+              "id": 1,
+              "name": "CallbackData",
+              "value": "{\"requestDetails\": [{\"vnfInstanceId\": \"Test\", \"relatedInstanceList\": [{\"relatedInstance\": {\"instanceId\": \"{serviceInstanceId}\", \"modelInfo\": {\"modelName\": \"{parent service model name}\", \"modelVersion\": \"2.0\", \"modelType\": \"service\", \"modelInvariantId\": \"ff3514e3-5a33-55df-13ab-12abad84e7ff\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"9ebb1521-2e74-47a4-aac7-e71a79f73a79\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}}}], \"requestParameters\": {\"usePreload\": \"True\"}, \"requestInfo\": {\"source\": \"VID\", \"requestorId\": \"az2016\", \"suppressRollback\": \"False\"}, \"vnfName\": \"Name\", \"modelInfo\": {\"modelName\": \"vSAMP12\", \"modelVersion\": \"2.0\", \"modelType\": \"vnf\", \"modelInvariantId\": \"ff5256d1-5a33-55df-13ab-12abad84e7ff\", \"modelCustomizationName\": \"vSAMP12 1\", \"modelVersionId\": \"254583ad-b38c-498b-bdbd-b8de5e07541b\", \"modelCustomizationId\": \"c539433a-84a6-4082-a12e-5c9b00c3b960\"}, \"cloudConfiguration\": {\"lcpCloudRegionId\": \"mdt1\", \"tenantId\": \"88a6ca3ee0394ade9403f075db23167e\"}}]}"
+            },
+            {
+              "id": 2,
+              "name": "WorkflowName",
+              "value": "Build Software Upgrade for vNFs"
+            },
+            {
+              "id": 3,
+              "name": "CallbackUrl",
+              "value": "http://127.0.0.1:8989/scheduler/v1/loopbacktest/vid"
+            }
+          ],
+          "scheduleApprovals": []
+        },
+        "schedulesId": 0
+      }
+    ]
+  }
+}

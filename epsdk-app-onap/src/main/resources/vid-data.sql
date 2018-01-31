@@ -28,8 +28,11 @@ DELETE FROM `fn_tab`;
 DELETE FROM `fn_function`;
 DELETE FROM `fn_lu_alert_method`;
 DELETE FROM `fn_lu_activity`;
+DELETE FROM `fn_lu_call_times`;
+DELETE FROM `fn_lu_country`;
 DELETE FROM `fn_lu_menu_set`;
 DELETE FROM `fn_lu_priority`;
+DELETE FROM `fn_lu_state`;
 DELETE FROM `fn_lu_tab_set`;
 
 --
@@ -44,6 +47,31 @@ REPLACE INTO `cr_raptor_action_img` VALUES ('DELETE','/static/fusion/raptor/img/
 INSERT IGNORE INTO `fn_app` VALUES (1,'Default',null,'Some Default Description','Some Default Note',null,null,null,'ECPP','?',1,'okYTaDrhzibcbGVq5mjkVQ==','N','N',null,'Default',null,null,'ECOMP-PORTAL-INBOX');
 
 
+--
+-- Dumping data for table `vid_workflow`
+--
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (1, 'Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Update';
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (2, 'Replace') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Replace';
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (3, 'VNF In Place Software Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='VNF In Place Software Update';
+
+
+--
+-- Dumping data for table `vid_category_parameter`
+--
+INSERT INTO `vid_category_parameter` (`CATEGORY_ID`, `NAME`, `ID_SUPPORTED`, `FAMILY`,`CREATED_DATE`, `MODIFIED_DATE`) VALUES (1, 'platform', 0, 'PARAMETER_STANDARDIZATION','2017-09-12 17:01:13', '2017-09-12 17:01:13') ON DUPLICATE KEY UPDATE NAME='platform';
+INSERT INTO `vid_category_parameter` (`CATEGORY_ID`, `NAME`, `ID_SUPPORTED`, `FAMILY`,`CREATED_DATE`, `MODIFIED_DATE`) VALUES (2, 'project', 0, 'PARAMETER_STANDARDIZATION','2017-09-12 18:23:54', '2017-09-13 15:05:25') ON DUPLICATE KEY UPDATE NAME='project';
+INSERT INTO `vid_category_parameter` (`CATEGORY_ID`, `NAME`, `ID_SUPPORTED`, `FAMILY`,`CREATED_DATE`, `MODIFIED_DATE`) VALUES (3, 'lineOfBusiness', 0,'PARAMETER_STANDARDIZATION', '2017-09-12 18:24:14', '2017-09-12 18:24:15') ON DUPLICATE KEY UPDATE NAME='lineOfBusiness';
+INSERT INTO `vid_category_parameter` (`CATEGORY_ID`, `NAME`, `ID_SUPPORTED`, `FAMILY`,`CREATED_DATE`, `MODIFIED_DATE`) VALUES (4, 'owningEntity', 1, 'PARAMETER_STANDARDIZATION', '2017-09-12 18:24:26', '2017-09-12 18:24:28') ON DUPLICATE KEY UPDATE NAME='owningEntity';
+INSERT INTO `vid_category_parameter` (`CATEGORY_ID`, `NAME`, `ID_SUPPORTED`, `FAMILY`,`CREATED_DATE`, `MODIFIED_DATE`) VALUES (5,'operational-environment-type', 0,'TENANT_ISOLATION', '2017-11-12 18:24:26', '2017-11-12 18:24:28') ON DUPLICATE KEY UPDATE NAME='operational-environment-type';
+INSERT INTO `vid_category_parameter` (`CATEGORY_ID`, `NAME`, `ID_SUPPORTED`, `FAMILY`,`CREATED_DATE`, `MODIFIED_DATE`) VALUES (6,'workload-context', 0, 'TENANT_ISOLATION','2017-11-12 18:24:26', '2017-11-12 18:24:28') ON DUPLICATE KEY UPDATE NAME='workload-context';
+
+--
+-- Dumping data for table `vid_category_parameter_option`
+--
+INSERT INTO `vid_category_parameter_option` (`CATEGORY_OPT_APP_ID`, `NAME`, `CATEGORY_ID`) VALUES ('ECOMP', 'ECOMP', '6') ON DUPLICATE KEY UPDATE NAME='ECOMP';
+INSERT INTO `vid_category_parameter_option` (`CATEGORY_OPT_APP_ID`, `NAME`, `CATEGORY_ID`) VALUES ('DEV', 'DEV', '6') ON DUPLICATE KEY UPDATE NAME='DEV';
+INSERT INTO `vid_category_parameter_option` (`CATEGORY_OPT_APP_ID`, `NAME`, `CATEGORY_ID`) VALUES ('TEST', 'TEST', '6') ON DUPLICATE KEY UPDATE NAME='TEST';
+INSERT INTO `vid_category_parameter_option` (`CATEGORY_OPT_APP_ID`, `NAME`, `CATEGORY_ID`) VALUES ('VNF', 'VNF', '5') ON DUPLICATE KEY UPDATE NAME='VNF';
 
 --
 -- Dumping data for table `fn_function`
@@ -84,6 +112,8 @@ INSERT INTO `fn_function` VALUES ('menu_test','Test Menu') ON DUPLICATE KEY UPDA
 INSERT INTO `fn_function` VALUES ('menu_viewlog','Log Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Log Menu';
 INSERT INTO `fn_function` VALUES ('view_reports','View Raptor reports') ON DUPLICATE KEY UPDATE FUNCTION_NAME='View Raptor reports';
 INSERT INTO `fn_function` VALUES ('menu_searchexisting', 'Search for Existing Service Instances') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Search for Existing Service Instances';
+INSERT INTO `fn_function` VALUES ('menu_changemanagement','VNF Changes') ON DUPLICATE KEY UPDATE FUNCTION_NAME='VNF Changes';
+INSERT INTO `fn_function` VALUES ('menu_testenvironment','Test Environments') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Test Environments';
 
 --
 -- Dumping data for table `fn_lu_activity`
@@ -111,6 +141,303 @@ REPLACE INTO `fn_lu_alert_method` VALUES ('PHONE','Phone');
 REPLACE INTO `fn_lu_alert_method` VALUES ('SMS','SMS');
 
 --
+-- Dumping data for table `fn_lu_call_times`
+--
+REPLACE INTO `fn_lu_call_times` VALUES (1,20,'20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (2,40,'40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (3,60,'1 hr');
+REPLACE INTO `fn_lu_call_times` VALUES (4,80,'1 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (5,100,'1 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (6,120,'2 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (7,140,'2 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (8,160,'2 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (9,180,'3 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (10,200,'3 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (11,220,'3 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (12,240,'4 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (13,260,'4 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (14,280,'4 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (15,300,'5 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (16,320,'5 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (17,340,'5 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (18,360,'6 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (19,380,'6 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (20,400,'6 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (21,420,'7 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (22,440,'7 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (23,460,'7 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (24,480,'8 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (25,500,'8 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (26,520,'8 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (27,540,'9 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (28,560,'9 hr 20 min');
+REPLACE INTO `fn_lu_call_times` VALUES (29,580,'9 hr 40 min');
+REPLACE INTO `fn_lu_call_times` VALUES (30,600,'10 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (31,10,'10 min');
+REPLACE INTO `fn_lu_call_times` VALUES (32,5,'5 min');
+REPLACE INTO `fn_lu_call_times` VALUES (33,1200,'20 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (34,1800,'30 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (35,2400,'40 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (36,3000,'50 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (37,4200,'70 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (38,4800,'80 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (39,5400,'90 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (40,6000,'100 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (41,7200,'120 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (42,9600,'160 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (43,10800,'180 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (44,12000,'200 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (45,18000,'300 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (46,24000,'400 hrs');
+REPLACE INTO `fn_lu_call_times` VALUES (47,30000,'500 hrs');
+
+--
+-- Dumping data for table `fn_lu_country`
+--
+REPLACE INTO `fn_lu_country` VALUES ('AD','Andorra','Andorra',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AE','United Arab Emirates','United Arab Emirates',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AF','Afghanistan','Afghanistan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AG','Antigua and Barbuda','Antigua and Barbuda',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AI','Anguilla','Anguilla',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AL','Albania','Albania',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AM','Armenia','Armenia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AN','Netherlands Antilles','Netherlands Antilles',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AO','Angola','Angola',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AQ','Antarctica','Antarctica',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AR','Argentina','Argentina',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AS','American Samoa','American Samoa',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AT','Austria','Austria',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AU','Australia','Australia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AW','Aruba','Aruba',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('AZ','Azerbaidjan','Azerbaidjan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BA','Bosnia-Herzegovina','Bosnia-Herzegovina',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BB','Barbados','Barbados',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BD','Bangladesh','Bangladesh',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BE','Belgium','Belgium',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BF','Burkina Faso','Burkina Faso',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BG','Bulgaria','Bulgaria',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BH','Bahrain','Bahrain',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BI','Burundi','Burundi',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BJ','Benin','Benin',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BM','Bermuda','Bermuda',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BN','Brunei Darussalam','Brunei Darussalam',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BO','Bolivia','Bolivia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BR','Brazil','Brazil',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BS','Bahamas','Bahamas',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BT','Bhutan','Bhutan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BV','Bouvet Island','Bouvet Island',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BW','Botswana','Botswana',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BY','Belarus','Belarus',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('BZ','Belize','Belize',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CA','Canada','Canada',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CC','Cocos (Keeling) Islands','Cocos (Keeling) Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CF','Central African Republic','Central African Republic',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CG','Congo','Congo',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CH','Switzerland','Switzerland',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CI','Ivory Coast (Cote D\'Ivoire)','Ivory Coast (Cote D\'Ivoire)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CK','Cook Islands','Cook Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CL','Chile','Chile',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CM','Cameroon','Cameroon',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CN','China','China','China');
+REPLACE INTO `fn_lu_country` VALUES ('CO','Colombia','Colombia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CR','Costa Rica','Costa Rica',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CS','Former Czechoslovakia','Former Czechoslovakia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CU','Cuba','Cuba',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CV','Cape Verde','Cape Verde',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CX','Christmas Island','Christmas Island',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CY','Cyprus','Cyprus',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('CZ','Czech Republic','Czech Republic',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('DE','Germany','Germany',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('DJ','Djibouti','Djibouti',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('DK','Denmark','Denmark',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('DM','Dominica','Dominica',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('DO','Dominican Republic','Dominican Republic',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('DZ','Algeria','Algeria',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('EC','Ecuador','Ecuador',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('EE','Estonia','Estonia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('EG','Egypt','Egypt',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('EH','Western Sahara','Western Sahara',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ER','Eritrea','Eritrea',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ES','Spain','Spain',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ET','Ethiopia','Ethiopia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('FI','Finland','Finland',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('FJ','Fiji','Fiji',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('FK','Falkland Islands','Falkland Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('FM','Micronesia','Micronesia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('FO','Faroe Islands','Faroe Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('FR','France','France',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('FX','France (European Territory)','France (European Territory)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GA','Gabon','Gabon',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GB','Great Britain','Great Britain',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GD','Grenada','Grenada',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GE','Georgia','Georgia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GF','French Guyana','French Guyana',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GH','Ghana','Ghana',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GI','Gibraltar','Gibraltar',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GL','Greenland','Greenland',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GM','Gambia','Gambia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GN','Guinea','Guinea',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GP','Guadeloupe (French)','Guadeloupe (French)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GQ','Equatorial Guinea','Equatorial Guinea',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GR','Greece','Greece',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GS','S. Georgia and S. Sandwich Isls.','S. Georgia and S. Sandwich Isls.',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GT','Guatemala','Guatemala',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GU','Guam (USA)','Guam (USA)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GW','Guinea Bissau','Guinea Bissau',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('GY','Guyana','Guyana',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('HK','Hong Kong','Hong Kong',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('HM','Heard and McDonald Islands','Heard and McDonald Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('HN','Honduras','Honduras',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('HR','Croatia','Croatia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('HT','Haiti','Haiti',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('HU','Hungary','Hungary',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ID','Indonesia','Indonesia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IE','Ireland','Ireland',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IL','Israel','Israel',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IN','India','India',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IO','British Indian Ocean Territory','British Indian Ocean Territory',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IQ','Iraq','Iraq',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IR','Iran','Iran',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IS','Iceland','Iceland',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('IT','Italy','Italy',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('JM','Jamaica','Jamaica',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('JO','Jordan','Jordan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('JP','Japan','Japan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KE','Kenya','Kenya',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KG','Kyrgyzstan','Kyrgyzstan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KH','Cambodia','Cambodia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KI','Kiribati','Kiribati',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KM','Comoros','Comoros',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KN','Saint Kitts and Nevis Anguilla','Saint Kitts and Nevis Anguilla',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KP','North Korea','North Korea',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KR','South Korea','South Korea',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KW','Kuwait','Kuwait',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KY','Cayman Islands','Cayman Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('KZ','Kazakhstan','Kazakhstan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LA','Laos','Laos',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LB','Lebanon','Lebanon',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LC','Saint Lucia','Saint Lucia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LI','Liechtenstein','Liechtenstein',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LK','Sri Lanka','Sri Lanka',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LR','Liberia','Liberia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LS','Lesotho','Lesotho',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LT','Lithuania','Lithuania',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LU','Luxembourg','Luxembourg',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LV','Latvia','Latvia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('LY','Libya','Libya',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MA','Morocco','Morocco',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MC','Monaco','Monaco',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MD','Moldavia','Moldavia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MG','Madagascar','Madagascar',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MH','Marshall Islands','Marshall Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MK','Macedonia','Macedonia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ML','Mali','Mali',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MM','Myanmar','Myanmar',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MN','Mongolia','Mongolia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MO','Macau','Macau',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MP','Northern Mariana Islands','Northern Mariana Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MQ','Martinique (French)','Martinique (French)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MR','Mauritania','Mauritania',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MS','Montserrat','Montserrat',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MT','Malta','Malta',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MU','Mauritius','Mauritius',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MV','Maldives','Maldives',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MW','Malawi','Malawi',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MX','Mexico','Mexico','Mexico');
+REPLACE INTO `fn_lu_country` VALUES ('MY','Malaysia','Malaysia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('MZ','Mozambique','Mozambique',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NA','Namibia','Namibia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NC','New Caledonia (French)','New Caledonia (French)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NE','Niger','Niger',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NF','Norfolk Island','Norfolk Island',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NG','Nigeria','Nigeria',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NI','Nicaragua','Nicaragua',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NL','Netherlands','Netherlands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NO','Norway','Norway',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NP','Nepal','Nepal',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NR','Nauru','Nauru',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NU','Niue','Niue',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('NZ','New Zealand','New Zealand',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('OM','Oman','Oman',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PA','Panama','Panama',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PE','Peru','Peru',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PF','Polynesia (French)','Polynesia (French)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PG','Papua New Guinea','Papua New Guinea',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PH','Philippines','Philippines',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PK','Pakistan','Pakistan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PL','Poland','Poland',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PM','Saint Pierre and Miquelon','Saint Pierre and Miquelon',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PN','Pitcairn Island','Pitcairn Island',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PR','Puerto Rico','Puerto Rico',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PT','Portugal','Portugal',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PW','Palau','Palau',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('PY','Paraguay','Paraguay',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('QA','Qatar','Qatar',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('RE','Reunion (French)','Reunion (French)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('RO','Romania','Romania',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('RU','Russian Federation','Russian Federation',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('RW','Rwanda','Rwanda',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SA','Saudi Arabia','Saudi Arabia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SB','Solomon Islands','Solomon Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SC','Seychelles','Seychelles',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SD','Sudan','Sudan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SE','Sweden','Sweden',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SG','Singapore','Singapore',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SH','Saint Helena','Saint Helena',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SI','Slovenia','Slovenia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SJ','Svalbard and Jan Mayen Islands','Svalbard and Jan Mayen Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SK','Slovak Republic','Slovak Republic',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SL','Sierra Leone','Sierra Leone',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SM','San Marino','San Marino',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SN','Senegal','Senegal',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SO','Somalia','Somalia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SR','Suriname','Suriname',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ST','Saint Tome (Sao Tome) and Principe','Saint Tome (Sao Tome) and Principe',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SU','Former USSR','Former USSR',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SV','El Salvador','El Salvador',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SY','Syria','Syria',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('SZ','Swaziland','Swaziland',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TC','Turks and Caicos Islands','Turks and Caicos Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TD','Chad','Chad',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TF','French Southern Territories','French Southern Territories',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TG','Togo','Togo',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TH','Thailand','Thailand',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TJ','Tadjikistan','Tadjikistan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TK','Tokelau','Tokelau',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TM','Turkmenistan','Turkmenistan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TN','Tunisia','Tunisia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TO','Tonga','Tonga',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TP','East Timor','East Timor',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TR','Turkey','Turkey',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TT','Trinidad and Tobago','Trinidad and Tobago',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TV','Tuvalu','Tuvalu',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TW','Taiwan','Taiwan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('TZ','Tanzania','Tanzania',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('UA','Ukraine','Ukraine',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('UG','Uganda','Uganda',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('UK','United Kingdom','United Kingdom',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('UM','USA Minor Outlying Islands','USA Minor Outlying Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('US','United States','United States','USA');
+REPLACE INTO `fn_lu_country` VALUES ('UY','Uruguay','Uruguay',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('UZ','Uzbekistan','Uzbekistan',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('VA','Vatican City State','Vatican City State',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('VC','Saint Vincent and Grenadines','Saint Vincent and Grenadines',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('VE','Venezuela','Venezuela',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('VG','Virgin Islands (British)','Virgin Islands (British)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('VI','Virgin Islands (USA)','Virgin Islands (USA)',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('VN','Vietnam','Vietnam',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('VU','Vanuatu','Vanuatu',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('WF','Wallis and Futuna Islands','Wallis and Futuna Islands',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('WS','Samoa','Samoa',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('YE','Yemen','Yemen',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('YT','Mayotte','Mayotte',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('YU','Yugoslavia','Yugoslavia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ZA','South Africa','South Africa',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ZM','Zambia','Zambia',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ZR','Zaire','Zaire',NULL);
+REPLACE INTO `fn_lu_country` VALUES ('ZW','Zimbabwe','Zimbabwe',NULL);
+
+--
 -- Dumping data for table `fn_lu_menu_set`
 --
 INSERT INTO `fn_lu_menu_set` VALUES ('APP','Application Menu') ON DUPLICATE KEY UPDATE MENU_SET_NAME='Application Menu';
@@ -124,6 +451,62 @@ REPLACE INTO `fn_lu_priority` VALUES (30,'High','Y',30);
 REPLACE INTO `fn_lu_priority` VALUES (40,'Urgent','Y',40);
 REPLACE INTO `fn_lu_priority` VALUES (50,'Fatal','Y',50);
 
+--
+-- Dumping data for table `fn_lu_state`
+--
+REPLACE INTO `fn_lu_state` VALUES ('AK','AK - Alaska');
+REPLACE INTO `fn_lu_state` VALUES ('AL','AL - Alabama');
+REPLACE INTO `fn_lu_state` VALUES ('AR','AR - Arkansas');
+REPLACE INTO `fn_lu_state` VALUES ('AZ','AZ - Arizona');
+REPLACE INTO `fn_lu_state` VALUES ('CA','CA - California');
+REPLACE INTO `fn_lu_state` VALUES ('CO','CO - Colorado');
+REPLACE INTO `fn_lu_state` VALUES ('CT','CT - Connecticut');
+REPLACE INTO `fn_lu_state` VALUES ('DC','DC - District Of Columbia');
+REPLACE INTO `fn_lu_state` VALUES ('DE','DE - Delaware');
+REPLACE INTO `fn_lu_state` VALUES ('FL','FL - Florida');
+REPLACE INTO `fn_lu_state` VALUES ('GA','GA - Georgia');
+REPLACE INTO `fn_lu_state` VALUES ('HI','HI - Hawaii');
+REPLACE INTO `fn_lu_state` VALUES ('IA','IA - Iowa');
+REPLACE INTO `fn_lu_state` VALUES ('ID','ID - Idaho');
+REPLACE INTO `fn_lu_state` VALUES ('IL','IL - Illinois');
+REPLACE INTO `fn_lu_state` VALUES ('IN','IN - Indiana');
+REPLACE INTO `fn_lu_state` VALUES ('KS','KS - Kansas');
+REPLACE INTO `fn_lu_state` VALUES ('KY','KY - Kentucky');
+REPLACE INTO `fn_lu_state` VALUES ('LA','LA - Louisiana');
+REPLACE INTO `fn_lu_state` VALUES ('MA','MA - Massachusetts');
+REPLACE INTO `fn_lu_state` VALUES ('MD','MD - Maryland');
+REPLACE INTO `fn_lu_state` VALUES ('ME','ME - Maine');
+REPLACE INTO `fn_lu_state` VALUES ('MI','MI - Michigan');
+REPLACE INTO `fn_lu_state` VALUES ('MN','MN - Minnesota');
+REPLACE INTO `fn_lu_state` VALUES ('MO','MO - Missouri');
+REPLACE INTO `fn_lu_state` VALUES ('MS','MS - Mississippi');
+REPLACE INTO `fn_lu_state` VALUES ('MT','MT - Montana');
+REPLACE INTO `fn_lu_state` VALUES ('NC','NC - North Carolina');
+REPLACE INTO `fn_lu_state` VALUES ('ND','ND - North Dakota');
+REPLACE INTO `fn_lu_state` VALUES ('NE','NE - Nebraska');
+REPLACE INTO `fn_lu_state` VALUES ('NH','NH - New Hampshire');
+REPLACE INTO `fn_lu_state` VALUES ('NJ','NJ - New Jersey');
+REPLACE INTO `fn_lu_state` VALUES ('NM','NM - New Mexico');
+REPLACE INTO `fn_lu_state` VALUES ('NV','NV - Nevada');
+REPLACE INTO `fn_lu_state` VALUES ('NY','NY - New York');
+REPLACE INTO `fn_lu_state` VALUES ('OH','OH - Ohio');
+REPLACE INTO `fn_lu_state` VALUES ('OK','OK - Oklahoma');
+REPLACE INTO `fn_lu_state` VALUES ('OR','OR - Oregon');
+REPLACE INTO `fn_lu_state` VALUES ('PA','PA - Pennsylvania');
+REPLACE INTO `fn_lu_state` VALUES ('PR','PR - Puerto Rico');
+REPLACE INTO `fn_lu_state` VALUES ('RI','RI - Rhode Island');
+REPLACE INTO `fn_lu_state` VALUES ('SC','SC - South Carolina');
+REPLACE INTO `fn_lu_state` VALUES ('SD','SD - South Dakota');
+REPLACE INTO `fn_lu_state` VALUES ('TN','TN - Tennessee');
+REPLACE INTO `fn_lu_state` VALUES ('TX','TX - Texas');
+REPLACE INTO `fn_lu_state` VALUES ('UT','UT - Utah');
+REPLACE INTO `fn_lu_state` VALUES ('VA','VA - Virginia');
+REPLACE INTO `fn_lu_state` VALUES ('VI','VI-Virgin Island');
+REPLACE INTO `fn_lu_state` VALUES ('VT','VT - Vermont');
+REPLACE INTO `fn_lu_state` VALUES ('WA','WA - Washington');
+REPLACE INTO `fn_lu_state` VALUES ('WI','WI - Wisconsin');
+REPLACE INTO `fn_lu_state` VALUES ('WV','WV - West Virginia');
+REPLACE INTO `fn_lu_state` VALUES ('WY','WY - Wyoming');
 
 --
 -- Dumping data for table `fn_lu_tab_set`
@@ -305,6 +688,9 @@ REPLACE INTO `fn_role_function` VALUES (16,'menu_viewlog');
 REPLACE INTO `fn_role_function` VALUES ('1', 'menu_searchexisting');
 REPLACE INTO `fn_role_function` VALUES ('16', 'menu_searchexisting');
 
+update fn_menu set active_yn = 'Y' where label = 'Admin';
+update fn_menu set active_yn = 'Y' where label = 'Root';
+update fn_menu set action = 'admin' where label = 'Admin';
 
 --
 -- Dumping data for table `fn_tab`

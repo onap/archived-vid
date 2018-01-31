@@ -64,6 +64,12 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 				"orchestrationStatus": "active",
 				"inMaint": false,
 				"operationalStatus": "out-of-service-path"
+			},
+			{
+				"provStatus": "prov",
+				"orchestrationStatus": "activated",
+				"inMaint": false,
+				"operationalStatus": "out-of-service-path"
 			}
 	];
 	/* 
@@ -96,6 +102,11 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 	 */
 	var COMPONENT_LIST_NAMED_QUERY_ID = "0367193e-c785-4d5f-9cb8-7bc89dc9ddb7";
 	var MACRO_SERVICES = [];
+
+	var SCHEDULER_CALLBACK_URL = "";
+
+	var SCHEDULER_PORTAL_URL = "";
+
     return {
     	ASDC_MODEL_STATUS : ASDC_MODEL_STATUS,
     	MSO_MAX_POLLS : MSO_MAX_POLLS,
@@ -106,6 +117,8 @@ appDS2.constant("VIDCONFIGURATION", (function() {
     	VNF_VALID_STATUS_LIST : vnfValidStatusList,
 		UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED : UPLOAD_SUPPLEMENTARY_STATUS_CHECK_ENABLED,
     	MACRO_SERVICES : MACRO_SERVICES,
-    	COMPONENT_LIST_NAMED_QUERY_ID : COMPONENT_LIST_NAMED_QUERY_ID
+    	COMPONENT_LIST_NAMED_QUERY_ID : COMPONENT_LIST_NAMED_QUERY_ID,
+        SCHEDULER_CALLBACK_URL: SCHEDULER_CALLBACK_URL,
+        SCHEDULER_PORTAL_URL: SCHEDULER_PORTAL_URL
     };
 })())

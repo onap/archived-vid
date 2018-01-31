@@ -20,7 +20,7 @@
 
 (function () {
   'use strict';
-  
+
   appDS2.config(['$routeProvider', '$locationProvider', function ($routeProvider) {
       $routeProvider
         .when('/models/services', {
@@ -32,30 +32,47 @@
           templateUrl: 'app/vid/scripts/view-models/createInstanceServiceModels.htm'
         })
         .when('/instances/services', {
-    		templateUrl : "app/vid/scripts/view-models/aaiGetSubs.htm", 
+    		templateUrl : "app/vid/scripts/view-models/aaiGetSubs.htm",
     		controller : "aaiSubscriberController"
         })
         .when('/instances/subscribers', {
-    		templateUrl : "app/vid/scripts/view-models/aaiGetSubscriberList.htm", 
+    		templateUrl : "app/vid/scripts/view-models/aaiGetSubscriberList.htm",
     		controller : "aaiSubscriberController"
         })
         .when('/instances/serviceTypes', {
-    		templateUrl : "app/vid/scripts/view-models/aaiServiceTypes.htm", 
+    		templateUrl : "app/vid/scripts/view-models/aaiServiceTypes.htm",
     		controller : "aaiSubscriberController"
         })
         .when('/instances/subdetails', {
-    		templateUrl : "app/vid/scripts/view-models/aaiSubDetails.htm", 
+    		templateUrl : "app/vid/scripts/view-models/aaiSubDetails.htm",
     		controller : "aaiSubscriberController"
         })
 	  	.when('/change-management', {
               templateUrl : "app/vid/scripts/view-models/change-management.html",
               controller : "changeManagementController",
 			  controllerAs: 'vm'
-          })
+		})
+		.when('/testEnvironments', {
+              templateUrl : "app/vid/scripts/view-models/testEnvironments.htm",
+              controller : "testEnvironmentsController",
+              controllerAs: 'vm'
+		})
         .when('/instantiate', {
           controller: 'InstantiationController',
           templateUrl: 'app/vid/scripts/view-models/instantiate.htm'
         })
+	    .when('/addNetworkNode', {
+		  controller: 'AddNetworkNodeController',
+		  templateUrl: 'app/vid/scripts/view-models/addNetworkNode.htm'
+		})
+        .when('/pnfSearchAssociation', {
+			controller: 'pnfSearchAssociationController',
+			templateUrl: 'app/vid/scripts/view-models/pnfSearchAssociation.htm'
+         })
+	    .when('/serviceProxyConfig', {
+		  controller: 'ServiceProxyConfigController',
+		  templateUrl: 'app/vid/scripts/view-models/serviceProxyConfig.htm'
+	    })
         .otherwise({
         	redirectTo: '/models/services'
         });

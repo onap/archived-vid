@@ -1,0 +1,18 @@
+service-metadata {
+    display: block;
+}
+service-metadata .header-title {
+    text-transform: uppercase;
+    font-size: 16px;
+    color: #191919;
+    background: #EAEAEA;
+    line-height: 40px;
+    padding-left: 20px;
+}
+service-metadata .metadata-content {
+    padding-left: 20px;
+}
+service-metadata .field {
+    margin-top: 15px;
+    font-size: 13px;
+}

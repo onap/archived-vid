@@ -1,0 +1,30 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/network/pnfs/pnf/DEAAI78"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "pnf-name": "DEAAI78",
+      "equip-type": "Switch",
+      "equip-vendor": "Cisco",
+      "equip-model": "ASR1002-X",
+      "resource-version": "1494001797554",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "complex",
+            "related-link": "/aai/v11/cloud-infrastructure/complexes/complex/NAMEAAI2",
+            "relationship-data": [
+              {
+                "relationship-key": "complex.physical-location-id",
+                "relationship-value": "NAMEAAI2"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

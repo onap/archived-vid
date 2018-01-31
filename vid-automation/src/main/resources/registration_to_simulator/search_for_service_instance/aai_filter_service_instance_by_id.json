@@ -1,0 +1,21 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v11/search/nodes-query",
+    "queryParams": {
+      "search-node-type": "service-instance",
+      "filter": "service-instance-id:EQUALS:3f93c7cb-2fd0-4557-9514-e189b7b04f9d"
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "result-data": [
+        {
+          "resource-type": "service-instance",
+          "resource-link": "/aai/v11/business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL%20USP/service-instances/service-instance/3f93c7cb-2fd0-4557-9514-e189b7b04f9d"
+        }
+      ]
+    }
+  }
+}

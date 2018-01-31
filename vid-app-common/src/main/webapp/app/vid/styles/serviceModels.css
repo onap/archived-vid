@@ -68,3 +68,7 @@ div[ng-controller=ServiceModelController] .progHidden {
 div[ng-controller=ServiceModelController] .progVisible {
 	visibility: visible;
 }
+
+.previous-versions-button {
+	width: 113px;
+}

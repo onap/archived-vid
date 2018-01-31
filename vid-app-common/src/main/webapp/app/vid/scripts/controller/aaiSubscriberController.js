@@ -20,8 +20,8 @@
 
 "use strict";
 
-appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService",
-    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService) {
+appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService", "OwningEntityService", "$q",
+    function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, $q) {
 
         $scope.showVnfDetails = function (vnf) {
             console.log("showVnfDetails");
@@ -121,253 +121,215 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
             DataService.setSubscribers($scope.custSubList);
 
-			if (selectedServicetype !== "" && selectedServicetype !== 'undefined') {
-				$location.path(COMPONENT.CREATE_INSTANCE_PATH);
-			}			
-		};
-		
-		$scope.serviceTypeName="";
-		$scope.getAaiServiceModelsList = function(){
-			var globalCustomerId="";
-             var serviceTypeId = DataService.getGlobalCustomerId();			
-			$scope.serviceTypeList = DataService.getServiceIdList();
-			$scope.createSubscriberName = DataService.getSubscriberName();
-			$scope.status = FIELD.STATUS.FETCHING_SERVICE_CATALOG;
-			$scope.custSubList = DataService.getSubscribers();
-			for(var i=0; i<$scope.serviceTypeList.length;i++){
-						if(parseInt(serviceTypeId) === i ){
-							$scope.serviceTypeName = $scope.serviceTypeList[i].name;
+            if (selectedServicetype !== "" && selectedServicetype !== 'undefined'&& selectedServicetype !== undefined) {
+                $location.path(COMPONENT.CREATE_INSTANCE_PATH);
+            }
+        };
+
+        $scope.serviceTypeName = "";
+        $scope.getAaiServiceModelsList = function () {
+            var globalCustomerId = "";
+            var serviceTypeId = DataService.getGlobalCustomerId();
+            $scope.serviceTypeList = DataService.getServiceIdList();
+            $scope.createSubscriberName = DataService.getSubscriberName();
+            $scope.status = FIELD.STATUS.FETCHING_SERVICE_CATALOG;
+            $scope.custSubList = DataService.getSubscribers();
+            for (var i = 0; i < $scope.serviceTypeList.length; i++) {
+                if (parseInt(serviceTypeId) === i) {
+                    $scope.serviceTypeName = $scope.serviceTypeList[i].name;
                 }
-						}
-					;
-		    for(var i=0; i<$scope.custSubList.length;i++){
-						if($scope.createSubscriberName === $scope.custSubList[i].subscriberName){
-							globalCustomerId = $scope.custSubList[i].globalCustomerId;
-							globalCustId = globalCustomerId;
-						}
-					}
-			;
-			var pathQuery ="";
+            }
+            ;
+            for (var i = 0; i < $scope.custSubList.length; i++) {
+                if ($scope.createSubscriberName === $scope.custSubList[i].subscriberName) {
+                    globalCustomerId = $scope.custSubList[i].globalCustomerId;
+                    globalCustId = globalCustomerId;
+                }
+            }
+            ;
+            var pathQuery = "";
 
-			if(null !== globalCustomerId && "" !== globalCustomerId && undefined !== globalCustomerId
-					&& null !== serviceTypeId && "" !== serviceTypeId && undefined !== serviceTypeId){
-				pathQuery = COMPONENT.SERVICES_PATH +globalCustomerId+"/"+$scope.serviceTypeName;
-			}
+            if (null !== globalCustomerId && "" !== globalCustomerId && undefined !== globalCustomerId
+                && null !== serviceTypeId && "" !== serviceTypeId && undefined !== serviceTypeId) {
+                pathQuery = COMPONENT.SERVICES_PATH + globalCustomerId + "/" + $scope.serviceTypeName;
+            }
 
-			var namedQueryId='6e806bc2-8f9b-4534-bb68-be91267ff6c8';
-			AaiService.getServiceModelsByServiceType(namedQueryId,globalCustomerId,$scope.serviceTypeName,function(response) { // success
-				$scope.services = [];
-				if (angular.isArray(response.data['inventory-response-item']) && response.data['inventory-response-item'].length > 0 && response.data['inventory-response-item'][0]['inventory-response-items']) {
-					wholeData = response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item'];
-					$scope.services = $scope.filterDataWithHigerVersion(response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item']);
-					$scope.serviceType = response.data['inventory-response-item'][0]['service-subscription']['service-type'];
-					$scope.viewPerPage=10;
-					$scope.totalPage=$scope.services.length/$scope.viewPerPage;
-					$scope.sortBy="name";
-					$scope.scrollViewPerPage=2;
-					$scope.currentPage=1;
-					$scope.searchCategory;
-					$scope.searchString="";
-					$scope.currentPageNum=1;
-					$scope.isSpinnerVisible = false;
-					$scope.isProgressVisible = false;
-				} else {
-					$scope.status = "Failed to get service models from A&AI.";
-					$scope.error = true;
-					$scope.isSpinnerVisible = false;
-				}
-				DataService.setServiceIdList(response);
-			},  function(response) { // failure
-				$scope.showError(FIELD.ERROR.AAI);
-				$scope.errorMsg = FIELD.ERROR.FETCHING_SERVICES+ response.status;
-				$scope.errorDetails = response.data;
-			});
+            var namedQueryId = '6e806bc2-8f9b-4534-bb68-be91267ff6c8';
+            AaiService.getServiceModelsByServiceType(namedQueryId, globalCustomerId, $scope.serviceTypeName, function (response) { // success
+                $scope.services = [];
+                if (angular.isArray(response.data['inventory-response-item']) && response.data['inventory-response-item'].length > 0 && response.data['inventory-response-item'][0]['inventory-response-items']) {
+                    wholeData = response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item'];
+                    $scope.services = $scope.filterDataWithHigerVersion(response.data['inventory-response-item'][0]['inventory-response-items']['inventory-response-item']);
+                    $scope.serviceType = response.data['inventory-response-item'][0]['service-subscription']['service-type'];
+                    $scope.viewPerPage = 10;
+                    $scope.totalPage = $scope.services.length / $scope.viewPerPage;
+                    $scope.sortBy = "name";
+                    $scope.scrollViewPerPage = 2;
+                    $scope.currentPage = 1;
+                    $scope.searchCategory;
+                    $scope.searchString = "";
+                    $scope.currentPageNum = 1;
+                    $scope.isSpinnerVisible = false;
+                    $scope.isProgressVisible = false;
+                } else {
+                    $scope.status = "Failed to get service models from ASDC.";
+                    $scope.error = true;
+                    $scope.isSpinnerVisible = false;
+                }
+                DataService.setServiceIdList(response);
+            }, function (response) { // failure
+                $scope.showError(FIELD.ERROR.AAI);
+                $scope.errorMsg = FIELD.ERROR.FETCHING_SERVICES + response.status;
+                $scope.errorDetails = response.data;
+            });
 
-			};
+        };
 
-			var globalCustId;// This value will be assigned only on create new service instance screen-macro
-			$scope.createType = "a la carte";
-		$scope.deployService = function(service,hideServiceFields) {
-			hideServiceFields = hideServiceFields|| false;
-			var temp = service;
-			service.uuid = service['service-instance']['model-version-id'];
+        var globalCustId;// This value will be assigned only on create new service instance screen-macro
+        $scope.createType = "a la carte";
+        $scope.deployService = function (service, hideServiceFields) {
+            hideServiceFields = hideServiceFields || false;
+            var temp = service;
+            service.uuid = service['service-instance']['model-version-id'];
 
-			console.log("Instantiating ASDC service " + service.uuid);
+            console.log("Instantiating ASDC service " + service.uuid);
 
-			$http.get('rest/models/services/' + service.uuid)
-				.then(function successCallback(getServiceResponse) {
-					getServiceResponse.data['service'].serviceTypeName =$scope.serviceTypeName ;
-					getServiceResponse.data['service'].createSubscriberName =$scope.createSubscriberName ;
-					var serviceModel = getServiceResponse.data;
-					DataService.setServiceName(serviceModel.service.name);
+            $http.get('rest/models/services/' + service.uuid)
+                .then(function successCallback(getServiceResponse) {
+                    getServiceResponse.data['service'].serviceTypeName = $scope.serviceTypeName;
+                    getServiceResponse.data['service'].createSubscriberName = $scope.createSubscriberName;
+                    var serviceModel = getServiceResponse.data;
+                    DataService.setServiceName(serviceModel.service.name);
 
-					DataService.setModelInfo(COMPONENT.SERVICE, {
-						"modelInvariantId": serviceModel.service.invariantUuid,
-						"modelVersion": serviceModel.service.version,
-						"modelNameVersionId": serviceModel.service.uuid,
-						"modelName": serviceModel.service.name,
-						"description": serviceModel.service.description,"serviceType": serviceModel.service.serviceType,
+                    DataService.setModelInfo(COMPONENT.SERVICE, {
+                        "modelInvariantId": serviceModel.service.invariantUuid,
+                        "modelVersion": serviceModel.service.version,
+                        "modelNameVersionId": serviceModel.service.uuid,
+                        "modelName": serviceModel.service.name,
+                        "description": serviceModel.service.description,
+                        "serviceType": serviceModel.service.serviceType,
                         "serviceRole": serviceModel.service.serviceRole,
-						"category":serviceModel.service.category,
-						"serviceTypeName":serviceModel.service.serviceTypeName,
-						"createSubscriberName":serviceModel.service.createSubscriberName
-					});
-					DataService.setHideServiceFields(hideServiceFields);
-					if(hideServiceFields){
-						DataService.setServiceType($scope.serviceTypeName);
-						DataService.setGlobalCustomerId(globalCustId);
-					}
+                        "category": serviceModel.service.category,
+                        "serviceTypeName": serviceModel.service.serviceTypeName,
+                        "createSubscriberName": serviceModel.service.createSubscriberName
+                    });
+                    DataService.setHideServiceFields(hideServiceFields);
+                    if (hideServiceFields) {
+                        DataService.setServiceType($scope.serviceTypeName);
+                        DataService.setGlobalCustomerId(globalCustId);
+                    }
 
-					DataService.setALaCarte (true);
-					$scope.createType = "a la carte";
-					var broadcastType = "createComponent";
-					
-					if (UtilityService.arrayContains (VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid )) {
-						DataService.setALaCarte (false);
-						$scope.createType = "Macro";
-						var convertedAsdcModel = UtilityService.convertModel(serviceModel);
-						
-						//console.log ("display inputs "); 
-						//console.log (JSON.stringify ( convertedAsdcModel.completeDisplayInputs));
-						
-						DataService.setModelInfo(COMPONENT.SERVICE, {
-							"modelInvariantId": serviceModel.service.invariantUuid,
-							"modelVersion": serviceModel.service.version,
-							"modelNameVersionId": serviceModel.service.uuid,
-							"modelName": serviceModel.service.name,
-							"description": serviceModel.service.description,
-							"category":serviceModel.service.category,
-							"serviceEcompNaming": serviceModel.service.serviceEcompNaming,
-							"inputs": serviceModel.service.inputs,
-							"displayInputs": convertedAsdcModel.completeDisplayInputs,
-							"serviceTypeName":serviceModel.service.serviceTypeName,
-							"createSubscriberName":serviceModel.service.createSubscriberName,
-						"serviceType": serviceModel.service.serviceType,
+                    DataService.setALaCarte(true);
+                    $scope.createType = "a la carte";
+                    var broadcastType = "createComponent";
+
+                    if (UtilityService.arrayContains(VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid)) {
+                        DataService.setALaCarte(false);
+                        $scope.createType = "Macro";
+                        var convertedAsdcModel = UtilityService.convertModel(serviceModel);
+
+                        //console.log ("display inputs ");
+                        //console.log (JSON.stringify ( convertedAsdcModel.completeDisplayInputs));
+
+                        DataService.setModelInfo(COMPONENT.SERVICE, {
+                            "modelInvariantId": serviceModel.service.invariantUuid,
+                            "modelVersion": serviceModel.service.version,
+                            "modelNameVersionId": serviceModel.service.uuid,
+                            "modelName": serviceModel.service.name,
+                            "description": serviceModel.service.description,
+                            "category": serviceModel.service.category,
+                            "serviceEcompNaming": serviceModel.service.serviceEcompNaming,
+                            "inputs": serviceModel.service.inputs,
+                            "displayInputs": convertedAsdcModel.completeDisplayInputs,
+                            "serviceTypeName": serviceModel.service.serviceTypeName,
+                            "createSubscriberName": serviceModel.service.createSubscriberName,
+                            "serviceType": serviceModel.service.serviceType,
                             "serviceRole": serviceModel.service.serviceRole
-                        });}
-					;
+                        });
+                    }
+                    ;
 
-					$scope.$broadcast(broadcastType, {
-					    componentId : COMPONENT.SERVICE,
-					    callbackFunction : function(response) {
-					    	if (response.isSuccessful) {
-								vidService.setModel(serviceModel);
+                    $scope.$broadcast(broadcastType, {
+                        componentId: COMPONENT.SERVICE,
+                        callbackFunction: function (response) {
+                            if (response.isSuccessful) {
+                                vidService.setModel(serviceModel);
 
-								var subscriberId = "Not Found";
-								var serviceType = "Not Found";
+                                var subscriberId = "Not Found";
+                                var serviceType = "Not Found";
 
-								var serviceInstanceId = response.instanceId;
+                                var serviceInstanceId = response.instanceId;
 
-								for (var i = 0; i < response.control.length; i++) {
-									if (response.control[i].id == "subscriberName") {
-										subscriberId = response.control[i].value;
-									} else if (response.control[i].id == "serviceType") {
-										serviceType = response.control[i].value;
-									}
-								}
+                                for (var i = 0; i < response.control.length; i++) {
+                                    if (response.control[i].id == "subscriberName") {
+                                        subscriberId = response.control[i].value;
+                                    } else if (response.control[i].id == "serviceType") {
+                                        serviceType = response.control[i].value;
+                                    }
+                                }
 
 
-								$scope.refreshSubs(subscriberId,serviceType,serviceInstanceId);
+                                $scope.refreshSubs(subscriberId, serviceType, serviceInstanceId);
 
-					    	}
-					    }
-					});
+                            }
+                        }
+                    });
 
-				}, function errorCallback(response) {
-					console.log("Error: " + response);
-				});
-		};
-		$scope.isFiltered=function(arr,obj){
-			var filtered = false;
-			if(arr.length>0){
-				for(var i=0;i<arr.length;i++){
-					if(obj['extra-properties']['extra-property'] && (obj['extra-properties']['extra-property'][2]['property-value'] == arr[i]['extra-properties']['extra-property'][2]['property-value'])
-							&& (obj['extra-properties']['extra-property'][4]['property-value'] == arr[i]['extra-properties']['extra-property'][4]['property-value'])){
-						filtered = true;
-					}
-				}
-			}
-			return filtered;
-		}
-		var wholeData=[];
-		$scope.filterDataWithHigerVersion = function(serviceData){
-			var fiterDataServices = [];
-			for(var i=0;i<serviceData.length;i++){
-				var higherVersion = serviceData[i];
-				if(!$scope.isFiltered(fiterDataServices,serviceData[i])){
-					for(var j=i;j<serviceData.length;j++){
-						if(serviceData[i]['extra-properties']['extra-property'] && serviceData[j]['extra-properties']['extra-property'] && (serviceData[i]['extra-properties']['extra-property'][4]['property-value'] == serviceData[j]['extra-properties']['extra-property'][4]['property-value'])
-								&& (serviceData[i]['extra-properties']['extra-property'][2]['property-value'] == serviceData[j]['extra-properties']['extra-property'][2]['property-value'])
-								&& (parseFloat(serviceData[j]['extra-properties']['extra-property'][6]['property-value'])>=parseFloat(serviceData[i]['extra-properties']['extra-property'][6]['property-value']))){
-							var data = $scope.isThisHigher(fiterDataServices,serviceData[j]);
-							if(data.isHigher){
-								fiterDataServices[data.index] = serviceData[j];
-							}
-						}
-					}
-				}
-			}
-			return fiterDataServices;
-		}
+                }, function errorCallback(response) {
+                    $log.error("Error: ", response);
+                });
+        };
 
-		$scope.isThisHigher = function(arr,obj){
-			var returnObj = {
-					isHigher:false,
-					index:0
-			};
-			if(arr.length>0){
-				var isNotMatched = true;
-				for(var i=0;i<arr.length;i++){
-					if(arr[i]['extra-properties']['extra-property'] && (arr[i]['extra-properties']['extra-property'][2]['property-value'] == obj['extra-properties']['extra-property'][2]['property-value'])
-							&& (arr[i]['extra-properties']['extra-property'][4]['property-value'] == obj['extra-properties']['extra-property'][4]['property-value'] )
-							&& (arr[i]['extra-properties']['extra-property'][6]['property-value'] < obj['extra-properties']['extra-property'][6]['property-value']) ){
-						isNotMatched = false;
-						returnObj = {
-								isHigher:true,
-								index:i
-						};
-					}
-				}
-				if(isNotMatched && !$scope.isFiltered(arr,obj)){
-					returnObj = {
-							isHigher:true,
-							index:arr.length
-					};
-				}
-			}else{
-				returnObj = {
-						isHigher:true,
-						index:0
-				}
-			}
-			return returnObj;
-		}
+        var wholeData=[];
+        //extract all models from service instances properties and filter by the higher model version
+        $scope.filterDataWithHigerVersion = function(serviceData){
 
-		$scope.tableData=[];
-		var oldData=[];
-		$scope.loadPreviousVersionData=function(version,invariantUUID){
-			$scope.tableData =[];
-			oldData=[];
-			for(var i=0;i<wholeData.length;i++){
-				if(wholeData[i]['extra-properties']['extra-property'] && wholeData[i]['extra-properties']['extra-property'][4]['property-value'] == invariantUUID  && version!=wholeData[i]['extra-properties']['extra-property'][6]['property-value']){
-					oldData.push(wholeData[i]);
-				}
-			}
-			$scope.tableData = oldData;
-			$scope.createType = "Previous Version";
-			var broadcastType = "createTableComponent";
-			$scope.componentName = invariantUUID;
-			$scope.$broadcast(broadcastType, {
-			    componentId : COMPONENT.OLDVERSION,
-			    callbackFunction : function(response) {
-			    }
-			});
-		}
-		 $scope.cancelCreateSIType = function(){
-		 		
-				window.location.href = COMPONENT.SERVICE_MODLES_INSTANCES_SUBSCRIBERS_PATH;
-				
-			}
+            //get all service instances & models collected into array. key = model invariant id
+            var servicesByModelInvariant = _.reduce(serviceData, function(result, item) {
+                if (item['extra-properties']['extra-property']) {
+                    var invariantId = item['extra-properties']['extra-property'][4];
+                    if (invariantId) {
+                        (result[invariantId["property-value"]] || (result[invariantId["property-value"]] = [])).push(item);
+                    }
+                }
+                return result;
+            }, {});
+
+            //iterate over the array and get the highest model version for each group of services
+            var filterDataServicesByVersion = [];
+            _.forEach(servicesByModelInvariant, function(items) {
+                var maxVersionItem = _.maxBy(items, function(item) { return parseFloat(item['extra-properties']['extra-property'][6]["property-value"]); });
+                filterDataServicesByVersion.push(maxVersionItem);
+            });
+
+            return filterDataServicesByVersion;
+        };
+
+        $scope.tableData = [];
+        var oldData = [];
+        $scope.loadPreviousVersionData = function (version, invariantUUID) {
+            $scope.tableData = [];
+            oldData = [];
+            for (var i = 0; i < wholeData.length; i++) {
+                if (wholeData[i]['extra-properties']['extra-property'] && wholeData[i]['extra-properties']['extra-property'][4]['property-value'] == invariantUUID && version != wholeData[i]['extra-properties']['extra-property'][6]['property-value']) {
+                    oldData.push(wholeData[i]);
+                }
+            }
+            $scope.tableData = oldData;
+            $scope.createType = "Previous Version";
+            var broadcastType = "createTableComponent";
+            $scope.componentName = invariantUUID;
+            $scope.$broadcast(broadcastType, {
+                componentId: COMPONENT.OLDVERSION,
+                callbackFunction: function (response) {
+                }
+            });
+        }
+        $scope.cancelCreateSIType = function () {
+
+            window.location.href = COMPONENT.SERVICE_MODLES_INSTANCES_SUBSCRIBERS_PATH;
+
+        }
 
         $scope.fetchServices = function () {
             var serviceIdList = [];
@@ -379,7 +341,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 $scope.errorMsg = FIELD.ERROR.FETCHING_SERVICES + response.status;
                 $scope.errorDetails = response.data;
             });
-        }
+        };
 
         $scope.refreshSubs = function () {
             $scope.init();
@@ -387,10 +349,20 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.fetchServices();
         };
 
+        $scope.loadOwningEntity = function () {
+            OwningEntityService.getOwningEntityProperties(function (response) {
+                $scope.owningEntities = response.owningEntity;
+                $scope.projects = response.project;
+
+                // working project name: owning-entity-id-val-cp8128
+                // working owning entity name: owning-entity-id-val-cp8128
+            });
+        };
+
         $scope.fetchSubs = function (status) {
             $scope.status = status;
 
-            AaiService.getSubList(function (response) { // sucesss
+            AaiService.getSubList(function (response) {
                 $scope.setProgress(100); // done
                 $scope.status = FIELD.STATUS.DONE;
                 $scope.isSpinnerVisible = false;
@@ -408,16 +380,23 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         }
 
 
-        $scope.getSubDetails = function (request) {
+        $scope.getSubDetails = function () {
 
             $scope.init();
-            $scope.selectedSubscriber = $location.search().selectedSubscriber;
-            $scope.selectedServiceInstance = $location.search().selectedServiceInstance;
+            //$scope.selectedSubscriber = $location.search().selectedSubscriber;
+            // $scope.selectedServiceInstance = $location.search().selectedServiceInstance;
             $scope.status = FIELD.STATUS.FETCHING_SUB_DETAILS + $scope.selectedSubscriber;
+            var query = $location.url().replace($location.path(),'');
 
             $scope.displayData = [];
-            AaiService.getSubDetails($scope.selectedSubscriber, $scope.selectedServiceInstance, function (displayData, subscriberName) {
-                $scope.displayData = displayData;
+            AaiService.searchServiceInstances(query).then(function (response) {
+                $scope.displayData = response.displayData;
+                if (response.displayData.length)
+                {
+                    var first = response.displayData[0];
+                    $scope.selectedSubscriberId = first.globalCustomerId;
+                    $scope.selectedSubscriberName = first.subscriberName;
+                }
                 $scope.viewPerPage = 10;
                 $scope.totalPage = $scope.displayData.length / $scope.viewPerPage;
                 $scope.scrollViewPerPage = 2;
@@ -429,13 +408,13 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 $scope.setProgress(100); // done
                 $scope.status = FIELD.STATUS.DONE;
                 $scope.isSpinnerVisible = false;
-                $scope.subscriberName = subscriberName;
-            }, function (response) {
+
+            }).catch(function (response) {
                 $scope.showError(FIELD.ERROR.AAI);
                 $scope.errorMsg = FIELD.ERROR.AAI_FETCHING_CUST_DATA + response.status;
                 $scope.errorDetails = response.data;
             });
-        }
+        };
 
 
         $scope.$on(COMPONENT.MSO_DELETE_REQ, function (event, request) {
@@ -452,7 +431,6 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         });
 
         $scope.init = function () {
-
             //PropertyService.setAaiBaseUrl("testaai");
             //PropertyService.setAsdcBaseUrl("testasdc");
 
@@ -529,37 +507,67 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             alert(response.statusText);
         }
 
-        $scope.getAsdcModel = function (disData) {
+        function getModelVersionIdForServiceInstance(instance) {
+            if (UtilityService.hasContents(instance.aaiModelVersionId)) {
+                return $q.resolve(instance.aaiModelVersionId);
+            } else {
+                return AaiService.getModelVersionId(instance.globalCustomerId, instance.serviceInstanceId);
+            }
+        }
 
-            console.log("disData");
-            console.log(JSON.stringify(disData, null, 4));
+        $scope.onViewEditClick = function (disData) {
+            $log.debug("disData", disData, null, 4);
 
-            // if ( !(UtilityService.hasContents (disData.aaiModelVersionId)) ) {
-            // 	$scope.errorMsg = FIELD.ERROR.MODEL_VERSION_ID_MISSING;
-            // 	alert($scope.errorMsg);
-            // 	return;
-            // }
+            getModelVersionIdForServiceInstance(disData)
+                .then(getAsdcModelByVersionId, handleErrorGettingModelVersion)
+                .then(navigateToViewEditPage);
 
-            // aaiModelVersionId is the model uuid
-            var pathQuery = COMPONENT.SERVICES_PATH + disData.aaiModelVersionId;
-            $http({
-                method: 'GET',
-                url: pathQuery
-            }).then(function successCallback(response) {
-                vidService.setModel(response.data);
+
+            function navigateToViewEditPage() {
                 window.location.href =
                     COMPONENT.INSTANTIATE_ROOT_PATH + disData.globalCustomerId +
                     COMPONENT.SUBSCRIBERNAME_SUB_PATH + disData.subscriberName +
                     COMPONENT.SERVICETYPE_SUB_PATH + disData.serviceType +
                     COMPONENT.SERVICEINSTANCEID_SUB_PATH + disData.serviceInstanceId +
                     COMPONENT.IS_PERMITTED_SUB_PATH + disData.isPermitted;
+            }
+        };
+
+        function handleErrorGettingModelVersion(err) {
+            $log.error("aaiSubscriber getModelVersionIdForServiceInstance - " + err);
+            $scope.errorMsg = err;
+            alert($scope.errorMsg);
+            return $q.reject();
+        }
+
+        function getAsdcModelByVersionId(aaiModelVersionId) {
+            // aaiModelVersionId is the model uuid
+            var pathQuery = COMPONENT.SERVICES_PATH + aaiModelVersionId;
+            return $http({
+                method: 'GET',
+                url: pathQuery
+            }).then(function successCallback(response) {
+                vidService.setModel(response.data);
                 console.log("aaiSubscriber getAsdcModel DONE!!!!");
             }, function errorCallback(response) {
-                console.log("aaiSubscriber getAsdcModel - No matching model found matching the A&AI model version ID = " + disData.aaiModelVersionId);
-                $scope.errorMsg = FIELD.ERROR.NO_MATCHING_MODEL_AAI + disData.aaiModelVersionId;
+                $log.error("aaiSubscriber getAsdcModel - " + FIELD.ERROR.NO_MATCHING_MODEL_AAI + aaiModelVersionId);
+                $scope.errorMsg = FIELD.ERROR.NO_MATCHING_MODEL_AAI + aaiModelVersionId;
                 alert($scope.errorMsg);
             });
+        }
 
+        function returnMatchingServiceSubscription(serviceSubs, serviceId){
+            var orchStatus;
+            serviceSubs.forEach(function(item){
+                if (item[FIELD.ID.SERVICE_INSTANCES] != null) {
+                    item[FIELD.ID.SERVICE_INSTANCES][FIELD.ID.SERVICE_INSTANCE].forEach(function (service) {
+                        if (service[FIELD.ID.SERVICE_INSTANCE_ID] === serviceId) {
+                            orchStatus = service['orchestration-status']
+                        }
+                    })
+                }
+            });
+            return orchStatus;
         }
 
         $scope.getTenants = function (globalCustomerId) {
@@ -572,10 +580,26 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 });
         }
 
+        $scope.isActivateDeactivateEnabled = function(btnType) {
+            if ($scope.serviceOrchestrationStatus && $scope.service.model.service.serviceType.toLowerCase().indexOf('transport') != -1) {
+                switch (btnType) {
+                    case "activate":
+                        return $scope.serviceOrchestrationStatus === 'Created' ||
+                            $scope.serviceOrchestrationStatus.toLowerCase() === 'pendingdelete' || $scope.serviceOrchestrationStatus.toLowerCase() === 'pending-delete';
+                        break;
+                    case "deactivate":
+                        return $scope.serviceOrchestrationStatus === 'Active';
+                        break;
+                }
+            }
+
+            return false;
+        };
+
         $scope.handleInitialResponseInventoryItems = function (response) {
 
             $scope.inventoryResponseItemList = response.data[FIELD.ID.INVENTORY_RESPONSE_ITEM]; // get data from json
-            console.log($scope.inventoryResponseItemList.toString());
+            $log.debug($scope.inventoryResponseItemList);
 
             $scope.displayData = [];
             $scope.vnfs = [];
@@ -585,8 +609,9 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.subscriberName = "";
             // just look up the subscriber name in A&AI here...
             AaiService.getSubscriberName($scope.globalCustomerId, function (response) {
-                $scope.subscriberName = response;
+                $scope.subscriberName = response.subscriberName;
                 DataService.setSubscriberName($scope.subscriberName);
+                $scope.serviceOrchestrationStatus = returnMatchingServiceSubscription(response.serviceSubscriptions[FIELD.ID.SERVICE_SUBSCRIPTION], $scope.serviceInstanceId);
 
                 angular.forEach($scope.inventoryResponseItemList, function (inventoryResponseItem, key) {
 
@@ -609,12 +634,13 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                 "type": PARAMETER.STRING,
                                 "description": FIELD.PROMPT.VAR_DESCRIPTION_B,
                                 "default": FIELD.PROMPT.DEFAULT_B
-                            },
+                            }
                         },
                         "object": $scope.inventoryResponseItem[FIELD.ID.SERVICE_INSTANCE],
                         "vnfs": [],
-                        "networks": []
-                    }
+                        "networks": [],
+                        "configurations": []
+                    };
 
                     if (inventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
 
@@ -760,6 +786,44 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                     });
                                 }
                             }
+
+                            if (subInventoryResponseItem[FIELD.ID.GENERIC_CONFIGURATION] != null) {
+                                var configObject = subInventoryResponseItem[FIELD.ID.GENERIC_CONFIGURATION];
+                                var config = {
+                                    "id": $scope.counter++,
+                                    "name": configObject[FIELD.ID.CONFIGURATION_NAME],
+                                    "itemType": FIELD.ID.CONFIGURATION,
+                                    "nodeId": configObject[FIELD.ID.CONFIGURATION_ID],
+                                    "nodeType": configObject[FIELD.ID.CONFIGURATION_TYPE],
+                                    "nodeStatus": configObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                    "modelInvariantId": configObject[FIELD.ID.MODEL_INVAR_ID],
+                                    "modelVersionId": configObject[FIELD.ID.MODEL_VERSION_ID],
+                                    "modelCustomizationId": configObject[FIELD.ID.MODEL_CUSTOMIZATION_ID],
+                                    "object": configObject,
+                                    "ports": []
+                                };
+
+                                $scope.allowConfigurationActions = [FIELD.STATUS.AAI_ACTIVE, FIELD.STATUS.AAI_INACTIVE, FIELD.STATUS.AAI_CREATED].indexOf(config.nodeStatus) != -1;
+
+                                if (subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
+                                    angular.forEach(subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS][FIELD.ID.INVENTORY_RESPONSE_ITEM], function (subSubInventoryResponseItem, key) {
+                                        var port = {};
+                                        var portObject;
+                                        if (subSubInventoryResponseItem[FIELD.ID.PORT] != null) {
+                                            portObject = subSubInventoryResponseItem[FIELD.ID.PORT];
+                                            port = {
+                                                "portId": portObject[FIELD.ID.PORT_ID],
+                                                "portName": portObject[FIELD.ID.PORT_NAME],
+                                                "portStatus": portObject[FIELD.ID.PORT_MIRRORED] === true ? FIELD.STATUS.AAI_ENABLED : FIELD.ID.AAI_DISABLED,
+                                                "object": portObject
+                                            };
+                                            config.ports.push(port);
+                                        }
+                                    });
+                                }
+                                $scope.service.instance[FIELD.ID.CONFIGURATIONS].push(config);
+                            }
+
                         });
                     }
                 });
@@ -901,63 +965,239 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.currentPage--;
         }
 
-        $scope.activateMSOInstance = function() {
-            MsoService.activateInstance($scope.service.instance, $scope.service.model)
-                .then(function(response) {
-                    alert("Activation succeeded");
-                })
-                .catch(function (error) {
-                    $log.error(error);
+        var getAicZoneAndSendToMso = function (msoType, requestParams) {
+            AaiService.getAicZoneForPNF(
+                $scope.service.instance.globalCustomerId,
+                $scope.service.instance.serviceType,
+                $scope.service.instance.serviceInstanceId, function (aicZone) {
+
+                    requestParams.aicZone = aicZone;
+
+                    openMsoModal(msoType, requestParams);
                 });
-            ;
+        };
+
+        var activateDeactivateServiceInstance = function(msoType) {
+            var requestParams = {
+                model: $scope.service.model,
+                instance: $scope.service.instance
+            };
+
+            if (DataService.getLoggedInUserId()) {
+                requestParams.userId = DataService.getLoggedInUserId();
+                getAicZoneAndSendToMso(msoType, requestParams)
+            } else {
+                AaiService.getLoggedInUserID(function (response) {
+                    var userID = response.data;
+                    DataService.setLoggedInUserId(userID);
+                    requestParams.userId = userID;
+
+                    getAicZoneAndSendToMso(msoType, requestParams);
+                });
+            }
+        };
+
+        $scope.activateMSOInstance = function() {
+
+            activateDeactivateServiceInstance(COMPONENT.MSO_ACTIVATE_SERVICE_REQ);
+        };
+
+        $scope.deactivateMSOInstance = function() {
+
+            activateDeactivateServiceInstance(COMPONENT.MSO_DEACTIVATE_SERVICE_REQ);
+        };
+
+        $scope.toggleConfigurationStatus = function (serviceObject, configuration) {
+
+
+            AaiService.getLoggedInUserID(function (response) {
+                    DataService.setLoggedInUserId(response.data);
+                    var requestParams = {
+                        serviceModel: {
+                            "modelType": "service",
+                            "modelInvariantId": serviceObject.model.service.invariantUuid,
+                            "modelVersionId": "uuid",
+                            "modelName": serviceObject.model.service.name,
+                            "modelVersion": serviceObject.model.service.version
+                        },
+                        configurationModel: {
+                            "modelType": "configuration",
+                            "modelInvariantId": configuration.modelInvariantId,
+                            "modelVersionId": configuration.modelVersionId,
+                            "modelCustomizationId": configuration.modelCustomizationId
+                        },
+                        serviceInstanceId: serviceObject.instance.serviceInstanceId,
+                        configurationId: configuration.nodeId,
+                        configStatus: configuration.nodeStatus,
+                        userId: DataService.getLoggedInUserId()
+                    };
+
+                    openMsoModal(COMPONENT.MSO_CHANGE_CONFIG_STATUS_REQ, requestParams);
+             });
+
+        };
+
+        $scope.togglePortStatus = function(serviceObject, configuration, port) {
+
+            var requestParams = {
+                serviceInstanceId: serviceObject.instance.serviceInstanceId,
+                configurationId: configuration.nodeId,
+                portId: port.portId,
+                portStatus: port.portStatus,
+                serviceModel: {
+                    "modelType": "service",
+                    "modelInvariantId": serviceObject.model.service.invariantUuid,
+                    "modelVersionId": "uuid",
+                    "modelName": serviceObject.model.service.name,
+                    "modelVersion": serviceObject.model.service.version
+                },
+                configurationModel: {
+                    "modelType": "configuration",
+                    "modelInvariantId": configuration.modelInvariantId,
+                    "modelVersionId": configuration.modelVersionId,
+                    "modelCustomizationId": configuration.modelCustomizationId
+                },
+                userId: DataService.getLoggedInUserId()
+            };
+
+            openMsoModal(COMPONENT.MSO_CHANGE_PORT_STATUS_REQ, requestParams);
+        };
+
+        $scope.dissociatePnf = function(pnfName) {
+
+            var jobInfo = {
+                status: "confirm",
+                message: "Are you sure you would like to dissociate " + pnfName + " from the service instance?"
+            };
+
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/alert-modal/alert-modal.html',
+                controller: 'alertModalController',
+                controllerAs: 'vm',
+                appendTo: angular.element("#pnfs-tree"),
+                resolve: {
+                    jobInfo: function () {
+                        return jobInfo;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (result) {
+                console.log("This is the result of the alert modal.", result);
+
+                if (result) {
+                    var requestParams = {
+                        pnf: pnfName,
+                        serviceModelInfo: {
+                            invariantUuid: $scope.service.model.service.invariantUuid,
+                            uuid: $scope.service.model.service.uuid,
+                            version: $scope.service.model.service.version,
+                            name: $scope.service.model.service.name
+                        },
+                        serviceInstanceId: $scope.service.instance.serviceInstanceId
+                    };
+
+                    if (DataService.getLoggedInUserId()) {
+                        requestParams.attuuid = DataService.getLoggedInUserId();
+                        openMsoModal(COMPONENT.MSO_REMOVE_RELATIONSHIP, requestParams);
+                    } else {
+                        AaiService.getLoggedInUserID(function (response) {
+                            DataService.setLoggedInUserId(response.data);
+
+                            requestParams.attuuid = response.data;
+                            openMsoModal(COMPONENT.MSO_REMOVE_RELATIONSHIP, requestParams);
+                        });
+                    }
+                }
+            });
+
+
+        };
+
+        var openMsoModal = function (msoType, requestParams) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/mso-commit/mso-commit.html',
+                controller : "msoCommitModalController",
+                backdrop: false,
+                resolve: {
+                    msoType: function () {
+                        return msoType;
+                    },
+                    requestParams: function() {
+                        requestParams.callbackFunction = updateViewCallbackFunction;
+                        return requestParams;
+                    }
+                }
+            });
+        };
+
+        var updateViewCallbackFunction = function(response) {
+            $scope.callbackResults = "";
+            var color = FIELD.ID.COLOR_NONE;
+            $scope.callbackStyle = {
+                "background-color" : color
+            };
+
+            /*
+             * This 1/2 delay was only added to visually highlight the status
+             * change. Probably not needed in the real application code.
+             */
+            $timeout(function() {
+                $scope.callbackResults = UtilityService.getCurrentTime()
+                    + FIELD.STATUS.IS_SUCCESSFUL + response.isSuccessful;
+                if (response.isSuccessful) {
+                    color = FIELD.ID.COLOR_8F8;
+                    $scope.reloadRoute();
+                } else {
+                    color = FIELD.ID.COLOR_F88;
+                }
+                $scope.callbackStyle = {
+                    "background-color" : color
+                };
+            }, 500);
         };
 
         $scope.nextPage = function () {
             $scope.currentPage++;
+        };
+
+        $scope.serviceInstanceses = [{"sinstance": FIELD.NAME.SERVICE_INSTANCE_Id}, {"sinstance": FIELD.NAME.SERVICE_INSTANCE_NAME}];
+
+        function navigateToSearchResultsPage(globalCustomerId, selectedServiceInstance, selectedProjects, selectedOwningEntities) {
+            var projectQuery = AaiService.getMultipleValueParamQueryString(_.map(selectedProjects, 'id'), COMPONENT.PROJECT_SUB_PATH);
+            var owningEntityQuery = AaiService.getMultipleValueParamQueryString(_.map(selectedOwningEntities, 'id'), COMPONENT.OWNING_ENTITY_SUB_PATH);
+            var globalCustomerIdQuery = globalCustomerId ? COMPONENT.SELECTED_SUBSCRIBER_SUB_PATH + globalCustomerId : null;
+            var serviceInstanceQuery = selectedServiceInstance ? COMPONENT.SELECTED_SERVICE_INSTANCE_SUB_PATH + selectedServiceInstance : null;
+            var query = AaiService.getJoinedQueryString([projectQuery, owningEntityQuery, globalCustomerIdQuery, serviceInstanceQuery]);
+
+            window.location.href = COMPONENT.SELECTED_SERVICE_SUB_PATH + query;
         }
-        $scope.serviceInstanceses = [{"sinstance": FIELD.NAME.SERVICE_INSTANCE_Id}, {"sinstance": FIELD.NAME.SERVICE_INSTANCE_NAME}]
-        $scope.getSubscriberDet = function (selectedCustomer, selectedserviceinstancetype, selectedServiceInstance) {
 
-            var sintype = selectedserviceinstancetype;
-            if (selectedServiceInstance != "" && selectedServiceInstance != undefined) {
-                selectedServiceInstance.trim();
+        $scope.getServiceInstancesSearchResults =
+            function (selectedCustomer, selectedInstanceIdentifierType, selectedServiceInstance, selectedProject, selectedOwningEntity) {
+                var isSelectionValid = UtilityService.hasContents(selectedCustomer) || UtilityService.hasContents(selectedProject)
+                    || UtilityService.hasContents(selectedOwningEntity) || UtilityService.hasContents(selectedServiceInstance);
 
-                // check with A&AI
-                $http.get(COMPONENT.AAI_GET_SERVICE_INSTANCE_PATH + selectedServiceInstance + "/" + sintype + "?r=" + Math.random(), {}, {
-                    timeout: $scope.responseTimeoutMsec
-                }).then(function (response) {
-                    var notFound = true;
-                    if (angular.isArray(response.data[FIELD.ID.RESULT_DATA])) {
-                        var item = [];
-                        var urlParts = [];
-                        item = response.data[FIELD.ID.RESULT_DATA][0];
-                        var url = item[FIELD.ID.RESOURCE_LINK];
-                        var globalCustomerId = "";
-                        var serviceSubscription = "";
-                        // split it and find the customer Id and service-subscription
-                        urlParts = url.split("/");
-                        if (urlParts[7] === FIELD.ID.CUSTOMER) {
-                            globalCustomerId = urlParts[8];
-                        }
-                        if (urlParts[10] === FIELD.ID.SERVICE_SUBSCRIPTION) {
-                            serviceSubscription = urlParts[11];
-                        }
-
-                        if (globalCustomerId !== "") {
-                            notFound = false;
-                            window.location.href = COMPONENT.SELECTED_SERVICE_SUB_PATH + serviceSubscription + COMPONENT.SELECTEDSUBSCRIBER_SUB_PATH + globalCustomerId + COMPONENT.SELECTEDSERVICEINSTANCE_SUB_PATH + selectedServiceInstance;
-                        }
+                if (isSelectionValid) {
+                    if (UtilityService.hasContents(selectedServiceInstance)) {
+                        AaiService
+                            .getGlobalCustomerIdByInstanceIdentifier(selectedServiceInstance, selectedInstanceIdentifierType)
+                            .then(handleCustomerIdResponse);
+                    } else {
+                        navigateToSearchResultsPage(selectedCustomer, null, selectedProject, selectedOwningEntity);
                     }
-                    if (notFound) {
+                } else {
+                    alert(FIELD.ERROR.SELECT);
+                }
+
+                function handleCustomerIdResponse(globalCustomerId) {
+                    if (UtilityService.hasContents(globalCustomerId)) {
+                        navigateToSearchResultsPage(globalCustomerId, selectedServiceInstance, selectedProject, selectedOwningEntity);
+                    } else {
                         alert(FIELD.ERROR.SERVICE_INST_DNE);
                     }
-                }); // add a failure callback...
-            } else if (selectedCustomer != null) {
-                window.location.href = COMPONENT.SELECTED_SUB_PATH + selectedCustomer;
-            } else {
-                alert(FIELD.ERROR.SELECT);
-            }
-        };
+                }
+            };
     }]).directive('restrictInput', function () {
 
     return {

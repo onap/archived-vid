@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_folder` (
   `PARENT_FOLDER_ID` INT(11) NULL DEFAULT NULL,
   `PUBLIC_YN` VARCHAR(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`FOLDER_ID`),
-  INDEX `fk_parent_key_cr_folder` (`PARENT_FOLDER_ID` ASC),
-  CONSTRAINT `fk_parent_key_cr_folder`
+  INDEX `FK_PARENT_KEY_CR_FOLDER` (`PARENT_FOLDER_ID` ASC),
+  CONSTRAINT `FK_PARENT_KEY_CR_FOLDER`
     FOREIGN KEY (`PARENT_FOLDER_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_folder` (`FOLDER_ID`))
 ENGINE = InnoDB
@@ -94,11 +94,11 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_hist_user_map` (
   `HIST_ID` INT(11) NOT NULL,
   `USER_ID` INT(11) NOT NULL,
   PRIMARY KEY (`HIST_ID`, `USER_ID`),
-  INDEX `sys_c0014617` (`USER_ID` ASC),
-  CONSTRAINT `sys_c0014616`
+  INDEX `SYS_C0014617` (`USER_ID` ASC),
+  CONSTRAINT `SYS_C0014616`
     FOREIGN KEY (`HIST_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_report_file_history` (`HIST_ID`),
-  CONSTRAINT `sys_c0014617`
+  CONSTRAINT `SYS_C0014617`
     FOREIGN KEY (`USER_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`))
 ENGINE = InnoDB
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_report` (
   `DASHBOARD_TYPE_YN` VARCHAR(1) NULL DEFAULT 'N',
   `DASHBOARD_YN` VARCHAR(1) NULL DEFAULT 'N',
   PRIMARY KEY (`REP_ID`),
-  INDEX `cr_report_create_idpublic_yntitle` (`CREATE_ID` ASC, `PUBLIC_YN` ASC, `TITLE` ASC))
+  INDEX `CR_REPORT_CREATE_IDPUBLIC_YNTITLE` (`CREATE_ID` ASC, `PUBLIC_YN` ASC, `TITLE` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_report_access` (
   `USER_ID` DECIMAL(11,0) NULL DEFAULT NULL,
   `READ_ONLY_YN` VARCHAR(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`REP_ID`, `ORDER_NO`),
-  CONSTRAINT `fk_cr_repor_ref_8550_cr_repor`
+  CONSTRAINT `FK_CR_REPOR_REF_8550_CR_REPOR`
     FOREIGN KEY (`REP_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_report` (`REP_ID`))
 ENGINE = InnoDB
@@ -213,8 +213,8 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_report_email_sent_log` (
   `ACCESS_FLAG` VARCHAR(1) NOT NULL DEFAULT 'Y',
   `TOUCH_DATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`LOG_ID`),
-  INDEX `fk_cr_report_rep_id` (`REP_ID` ASC),
-  CONSTRAINT `fk_cr_report_rep_id`
+  INDEX `FK_CR_REPORT_REP_ID` (`REP_ID` ASC),
+  CONSTRAINT `FK_CR_REPORT_REP_ID`
     FOREIGN KEY (`REP_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_report` (`REP_ID`))
 ENGINE = InnoDB
@@ -241,12 +241,12 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_report_file_history` (
   `DELETED_YN` CHAR(1) NULL DEFAULT 'N',
   `DELETED_BY` DECIMAL(38,0) NULL DEFAULT NULL,
   PRIMARY KEY (`HIST_ID`),
-  INDEX `sys_c0014614` (`FILE_TYPE_ID` ASC),
-  INDEX `sys_c0014615` (`REP_ID` ASC),
-  CONSTRAINT `sys_c0014614`
+  INDEX `SYS_C0014614` (`FILE_TYPE_ID` ASC),
+  INDEX `SYS_C0014615` (`REP_ID` ASC),
+  CONSTRAINT `SYS_C0014614`
     FOREIGN KEY (`FILE_TYPE_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_lu_file_type` (`LOOKUP_ID`),
-  CONSTRAINT `sys_c0014615`
+  CONSTRAINT `SYS_C0014615`
     FOREIGN KEY (`REP_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_report` (`REP_ID`))
 ENGINE = InnoDB
@@ -262,8 +262,8 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_report_log` (
   `ACTION` VARCHAR(2000) NOT NULL,
   `ACTION_VALUE` VARCHAR(50) NULL DEFAULT NULL,
   `FORM_FIELDS` VARCHAR(4000) NULL DEFAULT NULL,
-  INDEX `fk_cr_repor_ref_17645_cr_repor` (`REP_ID` ASC),
-  CONSTRAINT `fk_cr_repor_ref_17645_cr_repor`
+  INDEX `FK_CR_REPOR_REF_17645_CR_REPOR` (`REP_ID` ASC),
+  CONSTRAINT `FK_CR_REPOR_REF_17645_CR_REPOR`
     FOREIGN KEY (`REP_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_report` (`REP_ID`))
 ENGINE = InnoDB
@@ -292,8 +292,8 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_report_schedule` (
   `ENCRYPT_YN` CHAR(1) NULL DEFAULT 'N',
   `ATTACHMENT_YN` CHAR(1) NULL DEFAULT 'Y',
   PRIMARY KEY (`SCHEDULE_ID`),
-  INDEX `fk_cr_repor_ref_14707_cr_repor` (`REP_ID` ASC),
-  CONSTRAINT `fk_cr_repor_ref_14707_cr_repor`
+  INDEX `FK_CR_REPOR_REF_14707_CR_REPOR` (`REP_ID` ASC),
+  CONSTRAINT `FK_CR_REPOR_REF_14707_CR_REPOR`
     FOREIGN KEY (`REP_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_report` (`REP_ID`))
 ENGINE = InnoDB
@@ -309,7 +309,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_report_schedule_users` (
   `ROLE_ID` DECIMAL(11,0) NULL DEFAULT NULL,
   `ORDER_NO` DECIMAL(11,0) NOT NULL,
   PRIMARY KEY (`SCHEDULE_ID`, `REP_ID`, `USER_ID`, `ORDER_NO`),
-  CONSTRAINT `fk_cr_repor_ref_14716_cr_repor`
+  CONSTRAINT `FK_CR_REPOR_REF_14716_CR_REPOR`
     FOREIGN KEY (`SCHEDULE_ID`)
     REFERENCES `vid_openecomp_epsdk`.`cr_report_schedule` (`SCHEDULE_ID`))
 ENGINE = InnoDB
@@ -343,12 +343,12 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_table_join` (
   `SRC_TABLE_NAME` VARCHAR(30) NOT NULL,
   `DEST_TABLE_NAME` VARCHAR(30) NOT NULL,
   `JOIN_EXPR` VARCHAR(500) NOT NULL,
-  INDEX `cr_table_join_dest_table_name` (`DEST_TABLE_NAME` ASC),
-  INDEX `cr_table_join_src_table_name` (`SRC_TABLE_NAME` ASC),
-  CONSTRAINT `fk_cr_table_ref_311_cr_tab`
+  INDEX `CR_TABLE_JOIN_DEST_TABLE_NAME` (`DEST_TABLE_NAME` ASC),
+  INDEX `CR_TABLE_JOIN_SRC_TABLE_NAME` (`SRC_TABLE_NAME` ASC),
+  CONSTRAINT `FK_CR_TABLE_REF_311_CR_TAB`
     FOREIGN KEY (`SRC_TABLE_NAME`)
     REFERENCES `vid_openecomp_epsdk`.`cr_table_source` (`TABLE_NAME`),
-  CONSTRAINT `fk_cr_table_ref_315_cr_tab`
+  CONSTRAINT `FK_CR_TABLE_REF_315_CR_TAB`
     FOREIGN KEY (`DEST_TABLE_NAME`)
     REFERENCES `vid_openecomp_epsdk`.`cr_table_source` (`TABLE_NAME`))
 ENGINE = InnoDB
@@ -361,7 +361,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`cr_table_role` (
   `TABLE_NAME` VARCHAR(30) NOT NULL,
   `ROLE_ID` DECIMAL(11,0) NOT NULL,
   PRIMARY KEY (`TABLE_NAME`, `ROLE_ID`),
-  CONSTRAINT `fk_cr_table_ref_32384_cr_table`
+  CONSTRAINT `FK_CR_TABLE_REF_32384_CR_TABLE`
     FOREIGN KEY (`TABLE_NAME`)
     REFERENCES `vid_openecomp_epsdk`.`cr_table_source` (`TABLE_NAME`))
 ENGINE = InnoDB
@@ -383,74 +383,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.demo_bar_chart
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`demo_bar_chart` (
-  `label` VARCHAR(20) NULL DEFAULT NULL,
-  `value` DECIMAL(25,15) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.demo_bar_chart_inter
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`demo_bar_chart_inter` (
-  `spam_date` DATE NULL DEFAULT NULL,
-  `num_rpt_sources` DECIMAL(10,0) NULL DEFAULT NULL,
-  `num_det_sources` DECIMAL(10,0) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.demo_line_chart
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`demo_line_chart` (
-  `series` VARCHAR(20) NULL DEFAULT NULL,
-  `log_date` DATE NULL DEFAULT NULL,
-  `data_value` DECIMAL(10,5) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.demo_pie_chart
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`demo_pie_chart` (
-  `legend` VARCHAR(20) NULL DEFAULT NULL,
-  `data_value` DECIMAL(10,5) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.demo_scatter_chart
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`demo_scatter_chart` (
-  `rainfall` DECIMAL(10,2) NULL DEFAULT NULL,
-  `key_value` VARCHAR(20) NULL DEFAULT NULL,
-  `measurements` DECIMAL(10,2) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.demo_scatter_plot
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`demo_scatter_plot` (
-  `SERIES` VARCHAR(20) NULL DEFAULT NULL,
-  `VALUEX` DECIMAL(25,15) NULL DEFAULT NULL,
-  `VALUEY` DECIMAL(25,15) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.demo_util_chart
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`demo_util_chart` (
-  `traffic_date` DATE NULL DEFAULT NULL,
-  `util_perc` DECIMAL(10,5) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.fn_app
+-- Table vid_portal.fn_app
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_app` (
   `APP_ID` INT(11) NOT NULL AUTO_INCREMENT,
@@ -475,6 +408,21 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_app` (
   PRIMARY KEY (`APP_ID`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_app_mme_cpu
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_app_mme_cpu` (
+  `MME` VARCHAR(200) NULL DEFAULT NULL,
+  `YEARMONTH` INT(11) NULL DEFAULT NULL,
+  `SCTP_CPU` INT(11) NULL DEFAULT NULL,
+  `AP_CPU` INT(11) NULL DEFAULT NULL,
+  `DP_CPU` INT(11) NULL DEFAULT NULL,
+  `ROUTER_CPU` INT(11) NULL DEFAULT NULL,
+  `PEB_CPU` INT(11) NULL DEFAULT NULL,
+  `SAU` INT(11) NULL DEFAULT NULL)
+ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
@@ -519,14 +467,14 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_audit_log` (
   `AFFECTED_RECORD_ID_BK` VARCHAR(500) NULL DEFAULT NULL,
   `AFFECTED_RECORD_ID` VARCHAR(4000) NULL DEFAULT NULL,
   PRIMARY KEY (`LOG_ID`),
-  INDEX `fn_audit_log_activity_cd` (`ACTIVITY_CD` ASC),
-  INDEX `fn_audit_log_user_id` (`USER_ID` ASC),
+  INDEX `FN_AUDIT_LOG_ACTIVITY_CD` (`ACTIVITY_CD` ASC),
+  INDEX `FN_AUDIT_LOG_USER_ID` (`USER_ID` ASC),
+  CONSTRAINT `FK_FN_AUDIT_REF_205_FN_LU_AC`
+    FOREIGN KEY (`ACTIVITY_CD`)
+    REFERENCES `vid_openecomp_epsdk`.`fn_lu_activity` (`ACTIVITY_CD`),
   CONSTRAINT `FK_FN_AUDIT_REF_209_FN_USER`
     FOREIGN KEY (`USER_ID`)
-    REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`),
-  CONSTRAINT `fk_fn_audit_ref_205_fn_lu_ac`
-    FOREIGN KEY (`ACTIVITY_CD`)
-    REFERENCES `vid_openecomp_epsdk`.`fn_lu_activity` (`ACTIVITY_CD`))
+    REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -604,6 +552,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_datasource` (
   `DS_TYPE` VARCHAR(20) NULL DEFAULT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
@@ -613,6 +562,76 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_function` (
   `FUNCTION_CD` VARCHAR(30) NOT NULL,
   `FUNCTION_NAME` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`FUNCTION_CD`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_license
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_license` (
+  `id` DECIMAL(11,0) NOT NULL,
+  `app_id` DECIMAL(11,0) NOT NULL,
+  `ip_address` VARCHAR(100) NOT NULL,
+  `quantum_version_id` DECIMAL(11,0) NOT NULL,
+  `created_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_id` DECIMAL(11,0) NULL DEFAULT NULL,
+  `modified_id` DECIMAL(11,0) NULL DEFAULT NULL,
+  `end_date` TIMESTAMP NOT NULL DEFAULT '2036-01-19 03:14:07',
+  PRIMARY KEY (`id`),
+  INDEX `fn_license_r02` (`quantum_version_id` ASC),
+  CONSTRAINT `fn_license_r02`
+    FOREIGN KEY (`quantum_version_id`)
+    REFERENCES `vid_openecomp_epsdk`.`fn_license_version` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_license_app
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_license_app` (
+  `id` DECIMAL(11,0) NOT NULL,
+  `app_name` VARCHAR(100) NOT NULL,
+  `ctxt_name` VARCHAR(100) NULL DEFAULT NULL,
+  INDEX `fn_license_app_ID` (`id` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_license_contact
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_license_contact` (
+  `id` INT(11) NOT NULL,
+  `license_id` INT(11) NULL DEFAULT NULL,
+  `sbcid` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_license_history
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_license_history` (
+  `license_id` DECIMAL(11,0) NULL DEFAULT NULL,
+  `app_id` DECIMAL(11,0) NULL DEFAULT NULL,
+  `ip_address` VARCHAR(100) NULL DEFAULT NULL,
+  `quantum_version_id` DECIMAL(11,0) NULL DEFAULT NULL,
+  `created_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_id` DECIMAL(11,0) NULL DEFAULT NULL,
+  `modified_id` DECIMAL(11,0) NULL DEFAULT NULL,
+  `id` DECIMAL(11,0) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_license_version
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_license_version` (
+  `id` DECIMAL(11,0) NOT NULL,
+  `quantum_version` VARCHAR(25) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -647,22 +666,46 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_lu_call_times
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_lu_call_times` (
+  `CALL_TIME_ID` DECIMAL(10,0) NOT NULL,
+  `CALL_TIME_AMOUNT` DECIMAL(10,0) NOT NULL,
+  `CALL_TIME_DISPLAY` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`CALL_TIME_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_lu_city
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_lu_city` (
+  `CITY_CD` VARCHAR(2) NOT NULL,
+  `CITY` VARCHAR(100) NOT NULL,
+  `STATE_CD` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`CITY_CD`, `STATE_CD`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_lu_country
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_lu_country` (
+  `COUNTRY_CD` VARCHAR(3) NOT NULL,
+  `COUNTRY` VARCHAR(100) NOT NULL,
+  `FULL_NAME` VARCHAR(100) NULL DEFAULT NULL,
+  `WEBPHONE_COUNTRY_LABEL` VARCHAR(30) NULL DEFAULT NULL,
+  PRIMARY KEY (`COUNTRY_CD`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
 -- Table vid_openecomp_epsdk.fn_lu_menu_set
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_lu_menu_set` (
   `MENU_SET_CD` VARCHAR(10) NOT NULL,
   `MENU_SET_NAME` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`MENU_SET_CD`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.fn_lu_message_location
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_lu_message_location` (
-  `message_location_id` DECIMAL(11,0) NOT NULL,
-  `message_location_descr` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`message_location_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -685,6 +728,16 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_lu_role_type` (
   `ROLE_TYPE_ID` DECIMAL(11,0) NOT NULL,
   `ROLE_TYPE` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`ROLE_TYPE_ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.fn_lu_state
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_lu_state` (
+  `STATE_CD` VARCHAR(2) NOT NULL,
+  `STATE` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`STATE_CD`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -730,7 +783,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_menu` (
   PRIMARY KEY (`MENU_ID`),
   INDEX `FK_FN_MENU_REF_196_FN_MENU` (`PARENT_ID` ASC),
   INDEX `FK_FN_MENU_MENU_SET_CD` (`MENU_SET_CD` ASC),
-  INDEX `fn_menu_function_cd` (`FUNCTION_CD` ASC),
+  INDEX `FN_MENU_FUNCTION_CD` (`FUNCTION_CD` ASC),
   CONSTRAINT `FK_FN_MENU_MENU_SET_CD`
     FOREIGN KEY (`MENU_SET_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_lu_menu_set` (`MENU_SET_CD`),
@@ -741,7 +794,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_menu` (
     FOREIGN KEY (`FUNCTION_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_function` (`FUNCTION_CD`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 150039
+AUTO_INCREMENT = 150029
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
@@ -752,7 +805,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_org` (
   `ORG_NAME` VARCHAR(50) NOT NULL,
   `ACCESS_CD` VARCHAR(10) NULL DEFAULT NULL,
   PRIMARY KEY (`ORG_ID`),
-  INDEX `fn_org_access_cd` (`ACCESS_CD` ASC))
+  INDEX `FN_ORG_ACCESS_CD` (`ACCESS_CD` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -817,12 +870,12 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_qz_fired_triggers` (
   `IS_NONCONCURRENT` VARCHAR(1) NULL DEFAULT NULL,
   `REQUESTS_RECOVERY` VARCHAR(1) NULL DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`, `ENTRY_ID`),
-  INDEX `idx_fn_qz_ft_trig_inst_name` (`SCHED_NAME` ASC, `INSTANCE_NAME` ASC),
-  INDEX `idx_fn_qz_ft_inst_job_req_rcvry` (`SCHED_NAME` ASC, `INSTANCE_NAME` ASC, `REQUESTS_RECOVERY` ASC),
-  INDEX `idx_fn_qz_ft_j_g` (`SCHED_NAME` ASC, `JOB_NAME` ASC, `JOB_GROUP` ASC),
-  INDEX `idx_fn_qz_ft_jg` (`SCHED_NAME` ASC, `JOB_GROUP` ASC),
-  INDEX `idx_fn_qz_ft_t_g` (`SCHED_NAME` ASC, `TRIGGER_NAME` ASC, `TRIGGER_GROUP` ASC),
-  INDEX `idx_fn_qz_ft_tg` (`SCHED_NAME` ASC, `TRIGGER_GROUP` ASC))
+  INDEX `IDX_FN_QZ_FT_TRIG_INST_NAME` (`SCHED_NAME` ASC, `INSTANCE_NAME` ASC),
+  INDEX `IDX_FN_QZ_FT_INST_JOB_REQ_RCVRY` (`SCHED_NAME` ASC, `INSTANCE_NAME` ASC, `REQUESTS_RECOVERY` ASC),
+  INDEX `IDX_FN_QZ_FT_J_G` (`SCHED_NAME` ASC, `JOB_NAME` ASC, `JOB_GROUP` ASC),
+  INDEX `IDX_FN_QZ_FT_JG` (`SCHED_NAME` ASC, `JOB_GROUP` ASC),
+  INDEX `IDX_FN_QZ_FT_T_G` (`SCHED_NAME` ASC, `TRIGGER_NAME` ASC, `TRIGGER_GROUP` ASC),
+  INDEX `IDX_FN_QZ_FT_TG` (`SCHED_NAME` ASC, `TRIGGER_GROUP` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -841,8 +894,8 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_qz_job_details` (
   `REQUESTS_RECOVERY` VARCHAR(1) NOT NULL,
   `JOB_DATA` BLOB NULL DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`),
-  INDEX `idx_fn_qz_j_req_recovery` (`SCHED_NAME` ASC, `REQUESTS_RECOVERY` ASC),
-  INDEX `idx_fn_qz_j_grp` (`SCHED_NAME` ASC, `JOB_GROUP` ASC))
+  INDEX `IDX_FN_QZ_J_REQ_RECOVERY` (`SCHED_NAME` ASC, `REQUESTS_RECOVERY` ASC),
+  INDEX `IDX_FN_QZ_J_GRP` (`SCHED_NAME` ASC, `JOB_GROUP` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -941,20 +994,18 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_qz_triggers` (
   `MISFIRE_INSTR` SMALLINT(2) NULL DEFAULT NULL,
   `JOB_DATA` BLOB NULL DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`),
-  INDEX `idx_fn_qz_t_j` (`SCHED_NAME` ASC, `JOB_NAME` ASC, `JOB_GROUP` ASC),
-  INDEX `idx_fn_qz_t_jg` (`SCHED_NAME` ASC, `JOB_GROUP` ASC),
-  INDEX `idx_fn_qz_t_c` (`SCHED_NAME` ASC, `CALENDAR_NAME` ASC),
-  INDEX `idx_fn_qz_t_g` (`SCHED_NAME` ASC, `TRIGGER_GROUP` ASC),
-  INDEX `idx_fn_qz_t_state` (`SCHED_NAME` ASC, `TRIGGER_STATE` ASC),
-  INDEX `idx_fn_qz_t_n_state` (`SCHED_NAME` ASC, `TRIGGER_NAME` ASC, `TRIGGER_GROUP` ASC, `TRIGGER_STATE` ASC),
-  INDEX `idx_fn_qz_t_n_g_state` (`SCHED_NAME` ASC, `TRIGGER_GROUP` ASC, `TRIGGER_STATE` ASC),
-  INDEX `idx_fn_qz_t_next_fire_time` (`SCHED_NAME` ASC, `NEXT_FIRE_TIME` ASC),
-  INDEX `idx_fn_qz_t_nft_st` (`SCHED_NAME` ASC, `TRIGGER_STATE` ASC, `NEXT_FIRE_TIME` ASC),
-  INDEX `idx_fn_qz_t_nft_misfire` (`SCHED_NAME` ASC, `MISFIRE_INSTR` ASC, `NEXT_FIRE_TIME` ASC),
-  INDEX `idx_fn_qz_t_nft_st_misfire` (`SCHED_NAME` ASC, `MISFIRE_INSTR` ASC, `NEXT_FIRE_TIME` ASC, `TRIGGER_STATE` ASC),
-  INDEX `idx_fn_qz_t_nft_st_misfire_grp` (`SCHED_NAME` ASC, `MISFIRE_INSTR` ASC, `NEXT_FIRE_TIME` ASC, `TRIGGER_GROUP` ASC, 
-
-`TRIGGER_STATE` ASC),
+  INDEX `IDX_FN_QZ_T_J` (`SCHED_NAME` ASC, `JOB_NAME` ASC, `JOB_GROUP` ASC),
+  INDEX `IDX_FN_QZ_T_JG` (`SCHED_NAME` ASC, `JOB_GROUP` ASC),
+  INDEX `IDX_FN_QZ_T_C` (`SCHED_NAME` ASC, `CALENDAR_NAME` ASC),
+  INDEX `IDX_FN_QZ_T_G` (`SCHED_NAME` ASC, `TRIGGER_GROUP` ASC),
+  INDEX `IDX_FN_QZ_T_STATE` (`SCHED_NAME` ASC, `TRIGGER_STATE` ASC),
+  INDEX `IDX_FN_QZ_T_N_STATE` (`SCHED_NAME` ASC, `TRIGGER_NAME` ASC, `TRIGGER_GROUP` ASC, `TRIGGER_STATE` ASC),
+  INDEX `IDX_FN_QZ_T_N_G_STATE` (`SCHED_NAME` ASC, `TRIGGER_GROUP` ASC, `TRIGGER_STATE` ASC),
+  INDEX `IDX_FN_QZ_T_NEXT_FIRE_TIME` (`SCHED_NAME` ASC, `NEXT_FIRE_TIME` ASC),
+  INDEX `IDX_FN_QZ_T_NFT_ST` (`SCHED_NAME` ASC, `TRIGGER_STATE` ASC, `NEXT_FIRE_TIME` ASC),
+  INDEX `IDX_FN_QZ_T_NFT_MISFIRE` (`SCHED_NAME` ASC, `MISFIRE_INSTR` ASC, `NEXT_FIRE_TIME` ASC),
+  INDEX `IDX_FN_QZ_T_NFT_ST_MISFIRE` (`SCHED_NAME` ASC, `MISFIRE_INSTR` ASC, `NEXT_FIRE_TIME` ASC, `TRIGGER_STATE` ASC),
+  INDEX `IDX_FN_QZ_T_NFT_ST_MISFIRE_GRP` (`SCHED_NAME` ASC, `MISFIRE_INSTR` ASC, `NEXT_FIRE_TIME` ASC, `TRIGGER_GROUP` ASC, `TRIGGER_STATE` ASC),
   CONSTRAINT `fn_qz_triggers_ibfk_1`
     FOREIGN KEY (`SCHED_NAME` , `JOB_NAME` , `JOB_GROUP`)
     REFERENCES `vid_openecomp_epsdk`.`fn_qz_job_details` (`SCHED_NAME` , `JOB_NAME` , `JOB_GROUP`))
@@ -968,8 +1019,8 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_restricted_url` (
   `RESTRICTED_URL` VARCHAR(250) NOT NULL,
   `FUNCTION_CD` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`RESTRICTED_URL`, `FUNCTION_CD`),
-  INDEX `fk_restricted_url_function_cd` (`FUNCTION_CD` ASC),
-  CONSTRAINT `fk_restricted_url_function_cd`
+  INDEX `FK_RESTRICTED_URL_FUNCTION_CD` (`FUNCTION_CD` ASC),
+  CONSTRAINT `FK_RESTRICTED_URL_FUNCTION_CD`
     FOREIGN KEY (`FUNCTION_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_function` (`FUNCTION_CD`))
 ENGINE = InnoDB
@@ -980,13 +1031,16 @@ DEFAULT CHARACTER SET = utf8;
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_role` (
   `ROLE_ID` INT(11) NOT NULL AUTO_INCREMENT,
-  `ROLE_NAME` VARCHAR(50) NOT NULL,
+  `ROLE_NAME` VARCHAR(255) NOT NULL,
   `ACTIVE_YN` VARCHAR(1) NOT NULL DEFAULT 'Y',
   `PRIORITY` DECIMAL(4,0) NULL DEFAULT NULL,
   PRIMARY KEY (`ROLE_ID`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 17
 DEFAULT CHARACTER SET = utf8;
+
+ALTER TABLE `vid_openecomp_epsdk`.`fn_role` MODIFY `ROLE_NAME` VARCHAR (255);
+
 
 -- ----------------------------------------------------------------------------
 -- Table vid_openecomp_epsdk.fn_role_composite
@@ -1012,12 +1066,12 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_role_function` (
   `ROLE_ID` INT(11) NOT NULL,
   `FUNCTION_CD` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`ROLE_ID`, `FUNCTION_CD`),
-  INDEX `fn_role_function_function_cd` (`FUNCTION_CD` ASC),
-  INDEX `fn_role_function_role_id` (`ROLE_ID` ASC),
+  INDEX `FN_ROLE_FUNCTION_FUNCTION_CD` (`FUNCTION_CD` ASC),
+  INDEX `FN_ROLE_FUNCTION_ROLE_ID` (`ROLE_ID` ASC),
   CONSTRAINT `FK_FN_ROLE__REF_198_FN_ROLE`
     FOREIGN KEY (`ROLE_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_role` (`ROLE_ID`),
-  CONSTRAINT `fk_fn_role__ref_201_fn_funct`
+  CONSTRAINT `FK_FN_ROLE__REF_201_FN_FUNCT`
     FOREIGN KEY (`FUNCTION_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_function` (`FUNCTION_CD`))
 ENGINE = InnoDB
@@ -1053,12 +1107,12 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_tab` (
   `PARENT_TAB_CD` VARCHAR(30) NULL DEFAULT NULL,
   `TAB_SET_CD` VARCHAR(30) NULL DEFAULT NULL,
   PRIMARY KEY (`TAB_CD`),
-  INDEX `fk_fn_tab_function_cd` (`FUNCTION_CD` ASC),
-  INDEX `fk_fn_tab_set_cd` (`TAB_SET_CD` ASC),
-  CONSTRAINT `fk_fn_tab_function_cd`
+  INDEX `FK_FN_TAB_FUNCTION_CD` (`FUNCTION_CD` ASC),
+  INDEX `FK_FN_TAB_SET_CD` (`TAB_SET_CD` ASC),
+  CONSTRAINT `FK_FN_TAB_FUNCTION_CD`
     FOREIGN KEY (`FUNCTION_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_function` (`FUNCTION_CD`),
-  CONSTRAINT `fk_fn_tab_set_cd`
+  CONSTRAINT `FK_FN_TAB_SET_CD`
     FOREIGN KEY (`TAB_SET_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_lu_tab_set` (`TAB_SET_CD`))
 ENGINE = InnoDB
@@ -1071,7 +1125,7 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_tab_selected` (
   `SELECTED_TAB_CD` VARCHAR(30) NOT NULL,
   `TAB_URI` VARCHAR(40) NOT NULL,
   PRIMARY KEY (`SELECTED_TAB_CD`, `TAB_URI`),
-  CONSTRAINT `fk_fn_tab_selected_tab_cd`
+  CONSTRAINT `FK_FN_TAB_SELECTED_TAB_CD`
     FOREIGN KEY (`SELECTED_TAB_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_tab` (`TAB_CD`))
 ENGINE = InnoDB
@@ -1124,36 +1178,37 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_user` (
   `FIN_LOC_CODE` VARCHAR(10) NULL DEFAULT NULL,
   `SILO_STATUS` VARCHAR(10) NULL DEFAULT NULL,
   PRIMARY KEY (`USER_ID`),
-  UNIQUE INDEX `fn_user_hrid` (`HRID` ASC),
-  UNIQUE INDEX `fn_user_login_id` (`LOGIN_ID` ASC),
-  INDEX `fn_user_address_id` (`ADDRESS_ID` ASC),
-  INDEX `fn_user_alert_method_cd` (`ALERT_METHOD_CD` ASC),
-  INDEX `fn_user_org_id` (`ORG_ID` ASC),
-  INDEX `fk_fn_user_ref_197_fn_user` (`MANAGER_ID` ASC),
-  INDEX `fk_fn_user_ref_198_fn_user` (`CREATED_ID` ASC),
-  INDEX `fk_fn_user_ref_199_fn_user` (`MODIFIED_ID` ASC),
-  INDEX `fk_timezone` (`TIMEZONE` ASC),
-  CONSTRAINT `fk_fn_user_ref_110_fn_org`
+  UNIQUE INDEX `FN_USER_HRID` (`HRID` ASC),
+  UNIQUE INDEX `FN_USER_LOGIN_ID` (`LOGIN_ID` ASC),
+  INDEX `FN_USER_ADDRESS_ID` (`ADDRESS_ID` ASC),
+  INDEX `FN_USER_ALERT_METHOD_CD` (`ALERT_METHOD_CD` ASC),
+  INDEX `FN_USER_ORG_ID` (`ORG_ID` ASC),
+  INDEX `FK_FN_USER_REF_197_FN_USER` (`MANAGER_ID` ASC),
+  INDEX `FK_FN_USER_REF_198_FN_USER` (`CREATED_ID` ASC),
+  INDEX `FK_FN_USER_REF_199_FN_USER` (`MODIFIED_ID` ASC),
+  INDEX `FK_TIMEZONE` (`TIMEZONE` ASC),
+  CONSTRAINT `FK_FN_USER_REF_110_FN_ORG`
     FOREIGN KEY (`ORG_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_org` (`ORG_ID`),
-  CONSTRAINT `fk_fn_user_ref_123_fn_lu_al`
+  CONSTRAINT `FK_FN_USER_REF_123_FN_LU_AL`
     FOREIGN KEY (`ALERT_METHOD_CD`)
     REFERENCES `vid_openecomp_epsdk`.`fn_lu_alert_method` (`ALERT_METHOD_CD`),
-  CONSTRAINT `fk_fn_user_ref_197_fn_user`
+  CONSTRAINT `FK_FN_USER_REF_197_FN_USER`
     FOREIGN KEY (`MANAGER_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`),
-  CONSTRAINT `fk_fn_user_ref_198_fn_user`
+  CONSTRAINT `FK_FN_USER_REF_198_FN_USER`
     FOREIGN KEY (`CREATED_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`),
-  CONSTRAINT `fk_fn_user_ref_199_fn_user`
+  CONSTRAINT `FK_FN_USER_REF_199_FN_USER`
     FOREIGN KEY (`MODIFIED_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`),
-  CONSTRAINT `fk_timezone`
+  CONSTRAINT `FK_TIMEZONE`
     FOREIGN KEY (`TIMEZONE`)
     REFERENCES `vid_openecomp_epsdk`.`fn_lu_timezone` (`TIMEZONE_ID`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
+
 
 -- ----------------------------------------------------------------------------
 -- Table vid_openecomp_epsdk.fn_user_pseudo_role
@@ -1162,11 +1217,11 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_user_pseudo_role` (
   `PSEUDO_ROLE_ID` INT(11) NOT NULL,
   `USER_ID` INT(11) NOT NULL,
   PRIMARY KEY (`PSEUDO_ROLE_ID`, `USER_ID`),
-  INDEX `fk_pseudo_role_user_id` (`USER_ID` ASC),
-  CONSTRAINT `fk_pseudo_role_pseudo_role_id`
+  INDEX `FK_PSEUDO_ROLE_USER_ID` (`USER_ID` ASC),
+  CONSTRAINT `FK_PSEUDO_ROLE_PSEUDO_ROLE_ID`
     FOREIGN KEY (`PSEUDO_ROLE_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_role` (`ROLE_ID`),
-  CONSTRAINT `fk_pseudo_role_user_id`
+  CONSTRAINT `FK_PSEUDO_ROLE_USER_ID`
     FOREIGN KEY (`USER_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`))
 ENGINE = InnoDB
@@ -1181,16 +1236,16 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_user_role` (
   `PRIORITY` DECIMAL(4,0) NULL DEFAULT NULL,
   `APP_ID` INT(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`USER_ID`, `ROLE_ID`, `APP_ID`),
-  INDEX `fn_user_role_role_id` (`ROLE_ID` ASC),
-  INDEX `fn_user_role_user_id` (`USER_ID` ASC),
-  INDEX `fk_fn_user__ref_178_fn_app_IDX` (`APP_ID` ASC),
+  INDEX `FN_USER_ROLE_ROLE_ID` (`ROLE_ID` ASC),
+  INDEX `FN_USER_ROLE_USER_ID` (`USER_ID` ASC),
+  INDEX `FK_FN_USER__REF_178_FN_APP_idx` (`APP_ID` ASC),
   CONSTRAINT `FK_FN_USER__REF_172_FN_USER`
     FOREIGN KEY (`USER_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_user` (`USER_ID`),
   CONSTRAINT `FK_FN_USER__REF_175_FN_ROLE`
     FOREIGN KEY (`ROLE_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_role` (`ROLE_ID`),
-  CONSTRAINT `fk_fn_user__ref_178_fn_app`
+  CONSTRAINT `FK_FN_USER__REF_178_FN_APP`
     FOREIGN KEY (`APP_ID`)
     REFERENCES `vid_openecomp_epsdk`.`fn_app` (`APP_ID`))
 ENGINE = InnoDB
@@ -1218,26 +1273,12 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.rcloudinvocation
+-- Table vid_openecomp_epsdk.fn_xmltype
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`rcloudinvocation` (
-  `id` VARCHAR(128) NOT NULL,
-  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `userinfo` VARCHAR(2048) NOT NULL,
-  `notebookid` VARCHAR(128) NOT NULL,
-  `parameters` VARCHAR(2048) NULL DEFAULT NULL,
-  `tokenreaddate` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ----------------------------------------------------------------------------
--- Table vid_openecomp_epsdk.rcloudnotebook
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`rcloudnotebook` (
-  `notebookname` VARCHAR(128) NOT NULL,
-  `notebookid` VARCHAR(128) NOT NULL,
-  PRIMARY KEY (`notebookname`))
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_xmltype` (
+  `ID` DECIMAL(10,0) NOT NULL,
+  `XML_DOCUMENT` TEXT NULL DEFAULT NULL,
+  UNIQUE INDEX `FN_XMLTYPE_ID` (`ID` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -1257,16 +1298,87 @@ CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`schema_info` (
   `IDLE_CONNECTION_TEST_PERIOD` INT(11) NOT NULL)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.vid_vnf
+-- ----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`vid_vnf` (
+  `VNF_DB_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `VNF_APP_UUID` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `VNF_APP_INVARIANT_UUID` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `CREATED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`VNF_DB_ID`),
+  UNIQUE KEY `vid_vnf_VNF_ID_uindex` (`VNF_APP_UUID`,`VNF_APP_INVARIANT_UUID`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.vid_workflow
+-- ----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`vid_workflow` (
+  `WORKFLOW_DB_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `WORKFLOW_APP_NAME` varchar(50) COLLATE utf8_bin NOT NULL,
+  `CREATED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`WORKFLOW_DB_ID`),
+  UNIQUE KEY `vid_workflow_workflow_uuid_uindex` (`WORKFLOW_APP_NAME`),
+  UNIQUE KEY `vid_workflow_WORKFLOW_ID_uindex` (`WORKFLOW_DB_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.vid_vnf_workflow
+-- ----------------------------------------------------------------------------
+
+
+CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`vid_vnf_workflow` (
+  `VNF_DB_ID` int(11) NOT NULL,
+  `WORKFLOW_DB_ID` int(11) NOT NULL,
+  KEY `vid_vnf_workflow_vid_vnf_VND_ID_fk` (`VNF_DB_ID`),
+  KEY `vid_vnf_workflow_vid_workflow_WORKFLOW_ID_fk` (`WORKFLOW_DB_ID`),
+  CONSTRAINT `vid_vnf_workflow_vid_vnf_VND_ID_fk` FOREIGN KEY (`VNF_DB_ID`) REFERENCES `vid_vnf` (`VNF_DB_ID`),
+  CONSTRAINT `vid_vnf_workflow_vid_workflow_WORKFLOW_ID_fk` FOREIGN KEY (`WORKFLOW_DB_ID`) REFERENCES `vid_openecomp_epsdk`.`vid_workflow` (`WORKFLOW_DB_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.vid_category_parameter
+-- ----------------------------------------------------------------------------
+
+
+CREATE TABLE IF NOT EXISTS `vid_category_parameter` (
+	`CATEGORY_ID` INT(11) NOT NULL AUTO_INCREMENT,
+	`NAME` VARCHAR(255) NULL COLLATE 'utf8_bin',
+	`ID_SUPPORTED` TINYINT(1) NOT NULL DEFAULT '0',
+  `CREATED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`CATEGORY_ID`)
+) COLLATE='utf8_bin' ENGINE=InnoDB AUTO_INCREMENT=5;
+
+-------------------------------------------------------------------------------
+
+ALTER TABLE `vid_category_parameter`
+	ADD COLUMN if not exists `FAMILY` ENUM('PARAMETER_STANDARDIZATION','TENANT_ISOLATION') NOT NULL DEFAULT 'PARAMETER_STANDARDIZATION' AFTER `ID_SUPPORTED`;
+-- ----------------------------------------------------------------------------
+-- Table vid_openecomp_epsdk.vid_category_parameter
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vid_category_parameter_option` (
+  `CATEGORY_OPT_DB_ID` INT(11) NOT NULL AUTO_INCREMENT,
+  `CATEGORY_OPT_APP_ID` VARCHAR(50) NOT NULL COLLATE 'utf8_bin',
+  `NAME` VARCHAR(50) NULL COLLATE 'utf8_bin',
+  `CATEGORY_ID` INT(11) NOT NULL DEFAULT '0',
+  `CREATED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`CATEGORY_OPT_DB_ID`),
+  UNIQUE INDEX `APP_ID_CATEGORY_UNIQUE` (`CATEGORY_ID`, `CATEGORY_OPT_APP_ID`),
+  UNIQUE INDEX `NAME_CATEGORY_UNIQUE` (`CATEGORY_ID`, `NAME`),
+  CONSTRAINT `FK_OWNING_ENTITY_OPTIONS_TO_OE` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `vid_openecomp_epsdk`.`vid_category_parameter` (`CATEGORY_ID`)
+) COLLATE='utf8_bin' ENGINE=InnoDB AUTO_INCREMENT=25;
+
 
 -- ----------------------------------------------------------------------------
 -- View vid_openecomp_epsdk.v_url_access
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_url_access` AS select distinct `m`.`ACTION` AS 
-
-`URL`,`m`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_menu` `m` where (`m`.`ACTION` is not null) union select distinct 
-
-`t`.`ACTION` AS `URL`,`t`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_tab` `t` where (`t`.`ACTION` is not null) union select 
-
-`r`.`RESTRICTED_URL` AS `URL`,`r`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_restricted_url` `r`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_url_access` AS select distinct `m`.`ACTION` AS `URL`,`m`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_menu` `m` where (`m`.`ACTION` is not null) union select distinct `t`.`ACTION` AS `URL`,`t`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_tab` `t` where (`t`.`ACTION` is not null) union select `r`.`RESTRICTED_URL` AS `URL`,`r`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_restricted_url` `r`;
 SET FOREIGN_KEY_CHECKS = 1;
 

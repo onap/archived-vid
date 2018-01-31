@@ -1,0 +1,17 @@
+.message-viewer {
+    text-align: center;
+}
+
+.message-viewer .primaryMessage {
+    font-size: 18px;
+    padding-top: 20px;
+}
+
+.message-viewer .btn-primary {
+    background-color: #009FDB;
+    color: #FFFFFF;
+    border: 1px solid #009FDB;
+    padding: 0px 25px;
+    height: 35px;
+    margin-top: 45px;
+}

@@ -1,0 +1,16 @@
+.modal {
+    position: inherit;
+    text-align: left;
+}
+.modal-dialog {
+    position: absolute;
+    right: 0;
+    display: inline;
+    margin-top: -243px;
+}
+.modal-header {
+    border-bottom-color: #009FDB;
+}
+.modal-content {
+    width: 540px;
+}

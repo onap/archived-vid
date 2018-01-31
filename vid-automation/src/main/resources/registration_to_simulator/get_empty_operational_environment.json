@@ -1,0 +1,12 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../cloud-infrastructure/operational-environments"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "operational-environment":[]
+    }
+  }
+}

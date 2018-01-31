@@ -1,0 +1,39 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/mso/cloudResourcesRequests/v1",
+    "queryParams" :  {
+      "requestId": [ "dbe54591-c8ed-46d3-abc7-d3a24873dfbd" ]
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "request": {
+        "requestId": "3212b08c-0dcd-4d20-8c84-51e4f325c14a",
+        "startTime": "Thu, 02 Jun 2017 02:51:59 GMT",
+        "instanceReferences": {
+          "operationalEnvironmentInstanceId": "bc305d54-75b4-431b-adb2-eb6b9e546014"
+        },
+        "requestScope": "operationalEnvironment",
+        "requestType": "REQUEST-TYPE",
+        "requestDetails": {
+          "requestInfo": {
+            "resourceType": "operationalEnvironment",
+            "source": "VID",
+            "requestorId": "az2017"
+          },
+          "requestParameters": {
+            "operationalEnvironmentType": "VNF"
+          }
+        },
+        "requestStatus": {
+          "timestamp": "Thu, 02 Jun 2017 02:53:39 GMT",
+          "requestState": "COMPLETE",
+          "statusMessage": "status_message",
+          "percentProgress": "100"
+        }
+      }
+    }
+  }
+}

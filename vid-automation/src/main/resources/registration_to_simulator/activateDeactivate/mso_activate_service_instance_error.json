@@ -1,0 +1,9 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/ecomp/mso/infra/serviceInstances/v6/3f93c7cb-2fd0-4557-9514-e189b7b04f9d/<ACTIVE_ACTION>"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 500
+  }
+}

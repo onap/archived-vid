@@ -1,12 +1,8 @@
 {
     "networks": {
         "ExtVL 0": {
+            "type": "VL",
             "commands": {
-                "exVL_naming#naming_policy": {
-                    "command": "get_input",
-                    "displayName": "exVL_naming#naming_policy",
-                    "inputName": "extvl0_exVL_naming_naming_policy"
-                },
                 "network_role": {
                     "command": "get_input",
                     "displayName": "network_role",
@@ -16,20 +12,16 @@
                     "command": "get_input",
                     "displayName": "network_scope",
                     "inputName": "extvl0_network_scope"
+                },
+                "exVL_naming#naming_policy": {
+                    "command": "get_input",
+                    "displayName": "exVL_naming#naming_policy",
+                    "inputName": "extvl0_exVL_naming_naming_policy"
                 }
             },
             "customizationUuid": "664f8aa7-3989-46ac-81c0-dd72a8a63f26",
             "description": "ECOMP generic virtual link (network) base type for all other service-level and global networks",
             "inputs": {
-                "exVL_naming#naming_policy": {
-                    "constraints": [
-                    ],
-                    "default": null,
-                    "description": "Reference to naming policy that ECOMP will use when the name is auto-generated",
-                    "entry_schema": null,
-                    "required": true,
-                    "type": "string"
-                },
                 "network_role": {
                     "constraints": [
                     ],
@@ -47,13 +39,22 @@
                     "entry_schema": null,
                     "required": true,
                     "type": "string"
+                },
+                "exVL_naming#naming_policy": {
+                    "constraints": [
+                    ],
+                    "default": null,
+                    "description": "Reference to naming policy that ECOMP will use when the name is auto-generated",
+                    "entry_schema": null,
+                    "required": true,
+                    "type": "string"
                 }
             },
             "invariantUuid": "379f816b-a7aa-422f-be30-17114ff50b7c",
             "modelCustomizationName": "ExtVL 0",
             "name": "ExtVL",
             "properties": {
-                "exVL_naming": "{naming_policy={get_input=extvl0_exVL_naming_naming_policy}}",
+                "exVL_naming": "{naming_policy=get_input:extvl0_exVL_naming_naming_policy}",
                 "network_role": "get_input:extvl0_network_role",
                 "network_scope": "get_input:extvl0_network_scope"
             },
@@ -64,8 +65,8 @@
     "service": {
         "category": "Network L1-3",
         "description": "dsfg",
-          "serviceRole":"null",
-    	"serviceType":"null",
+        "serviceRole": null,
+        "serviceType": null,
         "inputs": {
             "extvl0_exVL_naming_naming_policy": {
                 "constraints": [
@@ -100,12 +101,19 @@
         "serviceEcompNaming": "true",
         "toscaModelURL": null,
         "uuid": "68101369-6f08-4e99-9a28-fa6327d344f3",
-        "version": "0.1"
+        "version": "1.0",
+        "instantiationType" : "ClientConfig"
     },
     "vfModules": {
     },
     "vnfs": {
     },
     "volumeGroups": {
+    },
+    "configurations": {
+    },
+    "serviceProxies": {
+    },
+    "pnfs": {
     }
 }

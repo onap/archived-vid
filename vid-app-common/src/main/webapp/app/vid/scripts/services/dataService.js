@@ -100,6 +100,12 @@ var DataService = function($log, DataService) {
 		getAicZones : function(){
 			return _this.aicZones;
 		},
+        setAicZoneForPNF: function(aicZone) {
+            _this.aicZone = aicZone;
+        },
+        getAicZoneForPNF : function(){
+            return _this.aicZone;
+        },
 		getServiceInstanceId : function() {
 			return _this.serviceInstanceId;
 		},
@@ -214,6 +220,12 @@ var DataService = function($log, DataService) {
 		setVnfInstanceId : function(vnfInstanceId) {
 			_this.vnfInstanceId = vnfInstanceId;
 		},
+        getVfModuleInstanceName : function() {
+            return _this.vfModuleInstanceName;
+        },
+        setVfModuleInstanceName : function(vfModuleInstanceName) {
+            _this.vfModuleInstanceName = vfModuleInstanceName;
+        },
 		getVolumeGroupInstanceId : function() {
 			return _this.volumeGroupInstanceId;
 		},
@@ -293,8 +305,81 @@ var DataService = function($log, DataService) {
 		},
 		getHideServiceFields:function(){
 			return _this.hideServiceFields;
-		}
+		},
+		getServiceProxies:function(){
+            return _this.serviceProxies;
+        },
+        setServiceProxies:function(serviceProxies){
+             _this.serviceProxies = serviceProxies;
+        },
+        getSourceServiceProxies:function(){
+            return _this.sourceServiceProxies;
+        },
+        setSourceServiceProxies:function(sourceServiceProxies){
+            _this.sourceServiceProxies = sourceServiceProxies;
+        },
+        getCollectorServiceProxies:function(){
+            return _this.collectorServiceProxies;
+        },
+        setCollectorServiceProxies:function(collectorServiceProxies){
+            _this.collectorServiceProxies = collectorServiceProxies;
+        },
+		getConfigurationByPolicy:function() {
+        	return _this.configurationByPolicy;
+		},
+        setConfigurationByPolicy:function (configurationByPolicy) {
+			_this.configurationByPolicy = configurationByPolicy;
+        },
+        getSuppressRollback:function(){
+            return _this.suppressRollback;
+        },
+        setSuppressRollback:function(suppressRollback){
+            _this.suppressRollback = suppressRollback;
+        },
+        getPortMirroningConfigFields:function(){
+            return _this.portMirroningConfigFields;
+        },
+        setPortMirroningConfigFields:function(portMirroningConfigFields){
+            _this.portMirroningConfigFields = portMirroningConfigFields;
+        },
+        getConfigurationInstanceId : function() {
+            return _this.configurationInstanceId;
+        },
+        setConfigurationInstanceId : function(configurationInstanceId) {
+            _this.configurationInstanceId = configurationInstanceId;
+        },
+		getConfigurationStatus: function () {
+			return _this.configurationStatus;
+        },
+        setConfigurationStatus: function (configurationStatus) {
+			_this.configurationStatus = configurationStatus;
+        },
+        getPortStatus: function () {
+            return _this.portStatus;
+        },
+        setPortStatus: function (portStatus) {
+            _this.portStatus = portStatus;
+        },
+        getPortId: function () {
+            return _this.portId;
+        },
+        setPortId: function (portId) {
+            _this.portId = portId;
+        },
+        getPnf: function () {
+            return _this.pnf;
+        },
+        setPnf: function (pnf) {
+            _this.pnf = pnf;
+        },
+        getOwningEntityProperties: function () {
+            return _this.owningEntityProperties;
+        },
+        setOwningEntityProperties: function (properties) {
+            _this.owningEntityProperties = properties;
+        }
+
 	}
-}
+};
 
 appDS2.factory("DataService", [ "$log", DataService ]);

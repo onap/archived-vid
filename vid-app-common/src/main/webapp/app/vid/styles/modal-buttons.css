@@ -1,0 +1,29 @@
+.modal-footer .btn-white,
+.modal-footer .btn-white:hover {
+    font-family: "OpenSans-Semibold";
+    border-radius: 5px;
+    border: 1px solid #009FDB;
+    background-color:  #FFFFFF;
+    width: 120px;
+    height: 36px;
+    color:  #009FDB;
+    font-size: 13px;
+    line-height: 30px;
+    text-align: center;
+    padding: 4px 12px !important;
+}
+
+.modal-footer .btn-primary,
+.modal-footer .btn-primary:hover{
+    font-family: "OpenSans-Semibold";
+    border-radius: 5px;
+    border: 1px solid #009FDB;
+    background-color:  #009FDB;
+    width: 120px;
+    height: 36px;
+    color:  #FFFFFF;
+    font-size: 13px;
+    line-height: 30px;
+    text-align: center;
+    padding: 4px 12px !important;
+}

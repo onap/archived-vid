@@ -1,0 +1,52 @@
+@font-face {
+    font-family: OpenSans-Light;
+    src: url("fonts/OpenSans/OpenSans-Light.ttf") format('truetype');
+}
+@font-face {
+    font-family: OpenSans-Regular;
+    src: url("fonts/OpenSans/OpenSans-Regular.ttf") format('truetype');
+}
+@font-face {
+    font-family: OpenSans-Semibold;
+    src: url("fonts/OpenSans/OpenSans-Semibold.ttf") format('truetype');
+}
+
+.modal-header * {
+    font-family: OpenSans-Light;
+}
+.modal-body * {
+    font-family: OpenSans-Regular;
+}
+.modal-footer * {
+    font-family: OpenSans-Semibold;
+}
+
+.modal-header {
+    border-bottom: 3px solid;
+    margin: auto;
+    width: 95%;
+    padding: 10px 0;
+    font-size: 22px;
+}
+.modal-header #cancel {
+    cursor: pointer;
+}
+.modal-title {
+    float: left;
+}
+.modal-content {
+    font-size: 15px;
+    border-radius: 0;
+    color: #191919;
+}
+.modal-footer {
+    background-color: #F8F8F8;
+    height: 60px;
+}
+.modal-footer .btn {
+    color: #FFF;
+    background-color: #009FDB;
+    border-color: #009FDB;
+    margin-right: 0;
+    font-size: 13px;
+}

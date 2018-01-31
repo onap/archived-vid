@@ -1,0 +1,43 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/aai/v11/search/named-query",
+    "body": {
+      "instance-filters":{
+        "instance-filter":[
+          {
+            "customer":{
+              "global-customer-id":"31739f3e-526b-11e6-beb8-9e71128cae77"
+            },
+            "service-instance":{
+              "service-instance-id":"f36f5734-e9df-4fbf-9f35-61be13f028a"
+            },
+            "service-subscription":{
+              "service-type":"AIM Transport"
+            }
+          }
+        ]
+      },
+      "query-parameters":{
+        "named-query":{
+          "named-query-uuid":"0367193e-c785-4d5f-9cb8-7bc89dc9ddb7"
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inventory-response-item": [
+        {
+          "model-name": "Servicetest1",
+          "service-instance": {
+            "service-instance-id": "f36f5734-e9df-4fbf-9f35-61be13f028a1",
+            "service-instance-name": "AIM_TRANSPORT_00004"
+          },
+          "extra-properties": {}
+        }
+      ]
+    }
+  }
+}

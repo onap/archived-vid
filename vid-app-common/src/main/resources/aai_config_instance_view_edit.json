@@ -1,0 +1,81 @@
+{
+  "model-name":"Proxy-Config-Instance",
+  "configuration":{
+    "configuration-id": "9533-config-LB1113",
+    "configuration-name": "configuration-name-9533",
+    "configuration-type": "configuration-type-9533",
+    "configuration-sub-type": "configuration-sub-type-9533",
+    "model-invariant-id": "model-invariant-id-9533",
+    "model-version-id": "model-version-id-9533",
+    "orchestration-status": "Active",
+    "operational-status": "",
+    "configuration-selflink": "",
+    "model-customization-id": "model-customization-id-9533",
+    "resource-version": "1504038855716"
+  },
+  "extra-properties": {
+  },
+  "inventory-response-items":{
+    "inventory-response-item":[
+      {
+        "model-name":"VidPcrf051517..pcrf_nimbus_pcm..module-4",
+        "l-interface": {
+          "interface-name": "9533lInterface-LB1113",
+          "interface-role": "8ni",
+          "v6-wan-link-ip": "Pnr",
+          "selflink": "Un56B",
+          "interface-id": "o74n",
+          "macaddr": "8an6",
+          "network-name": "kjOn",
+          "management-option": "0Rn7",
+          "interface-description": "XPnLr",
+          "is-port-mirrored": true,
+          "resource-version": "1504038598348",
+          "in-maint": false,
+          "is-ip-unnumbered": false,
+          "relationship-list": {
+            "relationship": [
+              {
+                "related-to": "logical-link",
+                "related-link": "/aai/v11/network/logical-links/logical-link/logicallink-987654321-21-LB1113",
+                "relationship-data": [
+                  {
+                    "relationship-key": "logical-link.link-name",
+                    "relationship-value": "logicallink-987654321-21-LB1113"
+                  }
+                ]
+              }
+            ]
+          },
+          "l3-interface-ipv4-address-list": [
+            {
+              "l3-interface-ipv4-address": "112.121.144.16",
+              "l3-interface-ipv4-prefix-length": 59,
+              "vlan-id-inner": 917,
+              "vlan-id-outer": 519,
+              "is-floating": true,
+              "resource-version": "1504038598353",
+              "neutron-network-id": "HX6m54p1akX",
+              "neutron-subnet-id": "nbmX5okGg"
+            }
+          ],
+          "l3-interface-ipv6-address-list": [
+            {
+              "l3-interface-ipv6-address": "2001:232E:2333:2322:122C:CDD:2AE3:3E4",
+              "l3-interface-ipv6-prefix-length": 76,
+              "vlan-id-inner": 27,
+              "vlan-id-outer": 710,
+              "is-floating": true,
+              "resource-version": "1504038598364",
+              "neutron-network-id": "xBR0OOToQ",
+              "neutron-subnet-id": "4E0gZLH"
+            }
+          ]
+        },
+        "extra-properties":{
+
+        }
+      }
+    ]
+  }
+}

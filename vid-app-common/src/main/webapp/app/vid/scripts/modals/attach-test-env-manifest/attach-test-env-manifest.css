@@ -1,0 +1,109 @@
+.modal-header {
+    border: none!important;
+    padding: 10px 20px 0px 20px!important;
+    font-family: "OpenSans-Light";
+    font-size: 22px;
+    color: #000000;
+}
+
+.modal-header h3 {
+    font-family: "OpenSans-Light";
+    color:  #000000;
+    color:  #000000;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 16px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #009fdb;
+
+}
+
+.control-label {
+    font-family: "OpenSans-Light";
+    color: #5a5a5a;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.modal-content {
+    width: 468px;
+    height: 242px;
+    border-radius: 8px;
+    background-color:  #ffffff;
+}
+
+body .modal-body {
+    padding-bottom: 0;
+    padding-top: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 468px;
+    height: 91px;
+}
+
+.modal-footer {
+    margin-top: 0;
+    background-color: #fff;
+}
+
+
+.modal-close {
+    margin: -60px 5px 0 0;
+    color: #5a5a5a;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.manifestName{
+    font-family: OpenSans-Semibold;
+    font-size: 12px;
+    color: #191919;
+}
+
+.manifestFileName {
+    width: 389px;
+    height: 37px;
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    border-radius: 2px;
+    display: inline-block;
+    line-height: 37px;
+    font-weight: normal !important;
+    padding-left: 3px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.elipsisImg {
+    width: 37px;
+    padding: 10px;
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
+    border-radius: 2px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.labelForImage {
+    vertical-align: top;
+}
+
+.errorLabel {
+    color: red;
+}
+
+
+
+

@@ -1,0 +1,15 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/serviceInstances/v6/*/addRelationships"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "requestReferences": {
+        "instanceId": "8edb3c04-e012-4d5c-9ef4-710600d68dfa",
+        "requestId": "b6dc9806-b094-42f7-9386-a48de8218ce7"
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'icomoon';
+    src:  url('fonts/icomoon.eot?4cilop');
+    src:  url('fonts/icomoon.eot?4cilop#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?4cilop') format('truetype'),
+    url('fonts/icomoon.woff?4cilop') format('woff'),
+    url('fonts/icomoon.svg?4cilop#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.pnf-search-association [class^="icon-"],.pnf-search-association [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.search-input{
+    width:40px;
+    margin-left: -30px;
+    z-index: 2;
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    line-height: 40px;
+}
+.content-wrapper{
+     margin-left: 70px;
+     font-family: OpenSans-Semibold;
+ }
+.content-wrapper .content{
+    margin-top: 47px;
+}
+.input-wrapper{
+    margin-top: 6px;
+}
+input[type=search]{
+    /*border: none;*/
+    width: 415px;
+    height: 40px;
+    border: 1px solid #D2D2D2;
+    border-radius: 2px;
+}
+input[type=search]:before {
+/*    content: "\e90d";
+    color: #00aeef;
+    font-size: 50px;
+    cursor: pointer;
+    margin-left: 350px*/
+}
+.error-msg{
+    color: red;
+}
+.bold{
+    font-family: OpenSans-Semibold;
+}
+.margin-search{
+    margin-top: 37px;
+}
+.result-content span{
+    font-family: OpenSans-Semibold;
+}
+.result-content div{
+    margin-bottom: 24px;
+    margin-top: 3px;
+}
+.search2-icon:before {
+    font-family: 'icomoon';
+    content: "\e90d";
+    color: #009FDB;
+    font-size: 17px;
+    cursor: pointer;
+}

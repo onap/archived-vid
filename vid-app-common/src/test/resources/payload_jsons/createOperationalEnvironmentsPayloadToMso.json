@@ -1,0 +1,24 @@
+{
+  "requestDetails": {
+    "requestInfo": {
+      "resourceType": "operationalEnvironment",
+      "instanceName": "<instanceName>",
+      "source": "VID",
+      "requestorId": "<userId>"
+    },
+    "relatedInstanceList": [
+      {
+        "relatedInstance": {
+          "resourceType": "operationalEnvironment",
+          "instanceId": "<ecompInstanceId>",
+          "instanceName": "<ecompInstanceName>"
+        }
+      }
+    ],
+    "requestParameters": {
+      "operationalEnvironmentType": "<operationalEnvType>",
+      "tenantContext": "<tenantContext>",
+      "workloadContext": "<workloadContext>"
+    }
+  }
+}
