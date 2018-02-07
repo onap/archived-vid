@@ -49,7 +49,7 @@ public class RelatedModel extends org.onap.vid.domain.mso.RelatedModel {
 
 //    /** The related model object instance list. */
 //    @JsonProperty("instanceId")
-//    private org.openecomp.vid.domain.mso.InstanceIds instanceId;
+//    private org.onap.vid.domain.mso.InstanceIds instanceId;
     
     /** The additional properties. */
     @JsonIgnore
@@ -76,7 +76,7 @@ public class RelatedModel extends org.onap.vid.domain.mso.RelatedModel {
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedModel#toString()
+     * @see org.onap.vid.domain.mso.RelatedModel#toString()
      */
     @Override
     public String toString() {
@@ -84,7 +84,7 @@ public class RelatedModel extends org.onap.vid.domain.mso.RelatedModel {
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedModel#getAdditionalProperties()
+     * @see org.onap.vid.domain.mso.RelatedModel#getAdditionalProperties()
      */
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
@@ -92,7 +92,7 @@ public class RelatedModel extends org.onap.vid.domain.mso.RelatedModel {
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedModel#setAdditionalProperty(java.lang.String, java.lang.Object)
+     * @see org.onap.vid.domain.mso.RelatedModel#setAdditionalProperty(java.lang.String, java.lang.Object)
      */
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
@@ -100,7 +100,7 @@ public class RelatedModel extends org.onap.vid.domain.mso.RelatedModel {
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedModel#hashCode()
+     * @see org.onap.vid.domain.mso.RelatedModel#hashCode()
      */
     @Override
     public int hashCode() {
@@ -108,7 +108,7 @@ public class RelatedModel extends org.onap.vid.domain.mso.RelatedModel {
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedModel#equals(java.lang.Object)
+     * @see org.onap.vid.domain.mso.RelatedModel#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object other) {
