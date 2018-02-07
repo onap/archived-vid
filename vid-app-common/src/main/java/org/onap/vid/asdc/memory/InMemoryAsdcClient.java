@@ -159,7 +159,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getResource(java.util.UUID)
+	 * @see org.onap.vid.asdc.AsdcClient#getResource(java.util.UUID)
 	 */
 	public Resource getResource(UUID uuid) throws AsdcCatalogException {
 		final JSONObject resource = getCatalog().getJSONObject("resources")
@@ -182,7 +182,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getResources(java.util.Map)
+	 * @see org.onap.vid.asdc.AsdcClient#getResources(java.util.Map)
 	 */
 	public Collection<Resource> getResources(Map<String, String[]> filter) throws AsdcCatalogException {
 		final Collection<Resource> resources = new LinkedList<Resource> ();
@@ -208,7 +208,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getService(java.util.UUID)
+	 * @see org.onap.vid.asdc.AsdcClient#getService(java.util.UUID)
 	 */
 	public Service getService(UUID uuid) throws AsdcCatalogException {
 		final JSONObject service = getCatalog().getJSONObject("services")
@@ -217,7 +217,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getServices()
+	 * @see org.onap.vid.asdc.AsdcClient#getServices()
 	 */
 	public Collection<Service> getServices() throws AsdcCatalogException {
 		final Collection<Service> services = new LinkedList<Service> ();
@@ -232,7 +232,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecompt.vid.asdc.AsdcClient#getServices(java.util.Map)
+	 * @see org.onap.vid.asdc.AsdcClient#getServices(java.util.Map)
 	 */
 	public Collection<Service> getServices(Map<String, String[]> filter) throws AsdcCatalogException {
 		final Collection<Service> services = new LinkedList<Service> ();
@@ -258,7 +258,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getResourceArtifact(java.util.UUID, java.util.UUID)
+	 * @see org.onap.vid.asdc.AsdcClient#getResourceArtifact(java.util.UUID, java.util.UUID)
 	 */
 	public Artifact getResourceArtifact(UUID resourceUuid, UUID artifactUuid) throws AsdcCatalogException {
 		final JSONArray artifacts = getCatalog().getJSONObject("resources")
@@ -277,7 +277,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getServiceArtifact(java.util.UUID, java.util.UUID)
+	 * @see org.onap.vid.asdc.AsdcClient#getServiceArtifact(java.util.UUID, java.util.UUID)
 	 */
 	public Artifact getServiceArtifact(UUID serviceUuid, UUID artifactUuid) throws AsdcCatalogException {
 		final JSONArray artifacts = getCatalog().getJSONObject("services")
@@ -296,7 +296,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getResourceToscaModel(java.util.UUID)
+	 * @see org.onap.vid.asdc.AsdcClient#getResourceToscaModel(java.util.UUID)
 	 */
 	public Path getResourceToscaModel(UUID resourceUuid) throws AsdcCatalogException {
 		final String toscaModelURL = getCatalog().getJSONObject("resources")
@@ -312,7 +312,7 @@ public class InMemoryAsdcClient implements AsdcClient {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openecomp.vid.asdc.AsdcClient#getServiceToscaModel(java.util.UUID)
+	 * @see org.onap.vid.asdc.AsdcClient#getServiceToscaModel(java.util.UUID)
 	 */
 	public Path getServiceToscaModel(UUID serviceUuid) throws AsdcCatalogException {
 		final String toscaModelURL = getCatalog().getJSONObject("services")

@@ -28,7 +28,7 @@
 		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
 		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
 		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
-		<sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
+		<sitePath>/content/sites/site/org/onap/vid/${project.version}</sitePath>
 
 		<!-- SONAR -->
 		<sonar.language>java</sonar.language>
@@ -163,7 +163,7 @@
 					</archive>
 					<overlays>
 						<overlay>
-							<groupId>org.openecomp.vid</groupId>
+							<groupId>org.onap.vid</groupId>
 							<artifactId>vid-app-common</artifactId>
 						</overlay>
 						<overlay>
@@ -274,13 +274,13 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.openecomp.vid</groupId>
+			<groupId>org.onap.vid</groupId>
 			<artifactId>vid-app-common</artifactId>
 			<version>${project.version}</version>
 			<type>war</type>
 		</dependency>
 		<dependency>
-			<groupId>org.openecomp.vid</groupId>
+			<groupId>org.onap.vid</groupId>
 			<artifactId>vid-app-common</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>
@@ -308,13 +308,13 @@
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.openecomp.vid</groupId>
+			<groupId>org.onap.vid</groupId>
 			<artifactId>vid-app-common</artifactId>
 			<version>${version}</version>
 			<type>war</type>
 		</dependency>
 		<dependency>
-			<groupId>org.openecomp.vid</groupId>
+			<groupId>org.onap.vid</groupId>
 			<artifactId>vid-app-common</artifactId>
 			<version>${version}</version>
 			<type>jar</type>

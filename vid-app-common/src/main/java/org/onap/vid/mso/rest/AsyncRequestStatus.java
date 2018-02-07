@@ -54,7 +54,7 @@ public class AsyncRequestStatus extends org.onap.vid.domain.mso.AsyncRequestStat
     private RequestStatus requestStatus;
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.AsyncRequestStatus#getInstanceIds()
+     * @see org.onap.vid.domain.mso.AsyncRequestStatus#getInstanceIds()
      */
     public InstanceIds getInstanceIds() {
         return instanceIds;
@@ -91,7 +91,7 @@ public class AsyncRequestStatus extends org.onap.vid.domain.mso.AsyncRequestStat
     }
     
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.AsyncRequestStatus#toString()
+     * @see org.onap.vid.domain.mso.AsyncRequestStatus#toString()
      */
     @Override
     public String toString() {
@@ -99,7 +99,7 @@ public class AsyncRequestStatus extends org.onap.vid.domain.mso.AsyncRequestStat
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.AsyncRequestStatus#hashCode()
+     * @see org.onap.vid.domain.mso.AsyncRequestStatus#hashCode()
      */
     @Override
     public int hashCode() {
@@ -107,7 +107,7 @@ public class AsyncRequestStatus extends org.onap.vid.domain.mso.AsyncRequestStat
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.AsyncRequestStatus#equals(java.lang.Object)
+     * @see org.onap.vid.domain.mso.AsyncRequestStatus#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object other) {

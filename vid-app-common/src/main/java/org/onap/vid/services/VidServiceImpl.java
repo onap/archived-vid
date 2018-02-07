@@ -39,7 +39,7 @@ public class VidServiceImpl implements VidService {
     /*
      * (non-Javadoc)
      *
-     * @see org.openecomp.vid.controller.VidService#getServices(java.util.Map)
+     * @see org.onap.vid.controller.VidService#getServices(java.util.Map)
      */
     @Override
     public Collection<Service> getServices(Map<String, String[]> requestParams)
@@ -50,7 +50,7 @@ public class VidServiceImpl implements VidService {
     /*
      * (non-Javadoc)
      *
-     * @see org.openecomp.vid.controller.VidService#getService(java.lang.String)
+     * @see org.onap.vid.controller.VidService#getService(java.lang.String)
      */
     @Override
     public ServiceModel getService(String uuid) throws AsdcCatalogException {

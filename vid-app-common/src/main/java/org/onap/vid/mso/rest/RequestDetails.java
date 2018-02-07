@@ -179,7 +179,7 @@ public class RequestDetails{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RequestDetails#toString()
+     * @see org.onap.vid.domain.mso.RequestDetails#toString()
      */
     @Override
     public String toString() {
@@ -187,7 +187,7 @@ public class RequestDetails{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RequestDetails#getAdditionalProperties()
+     * @see org.onap.vid.domain.mso.RequestDetails#getAdditionalProperties()
      */
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
@@ -195,7 +195,7 @@ public class RequestDetails{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RequestDetails#setAdditionalProperty(java.lang.String, java.lang.Object)
+     * @see org.onap.vid.domain.mso.RequestDetails#setAdditionalProperty(java.lang.String, java.lang.Object)
      */
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
@@ -203,7 +203,7 @@ public class RequestDetails{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RequestDetails#hashCode()
+     * @see org.onap.vid.domain.mso.RequestDetails#hashCode()
      */
     @Override
     public int hashCode() {
@@ -211,7 +211,7 @@ public class RequestDetails{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RequestDetails#equals(java.lang.Object)
+     * @see org.onap.vid.domain.mso.RequestDetails#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object other) {

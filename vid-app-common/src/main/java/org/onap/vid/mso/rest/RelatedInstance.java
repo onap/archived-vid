@@ -76,7 +76,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedInstance#toString()
+     * @see org.onap.vid.domain.mso.RelatedInstance#toString()
      */
     @Override
     public String toString() {
@@ -84,7 +84,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedInstance#getAdditionalProperties()
+     * @see org.onap.vid.domain.mso.RelatedInstance#getAdditionalProperties()
      */
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
@@ -92,7 +92,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedInstance#setAdditionalProperty(java.lang.String, java.lang.Object)
+     * @see org.onap.vid.domain.mso.RelatedInstance#setAdditionalProperty(java.lang.String, java.lang.Object)
      */
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
@@ -100,7 +100,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedInstance#hashCode()
+     * @see org.onap.vid.domain.mso.RelatedInstance#hashCode()
      */
     @Override
     public int hashCode() {
@@ -108,7 +108,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
     }
 
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.RelatedInstance#equals(java.lang.Object)
+     * @see org.onap.vid.domain.mso.RelatedInstance#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object other) {

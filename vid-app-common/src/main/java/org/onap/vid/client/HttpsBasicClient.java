@@ -61,7 +61,7 @@ public class HttpsBasicClient{
 		String methodName = "getClient";
 		ClientConfig config = new ClientConfig();
 		//config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-		//config.getClasses().add(org.openecomp.aai.util.CustomJacksonJaxBJsonProvider.class);
+		//config.getClasses().add(org.onap.aai.util.CustomJacksonJaxBJsonProvider.class);
 	
 		SSLContext ctx = null;
 		

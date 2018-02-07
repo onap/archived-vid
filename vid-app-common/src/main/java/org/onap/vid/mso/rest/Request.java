@@ -57,7 +57,7 @@ public class Request extends org.onap.vid.domain.mso.Request {
  
     
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.Request#getInstanceIds()
+     * @see org.onap.vid.domain.mso.Request#getInstanceIds()
      */
     @JsonProperty("instanceIds")
     public InstanceIds getInstanceIds() {
@@ -117,7 +117,7 @@ public class Request extends org.onap.vid.domain.mso.Request {
 
   
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.Request#toString()
+     * @see org.onap.vid.domain.mso.Request#toString()
      */
     @Override
     public String toString() {
@@ -125,7 +125,7 @@ public class Request extends org.onap.vid.domain.mso.Request {
     }
     
     /* (non-Javadoc)
-     * @see org.openecomp.vid.domain.mso.Request#equals(java.lang.Object)
+     * @see org.onap.vid.domain.mso.Request#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object other) {
