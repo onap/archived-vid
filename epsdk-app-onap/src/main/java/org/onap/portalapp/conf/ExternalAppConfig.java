@@ -64,7 +64,7 @@ import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "org.openecomp")
+@ComponentScan(basePackages = {"org.openecomp", "org.onap"})
 @PropertySource(value = { "${container.classpath:}/WEB-INF/conf/app/test.properties" }, ignoreResourceNotFound = true)
 @Profile("src")
 @EnableAsync

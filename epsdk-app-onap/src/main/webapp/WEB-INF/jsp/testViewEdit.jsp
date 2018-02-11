@@ -40,7 +40,7 @@
 	Consider / investigate replacing this approach with an alternative
 	REST / Angular mechanism.
 -->
-<%@ page import="org.openecomp.vid.mso.*"%>
+<%@ page import="org.onap.vid.mso.*"%>
 <%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
 <%
 	String properties = "{msoMaxPolls:" + SystemProperties.getProperty(MsoProperties.MSO_MAX_POLLS)
