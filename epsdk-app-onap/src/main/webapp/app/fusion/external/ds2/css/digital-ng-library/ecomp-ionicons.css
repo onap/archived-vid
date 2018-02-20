@@ -1,0 +1,193 @@
+@charset "UTF-8";
+
+@font-face { font-family: "Ionicons"; src: url("../fonts/ionicons.eot?v=2.0.0"); src: url("../fonts/ionicons.eot?v=2.0.0#iefix") format("embedded-opentype"), url("../fonts/ionicons.ttf?v=2.0.0") format("truetype"), url("../fonts/ionicons.woff?v=2.0.0") format("woff"), url("../fonts/ionicons.svg?v=2.0.0#Ionicons") format("svg"); font-weight: normal; font-style: normal; }
+.ionicons,
+.icon-controls-upPRIMARY, 
+.icon-arrows-download:before, 
+.icon-securityalerts-alertL:before, 
+.icon-controls-add-maximize:before, 
+.icon-controls-add-maximize-circle:before, 
+.icon-misc-time:before, 
+.icoSecurityalerts:before,
+.icon-apps-marketplace:before,
+.icon-content-grid:before,
+.icon-documents-archive:before,
+.icon-arrows-vertical-arrow-down:before,
+.icoArrows-download:before,
+.icoArrows-incoming-call:before,
+.icon-arrows-outgoing-call:before,
+.icon-arrows-upload:before,
+.icon-arrows-straight-arrow:before,
+.icoArrows-vertical-arrow:before,
+.icon-people-userbookmark:before,
+.icon-controls-check:before,
+.icon-chevron-down:before,
+.icon-controls-down:before,
+.icon-controls-left:before,
+.icon-controls-right:before,
+.icon-chevron-up:before,
+.icoDocuments-report:before,
+.icon-edit:before,
+.icon-controls-up:before,
+.icon-overview:before,
+.icon-settings:before,
+.icon-building-home:before,
+.icon-documents-book:before,
+.icoDocuments-book-outline:before,
+.icoDocuments-bookmarks:before,
+.icoDocuments-bookmarks-outline:before,
+.icon-add-widget:before,
+.icon-documents-copy:before,
+.icon-content-flag:before,
+.icon-primary-accordion-minus:before,
+.icon-misc-piechart:before,
+.icon-misc-piechart-outline:before,
+.icon-primary-accordion-plus:before,
+.icon-star:before,
+.icon-building-door:before,
+.icon-content-gridguide:before,
+.icon-user:before,
+.icon-people-oneperson:before, 
+.icon-people-oneperson-add:before, 
+.icon-people-oneperson-stalker:before,  
+.icon-controls-pointer:before, 
+.icon-arrows-replay-restart:before, 
+.icon-content-star:before, 
+.icon-misc-trash:before, 
+.icon-misc-pen:before,
+.ion-navicon:before, 
+.icon-primary-close:before, .close:before, .reset-field:before,
+.icon-datanetwork-softwareasaservice:before,
+.icon-datanetwork-messaging2:before,
+.icon-controls-settingsconnectedactivity:before,
+.icon-arrows-upload:before { 
+	display: inline-block; 
+	font-family: "Ionicons"; 
+	speak: none; 
+	font-style: normal; 
+	font-weight: normal; 
+	font-variant: normal; 
+	text-transform: none; 
+	text-rendering: auto; 
+	line-height: 1; 
+	-webkit-font-smoothing: antialiased; 
+	-moz-osx-font-smoothing: grayscale; 
+	}
+
+
+
+.icoSecurityalerts-alert:before { content: "\f100"; }
+
+.icon-arrows-download:before { content: "\f41f"; }
+
+.icon-controls-add-maximize:before { content: "\f2c7"; }
+
+.icon-controls-add-maximize-circle:before { content: "\f359"; }
+
+.icon-misc-time:before { content: "\f35a"; }
+
+.icoSecurityalerts:before { content: "\f35b"; }
+
+.icon-content-grid:before { content: "\f35c"; }
+
+.icon-documents-archive:before { content: "\f2c9"; }
+
+.icon-arrows-vertical-arrow-down:before { content: "\f35d"; }
+
+.icon-arrows-download:before { content: "\f35e"; }
+
+.icon-arrows-incoming-call:before { content: "\f360"; }
+
+.icoArrows-outgoing-call:before { content: "\f362"; }
+
+.icoArrows-upload:before { content: "\f364"; }
+
+.icoArrows-straight-arrow:before { content: "\f30f"; }
+
+.icon-arrows-vertical-arrow:before { content: "\f366"; }
+
+.icon-people-userbookmark:before { content: "\f39f"; }
+
+.icon-controls-check:before { content: "\f121"; }
+
+.icon-chevron-down:before { content: "\f123"; }
+
+.icon-controls-left:before { content: "\f124"; }
+
+.icon-controls-right:before { content: "\f125"; }
+
+.icon-chevron-up:before { content: "\f126"; }
+
+.icoDocuments-report:before { content: "\f274"; }
+
+.icon-overview:before { content: "\f133"; }
+
+.icon-controls-down:before { content: "\f3d0"; }
+
+.icon-controls-up:before { content: "\f3d8"; }
+
+.icon-documents-book:before { content: "\f3e8"; }
+
+.icoDocuments-book-outline:before { content: "\f3e7"; }
+
+.icoDocuments-bookmarks:before { content: "\f3ea"; }
+
+.icoDocuments-bookmarks-outline:before { content: "\f3e9"; }
+
+.icon-documents-copy:before { content: "\f41c"; }
+
+.icon-content-flag:before { content: "\f42d"; }
+
+.icon-primary-accordion-minus:before { content: "\f463"; }
+
+.icon-misc-piechart:before { content: "\f484"; }
+
+.icon-misc-piechart-outline:before { content: "\f483"; }
+
+.icon-primary-accordion-plus:before { content: "\f48a"; }
+
+.icon-building-door:before { content: "\f29f"; }
+
+.icon-content-gridguide:before { content: "\f20d"; }
+
+.icon-people-oneperson:before { content: "\f213"; }
+
+.icon-people-oneperson-add:before { content: "\f211"; }
+
+.icon-people-oneperson-stalker:before { content: "\f212"; }
+
+.icon-arrows-replay-restart:before { content: "\f21c"; }
+
+.icon-misc-trash:before { content: "\f252"; }
+
+.icon-arrows-upload:before { content: "\f255"; }
+
+.icon-user:before { content: "\f213"; } 
+
+.icon-star:before { content: "\f4b3"; }
+
+.icon-edit:before { content: "\f2bf"; }
+
+.icon-settings:before { content: "\f13d"; }
+
+.icon-apps-marketplace:before { content: "\f35c"; }
+
+.icon-add-widget:before { content: "\f3f0"; }
+
+.icon-controls-upPRIMARY:before { content: "\f3d8";  }
+
+.icon-misc-pen:before { content: "\f2bf"; }
+
+.ion-navicon:before { content: "\f20e"; }
+
+.icon-building-home:before { content: "\f144"; }
+
+.icon-content-star:before { content: "\f24e"; }
+
+.icon-primary-close:before, .close:before, .reset-field:before { content: "\f129"; }
+
+.icon-datanetwork-softwareasaservice:before { content: "\f40c"; }
+
+.icon-datanetwork-messaging2:before { content: "\f132"; }
+
+.icon-controls-settingsconnectedactivity:before { content: "\f411"; }

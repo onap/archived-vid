@@ -1,6 +1,6 @@
 package org.onap.vid.integrationTest;
 
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiResponse;

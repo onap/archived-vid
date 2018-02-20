@@ -1,5 +1,5 @@
 <%@ page import="java.net.URLEncoder"%>
-<%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
+<%@ page import="org.onap.portalsdk.core.util.SystemProperties"%>
 <%
 	// Requests are handled by class ProcessCspController in the EP-SDK-Core library.
 	// On login error, that controller returns a model that is a String->String map.

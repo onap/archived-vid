@@ -35,8 +35,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.att.eelf.configuration.EELFLogger;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
@@ -292,12 +292,17 @@ public class AAIRestInterface {
 			initRestClient();
 
 			url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL) + path;
+			String vidUsername = SystemProperties.getProperty(AAIProperties.AAI_VID_USERNAME);
+            String vidPassword = Password.deobfuscate(SystemProperties.getProperty(AAIProperties.AAI_VID_PASSWD_X));
+            String encodeThis = vidUsername + ":" + vidPassword;
+            
 			Logging.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, payload);
 			final Response cres = client.target(url)
 					.request()
 					.accept(responseType)
 					.header(TRANSACTION_ID_HEADER, transId)
 					.header(FROM_APP_ID_HEADER,  fromAppId)
+					.header("Authorization", "Basic " + Base64.getEncoder().encodeToString(encodeThis.getBytes("utf-8")))
 					.header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
 					.put(Entity.entity(payload, MediaType.APPLICATION_JSON));
 			Logging.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, cres);

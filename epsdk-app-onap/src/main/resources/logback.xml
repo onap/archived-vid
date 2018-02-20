@@ -1,28 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ================================================================================
-  eCOMP Portal SDK
-  ================================================================================
-  Copyright (C) 2017 AT&T Intellectual Property
-  ================================================================================
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
+  ============LICENSE_START==========================================
+  ONAP Portal SDK
+  ===================================================================
+  Copyright © 2017 AT&T Intellectual Property. All rights reserved.
+  ===================================================================
+ 
+  Unless otherwise specified, all software contained herein is licensed
+  under the Apache License, Version 2.0 (the “License”);
+  you may not use this software except in compliance with the License.
   You may obtain a copy of the License at
-  
-       http://www.apache.org/licenses/LICENSE-2.0
-  
+ 
+              http://www.apache.org/licenses/LICENSE-2.0
+ 
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  ================================================================================
+ 
+  Unless otherwise specified, all documentation contained herein is licensed
+  under the Creative Commons License, Attribution 4.0 Intl. (the “License”);
+  you may not use this documentation except in compliance with the License.
+  You may obtain a copy of the License at
+ 
+              https://creativecommons.org/licenses/by/4.0/
+ 
+  Unless required by applicable law or agreed to in writing, documentation
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ 
+  ============LICENSE_END============================================
+ 
+  ECOMP is a trademark and service mark of AT&T Intellectual Property.
   -->
 <configuration scan="true" scanPeriod="3 seconds" debug="true">
   <!-- 
-  Logback files for the ECOMP SDK Application "ecomp_app"
-  are created in directory ${catalina.base}/logs/ecomp_app;
-  e.g., apache-tomcat-8.0.35/logs/ecomp_app/application.log  
+  Logback files for the ONAP Portal SDK Application "epsdk-app-os"
+  are created in directory ${catalina.base}/logs/epsdk_app_os;
+  e.g., apache-tomcat-8.0.35/logs/epsdk_app_os/application.log  
   -->
   <!--<jmxConfigurator /> -->
 
@@ -98,7 +116,7 @@
     <encoder>
       <pattern>${applicationLoggerPattern}</pattern>
     </encoder>
-    <filter class="org.openecomp.portalapp.util.CustomLoggingFilter" />
+    <filter class="org.onap.portalapp.util.CustomLoggingFilter" />
   </appender>
   
   <appender name="asyncEELF" class="ch.qos.logback.classic.AsyncAppender">
@@ -323,45 +341,29 @@
   </appender>
  
   
-  <!-- ============================================================================ -->
-  <!--  EELF loggers -->
-  <!-- ============================================================================ -->
-  <logger name="com.att.eelf" level="debug" additivity="false">
+ 
+
+  <logger name="org.onap.eelf" level="info" additivity="false">
     <appender-ref ref="asyncEELF" />
   </logger>
-  
-  <!--
-  <logger name="com.att.eelf.security" level="info" additivity="false">
-    <appender-ref ref="asyncEELFSecurity" />
-  </logger>
-  <logger name="com.att.eelf.perf" level="info" additivity="false">
-    <appender-ref ref="asyncEELFPerformance" />
-  </logger>
-  <logger name="com.att.eelf.server" level="info" additivity="false">
-    <appender-ref ref="asyncEELFServer" />
-  </logger>
-  <logger name="com.att.eelf.policy" level="info" additivity="false">
-    <appender-ref ref="asyncEELFPolicy" />
-  </logger>
-  -->
-  
-  <logger name="com.att.eelf.audit" level="info" additivity="false">
+
+  <logger name="org.onap.eelf.audit" level="info" additivity="false">
     <appender-ref ref="asyncEELFAudit" />
   </logger>
   
-  <logger name="com.att.eelf.metrics" level="info" additivity="false">
-        <appender-ref ref="asyncEELFMetrics" />
+  <logger name="org.onap.eelf.debug" level="debug" additivity="false">
+    <appender-ref ref="asyncEELFDebug" />
   </logger>
+	
+  <logger name="org.onap.eelf.error" level="info" additivity="false">
+    <appender-ref ref="asyncEELFError" />
+  </logger>
+
+  <logger name="org.onap.eelf.metrics" level="info" additivity="false">
+    <appender-ref ref="asyncEELFMetrics" />
+  </logger>      
     
-  <logger name="com.att.eelf.error" level="info" additivity="false">
-  	<appender-ref ref="asyncEELFError" />
-  </logger>
   
-   <logger name="com.att.eelf.debug" level="debug" additivity="false">
-        <appender-ref ref="asyncEELFDebug" />
-  </logger>
-  
-    
   <root level="DEBUG">
     <appender-ref ref="asyncEELF" />
   </root>

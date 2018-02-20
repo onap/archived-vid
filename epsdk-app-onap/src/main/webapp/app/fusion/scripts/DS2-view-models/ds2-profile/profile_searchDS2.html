@@ -17,7 +17,7 @@
 						<th>User ID</th>
 						<th>Manager User ID</th>
 						<th>Edit</th>
-						<th>Active?</th>
+						<th ng-show="(isAppCentralized=='false')">Active?</th>
 					</tr>
 				</thead>
 				<tbody type="body" ng-repeat="rowData in tableData">
@@ -31,11 +31,12 @@
 						<!--  Include an edit image with respective redirection -->
 						<td><a href="#/profile/{{rowData.id}}" class="icon-misc-pen"
 							style="color: #888; font-size: 20px;"></a></td>
-						<td>
+						<td ng-show="(isAppCentralized=='false')">
 							<div class="form-row">
 								<label class="btn-switch-label" tabindex="0" role="option">
-									<input type="checkbox" b2b-switches ng-model="rowData.active"
-									ng-disabled="allDisabled" aria-disabled="{{allDisabled}}">
+									<input type="checkbox" b2b-switches 
+										ng-model="rowData.active" ng-click="toggleProfileActive(rowData)"
+										ng-disabled="allDisabled" aria-disabled="{{allDisabled}}" />
 									<div class="sr-text hidden-spoken" ng-if="!allDisabled">Double
 										tap to turn</div>
 								</label>

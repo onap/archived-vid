@@ -1,8 +1,8 @@
 package org.onap.vid.model;
 
 //import org.hibernate.annotations.Table;
-import org.openecomp.portalsdk.core.domain.support.DomainVo;
-import org.onap.vid.controller.MaintenanceController;
+import org.onap.portalsdk.core.domain.support.DomainVo;
+import org.onap.vid.controllers.MaintenanceController;
 
 //import javax.persistence.*;
 import javax.persistence.*;

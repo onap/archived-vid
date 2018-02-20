@@ -1,6 +1,6 @@
 package org.onap.vid.mso.rest;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.model.RequestReferencesContainer;

@@ -21,7 +21,7 @@
 package org.onap.vid.policy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.policy.rest.RequestDetails;
 
 import java.text.DateFormat;
