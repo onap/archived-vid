@@ -1,6 +1,6 @@
 package org.onap.vid.model;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

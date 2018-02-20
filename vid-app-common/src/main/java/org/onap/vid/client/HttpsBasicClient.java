@@ -35,8 +35,8 @@ import javax.ws.rs.client.ClientBuilder;
 import org.eclipse.jetty.util.security.Password;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.properties.VidProperties;
 
  /**

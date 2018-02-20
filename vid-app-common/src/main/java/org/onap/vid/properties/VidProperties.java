@@ -20,8 +20,8 @@
 
 package org.onap.vid.properties;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.model.ModelConstants;
 
 import java.text.DateFormat;

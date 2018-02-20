@@ -1,4 +1,4 @@
-package org.openecomp.portalsdk.core.drools;
+package org.onap.portalsdk.core.drools;
 global String age
 
 rule "Default"

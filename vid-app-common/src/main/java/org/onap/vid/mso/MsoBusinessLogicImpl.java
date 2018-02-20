@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.controllers.OperationalEnvironmentController;
 import org.onap.vid.domain.mso.RequestInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.onap.vid.changeManagement.ChangeManagementRequest.MsoChangeManagementRequest;
-import static org.onap.vid.controller.MsoController.*;
+import static org.onap.vid.controllers.MsoController.*;
 import static org.onap.vid.mso.MsoProperties.*;
 
 public class MsoBusinessLogicImpl implements MsoBusinessLogic {

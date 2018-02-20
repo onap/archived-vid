@@ -1,7 +1,7 @@
 package org.onap.vid.controller.filter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;

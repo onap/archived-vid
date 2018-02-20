@@ -88,7 +88,7 @@
 
 
 <%@ page import="org.onap.vid.mso.*"%>
-<%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
+<%@ page import="org.onap.portalsdk.core.util.SystemProperties"%>
 <%
 	String properties = "{msoMaxPolls:" + SystemProperties.getProperty(MsoProperties.MSO_MAX_POLLS)
 			+ ",msoMaxPollingIntervalMsec:"

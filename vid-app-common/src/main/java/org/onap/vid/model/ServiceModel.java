@@ -30,7 +30,7 @@ import java.util.Map.Entry;
 import org.onap.vid.asdc.beans.tosca.Group;
 import org.onap.vid.asdc.beans.tosca.NodeTemplate;
 import org.onap.vid.asdc.beans.tosca.ToscaModel;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.properties.VidProperties;
 /**
  * The Class ServiceModel.

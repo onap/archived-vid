@@ -3,7 +3,7 @@ package org.onap.vid.controller.filter;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.UUID;
 
-import static org.openecomp.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
+import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
 
 @WebFilter(urlPatterns = "/*")
 public class PromiseEcompRequestIdFilter extends GenericFilterBean {

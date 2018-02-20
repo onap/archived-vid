@@ -20,7 +20,7 @@
 
 package  org.onap.vid.controller.test;
 
-import org.openecomp.portalsdk.core.controller.RestrictedBaseController;
+import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
