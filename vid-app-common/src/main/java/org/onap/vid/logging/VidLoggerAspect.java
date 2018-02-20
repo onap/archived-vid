@@ -5,9 +5,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.openecomp.portalsdk.core.logging.aspect.EELFLoggerAdvice;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.logging.aspect.EELFLoggerAdvice;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetAddress;
@@ -38,8 +38,8 @@ public class VidLoggerAspect {
     public void vidControllers() {}
 
     @Around("vidControllers() && (" +
-            "  @within(org.openecomp.portalsdk.core.logging.aspect.AuditLog)" +
-            "  || @annotation(org.openecomp.portalsdk.core.logging.aspect.AuditLog)" +
+            "  @within(org.onap.portalsdk.core.logging.aspect.AuditLog)" +
+            "  || @annotation(org.onap.portalsdk.core.logging.aspect.AuditLog)" +
             "  || @annotation(org.springframework.web.bind.annotation.RequestMapping)" +
             ")")
     public Object logAuditMethodClassAround(ProceedingJoinPoint joinPoint) throws Throwable {

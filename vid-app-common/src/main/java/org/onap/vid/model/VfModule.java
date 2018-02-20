@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.onap.vid.asdc.beans.tosca.Group;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 /**
  * The Class VfModule.

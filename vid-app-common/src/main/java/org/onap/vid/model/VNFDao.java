@@ -1,7 +1,7 @@
 package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openecomp.portalsdk.core.domain.support.DomainVo;
+import org.onap.portalsdk.core.domain.support.DomainVo;
 
 import javax.persistence.*;
 import java.io.Serializable;

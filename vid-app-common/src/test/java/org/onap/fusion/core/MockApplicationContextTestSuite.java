@@ -39,10 +39,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.testng.annotations.Test;
-import org.openecomp.portalsdk.core.conf.AppConfig;
-import org.openecomp.portalsdk.core.objectcache.AbstractCacheManager;
-import org.openecomp.portalsdk.core.util.SystemProperties;
-import org.openecomp.portalsdk.core.util.CacheManager;
+import org.onap.portalsdk.core.conf.AppConfig;
+import org.onap.portalsdk.core.objectcache.AbstractCacheManager;
+import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.util.CacheManager;
 
 /**
  * 

@@ -4,14 +4,15 @@
 		<div ng-show="showLoader" class="span loader-container">
 			<i class="icon-primary-spinner" role="img"	aria-label="Please wait while we load your content"></i>
 		</div>
-		<div ng-hide="showLoader" >	
-			<h3 class="heading-small">Please edit the profile details below:</h3>
+		<div ng-hide="showLoader" >
+		    <h3  class="heading-small" ng-show="isAppCentralized=='true'" style="color:red;">Please use Portal for access management</h3>	
+			<h3 class="heading-small" ng-show="isAppCentralized=='false'">Please edit the profile details below:</h3>
 			<div class="row-nowrap">
 				<div class="span12">
 					<div class="form-row">
 						<label for="textinputID-2a">*First Name</label>
 						<div class="field-group">
-							<input id="textinputID-2a" b2b-reset="" class="span12" type="text" data-ng-model="profile.lastName">
+							<input id="textinputID-2a" b2b-reset="" class="span12" type="text" data-ng-model="profile.firstName" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -19,7 +20,7 @@
 					<div class="form-row">
 						<label for="textinputID-3a">*Last Name</label>
 						<div class="field-group">
-							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.firstName">
+							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.lastName" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -62,7 +63,7 @@
 					<div class="form-row">
 						<label for="textinputID-3a">*Phone</label>
 						<div class="field-group">
-							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.phone">
+							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.phone" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -70,7 +71,7 @@
 					<div class="form-row">
 						<label for="textinputID-3a">Fax</label>
 						<div class="field-group">
-							<input id="textinputID-3a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.fax">
+							<input id="textinputID-3a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.fax" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -81,7 +82,7 @@
 					<div class="form-row">
 						<label for="textinputID-2a">Cellular</label>
 						<div class="field-group">
-							<input id="textinputID-2a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.cellular">
+							<input id="textinputID-2a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.cellular" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -89,7 +90,7 @@
 					<div class="form-row">
 						<label for="textinputID-3a">*Email</label>
 						<div class="field-group">
-							<input id="textinputID-3a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.email">
+							<input id="textinputID-3a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.email" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -97,7 +98,7 @@
 					<div class="form-row">
 						<label for="textinputID-3a">Address 1</label>
 						<div class="field-group">
-							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.address1">
+							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.address1" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -105,7 +106,7 @@
 					<div class="form-row">
 						<label for="textinputID-3a">Address 2</label>
 						<div class="field-group">
-							<input id="textinputID-3a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.address2">
+							<input id="textinputID-3a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.address2" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
@@ -116,14 +117,14 @@
 					<div class="form-row">
 						<label for="textinputID-2a">City</label>
 						<div class="field-group">
-							<input id="textinputID-2a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.city">
+							<input id="textinputID-2a" b2b-reset=""  class="span12" type="text" data-ng-model="profile.city" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
 				<div class="span12">
 					<div class="form-row">
 						<label for="textinputID-3a">State</label>
-						<select name="dropdown1" b2b-dropdown ng-model="stateList.selected.value"> 
+						<select name="dropdown1" b2b-dropdown ng-model="stateList.selected.value" ng-disabled="(isAppCentralized == 'true')"> 
 							<option b2b-dropdown-list option-repeat="d in stateList.options" value="{{d.value}}" init-value="{{stateList.selected.title}}">{{d.title}}</option>
 						</select>  
 					</div>
@@ -132,14 +133,14 @@
 					<div class="form-row">
 						<label for="textinputID-3a">Zip Code</label>
 						<div class="field-group">
-							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.zipCode">
+							<input id="textinputID-3a" b2b-reset="" class="span12" type="text" data-ng-model="profile.zipCode" ng-disabled="(isAppCentralized == 'true')">
 						</div>
 					</div>
 				</div>
 				<div class="span12">
 					<div class="form-row">
 						<label for="textinputID-3a">Country</label>
-						<select name="dropdown1" b2b-dropdown ng-model="selectedCountry.value"> 
+						<select name="dropdown1" b2b-dropdown ng-model="selectedCountry.value" ng-disabled="(isAppCentralized == 'true')"> 
 							<option b2b-dropdown-list option-repeat="d in countries" value="{{d.value}}" init-value="{{selectedCountry.title}}">{{d.title}}</option>
 						</select>  
 					</div>
@@ -148,17 +149,17 @@
 			<div class="span3">
 				<div class="form-row">
 					<label for="textinputID-3a">Time Zone</label>
-					<select name="dropdown1" b2b-dropdown ng-model="selectedTimeZone.value"> 
+					<select name="dropdown1" b2b-dropdown ng-model="selectedTimeZone.value" ng-disabled="(isAppCentralized == 'true')"> 
 						<option b2b-dropdown-list option-repeat="d in timeZones" value="{{d.value}}" init-value="{{selectedTimeZone.title}}">{{d.title}}</option>
 					</select>  
 				</div>
 			</div>
 			
-			<div>
-				<button class="btn btn-alt btn-small" type="button" ng-click="saveProfile()">Save</button>
+			<div class="form-row">
+				<button class="btn btn-alt btn-small" type="button" ng-click="saveProfile()" ng-show="(isAppCentralized=='false')">Save</button>
 			</div>
 			<br>
-			<div>
+			<div ng-show="(isAppCentralized=='false')">
 				Role
 				<a ng-click="addNewRoleFunctionModalPopup(role.roleFunctions,role.name, role);" class="icon-primary-accordion-plus" size="small"></a>
 			</div>
@@ -168,14 +169,14 @@
 					<thead>
 						<tr>
 							<th>Name</th>				
-							<th>Delete</th>
+							<th ng-show="(isAppCentralized=='false')">Delete</th>
 						</tr>
 					</thead>
 					<tbody type="body" ng-repeat="rowData in profile.roles">
 						<tr>
 							<td ng-bind="rowData['name']"></td>
 							
-							<td>
+							<td ng-show="(isAppCentralized=='false')">
 								<div style="font-size: 20px;">
 									<a href="javascript:void(0)" ng-click="removeRole(rowData);" 	class="icon-misc-trash"></a>
 								</div>

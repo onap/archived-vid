@@ -22,7 +22,7 @@ package org.onap.vid.mso;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 import javax.ws.rs.core.Response;
 import java.text.DateFormat;

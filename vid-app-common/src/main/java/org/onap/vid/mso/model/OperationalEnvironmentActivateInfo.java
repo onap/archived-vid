@@ -1,7 +1,8 @@
 package org.onap.vid.mso.model;
 
+import org.onap.vid.controllers.OperationalEnvironmentController;
+
 import com.google.common.base.MoreObjects;
-import org.onap.vid.controller.OperationalEnvironmentController;
 
 public class OperationalEnvironmentActivateInfo extends OperationalEnvironmentController.OperationalEnvironmentActivateBody {
     private final String userId;

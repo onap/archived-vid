@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.glassfish.jersey.client.ClientResponse;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.policy.PolicyResponseWrapper;
 import org.onap.vid.policy.PolicyUtil;
 import org.onap.vid.policy.RestObject;

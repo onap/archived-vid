@@ -17,7 +17,7 @@
   limitations under the License.
   ================================================================================
 --%>
-<%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
+<%@ page import="org.onap.portalsdk.core.util.SystemProperties"%>
 <!DOCTYPE html>
 <%
 	// Name is defined by app; do not throw if missing

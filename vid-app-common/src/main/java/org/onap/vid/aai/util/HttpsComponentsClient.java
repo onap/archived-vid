@@ -31,7 +31,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.jetty.util.security.Password;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.util.SystemProperties;
 
 
 /**

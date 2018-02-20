@@ -3,8 +3,8 @@ package org.onap.vid.policy;
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.json.simple.JSONObject;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.client.HttpBasicClient;
 import org.onap.vid.policy.rest.RequestDetails;
 

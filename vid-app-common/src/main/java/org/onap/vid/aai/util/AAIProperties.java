@@ -21,7 +21,7 @@
 package org.onap.vid.aai.util;
 
 
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.util.SystemProperties;
 
 /**
  * The Class AAIProperties.

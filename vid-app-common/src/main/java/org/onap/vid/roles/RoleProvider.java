@@ -2,8 +2,8 @@ package org.onap.vid.roles;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.web.support.UserUtils;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
 import org.onap.vid.model.ModelConstants;
@@ -53,9 +53,10 @@ public class RoleProvider {
         LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Entering to get user role for user " + UserUtils.getUserId(request));
 
         List<Role> roleList = new ArrayList<>();
-        HashMap roles = UserUtils.getRoles(request);
+        //Disable roles until AAF integration finishes
+        /*Map roles = UserUtils.getRoles(request);
         for (Object role : roles.keySet()) {
-            org.openecomp.portalsdk.core.domain.Role sdkRol = (org.openecomp.portalsdk.core.domain.Role) roles.get(role);
+            org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);
 
             LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Role " + sdkRol.getName() + " is being proccessed");
             try {
@@ -72,7 +73,7 @@ public class RoleProvider {
                 LOG.error(logPrefix + " Failed to parse permission");
 
             }
-        }
+        }*/
 
         return roleList;
     }

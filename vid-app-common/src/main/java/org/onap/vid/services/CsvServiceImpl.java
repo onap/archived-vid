@@ -3,7 +3,7 @@ package org.onap.vid.services;
 import com.opencsv.CSVReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

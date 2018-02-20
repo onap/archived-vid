@@ -27,10 +27,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.onap.fusion.core.MockApplicationContextTestSuite;
-import org.openecomp.portalsdk.core.domain.Profile;
-import org.openecomp.portalsdk.core.domain.User;
-import org.openecomp.portalsdk.core.service.ProfileService;
-import org.openecomp.portalsdk.core.service.UserProfileService;
+import org.onap.portalsdk.core.domain.Profile;
+import org.onap.portalsdk.core.domain.User;
+import org.onap.portalsdk.core.service.ProfileService;
+import org.onap.portalsdk.core.service.UserProfileService;
 
 
 /**

@@ -21,7 +21,7 @@
 package org.onap.vid.dao;
 
 import java.util.List;
-import org.openecomp.portalsdk.core.domain.Profile;
+import org.onap.portalsdk.core.domain.Profile;
 
 /**
  * The Interface ProfileDao.

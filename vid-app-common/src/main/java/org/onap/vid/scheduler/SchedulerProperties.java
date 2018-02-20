@@ -1,6 +1,6 @@
 package org.onap.vid.scheduler;
 
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.util.SystemProperties;
 
 
 public class SchedulerProperties extends SystemProperties { 
