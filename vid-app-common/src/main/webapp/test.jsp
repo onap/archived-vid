@@ -2,7 +2,7 @@
 <head><title>Test VID Properties related to MSO </title></head>
 <!-- This is a temporary test page. It will be removed from source control -->
 <body>
-<%@ page import="org.openecomp.portalsdk.core.util.SystemProperties" %>
+<%@ page import="org.onap.portalsdk.core.util.SystemProperties" %>
 <%@ page import="org.onap.vid.controller.MsoController" %>
 <%@ page import="org.onap.vid.mso.rest.Request" %>
 <%@ page import="org.onap.vid.mso.rest.RequestDetails" %>

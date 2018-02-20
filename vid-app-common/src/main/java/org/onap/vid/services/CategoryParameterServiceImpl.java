@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.service.DataAccessService;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.category.AddCategoryOptionResponse;
 import org.onap.vid.category.CategoryParameterOptionRep;
 import org.onap.vid.model.CategoryParameter;

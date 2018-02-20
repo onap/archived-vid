@@ -1,7 +1,7 @@
 package org.onap.vid.mso;
 
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.controllers.OperationalEnvironmentController;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;

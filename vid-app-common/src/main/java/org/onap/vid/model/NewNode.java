@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.asdc.beans.tosca.Input;
 
 

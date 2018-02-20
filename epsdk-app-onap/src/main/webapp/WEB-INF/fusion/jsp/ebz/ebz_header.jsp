@@ -20,10 +20,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
-<%@ page import="org.openecomp.portalsdk.core.util.SystemProperties"%>
-<%@ page import="org.openecomp.portalsdk.core.onboarding.util.PortalApiProperties"%>
-<%@ page import="org.openecomp.portalsdk.core.onboarding.util.PortalApiConstants"%>
-<%@ page import="org.openecomp.portalsdk.core.domain.MenuData"%>
+<%@ page import="org.onap.portalsdk.core.util.SystemProperties"%>
+<%@ page import="org.onap.portalsdk.core.onboarding.util.PortalApiProperties"%>
+<%@ page import="org.onap.portalsdk.core.onboarding.util.PortalApiConstants"%>
+<%@ page import="org.onap.portalsdk.core.domain.MenuData"%>
 <link rel="stylesheet" type="text/css" href="app/fusion/external/ebz/ebz_header/header.css">
 <link rel="stylesheet" type="text/css" href="app/fusion/external/ebz/ebz_header/portal_ebz_header.css">
 <link rel="stylesheet" type="text/css" href="app/fusion/external/ebz/sandbox/styles/style.css" >

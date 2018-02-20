@@ -1,7 +1,7 @@
 package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.openecomp.sdc.toscaparser.api.NodeTemplate;
 import org.openecomp.sdc.toscaparser.api.RequirementAssignments;
 

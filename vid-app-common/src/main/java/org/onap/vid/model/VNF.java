@@ -29,10 +29,8 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.onap.vid.asdc.beans.tosca.NodeTemplate;
-
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.controller.VidController;
-
+import org.onap.vid.controllers.VidController;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.asdc.beans.tosca.Group;
 import org.onap.vid.asdc.beans.tosca.Input;
 

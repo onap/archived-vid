@@ -30,7 +30,7 @@ import java.util.Map.Entry;
 import org.onap.vid.asdc.beans.tosca.Input;
 import org.onap.vid.asdc.beans.tosca.NodeTemplate;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 /**
  * The Class Node.
  */

@@ -21,7 +21,7 @@
 package org.onap.vid.asdc.rest;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Artifact;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.asdc.beans.tosca.NodeTemplate;
 
 public class NewVNF extends NewNode {

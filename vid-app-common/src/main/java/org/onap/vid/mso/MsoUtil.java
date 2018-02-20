@@ -23,7 +23,7 @@ package org.onap.vid.mso;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.client.ClientResponse;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

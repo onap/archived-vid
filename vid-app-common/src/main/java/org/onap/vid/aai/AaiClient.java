@@ -7,7 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.onap.vid.aai.util.AAIRestInterface;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.*;

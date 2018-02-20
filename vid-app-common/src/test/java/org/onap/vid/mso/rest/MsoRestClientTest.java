@@ -3,7 +3,7 @@
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.json.JSONObject;
 //import org.junit.Assert;
-//import org.openecomp.portalsdk.core.util.SystemProperties;
+//import org.onap.portalsdk.core.util.SystemProperties;
 //import org.onap.vid.changeManagement.RequestDetails;
 //import org.onap.vid.controller.LocalWebConfig;
 //import org.onap.vid.domain.mso.CloudConfiguration;

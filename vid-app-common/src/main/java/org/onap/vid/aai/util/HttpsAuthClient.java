@@ -36,8 +36,8 @@ import javax.ws.rs.client.ClientBuilder;
 import org.eclipse.jetty.util.security.Password;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 /**
  * The Class HttpsAuthClient.
  */
@@ -56,7 +56,7 @@ public class HttpsAuthClient{
 
 		ClientConfig config = new ClientConfig();
 		//config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-		//config.getClasses().add(org.openecomp.aai.util.CustomJacksonJaxBJsonProvider.class);
+		//config.getClasses().add(org.onap.aai.util.CustomJacksonJaxBJsonProvider.class);
 
 		try {
 			

@@ -2,7 +2,7 @@ package org.onap.vid.services;
 
 import org.apache.http.HttpStatus;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
-import org.openecomp.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.*;
 import org.onap.vid.aai.ServiceInstance;
 import org.onap.vid.aai.ServiceSubscription;
