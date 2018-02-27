@@ -22,6 +22,7 @@ package org.onap.vid.asdc.rest;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Artifact;
@@ -160,6 +161,7 @@ public class RestfulAsdcClient implements AsdcClient {
 
         commonHeaders = new MultivaluedHashMap<String, Object>();
         commonHeaders.put("Authorization", Collections.singletonList((Object) (auth)));
+        commonHeaders.put("X-ECOMP-InstanceID", Collections.singletonList((Object) (SystemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME))));
     }
 
     private Path createTmpFile(InputStream csarInputStream) throws AsdcCatalogException {
