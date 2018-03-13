@@ -108,6 +108,7 @@ appDS2
 	VPN_ID_1 : "1a2b3c4d5e6f",
 
 	// PATHS
+	CHANGE_MANAGEMENT_OPERATION_NO_SCHEDULER: "change-management/workflow/@vnfName",
 	GET_WORKFLOW: "change-management/get_vnf_workflow_relation",
 	GET_MSO_WORKFLOWS: "change-management/mso",
 	GET_SCHEDULER_CHANGE_MANAGEMENTS: "change-management/scheduler",

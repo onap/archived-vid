@@ -76,5 +76,16 @@
 
             return deferred.promise;
         };
+		
+		this.postChangeManagementNow = function (requestData, vnfName) {
+			var url = COMPONENT.CHANGE_MANAGEMENT_OPERATION_NO_SCHEDULER.replace('@vnfName', vnfName);
+            return $http.post(url, requestData)
+            .success(function (response) {
+                return {data: response};
+            })
+                .catch(function (err) {
+                    return {data: []};
+                });
+        };
     }
 })();

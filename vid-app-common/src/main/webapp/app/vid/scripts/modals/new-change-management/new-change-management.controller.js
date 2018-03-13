@@ -132,21 +132,143 @@
         };
 
 
+		/***converting objects to scheduler format (taken from IST)***/
+		function extractChangeManagementCallbackDataStr(changeManagement) {
+			console.log(changeManagement);
+			var result = {};
+			result.requestType = changeManagement.workflow;
+			var workflowType = changeManagement.workflow;
+			result.requestDetails = [];
+			_.forEach(changeManagement.vnfNames, function (vnf) {
+				
+				try{
+				var requestInfoData ={};
+				var requestParametersData ={};
+				if (vnf.availableVersions && vnf.availableVersions.length!=0){
+					
+					requestInfoData ={
+						source: vnf.availableVersions[0].requestInfo.source,
+						suppressRollback: vnf.availableVersions[0].requestInfo.suppressRollback,
+						requestorId: vnf.availableVersions[0].requestInfo.requestorId
+					}
+					
+					if(workflowType=='Update'){
+						requestParametersData = {
+							usePreload: vnf.availableVersions[0].requestParameters.usePreload
+						}
+					}else if(workflowType=="Replace"){
+						requestParametersData = {
+							rebuildVolumeGroups: vnf.availableVersions[0].requestParameters.usePreload
+						}
+					}else if(workflowType=="VNF In Place Software Update"){
+						var payloadObj = {
+							'existing_software_version':changeManagement.existingSoftwareVersion,
+							'new_software_version':changeManagement.newSoftwareVersion,
+							'operations_timeout':changeManagement.operationTimeout
+						};
+						requestParametersData = {
+							payload: JSON.stringify(payloadObj)
+						}
+					}else if(workflowType=="VNF Config Update"){
+						requestParametersData = {
+							payload: changeManagement.configUpdateFile
+						}
+					}
+					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: workflowType '+ workflowType);
+					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: requestParametersData '+ requestParametersData);
+
+				}else if(workflowType=="VNF In Place Software Update"){
+					var payloadObj = {
+						'existing_software_version':changeManagement.existingSoftwareVersion,
+						'new_software_version':changeManagement.newSoftwareVersion,
+						'operations_timeout':changeManagement.operationTimeout
+					};
+					requestParametersData = {
+						payload: JSON.stringify(payloadObj)
+					}
+				}else if(workflowType=="VNF Config Update"){
+					requestParametersData = {
+						payload: changeManagement.configUpdateFile
+					}
+				}	
+				
+				var data = {
+					vnfName: vnf.name,
+					vnfInstanceId: vnf.id,
+					modelInfo: {
+						modelType: 'vnf',
+						modelInvariantId: vnf.properties['model-invariant-id'],
+						modelVersionId: vnf.modelVersionId,
+						modelName: vnf.properties['vnf-name'],
+						modelVersion: vnf.version,
+						modelCustomizationName: vnf.properties['model-customization-name'],
+						modelCustomizationId: vnf.properties['model-customization-id']
+					},
+					cloudConfiguration: vnf.cloudConfiguration,
+					requestInfo: requestInfoData,
+					relatedInstanceList: [],
+					requestParameters:requestParametersData
+				};
+
+				var serviceInstanceId = '';
+				_.forEach(vnf['service-instance-node'], function (instanceNode) {
+					if(instanceNode['node-type'] === 'service-instance'){
+						serviceInstanceId = instanceNode.properties['service-instance-id'];
+					}
+				});
+
+				if (vnf.availableVersions && vnf.availableVersions.length!=0){
+					_.forEach(vnf.availableVersions[0].relatedInstanceList, function (related) {
+						var rel = related.relatedInstance;
+						var relatedInstance = {
+							instanceId: serviceInstanceId,
+							modelInfo: {
+								modelType: rel.modelInfo.modelType,
+								modelInvariantId: rel.modelInfo.modelInvariantId,
+								modelVersionId: rel.modelInfo.modelVersionId,
+								modelName: rel.modelInfo.modelName,
+								modelVersion: rel.modelInfo.modelVersion,
+								modelCustomizationName: rel.modelInfo.modelCustomizationName,
+								modelCustomizationId: rel.modelInfo.modelCustomizationId
+							}
+						};
+						if (rel.vnfInstanceId)
+							relatedInstance.instanceId = rel.vnfInstanceId;
+
+						data.relatedInstanceList.push({relatedInstance: relatedInstance});
+					});
+				}
+				}catch(err){
+					$log.error('SchedulerCtrl::extractChangeManagementCallbackDataStr error: ' + err);
+				}
+
+				result.requestDetails.push(data);
+			});
+			return JSON.stringify(result);
+		}
+		
         vm.openModal = function () {
-            $scope.widgetParameter = ""; // needed by the scheduler?
+            if(VIDCONFIGURATION.SCHEDULER_PORTAL_URL) { //scheduling supported
+				$scope.widgetParameter = ""; // needed by the scheduler?
 
-            // properties needed by the scheduler so it knows whether to show
-            // policy or sniro related features on the scheduler UI or not.
-            vm.changeManagement.policyYN = "Y";
-            vm.changeManagement.sniroYN = "Y";
+				// properties needed by the scheduler so it knows whether to show
+				// policy or sniro related features on the scheduler UI or not.
+				vm.changeManagement.policyYN = "Y";
+				vm.changeManagement.sniroYN = "Y";
 
-            var data = {
-                widgetName: 'Portal-Common-Scheduler',
-                widgetData: vm.changeManagement,
-                widgetParameter: $scope.widgetParameter
-            };
-
-            window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
+				var data = {
+					widgetName: 'Portal-Common-Scheduler',
+					widgetData: vm.changeManagement,
+					widgetParameter: $scope.widgetParameter
+				};
+			
+				window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
+			} else {
+				//no scheduling support
+				var dataToSo = extractChangeManagementCallbackDataStr(vm.changeManagement);
+				var vnfName = vm.changeManagement.vnfNames[0].name;
+				changeManagementService.postChangeManagementNow(dataToSo, vnfName);
+			}
         };
 
         vm.loadSubscribers = function () {
