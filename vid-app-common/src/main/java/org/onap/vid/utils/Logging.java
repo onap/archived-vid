@@ -19,7 +19,7 @@ import static org.onap.vid.utils.Streams.not;
 
 public class Logging {
 
-    private Logging() {
+    Logging() {
     }
 
     public static final String HTTP_REQUESTS_OUTGOING = "http.requests.outgoing.";

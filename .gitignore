@@ -4,3 +4,12 @@ epsdk-app-onap/target/
 vid-app-common/target/
 vid-parent_bdio.jsonld
 deliveries/target/
+/vid-app-common/debug-logs/EELF/debug.log
+/vid-app-common/logs/EELF/application.log
+/vid-app-common/logs/EELF/audit.log
+/vid-app-common/logs/EELF/error.log
+/vid-app-common/logs/EELF/metrics.log
+/vid-app-common/logs/EELF/performance.log
+/vid-app-common/logs/EELF/policy.log
+/vid-app-common/logs/EELF/security.log
+/vid-app-common/logs/EELF/server.log

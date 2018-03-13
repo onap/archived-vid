@@ -42,7 +42,7 @@ public class Requirement {
 	/**
 	 * Instantiates a new requirement.
 	 */
-	private Requirement() {}
+	Requirement() {}
 	
 	/**
 	 * Gets the occurrences.
