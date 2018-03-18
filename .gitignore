@@ -13,3 +13,17 @@ deliveries/target/
 /vid-app-common/logs/EELF/policy.log
 /vid-app-common/logs/EELF/security.log
 /vid-app-common/logs/EELF/server.log
+/epsdk-app-onap/catalina.base_IS_UNDEFINED/logs/ep_sdk_app/application.log
+/epsdk-app-onap/catalina.base_IS_UNDEFINED/logs/ep_sdk_app/audit.log
+/epsdk-app-onap/catalina.base_IS_UNDEFINED/logs/ep_sdk_app/debug.log
+/epsdk-app-onap/catalina.base_IS_UNDEFINED/logs/ep_sdk_app/error.log
+/epsdk-app-onap/catalina.base_IS_UNDEFINED/logs/ep_sdk_app/metrics.log
+/epsdk-app-onap/debug-logs/EELF/debug.log
+/epsdk-app-onap/logs/EELF/application.log
+/epsdk-app-onap/logs/EELF/audit.log
+/epsdk-app-onap/logs/EELF/error.log
+/epsdk-app-onap/logs/EELF/metrics.log
+/epsdk-app-onap/logs/EELF/performance.log
+/epsdk-app-onap/logs/EELF/policy.log
+/epsdk-app-onap/logs/EELF/security.log
+/epsdk-app-onap/logs/EELF/server.log
