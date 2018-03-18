@@ -2,6 +2,8 @@ package org.onap.vid.aai;
 
 import org.junit.Test;
 import org.onap.vid.aai.model.RelationshipList;
+import java.util.*;
+import org.junit.Assert;
 
 public class OperationalEnvironmentTest {
 
@@ -167,5 +169,23 @@ public class OperationalEnvironmentTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setRelationshipList(relationshipList);
+    }
+
+    @Test
+    public void testOperationalEnvironment() throws Exception {
+        OperationalEnvironment testSubject;
+        String operationalEnvironmentId = "";
+        String operationalEnvironmentName = "";
+        String operationalEnvironmentType = "";
+        String operationalEnvironmentStatus = "";
+        String tenantContext = "";
+        String workloadContext = "";
+        String resourceVersion = "";
+        RelationshipList relationshipList = null;
+
+        // default test
+        testSubject = new OperationalEnvironment(operationalEnvironmentId, operationalEnvironmentName,
+                operationalEnvironmentType, operationalEnvironmentStatus, tenantContext, workloadContext,
+                resourceVersion, relationshipList);
     }
 }

@@ -154,7 +154,7 @@ public class RestfulAsdcClient implements AsdcClient {
      *
      * @param builder the builder
      */
-    private RestfulAsdcClient(Builder builder) {
+    RestfulAsdcClient(Builder builder) {
         client = builder.client;
         uri = builder.uri;
         auth = builder.auth;

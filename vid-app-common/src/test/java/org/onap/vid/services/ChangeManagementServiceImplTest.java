@@ -24,7 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ChangeManagementServiceImplTest {
 
     private ChangeManagementServiceImpl createTestSubject() {
-        return new ChangeManagementServiceImpl(new DataAccessServiceImpl(), new MsoBusinessLogicImpl(new MsoRestClientNew()));
+        return new ChangeManagementServiceImpl(new DataAccessServiceImpl(),
+                new MsoBusinessLogicImpl(new MsoRestClientNew()));
     }
 
     @Test
@@ -51,7 +52,6 @@ public class ChangeManagementServiceImplTest {
         Assert.assertEquals(null, result);
     }
 
-    
     @Test
     public void testGetSchedulerChangeManagements() throws Exception {
         ChangeManagementServiceImpl testSubject;
@@ -72,7 +72,84 @@ public class ChangeManagementServiceImplTest {
         testSubject.deleteSchedule(scheduleId);
     }
 
+    @Test
+    public void testAddVnfWorkflowRelation() throws Exception {
+        ChangeManagementServiceImpl testSubject;
+        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = null;
+        VnfWorkflowRelationResponse result;
 
+        // default test
+        try {
+            testSubject = createTestSubject();
+            result = testSubject.addVnfWorkflowRelation(vnfWorkflowRelationRequest);
+        } catch (
+
+        Exception e) {
+        }
+    }
+
+    @Test
+    public void testDeleteVnfWorkflowRelation() throws Exception {
+        ChangeManagementServiceImpl testSubject;
+        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = null;
+        VnfWorkflowRelationResponse result;
+
+        // default test
+        try {
+            testSubject = createTestSubject();
+            result = testSubject.deleteVnfWorkflowRelation(vnfWorkflowRelationRequest);
+        } catch (
+
+        Exception e) {
+        }
+    }
+
+    @Test
+    public void testGetAllVnfWorkflowRelations() throws Exception {
+        ChangeManagementServiceImpl testSubject;
+        VnfWorkflowRelationAllResponse result;
+
+        // default test
+        try {
+            testSubject = createTestSubject();
+            result = testSubject.getAllVnfWorkflowRelations();
+        } catch (
+
+        Exception e) {
+        }
+    }
+
+    @Test
+    public void testGetWorkflowsForVnf() throws Exception {
+        ChangeManagementServiceImpl testSubject;
+        GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest = null;
+        List<String> result;
+
+        // default test
+        try {
+            testSubject = createTestSubject();
+            result = testSubject.getWorkflowsForVnf(getVnfWorkflowRelationRequest);
+        } catch (
+
+        Exception e) {
+        }
+    }
+
+    @Test
+    public void testUploadConfigUpdateFile() throws Exception {
+        ChangeManagementServiceImpl testSubject;
+        MultipartFile file = null;
+        String result;
+
+        // default test
+        try {
+            testSubject = createTestSubject();
+            result = testSubject.uploadConfigUpdateFile(file);
+        } catch (
+
+        Exception e) {
+        }
+    }
 
     /*
      * TODO: fix private ChangeManagementServiceImpl createTestSubject() {
