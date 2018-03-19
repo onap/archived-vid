@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<epsdk.version>2.1.0</epsdk.version>
-		<springframework.version>4.2.0.RELEASE</springframework.version>
+		<springframework.version>4.2.2.RELEASE</springframework.version>
 		<hibernate.version>4.3.11.Final</hibernate.version>
 		<!-- Skip assembling the zip by default -->
 		<skipassembly>true</skipassembly>
@@ -287,6 +287,16 @@
 			<artifactId>eelf-core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
 
 		<!-- Mapper -->
 		<dependency>
@@ -302,7 +312,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.6.3</version>
+			<version>2.6.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
