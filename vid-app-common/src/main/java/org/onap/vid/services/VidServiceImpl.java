@@ -1,7 +1,7 @@
 package org.onap.vid.services;
 
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;

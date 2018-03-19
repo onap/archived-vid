@@ -15,7 +15,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.asdc.beans.tosca.NodeTemplate;

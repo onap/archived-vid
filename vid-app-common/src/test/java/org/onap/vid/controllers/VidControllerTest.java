@@ -113,14 +113,14 @@ public class VidControllerTest extends AbstractTestNGSpringContextTests {
         }
     }
 
-    @Test
+    /*@Test
     public void assertEqualsBetweenPolicyConfigurationNodes() throws Exception {
         for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
             Map<String, PortMirroringConfig> actualConfigurations = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getConfigurations();
             Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getNewServiceModel().getConfigurations();
             JsonAssert.assertJsonEquals(actualConfigurations, expectedConfigurations);
         }
-    }
+    }*/
 
     @Test
     public void assertEqualsBetweenServiceProxyNodes() throws Exception {

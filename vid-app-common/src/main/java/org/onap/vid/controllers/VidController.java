@@ -22,7 +22,7 @@ package org.onap.vid.controllers;
 
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.SecureServices;
 import org.onap.vid.exceptions.VidServiceUnavailableException;

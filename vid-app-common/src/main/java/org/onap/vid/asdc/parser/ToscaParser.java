@@ -2,7 +2,7 @@ package org.onap.vid.asdc.parser;
 
 import java.nio.file.Path;
 
-import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.tosca.ToscaCsar;
 import org.onap.vid.asdc.beans.Service;

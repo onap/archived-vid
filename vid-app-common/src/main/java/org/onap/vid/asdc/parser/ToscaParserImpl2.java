@@ -2,13 +2,13 @@ package org.onap.vid.asdc.parser;
 
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.model.*;
-import org.openecomp.sdc.tosca.parser.api.ISdcCsarHelper;
-import org.openecomp.sdc.tosca.parser.exceptions.SdcToscaParserException;
-import org.openecomp.sdc.tosca.parser.impl.FilterType;
-import org.openecomp.sdc.tosca.parser.impl.SdcToscaParserFactory;
-import org.openecomp.sdc.tosca.parser.impl.SdcTypes;
-import org.openecomp.sdc.toscaparser.api.*;
-import org.openecomp.sdc.toscaparser.api.parameters.Input;
+import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
+import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.sdc.tosca.parser.impl.FilterType;
+import org.onap.sdc.tosca.parser.impl.SdcToscaParserFactory;
+import org.onap.sdc.tosca.parser.impl.SdcTypes;
+import org.onap.sdc.toscaparser.api.*;
+import org.onap.sdc.toscaparser.api.parameters.Input;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -235,9 +235,9 @@ public class ToscaParserImpl2 {
         return volumeGroupHashMap;
     }
 
-    private Map<String, org.onap.vid.asdc.beans.tosca.Input> inputsListToInputsMap(List<org.openecomp.sdc.toscaparser.api.parameters.Input> inputList) {
+    private Map<String, org.onap.vid.asdc.beans.tosca.Input> inputsListToInputsMap(List<org.onap.sdc.toscaparser.api.parameters.Input> inputList) {
         Map<String, org.onap.vid.asdc.beans.tosca.Input> inputs = new HashMap<>();
-        for (org.openecomp.sdc.toscaparser.api.parameters.Input input : inputList) {
+        for (org.onap.sdc.toscaparser.api.parameters.Input input : inputList) {
             inputs.put(input.getName(), convertInput(input, new org.onap.vid.asdc.beans.tosca.Input()));
         }
         return inputs;

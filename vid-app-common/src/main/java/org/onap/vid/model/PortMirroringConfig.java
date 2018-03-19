@@ -2,8 +2,8 @@ package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.openecomp.sdc.toscaparser.api.NodeTemplate;
-import org.openecomp.sdc.toscaparser.api.RequirementAssignments;
+import org.onap.sdc.toscaparser.api.NodeTemplate;
+import org.onap.sdc.toscaparser.api.RequirementAssignments;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
