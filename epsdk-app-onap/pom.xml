@@ -272,6 +272,12 @@
 			<artifactId>epsdk-app-common</artifactId>
 			<version>${epsdk.version}</version>
 			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-fileupload</groupId>
+					<artifactId>commons-fileupload</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.onap.vid</groupId>
@@ -291,6 +297,12 @@
 			<groupId>org.onap.portal.sdk</groupId>
 			<artifactId>epsdk-core</artifactId>
 			<version>${epsdk.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.thoughtworks.xstream</groupId>
+					<artifactId>xstream</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.onap.portal.sdk</groupId>
@@ -383,11 +395,6 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.6.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
 			<version>2.6.3</version>
 		</dependency>
 		<dependency>
