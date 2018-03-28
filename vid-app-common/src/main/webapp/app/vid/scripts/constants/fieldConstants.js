@@ -28,6 +28,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
     var ID = {
         AVAILABLE_VOLUME_GROUP: "availableVolumeGroup",
         INSTANCE_NAME: "instanceName",
+        PNF_ID: "pnfId",
         LCP_REGION: "lcpRegion",
         LCP_REGION_TEXT: "lcpRegionText",
         PRODUCT_FAMILY: "productFamily",
@@ -155,6 +156,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
     var NAME = {
     AVAILABLE_VOLUME_GROUP: "Available Volume Group",
     INSTANCE_NAME: "Instance Name",
+    PNF_ID: "PNF (Correlation) ID",
     CUSTOMER_ID: "Customer ID",
     LCP_REGION: "LCP Region",
     LCP_REGION_TEXT: "Legacy Region",
@@ -336,6 +338,11 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
             name: NAME.INSTANCE_NAME,
             id: ID.INSTANCE_NAME,
             isRequired: true
+        },
+        PNF_ID: {
+            name: NAME.PNF_ID,
+            id: ID.PNF_ID,
+            isRequired: false
         },
         LCP_REGION: {
             name: NAME.LCP_REGION,

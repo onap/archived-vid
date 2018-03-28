@@ -241,7 +241,10 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
             parameterList = parameterList.concat([ getProjectParameter() ]);
             parameterList = parameterList.concat([ getOwningEntityParameter() ]);
-
+            //if service model has a pnf, add a PNF ID parameter
+            if (DataService.getPnf()) {
+                parameterList = parameterList.concat([ FIELD.PARAMETER.PNF_ID ]);
+            }
         }
         else {
             parameterList = [ FIELD.PARAMETER.INSTANCE_NAME ];
