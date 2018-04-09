@@ -25,7 +25,7 @@ ENV LOG4J_LOGS_DIRECTORY ${ROOT_DIR}/logs
 ENV VID_AAI_HOST aai.api.simpledemo.openecomp.org
 ENV VID_AAI_PORT 8443
 ENV VID_APP_DISPLAY_NAME VID
-ENV VID_ECOMP_SHARED_CONTEXT_REST_URL https://portal.api.simpledemo.openecomp.org:8080/ecompportal/context
+ENV VID_ECOMP_SHARED_CONTEXT_REST_URL https://portal.api.simpledemo.openecomp.org:8080/onapportal/context
 ENV VID_MSO_SERVER_URL http://vm1.mso.simpledemo.openecomp.org:8080
 ENV VID_TRUSTSTORE_FILE ${ROOT_DIR}/etc/vid_keystore.jks
 ENV VID_MYLOGIN_FEED_DIRECTORY /tmp/MyLogins
@@ -45,9 +45,9 @@ ENV AAI_VID_UID VID
 ENV AAI_VID_PASSWD_X OBF:1jm91i0v1jl9
 ENV AAI_USE_CLIENT_CERT false
 ENV AAI_VNF_PROV_STATUS PREPROV,NVTPROV,PROV,CAPPED
-ENV VID_ECOMP_REDIRECT_URL  http://portal.api.simpledemo.openecomp.org:8989/ECOMPPORTAL/login.htm
-ENV VID_ECOMP_REST_URL http://portal.api.simpledemo.openecomp.org:8989/ECOMPPORTAL/auxapi
-ENV VID_ECOMP_SHARED_CONTEXT_REST_URL http://portal.api.simpledemo.openecomp.org:8989/ECOMPPORTAL/context
+ENV VID_ECOMP_REDIRECT_URL  http://portal.api.simpledemo.openecomp.org:8989/ONAPPORTAL/login.htm
+ENV VID_ECOMP_REST_URL http://portal.api.simpledemo.openecomp.org:8989/ONAPPORTAL/auxapi
+ENV VID_ECOMP_SHARED_CONTEXT_REST_URL http://portal.api.simpledemo.openecomp.org:8989/ONAPPORTAL/context
 ENV VID_CONTACT_US_LINK https://todo_contact_us_link.com
 
 ENV VID_DECRYPTION_KEY AGLDdG4D04BKm2IxIWEr8o=
