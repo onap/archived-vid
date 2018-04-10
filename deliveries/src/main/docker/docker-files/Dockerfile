@@ -9,7 +9,7 @@ RUN sed -i 's/# alias/alias/g' /root/.bashrc
 ENV ROOT_DIR /opt/app/vid
 
 ENV ASDC_CLIENT_TYPE REST
-ENV ASDC_CLIENT_REST_HOST c2.vm1.sdc.simpledemo.openecomp.org
+ENV ASDC_CLIENT_REST_HOST c2.vm1.sdc.simpledemo.onap.org
 #old creds 1/9/2017 ENV ASDC_CLIENT_REST_AUTH Basic dmlkOnZpZG9z
 ENV ASDC_CLIENT_REST_AUTH Basic dmlkOktwOGJKNFNYc3pNMFdYbGhhazNlSGxjc2UyZ0F3ODR2YW9HR21KdlV5MlU=
 ENV ASDC_CLIENT_REST_PROTOCOL http
@@ -22,11 +22,11 @@ ENV LOG4J_LOGLEVEL INFO
 ENV LOG4J_APPENDER rollingfile
 ENV LOG4J_LOGS_DIRECTORY ${ROOT_DIR}/logs
 
-ENV VID_AAI_HOST aai.api.simpledemo.openecomp.org
+ENV VID_AAI_HOST aai.api.simpledemo.onap.org
 ENV VID_AAI_PORT 8443
 ENV VID_APP_DISPLAY_NAME VID
-ENV VID_ECOMP_SHARED_CONTEXT_REST_URL https://portal.api.simpledemo.openecomp.org:8080/onapportal/context
-ENV VID_MSO_SERVER_URL http://vm1.mso.simpledemo.openecomp.org:8080
+ENV VID_ECOMP_SHARED_CONTEXT_REST_URL https://portal.api.simpledemo.onap.org:8080/onapportal/context
+ENV VID_MSO_SERVER_URL http://vm1.mso.simpledemo.onap.org:8080
 ENV VID_TRUSTSTORE_FILE ${ROOT_DIR}/etc/vid_keystore.jks
 ENV VID_MYLOGIN_FEED_DIRECTORY /tmp/MyLogins
 ENV VID_TRUSTSTORE_PASS 5c84906b14912dbe96154e09b1e1db90e31f8dedb08e3e6c9f17da3f926cb67b33e4229cc1fe0f59c996d2e38b8ded42
@@ -45,13 +45,13 @@ ENV AAI_VID_UID VID
 ENV AAI_VID_PASSWD_X OBF:1jm91i0v1jl9
 ENV AAI_USE_CLIENT_CERT false
 ENV AAI_VNF_PROV_STATUS PREPROV,NVTPROV,PROV,CAPPED
-ENV VID_ECOMP_REDIRECT_URL  http://portal.api.simpledemo.openecomp.org:8989/ONAPPORTAL/login.htm
-ENV VID_ECOMP_REST_URL http://portal.api.simpledemo.openecomp.org:8989/ONAPPORTAL/auxapi
-ENV VID_ECOMP_SHARED_CONTEXT_REST_URL http://portal.api.simpledemo.openecomp.org:8989/ONAPPORTAL/context
+ENV VID_ECOMP_REDIRECT_URL  http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/login.htm
+ENV VID_ECOMP_REST_URL http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/auxapi
+ENV VID_ECOMP_SHARED_CONTEXT_REST_URL http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/context
 ENV VID_CONTACT_US_LINK https://todo_contact_us_link.com
 
 ENV VID_DECRYPTION_KEY AGLDdG4D04BKm2IxIWEr8o=
-ENV VID_UEB_URL_LIST ueb.api.simpledemo.openecomp.org 
+ENV VID_UEB_URL_LIST ueb.api.simpledemo.onap.org 
 ENV VID_UEB_CONSUMER_GROUP VID
 ENV VID_ECOMP_PORTAL_INBOX_NAME ECOMP-PORTAL-INBOX
 ENV VID_UEB_APP_KEY 2Re7Pvdkgw5aeAUD
