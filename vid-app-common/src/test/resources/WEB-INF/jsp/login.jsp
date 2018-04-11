@@ -86,9 +86,9 @@ body {
 </style>
 </head>
 <body>
-	<!-- AT&T Logo -->
+	<!-- Logo -->
 	<div class="logo">
-		<img src="static/fusion/images/logo_att_header.jpg" alt="AT&T" />
+		<img src="static/fusion/images/logo_att_header.jpg" alt="Logo" />
 	</div>
 	<div class="login">
 		<img src="static/fusion/images/ecomp-login-550x360.jpg" />
@@ -109,16 +109,11 @@ body {
 	<br />
 	<div id="footer">
 		<div class="terms">
-			Warning: This system is restricted to AT&amp;T authorized users for
-			business purposes. Unauthorized access is a violation of the law. <br />
-			This service may be monitored for administrative and security
-			reasons. By proceeding, you consent to this monitoring.
+			
 		</div>
 		<p>
 		<div class="terms">
-			<a target="_top" href="http://www.att.com/terms/">Terms and
-				Conditions</a> | <a target="_top" href="http://www.att.com/privacy/">Privacy
-				Policy</a> <br> &copy; 2017 AT&amp;T. All rights reserved.
+			
 		</div>
 	</div>
 </body>
