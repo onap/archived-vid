@@ -62,7 +62,7 @@ public class VidServiceImpl implements VidService {
             final Service asdcServiceMetadata = asdcClient.getService(UUID.fromString(uuid));
             return getServiceModel(uuid, serviceCsar, tosca, asdcServiceMetadata);
         } catch (Exception e) {
-            LOG.error("Failed to download and proccess service from ASDC", e);
+            LOG.error("Failed to download and proccess service from SDC", e);
         }
         return serviceModel;
     }

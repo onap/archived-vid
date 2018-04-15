@@ -41,7 +41,7 @@ public class Constants {
         public static final int numOfButtons = 7;
         public static final String buttonClass = "att-accordion__group";
         public static final String SEARCH_EXISTING_SERVICE = "Search for Existing Service Instances";
-        public static final String BROWSE_ASDC_SERVICE_MODELS = "Browse ASDC Service Models";
+        public static final String BROWSE_ASDC_SERVICE_MODELS = "Browse SDC Service Models";
         public static final String CREATE_NEW_SERVICE = "Create New Service Instance";
         public static final String VNF_CHANGES = "VNF Changes";
         public static final String TEST_ENVIRONMENTS = "Test Environments";

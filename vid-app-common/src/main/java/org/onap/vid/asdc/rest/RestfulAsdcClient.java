@@ -201,10 +201,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     .get(Resource.class);
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
@@ -227,10 +227,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     .get(Artifact.class);
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
@@ -254,10 +254,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     });
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
@@ -287,10 +287,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     });
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (NotFoundException e) {
             throw e;
         } catch (WebApplicationException e) {
@@ -315,7 +315,7 @@ public class RestfulAsdcClient implements AsdcClient {
 
             return getToscaCsar(csarInputStream);
         } catch (IOException e) {
-            throw new AsdcCatalogException("Failed to retrieve resource TOSCA model from ASDC", e);
+            throw new AsdcCatalogException("Failed to retrieve resource TOSCA model from SDC", e);
         }
     }
 
@@ -335,10 +335,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     .get(Service.class);
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
@@ -362,10 +362,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     .get(Artifact.class);
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
@@ -390,10 +390,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     });
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
@@ -425,10 +425,10 @@ public class RestfulAsdcClient implements AsdcClient {
                     });
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (NotFoundException e) {
             throw e;
         } catch (WebApplicationException e) {
@@ -457,10 +457,10 @@ public class RestfulAsdcClient implements AsdcClient {
             return getToscaCsar(csarInputStream);
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
-            throw new AsdcCatalogException("ASDC response could not be processed", e);
+            throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from ASDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
