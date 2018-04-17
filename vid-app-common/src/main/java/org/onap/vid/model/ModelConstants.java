@@ -31,7 +31,7 @@ public class ModelConstants {
 	public static final String ASDC_SVC_API_PATH = "sdc.svc.api.path";
 	public static final String ASDC_RESOURCE_API_PATH = "sdc.resource.api.path";
 	
-	public static final String DEFAULT_ASDC_MODEL_NAMESPACE = "org.openecomp.";
+	public static final String DEFAULT_ASDC_MODEL_NAMESPACE = "org.onap.";
 	public static final String DEFAULT_ASDC_SVC_API_PATH = "sdc/v1/catalog/services";
 	public static final String DEFAULT_ASDC_RESOURCE_API_PATH = "sdc/v1/catalog/resources";
 	
