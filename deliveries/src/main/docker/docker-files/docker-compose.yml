@@ -6,8 +6,6 @@ services:
                 - "8080:8080"
                 links:
                 - vid-mariadb:vid-mariadb-docker-instance
-                environment:
-                - JVM_OPTS=-Xmx1536m -Xms1536m
         vid-mariadb:
                 image: mariadb:10.1.11
                 ports:

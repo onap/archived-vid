@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN sed -i 's/# alias/alias/g' /root/.bashrc
 
+ENV JAVA_OPTS="-Xmx1536m -Xms1536m"
 
 ENV ROOT_DIR /opt/app/vid
 
