@@ -4,7 +4,7 @@
     <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
 </div>
 <form class="form-create" name="newChangeManagement" ng-submit="vm.openModal();vm.close();" novalidate>
-    <div class="modal-body">
+    <div class="modal-body step1" ng-show="vm.wizardStep === 1" >
         <div class="form-group">
             <label class="control-label">Subscriber</label>
             <select class="form-control" ng-model="vm.changeManagement.subscriberId" ng-change="vm.loadServiceTypes()" name="subscriber" id="subscriber" data-tests-id="subscriberName" required>
@@ -84,10 +84,63 @@
             </div>
 
         </div>
+        <div ng-if="vm.isScaleOut()">
+            <div class="form-group">
+                <label class="control-label">Controller Type</label>
+                <select class="form-control" ng-model="vm.changeManagement.controllerType" name="controllerType" id="controllerType"
+                        ng-options="o as o for o in vm.controllers">
+                </select>
+            </div>
+        </div>
     </div>
+
+    <div class="modal-body step2 scale-out-modules" ng-if="vm.wizardStep === 2">
+
+        <div class="table-header table-row">
+            <div></div>
+            <div>VNF instance name</div>
+            <div>Model V</div>
+            <div>Category</div>
+            <div>Sub Category</div>
+            <div>UUID</div>
+            <div>Invariant UUID</div>
+        </div>
+
+        <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames" ng-if="vnf['prov-status'] === 'PROV'">
+            <div></div>
+            <div>{{vnf.name}} service instance name: {{vnf['service-instance-node'].properties['service-instance-name']}}</div>
+            <div>2</div>
+            <div>Category</div>
+            <div>Sub Category</div>
+            <div>{{vnf.modelVersionId}}</div>
+            <div>{{vnf['invariant-id']}}</div>
+        </div>
+        <div class="modules-table open" ng-repeat-end="">
+            <div class="table-header table-row">
+                <div>VF Module</div>
+                <div>In Service</div>
+                <div>Scale</div>
+                <div>Module UID</div>
+                <div>File</div>
+            </div>
+
+            <div class="table-row" ng-repeat="(key, module) in vnf.vfModules">
+                <div>{{module.modelCustomizationName}}</div>
+                <div>{{module.properties.minCountInstances}} - {{module.properties.maxCountInstances}}</div>
+                <div>Category</div>
+                <div>{{module.uuid}}</div>
+                <div>
+                    <input type="file" ng-model="module.file" accept="application/json" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <div class="modal-footer">
         <div class="pull-right">
-            <button type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Schedule</button>
+            <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2)" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Schedule</button>
+            <button ng-if="vm.isScaleOut() && vm.wizardStep === 1" ng-click="vm.nextStep();" type="button" id="next" name="next" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Next</button>
             <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
         </div>
     </div>

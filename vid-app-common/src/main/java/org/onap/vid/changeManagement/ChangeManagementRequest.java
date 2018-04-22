@@ -27,6 +27,7 @@ public class ChangeManagementRequest {
 	public static final String UPDATE = "update";
 	public static final String REPLACE = "replace";
 	public final static String CONFIG_UPDATE = "vnf config update";
+	public final static String SCALE_OUT = "vnf scale out";
 
 	@JsonProperty("requestDetails")
     private List<RequestDetails> requestDetails;

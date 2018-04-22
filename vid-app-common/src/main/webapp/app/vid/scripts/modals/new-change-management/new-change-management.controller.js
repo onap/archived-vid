@@ -9,6 +9,16 @@
         var vm = this;
         vm.configUpdatePatternError = "Invalid file type. Please select a file with a CSV extension.";
         vm.configUpdateContentError = "Invalid file structure.";
+        vm.controllers = VIDCONFIGURATION.SCALE_OUT_CONTROLLERS;
+        vm.wizardStep = 1;
+        vm.nextStep = function(){
+            vm.wizardStep++;
+            $(".modal-dialog").animate({"width":"1000px"},400,'linear');
+        };
+        vm.prevStep = function(){
+            vm.wizardStep--;
+            $(".modal-dialog").animate({"width":"6000px"},400,'linear');
+        };
 
         vm.softwareVersionRegex = "[-a-zA-Z0-9\.]+";
 
@@ -49,6 +59,7 @@
                                     _.each(response.data.vnfs, function (vnf) {
                                         if (newVNFName["invariant-id"] === vnf.invariantUuid) {
                                             availableVersions.push(extractVNFModel(vnf, response.data.service, newVNFName));
+                                            newVNFName.vfModules = vnf.vfModules;
                                         }
                                     });
                                     var versions = _.uniqBy(availableVersions, 'modelInfo.modelVersion');
@@ -132,7 +143,7 @@
         };
 
 
-		/***converting objects to scheduler format (taken from IST)***/
+		/***converting objects to scheduler format (taken from IST) - was altered for Scale out support ***/
 		function extractChangeManagementCallbackDataStr(changeManagement) {
 			console.log(changeManagement);
 			var result = {};
@@ -173,7 +184,13 @@
 						requestParametersData = {
 							payload: changeManagement.configUpdateFile
 						}
-					}
+                    }else if(workflowType=="VNF Scale Out"){
+                        requestParametersData = {
+                            controllerType: changeManagement.controllerType
+                            //userParams: { ..json.. }
+                            //usePreload: false
+                        }
+                    }
 					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: workflowType '+ workflowType);
 					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: requestParametersData '+ requestParametersData);
 
@@ -266,7 +283,8 @@
 			} else {
 				//no scheduling support
 				var dataToSo = extractChangeManagementCallbackDataStr(vm.changeManagement);
-				var vnfName = vm.changeManagement.vnfNames[0].name;
+				//TODO: foreach
+                var vnfName = vm.changeManagement.vnfNames[0].name;
 				changeManagementService.postChangeManagementNow(dataToSo, vnfName);
 			}
         };
@@ -524,6 +542,10 @@
 
         vm.isConfigUpdate = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfConfigUpdate;
+        }
+		
+        vm.isScaleOut = function () {
+            return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfScaleOut;
         }
 
         vm.shouldShowVnfInPlaceFields = function () {

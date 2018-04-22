@@ -50,9 +50,11 @@ INSERT IGNORE INTO `fn_app` VALUES (1,'Default',null,'Some Default Description',
 --
 -- Dumping data for table `vid_workflow`
 --
-INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (1, 'Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Update';
-INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (2, 'Replace') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Replace';
+--update & replace workflows are disabled in ONAP
+--INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (1, 'Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Update';
+--INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (2, 'Replace') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Replace';
 INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (3, 'VNF In Place Software Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='VNF In Place Software Update';
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (4, 'VNF Scale Out') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='VNF Scale Out';
 
 
 --

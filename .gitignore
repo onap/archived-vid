@@ -27,3 +27,9 @@ deliveries/target/
 /epsdk-app-onap/logs/EELF/policy.log
 /epsdk-app-onap/logs/EELF/security.log
 /epsdk-app-onap/logs/EELF/server.log
+/vid-app-common/.idea/encodings.xml
+/vid-app-common/.idea/misc.xml
+/vid-app-common/.idea/modules.xml
+/vid-app-common/.idea/vid-app-common.iml
+/vid-app-common/.idea/workspace.xml
+/vid-app-common/.settings/org.eclipse.core.resources.prefs

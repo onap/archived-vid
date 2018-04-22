@@ -220,7 +220,8 @@ appDS2
     	vnfConfigUpdate: "VNF Config Update",
 		vnfInPlace: "VNF In Place Software Update",
 		update: "update",
-		replace: "replace"
+		replace: "replace",
+		vnfScaleOut: "VNF Scale Out"
 	}
 
     };

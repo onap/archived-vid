@@ -98,6 +98,10 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
                         msoResponseWrapperObject = msoBusinessLogic.updateVnfConfig(currentRequestDetails, serviceInstanceId, vnfInstanceId);
                         break;
                     }
+                    case ChangeManagementRequest.SCALE_OUT:{
+                        msoResponseWrapperObject = msoBusinessLogic.createVfModuleInstance(currentRequestDetails, serviceInstanceId, vnfInstanceId);
+                        break;
+                    }
                 }
                 response = new ResponseEntity<String>(msoResponseWrapperObject.getResponse(), HttpStatus.OK);
                 return response;
