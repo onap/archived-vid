@@ -1,0 +1,162 @@
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 3 entries
+
+Alias name: root
+Creation date: Nov 30, 2016
+Entry type: trustedCertEntry
+
+Owner: EMAILADDRESS=simpledemo@openecomp.org, CN=OpenECOMP simpledemo Root Certification Authority, OU=simpledemo, O=OpenECOMP, L=Bedminster, ST=NJ, C=US
+Issuer: EMAILADDRESS=simpledemo@openecomp.org, CN=OpenECOMP simpledemo Root Certification Authority, OU=simpledemo, O=OpenECOMP, L=Bedminster, ST=NJ, C=US
+Serial number: d4a2fdbb1710e239
+Valid from: Mon Nov 28 21:14:25 UTC 2016 until: Thu Nov 26 21:14:25 UTC 2026
+Certificate fingerprints:
+	 MD5:  FC:64:AF:8A:39:0B:73:48:29:B7:E7:FF:0B:0D:F9:2C
+	 SHA1: E5:E8:31:B2:C8:EB:40:C9:FF:08:69:D2:ED:DF:39:31:64:8E:0F:3C
+	 SHA256: C3:35:15:5F:EC:A0:42:2F:C2:A0:42:80:A4:5C:CB:00:15:60:12:AF:13:EE:76:5F:11:3C:A1:98:4A:6E:A8:77
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 4096-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:2147483647
+]
+
+#2: ObjectId: 2.5.29.15 Criticality=true
+KeyUsage [
+  Key_CertSign
+  Crl_Sign
+]
+
+#3: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 9A 64 05 40 3D E8 59 95   0E 54 4F 35 41 CF 56 49  .d.@=.Y..TO5A.VI
+0010: F7 32 AB 0C                                        .2..
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+Alias name: server
+Creation date: Nov 30, 2016
+Entry type: trustedCertEntry
+
+Owner: EMAILADDRESS=simpledemo@openecomp.org, CN=OpenECOMP simpledemo Server CA X1, OU=simpledemo, O=OpenECOMP, L=Bedminster, ST=NJ, C=US
+Issuer: EMAILADDRESS=simpledemo@openecomp.org, CN=OpenECOMP simpledemo Root Certification Authority, OU=simpledemo, O=OpenECOMP, L=Bedminster, ST=NJ, C=US
+Serial number: 9ab1f1d2a7099668
+Valid from: Mon Nov 28 21:14:26 UTC 2016 until: Sat Nov 27 21:14:26 UTC 2021
+Certificate fingerprints:
+	 MD5:  83:41:E6:AC:DA:28:73:47:9E:0B:58:90:EF:48:99:38
+	 SHA1: 2D:63:D2:6C:B7:11:04:6C:A8:7B:97:DF:A9:D2:19:77:41:D2:45:BF
+	 SHA256: 95:32:12:E4:FC:09:DA:B7:DE:5B:FA:1D:3A:F8:F7:D8:D1:96:01:D0:A1:9B:26:F9:1D:82:8B:27:CA:47:E7:9C
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 2048-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:2147483647
+]
+
+#2: ObjectId: 2.5.29.32 Criticality=false
+CertificatePolicies [
+  [CertificatePolicyId: [2.5.29.32.0]
+[PolicyQualifierInfo: [
+  qualifierID: 1.3.6.1.5.5.7.2.2
+  qualifier: 0000: 30 4F 1A 4D 49 66 20 79   6F 75 20 74 72 75 73 74  0O.MIf you trust
+0010: 20 74 68 69 73 20 63 65   72 74 20 74 68 65 6E 20   this cert then 
+0020: 77 65 20 68 61 76 65 20   61 20 62 72 69 64 67 65  we have a bridge
+0030: 20 74 68 61 74 20 79 6F   75 20 6D 69 67 68 74 20   that you might 
+0040: 62 65 20 69 6E 74 65 72   65 73 74 65 64 20 69 6E  be interested in
+0050: 2E                                                 .
+
+]]  ]
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=true
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 4E A7 6C 62 01 8D 1A E6   DD 24 7A BD B6 C6 89 84  N.lb.....$z.....
+0010: CF 47 13 9C                                        .G..
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+Alias name: onapaafroot
+Creation date: Apr 23, 2018
+Entry type: trustedCertEntry
+
+Owner: C=US, O=ONAP, OU=OSAAF
+Issuer: C=US, O=ONAP, OU=OSAAF
+Serial number: 9eaeedc0a7ceb59d
+Valid from: Thu Apr 05 14:15:28 UTC 2018 until: Wed Mar 31 14:15:28 UTC 2038
+Certificate fingerprints:
+	 MD5:  77:EB:5E:94:2E:B7:A3:45:97:6C:87:FE:A7:F7:64:0F
+	 SHA1: 90:25:D1:D3:8B:3C:BE:2C:73:E9:6C:1A:48:5B:06:A8:39:0D:54:3B
+	 SHA256: 1F:C2:BB:F6:7E:11:6F:F0:4C:C3:D9:6C:73:E5:99:B7:CA:7D:4D:EF:AA:6C:69:46:0D:2C:7B:A9:E4:23:5F:EA
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 4096-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 53 55 33 F2 4B EB D0 51   B1 C1 78 9A C1 28 31 7B  SU3.K..Q..x..(1.
+0010: EF EA ED 49                                        ...I
+]
+]
+
+#2: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:2147483647
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=true
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 53 55 33 F2 4B EB D0 51   B1 C1 78 9A C1 28 31 7B  SU3.K..Q..x..(1.
+0010: EF EA ED 49                                        ...I
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
