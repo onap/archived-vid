@@ -43,6 +43,7 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 //import java.util.UUID;
@@ -105,6 +106,27 @@ public class MsoController extends RestrictedBaseController {
         // always return OK, the MSO status code is embedded in the body
 
         MsoResponseWrapper w = msoBusinessLogic.createSvcInstance(mso_request);
+
+        return (new ResponseEntity<>(w.getResponse(), HttpStatus.OK));
+
+    }
+    
+    /**
+     * Creates the e2e svc instance.
+     *
+     * @param request the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "/mso_create_e2e_svc_instance", method = RequestMethod.POST)
+    public ResponseEntity<String> createE2eSvcInstance(HttpServletRequest request, @RequestBody LinkedHashMap<String, Object> mso_request) throws Exception {
+        String methodName = "createE2eSvcInstance";
+
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        // always return OK, the MSO status code is embedded in the body
+
+        MsoResponseWrapper w = msoBusinessLogic.createE2eSvcInstance(mso_request.get("requestDetails"));
 
         return (new ResponseEntity<>(w.getResponse(), HttpStatus.OK));
 

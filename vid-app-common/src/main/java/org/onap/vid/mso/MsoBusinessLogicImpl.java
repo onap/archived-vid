@@ -82,6 +82,21 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         return msoClientInterface.createSvcInstance(msoRequest, endpoint);
     }
 
+    @Override
+    public MsoResponseWrapper createE2eSvcInstance(Object msoRequest) throws Exception {
+        String methodName = "createE2eSvcInstance ";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        String endpoint;
+        try {
+            endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_E2E_SVC_INSTANCE);
+        } catch (Exception exception) {
+            throw exception;
+        }
+
+        return msoClientInterface.createE2eSvcInstance(msoRequest, endpoint);
+    }
+    
     void validateLineOfBusiness(RequestDetails requestDetails) {
 
         Object value = requestDetails.getAdditionalProperties();

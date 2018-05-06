@@ -120,7 +120,15 @@
 					
 					var serviceModel = getServiceResponse.data;
 					DataService.setServiceName(serviceModel.service.name);
-					
+
+					//VOLTE services need input list generated and macro style
+					DataService.setE2EService(false);
+					if(serviceModel.service.category === 'E2E Service') {
+						DataService.setE2EService(true);
+						DataService.setHideServiceFields(false);
+						VIDCONFIGURATION.MACRO_SERVICES.push(serviceModel.service.invariantUuid);
+					}
+
 					DataService.setModelInfo(COMPONENT.SERVICE, {
 						"modelInvariantId": serviceModel.service.invariantUuid,
 						"modelVersion": serviceModel.service.version,

@@ -25,7 +25,8 @@ appDS2
 	.constant("COMPONENT", (function() {
     return {
     A_LA_CARTE : "a la carte",
-    CLOUD_REGION_ID : "cloudRegionID",
+	CLOUD_OWNER : "cloudOwner",
+	CLOUD_REGION_ID : "cloudRegionID",
     COMPONENT_STATUS : "ComponentStatus",
     CREATE_COMPONENT : "createComponent",
     DELETE_RESUME_COMPONENT : "deleteResumeComponent",

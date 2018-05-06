@@ -8,6 +8,7 @@ import org.onap.sdc.tosca.parser.impl.FilterType;
 import org.onap.sdc.tosca.parser.impl.SdcToscaParserFactory;
 import org.onap.sdc.tosca.parser.impl.SdcTypes;
 import org.onap.sdc.toscaparser.api.*;
+import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.sdc.toscaparser.api.parameters.Input;
 
 import java.nio.file.Path;
@@ -238,7 +239,7 @@ public class ToscaParserImpl2 {
     private Map<String, org.onap.vid.asdc.beans.tosca.Input> inputsListToInputsMap(List<org.onap.sdc.toscaparser.api.parameters.Input> inputList) {
         Map<String, org.onap.vid.asdc.beans.tosca.Input> inputs = new HashMap<>();
         for (org.onap.sdc.toscaparser.api.parameters.Input input : inputList) {
-            inputs.put(input.getName(), convertInput(input, new org.onap.vid.asdc.beans.tosca.Input()));
+            inputs.put(input.getName(), convertInput(input, new org.onap.vid.asdc.beans.tosca.Input(), null));
         }
         return inputs;
     }
@@ -297,7 +298,7 @@ public class ToscaParserImpl2 {
             for (Input input: inputs){
                 if(input.getName().equals(key)){
                     org.onap.vid.asdc.beans.tosca.Input localInput = new org.onap.vid.asdc.beans.tosca.Input();
-                    localInput = convertInput(input, localInput);
+                    localInput = convertInput(input, localInput, nodeTemplate);
                     String name = property.getKey();
                     commandPropertyMap.put(name, extractCommands(name, key));
                     inputMap.put(name, localInput);
@@ -312,13 +313,23 @@ public class ToscaParserImpl2 {
         return inputKey.substring(inputKey.indexOf(":") + 1);
     }
 
-    private org.onap.vid.asdc.beans.tosca.Input convertInput(Input parserInput, org.onap.vid.asdc.beans.tosca.Input localInput){
+    private org.onap.vid.asdc.beans.tosca.Input convertInput(Input parserInput, org.onap.vid.asdc.beans.tosca.Input localInput, NodeTemplate nodeTemplate){
         localInput.setDefault(parserInput.getDefault());
         localInput.setDescription(parserInput.getDescription());
         localInput.setRequired(parserInput.isRequired());
         localInput.setType(parserInput.getType());
         localInput.setConstraints(parserInput.getConstraints());
 //        localInput.setentry_schema()
+        
+        //if inputs of inner nodeTemplate - tell its details
+        if(nodeTemplate != null) {
+            Metadata metadata = nodeTemplate.getMetaData();
+            localInput.setTemplateName(metadata.getValue("name"));
+            localInput.setTemplateUUID(metadata.getValue("UUID"));
+            localInput.setTemplateInvariantUUID(metadata.getValue("invariantUUID"));
+            localInput.setTemplateCustomizationUUID(metadata.getValue("customizationUUID"));
+        }
+        
         return localInput;
     }
 

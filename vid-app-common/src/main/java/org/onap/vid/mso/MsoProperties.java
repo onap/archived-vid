@@ -70,6 +70,9 @@ public class MsoProperties extends SystemProperties {
 	public static final String MSO_PASSWORD = "mso.password.x";
 	
 	/** The Constant MSO_REST_API_SVC_INSTANCE. */
+    public static final String MSO_REST_API_E2E_SVC_INSTANCE = "mso.restapi.svc.e2einstance"; // /e2eServiceInstances/v3
+	
+	/** The Constant MSO_REST_API_SVC_INSTANCE. */
 	public static final String MSO_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance"; // /serviceInstances/v2
 	
 	/** The Constant MSO_REST_API_VNF_INSTANCE. */

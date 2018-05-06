@@ -33,6 +33,14 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
         return createInstance(requestDetails, endpoint);
     }
+    
+    @Override
+    public MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint) throws Exception {
+        String methodName = "createE2eSvcInstance ";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        return createInstance(requestDetails, endpoint);
+    }
 
     @Override
     public MsoResponseWrapper createVnf(RequestDetails requestDetails, String endpoint) throws Exception {
@@ -126,7 +134,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
 
-    public MsoResponseWrapper createInstance(RequestDetails request, String path) throws Exception {
+    public MsoResponseWrapper createInstance(Object request, String path) throws Exception {
         String methodName = "createInstance";
         logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
 

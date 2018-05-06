@@ -300,6 +300,12 @@ var DataService = function($log, DataService) {
 		getArbitraryParameters : function () {
 			return _this.arbitraryParameters;
 		},
+		setE2EService:function(b){
+			_this.e2eService=b;
+		},
+		getE2EService:function(){
+			return _this.e2eService;
+		},
 		setHideServiceFields:function(b){
 			_this.hideServiceFields=b;
 		},

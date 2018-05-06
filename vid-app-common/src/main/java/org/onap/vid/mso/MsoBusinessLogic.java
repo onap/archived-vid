@@ -16,6 +16,8 @@ public interface MsoBusinessLogic {
     // this function should get params from tosca and send them to instance at mso, then return success response.
     MsoResponseWrapper createSvcInstance(RequestDetails msoRequest) throws Exception;
 
+    MsoResponseWrapper createE2eSvcInstance(Object msoRequest) throws Exception;
+    
     MsoResponseWrapper createVnf(RequestDetails requestDetails, String serviceInstanceId) throws Exception;
 
     MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception;

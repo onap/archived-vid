@@ -49,6 +49,12 @@ public class Input {
 	/** The required field. If not set, the default is true */
 	private boolean required = true;
 	
+	/** Details the inputs template */
+	private String templateName;
+	private String templateUUID;
+	private String templateInvariantUUID;
+	private String templateCustomizationUUID;
+	
 	/**
 	 * Instantiates a new input.
 	 */
@@ -165,4 +171,36 @@ public class Input {
 	public String toString() {
 		return "type=" + type + ",description=" + description + ",default=" + _default;
 	}
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public String getTemplateUUID() {
+        return templateUUID;
+    }
+
+    public void setTemplateUUID(String templateUUID) {
+        this.templateUUID = templateUUID;
+    }
+
+    public String getTemplateInvariantUUID() {
+        return templateInvariantUUID;
+    }
+
+    public void setTemplateInvariantUUID(String templateInvariantUUID) {
+        this.templateInvariantUUID = templateInvariantUUID;
+    }
+
+    public String getTemplateCustomizationUUID() {
+        return templateCustomizationUUID;
+    }
+
+    public void setTemplateCustomizationUUID(String templateCustomizationUUID) {
+        this.templateCustomizationUUID = templateCustomizationUUID;
+    }
 }

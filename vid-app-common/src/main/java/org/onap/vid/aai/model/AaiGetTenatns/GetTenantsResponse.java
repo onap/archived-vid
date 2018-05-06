@@ -12,6 +12,9 @@ public class GetTenantsResponse {
     @JsonProperty("cloudRegionID")
     public String cloudRegionId;
 
+    @JsonProperty("cloudOwner")
+    public String cloudOwner;
+    
     @JsonProperty("tenantName")
     public String tenantName;
 
@@ -24,8 +27,9 @@ public class GetTenantsResponse {
     public GetTenantsResponse() {
     }
 
-    public GetTenantsResponse(String cloudRegionId, String tenantName, String tenantID, boolean isPermitted) {
+    public GetTenantsResponse(String cloudRegionId, String cloudOwner, String tenantName, String tenantID, boolean isPermitted) {
         this.cloudRegionId = cloudRegionId;
+        this.cloudOwner = cloudOwner;
         this.tenantName = tenantName;
         this.tenantID = tenantID;
         this.isPermitted = isPermitted;

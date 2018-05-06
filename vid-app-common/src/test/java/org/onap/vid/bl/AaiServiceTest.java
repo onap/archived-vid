@@ -129,7 +129,7 @@ public class AaiServiceTest {
     @Test(dataProvider = "getTenantsData")
     public void testGetTenants(String userGlobalCustomerId, String userServiceType, String userTenantName, String serviceGlobalCustomerId,
                                String serviceServiceType, String serviceTenantName, String serviceTenantId, boolean expectedIsPermitted) {
-        GetTenantsResponse[] getTenantsResponses = new GetTenantsResponse[] {new GetTenantsResponse(null, serviceTenantName, serviceTenantId, false)};
+        GetTenantsResponse[] getTenantsResponses = new GetTenantsResponse[] {new GetTenantsResponse(null, null, serviceTenantName, serviceTenantId, false)};
         AaiResponse<GetTenantsResponse[]> aaiResponse = new AaiResponse<>(getTenantsResponses, null, 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getTenants(serviceGlobalCustomerId, serviceServiceType);
         Role role = new Role(null, userGlobalCustomerId, userServiceType, userTenantName);

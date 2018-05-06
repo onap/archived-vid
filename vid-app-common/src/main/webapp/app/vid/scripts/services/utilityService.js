@@ -156,6 +156,11 @@ var UtilityService = function($log, DataService, PARAMETER) {
 										serviceModel.service.inputs[cmdObj.inputName] != null ) {
 									networkModelDisplayInputs[cmdObj.inputName] = (serviceModel.service.inputs[cmdObj.inputName]);
 									networkModelDisplayInputs[cmdObj.inputName][PARAMETER.DISPLAY_NAME] = cmdObj.displayName;
+									//E2E services need this
+									["templateInvariantUUID", "templateCustomizationUUID", "templateUUID", "templateName"].forEach(function(templateProp) {
+										networkModelDisplayInputs[cmdObj.inputName][templateProp] = networkModel.inputs[cmdObj.displayName][templateProp];
+									});
+
 								}
 						}
 								
@@ -237,6 +242,10 @@ var UtilityService = function($log, DataService, PARAMETER) {
 										serviceModel.service.inputs[cmdObj.inputName] != null ) {
 									vnfModelDisplayInputs[cmdObj.inputName] = (serviceModel.service.inputs[cmdObj.inputName]);
 									vnfModelDisplayInputs[cmdObj.inputName][PARAMETER.DISPLAY_NAME] = cmdObj.displayName;
+									//E2E services need this
+									["templateInvariantUUID", "templateCustomizationUUID", "templateUUID", "templateName"].forEach(function(templateProp) {
+										networkModelDisplayInputs[cmdObj.inputName][templateProp] = vnfModel.inputs[cmdObj.displayName][templateProp];
+									});
 								}
 						}
 								

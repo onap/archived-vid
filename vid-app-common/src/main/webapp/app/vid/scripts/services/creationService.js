@@ -199,8 +199,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
     var getUserProvidedList = function() {
         var parameterList = [];
         var isUserProvidedNaming = false;
-        if ( (DataService.getModelInfo(_this.componentId).serviceEcompNaming != null)
-            && (DataService.getModelInfo(_this.componentId).serviceEcompNaming === "false") ) {
+        if ( ((DataService.getModelInfo(_this.componentId).serviceEcompNaming != null)
+            && (DataService.getModelInfo(_this.componentId).serviceEcompNaming === "false")) || DataService.getE2EService() ) {
             isUserProvidedNaming = true;
         }
 
@@ -228,8 +228,9 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                         FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
                         FIELD.PARAMETER.TENANT_DISABLED
                     ]);
-                    parameterList = parameterList.concat([ getAicZonesParameter() ]);
-
+                    if(!DataService.getE2EService()) {
+                        parameterList = parameterList.concat([getAicZonesParameter()]);
+                    }
 
                 }else{
                     parameterList = parameterList.concat([ getServiceId(),
@@ -239,8 +240,11 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 }
             }
 
-            parameterList = parameterList.concat([ getProjectParameter() ]);
-            parameterList = parameterList.concat([ getOwningEntityParameter() ]);
+            if(!DataService.getE2EService()) {
+                parameterList = parameterList.concat([getProjectParameter()]);
+                parameterList = parameterList.concat([getOwningEntityParameter()]);
+            }
+
             //if service model has a pnf, add a PNF ID parameter
             if (DataService.getPnf()) {
                 parameterList = parameterList.concat([ FIELD.PARAMETER.PNF_ID ]);
@@ -516,7 +520,10 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 return "mso_create_nw_instance/"
                     + DataService.getServiceInstanceId();
             case COMPONENT.SERVICE:
-                return "mso_create_svc_instance";
+                if(DataService.getE2EService() === true)
+                    return "mso_create_e2e_svc_instance";
+                else
+                    return "mso_create_svc_instance";
             case COMPONENT.VNF:
                 return "mso_create_vnf_instance/"
                     + DataService.getServiceInstanceId();
@@ -531,10 +538,97 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         }
     };
 
+    var getMsoE2ERequest = function(parameterList) {
+        var modelInfo = DataService.getModelInfo(_this.componentId);
+
+        //region id
+        var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
+        if (lcpRegion === FIELD.KEY.LCP_REGION_TEXT) {
+            lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
+                parameterList);
+        }
+        var cloudOwner = _.find(DataService.getCloudRegionTenantList(), function(region){
+            return region.cloudRegionId === lcpRegion;
+        }).cloudOwner;
+
+        var params = [];
+        var displayInputs = modelInfo.displayInputs;
+        var groupBy = _.groupBy(displayInputs, "templateUUID");
+
+        _.forEach(groupBy, function(nodeTemplateInputs, nodeTemplateUUID) {
+            var reqParas = {};
+            var vfLocations = [];
+
+            nodeTemplateInputs.forEach(function(parameter){
+                if(parameter.type === 'vf_location') {
+                    var loc = {
+                        vnfProfileId: parameter.displayName,
+                        locationConstraints : {
+                            vimId: cloudOwner + '_' + lcpRegion
+                        }
+                    };
+                    vfLocations.push(loc);
+                } else if(parameter.type === 'sdn_controller') {
+                    if(parameter.value === undefined || parameter.value === null) {
+                        reqParas[parameter.name] = '';
+                    } else {
+                        reqParas[parameter.name] = parameter.value.value;
+                    }
+                } else {
+                    var name;
+                    _.forEach(displayInputs, function(item, key){
+                        if(item === parameter) {
+                            name = key;
+                        }
+                    });
+                    var value = _.find(parameterList, function(item){
+                        return item.id === name;
+                    }).value;
+                    reqParas[parameter.displayName] = value;
+                }
+            });
+
+            params.push({
+                resourceName: nodeTemplateInputs[0].templateName,
+                resourceInvariantUuid: nodeTemplateInputs[0].templateInvariantUUID,
+                resourceUuid: nodeTemplateInputs[0].templateUUID,
+                resourceCustomizationUuid: nodeTemplateInputs[0].templateCustomizationUUID,
+                parameters: {
+                    locationConstraints: vfLocations,
+                    //TODO resources: [],
+                    requestInputs: reqParas
+                }
+            });
+        });
+
+        var requestBody = {
+            service: {
+                name: getValueFromList(FIELD.ID.INSTANCE_NAME, parameterList),
+                description: modelInfo["description"],
+                serviceInvariantUuid: modelInfo["modelInvariantId"],
+                serviceUuid: modelInfo["modelNameVersionId"],
+                globalSubscriberId: DataService.getGlobalCustomerId(),
+                serviceType: getValueFromList(FIELD.ID.SERVICE_TYPE, parameterList) || modelInfo["serviceTypeName"],
+                parameters: {
+                    locationConstraints: [],
+                    resources: params,
+                    requestInputs: {} //TODO
+                }
+            }
+        };
+
+        return requestBody;
+    };
+
     var getMsoRequestDetails = function(parameterList) {
         console.log("getMsoRequestDetails invoked, parameterList="); console.log(JSON.stringify(parameterList,null,4));
         //console.log("getMsoRequestDetails invoked, DataService.getArbitraryParameters()=");
         //console.log(JSON.stringify(DataService.getArbitraryParameters(),null,4));
+
+        //VoLTE logic goes here
+        if(DataService.getE2EService() === true) {
+            return getMsoE2ERequest(parameterList);
+        }
 
         var modelInfo = DataService.getModelInfo(_this.componentId);
         var requestorloggedInId = DataService.getLoggedInUserId();

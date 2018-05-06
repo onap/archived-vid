@@ -378,6 +378,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
 
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
                     lcpCloudRegionTenants.push({
+                        "cloudOwner": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_OWNER],
                         "cloudRegionId": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID],
                         "tenantName": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_NAME],
                         "tenantId": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_ID],
