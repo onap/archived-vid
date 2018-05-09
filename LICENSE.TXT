@@ -18,3 +18,7 @@
  *
  *
  */
+
+For the file /epsdk-app-onap/src/main/webapp/app/fusion/external/ebz/angular_js/angular-sanitize.js, 
+to the extent that it contains code originating from Erik Arvidsson, that code is used under the Apache-2.0 license, 
+as permitted by http://erik.eae.net/simplehtmlparser/simplehtmlparser.js.
