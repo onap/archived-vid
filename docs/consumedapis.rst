@@ -18,42 +18,44 @@ SO
 ---
 
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| POST /serviceInstances/v5                                                                                                     | Create instance                                                        |
+| POST /e2eServiceInstances/v3                                                                                                  | Create E2E instance                                                    |
++-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
+| POST /serviceInstances/v6                                                                                                     | Create instance                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | DELETE                                                                                                                        | Delete instance                                                        |
-|   /serviceInstances/v5/<instance-id>                                                                                          |                                                                        |
+|   /serviceInstances/v6/<instance-id>                                                                                          |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST                                                                                                                          | Create VNF                                                             |
-|   /serviceInstances/v5/<service_instance_id>/vnfs                                                                             |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/vnfs                                                                             |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | DELETE                                                                                                                        | Delete VNF                                                             |
-|   /serviceInstances/v5/<service_instance_id>/vnfs/<vnf_id>                                                                    |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/vnfs/<vnf_id>                                                                    |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST                                                                                                                          | Create VF-Module                                                       |
-|   /serviceInstances/v5/<service_instance_id>/vnfs/<vnf_instance_id>/vfModules                                                 |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/vnfs/<vnf_instance_id>/vfModules                                                 |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | DELETE                                                                                                                        | Delete VF-Module                                                       |
-|   /serviceInstances/v5/<service_instance_id>/vnfs/<vnf_instance_id>/vfModules                                                 |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/vnfs/<vnf_instance_id>/vfModules                                                 |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST                                                                                                                          | Create Volume group                                                    |
-|   /serviceInstances/v5/<service_instance_id>/vnfs/<vnf_instance_id>/volumeGroups                                              |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/vnfs/<vnf_instance_id>/volumeGroups                                              |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | DELETE                                                                                                                        | Delete Volume group                                                    |
-|   /serviceInstances/v5/<service_instance_id>/vnfs/<vnf_instance_id>/volumeGroups                                              |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/vnfs/<vnf_instance_id>/volumeGroups                                              |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST                                                                                                                          | Create configuration                                                   |
-|   /serviceInstances/v5/<service_instance_id>/configurations/                                                                  |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/configurations/                                                                  |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | DELETE                                                                                                                        | Delete configuration                                                   |
-|   serviceInstances/v5/<service_instance_id>/configurations/<configuration_id>                                                 |                                                                        |
+|   serviceInstances/v6/<service_instance_id>/configurations/<configuration_id>                                                 |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST                                                                                                                          | Create network                                                         |
-|   /serviceInstances/v5/<service_instance_id>/networks                                                                         |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/networks                                                                         |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | DELETE                                                                                                                        | Delete network (network instance id)                                   |
-|   /serviceInstances/v5/<service_instance_id>/networks/<network_instance_id>                                                   |                                                                        |
+|   /serviceInstances/v6/<service_instance_id>/networks/<network_instance_id>                                                   |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET /orchestrationRequests/v5                                                                                                 | Get orchestration status                                               |
+| GET /orchestrationRequests/v6                                                                                                 | Get orchestration status                                               |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET /tasks/v1                                                                                                                 | Get available manual tasks by request id                               |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
@@ -64,36 +66,34 @@ A&AI
 
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get all subscribers                                                    |
-|   aai/v11/business/customers?subscriber-type=INFRA&depth=2                                                                    |                                                                        |
+|   aai/v13/business/customers?subscriber-type=INFRA&depth=2                                                                    |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v11/                                                                                                                  | Get data for a specific subscriber including its available services    |
+| GET aai/v13/                                                                                                                  | Get data for a specific subscriber including its available services    |
 |   business/customers/customer/<global_customer_id>                                                                            |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get all service types                                                  |
-|   aai/v11/service-design-and-creation/services                                                                                |                                                                        |
+|   aai/v13/service-design-and-creation/services                                                                                |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get services by owner entity id                                        |
-|   aai/v11/business/owning-entities?<owning_entitiy_ids>                                                                       |                                                                        |
+|   aai/v13/business/owning-entities?<owning_entitiy_ids>                                                                       |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get services by project name                                           |
-|   aai/v11/business/projects?<project-names>                                                                                   |                                                                        |
+|   aai/v13/business/projects?<project-names>                                                                                   |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v11/network/zones                                                                                                     | Get all AIC zones                                                      |
+| GET aai/v13/network/zones                                                                                                     | Get all AIC zones                                                      |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST search/named-query                                                                                                       | Get data regarding an instance and the instance's related nodes        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v11/                                                                                                                  | Get AIC zones for a specific service instance                          |
+| GET aai/v13/                                                                                                                  | Get AIC zones for a specific service instance                          |
 |   business/customers/customer/<global_customer_id>/                                                                           |                                                                        |
 |   /service-subscriptions/service-subscription/<service_type>/service-instances/service-instance/<service_instance_id>         |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| PUT Aai/v11/query?format=simple(types:                                                                                        | This is a custom query and has multiple types(declared in the url line)|
+| PUT Aai/v13/query?format=simple(types:                                                                                        | This is a custom query and has multiple types(declared in the url line)|
 |   “query/vnfFromModelbyRegion?cloudRegionId”,”                                                                                |                                                                        |
 |   vnf-topology-fromServiceInstance”)                                                                                          |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| Aai/v11/                                                                                                                      | Get the human readable version by version id                           |
+| Aai/v13/                                                                                                                      | Get the human readable version by version id                           |
 |   service-design-and-creation/models?depth=2                                                                                  |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | business/customers/customer/<global_customer_id>/service-subscriptions/service-subscription/<service_Subscription_Id>?depth=0 | Get all service subscriptions                                          |
-+-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-|                                                                                                                               |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
