@@ -115,7 +115,7 @@ INSERT INTO `fn_function` VALUES ('menu_viewlog','Log Menu') ON DUPLICATE KEY UP
 INSERT INTO `fn_function` VALUES ('view_reports','View Raptor reports') ON DUPLICATE KEY UPDATE FUNCTION_NAME='View Raptor reports';
 INSERT INTO `fn_function` VALUES ('menu_searchexisting', 'Search for Existing Service Instances') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Search for Existing Service Instances';
 INSERT INTO `fn_function` VALUES ('menu_changemanagement','VNF Changes') ON DUPLICATE KEY UPDATE FUNCTION_NAME='VNF Changes';
-INSERT INTO `fn_function` VALUES ('menu_testenvironment','Test Environments') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Test Environments';
+--INSERT INTO `fn_function` VALUES ('menu_testenvironment','Test Environments') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Test Environments';
 
 --
 -- Dumping data for table `fn_lu_activity`
@@ -545,7 +545,7 @@ INSERT INTO `fn_menu` VALUES (105,'Cache Admin',10,40,'admin#/jcs_admin','menu_a
 INSERT INTO `fn_menu` VALUES (106,'Lock/Unlock Application',10,60,'application_lockout.htm','menu_admin','N',NULL,NULL,NULL,NULL,'APP','N','/static/fusion/images/decrypted.png') ON DUPLICATE KEY UPDATE LABEL='Lock/Unlock Application', PARENT_ID=10, SORT_ORDER=60, ACTION='application_lockout.htm', FUNCTION_CD='menu_admin', ACTIVE_YN='N', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='/static/fusion/images/decrypted.png';
 INSERT INTO `fn_menu` VALUES (108,'Usage',10,80,'admin#/usage_list','menu_admin','N',NULL,NULL,NULL,NULL,'APP','N','/static/fusion/images/users.png') ON DUPLICATE KEY UPDATE LABEL='Usage', PARENT_ID=10, SORT_ORDER=80, ACTION='admin#/usage_list', FUNCTION_CD='menu_admin', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='/static/fusion/images/users.png';
 INSERT INTO `fn_menu` VALUES (109, 'VNF Changes', 1, 11, 'serviceModels.htm#/change-management', 'menu_changemanagement', 'Y', NULL, NULL, NULL, NULL, 'APP', 'N', 'icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='VNF Changes', PARENT_ID=1, SORT_ORDER=11, ACTION='serviceModels.htm#/change-management', FUNCTION_CD='menu_changemanagement', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
-INSERT INTO `fn_menu` VALUES (110, 'Test Environments', 1, 12, 'serviceModels.htm#/testEnvironments', 'menu_testenvironment', 'Y', NULL, NULL, NULL, NULL, 'APP', 'N', 'icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Test Environments', PARENT_ID=1, SORT_ORDER=12, ACTION='serviceModels.htm#/testEnvironments', FUNCTION_CD='menu_testenvironment', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
+--INSERT INTO `fn_menu` VALUES (110, 'Test Environments', 1, 12, 'serviceModels.htm#/testEnvironments', 'menu_testenvironment', 'Y', NULL, NULL, NULL, NULL, 'APP', 'N', 'icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Test Environments', PARENT_ID=1, SORT_ORDER=12, ACTION='serviceModels.htm#/testEnvironments', FUNCTION_CD='menu_testenvironment', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
 --
 -- Dumping data for table `fn_restricted_url`
 --
