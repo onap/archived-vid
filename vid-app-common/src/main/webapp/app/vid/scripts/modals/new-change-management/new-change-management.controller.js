@@ -186,7 +186,8 @@
 							'operations_timeout':changeManagement.operationTimeout
 						};
 						requestParametersData = {
-							payload: JSON.stringify(payloadObj)
+                            controllerType: changeManagement.controllerType,
+                            payload: JSON.stringify(payloadObj)
 						}
 					}else if(workflowType=="VNF Config Update"){
 						requestParametersData = {

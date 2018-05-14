@@ -84,7 +84,7 @@
             </div>
 
         </div>
-        <div ng-if="vm.isScaleOut()">
+        <div ng-if="vm.isScaleOut() || vm.shouldShowVnfInPlaceFields()">
             <div class="form-group">
                 <label class="control-label">Controller Type</label>
                 <select class="form-control" ng-model="vm.changeManagement.controllerType" name="controllerType" id="controllerType"
