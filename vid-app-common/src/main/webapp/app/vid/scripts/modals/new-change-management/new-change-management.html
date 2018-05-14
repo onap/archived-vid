@@ -98,24 +98,24 @@
 
         <div class="table-header table-row">
             <div></div>
-            <div>VNF instance name</div>
+            <div>Service Instance Name</div>
+            <div>VNF Instance Name</div>
             <div>Model V</div>
             <div>Category</div>
-            <div>Sub Category</div>
             <div>UUID</div>
             <div>Invariant UUID</div>
         </div>
 
-        <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames" ng-if="vnf['prov-status'] === 'PROV'">
-            <div></div>
-            <div>{{vnf.name}} service instance name: {{vnf['service-instance-node'].properties['service-instance-name']}}</div>
-            <div>2</div>
-            <div>Category</div>
-            <div>Sub Category</div>
+        <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames" ng-if="vnf['prov-status'] === 'PROV'" ng-click="vnf.isOpen=!!!vnf.isOpen">
+            <div>+</div>
+            <div>{{vnf['service-instance-node'].properties['service-instance-name']}}</div>
+            <div>{{vnf.name}}</div>
+            <div>{{vnf['availableVersions'][0].modelInfo.modelVersion}}</div>
+            <div>{{vnf.category}}</div>
             <div>{{vnf.modelVersionId}}</div>
             <div>{{vnf['invariant-id']}}</div>
         </div>
-        <div class="modules-table open" ng-repeat-end="">
+        <div class="modules-table" ng-repeat-end="" ng-class="{'open' :vnf.isOpen}">
             <div class="table-header table-row">
                 <div>VF Module</div>
                 <div>In Service</div>
@@ -124,13 +124,17 @@
                 <div>File</div>
             </div>
 
-            <div class="table-row" ng-repeat="(key, module) in vnf.vfModules">
-                <div>{{module.modelCustomizationName}}</div>
-                <div>{{module.properties.minCountInstances}} - {{module.properties.maxCountInstances}}</div>
-                <div>Category</div>
-                <div>{{module.uuid}}</div>
+            <div class="table-row" ng-repeat="(custUUID, moduleArr) in vnf.groupModules">
+                <div>{{moduleArr[0].modelCustomizationName}}</div>
+                <div>{{moduleArr.length}}</div>
+                <div ng-if="moduleArr[0].properties.minCountInstances == moduleArr[0].properties.maxCountInstances">N/A</div>
+                <div ng-if="moduleArr[0].properties.minCountInstances != moduleArr[0].properties.maxCountInstances">
+                    <input type="number" ng-model="moduleArr[0].scale" step="1"
+                           ng-min="moduleArr[0].properties.minCountInstances" ng-max="moduleArr[0].properties.maxCountInstances - moduleArr.length" />
+                </div>
+                <div>{{moduleArr[0].uuid}}</div>
                 <div>
-                    <input type="file" ng-model="module.file" accept="application/json" />
+                    <input type="file" accept="application/json" onchange="angular.element(this).scope().setPreload(this)" />
                 </div>
             </div>
         </div>
@@ -139,7 +143,7 @@
 
     <div class="modal-footer">
         <div class="pull-right">
-            <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2)" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Schedule</button>
+            <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2)" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">{{vm.hasScheduler ? "Schedule" : "Confirm"}}</button>
             <button ng-if="vm.isScaleOut() && vm.wizardStep === 1" ng-click="vm.nextStep();" type="button" id="next" name="next" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Next</button>
             <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
         </div>

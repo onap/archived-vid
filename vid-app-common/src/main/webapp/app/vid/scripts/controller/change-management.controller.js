@@ -1,12 +1,13 @@
 (function () {
     'use strict';
 
-    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log",  "SchedulerService", "$filter", changeManagementController]);
+    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log",  "SchedulerService", "$filter", "VIDCONFIGURATION", changeManagementController]);
 
-    function changeManagementController($uibModal, changeManagementService, _, $log, SchedulerService, $filter) {
+    function changeManagementController($uibModal, changeManagementService, _, $log, SchedulerService, $filter, VIDCONFIGURATION) {
         var vm = this;
 
         vm.lastTimeUpdated = "";
+        vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
 
         vm.init = function() {
             vm.lastTimeUpdated = $filter('date')(new Date(), "MM/dd/yyyy | HH:mm:ss");

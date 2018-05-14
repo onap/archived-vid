@@ -59,7 +59,7 @@
                         </table>
                         </div>
                         <div class="table-wrapper">
-                        <table class="table table-bordered"  data-tests-id="pending-table-cm" id="pending-table">
+                        <table ng-if="vm.hasScheduler" class="table table-bordered"  data-tests-id="pending-table-cm" id="pending-table">
                             <thead ng-click="collapsePending=!collapsePending">
                             <tr class="table-headline-row">
                                 <th class="col-md-6">

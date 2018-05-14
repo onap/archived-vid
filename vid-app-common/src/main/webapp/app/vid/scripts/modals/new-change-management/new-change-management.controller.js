@@ -7,6 +7,7 @@
     function newChangeManagementModalController($uibModalInstance, $uibModal,$q, AaiService, changeManagementService, Upload, $log, $scope, _, COMPONENT, VIDCONFIGURATION) {
 
         var vm = this;
+        vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
         vm.configUpdatePatternError = "Invalid file type. Please select a file with a CSV extension.";
         vm.configUpdateContentError = "Invalid file structure.";
         vm.controllers = VIDCONFIGURATION.SCALE_OUT_CONTROLLERS;
@@ -60,6 +61,10 @@
                                         if (newVNFName["invariant-id"] === vnf.invariantUuid) {
                                             availableVersions.push(extractVNFModel(vnf, response.data.service, newVNFName));
                                             newVNFName.vfModules = vnf.vfModules;
+
+                                            //for scale out screen
+                                            newVNFName.category = response.data.service.category;
+                                            newVNFName.groupModules = _.groupBy(newVNFName.vfModules, "customizationUuid");
                                         }
                                     });
                                     var versions = _.uniqBy(availableVersions, 'modelInfo.modelVersion');
@@ -155,6 +160,9 @@
 				try{
 				var requestInfoData ={};
 				var requestParametersData ={};
+                var moduleToScale = _.find(vnf.vfModules, function(key, item){
+                    return !item.scale;
+                });
 				if (vnf.availableVersions && vnf.availableVersions.length!=0){
 					
 					requestInfoData ={
@@ -185,10 +193,19 @@
 							payload: changeManagement.configUpdateFile
 						}
                     }else if(workflowType=="VNF Scale Out"){
-                        requestParametersData = {
-                            controllerType: changeManagement.controllerType
-                            //userParams: { ..json.. }
-                            //usePreload: false
+
+                        if(moduleToScale.userParams) {
+                            requestParametersData = {
+                                controllerType: changeManagement.controllerType,
+                                userParams: moduleToScale.userParams,
+                                usePreload: true
+                            }
+                        }else{
+                            requestParametersData = {
+                                controllerType: changeManagement.controllerType,
+                                userParams: [],
+                                usePreload: false
+                            }
                         }
                     }
 					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: workflowType '+ workflowType);
@@ -207,25 +224,46 @@
 					requestParametersData = {
 						payload: changeManagement.configUpdateFile
 					}
-				}	
-				
-				var data = {
-					vnfName: vnf.name,
-					vnfInstanceId: vnf.id,
-					modelInfo: {
-						modelType: 'vnf',
-						modelInvariantId: vnf.properties['model-invariant-id'],
-						modelVersionId: vnf.modelVersionId,
-						modelName: vnf.properties['vnf-name'],
-						modelVersion: vnf.version,
-						modelCustomizationName: vnf.properties['model-customization-name'],
-						modelCustomizationId: vnf.properties['model-customization-id']
-					},
-					cloudConfiguration: vnf.cloudConfiguration,
-					requestInfo: requestInfoData,
-					relatedInstanceList: [],
-					requestParameters:requestParametersData
-				};
+				}
+
+
+				var data;
+				if(workflowType=="VNF Scale Out") {
+				    var name = moduleToScale.modelCustomizationName.split('-')[0]; //example: vSAMP12..base..module-0
+                    name = name + "-" + vnf.groupModules[moduleToScale.customizationUuid].length;
+
+                    data = {
+                        modelInfo: {
+                            modelType: 'vfModule',
+                            modelInvariantId: moduleToScale.invariantUuid,
+                            modelName: name,
+                            modelVersion: moduleToScale.version,
+                            modelCustomizationId: moduleToScale.customizationUuid
+                        },
+                        cloudConfiguration: vnf.cloudConfiguration,
+                        requestInfo: requestInfoData,
+                        relatedInstanceList: [],
+                        requestParameters:requestParametersData
+                    }
+                }else{
+                    data = {
+                        vnfName: vnf.name,
+                        vnfInstanceId: vnf.id,
+                        modelInfo: {
+                            modelType: 'vnf',
+                            modelInvariantId: vnf.properties['model-invariant-id'],
+                            modelVersionId: vnf.modelVersionId,
+                            modelName: vnf.properties['vnf-name'],
+                            modelVersion: vnf.version,
+                            modelCustomizationName: vnf.properties['model-customization-name'],
+                            modelCustomizationId: vnf.properties['model-customization-id']
+                        },
+                        cloudConfiguration: vnf.cloudConfiguration,
+                        requestInfo: requestInfoData,
+                        relatedInstanceList: [],
+                        requestParameters:requestParametersData
+                    }
+                }
 
 				var serviceInstanceId = '';
 				_.forEach(vnf['service-instance-node'], function (instanceNode) {
@@ -265,7 +303,7 @@
 		}
 		
         vm.openModal = function () {
-            if(VIDCONFIGURATION.SCHEDULER_PORTAL_URL) { //scheduling supported
+            if(vm.hasScheduler) { //scheduling supported
 				$scope.widgetParameter = ""; // needed by the scheduler?
 
 				// properties needed by the scheduler so it knows whether to show
@@ -550,6 +588,22 @@
 
         vm.shouldShowVnfInPlaceFields = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfInPlace;
+        };
+
+        vm.setPreload = function (fileEl) {
+            var files = fileEl.files;
+            var file = files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function(evt) {
+                if (evt.target.readyState === FileReader.DONE) {
+                    $scope.$apply(function () {
+                        $scope.moduleArr[0].userParams = JSON.parse(evt.target.result);
+                    });
+                }
+            };
+
+            reader.readAsText(file);
         };
 
         init();

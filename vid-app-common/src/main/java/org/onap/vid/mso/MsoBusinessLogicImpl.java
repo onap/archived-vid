@@ -556,12 +556,12 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         final String noValidPayloadMsg = "No valid payload in " + ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE + " request";
 
         Map payload = getChangeManagementPayload(requestDetails, noValidPayloadMsg);
-        validateUpdateVnfSoftwarePayloadProperty(payload, noValidPayloadMsg, "existing-software-version", SOFTWARE_VERSION_PATTERN);
-        validateUpdateVnfSoftwarePayloadProperty(payload, noValidPayloadMsg, "new-software-version", SOFTWARE_VERSION_PATTERN);
+        validateUpdateVnfSoftwarePayloadProperty(payload, noValidPayloadMsg, "existing_software_version", SOFTWARE_VERSION_PATTERN);
+        validateUpdateVnfSoftwarePayloadProperty(payload, noValidPayloadMsg, "new_software_version", SOFTWARE_VERSION_PATTERN);
 
         //if "operations-timeout" is not integer, trying to read it as String that represent a number
         if (!(payload.get("operations-timeout") instanceof Integer)) {
-            validateUpdateVnfSoftwarePayloadProperty(payload, noValidPayloadMsg, "operations-timeout", NUMBER_PATTERN);
+            validateUpdateVnfSoftwarePayloadProperty(payload, noValidPayloadMsg, "operations_timeout", NUMBER_PATTERN);
         }
 
     }
