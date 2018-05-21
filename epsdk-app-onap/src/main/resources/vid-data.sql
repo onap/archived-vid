@@ -687,8 +687,8 @@ REPLACE INTO `fn_role_function` VALUES ('1', 'menu_searchexisting');
 REPLACE INTO `fn_role_function` VALUES ('16', 'menu_searchexisting');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_changemanagement');
 REPLACE INTO `fn_role_function` VALUES (16,'menu_changemanagement');
-REPLACE INTO `fn_role_function` VALUES (1,'menu_testenvironment');
-REPLACE INTO `fn_role_function` VALUES (16,'menu_testenvironment');
+--REPLACE INTO `fn_role_function` VALUES (1,'menu_testenvironment');
+--REPLACE INTO `fn_role_function` VALUES (16,'menu_testenvironment');
 
 update fn_menu set active_yn = 'Y' where label = 'Admin';
 update fn_menu set active_yn = 'Y' where label = 'Root';
