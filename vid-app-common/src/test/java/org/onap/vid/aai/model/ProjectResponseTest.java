@@ -1,32 +1,14 @@
 package org.onap.vid.aai.model;
 
-import java.util.List;
-
 import org.junit.Test;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ProjectResponseTest {
 
-    private ProjectResponse createTestSubject() {
-        return new ProjectResponse();
-    }
-
     @Test
-    public void testGetProject() throws Exception {
-        ProjectResponse testSubject;
-        List<Project> result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getProject();
-    }
-
-    @Test
-    public void testSetProject() throws Exception {
-        ProjectResponse testSubject;
-        List<Project> project = null;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setProject(project);
+    public void shouldHaveValidGettersAndSetters(){
+        assertThat(ProjectResponse.class, hasValidGettersAndSetters());
     }
 }

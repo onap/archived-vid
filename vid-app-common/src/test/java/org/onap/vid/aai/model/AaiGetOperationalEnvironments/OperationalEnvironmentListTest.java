@@ -1,33 +1,14 @@
 package org.onap.vid.aai.model.AaiGetOperationalEnvironments;
 
-import java.util.List;
-
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
-import org.onap.vid.aai.OperationalEnvironment;
 
 public class OperationalEnvironmentListTest {
 
-    private OperationalEnvironmentList createTestSubject() {
-        return new OperationalEnvironmentList();
-    }
-
     @Test
-    public void testGetOperationalEnvironment() throws Exception {
-        OperationalEnvironmentList testSubject;
-        List<OperationalEnvironment> result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getOperationalEnvironment();
+    public void shouldHaveValidGettersAndSetters(){
+        assertThat(OperationalEnvironmentList.class, hasValidGettersAndSetters());
     }
 
-    @Test
-    public void testSetOperationalEnvironment() throws Exception {
-        OperationalEnvironmentList testSubject;
-        List<OperationalEnvironment> operationalEnvironment = null;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setOperationalEnvironment(operationalEnvironment);
-    }
 }

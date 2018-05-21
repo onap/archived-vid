@@ -1,32 +1,15 @@
 package org.onap.vid.aai.model;
 
-import java.util.List;
-
 import org.junit.Test;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GetServiceModelsByDistributionStatusResponseTest {
 
-    private GetServiceModelsByDistributionStatusResponse createTestSubject() {
-        return new GetServiceModelsByDistributionStatusResponse();
-    }
-
     @Test
-    public void testGetResults() throws Exception {
-        GetServiceModelsByDistributionStatusResponse testSubject;
-        List<Result> result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getResults();
+    public void shouldHaveValidGettersAndSetters(){
+        assertThat(GetServiceModelsByDistributionStatusResponse.class, hasValidGettersAndSetters());
     }
 
-    @Test
-    public void testSetResults() throws Exception {
-        GetServiceModelsByDistributionStatusResponse testSubject;
-        List<Result> results = null;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setResults(results);
-    }
 }
