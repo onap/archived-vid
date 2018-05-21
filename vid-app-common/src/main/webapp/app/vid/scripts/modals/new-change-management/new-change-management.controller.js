@@ -14,11 +14,11 @@
         vm.wizardStep = 1;
         vm.nextStep = function(){
             vm.wizardStep++;
-            $(".modal-dialog").animate({"width":"1000px"},400,'linear');
+            $(".modal-dialog").animate({"width":"1200px"},400,'linear');
         };
         vm.prevStep = function(){
             vm.wizardStep--;
-            $(".modal-dialog").animate({"width":"6000px"},400,'linear');
+            $(".modal-dialog").animate({"width":"600px"},400,'linear');
         };
 
         vm.softwareVersionRegex = "[-a-zA-Z0-9\.]+";
@@ -65,6 +65,9 @@
                                             //for scale out screen
                                             newVNFName.category = response.data.service.category;
                                             newVNFName.groupModules = _.groupBy(newVNFName.vfModules, "customizationUuid");
+                                            _.forEach(newVNFName.vfModules, function(mdl, key){
+                                                mdl.scale = false; //defaults to not scale unless user changes it
+                                            });
                                         }
                                     });
                                     var versions = _.uniqBy(availableVersions, 'modelInfo.modelVersion');
@@ -194,6 +197,7 @@
 							payload: changeManagement.configUpdateFile
 						}
                     }else if(workflowType=="VNF Scale Out"){
+                        if(!moduleToScale) return null;
 
                         if(moduleToScale.userParams) {
                             requestParametersData = {
@@ -322,9 +326,11 @@
 			} else {
 				//no scheduling support
 				var dataToSo = extractChangeManagementCallbackDataStr(vm.changeManagement);
-				//TODO: foreach
-                var vnfName = vm.changeManagement.vnfNames[0].name;
-				changeManagementService.postChangeManagementNow(dataToSo, vnfName);
+                if(dataToSo) {
+                    //TODO: foreach
+                    var vnfName = vm.changeManagement.vnfNames[0].name;
+                    changeManagementService.postChangeManagementNow(dataToSo, vnfName);
+                }
 			}
         };
 

@@ -106,9 +106,9 @@
             <div>Invariant UUID</div>
         </div>
 
-        <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames" ng-if="vnf['prov-status'] === 'PROV'" ng-click="vnf.isOpen=!!!vnf.isOpen">
+        <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames" ng-click="vnf.isOpen=!!!vnf.isOpen">
             <div>+</div>
-            <div>{{vnf['service-instance-node'].properties['service-instance-name']}}</div>
+            <div>{{vnf['service-instance-node'][0].properties['service-instance-name']}}</div>
             <div>{{vnf.name}}</div>
             <div>{{vnf['availableVersions'][0].modelInfo.modelVersion}}</div>
             <div>{{vnf.category}}</div>
@@ -127,10 +127,9 @@
             <div class="table-row" ng-repeat="(custUUID, moduleArr) in vnf.groupModules">
                 <div>{{moduleArr[0].modelCustomizationName}}</div>
                 <div>{{moduleArr.length}}</div>
-                <div ng-if="moduleArr[0].properties.minCountInstances == moduleArr[0].properties.maxCountInstances">N/A</div>
-                <div ng-if="moduleArr[0].properties.minCountInstances != moduleArr[0].properties.maxCountInstances">
-                    <input type="number" ng-model="moduleArr[0].scale" step="1"
-                           ng-min="moduleArr[0].properties.minCountInstances" ng-max="moduleArr[0].properties.maxCountInstances - moduleArr.length" />
+                <div ng-if="!(moduleArr[0].properties.maxCountInstances - moduleArr.length > 0)">N/A</div>
+                <div ng-if="moduleArr[0].properties.maxCountInstances - moduleArr.length > 0">
+                    <input type="checkbox" ng-model="moduleArr[0].scale" />
                 </div>
                 <div>{{moduleArr[0].uuid}}</div>
                 <div>
@@ -142,10 +141,13 @@
     </div>
 
     <div class="modal-footer">
+        <div class="pull-left">
+            <button ng-if="vm.wizardStep === 2" ng-click="vm.prevStep();" type="button" id="back" name="back" class="btn btn-primary">Back</button>
+        </div>
         <div class="pull-right">
+            <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
             <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2)" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">{{vm.hasScheduler ? "Schedule" : "Confirm"}}</button>
             <button ng-if="vm.isScaleOut() && vm.wizardStep === 1" ng-click="vm.nextStep();" type="button" id="next" name="next" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Next</button>
-            <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
         </div>
     </div>
 </form>

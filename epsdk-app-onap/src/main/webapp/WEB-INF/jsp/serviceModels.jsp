@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="app/vid/styles/angularjs-datetime-picker.css"></link>
 <link rel="stylesheet" type="text/css" href="app/vid/styles/common.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/messageViewer.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/new-change-management/new-change-management.css" />
 
 	
 	<script>

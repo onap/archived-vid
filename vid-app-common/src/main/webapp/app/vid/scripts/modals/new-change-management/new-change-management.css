@@ -3,7 +3,7 @@
     display: flex;
 }
 .scale-out-modules .table-row > div {
-    text-indent: 12px;
+    padding: 0 12px;
     color: #5A5A5A;
     font-size: 13px;
     border-right: 1px solid #D2D2D2;
@@ -17,16 +17,16 @@
     font-size: 22px;
 }
 .scale-out-modules .table-row > div:nth-child(2) {
-    flex: 220px 1 0;
+    flex: 200px 1 0;
 }
 .scale-out-modules .table-row > div:nth-child(3) {
     flex: 200px 1 0;
 }
 .scale-out-modules .table-row > div:nth-child(4), .scale-out-modules .table-row > div:nth-child(5) {
-    flex: 150px 0 0;
+    flex: 110px 0 0;
 }
 .scale-out-modules .table-row > div:nth-child(6), .scale-out-modules .table-row > div:nth-child(7) {
-    flex: 120px 0 0;
+    flex: 130px 0 0;
 }
 .scale-out-modules .table-row.open > div {
     line-height: 29px;
@@ -62,7 +62,7 @@
     margin-left: 60px;
 }
 .scale-out-modules .modules-table .table-row  > div:nth-child(1) {
-    flex: 539px 0 0;
+    flex: 300px 1 0;
     font-size: 13px;
 }
 .scale-out-modules .modules-table .table-row  > div:nth-child(2) {
@@ -71,11 +71,15 @@
 .scale-out-modules .modules-table .table-row  > div:nth-child(3) {
     flex: 90px 0 0;
 }
+.scale-out-modules .modules-table .table-row  > div:nth-child(3) input {
+    width: 60px;
+    margin-top: 10px;
+}
 .scale-out-modules .modules-table .table-row  > div:nth-child(4) {
     flex: 180px 0 0;
 }
 .scale-out-modules .modules-table .table-row  > div:nth-child(5) {
-    flex: 110px 0 0;
+    flex: 280px 0 0;
 }
 .scale-out-modules .modules-table.open {
     display: block;
@@ -93,7 +97,7 @@
 		display:flex;
 
         > div {
-			text-indent:12px;
+			padding: 0 12px;
 			color: #5A5A5A;
 			font-size:13px;
 			border-right:1px solid #D2D2D2;
@@ -108,16 +112,16 @@
 				font-size:22px;
 			}
 			&:nth-child(2){
-				flex:220px 1 0;
+				flex:200px 1 0;
 			}
 			&:nth-child(3){
 				flex:200px 1 0;
 			}
 			&:nth-child(4), &:nth-child(5){
-				flex:150px 0 0;
+				flex:110px 0 0;
 			}
 			&:nth-child(6), &:nth-child(7){
-				flex:120px 0 0;
+				flex:130px 0 0;
 			}
 		}
 
@@ -162,7 +166,7 @@
 			& > div{
 
 				&:nth-child(1){
-					flex:539px 0 0;
+					flex:300px 1 0;
 					font-size:13px;
 				}
 				&:nth-child(2){
@@ -170,12 +174,17 @@
 				}
 				&:nth-child(3){
 					flex:90px 0 0;
+
+                    input {
+                        width: 60px;
+                        margin-top: 10px;
+                    }
 				}
 				&:nth-child(4){
 					flex:180px 0 0;
 				}
 				&:nth-child(5){
-					flex:110px 0 0;
+					flex:280px 0 0;
 				}
 			}
 		}
