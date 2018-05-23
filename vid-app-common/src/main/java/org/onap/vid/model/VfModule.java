@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import org.onap.vid.asdc.beans.tosca.Group;
 
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.sdc.toscaparser.api.Property;
 
 /**
  * The Class VfModule.
@@ -67,6 +68,9 @@ public class VfModule {
 	
 	/** The model customization name. */
 	private String modelCustomizationName;
+	
+	/** The model properties. */
+	private Map<String, Property> properties;
 	
 	/**
 	 * Instantiates a new vf module.
@@ -246,6 +250,7 @@ public class VfModule {
 			vfModule.setVersion(group.getMetadata().getVfModuleModelVersion());
 			vfModule.setCustomizationUuid(group.getMetadata().getVfModuleModelCustomizationUUID());
 			vfModule.setModelCustomizationName (modelCustomizationName);
+			//?vfModule.setProperties(group.getProperties());
 			
 			if (group.getProperties().containsKey("volume_group")) {
 				if (group.getProperties().get("volume_group") != null) {
@@ -305,4 +310,10 @@ public class VfModule {
 		}*/
 		return vfModule;
 	}
+    public Map<String, Property> getProperties() {
+        return properties;
+    }
+    public void setProperties(Map<String, Property> properties) {
+        this.properties = properties;
+    }
 }

@@ -60,14 +60,21 @@
                                     _.each(response.data.vnfs, function (vnf) {
                                         if (newVNFName["invariant-id"] === vnf.invariantUuid) {
                                             availableVersions.push(extractVNFModel(vnf, response.data.service, newVNFName));
-                                            newVNFName.vfModules = vnf.vfModules;
 
                                             //for scale out screen
-                                            newVNFName.category = response.data.service.category;
-                                            newVNFName.groupModules = _.groupBy(newVNFName.vfModules, "customizationUuid");
-                                            _.forEach(newVNFName.vfModules, function(mdl, key){
-                                                mdl.scale = false; //defaults to not scale unless user changes it
-                                            });
+                                            if(service.uuid === newVNFName["service-instance-node"][0].properties["model-version-id"]) {
+                                                newVNFName.vfModules = vnf.vfModules;
+                                                newVNFName.category = response.data.service.category;
+                                                newVNFName.groupModules = _.groupBy(newVNFName.vfModules, "customizationUuid");
+                                                _.forEach(newVNFName.vfModules, function (mdl, key) {
+                                                    mdl.scale = false; //defaults to not scale unless user changes it
+                                                    if(mdl.properties && mdl.properties.max_vf_module_instances) {
+                                                        mdl.scalable = mdl.properties.max_vf_module_instances.value - newVNFName.groupModules[mdl.customizationUuid].length > 0;
+                                                    }else{
+                                                        mdl.scalable = false;
+                                                    }
+                                                });
+                                            }
                                         }
                                     });
                                     var versions = _.uniqBy(availableVersions, 'modelInfo.modelVersion');

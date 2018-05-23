@@ -269,6 +269,7 @@ public class ToscaParserImpl2 {
         vfModule.setDescription(group.getDescription());
         vfModule.setInvariantUuid(group.getMetadata().getValue(Constants.vfModuleModelInvariantUUID));
         vfModule.setUuid(group.getMetadata().getValue(Constants.vfModuleModelUUID));
+        vfModule.setProperties(group.getProperties());
         return vfModule;
     }
 

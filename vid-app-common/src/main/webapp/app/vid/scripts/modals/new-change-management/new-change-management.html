@@ -107,7 +107,7 @@
         </div>
 
         <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames" ng-click="vnf.isOpen=!!!vnf.isOpen">
-            <div>+</div>
+            <div>{{vnf.isOpen ? '-' : '+'}}</div>
             <div>{{vnf['service-instance-node'][0].properties['service-instance-name']}}</div>
             <div>{{vnf.name}}</div>
             <div>{{vnf['availableVersions'][0].modelInfo.modelVersion}}</div>
@@ -127,12 +127,13 @@
             <div class="table-row" ng-repeat="(custUUID, moduleArr) in vnf.groupModules">
                 <div>{{moduleArr[0].modelCustomizationName}}</div>
                 <div>{{moduleArr.length}}</div>
-                <div ng-if="!(moduleArr[0].properties.maxCountInstances - moduleArr.length > 0)">N/A</div>
-                <div ng-if="moduleArr[0].properties.maxCountInstances - moduleArr.length > 0">
+                <div ng-if="!moduleArr[0].scalable">N/A</div>
+                <div ng-if="moduleArr[0].scalable">
                     <input type="checkbox" ng-model="moduleArr[0].scale" />
                 </div>
                 <div>{{moduleArr[0].uuid}}</div>
-                <div>
+                <div ng-if="!moduleArr[0].scalable">N/A</div>
+                <div ng-if="moduleArr[0].scalable">
                     <input type="file" accept="application/json" onchange="angular.element(this).scope().setPreload(this)" />
                 </div>
             </div>
