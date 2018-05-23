@@ -22,25 +22,22 @@ package org.onap.vid.aai.util;
 
 import com.att.eelf.configuration.EELFLogger;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.eclipse.jetty.util.security.Password;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
+import org.onap.vid.aai.exceptions.InvalidPropertyException;
 import org.onap.vid.utils.Logging;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
@@ -52,14 +49,11 @@ import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
  */
 public class AAIRestInterface {
 
-	public static final String WITH_STATUS = " with status=";
 	/** The logger. */
 	protected EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AAIRestInterface.class);
 
 	protected final EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("aai");
 
-	/** The Constant dateFormat. */
-	protected final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
 	/** The client. */
 	private Client client = null;
@@ -69,15 +63,36 @@ public class AAIRestInterface {
 
 	@Autowired
 	protected HttpsAuthClient httpsAuthClientFactory;
+	private final ServletRequestHelper servletRequestHelper;
+	private final SystemPropertyHelper systemPropertyHelper;
 
-	private String START_STRING = " start";
-	protected String TRANSACTION_ID_HEADER = "X-TransactionId";
-	protected String FROM_APP_ID_HEADER = "X-FromAppId";
-	private String SUCCESSFUL_API_MESSAGE=" REST api POST was successful!";
-	protected String URL_DECLARATION = ", url=";
+	protected static final String START_STRING = " start";
+	protected static final String TRANSACTION_ID_HEADER = "X-TransactionId";
+	protected static final String FROM_APP_ID_HEADER = "X-FromAppId";
+	protected static final String SUCCESSFUL_API_MESSAGE = " REST api call was successful!";
+	protected static final String URL_DECLARATION = ", url=";
 
-	public AAIRestInterface(HttpsAuthClient httpsAuthClientFactory) {
+	public AAIRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
 		this.httpsAuthClientFactory = httpsAuthClientFactory;
+		this.servletRequestHelper = servletRequestHelper;
+		this.systemPropertyHelper = systemPropertyHelper;
+		initRestClient();
+	}
+
+	/**
+	 * For testing purpose
+	 */
+	AAIRestInterface(Optional<Client> client,
+					 HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper){
+		this.httpsAuthClientFactory = httpsAuthClientFactory;
+		this.servletRequestHelper = servletRequestHelper;
+		this.systemPropertyHelper = systemPropertyHelper;
+		if (client.isPresent()){
+			this.client = client.get();
+		}else{
+			initRestClient(true);
+		}
+
 	}
 
 	/**
@@ -96,14 +111,13 @@ public class AAIRestInterface {
     }
 
 
-	private void initRestClient(boolean propagateExceptions)
-	{
+	private void initRestClient(boolean propagateExceptions) {
 		if (client == null) {
 			try {
-				client = httpsAuthClientFactory.getClient(HttpClientMode.WITHOUT_KEYSTORE);
+				client = httpsAuthClientFactory.getClient(HttpClientMode.WITH_KEYSTORE);
 			} catch (Exception e) {
-				logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) +  "<== Exception in REST call to DB in initRestClient" + e.toString());
-				logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) +  "<== Exception in REST call to DB : " + e.toString());
+				logger.info(EELFLoggerDelegate.errorLogger, "Exception in REST call to DB in initRestClient" + e.toString());
+				logger.debug(EELFLoggerDelegate.debugLogger, "Exception in REST call to DB : " + e.toString());
 				if (propagateExceptions) {
 					ExceptionUtils.rethrow(e);
 				}
@@ -120,10 +134,9 @@ public class AAIRestInterface {
 	 */
 	public void SetRestSrvrBaseURL(String baseURL)
 	{
-		if (baseURL == null)
-		{
-			logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) +  "<== REST Server base URL cannot be null.");
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) +  "<== REST Server base URL cannot be null.");
+		if (baseURL == null) {
+			logger.info(EELFLoggerDelegate.errorLogger, "REST Server base URL cannot be null.");
+			logger.debug(EELFLoggerDelegate.debugLogger, "REST Server base URL cannot be null.");
 		}
 
 		restSrvrBaseURL = baseURL;
@@ -134,8 +147,7 @@ public class AAIRestInterface {
 	 *
 	 * @return the rest srvr base URL
 	 */
-	public String getRestSrvrBaseURL()
-	{
+	public String getRestSrvrBaseURL() {
 		return restSrvrBaseURL;
 	}
 
@@ -149,81 +161,51 @@ public class AAIRestInterface {
 	 * @param xml the xml
 	 * @return the string
 	 */
-
 	public ResponseWithRequestInfo RestGet(String fromAppId, String transId, String requestUri, boolean xml) {
 		return RestGet(fromAppId, transId, requestUri, xml, false);
 	}
 
 	public ResponseWithRequestInfo RestGet(String fromAppId, String transId, String requestUri, boolean xml, boolean propagateExceptions) {
-		String url = null;
+        String methodName = "RestGet";
+		String url = systemPropertyHelper.getFullServicePath(requestUri);
 		try {
-			String methodName = "RestGet";
-			url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL) + requestUri;
-
-			String responseType = MediaType.APPLICATION_JSON;
-			if (xml)
-				responseType = MediaType.APPLICATION_XML;
-
 			initRestClient(propagateExceptions);
 
-			String clientCert = SystemProperties.getProperty(AAIProperties.AAI_USE_CLIENT_CERT);
-
-			boolean useClientCert = false;
-			if (clientCert != null &&
-					SystemProperties.getProperty(AAIProperties.AAI_USE_CLIENT_CERT).equalsIgnoreCase("true")) {
-				useClientCert = true;
-			}
-
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START_STRING);
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + url + " for the get REST API");
+			logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
+			logger.debug(EELFLoggerDelegate.debugLogger, url + " for the get REST API");
 
 			Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
 
-			final Response cres;
-			if (useClientCert == true) {
-				cres = client.target(url)
-						.request()
-						.accept(responseType)
-						.header(TRANSACTION_ID_HEADER, transId)
-						.header(FROM_APP_ID_HEADER, fromAppId)
-						.header("Content-Type", MediaType.APPLICATION_JSON)
-						.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
-						.get();
+			final Response response;
+            Invocation.Builder requestBuilder = client.target(url)
+                    .request()
+                    .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+                    .header(TRANSACTION_ID_HEADER, transId)
+                    .header(FROM_APP_ID_HEADER, fromAppId)
+                    .header("Content-Type", MediaType.APPLICATION_JSON)
+                    .header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId());
+            response = systemPropertyHelper.isClientCertEnabled() ?
+                    requestBuilder.get() : authenticateRequest(requestBuilder).get();
+			Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
+
+			if (response.getStatusInfo().equals(Response.Status.OK)) {
+				logger.debug(EELFLoggerDelegate.debugLogger, methodName + SUCCESSFUL_API_MESSAGE);
+				logger.info(EELFLoggerDelegate.errorLogger, methodName + SUCCESSFUL_API_MESSAGE);
 			} else {
-
-				String vidUsername = SystemProperties.getProperty(AAIProperties.AAI_VID_USERNAME);
-				String vidPassword = Password.deobfuscate(SystemProperties.getProperty(AAIProperties.AAI_VID_PASSWD_X));
-				String encodeThis = vidUsername + ":" + vidPassword;
-
-				cres = client.target(url)
-						.request()
-						.accept(responseType)
-						.header(TRANSACTION_ID_HEADER, transId)
-						.header(FROM_APP_ID_HEADER, fromAppId)
-						.header("Content-Type", "application/json")
-						.header("Authorization", "Basic " + Base64.getEncoder().encodeToString(encodeThis.getBytes("utf-8")))
-						.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
-						.get();
+				logger.debug(EELFLoggerDelegate.debugLogger, getInvalidResponseLogMessage(url, methodName, response));
 			}
-			Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, cres);
-
-			if (cres.getStatus() == 200) {
-				logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + SUCCESSFUL_API_MESSAGE);
-				logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + SUCCESSFUL_API_MESSAGE);
-			} else {
-				logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + WITH_STATUS + cres.getStatus() + URL_DECLARATION + url);
-			}
-			return new ResponseWithRequestInfo(cres, url, HttpMethod.GET);
+			return new ResponseWithRequestInfo(response, url, HttpMethod.GET);
 		} catch (Exception e) {
 			// no need to ask if "propagateExceptions" because any exception
 			// at this point should have already obey to the
 			// "propagateExceptions" flag
+			logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
 			throw new ExceptionWithRequestInfo(HttpMethod.GET, defaultIfNull(url, requestUri), e);
 		}
 	}
 
 	protected String extractOrGenerateRequestId() {
-		return Logging.extractOrGenerateRequestId();
+		return servletRequestHelper.extractOrGenerateRequestId();
 	}
 
 
@@ -235,38 +217,42 @@ public class AAIRestInterface {
 	 * @param path the path
 	 * @return true, if successful
 	 */
-	public boolean Delete(String sourceID,  String transId,  String path) {
+	public boolean Delete(String sourceID, String transId, String path) {
 		String methodName = "Delete";
-		String url="";
 		transId += ":" + UUID.randomUUID().toString();
-		logger.debug(dateFormat.format(new Date()) + "<== " +  methodName + START_STRING);
+		logger.debug(methodName + START_STRING);
+		Boolean response = false;
+		String url = systemPropertyHelper.getFullServicePath(path);;
+		try {
 
-		initRestClient();
-		url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL) + path;
-		Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
-		final Response cres = client.target(url)
-				.request()
-				.accept(MediaType.APPLICATION_JSON)
-				.header(TRANSACTION_ID_HEADER, transId)
-				.header(FROM_APP_ID_HEADER,  sourceID)
-				.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
-				.delete();
-		Logging.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
-		if (cres.getStatus() == 404) { // resource not found
-			String msg = "Resource does not exist...: " + cres.getStatus()
-					+ ":" + cres.readEntity(String.class);
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + msg);
-			return false;
-		} else if (cres.getStatus() == 200  || cres.getStatus() == 204){
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "Resource " + url + " deleted");
-			return true;
-		} else {
-			String msg = "Deleting Resource failed: " + cres.getStatus()
-					+ ":" + cres.readEntity(String.class);
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + msg);
+			initRestClient();
+			Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
+			final Response cres = client.target(url)
+					.request()
+					.accept(MediaType.APPLICATION_JSON)
+					.header(TRANSACTION_ID_HEADER, transId)
+					.header(FROM_APP_ID_HEADER, sourceID)
+					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
+					.delete();
+			Logging.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
+			if (cres.getStatusInfo().equals(Response.Status.NOT_FOUND)) {
+				logger.debug(EELFLoggerDelegate.debugLogger, "Resource does not exist...: " + cres.getStatus()
+						+ ":" + cres.readEntity(String.class));
+				response = false;
+			} else if (cres.getStatusInfo().equals(Response.Status.OK) || cres.getStatusInfo().equals(Response.Status.NO_CONTENT)) {
+				logger.debug(EELFLoggerDelegate.debugLogger, "Resource " + url + " deleted");
+				logger.info(EELFLoggerDelegate.errorLogger, "Resource " + url + " deleted");
+				response = true;
+			} else {
+				logger.debug(EELFLoggerDelegate.debugLogger, "Deleting Resource failed: " + cres.getStatus()
+						+ ":" + cres.readEntity(String.class));
+				response = false;
+			}
+
+		} catch (Exception e) {
+			logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
 		}
-
-		return false;
+		return response;
 	}
 
 
@@ -281,45 +267,33 @@ public class AAIRestInterface {
 	 */
 	public Response RestPut(String fromAppId, String path, String payload, boolean xml) {
 		String methodName = "RestPut";
-		String url="";
+		String url=systemPropertyHelper.getFullServicePath(path);
 		String transId = UUID.randomUUID().toString();
-		logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + START_STRING);
+		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 
+        Response response = null;
 		try {
-
-			String responseType = MediaType.APPLICATION_JSON;
-			if (xml)
-				responseType = "application/xml";
-
 			initRestClient();
-
-			url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL) + path;
-			String vidUsername = SystemProperties.getProperty(AAIProperties.AAI_VID_USERNAME);
-            String vidPassword = Password.deobfuscate(SystemProperties.getProperty(AAIProperties.AAI_VID_PASSWD_X));
-            String encodeThis = vidUsername + ":" + vidPassword;
-            
 			Logging.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, payload);
-			final Response cres = client.target(url)
+			response = authenticateRequest(client.target(url)
 					.request()
-					.accept(responseType)
+                    .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
 					.header(TRANSACTION_ID_HEADER, transId)
-					.header(FROM_APP_ID_HEADER,  fromAppId)
-					.header("Authorization", "Basic " + Base64.getEncoder().encodeToString(encodeThis.getBytes("utf-8")))
+					.header(FROM_APP_ID_HEADER,  fromAppId))
 					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
 					.put(Entity.entity(payload, MediaType.APPLICATION_JSON));
-			Logging.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, cres);
+			Logging.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, response);
 
-			if (cres.getStatus() == 200 && cres.getStatus() <= 299) {
-				logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + URL_DECLARATION);
-				logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + URL_DECLARATION);
+			if (response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
+				logger.info(EELFLoggerDelegate.errorLogger, getValidResponseLogMessage(methodName));
+				logger.debug(EELFLoggerDelegate.debugLogger, getValidResponseLogMessage(methodName));
 			} else {
-				logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + WITH_STATUS +cres.getStatus()+ URL_DECLARATION +url);
+				logger.debug(EELFLoggerDelegate.debugLogger, getInvalidResponseLogMessage(url, methodName, response));
 			}
-			return cres;
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + URL_DECLARATION +url+ ", Exception: " + e.toString());
+			logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
 		}
-		return null;
+		return response;
 	}
 
 
@@ -335,45 +309,50 @@ public class AAIRestInterface {
 	 */
 	public Response RestPost(String fromAppId, String path, String payload, boolean xml) {
 		String methodName = "RestPost";
-		String url="";
+		String url=systemPropertyHelper.getFullServicePath(path);
 		String transId = UUID.randomUUID().toString();
-		logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " +  methodName + START_STRING);
+		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 
+        Response response = null;
 		try {
-
-			String responseType = MediaType.APPLICATION_JSON;
-			if (xml)
-				responseType = "application/xml";
-
 			initRestClient();
-
-			url = SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL_BASE) + path;
-			String vidUsername = SystemProperties.getProperty(AAIProperties.AAI_VID_USERNAME);
-			String vidPassword = Password.deobfuscate(SystemProperties.getProperty(AAIProperties.AAI_VID_PASSWD_X));
-			String encodeThis = vidUsername + ":" + vidPassword;
-			
 			Logging.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
-			final Response cres = client.target(url)
+			response = authenticateRequest(client.target(systemPropertyHelper.getFullServicePath(path))
 					.request()
-					.accept(responseType)
+                    .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
 					.header(TRANSACTION_ID_HEADER, transId)
-					.header(FROM_APP_ID_HEADER,  fromAppId)
-					.header("Authorization", "Basic " + Base64.getEncoder().encodeToString(encodeThis.getBytes("utf-8")))
+					.header(FROM_APP_ID_HEADER,  fromAppId))
 					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
 					.post(Entity.entity(payload, MediaType.APPLICATION_JSON));
-			Logging.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, cres);
+			Logging.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, response);
 
-			if (cres.getStatus() == 200 && cres.getStatus() <= 299) {
-				logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + methodName + URL_DECLARATION);
-				logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + URL_DECLARATION);
+			if (response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
+				logger.info(EELFLoggerDelegate.errorLogger, getValidResponseLogMessage(methodName));
+				logger.debug(EELFLoggerDelegate.debugLogger, getValidResponseLogMessage(methodName));
 			} else {
-				logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + WITH_STATUS +cres.getStatus()+ URL_DECLARATION +url);
+				logger.debug(EELFLoggerDelegate.debugLogger, getInvalidResponseLogMessage(url, methodName, response));
 			}
-			return cres;
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + URL_DECLARATION +url+ ", Exception: " + e.toString());
+			logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
 		}
-		return null;
+		return response;
+	}
+
+	protected String getFailedResponseLogMessage(String path, String methodName, Exception e) {
+		return methodName + URL_DECLARATION + path + ", Exception: " + e.toString();
+	}
+
+	protected String getValidResponseLogMessage(String methodName) {
+		return methodName + URL_DECLARATION;
+	}
+
+	protected String getInvalidResponseLogMessage(String path, String methodName, Response cres) {
+		return methodName + " with status=" + cres.getStatus() + URL_DECLARATION + path;
+	}
+
+	private Invocation.Builder authenticateRequest(Invocation.Builder requestBuilder) throws InvalidPropertyException, UnsupportedEncodingException {
+		return requestBuilder
+				.header("Authorization", "Basic " + systemPropertyHelper.getEncodedCredentials());
 	}
 
 }
