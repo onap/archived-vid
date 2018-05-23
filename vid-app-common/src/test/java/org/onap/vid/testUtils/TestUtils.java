@@ -133,6 +133,7 @@ public class TestUtils {
             Mockito.when(fakeBuilder.get(any(GenericType.class))).thenReturn(null);
 
             Mockito.when(fakeResponse.getStatus()).thenReturn(200);
+            Mockito.when(fakeResponse.getStatusInfo()).thenReturn(Response.Status.OK);
             Mockito.when(fakeResponse.readEntity(Service.class)).thenReturn(null);
         }
     }

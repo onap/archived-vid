@@ -1,10 +1,30 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.onap.vid.aai.*;
 import org.onap.vid.aai.model.PortDetailsTranslator;
-import org.onap.vid.aai.util.AAIRestInterface;
-import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.*;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.rest.RestfulAsdcClient;
@@ -66,19 +86,34 @@ public class WebConfig {
     }
 
     @Bean(name = "aaiRestInterface")
-    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory) {
-        return new AAIRestInterface(httpsAuthClientFactory);
+    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
+        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
     }
 
     @Bean
-    public PombaRestInterface getPombaRestInterface(HttpsAuthClient httpsAuthClientFactory) {
-        return new PombaRestInterface(httpsAuthClientFactory);
+    public PombaRestInterface getPombaRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
+        return new PombaRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
     }
 
     @Bean
-    public HttpsAuthClient httpsAuthClientFactory(ServletContext servletContext) {
+    public SSLContextProvider sslContextProvider() {
+        return new SSLContextProvider();
+    }
+
+    @Bean
+    public SystemPropertyHelper systemPropertyHelper() {
+        return new SystemPropertyHelper();
+    }
+
+    @Bean
+    public ServletRequestHelper servletRequestHelper() {
+        return new ServletRequestHelper();
+    }
+
+    @Bean
+    public HttpsAuthClient httpsAuthClientFactory(ServletContext servletContext, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider) {
         final String certFilePath = new File(servletContext.getRealPath("/WEB-INF/cert/")).getAbsolutePath();
-        return new HttpsAuthClient(certFilePath);
+        return new HttpsAuthClient(certFilePath, systemPropertyHelper, sslContextProvider);
     }
 
     @Bean
