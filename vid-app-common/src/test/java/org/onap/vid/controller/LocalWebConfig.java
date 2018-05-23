@@ -5,8 +5,7 @@ import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.model.PortDetailsTranslator;
-import org.onap.vid.aai.util.AAIRestInterface;
-import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.*;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.services.AaiService;
@@ -46,14 +45,29 @@ public class LocalWebConfig {
     }
 
     @Bean
-    public HttpsAuthClient httpsAuthClientFactory(ServletContext servletContext) {
+    public SSLContextProvider sslContextProvider() {
+        return new SSLContextProvider();
+    }
+
+    @Bean
+    public SystemPropertyHelper systemPropertyHelper() {
+        return new SystemPropertyHelper();
+    }
+
+    @Bean
+    public ServletRequestHelper servletRequestHelper() {
+        return new ServletRequestHelper();
+    }
+
+    @Bean
+    public HttpsAuthClient httpsAuthClientFactory(ServletContext servletContext, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider) {
         final String certFilePath = new File(servletContext.getRealPath("/WEB-INF/cert/")).getAbsolutePath();
-        return new HttpsAuthClient(certFilePath);
+        return new HttpsAuthClient(certFilePath, systemPropertyHelper, sslContextProvider);
     }
 
     @Bean(name = "aaiRestInterface")
-    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory) {
-        return new AAIRestInterface(httpsAuthClientFactory);
+    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
+        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
     }
 
     @Bean
