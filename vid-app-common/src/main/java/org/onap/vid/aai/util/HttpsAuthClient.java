@@ -21,30 +21,33 @@
 package org.onap.vid.aai.util;
 
 
-import org.eclipse.jetty.util.security.Password;
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.exceptions.HttpClientBuilderException;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import java.nio.file.FileSystems;
+
+import static org.onap.vid.aai.util.HttpClientMode.WITH_KEYSTORE;
 
 /**
  * The Class HttpsAuthClient.
  */
 public class HttpsAuthClient {
 
+    private static final String SSL_TRUST_STORE = "javax.net.ssl.trustStore";
+    private static final String SSL_TRUST_STORE_PASS_WORD = "javax.net.ssl.trustStorePassword";
 
-    public HttpsAuthClient(String certFilePath) {
+    private final SystemPropertyHelper systemPropertyHelper;
+    private final SSLContextProvider sslContextProvider;
+
+    public HttpsAuthClient(String certFilePath, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider) {
         this.certFilePath = certFilePath;
+        this.systemPropertyHelper = systemPropertyHelper;
+        this.sslContextProvider = sslContextProvider;
     }
 
     private final String certFilePath;
@@ -52,62 +55,24 @@ public class HttpsAuthClient {
     /** The logger. */
     static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(HttpsAuthClient.class);
 
+
     /**
      * Gets the client.
      *
      * @return the client
-     * @throws KeyManagementException the key management exception
      */
-    public Client getClient(HttpClientMode mode) throws GeneralSecurityException, IOException {
-        ClientConfig config = new ClientConfig();
-        SSLContext ctx;
+    public Client getClient(HttpClientMode mode) {
+        ClientConfig config = prepareClientConfig(mode);
 
         try {
-            String truststorePath = getCertificatesPath() + org.onap.vid.aai.util.AAIProperties.FILESEPARTOR + SystemProperties.getProperty(org.onap.vid.aai.util.AAIProperties.AAI_TRUSTSTORE_FILENAME);
-            String truststorePassword = SystemProperties.getProperty(org.onap.vid.aai.util.AAIProperties.AAI_TRUSTSTORE_PASSWD_X);
-            String decryptedTruststorePassword = Password.deobfuscate(truststorePassword);
+            setSystemProperties();
 
-            System.setProperty("javax.net.ssl.trustStore", truststorePath);
-            System.setProperty("javax.net.ssl.trustStorePassword", decryptedTruststorePassword);
+            ignoreHostname();
 
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-                public boolean verify(String string, SSLSession ssls) {
-                    return true;
-                }
-            });
-            ctx = SSLContext.getInstance("TLSv1.2");
-            KeyManager[] keyManagers = null;
-            TrustManager[] trustManagers = getTrustManager(mode);
+            return systemPropertyHelper.isClientCertEnabled() ?
+                    getTrustedClient(config, getKeystorePath(), systemPropertyHelper.getDecryptedKeystorePassword(), mode)
+                    : getUntrustedClient(config);
 
-            switch (mode) {
-                case WITH_KEYSTORE:
-                    String aaiKeystorePath = getCertificatesPath() + org.onap.vid.aai.util.AAIProperties.FILESEPARTOR + SystemProperties.getProperty(org.onap.vid.aai.util.AAIProperties.AAI_KEYSTORE_FILENAME);
-                    String aaiKeystorePassword = SystemProperties.getProperty(org.onap.vid.aai.util.AAIProperties.AAI_KEYSTORE_PASSWD_X);
-                    config.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, Boolean.TRUE);
-                    config.connectorProvider(new HttpUrlConnectorProvider().useSetMethodWorkaround());
-                    KeyManagerFactory kmf = getKeyManagerFactory(aaiKeystorePath, aaiKeystorePassword);
-                    keyManagers = kmf.getKeyManagers();
-                    break;
-
-                case WITHOUT_KEYSTORE:
-                    config.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-                    break;
-
-                default:
-                    logger.debug(EELFLoggerDelegate.debugLogger, "Error setting up config. HttpClientMode is " + mode);
-            }
-
-            ctx.init(keyManagers, trustManagers, null);
-            return ClientBuilder.newBuilder()
-                    .sslContext(ctx)
-                    .hostnameVerifier(new HostnameVerifier() {
-                        @Override
-                        public boolean verify(String s, SSLSession sslSession) {
-                            return true;
-                        }
-                    }).withConfig(config)
-                    .build()
-                    .register(org.onap.vid.aai.util.CustomJacksonJaxBJsonProvider.class);
         } catch (Exception e) {
             logger.debug(EELFLoggerDelegate.debugLogger, "Error setting up config", e);
             throw e;
@@ -115,57 +80,44 @@ public class HttpsAuthClient {
 
     }
 
-    /**
-     * @param aaiKeystorePath
-     * @param aaiKeystorePassword - in OBF format
-     * @return
-     * @throws NoSuchAlgorithmException
-     * @throws KeyStoreException
-     * @throws IOException
-     * @throws CertificateException
-     * @throws UnrecoverableKeyException
-     */
-    private KeyManagerFactory getKeyManagerFactory(String aaiKeystorePath, String aaiKeystorePassword) throws IOException, GeneralSecurityException {
-        String aaiDecryptedKeystorePassword = Password.deobfuscate(aaiKeystorePassword);
-        KeyManagerFactory kmf = null;
-        try (FileInputStream fin = new FileInputStream(aaiKeystorePath)) {
-            kmf = KeyManagerFactory.getInstance("SunX509");
-            KeyStore ks = KeyStore.getInstance("PKCS12");
-            char[] pwd = aaiDecryptedKeystorePassword.toCharArray();
-            ks.load(fin, pwd);
-            kmf.init(ks, pwd);
-        } catch (Exception e) {
-            logger.debug(EELFLoggerDelegate.debugLogger, "Error setting up kmf");
-            logger.error(EELFLoggerDelegate.errorLogger, "Error setting up kmf (keystore path: {}, obfuascated keystore password: {})", aaiKeystorePath, aaiKeystorePassword, e);
-            throw e;
+    private void ignoreHostname() {
+        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+    }
+
+    private Client getUntrustedClient(ClientConfig config) {
+        return ClientBuilder.newBuilder().withConfig(config).build().register(CustomJacksonJaxBJsonProvider.class);
+    }
+
+    private Client getTrustedClient(ClientConfig config, String keystorePath, String keystorePassword, HttpClientMode httpClientMode) throws HttpClientBuilderException {
+        return ClientBuilder.newBuilder()
+                .sslContext(sslContextProvider.getSslContext(keystorePath, keystorePassword, httpClientMode))
+                .hostnameVerifier((s, sslSession) -> true)
+                .withConfig(config)
+                .build()
+                .register(CustomJacksonJaxBJsonProvider.class);
+    }
+
+    private String getKeystorePath() {
+        return getCertificatesPath() + FileSystems.getDefault().getSeparator() + systemPropertyHelper.getAAIKeystoreFilename();
+    }
+
+    private void setSystemProperties() {
+        System.setProperty(SSL_TRUST_STORE, getCertificatesPath() + FileSystems.getDefault().getSeparator() +
+                systemPropertyHelper.getAAITruststoreFilename().orElse(""));
+        System.setProperty(SSL_TRUST_STORE_PASS_WORD, systemPropertyHelper.getDecryptedTruststorePassword());
+    }
+
+    private ClientConfig prepareClientConfig(HttpClientMode mode) {
+        ClientConfig config = new ClientConfig();
+        if (mode.equals(WITH_KEYSTORE)) {
+            config.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, Boolean.TRUE);
+            config.connectorProvider(new HttpUrlConnectorProvider().useSetMethodWorkaround());
         }
-        return kmf;
+        return config;
     }
 
     private String getCertificatesPath() {
         return certFilePath;
     }
-
-    private TrustManager[] getTrustManager(HttpClientMode httpClientMode) {
-        //Creating a trustManager that will accept all certificates.
-        //TODO - remove this one the POMBA certificate is added to the tomcat_keystore file
-        TrustManager[] trustAllCerts = null;
-        if (httpClientMode == HttpClientMode.UNSECURE) {
-
-            trustAllCerts = new TrustManager[]{new X509TrustManager() {
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-
-                public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                }
-
-                public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                }
-            }};
-        }
-        return trustAllCerts;
-    }
-
 
 }

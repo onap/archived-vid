@@ -2,8 +2,11 @@ package org.onap.vid.config;
 
 import org.hibernate.SessionFactory;
 import org.mockito.Mockito;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.SSLContextProvider;
+import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.InProgressStatusCommand;
@@ -17,13 +20,11 @@ import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AsyncInstantiationBusinessLogicImpl;
 import org.onap.vid.services.AuditService;
 import org.onap.vid.services.AuditServiceImpl;
-import org.onap.portalsdk.core.service.DataAccessService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.togglz.core.manager.FeatureManager;
 
 @Configuration
 public class JobCommandsConfigWithMockedMso {
@@ -40,7 +41,7 @@ public class JobCommandsConfigWithMockedMso {
 
     @Bean
     public HttpsAuthClient httpsAuthClientFactory(){
-        return new HttpsAuthClient("some random path");
+        return new HttpsAuthClient("some random path", new SystemPropertyHelper(), new SSLContextProvider());
     }
 
     @Bean
