@@ -87,5 +87,16 @@
                     return {data: []};
                 });
         };
+
+        this.postChangeManagementScaleOutNow = function (requestData, serviceInstanceId, vnfId) {
+            var url = "mso/mso_create_vfmodule_instance/"+serviceInstanceId+"/vnfs/"+vnfId;
+            return $http.post(url, requestData)
+                .success(function (response) {
+                    return {data: response};
+                })
+                .catch(function (err) {
+                    return {data: []};
+                });
+        };
     }
 })();

@@ -209,14 +209,14 @@
                         if(moduleToScale.userParams) {
                             requestParametersData = {
                                 controllerType: changeManagement.controllerType,
-                                userParams: moduleToScale.userParams,
-                                usePreload: true
+                                userParams: moduleToScale.userParams
+                                //,usePreload: true
                             }
                         }else{
                             requestParametersData = {
                                 controllerType: changeManagement.controllerType,
-                                userParams: [],
-                                usePreload: false
+                                userParams: []
+                                //,usePreload: false
                             }
                         }
                     }
@@ -250,13 +250,14 @@
                             modelInvariantId: moduleToScale.invariantUuid,
                             modelName: name,
                             modelVersion: moduleToScale.version,
-                            modelCustomizationId: moduleToScale.customizationUuid
+                            modelVersionId: moduleToScale.uuid
                         },
                         cloudConfiguration: vnf.cloudConfiguration,
                         requestInfo: requestInfoData,
                         relatedInstanceList: [],
                         requestParameters:requestParametersData
                     }
+                    requestInfoData.instanceName = vnf.name;
                 }else{
                     data = {
                         vnfName: vnf.name,
@@ -304,7 +305,22 @@
 
 						data.relatedInstanceList.push({relatedInstance: relatedInstance});
 					});
-				}
+                    if(workflowType=="VNF Scale Out") {
+                        //push vnf to related as well as the service instance
+                        var relatedInstance = {
+                            instanceId: vnf.id,
+                            modelInfo: {
+                                modelCustomizationName: vnf.availableVersions[0].modelInfo.modelCustomizationName,
+                                modelInvariantId: vnf.availableVersions[0].modelInfo.modelInvariantId,
+                                modelName: vnf.availableVersions[0].modelInfo.modelName,
+                                modelType: vnf.availableVersions[0].modelInfo.modelType,
+                                modelVersion: vnf.availableVersions[0].modelInfo.modelVersion,
+                                modelVersionId: vnf.availableVersions[0].modelInfo.modelVersionId
+                            }
+                        };
+                        data.relatedInstanceList.push({relatedInstance: relatedInstance});
+                    }
+                }
 				}catch(err){
 					$log.error('SchedulerCtrl::extractChangeManagementCallbackDataStr error: ' + err);
 				}
@@ -334,9 +350,16 @@
 				//no scheduling support
 				var dataToSo = extractChangeManagementCallbackDataStr(vm.changeManagement);
                 if(dataToSo) {
-                    //TODO: foreach
-                    var vnfName = vm.changeManagement.vnfNames[0].name;
-                    changeManagementService.postChangeManagementNow(dataToSo, vnfName);
+
+                    if(vm.changeManagement.workflow==="VNF Scale Out") {
+                        dataToSo = JSON.parse(dataToSo);
+                        dataToSo = {requestDetails: dataToSo.requestDetails[0]};
+                        changeManagementService.postChangeManagementScaleOutNow(dataToSo, vm.changeManagement.vnfNames[0]["service-instance-node"][0].properties["service-instance-id"], vm.changeManagement.vnfNames[0].id);
+                    }else{
+                        //TODO: foreach
+                        var vnfName = vm.changeManagement.vnfNames[0].name;
+                        changeManagementService.postChangeManagementNow(dataToSo, vnfName);
+                    }
                 }
 			}
         };
