@@ -241,14 +241,11 @@
 
 				var data;
 				if(workflowType=="VNF Scale Out") {
-				    var name = moduleToScale.modelCustomizationName.split('-')[0]; //example: vSAMP12..base..module-0
-                    name = name + "-" + vnf.groupModules[moduleToScale.customizationUuid].length;
-
                     data = {
                         modelInfo: {
                             modelType: 'vfModule',
                             modelInvariantId: moduleToScale.invariantUuid,
-                            modelName: name,
+                            modelName: moduleToScale.modelCustomizationName,
                             modelVersion: moduleToScale.version,
                             modelVersionId: moduleToScale.uuid
                         },
@@ -256,8 +253,8 @@
                         requestInfo: requestInfoData,
                         relatedInstanceList: [],
                         requestParameters:requestParametersData
-                    }
-                    requestInfoData.instanceName = vnf.name;
+                    };
+                    requestInfoData.instanceName = vnf.name + "_" + (vnf.groupModules[moduleToScale.customizationUuid].length + 1);
                 }else{
                     data = {
                         vnfName: vnf.name,
@@ -275,7 +272,7 @@
                         requestInfo: requestInfoData,
                         relatedInstanceList: [],
                         requestParameters:requestParametersData
-                    }
+                    };
                 }
 
 				var serviceInstanceId = '';
