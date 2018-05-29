@@ -111,14 +111,29 @@
 		
 		$scope.createType = COMPONENT.A_LA_CARTE;
 		$scope.deployService = function(service) {
-			
-			
+
+
 			console.log("Instantiating SDC service " + service.uuid);
 			
 			$http.get(COMPONENT.SERVICES_PATH + service.uuid)
 				.then(function successCallback(getServiceResponse) {
 					
 					var serviceModel = getServiceResponse.data;
+
+					//VID-233 bug fix when models doesn't exists
+					if(typeof(serviceModel)==="string"){  //not an object
+						$scope.status = FIELD.STATUS.FAILED_SERVICE_MODELS_ASDC;
+						$scope.error = true;
+						$scope.isSpinnerVisible = false;
+						$scope.isProgressVisible = true;
+						return;
+					} else{ //clean error message
+						$scope.status = "";
+						$scope.error = false;
+						$scope.isSpinnerVisible = false;
+						$scope.isProgressVisible = false;
+					}
+
 					DataService.setServiceName(serviceModel.service.name);
 
 					//VOLTE services need input list generated and macro style
