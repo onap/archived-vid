@@ -66,10 +66,24 @@
                                                 newVNFName.vfModules = vnf.vfModules;
                                                 newVNFName.category = response.data.service.category;
                                                 newVNFName.groupModules = _.groupBy(newVNFName.vfModules, "customizationUuid");
+
+                                                //list vfmodules ids in AAI that belong to that vnf instance
+                                                var modulesAaiIds = _.filter(newVNFName.relatedTo, function(item){
+                                                                        return item["node-type"] === "vf-module";
+                                                                    }).map(function(item){
+                                                                        return item.id;
+                                                                    });
+
                                                 _.forEach(newVNFName.vfModules, function (mdl, key) {
                                                     mdl.scale = false; //defaults to not scale unless user changes it
                                                     if(mdl.properties && mdl.properties.max_vf_module_instances) {
-                                                        mdl.scalable = mdl.properties.max_vf_module_instances.value - newVNFName.groupModules[mdl.customizationUuid].length > 0;
+
+                                                        //how many vf modules of the same customizationId belong to that vnf instance
+                                                        mdl.currentCount = _.filter(vm.vfModules, function(item){
+                                                            return modulesAaiIds.indexOf(item.id) > -1 && item.properties["model-customization-id"] === mdl.customizationUuid;
+                                                        }).length;
+
+                                                        mdl.scalable = mdl.properties.max_vf_module_instances.value - mdl.currentCount > 0;
                                                     }else{
                                                         mdl.scalable = false;
                                                     }
@@ -254,7 +268,7 @@
                         relatedInstanceList: [],
                         requestParameters:requestParametersData
                     };
-                    requestInfoData.instanceName = vnf.name + "_" + (vnf.groupModules[moduleToScale.customizationUuid].length + 1);
+                    requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
                 }else{
                     data = {
                         vnfName: vnf.name,
@@ -389,6 +403,7 @@
             // var promiseArrOfGetVnfs = preparePromiseArrOfGetVnfs(instances);
 
             vm.vnfs = [];
+            vm.vfModules = [];
 
             AaiService.getVnfsByCustomerIdAndServiceType(
                 vm.changeManagement.subscriberId,
@@ -407,6 +422,8 @@
                                     }
                                 } else if (nodeType === "service-instance") {
                                     vm.serviceInstances.push(vnfsData[i]);
+                                } else if (nodeType === "vf-module") {
+                                    vm.vfModules.push(vnfsData[i]);
                                 }
                             }
                         }
