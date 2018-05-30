@@ -3,6 +3,161 @@
 VID Release Notes
 =================
 
+Version: 2.0.0
+--------------
+
+:Release Date: 2018-06-07
+
+New Features
+------------
+
+1. VoLTE E2E services instantiation.
+2. Change Management - invoking vNF In-Place SW Update without a scheduler.
+3. Manual vNF Scale Out.
+
+**Epics**
+
+-  [`VID-101`_] - Port Mirroring
+-  [`VID-106`_] - Cancel "Pending" workflows
+-  [`VID-110`_] - Owning Entity
+-  [`VID-114`_] - Preload Automation
+-  [`VID-116`_] - Tenant Isolation
+-  [`VID-120`_] - Active/Deactivate service type transport
+-  [`VID-124`_] - Agnostic vNF In-Place SW Update
+-  [`VID-127`_] - Agnostic vNF Configuration Update
+-  [`VID-131`_] - Port mirroring - pProbe configuration
+-  [`VID-136`_] - Support for pProbes
+-  [`VID-139`_] - Refactor Scheduler
+-  [`VID-148`_] - Non-Functional requirements - Resiliency
+-  [`VID-154`_] - Non-Functional requirements - Stability
+-  [`VID-157`_] - Non-Functional requirements - Performance
+-  [`VID-158`_] - Non-Functional requirements - Usability
+-  [`VID-160`_] - Non-Functional requirements - Scalability
+-  [`VID-161`_] - Non-Functional requirements - Security (CII passing badge + 50% test coverage)
+-  [`VID-162`_] - OOM integration
+-  [`VID-179`_] - Change management - working without scheduler
+-  [`VID-180`_] - Support manual scale out
+-  [`VID-192`_] - Verify features merged from ECOMP 1802
+
+.. _VID-101: https://jira.onap.org/browse/VID-101
+.. _VID-106: https://jira.onap.org/browse/VID-106
+.. _VID-110: https://jira.onap.org/browse/VID-110
+.. _VID-114: https://jira.onap.org/browse/VID-114
+.. _VID-116: https://jira.onap.org/browse/VID-116
+.. _VID-120: https://jira.onap.org/browse/VID-120
+.. _VID-124: https://jira.onap.org/browse/VID-124
+.. _VID-127: https://jira.onap.org/browse/VID-127
+.. _VID-131: https://jira.onap.org/browse/VID-131
+.. _VID-136: https://jira.onap.org/browse/VID-136
+.. _VID-139: https://jira.onap.org/browse/VID-139
+.. _VID-148: https://jira.onap.org/browse/VID-148
+.. _VID-154: https://jira.onap.org/browse/VID-154
+.. _VID-157: https://jira.onap.org/browse/VID-157
+.. _VID-158: https://jira.onap.org/browse/VID-158
+.. _VID-160: https://jira.onap.org/browse/VID-160
+.. _VID-161: https://jira.onap.org/browse/VID-161
+.. _VID-162: https://jira.onap.org/browse/VID-162
+.. _VID-179: https://jira.onap.org/browse/VID-179
+.. _VID-180: https://jira.onap.org/browse/VID-180
+.. _VID-192: https://jira.onap.org/browse/VID-192
+
+
+**Stories**
+
+-  [`VID-16`_] - Replace any remaining openecomp reference by onap
+-  [`VID-86`_] - Migrate to org.onap
+-  [`VID-102`_] - Create "Port mirror" configuration - Attach Source & collector VNFs
+-  [`VID-103`_] - Create "Port mirror" configuration - General Required Fields
+-  [`VID-104`_] - Configuration supporting actions
+-  [`VID-105`_] - Create "Port mirror" configuration - Get model information
+-  [`VID-107`_] - 3rd party simulator
+-  [`VID-108`_] - Cancel Scheduled workflows
+-  [`VID-109`_] - Change information of columns in the "Pending" section of the "dashboard"
+-  [`VID-111`_] - New properties logic
+-  [`VID-112`_] - Filter service instance by new properties
+-  [`VID-113`_] - Implement new properties & their values
+-  [`VID-115`_] - Resume VF- module (after pause)
+-  [`VID-117`_] - Create Application ENV
+-  [`VID-118`_] - Deploy Services on VID operational
+-  [`VID-119`_] - Activate/Deactivate Application ENV
+-  [`VID-121`_] - Deactivate a Transport service logic
+-  [`VID-122`_] - Service Instance Deactivate - API MSO
+-  [`VID-123`_] - "Activate" avilable only for service instance from type= transport
+-  [`VID-125`_] - VNF In Place Software Update API - MSO
+-  [`VID-126`_] - Support new workflow "Agnostic vNF In-Place SW Update"
+-  [`VID-128`_] - Support workflow "vnf Config Update"
+-  [`VID-129`_] - Rules For Converting Payload Spreadsheet To JSON
+-  [`VID-130`_] - VNF Config Update - API MSO
+-  [`VID-132`_] - Get pnf-fromModel-byRegion - A&AI API
+-  [`VID-133`_] - pProbe config create request - MSO API
+-  [`VID-134`_] - Associate PNF instance to port mirroring configuration by policy
+-  [`VID-135`_] - Get Port Mirroring Configuration By Policy Node type
+-  [`VID-137`_] - Associate PNF instance to service instance
+-  [`VID-138`_] - Disassociate PNF instance from service instance
+-  [`VID-140`_] - New function to support Scheduler in widget
+-  [`VID-151`_] - ONAP Support
+-  [`VID-174`_] - Change management: bypassing scheduler for immediate operations
+-  [`VID-185`_] - UI changes for working without scheduler
+-  [`VID-186`_] - docker alignment analyzes
+-  [`VID-188`_] - UI for Scale Out workflow
+-  [`VID-189`_] - VoLTE use case support
+-  [`VID-191`_] - Changes to API to SO for Manual scale out use case
+-  [`VID-197`_] - Reach 50% unit test coverage
+-  [`VID-201`_] - User inteface for invoking upgrade workflow
+-  [`VID-202`_] - Verify R1 and R2 features - integration and regression tests
+-  [`VID-216`_] - Update ReadTheDocs docs folder
+            
+.. _VID-16: https://jira.onap.org/browse/VID-16
+.. _VID-86: https://jira.onap.org/browse/VID-86
+.. _VID-102: https://jira.onap.org/browse/VID-102
+.. _VID-103: https://jira.onap.org/browse/VID-103
+.. _VID-104: https://jira.onap.org/browse/VID-104
+.. _VID-105: https://jira.onap.org/browse/VID-105
+.. _VID-107: https://jira.onap.org/browse/VID-107
+.. _VID-108: https://jira.onap.org/browse/VID-108
+.. _VID-109: https://jira.onap.org/browse/VID-109
+.. _VID-111: https://jira.onap.org/browse/VID-111
+.. _VID-112: https://jira.onap.org/browse/VID-112
+.. _VID-113: https://jira.onap.org/browse/VID-113
+.. _VID-115: https://jira.onap.org/browse/VID-115
+.. _VID-117: https://jira.onap.org/browse/VID-117
+.. _VID-118: https://jira.onap.org/browse/VID-118
+.. _VID-119: https://jira.onap.org/browse/VID-119
+.. _VID-121: https://jira.onap.org/browse/VID-121
+.. _VID-122: https://jira.onap.org/browse/VID-122
+.. _VID-123: https://jira.onap.org/browse/VID-123
+.. _VID-125: https://jira.onap.org/browse/VID-125
+.. _VID-126: https://jira.onap.org/browse/VID-126
+.. _VID-128: https://jira.onap.org/browse/VID-128
+.. _VID-129: https://jira.onap.org/browse/VID-129
+.. _VID-130: https://jira.onap.org/browse/VID-130
+.. _VID-132: https://jira.onap.org/browse/VID-132
+.. _VID-133: https://jira.onap.org/browse/VID-133
+.. _VID-134: https://jira.onap.org/browse/VID-134
+.. _VID-135: https://jira.onap.org/browse/VID-135
+.. _VID-137: https://jira.onap.org/browse/VID-137
+.. _VID-138: https://jira.onap.org/browse/VID-138
+.. _VID-140: https://jira.onap.org/browse/VID-140
+.. _VID-151: https://jira.onap.org/browse/VID-151
+.. _VID-174: https://jira.onap.org/browse/VID-174
+.. _VID-185: https://jira.onap.org/browse/VID-185
+.. _VID-186: https://jira.onap.org/browse/VID-186
+.. _VID-188: https://jira.onap.org/browse/VID-188
+.. _VID-189: https://jira.onap.org/browse/VID-189
+.. _VID-191: https://jira.onap.org/browse/VID-191
+.. _VID-197: https://jira.onap.org/browse/VID-197
+.. _VID-201: https://jira.onap.org/browse/VID-201
+.. _VID-202: https://jira.onap.org/browse/VID-202
+.. _VID-216: https://jira.onap.org/browse/VID-216
+
+
+**Other**
+
+In order to work properly, VID needs a working instance of SDC, A&AI and SO.
+
+===========
+
+
 Version: 1.1.1
 --------------
 

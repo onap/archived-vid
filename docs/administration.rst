@@ -16,6 +16,11 @@ Actions
   |  ``curl -X POST 'http://vid.api.simpledemo.onap.org:8080/vid/maintenance/category_parameter/lineOfBusiness' -H 'Accept-Encoding: gzip, deflate' -H 'Content-Type:application/json' -d '{"options":["Demonstration"]}'``
   |
   |  (Replace lineOfBusiness with: platform, project, owningEntity - in order to add Demonstration to all other drop downs as well)
+
+- |  **Set change management workflows support for a VNF** 
+  |  VID administrator has to set explicity the available workflows by VNF UUID and invariantUUID. This gets done easily by a POST request. In the following example we set both Scale out and In software update support for UUID X-X-X-X and invariantUUID Y-Y-Y-Y:
+  |
+  |  ``curl -X POST 'http://vid.api.simpledemo.onap.org:8080/vid/change-management/vnf_workflow_relation' -H 'Accept-Encoding: gzip, deflate' -H 'Content-Type:application/json' -d '{"workflowsDetails":[{"workflowName":"VNF In Place Software Update","vnfDetails":{"UUID":"X-X-X-X","invariantUUID":"Y-Y-Y-Y"}}, {"workflowName":"VNF Scale Out","vnfDetails":{"UUID":"X-X-X-X","invariantUUID":"Y-Y-Y-Y"}}]}'``
   
 - |  **VoLTE E2E services deployment support** 
   |  VID supports VoLTE E2E services deployment. In order to trigger the E2E flow, the service category in the model (as SDC generates it) has to be set to "E2E Service".
