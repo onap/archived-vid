@@ -10,13 +10,11 @@ Version: 2.0.0
 
 New Features
 ------------
-
 1. VoLTE E2E services instantiation.
 2. Change Management - invoking vNF In-Place SW Update without a scheduler.
 3. Manual vNF Scale Out.
 
 **Epics**
-
 -  [`VID-101`_] - Port Mirroring
 -  [`VID-106`_] - Cancel "Pending" workflows
 -  [`VID-110`_] - Owning Entity
@@ -61,9 +59,7 @@ New Features
 .. _VID-180: https://jira.onap.org/browse/VID-180
 .. _VID-192: https://jira.onap.org/browse/VID-192
 
-
 **Stories**
-
 -  [`VID-16`_] - Replace any remaining openecomp reference by onap
 -  [`VID-86`_] - Migrate to org.onap
 -  [`VID-102`_] - Create "Port mirror" configuration - Attach Source & collector VNFs
@@ -150,13 +146,16 @@ New Features
 .. _VID-202: https://jira.onap.org/browse/VID-202
 .. _VID-216: https://jira.onap.org/browse/VID-216
 
+**Security Notes**
+VID code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The VID open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`_.
+
+Quick Links:
+- `VID project page <https://wiki.onap.org/display/DW/Virtual+Infrastructure+Deployment+Project>`_
+- `Passing Badge information for VID <https://bestpractices.coreinfrastructure.org/en/projects/1658>`_
+- `Project Vulnerability Review Table for VID <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`_
 
 **Other**
-
 In order to work properly, VID needs a working instance of SDC, A&AI and SO.
-
-===========
-
 
 Version: 1.1.1
 --------------
@@ -171,7 +170,6 @@ New Features
 3. PNF Instantiation - PNFs are already installed on the edges of the cloud. In order to configure the PNF, the service needs to be connected to the PNF.
 
 **Epics**
-
 -  [`VID-25`_] - Role management: Global Read only role
 -  [`VID-26`_] - Role management: Support VID specific Roles
 -  [`VID-27`_] - Change management: Schedule workflow
@@ -189,7 +187,6 @@ New Features
 .. _VID-31: https://jira.onap.org/browse/VID-31
 
 **Stories**
-
 -  [`VID-44`_] - Implement change management phase 1
 -  [`VID-48`_] - Change management: Schedule workflow
 -  [`VID-49`_] - Change management: Status of workflow
@@ -207,7 +204,6 @@ New Features
 
 Bug Fixes
 ----------
-
 -  [`VID-20`_] - Failed to get service models from ASDC in VID
 -  [`VID-59`_] - VID Fails Robot Health Check
 -  [`VID-62`_] - VID healthcheck failure in RS ORD ONAP 1.1.0
@@ -225,15 +221,12 @@ Bug Fixes
 
 
 **Known Issues**
-
 - `VID-78 <https://jira.onap.org/browse/VID-78>`_ VID shows the HTML code output whenever the customer list is empty (Cosmetic)
 
 **Upgrade Notes**
-
 A scheduler is needed for the change management feature to work (not included in the Amsterdam release).
 
 **Other**
-
 In order to work properly, VID needs a working instance of SDC, A&AI and SO.
 
 ===========
