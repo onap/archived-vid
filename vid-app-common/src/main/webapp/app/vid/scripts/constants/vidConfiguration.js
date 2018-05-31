@@ -107,7 +107,7 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 
 	var SCHEDULER_PORTAL_URL = "";
 
-	var SCALE_OUT_CONTROLLERS = ["", "SDN-C", "APP-C"];
+	var SCALE_OUT_CONTROLLERS = ["", "SDNC", "APPC"];
 	
     return {
     	ASDC_MODEL_STATUS : ASDC_MODEL_STATUS,
