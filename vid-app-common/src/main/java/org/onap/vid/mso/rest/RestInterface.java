@@ -37,7 +37,7 @@ public interface RestInterface {
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Delete(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) throws Exception;
+    <T> void Delete(T t, Object r, String sourceID, String path, RestObject<T> restObject) throws Exception;
 
     /**
      * Post.

@@ -21,7 +21,7 @@
 "use strict";
 
 var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $timeout, $log,
-    DeleteResumeService, CreationService, UtilityService) {
+    DeleteResumeService, CreationService, DataService, UtilityService) {
 
     $scope.isDialogVisible = false;
     $scope.summaryControl = {};
@@ -32,6 +32,7 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 
     $scope.$on(COMPONENT.DELETE_RESUME_COMPONENT, function(event, request) {
 
+    $scope.isE2EService = false;
     $scope.isDataVisible = false;
 	$scope.isSpinnerVisible = false;
 	$scope.isErrorVisible = false;
@@ -41,6 +42,7 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 	$scope.dialogMethod = request.dialogMethod;
 	callbackFunction = request.callbackFunction;
 	componentId = request.componentId;
+    $scope.isServiceInstance = componentId === "service";
 
     DeleteResumeService.initializeComponent(request.componentId);
 
@@ -69,6 +71,8 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 	}
 
     $scope.confirm = function() {
+        DataService.setE2EService($scope.isE2EService); //VoLTE support
+
     	var requiredFields = $scope.userProvidedControl.getRequiredFields();
 		if (requiredFields === "") {
 			$scope.isErrorVisible = false;
@@ -96,7 +100,7 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 
             var requestDetails = DeleteResumeService.getMsoRequestDetails($scope.userProvidedControl.getList());
 
-            if(DeleteResumeService.isMacro === true){
+            if(!DataService.getE2EService() && DeleteResumeService.isMacro === true){
             	requestDetails.requestParameters.aLaCarte = false;
             }
 
@@ -144,5 +148,5 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 }
 
 appDS2.controller("deleteResumeDialogController", [ "COMPONENT", "FIELD", "$scope", "$http",
-		"$timeout", "$log", "DeleteResumeService","CreationService", "UtilityService",
+		"$timeout", "$log", "DeleteResumeService","CreationService", "DataService", "UtilityService",
     deleteResumeDialogController]);

@@ -235,7 +235,31 @@ public class MsoController extends RestrictedBaseController {
         return (new ResponseEntity<>(w.getResponse(), HttpStatus.OK));
     }
 
-	/**
+    /**
+     * Delete E2e svc instance.
+     *
+     * @param serviceInstanceId the service instance id
+     * @param request           the request
+     * @return the response entity
+     * @throws Exception the exception
+     */
+    @RequestMapping(value = "/mso_delete_e2e_svc_instance/{serviceInstanceId}", method = RequestMethod.POST)
+    public ResponseEntity<String> deleteE2eSvcInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
+                                                    HttpServletRequest request, @RequestBody LinkedHashMap<String, Object> mso_request) throws Exception {
+
+        String methodName = "deleteE2eSvcInstance";
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        MsoResponseWrapper w = msoBusinessLogic.deleteE2eSvcInstance(mso_request.get("requestDetails"), serviceInstanceId);
+
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
+        // always return OK, the MSO status code is embedded in the body
+
+        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
+
+    }
+    
+    /**
      * Delete svc instance.
      *
      * @param serviceInstanceId the service instance id

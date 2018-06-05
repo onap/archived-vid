@@ -20,6 +20,7 @@ public interface MsoInterface {
     
     //For VoLTE E2E services
     MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint) throws Exception;
 
     /**
      * will create a virtual network function using MSO service.

@@ -266,8 +266,10 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 					+ DataService.getServiceInstanceId() + "/networks/"
 					+ DataService.getNetworkInstanceId();
 			case COMPONENT.SERVICE:
-				return "mso_delete_svc_instance/"
-					+ DataService.getServiceInstanceId();
+				if(DataService.getE2EService() === true)
+					return "mso_delete_e2e_svc_instance/"+ DataService.getServiceInstanceId();
+				else
+					return "mso_delete_svc_instance/"+ DataService.getServiceInstanceId();
 			case COMPONENT.VNF:
 				return "mso_delete_vnf_instance/"
 					+ DataService.getServiceInstanceId() + "/vnfs/"
@@ -291,9 +293,22 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 			value : value
 		});
 	};
-	
+
+	var getMsoE2ERequest = function(parameterList) {
+		return {
+			"globalSubscriberId": DataService.getSubscriberName(),
+			"serviceType": DataService.getServiceType()
+		};
+	};
+
     var getMsoRequestDetails = function(parameterList) {
     	console.log("getMsoRequestDetails invoked");
+
+		//VoLTE logic goes here
+		if(DataService.getE2EService() === true) {
+			return getMsoE2ERequest(parameterList);
+		}
+
 		var inventoryInfo = ComponentService.getInventoryInfo(
 			_this.componentId, DataService.getInventoryItem());
 		var modelInfo = DataService.getModelInfo(_this.componentId);

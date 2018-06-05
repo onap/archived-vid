@@ -197,6 +197,23 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
     @Override
+    public MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String serviceInstanceId) throws Exception {
+        String methodName = "deleteE2eSvcInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        String endpoint;
+        try {
+            endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_E2E_SVC_INSTANCE);
+        } catch (Exception exception) {
+            throw exception;
+        }
+
+        String svc_endpoint = endpoint + "/" + serviceInstanceId;
+
+        return msoClientInterface.deleteE2eSvcInstance(requestDetails, svc_endpoint);
+    }
+    
+    @Override
     public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception {
         String methodName = "deleteSvcInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");

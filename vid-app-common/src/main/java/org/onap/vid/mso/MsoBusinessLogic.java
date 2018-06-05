@@ -18,6 +18,8 @@ public interface MsoBusinessLogic {
 
     MsoResponseWrapper createE2eSvcInstance(Object msoRequest) throws Exception;
     
+    MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String serviceInstanceId) throws Exception;
+    
     MsoResponseWrapper createVnf(RequestDetails requestDetails, String serviceInstanceId) throws Exception;
 
     MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception;

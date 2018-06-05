@@ -85,6 +85,14 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
+    public MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint) throws Exception {
+        String methodName = "deleteE2eSvcInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+
+        return deleteInstance(requestDetails, endpoint);
+    }
+    
+    @Override
     public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception {
         String methodName = "deleteSvcInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -165,7 +173,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      * @return the mso response wrapper
      * @throws Exception the exception
      */
-    public MsoResponseWrapper deleteInstance(RequestDetails request, String path) throws Exception {
+    public MsoResponseWrapper deleteInstance(Object request, String path) throws Exception {
         String methodName = "deleteInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 

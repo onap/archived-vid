@@ -170,7 +170,7 @@ public class RestMsoImplementation implements RestInterface {
     }
 
     @Override
-    public <T> void Delete(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) {
+    public <T> void Delete(T t, Object r, String sourceID, String path, RestObject<T> restObject) {
 
         String methodName = "Delete";
         String url="";

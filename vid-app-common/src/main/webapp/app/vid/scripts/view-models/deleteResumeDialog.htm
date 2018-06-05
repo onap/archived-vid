@@ -32,7 +32,13 @@
 		</div>
 
       <parameter-block control="summaryControl"></parameter-block>
-      
+
+		<!-- tell VID if it's an E2E VoLTE service-->
+		<div style="margin-left: 15px" ng-show="isServiceInstance">
+			<input type="checkbox" ng-model="isE2EService" />
+			This is an E2E (VoLTE) service instance
+	  	</div>
+
       <div ngx-visible="{{isDataVisible}}">
 		
         <h4>
