@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_1802aa6f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/HttpsAuthClientTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-06-14T07:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_baa4efb9",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "f1bdbf57a09c57d2677fa4c4d4f726975a019628",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_ba8b8f1d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/ParametrizedAAIRestInterfaceTest.java",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2018-05-25T11:50:12Z",
       "side": 1,
       "message": "private",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 10
+      },
+      "revId": "f1bdbf57a09c57d2677fa4c4d4f726975a019628",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_382a06e8",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/ParametrizedAAIRestInterfaceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-06-14T07:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_ba8b8f1d",
       "range": {
         "startLine": 32,
         "startChar": 4,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_f8333e60",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/SingleAAIRestInterfaceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-06-14T07:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_3a90df4d",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 10
+      },
+      "revId": "f1bdbf57a09c57d2677fa4c4d4f726975a019628",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_da9c5b6d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/SingleAAIRestInterfaceTest.java",
         "patchSetId": 4
@@ -82,6 +154,24 @@
       "writtenOn": "2018-05-25T11:50:12Z",
       "side": 1,
       "message": "you could think about extracting strings into consts",
+      "revId": "f1bdbf57a09c57d2677fa4c4d4f726975a019628",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_58a592b3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/SingleAAIRestInterfaceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-06-14T07:39:03Z",
+      "side": 1,
+      "message": "it is just a test so i wouldnt be so prudential and sensible for clean code.",
+      "parentUuid": "5a93c517_da9c5b6d",
       "revId": "f1bdbf57a09c57d2677fa4c4d4f726975a019628",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
