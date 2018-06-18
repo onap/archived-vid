@@ -2,49 +2,14 @@ package org.onap.vid.aai.model;
 
 import org.junit.Test;
 
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class AaiRelationResponseTest {
 
-    private AaiRelationResponse createTestSubject() {
-        return new AaiRelationResponse();
-    }
-
     @Test
-    public void testGetResourceVersion() throws Exception {
-        AaiRelationResponse testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getResourceVersion();
+    public void shouldHaveValidGettersAndSetters(){
+        assertThat(AaiRelationResponse.class, hasValidGettersAndSetters());
     }
 
-    @Test
-    public void testSetResourceVersion() throws Exception {
-        AaiRelationResponse testSubject;
-        String resourceVersion = "";
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setResourceVersion(resourceVersion);
-    }
-
-    @Test
-    public void testGetRelationshipList() throws Exception {
-        AaiRelationResponse testSubject;
-        RelationshipList result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getRelationshipList();
-    }
-
-    @Test
-    public void testSetRelationshipList() throws Exception {
-        AaiRelationResponse testSubject;
-        RelationshipList relationshipList = null;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setRelationshipList(relationshipList);
-    }
 }
