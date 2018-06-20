@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_bd510932",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "Consider using Spring here for injecting beans, this could save the other constructor",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_fd579125",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "VID never deletes from AAI, only reads, maybe it\u0027s worth commenting this function out for now (anyway it\u0027s good that you refactored this one too for consistency)",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_dd5c154f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "Sometimes response code is not 200:\nOK(200, \"OK\"),\nCREATED(201, \"Created\"),\nACCEPTED(202, \"Accepted\"),\nNO_CONTENT(204, \"No Content\"),\nRESET_CONTENT(205, \"Reset Content\"),\nPARTIAL_CONTENT(206, \"Partial Content\")\nWe better support these response codes too",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_3d46597c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "I think this function was never in use, we can comment it out or remove it",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_dd75f5cc",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "SSLContextProvider is only in use inside HttpsAuthClient. It should be constructed in there instead of in AAIRestInterface",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_1d435d6d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/HttpsAuthClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "I suggest using systemPropertyHelper.isClientCertEnabled() here",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_9d7f6dab",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/LogHelper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "It was a great idea to make this class for logging functions. I\u0027d move it to org.onap.vid.utils ,  instead of org.onap.vid.aai.util , as it is relevant across the whole application",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_1d6cbd07",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/ServletRequestHelper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "I understand the purpose if this class is to make the AAIClient testable. It\u0027s worth adding some comments in order to describe the class role and what it does, it wasn\u0027t clear at first place",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_bda34942",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/SystemPropertyHelper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-06-20T14:34:43Z",
+      "side": 1,
+      "message": "We can use getAAIUseClientCert().orElse(\"false\") here instead of both isPresent and orElseGet",
+      "revId": "6d8fa7d179b8de802ae386b317ddd1214eac1c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
