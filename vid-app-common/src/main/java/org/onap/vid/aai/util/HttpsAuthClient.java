@@ -93,9 +93,8 @@ public class HttpsAuthClient{
 			KeyManagerFactory kmf = null;
 			if (useClientCert) {
 			
-				try {
+				try(FileInputStream fin = new FileInputStream(keystore_path)) {
 					kmf = KeyManagerFactory.getInstance("SunX509");
-					FileInputStream fin = new FileInputStream(keystore_path);
 					KeyStore ks = KeyStore.getInstance("PKCS12");
 					char[] pwd = decrypted_keystore_password.toCharArray();
 					ks.load(fin, pwd);

@@ -48,6 +48,8 @@ public class HttpsComponentsClient{
 	 */
 	public static CloseableHttpClient getClient(String certFilePath) throws Exception {
 		CloseableHttpClient httpclient = null;
+		FileInputStream fin = null;
+		FileInputStream fin1 = null;
 		try {
 			
 			String truststore_path = certFilePath + AAIProperties.FILESEPARTOR + SystemProperties.getProperty(AAIProperties.AAI_TRUSTSTORE_FILENAME);
@@ -60,14 +62,14 @@ public class HttpsComponentsClient{
 			SSLContextBuilder sslContextB = new SSLContextBuilder();
 			
 			KeyStore ks = KeyStore.getInstance("PKCS12");
-			FileInputStream fin = new FileInputStream(keystore_path);
+			fin = new FileInputStream(keystore_path);
 			char[] pwd = decrypted_keystore_password.toCharArray();
 			ks.load(fin, pwd);
 			
 			sslContextB.loadKeyMaterial(ks, pwd);
 			
 			KeyStore ts = KeyStore.getInstance("JKS");
-			FileInputStream fin1 = new FileInputStream(truststore_path);
+			fin1 = new FileInputStream(truststore_path);
 			char[] pwd1 = decrypted_truststore_password.toCharArray();
 			ts.load(fin1, pwd1);
 			
@@ -90,6 +92,10 @@ public class HttpsComponentsClient{
 
 		} catch (Exception e) {
 			throw e;
+		}
+		finally {
+			fin.close();
+			fin1.close();
 		}
 		return httpclient;
 	}
