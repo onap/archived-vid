@@ -1,0 +1,67 @@
+<div class="content">
+  <form #form="ngForm" name="networkNodeForm" class="form-wrapper">
+    <div *ngIf="isUserProvidedNaming" class="details-item">
+      <label class="placeholder">Instance name*</label>
+      <input [attr.data-tests-id]="'instanceName'" id="instance-name" [(ngModel)]="serviceInstance.instanceName" name="instance-name"
+        class="form-control input-text" placeholder="Type Instance Name" type="text" required>
+    </div>
+
+    <div class="details-item">
+      <label>Product family</label>
+      <select class="form-control input-text" [(ngModel)]="serviceInstance.productFamily" data-tests-id="productFamily" id="product-family-select"
+        name="product-family-select">
+        <option class="placeholder" [value]="undefined" disabled>Select Product Family</option>
+        <option *ngFor="let productFamily of productFamilies | async" [value]="productFamily.id" [disabled]="!productFamily.isPermitted">{{productFamily.name}}</option>
+      </select>
+    </div>
+
+    <div class="details-item">
+      <label>LCP region:*</label>
+      <select (change)="onLcpSelect($event.target.value)" class="form-control input-text" [(ngModel)]="serviceInstance.lcpRegion"
+        name="lcpRegion" id="lcpRegion-select" data-tests-id="lcpRegion" required>
+        <option class="placeholder1" [value]="undefined" disabled>Select LCP Region</option>
+        <option *ngFor="let lcpRegion of lcpRegions | async" [value]="lcpRegion.id" [disabled]="!lcpRegion.isPermitted" class="lcpRegionOption">{{lcpRegion.id}}</option>
+      </select>
+    </div>
+    <div class="details-item">
+      <label>Tenant:*</label>
+      <select class="form-control input-text" [(ngModel)]="serviceInstance.tenantId" name="tenant" id="tenant-select" data-tests-id="tenant"
+        required>
+        <option class="placeholder1" [value]="undefined" disabled>Select Tenant</option>
+        <option *ngFor="let tenant of tenants" [value]="tenant.id" [disabled]="!tenant.isPermitted">{{tenant.name}}</option>
+      </select>
+    </div>
+
+    <div class="details-item">
+      <label>AIC Zone:</label>
+      <select class="form-control input-text" name="aicZone" id="aicZone-select" data-tests-id="aic_zone" [(ngModel)]="serviceInstance.aicZone">
+        <option class="placeholder1" [value]="undefined" disabled>Select AIC Zone</option>
+        <option class="aicZoneOption" *ngFor="let aicZone of aicZones | async" [value]="aicZone.id">{{aicZone.name}}</option>
+      </select>
+    </div>
+    <div class="details-item">
+      <label>Platform:</label>
+      <select data-tests-id="platform" class="form-control input-text" name="platform" id="platform" [(ngModel)]="serviceInstance.platformName">
+        <option class="placeholder1" [value]="undefined" disabled>Select Platform</option>
+        <option *ngFor="let platform of platformList | async" [value]="platform.id">{{platform.name}}</option>
+      </select>
+    </div>
+
+    <div class="details-item">
+      <label>Line Of Business:*</label>
+      <select data-tests-id="lineOfBusiness" class="form-control input-text" [(ngModel)]="serviceInstance.lineOfBusiness"
+        name="owningEntity" id="owningEntity" required>
+        <option class="placeholder1" [value]="undefined" disabled>Select Line Of Business</option>
+        <option *ngFor="let lineOfBusiness of lineOfBusinessList | async" [value]="lineOfBusiness.id">{{lineOfBusiness.name}}</option>
+      </select>
+    </div>
+    <div class="details-item">
+      <label>Rollback On Failure:</label>
+      <select data-tests-id="suppressRollback" class="form-control input-text" name="rollbackOnFailure" id="rollbackOnFailure" [(ngModel)]="serviceInstance.rollback">
+        <option *ngFor="let option of rollbackOnFailure" [value]="option.id">{{option.name}}</option>
+      </select>
+    </div>
+  </form>
+
+</div>
+

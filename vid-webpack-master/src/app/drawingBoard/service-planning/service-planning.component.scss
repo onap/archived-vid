@@ -1,0 +1,16 @@
+
+.service-planning-content {
+  display: flex;
+  flex: 1;
+}
+
+.span-over {
+  display: flex;
+  flex: 1;
+}
+
+//css for the icon. :host ::ng-deep are needed for applying css to child component
+:host ::ng-deep .upload-icon-service-planing {
+  height: 117px;
+  margin-top: 32px;
+}

@@ -1,0 +1,13 @@
+<div class="service-planning-header">
+  <drawing-board-header></drawing-board-header>
+</div>
+<div class="service-planning-content row">
+  <available-models-tree class="left-side col-md-6" (highlightInstances)="highlightInstancesBySelectingNode($event)"></available-models-tree>
+  <!--<no-content-message-and-icon *ngIf="!isShowTree()" class="span-over"-->
+                               <!--data-title="Please add objects (VNFs, network, modules etc.) from the left tree to design the service instance"-->
+                               <!--subtitle="Once done, click Deploy to start instantiation"-->
+                               <!--iconPath="./img/UPLOAD.svg"-->
+                               <!--iconClass="upload-icon-service-planing"></no-content-message-and-icon>-->
+  <drawing-board-tree *ngIf="isShowTree()" class="span-over col-md-6" (highlightNode)="highlightNodeBySelectingInstance($event)"></drawing-board-tree>
+</div>
+

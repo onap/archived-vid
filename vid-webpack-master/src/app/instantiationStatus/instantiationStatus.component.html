@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="instantiation-status-header">
+    <div>
+      <div class="row" style="margin-left: 0;">
+        <div>
+          <span class="title">Instantiation Status</span>
+          <span class="icon-info"
+                triggers="mouseenter:mouseleave"
+                popover="This table presents all the instantiation requests you made that are waiting, during or finished instantiating. You may see others requests by removing the Show only my requests checkmark."
+                placement="bottom"></span>
+
+        </div>
+        <div class="lastUpdate">
+          <div style="float: left;margin-top: 3px;"><span>Last update:  {{lastUpdatedDate | date:'MMM. dd, yyyy | HH:mm'}}</span></div>
+          <div id="refresh-btn" class="refresh-btn" [ngClass]="{'spin' : !dataIsReady}" (click)="deactivateInterval(); refreshData(); activateInterval();">
+            <span class="icon-refresh"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="instantiation-status-data table-responsive">
+    <table id="instantiation-status" class="table table-bordered">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col" class="smallTd">User ID</th>
+        <th scope="col" class="normal">Model Name</th>
+        <th scope="col" class="normal">Instance Name</th>
+        <th scope="col" class="smallTd">Model version</th>
+        <th scope="col" class="normal">Subscriber</th>
+        <th scope="col" class="mediumTd">Service Type</th>
+        <th scope="col" class="normal">Region</th>
+        <th scope="col" class="mediumTd">Tenant</th>
+        <th scope="col" class="mediumTd">AIC Zone</th>
+        <th scope="col" class="mediumTd">Project</th>
+        <th scope="col" class="mediumTd">Owning entity</th>
+        <th scope="col" class="smallTd">Pause</th>
+        <th scope="col" class="mediumTd">Date</th>
+        <th scope="col" class="last">Status</th>
+      </tr>
+      </thead>
+      <tbody >
+        <tr *ngFor="let data of serviceInfoData; let i = index" [ngClass]="{'odd' : data.serviceIndex%2 == 1}" [id]="data.jobId"  (mouseenter)="currentJobId = data?.jobId">
+          <td class="smallTd" id="userId"><custom-ellipsis [id]="data.userId" [value]="data.userId"></custom-ellipsis></td>
+          <td class="normal" id="serviceModelName"><custom-ellipsis [id]="data.serviceModelName" [value]="data.serviceModelName"></custom-ellipsis></td>
+          <td class="normal" id="serviceInstanceName"><custom-ellipsis [id]="data.serviceInstanceName" [value]="data.serviceInstanceName"></custom-ellipsis></td>
+          <td class="smallTd" id="serviceModelVersion"><custom-ellipsis [id]="data.serviceModelVersion" [value]="data.serviceModelVersion"></custom-ellipsis></td>
+          <td class="normal" id="subscriberName"><custom-ellipsis [id]="data.subscriberName" [value]="data.subscriberName"></custom-ellipsis></td>
+          <td class="mediumTd" id="serviceType"><custom-ellipsis [id]="data.serviceType" [value]="data.serviceType"></custom-ellipsis></td>
+          <td class="normal" id="regionId"><custom-ellipsis [id]="data.regionId" [value]="data.regionId"></custom-ellipsis></td>
+          <td class="mediumTd" id="tenantName"><custom-ellipsis [id]="data.tenantName" [value]="data.tenantName"></custom-ellipsis></td>
+          <td class="mediumTd" id="aicZoneName"><custom-ellipsis [id]="data.aicZoneName" [value]="data.aicZoneName"></custom-ellipsis></td>
+          <td class="mediumTd" id="project"><custom-ellipsis [id]="data.project" [value]="data.project"></custom-ellipsis></td>
+          <td class="mediumTd" id="owningEntityName"><custom-ellipsis [id]="data.owningEntityName" [value]="data.owningEntityName"></custom-ellipsis></td>
+          <td class="smallTd" id="pause"><custom-ellipsis [id]="data.pause" [value]="data.pause"></custom-ellipsis></td>
+          <td class="mediumTd" id="created"><custom-ellipsis [id]="data.created" [value]="data.created | date:'MMM. dd, yyyy HH:mm'"></custom-ellipsis></td>
+          <td class="last" id="jobStatus" [ngClass]="data.jobStatus">
+            <custom-popover [value]="data.serviceStatus.tooltip" style="float: left;">
+              <svg-icon  id="jobStatusIcon-{{i}}" (click)="auditInfo(data)" svg-directive [fill]="data.serviceStatus.color" [widthViewBox]="27" [heightViewBox]="27"
+                        src="./assets/img/{{data.serviceStatus.iconClassName}}.svg"></svg-icon>
+            </custom-popover>
+            <div class="menu-div" (click)="onContextMenu($event, data); currentJobId = data.jobId">
+                <span class="icon-menu"></span>
+              <context-menu>
+                <ng-template contextMenuItem (execute)="open($event?.item)" [enabled]="isOpenVisible">
+                  <div [attr.data-tests-id]="'context-menu-open'">
+                    <span class="context-menu-icon"><i class="fa fa-external-link" aria-hidden="true"></i></span>
+                    Open
+                  </div>
+                </ng-template>
+                <ng-template contextMenuItem (execute)="auditInfo($event?.item)">
+                  <div  [attr.data-tests-id]="'context-menu-audit-info'">
+                    <span class="context-menu-icon audit-icon"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                    Audit info
+                  </div>
+                </ng-template>
+                <ng-template contextMenuItem let-item (execute)="deleteItem($event?.item)" [enabled]="isDeleteEnabled">
+                  <div [attr.data-tests-id]="'context-menu-delete'">
+                    <span class="context-menu-icon"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+                    Delete
+                  </div>
+                </ng-template>
+                <ng-template contextMenuItem let-item (execute)="hideItem($event?.item)" [enabled]="isHideEnabled">
+                  <div [attr.data-tests-id]="'context-menu-hide'">
+                    <span class="context-menu-icon"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+                    Hide request
+                  </div>
+                </ng-template>
+              </context-menu>
+            </div>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <audit-info-modal></audit-info-modal>
+</div>
+
+
+

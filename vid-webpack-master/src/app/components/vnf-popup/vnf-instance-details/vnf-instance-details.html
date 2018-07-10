@@ -1,0 +1,114 @@
+
+<div id="vnf-instance-details">
+  <form id="vnfForm" #vnfForm="ngForm" (ngSubmit)="onSubmit(vnfForm.value)" [formGroup]="instanceFormGroup">
+
+    <div class="details-item" *ngIf="instanceFormGroup.get('instanceName')">
+      <label class="required">Instance name:</label>
+      <input patternInput
+             pattern="^[a-zA-Z0-9_]*$"
+            [attr.data-tests-id]="'instanceName'"
+             [ngClass]="{'error-style' : _vnfInstanceDetailsService.hasInstanceNameError(instanceFormGroup) || _vnfInstanceDetailsService.hasUniqueError(isNotUniqueInstanceName)}"
+             id="instance-name" name="instance-name"
+             [formControlName]="'instanceName'"
+             class="form-control input-text"
+             placeholder="Type Instance Name"
+             type="text"
+             (blur)="checkForUniqueInstanceName()">
+      <form-control-error *ngIf="_vnfInstanceDetailsService.hasUniqueError(isNotUniqueInstanceName)" [message]="'Instance name is already in use, please pick another name.'"></form-control-error>
+      <form-control-error *ngIf="_vnfInstanceDetailsService.hasInstanceNameError(instanceFormGroup)" [message]="'Instance name may include only alphanumeric characters and underscore.'"></form-control-error>
+    </div>
+
+    <div *ngIf="isInputShouldBeShown(inputType.PRODUCT_FAMILY)" class="details-item">
+      <label>Product family:</label>
+      <select class="form-control input-text"
+              [ngClass]="{'error-style' :_vnfInstanceDetailsService.hasApiError('productFamilyId',productFamilies, instanceFormGroup)}"
+              data-tests-id="productFamily"
+              id="product-family-select"
+              [formControlName]="'productFamilyId'"
+              name="product-family-select" >
+        <option [value]="null" disabled>Select Product Family</option>
+        <option *ngFor="let productFamily of productFamilies | async" [value]="productFamily.id"
+                [disabled]="!productFamily.isPermitted">{{productFamily.name}}</option>
+      </select>
+      <form-control-error *ngIf="_vnfInstanceDetailsService.hasApiError('productFamilyId',productFamilies, instanceFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div *ngIf="isInputShouldBeShown(inputType.LCP_REGION)" class="details-item">
+      <label class="required">LCP region:</label>
+      <select
+        [ngClass]="{'error-style' :_vnfInstanceDetailsService.hasApiError('lcpCloudRegionId',vnfPopupDataModel?.lcpRegions, instanceFormGroup)}"
+        class="form-control input-text"
+        [formControlName]="'lcpCloudRegionId'"
+        name="lcpRegion" id="lcpRegion-select"
+        data-tests-id="lcpRegion">
+        <option [value]="null" disabled>Select LCP Region</option>
+        <option *ngFor="let lcpRegion of vnfPopupDataModel.lcpRegions" [value]="lcpRegion.id" [disabled]="!lcpRegion.isPermitted" class="lcpRegionOption">{{lcpRegion.id}}</option>
+      </select>
+      <form-control-error *ngIf="_vnfInstanceDetailsService.hasApiError('lcpCloudRegionId',vnfPopupDataModel?.lcpRegions, instanceFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div class="details-item" *ngIf="shouldShowLegacyRegion">
+      <label>Legacy Region:</label>
+      <input
+        [attr.data-tests-id]="'lcpRegionText'"
+        id="legacy-region"
+        name="legacy-region"
+        [formControlName]="'legacyRegion'"
+        class="form-control input-text"
+             placeholder="Type Legacy Region" type="text">
+    </div>
+
+    <div *ngIf="isInputShouldBeShown(inputType.TENANT)" class="details-item">
+      <label class="required">Tenant:</label>
+      <select class="form-control input-text"
+              [ngClass]="{'error-style' :_vnfInstanceDetailsService.hasApiError('tenantId',vnfPopupDataModel?.tenants, instanceFormGroup)}"
+              [formControlName]="'tenantId'"
+              name="tenant" id="tenant-select" data-tests-id="tenant">
+        <option [value]="undefined" disabled>Select Tenant</option>
+        <option *ngFor="let tenant of vnfPopupDataModel.tenants" [value]="tenant.id" [disabled]="!tenant.isPermitted">{{tenant.name}}</option>
+      </select>
+      <form-control-error *ngIf="_vnfInstanceDetailsService.hasApiError('tenantId',vnfPopupDataModel?.tenants, instanceFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div *ngIf="isInputShouldBeShown(inputType.LOB)"  class="details-item">
+      <label>Line of business:</label>
+      <select [attr.data-tests-id]="'lineOfBusiness'"
+              class="form-control input-text"
+              [ngClass]="{'error-style' :_vnfInstanceDetailsService.hasApiError('lineOfBusiness',vnfPopupDataModel?.lineOfBusinesses, instanceFormGroup)}"
+              name="lineOfBusiness" id="lineOfBusiness"
+              [formControlName]="'lineOfBusiness'">
+        <option [value]="null" disabled>Select Line Of Business</option>
+        <option *ngFor="let project of vnfPopupDataModel.lineOfBusinesses" [value]="project.id">{{project.name}}</option>
+      </select>
+      <form-control-error *ngIf="_vnfInstanceDetailsService.hasApiError('lineOfBusiness',vnfPopupDataModel?.lineOfBusinesses, instanceFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div *ngIf="isInputShouldBeShown(inputType.PLATFORM)" class="details-item">
+      <label class="required">Platform:</label>
+      <select
+        [attr.data-tests-id]="'platform'"
+        [ngClass]="{'error-style' :_vnfInstanceDetailsService.hasApiError('platformName',vnfPopupDataModel?.platforms, instanceFormGroup)}"
+        class="form-control input-text"
+        [formControlName]="'platformName'"
+        name="platform" id="platform">
+        <option [value]="null" disabled>Select Platform</option>
+        <option *ngFor="let platform of vnfPopupDataModel.platforms" [value]="platform.id">{{platform.name}}</option>
+      </select>
+      <form-control-error *ngIf="_vnfInstanceDetailsService.hasApiError('platformName',vnfPopupDataModel?.platforms, instanceFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+
+    <div *ngIf="isInputShouldBeShown(inputType.VG) && instanceFormGroup.get('volumeGroupName')" class="details-item" >
+      <label class="required">Volume Group Name:</label>
+      <input [attr.data-tests-id]="'volumeGroupName'"
+             id="vgName" name="vgName"
+             [ngClass]="{'error-style' :isNotUniqueVolumeGroupName}"
+             [formControlName]="'volumeGroupName'"
+             class="form-control input-text"
+             placeholder="Type Instance Name" type="text" (blur)="checkForUniqueGroupName()">
+      <form-control-error *ngIf="isNotUniqueVolumeGroupName" [message]="'Volume Group instance name is already in use, please pick another name.'"></form-control-error>
+    </div>
+
+    <dynamic-inputs *ngIf="dynamicInputs != undefined && dynamicInputs.length>0" [group]="instanceFormGroup" [list]="dynamicInputs"></dynamic-inputs>
+  </form>
+</div>

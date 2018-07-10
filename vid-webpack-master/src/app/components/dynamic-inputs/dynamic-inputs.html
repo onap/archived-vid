@@ -1,0 +1,22 @@
+<div *ngFor="let item of dynamicList">
+  <div id="{{item.id}}" class="details-item" [ngSwitch]="item.type" [formGroup]="group" [hidden]="!item.isVisible">
+    <label>{{item.name | dynamicInputLabel }}</label>
+    <select *ngSwitchCase="item.type === 'select'|| item.type === 'boolean'? item.type: ''" name="{{item.name}}" class="form-control input-text" [formControlName]="item.name" title="{{item.description}}" [required]="item.isRequired && item.isVisible"  maxlength="{{item.maxLength}}" minlength="{{item.minLength}}">
+      <option value="null" [selected]="item.value == null || item.value == undefined" hidden disabled>{{item.prompt}}</option>
+      <option *ngFor="let option of item.optionList" [ngValue]="option.id || option.name" [disabled]="!option.isPermitted" [selected]="option.isDataLoading">{{option.name}}</option>
+    </select>
+    <angular2-multiselect *ngSwitchCase="'multi_select'" [formControlName]="item.name" [(ngModel)]="item.selectedItems" [data]="item.optionList" [settings]="item.settings" title="{{item.description}}" [required]="item.isRequired && item.isVisible"></angular2-multiselect>
+    <input *ngSwitchCase="'number'"  name="{{item.name}}" class="form-control input-text" [formControlName]="item.name" type="number" placeholder="{{item.prompt}}" title="{{item.description}}" min="{{item.min}}" max="{{item.max}}" [readonly]="item.isReadOnly" [required]="item.isRequired && item.isVisible">
+    <div *ngSwitchCase="'file'">
+
+      <label class="dynamicFileName" for="dynamicFileInput-{{item.name}}">
+        <input id="dynamicFileInput-{{item.name}}"  name="{{item.name}}" class="form-control input-text" [formControlName]="item.name" type="file" placeholder="{{item.prompt}}" [readonly]="item.isReadOnly" [required]="item.isRequired && item.isVisible">
+        <label for="dynamicFileInput-{{item.name}}" class="labelForImage">
+          <span class="icon-browse"></span>
+        </label>
+      </label>
+    </div>
+    <input *ngSwitchCase="'checkbox'"  name="{{item.name}}" [formControlName]="item.name" type="checkbox"  data-toggle="toggle" title="{{item.description}}" [readonly]="item.isReadOnly" [required]="item.isRequired && item.isVisible">
+    <input *ngSwitchDefault name="{{item.name}}" class="form-control input-text" [formControlName]="item.name" placeholder="{{item.prompt}}" title="{{item.description}}" maxlength="{{item.maxLength}}" minlength="{{item.minLength}}" [readonly]="item.isReadOnly" [required]="item.isRequired && item.isVisible"/>
+  </div>
+</div>

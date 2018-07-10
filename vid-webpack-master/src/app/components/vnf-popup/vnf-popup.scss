@@ -1,0 +1,185 @@
+$grid-border: 1px #d2d2d2 solid;
+
+#instance-popup {
+  color: #191919;
+
+  .left-panel {
+    background: #f2f2f2;
+    border-right: $grid-border;
+  }
+
+  .header-common {
+    height: 100%;
+    align-items: center;
+    display: flex;
+    font-family: OpenSans-Semibold;
+    font-size: 12px;
+  }
+
+  .header-text {
+    padding-left: 30px;
+    @extend .header-common;
+  }
+
+  .header-left {
+    grid-area: header-left;
+    @extend .header-text;
+    @extend .left-panel;
+    border-bottom: $grid-border;
+
+    span {
+      font-family: OpenSans-Regular;
+      font-size: 14px;
+    };
+  }
+
+  .header-right {
+    grid-area: header-right;
+
+    @extend .header-text;
+    border-bottom: $grid-border;
+  }
+
+  .quantity-label {
+    grid-area: quantity-label;
+    @extend .header-common;
+    border-bottom: $grid-border;
+    height: 100%;
+    font-family: OpenSans-Regular;
+  }
+
+  .quantity {
+    grid-area: quantity;
+    border-left: $grid-border;
+    border-bottom: $grid-border;
+    border-top-style: none;
+    font-family: OpenSans-Semibold;
+    text-align: start;
+    text-indent: 10px;
+  }
+
+  .quantity-select {
+    width: 78px;
+    height: 100%;
+    border: 0;
+    background: white;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url('../../../assets/img/chevron.svg') 0 0 no-repeat;
+    background-size: 24px;
+    background-position-x: right;
+    background-position-y: center;
+  }
+  input[type="number"]:hover::-webkit-inner-spin-button {
+    height: 20px;
+  }
+
+  .model-information {
+    grid-area: model-information;
+
+    padding: 30px;
+    overflow: auto;
+    @extend .left-panel;
+  }
+
+  .instance-form {
+    grid-area: instance-form;
+  }
+
+  .popup-content {
+    display: grid;
+    grid-template-columns: 400px auto 30px 93px;
+    grid-template-rows: 50px calc(100vh - 180px);
+    grid-template-areas:
+      "header-left header-right header-right header-right"
+      "model-information instance-form instance-form instance-form";
+    padding: 0;
+  }
+}
+
+.modal {
+  background-color: #191919;
+  opacity: 0.8;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 0;
+}
+@media (min-width: 1150px) {
+  .popup-content {
+    grid-template-rows: 30px 680px;
+  }
+}
+
+.modal-content {
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.modal-footer {
+  .cancel {
+    width: 120px;
+    height: 36px;
+    background: #ffffff;
+    border: 1px solid  #009fdb;
+    border-radius: 2px;
+    span {
+      font-family: OpenSans-Regular;
+      font-size: 14px;
+      color: #009fdb;
+      line-height: 16px;
+    }
+  }
+
+  .submit {
+    width: 120px;
+    height: 36px;
+    background: #009fdb;
+    border-radius: 2px;
+    border-color: #009fdb;
+    span {
+      font-family: OpenSans-Regular;
+      font-size: 14px;
+      color: #FFFFFF;
+      line-height: 16px;
+    }
+  }
+}
+
+.modal-header {
+  background-color: #009fdb;
+
+  padding-bottom: 13px;
+  padding-top: 13px;
+  padding-left: 29px;
+  padding-right: 21px;
+
+  .close {
+    font-size: 32px;
+    font-weight: 200;
+    color: #d8d8d8;
+    text-shadow: none;
+    filter: none;
+    opacity: 1;
+  }
+
+  .modal-title {
+    font-family: OpenSans-Regular;
+    font-size: 24px;
+    color: #fff;
+    line-height: 34px;
+  }
+}
+//
+//@media (min-width: 1200px) {
+//  .service-model,
+//  .service-instance {
+//    width: 1050px;
+//    margin: 30px auto;
+//  }
+//}

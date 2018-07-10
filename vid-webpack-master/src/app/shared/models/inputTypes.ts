@@ -1,0 +1,12 @@
+export enum  InputType {
+  LCP_REGION = "LCP_REGION",
+  TENANT = "TENANT",
+  LOB  = "LOB",
+  PLATFORM = "PLATFORM",
+  ROLLBACK = "ROLLBACK",
+  PRODUCT_FAMILY = "PRODUCT_FAMILY",
+  VG = "VG"
+
+}
+
+

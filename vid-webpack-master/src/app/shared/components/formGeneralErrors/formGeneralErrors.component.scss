@@ -1,0 +1,48 @@
+.icon-alert {
+  margin-top: 10px;
+  &:before {
+    content: "\e904";
+    font-size: 30px;
+    color: #ffffff;
+  }
+}
+
+.icon-div {
+  background: rgb(207,41,41);
+  text-align: center;
+  padding-top: 18px;
+  width: 77px;
+  height: 110px;
+  float: left;
+}
+
+
+.error-title {
+  color: #cf2a2a;
+}
+
+.row-padding {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.parentbox {
+  padding-right: 0;
+}
+
+.parentbox:before {
+  content: ' ';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.childbox {
+  color: #cf2a2a;
+  display: inline-block;
+  vertical-align: middle;
+}

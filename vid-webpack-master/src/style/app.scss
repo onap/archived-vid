@@ -1,0 +1,125 @@
+// styles in src/style directory are applied to the whole page
+@import "../app/drawingBoard/drawing-board-tree/drawing-board-tree";
+@import "../app/drawingBoard/available-models-tree/available-models-tree.component";
+
+@font-face {
+  font-family: OpenSans-Bold;
+  src: url("fonts/OpenSans/OpenSans-Bold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-BoldItlaic;
+  src: url("fonts/OpenSans/OpenSans-BoldItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-ExtraBold;
+  src: url("fonts/OpenSans/OpenSans-ExtraBold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-ExtraBoldItalic;
+  src: url("fonts/OpenSans/OpenSans-ExtraBoldItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Italic;
+  src: url("fonts/OpenSans/OpenSans-Italic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Light;
+  src: url("fonts/OpenSans/OpenSans-Light.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-LightItalic;
+  src: url("fonts/OpenSans/OpenSans-LightItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Regular;
+  src: url("fonts/OpenSans/OpenSans-Regular.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Semibold;
+  src: url("fonts/OpenSans/OpenSans-Semibold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-SemiboldItalic;
+  src: url("fonts/OpenSans/OpenSans-SemiboldItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?4cilop');
+  src:  url('fonts/icomoon.eot?4cilop#iefix') format('embedded-opentype'),
+  url('fonts/icomoon.ttf?4cilop') format('truetype'),
+  url('fonts/icomoon.woff?4cilop') format('woff'),
+  url('fonts/icomoon.svg?4cilop#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  min-height: 100%;
+  height: 100%;
+  body {
+    height: 100%;
+    vid-app {
+      height: 100%;
+      display: flex !important;
+      flex-direction: column;
+      main {
+        &[_ngcontent-c0] {
+          font-family: OpenSans-Regular;
+        }
+
+        display: flex !important;
+        flex-direction: column;
+        flex: 1;
+
+      }
+    }
+  }
+}
+a {
+  color: #03A9F4;
+}
+
+tooltip-content {
+  .tooltip.left .tooltip-arrow {
+      border-left-color: #171f2a;
+  }
+  .tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #171f2a;
+  }
+  .tooltip-inner {
+    background-color: #171f2a;
+    text-align: left;
+  }
+}
+
+service-planning {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border: 1px solid #d2d2d2;
+}

@@ -1,0 +1,478 @@
+{
+  "global-customer-id": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "subscriber-name": "USP VOICE",
+  "subscriber-type": "INFRA",
+  "resource-version": "1494001938080",
+  "service-subscriptions": {
+    "service-subscription": [
+      {
+        "service-type": "HOSTED COMMUNICATIONS",
+        "resource-version": "1494001920845",
+        "service-instances": {
+          "service-instance": [
+            {
+              "service-instance-id": "67aba9ab-f745-442e-a37b-2040a17ec9c7",
+              "service-instance-name": "test_948473",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1501137356564",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "1de57bcf-365a-4ba7-8a51-7377b7144586"
+            },
+            {
+              "service-instance-id": "328e117c-8f27-4a59-beea-3b3c36e4652f",
+              "service-instance-name": "test_inputs_002",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1501142919029",
+              "orchestration-status": "Active",
+              "model-invariant-id": "74b2fa72-e3b9-4942-8448-983a4b50891a",
+              "model-version-id": "8c16d416-f183-4f2e-8a05-48a7ee0738f7"
+            },
+            {
+              "service-instance-id": "66608fd9-a786-4f60-ae7b-c18d030c499b",
+              "service-instance-name": "testtt",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1503224667654",
+              "orchestration-status": "Active",
+              "model-invariant-id": "1cc41b64-5c12-4d51-bac9-448e963bd81d",
+              "model-version-id": "91f79100-6450-4078-80d7-531427b4fe74"
+            },
+            {
+              "service-instance-id": "9d29dcf2-7742-4384-bca0-a38f6c296a79",
+              "service-instance-name": "test_9sdfkdfj",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500813552431",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "5b174112-cea4-4a36-b540-853b9d0548fc"
+            },
+            {
+              "service-instance-id": "e10414d0-692b-4e8e-b56e-9fdc5ef24059",
+              "service-instance-name": "test_04598485",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1501144603052",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "1de57bcf-365a-4ba7-8a51-7377b7144586"
+            },
+            {
+              "service-instance-id": "25a5cc93-73df-4c9c-9cc5-e2df9a72f3b7",
+              "service-instance-name": "test_inputs_values1",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1501412516301",
+              "orchestration-status": "Active",
+              "model-invariant-id": "b594a6ec-94e0-4c95-826f-4c3d3af56339",
+              "model-version-id": "59f3ea84-313a-4670-b7c2-8997e5749864"
+            },
+            {
+              "service-instance-id": "9cfcd777-7f14-425c-80bf-a562fba03cfa",
+              "service-instance-name": "test_vl_inputs01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1501421232100",
+              "orchestration-status": "Active",
+              "model-invariant-id": "9f5ed6d5-c960-4903-9625-4ccb6ba9c63a",
+              "model-version-id": "f263c8f6-b52f-4b6c-9ed9-0c83ad098697"
+            },
+            {
+              "service-instance-id": "4173d5da-df33-474e-a4ef-c93be61a1355",
+              "service-instance-name": "test_instance_vl_01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500966394803",
+              "orchestration-status": "Active",
+              "model-invariant-id": "9f5ed6d5-c960-4903-9625-4ccb6ba9c63a",
+              "model-version-id": "25447dd8-4154-4146-b57b-bc3d82e1a670"
+            },
+            {
+              "service-instance-id": "1753f7eb-85db-498c-aa6a-c68a06fc77db",
+              "service-instance-name": "sdfjdfj",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500991399818",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "1de57bcf-365a-4ba7-8a51-7377b7144586"
+            },
+            {
+              "service-instance-id": "5d5520c7-dcbc-4287-bed2-50ff57c41a6f",
+              "service-instance-name": "tesy_jsdjjdj",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1501400257544",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "240376de-870e-48df-915a-31f140eedd2c"
+            },
+            {
+              "service-instance-id": "1ab8ad18-1445-412a-81f2-671b936ab650",
+              "service-instance-name": "Test_098765",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500562034054",
+              "orchestration-status": "Active",
+              "model-invariant-id": "74b2fa72-e3b9-4942-8448-983a4b50891a",
+              "model-version-id": "8c16d416-f183-4f2e-8a05-48a7ee0738f7"
+            },
+            {
+              "service-instance-id": "a1427609-254d-4637-906f-8f0f6f6d4711",
+              "service-instance-name": "test343445",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502111792531",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "c079d859-4d81-4add-a9c3-94551f96e2b0"
+            },
+            {
+              "service-instance-id": "f87c0dbe-2658-4971-8014-ad5da1f9df51",
+              "service-instance-name": "test_03494595",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502006858511",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "240376de-870e-48df-915a-31f140eedd2c"
+            },
+            {
+              "service-instance-id": "7a8dea9f-5f67-4755-9344-ec3736240b9e",
+              "service-instance-name": "test_045045",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502111390681",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "c079d859-4d81-4add-a9c3-94551f96e2b0"
+            },
+            {
+              "service-instance-id": "8d0f4c13-a564-43ec-b756-c0017161dee2",
+              "service-instance-name": "testkjhjjj",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500553831697",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "5b174112-cea4-4a36-b540-853b9d0548fc"
+            },
+            {
+              "service-instance-id": "27535e2a-785e-47e8-a482-16f4d019033a",
+              "service-instance-name": "test765766",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502109495302",
+              "orchestration-status": "Active",
+              "model-invariant-id": "452538c0-ef1e-4d65-9939-697f6ed58934",
+              "model-version-id": "f430728a-4530-42be-a577-1206b9484cef"
+            },
+            {
+              "service-instance-id": "9601d34e-d3f9-4108-932c-fc52312c260a",
+              "service-instance-name": "test_9459495",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502028721334",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d2103eaa-8cc7-4422-ad67-1ce582af0097",
+              "model-version-id": "5801fed3-b6db-4969-abb4-d1171c4c3202"
+            },
+            {
+              "service-instance-id": "e65ae593-afdd-4f31-8192-ba7606a026e4",
+              "service-instance-name": "test_84574854",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502026481024",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d2103eaa-8cc7-4422-ad67-1ce582af0097",
+              "model-version-id": "5801fed3-b6db-4969-abb4-d1171c4c3202"
+            },
+            {
+              "service-instance-id": "29e210af-9fa5-44ae-940c-acca84b1b287",
+              "service-instance-name": "testjkdfkdf",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502114664500",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "c079d859-4d81-4add-a9c3-94551f96e2b0"
+            },
+            {
+              "service-instance-id": "c1a81ab3-2bc6-4b6f-b04f-d358e67c1d01",
+              "service-instance-name": "test499494",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500552497782",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "1de57bcf-365a-4ba7-8a51-7377b7144586"
+            },
+            {
+              "service-instance-id": "01834681-686a-4258-aff0-6eea448deddd",
+              "service-instance-name": "tesr_iii_999",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502019889568",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d2103eaa-8cc7-4422-ad67-1ce582af0097",
+              "model-version-id": "5801fed3-b6db-4969-abb4-d1171c4c3202"
+            },
+            {
+              "service-instance-id": "266008e8-04f9-440a-90e9-d9299821ec08",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001993349",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "6c3a22e9-6b04-49d2-b1fa-1e49103971ca",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001986409",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "918085fc-29cf-41c2-acc8-15878c0d58b3",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001986411",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "1c464a9d-eff7-4d29-8e97-ed1e9e3c8458",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001953169",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "bb2f563f-6db7-46ec-b521-fc6ee07e4f3e",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494002002228",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "4cf94a42-85b8-414f-8fb4-a43b1dac1d2f",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001834026",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "ed7c0d8e-de81-408f-b695-47b9dd6b2ca0",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001986403",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "8bf34b89-1648-4a41-a21f-9b752833bd4b",
+              "service-instance-name": "test-gkmf546g",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500377885652",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "1de57bcf-365a-4ba7-8a51-7377b7144586"
+            },
+            {
+              "service-instance-id": "082c606c-60d7-4d9a-87c7-1370de6e56ba",
+              "service-instance-name": "test123456",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500375305701",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d2103eaa-8cc7-4422-ad67-1ce582af0097",
+              "model-version-id": "5801fed3-b6db-4969-abb4-d1171c4c3202"
+            },
+            {
+              "service-instance-id": "c4707aae-9b16-49b4-8b52-cbeb8c4129ab",
+              "service-instance-name": "test_sdfdlfldl",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500376318829",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+              "model-version-id": "cad9f2eb-39f7-4692-90c2-8726bb594610"
+            },
+            {
+              "service-instance-id": "86ab6048-9037-4367-ac01-f2e5881e8034",
+              "service-instance-name": "test1234456",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500369079277",
+              "orchestration-status": "Active",
+              "model-invariant-id": "b1ed0d58-0700-4631-be18-d2f1e527d637",
+              "model-version-id": "849a6347-cca7-4ae6-b5c2-7d41e9f6d9b2"
+            },
+            {
+              "service-instance-id": "a5e3b6ae-7b4c-4247-b975-1cd46c3b3e9a",
+              "service-instance-name": "pavel_usp_voice",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1506931067790",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "5b174112-cea4-4a36-b540-853b9d0548fc"
+            },
+            {
+              "service-instance-id": "c9fb03a4-8c21-444a-84ee-a6f969698d9c",
+              "service-instance-name": "test_0e459495945kg",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502021459612",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d2103eaa-8cc7-4422-ad67-1ce582af0097",
+              "model-version-id": "5801fed3-b6db-4969-abb4-d1171c4c3202"
+            },
+            {
+              "service-instance-id": "4fd55324-bc4d-4acf-8f76-2e1eb01ae6a5",
+              "service-instance-name": "test_0w459495",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502019352627",
+              "orchestration-status": "Active",
+              "model-invariant-id": "e3ee9d25-2c6b-4734-8a8c-b6e0dee11ca9",
+              "model-version-id": "159cc54d-a6be-4c3b-bea3-3214181ebb5d"
+            },
+            {
+              "service-instance-id": "bbccd5cf-f641-4082-8411-7ae123530d92",
+              "service-instance-name": "kkk",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1502087710872",
+              "orchestration-status": "Active",
+              "model-invariant-id": "331a194d-9248-4533-88bc-62c812ccb5c1",
+              "model-version-id": "171b3887-e73e-479d-8ef8-2690bf74f2aa"
+            },
+            {
+              "service-instance-id": "4c263e04-260e-434a-8ac2-b0335a02f30b",
+              "service-instance-name": null,
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001791264",
+              "orchestration-status": null,
+              "model-invariant-id": "",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "e4feb759-e4a9-4614-b2d2-985848ba3b9f",
+              "service-instance-name": "test345345342334f",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1499869396079",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "240376de-870e-48df-915a-31f140eedd2c"
+            }
+          ]
+        },
+        "is-permitted": false
+      },
+      {
+        "service-type": "TSBC",
+        "resource-version": "1494001891362",
+        "service-instances": {
+          "service-instance": [
+            {
+              "service-instance-id": "c0edefb0-2505-4a34-85cc-96c4cd5a121d",
+              "service-instance-name": "test-343432",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500370094198",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "240376de-870e-48df-915a-31f140eedd2c"
+            },
+            {
+              "service-instance-id": "7cb54908-f3fb-46b9-b547-d1e670ea95b2",
+              "service-instance-name": "test765445g",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1499868690949",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "240376de-870e-48df-915a-31f140eedd2c"
+            },
+            {
+              "service-instance-id": "8e953267-4cd8-45ec-ae7f-bdeb018656c0",
+              "service-instance-name": "a1",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1509355912484",
+              "orchestration-status": "Active",
+              "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+              "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+            },
+            {
+              "service-instance-id": "e2ecfd33-b5d3-4a7b-85ba-1a709b26b66c",
+              "service-instance-name": "a3",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1509356358573",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d5937aa1-37fb-4ed0-8c30-5144b89a64ae",
+              "model-version-id": "06ac9663-54cf-4c77-b926-6e8757cf6380"
+            },
+            {
+              "service-instance-id": "7dfef88f-fec0-421f-90d4-91eea35a5813",
+              "service-instance-name": "shanitest",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1508144995828",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d7b48529-6ae2-49f0-8633-b29e7cd4d4ce",
+              "model-version-id": "44671b15-83dd-4db7-a36e-dfada3eaa2f9"
+            },
+            {
+              "service-instance-id": "a46ca55c-e9bd-4e68-9c49-c98933240218",
+              "service-instance-name": "si_failtest",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001997513",
+              "orchestration-status": null,
+              "model-invariant-id": "732263bd-0655-428d-a347-d65676d1a949",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "e165f1af-a3cf-4323-8cd2-607acb55baa9",
+              "service-instance-name": "first_macro_shani",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1508071197869",
+              "orchestration-status": "Active",
+              "model-invariant-id": "5b9c0f33-eec1-484a-bf77-736a6644d7a8",
+              "model-version-id": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6"
+            }
+          ]
+        },
+        "is-permitted": false
+      }
+    ]
+  }
+}

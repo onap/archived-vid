@@ -1,0 +1,52 @@
+{
+  "categoryParameters": {
+    "lineOfBusiness": [
+      {
+        "id": "ECOMP",
+        "name": "ECOMP"
+      },
+      {
+        "id": "zzz1",
+        "name": "zzz1"
+      }
+    ],
+    "owningEntity": [
+      {
+        "id": "aaa1",
+        "name": "aaa1"
+      },
+      {
+        "id": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+        "name": "MetroPacketCore"
+      },
+      {
+        "id": "Wireline",
+        "name": "Wireline"
+      }
+    ],
+    "project": [
+      {
+        "id": "DFW",
+        "name": "DFW"
+      },
+      {
+        "id": "x1",
+        "name": "x1"
+      },
+      {
+        "id": "yyy1",
+        "name": "yyy1"
+      }
+    ],
+    "platform": [
+      {
+        "id": "platform",
+        "name": "platform"
+      },
+      {
+        "id": "xxx1",
+        "name": "xxx1"
+      }
+    ]
+  }
+}

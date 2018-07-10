@@ -1,0 +1,34 @@
+#model-information {
+  overflow: auto;
+
+}
+
+tooltip-content span {
+  font-family: OpenSans-Regular;
+  font-size: 12px;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+
+.item {
+  display: block;
+
+  .wrapper {
+
+    display: inline-block;
+    margin-bottom: 25px;
+
+    label {
+      font-family: OpenSans-Semibold;
+      font-size: 12px;
+    }
+
+    div {
+      font-family: OpenSans-Regular;
+      font-size: 14px;
+    }
+  }
+}
+
+

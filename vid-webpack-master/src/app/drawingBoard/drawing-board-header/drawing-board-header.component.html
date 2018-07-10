@@ -1,0 +1,33 @@
+<div class="drawing-board-header">
+  <div class="left-header">
+    <span [attr.data-tests-id]="'backBtn'" class="icon-back" (click)="closePage()"></span>
+    <span [attr.data-tests-id]="'serviceInstance'" class="service-instance-label">Service instance:</span>
+    <span [attr.data-tests-id]="'serviceName'" class="service-instance-name">{{serviceName}}</span>
+    <span class="quantity-container" style="    padding: 10px;font-size: 13px;" tooltip="Number of services to instantiate including all their objects as defined below">
+      <span [attr.data-tests-id]="'quantityLabel'" class="quantity-label" >Scale Times:</span>
+      <span [attr.data-tests-id]="'servicesQuantity'" class="quantity" style="font-family: OpenSans-Semibold;font-size: 14px;"> {{numServicesToDeploy}} </span>
+    </span>
+    <span  class="service-instance-label">status:</span>
+    <span [attr.data-tests-id]="'serviceStatus'" class="status">{{status}}</span>
+  </div>
+  <div class="right-header">
+    <span class="menu-container">
+      <span [attr.data-tests-id]="'openMenuBtn'" class="icon-browse" (click)="onContextMenu($event)"></span>
+      <context-menu>
+        <ng-template contextMenuItem (execute)="editService()">
+          <div [attr.data-tests-id]="'context-menu-header-edit-item'">
+            <span class="icon-edit"></span>
+            Edit
+          </div>
+        </ng-template>
+        <ng-template contextMenuItem (execute)="closePage()">
+          <div [attr.data-tests-id]="'context-menu-header-delete-item'">
+            <span class="icon-trash"></span>
+            Delete
+          </div>
+        </ng-template>
+      </context-menu>
+    </span>
+    <button [disabled]="false" [attr.data-tests-id]="'deployBtn'" (click)="deployMacroservice()" class="deploy-btn">DEPLOY</button>
+  </div>
+</div>

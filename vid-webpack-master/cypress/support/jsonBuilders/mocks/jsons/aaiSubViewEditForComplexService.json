@@ -1,0 +1,113 @@
+{
+  "inventory-response-item": [
+    {
+      "model-name": "1707vidnf",
+      "service-instance": {
+        "service-instance-id": "3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+        "service-instance-name": "complex-service"
+      },
+      "extra-properties": {},
+      "inventory-response-items": {
+        "inventory-response-item": [
+          {
+            "model-name": "VID-PCRF-05-15-17",
+            "generic-vnf": {
+              "vnf-id": "c015cc0f-0f37-4488-aabf-53795fd93cd3",
+              "vnf-name": "fsd",
+              "vnf-type": "1707vidnf/VID-PCRF-05-15-17 0",
+              "service-id": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
+              "prov-status": "PREPROV",
+              "orchestration-status": "Created",
+              "in-maint": false,
+              "is-closed-loop-disabled": false,
+              "resource-version": "1502299355826",
+              "model-invariant-id": "4160458e-f648-4b30-a176-43881ffffe9e",
+              "model-version-id": "d6557200-ecf2-4641-8094-5393ae3aae60",
+              "model-customization-id": "91415b44-753d-494c-926a-456a9172bbb9",
+              "nf-type": "null",
+              "nf-function": "null",
+              "nf-role": "null",
+              "nf-naming-code": "null"
+            },
+            "extra-properties": {},
+            "inventory-response-items": {
+              "inventory-response-item": [
+                {
+                  "volume-group": {
+                    "volume-group-id": "d9db0900-31f6-4880-8658-8c996c6123b4",
+                    "volume-group-name": "f",
+                    "heat-stack-id": "",
+                    "vnf-type": "1707vidnf/null",
+                    "orchestration-status": "Pending",
+                    "vf-module-model-customization-id": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
+                    "resource-version": "1508048984071"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "model-name": "VidPcrf051517..pcrf_base_template_v3_0..module-0",
+                  "vf-module": {
+                    "vf-module-id": "f2805715-e24f-4c8a-9eb3-6c618da7691d",
+                    "vf-module-name": "aa",
+                    "orchestration-status": "pendingactivation",
+                    "is-base-vf-module": true,
+                    "resource-version": "1504770843380",
+                    "model-invariant-id": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
+                    "model-version-id": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
+                    "model-customization-id": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
+                    "module-index": 0
+                  },
+                  "extra-properties": {}
+                }
+              ]
+            }
+          },
+          {
+            "l3-network": {
+              "network-id": "6adc05e4-85c6-4f91-aa5a-1eb9546c4369",
+              "network-name": "APP-C-DND_vEPDG-FN_hsl_fn_net_1",
+              "network-type": "CONTRAIL30_BASIC",
+              "network-role": "hsl",
+              "network-technology": "contrail",
+              "neutron-network-id": "41a61725-f623-4166-bc84-e76a219cca9d",
+              "is-bound-to-vpn": false,
+              "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+              "network-role-instance": 0,
+              "resource-version": "1511279493784",
+              "orchestration-status": "Created",
+              "heat-stack-id": "APP-C-DND_vEPDG-FN_hsl_fn_net_1/af134fb1-8ce3-4d41-88d9-8a83f5f79776",
+              "contrail-network-fqdn": "default-domain:APP-C-DND:APP-C-DND_vEPDG-FN_hsl_fn_net_1",
+              "physical-network-name": "leave blank",
+              "is-provider-network": false,
+              "is-shared-network": true,
+              "is-external-network": false
+            },
+            "extra-properties": {},
+            "inventory-response-items": {
+              "inventory-response-item": [
+                {
+                  "subnet": {
+                    "subnet-id": "1254dd9b-e689-4075-a089-f0deeb23c00c",
+                    "subnet-name": "APP-C-DND_vEPDG-FN_hsl_fn_net_1_subnet_1",
+                    "neutron-subnet-id": "7b5ea34d-fb95-4278-a148-4f6677ebe866",
+                    "gateway-address": "107.243.49.1",
+                    "network-start-address": "107.243.49.0",
+                    "cidr-mask": "26",
+                    "ip-version": "4",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": true,
+                    "dhcp-start": "107.243.49.3",
+                    "dhcp-end": "107.243.49.62",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1511279493791"
+                  },
+                  "extra-properties": {}
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

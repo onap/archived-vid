@@ -1,0 +1,12 @@
+<div id="model-information">
+  <div *ngFor="let item of modelInformationItems" class="item" attr.data-tests-id="model-item-{{item.label}}">
+    <tooltip-content #a>
+      <span> {{item.toolTipText}}</span>
+    </tooltip-content>
+
+    <div class="wrapper" [tooltip]="a" [tooltipDisabled]="!item.toolTipText" tooltipPlacement="top" [tooltipAnimation]="false">
+      <label attr.data-tests-id="model-item-label-{{item.testsId}}">{{item.label}}</label>
+      <div *ngFor="let value of item.values" attr.data-tests-id="model-item-value-{{item.testsId}}">{{value}}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="form-wrapper">
+  <form #form="ngForm">
+    <div class="network" *ngFor="let group of groups">
+      <label class="placeholder" [attr.data-tests-id]="'groupLabel'">{{getValueOfLabelInGroup(group,'Group Name')}}</label>
+      <select [(ngModel)]="groupSelection[getValueOfLabelInGroup(group,'Group Name')]" class="form-control input-text"
+              [attr.data-tests-id]="'groupTestId'"
+              id="{{getGroupName(group)}}" name="{{getGroupName(group)}}" required>
+        <option class="placeholder" [value]="undefined" disabled>Select Network</option>
+        <option *ngFor="let singleGroup of getNetworksByNetworkFunctionRole(group) | async"
+        [ngValue]="singleGroup">{{singleGroup["instance-group"]["instance-group-name"]}}</option>
+      </select>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,12 @@
+{
+  "chromeWebSecurity": false,
+  "hostPortPath": null,
+	"reporter": "junit",
+  "pageLoadTimeout" : 100000,
+  "defaultCommandTimeout" : 10000,
+  "responseTimeout" : 100000,
+	"reporterOptions": {
+		"mochaFile": "cypress/junitreport.xml",
+		"toConsole": true
+	}
+}

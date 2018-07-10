@@ -1,0 +1,26 @@
+<table class="table table-hover table-striped table-sortable" [mfData]="options.data | dataFilter : filterQuery" #mf="mfDataTable"  [(mfSortBy)]="options.config.sortBy" [(mfSortOrder)]="options.config.sortOrder" [mfRowsOnPage]="10">
+  <thead>
+  <tr>
+    <th *ngFor="let column of options.columns">
+      <mfDefaultSorter by="{{column.key}}"> {{column.displayName}}</mfDefaultSorter>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of mf.data">
+    <td *ngFor="let column of options.columns" >
+      <button class="btn btn-primary" *ngIf="column.type==='button' && (!column.showCondition || row[column.showCondition])" title="{{column.text}}" (click)="clickBtn(row, column.action)">
+       {{column.text}}
+      </button>
+      {{row[column.key]}}
+    </td>
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="5">
+      <mfBootstrapPaginator [rowsOnPageSet]="[10,15,20]"></mfBootstrapPaginator>
+    </td>
+  </tr>
+  </tfoot>
+</table>

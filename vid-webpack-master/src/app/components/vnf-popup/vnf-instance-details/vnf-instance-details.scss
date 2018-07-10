@@ -1,0 +1,64 @@
+#vnf-instance-details {
+  position: relative;
+
+  #notification-area {
+    color: #959595;
+    font-size: 12px;
+    position: absolute;
+    top: 3px;
+    left: 30px;
+  }
+
+  height: 100%;
+  overflow: auto;
+  padding: 30px;
+
+  /deep/ {
+    .form-control {
+      border-radius: 2px;
+      box-shadow: none;
+      border-color: #D2D2D2;
+    }
+
+    label {
+      font-family: OpenSans-Semibold;
+      font-size: 12px;
+    }
+
+    select {
+      @extend .form-control;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: url('../../../../assets/img/chevron.svg') 0 0 no-repeat;
+      background-size: 24px;
+      background-position-x: right;
+      background-position-y: center;
+      font-family: OpenSans-Italic;
+      font-size: 14px;
+      color: #959595;
+      height: 38px;
+    }
+
+    input:not([type='checkbox']) {
+      @extend .form-control;
+      height: 38px;
+    }
+
+    .form-control[disabled], fieldset[disabled] .form-control {
+      opacity: 0.5;
+    }
+    .input-text {
+      border: 1px solid #D2D2D2;
+      border-radius: 2px;
+    }
+
+    .details-item {
+      margin-bottom: 20px;
+    }
+  }
+
+    .checkbox-label {
+      font-family: OpenSans-Regular;
+    }
+}

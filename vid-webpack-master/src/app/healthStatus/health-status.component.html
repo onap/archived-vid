@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="health-status-header">
+    <div>
+      <div class="row" style="margin-left: 0;">
+        <div>
+          <span class="title">Health Status </span>
+        </div>
+        <div class="lastUpdate">
+          <div style="float: left;margin-top: 3px;"><span>Last update:  {{lastUpdatedDate | date:'MMM. dd, yyyy | HH:mm'}}</span>
+          </div>
+          <div class="refresh-btn" [ngClass]="{'spin' : !dataIsReady}" (click)="refreshData()">
+            <span class="icon-refresh"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <table id="health-status-table" class="table table-bordered">
+    <tbody>
+      <tr class="row spaceUnder" *ngFor="let componentStatus of componentStatuses" [attr.data-tests-id]="'component-'+componentStatus?.component">
+        <td class="col-md-1 col-xs-1 component-name"
+            [attr.data-tests-id]="'component-name-'+componentStatus?.component"
+            [ngClass]="isAvailable(componentStatus) ? 'border-is-ok': 'border-not-ok'">
+          {{componentStatus?.component}}
+        </td>
+        <td class="col-md-11 col-xs-3 component-metadata-cell"
+            [attr.data-tests-id]="'component-metadata-'+componentStatus?.component"
+            [ngClass]="isAvailable(componentStatus) ? 'border-is-ok': 'border-not-ok'">
+          <pre class="component-metadata">{{getMetadata(componentStatus) | json}}</pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

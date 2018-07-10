@@ -1,0 +1,42 @@
+<div class="drawing-board-tree">
+  <div *ngIf="nodes?.length == 0" style="text-align: center;    margin-top: 50px;">
+    <no-content-message-and-icon class="span-over"
+                                 data-title="Please add objects (VNFs, network, modules etc.) from the left tree to design the service instance"
+                                 subtitle="Once done, click Deploy to start instantiation"
+                                 iconPath="./assets/img/UPLOAD.svg"
+                                 iconClass="upload-icon-service-planing"></no-content-message-and-icon>
+  </div>
+  <tree-root [attr.data-tests-id]="'drawing-board-tree'" #tree [nodes]="nodes" [options]="options"  id="drawing-board-tree">
+    <ng-template #treeNodeTemplate let-node let-index="index">
+      <div [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName" (click)="selectNode(node)">
+        <div class="model-info">
+          <span>
+            <span class="property-name">{{node.data.type}}{{node.data.name ? ': ': ''}}<span class="auto-name">{{node.data.name? node.data.name: ''}}</span></span>
+          </span>
+        </div>
+        <div class="model-actions">
+          <span class="icon-browse" [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-menu-btn'" (click)="onContextMenu($event, node)" >
+          <context-menu>
+            <ng-template contextMenuItem (execute)="editItem(node)">
+              <div [attr.data-tests-id]="'context-menu-item'">
+                <span class="icon-edit"></span>
+                Edit
+              </div>
+            </ng-template>
+            <ng-template contextMenuItem (execute)="deleteItem(node)">
+              <div>
+                <span class="icon-trash"></span>
+                Remove
+              </div>
+            </ng-template>
+          </context-menu>
+          </span>
+          <span *ngIf="isDataMissing(node)" class="icon-alert" tooltip="{{ missingDataTooltip }}" tooltipPlacement="left" [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>
+        </div>
+      </div>
+
+    </ng-template>
+  </tree-root>
+</div>
+
+

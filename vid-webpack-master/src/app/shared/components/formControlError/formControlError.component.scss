@@ -1,0 +1,14 @@
+.icon-alert {
+  margin-top: 10px;
+  &:before {
+    content: "\e904";
+    font-size: 16px;
+    color: #cf2a2a;
+  }
+}
+
+.message {
+  font-size: 12px;
+  line-height: 14px;
+  color: #cf2a2a;
+}

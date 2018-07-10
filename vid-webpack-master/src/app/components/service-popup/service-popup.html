@@ -1,0 +1,52 @@
+<div id="service-popup" class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="onCancelClick()" >&times;</button>
+      <span [attr.data-tests-id]="'create-modal-title'" class="modal-title">{{title}}</span>
+    </div>
+    <div class="modal-body popup-content">
+
+      <div class="header-left">
+        <div>SERVICE MODEL: <span>"{{getModelName()}}"</span></div>
+      </div>
+
+      <div class="header-right">
+        Service Instance Details
+      </div>
+
+      <label class="quantity-label">Qty:</label>
+      <div class="quantity">
+        <select class="quantity-select" [(ngModel)]="servicesQty" name="quantity" id="quantity-select" required>
+          <option *ngFor="let qty of quantityOptions" [value]="qty">{{qty}}</option>
+        </select>
+      </div>
+
+      <div class="service-model">
+
+        <model-information [modelInformationItems]="modelInformationItems"></model-information>
+      </div>
+
+      <div class="service-instance">
+        <service-instance-details [dynamicInputs]="dynamicInputs"
+                                  [serviceInstance]="serviceInstance"
+                                  [serviceModel]="serviceModel"
+                                  [servicesQty]="servicesQty"
+                                  (onDataChanged)="updateGeneralErrorSection()"
+                                  (closePopup)="onCancelClick($event)"></service-instance-details>
+      </div>
+
+    </div>
+    <div class="modal-footer row" style="padding: 0">
+      <div class="col-md-6">
+        <div *ngIf="hasGeneralApiError == true">
+          <form-general-error [message]="'Page contains errors. Please see details next to the relevant fields.'"></form-general-error>
+        </div>
+      </div>
+      <div class="col-md-6" style="padding: 15px;padding-right: 35px;">
+        <button [attr.data-tests-id]="'cancelButton'"  type="button" class="btn btn-default cancel" (click)="onCancelClick()"><span>Cancel</span></button>
+        <input type="submit" value="Set" form="serviceForm"  data-tests-id="service-form-set"
+               class="btn btn-success submit" [disabled]="!serviceInstanceDetails?.serviceForm?.valid">
+      </div>
+    </div>
+  </div>
+</div>

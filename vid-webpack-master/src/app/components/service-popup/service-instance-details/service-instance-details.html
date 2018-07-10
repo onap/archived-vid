@@ -1,0 +1,168 @@
+
+<div id="service-instance-details">
+  <form id="serviceForm" #serviceForm="ngForm" (ngSubmit)="onSubmit(serviceForm.value)" [formGroup]="serviceInstanceDetailsFormGroup">
+    <!--We can't use [hidden] since bootstrap.css label has display: inline-block. -->
+    <!--see https://stackoverflow.com/questions/34650410/angular-2-hidden-does-not-seem-to-be-working-->
+    <label id="notification-area" *ngIf="isShowingNotificationArea()">Data entered will apply to all service instances</label>
+
+    <div class="details-item" *ngIf="serviceInstanceDetailsFormGroup.get('instanceName')">
+      <label class="required">Instance name:</label>
+      <input patternInput
+             pattern="^[a-zA-Z0-9_]*$"
+             [attr.data-tests-id]="'instanceName'"
+             id="instance-name"
+             name="instance-name"
+             [ngClass]="{'error-style' :(serviceInstance?.instanceName != '' && serviceInstanceDetailsFormGroup.controls['instanceName']?.touched && serviceInstanceDetailsFormGroup.controls['instanceName']?.errors?.pattern !== null)}"
+             [formControlName]="'instanceName'"
+             class="form-control input-text"
+             placeholder="Type Instance Name"
+             type="text"
+             [(ngModel)]="serviceInstance.instanceName" required>
+      <form-control-error
+        *ngIf="serviceInstance?.instanceName != '' && serviceInstanceDetailsFormGroup.controls['instanceName']?.touched && serviceInstanceDetailsFormGroup.controls['instanceName']?.errors?.pattern !== null"
+        [message]="'Instance name may include only alphanumeric characters and underscore.'"></form-control-error>
+
+    </div>
+
+    <div class="details-item">
+      <label class="required">Subscriber name:</label>
+      <select class="subscriber form-control input-text" id="subscriber-name-select" data-tests-id="subscriberName"
+              name="subscriber-name-select" [formControlName]="'globalSubscriberId'"
+              [ngClass]="{'error-style' :serviceInstanceDetailsService.hasApiError('globalSubscriberId',servicePopupDataModel?.subscribers, serviceInstanceDetailsFormGroup)}"
+              [(ngModel)]="serviceInstance.globalSubscriberId"
+              required>
+        <option [value]="undefined" disabled>Select Subscriber Name</option>
+        <option class="subscriberNameOption" *ngFor="let subscriber of servicePopupDataModel.subscribers"
+                [value]="subscriber.id" [disabled]="!subscriber.isPermitted">{{subscriber.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('globalSubscriberId',servicePopupDataModel?.subscribers, serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+
+    </div>
+
+    <div class="details-item">
+      <label class="required">Service type:</label>
+      <select class="form-control input-text"
+              [(ngModel)]="serviceInstance.subscriptionServiceType"
+              [formControlName]="'subscriptionServiceType'"
+              [ngClass]="{'error-style' :serviceInstanceDetailsService.hasApiError('subscriptionServiceType',servicePopupDataModel?.serviceTypes, serviceInstanceDetailsFormGroup)}"
+              data-tests-id="serviceType" id="service-type-select"
+              name="service-type" required>
+        <option [value]="undefined" disabled>Select Service Type</option>
+        <option *ngFor="let serviceType of servicePopupDataModel.serviceTypes" class="serviceTypeOption" [value]="serviceType.name" [disabled]="!serviceType.isPermitted">{{serviceType.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('subscriptionServiceType',servicePopupDataModel?.serviceTypes, serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div class="details-item">
+      <label class="required">Product family:</label>
+      <select class="form-control input-text"
+              data-tests-id="productFamily"
+              id="product-family-select"
+              [ngClass]="{'error-style' :serviceInstanceDetailsService.hasApiError('productFamilyId',productFamilies, serviceInstanceDetailsFormGroup)}"
+              [formControlName]="'productFamilyId'"
+              [(ngModel)]="serviceInstance.productFamilyId"
+              name="product-family-select" required>
+        <option [value]="undefined" disabled>Select Product Family</option>
+        <option *ngFor="let productFamily of productFamilies | async" [value]="productFamily.id"
+                [disabled]="!productFamily.isPermitted">{{productFamily.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('productFamilyId',productFamilies, serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div class="details-item">
+      <label class="required">LCP region:</label>
+      <select
+        class="form-control input-text"
+        [formControlName]="'lcpCloudRegionId'"
+        [(ngModel)]="serviceInstance.lcpCloudRegionId"
+        [ngClass]="{'error-style ' : serviceInstanceDetailsService.hasApiError('lcpCloudRegionId', servicePopupDataModel?.lcpRegions, serviceInstanceDetailsFormGroup)}"
+        name="lcpRegion"
+        id="lcpRegion-select"
+        data-tests-id="lcpRegion"
+        required>
+        <option [value]="undefined" disabled>Select LCP Region</option>
+        <option *ngFor="let lcpRegion of servicePopupDataModel.lcpRegions" [value]="lcpRegion.id" [disabled]="!lcpRegion.isPermitted" class="lcpRegionOption">{{lcpRegion.id}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('lcpCloudRegionId', servicePopupDataModel?.lcpRegions, serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div class="details-item">
+      <label class="required">Tenant:</label>
+      <select class="form-control input-text"
+              [formControlName]="'tenantId'"
+              [(ngModel)]="serviceInstance.tenantId"
+              name="tenant" id="tenant-select"
+              [ngClass]="{'error-style ' : serviceInstanceDetailsService.hasApiError('tenantId',servicePopupDataModel?.tenants ,serviceInstanceDetailsFormGroup)}"
+              data-tests-id="tenant" required>
+        <option [value]="undefined" disabled>Select Tenant</option>
+        <option *ngFor="let tenant of servicePopupDataModel.tenants" [value]="tenant.id" [disabled]="!tenant.isPermitted">{{tenant.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('tenantId',servicePopupDataModel?.tenants ,serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+
+    <div class="details-item">
+      <label>AIC Zone:</label>
+      <select
+        class="form-control input-text"
+        name="aicZone" id="aicZone-select"
+        data-tests-id="aic_zone"
+        [formControlName]="'aicZoneId'"
+        [ngClass]="{'error-style ' : servicePopupDataModel?.aicZones?.length == 0 && serviceInstanceDetailsFormGroup.controls['aicZoneId'].disabled == false}"
+        [(ngModel)]="serviceInstance.aicZoneId" >
+        <option [value]="undefined" disabled>Select AIC Zone</option>
+        <option class="aicZoneOption" *ngFor="let aicZone of servicePopupDataModel.aicZones" [value]="aicZone.id">{{aicZone.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('aicZoneId',servicePopupDataModel?.aicZones ,serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+
+    </div>
+
+    <div class="details-item">
+      <label>Project:</label>
+      <select
+        [attr.data-tests-id]="'project'"
+        class="form-control input-text"
+        [ngClass]="{'error-style ' : servicePopupDataModel?.projects?.length == 0 && serviceInstanceDetailsFormGroup.controls['projectName'].disabled == false}"
+        name="project" id="project"
+        [formControlName]="'projectName'"
+        [(ngModel)]="serviceInstance.projectName" >
+        <option [value]="undefined" disabled>Select Project</option>
+        <option *ngFor="let project of servicePopupDataModel.projects" [value]="project.id">{{project.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('projectName',servicePopupDataModel?.projects ,serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+
+    </div>
+
+    <div class="details-item">
+      <label class="required">Owning entity:</label>
+      <select [attr.data-tests-id]="'owningEntity'"
+              class="form-control input-text"
+              [formControlName]="'owningEntityId'"
+              [(ngModel)]="serviceInstance.owningEntityId"
+              name="owningEntity" id="owningEntity"
+              [ngClass]="{'error-style ' : servicePopupDataModel?.owningEntities?.length == 0 && serviceInstanceDetailsFormGroup.controls['owningEntityId'].disabled == false}"
+              required>
+        <option [value]="undefined" disabled>Select Owning Entity</option>
+        <option *ngFor="let owningEntity of servicePopupDataModel.owningEntities" [value]="owningEntity.id">{{owningEntity.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('owningEntityId',servicePopupDataModel?.owningEntities ,serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+    <div class="details-item">
+      <label class="required">Rollback On Failure:</label>
+      <select [attr.data-tests-id]="'rollback'"
+              [ngClass]="{'error-style' :serviceInstanceDetailsService.hasApiError('rollbackOnFailure',servicePopupDataModel?.rollbackOnFailure, serviceInstanceDetailsFormGroup)}"
+              class="form-control input-text"
+              [(ngModel)]="serviceInstance.rollbackOnFailure"
+              [formControlName]="'rollbackOnFailure'" name="rollbackOnFailure" id="rollbackOnFailure">
+        <option *ngFor="let option of servicePopupDataModel.rollbackOnFailure" [value]="option.id">{{option.name}}</option>
+      </select>
+      <form-control-error *ngIf="serviceInstanceDetailsService.hasApiError('rollbackOnFailure',servicePopupDataModel?.rollbackOnFailure, serviceInstanceDetailsFormGroup)" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+    </div>
+    <div class="details-item" *ngIf="serviceInstanceDetailsFormGroup.get('pause')">
+      <input  #pause id="pause" [formControlName]="'pause'" [(ngModel)]="serviceInstance.pause" type="checkbox" name="pause" data-toggle="toggle">
+      <label class="checkbox-label" for="pause">Pause on pause points:</label>
+    </div>
+
+
+    <dynamic-inputs *ngIf="dynamicInputs != undefined && dynamicInputs.length>0" [group]="serviceInstanceDetailsFormGroup" [list]="dynamicInputs"></dynamic-inputs>
+  </form>
+</div>

@@ -1,0 +1,84 @@
+<div class="modal fade" bsModal #auditInfoModal="bs-modal" [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div id="audit-info-modal" class="">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="onCancelClick()">&times;</button>
+        <span [attr.data-tests-id]="'audit-info-title'" class="modal-title">{{title}}</span>
+      </div>
+      <div class="modal-body row">
+        <div class="col-md-4 left-panel">
+          <div id="service-model-name" class="row">SERVICE MODEL: {{serviceModelName}}</div>
+          <div class="row service-model">
+            <model-information [modelInformationItems]="modelInfoItems"></model-information>
+          </div>
+        </div>
+        <div class="col-md-8 right-panel">
+            <div class="row"><span class="table-title">VID status</span></div>
+            <div class="row">
+              <table id="service-instantiation-audit-info-vid"  class="table table-bordered">
+                <thead class="thead-dark">
+                <tr class="row">
+                  <th class="col-md-4" scope="col">Status</th>
+                  <th class="col-md-4" scope="col">Status time</th>
+                  <th class="col-md-4" scope="col">Final</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row" *ngFor="let data of vidInfoData">
+                  <td class="col-md-4" id="vidJobStatus" [attr.data-tests-id]="'vidJobStatus'">
+                    <custom-ellipsis [id]="data?.jobStatus" [value]="data?.jobStatus | capitalizeAndFormat"></custom-ellipsis>
+                  </td>
+                  <td class="col-md-4" id="vidStatusTime">
+                    <custom-ellipsis [id]="data?.vidCreated"
+                                     [value]="data?.createdDate | date:'MMM dd, yyyy HH:mm'"></custom-ellipsis>
+                  </td>
+                  <td class="col-md-4" id="vidFinalStatus">
+                    <custom-ellipsis [id]="data?.final"
+                                     [value]="data?.final ? 'Yes' : 'No'"></custom-ellipsis>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <div class="no-result" *ngIf="!isLoading && vidInfoData?.length == 0">There is no data.</div>
+            </div>
+
+            <div class="row"><span class="table-title">MSO status</span></div>
+            <table id="service-instantiation-audit-info-mso" class="table table-bordered">
+              <thead class="thead-dark row">
+              <tr class="row">
+                <th class="col-md-3" scope="col">Request ID</th>
+                <th class="col-md-3" scope="col">Status</th>
+                <th class="col-md-3" scope="col">Status time</th>
+                <th class="col-md-3" scope="col">Additional info</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="row" *ngFor="let data of msoInfoData">
+                <td class="col-md-3" id="msoRequestId">
+                  <custom-ellipsis [id]="data?.requestId" [value]="data?.requestId"></custom-ellipsis>
+                </td>
+                <td class="col-md-3" id="msoJobStatus">
+                  <custom-ellipsis [id]="data?.jobStatus" [value]="data?.jobStatus | capitalizeAndFormat"></custom-ellipsis>
+                </td>
+                <td class="col-md-3" id="msoStatusTime">
+                  <custom-ellipsis [id]="data?.vidCreated"
+                                   [value]="data?.createdDate  | date:'MMM dd, yyyy HH:mm'"></custom-ellipsis>
+                </td>
+                <td class="col-md-3" id="msoAdditionalInfo">
+                  <custom-ellipsis [id]="data?.additionalInfo" [value]="data?.additionalInfo"></custom-ellipsis>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          <div class="no-result" *ngIf="!isLoading && msoInfoData?.length == 0">There is no data.</div>
+          </div>
+      </div>
+      <div class="modal-footer row">
+        <button id="cancelButton" type="button" class="btn btn-default cancel" (click)="onCancelClick()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

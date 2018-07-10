@@ -1,0 +1,15 @@
+.form-wrapper{
+  width:640px;
+  padding-left: 50px;
+  padding-top: 50px;
+  .details-item{
+    padding-bottom: 30px;
+  }
+  .details-item {
+    select {
+      font-family: OpenSans-Italic;
+      font-size: 14px;
+      color: #959595 !important;
+    }
+  }
+}

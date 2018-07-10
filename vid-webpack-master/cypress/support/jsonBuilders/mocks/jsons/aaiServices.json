@@ -1,0 +1,46 @@
+{
+  "service": {
+    "uuid": "4d71990b-d8ad-4510-ac61-496288d9078e",
+    "invariantUuid": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+    "name": "vidmacrofalsenaming",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L1-3",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "vidmacrofalsenaming",
+    "serviceEcompNaming": "false",
+    "instantiationType": "A-La-Carte",
+    "inputs": {}
+  },
+  "vnfs": {},
+  "networks": {
+    "MULTI_PROVIDER_PORT_GROUP 0": {
+      "uuid": "e5d235de-2188-4f9f-a28c-fe38967883f2",
+      "invariantUuid": "b0303003-0abb-454c-9119-8cbe2e09e003",
+      "description": "Creates a neutron multi-provider VLAN network with dummy subnet",
+      "name": "MULTI_PROVIDER_PORT_GROUP",
+      "version": "1.0",
+      "customizationUuid": "0fde4286-ee4c-439d-9556-74b6be6bbc42",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "network_assignments": "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_scope": "GLOBAL",
+        "network_ecomp_naming": "{ecomp_generated_naming=true}",
+        "network_type": "MULTI_PROVIDER_PORT_GROUP",
+        "network_technology": "MULTI_GROUP",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
+      },
+      "type": "VL",
+      "modelCustomizationName": "MULTI_PROVIDER_PORT_GROUP 0"
+    }
+  },
+  "collectionResource": {},
+  "configurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {}
+}

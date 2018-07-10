@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+
+  <!-- This is a stub web.xml in the common area -->
+  <display-name>vid-ebpack-master</display-name>
+
+  <!--
+  `vid-webpack-master` servlet and it's servlet mapping below, serves
+  Angular's index.html for any requests like the following, letting
+  the JavaScript router do its magic:
+  * /vid/app/ui/
+  * /vid/app/ui/servicePlanning
+  * /vid/app/ui/browseSdc
+  -->
+  <servlet>
+    <servlet-name>vid-webpack-master</servlet-name>
+    <jsp-file>/app/ui/index.html</jsp-file>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>vid-webpack-master</servlet-name>
+    <url-pattern>/app/ui/*</url-pattern>
+  </servlet-mapping>
+
+
+  <!--
+  All the files under the paths below are served as static files, using
+  tomcat's `default` servlet. This overrides the `vid-webpack-master`
+  url-pattern.
+  The filter `charset-to-utf8-filter` adds "charset=UTF-8" to these files
+  content type, as the default content-type is platform-dependant (which
+  is not ok for Windows stations).
+  -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/app/ui/css/*</url-pattern>
+    <url-pattern>/app/ui/fonts/*</url-pattern>
+    <url-pattern>/app/ui/img/*</url-pattern>
+    <url-pattern>/app/ui/js/*</url-pattern>
+  </servlet-mapping>
+
+  <filter>
+    <filter-name>charset-to-utf8-filter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>charset-to-utf8-filter</filter-name>
+    <url-pattern>/app/ui/*</url-pattern>
+  </filter-mapping>
+
+</web-app>

@@ -1,0 +1,14 @@
+{
+  "service-instances": [
+    {
+      "aaiModelInvariantId": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+      "aaiModelVersionId": "240376de-870e-48df-915a-31f140eedd2c",
+      "globalCustomerId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "isPermitted": true,
+      "serviceInstanceId": "3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+      "serviceInstanceName": "vid-test-444",
+      "serviceType": "VIRTUAL USP",
+      "subscriberName": "USP VOICE"
+    }
+  ]
+}

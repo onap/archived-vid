@@ -1,0 +1,26 @@
+<div>
+
+	<span class="statusLine" [hidden]="!isSpinnerVisible">
+			<img src="./img/spinner.gif"/>
+	</span>
+  <span class="statusLine" [hidden]="!isProgressVisible">
+			<label>Status:</label><span class="status"><span [hidden]="!error"><font color='red'><b>Error: </b></font></span>{{status}}</span>
+		</span>
+  <br><br>
+  <div>
+    <input class="form-control search-query" placeholder="Filter..." data-tests-id="browseFilter" type="text" [(ngModel)]="filterQuery" size="20" style="width: 250px;">
+  </div>
+
+  <h1 class="heading1" style="margin-top:20px;">Browse SDC Service Models</h1>
+  <div style="margin-top:30px">
+    <button (click)="deploy()">deploy</button>
+    <vid-table
+      [options]="tableOptions"
+      [filterQuery]="filterQuery"
+      (clickEvent)="clickAction($event)">
+      Loading table...
+    </vid-table>
+  </div>
+</div>
+
+

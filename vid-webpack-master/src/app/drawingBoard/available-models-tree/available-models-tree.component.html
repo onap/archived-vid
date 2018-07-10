@@ -1,0 +1,35 @@
+<div class="available-models-tree">
+  <h5>
+    <span>SERVICE MODEL:</span>
+    <span id="service-model-name">{{service | serviceInfo: _store: serviceModelId : 'name'}}</span>
+  </h5>
+  <div class="available-models-content-wrapper">
+    <div class="search-container">
+      <input [attr.data-tests-id]="'search-left-tree'"  #filter (keyup)="searchTree(filter.value, $event)" placeholder="Filter..."/>
+      <span class="icon-search"></span>
+    </div>
+
+    <tree-root #tree [attr.data-tests-id]="'available-models-tree'" [nodes]="nodes" [options]="options">
+      <ng-template #treeNodeTemplate let-node let-index="index">
+        <div [attr.data-tests-id]="'node-'+node.data.name" (click)="selectNode(node)" [ngClass]="{'selected': index , 'isParent': node.data.type !== 'VFmodule' , 'isChild': node.data.type === 'VFmodule' }">
+          <span class="vf-type">{{node.data.type.substring(0,1)}}</span>
+          <span class="span-name" [innerHTML]=" isFilterEnabled ? (node.data.name | highlight : filter.value) : (node.data.name)"></span>
+          <span class="actions">
+            <span class="number-button" *ngIf="isShowNodeCount(node)">
+              <span>{{getNodeCount(node)}}</span>
+            </span>
+            <span class="icon-v" *ngIf="isShowIconV(node)">
+              <span ></span>
+            </span>
+            <span class="icon-plus" *ngIf="isShowIconAdd(node)">
+              <span tooltip="Add" [attr.data-tests-id]="'node-'+node.data.name+'-add-btn'" (click)="onClickAdd($event,node)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </span>
+            </span>
+          </span>
+       </div>
+      </ng-template>
+    </tree-root>
+
+  </div>
+</div>

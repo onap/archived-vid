@@ -1,0 +1,27 @@
+<div class="vlan-wrapper-config">
+  <div class="head">
+    <div class="title">Collection Resource Consumer VNF</div>
+    <div class="btn-wrapper">
+      <button class="cancel-btn grey" data-tests-id="cancelButton" (click)="cancel()">{{cancelButtonText}}</button>
+      <button class="next-btn blue" data-tests-id="nextButton" [disabled]="isNextButtonDisabled()" (click)="nextStep()">{{nextButtonText}}</button>
+    </div>
+  </div>
+  <span (serviceInstamce)="onServiceInstanceChange($event)"></span>
+  <div class="content-wrapper">
+    <div class="left-side">
+      <formasync [hidden]="currentStep === wizardSteps.two" [model]="model" class="form"></formasync>
+      <app-network-selector [hidden]="currentStep === wizardSteps.one" class="form-wrapper" [groups]="groups"></app-network-selector>
+    </div>
+
+    <div style="padding-left: 30px;padding-right: 30px" class="sidebar-right">
+      <div class="headline">META DATA</div>
+      <div class="seperator"></div>
+      <model-information [modelInformationItems]="modelInfoItems"></model-information>
+      <div class="headline">Collection Resource Consumer VNF</div>
+      <div *ngFor="let group of groups">
+        <div class="seperator"></div>
+        <model-information [modelInformationItems]="group"></model-information>
+      </div>
+    </div>
+  </div>
+</div>

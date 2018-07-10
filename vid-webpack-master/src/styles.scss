@@ -1,0 +1,171 @@
+/* You can add global styles to this file, and also import other style files */
+// styles in src/style directory are applied to the whole page
+
+@import "app/drawingBoard/drawing-board-tree/drawing-board-tree";
+@import "app/drawingBoard/available-models-tree/available-models-tree.component";
+@import "../node_modules/sdc-ui/css/style.css";
+//body {
+//  [ui-view="content"] {
+//    height: 100%;
+//  }
+//}
+
+@font-face {
+  font-family: OpenSans-Bold;
+  src: url("../src/assets/fonts/OpenSans/OpenSans-Bold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-BoldItlaic;
+  src: url("./assets/fonts/OpenSans/OpenSans-BoldItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-ExtraBold;
+  src: url("./assets/fonts/OpenSans/OpenSans-ExtraBold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-ExtraBoldItalic;
+  src: url("./assets/fonts/OpenSans/OpenSans-ExtraBoldItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Italic;
+  src: url("./assets/fonts/OpenSans/OpenSans-Italic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Light;
+  src: url("./assets/fonts/OpenSans/OpenSans-Light.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-LightItalic;
+  src: url("./assets/fonts/OpenSans/OpenSans-LightItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Regular;
+  src: url("./assets/fonts/OpenSans/OpenSans-Regular.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-Semibold;
+  src: url("./assets/fonts/OpenSans/OpenSans-Semibold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: OpenSans-SemiboldItalic;
+  src: url("./assets/fonts/OpenSans/OpenSans-SemiboldItalic.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('./assets/fonts/icomoon.eot?4cilop');
+  src:  url('./assets/fonts/icomoon.eot?4cilop#iefix') format('embedded-opentype'),
+  url('./assets/fonts/icomoon.ttf?4cilop') format('truetype'),
+  url('./assets/fonts/icomoon.woff?4cilop') format('woff'),
+  url('./assets/fonts/icomoon.svg?4cilop#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon', serif !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  min-height: 100%;
+  height: 100%;
+  body {
+    height: 100%;
+    vid-app {
+      height: 100%;
+      display: flex !important;
+      flex-direction: column;
+      main {
+        &[_ngcontent-c0] {
+          font-family: OpenSans-Regular, serif;
+        }
+
+        display: flex !important;
+        flex-direction: column;
+        flex: 1;
+
+      }
+    }
+  }
+}
+a {
+  color: #03A9F4;
+}
+
+tooltip-content {
+  .tooltip.left .tooltip-arrow {
+    border-left-color: #171f2a;
+  }
+  .tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #171f2a;
+  }
+  .tooltip-inner {
+    background-color: #171f2a;
+    text-align: left;
+  }
+}
+
+service-planning {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border: 1px solid #d2d2d2;
+}
+
+.required:after {
+  content: " * ";
+  color: #cf2a2a;
+  margin-left: 3px;
+}
+
+
+.error-style {
+  border: solid 1px #cf2a2a !important;
+  color: #cf2a2a !important;
+  outline: none !important;
+}
+
+select option:disabled {
+  color: #959595;
+  cursor: default;
+}
+
+select option:disabled {
+  color: #959595 !important;
+  cursor: default;
+}
+
+select option {
+  color: black;
+}
+
+tooltip-content div {
+  word-wrap: break-word !important;
+}
+
+body {
+  -webkit-touch-callout: default !important;
+  -webkit-user-select: auto !important;
+  -moz-user-select: element !important;
+  -ms-user-select: element !important;
+  user-select: element !important;}
