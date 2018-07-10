@@ -234,9 +234,7 @@ public class Service {
 	 */
 	@Override
 	public int hashCode() {
-		final UUID uuid = UUID.fromString(getUuid());
-		
-		return uuid.hashCode();
+		return UUID.fromString(getUuid()).hashCode();
 	}
 	
 	/* (non-Javadoc)
@@ -267,17 +265,4 @@ public class Service {
 	public void setServiceRole(String serviceRole) {
 		this.serviceRole = serviceRole;
 	}
-
-	/*public static void extractVfModuleCustomizationUUID (Service s, String vnfCustomizationName, VfModule vfMod ) {
-		
-		//Look for vnfCustomizationName..vfModuleCustomizationName
-		String nameToFind = vnfCustomizationName + ".." + vfMod.getModelCustomizationName();
-		for (Entry<UUID, VfModule> vfModuleComponent : s.getVfModules().entrySet()) {
-			VfModule xMod = vfModuleComponent.getValue();
-			if ( (xMod.getModelCustomizationName() != null) && (xMod.getModelCustomizationName().equalsIgnoreCase(nameToFind)) ) {
-				vfMod.setCustomizationUuid( xMod.getCustomizationUuid());
-				return;
-			}
-		}
-	}*/
 }

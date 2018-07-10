@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ChangeManagementControllerTest {
 
     private ChangeManagementController createTestSubject() {
-        return new ChangeManagementController(new WorkflowServiceImpl(), new ChangeManagementServiceImpl(null, null),
+        return new ChangeManagementController(new WorkflowServiceImpl(), new ChangeManagementServiceImpl(null, null, null),
                 null);
     }
 

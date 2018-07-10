@@ -20,13 +20,15 @@
 
 package org.onap.vid.controllers;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.onap.vid.aai.AaiResponse;
+import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.ServiceInstancesSearchResults;
 import org.onap.vid.aai.SubscriberData;
 import org.onap.vid.aai.SubscriberFilteredResults;
+import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -49,16 +51,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.onap.vid.utils.Logging.getMethodName;
 
@@ -67,8 +68,7 @@ import static org.onap.vid.utils.Logging.getMethodName;
  */
 
 @RestController
-public class
-AaiController extends RestrictedBaseController {
+public class AaiController extends RestrictedBaseController {
     /**
      * The Constant dateFormat.
      */
@@ -98,14 +98,8 @@ AaiController extends RestrictedBaseController {
     @Autowired
     private RoleProvider roleProvider;
 
-    public AaiController() {
-
-    }
-
-    public AaiController(ServletContext servletContext) {
-        this.servletContext = servletContext;
-
-    }
+    @Autowired
+    private AAIRestInterface aaiRestInterface;
 
     /**
      * Welcome method.
@@ -120,28 +114,32 @@ AaiController extends RestrictedBaseController {
     }
 
     @RequestMapping(value = {"/aai_get_aic_zones"}, method = RequestMethod.GET)
-    public ResponseEntity<String> getAicZones(HttpServletRequest request) throws JsonGenerationException, JsonMappingException, IOException {
+    public ResponseEntity<String> getAicZones(HttpServletRequest request) throws IOException {
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== getAicZones controller start");
         AaiResponse response = aaiService.getAaiZones();
         return aaiResponseToResponseEntity(response);
     }
 
     @RequestMapping(value = {"/aai_get_aic_zone_for_pnf/{globalCustomerId}/{serviceType}/{serviceId}"}, method = RequestMethod.GET)
-    public ResponseEntity<String> getAicZoneForPnf(@PathVariable("globalCustomerId") String globalCustomerId ,@PathVariable("serviceType") String serviceType , @PathVariable("serviceId") String serviceId ,HttpServletRequest request) throws JsonGenerationException, JsonMappingException, IOException {
+    public ResponseEntity<String> getAicZoneForPnf(@PathVariable("globalCustomerId") String globalCustomerId ,@PathVariable("serviceType") String serviceType , @PathVariable("serviceId") String serviceId ,HttpServletRequest request) throws IOException {
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== getAicZoneForPnf controller start");
         AaiResponse response = aaiService.getAicZoneForPnf(globalCustomerId , serviceType , serviceId);
         return aaiResponseToResponseEntity(response);
     }
 
+    @RequestMapping(value = {"/aai_get_instance_groups_by_vnf_instance_id/{vnfInstanceId}"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getInstanceGroupsByVnfInstanceId(@PathVariable("vnfInstanceId") String vnfInstanceId ,HttpServletRequest request) throws IOException {
+        AaiResponse response = aaiService.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
+        return aaiResponseToResponseEntity(response);
+    }
     /**
      * Get services from a&ai.
      *
      * @return ResponseEntity<String> The response entity with the logged in user uuid.
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = {"/getuserID"}, method = RequestMethod.GET)
-    public ResponseEntity<String> getUserID(HttpServletRequest request) throws IOException, InterruptedException {
+    public ResponseEntity<String> getUserID(HttpServletRequest request) {
 
         String userId = ControllersUtils.extractUserId(request);
 
@@ -153,10 +151,9 @@ AaiController extends RestrictedBaseController {
      *
      * @return ResponseEntity<String> The response entity
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = "/aai_get_services", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> doGetServices(HttpServletRequest request) throws IOException, InterruptedException {
+    public ResponseEntity<String> doGetServices(HttpServletRequest request) throws IOException {
         RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
 
         AaiResponse subscriberList = aaiService.getServices(roleValidator);
@@ -167,7 +164,7 @@ AaiController extends RestrictedBaseController {
 
 
     @RequestMapping(value = {"/aai_get_version_by_invariant_id"}, method = RequestMethod.POST)
-    public ResponseEntity<String> getVersionByInvariantId(HttpServletRequest request, @RequestBody VersionByInvariantIdsRequest versions) throws IOException {
+    public ResponseEntity<String> getVersionByInvariantId(HttpServletRequest request, @RequestBody VersionByInvariantIdsRequest versions) {
         ResponseEntity<String> responseEntity;
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -178,7 +175,7 @@ AaiController extends RestrictedBaseController {
 
 
     private ResponseEntity<String> aaiResponseToResponseEntity(AaiResponse aaiResponseData)
-            throws IOException, JsonGenerationException, JsonMappingException {
+            throws IOException {
         ResponseEntity<String> responseEntity;
         ObjectMapper objectMapper = new ObjectMapper();
         if (aaiResponseData.getHttpCode() == 200) {
@@ -195,19 +192,17 @@ AaiController extends RestrictedBaseController {
      * @param serviceInstanceId the service instance Id
      * @return ResponseEntity The response entity
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = "/aai_get_service_instance/{service-instance-id}/{service-instance-type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> doGetServiceInstance(@PathVariable("service-instance-id") String serviceInstanceId, @PathVariable("service-instance-type") String serviceInstanceType) throws IOException, InterruptedException {
-        File certiPath = GetCertificatesPath();
+    public ResponseEntity<String> doGetServiceInstance(@PathVariable("service-instance-id") String serviceInstanceId, @PathVariable("service-instance-type") String serviceInstanceType) {
         Response resp = null;
 
         if (serviceInstanceType.equalsIgnoreCase("Service Instance Id")) {
-            resp = doAaiGet(certiPath.getAbsolutePath(),
+            resp = doAaiGet(
                     "search/nodes-query?search-node-type=service-instance&filter=service-instance-id:EQUALS:"
                             + serviceInstanceId, false);
         } else {
-            resp = doAaiGet(certiPath.getAbsolutePath(),
+            resp = doAaiGet(
                     "search/nodes-query?search-node-type=service-instance&filter=service-instance-name:EQUALS:"
                             + serviceInstanceId, false);
         }
@@ -221,13 +216,11 @@ AaiController extends RestrictedBaseController {
      * @param serviceSubscriptionId the service subscription id
      * @return ResponseEntity The response entity
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = "/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetServices(@PathVariable("global-customer-id") String globalCustomerId,
-                                                @PathVariable("service-subscription-id") String serviceSubscriptionId) throws IOException, InterruptedException {
-        File certiPath = GetCertificatesPath();
-        Response resp = doAaiGet(certiPath.getAbsolutePath(), "business/customers/customer/" + globalCustomerId
+                                                @PathVariable("service-subscription-id") String serviceSubscriptionId) {
+        Response resp = doAaiGet("business/customers/customer/" + globalCustomerId
                 + "/service-subscriptions/service-subscription/" + serviceSubscriptionId + "?depth=0", false);
         return convertResponseToResponseEntity(resp);
     }
@@ -238,10 +231,9 @@ AaiController extends RestrictedBaseController {
      * @param fullSet the full set
      * @return ResponseEntity The response entity
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = "/aai_get_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> doGetSubscriberList(HttpServletRequest request, @DefaultValue("n") @QueryParam("fullSet") String fullSet) throws IOException, InterruptedException {
+    public ResponseEntity<String> doGetSubscriberList(HttpServletRequest request, @DefaultValue("n") @QueryParam("fullSet") String fullSet) throws IOException {
         return getFullSubscriberList(request);
     }
 
@@ -250,10 +242,9 @@ AaiController extends RestrictedBaseController {
      *
      * @return ResponseEntity The response entity
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = "/get_system_prop_vnf_prov_status", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getTargetProvStatus() throws IOException, InterruptedException {
+    public ResponseEntity<String> getTargetProvStatus() {
         String p = SystemProperties.getProperty("aai.vnf.provstatus");
         return new ResponseEntity<String>(p, HttpStatus.OK);
     }
@@ -264,11 +255,10 @@ AaiController extends RestrictedBaseController {
      *
      * @return ResponseEntity The response entity
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = "/get_operational_environments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(@RequestParam(value="operationalEnvironmentType", required = false) String operationalEnvironmentType,
-                                                           @RequestParam(value="operationalEnvironmentStatus", required = false) String operationalEnvironmentStatus) throws IOException, InterruptedException {
+                                                           @RequestParam(value="operationalEnvironmentStatus", required = false) String operationalEnvironmentStatus) {
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "start {}({}, {})", getMethodName(), operationalEnvironmentType, operationalEnvironmentStatus);
         AaiResponse<OperationalEnvironmentList> response = aaiService.getOperationalEnvironments(operationalEnvironmentType,operationalEnvironmentStatus);
         if (response.getHttpCode() != 200) {
@@ -288,10 +278,9 @@ AaiController extends RestrictedBaseController {
      * g @return ResponseEntity The response entity
      *
      * @throws IOException          Signals that an I/O exception has occurred.
-     * @throws InterruptedException the interrupted exception
      */
     @RequestMapping(value = "/aai_get_full_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getFullSubscriberList(HttpServletRequest request) throws IOException, InterruptedException {
+    public ResponseEntity<String> getFullSubscriberList(HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity<String> responseEntity;
         RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
@@ -312,7 +301,7 @@ AaiController extends RestrictedBaseController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getVnfDataByGlobalIdAndServiceType(HttpServletRequest request,
                                                                      @PathVariable("globalCustomerId") String globalCustomerId,
-                                                                     @PathVariable("serviceType") String serviceType) throws IOException {
+                                                                     @PathVariable("serviceType") String serviceType) {
 
         Response resp = aaiService.getVNFData(globalCustomerId, serviceType);
         return convertResponseToResponseEntity(resp);
@@ -326,7 +315,7 @@ AaiController extends RestrictedBaseController {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @RequestMapping(value = "/aai_refresh_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> doRefreshSubscriberList() throws IOException {
+    public ResponseEntity<String> doRefreshSubscriberList() {
         Response resp = getSubscribers(false);
         return convertResponseToResponseEntity(resp);
     }
@@ -338,7 +327,7 @@ AaiController extends RestrictedBaseController {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @RequestMapping(value = "/aai_refresh_full_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> doRefreshFullSubscriberList() throws IOException {
+    public ResponseEntity<String> doRefreshFullSubscriberList() {
         Response resp = getSubscribers(false);
         return convertResponseToResponseEntity(resp);
     }
@@ -421,9 +410,8 @@ AaiController extends RestrictedBaseController {
             @PathVariable("serviceInstance") String serviceInstance) {
 
         String componentListPayload = getComponentListPutPayload(namedQueryId, globalCustomerId, serviceType, serviceInstance);
-        File certiPath = GetCertificatesPath();
 
-        Response resp = doAaiPost(certiPath.getAbsolutePath(), "search/named-query", componentListPayload, false);
+        Response resp = doAaiPost("search/named-query", componentListPayload, false);
         return convertResponseToResponseEntity(resp);
     }
 
@@ -453,9 +441,8 @@ AaiController extends RestrictedBaseController {
             @PathVariable("serviceType") String serviceType) {
 
         String componentListPayload = getModelsByServiceTypePayload(namedQueryId, globalCustomerId, serviceType);
-        File certiPath = GetCertificatesPath();
 
-        Response resp = doAaiPost(certiPath.getAbsolutePath(), "search/named-query", componentListPayload, false);
+        Response resp = doAaiPost("search/named-query", componentListPayload, false);
         return convertResponseToResponseEntity(resp);
     }
 
@@ -471,24 +458,48 @@ AaiController extends RestrictedBaseController {
         return new ResponseEntity<String>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
     }
 
+    @RequestMapping(value = "/aai_get_network_collection_details/{serviceInstanceId}", method = RequestMethod.GET)
+    public ResponseEntity<String> getNetworkCollectionDetails(@PathVariable("serviceInstanceId") String serviceInstanceId) throws IOException {
+        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        AaiResponse<String> resp = aaiService.getNetworkCollectionDetails(serviceInstanceId);
+
+        String httpMessage = resp.getT() != null ?
+                objectMapper.writeValueAsString(resp.getT()) :
+                resp.getErrorMessage();
+        return new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(resp.getHttpCode()));
+    }
+
+    @RequestMapping(value = "/aai_get_instance_groups_by_cloudregion/{cloudOwner}/{cloudRegionId}/{networkFunction}", method = RequestMethod.GET)
+    public ResponseEntity<String> getInstanceGroupsByCloudRegion(@PathVariable("cloudOwner") String cloudOwner,
+                                                                 @PathVariable("cloudRegionId") String cloudRegionId,
+                                                                 @PathVariable("networkFunction") String networkFunction) throws IOException {
+        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        AaiResponse<AaiGetInstanceGroupsByCloudRegion> resp = aaiService.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
+
+        String httpMessage = resp.getT() != null ?
+                objectMapper.writeValueAsString(resp.getT()) :
+                resp.getErrorMessage();
+        return new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(resp.getHttpCode()));
+    }
+
     @RequestMapping(value = "/aai_get_by_uri/**", method = RequestMethod.GET)
     public ResponseEntity<String> getByUri(HttpServletRequest request) {
-        File certiPath = GetCertificatesPath();
 
         String restOfTheUrl = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         String formattedUri = restOfTheUrl.replaceFirst("/aai_get_by_uri/", "").replaceFirst("^aai/v[\\d]+/", "");
 
-        Response resp = doAaiGet(certiPath.getAbsolutePath(), formattedUri, false);
+        Response resp = doAaiGet(formattedUri, false);
 
         return convertResponseToResponseEntity(resp);
     }
 
+
+
     @RequestMapping(value = "/aai_get_configuration/{configuration_id}", method = RequestMethod.GET)
     public ResponseEntity<String> getSpecificConfiguration(@PathVariable("configuration_id") String configurationId) {
-        File certiPath = GetCertificatesPath();
 
-        Response resp = doAaiGet(certiPath.getAbsolutePath(), "network/configurations/configuration/"+configurationId, false);
+        Response resp = doAaiGet("network/configurations/configuration/"+configurationId, false);
 
         return convertResponseToResponseEntity(resp);
     }
@@ -563,6 +574,24 @@ AaiController extends RestrictedBaseController {
         return new ResponseEntity<String>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
     }
 
+    @RequestMapping(value = "/aai_getPortMirroringConfigsData", method = RequestMethod.GET)
+    public Map<String, PortMirroringConfigData> getPortMirroringConfigsData(
+            @RequestParam ("configurationIds") List<String> configurationIds) {
+
+        return configurationIds.stream()
+                .map(id -> ImmutablePair.of(id, aaiService.getPortMirroringConfigData(id)))
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+    }
+
+    @RequestMapping(value = "/aai_getPortMirroringSourcePorts", method = RequestMethod.GET)
+    public Map<String, Object> getPortMirroringSourcePorts(
+            @RequestParam ("configurationIds") List<String> configurationIds) {
+
+        return configurationIds.stream()
+                .map(id -> ImmutablePair.of(id, aaiService.getPortMirroringSourcePorts(id)))
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+    }
+
     private ResponseEntity<String> convertResponseToResponseEntity(Response resp) {
         ResponseEntity<String> respEnt;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -582,10 +611,9 @@ AaiController extends RestrictedBaseController {
      */
     private Response getSubscribers(boolean isFullSet) {
 
-        File certiPath = GetCertificatesPath();
         String depth = "0";
 
-        Response resp = doAaiGet(certiPath.getAbsolutePath(), "business/customers?subscriber-type=INFRA&depth=" + depth, false);
+        Response resp = doAaiGet("business/customers?subscriber-type=INFRA&depth=" + depth, false);
         if (resp != null) {
             LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "getSubscribers() resp=" + resp.getStatusInfo().toString());
         }
@@ -599,33 +627,20 @@ AaiController extends RestrictedBaseController {
      * @return the subscriber details
      */
     private Response getSubscriberDetails(String subscriberId) {
-        File certiPath = GetCertificatesPath();
-        Response resp = doAaiGet(certiPath.getAbsolutePath(), "business/customers/customer/" + subscriberId + "?depth=2", false);
+        Response resp = doAaiGet("business/customers/customer/" + subscriberId + "?depth=2", false);
         //String resp = doAaiGet(certiPath.getAbsolutePath(), "business/customers/customer/" + subscriberId, false);
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "getSubscriberDetails() resp=" + resp.getStatusInfo().toString());
         return resp;
     }
 
     /**
-     * Gets the certificates path.
-     *
-     * @return the file
-     */
-    private File GetCertificatesPath() {
-        if (servletContext != null)
-            return new File(servletContext.getRealPath("/WEB-INF/cert/"));
-        return null;
-    }
-
-    /**
      * Send a GET request to a&ai.
      *
-     * @param certiPath the certi path
      * @param uri       the uri
      * @param xml       the xml
      * @return String The response
      */
-    protected Response doAaiGet(String certiPath, String uri, boolean xml) {
+    protected Response doAaiGet(String uri, boolean xml) {
         String methodName = "getSubscriberList";
         String transId = UUID.randomUUID().toString();
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -633,11 +648,11 @@ AaiController extends RestrictedBaseController {
         Response resp = null;
         try {
 
-            AAIRestInterface restContrller = new AAIRestInterface(certiPath);
-            resp = restContrller.RestGet(fromAppId, transId, uri, xml);
+
+            resp = aaiRestInterface.RestGet(fromAppId, transId, uri, xml).getResponse();
 
         } catch (WebApplicationException e) {
-            final String message = ((BadRequestException) e).getResponse().readEntity(String.class);
+            final String message = e.getResponse().readEntity(String.class);
             LOGGER.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + message);
             LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + message);
         } catch (Exception e) {
@@ -651,13 +666,12 @@ AaiController extends RestrictedBaseController {
     /**
      * Send a POST request to a&ai.
      *
-     * @param certiPath the certi path
      * @param uri       the uri
      * @param payload   the payload
      * @param xml       the xml
      * @return String The response
      */
-    protected Response doAaiPost(String certiPath, String uri, String payload, boolean xml) {
+    protected Response doAaiPost(String uri, String payload, boolean xml) {
         String methodName = "getSubscriberList";
         String transId = UUID.randomUUID().toString();
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -665,8 +679,7 @@ AaiController extends RestrictedBaseController {
         Response resp = null;
         try {
 
-            AAIRestInterface restContrller = new AAIRestInterface(certiPath);
-            resp = restContrller.RestPost(fromAppId, transId, uri, payload, xml);
+            resp = aaiRestInterface.RestPost(fromAppId, uri, payload, xml);
 
         } catch (Exception e) {
             LOGGER.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());

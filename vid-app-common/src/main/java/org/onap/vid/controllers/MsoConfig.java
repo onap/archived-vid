@@ -8,6 +8,7 @@ import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.togglz.core.manager.FeatureManager;
 
 
 @Configuration
@@ -34,8 +35,8 @@ public class MsoConfig {
     }
 
     @Bean
-    public MsoBusinessLogic getMsoBusinessLogic(){
-        return new MsoBusinessLogicImpl(getMsoClient());
+    public MsoBusinessLogic getMsoBusinessLogic(MsoInterface msoClient, FeatureManager featureManager){
+        return new MsoBusinessLogicImpl(msoClient, featureManager);
     }
 
 

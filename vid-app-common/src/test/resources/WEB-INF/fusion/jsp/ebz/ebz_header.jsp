@@ -43,7 +43,7 @@
 <script src="static/fusion/js/att_angular_gridster/ui-gridster-tpls.js"></script>
 <script src="static/fusion/js/att_angular_gridster/angular-gridster.js"></script>
 <script src= "app/fusion/external/ebz/angular_js/checklist-model.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+<script type="text/javascript" src="app/fusion/external/lodash/lodash.min.0.10.js"></script>
 <script src="app/fusion/external/angular-ui/ui-bootstrap-tpls-1.1.2.min.js"></script>
 <script src="app/fusion/scripts/services/userInfoService.js"></script>
 <script src="app/fusion/scripts/services/leftMenuService.js"></script>

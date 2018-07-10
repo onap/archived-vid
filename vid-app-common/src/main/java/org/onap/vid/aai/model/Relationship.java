@@ -1,14 +1,14 @@
 package org.onap.vid.aai.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-
 import java.util.List;
 
 
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Relationship {
-	
+
 	@JsonProperty("related-to")
 	public String relatedTo;
 	

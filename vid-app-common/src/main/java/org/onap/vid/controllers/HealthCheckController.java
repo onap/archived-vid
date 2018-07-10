@@ -116,10 +116,9 @@ public class HealthCheckController extends UnRestrictedBaseController {
 		 * Used by IDNS for redundancy
 		 * @return ResponseEntity The response entity
 		 * @throws IOException Signals that an I/O exception has occurred.
-		 * @throws InterruptedException the interrupted exception
-		 */	
+		 */
 		@RequestMapping(value="/healthCheck",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)  	
-		public HealthStatus gethealthCheckStatusforIDNS() throws IOException, InterruptedException {
+		public HealthStatus gethealthCheckStatusforIDNS() {
 
 			String driver = SystemProperties.getProperty("db.driver");
 			String URL = SystemProperties.getProperty("db.connectionURL");
@@ -151,13 +150,12 @@ public class HealthCheckController extends UnRestrictedBaseController {
 		 *
 		 * @return ResponseEntity The response entity
 		 * @throws IOException Signals that an I/O exception has occurred.
-		 * @throws InterruptedException the interrupted exception
 		 * Project :
 		 */	
 		@RequestMapping(value="rest/healthCheck/{User-Agent}/{X-ECOMP-RequestID}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)  	
 		public HealthStatus getHealthCheck(
 				@PathVariable("User-Agent") String UserAgent,
-				@PathVariable("X-ECOMP-RequestID") String ECOMPRequestID) throws IOException, InterruptedException {
+				@PathVariable("X-ECOMP-RequestID") String ECOMPRequestID) {
 
 			String driver = SystemProperties.getProperty("db.driver");
 			String URL = SystemProperties.getProperty("db.connectionURL");

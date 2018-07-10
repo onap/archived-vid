@@ -27,6 +27,7 @@ import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.mso.rest.RequestDetailsWrapper;
 import org.onap.vid.mso.rest.Task;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -45,6 +46,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static org.onap.vid.utils.Logging.getMethodName;
 
 //import java.util.UUID;
 //import org.springframework.http.ResponseEntity;
@@ -65,7 +68,7 @@ public class MsoController extends RestrictedBaseController {
     /**
      * The Constant dateFormat.
      */
-    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+    private final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
     /**
      * The Constant SVC_INSTANCE_ID.
@@ -98,7 +101,7 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_create_svc_instance", method = RequestMethod.POST)
-    public ResponseEntity<String> createSvcInstance(HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+    public ResponseEntity<String> createSvcInstance(HttpServletRequest request, @RequestBody RequestDetails mso_request) {
         String methodName = "createSvcInstance";
 
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -119,7 +122,7 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_create_e2e_svc_instance", method = RequestMethod.POST)
-    public ResponseEntity<String> createE2eSvcInstance(HttpServletRequest request, @RequestBody LinkedHashMap<String, Object> mso_request) throws Exception {
+    public ResponseEntity<String> createE2eSvcInstance(HttpServletRequest request, @RequestBody LinkedHashMap<String, Object> mso_request) {
         String methodName = "createE2eSvcInstance";
 
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -141,7 +144,7 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_create_vnf_instance/{serviceInstanceId}", method = RequestMethod.POST)
-    public ResponseEntity<String> createVnf(@PathVariable("serviceInstanceId") String serviceInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+    public ResponseEntity<String> createVnf(@PathVariable("serviceInstanceId") String serviceInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) {
 
         MsoResponseWrapper w = msoBusinessLogic.createVnf(mso_request, serviceInstanceId);
 
@@ -160,7 +163,7 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_create_nw_instance/{serviceInstanceId}", method = RequestMethod.POST)
-    public ResponseEntity<String> createNwInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+    public ResponseEntity<String> createNwInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) {
         String methodName = "createNwInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start, serviceInstanceId = " + serviceInstanceId);
 
@@ -181,7 +184,7 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_create_volumegroup_instance/{serviceInstanceId}/vnfs/{vnfInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> createVolumeGroupInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, @PathVariable("vnfInstanceId") String vnfInstanceId,
-                                                            HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+                                                            HttpServletRequest request, @RequestBody RequestDetails mso_request) {
         String methodName = "createVolumeGroupInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
@@ -202,7 +205,7 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_create_vfmodule_instance/{serviceInstanceId}/vnfs/{vnfInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> createVfModuleInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
-                                                         @PathVariable("vnfInstanceId") String vnfInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+                                                         @PathVariable("vnfInstanceId") String vnfInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) {
         String methodName = "createVfModuleInstance";
 
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -224,7 +227,7 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_create_configuration_instance/{serviceInstanceId}/configurations/", method = RequestMethod.POST)
     public ResponseEntity<String> createConfigurationInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
-                                                         HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+                                                         HttpServletRequest request, @RequestBody RequestDetailsWrapper mso_request) {
         String methodName = "createConfigurationInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
@@ -245,10 +248,10 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_delete_e2e_svc_instance/{serviceInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> deleteE2eSvcInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
-                                                    HttpServletRequest request, @RequestBody LinkedHashMap<String, Object> mso_request) throws Exception {
+                                                    HttpServletRequest request, @RequestBody LinkedHashMap<String, Object> mso_request) {
 
         String methodName = "deleteE2eSvcInstance";
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName(), mso_request);
 
         MsoResponseWrapper w = msoBusinessLogic.deleteE2eSvcInstance(mso_request.get("requestDetails"), serviceInstanceId);
 
@@ -267,20 +270,18 @@ public class MsoController extends RestrictedBaseController {
      * @return the response entity
      * @throws Exception the exception
      */
+
     @RequestMapping(value = "/mso_delete_svc_instance/{serviceInstanceId}", method = RequestMethod.POST)
-    public ResponseEntity<String> deleteSvcInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
-                                                    HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+    public String deleteSvcInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
+                                                    HttpServletRequest request, @RequestBody RequestDetails mso_request,
+                                                    @RequestParam(value = "serviceStatus") String serviceStatus) {
 
         String methodName = "deleteSvcInstance";
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-
-        MsoResponseWrapper w = msoBusinessLogic.deleteSvcInstance(mso_request, serviceInstanceId);
-
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName(), mso_request);
+        MsoResponseWrapper w = msoBusinessLogic.deleteSvcInstance(mso_request, serviceInstanceId, serviceStatus);
         // always return OK, the MSO status code is embedded in the body
 
-        return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
-
+        return w.getResponse();
     }
 
     /**
@@ -295,7 +296,7 @@ public class MsoController extends RestrictedBaseController {
     @RequestMapping(value = "/mso_delete_vnf_instance/{serviceInstanceId}/vnfs/{vnfInstanceId}", method = RequestMethod.POST)
 
     public ResponseEntity<String> deleteVnf(@PathVariable("serviceInstanceId") String serviceInstanceId, @PathVariable("vnfInstanceId") String vnfInstanceId,
-                                            HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+                                            HttpServletRequest request, @RequestBody RequestDetails mso_request) {
         String methodName = "deleteVnf";
 
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -320,7 +321,7 @@ public class MsoController extends RestrictedBaseController {
     public ResponseEntity<String> deleteConfiguration(
             @PathVariable("serviceInstanceId") String serviceInstanceId,
             @PathVariable ("configurationId") String configurationId,
-            @RequestBody RequestDetails mso_request) throws Exception {
+            @RequestBody RequestDetailsWrapper mso_request) {
 
         String methodName = "deleteConfiguration";
         LOGGER.debug(EELFLoggerDelegate.debugLogger,
@@ -345,7 +346,7 @@ public class MsoController extends RestrictedBaseController {
     public ResponseEntity<String> activateConfiguration(
             @PathVariable("serviceInstanceId") String serviceInstanceId,
             @PathVariable("configurationId") String configurationId,
-            @RequestBody RequestDetails mso_request) throws Exception {
+            @RequestBody RequestDetails mso_request) {
 
         MsoResponseWrapper w = msoBusinessLogic.setConfigurationActiveStatus(mso_request, serviceInstanceId, configurationId, true);
 
@@ -366,7 +367,7 @@ public class MsoController extends RestrictedBaseController {
     public ResponseEntity<String> deactivateConfiguration(
             @PathVariable("serviceInstanceId") String serviceInstanceId,
             @PathVariable("configurationId") String configurationId,
-            @RequestBody RequestDetails mso_request) throws Exception {
+            @RequestBody RequestDetails mso_request) {
 
         MsoResponseWrapper w = msoBusinessLogic.setConfigurationActiveStatus(mso_request, serviceInstanceId, configurationId, false);
 
@@ -387,7 +388,7 @@ public class MsoController extends RestrictedBaseController {
     public ResponseEntity<String> disablePortOnConfiguration(
             @PathVariable("serviceInstanceId") String serviceInstanceId,
             @PathVariable("configurationId") String configurationId,
-            @RequestBody RequestDetails mso_request) throws Exception {
+            @RequestBody RequestDetails mso_request) {
 
         MsoResponseWrapper w = msoBusinessLogic.setPortOnConfigurationStatus(mso_request, serviceInstanceId, configurationId, false);
 
@@ -408,7 +409,7 @@ public class MsoController extends RestrictedBaseController {
     public ResponseEntity<String> enablePortOnConfiguration(
             @PathVariable("serviceInstanceId") String serviceInstanceId,
             @PathVariable("configurationId") String configurationId,
-            @RequestBody RequestDetails mso_request) throws Exception {
+            @RequestBody RequestDetails mso_request) {
 
         MsoResponseWrapper w = msoBusinessLogic.setPortOnConfigurationStatus(mso_request, serviceInstanceId, configurationId, true);
 
@@ -430,7 +431,7 @@ public class MsoController extends RestrictedBaseController {
     @RequestMapping(value = "/mso_delete_vfmodule_instance/{serviceInstanceId}/vnfs/{vnfInstanceId}/vfModules/{vfModuleId}", method = RequestMethod.POST)
     public ResponseEntity<String> deleteVfModule(
             @PathVariable("serviceInstanceId") String serviceInstanceId, @PathVariable("vnfInstanceId") String vnfInstanceId,
-            @PathVariable("vfModuleId") String vfModuleId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+            @PathVariable("vfModuleId") String vfModuleId, HttpServletRequest request, @RequestBody RequestDetails mso_request) {
 
         String methodName = "deleteVfModule";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -439,7 +440,6 @@ public class MsoController extends RestrictedBaseController {
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
-
     }
 
     /**
@@ -455,7 +455,7 @@ public class MsoController extends RestrictedBaseController {
     @RequestMapping(value = "/mso_delete_volumegroup_instance/{serviceInstanceId}/vnfs/{vnfInstanceId}/volumeGroups/{volumeGroupId}", method = RequestMethod.POST)
     public ResponseEntity<String> deleteVolumeGroupInstance(
             @PathVariable("serviceInstanceId") String serviceInstanceId, @PathVariable("vnfInstanceId") String vnfInstanceId, @PathVariable("volumeGroupId") String volumeGroupId,
-            HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+            HttpServletRequest request, @RequestBody RequestDetails mso_request) {
         String methodName = "deleteVolumeGroupInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
@@ -476,7 +476,7 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_delete_nw_instance/{serviceInstanceId}/networks/{networkInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> deleteNwInstance(@PathVariable("serviceInstanceId") String serviceInstanceId,
-                                                   @PathVariable("networkInstanceId") String networkInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) throws Exception {
+                                                   @PathVariable("networkInstanceId") String networkInstanceId, HttpServletRequest request, @RequestBody RequestDetails mso_request) {
         String methodName = "deleteNwInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
@@ -484,7 +484,6 @@ public class MsoController extends RestrictedBaseController {
 
         // always return OK, the MSO status code is embedded in the body
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
-
     }
 
     /**
@@ -497,7 +496,7 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_get_orch_req/{requestId}", method = RequestMethod.GET)
     public ResponseEntity<String> getOrchestrationRequest(@PathVariable("requestId") String requestId,
-                                                          HttpServletRequest request) throws Exception {
+                                                          HttpServletRequest request) {
 
         String methodName = "getOrchestrationRequest";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -509,7 +508,6 @@ public class MsoController extends RestrictedBaseController {
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
     }
 
-
     /**
      * Gets the orchestration requests.
      *
@@ -520,7 +518,7 @@ public class MsoController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/mso_get_orch_reqs/{filterString}", method = RequestMethod.GET)
     public ResponseEntity<String> getOrchestrationRequests(@PathVariable("filterString") String filterString,
-                                                           HttpServletRequest request) throws Exception {
+                                                           HttpServletRequest request) {
 
         String methodName = "getOrchestrationRequests";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -532,7 +530,6 @@ public class MsoController extends RestrictedBaseController {
         return (new ResponseEntity<String>(w.getResponse(), HttpStatus.OK));
     }
 
-
     /**
      * activate to a pnf instance.
      *
@@ -542,7 +539,7 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_activate_service_instance/{serviceInstanceId}", method = RequestMethod.POST)
-    public ResponseEntity<String> activateServiceInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, @RequestBody RequestDetails requestDetails) throws Exception {
+    public ResponseEntity<String> activateServiceInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, @RequestBody RequestDetails requestDetails) {
         String methodName = "activateServiceInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
@@ -559,14 +556,13 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_deactivate_service_instance/{serviceInstanceId}", method = RequestMethod.POST)
-    public ResponseEntity<String> deactivateServiceInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, @RequestBody RequestDetails requestDetails) throws Exception {
+    public ResponseEntity<String> deactivateServiceInstance(@PathVariable("serviceInstanceId") String serviceInstanceId, @RequestBody RequestDetails requestDetails) {
         String methodName = "deactivateServiceInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
         MsoResponseWrapper w = msoBusinessLogic.setServiceInstanceStatus(requestDetails, serviceInstanceId, false);
         return new ResponseEntity<>(w.getResponse(), HttpStatus.OK);
     }
-
 
     /**
      * Gets the orchestration requests for the dashboard.
@@ -575,7 +571,7 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_get_orch_reqs/dashboard", method = RequestMethod.GET)
-    public List<Request> getOrchestrationRequestsForDashboard() throws Exception {
+    public List<Request> getOrchestrationRequestsForDashboard() {
 
         String methodName = "getOrchestrationRequestsForDashboard";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -592,15 +588,13 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_get_man_task/{originalRequestId}", method = RequestMethod.GET)
-    public List<Task> getManualTasksByRequestId(@PathVariable("originalRequestId") String originalRequestId) throws Exception {
+    public List<Task> getManualTasksByRequestId(@PathVariable("originalRequestId") String originalRequestId) {
 
         String methodName = "getManualTasksByRequestId";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
 
         return  msoBusinessLogic.getManualTasksByRequestId(originalRequestId);
     }
-
-
 
     /**
      * Complete the manual task.
@@ -611,7 +605,7 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_post_man_task/{taskId}", method = RequestMethod.POST)
-    public ResponseEntity<String> manualTaskComplete(@PathVariable("taskId") String taskId , @RequestBody RequestDetails requestDetails) throws Exception {
+    public ResponseEntity<String> manualTaskComplete(@PathVariable("taskId") String taskId , @RequestBody RequestDetails requestDetails) {
 
         String methodName = "manualTaskComplete";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -622,7 +616,7 @@ public class MsoController extends RestrictedBaseController {
 
     @RequestMapping(value = "/mso_remove_relationship/{serviceInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> removeRelationshipFromServiceInstance(@PathVariable("serviceInstanceId") String serviceInstanceId ,
-                                                                        @RequestBody RequestDetails requestDetails) throws Exception {
+                                                                        @RequestBody RequestDetails requestDetails) {
 
         String methodName = "removeRelationshipFromServiceInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -639,7 +633,7 @@ public class MsoController extends RestrictedBaseController {
 
     @RequestMapping(value = "/mso_add_relationship/{serviceInstanceId}", method = RequestMethod.POST)
     public ResponseEntity<String> addRelationshipToServiceInstance(@PathVariable("serviceInstanceId") String serviceInstanceId ,
-                                                                        @RequestBody RequestDetails requestDetails) throws Exception {
+                                                                        @RequestBody RequestDetails requestDetails) {
 
         String methodName = "addRelationshipToServiceInstance";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
@@ -653,7 +647,6 @@ public class MsoController extends RestrictedBaseController {
         }
         return new ResponseEntity<>(w.getResponse(), HttpStatus.OK);
     }
-
 
     /**
      * Exception handler.
@@ -697,5 +690,4 @@ public class MsoController extends RestrictedBaseController {
         response.flushBuffer();
 
     }
-
 }

@@ -21,11 +21,7 @@
 package org.onap.vid.aai.util;
 
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.eclipse.jetty.util.security.Password;
 
 
@@ -70,7 +66,7 @@ public class JettyObfuscationConversionCommandLineUtil {
 	 * Usage.
 	 */
 	private static void usage(){
-		System.out.println("usage:");;
+		System.out.println("usage:");
 		System.out.println("-e [string] to obfuscate");
 		System.out.println("-d [string] to deobfuscate");
 		System.out.println("-h help");

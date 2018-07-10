@@ -16,11 +16,11 @@ public interface MsoInterface {
      * --> failure : would return 200 with failure data.
      * @throws Exception
      */
-    MsoResponseWrapper createSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper createSvcInstance(RequestDetails requestDetails, String endpoint);
     
     //For VoLTE E2E services
-    MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint) throws Exception;
-    MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint);
+    MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint);
 
     /**
      * will create a virtual network function using MSO service.
@@ -28,9 +28,9 @@ public interface MsoInterface {
      * @return - the response body recived from MSO
      * @throws Exception
      */
-    MsoResponseWrapper createVnf(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper createVnf(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String endpoint);
     /**
      *
      * @param requestDetails
@@ -38,7 +38,7 @@ public interface MsoInterface {
      * @return
      * @throws Exception
      */
-    MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String path) throws Exception;
+    MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String path);
 
     /**
      *
@@ -46,44 +46,46 @@ public interface MsoInterface {
      * @return
      * @throws Exception
      */
-    MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper createConfigurationInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String endpoint);
 
-    MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper unassignSvcInstance(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String endpoint);
 
-    void getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject) throws Exception;
+    MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper getOrchestrationRequestsForDashboard(String t , String sourceId , String endpoint , RestObject restObject) throws Exception;
+    void getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject);
 
-    MsoResponseWrapper getManualTasksByRequestId(String t , String sourceId , String endpoint , RestObject restObject) throws Exception;
+    MsoResponseWrapper getOrchestrationRequestsForDashboard(String t , String sourceId , String endpoint , RestObject restObject);
 
-    MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject restObject) throws Exception;
+    MsoResponseWrapper getManualTasksByRequestId(String t , String sourceId , String endpoint , RestObject restObject);
 
-	MsoResponseWrapper updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnf_endpoint)  throws Exception;
+    MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject restObject);
 
-	MsoResponseWrapper replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnf_endpoint)  throws Exception;
+	MsoResponseWrapper updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnf_endpoint);
 
-    MsoResponseWrapper deleteConfiguration(RequestDetails requestDetails, String pmc_endpoint) throws Exception;
+	MsoResponseWrapper replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnf_endpoint);
 
-    MsoResponseWrapper setConfigurationActiveStatus(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper deleteConfiguration(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String pmc_endpoint);
 
-    MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapper setConfigurationActiveStatus(RequestDetails requestDetails, String endpoint);
 
-    void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception;
+    MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint) throws Exception;
+    void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject);
 
-    MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint) throws Exception;
+    MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint);
 
-    MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath) throws Exception;
+    MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint);
+
+    MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath);
 }
 

@@ -20,66 +20,16 @@
 
 package org.onap.vid.asdc;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
-
-import org.onap.vid.asdc.beans.Artifact;
-import org.onap.vid.asdc.beans.Resource;
 import org.onap.vid.asdc.beans.Service;
+
+import java.nio.file.Path;
+import java.util.UUID;
 
 /**
  * The Interface AsdcClient.
  */
 public interface AsdcClient {
-	
-	/**
-	 * Gets the resource.
-	 *
-	 * @param uuid the uuid
-	 * @return the resource
-	 * @throws AsdcCatalogException the sdc catalog exception
-	 */
-	public Resource getResource(UUID uuid) throws AsdcCatalogException;
-	
-	/**
-	 * Gets the resources.
-	 *
-	 * @return the resources
-	 * @throws AsdcCatalogException the sdc catalog exception
-	 */
-	public Collection<Resource> getResources() throws AsdcCatalogException;
-	
-	/**
-	 * Gets the resources.
-	 *
-	 * @param filter the filter
-	 * @return the resources
-	 * @throws AsdcCatalogException the sdc catalog exception
-	 */
-	public Collection<Resource> getResources(Map<String, String[]> filter) throws AsdcCatalogException;
-	
-	/**
-	 * Gets the resource artifact.
-	 *
-	 * @param resourceUuid the resource uuid
-	 * @param artifactUuid the artifact uuid
-	 * @return the resource artifact
-	 * @throws AsdcCatalogException the sdc catalog exception
-	 */
-	public Artifact getResourceArtifact(UUID resourceUuid, UUID artifactUuid) throws AsdcCatalogException;
-	
-	/**
-	 * Gets the resource tosca model.
-	 *
-	 * @param uuid the uuid
-	 * @return the resource tosca model
-	 * @throws AsdcCatalogException the sdc catalog exception
-	 */
-	public Path getResourceToscaModel(UUID uuid) throws AsdcCatalogException;
-	
+
 	/**
 	 * Gets the service.
 	 *
@@ -87,35 +37,8 @@ public interface AsdcClient {
 	 * @return the service
 	 * @throws AsdcCatalogException the sdc catalog exception
 	 */
-	public Service getService(UUID uuid) throws AsdcCatalogException;
-	
-	/**
-	 * Gets the services.
-	 *
-	 * @return the services
-	 * @throws AsdcCatalogException the sdc catalog exception
-	 */
-	public Collection<Service> getServices() throws AsdcCatalogException;
-	
-	/**
-	 * Gets the services.
-	 *
-	 * @param filter the filter
-	 * @return the services
-	 * @throws AsdcCatalogException the asdc catalog exception
-	 */
-	public Collection<Service> getServices(Map<String, String[]> filter) throws AsdcCatalogException;
-	
-	/**
-	 * Gets the service artifact.
-	 *
-	 * @param serviceUuid the service uuid
-	 * @param artifactUuid the artifact uuid
-	 * @return the service artifact
-	 * @throws AsdcCatalogException the asdc catalog exception
-	 */
-	public Artifact getServiceArtifact(UUID serviceUuid, UUID artifactUuid) throws AsdcCatalogException;
-	
+	Service getService(UUID uuid) throws AsdcCatalogException;
+
 	/**
 	 * Gets the service tosca model.
 	 *
@@ -123,7 +46,5 @@ public interface AsdcClient {
 	 * @return the service tosca model
 	 * @throws AsdcCatalogException the asdc catalog exception
 	 */
-	public Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException;
-	
-	//TODO: Collect TOSCA information from CSAR
+	Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException;
 }

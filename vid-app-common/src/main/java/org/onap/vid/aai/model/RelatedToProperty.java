@@ -1,8 +1,10 @@
 package org.onap.vid.aai.model;
 
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RelatedToProperty {
 
 	public String getPropertyKey() {
@@ -27,8 +29,8 @@ public class RelatedToProperty {
 
 	@JsonProperty("property-key")
 	public String propertyKey;
-	
-	
+
+
 	@JsonProperty("property-value")
 	public String propertyValue;
 

@@ -20,21 +20,15 @@
 
 package org.onap.vid.mso.rest;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-
-import org.onap.vid.domain.mso.*;
-import org.onap.vid.domain.mso.SubscriberInfo;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.onap.vid.domain.mso.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -51,6 +45,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 })
 public class RequestDetails{
 
+
+
     /** The cloud configuration. */
     @JsonProperty("cloudConfiguration")
     private CloudConfiguration cloudConfiguration;
@@ -60,8 +56,8 @@ public class RequestDetails{
     private ModelInfo modelInfo;
 
     /** The related model list. */
-    @JsonProperty("relatedModelList")
-    private List<RelatedModel> relatedInstanceList;
+    @JsonProperty("relatedInstanceList")
+    private List<RelatedInstanceWrapper> relatedInstanceList;
 
     /** The request info. */
     @JsonProperty("requestInfo")
@@ -124,7 +120,7 @@ public class RequestDetails{
      * @return     The relatedInstanceList
      */
     @JsonProperty("relatedInstanceList")
-    public List<RelatedModel> getRelatedInstanceList() {
+    public List<RelatedInstanceWrapper> getRelatedInstanceList() {
         return relatedInstanceList;
     }
 
@@ -134,7 +130,7 @@ public class RequestDetails{
      * @param relatedInstanceList     The relatedInstanceList
      */
     @JsonProperty("relatedInstanceList")
-    public void setRelatedInstanceList( List<RelatedModel> relatedInstanceList) {
+    public void setRelatedInstanceList(List<RelatedInstanceWrapper> relatedInstanceList) {
         this.relatedInstanceList = relatedInstanceList;
     }
 

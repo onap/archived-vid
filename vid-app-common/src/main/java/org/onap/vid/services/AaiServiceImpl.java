@@ -1,12 +1,14 @@
 package org.onap.vid.services;
 
 import org.apache.http.HttpStatus;
-import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.codehaus.jackson.JsonNode;
 import org.onap.vid.aai.*;
 import org.onap.vid.aai.ServiceInstance;
 import org.onap.vid.aai.ServiceSubscription;
 import org.onap.vid.aai.Services;
+import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetNetworkCollectionDetails;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetRelatedInstanceGroupsByVnfId;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
@@ -17,6 +19,7 @@ import org.onap.vid.model.ServiceInstanceSearchResult;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.utils.Intersection;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
@@ -24,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,55 +35,53 @@ import java.util.stream.Collectors;
  * Created by Oren on 7/4/17.
  */
 public class AaiServiceImpl implements AaiService {
-    private String serviceInstanceId = "service-instance.service-instance-id";
-    private String serviceType = "service-subscription.service-type";
-    private String customerId = "customer.global-customer-id";
-    private String serviceInstanceName = "service-instance.service-instance-name";
+    private static final String SERVICE_INSTANCE_ID = "service-instance.service-instance-id";
+    private static final String SERVICE_TYPE = "service-subscription.service-type";
+    private static final String CUSTOMER_ID = "customer.global-customer-id";
+    private static final String SERVICE_INSTANCE_NAME = "service-instance.service-instance-name";
     private int indexOfSubscriberName = 6;
 
     @Autowired
     private AaiClientInterface aaiClient;
 
-    EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
+    @Autowired
+    private AaiResponseTranslator aaiResponseTranslator;
+
+    private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
 
     private List<Service> convertModelToService(Model model) {
         List<Service> services = new ArrayList<>();
         String category = "";
 
         if(validateModel(model)){
-            if(model.getModelType() != null)
+            if(model.getModelType() != null) {
                 category = model.getModelType();
+            }
 
             for (ModelVer modelVer: model.getModelVers().getModelVer()) {
-                Service service = new Service();
-                if (modelVer.getModelVersionId() != null)
-                    service.setUuid(modelVer.getModelVersionId());
-                if(model.getModelInvariantId() != null)
-                    service.setInvariantUUID(model.getModelInvariantId());
-                if(modelVer.getModelVersion() != null)
-                    service.setVersion(modelVer.getModelVersion());
-                if(modelVer.getModelName() != null)
-                    service.setName(modelVer.getModelName());
-                if(modelVer.getDistributionStatus() != null)
-                    service.setDistributionStatus(Service.DistributionStatus.valueOf(modelVer.getDistributionStatus()));
-                service.setCategory(category);
+                Service service = new Service(
+                        modelVer.getModelVersionId(),
+                        model.getModelInvariantId(),
+                        category, modelVer.getModelVersion(), modelVer.getModelName(),
+                        modelVer.getDistributionStatus(),
+                        null, null, null, null
+                );
 
                 services.add(service);
             }
         } else {
-            return null;
+            return Collections.emptyList();
         }
 
         return services;
     }
 
     private boolean validateModel(Model model){
-        if(model != null){
-            if(model.getModelVers() != null && model.getModelVers().getModelVer() != null && model.getModelVers().getModelVer().get(0).getModelVersionId() != null){
-                return true;
-            }
+        if (model == null) {
+            return false;
+        } else {
+            return model.getModelVers() != null && model.getModelVers().getModelVer() != null && model.getModelVers().getModelVer().get(0).getModelVersionId() != null;
         }
-        return false;
     }
 
     private List<ServiceInstanceSearchResult> getServicesByOwningEntityId(List<String> owningEntities, RoleValidator roleValidator) {
@@ -100,8 +102,9 @@ public class AaiServiceImpl implements AaiService {
         List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
         if (projectByIdResponse.getT() != null) {
             for (Project project : projectByIdResponse.getT().getProject()) {
-                if (project.getRelationshipList() != null)
+                if (project.getRelationshipList() != null) {
                     serviceInstanceSearchResultList = convertRelationshipToSearchResult(project, serviceInstanceSearchResultList, roleValidator);
+                }
             }
         }
         return serviceInstanceSearchResultList;
@@ -126,11 +129,11 @@ public class AaiServiceImpl implements AaiService {
             setSubscriberName(relationship, serviceInstanceSearchResult);
             for (RelationshipData relationshipData : relationshipDataList) {
                 String key = relationshipData.getRelationshipKey();
-                if (key.equals(serviceInstanceId)) {
+                if (key.equals(SERVICE_INSTANCE_ID)) {
                     serviceInstanceSearchResult.setServiceInstanceId(relationshipData.getRelationshipValue());
-                } else if (key.equals(serviceType)) {
+                } else if (key.equals(SERVICE_TYPE)) {
                     serviceInstanceSearchResult.setServiceType(relationshipData.getRelationshipValue());
-                } else if (key.equals(customerId)) {
+                } else if (key.equals(CUSTOMER_ID)) {
                     serviceInstanceSearchResult.setGlobalCustomerId(relationshipData.getRelationshipValue());
                 }
             }
@@ -150,7 +153,7 @@ public class AaiServiceImpl implements AaiService {
         List<RelatedToProperty> relatedToPropertyList = relationship.getRelatedToPropertyList();
         if (relatedToPropertyList != null) {
             for (RelatedToProperty relatedToProperty : relatedToPropertyList) {
-                if (relatedToProperty.getPropertyKey().equals(serviceInstanceName)) {
+                if (relatedToProperty.getPropertyKey().equals(SERVICE_INSTANCE_NAME)) {
                     serviceInstanceSearchResult.setServiceInstanceName(relatedToProperty.getPropertyValue());
                 }
             }
@@ -160,24 +163,20 @@ public class AaiServiceImpl implements AaiService {
     @Override
     public SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator) {
         AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();
-        SubscriberFilteredResults subscriberFilteredResults =
-                new SubscriberFilteredResults(roleValidator, subscriberResponse.getT(),
-                        subscriberResponse.getErrorMessage(),
-                        subscriberResponse.getHttpCode());
 
-        return subscriberFilteredResults;
+        return new SubscriberFilteredResults(roleValidator, subscriberResponse.getT(),
+                subscriberResponse.getErrorMessage(),
+                subscriberResponse.getHttpCode());
     }
 
     @Override
     public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus) {
-        AaiResponse<OperationalEnvironmentList> subscriberResponse = aaiClient.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
-        return subscriberResponse;
+        return aaiClient.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
     }
 
     @Override
     public AaiResponse<SubscriberList> getFullSubscriberList() {
-        AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();
-        return subscriberResponse;
+        return aaiClient.getAllSubscribers();
     }
 
     @Override
@@ -206,7 +205,7 @@ public class AaiServiceImpl implements AaiService {
         if (projects != null) {
             resultList.add(getServicesByProjectNames(projects, roleValidator));
         }
-        if (resultList.size() > 0) {
+        if (!resultList.isEmpty()) {
             Intersection<ServiceInstanceSearchResult> intersection = new Intersection<>();
             serviceInstancesSearchResults.serviceInstances = intersection.intersectMultipileArray(resultList);
         }
@@ -270,7 +269,7 @@ public class AaiServiceImpl implements AaiService {
         try {
             return aaiClient.getVersionByInvariantId(modelInvariantId);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to getVersionByInvariantId from A&AI", e);
         }
         return null;
     }
@@ -290,10 +289,11 @@ public class AaiServiceImpl implements AaiService {
     @Override
     public AaiResponse getServices(RoleValidator roleValidator) {
         AaiResponse<GetServicesAAIRespone> subscriberResponse = aaiClient.getServices();
-        if (subscriberResponse.getT() != null)
+        if (subscriberResponse.getT() != null) {
             for (org.onap.vid.aai.model.AaiGetServicesRequestModel.Service service : subscriberResponse.getT().service) {
                 service.isPermitted = true;
             }
+        }
         return subscriberResponse;
     }
 
@@ -323,8 +323,7 @@ public class AaiServiceImpl implements AaiService {
 
     @Override
     public AaiResponse getAaiZones() {
-        AaiResponse<AicZones> response = aaiClient.getAllAicZones();
-        return response;
+        return (AaiResponse<AicZones>) aaiClient.getAllAicZones();
     }
 
     @Override
@@ -334,17 +333,17 @@ public class AaiServiceImpl implements AaiService {
         AaiResponse<ServiceRelationships> serviceInstanceResp = aaiClient.getServiceInstance(globalCustomerId, serviceType, serviceId);
         if (serviceInstanceResp.getT() != null) {
             List<String> aicZoneList = getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "zone", "zone.zone-id");
-            if (aicZoneList.size() > 0) {
+            if (!aicZoneList.isEmpty()) {
                 aicZone = aicZoneList.get(0);
             } else {
-                logger.warn("aic zone not found for service instance " + serviceId);
+                LOGGER.warn("aic zone not found for service instance " + serviceId);
             }
         } else {
             if (serviceInstanceResp.getErrorMessage() != null) {
-                logger.error("get service instance " + serviceId + " return error", serviceInstanceResp.getErrorMessage());
+                LOGGER.error("get service instance {} return error {}", serviceId, serviceInstanceResp.getErrorMessage());
                 return new AaiResponse(aicZone , serviceInstanceResp.getErrorMessage() ,serviceInstanceResp.getHttpCode());
             } else {
-                logger.warn("get service instance " + serviceId + " return empty body");
+                LOGGER.warn("get service instance {} return empty body", serviceId);
                 return new AaiResponse(aicZone , "get service instance " + serviceId + " return empty body" ,serviceInstanceResp.getHttpCode());
             }
         }
@@ -358,6 +357,18 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
+    public AaiResponse getNetworkCollectionDetails(String serviceInstanceId){
+        AaiResponse<AaiGetNetworkCollectionDetails> getNetworkCollectionDetailsAaiResponse = aaiClient.getNetworkCollectionDetails(serviceInstanceId);
+        return getNetworkCollectionDetailsAaiResponse;
+    }
+
+    @Override
+    public AaiResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction){
+        AaiResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegionResponse = aaiClient.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
+        return getInstanceGroupsByCloudRegionResponse;
+    }
+
+    @Override
     public Collection<Service> getServicesByDistributionStatus() {
         AaiResponse<GetServiceModelsByDistributionStatusResponse> serviceModelsByDistributionStatusResponse = aaiClient.getServiceModelsByDistributionStatus();
         Collection<Service> services = new ArrayList<>();
@@ -366,9 +377,7 @@ public class AaiServiceImpl implements AaiService {
             for (Result result : results) {
                 if(result.getModel() != null) {
                     List<Service> service = convertModelToService(result.getModel());
-                    if (service != null) {
-                        services.addAll(service);
-                    }
+                    services.addAll(service);
                 }
             }
         }
@@ -381,40 +390,95 @@ public class AaiServiceImpl implements AaiService {
 
         AaiResponse<ServiceRelationships> serviceInstanceResp = aaiClient.getServiceInstance(globalCustomerId, serviceType, serviceInstanceId);
         if (serviceInstanceResp.getT() != null) {
-            List<String> logicalLinks = getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "logical-link", "logical-link.link-name");
-            for (String logicalLink : logicalLinks) {
-                String link = "";
-                try {
-                    link = URLEncoder.encode(logicalLink, "UTF-8");
-                    AaiResponse<LogicalLinkResponse> logicalLinkResp = aaiClient.getLogicalLink(link);
-                    if (logicalLinkResp.getT() != null) {
-                        //lag-interface is the key for pnf - approved by Bracha
-                        List<String> linkPnfs = getRelationshipDataByType(logicalLinkResp.getT().getRelationshipList(), "lag-interface", "pnf.pnf-name");
-                        if (linkPnfs.size() > 0) {
-                            pnfs.addAll(linkPnfs);
-                        } else {
-                            logger.warn("no pnf found for logical link " + logicalLink);
-                        }
-                    } else {
-                        if (logicalLinkResp.getErrorMessage() != null) {
-                            logger.error("get logical link " + logicalLink + " return error", logicalLinkResp.getErrorMessage());
-                        } else {
-                            logger.warn("get logical link " + logicalLink + " return empty body");
-                        }
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    logger.error("Failed to encode logical link: " + logicalLink, e.getMessage());
-                }
+
+            addPnfsToListViaLogicalLinks(pnfs, serviceInstanceResp);
+            addPnfsToListViaDirectRelations(pnfs, serviceInstanceResp);
+
+            if (pnfs.isEmpty()) {
+                LOGGER.warn("no pnf direct relation found for service id:" + serviceInstanceId+
+                        " name: "+serviceInstanceResp.getT().getServiceInstanceName());
             }
         } else {
             if (serviceInstanceResp.getErrorMessage() != null) {
-                logger.error("get service instance " + serviceInstanceId + " return error", serviceInstanceResp.getErrorMessage());
+                LOGGER.error("get service instance {} return error {}", serviceInstanceId, serviceInstanceResp.getErrorMessage());
             } else {
-                logger.warn("get service instance " + serviceInstanceId + " return empty body");
+                LOGGER.warn("get service instance {} return empty body", serviceInstanceId);
             }
         }
 
         return pnfs.stream().distinct().collect(Collectors.toList());
+    }
+
+    @Override
+    public AaiResponseTranslator.PortMirroringConfigData getPortMirroringConfigData(String configurationId) {
+        AaiResponse<JsonNode> aaiResponse = aaiClient.getCloudRegionAndSourceByPortMirroringConfigurationId(configurationId);
+        return aaiResponseTranslator.extractPortMirroringConfigData(aaiResponse);
+    }
+
+    @Override
+    public AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId){
+        AaiResponse<AaiGetRelatedInstanceGroupsByVnfId> aaiResponse = aaiClient.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
+        if(aaiResponse.getHttpCode() == HttpStatus.SC_OK){
+            return new AaiResponse(convertGetInstanceGroupsResponseToSimpleResponse(aaiResponse.getT()), aaiResponse.getErrorMessage(), aaiResponse.getHttpCode());
+        }
+        return aaiClient.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
+    }
+
+    private List<InstanceGroupInfo> convertGetInstanceGroupsResponseToSimpleResponse(AaiGetRelatedInstanceGroupsByVnfId response) {
+        List<InstanceGroupInfo> instanceGroupInfoList = new ArrayList<>();
+        for(org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship relationship: response.getRelationshipList().getRelationship()){
+            getInstanceGroupInfoFromRelationship(relationship, instanceGroupInfoList);
+        }
+        return instanceGroupInfoList;
+    }
+
+    private void getInstanceGroupInfoFromRelationship(org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship relationship, List<InstanceGroupInfo> instanceGroupInfoList) {
+        if(relationship.getRelatedTo().equals("instance-group")){
+            for(org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelatedToProperty relatedToProperty: relationship.getRelatedToPropertyList()){
+                if(relatedToProperty.getPropertyKey().equals("instance-group.instance-group-name")){
+                    instanceGroupInfoList.add(new InstanceGroupInfo(relatedToProperty.getPropertyValue()));
+                }
+            }
+        }
+    }
+
+    @Override
+    public  List<PortDetailsTranslator.PortDetails> getPortMirroringSourcePorts(String configurationId){
+        return aaiClient.getPortMirroringSourcePorts(configurationId);
+    }
+
+    private void addPnfsToListViaDirectRelations(List<String> pnfs, AaiResponse<ServiceRelationships> serviceInstanceResp) {
+        pnfs.addAll(getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "pnf", "pnf.pnf-name"));
+    }
+
+    private void addPnfsToListViaLogicalLinks(List<String> pnfs, AaiResponse<ServiceRelationships> serviceInstanceResp) {
+        List<String> logicalLinks = getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "logical-link", "logical-link.link-name");
+        for (String logicalLink : logicalLinks) {
+            String link;
+            try {
+                link = URLEncoder.encode(logicalLink, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                LOGGER.error("Failed to encode logical link: " + logicalLink, e);
+                continue;
+            }
+
+            AaiResponse<LogicalLinkResponse> logicalLinkResp = aaiClient.getLogicalLink(link);
+            if (logicalLinkResp.getT() != null) {
+                //lag-interface is the key for pnf - approved by Bracha
+                List<String> linkPnfs = getRelationshipDataByType(logicalLinkResp.getT().getRelationshipList(), "lag-interface", "pnf.pnf-name");
+                if (!linkPnfs.isEmpty()) {
+                    pnfs.addAll(linkPnfs);
+                } else {
+                    LOGGER.warn("no pnf found for logical link " + logicalLink);
+                }
+            } else {
+                if (logicalLinkResp.getErrorMessage() != null) {
+                    LOGGER.error("get logical link " + logicalLink + " return error", logicalLinkResp.getErrorMessage());
+                } else {
+                    LOGGER.warn("get logical link " + logicalLink + " return empty body");
+                }
+            }
+        }
     }
 
     private List<String> getRelationshipDataByType(RelationshipList relationshipList, String relationshipType, String relationshipDataKey) {

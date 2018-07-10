@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.BadRequestException;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,7 +24,7 @@ public class CsvServiceImpl implements CsvService{
     /** The logger. */
     static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(CsvServiceImpl.class);
 
-    private static final String arrayRegex = "\\[(.*?)\\]";
+    private static final String ARRAY_REGEX = "\\[(.*?)\\]";
 
 
     /**
@@ -216,33 +215,37 @@ public class CsvServiceImpl implements CsvService{
             String key = currentRow[j];
             if (j == length-1) {
                 json = putJson(json,currentRow[j],null);
-
             }
             else
             {
-                if (key.matches(arrayRegex)){
-                    JSONArray arrayObjects = buildJSON(myEntries, i, j + 1, currentDuplicateRows, JSONArray.class);
-                    json = putJson(json,key.replaceAll("\\[","").replaceAll("]",""),arrayObjects);
-                }
-                else {
-                    if (j < length - 2) {
-                        json = putJson(json, currentRow[j], buildJSON(myEntries, i, j + 1, currentDuplicateRows, JSONObject.class));
-                    }
-                    else
-                    {
-                        if (j == length - 2)//last object
-                        {
-                            if(currentDuplicateRows > 1) {
-                                throw new BadRequestException("Invalid csv file");
-                            }
-                            json = putJson(json, currentRow[j], currentRow[j + 1]);
-                        }
-                    }
-                }
+                json = buildJsonRow(myEntries, i, j, json, currentRow, length, currentDuplicateRows, key);
             }
             i += currentDuplicateRows;
         }
         logger.debug(EELFLoggerDelegate.debugLogger, "end {} json = {}", getMethodName(), json);
+        return json;
+    }
+
+    private <T> T buildJsonRow(List<String[]> myEntries, int i, int j, T json, String[] currentRow, int length, int currentDuplicateRows, String key) throws IllegalAccessException, InstantiationException {
+        if (key.matches(ARRAY_REGEX)){
+            JSONArray arrayObjects = buildJSON(myEntries, i, j + 1, currentDuplicateRows, JSONArray.class);
+            json = putJson(json,key.replaceAll("\\[","").replaceAll("]",""),arrayObjects);
+        }
+        else {
+            if (j < length - 2) {
+                json = putJson(json, currentRow[j], buildJSON(myEntries, i, j + 1, currentDuplicateRows, JSONObject.class));
+            }
+            else
+            {
+                if (j == length - 2)//last object
+                {
+                    if(currentDuplicateRows > 1) {
+                        throw new BadRequestException("Invalid csv file");
+                    }
+                    json = putJson(json, currentRow[j], currentRow[j + 1]);
+                }
+            }
+        }
         return json;
     }
 

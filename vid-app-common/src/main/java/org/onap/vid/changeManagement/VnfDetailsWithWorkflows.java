@@ -13,7 +13,6 @@ public class VnfDetailsWithWorkflows extends VnfDetails {
     public VnfDetailsWithWorkflows() {
     }
 
-
     @SuppressWarnings("WeakerAccess")
     public VnfDetailsWithWorkflows(String UUID, String invariantUUID, List<String> workflows) {
         super(UUID, invariantUUID);
@@ -32,5 +31,9 @@ public class VnfDetailsWithWorkflows extends VnfDetails {
 
     public void setWorkflows(List<String> workflows) {
         this.workflows = workflows;
+    }
+
+    public boolean equals(VnfDetailsWithWorkflows vnfDetailsWithWorkflows){
+        return this.workflows.equals(vnfDetailsWithWorkflows.getWorkflows());
     }
 }

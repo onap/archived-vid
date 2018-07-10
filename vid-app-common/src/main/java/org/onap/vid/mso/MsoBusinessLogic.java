@@ -14,68 +14,68 @@ import java.util.List;
 public interface MsoBusinessLogic {
 
     // this function should get params from tosca and send them to instance at mso, then return success response.
-    MsoResponseWrapper createSvcInstance(RequestDetails msoRequest) throws Exception;
+    MsoResponseWrapper createSvcInstance(RequestDetails msoRequest);
 
-    MsoResponseWrapper createE2eSvcInstance(Object msoRequest) throws Exception;
+    MsoResponseWrapper createE2eSvcInstance(Object msoRequest);
     
-    MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String serviceInstanceId) throws Exception;
+    MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String serviceInstanceId);
     
-    MsoResponseWrapper createVnf(RequestDetails requestDetails, String serviceInstanceId) throws Exception;
+    MsoResponseWrapper createVnf(RequestDetails requestDetails, String serviceInstanceId);
 
-    MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception;
+    MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String serviceInstanceId);
 
-    MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception;
+    MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
-    MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception;
+    MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
-    MsoResponseWrapper createConfigurationInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception;
+    MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String serviceInstanceId);
 
-    MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception;
+    MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String serviceInstanceId, String serviceStatus);
 
-    MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception;
+    MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
-    MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId, String vfModuleId) throws Exception;
+    MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId, String vfModuleId);
 
-    MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId, String volumeGroupId)throws Exception;
+    MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId, String volumeGroupId);
 
-    MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String serviceInstanceId, String networkInstanceId) throws Exception;
+    MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String serviceInstanceId, String networkInstanceId);
 
-    MsoResponseWrapper getOrchestrationRequest(String requestId)throws Exception;
+    MsoResponseWrapper getOrchestrationRequest(String requestId);
 
-    MsoResponseWrapper getOrchestrationRequests(String filterString)throws Exception;
+    MsoResponseWrapper getOrchestrationRequests(String filterString);
 
-    List<Request> getOrchestrationRequestsForDashboard()throws Exception;
+    List<Request> getOrchestrationRequestsForDashboard();
 
-    List<Task> getManualTasksByRequestId(String originalRequestId)throws Exception;
+    List<Task> getManualTasksByRequestId(String originalRequestId);
 
-    MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String taskId)throws Exception;
+    MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String taskId);
 
-    MsoResponseWrapper activateServiceInstance(RequestDetails requestDetails, String serviceInstanceId)throws Exception;
+    MsoResponseWrapper activateServiceInstance(RequestDetails requestDetails, String serviceInstanceId);
 
-    MsoResponseWrapperInterface updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception;
+    MsoResponseWrapperInterface updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
-    MsoResponseWrapperInterface replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception;
+    MsoResponseWrapperInterface replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
-    MsoResponseWrapperInterface updateVnfSoftware(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception;
+    MsoResponseWrapperInterface updateVnfSoftware(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
-    MsoResponseWrapperInterface updateVnfConfig(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) throws Exception;
+    MsoResponseWrapperInterface updateVnfConfig(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
     MsoResponseWrapper deleteConfiguration(
-            RequestDetails requestDetails,
+            org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper,
             String serviceInstanceId,
-            String configurationId) throws Exception;
+            String configurationId);
 
     MsoResponseWrapper setConfigurationActiveStatus(
             RequestDetails requestDetails,
             String serviceInstanceId,
             String configurationId,
-            boolean isActivate) throws Exception;
+            boolean isActivate);
 
     MsoResponseWrapper setPortOnConfigurationStatus(
             RequestDetails requestDetails,
             String serviceInstanceId,
             String configurationId,
-            boolean isEnable) throws Exception;
+            boolean isEnable);
 
     RequestDetailsWrapper<RequestDetails> createOperationalEnvironmentActivationRequestDetails(OperationalEnvironmentActivateInfo details);
 
@@ -91,13 +91,13 @@ public interface MsoBusinessLogic {
 
     RequestDetailsWrapper<OperationEnvironmentRequestDetails> convertParametersToRequestDetails(OperationalEnvironmentController.OperationalEnvironmentCreateBody input, String userId);
 
-    MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String serviceInstanceId) throws Exception;
+    MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String serviceInstanceId);
 
-    MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String serviceInstanceId) throws  Exception;
+    MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String serviceInstanceId);
 
-    MsoResponseWrapper setServiceInstanceStatus(RequestDetails requestDetails , String serviceInstanceId, boolean isActivate)throws Exception;
+    MsoResponseWrapper setServiceInstanceStatus(RequestDetails requestDetails , String serviceInstanceId, boolean isActivate);
 
-    RequestDetailsWrapper generateInPlaceMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails) throws Exception;
+    RequestDetailsWrapper generateInPlaceMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails);
 
-    RequestDetailsWrapper generateConfigMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails) throws Exception;
+    RequestDetailsWrapper generateConfigMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails);
 }

@@ -21,14 +21,14 @@
 package org.onap.vid.aai.util;
 
 
-import javax.ws.rs.ext.Provider;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+
+import javax.ws.rs.ext.Provider;
 
 /**
  * The Class CustomJacksonJaxBJsonProvider.

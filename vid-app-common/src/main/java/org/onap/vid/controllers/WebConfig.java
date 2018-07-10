@@ -1,36 +1,30 @@
 package org.onap.vid.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.onap.vid.aai.AaiClient;
-import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.*;
+import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.asdc.AsdcClient;
-import org.onap.vid.asdc.local.LocalAsdcClient;
-import org.onap.vid.asdc.memory.InMemoryAsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.rest.RestfulAsdcClient;
-import org.onap.vid.controllers.VidController;
+import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.properties.AsdcClientConfiguration;
-import org.onap.vid.properties.AsdcClientConfiguration.AsdcClientType;
-import org.onap.vid.services.AaiService;
-import org.onap.vid.services.AaiServiceImpl;
-import org.onap.vid.services.VidService;
-import org.onap.vid.services.VidServiceImpl;
+import org.onap.vid.services.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.togglz.core.manager.FeatureManager;
 
 import javax.net.ssl.SSLContext;
+import javax.servlet.ServletContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 @Configuration
 public class WebConfig {
@@ -46,73 +40,76 @@ public class WebConfig {
     }
 
 
-
-
     @Bean
-    public VidService vidService(AsdcClient asdcClient) {
-        return new VidServiceImpl(asdcClient);
+    public VidService vidService(AsdcClient asdcClient, FeatureManager featureManager) {
+        return new VidServiceImpl(asdcClient, featureManager);
     }
 
     @Bean
-    public AaiService getAaiService(){
+    public AaiService getAaiService() {
         return new AaiServiceImpl();
     }
 
     @Bean
-    public AaiClientInterface getAaiClientInterface(){
-        return new AaiClient();
+    public AaiResponseTranslator aaiResponseTranslator() {
+        return new AaiResponseTranslator();
     }
 
     @Bean
-    public AsdcClient asdcClient(AsdcClientConfiguration asdcClientConfig) throws IOException {
-        switch (asdcClientConfig.getAsdcClientType()) {
-            case IN_MEMORY:
-                final InputStream asdcCatalogFile = VidController.class.getClassLoader().getResourceAsStream("catalog.json");
-                final JSONTokener tokener = new JSONTokener(asdcCatalogFile);
-                final JSONObject catalog = new JSONObject(tokener);
+    public PortDetailsTranslator portDetailsTranslator() {
+        return new PortDetailsTranslator();
+    }
 
-                return new InMemoryAsdcClient.Builder().catalog(catalog).build();
-            case REST:
+    @Bean
+    public AaiClientInterface getAaiRestInterface(@Qualifier("aaiRestInterface") AAIRestInterface restController, PortDetailsTranslator portsDetailsTranslator) {
+        return new AaiClient(restController, portsDetailsTranslator);
+    }
 
-                final String protocol = asdcClientConfig.getAsdcClientProtocol();
-                final String host = asdcClientConfig.getAsdcClientHost();
-                final int port = asdcClientConfig.getAsdcClientPort();
-                final String auth = asdcClientConfig.getAsdcClientAuth();
-                Client cl = null;
-                if (protocol.equalsIgnoreCase("https")) {
-                    try {
-                        SSLContext ctx = SSLContext.getInstance("TLSv1.2");
-                        ctx.init(null, null, null);
-                        cl = ClientBuilder.newBuilder().sslContext(ctx).build();
-                    } catch (NoSuchAlgorithmException n) {
-                        throw new RuntimeException("SDC Client could not be instantiated due to unsupported protocol TLSv1.2", n);
-                    } catch (KeyManagementException k) {
-                        throw new RuntimeException("SDC Client could not be instantiated due to a key management exception", k);
-                    }
-                } else {
-                    cl = ClientBuilder.newBuilder().build();
-                }
+    @Bean(name = "aaiRestInterface")
+    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory) {
+        return new AAIRestInterface(httpsAuthClientFactory);
+    }
 
-                try {
-                    final URI uri = new URI(protocol + "://" + host + ":" + port + "/");
-                    return new RestfulAsdcClient.Builder(cl, uri)
-                            .auth(auth)
-                            .build();
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException("SDC Client could not be instantiated due to a syntax error in the URI", e);
-                }
+    @Bean
+    public PombaRestInterface getPombaRestInterface(HttpsAuthClient httpsAuthClientFactory) {
+        return new PombaRestInterface(httpsAuthClientFactory);
+    }
 
-            case LOCAL:
+    @Bean
+    public HttpsAuthClient httpsAuthClientFactory(ServletContext servletContext) {
+        final String certFilePath = new File(servletContext.getRealPath("/WEB-INF/cert/")).getAbsolutePath();
+        return new HttpsAuthClient(certFilePath);
+    }
 
-                final InputStream asdcServicesFile = VidController.class.getClassLoader().getResourceAsStream("sdcservices.json");
+    @Bean
+    public AsdcClient asdcClient(AsdcClientConfiguration asdcClientConfig) {
 
-                final JSONTokener jsonTokener = new JSONTokener(IOUtils.toString(asdcServicesFile));
-                final JSONObject sdcServicesCatalog = new JSONObject(jsonTokener);
+        final String protocol = asdcClientConfig.getAsdcClientProtocol();
+        final String host = asdcClientConfig.getAsdcClientHost();
+        final int port = asdcClientConfig.getAsdcClientPort();
+        final String auth = asdcClientConfig.getAsdcClientAuth();
+        Client cl = null;
+        if (protocol.equalsIgnoreCase("https")) {
+            try {
+                SSLContext ctx = SSLContext.getInstance("TLSv1.2");
+                ctx.init(null, null, null);
+                cl = ClientBuilder.newBuilder().sslContext(ctx).build();
+            } catch (NoSuchAlgorithmException n) {
+                throw new GenericUncheckedException("SDC Client could not be instantiated due to unsupported protocol TLSv1.2", n);
+            } catch (KeyManagementException k) {
+                throw new GenericUncheckedException("SDC Client could not be instantiated due to a key management exception", k);
+            }
+        } else {
+            cl = ClientBuilder.newBuilder().build();
+        }
 
-                return new LocalAsdcClient.Builder().catalog(sdcServicesCatalog).build();
-
-            default:
-                throw new RuntimeException(asdcClientConfig.getAsdcClientType() + " is invalid; must be one of " + Arrays.toString(AsdcClientType.values()));
+        try {
+            final URI uri = new URI(protocol + "://" + host + ":" + port + "/");
+            return new RestfulAsdcClient.Builder(cl, uri)
+                    .auth(auth)
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new GenericUncheckedException("SDC Client could not be instantiated due to a syntax error in the URI", e);
         }
     }
 
@@ -121,4 +118,13 @@ public class WebConfig {
         return new ToscaParserImpl2();
     }
 
+    @Bean
+    public PombaService getVerifyServiceInstanceService() {
+        return new PombaServiceImpl();
+    }
+
+    @Bean
+    public PombaClientInterface getVerifyServiceInstanceClientInterface() {
+        return new PombaClientImpl();
+    }
 }

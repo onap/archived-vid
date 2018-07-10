@@ -6,27 +6,20 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import org.apache.commons.io.IOUtils;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.controllers.MsoConfig;
 import org.onap.vid.controllers.OperationalEnvironmentController;
-import org.onap.vid.controllers.WebConfig;
-import org.onap.vid.controllers.OperationalEnvironmentController.*;
+import org.onap.vid.controllers.OperationalEnvironmentController.OperationalEnvironmentManifest;
 import org.onap.vid.mso.MsoBusinessLogic;
+import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.onap.vid.mso.rest.RequestDetails;
-import org.onap.vid.properties.AsdcClientConfiguration;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -36,12 +29,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Test
-@ContextConfiguration(classes = { WebConfig.class, AsdcClientConfiguration.class, SystemProperties.class, MsoConfig.class })
-@WebAppConfiguration
-public class MsoOperationalEnvironmentTest extends AbstractTestNGSpringContextTests {
+public class MsoOperationalEnvironmentTest {
 
-    @Inject
-    private MsoBusinessLogic msoBusinessLogic;
+    private MsoBusinessLogic msoBusinessLogic = new MsoBusinessLogicImpl(null,null);
 
     @Test(dataProvider = "getOperationalEnvironmentActivationPermutations")
     public void testJsonResultOfOperationalEnvironmentActivationRequestDetails(HashMap<String, String> permutation) throws IOException {
@@ -63,7 +53,7 @@ public class MsoOperationalEnvironmentTest extends AbstractTestNGSpringContextTe
     }
 
     @DataProvider
-    private Object[][] getOperationalEnvironmentActivationPermutations() throws IOException {
+    private Object[][] getOperationalEnvironmentActivationPermutations() {
         final String manifest = "" +
                 "{" +
                 "  \"serviceModelList\": [" +
@@ -106,7 +96,7 @@ public class MsoOperationalEnvironmentTest extends AbstractTestNGSpringContextTe
     }
 
     @DataProvider
-    private Object[][] getOperationalEnvironmentCreationPermutations() throws IOException {
+    private Object[][] getOperationalEnvironmentCreationPermutations() {
 
         final ImmutableListMultimap<String, String> options = ImmutableListMultimap.<String, String>builder()
                 // instanceName, ecompInstanceId, ecompInstanceName, operationalEnvType, tenantContext, workloadContext
@@ -137,7 +127,7 @@ public class MsoOperationalEnvironmentTest extends AbstractTestNGSpringContextTe
     }
 
     @DataProvider
-    private Object[][] getOperationalEnvironmentDeactivationPermutations() throws IOException {
+    private Object[][] getOperationalEnvironmentDeactivationPermutations() {
 
         final ImmutableListMultimap<String, String> options = ImmutableListMultimap.<String, String>builder()
                 .putAll("<userId>", "instanceName", "Slavica Hadrien")
@@ -173,7 +163,7 @@ public class MsoOperationalEnvironmentTest extends AbstractTestNGSpringContextTe
         return res;
     }
 
-    private void assertThatExpectationIsLikeObject(String expected, Object requestDetails) throws JsonProcessingException {
+    public static void assertThatExpectationIsLikeObject(String expected, Object requestDetails) throws JsonProcessingException {
         final String requestDetailsAsString = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(requestDetails);
 
         // assert for exact match
@@ -197,8 +187,6 @@ public class MsoOperationalEnvironmentTest extends AbstractTestNGSpringContextTe
         return expected;
     }
 
-
-
     private OperationalEnvironmentActivateInfo createOperationalEnvironmentActivateInfo(String operationalEnvId, String userId, OperationalEnvironmentManifest manifest, String relatedInstanceId, String relatedInstanceName, String workloadContext) {
         OperationalEnvironmentController.OperationalEnvironmentActivateBody body = new OperationalEnvironmentController.OperationalEnvironmentActivateBody(relatedInstanceId, relatedInstanceName, workloadContext, manifest);
         return new OperationalEnvironmentActivateInfo(body, userId, operationalEnvId);
@@ -211,5 +199,4 @@ public class MsoOperationalEnvironmentTest extends AbstractTestNGSpringContextTe
     private OperationalEnvironmentController.OperationalEnvironmentCreateBody createOperationalEnvironmentCreateBody(String instanceName, String ecompInstanceId, String ecompInstanceName, String operationalEnvType, String tenantContext, String workloadContext) {
         return new OperationalEnvironmentController.OperationalEnvironmentCreateBody(instanceName, ecompInstanceId, ecompInstanceName, operationalEnvType, tenantContext, workloadContext);
     }
-
 }

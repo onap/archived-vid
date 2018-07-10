@@ -20,6 +20,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      * The Constant dateFormat.
      */
     final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+    private static final String START = " start";
     private final String ORIGINAL_REQUEST_ID = "originalRequestId";
     /**
      * The logger.
@@ -27,124 +28,131 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
 
     @Override
-    public MsoResponseWrapper createSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper createSvcInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "createSvcInstance ";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return createInstance(requestDetails, endpoint);
     }
     
     @Override
-    public MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint) {
         String methodName = "createE2eSvcInstance ";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return createInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper createVnf(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper createVnf(RequestDetails requestDetails, String endpoint) {
 
         String methodName = "createVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return createInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String endpoint) {
 
         String methodName = "createNwInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return createInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "createVolumeGroupInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return createInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "createVfModuleInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return createInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper createConfigurationInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String endpoint) {
         String methodName = "createConfigurationInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
-
-        return createInstance(requestDetails, endpoint);
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        return createInstance(requestDetailsWrapper, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint) {
         String methodName = "deleteE2eSvcInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return deleteInstance(requestDetails, endpoint);
     }
-    
+
     @Override
-    public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteSvcInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return deleteInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper unassignSvcInstance(RequestDetails requestDetails, String endpoint) {
+        String methodName = "unassignSvcInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+
+        RestObject<String> msoResponse = PostForObject(requestDetails, "", endpoint, String.class);
+        return MsoUtil.wrapResponse(msoResponse);
+    }
+
+    @Override
+    public MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return deleteInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteVfModule";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return deleteInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteVolumeGroupInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return deleteInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteNwInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         return deleteInstance(requestDetails, endpoint);
     }
 
     @Override
-    public void getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject) throws Exception {
+    public void getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject) {
         Get(t, sourceId, endpoint, restObject);
     }
 
-    public void getManualTasks(String t, String sourceId, String endpoint, RestObject restObject) throws Exception {
+    public void getManualTasks(String t, String sourceId, String endpoint, RestObject restObject) {
         Get(t, sourceId, endpoint, restObject);
     }
 
-
-    public MsoResponseWrapper createInstance(Object request, String path) throws Exception {
+    public MsoResponseWrapper createInstance(Object request, String path) {
         String methodName = "createInstance";
-        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             RestObject<String> restObjStr = new RestObject<String>();
@@ -164,7 +172,6 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         }
     }
 
-
     /**
      * Delete instance.
      *
@@ -173,9 +180,9 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      * @return the mso response wrapper
      * @throws Exception the exception
      */
-    public MsoResponseWrapper deleteInstance(Object request, String path) throws Exception {
+    public MsoResponseWrapper deleteInstance(Object request, String path) {
         String methodName = "deleteInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Delete, path =[" + path + "]");
@@ -197,9 +204,9 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
     }
 
-    public MsoResponseWrapper getOrchestrationRequestsForDashboard(String t, String sourceId, String endpoint, RestObject restObject) throws Exception {
+    public MsoResponseWrapper getOrchestrationRequestsForDashboard(String t, String sourceId, String endpoint, RestObject restObject) {
         String methodName = "getOrchestrationRequestsForDashboard";
-        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             getOrchestrationRequest(t, sourceId, endpoint, restObject);
@@ -215,9 +222,9 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         }
     }
 
-    public MsoResponseWrapper getManualTasksByRequestId(String t, String sourceId, String endpoint, RestObject restObject) throws Exception {
+    public MsoResponseWrapper getManualTasksByRequestId(String t, String sourceId, String endpoint, RestObject restObject) {
         String methodName = "getManualTasksByRequestId";
-        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             getManualTasks(t, sourceId, endpoint, restObject);
@@ -233,9 +240,8 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         }
     }
 
-
     @Override
-    public MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject restObject) throws Exception {
+    public MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject restObject) {
         String methodName = "completeManualTask";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Complete ");
         try {
@@ -254,26 +260,25 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
-    public MsoResponseWrapper replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String endpoint) {
         String methodName = "replaceVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
         return replaceInstance(requestDetails, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper deleteConfiguration(RequestDetails requestDetails, String pmc_endpoint)
-            throws Exception {
+    public MsoResponseWrapper deleteConfiguration(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String pmc_endpoint) {
         String methodName = "deleteConfiguration";
         logger.debug(EELFLoggerDelegate.debugLogger,
-                dateFormat.format(new Date()) + "<== " + methodName + " start");
+                dateFormat.format(new Date()) + "<== " + methodName + START);
 
-        return deleteInstance(requestDetails, pmc_endpoint);
+        return deleteInstance(requestDetailsWrapper, pmc_endpoint);
     }
 
     @Override
-    public MsoResponseWrapper setConfigurationActiveStatus(RequestDetails request, String path) throws Exception {
+    public MsoResponseWrapper setConfigurationActiveStatus(RequestDetails request, String path) {
         String methodName = "setConfigurationActiveStatus";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling change configuration active status, path =[" + path + "]");
@@ -293,9 +298,9 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
-    public MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails request, String path) throws Exception {
+    public MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails request, String path) {
         String methodName = "setPortOnConfigurationStatus";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling change port configuration status, path =[" + path + "]");
@@ -315,14 +320,14 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
-    public MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint) {
         RestObject<RequestReferencesContainer> msoResponse = PostForObject(requestDetails, "", endpoint, RequestReferencesContainer.class);
         return new MsoResponseWrapper2<>(msoResponse);
     }
 
-    public MsoResponseWrapper replaceInstance(org.onap.vid.changeManagement.RequestDetails request, String path) throws Exception {
+    public MsoResponseWrapper replaceInstance(org.onap.vid.changeManagement.RequestDetails request, String path) {
         String methodName = "replaceInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
 
@@ -357,17 +362,17 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
-    public MsoResponseWrapper updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String endpoint) {
         String methodName = "updateVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
         RequestDetailsWrapper wrapper = new RequestDetailsWrapper();
         wrapper.requestDetails = new MsoRequestDetails(requestDetails);
         return updateInstance(requestDetails, endpoint);
     }
 
-    public MsoResponseWrapper updateInstance(org.onap.vid.changeManagement.RequestDetails request, String path) throws Exception {
+    public MsoResponseWrapper updateInstance(org.onap.vid.changeManagement.RequestDetails request, String path) {
         String methodName = "updateInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Delete, path =[" + path + "]");
@@ -390,7 +395,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
     }
 
-    public void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) throws Exception {
+    public void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) {
         String methodName = "activateServiceInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start ");
         try {
@@ -408,9 +413,9 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
-    public MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint) throws Exception {
+    public MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "removeRelationshipFromServiceInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Remove relationship from service instance, path =[" + endpoint + "]");
@@ -429,9 +434,9 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
-    public MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath) throws Exception {
+    public MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath) {
         String methodName = "addRelationshipToServiceInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Add relationship to service instance, path =[" + addRelationshipsPath + "]");
@@ -447,5 +452,4 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             throw e;
         }
     }
-
 }

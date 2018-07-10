@@ -1,10 +1,8 @@
 package org.onap.vid.services;
 
-import fj.data.Either;
 import org.apache.commons.lang3.tuple.Pair;
-import org.json.JSONObject;
-import org.onap.vid.changeManagement.*;
 import org.json.simple.JSONArray;
+import org.onap.vid.changeManagement.*;
 import org.onap.vid.mso.rest.Request;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,8 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ChangeManagementService {
-    Collection<Request> getMSOChangeManagements() throws Exception;
-	ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName) throws Exception;
+    Collection<Request> getMSOChangeManagements();
+	ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName);
     JSONArray getSchedulerChangeManagements();
 
     /**
@@ -27,6 +25,6 @@ public interface ChangeManagementService {
     List<String> getWorkflowsForVnf(GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest);
     VnfWorkflowRelationResponse deleteVnfWorkflowRelation(VnfWorkflowRelationRequest vnfWorkflowRelationRequest);
     VnfWorkflowRelationAllResponse getAllVnfWorkflowRelations();
-    String uploadConfigUpdateFile(MultipartFile file) throws Exception;
+    String uploadConfigUpdateFile(MultipartFile file);
 
 }

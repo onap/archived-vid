@@ -20,18 +20,18 @@
 
 package org.onap.vid.model;
 
+import org.apache.commons.collections.MapUtils;
+import org.onap.vid.asdc.beans.tosca.Group;
+import org.onap.vid.asdc.beans.tosca.ToscaModel;
+import org.onap.vid.properties.VidProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.onap.vid.asdc.beans.tosca.Group;
-import org.onap.vid.asdc.beans.tosca.NodeTemplate;
-import org.onap.vid.asdc.beans.tosca.ToscaModel;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.properties.VidProperties;
 /**
  * The Class ServiceModel.
  */
@@ -42,7 +42,7 @@ public class ServiceModel {
 	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(ServiceModel.class);
 	
 	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+	static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 	/** The service. */
 	private Service service;
 	
@@ -51,6 +51,9 @@ public class ServiceModel {
 	
 	/** The networks. */
 	private Map<String, Network> networks;
+
+	private Map<String, CR> collectionResource;
+
 
 	/** Port Mirroring Configuration node templates */
 	private Map<String, PortMirroringConfig> configurations;
@@ -218,6 +221,14 @@ public class ServiceModel {
 	 */
 	public void setPnfs(Map<String,Node> pnfs) {this.pnfs = pnfs;}
 
+	public Map<String, CR> getCollectionResource() {
+		return collectionResource;
+	}
+
+	public void setCollectionResource(Map<String, CR> collectionResource) {
+		this.collectionResource = collectionResource;
+	}
+
 	/**
 	 * Extract service.
 	 *
@@ -247,8 +258,8 @@ public class ServiceModel {
 		// Get the groups. The groups may duplicate the groups that are in the VNF model and have
 		// additional data like the VF module customization String>
 		
-		final Map<String, VfModule> vfModules = new HashMap<String, VfModule> ();
-		final Map<String, VolumeGroup> volumeGroups = new HashMap<String, VolumeGroup> ();
+		final Map<String, VfModule> vfModules = new HashMap<> ();
+		final Map<String, VolumeGroup> volumeGroups = new HashMap<> ();
 		
 		String asdcModelNamespace = VidProperties.getAsdcModelNamespace();
     	String vfModuleTag = asdcModelNamespace + ModelConstants.VF_MODULE;
@@ -283,47 +294,53 @@ public class ServiceModel {
 		String vnfCustomizationName = null;
 		String normalizedVnfCustomizationName = null;
 		String vfModuleCustomizationName = null;
-		VNF tmpVnf = null;
-		
-		if ( ( getVnfs() != null ) && (!(getVnfs().isEmpty())) ) {
+
+		if (!MapUtils.isEmpty(getVnfs())) {
 			for (Entry<String, VNF> vnfComponent : getVnfs().entrySet()) {
 				vnfCustomizationName = vnfComponent.getValue().getModelCustomizationName();
 				normalizedVnfCustomizationName = VNF.normalizeName(vnfCustomizationName);
-				
+
 				LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + 
 						" VNF customizationName=" + vnfCustomizationName + "normalized customization name=" + normalizedVnfCustomizationName);
 				
 				// now check to see if there is a vf module with customization name that starts with normalizedVnfCustomizationName
-				
-				if (( getVfModules() != null ) && (!(getVfModules().isEmpty()))) {
+
+				if (!MapUtils.isEmpty(getVolumeGroups())) {
 					for (Entry<String, VfModule> vfModuleComponent : getVfModules().entrySet()) {
 						vfModuleCustomizationName = vfModuleComponent.getValue().getModelCustomizationName();
 						
 						LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + 
 								" VF Module customizationName=" + vfModuleCustomizationName );
 						if ( vfModuleCustomizationName.startsWith(normalizedVnfCustomizationName + ".." )) {
-							
-							// this vf module belongs to the VNF
-							tmpVnf = vnfComponent.getValue();
-							(tmpVnf.getVfModules()).put(vfModuleComponent.getKey(), vfModuleComponent.getValue());
-							
-							LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + 
-									" Associated VF Module customizationName=" + vfModuleComponent.getKey() + " with VNF customization name=" + vnfCustomizationName);
-							
-							// now find if this vf module has volume groups, if so, find the volume group with the same customization name and put it under the VNF
-							if ( vfModuleComponent.getValue().isVolumeGroupAllowed() ) {
-								if (( getVolumeGroups() != null ) && (!(getVolumeGroups().isEmpty()))) {
-									if (getVolumeGroups().containsKey((vfModuleCustomizationName))) {
-										(vnfComponent.getValue().getVolumeGroups()).put(vfModuleCustomizationName, (getVolumeGroups()).get(vfModuleCustomizationName));
-									}
-								}	
-							}
+							handleCustomizationName(methodName, vnfCustomizationName, vfModuleCustomizationName, vnfComponent, vfModuleComponent);
 						}
 					}
 				}
 			}
 		}
 		
+	}
+
+
+
+	private void handleCustomizationName(String methodName, String vnfCustomizationName, String vfModuleCustomizationName, Entry<String, VNF> vnfComponent, Entry<String, VfModule> vfModuleComponent) {
+		VNF tmpVnf;// this vf module belongs to the VNF
+		tmpVnf = vnfComponent.getValue();
+		(tmpVnf.getVfModules()).put(vfModuleComponent.getKey(), vfModuleComponent.getValue());
+
+		LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName +
+                " Associated VF Module customizationName=" + vfModuleComponent.getKey() + " with VNF customization name=" + vnfCustomizationName);
+
+		// now find if this vf module has volume groups, if so, find the volume group with the same customization name and put it under the VNF
+		if ( vfModuleComponent.getValue().isVolumeGroupAllowed() ) {
+            if (isVolumeGroupsContainsVfModuleCustomName(vfModuleCustomizationName)) {
+                    (vnfComponent.getValue().getVolumeGroups()).put(vfModuleCustomizationName, (getVolumeGroups()).get(vfModuleCustomizationName));
+            }
+        }
+	}
+
+	private boolean isVolumeGroupsContainsVfModuleCustomName(String vfModuleCustomizationName) {
+		return (!MapUtils.isEmpty(getVolumeGroups())) && (getVolumeGroups().containsKey((vfModuleCustomizationName)));
 	}
 
 

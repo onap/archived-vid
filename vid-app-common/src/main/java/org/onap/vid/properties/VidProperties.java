@@ -33,7 +33,11 @@ import java.util.Date;
 public class VidProperties extends SystemProperties {
 
 	//VID General Properties
-	
+	public static final String MSO_DISPLAY_TEST_API_ON_SCREEN="mso.displayTestAPIOnScreen";
+	public static final String MSO_DEFAULT_TEST_API="mso.defaultTestAPI";
+	public static final String MSO_MAX_OPENED_INSTANTIATION_REQUESTS="mso.maxOpenedInstantiationRequests";
+	public static final String MSO_ASYNC_POLLING_INTERVAL_SECONDS="mso.asyncPollingIntervalSeconds";
+
 	/** The Constant VID_TRUSTSTORE_FILENAME. */
 	public static final String VID_TRUSTSTORE_FILENAME = "vid.truststore.filename";
 	

@@ -63,6 +63,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import org.springframework.scheduling.quartz.SpringBeanJobFactory;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -176,13 +178,14 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 * @return New instance of {@link SchedulerFactoryBean}
 	 * @throws Exception
 	 */
-	// @Bean // ANNOTATION COMMENTED OUT
+	@Bean // ANNOTATION COMMENTED OUT
 	// APPLICATIONS REQUIRING QUARTZ SHOULD RESTORE ANNOTATION
 	public SchedulerFactoryBean schedulerFactoryBean() throws Exception {
 		SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
 		scheduler.setTriggers(schedulerRegistryAdapter.getTriggers());
 		scheduler.setConfigLocation(appApplicationContext.getResource("WEB-INF/conf/quartz.properties"));
 		scheduler.setDataSource(dataSource());
+	    scheduler.setJobFactory(new SpringBeanJobFactory());
 		return scheduler;
 	}
 
@@ -218,6 +221,14 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
         return populator;
     }
 	
+
+	/*@Bean
+	public SpringLiquibase liquibaseBean(DataSource dataSource) {
+		SpringLiquibase springLiquibase = new SpringLiquibase();
+		springLiquibase.setDataSource(dataSource);
+		springLiquibase.setChangeLog("classpath:db-master-changelog.xml");
+		return springLiquibase;
+	}*/
 	
 	/**
 	 * Sets the scheduler registry adapter.
@@ -233,4 +244,12 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	public LoginStrategy loginStrategy() {
 		return new LoginStrategyImpl();
 	}
+
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+		resolver.setDefaultEncoding("utf-8");
+		return resolver;
+	}
+
 }

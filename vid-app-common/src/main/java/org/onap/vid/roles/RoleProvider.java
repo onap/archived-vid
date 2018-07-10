@@ -13,7 +13,6 @@ import org.onap.vid.services.AaiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -39,7 +38,6 @@ public class RoleProvider {
 
     }
 
-    @PostConstruct
     public void init() {
         LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method started");
         AaiResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
@@ -54,9 +52,9 @@ public class RoleProvider {
 
         List<Role> roleList = new ArrayList<>();
         //Disable roles until AAF integration finishes
-        /*Map roles = UserUtils.getRoles(request);
+        /*HashMap roles = UserUtils.getRoles(request);
         for (Object role : roles.keySet()) {
-            org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);
+            org.openecomp.portalsdk.core.domain.Role sdkRol = (org.openecomp.portalsdk.core.domain.Role) roles.get(role);
 
             LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Role " + sdkRol.getName() + " is being proccessed");
             try {

@@ -3,18 +3,21 @@ package org.onap.vid.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.controllers.MsoConfig;
 import org.onap.vid.controllers.WebConfig;
 import org.onap.vid.model.RequestReferencesContainer;
+import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.properties.AsdcClientConfiguration;
+import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.onap.vid.services.ChangeManagementService;
 import org.onap.vid.services.ChangeManagementServiceImpl;
 import org.onap.vid.testUtils.RegExMatcher;
+import org.onap.portalsdk.core.service.DataAccessService;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.context.annotation.Bean;
@@ -100,8 +103,8 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
         }
 
         @Bean
-        public ChangeManagementService getChangeManagementService() {
-            return new ChangeManagementServiceImpl(null, getMsoBusinessLogic());
+        public ChangeManagementService getChangeManagementService(DataAccessService dataAccessService, MsoBusinessLogic msoInterface, SchedulerRestInterfaceIfc schedulerRestInterface) {
+            return new ChangeManagementServiceImpl(dataAccessService, msoInterface, schedulerRestInterface);
         }
     }
 }

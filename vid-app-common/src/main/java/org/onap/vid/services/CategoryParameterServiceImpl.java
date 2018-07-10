@@ -1,22 +1,20 @@
 package org.onap.vid.services;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import org.onap.vid.category.AddCategoryOptionResponse;
+import org.onap.vid.category.AddCategoryOptionsRequest;
+import org.onap.vid.category.CategoryParameterOptionRep;
+import org.onap.vid.category.CategoryParametersResponse;
+import org.onap.vid.model.CategoryParameter;
+import org.onap.vid.model.CategoryParameter.Family;
+import org.onap.vid.model.CategoryParameterOption;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.service.DataAccessService;
-import org.onap.vid.category.AddCategoryOptionResponse;
-import org.onap.vid.category.CategoryParameterOptionRep;
-import org.onap.vid.model.CategoryParameter;
-import org.onap.vid.model.CategoryParameterOption;
-import org.onap.vid.category.AddCategoryOptionsRequest;
-import org.onap.vid.category.CategoryParametersResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.onap.vid.model.CategoryParameter.Family;
 
 import javax.ws.rs.ForbiddenException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -49,7 +47,7 @@ public class CategoryParameterServiceImpl implements CategoryParameterService {
     }
 
     @Override
-    public CategoryParametersResponse getCategoryParameters(Family familyName) throws IOException {
+    public CategoryParametersResponse getCategoryParameters(Family familyName) {
         List<CategoryParameter> categoryParameters = dataAccessService.getList(CategoryParameter.class, String.format(" where family = '%s' ",familyName), null, null);
         return convertToCategoryParametersResponse(categoryParameters);
     }
@@ -63,7 +61,7 @@ public class CategoryParameterServiceImpl implements CategoryParameterService {
     }
 
     @Override
-    public AddCategoryOptionResponse createCategoryParameterOptions(String categoryName, AddCategoryOptionsRequest optionsRequest) throws IOException, UnfoundedCategoryException {
+    public AddCategoryOptionResponse createCategoryParameterOptions(String categoryName, AddCategoryOptionsRequest optionsRequest) {
 
         AddCategoryOptionResponse response = new AddCategoryOptionResponse(new ArrayList<>());
         CategoryParameter categoryParameter = getCategoryParameter(categoryName);
@@ -123,7 +121,7 @@ public class CategoryParameterServiceImpl implements CategoryParameterService {
     }
 
     @Override
-    public void deleteCategoryOption(String categoryName, CategoryParameterOption option) throws IOException {
+    public void deleteCategoryOption(String categoryName, CategoryParameterOption option) {
         List<CategoryParameter> categoryParameters = dataAccessService.getList(CategoryParameter.class, String.format(" where name = '%s'", categoryName), null, null);
         if (categoryParameters.size() != 1) {
             String msg = "There is no category parameter with name " + categoryName;

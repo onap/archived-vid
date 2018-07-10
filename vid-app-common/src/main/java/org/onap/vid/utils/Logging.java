@@ -3,6 +3,10 @@ package org.onap.vid.utils;
 import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.http.HttpMethod;
@@ -14,7 +18,11 @@ import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.UUID;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getThrowableList;
 import static org.onap.vid.utils.Streams.not;
 
 public class Logging {
@@ -24,7 +32,7 @@ public class Logging {
 
     public static final String HTTP_REQUESTS_OUTGOING = "http.requests.outgoing.";
 
-    public static final String requestIdHeaderKey = SystemProperties.ECOMP_REQUEST_ID;
+    public static final String REQUEST_ID_HEADER_KEY = SystemProperties.ECOMP_REQUEST_ID;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -99,6 +107,61 @@ public class Logging {
 
     public static HttpServletRequest getHttpServletRequest(){
         return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+    }
+
+    public static String extractOrGenerateRequestId() {
+        try {
+            return getHttpServletRequest().getHeader(REQUEST_ID_HEADER_KEY);
+        }
+        catch (IllegalStateException e) {
+            //in async jobs we don't have any HttpServletRequest
+            return UUID.randomUUID().toString();
+        }
+    }
+
+    public static void debugRequestDetails(Object requestDetails, final EELFLogger logger) {
+        if (logger.isDebugEnabled()) {
+            String requestDetailsAsString;
+            try {
+                requestDetailsAsString = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(requestDetails);
+            } catch (JsonProcessingException e) {
+                requestDetailsAsString = "error: cannot stringify RequestDetails";
+            }
+            logger.debug("requestDetailsAsString: {}", requestDetailsAsString);
+        }
+    }
+
+    public static String exceptionToDescription(Throwable exceptionToDescribe) {
+        // Ignore top-most GenericUnchecked or Runtime exceptions that has no added message
+        final Throwable top = getThrowableList(exceptionToDescribe).stream()
+                .filter(not(e -> ImmutableList.of(GenericUncheckedException.class, RuntimeException.class).contains(e.getClass())
+                        && StringUtils.equals(e.getMessage(), e.getCause() == null ? null : e.getCause().toString())))
+                .findFirst().orElse(exceptionToDescribe);
+
+        final Throwable root = defaultIfNull(getRootCause(top), top);
+
+        String rootToString = root.toString();
+
+        // nullPointer description will include some context
+        if (root.getClass().equals(NullPointerException.class) && root.getStackTrace().length > 0) {
+            rootToString = String.format("NullPointerException at %s:%d",
+                    root.getStackTrace()[0].getFileName(),
+                    root.getStackTrace()[0].getLineNumber());
+        }
+
+        // if input is a single exception, without cause: top.toString
+        // else: return top.toString + root.toString
+        //       but not if root is already described in top.toString
+        if (top.equals(root)) {
+            return rootToString;
+        } else {
+            final String topToString = top.toString();
+            if (topToString.contains(root.getClass().getName()) && topToString.contains(root.getLocalizedMessage())) {
+                return topToString;
+            } else {
+                return topToString + ": " + rootToString;
+            }
+        }
     }
 
 

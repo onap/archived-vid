@@ -1,22 +1,24 @@
 package org.onap.vid.aai;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
+import org.codehaus.jackson.JsonNode;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
-import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
+import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.AaiNodeQueryResponse;
+import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.model.SubscriberList;
+import org.onap.vid.model.probes.ExternalComponentStatus;
 
 import javax.ws.rs.core.Response;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by Oren on 7/4/17.
  */
 public interface AaiClientInterface {
+
+    AaiResponse<AaiNodeQueryResponse> searchNodeTypeByName(String name, ResourceType type);
 
     AaiResponse<SubscriberList> getAllSubscribers();
 
@@ -35,6 +37,10 @@ public interface AaiClientInterface {
     AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId);
 
 	AaiResponse getVNFData();
+
+    AaiResponse getNetworkCollectionDetails(String serviceInstanceId);
+
+    AaiResponse getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction);
 
     Response getVNFData(String globalSubscriberId, String serviceType);
 
@@ -55,4 +61,12 @@ public interface AaiClientInterface {
     AaiResponse getServiceInstance(String globalCustomerId, String serviceType, String serviceInstanceId);
 
     AaiResponse getLogicalLink(String link);
+
+    AaiResponse<JsonNode> getCloudRegionAndSourceByPortMirroringConfigurationId(String configurationId);
+
+    List<PortDetailsTranslator.PortDetails> getPortMirroringSourcePorts(String configurationID);
+
+    AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId);
+
+    ExternalComponentStatus probeAaiGetAllSubscribers();
 }

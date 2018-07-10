@@ -7,23 +7,22 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
-import org.onap.vid.asdc.beans.Artifact;
-import org.onap.vid.asdc.beans.Resource;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.asdc.beans.tosca.ToscaCsar;
 import org.onap.vid.asdc.beans.tosca.ToscaMeta;
 import org.onap.vid.asdc.beans.tosca.ToscaModel;
+import org.onap.vid.exceptions.GenericUncheckedException;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.zip.ZipFile;
@@ -34,6 +33,7 @@ import java.util.zip.ZipFile;
 public class LocalAsdcClient implements AsdcClient {
 
 
+    public static final String SERVICES = "services";
     /**
      * The catalog.
      */
@@ -94,62 +94,12 @@ public class LocalAsdcClient implements AsdcClient {
     }
 
     /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResource(java.util.UUID)
-     */
-    public Resource getResource(UUID uuid) throws AsdcCatalogException {
-        final JSONObject resource = getCatalog().getJSONObject("resources")
-                .getJSONObject(uuid.toString());
-        return convert(resource, Resource.class);
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResources()
-     */
-    public Collection<Resource> getResources() throws AsdcCatalogException {
-        final Collection<Resource> resources = new LinkedList<Resource>();
-
-        for (String key : getCatalog().getJSONObject("resources").keySet()) {
-            final JSONObject json = getCatalog().getJSONObject("resources").getJSONObject(key);
-            final Resource resource = convert(json, Resource.class);
-            resources.add(resource);
-        }
-
-        return resources;
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResources(java.util.Map)
-     */
-    public Collection<Resource> getResources(Map<String, String[]> filter) throws AsdcCatalogException {
-        final Collection<Resource> resources = new LinkedList<Resource>();
-
-        for (String key : getCatalog().getJSONObject("resources").keySet()) {
-            final JSONObject json = getCatalog().getJSONObject("resources").getJSONObject(key);
-
-            boolean filterMatch = true;
-
-            for (Map.Entry<String, String[]> entry : filter.entrySet()) {
-                for (int i = 0; i < entry.getValue().length; i++) {
-                    if (!json.getString(entry.getKey()).equals(entry.getValue()[i])) {
-                        filterMatch = false;
-                        break;
-                    }
-                }
-            }
-
-            if (filterMatch) resources.add(convert(json, Resource.class));
-        }
-
-        return resources;
-    }
-
-    /* (non-Javadoc)
      * @see org.onap.vid.asdc.AsdcClient#getService(java.util.UUID)
      */
     public Service getService(UUID uuid) throws AsdcCatalogException {
 
         JSONObject serviceJsonObject = null;
-        final JSONArray categoryJsonArray = getCatalog().getJSONArray("services");
+        final JSONArray categoryJsonArray = getCatalog().getJSONArray(SERVICES);
 
         for (int i = 0; i < categoryJsonArray.length(); i++) {
             JSONObject jsonServiceObject = categoryJsonArray.getJSONObject(i);
@@ -165,132 +115,34 @@ public class LocalAsdcClient implements AsdcClient {
     }
 
     /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getServices()
-     */
-    public Collection<Service> getServices() throws AsdcCatalogException {
-        final Collection<Service> services = new LinkedList<Service>();
-
-        JSONArray servicesArr = getCatalog().getJSONArray("services");
-
-        for (Object objService : servicesArr) {
-            JSONObject jsonServiceItem = (JSONObject) objService;
-            final Service service = convert(jsonServiceItem, Service.class);
-            services.add(service);
-        }
-
-        return services;
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getServices(java.util.Map)
-     */
-    public Collection<Service> getServices(Map<String, String[]> filter) throws AsdcCatalogException {
-        final Collection<Service> services = new LinkedList<Service>();
-
-        JSONArray catalogServices = catalog.getJSONArray("services");
-
-        for (int i = 0; i < catalogServices.length(); i++) {
-
-            JSONObject serviceJson = catalogServices.getJSONObject(i);
-
-            boolean filterMatch = true;
-
-            for (Map.Entry<String, String[]> entry : filter.entrySet()) {
-                for (int j = 0; j < entry.getValue().length; j++) {
-                    if (!serviceJson.getString(entry.getKey()).equals(entry.getValue()[j])) {
-                        filterMatch = false;
-                        break;
-                    }
-                }
-            }
-            if (filterMatch) services.add(convert(serviceJson, Service.class));
-        }
-        return services;
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResourceArtifact(java.util.UUID, java.util.UUID)
-     */
-    public Artifact getResourceArtifact(UUID resourceUuid, UUID artifactUuid) throws AsdcCatalogException {
-        final JSONArray artifacts = getCatalog().getJSONObject("resources")
-                .getJSONObject(resourceUuid.toString())
-                .getJSONArray("artifacts");
-
-        for (int i = 0; i < artifacts.length(); i++) {
-            final JSONObject artifact = artifacts.getJSONObject(i);
-
-            if (artifact.getString("artifactUUID").equals(artifactUuid.toString())) {
-                return convert(artifact, Artifact.class);
-            }
-        }
-
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getServiceArtifact(java.util.UUID, java.util.UUID)
-     */
-    public Artifact getServiceArtifact(UUID serviceUuid, UUID artifactUuid) throws AsdcCatalogException {
-        final JSONArray artifacts = getCatalog().getJSONObject("services")
-                .getJSONObject(serviceUuid.toString())
-                .getJSONArray("artifacts");
-
-        for (int i = 0; i < artifacts.length(); i++) {
-            final JSONObject artifact = artifacts.getJSONObject(i);
-
-            if (artifact.getString("artifactUUID").equals(artifactUuid.toString())) {
-                return convert(artifact, Artifact.class);
-            }
-        }
-
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResourceToscaModel(java.util.UUID)
-     */
-    public Path getResourceToscaModel(UUID resourceUuid) throws AsdcCatalogException {
-        final String toscaModelURL = getCatalog().getJSONObject("resources")
-                .getJSONObject(resourceUuid.toString())
-                .getString("toscaModelURL");
-
-
-        final InputStream toscaModelStream = getClass().getClassLoader().getResourceAsStream(toscaModelURL);
-
-        if (toscaModelStream == null) return null;
-
-        return null;//getToscaModel(toscaModelStream);
-    }
-
-    /* (non-Javadoc)
      * @see org.onap.vid.asdc.AsdcClient#getServiceToscaModel(java.util.UUID)
      */
     public Path getServiceToscaModel(UUID serviceUuid) throws AsdcCatalogException {
 
         String toscaModelURL = null;
 
-        final JSONArray categoryJsonArray = getCatalog().getJSONArray("services");
+        final JSONArray categoryJsonArray = getCatalog().getJSONArray(SERVICES);
 
         for (int i = 0; i < categoryJsonArray.length(); i++) {
 
             JSONObject jsonServiceObject = categoryJsonArray.getJSONObject(i);
             if (jsonServiceObject.get("uuid").equals(serviceUuid.toString())) {
                 toscaModelURL = jsonServiceObject.getString("toscaModelURL");
-                break;
             }
         }
         if (toscaModelURL == null) {
             return null;
         }
-        final InputStream toscaModelStream = getClass().getClassLoader().getResourceAsStream(toscaModelURL);
-
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(toscaModelURL).getFile());
-        Path path = Paths.get(file.getPath());
 
-        if (toscaModelStream == null) return null;
-
-        return path;
+        try {
+            //using URLDecoder.decode to convert special characters from %XX to real character
+            //see https://stackoverflow.com/questions/32251251/java-classloader-getresource-with-special-characters-in-path
+            return Paths.get(URLDecoder.decode(file.getPath(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new GenericUncheckedException(e);
+        }
     }
 
     /**
@@ -346,7 +198,7 @@ public class LocalAsdcClient implements AsdcClient {
          */
         private JSONObject catalog = new JSONObject()
                 .put("resources", new JSONObject())
-                .put("services", new JSONObject());
+                .put(SERVICES, new JSONObject());
 
         /**
          * The mapper.

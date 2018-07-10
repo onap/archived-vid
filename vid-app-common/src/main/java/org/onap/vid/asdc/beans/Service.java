@@ -97,7 +97,7 @@ public class Service {
 	private String lastUpdaterFullName;
 
 	/** The distribution status. */
-	private Service.DistributionStatus distributionStatus;
+	private String distributionStatus;
 
 	/** The artifacts. */
 	private Collection<Artifact> artifacts;
@@ -191,7 +191,7 @@ public class Service {
 	 *
 	 * @return the distribution status
 	 */
-	public Service.DistributionStatus getDistributionStatus() {
+	public String getDistributionStatus() {
 		return distributionStatus;
 	}
 
@@ -299,7 +299,7 @@ public class Service {
 	 *
 	 * @param distributionStatus the new distribution status
 	 */
-	public void setDistributionStatus(Service.DistributionStatus distributionStatus) {
+	public void setDistributionStatus(String distributionStatus) {
 		this.distributionStatus = distributionStatus;
 	}
 
@@ -334,9 +334,7 @@ public class Service {
 	 */
 	@Override
 	public int hashCode() {
-		final UUID uuid = UUID.fromString(getUuid());
-
-		return uuid.hashCode();
+		return UUID.fromString(getUuid()).hashCode();
 	}
 
 	/* (non-Javadoc)
@@ -350,5 +348,21 @@ public class Service {
 		final Service service = (Service) o;
 
 		return (service.getUuid().equals(getUuid()));
+	}
+
+	public Service(String uuid, String invariantUUID, String category, String version, String name, String distributionStatus, String toscaModelURL, LifecycleState lifecycleState, Collection<Artifact> artifacts, Collection<SubResource> resources) {
+		this.uuid = uuid;
+		this.invariantUUID = invariantUUID;
+		this.name = name;
+		this.version = version;
+		this.toscaModelURL = toscaModelURL;
+		this.category = category;
+		this.lifecycleState = lifecycleState;
+		this.distributionStatus = distributionStatus;
+		this.artifacts = artifacts;
+		this.resources = resources;
+	}
+
+	public Service() {
 	}
 }

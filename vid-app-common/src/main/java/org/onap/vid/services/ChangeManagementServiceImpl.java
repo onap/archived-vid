@@ -17,7 +17,6 @@ import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.scheduler.SchedulerProperties;
-import org.onap.vid.scheduler.SchedulerRestInterfaceFactory;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.BadRequestException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,27 +34,30 @@ import java.util.stream.Collectors;
 @Service
 public class ChangeManagementServiceImpl implements ChangeManagementService {
 
-    private final static String primaryKey = "payload";
-    private final static Set<String> requiredKeys = new HashSet<>(Arrays.asList("request-parameters", "configuration-parameters"));
+    private final static String PRIMARY_KEY = "payload";
+    private final static Set<String> REQUIRED_KEYS = new HashSet<>(Arrays.asList("request-parameters", "configuration-parameters"));
     private final DataAccessService dataAccessService;
     private EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ChangeManagementServiceImpl.class);
     private MsoBusinessLogic msoBusinessLogic;
+    private final SchedulerRestInterfaceIfc restClient;
+
     @Autowired
     private CsvService csvService;
 
     @Autowired
-    public ChangeManagementServiceImpl(DataAccessService dataAccessService, MsoBusinessLogic msoBusinessLogic) {
+    public ChangeManagementServiceImpl(DataAccessService dataAccessService, MsoBusinessLogic msoBusinessLogic, SchedulerRestInterfaceIfc schedulerRestInterface) {
         this.dataAccessService = dataAccessService;
         this.msoBusinessLogic = msoBusinessLogic;
+        this.restClient = schedulerRestInterface;
     }
 
     @Override
-    public Collection<Request> getMSOChangeManagements() throws Exception {
+    public Collection<Request> getMSOChangeManagements() {
         Collection<Request> result = null;
             return msoBusinessLogic.getOrchestrationRequestsForDashboard();
     }
 
-    private RequestDetails findRequestByVnfName(List<RequestDetails> requests, String vnfName) {
+    protected RequestDetails findRequestByVnfName(List<RequestDetails> requests, String vnfName) {
 
         if (requests == null)
             return null;
@@ -69,7 +72,7 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
     }
 
     @Override
-    public ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName) throws Exception {
+    public ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName) {
         if (request == null)
             return null;
         ResponseEntity<String> response;
@@ -102,6 +105,8 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
                         msoResponseWrapperObject = msoBusinessLogic.createVfModuleInstance(currentRequestDetails, serviceInstanceId, vnfInstanceId);
                         break;
                     }
+					default:
+                        logger.error("Failure during doChangeManagement with request " + request.toString());
                 }
                 response = new ResponseEntity<String>(msoResponseWrapperObject.getResponse(), HttpStatus.OK);
                 return response;
@@ -124,7 +129,7 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
         return currentRequestDetails.getVnfInstanceId();
     }
 
-    private String extractServiceInstanceId(RequestDetails currentRequestDetails, String requestType) {
+    protected String extractServiceInstanceId(RequestDetails currentRequestDetails, String requestType) {
         try {
             String serviceInstanceId = currentRequestDetails.getRelatedInstList().get(0).getRelatedInstance().getInstanceId();
             serviceInstanceId.toString(); //throw exception in case that serviceInstanceId is null...
@@ -141,7 +146,6 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
         try {
             String path = SystemProperties.getProperty(SchedulerProperties.SCHEDULER_GET_SCHEDULES);
             org.onap.vid.scheduler.RestObject<String> restObject = new org.onap.vid.scheduler.RestObject<>();
-            SchedulerRestInterfaceIfc restClient = SchedulerRestInterfaceFactory.getInstance();
 
             String str = new String();
             restObject.set(str);
@@ -162,7 +166,6 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
         try {
             String path = String.format(SystemProperties.getProperty(SchedulerProperties.SCHEDULER_DELETE_SCHEDULE), scheduleId);
             org.onap.vid.scheduler.RestObject<String> restObject = new org.onap.vid.scheduler.RestObject<>();
-            SchedulerRestInterfaceIfc restClient = SchedulerRestInterfaceFactory.getInstance();
             String str = new String();
             restObject.set(str);
             restClient.Delete(str, "", path, restObject);
@@ -289,18 +292,22 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
     }
 
     @Override
-    public String uploadConfigUpdateFile(MultipartFile file)
-            throws Exception {
-        JSONObject json = csvService.convertCsvToJson(csvService.readCsv(file));
+    public String uploadConfigUpdateFile(MultipartFile file) {
+        JSONObject json = null;
+        try {
+            json = csvService.convertCsvToJson(csvService.readCsv(file));
+        } catch (InstantiationException | IllegalAccessException | IOException e) {
+            throw new BadRequestException("Invalid csv file", e);
+        }
         if (!validateJsonOutput(json))
             throw new BadRequestException("Invalid csv file");
-        json = json.getJSONObject(primaryKey);
-        json = new JSONObject().put(primaryKey, json.toString());
+        json = json.getJSONObject(PRIMARY_KEY);
+        json = new JSONObject().put(PRIMARY_KEY, json.toString());
         return json.toString();
     }
 
     private boolean validateJsonOutput(org.json.JSONObject json) {
-        if (!json.has(primaryKey) || !json.getJSONObject(primaryKey).keySet().containsAll(requiredKeys))
+        if (!json.has(PRIMARY_KEY) || !json.getJSONObject(PRIMARY_KEY).keySet().containsAll(REQUIRED_KEYS))
             return false;
         return true;
     }

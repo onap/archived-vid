@@ -20,22 +20,21 @@
 
 package org.onap.vid.controllers;
 
-import org.onap.portalsdk.core.controller.RestrictedBaseController;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.SecureServices;
 import org.onap.vid.exceptions.VidServiceUnavailableException;
+import org.onap.vid.model.PombaInstance.PombaRequest;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
+import org.onap.vid.services.PombaService;
 import org.onap.vid.services.VidService;
+import org.onap.portalsdk.core.controller.RestrictedBaseController;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,8 +50,7 @@ public class VidController extends RestrictedBaseController {
 	private final VidService service;
 
 	@Autowired
-	public VidController(VidService vidService) throws SdcToscaParserException{
-
+	public VidController(VidService vidService) {
 		service = vidService;
 	}
 
@@ -61,6 +59,9 @@ public class VidController extends RestrictedBaseController {
 
 	@Autowired
 	RoleProvider roleProvider;
+
+    @Autowired
+	private PombaService pombaService;
 
 //	/**
 //	 * Gets the services.
@@ -112,7 +113,6 @@ public class VidController extends RestrictedBaseController {
 		}
 		catch (Exception t) {
 			LOG.debug("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage() + ":", t);
-			t.printStackTrace();
 			throw new VidServiceUnavailableException("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage(), t);
 		}
 	}
@@ -131,11 +131,16 @@ public class VidController extends RestrictedBaseController {
 		try {
 			return service.getService(uuid);
 		} catch (AsdcCatalogException e) {
-			LOG.error("Failed to retrieve service definitions from SDC", e);
+			LOG.error("Failed to retrieve service definitions from SDC. Error: "+e.getMessage() , e);
 			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
 		}
 	}
 
+	@RequestMapping(value = "/rest/models/reset", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public void invalidateServiceModelCache(HttpServletRequest request) {
+		service.invalidateServiceCache();
+	}
 
 	/**
 	 * Gets the services view.
@@ -145,7 +150,12 @@ public class VidController extends RestrictedBaseController {
 	 * @throws VidServiceUnavailableException the vid service unavailable exception
 	 */
 	@RequestMapping(value={"/serviceModels"}, method=RequestMethod.GET)
-	public ModelAndView getServicesView(HttpServletRequest request) throws VidServiceUnavailableException {
-		return new ModelAndView("serviceModels");
-	}
+    public ModelAndView getServicesView(HttpServletRequest request) {
+        return new ModelAndView("serviceModels");
+    }
+
+    @RequestMapping(value = {"/rest/models/services/verifyService"}, method = RequestMethod.POST)
+	public void verifyServiceInstance(HttpServletRequest request, @RequestBody PombaRequest pombaRequest) {
+		pombaService.verify(pombaRequest);
+    }
 }

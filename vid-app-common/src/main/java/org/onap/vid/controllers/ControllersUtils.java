@@ -6,9 +6,11 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.model.ExceptionResponse;
 import org.slf4j.MDC;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.WebApplicationException;
 
 import static com.att.eelf.configuration.Configuration.MDC_KEY_REQUEST_ID;
 import static org.onap.vid.utils.Logging.getMethodName;
@@ -37,4 +39,9 @@ public class ControllersUtils {
         ExceptionResponse exceptionResponse = new ExceptionResponse(e);
         return exceptionResponse;
     }
+
+    public static ResponseEntity handleWebApplicationException(WebApplicationException e, EELFLoggerDelegate logger) {
+        return ResponseEntity.status(e.getResponse().getStatus()).body(ControllersUtils.handleException(e, logger));
+    }
+
 }

@@ -15,5 +15,7 @@ public class SchedulerProperties extends SystemProperties {
 
 	public static final String SCHEDULER_DELETE_SCHEDULE = "scheduler.delete.schedule";
 
+	public static final String SCHEDULER_BASIC_AUTH =  "scheduler.basic.auth";
+
 
 }

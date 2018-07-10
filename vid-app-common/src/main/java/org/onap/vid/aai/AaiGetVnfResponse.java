@@ -17,7 +17,7 @@ public class AaiGetVnfResponse {
     @JsonProperty("results")
     public List<VnfResult> results = null;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

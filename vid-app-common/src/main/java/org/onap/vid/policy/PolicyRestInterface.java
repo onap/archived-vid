@@ -3,10 +3,11 @@ package org.onap.vid.policy;
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.json.simple.JSONObject;
+import org.onap.vid.client.HttpBasicClient;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.policy.rest.RequestDetails;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.client.HttpBasicClient;
-import org.onap.vid.policy.rest.RequestDetails;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -23,25 +24,24 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
 	/** The logger. */
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(PolicyRestInterface.class);
 	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-	
+	public static final String APPLICATION_JSON = "application/json";
+
 	/** The client. */
 	private static Client client = null;
-	
+
 	/** The common headers. */
 	private MultivaluedHashMap<String, Object> commonHeaders;
-	
 	public PolicyRestInterface() {
 		super();
 	}
-	
+
+	/** The Constant dateFormat. */
+	static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+
 	public void initRestClient()
 	{
 		final String methodname = "initRestClient()";
 		
-		//final String clientAuth = SystemProperties.getProperty(PolicyProperties.POLICY_CLIENTAUTH_VAL);
-		//final String authorization = SystemProperties.getProperty(PolicyProperties.POLICY_AUTHORIZATION_VAL);
 		final String mechId = SystemProperties.getProperty(PolicyProperties.POLICY_CLIENT_MECHID_VAL);
 		final String clientPassword = SystemProperties.getProperty(PolicyProperties.POLICY_CLIENT_PASSWORD_VAL);
 		final String username = SystemProperties.getProperty(PolicyProperties.POLICY_USERNAME_VAL);
@@ -58,7 +58,7 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
 		byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
 		String authorization = new String(authEncBytes);
 		
-		commonHeaders = new MultivaluedHashMap<String, Object> ();
+		commonHeaders = new MultivaluedHashMap<> ();
 		commonHeaders.put("ClientAuth",  Collections.singletonList((Object) ("Basic " + clientAuth)));
 		commonHeaders.put("Authorization",  Collections.singletonList((Object) ("Basic " + authorization)));
 		commonHeaders.put("Environment",  Collections.singletonList((Object) (environment)));
@@ -74,7 +74,7 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> void  Get (T t, String sourceId, String path, RestObject<T> restObject ) throws Exception {
+	public <T> void  Get (T t, String sourceId, String path, RestObject<T> restObject ) {
 		String methodName = "Get";
 		
 		logger.debug(EELFLoggerDelegate.debugLogger, methodName + " start");
@@ -89,7 +89,7 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
 		
 		final Response cres = client.target(url)
 			 .request()
-	         .accept("application/json")
+	         .accept(APPLICATION_JSON)
 	         .headers(commonHeaders)
 	         .get();
 		
@@ -102,7 +102,7 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
 			 logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " REST api was successfull!");
 		    
 		 } else {
-		     throw new Exception(methodName + " with status="+ status + ", url= " + url );
+		     throw new GenericUncheckedException(methodName + " with status="+ status + ", url= " + url );
 		 }
 
 		logger.debug(EELFLoggerDelegate.debugLogger,methodName + " received status=" + status );
@@ -128,13 +128,11 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
 	
 			cres = client.target(url)
 					 .request()
-			         .accept("application/json")
+			         .accept(APPLICATION_JSON)
 	        		 .headers(commonHeaders)
 			         //.entity(r)
 			         .build("DELETE", Entity.entity(r, MediaType.APPLICATION_JSON)).invoke();
-			       //  .method("DELETE", Entity.entity(r, MediaType.APPLICATION_JSON));
-			         //.delete(Entity.entity(r, MediaType.APPLICATION_JSON));
-			
+
 			int status = cres.getStatus();
 	    	restObject.setStatusCode (status);
 	    	
@@ -171,14 +169,13 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> void Post(T t, JSONObject requestDetails, String uuid, String path, RestObject<T> restObject) throws Exception {
+	public <T> void Post(T t, JSONObject requestDetails, String uuid, String path, RestObject<T> restObject) {
 		
         String methodName = "Post";
         String url="";
 
         System.out.println( "POST policy rest interface");
        
-     //   logRequest (requestDetails);
         try {
             
             initRestClient();    
@@ -188,7 +185,7 @@ public class PolicyRestInterface extends PolicyRestInt implements PolicyRestInte
             // Change the content length
             final Response cres = client.target(url)
             	 .request()
-                 .accept("application/json")
+                 .accept(APPLICATION_JSON)
 	        	 .headers(commonHeaders)
                  //.header("content-length", 201)
                  //.header("X-FromAppId",  sourceID)

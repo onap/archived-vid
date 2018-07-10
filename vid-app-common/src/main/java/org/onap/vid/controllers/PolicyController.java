@@ -21,9 +21,9 @@
 package  org.onap.vid.controllers;
 
 import org.json.simple.JSONObject;
+import org.onap.vid.policy.*;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.policy.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,7 +45,7 @@ public class PolicyController extends RestrictedBaseController{
 	private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(PolicyController.class);
 	
 	@RequestMapping(value="/get_policy",method = RequestMethod.POST)	
-	public ResponseEntity<String> getPolicyInfo( HttpServletRequest request, @RequestBody JSONObject policy_request) throws Exception {	
+	public ResponseEntity<String> getPolicyInfo( HttpServletRequest request, @RequestBody JSONObject policy_request) {
 		
 		LOGGER.debug("#####################POLICY API CALL STARTED ###############"+ PolicyProperties.POLICY_GET_CONFIG_VAL);
 		LOGGER.debug("#####################Policy Request ###############"+policy_request.toString());
@@ -58,7 +58,7 @@ public class PolicyController extends RestrictedBaseController{
 		return ( new ResponseEntity<String>(policyResWrapper.getResponse(), HttpStatus.valueOf(policyResWrapper.getStatus())) );		
 	}
 	
-	protected static PolicyResponseWrapper getPolicyConfig(JSONObject request, String path) throws Exception {
+	protected static PolicyResponseWrapper getPolicyConfig(JSONObject request, String path) {
 		String methodName = "getPolicyConfig";
 		String uuid = UUID.randomUUID().toString();
 		LOGGER.debug(  "starting getPolicyConfig ");

@@ -24,7 +24,7 @@ public interface RestInterface {
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Get (T t, String sourceId, String path, RestObject<T> restObject ) throws Exception;
+    <T> void Get (T t, String sourceId, String path, RestObject<T> restObject );
 
     /**
      * Delete.
@@ -37,7 +37,7 @@ public interface RestInterface {
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Delete(T t, Object r, String sourceID, String path, RestObject<T> restObject) throws Exception;
+    <T> void Delete(T t, Object r, String sourceID, String path, RestObject<T> restObject);
 
     /**
      * Post.
@@ -50,7 +50,7 @@ public interface RestInterface {
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Post(T t, Object r, String sourceID, String path, RestObject<T> restObject) throws Exception;
+    <T> void Post(T t, Object r, String sourceID, String path, RestObject<T> restObject);
 
     /**
      * Put.
@@ -63,6 +63,6 @@ public interface RestInterface {
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Put(T t, org.onap.vid.changeManagement.RequestDetailsWrapper r, String sourceID, String path, RestObject<T> restObject) throws Exception;
+    <T> void Put(T t, org.onap.vid.changeManagement.RequestDetailsWrapper r, String sourceID, String path, RestObject<T> restObject);
 
 }

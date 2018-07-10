@@ -20,7 +20,7 @@
 
 package org.onap.vid.asdc.beans.tosca;
 
-import org.onap.sdc.toscaparser.api.elements.constraints.*;
+import org.onap.sdc.toscaparser.api.Property;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -30,6 +30,13 @@ import java.util.ArrayList;
  * The Class Input.
  */
 public class Input {
+
+	public Input(org.onap.sdc.toscaparser.api.parameters.Input input, List<Property> properties){
+		this.type = input.getType();
+		this.description = input.getDescription();
+		this._default = input.getDefault();
+		this.inputProperties = new InputProperties(properties);
+	}
 
 	/** The type. */
 	private String type;
@@ -42,6 +49,8 @@ public class Input {
 	
 	/** The entry schema. */
 	private Input entry_schema;
+
+	private InputProperties inputProperties;
 	
 	/** The constraints */
 	private List<org.onap.sdc.toscaparser.api.elements.constraints.Constraint> constraints;
@@ -142,10 +151,17 @@ public class Input {
 	/**
 	 * Sets the entry schema.
 	 *
-	 * @param the entry schema
 	 */
 	public void setentry_schema(Input s) {
 		this.entry_schema = s;
+	}
+
+	public InputProperties getInputProperties() {
+		return inputProperties;
+	}
+
+	public void setInputProperties(InputProperties inputProperties) {
+		this.inputProperties = inputProperties;
 	}
 	/**
 	 * Sets the constraints.

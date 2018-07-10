@@ -20,104 +20,56 @@
 
 package org.onap.vid.mso.rest;
 
-//import java.util.HashMap;
-//import java.util.Map;
-//import javax.annotation.Generated;
 
-import org.onap.vid.domain.mso.InstanceIds;
-import org.onap.vid.domain.mso.RequestStatus;
-//import com.fasterxml.jackson.annotation.JsonAnyGetter;
-//import com.fasterxml.jackson.annotation.JsonAnySetter;
-//import com.fasterxml.jackson.annotation.JsonCreator;
-//import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-//import com.fasterxml.jackson.annotation.JsonValue;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
+import org.onap.vid.domain.mso.RequestStatus;
 
 /**
- * request structure.
+ * Represent response for: GET orchestrationRequests
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AsyncRequestStatus  {
 
-public class AsyncRequestStatus extends org.onap.vid.domain.mso.AsyncRequestStatus {
+    public Request request;
 
-    
-    /** The instance ids. */
-    private InstanceIds instanceIds;
-   
-    /** The request status. */
-    private RequestStatus requestStatus;
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.domain.mso.AsyncRequestStatus#getInstanceIds()
-     */
-    public InstanceIds getInstanceIds() {
-        return instanceIds;
+    public AsyncRequestStatus(Request request) {
+        this.request = request;
     }
 
-    /**
-     * Sets the instance ids.
-     *
-     * @param instanceIds the new instance ids
-     */
-    public void setInstanceIds(InstanceIds instanceIds) {
-        this.instanceIds = instanceIds;
+    public AsyncRequestStatus() {
+
     }
 
-    
-    /**
-     * (Required).
-     *
-     * @return     The requestStatus
-     */
-    @JsonProperty("requestStatus")
-    public RequestStatus getRequestStatus() {
-        return requestStatus;
-    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Request {
 
-    /**
-     * (Required).
-     *
-     * @param requestStatus     The requestStatus
-     */
-    @JsonProperty("requestStatus")
-    public void setRequestStatus(RequestStatus requestStatus) {
-        this.requestStatus = requestStatus;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.onap.vid.domain.mso.AsyncRequestStatus#toString()
-     */
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.domain.mso.AsyncRequestStatus#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getCorrelator()).append(getFinishTime()).append(instanceIds).append(getRequestId()).append(getRequestScope()).append(getRequestStatus()).append(getRequestType()).append(getStartTime()).append(getAdditionalProperties()).toHashCode();
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.domain.mso.AsyncRequestStatus#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
+        public Request(RequestStatus requestStatus) {
+            this.requestStatus = requestStatus;
         }
-        if ((other instanceof AsyncRequestStatus) == false) {
-            return false;
+
+        public Request() {
         }
-        AsyncRequestStatus rhs = ((AsyncRequestStatus) other);
-        return new EqualsBuilder().append(getCorrelator(), rhs.getCorrelator()).append(getFinishTime(), rhs.getFinishTime()).append(instanceIds, rhs.instanceIds).append(getRequestId(), rhs.getRequestId()).append(getRequestScope(), rhs.getRequestScope()).append(getRequestStatus(), rhs.getRequestStatus()).append(getRequestType(), rhs.getRequestType()).append(getStartTime(), rhs.getStartTime()).append(getAdditionalProperties(), rhs.getAdditionalProperties()).isEquals();
+
+        public String requestId;
+
+        /**
+         * The instance ids.
+         */
+        public InstanceReferences instanceReferences;
+
+        /**
+         * The request status.
+         */
+        public RequestStatus requestStatus;
     }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class InstanceReferences {
+
+        public String serviceInstanceId;
+    }
+
+
 }

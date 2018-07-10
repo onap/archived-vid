@@ -74,7 +74,10 @@ public class MsoProperties extends SystemProperties {
 	
 	/** The Constant MSO_REST_API_SVC_INSTANCE. */
 	public static final String MSO_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance"; // /serviceInstances/v2
-	
+
+	/** The Constant MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE. */
+	public static final String MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance.deleteAndUnassign";
+
 	/** The Constant MSO_REST_API_VNF_INSTANCE. */
 	public static final String MSO_REST_API_VNF_INSTANCE = "mso.restapi.vnf.instance"; // /serviceInstances/v2/{service_instance_id}/vnfs
 	
@@ -100,7 +103,7 @@ public class MsoProperties extends SystemProperties {
 	public static final String MSO_REST_API_VOLUME_GROUP_INSTANCE = "mso.restapi.volume.group.instance"; //serviceInstances/v2/{serviceInstanceId}/volumeGroups
 
 	/** The Constant MSO_REST_API_CONFIGURATION_INSTANCE. */
-	public static final String MSO_REST_API_CONFIGURATIONS = "mso.restapi.configurations"; //serviceInstances/v5/{serviceInstanceId}/configurations/
+	public static final String MSO_REST_API_CONFIGURATIONS = "mso.restapi.configurations"; //serviceInstances/v5/{serviceInstanceId}/configurations
 	public static final String MSO_REST_API_CONFIGURATION_INSTANCE = "mso.restapi.configuration.instance"; //serviceInstances/v5/{serviceInstanceId}/configurations/{configurationId}
 
 	/** The Constant MSO_REST_API_OPERATIONAL_ENVIRONMENT */
@@ -118,5 +121,5 @@ public class MsoProperties extends SystemProperties {
 	
 	/** The Constant dateFormat. */
 	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-	
+
 }

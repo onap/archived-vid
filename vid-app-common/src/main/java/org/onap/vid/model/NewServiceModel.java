@@ -67,6 +67,9 @@ public class NewServiceModel {
 
 	private Map<String, Node> pnfs;
 
+	private Map<String, CR> collectionResource;
+
+
 	/**
 	 * Instantiates a new service model.
 	 */
@@ -176,6 +179,14 @@ public class NewServiceModel {
 
 	public void setPnfs(Map<String, Node> pnfs) {
 		this.pnfs = pnfs;
+	}
+
+	public Map<String, CR> getCollectionResource() {
+		return collectionResource;
+	}
+
+	public void setCollectionResource(Map<String, CR> collectionResource) {
+		this.collectionResource = collectionResource;
 	}
 
 	/**

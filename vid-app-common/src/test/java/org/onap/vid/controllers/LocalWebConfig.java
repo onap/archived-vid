@@ -36,7 +36,7 @@ public class LocalWebConfig {
 
     @Bean
     public VidService vidService(AsdcClient asdcClient) {
-        return new VidServiceImpl(asdcClient);
+        return new VidServiceImpl(asdcClient, null);
     }
 
     @Bean
@@ -46,7 +46,7 @@ public class LocalWebConfig {
 
     @Bean
     public AaiClientInterface getAaiClientInterface() {
-        return new AaiClient();
+        return new AaiClient(null,null);
     }
 
     @Bean

@@ -1,7 +1,6 @@
 package org.onap.vid.mso.rest;
 
 import org.junit.Test;
-import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.RestObject;
@@ -90,7 +89,7 @@ public class MsoRestClientNewTest {
     @Test
     public void testCreateConfigurationInstance() throws Exception {
         MsoRestClientNew testSubject;
-        RequestDetails requestDetails = null;
+        RequestDetailsWrapper requestDetails = null;
         String endpoint = "";
         MsoResponseWrapper result;
 
@@ -294,7 +293,7 @@ public class MsoRestClientNewTest {
     @Test
     public void testDeleteConfiguration() throws Exception {
         MsoRestClientNew testSubject;
-        RequestDetails requestDetails = null;
+        RequestDetailsWrapper requestDetails = null;
         String pmc_endpoint = "";
         MsoResponseWrapper result;
 
@@ -339,7 +338,7 @@ public class MsoRestClientNewTest {
     @Test
     public void testChangeManagementUpdate() throws Exception {
         MsoRestClientNew testSubject;
-        RequestDetailsWrapper requestDetails = null;
+        org.onap.vid.changeManagement.RequestDetailsWrapper requestDetails = null;
         String endpoint = "";
         MsoResponseWrapperInterface result;
 

@@ -1,13 +1,11 @@
 package org.onap.vid.integrationTest;
 
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.model.GetServiceModelsByDistributionStatusResponse;
 import org.onap.vid.aai.model.Result;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,12 +21,10 @@ public class AaiIntegrationTest extends AbstractTestNGSpringContextTests {
 
 
     @Autowired
-    MockServletContext servletContext;
+    AaiClientInterface aaiClient;
 
-
-    @Test
-    public void testGetServiceModelsFromAai() throws Exception {
-        AaiClientInterface aaiClient = new AaiClient(servletContext);
+    @Test(enabled = false)
+    public void testGetServiceModelsFromAai() {
         AaiResponse<GetServiceModelsByDistributionStatusResponse> serviceModelsByDistributionStatusResponse = aaiClient.getServiceModelsByDistributionStatus();
         GetServiceModelsByDistributionStatusResponse response = serviceModelsByDistributionStatusResponse.getT();
         for(Result result: response.getResults()){
@@ -38,6 +34,4 @@ public class AaiIntegrationTest extends AbstractTestNGSpringContextTests {
             Assert.assertNotNull(result.getModel().getModelVers().getModelVer().get(0).getModelVersion());
         }
     }
-
-
 }

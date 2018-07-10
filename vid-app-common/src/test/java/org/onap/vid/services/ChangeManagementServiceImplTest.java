@@ -1,193 +1,116 @@
 package org.onap.vid.services;
 
-import static org.junit.Assert.*;
-import java.util.*;
-
-import org.json.simple.JSONArray;
-import org.junit.Assert;
-import org.junit.Test;
-import org.onap.portalsdk.core.service.DataAccessService;
-import org.onap.portalsdk.core.service.DataAccessServiceImpl;
+import org.mockito.*;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
-import org.onap.vid.changeManagement.GetVnfWorkflowRelationRequest;
 import org.onap.vid.changeManagement.RequestDetails;
-import org.onap.vid.changeManagement.VnfWorkflowRelationAllResponse;
-import org.onap.vid.changeManagement.VnfWorkflowRelationRequest;
-import org.onap.vid.changeManagement.VnfWorkflowRelationResponse;
 import org.onap.vid.mso.MsoBusinessLogic;
-import org.onap.vid.mso.MsoBusinessLogicImpl;
-import org.onap.vid.mso.rest.MsoRestClientNew;
-import org.onap.vid.mso.rest.Request;
+import org.onap.vid.mso.MsoResponseWrapperInterface;
+import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
+import static org.mockito.Mockito.verify;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
+
+@Test
 public class ChangeManagementServiceImplTest {
 
-    private ChangeManagementServiceImpl createTestSubject() {
-        return new ChangeManagementServiceImpl(new DataAccessServiceImpl(),
-                new MsoBusinessLogicImpl(new MsoRestClientNew()));
+    @Mock
+    DataAccessService dataAccessServiceMock;
+
+    @Mock
+    MsoBusinessLogic msoBusinessLogicMock;
+
+    @Mock
+    SchedulerRestInterfaceIfc schedulerRestInterface;
+
+    @BeforeMethod
+    public void initMocks(){
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testGetMSOChangeManagements() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        Collection<Request> result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getMSOChangeManagements();
+    public void doChangeManagement_requestIsNull_returnsNull() throws Exception {
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface);
+        ResponseEntity<String> result = changeManagementService.doChangeManagement(null,"anyString");
+        assertNull(result);
     }
 
     @Test
-    public void testDoChangeManagement() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        ChangeManagementRequest request = null;
-        String vnfName = "";
-        ResponseEntity<String> result;
+    public void doChangeManagement_currentRequestDetailsIsNull_returnsNull() throws Exception {
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface);
 
-        // test 1
-        testSubject = createTestSubject();
-        request = null;
-        result = testSubject.doChangeManagement(request, vnfName);
-        Assert.assertEquals(null, result);
+        ChangeManagementServiceImpl changeManagementServiceSpied = Mockito.spy(changeManagementService);
+        Mockito.doReturn(null).when(changeManagementServiceSpied).findRequestByVnfName(Matchers.anyList(),Mockito.anyString());
+
+        ResponseEntity<String> result = changeManagementServiceSpied.doChangeManagement(null,"anyString");
+
+        assertNull(result);
+    }
+
+
+    @Test
+    public void  doChangeManagement_requestTypeIsUpdate_MsoUpdateVnfIsCalled() throws Exception {
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnf(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.UPDATE);
+
+        ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
+        verify(msoBusinessLogicMock).updateVnf(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
     @Test
-    public void testGetSchedulerChangeManagements() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        JSONArray result;
+    public void  doChangeManagement_requestTypeIsReplace_MsoUpdateVnfIsCalled() throws Exception {
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).replaceVnf(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.REPLACE);
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getSchedulerChangeManagements();
+
+        ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
+
+        verify(msoBusinessLogicMock).replaceVnf(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
     @Test
-    public void testDeleteSchedule() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        String scheduleId = "";
+    public void  doChangeManagement_requestTypeIsInPlaceSoftwareUpdate_MsoUpdateVnfIsCalled() throws Exception {
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnfSoftware(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.deleteSchedule(scheduleId);
+
+        ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
+
+        verify(msoBusinessLogicMock).updateVnfSoftware(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
     @Test
-    public void testAddVnfWorkflowRelation() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = null;
-        VnfWorkflowRelationResponse result;
+    public void  doChangeManagement_requestTypeIsConfigUpdate_MsoUpdateVnfIsCalled() throws Exception {
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnfConfig(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.CONFIG_UPDATE);
 
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.addVnfWorkflowRelation(vnfWorkflowRelationRequest);
-        } catch (
 
-        Exception e) {
-        }
+        ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
+
+        verify(msoBusinessLogicMock).updateVnfConfig(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
-    @Test
-    public void testDeleteVnfWorkflowRelation() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = null;
-        VnfWorkflowRelationResponse result;
+    private RequestDetails callChangeManagement(String requestType) throws Exception {
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface);
+        ChangeManagementServiceImpl changeManagementServiceSpied = Mockito.spy(changeManagementService);
+        ChangeManagementRequest updateRequest = new ChangeManagementRequest();
 
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.deleteVnfWorkflowRelation(vnfWorkflowRelationRequest);
-        } catch (
+        updateRequest.setRequestType(requestType);
+        RequestDetails requestDetails = new RequestDetails();
+        requestDetails.setVnfInstanceId("vnfFakeId");
+        Mockito.doReturn("fakeId").when(changeManagementServiceSpied).extractServiceInstanceId(Mockito.anyObject(),Mockito.anyString());
+        Mockito.doReturn(requestDetails).when(changeManagementServiceSpied).findRequestByVnfName(Matchers.anyList(),Mockito.anyString());
 
-        Exception e) {
-        }
+        changeManagementServiceSpied.doChangeManagement(updateRequest,"anyVnfName");
+
+        return requestDetails;
     }
-
-    @Test
-    public void testGetAllVnfWorkflowRelations() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        VnfWorkflowRelationAllResponse result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getAllVnfWorkflowRelations();
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetWorkflowsForVnf() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest = null;
-        List<String> result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getWorkflowsForVnf(getVnfWorkflowRelationRequest);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testUploadConfigUpdateFile() throws Exception {
-        ChangeManagementServiceImpl testSubject;
-        MultipartFile file = null;
-        String result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.uploadConfigUpdateFile(file);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    /*
-     * TODO: fix private ChangeManagementServiceImpl createTestSubject() {
-     * return new ChangeManagementServiceImpl(); }
-     */
-
-    /*
-     * @Test public void testGetMSOChangeManagements() throws Exception {
-     * ChangeManagementServiceImpl testSubject; Collection<Request> result;
-     * 
-     * // default test testSubject = createTestSubject(); result =
-     * testSubject.getMSOChangeManagements(); }
-     * 
-     * 
-     * @Test public void testFindRequestByVnfName() throws Exception {
-     * ChangeManagementServiceImpl testSubject;List<RequestDetails> requests =
-     * null; String vnfName = ""; RequestDetails result;
-     * 
-     * // test 1 testSubject=createTestSubject();requests = null;
-     * result=Deencapsulation.invoke(testSubject, "findRequestByVnfName", new
-     * Object[]{List<RequestDetails>.class, vnfName}); Assert.assertEquals(null,
-     * result); }
-     */
-    /*
-     * 
-     * @Test public void testDoChangeManagement() throws Exception {
-     * ChangeManagementServiceImpl testSubject; ChangeManagementRequest request
-     * = null; String vnfName = ""; ResponseEntity<String> result;
-     * 
-     * // test 1 testSubject = createTestSubject(); request = null; result =
-     * testSubject.doChangeManagement(request, vnfName);
-     * Assert.assertEquals(null, result); }
-     * 
-     * 
-     * @Test public void testGetSchedulerChangeManagements() throws Exception {
-     * ChangeManagementServiceImpl testSubject; JSONArray result;
-     * 
-     * // default test testSubject = createTestSubject(); result =
-     * testSubject.getSchedulerChangeManagements(); }
-     */
 }

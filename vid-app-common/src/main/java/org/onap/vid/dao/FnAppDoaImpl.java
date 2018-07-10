@@ -20,20 +20,9 @@
 
 package org.onap.vid.dao;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Properties;
-
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+
+import java.sql.*;
 
 
 public class FnAppDoaImpl {
@@ -48,7 +37,7 @@ public class FnAppDoaImpl {
 			String q = null;
 			int count = 0;
 			try {
-				 	dbc = getConnection(driver,URL,username,password);
+				 	dbc = getConnection(URL,username,password);
 				   logger.debug(EELFLoggerDelegate.debugLogger, "getConnection:::"+ dbc);
 				q = "select count(*) from fn_app";
 					pst = dbc.prepareStatement(q);
@@ -65,7 +54,7 @@ public class FnAppDoaImpl {
 			return count;
 		}
 
-		public static Connection getConnection(String driver2, String url, String username, String password) throws IOException, SQLException, ClassNotFoundException{
+		public static Connection getConnection(String url, String username, String password) throws SQLException {
 			java.sql.Connection con=null;
 		
 			if( url!=null && username!=null && password!=null ){
@@ -79,34 +68,46 @@ public class FnAppDoaImpl {
 		
 		public static void cleanup(ResultSet rs, PreparedStatement st, Connection c) {
 			if (rs != null) {
-				try {
-					rs.close();
-				} catch (Exception e) {
-					if (logger != null)
-						logger.error("Error when trying to close result set", e);
-				}
+				closeResultSet(rs);
 			}
 			if (st != null) {
-				try {
-					st.close();
-				} catch (Exception e) {
-					if (logger != null)
-						logger.error("Error when trying to close statement", e);
-				}
+				closePreparedStatement(st);
 			}
 			if (c != null) {
-				try {
-					c.rollback();
-				} catch (Exception e) {
-					if (logger != null)
-						logger.error("Error when trying to rollback connection", e);
-				}
-				try {
-					c.close();
-				} catch (Exception e) {
-					if (logger != null)
-						logger.error("Error when trying to close connection", e);
-				}
+				rollbackAndCloseConnection(c);
 			}
 		}
+
+	private static void rollbackAndCloseConnection(Connection c) {
+		try {
+            c.rollback();
+        } catch (Exception e) {
+            if (logger != null)
+                logger.error("Error when trying to rollback connection", e);
+        }
+		try {
+            c.close();
+        } catch (Exception e) {
+            if (logger != null)
+                logger.error("Error when trying to close connection", e);
+        }
+	}
+
+	private static void closePreparedStatement(PreparedStatement st) {
+		try {
+            st.close();
+        } catch (Exception e) {
+            if (logger != null)
+                logger.error("Error when trying to close statement", e);
+        }
+	}
+
+	private static void closeResultSet(ResultSet rs) {
+		try {
+            rs.close();
+        } catch (Exception e) {
+            if (logger != null)
+                logger.error("Error when trying to close result set", e);
+        }
+	}
 }

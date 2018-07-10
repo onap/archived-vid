@@ -56,7 +56,10 @@ public class VNF extends Node {
 	
 	/** The volume groups. */
 	private Map<String, VolumeGroup> volumeGroups = new HashMap<String, VolumeGroup>();
-	
+
+	private Map<String, VfcInstanceGroup> vfcInstanceGroups = new HashMap<>();
+
+
 	/**
 	 * Instantiates a new vnf.
 	 */
@@ -107,6 +110,15 @@ public class VNF extends Node {
 	 */
 	public void setVolumeGroups(Map<String, VolumeGroup> volumeGroups) {
 		this.volumeGroups = volumeGroups;
+	}
+
+
+	public Map<String, VfcInstanceGroup> getVfcInstanceGroups() {
+		return vfcInstanceGroups;
+	}
+
+	public void setVfcInstanceGroups(Map<String, VfcInstanceGroup> vfcInstanceGroups) {
+		this.vfcInstanceGroups = vfcInstanceGroups;
 	}
 
 	/**

@@ -1,8 +1,10 @@
 package org.onap.vid.services;
 
 import jline.internal.Log;
-import org.junit.Test;
-import org.onap.vid.aai.*;
+import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiResponse;
+import org.onap.vid.aai.ServiceSubscription;
+import org.onap.vid.aai.Services;
 import org.onap.vid.model.ModelConstants;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
@@ -14,17 +16,18 @@ import java.util.HashMap;
 @Service
 public class RoleGenaratorServiceImpl implements RoleGeneratorService {
 
+    public static final String ROLE_ID_COLUMN = "ROLE_ID";
     @Autowired
     AaiClientInterface client;
 
-    public static final String dbName =  "vid_portal";
-    public static final String  tblName = "fn_role";
-    public static final String tempDelimiter ="***";
-    public static final String oldDelimiter = "_";
+    public static final String DB_NAME =  "vid_portal";
+    public static final String TBL_NAME = "fn_role";
+    public static final String TEMP_DELIMITER ="***";
+    public static final String OLD_DELIMITER = "_";
 
     @Override
     public String generateRoleScript(Boolean firstRun) {
-        String query =  "USE " + dbName + ";\r\n" +
+        String query =  "USE " + DB_NAME + ";\r\n" +
                 "SET SQL_SAFE_UPDATES = 0;\r\n";
         try {
             AaiResponse<SubscriberList> subscribers = client.getAllSubscribers();
@@ -69,7 +72,7 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
     private String buildSubscribersValuesForMappingsTable(SubscriberList subscribers){
         String query="";
         for (Subscriber subscriber : subscribers.customer) {
-            String subscriberName = subscriber.subscriberName.contains(oldDelimiter) ? subscriber.subscriberName.replace(oldDelimiter, tempDelimiter) : subscriber.subscriberName;
+            String subscriberName = subscriber.subscriberName.contains(OLD_DELIMITER) ? subscriber.subscriberName.replace(OLD_DELIMITER, TEMP_DELIMITER) : subscriber.subscriberName;
             query = query + "('" + subscriber.globalCustomerId + "','" + subscriberName + "') ,";
         }
         if(query.length() > 0)
@@ -80,8 +83,8 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
     private String buildServicesValuesForMappingsTable(HashMap<String,String> servicesNames){
         final String[] query = {""};
         servicesNames.forEach((k,v)->{
-            if (k.contains(oldDelimiter)) {
-                query[0] += "('" + k + "' ,'" + k.replace(oldDelimiter, tempDelimiter) +"'),";
+            if (k.contains(OLD_DELIMITER)) {
+                query[0] += "('" + k + "' ,'" + k.replace(OLD_DELIMITER, TEMP_DELIMITER) +"'),";
             }
         });
         if(query[0].length() > 0)
@@ -97,7 +100,7 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
             query = "CREATE TEMPORARY TABLE IF NOT EXISTS " + entityName + "Mappings(mapKey VARCHAR(255),mapValue VARCHAR(255));\r\n" +
                     "INSERT INTO " + entityName + "Mappings VALUES ";
             query += valuesForMappingsTable;
-            query += "UPDATE " + tblName + "\r\n" +
+            query += "UPDATE " + TBL_NAME + "\r\n" +
                     "INNER JOIN " + entityName + "Mappings ON role_name LIKE concat('%',mapKey, '%')\r\n" +
                     "SET ROLE_NAME = REPLACE(ROLE_NAME, mapKey, mapValue) ;  \r\n" +
                     dropTemporaryTable(entityName + "Mappings");
@@ -106,10 +109,10 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
     }
 
     private String replaceToNewDelimiter(){
-        String query =  "UPDATE " + tblName + "\r\n" +
-                "SET ROLE_NAME = REPLACE(ROLE_NAME, '" + oldDelimiter + "', '" + ModelConstants.ROLE_DELIMITER + "');\r\n" ;
+        String query =  "UPDATE " + TBL_NAME + "\r\n" +
+                "SET ROLE_NAME = REPLACE(ROLE_NAME, '" + OLD_DELIMITER + "', '" + ModelConstants.ROLE_DELIMITER + "');\r\n" ;
         query += "UPDATE fn_role\r\n" +
-                "SET ROLE_NAME = REPLACE(ROLE_NAME, '" + tempDelimiter + "', '" + oldDelimiter + "');\r\n" ;
+                "SET ROLE_NAME = REPLACE(ROLE_NAME, '" + TEMP_DELIMITER + "', '" + OLD_DELIMITER + "');\r\n" ;
         return query;
     }
 
@@ -145,9 +148,9 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
         String query = deleteFromTableByRoles("fn_role_composite", "PARENT_ROLE_ID");
         query = query.substring(0, query.length()-1);
         query += " OR wrong_roles.ROLEID = fn_role_composite.CHILD_ROLE_ID;\r\n";
-        query += deleteFromTableByRoles("fn_role_function", "ROLE_ID")+ "\r\n";
-        query += deleteFromTableByRoles("fn_user_role", "ROLE_ID")+ "\r\n";
-        query += deleteFromTableByRoles("fn_role", "ROLE_ID")+ "\r\n";
+        query += deleteFromTableByRoles("fn_role_function", ROLE_ID_COLUMN)+ "\r\n";
+        query += deleteFromTableByRoles("fn_user_role", ROLE_ID_COLUMN)+ "\r\n";
+        query += deleteFromTableByRoles(TBL_NAME, ROLE_ID_COLUMN)+ "\r\n";
         return query;
     }
 

@@ -61,7 +61,7 @@ public class RequestDetailsTest {
 	@Test
 	public void testGetRelatedInstanceList() throws Exception {
 		RequestDetails testSubject;
-		List<RelatedModel> result;
+		List<RelatedInstanceWrapper> result;
 
 		// default test
 		testSubject = createTestSubject();
@@ -72,7 +72,7 @@ public class RequestDetailsTest {
 	@Test
 	public void testSetRelatedInstanceList() throws Exception {
 		RequestDetails testSubject;
-		List<RelatedModel> relatedInstanceList = null;
+		List<RelatedInstanceWrapper> relatedInstanceList = null;
 
 		// default test
 		testSubject = createTestSubject();

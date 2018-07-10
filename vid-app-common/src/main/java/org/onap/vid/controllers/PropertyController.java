@@ -20,12 +20,12 @@
 
 package org.onap.vid.controllers;
 
-import org.onap.portalsdk.core.controller.RestrictedBaseController;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.category.CategoryParametersResponse;
 import org.onap.vid.model.CategoryParameter.Family;
 import org.onap.vid.services.CategoryParameterService;
+import org.onap.portalsdk.core.controller.RestrictedBaseController;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +79,7 @@ public class PropertyController extends RestrictedBaseController{
 	 */
 	@RequestMapping(value = "/get_property/{name}/{defaultvalue}", method = RequestMethod.GET)
 	public ResponseEntity<String> getProperty (@PathVariable("name") String name, @PathVariable("defaultvalue") String defaultvalue,
-			HttpServletRequest request) throws Exception {
+			HttpServletRequest request) {
 		
 		String methodName = "getProperty";	
 		ResponseEntity<String> resp = null;
@@ -115,7 +115,7 @@ public class PropertyController extends RestrictedBaseController{
 	 * @throws Exception the exception
 	 */
 	@RequestMapping(value = "/category_parameter", method = RequestMethod.GET)
-	public ResponseEntity getCategoryParameter(HttpServletRequest request, @RequestParam(value="familyName", required = true) Family familyName) throws Exception {
+	public ResponseEntity getCategoryParameter(HttpServletRequest request, @RequestParam(value="familyName", required = true) Family familyName) {
 		LOGGER.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName());
 		try {
 			CategoryParametersResponse response = categoryParameterService.getCategoryParameters(familyName);

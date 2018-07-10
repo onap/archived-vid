@@ -20,10 +20,10 @@
 
 package org.onap.vid.model;
 
+import org.onap.vid.asdc.beans.tosca.Input;
+
 import java.util.Map;
 import java.util.UUID;
-
-import org.onap.vid.asdc.beans.tosca.Input;
 
 /**
  * The Class Service.
@@ -220,9 +220,7 @@ public class NewService {
 	 */
 	@Override
 	public int hashCode() {
-		final UUID uuid = UUID.fromString(getUuid());
-		
-		return uuid.hashCode();
+		return UUID.fromString(getUuid()).hashCode();
 	}
 	
 	/* (non-Javadoc)
@@ -237,16 +235,4 @@ public class NewService {
 		
 		return (service.getUuid().equals(getUuid()));
 	}
-	/*public static void extractVfModuleCustomizationUUID (Service s, String vnfCustomizationName, VfModule vfMod ) {
-		
-		//Look for vnfCustomizationName..vfModuleCustomizationName
-		String nameToFind = vnfCustomizationName + ".." + vfMod.getModelCustomizationName();
-		for (Entry<UUID, VfModule> vfModuleComponent : s.getVfModules().entrySet()) {
-			VfModule xMod = vfModuleComponent.getValue();
-			if ( (xMod.getModelCustomizationName() != null) && (xMod.getModelCustomizationName().equalsIgnoreCase(nameToFind)) ) {
-				vfMod.setCustomizationUuid( xMod.getCustomizationUuid());
-				return;
-			}
-		}
-	}*/
 }

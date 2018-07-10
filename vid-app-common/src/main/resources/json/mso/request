@@ -16,31 +16,12 @@
 		},
 		"requestScope": {
 			"description": "short description of the entity being operated on",
-			"type": "string",
-			"enum": [
-				"network",
-				"service",
-				"vfModule",
-				"vnf",
-				"volumeGroup",
-				"unknown",
-				"configuration"
-			]
+			"type": "string"
 		},
 		"requestStatus": {},
 		"requestType": {
 			"description": "short description of the action being performed on the requestScope",
-			"type": "string",
-			"enum": [
-				"createInstance",
-				"deleteInstance",
-				"replaceInstance",
-				"updateInstance",
-				"activateInstance",
-				"deactivateInstance",
-				"unknown",
-				"not provided"
-			]
+			"type": "string"
 		},
 		"startTime": {
 			"description": "Date and time the request was created in GMT with the following sample format: Wed, 15 Oct 2014 13:01:52 GMT",

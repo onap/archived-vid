@@ -60,7 +60,7 @@ public class Node {
 	private String customizationUuid;
 	
 	/** The inputs. */
-	private Map<String, Input> inputs;
+	private Map<String, Input> inputs = new HashMap<>();
 	
 	/** The get_input or other constructs from node template properties. */
 	private Map<String, CommandProperty> commands;
@@ -271,45 +271,10 @@ public class Node {
 
 		try {
 			// nodeTemplate.getProperties() map of String->Object
-			for (Entry<String, Object> e : nodeTemplate.getProperties().entrySet()) {
-				
-				String k = e.getKey();
-				
-				LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " node template property: " + k );
-				
-				if ( e.getValue() != null ) {
-					LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + "  property: " + 
-							k + "=" + e.getValue());
-					//LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " V class name: " +
-					//	 e.getValue().getClass().getName());
-					Class<?> c = e.getValue().getClass();
-					if ( c.getName().equalsIgnoreCase(java.lang.String.class.getName())) {
-						getProperties().put (k, (String)e.getValue());
-					}
-					else {
-						Class<?>[] interfaces = e.getValue().getClass().getInterfaces();
-
-						for(Class<?> ifc: interfaces ) {
-							//LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " ifc name: " +
-							//	 ifc.getName());
-							if ( ifc.getName().equalsIgnoreCase(java.util.Map.class.getName()) ) {
-								// only extract get_input for now
-								@SuppressWarnings("unchecked")
-								HashMap<String,String> v = (HashMap<String,String>)e.getValue();
-								for (Entry<String, String> entry : v.entrySet()) {
-									// only include get_input for now
-									if ( ModelConstants.GET_INPUT_TAG.equalsIgnoreCase ( entry.getKey() ) ) {
-										CommandProperty cp = new CommandProperty();
-										cp.setCommand(entry.getKey());
-										cp.setInputName(entry.getValue());
-										cp.setDisplayName(k);
-										getCommands().put(k,cp);
-									}
-								}
-							}
-						}
-
-					}
+			for (Entry<String, Object> entrySet : nodeTemplate.getProperties().entrySet()) {
+				LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " node template property: " + entrySet.getKey());
+				if ( entrySet.getValue() != null ) {
+					readStringAndCommandsProperties(entrySet);
 				}
 			}
 		}
@@ -318,5 +283,43 @@ public class Node {
 					e.toString());
 		}
 	}
+
+	private void readStringAndCommandsProperties(Entry<String, Object> entrySet) {
+		String key = entrySet.getKey();
+		String methodName = "readStringAndCommandsProperties";
+		LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + "  property: " +
+				key + "=" + entrySet.getValue());
+		Class<?> c = entrySet.getValue().getClass();
+		if ( c.getName().equalsIgnoreCase(String.class.getName())) {
+            getProperties().put (key, (String) entrySet.getValue());
+        }
+        else {
+            Class<?>[] interfaces = entrySet.getValue().getClass().getInterfaces();
+
+            for(Class<?> ifc: interfaces ) {
+                if ( ifc.getName().equalsIgnoreCase(Map.class.getName()) ) {
+                    readGetInputAsCommands(entrySet, key);
+
+                }
+            }
+
+        }
+	}
+
+    private void readGetInputAsCommands(Entry<String, Object> entrySet, String key) {
+        // only extract get_input for now
+        @SuppressWarnings("unchecked")
+        HashMap<String,String> v = (HashMap<String,String>) entrySet.getValue();
+        for (Entry<String, String> entry : v.entrySet()) {
+            // only include get_input for now
+            if ( ModelConstants.GET_INPUT_TAG.equalsIgnoreCase ( entry.getKey() ) ) {
+                CommandProperty cp = new CommandProperty();
+                cp.setCommand(entry.getKey());
+                cp.setInputName(entry.getValue());
+                cp.setDisplayName(key);
+                getCommands().put(key,cp);
+            }
+        }
+    }
 
 }

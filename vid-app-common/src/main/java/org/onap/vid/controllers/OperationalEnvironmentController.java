@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.onap.portalsdk.core.controller.RestrictedBaseController;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.model.ExceptionResponse;
 import org.onap.vid.model.RequestReferencesContainer;
@@ -19,6 +17,7 @@ import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -35,13 +34,11 @@ import java.util.stream.Stream;
 
 import static org.onap.vid.utils.Logging.getMethodCallerName;
 import static org.onap.vid.utils.Logging.getMethodName;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
 @RequestMapping("operationalEnvironment")
-public class OperationalEnvironmentController extends RestrictedBaseController {
+public class OperationalEnvironmentController extends VidRestrictedBaseController {
 
-    private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(OperationalEnvironmentController.class);
     private final RestMsoImplementation restMso;
     private final MsoBusinessLogic msoBusinessLogic;
 
@@ -55,8 +52,8 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public MsoResponseWrapper2 createOperationalEnvironment(HttpServletRequest request, @RequestBody OperationalEnvironmentCreateBody operationalEnvironment) throws Exception {
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName(), operationalEnvironment);
+    public MsoResponseWrapper2 createOperationalEnvironment(HttpServletRequest request, @RequestBody OperationalEnvironmentCreateBody operationalEnvironment) {
+        debugStart(operationalEnvironment);
         String userId = ControllersUtils.extractUserId(request);
         RequestDetailsWrapper<OperationEnvironmentRequestDetails> requestDetailsWrapper = msoBusinessLogic.convertParametersToRequestDetails(operationalEnvironment, userId);
         String path = msoBusinessLogic.getOperationalEnvironmentCreationPath();
@@ -69,7 +66,7 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
     public MsoResponseWrapper2 activate(HttpServletRequest request,
                                         @RequestParam("operationalEnvironment") String operationalEnvironmentId,
-                                        @RequestBody OperationalEnvironmentActivateBody activateRequest) throws Exception {
+                                        @RequestBody OperationalEnvironmentActivateBody activateRequest) throws MissingServletRequestParameterException {
 
         verifyIsNotEmpty(operationalEnvironmentId, "operationalEnvironment");
 
@@ -96,7 +93,7 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
     @RequestMapping(value = "/deactivate", method = RequestMethod.POST)
     public MsoResponseWrapper2 deactivate(HttpServletRequest request,
                                           @RequestParam("operationalEnvironment") String operationalEnvironmentId,
-                                          @RequestBody Map deactivationRequest) throws Exception {
+                                          @RequestBody Map deactivationRequest) throws MissingServletRequestParameterException {
 
         verifyIsNotEmpty(operationalEnvironmentId, "operationalEnvironment");
 
@@ -116,9 +113,9 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
     }
 
     @RequestMapping(value = "/requestStatus", method = RequestMethod.GET)
-    public MsoResponseWrapper2 status(HttpServletRequest request, @RequestParam("requestId") String requestId) throws Exception {
+    public MsoResponseWrapper2 status(HttpServletRequest request, @RequestParam("requestId") String requestId) throws MissingServletRequestParameterException {
 
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName(), requestId);
+        debugStart(requestId);
 
         verifyIsNotEmpty(requestId, "requestId");
         String path = msoBusinessLogic.getCloudResourcesRequestsStatusPath(requestId);
@@ -127,12 +124,6 @@ public class OperationalEnvironmentController extends RestrictedBaseController {
 
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), msoResponse);
         return new MsoResponseWrapper2<>(msoResponse);
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(value=INTERNAL_SERVER_ERROR)
-    private ExceptionResponse exceptionHandler(Exception e) {
-        return ControllersUtils.handleException(e, LOGGER);
     }
 
     @ExceptionHandler({

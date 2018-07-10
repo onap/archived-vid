@@ -57,6 +57,17 @@ public class AaiServiceTest {
     }
 
     @Test
+    public void testPnfByRegion(){
+        AaiGetPnfResponse aaiGetPnfResponse = new AaiGetPnfResponse();
+        AaiResponse<AaiGetPnfResponse> aaiResponse = new AaiResponse<>(aaiGetPnfResponse, "", 200);
+        Mockito.doReturn(aaiResponse).when(aaiClientInterface).getPNFData(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        AaiResponse<AaiGetPnfResponse> aaiGetPnfResponseWrapper = aaiService.getPNFData("1345667", "1345667", "1345667", "1345667", "1345667", "1345667", "1345667");
+        assertNotNull(aaiGetPnfResponseWrapper);
+        aaiGetPnfResponse = aaiGetPnfResponseWrapper.getT();
+        assertNotNull(aaiGetPnfResponse);
+    }
+
+    @Test
     public void testGetAssociatedPnfs(){
         ServiceRelationships serviceRelationships = createServiceRelationships();
         AaiResponse<ServiceRelationships> aaiResponse = new AaiResponse<>(serviceRelationships, null, 200);
@@ -129,7 +140,7 @@ public class AaiServiceTest {
     @Test(dataProvider = "getTenantsData")
     public void testGetTenants(String userGlobalCustomerId, String userServiceType, String userTenantName, String serviceGlobalCustomerId,
                                String serviceServiceType, String serviceTenantName, String serviceTenantId, boolean expectedIsPermitted) {
-        GetTenantsResponse[] getTenantsResponses = new GetTenantsResponse[] {new GetTenantsResponse(null, null, serviceTenantName, serviceTenantId, false)};
+        GetTenantsResponse[] getTenantsResponses = new GetTenantsResponse[] {new GetTenantsResponse(null, null, serviceTenantName, serviceTenantId, expectedIsPermitted)};
         AaiResponse<GetTenantsResponse[]> aaiResponse = new AaiResponse<>(getTenantsResponses, null, 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getTenants(serviceGlobalCustomerId, serviceServiceType);
         Role role = new Role(null, userGlobalCustomerId, userServiceType, userTenantName);

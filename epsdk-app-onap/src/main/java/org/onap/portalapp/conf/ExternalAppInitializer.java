@@ -37,7 +37,13 @@
  */
 package org.onap.portalapp.conf;
 
+import org.onap.vid.controllers.ChangeManagementController;
+import org.onap.vid.controllers.MaintenanceController;
+import org.onap.vid.controllers.RoleGeneratorController;
 import org.onap.portalsdk.core.conf.AppInitializer;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import java.util.TimeZone;
 
 public class ExternalAppInitializer extends AppInitializer {
 
@@ -62,4 +68,20 @@ public class ExternalAppInitializer extends AppInitializer {
 		return super.getServletMappings();
 	}
 
+//	@Override
+//	public void onStartup(ServletContext servletContext) throws ServletException {
+//		super.onStartup(servletContext);
+//		setDefaultTimeZoneToUTC();
+//		servletContext.addFilter("requestFromLocalhost", LocalhostFilter.class)
+//				.addMappingForUrlPatterns(null, false,
+//						String.format("/%s/%s/*", ChangeManagementController.CHANGE_MANAGEMENT, ChangeManagementController.VNF_WORKFLOW_RELATION),
+//						String.format("/%s/*", RoleGeneratorController.GENERATE_ROLE_SCRIPT),
+//						String.format("/%s/*", MaintenanceController.MAINTENANCE));
+//	}
+
+	//set time zone to UTC so Dates would be written to DB in UTC timezone
+	private void setDefaultTimeZoneToUTC() {
+		System.setProperty("user.timezone", "UTC");
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC")); //since TimeZone cache previous user.timezone
+	}
 }

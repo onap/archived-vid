@@ -1,0 +1,77 @@
+{
+  "service": {
+    "uuid": "76f27dfe-33e5-472f-8e0b-acf524adc4f0",
+    "invariantUuid": "c3618e16-bb5b-433a-a6e0-565ca79d8b65",
+    "name": "MSO_Example_Service",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L4+",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "MSO_Example_Service",
+    "serviceEcompNaming": "true",
+    "instantiationType": "ClientConfig",
+    "inputs": {
+
+    }
+  },
+  "vnfs": {
+
+  },
+  "networks": {
+
+  },
+  "collectionResource": {
+    "MSO_Example 0": {
+      "uuid": "4f8068d9-fb13-49fc-9e39-634d2094b659",
+      "invariantUuid": "2fc1b3b8-b8ed-413e-add8-3d903cf2b458",
+      "description": "MSO_Example",
+      "name": "MSO_Example",
+      "version": "0.2",
+      "customizationUuid": "fffc356d-9e95-4d9c-aa64-7273f33aae84",
+      "inputs": null,
+      "commands": {
+
+      },
+      "properties": {
+        "MSO_Example..NetworkCollection..0_network_collection_function": "fffff",
+        "MSO_Example..NetworkCollection..0_network_collection_description": "ddd",
+        "MSO_Example..Fixed..0_quantity": "89"
+      },
+      "type": "CR",
+      "category": "Network L2-3",
+      "subcategory": "Infrastructure",
+      "resourceVendor": "cisco",
+      "customizationUUID": "fffc356d-9e95-4d9c-aa64-7273f33aae84",
+      "resourceVendorRelease": "1.0",
+      "resourceVendorModelNumber": "",
+      "networksCollection": {
+        "MSO_Example..NetworkCollection..0": {
+          "uuid": "f4cb3cb6-a45d-474d-9af8-f4ae2e733ef7",
+          "invariantUuid": "f3cf3727-f779-4721-b989-851722c64ca4",
+          "name": "MSO_Example..NetworkCollection..0",
+          "version": "1",
+          "networkCollectionProperties": {
+            "networkCollectionFunction": "fffff",
+            "networkCollectionDescription": "ddd"
+          }
+        }
+      }
+    }
+  },
+  "configurations": {
+
+  },
+  "serviceProxies": {
+
+  },
+  "vfModules": {
+
+  },
+  "volumeGroups": {
+
+  },
+  "pnfs": {
+
+  }
+}

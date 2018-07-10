@@ -7,13 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.mso.rest.RequestDetailsWrapper;
 import org.springframework.http.ResponseEntity;
 
 public class MsoControllerNewTest {
 
     private MsoController createTestSubject() {
         try {
-            return new MsoController(new MsoBusinessLogicImpl(null));
+            return new MsoController(new MsoBusinessLogicImpl(null,null));
         } catch (Exception e) {
             return null;
         }
@@ -105,7 +106,7 @@ public class MsoControllerNewTest {
         MsoController testSubject;
         String serviceInstanceId = "";
         HttpServletRequest request = null;
-        RequestDetails mso_request = null;
+        RequestDetailsWrapper mso_request = null;
         ResponseEntity<String> result;
 
         // default test
@@ -122,12 +123,12 @@ public class MsoControllerNewTest {
         String serviceInstanceId = "";
         HttpServletRequest request = null;
         RequestDetails mso_request = null;
-        ResponseEntity<String> result;
+        String result;
 
         // default test
         try {
             testSubject = createTestSubject();
-            result = testSubject.deleteSvcInstance(serviceInstanceId, request, mso_request);
+            result = testSubject.deleteSvcInstance(serviceInstanceId, request, mso_request, "");
         } catch (Exception e) {
         }
     }
@@ -154,7 +155,7 @@ public class MsoControllerNewTest {
         MsoController testSubject;
         String serviceInstanceId = "";
         String configurationId = "";
-        RequestDetails mso_request = null;
+        RequestDetailsWrapper mso_request = null;
         ResponseEntity<String> result;
 
         // default test

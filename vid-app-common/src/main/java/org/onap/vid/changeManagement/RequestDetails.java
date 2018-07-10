@@ -53,4 +53,8 @@ public class RequestDetails extends org.onap.vid.mso.rest.RequestDetails{
 		this.relatedInstList = relatedInstList;
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		return super.equals(other);
+	}
 }

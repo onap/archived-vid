@@ -20,7 +20,7 @@ public interface PolicyRestInterfaceIfc {
 	 * @param restObject the rest object
 	 * @throws Exception the exception
 	 */
-	public <T> void Get (T t, String sourceId, String path, RestObject<T> restObject ) throws Exception;
+	public <T> void Get (T t, String sourceId, String path, RestObject<T> restObject );
 	
 	/**
 	 * Delete.
@@ -33,7 +33,7 @@ public interface PolicyRestInterfaceIfc {
 	 * @param restObject the rest object
 	 * @throws Exception the exception
 	 */
-	public <T> void Delete(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject) throws Exception;
+	public <T> void Delete(T t, RequestDetails r, String sourceID, String path, RestObject<T> restObject);
 	
 	/**
 	 * Post.
@@ -46,7 +46,7 @@ public interface PolicyRestInterfaceIfc {
 	 * @param restObject the rest object
 	 * @throws Exception the exception
 	 */
-	public <T> void Post(T t, JSONObject r, String sourceID, String path, RestObject<T> restObject) throws Exception;
+	public <T> void Post(T t, JSONObject r, String sourceID, String path, RestObject<T> restObject);
 	
 	/***
 	 * Log request.

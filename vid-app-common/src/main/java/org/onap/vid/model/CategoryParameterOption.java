@@ -11,7 +11,6 @@ import java.util.Set;
 @Table(name = "vid_category_parameter_option")
 public class CategoryParameterOption extends DomainVo {
 
-    private Long id;
     private String appId;
     private String name;
 
@@ -31,10 +30,6 @@ public class CategoryParameterOption extends DomainVo {
     @Column(name = "CATEGORY_OPT_DB_ID")
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Column(name = "CATEGORY_OPT_APP_ID")

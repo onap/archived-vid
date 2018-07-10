@@ -21,18 +21,16 @@
 package org.onap.vid.client;
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  *  General HTTP client.
@@ -56,7 +54,7 @@ public class HttpBasicClient{
 	 * @return Client client object
 	 * @throws Exception the exception
 	 */
-	public static Client getClient() throws Exception {
+	public static Client getClient() {
 		
 		ClientConfig config = new ClientConfig();
 		config.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);

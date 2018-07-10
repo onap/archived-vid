@@ -31,16 +31,7 @@
 		},
 		"modelType": {
 			"description": "short description of the entity being operated on",
-			"type": "string",
-			"enum": [
-			    "pnf",
-				"network",
-				"service",
-				"vfModule",
-				"vnf",
-				"volumeGroup",
-				"configuration"
-			]
+			"type": "string"
 		},
 		"modelVersion": {
 			"description": "the version of the model as defined in SDC--not authoritative",

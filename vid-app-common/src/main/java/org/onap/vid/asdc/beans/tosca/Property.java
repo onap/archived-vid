@@ -73,15 +73,6 @@ public class Property {
 	}
 
 	/**
-	 * Gets the default.
-	 *
-	 * @return the default
-	 */
-	public String get_default() {
-		return _default;
-	}
-
-	/**
 	 * Sets the type.
 	 *
 	 * @param type the new type
@@ -109,15 +100,6 @@ public class Property {
 	}
 
 	/**
-	 * Sets the default.
-	 *
-	 * @param _default the new default
-	 */
-	public void set_default(String _default) {
-		this._default = _default;
-	}
-
-	/**
 	 * Gets the default.
 	 *
 	 * @return the default
@@ -125,7 +107,7 @@ public class Property {
 	public String getDefault() {
 		return _default;
 	}
-	
+
 	/**
 	 * Checks if is required.
 	 *

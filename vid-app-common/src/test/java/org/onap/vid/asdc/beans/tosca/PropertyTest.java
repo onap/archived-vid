@@ -38,15 +38,6 @@ public class PropertyTest {
         result = testSubject.getEntry_schema();
     }
 
-    @Test
-    public void testGet_default() throws Exception {
-        Property testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.get_default();
-    }
 
     @Test
     public void testSetType() throws Exception {
@@ -78,15 +69,6 @@ public class PropertyTest {
         testSubject.setEntry_schema(entry_schema);
     }
 
-    @Test
-    public void testSet_default() throws Exception {
-        Property testSubject;
-        String _default = "";
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.set_default(_default);
-    }
 
     @Test
     public void testGetDefault() throws Exception {

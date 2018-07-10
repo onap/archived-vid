@@ -20,43 +20,35 @@
 
 package org.onap.vid.asdc.rest;
 
+import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
-import org.onap.vid.asdc.beans.Artifact;
-import org.onap.vid.asdc.beans.Resource;
 import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.asdc.parser.ToscaParserImpl;
 import org.onap.vid.model.ModelConstants;
 import org.onap.vid.properties.VidProperties;
+import org.onap.vid.utils.Logging;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.springframework.http.HttpMethod;
 
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ResponseProcessingException;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
-import static org.onap.vid.utils.Logging.getHttpServletRequest;
-import static org.onap.vid.utils.Logging.requestIdHeaderKey;
+import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 /**
  * The Class RestfulAsdcClient.
  */
@@ -122,10 +114,7 @@ public class RestfulAsdcClient implements AsdcClient {
      */
     static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(RestfulAsdcClient.class);
 
-    /**
-     * The Constant dateFormat.
-     */
-    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+    final private static EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("asdc");
 
     /**
      * The client.
@@ -147,8 +136,6 @@ public class RestfulAsdcClient implements AsdcClient {
      */
     private final String auth;
 
-    ToscaParserImpl p = new ToscaParserImpl();
-
     /**
      * Instantiates a new restful asdc client.
      *
@@ -160,8 +147,8 @@ public class RestfulAsdcClient implements AsdcClient {
         auth = builder.auth;
 
         commonHeaders = new MultivaluedHashMap<String, Object>();
-        commonHeaders.put("Authorization", Collections.singletonList((Object) (auth)));
         commonHeaders.put("X-ECOMP-InstanceID", Collections.singletonList((Object) (SystemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME))));
+        commonHeaders.put("Authorization", Collections.singletonList((Object) (auth)));
     }
 
     private Path createTmpFile(InputStream csarInputStream) throws AsdcCatalogException {
@@ -185,252 +172,32 @@ public class RestfulAsdcClient implements AsdcClient {
     }
 
     /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResource(java.util.UUID)
-     */
-    public Resource getResource(UUID uuid) throws AsdcCatalogException {
-
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_RESOURCE_API_PATH, ModelConstants.DEFAULT_ASDC_RESOURCE_API_PATH);
-        try {
-            return getClient()
-                    .target(uri)
-                    .path(path + "/" + uuid.toString() + "/metadata")
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .headers(commonHeaders)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(Resource.class);
-        } catch (ResponseProcessingException e) {
-            //Couldn't convert response to Java type
-            throw new AsdcCatalogException("SDC response could not be processed", e);
-        } catch (ProcessingException e) {
-            //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (WebApplicationException e) {
-            //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
-            throw new AsdcCatalogException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResourceArtifact(java.util.UUID, java.util.UUID)
-     */
-    public Artifact getResourceArtifact(UUID resourceUuid, UUID artifactUuid) throws AsdcCatalogException {
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_RESOURCE_API_PATH, ModelConstants.DEFAULT_ASDC_RESOURCE_API_PATH);
-        try {
-            return getClient()
-                    .target(uri)
-                    .path(path + "/" + resourceUuid + "/artifacts/" + artifactUuid)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .headers(commonHeaders)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(Artifact.class);
-        } catch (ResponseProcessingException e) {
-            //Couldn't convert response to Java type
-            throw new AsdcCatalogException("SDC response could not be processed", e);
-        } catch (ProcessingException e) {
-            //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (WebApplicationException e) {
-            //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
-            throw new AsdcCatalogException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResources()
-     */
-    public Collection<Resource> getResources() throws AsdcCatalogException {
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_RESOURCE_API_PATH, ModelConstants.DEFAULT_ASDC_RESOURCE_API_PATH);
-        try {
-            return getClient()
-                    .target(uri)
-                    .path(path)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .headers(commonHeaders)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(new GenericType<Collection<Resource>>() {
-                    });
-        } catch (ResponseProcessingException e) {
-            //Couldn't convert response to Java type
-            throw new AsdcCatalogException("SDC response could not be processed", e);
-        } catch (ProcessingException e) {
-            //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (WebApplicationException e) {
-            //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
-            throw new AsdcCatalogException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResources(java.util.Map)
-     */
-    public Collection<Resource> getResources(Map<String, String[]> filter) throws AsdcCatalogException {
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_RESOURCE_API_PATH, ModelConstants.DEFAULT_ASDC_RESOURCE_API_PATH);
-        WebTarget target = getClient()
-                .target(uri)
-                .path(path);
-
-        for (Entry<String, String[]> filterEntry : filter.entrySet()) {
-            target = target.queryParam(filterEntry.getKey(), (Object[]) filterEntry.getValue());
-        }
-
-        try {
-            return target.request()
-                    .accept(MediaType.APPLICATION_JSON_TYPE)
-                    .headers(commonHeaders)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(new GenericType<Collection<Resource>>() {
-                    });
-        } catch (ResponseProcessingException e) {
-            //Couldn't convert response to Java type
-            throw new AsdcCatalogException("SDC response could not be processed", e);
-        } catch (ProcessingException e) {
-            //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (NotFoundException e) {
-            throw e;
-        } catch (WebApplicationException e) {
-            //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
-            throw new AsdcCatalogException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getResourceToscaModel(java.util.UUID)
-     */
-    public Path getResourceToscaModel(UUID resourceUuid) throws AsdcCatalogException {
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_RESOURCE_API_PATH, ModelConstants.DEFAULT_ASDC_RESOURCE_API_PATH);
-        try (final InputStream csarInputStream = (InputStream) getClient()
-                .target(uri)
-                .path(path + "/" + resourceUuid + "/toscaModel")
-                .request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
-                .headers(commonHeaders)
-                .header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
-                .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                .get(InputStream.class)) {
-
-            return getToscaCsar(csarInputStream);
-        } catch (IOException e) {
-            throw new AsdcCatalogException("Failed to retrieve resource TOSCA model from SDC", e);
-        }
-    }
-
-    /* (non-Javadoc)
      * @see org.onap.vid.asdc.AsdcClient#getService(java.util.UUID)
      */
     public Service getService(UUID uuid) throws AsdcCatalogException {
 
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH, ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
+        String path = VidProperties.getPropertyWithDefault(
+                ModelConstants.ASDC_SVC_API_PATH,
+                ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
+
+        String url = uri+path + "/" + uuid.toString() + "/metadata";
+        Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
         try {
-            return getClient()
+            Response response = getClient()
                     .target(uri)
                     .path(path + "/" + uuid.toString() + "/metadata")
                     .request(MediaType.APPLICATION_JSON)
                     .headers(commonHeaders)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(Service.class);
+                    .header(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
+                    .get();
+            Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
+            return response.readEntity(Service.class);
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
             throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
             throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (WebApplicationException e) {
-            //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
-            throw new AsdcCatalogException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getServiceArtifact(java.util.UUID, java.util.UUID)
-     */
-    public Artifact getServiceArtifact(UUID serviceUuid, UUID artifactUuid) throws AsdcCatalogException {
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH, ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
-
-        try {
-            return getClient()
-                    .target(uri)
-                    .path(path + "/" + serviceUuid + "/artifacts/" + artifactUuid)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .headers(commonHeaders)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(Artifact.class);
-        } catch (ResponseProcessingException e) {
-            //Couldn't convert response to Java type
-            throw new AsdcCatalogException("SDC response could not be processed", e);
-        } catch (ProcessingException e) {
-            //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (WebApplicationException e) {
-            //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
-            throw new AsdcCatalogException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getServices()
-     */
-    public Collection<Service> getServices() throws AsdcCatalogException {
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH, ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
-        try {
-            return getClient()
-                    .target(uri)
-                    .path(path)
-                    .request()
-                    .accept(MediaType.APPLICATION_JSON_TYPE)
-                    .headers(commonHeaders)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(new GenericType<Collection<Service>>() {
-                    });
-        } catch (ResponseProcessingException e) {
-            //Couldn't convert response to Java type
-            throw new AsdcCatalogException("SDC response could not be processed", e);
-        } catch (ProcessingException e) {
-            //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (WebApplicationException e) {
-            //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
-            throw new AsdcCatalogException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.onap.vid.asdc.AsdcClient#getServices(java.util.Map)
-     */
-    public Collection<Service> getServices(Map<String, String[]> filter) throws AsdcCatalogException {
-
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH, ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
-        WebTarget target = getClient()
-                .target(uri)
-                .path(path);
-
-
-        for (Entry<String, String[]> filterEntry : filter.entrySet()) {
-            target = target.queryParam(filterEntry.getKey(), (Object[]) filterEntry.getValue());
-        }
-
-        try {
-            return target.request()
-                    .accept(MediaType.APPLICATION_JSON_TYPE)
-                    .headers(commonHeaders)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
-                    .get(new GenericType<Collection<Service>>() {
-                    });
-        } catch (ResponseProcessingException e) {
-            //Couldn't convert response to Java type
-            throw new AsdcCatalogException("SDC response could not be processed", e);
-        } catch (ProcessingException e) {
-            //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
-        } catch (NotFoundException e) {
-            throw e;
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
@@ -442,41 +209,34 @@ public class RestfulAsdcClient implements AsdcClient {
      * @see org.onap.vid.asdc.AsdcClient#getServiceToscaModel(java.util.UUID)
      */
     public Path getServiceToscaModel(UUID serviceUuid) throws AsdcCatalogException {
-        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH, ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
+        String path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH,
+                ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
+
+        String url = uri+path + "/" + serviceUuid + "/toscaModel";
+        Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
         try {
-            final InputStream csarInputStream = (InputStream) getClient()
+            final InputStream csarInputStream = getClient()
                     .target(uri)
                     .path(path + "/" + serviceUuid + "/toscaModel")
                     .request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
                     .headers(commonHeaders)
                     .header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
-                    .header(requestIdHeaderKey, getHttpServletRequest().getHeader(requestIdHeaderKey))
+                    .header(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
                     .get(InputStream.class);
-
-
-            return getToscaCsar(csarInputStream);
+            Path toscaFilePath = createTmpFile(csarInputStream);
+            outgoingRequestsLogger.debug("Received {} {} . Tosca file was saved at: {}", HttpMethod.GET.name(), url, toscaFilePath.toAbsolutePath());
+            return toscaFilePath;
         } catch (ResponseProcessingException e) {
             //Couldn't convert response to Java type
             throw new AsdcCatalogException("SDC response could not be processed", e);
         } catch (ProcessingException e) {
             //IO problems during request
-            throw new AsdcCatalogException("Failed to get a response from SDC service", e);
+            throw new AsdcCatalogException("Failed to get a response from SDC service. Cause: "+e.getMessage(), e);
         } catch (WebApplicationException e) {
             //Web service returned data, but the response status wasn't a good one (i.e. non 2xx)
             throw new AsdcCatalogException(e);
         }
     }
 
-
-    /**
-     * Gets the tosca model.
-     *
-     * @param csarInputStream the csar input stream
-     * @return the tosca model
-     * @throws AsdcCatalogException the asdc catalog exception
-     */
-    private Path getToscaCsar(InputStream csarInputStream) throws AsdcCatalogException {
-        return createTmpFile(csarInputStream);
-    }
 }
 

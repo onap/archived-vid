@@ -25,28 +25,10 @@ import org.onap.vid.asdc.beans.tosca.Group;
 /**
  * The Class VolumeGroup.
  */
-public class VolumeGroup {
+public class VolumeGroup extends org.onap.vid.model.Group {
 
-	/** The uuid. */
-	private String uuid;
-	
-	/** The invariant uuid. */
-	private String invariantUuid;
-	
-	/** The description. */
-	private String description;
-	
-	/** The name. */
-	private String name;
-	
-	/** The version. */
-	private String version;
-	
-	/** The customization uuid. */
-	private String customizationUuid;
-	
-	/** The customization uuid. */
-	private String modelCustomizationName;
+
+
 	/**
 	 * Instantiates a new volume group.
 	 */
@@ -57,123 +39,7 @@ public class VolumeGroup {
 	 *
 	 * @return the uuid
 	 */
-	public String getUuid() {
-		return uuid;
-	}
-	/**
-	 * Gets the customization uuid.
-	 *
-	 * @return the customization uuid
-	 */
-	public String getCustomizationUuid() {
-		return customizationUuid;
-	}
-	/**
-	 * Gets the customization name.
-	 *
-	 * @return the customization name
-	 */
-	public String getModelCustomizationName() {
-		return modelCustomizationName;
-	}
-	/**
-	 * Gets the invariant uuid.
-	 *
-	 * @return the invariant uuid
-	 */
-	public String getInvariantUuid() {
-		return invariantUuid;
-	}
 
-	/**
-	 * Gets the description.
-	 *
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Gets the version.
-	 *
-	 * @return the version
-	 */
-	public String getVersion() {
-		return version;
-	}
-
-	/**
-	 * Sets the uuid.
-	 *
-	 * @param uuid the new uuid
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
-	/**
-	 * Sets the invariant uuid.
-	 *
-	 * @param invariantUuid the new invariant uuid
-	 */
-	public void setInvariantUuid(String invariantUuid) {
-		this.invariantUuid = invariantUuid;
-	}
-
-	/**
-	 * Sets the description.
-	 *
-	 * @param description the new description
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Sets the version.
-	 *
-	 * @param version the new version
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
-	/**
-	 * Sets the customization uuid.
-	 *
-	 * @param u the new customization uuid
-	 */
-	public void setCustomizationUuid(String u) {
-		this.customizationUuid = u;
-		
-	}
-	/**
-	 * Sets the customization name.
-	 *
-	 * @param u the new customization name
-	 */
-	public void setModelCustomizationName(String u) {
-		this.modelCustomizationName = u;
-		
-	}
 	/**
 	 * Extract volume group.
 	 *
@@ -190,6 +56,7 @@ public class VolumeGroup {
 		volumeGroup.setVersion(group.getMetadata().getVfModuleModelVersion());
 		volumeGroup.setCustomizationUuid(group.getMetadata().getVfModuleModelCustomizationUUID());
 		volumeGroup.setModelCustomizationName(modelCustomizationName);
+		volumeGroup.setProperties(VolumeGroup.extractPropertiesForGroup(group));
 		return volumeGroup;
 	}
 

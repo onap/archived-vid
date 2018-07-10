@@ -63,6 +63,61 @@ html, body {
     font-size:14px;
 }
 
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.applicationWindow {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#mContent {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.content.modal-open .body-content-jsp{
+    margin: 0 auto;
+}
+.content .body-content-jsp > div.ng-scope > div.overlay{
+    display: none;
+}
+.content.modal-open .body-content-jsp .service-models-page .overlay{
+    display: block !important;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3004;
+    background-color: #000;
+    opacity: 0.5;
+}
+
+.content.modal-open .body-content-jsp  .service-models-page  .service-model-content{
+    z-index: 3005;
+    margin: 0 auto;
+    flex: none;
+    width: 1100px;
+    padding: 10px;
+}
+.content.modal-open{
+    margin: 0 !important;
+}
+
+.body-content-jsp {
+    flex: 1;
+}
+
 .button--inactive {
     border: none !important;
 }
@@ -113,4 +168,38 @@ html, body {
 input:focus:invalid {
     border-color: Tomato;
     box-shadow: none;
+}
+
+iframe {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border:0;
+}
+
+iframe.popup{
+    width: 1103px;
+    height: 691px;
+}
+
+/*todo: remove. this a temporary fix for the sub-interface popup not showing as a page beside the sidebar. currently showing it in full screen.*/
+iframe.iframeDialog {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+
+.service-models-page {
+    flex: 1;
+    display: flex;
+    min-height: 700px;
+}
+
+.service-model-content {
+    flex: 1;
+}
+
+.service-model-content .popupContents {
+    padding: 0 !important;
 }

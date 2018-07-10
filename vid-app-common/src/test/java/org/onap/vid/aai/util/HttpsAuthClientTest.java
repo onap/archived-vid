@@ -4,6 +4,9 @@ import org.junit.Test;
 
 public class HttpsAuthClientTest {
 
+    /*
+    TO BE IMPLEMENTED
+    
     private HttpsAuthClient createTestSubject() {
         return new HttpsAuthClient();
     }
@@ -15,4 +18,5 @@ public class HttpsAuthClientTest {
         // default test
         HttpsAuthClient.getClient(certFilePath);
     }
+    */
 }

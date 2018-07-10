@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -36,7 +35,6 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping(ChangeManagementController.CHANGE_MANAGEMENT)
 public class ChangeManagementController extends UnRestrictedBaseController {
-    private static final String GetWorkflowsResponse = null;
     public static final String VNF_WORKFLOW_RELATION = "vnf_workflow_relation";
     public static final String CHANGE_MANAGEMENT = "change-management";
     public static final String GET_VNF_WORKFLOW_RELATION = "get_vnf_workflow_relation";
@@ -57,13 +55,13 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     }
 
     @RequestMapping(value = {"/workflow"}, method = RequestMethod.GET)
-    public ResponseEntity<Collection<String>> getWorkflow(@RequestParam("vnfs") Collection<String> vnfs) throws IOException, InterruptedException {
+    public ResponseEntity<Collection<String>> getWorkflow(@RequestParam("vnfs") Collection<String> vnfs) {
         Collection<String> result = this.workflowService.getWorkflowsForVNFs(vnfs);
         return new ResponseEntity<>(result, OK);
     }
 
     @RequestMapping(value = {"/mso"}, method = RequestMethod.GET)
-    public ResponseEntity<Collection<Request>> getMSOChangeManagements() throws Exception, IOException, InterruptedException {
+    public ResponseEntity<Collection<Request>> getMSOChangeManagements() {
 
         Collection<Request> result = this.changeManagementService.getMSOChangeManagements();
         return new ResponseEntity<>(result, OK);
@@ -94,20 +92,20 @@ public class ChangeManagementController extends UnRestrictedBaseController {
 
 
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
-    public ResponseEntity<JSONArray> getSchedulerChangeManagements() throws IOException, InterruptedException {
+    public ResponseEntity<JSONArray> getSchedulerChangeManagements() {
         JSONArray result = this.changeManagementService.getSchedulerChangeManagements();
         return new ResponseEntity<>(result, OK);
     }
 
     @RequestMapping(value = {SCHEDULER_BY_SCHEDULE_ID}, method = RequestMethod.DELETE)
-    public ResponseEntity deleteSchedule(@PathVariable("scheduleId") String scheduleId) throws IOException, InterruptedException {
+    public ResponseEntity deleteSchedule(@PathVariable("scheduleId") String scheduleId) {
         Pair<String, Integer> result = this.changeManagementService.deleteSchedule(scheduleId);
         return ResponseEntity.status(result.getRight()).build();
     }
 
     
     @RequestMapping(value = {GET_VNF_WORKFLOW_RELATION}, method = RequestMethod.POST)
-    public ResponseEntity getWorkflows(@RequestBody GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest) throws IOException, InterruptedException {
+    public ResponseEntity getWorkflows(@RequestBody GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest) {
         try {
             GetWorkflowsResponse response = new GetWorkflowsResponse(changeManagementService.getWorkflowsForVnf(getVnfWorkflowRelationRequest));
             return ResponseEntity.status(OK).body(response);
@@ -122,7 +120,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     }
     
     @RequestMapping(value = {VNF_WORKFLOW_RELATION}, method = RequestMethod.POST)
-    public ResponseEntity createWorkflowRelation(@RequestBody VnfWorkflowRelationRequest vnfWorkflowRelationRequest) throws IOException, InterruptedException {
+    public ResponseEntity createWorkflowRelation(@RequestBody VnfWorkflowRelationRequest vnfWorkflowRelationRequest) {
     	VnfWorkflowRelationResponse vnfWorkflowRelationResponse;
         try {
             vnfWorkflowRelationResponse = changeManagementService.addVnfWorkflowRelation(vnfWorkflowRelationRequest);
@@ -135,7 +133,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     }
 
     @RequestMapping(value = {VNF_WORKFLOW_RELATION}, method = RequestMethod.GET)
-    public ResponseEntity getAllWorkflowRelation() throws IOException, InterruptedException {
+    public ResponseEntity getAllWorkflowRelation() {
 
         try {
             VnfWorkflowRelationAllResponse vnfWorkflowRelationAllResponse = changeManagementService.getAllVnfWorkflowRelations();
@@ -147,7 +145,7 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     }
     
     @RequestMapping(value = {VNF_WORKFLOW_RELATION}, method = RequestMethod.DELETE)
-    public ResponseEntity deleteWorkflowRelation(@RequestBody VnfWorkflowRelationRequest vnfWorkflowRelationRequest) throws IOException, InterruptedException {
+    public ResponseEntity deleteWorkflowRelation(@RequestBody VnfWorkflowRelationRequest vnfWorkflowRelationRequest) {
     	VnfWorkflowRelationResponse vnfWorkflowRelationResponse;
     	try {
     		vnfWorkflowRelationResponse = changeManagementService.deleteVnfWorkflowRelation(vnfWorkflowRelationRequest);

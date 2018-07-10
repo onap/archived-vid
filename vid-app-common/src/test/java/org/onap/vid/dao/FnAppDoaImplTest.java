@@ -25,42 +25,42 @@ public class FnAppDoaImplTest {
         url = null;
         username = null;
         password = null;
-        result = FnAppDoaImpl.getConnection(driver2, url, username, password);
+        result = FnAppDoaImpl.getConnection(driver2, url, username);
         Assert.assertEquals(null, result);
 
         // test 2
         url = "";
         username = null;
         password = null;
-        result = FnAppDoaImpl.getConnection(driver2, url, username, password);
+        result = FnAppDoaImpl.getConnection(driver2, url, username);
         Assert.assertEquals(null, result);
 
         // test 3
         username = null;
         url = null;
         password = null;
-        result = FnAppDoaImpl.getConnection(driver2, url, username, password);
+        result = FnAppDoaImpl.getConnection(driver2, url, username);
         Assert.assertEquals(null, result);
 
         // test 4
         username = "";
         url = null;
         password = null;
-        result = FnAppDoaImpl.getConnection(driver2, url, username, password);
+        result = FnAppDoaImpl.getConnection(driver2, url, username);
         Assert.assertEquals(null, result);
 
         // test 5
         password = null;
         url = null;
         username = null;
-        result = FnAppDoaImpl.getConnection(driver2, url, username, password);
+        result = FnAppDoaImpl.getConnection(driver2, url, username);
         Assert.assertEquals(null, result);
 
         // test 6
         password = "";
         url = null;
         username = null;
-        result = FnAppDoaImpl.getConnection(driver2, url, username, password);
+        result = FnAppDoaImpl.getConnection(driver2, url, username);
         Assert.assertEquals(null, result);
     }
 

@@ -1,8 +1,9 @@
 package org.onap.vid.aai.model;
 
-
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RelationshipData {
 	@JsonProperty("relationship-key")
 	public String getRelationshipKey() {
@@ -21,10 +22,8 @@ public class RelationshipData {
 		this.relationshipValue = relationshipValue;
 	}
 
-	@JsonProperty("relationship-key")
 	public String relationshipKey;
 	
-	@JsonProperty("relationship-value")
 	public String relationshipValue;
 
 }
