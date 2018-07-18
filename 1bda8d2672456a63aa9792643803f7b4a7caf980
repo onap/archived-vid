@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_98b6e4db",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/HttpsAuthClientTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-07-18T15:10:19Z",
+      "side": 1,
+      "message": "Are these commented out intentionally?",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 77
+      },
+      "revId": "1bda8d2672456a63aa9792643803f7b4a7caf980",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
