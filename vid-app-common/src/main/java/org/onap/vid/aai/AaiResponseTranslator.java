@@ -61,7 +61,7 @@ public class AaiResponseTranslator {
             final String errorMessage = aaiResponse.getErrorMessage();
             return Optional.of(new PortMirroringConfigDataError(
                     "Got " + aaiResponse.getHttpCode() + " from aai",
-                    errorMessage != null ? errorMessage.toString() : null)
+                    errorMessage != null ? errorMessage : null)
             );
         } else {
             return Optional.empty();

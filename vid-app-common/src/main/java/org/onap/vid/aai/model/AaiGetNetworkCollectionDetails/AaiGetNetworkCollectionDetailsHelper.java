@@ -14,7 +14,7 @@ public class AaiGetNetworkCollectionDetailsHelper {
     @JsonProperty("results")
     private List<Object> results = null;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("results")
     public List<Object> getResults() {

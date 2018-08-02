@@ -13,7 +13,7 @@ import java.util.List;
 public class SubscriberListWithFilterData {
 
     public SubscriberListWithFilterData(SubscriberList subscriberList, RoleValidator roleValidator){
-        List<Subscriber> subscribers = subscriberList != null ? subscriberList.customer : new ArrayList<Subscriber>();
+        List<Subscriber> subscribers = subscriberList != null ? subscriberList.customer : new ArrayList<>();
         List<SubscriberWithFilter> subscribersWithFilter = new ArrayList<>();
         for (Subscriber subscriber :subscribers){
             SubscriberWithFilter subscriberWithFilter = new SubscriberWithFilter();

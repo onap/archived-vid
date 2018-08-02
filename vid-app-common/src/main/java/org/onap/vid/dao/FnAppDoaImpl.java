@@ -60,8 +60,9 @@ public class FnAppDoaImpl {
 			if( url!=null && username!=null && password!=null ){
 			    con = DriverManager.getConnection(url, username, password);
 			}
-			
-			   System.out.println("Connection Successful");		    	
+
+			logger.info("Connection Successful");
+
 			return con;
 			
 		}
