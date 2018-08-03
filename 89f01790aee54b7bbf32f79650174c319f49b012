@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_902b25eb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "Please explain why i should do so",
+      "parentUuid": "1a76adc5_90b6c5db",
+      "range": {
+        "startLine": 48,
+        "startChar": 20,
+        "endLine": 48,
+        "endChar": 23
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_b0bbc1c3",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2018-08-03T06:28:50Z",
       "side": 1,
       "message": "maybe use static imports?",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 15
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_50358d44",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "Please explain why i should do so",
+      "parentUuid": "1a76adc5_b0bbc1c3",
       "range": {
         "startLine": 64,
         "startChar": 8,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_703a0938",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "GET or CallWithRetry?",
+      "parentUuid": "1a76adc5_50b02ddd",
+      "range": {
+        "startLine": 88,
+        "startChar": 154,
+        "endLine": 88,
+        "endChar": 160
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_b0e2e1d3",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 2
@@ -82,6 +154,30 @@
       "writtenOn": "2018-08-03T06:28:50Z",
       "side": 1,
       "message": "i don\u0027t like this kind of logic. Why not catch only SSLHandshakeException?",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 9
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_103f1527",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "Because its opaqued inside UnirestException",
+      "parentUuid": "1a76adc5_b0e2e1d3",
       "range": {
         "startLine": 108,
         "startChar": 0,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_d048bdce",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "I prefer to leave it here. As you see its private 10-lines-class",
+      "parentUuid": "1a76adc5_50e7cde4",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 13
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_709e8958",
         "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpServerTest.java",
         "patchSetId": 2
@@ -128,6 +248,30 @@
       "writtenOn": "2018-08-03T06:28:50Z",
       "side": 1,
       "message": "remove asterisks",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 34
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_10263517",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpServerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "Please explain why i should do so",
+      "parentUuid": "1a76adc5_709e8958",
       "range": {
         "startLine": 43,
         "startChar": 0,
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_7011a9ab",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpsServerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "?",
+      "parentUuid": "1a76adc5_50990d6d",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 35
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_70b529cc",
         "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientModel.java",
         "patchSetId": 2
@@ -186,6 +354,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_b01741a3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientModel.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "What if we will have more tests which requires objects different than this one? I really dont like to produce more code than needed",
+      "parentUuid": "1a76adc5_70b529cc",
+      "range": {
+        "startLine": 25,
+        "startChar": 17,
+        "endLine": 25,
+        "endChar": 26
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_b0942138",
         "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientModel.java",
         "patchSetId": 2
@@ -197,6 +389,30 @@
       "writtenOn": "2018-08-03T06:28:50Z",
       "side": 1,
       "message": "useless comment",
+      "range": {
+        "startLine": 28,
+        "startChar": 12,
+        "endLine": 28,
+        "endChar": 43
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_500cad94",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientModel.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-03T06:49:07Z",
+      "side": 1,
+      "message": "Do you know what will happen if someone remove this constructor? IMO its very usefull",
+      "parentUuid": "1a76adc5_b0942138",
       "range": {
         "startLine": 28,
         "startChar": 12,
