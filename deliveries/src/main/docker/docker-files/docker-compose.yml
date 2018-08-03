@@ -1,14 +1,26 @@
-version: '2'
+version: '3.1'
+
 services:
-        vid-server:
-                image: onap/vid
-                ports:
-                - "8080:8080"
-                links:
-                - vid-mariadb:vid-mariadb-docker-instance
-        vid-mariadb:
-                image: mariadb:10.1.11
-                ports:
-                - "3306:3306"
-                volumes:
-                - /var/lib/mysql
+    vid-server:
+        image: nexus3.onap.org:10001/onap/vid:1.2.1
+        ports:
+            - "8080:8080"
+        links:
+            - vid-mariadb:vid-mariadb-docker-instance
+        environment:
+            VID_MYSQL_DBNAME: vid_openecomp_epsdk
+            VID_MYSQL_PASS: YOUR_PASSWORD
+
+    vid-mariadb:
+        image: mariadb:10
+        ports:
+            - "3306:3306"
+        volumes:
+            - ../../../../../lf_config/vid-my.cnf:/etc/mysql/my.cnf
+            - ../../../../../lf_config/vid-pre-init.sql:/docker-entrypoint-initdb.d/vid-pre-init.sql
+            - /var/lib/mysql
+        environment:
+            MYSQL_DATABASE: vid_openecomp_epsdk
+            MYSQL_USER: vidadmin
+            MYSQL_PASSWORD: YOUR_PASSWORD
+            MYSQL_ROOT_PASSWORD: ROOT_PASSWORD

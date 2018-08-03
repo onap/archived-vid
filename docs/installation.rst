@@ -29,3 +29,8 @@ Please follow the instructions given below, for installing VID using a Docker im
    #start VID server
    docker run -e VID_MYSQL_DBNAME=vid_openecomp_epsdk -e VID_MYSQL_PASS=YOUR_PASSWORD --name vid-server -p 8080:8080 --link vid-mariadb:vid-mariadb-docker-instance -d nexus3.onap.org:10001/onap/vid:1.2.1
 
+Or use docker-compose:
+
+.. code-block:: bash
+
+   docker-compose up
