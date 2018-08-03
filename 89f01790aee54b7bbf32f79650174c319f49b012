@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_b0cc2137",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-03T07:30:40Z",
+      "side": 1,
+      "message": "There is ONAP code rules and they forbid it.\nAlso this improves readability cause you see exactly what you\u0027re importing.",
+      "parentUuid": "1a76adc5_902b25eb",
+      "range": {
+        "startLine": 48,
+        "startChar": 20,
+        "endLine": 48,
+        "endChar": 23
+      },
+      "revId": "89f01790aee54b7bbf32f79650174c319f49b012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_b0bbc1c3",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 2
