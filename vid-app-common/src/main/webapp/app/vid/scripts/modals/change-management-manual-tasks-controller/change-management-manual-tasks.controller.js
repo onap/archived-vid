@@ -10,6 +10,8 @@
         vm.manualTasks = [];
         vm.MANUAL_TASKS = COMPONENT.MANUAL_TASKS;
         var init = function() {
+            vm.requestState = jobInfo.requestState;
+
             if (jobInfo && jobInfo.details) {
                 vm.content = jobInfo.details;
             } else {

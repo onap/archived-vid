@@ -30,10 +30,9 @@
  */
 
 var CreationService = function($log, AaiService, AsdcService, DataService,VIDCONFIGURATION,
-                               ComponentService, COMPONENT, FIELD, PARAMETER, UtilityService, OwningEntityService) {
+                               ComponentService, COMPONENT, FIELD, PARAMETER, UtilityService, OwningEntityService,featureFlags) {
 
     var _this = this;
-
     var getAsyncOperationList = function() {
         if (DataService.getLoggedInUserId() == null) {
             getLoggedInUserID();
@@ -660,6 +659,11 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 userParams : getArbitraryParameters(parameterList)
             }
         };
+        if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) {
+            if ((_this.componentId != COMPONENT.SERVICE) || ( DataService.getALaCarte() )) {
+                requestDetails.requestParameters.testApi = DataService.getMsoRequestParametersTestApi();
+            }
+        }
         if ( (_this.componentId != COMPONENT.SERVICE) || ( !DataService.getALaCarte() ) ) {
             // include cloud region for everything but service create alacarte
             var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
@@ -673,6 +677,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
             };
         }
         switch (_this.componentId) {
+
             case COMPONENT.SERVICE:
                 requestDetails.subscriberInfo = {
                     globalSubscriberId : DataService.getGlobalCustomerId(),
@@ -1285,4 +1290,4 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
 appDS2.factory("CreationService", [ "$log", "AaiService", "AsdcService",
     "DataService","VIDCONFIGURATION", "ComponentService", "COMPONENT", "FIELD", "PARAMETER",
-    "UtilityService", "OwningEntityService", CreationService ]);
+    "UtilityService", "OwningEntityService","featureFlags", CreationService ]);

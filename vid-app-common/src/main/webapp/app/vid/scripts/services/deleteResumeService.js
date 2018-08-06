@@ -21,7 +21,7 @@
 "use strict";
 
 var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
-	ComponentService, COMPONENT, FIELD, UtilityService) {
+	ComponentService, COMPONENT, FIELD, UtilityService,featureFlags) {
 
     var _this = this;
 
@@ -255,7 +255,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 	}
     };
 
-    var getMsoUrl = function() {
+    var getMsoUrl = function(serviceStatus) {
 		switch (_this.componentId) {
 			case COMPONENT.CONFIGURATION:
 				return "mso_delete_configuration/"
@@ -269,7 +269,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 				if(DataService.getE2EService() === true)
 					return "mso_delete_e2e_svc_instance/"+ DataService.getServiceInstanceId();
 				else
-					return "mso_delete_svc_instance/"+ DataService.getServiceInstanceId();
+					return "mso_delete_svc_instance" + "/" + DataService.getServiceInstanceId() + "?serviceStatus="  + serviceStatus;
 			case COMPONENT.VNF:
 				return "mso_delete_vnf_instance/"
 					+ DataService.getServiceInstanceId() + "/vnfs/"
@@ -330,12 +330,21 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 					requestorId: requestorloggedInId
 				}
 		};
+        if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) {
+            if ((_this.componentId != COMPONENT.SERVICE) || ( DataService.getALaCarte() )) {
+                // a-la-carte services AND *any* non-service
+                requestDetails.requestParameters = {
+                    testApi : DataService.getMsoRequestParametersTestApi()
+                };
+            }
+        }
 		
 		switch (_this.componentId) {
 			case COMPONENT.SERVICE:
-				requestDetails.requestParameters = {
-					aLaCarte : DataService.getALaCarte()
-				};
+				if (!requestDetails.requestParameters) {
+                    requestDetails.requestParameters = {};
+                }
+				requestDetails.requestParameters.aLaCarte = DataService.getALaCarte();
 				if ( !(DataService.getALaCarte()) ) {
 					// for macro delete include cloud config.
 					var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
@@ -530,4 +539,4 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 
 appDS2.factory("DeleteResumeService", [ "$log", "AaiService", "AsdcService",
 	"DataService", "ComponentService", "COMPONENT", "FIELD",
-	"UtilityService", DeleteResumeService ]);
+	"UtilityService","featureFlags", DeleteResumeService ]);

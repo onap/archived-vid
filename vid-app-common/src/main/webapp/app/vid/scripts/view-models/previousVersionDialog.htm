@@ -10,7 +10,7 @@
 		<div class="error" ng-show="isTableErrorVisible">
 			<img src="app/vid/images/error.png"></img>{{error}}
 		</div>
-		<table att-table table-data="tableData" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		<table att-table table-data="tableData" data-tests-id="Previous-version-pop-up-table" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
 		    <thead  att-table-row type="header">
 				<tr>
 					<th att-table-header key="action">Action</th>
@@ -25,8 +25,8 @@
 		        </tr>
 		    </thead>
 		    <tbody att-table-row type="body" row-repeat="row in tableData">
-		        <tr>
-		        	<td att-table-body ><button type=button ng-click="deployService(row)" att-button btn-type="{{deployButtonType}}" size="small">Deploy</button></td>
+		        <tr data-tests-id="Previous-version-pop-up-uuid-{{row['uuid']}}">
+		        	<td att-table-body ><button type=button data-tests-id="deploy-{{row['uuid']}}" ng-click="deployService(row)" att-button btn-type="{{deployButtonType}}" size="small">Deploy</button></td>
 	            	<td att-table-body ng-bind="row['uuid']"></td>
 	            	<td att-table-body ng-bind="row['invariantUUID']"></td>
 	            	<td att-table-body ng-bind="row['name']"></td>
@@ -41,7 +41,7 @@
 		
 		
 		<div class="buttonRow">
-			<button type="button" ng-click="cancelTable();" att-button
+			<button type="button" id="cancel" ng-click="cancelTable();" att-button
 				btn-type="primary" size="small">Cancel</button>
 		</div>
 	</div>

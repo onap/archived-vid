@@ -1,40 +1,42 @@
-<div ng-controller="creationDialogController">
-
+<div  ng-controller="creationDialogController">
 	<div ng-show="isDialogVisible">
-		<div class="titleLine">
-			<img src="app/vid/images/spinner.gif"
-				ngx-visible="{{isSpinnerVisible}}"></img>
-			<h3 data-tests-id="create-modal-title">Create {{componentName}} -- {{createType}}</h3>
-		</div>
-
-		<div class="error" ng-show="isErrorVisible">
-			<img src="app/vid/images/error.png"></img>{{error}}
-		</div>
-
-		<div ngx-visible="{{isDataVisible}}">
-			<parameter-block control="summaryControl"></parameter-block>
-			<h4>
-				User Provided Data (<img class="requiredIndicator"
-					src="app/vid/images/asterisk.png" height='10' width='10'></img> indicates required field)
-			</h4>
-			<parameter-block control="userProvidedControl"
-				callback="userParameterChanged(id);" editable></parameter-block>
-			<div class="prompt">
-				<p>
-					Enter Data and <span>Confirm</span> to<br />Create <span>{{componentName}}</span>
-				</p>
-				<p>
-					<span>Cancel</span> to Return to Previous Page.<br />Data entered
-					will be lost
-				</p>
+		<iframe class="popup" scrolling="no" ng-if="!shouldShowOldPopup()" id="iframe_callback"  ng-src={{url}}></iframe>
+		<div ng-if="shouldShowOldPopup()">
+			<div class="titleLine">
+				<img src="app/vid/images/spinner.gif"
+					ngx-visible="{{isSpinnerVisible}}"></img>
+				<h3 data-tests-id="create-modal-title">Create {{componentName}} -- {{createType}}</h3>
 			</div>
 
-		</div>
-		<div class="buttonRow">
-			<button data-tests-id="confirmButton" ngx-enabled="{{isConfirmEnabled}}" att-button size="small"
-				ng-click="confirm();">Confirm</button>
-			<button type="button" data-tests-id="cancelButton" ng-click="cancel();" att-button
-				btn-type="primary" size="small">Cancel</button>
+			<div class="error" ng-show="isErrorVisible">
+				<img src="app/vid/images/error.png"></img>{{error}}
+			</div>
+
+			<div ngx-visible="{{isDataVisible}}">
+				<parameter-block control="summaryControl"></parameter-block>
+				<h4>
+					User Provided Data (<img class="requiredIndicator"
+						src="app/vid/images/asterisk.png" height='10' width='10'></img> indicates required field)
+				</h4>
+				<parameter-block control="userProvidedControl"
+					callback="userParameterChanged(id);" editable></parameter-block>
+				<div class="prompt">
+					<p>
+						Enter Data and <span>Confirm</span> to<br />Create <span>{{componentName}}</span>
+					</p>
+					<p>
+						<span>Cancel</span> to Return to Previous Page.<br />Data entered
+						will be lost
+					</p>
+				</div>
+
+			</div>
+			<div class="buttonRow">
+				<button data-tests-id="confirmButton" ngx-enabled="{{isConfirmEnabled}}" att-button size="small"
+					ng-click="confirm();">Confirm</button>
+				<button type="button" data-tests-id="cancelButton" ng-click="cancel();" att-button
+					btn-type="primary" size="small">Cancel</button>
+			</div>
 		</div>
 	</div>
 

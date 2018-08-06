@@ -119,6 +119,8 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         VF_MODULES: "vfModules",
         VF_MODULE_ID: "vf-module-id",
         VF_MODULE_NAME: "vf-module-name",
+        VF_MODULE_MODEL_CUSTOMIZATION_ID: "vf-module-model-customization-id",
+        VF_MODULE_MODEL_VERSION_ID: "vf-module-model-version-id",
         VID: "VID",
         VNF_ID: "vnf-id",
         VNF_NAME: "vnf-name",
@@ -140,10 +142,9 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         CONFIGURATION_NAME: "configuration-name",
         CONFIGURATION_TYPE: "configuration-type",
         CONFIGURATION_ID: "configuration-id",
-        PORT: "l-interface",
-        PORT_ID: "interface-id",
-        PORT_NAME: "interface-name",
-        PORT_MIRRORED: "is-port-mirrored"
+        PORT_ID: "interfaceId",
+        PORT_NAME: "interfaceName",
+        PORT_MIRRORED: "isPortMirrored"
     };
 
     var KEY = {
@@ -270,6 +271,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         AAI_ACTIVE: "Active",
         AAI_INACTIVE: "Inactive",
         AAI_CREATED: "Created",
+        AAI_DELETE: "Deleted",
         AAI_ENABLED: "Enabled",
         AAI_DISABLED: "Disabled"
     };

@@ -1,3 +1,4 @@
+<script src="../controller/change-management.controller.js"></script>
 <link rel="stylesheet" type="text/css" href="app/vid/styles/change-management.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/change-management-icons.css" />
 <div class="changes-management">
@@ -46,20 +47,29 @@
                             </thead>
                             <tbody ng-show="!collapseInProgress">
 
-                                <tr  data-tests-id="active-table-cm-row" ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['FAILED', 'IN_PROGRESS', 'PENDING']}">
-                                    <th scope="row">{{changeManagement.instanceReferences.vnfInstanceName || 'No-Instance-Name'}}</th>
+                                <tr  data-tests-id="active-table-cm-row" ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['COMPLETE'], notContains: true}">
+                                    <th scope="row">{{
+                                        changeManagement.vnfNameFromScheduler ||
+                                        changeManagement.instanceReferences.vnfInstanceId ||
+                                        'No-Instance-Name'
+                                        }}</th>
                                     <td>{{changeManagement.requestScope}}</td>
                                     <td>{{changeManagement.requestType}}</td>
                                     <td>{{changeManagement.startTime}}</td>
-                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'FAILED'"><span class="icon-x" ng-click="vm.openFailedModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
-                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'IN_PROGRESS'"><span class="icon-process" ng-click="vm.openInProgressModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
-                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState == 'PENDING'"><span class="icon-alert" ng-click="vm.openAlertModal({details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState.toUpperCase() === 'FAILED'"><span class="icon-x" ng-click="vm.openFailedModal($event, {details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered" ng-if="changeManagement.requestStatus.requestState.toUpperCase() === 'IN_PROGRESS'"><span class="icon-process" ng-click="vm.openInProgressModal($event, {details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered"
+                                        ng-if="['PENDING_MANUAL_TASK','PENDING'].indexOf(changeManagement.requestStatus.requestState.toUpperCase()) !== -1"
+                                    ><span class="icon-alert" ng-click="vm.openAlertModal($event, {details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
+                                    <td class="centered"
+                                        ng-if="['FAILED','IN_PROGRESS','PENDING_MANUAL_TASK','PENDING'].indexOf(changeManagement.requestStatus.requestState.toUpperCase()) == -1"
+                                    ><span class="icon-alert" ng-click="vm.openFailedModal($event, {requestState: changeManagement.requestStatus.requestState, details: changeManagement.requestStatus.statusMessage, job: changeManagement})"></span></td>
                                 </tr>
                             </tbody>
                         </table>
                         </div>
                         <div class="table-wrapper">
-                        <table ng-if="vm.hasScheduler" class="table table-bordered"  data-tests-id="pending-table-cm" id="pending-table">
+                        <table class="table table-bordered"  data-tests-id="pending-table-cm" id="pending-table">
                             <thead ng-click="collapsePending=!collapsePending">
                             <tr class="table-headline-row">
                                 <th class="col-md-6">
@@ -96,8 +106,12 @@
                                     <td>{{changeManagement.scheduleRequest.domainData[1].value}}</td>
                                     <td>{{changeManagement.scheduleRequest.createDateTime }}</td><!--| date:"MM/dd/yyyy HH:mm:ss"-->
                                     <td>{{changeManagement.scheduleRequest.status}}</td>
-                                    <td class="centered"><span class="cancel-action" ng-class="{'icon-pending':changeManagement.scheduleRequest.status!=='Deleted', 'icon-deleted': changeManagement.scheduleRequest.status=='Deleted'}"
-                                                                ng-click="vm.openPendingModal($event, changeManagement)"></span></td>
+                                    <td class="centered"><span class="cancel-action"
+                                                               ng-class="{'icon-pending':changeManagement.scheduleRequest.status!=='Deleted', 'icon-deleted': changeManagement.scheduleRequest.status=='Deleted'}"
+                                                               ng-click="vm.openPendingModal($event, changeManagement)"
+                                                               ng-show="vm.isChangeManagementDeleted(changeManagement)"
+                                                               data-tests-id="icon-status-{{changeManagement.scheduleRequest.scheduleId}}"></span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -127,7 +141,11 @@
                                 <th></th>
                             </tr>
                             <tr ng-repeat="changeManagement in vm.changeManagements | changeManagementsByStatuses:{statuses: ['COMPLETE']}">
-                                <th scope="row">{{changeManagement.instanceReferences.vnfInstanceName || 'No-Instance-Name'}}</th>
+                                <th scope="row">{{
+                                    changeManagement.vnfNameFromScheduler ||
+                                    changeManagement.instanceReferences.vnfInstanceId ||
+                                    'No-Instance-Name'
+                                    }}</th>
                                 <td>{{changeManagement.requestScope}}</td>
                                 <td>{{changeManagement.requestType}}</td>
                                 <td>{{changeManagement.startTime}}</td>

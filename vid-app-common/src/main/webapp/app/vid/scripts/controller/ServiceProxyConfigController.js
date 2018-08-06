@@ -163,6 +163,9 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                             },
                             requestParams: function () {
                                 return requestParams;
+                            },
+                            configuration: function () {
+                                return null;
                             }
                         }
                     });

@@ -257,6 +257,9 @@ var DataService = function($log, DataService) {
 		getServiceInstanceToCustomer : function() {
 			return _this.serviceInstanceToCustomer;
 		},
+        getMsoRequestParametersTestApi: function(){
+            return sessionStorage.getItem("msoRequestParametersTestApiValue");
+		},
 		setALaCarte : function(aval) {
 			_this.aLaCarte = aval;
 		},
@@ -266,6 +269,15 @@ var DataService = function($log, DataService) {
 				return true;
 			}
 			return _this.aLaCarte;
+		},
+		setShouldExcludeMacroFromAsyncInstatiationFlow: function (val) {
+			_this.shouldExcludeMacroFromAsyncInstatiationFlow = val;
+        },
+        getShouldExcludeMacroFromAsyncInstatiationFlow: function(){
+            if (_this.shouldExcludeMacroFromAsyncInstatiationFlow === undefined) {
+                return false;
+            }
+            return _this.shouldExcludeMacroFromAsyncInstatiationFlow;
 		},
 		setMacro : function(aval) {
 			_this.macro = aval;

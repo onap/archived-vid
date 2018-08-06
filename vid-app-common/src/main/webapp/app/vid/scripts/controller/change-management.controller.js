@@ -8,6 +8,7 @@
 
         vm.lastTimeUpdated = "";
         vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
+        vm.currModal = null;
 
         vm.init = function() {
             vm.lastTimeUpdated = $filter('date')(new Date(), "MM/dd/yyyy | HH:mm:ss");
@@ -15,10 +16,30 @@
             loadSchedulerChangeManagements();
         };
 
+        var fuseMsoAndSchedulerTaks = function() {
+            if (vm.changeManagements && vm.pendingChangeManagements) {
+                var requestIdToVnfName = {}
+                vm.pendingChangeManagements.forEach(function(schedulerItem) {
+                    if (schedulerItem.msoRequestId && schedulerItem.vnfName) {
+                        requestIdToVnfName[schedulerItem.msoRequestId] = schedulerItem.vnfName;
+                    }
+                })
+                $log.debug("requestIdToVnfName", requestIdToVnfName);
+
+                vm.changeManagements = vm.changeManagements.map(function(msoItem) {
+                    msoItem['vnfNameFromScheduler'] = requestIdToVnfName[msoItem.requestId];
+                    return msoItem;
+                })
+            }
+        };
+
         var loadMSOChangeManagements = function() {
             changeManagementService.getMSOChangeManagements()
                 .then(function(response) {
                     vm.changeManagements = response.data;
+                })
+                .then(function () {
+                    fuseMsoAndSchedulerTaks();
                 })
                 .catch(function (error) {
                     $log.error(error);
@@ -43,18 +64,24 @@
                         }
                     });
                 })
+                .then(function () {
+                    fuseMsoAndSchedulerTaks();
+                })
                 .catch(function(error) {
                     $log.error(error);
                 });
         };
 
         vm.createNewChange = function() {
+            vm.closeCurrentModalIfOpen();
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/new-change-management/new-change-management.html',
                 controller: 'newChangeManagementModalController',
                 controllerAs: 'vm',
                 resolve: {}
             });
+
+            vm.currModal = modalInstance;
 
             modalInstance.result.then(function (result) {
                 console.log("This is the result of the new change management modal.", result);
@@ -65,29 +92,18 @@
             console.log("function for searching changes: " + vm.searchChangesTerm)
         };
 
-        vm.openFailedModal = function(jobInfo) {
+
+        vm.openManualTasksPopup = function($event, jobInfo, templateUrl, message) {
+
+            vm.closeCurrentModalIfOpen();
+
             var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/failed-change-management/failed-change-management.html',
+                templateUrl: templateUrl,
                 controller: 'changeManagementManualTasksController',
                 controllerAs: 'vm',
-                resolve: {
-                    jobInfo: function () {
-                        return jobInfo;
-                    }
-                },
-
-            });
-
-            modalInstance.result.then(function (result) {
-                console.log("This is the result of the failed change management modal.", result);
-            });
-        };
-
-        vm.openInProgressModal = function(jobInfo) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.html',
-                controller: 'changeManagementManualTasksController',
-                controllerAs: 'vm',
+                backdrop: false,
+                animation: true,
+                appendTo: angular.element($event.currentTarget).parent(),
                 resolve: {
                     jobInfo: function () {
                         return jobInfo;
@@ -96,31 +112,38 @@
             });
 
             modalInstance.result.then(function (result) {
-                console.log("This is the result of the in progress change management modal.", result);
-            });
-        };
-
-        vm.openAlertModal = function(jobInfo) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'app/vid/scripts/modals/alert-change-management/alert-change-management.html',
-                controller: 'changeManagementManualTasksController',
-                controllerAs: 'vm',
-                resolve: {
-                    jobInfo: function () {
-                        return jobInfo;
-                    }
-                }
+                console.log(message, result);
             });
 
-            modalInstance.result.then(function (result) {
-                console.log("This is the result of the alert change management modal.", result);
-            });
+            vm.currModal = modalInstance;
         };
+
+        vm.openFailedModal = function($event, jobInfo) {
+            vm.openManualTasksPopup($event, jobInfo,
+                'app/vid/scripts/modals/failed-change-management/failed-change-management.html',
+                "This is the result of the failed change management modal.")
+        };
+
+        vm.openInProgressModal = function($event, jobInfo) {
+            vm.openManualTasksPopup($event, jobInfo,
+                'app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.html',
+                "This is the result of the in progress change management modal.")
+        };
+
+        vm.openAlertModal = function($event, jobInfo) {
+            vm.openManualTasksPopup($event, jobInfo,
+                'app/vid/scripts/modals/alert-change-management/alert-change-management.html',
+                "This is the result of the alert change management modal.")
+        };
+
         vm.openBasicAlertModal = function(jobInfo) {
+            vm.closeCurrentModalIfOpen();
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/alert-modal/alert-modal.html',
                 controller: 'alertModalController',
                 controllerAs: 'vm',
+                backdrop: false,
+                animation: true,
                 appendTo: angular.element(".jobs-table").eq(0),
                 resolve: {
                     jobInfo: function () {
@@ -128,12 +151,16 @@
                     }
                 }
             });
+            vm.currModal = modalInstance;
 
             modalInstance.result.then(function (result) {
                 console.log("This is the result of the alert change management modal.", result);
             });
         };
         vm.openPendingModal = function($event, changeManagement) {
+
+            vm.closeCurrentModalIfOpen();
+
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/cancel-pending-workflow/cancel-pending-workflow.html',
                 controller: 'cancelPendingWorkflowController',
@@ -147,6 +174,8 @@
                     }
                 }
             });
+
+            vm.currModal = modalInstance;
 
             modalInstance.result.then(function (result) {
                 // send to service
@@ -173,6 +202,16 @@
             }});
 
         };
+        vm.isChangeManagementDeleted = function(changeManagement) {
+            return changeManagement.scheduleRequest.status!=='Deleted'
+        };
+
+        vm.closeCurrentModalIfOpen = function() {
+            if (vm.currModal != null) {
+                vm.currModal.close();
+                vm.currModal = null;
+            }
+        }
 
 
         vm.init();

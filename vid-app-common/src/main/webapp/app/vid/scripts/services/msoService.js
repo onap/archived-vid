@@ -20,7 +20,7 @@
 
 "use strict";
 
-var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityService, COMPONENT, FIELD) {
+var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityService, COMPONENT, FIELD, moment) {
 
     var _this = this;
 
@@ -36,7 +36,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             timeout : PropertyService.getServerResponseTimeoutMsec()
         }).then(successCallbackFunction)["catch"]
         (UtilityService.runHttpErrorHandler);
-    }
+    };
 
     var checkValidStatus = function(response) {
         if (response.data.status < 200 || response.data.status > 202) {
@@ -55,7 +55,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
         }
     };
 
-    var buildPayloadForServiceActivateDeactivate = function (model, userId, aicZone) {
+    var buildPayloadForServiceActivateDeactivate = function (model, userId) {
         var requestDetails = {
                 "modelInfo": {
                     "modelType": "service",
@@ -69,10 +69,8 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                     "requestorId": userId
                 },
                 "requestParameters": {
-                    "userParams": [{
-                        "name": "aic_zone",
-                        "value": aicZone
-                    }]
+                    // aicZone was sent from here
+                    "userParams": []
                 }
         };
 
@@ -83,14 +81,14 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
     };
 
     var activateInstance = function(requestParams) {
-        var requestDetails = buildPayloadForServiceActivateDeactivate(requestParams.model, requestParams.userId, requestParams.aicZone);
+        var requestDetails = buildPayloadForServiceActivateDeactivate(requestParams.model, requestParams.userId);
 
         return sendPostRequest(COMPONENT.MSO_ACTIVATE_INSTANCE.replace('@serviceInstanceId', requestParams.instance.serviceInstanceId),
             requestDetails);
     };
 
     var deactivateInstance = function(requestParams) {
-        var requestDetails = buildPayloadForServiceActivateDeactivate(requestParams.model, requestParams.userId, requestParams.aicZone);
+        var requestDetails = buildPayloadForServiceActivateDeactivate(requestParams.model, requestParams.userId);
 
         return sendPostRequest(COMPONENT.MSO_DEACTIVATE_INSTANCE.replace('@serviceInstanceId', requestParams.instance.serviceInstanceId),
             requestDetails);
@@ -154,7 +152,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             UtilityService.checkUndefined(COMPONENT.STATUS, response.data.status);
             checkValidStatus(response);
 
-            var list = response.data.entity.requestList
+            var list = response.data.entity.requestList;
             UtilityService.checkUndefined(FIELD.ID.REQUEST_LIST, list);
 
             var message = "";
@@ -168,8 +166,10 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                 if (status === undefined) {
                     message += addListEntry(FIELD.ID.REQUEST_STATUS, undefined) + "\n";
                 } else {
-                    message += addListEntry(FIELD.ID.TIMESTAMP, status.timestamp)
-                        + ",\n";
+                    if(status.finishTime) {
+                        message += addListEntry(FIELD.ID.TIMESTAMP, moment(new Date(status.finishTime)).format("ddd, DD MMM YYYY HH:mm:ss"))
+                            + ",\n";
+                    }
                     message += addListEntry(FIELD.ID.REQUEST_STATE, status.requestState)
                         + ",\n";
                     message += addListEntry(FIELD.ID.REQUEST_STATUS,
@@ -203,7 +203,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                 if (status === undefined) {
                     message += addListEntry(FIELD.ID.REQUEST_STATUS, undefined) + "\n";
                 } else {
-                    message += addListEntry(FIELD.ID.TIMESTAMP, status.timestamp)
+                    message += addListEntry(FIELD.ID.TIMESTAMP, moment(new Date()).format("ddd, DD MMM YYYY HH:mm:ss"))
                         + ",\n";
                     message += addListEntry(FIELD.ID.REQUEST_STATE, status.requestState)
                         + ",\n";
@@ -272,7 +272,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                     showFunction(FIELD.ERROR.SYSTEM_FAILURE, error.message);
                     break;
                 case "msoFailure":
-                    showFunction(FIELD.ERROR.MSO, "")
+                    showFunction(FIELD.ERROR.MSO, "");
                     break;
                 default:
                     showFunction(FIELD.ERROR.SYSTEM_FAILURE);
@@ -341,15 +341,16 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                             }
                         },
                         {
-                            "relatedInstance": {
-                                "instanceId": requestParams.configurationByPolicy ?
-                                    requestParams.portMirroringConfigFields.destinationInstance.properties['pnfName']:
-                                    requestParams.portMirroringConfigFields.destinationInstance.properties['vnf-id'],
+                            "relatedInstance": requestParams.configurationByPolicy ? {
+                                "instanceName": requestParams.portMirroringConfigFields.destinationInstance.properties['pnfName'],
                                 "instanceDirection": "destination",
-                                "modelInfo":
-                                    requestParams.configurationByPolicy ?
-                                        {"modelType": "pnf"} :
-                                        modelInfoOf(requestParams.portMirroringConfigFields.destinationInstance)
+                                "modelInfo": {
+                                    "modelType": "pnf"
+                                }
+                            } : {
+                                "instanceId": requestParams.portMirroringConfigFields.destinationInstance.properties['vnf-id'],
+                                "instanceDirection": "destination",
+                                "modelInfo": modelInfoOf(requestParams.portMirroringConfigFields.destinationInstance)
                             }
                         }
                     ],
@@ -375,13 +376,31 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             });
             return deferred.promise;
         },
-
-        toggleConfigurationStatus: function(requestParams) {
+        deleteConfiguration: function(requestParams, configuration) {
 
             var requestDetails = {
                 "modelInfo": requestParams.configurationModel,
                 "cloudConfiguration": {
-                    "lcpCloudRegionId": "mdt1"
+                    "lcpCloudRegionId": configuration.configData.cloudRegionId
+                },
+                "requestInfo": {
+                    "source": "VID",
+                    "requestorId": requestParams.userId
+                },
+                "requestParameters": {
+                    "userParams": []
+                }
+            };
+
+            var url = "mso/mso_delete_configuration/" + requestParams.serviceInstanceId + "/configurations/" + requestParams.configurationId;
+            return sendPostRequest(url, requestDetails);
+        },
+        toggleConfigurationStatus: function(requestParams, configuration) {
+
+            var requestDetails = {
+                "modelInfo": requestParams.configurationModel,
+                "cloudConfiguration": {
+                    "lcpCloudRegionId": configuration && configuration.configData ? configuration.configData.cloudRegionId : null
                 },
                 "requestInfo": {
                     "source": "VID",
@@ -412,11 +431,12 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             return sendPostRequest(url, requestDetails);
         },
 
-        togglePortStatus: function(requestParams) {
+        togglePortStatus: function(requestParams, configuration, defaultParams) {
+
             var requestDetails = {
                 "modelInfo": requestParams.configurationModel,
                 "cloudConfiguration": {
-                    "lcpCloudRegionId": "mdt1"
+                    "lcpCloudRegionId": configuration && configuration.configData ? configuration.configData.cloudRegionId : null
                 },
                 "requestInfo": {
                     "source": "VID",

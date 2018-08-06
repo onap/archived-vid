@@ -2,9 +2,9 @@
 <link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/cancel-pending-workflow/cancel-pending-workflow.css"/>
 <div class="modal-header">
     <span class="modal-title" id="pending-modal-header">Pending</span>
-    <span id="cancel" ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+    <span id="cancel" ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true" data-tests-id="pull_right_modal_close">&times;</span>
 </div>
-<div class="modal-body" id="modal-body">
+<div class="modal-body" id="modal-body" data-tests-id="btn-cancel-workflow">
     Are you sure you want to delete workflow
     <br/>
     {{vm.workflow.scheduleRequest.scheduleName}}?

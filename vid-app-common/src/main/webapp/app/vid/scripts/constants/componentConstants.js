@@ -29,6 +29,7 @@ appDS2
 	CLOUD_REGION_ID : "cloudRegionID",
     COMPONENT_STATUS : "ComponentStatus",
     CREATE_COMPONENT : "createComponent",
+	IFRAME_DIALOG : "iframeDialog",
     DELETE_RESUME_COMPONENT : "deleteResumeComponent",
     DELETE:"Delete",
     RESUME:"Resume",
@@ -46,6 +47,7 @@ appDS2
 	MODEL_VERSION_1 : "1",
 	MSO_CREATE_REQ : "createInstance",
 	MSO_DELETE_REQ : "deleteInstance",
+	MSO_DELETE_CONFIGURATION_REQ : 'deleteConfiguration',
 	MSO_CHANGE_CONFIG_STATUS_REQ: "changeConfigurationStatus",
 	MSO_CHANGE_PORT_STATUS_REQ: "changePortStatus",
 	MSO_CREATE_ENVIRONMENT: "createEnvironmentInstance",
@@ -81,7 +83,6 @@ appDS2
 	VNF_TYPE : "vnfType",
 	VOLUME_GROUP : "volumeGroup",
     IS_PERMITTED: "is-permitted",
-    RESUME_STATUS: "PendingActivation",
     PNF : "pnf",
         // IDs
 	CIDR_MASK_1 : "255.255.255.000",
@@ -123,6 +124,8 @@ appDS2
 	AAI_GET_TENANTS : "aai_get_tenants/",
 	AAI_SUB_DETAILS_PATH : "aai_sub_details/",
     AAI_GET_VERSION_BY_INVARIANT_ID:"aai_get_version_by_invariant_id/",
+    AAI_GET_PORT_MIRRORING_CONFIGS_DATA : "aai_getPortMirroringConfigsData",
+    AAI_GET_PORT_MIRRORING_SOURCE_PORTS : "aai_getPortMirroringSourcePorts",
     SEARCH_SERVICE_INSTANCES:"search_service_instances",
     AAI_GET_VNF_DATA_PATH: "aai_get_vnf_data/",
     AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE: "get_vnf_data_by_globalid_and_service_type/",
@@ -130,6 +133,7 @@ appDS2
     AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
 	AAI_GET_VNF_INFO : "aai_get_vnf_information",
 	AAI_GET_PNF_INSTANCE: "aai_get_service_instance_pnfs",
+	AAI_GET_CR_INSTANCE: "aai_get_network_collection_details",
 	AAI_GET_VNF_INSTANCES_LIST: "aai_get_vnf_instances",
 	AAI_GET_PNF_INSTANCES_LIST: "aai_get_pnf_instances",
 	AAI_GET_BY_URI: "aai_get_by_uri/",
@@ -146,6 +150,7 @@ appDS2
 	WORKFLOW: "workflow",
 	GET_TIME_SLOTS:"get_time_slots",
 	SUBMIT_VNF_CHANGE_TIMESLOTS:"submit_vnf_change_timeslots",
+        AAI_GET_INSTANCE_GROUPS_BY_VNF_INSTANCE_ID_PATH: 'aai_get_instance_groups_by_vnf_instance_id',
 
 	FORWARD_SLASH : "/",
 	GET_SYSTEM_PROP_VNF_PROV_STATUS_PATH : "get_system_prop_vnf_prov_status",
@@ -174,14 +179,18 @@ appDS2
 	SERVICES_PATH : "rest/models/services/",
 	SERVICETYPE_SUB_PATH : "&serviceType=",
 	SERVICEINSTANCEID_SUB_PATH : "&serviceInstanceId=",
+	MODELVERSIONID_SUB_PATH : "&aaiModelVersionId=",
 	SERVICEMODELS_INSTANCES_SERVICES_PATH : "serviceModels.htm#/instances/services",
 	SERVICEMODELS_MODELS_SERVICES_PATH : "serviceModels.htm#/models/services",
 	SUBDETAILS_SELECTEDSUBSCRIBER : "#subdetails?selectedSubscriber=",
 	SUBSCRIBERNAME_SUB_PATH : "&subscriberName=",
 	WELCOME_PATH : "welcome.htm",
     IS_PERMITTED_SUB_PATH: "&isPermitted=",
+	SERVICE_POPUP_IFRAME_URL: "app/ui/#/servicePopup?serviceModelId=",
+	SUB_INTERFACE_POPUP_IFRAME_URL: "app/ui/#/vlan?",
+    VERIFY_SERVICE_URL: "rest/models/services/verifyService",
 
-    //Test Environment Urls:
+        //Test Environment Urls:
 	OPERATIONAL_ENVIRONMENT_CREATE : "operationalEnvironment/create",
 	OPERATIONAL_ENVIRONMENT_DEACTIVATE : "operationalEnvironment/deactivate?operationalEnvironment=",
 	OPERATIONAL_ENVIRONMENT_ACTIVATE : "operationalEnvironment/activate?operationalEnvironment=",
@@ -196,7 +205,7 @@ appDS2
 	INSTANTIATE_URL : "app/vid/scripts/view-models/instantiate.htm",
 	SERVICE_MODELS : "app/vid/scripts/view-models/serviceModels.htm",
 
-
+    ACTIVATE_SERVICE_STATUSES: ['created', 'pendingdelete', 'pending-delete', 'assigned'],
 
 	FULL_NAME_MAP : {
 	    "model-invariant-id" : "Model ID",
@@ -223,7 +232,18 @@ appDS2
 		update: "update",
 		replace: "replace",
 		vnfScaleOut: "VNF Scale Out"
-	}
+	},
+
+	FEATURE_FLAGS:{
+    	FLAG_ASYNC_INSTANTIATION : "FLAG_ASYNC_INSTANTIATION",
+		FLAG_VLAN_TAGGING_VIEW_EDIT: "FLAG_VLAN_TAGGING_VIEW_EDIT",
+		FLAG_NETWORK_TO_ASYNC_INSTANTIATION : "FLAG_NETWORK_TO_ASYNC_INSTANTIATION",
+        FLAG_REGION_ID_FROM_REMOTE : "FLAG_REGION_ID_FROM_REMOTE",
+        FLAG_ADD_MSO_TESTAPI_FIELD : "FLAG_ADD_MSO_TESTAPI_FIELD",
+        FLAG_COLLECTION_RESOURCE_SUPPORT : "FLAG_COLLECTION_RESOURCE_SUPPORT",
+        FLAG_SHOW_ASSIGNMENTS: "FLAG_SHOW_ASSIGNMENTS",
+        FLAG_SHOW_VERIFY_SERVICE: "FLAG_SHOW_VERIFY_SERVICE"
+    }
 
     };
-})())
+})());

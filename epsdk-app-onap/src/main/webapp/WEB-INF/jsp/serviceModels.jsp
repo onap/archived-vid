@@ -25,6 +25,9 @@
 <script src="app/vid/external/bootstrap/js/bootstrap.min.js"></script>
 <script src="app/vid/external/multiselect/angular-bootstrap-multiselect.min.js"></script>
 <script src="app/vid/external/upload-file/ng-file-upload.min.js"></script>
+<script src="app/vid/external/angular-feature-flags/featureFlags.min.js"></script>
+<script src="app/vid/external/angular-moment/moment.min.js"></script>
+<script src="app/vid/external/angular-moment/angular-moment.min.js"></script>
 
 <script src="app/vid/scripts/angular-ui-tree.js"></script>
 
@@ -42,6 +45,7 @@
 <script src="app/vid/scripts/modals/alert-modal/alert-modal.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
+<script src="app/vid/scripts/controller/iframeDialogController.js"></script>
 <script src="app/vid/scripts/controller/deleteResumeDialogController.js"></script>
 <script src="app/vid/scripts/controller/detailsDialogController.js"></script>
 <script src="app/vid/scripts/controller/statusDialogController.js"></script>
@@ -56,6 +60,7 @@
 <script src="app/vid/scripts/controller/testEnvironmentsController.js"></script>
 <script src="app/vid/scripts/modals/attach-test-env-manifest/attach-test-env-manifest.controller.js"></script>
 <script src="app/vid/scripts/controller/ServiceProxyConfigController.js"></script>
+<script src="app/vid/scripts/controller/iframeController.js"></script>
 
 <script src="app/vid/scripts/directives/angularjs-datetime-picker.js"></script>
 <script src="app/vid/scripts/controller/msoCommitModalController.js"></script>
@@ -81,6 +86,7 @@
 <script src="app/vid/scripts/services/utilityService.js"></script>
 <script src="app/vid/scripts/services/vnfService.js"></script>
 <script src="app/vid/scripts/services/pnfService.js"></script>
+<script src="app/vid/scripts/services/crService.js"></script>
 <script src="app/vid/scripts/services/change-management.service.js"></script>
 <script src="app/vid/scripts/modals/cancel-pending-workflow/cancel-pending-workflow.controller.js"></script>
 <script src="app/vid/scripts/services/OwningEntityService.js"></script>
@@ -96,9 +102,10 @@
 			+ SystemProperties.getProperty(MsoProperties.MSO_POLLING_INTERVAL_MSECS) + "}";
 %>
 
-<div ng-controller="ServiceModelController"
+<div class="service-models-page" ng-controller="ServiceModelController"
 	ng-init="init(<%=properties%>);" ng-cloak>
-	<div ng-view></div>
+	<div class="overlay"></div>
+	<div class="service-model-content" ng-view></div>
 </div>
 <!--  Temporary solution for footer overlapping the men after talking to EComp SDK developer on 06/16/2016 -->
 <div class="temporary-solution">

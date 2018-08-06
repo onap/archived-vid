@@ -18,7 +18,7 @@
   ============LICENSE_END=========================================================
   -->
 
-<div ng-controller="InstantiationController">
+<div>
 
 	<div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
 		 ng-cloak>
@@ -26,6 +26,7 @@
 		<div ng-include="'app/vid/scripts/view-models/deleteResumeDialog.htm'"></div>
 		<div ng-include="'app/vid/scripts/view-models/detailsDialog.htm'"></div>
 		<div ng-include="'app/vid/scripts/view-models/statusDialog.htm'"></div>
+	    <div ng-include="'app/vid/scripts/view-models/iframeDialog.htm'"></div>
 	</div>
 	<div ng-controller="aaiSubscriberController" ng-init="getComponentList() ">
 		<div class="statusLine" ng-class="{true:'aaiVisible', false:'aaiHidden'}[isSpinnerVisible]">
@@ -33,272 +34,441 @@
 			<label>Status:</label><span class="status">{{status}}</span>
 		</div>
 
-		<div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
+        <div ng-if="errorMsg != null" style="white-space: pre-line"><font color='red'>{{errorMsg}}
+            <pre>{{errorDetails | json}}</pre>
+        </font></div>
 
-		<h1 class="heading1" style="margin-top: 20px;">{{isPermitted ? "View/Edit" : "View"}} Service Instance</h1>
-		<a class="btn btn-primary btn-xs pull-right" ng-click="reloadRoute();" ><span class="glyphicon glyphicon-refresh"></span></a>
+        <h1 class="heading1" style="margin-top: 20px;">{{isPermitted ? "View/Edit" : "View"}} Service Instance</h1>
+        <a class="btn btn-primary btn-xs pull-right" ng-click="reloadRoute();"><span
+                class="glyphicon glyphicon-refresh"></span></a>
 
-		<br>
+        <br>
 
-		<center>
-			<table att-table border="1" ng-model="service">
-				<tr>
-					<th style="text-align: center" width="33%">SUBSCRIBER:
-						{{service.instance.subscriberName}}</th>
-					<th style="text-align: center" width="34%">SERVICE TYPE:
-						{{service.instance.serviceType}}</th>
-					<th data-tests-id="service-instanceId-th-id" style="text-align: center" width="33%">SERVICE INSTANCE
-						ID: {{service.instance.serviceInstanceId}}</th>
-				<tr>
-				<tr>
-					<td colspan='3' style="text-align: center">Service Instance
-						Name: {{service.instance.name || "Not defined"}}
-					</td>
-				<tr>
-			</table>
+        <center>
+            <table att-table border="1" ng-model="service">
+                <tr>
+                    <th style="text-align: center" width="33%">SUBSCRIBER:
+                        {{service.instance.subscriberName}}
+                    </th>
+                    <th style="text-align: center" width="34%">SERVICE TYPE:
+                        {{service.instance.serviceType}}
+                    </th>
+                    <th data-tests-id="service-instanceId-th-id" style="text-align: center" width="33%">SERVICE INSTANCE
+                        ID: {{service.instance.serviceInstanceId}}
+                    </th>
+                <tr>
+                <tr>
+                    <td colspan='3' style="text-align: center">Service Instance
+                        Name: {{service.instance.name || "Not defined"}}
+                    </td>
+                <tr>
+            </table>
 
-		</center>
+        </center>
 
-		<div ui-tree data-drag-enabled="false" data-nodrop-enabled="true" style="margin: 30px">
+        <div ui-tree data-drag-enabled="false" data-nodrop-enabled="true" style="margin: 30px">
 
-			<ol ui-tree-nodes="" ng-model="service"  >
-				<li ng-repeat="aService in [service]" ui-tree-node>
-					<div ui-tree-handle class="tree-node tree-node-content">
-						<a class="btn btn-success btn-xs" ng-if="(aService.instance.vnfs && aService.instance.vnfs.length > 0) ||(aService.instance.pnfs && aService.instance.pnfs.length > 0) || (aService.instance.networks && aService.instance.networks.length > 0)" data-nodrag ng-click="this.toggle()">
-							<span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
-						</a>
-						SERVICE INSTANCE: {{aService.instance.name}} | ORCH STATUS: {{serviceOrchestrationStatus}}
-						<a ng-if="((isMacro()) ||  (isObjectEmpty(aService.instance.vnfs) && isObjectEmpty(aService.instance.networks) && isObjectEmpty(aService.instance.pnfs))) && isPermitted" data-tests-id="deleteServiceButton" class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteService(aService.instance);">
-							<span class="glyphicon glyphicon-remove"></span>
-						</a>
-						<div class="pull-right btn-group" ng-if="(aService.convertedModel.vnfs||aService.convertedModel.vnfs) &&(!isObjectEmpty(aService.convertedModel.pnfs)||!isObjectEmpty(aService.convertedModel.pnfs))  && !aService.convertedModel.isNewFlow && isPermitted">
-							<button type="button" data-tests-id="addVNFButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Add node instance<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" ng-model="aService.convertedModel.vnfs">
-								<a role="menuitem" ng-repeat="(vnfUuid, vnf) in aService.convertedModel.vnfs" data-tests-id="addVNFOption-{{vnf.modelCustomizationName}}" ng-click="addVnfInstance(vnf, aService.instance.vnfs)">{{vnf.modelCustomizationName}}</a>
+            <ol ui-tree-nodes="" ng-model="service">
+                <li ng-repeat="aService in [service]" ui-tree-node>
 
-							</ul>
-						</div>
-						<div class="pull-right btn-group" ng-if="aService.convertedModel.vnfs && !isObjectEmpty(aService.convertedModel.vnfs) && aService.convertedModel.isNewFlow && isPermitted">
-							<button type="button" data-tests-id="addVNFButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Add node instance<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" ng-model="aService.convertedModel.vnfs" data-tests-id="addVnfsDropdown">
-								<li role="menuitem" ng-repeat="(vnfUuid, vnf) in aService.convertedModel.vnfs">
-									<a data-tests-id="addVNFOption-{{vnf.modelCustomizationName}}" ng-click="addVnfInstance(vnf, aService.instance.vnfs)">{{vnf.modelCustomizationName}} {{vnf.nfType}} {{vnf.nfRole}} {{vnf.nfFunction}} {{vnf.nfCode}}</a>
-								</li>
-							</ul>
-						</div>
-						<!--  <div class="pull-right btn-group" ng-if="aService.model.networks && !equals(aService.model.networks, {})">-->
-						<div class="pull-right btn-group" ng-if="aService.convertedModel.networks && (!(isObjectEmpty(aService.convertedModel.networks))) && isPermitted">
-							<!--<div class="pull-right btn-group" ng-if="aService.model.networks">-->
-							<button type="button" data-tests-id="addNetworkButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Add Network<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" ng-model="aService.convertedModel.networks">
-								<li ng-repeat="(networkUuid, network) in aService.convertedModel.networks">
-									<a data-tests-id="addNetworkOption-{{network.modelCustomizationName}}" ng-click="addNetworkInstance(network, aService.instance.vnfs)">{{network.modelCustomizationName}}</a>
-								</li>
-							</ul>
-						</div>
-						<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeService(aService.instance)" style="margin-right: 8px;">
-							<span class="glyphicon glyphicon-info-sign"></span>
-						</a>
-						<a data-tests-id="deactivateButton" ng-disabled="!isActivateDeactivateEnabled('deactivate')" class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="deactivateMSOInstance()" style="margin-right: 8px;">
-							Deactivate
-						</a>
-						<a data-tests-id="activateButton" ng-disabled="!isActivateDeactivateEnabled('activate')" class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="activateMSOInstance()" style="margin-right: 8px;">
-							Activate
-						</a>
-					</div>
-					<ol ui-tree-nodes="" ng-model="aService.instance.vnfs" ng-class="{hidden: collapsed}">
-						<li ng-repeat="vnf in aService.instance.vnfs" ui-tree-node>
-							<div ui-tree-handle class="tree-node tree-node-content">
-								<a class="btn btn-success btn-xs" ng-if="(vnf.vfModules && vnf.vfModules.length > 0) || (vnf.volumeGroups && vnf.volumeGroups.length > 0)" data-nodrag ng-click="this.toggle()">
-									<span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
-								</a>
-								VNF: {{vnf.name}} | TYPE: {{vnf.nodeType}} | ORCH STATUS: {{vnf.nodeStatus}}
+                    <div ng-if="isCR && collectionResource != null">
+                        <div ui-tree-handle class="tree-node tree-node-content">
+                            <a class="btn btn-success btn-xs" data-nodrag ng-click="this.toggle()">
+                                <span class="glyphicon"
+                                      ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                            </a>
+                            SERVICE INSTANCE: {{aService.instance.name}} | ORCH STATUS: {{serviceOrchestrationStatus}}
+                            <a ng-if="isPermitted" data-tests-id="deleteServiceButton"
+                               class="pull-right btn btn-danger btn-xs" data-nodrag
+                               ng-click="deleteService(aService.instance);">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a>
 
-								<a ng-if="(vnf.vfModules.length == 0) && (vnf.volumeGroups.length == 0) && isPermitted" data-tests-id="deleteVNFButton" class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteVnf(aService.instance, vnf)">
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
-								<!--  <div class="pull-right btn-group" ng-if="aService.convertedModel.vnfs[vnf.object['model-invariant-id']][vnf.object['model-version-id']].vfModules">-->
-								<div class="pull-right btn-group" ng-if="(hasVfModules(vnf.object) && (aService.convertedModel.isNewFlow)) && isPermitted">
+                            <a class="pull-right btn btn-primary btn-xs" data-tests-id="infoServiceButton" data-nodrag
+                               ng-click="describeService(aService.instance)" style="margin-right: 8px;">
+                                <span class="glyphicon glyphicon-info-sign service-info"></span>
+                            </a>
+                        </div>
+                        <ol ui-tree-nodes="" ng-model="collections" ng-class="{hidden: collapsed}">
+                            <li ng-repeat="collection in collections" ui-tree-node>
+                                <div ui-tree-handle class="tree-node tree-node-content" data-tests-id="collectionDiv">
+                                    <a class="btn btn-success btn-xs" data-nodrag ng-click="this.toggle()">
+                                        <span class="glyphicon"
+                                              ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                                    </a>
+                                    COLLECTION: {{collection["collection-name"]}} | TYPE:
+                                    {{collection["collection-type"]}}
+                                </div>
+                                <ol ui-tree-nodes="" ng-model="networks" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="network in networks" ui-tree-node>
+                                        <div ui-tree-handle class="tree-node tree-node-content"
+                                             data-tests-id="collectionNetworkDiv">
+                                            NETWORK INSTANCE GROUP: {{network["network-id"]}} | ROLE:
+                                            {{network["network-role"]}} | TYPE: {{network["network-type"]}} | # OF
+                                            NETWORKS: {{collectionResource.networks.length}}
+                                        </div>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                    <div ng-if="!isCR">
+                        <div ui-tree-handle class="tree-node tree-node-content">
+                            <a class="btn btn-success btn-xs"
+                               ng-if="(aService.instance.vnfs && aService.instance.vnfs.length > 0) ||(aService.instance.pnfs && aService.instance.pnfs.length > 0) || (aService.instance.networks && aService.instance.networks.length > 0)"
+                               data-nodrag ng-click="this.toggle()">
+                                <span class="glyphicon"
+                                      ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                            </a>
+                            SERVICE INSTANCE: {{aService.instance.name}} | ORCH STATUS: {{serviceOrchestrationStatus}}
+                            <a ng-if="((isMacro()) ||  (isObjectEmpty(aService.instance.vnfs) && isObjectEmpty(aService.instance.networks) && isObjectEmpty(aService.instance.pnfs))) && isPermitted"
+                               data-tests-id="deleteServiceButton" class="pull-right btn btn-danger btn-xs" data-nodrag
+                               ng-click="deleteService(aService.instance, serviceOrchestrationStatus);">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                            <div class="pull-right btn-group"
+                                 ng-if="(aService.convertedModel.vnfs||aService.convertedModel.vnfs) &&(!isObjectEmpty(aService.convertedModel.pnfs)||!isObjectEmpty(aService.convertedModel.pnfs))  && !aService.convertedModel.isNewFlow && isPermitted">
+                                <button type="button" data-tests-id="addVNFButton"
+                                        class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Add node instance<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" ng-model="aService.convertedModel.vnfs">
+                                    <a role="menuitem" ng-repeat="(vnfUuid, vnf) in aService.convertedModel.vnfs"
+                                       data-tests-id="addVNFOption-{{vnf.modelCustomizationName}}"
+                                       ng-click="addVnfInstance(vnf, aService.instance.vnfs)">{{vnf.modelCustomizationName}}</a>
 
-									<button type="button" data-tests-id="addVFModuleButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Add VF-Module<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" ng-model="vfModule" >
-										<a ng-repeat="(vfModuleCustomizationUuid, vfModule) in aService.convertedModel.vnfs[vnf.object['model-customization-id']].vfModules" data-tests-id="addVFModuleOption-{{vfModule.modelCustomizationName}}" ng-click="addVfModuleInstance(vnf, vfModule)">{{vfModule.modelCustomizationName}} </a>
-									</ul>
-								</div>
+                                </ul>
+                            </div>
+                            <div class="pull-right btn-group"
+                                 ng-if="aService.convertedModel.vnfs && !isObjectEmpty(aService.convertedModel.vnfs) && aService.convertedModel.isNewFlow && isPermitted">
+                                <button type="button" data-tests-id="addVNFButton"
+                                        class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Add node instance<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" ng-model="aService.convertedModel.vnfs"
+                                    data-tests-id="addVnfsDropdown">
+                                    <li role="menuitem" ng-repeat="(vnfUuid, vnf) in aService.convertedModel.vnfs">
+                                        <a data-tests-id="addVNFOption-{{vnf.modelCustomizationName}}"
+                                           ng-click="addVnfInstance(vnf, aService.instance.vnfs)">{{vnf.modelCustomizationName}}
+                                            {{vnf.nfType}} {{vnf.nfRole}} {{vnf.nfFunction}} {{vnf.nfCode}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--  <div class="pull-right btn-group" ng-if="aService.model.networks && !equals(aService.model.networks, {})">-->
+                            <div class="pull-right btn-group"
+                                 ng-if="aService.convertedModel.networks && (!(isObjectEmpty(aService.convertedModel.networks))) && isPermitted">
+                                <!--<div class="pull-right btn-group" ng-if="aService.model.networks">-->
+                                <button type="button" data-tests-id="addNetworkButton"
+                                        class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Add Network<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" ng-model="aService.convertedModel.networks">
+                                    <li ng-repeat="(networkUuid, network) in aService.convertedModel.networks">
+                                        <a data-tests-id="addNetworkOption-{{network.modelCustomizationName}}"
+                                           ng-click="addNetworkInstance(network, aService.instance.vnfs)">{{network.modelCustomizationName}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a class="pull-right btn btn-primary btn-xs" data-nodrag
+                               ng-click="describeService(aService.instance)" style="margin-right: 8px;">
+                                <span class="glyphicon glyphicon-info-sign service-info"></span>
+                            </a>
+                            <a data-tests-id="deactivateButton" ng-disabled="!isActivateDeactivateEnabled('deactivate')"
+                               class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="deactivateMSOInstance()"
+                               style="margin-right: 8px;">
+                                Deactivate
+                            </a>
+                            <a data-tests-id="activateButton" ng-disabled="!isActivateDeactivateEnabled('activate')"
+                               class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="activateMSOInstance()"
+                               style="margin-right: 8px;">
+                                Activate
+                            </a>
+                            <a data-tests-id="showAssignmentsButton" ng-disabled="!isShowAssignmentsEnabled()"
+                               class="pull-right btn btn-primary btn-xs" data-nodrag style="margin-right: 8px;"
+                               target="_blank" ng-href="{{showAssignmentsSDNC()}}">
+                                Show Assignments
+                            </a>
+                            <a data-tests-id="verifyServiceButton" ng-if="isShowVerifyService()" ng-disabled="!isEnableVerifyService()"
+                               class="pull-right btn btn-primary btn-xs" data-nodrag style="margin-right: 8px;"
+                               target="_blank" ng-click="activateVerifyService()">
+                                Verify Service
+                            </a>
+                        </div>
+                        <ol ui-tree-nodes="" ng-model="aService.instance.vnfs" ng-class="{hidden: collapsed}">
+                            <li ng-repeat="vnf in aService.instance.vnfs" ui-tree-node>
+                                <div ui-tree-handle class="tree-node tree-node-content">
+                                    <a class="btn btn-success btn-xs"
+                                       ng-if="(vnf.vfModules && vnf.vfModules.length > 0) || (vnf.volumeGroups && vnf.volumeGroups.length > 0)"
+                                       data-nodrag ng-click="this.toggle()">
+                                        <span class="glyphicon"
+                                              ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                                    </a>
+                                    VNF: {{vnf.name}} | TYPE: {{vnf.nodeType}} | ORCH STATUS: {{vnf.nodeStatus}}
 
+                                    <a ng-if="(vnf.vfModules.length == 0) && (vnf.volumeGroups.length == 0) && isPermitted"
+                                       data-tests-id="deleteVNFButton" class="pull-right btn btn-danger btn-xs"
+                                       data-nodrag ng-click="deleteVnf(aService.instance, vnf)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                    <!--  <div class="pull-right btn-group" ng-if="aService.convertedModel.vnfs[vnf.object['model-invariant-id']][vnf.object['model-version-id']].vfModules">-->
+                                    <div class="pull-right btn-group"
+                                         ng-if="(hasVfModules(vnf.object) && (aService.convertedModel.isNewFlow)) && isPermitted">
 
-								<div class="pull-right btn-group" ng-if="(hasVfModules(vnf.object) && (!(aService.convertedModel.isNewFlow))) && isPermitted">
-
-									<button type="button" data-tests-id="addVFModuleButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Add VF-Module<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" ng-model="vnf">
-										<a ng-repeat="(vfModuleUuid, vfModule) in aService.convertedModel.vnfs[vnf.object['model-version-id']].vfModules" data-tests-id="addVFModuleOption-{{vfModule.modelCustomizationName}}" ng-click="addVfModuleInstance(vnf, vfModule)">{{vfModule.modelCustomizationName}}</a>
-										</li>
-									</ul>
-
-								</div>
-
-								<div class="pull-right btn-group" ng-if="(hasVolumeGroups(vnf.object) && (aService.convertedModel.isNewFlow)) && isPermitted">
-									<button type="button" data-tests-id="addVolumeGroupButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Add Volume Group<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" ng-model="volumeGroup" >
-										<a ng-repeat="(volumeGroupCustomizationUuid, volumeGroup) in aService.convertedModel.vnfs[vnf.object['model-customization-id']].volumeGroups" data-tests-id="addVolumeGroupOption-{{volumeGroup.modelCustomizationName}}" ng-click="addVolumeGroupInstance(vnf, volumeGroup)">{{volumeGroup.modelCustomizationName}}</a>
-									</ul>
-								</div>
-
-								<div class="pull-right btn-group" ng-if="(hasVolumeGroups(vnf.object) && (!(aService.convertedModel.isNewFlow))) && isPermitted">
-
-									<button type="button" data-tests-id="addVolumeGroupButton" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Add Volume Group<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" ng-model="vnf">
-										<a ng-repeat="(volumeGroupUuid, volumeGroup) in aService.convertedModel.vnfs[vnf.object['model-version-id']].volumeGroups" data-tests-id="addVolumeGroupOption-{{volumeGroup.modelCustomizationName}}" ng-click="addVolumeGroupInstance(vnf, volumeGroup)">{{volumeGroup.modelCustomizationName}}</a>
-										</li>
-									</ul>
-
-								</div>
-
-								<!-- VID-374/378 - switching-off feature <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="getStatusOfVnf(aService.instance, vnf)" style="margin-right: 8px;">
-                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                </a>  -->
-								<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeVnf(aService.instance, vnf)" style="margin-right: 8px;">
-									<span class="glyphicon glyphicon-info-sign"></span>
-								</a>
-							</div>
-							<ol ui-tree-nodes="" ng-model="vnf.vfModules" ng-class="{hidden: collapsed}">
-								<li ng-repeat="vfModule in vnf.vfModules" ui-tree-node>
-									<div ui-tree-handle class="tree-node tree-node-content">
-										<a class="btn btn-success btn-xs" ng-if="(vfModule.volumeGroups && vfModule.volumeGroups.length > 0)" data-nodrag ng-click="this.toggle()">
-											<span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
-										</a>
-										VFMODULE: {{vfModule.name}} | TYPE: {{vfModule.nodeType}} | ORCH STATUS: {{vfModule.nodeStatus}}
-										<!--  -->
-										<a class="pull-right btn btn-danger btn-xs" ng-if="isPermitted" data-tests-id="deleteVFModuleButton-{{vfModule.name}}" data-nodrag ng-click="deleteVfModule(aService.instance, vfModule, vnf)">
-											<span class="glyphicon glyphicon-remove"></span>
-										</a>
-										<div class="pull-right btn-group">
-											<!--   <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Attach Volume Group<span class="caret"></span>
-                                              </button>
-                                              <ul class="dropdown-menu" ng-model="vnf.volumeGroups">
-                                                <li ng-repeat="volumeGroup in vnf.availableVolumeGroups">
-                                                    <a ng-click="attachVolumeGroupInstance(vfModule, volumeGroup)">{{volumeGroup.name}}</a>
-                                                </li>
-                                              </ul> -->
-										</div>
-										<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeVfModule(aService.instance, vfModule, vnf)" style="margin-right: 8px;">
-											<span class="glyphicon glyphicon-info-sign"></span>
-										</a>
-										<div class="resume" ng-if="isPermitted&&(vfModule.nodeStatus==resumeStatus)">
-											<a data-tests-id="resumeVFModuleButton-{{vfModule.name}}" class="pull-right btn btn-success btn-xs button-margin" ng-click="resume(aService.instance, vfModule, vnf)" >
-												Resume
-											</a>
-										</div>
-
-									</div>
-									<ol ui-tree-nodes="" ng-model="vfModule.volumeGroups" ng-class="{hidden: collapsed}">
-										<li ng-repeat="volumeGroup in vfModule.volumeGroups" ui-tree-node>
-											<div ui-tree-handle class="tree-node tree-node-content">
-												VOLUME GROUP: {{volumeGroup.name}} | TYPE: {{volumeGroup.nodeType}} | ORCH STATUS: {{volumeGroup.nodeStatus}}
-												<!-- <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteVolumeGroup(aService.instance, vnf, vfModule, volumeGroup)">
-                                                    <span class="glyphicon glyphicon-remove"></span>
-                                                </a> -->
-												<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeVolumeGroup(aService.instance, vnf, volumeGroup)" style="margin-right: 8px;">
-													<span class="glyphicon glyphicon-info-sign"></span>
-												</a>
-											</div>
-										</li>
-									</ol>
-								</li>
-							</ol>
-							<ol ui-tree-nodes="" ng-model="vnf.availableVolumeGroups" ng-class="{hidden: collapsed}">
-								<li ng-repeat="volumeGroup in vnf.availableVolumeGroups" ui-tree-node>
-									<div ui-tree-handle class="tree-node tree-node-content">
-										VOLUME GROUP: {{volumeGroup.name}} | TYPE: {{volumeGroup.nodeType}} | ORCH STATUS: {{volumeGroup.nodeStatus}}
-										<a class="pull-right btn btn-danger btn-xs" ng-if="isPermitted" data-tests-id="deleteVNFVolumeGroupButton" data-nodrag ng-click="deleteVnfVolumeGroup(aService.instance, vnf, volumeGroup)">
-											<span class="glyphicon glyphicon-remove"></span>
-										</a>
-										<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeVolumeGroup(aService.instance, vnf, volumeGroup)" style="margin-right: 8px;">
-											<span class="glyphicon glyphicon-info-sign"></span>
-										</a>
-									</div>
-								</li>
-							</ol>
-						</li>
-					</ol>
-
-					<ol ui-tree-nodes="" ng-model="aService.instance.networks" ng-class="{hidden: collapsed}">
-						<li ng-repeat="network in aService.instance.networks" ui-tree-node>
-							<div ui-tree-handle class="tree-node tree-node-content">
-								NETWORK: {{network.name}} | TYPE: {{network.nodeType}} | ORCH	STATUS: {{network.nodeStatus}}
-
-								<a class="pull-right btn btn-danger btn-xs" ng-if="!isMacro() && isPermitted" data-tests-id="deleteNetworkButton" data-nodrag ng-click="deleteNetwork(aService.instance, network)">
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
-								<!--  <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteNetwork(aService.instance, network)">
-                                   <span class="glyphicon glyphicon-remove"></span>
-                               </a>-->
-								<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="describeNetwork(aService.instance, network)" style="margin-right: 8px;">
-									<span class="glyphicon glyphicon-info-sign"></span>
-								</a>
-							</div>
-						</li>
-					</ol>
+                                        <button type="button" data-tests-id="addVFModuleButton"
+                                                class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            Add VF-Module<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" ng-model="vfModule">
+                                            <a ng-repeat="(vfModuleCustomizationUuid, vfModule) in aService.convertedModel.vnfs[vnf.object['model-customization-id']].vfModules"
+                                               data-tests-id="addVFModuleOption-{{vfModule.modelCustomizationName}}"
+                                               ng-click="addVfModuleInstance(vnf, vfModule)">{{vfModule.modelCustomizationName}} </a>
+                                        </ul>
+                                    </div>
 
 
-					<ol ui-tree-nodes="" ng-model="aService.instance.configurations" ng-class="{hidden: collapsed}">
-						<li ng-repeat="configuration in aService.instance.configurations" ui-tree-node>
-							<div ui-tree-handle class="tree-node tree-node-content">
-								<a class="btn btn-success btn-xs" ng-if="(configuration.ports && configuration.ports.length > 0)" data-nodrag ng-click="this.toggle()">
-									<span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
-								</a>
-								CONFIGURATION: {{configuration.name}} | TYPE: {{configuration.nodeType}} | ORCH	STATUS: {{configuration.nodeStatus}}
+                                    <div class="pull-right btn-group"
+                                         ng-if="(hasVfModules(vnf.object) && (!(aService.convertedModel.isNewFlow))) && isPermitted">
 
-								<a class="pull-right btn btn-danger btn-xs" ng-if="!isMacro() && isPermitted && configuration.nodeStatus === STATUS_CONSTANTS.AAI_INACTIVE" data-tests-id="deleteConfigurationButton" data-nodrag ng-click="deleteConfiguration(aService.instance, configuration)">
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
+                                        <button type="button" data-tests-id="addVFModuleButton"
+                                                class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            Add VF-Module<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" ng-model="vnf">
+                                            <a ng-repeat="(vfModuleUuid, vfModule) in aService.convertedModel.vnfs[vnf.object['model-version-id']].vfModules"
+                                               data-tests-id="addVFModuleOption-{{vfModule.modelCustomizationName}}"
+                                               ng-click="addVfModuleInstance(vnf, vfModule)">{{vfModule.modelCustomizationName}}</a>
+                                            </li>
+                                        </ul>
 
-								<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="toggleConfigurationStatus(aService, configuration)" ng-if="isPermitted && allowConfigurationActions">
-									{{configuration.nodeStatus === STATUS_CONSTANTS.AAI_ACTIVE ? "Deactivate" : "Activate"}}
-								</a>
-							</div>
-							<ol ui-tree-nodes="" ng-model="configuration.ports" ng-class="{hidden: collapsed}">
-								<li ng-repeat="port in configuration.ports" ui-tree-node>
-									<div ui-tree-handle class="tree-node tree-node-content">
-										PORT: {{port.portName}} | ORCH STATUS: {{port.portStatus}}
+                                    </div>
 
-										<button type="button" class="pull-right btn btn-primary btn-xs" ng-if="configuration.nodeStatus == STATUS_CONSTANTS.AAI_ACTIVE" ng-click="togglePortStatus(aService, configuration, port)">
-											{{port.portStatus === STATUS_CONSTANTS.AAI_ENABLED ? "Disable" : "Enable"}}
-										</button>
-									</div>
-								</li>
-							</ol>
-						</li>
-					</ol>
+                                    <div class="pull-right btn-group"
+                                         ng-if="(hasVolumeGroups(vnf.object) && (aService.convertedModel.isNewFlow)) && isPermitted">
+                                        <button type="button" data-tests-id="addVolumeGroupButton"
+                                                class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            Add Volume Group<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" ng-model="volumeGroup">
+                                            <a ng-repeat="(volumeGroupCustomizationUuid, volumeGroup) in aService.convertedModel.vnfs[vnf.object['model-customization-id']].volumeGroups"
+                                               data-tests-id="addVolumeGroupOption-{{volumeGroup.modelCustomizationName}}"
+                                               ng-click="addVolumeGroupInstance(vnf, volumeGroup)">{{volumeGroup.modelCustomizationName}}</a>
+                                        </ul>
+                                    </div>
 
-					<ol id="pnfs-tree" ui-tree-nodes="" ng-model="pnfs" ng-class="{hidden: collapsed || pnf.length === 0}">
-						<li ng-repeat="pnf in pnfs" ui-tree-node>
-							<div ui-tree-handle class="tree-node tree-node-content">
-								PNF: {{pnf}}
+                                    <div class="pull-right btn-group"
+                                         ng-if="(hasVolumeGroups(vnf.object) && (!(aService.convertedModel.isNewFlow))) && isPermitted">
 
-								<a class="dissociate-pnf pull-right btn btn-primary btn-xs" data-nodrag ng-click="dissociatePnf(pnf)" style="margin-right: 8px;">
-									<span>Dissociate</span>
-								</a>
-							</div>
-						</li>
-					</ol>
-				</li>
-			</ol>
-		</div>
-	</div>
+                                        <button type="button" data-tests-id="addVolumeGroupButton"
+                                                class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            Add Volume Group<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" ng-model="vnf">
+                                            <a ng-repeat="(volumeGroupUuid, volumeGroup) in aService.convertedModel.vnfs[vnf.object['model-version-id']].volumeGroups"
+                                               data-tests-id="addVolumeGroupOption-{{volumeGroup.modelCustomizationName}}"
+                                               ng-click="addVolumeGroupInstance(vnf, volumeGroup)">{{volumeGroup.modelCustomizationName}}</a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+
+                                    <!-- VID-374/378 - switching-off feature <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="getStatusOfVnf(aService.instance, vnf)" style="margin-right: 8px;">
+                                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                    </a>  -->
+                                    <a class="pull-right btn btn-primary btn-xs" data-nodrag
+                                       ng-click="describeVnf(aService.instance, vnf)" style="margin-right: 8px;">
+                                        <span class="glyphicon glyphicon-info-sign vnf-info"></span>
+                                    </a>
+                                </div>
+                                <ol ui-tree-nodes="" ng-model="vnf.instanceGroups" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="instanceGroup in vnf.instanceGroups" ui-tree-node>
+                                        <div ui-tree-handle class="tree-node tree-node-content"
+                                             ng-class="'instanceGroupTreeNode'">
+                                            INSTANCE-GROUP: {{instanceGroup.name}} | TYPE: Instance-Group
+                                        </div>
+
+                                    </li>
+                                </ol>
+
+                                <ol ui-tree-nodes="" ng-model="vnf.vfModules" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="vfModule in vnf.vfModules" ui-tree-node>
+                                        <div ui-tree-handle class="tree-node tree-node-content"
+                                             ng-class="'vfModuleTreeNode-' + vfModule.nodeStatus.toLowerCase()">
+                                            <a class="btn btn-success btn-xs"
+                                               ng-if="(vfModule.volumeGroups && vfModule.volumeGroups.length > 0)"
+                                               data-nodrag ng-click="this.toggle()">
+                                                <span class="glyphicon"
+                                                      ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                                            </a>
+                                            VFMODULE: {{vfModule.name}} | TYPE: {{vfModule.nodeType}} | ORCH STATUS:
+                                            {{vfModule.nodeStatus}}
+                                            <!--  -->
+                                            <a class="pull-right btn btn-danger btn-xs" ng-if="isPermitted"
+                                               data-tests-id="deleteVFModuleButton-{{vfModule.name}}" data-nodrag
+                                               ng-click="deleteVfModule(aService.instance, vfModule, vnf)">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </a>
+                                            <div class="pull-right btn-group">
+                                                <!--   <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Attach Volume Group<span class="caret"></span>
+                                                  </button>
+                                                  <ul class="dropdown-menu" ng-model="vnf.volumeGroups">
+                                                    <li ng-repeat="volumeGroup in vnf.availableVolumeGroups">
+                                                        <a ng-click="attachVolumeGroupInstance(vfModule, volumeGroup)">{{volumeGroup.name}}</a>
+                                                    </li>
+                                                  </ul> -->
+                                            </div>
+                                            <a class="pull-right btn btn-primary btn-xs" data-nodrag
+                                               ng-click="describeVfModule(aService.instance, vfModule, vnf)"
+                                               style="margin-right: 8px;">
+                                                <span class="glyphicon glyphicon-info-sign vfmodule-info"></span>
+                                            </a>
+                                            <div class="resume"
+                                                 ng-if="isPermitted && isResumeShown(vfModule.nodeStatus)">
+                                                <a data-tests-id="resumeVFModuleButton-{{vfModule.name}}"
+                                                   class="pull-right btn btn-success btn-xs button-margin"
+                                                   ng-click="resume(aService.instance, vfModule, vnf)">
+                                                    Resume
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                        <ol ui-tree-nodes="" ng-model="vfModule.volumeGroups"
+                                            ng-class="{hidden: collapsed}">
+                                            <li ng-repeat="volumeGroup in vfModule.volumeGroups" ui-tree-node>
+                                                <div ui-tree-handle class="tree-node tree-node-content">
+                                                    VOLUME GROUP: {{volumeGroup.name}} | TYPE: {{volumeGroup.nodeType}}
+                                                    | ORCH STATUS: {{volumeGroup.nodeStatus}}
+                                                    <!-- <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteVolumeGroup(aService.instance, vnf, vfModule, volumeGroup)">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </a> -->
+                                                    <a class="pull-right btn btn-primary btn-xs" data-nodrag
+                                                       ng-click="describeVolumeGroup(aService.instance, vnf, volumeGroup)"
+                                                       style="margin-right: 8px;">
+                                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                                <ol ui-tree-nodes="" ng-model="vnf.availableVolumeGroups"
+                                    ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="volumeGroup in vnf.availableVolumeGroups" ui-tree-node>
+                                        <div ui-tree-handle class="tree-node tree-node-content">
+                                            VOLUME GROUP: {{volumeGroup.name}} | TYPE: {{volumeGroup.nodeType}} | ORCH
+                                            STATUS: {{volumeGroup.nodeStatus}}
+                                            <a class="pull-right btn btn-danger btn-xs" ng-if="isPermitted"
+                                               data-tests-id="deleteVNFVolumeGroupButton" data-nodrag
+                                               ng-click="deleteVnfVolumeGroup(aService.instance, vnf, volumeGroup)">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </a>
+                                            <a class="pull-right btn btn-primary btn-xs" data-nodrag
+                                               ng-click="describeVolumeGroup(aService.instance, vnf, volumeGroup)"
+                                               style="margin-right: 8px;">
+                                                <span class="glyphicon glyphicon-info-sign volume-group-info"></span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+
+                        <ol ui-tree-nodes="" ng-model="aService.instance.networks" ng-class="{hidden: collapsed}">
+                            <li ng-repeat="network in aService.instance.networks" ui-tree-node>
+                                <div ui-tree-handle class="tree-node tree-node-content">
+                                    NETWORK: {{network.name}} | TYPE: {{network.nodeType}} | ORCH STATUS:
+                                    {{network.nodeStatus}}
+
+                                    <a class="pull-right btn btn-danger btn-xs" ng-if="!isMacro() && isPermitted"
+                                       data-tests-id="deleteNetworkButton" data-nodrag
+                                       ng-click="deleteNetwork(aService.instance, network)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                    <!--  <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="deleteNetwork(aService.instance, network)">
+                                       <span class="glyphicon glyphicon-remove"></span>
+                                   </a>-->
+                                    <a class="pull-right btn btn-primary btn-xs" data-nodrag
+                                       ng-click="describeNetwork(aService.instance, network)"
+                                       style="margin-right: 8px;">
+                                        <span class="glyphicon glyphicon-info-sign network-info"></span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <ol ui-tree-nodes="" ng-model="aService.instance.configurations" ng-class="{hidden: collapsed}">
+                            <li ng-repeat="configuration in aService.instance.configurations" ui-tree-node>
+                                <div ui-tree-handle class="tree-node tree-node-content">
+                                    <a class="btn btn-success btn-xs"
+                                       ng-if="(configuration.ports && configuration.ports.length > 0)" data-nodrag
+                                       ng-click="this.toggle()">
+                                        <span class="glyphicon"
+                                              ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                                    </a>
+                                    CONFIGURATION: {{configuration.name}} | TYPE: {{configuration.nodeType}} | ORCH
+                                    STATUS: {{configuration.nodeStatus}}
+
+                                    <a class="pull-right btn btn-danger btn-xs"
+                                       ng-if="!isMacro() && isPermitted && configuration.nodeStatus !== STATUS_CONSTANTS.AAI_ACTIVE"
+                                       ng-disabled="!isConfigurationDataAvailiable(configuration)"
+                                       data-tests-id="deleteConfigurationButton"
+                                       data-nodrag
+                                       ng-click="deleteConfiguration(aService, configuration)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+
+
+                                    <a class="pull-right btn btn-primary btn-xs" data-nodrag
+                                       ng-click="toggleConfigurationStatus(aService, configuration)"
+                                       ng-if="isPermitted && allowConfigurationActions"
+                                       ng-disabled="!isConfigurationDataAvailiable(configuration)"
+                                       data-tests-id="activateDeactivateButton">
+                                        {{configuration.nodeStatus === STATUS_CONSTANTS.AAI_ACTIVE ? "Deactivate" :
+                                        "Activate"}}
+                                    </a>
+                                </div>
+                                <ol ui-tree-nodes="" ng-model="configuration.ports" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="port in configuration.ports" ui-tree-node>
+                                        <div ui-tree-handle class="tree-node tree-node-content">
+                                            PORT: {{port.portName}} | ORCH STATUS: {{port.portStatus}}
+
+                                            <button type="button" data-tests-id="enableDisableButton"
+                                                    class="pull-right btn btn-primary btn-xs"
+                                                    ng-if="configuration.nodeStatus == STATUS_CONSTANTS.AAI_ACTIVE"
+                                                    ng-disabled="!isConfigurationDataAvailiable(configuration)"
+                                                    ng-click="togglePortStatus(aService, configuration, port)">
+                                                {{port.portStatus === STATUS_CONSTANTS.AAI_ENABLED ? "Disable" :
+                                                "Enable"}}
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+
+                        <ol id="pnfs-tree" ui-tree-nodes="" ng-model="pnfs"
+                            ng-class="{hidden: collapsed || pnf.length === 0}">
+                            <li ng-repeat="pnf in pnfs" ui-tree-node>
+                                <div ui-tree-handle class="tree-node tree-node-content">
+                                    PNF: {{pnf}}
+
+                                    <a class="dissociate-pnf pull-right btn btn-primary btn-xs" data-nodrag
+                                       ng-click="dissociatePnf(pnf)" style="margin-right: 8px;">
+                                        <span>Dissociate</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
 </div>

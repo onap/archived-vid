@@ -53,7 +53,7 @@
                         _.find(relatedEcompEnv.relationshipData, {"relationshipKey": "operational-environment.operational-environment-id"})
                             .relationshipValue;
                     var relatedInstanceName =
-                        _.find(relatedEcompEnv.relatedToProperty, {"propertyKey": "operational-environment.operational-name"})
+                        _.find(relatedEcompEnv.relatedToProperty, {"propertyKey": "operational-environment.operational-environment-name"})
                             .propertyValue;
                     var workloadContext = testEnv.workloadContext;
 

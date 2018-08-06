@@ -1,0 +1,6 @@
+<div  ng-controller="iframeDialogController">
+	<div ng-if="isDialogVisible">
+		<iframe class="popup iframeDialog" scrolling="no" id="iframe_callback"  ng-src={{url}}></iframe>
+	</div>
+	<div ng-include="'app/vid/scripts/view-models/msoCommit.htm'"></div>
+</div>
