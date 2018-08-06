@@ -1,3 +1,24 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.aai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,21 +29,23 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.ServletRequestHelper;
+import org.onap.vid.aai.util.SystemPropertyHelper;
+import org.onap.vid.controllers.LocalWebConfig;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.model.probes.StatusMetadata;
-import org.onap.vid.controllers.LocalWebConfig;
 import org.onap.vid.testUtils.TestUtils;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -398,7 +421,7 @@ public class AaiClientTest {
         Response responseMock = mocks.getFakeResponse();
 
         // prepare real AAIRestInterface and AaiClient, and wire mocks
-        AAIRestInterface aaiRestInterface = new AAIRestInterface(httpsAuthClientMock);
+        AAIRestInterface aaiRestInterface = new AAIRestInterface(httpsAuthClientMock, new ServletRequestHelper(), new SystemPropertyHelper());
         final AaiClient aaiClient = new AaiClient(aaiRestInterface, null);
         when(httpsAuthClientMock.getClient(any())).thenReturn(javaxClientMock);
 
