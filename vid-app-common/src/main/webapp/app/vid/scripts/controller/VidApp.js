@@ -73,6 +73,14 @@
 		  controller: 'ServiceProxyConfigController',
 		  templateUrl: 'app/vid/scripts/view-models/serviceProxyConfig.htm'
 	    })
+	  .when('/servicePlanning', {
+		  controller: 'iframeController',
+		  templateUrl: 'app/vid/scripts/view-models/iframe.htm'
+	  })
+	    .when('/instantiationStatus', {
+	    	controller: 'iframeController',
+			templateUrl: 'app/vid/scripts/view-models/iframe.htm'
+	    })
         .otherwise({
         	redirectTo: '/models/services'
         });

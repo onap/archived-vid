@@ -94,6 +94,9 @@ appDS2.controller("pnfSearchAssociationController", ["COMPONENT", "$log", "FIELD
                     requestParams: function () {
                         requestParams.callbackFunction = updateViewCallbackFunction;
                         return requestParams;
+                    },
+                    configuration: function () {
+                        return null;
                     }
                 }
             })

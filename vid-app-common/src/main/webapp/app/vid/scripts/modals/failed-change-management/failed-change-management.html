@@ -1,7 +1,8 @@
 <link rel="stylesheet" type="text/css" href="app/vid/styles/modal-create-new.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/failed-change-management/failed-change-management.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/css/manual-task-popup.css" />
 <div class="modal-header">
-    <h3 class="modal-title" id="failed-modal-header">Failed</h3>
+    <h3 class="modal-title" id="failed-modal-header">{{vm.requestState || 'Failed' }}</h3>
     <span id="cancel" ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
 </div>
 <div class="modal-body">

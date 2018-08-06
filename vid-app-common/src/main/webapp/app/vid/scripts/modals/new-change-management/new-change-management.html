@@ -71,15 +71,15 @@
         </div>
         <div ng-if="vm.shouldShowVnfInPlaceFields()">
             <div class="form-group">
-                <label class="control-label">operations-timeout</label>
+                <label class="control-label">Operations timeout</label>
                 <input class="form-control" ng-model="vm.changeManagement.operationTimeout" name="operationTimeout" type="text" id="operations-timeout" pattern="[0-9]+" required>
             </div>
             <div class="form-group">
-                <label class="control-label">existing-software-version</label>
+                <label class="control-label">Existing software version</label>
                 <input class="form-control" ng-model="vm.changeManagement.existingSoftwareVersion" name="existingSoftwareVersion" type="text" id="existing-software-version" pattern="{{vm.softwareVersionRegex}}" required>
             </div>
             <div class="form-group">
-                <label class="control-label">new-software-version</label>
+                <label class="control-label">New software version</label>
                 <input class="form-control" ng-model="vm.changeManagement.newSoftwareVersion" name="newSoftwareVersion" type="text" id="new-software-version" pattern="{{vm.softwareVersionRegex}}" required>
             </div>
 

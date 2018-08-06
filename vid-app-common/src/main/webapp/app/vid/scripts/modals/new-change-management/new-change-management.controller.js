@@ -2,9 +2,9 @@
     'use strict';
 
     appDS2.controller("newChangeManagementModalController", ["$uibModalInstance", "$uibModal",'$q', "AaiService", "changeManagementService", "Upload",
-        "$log", "$scope", "_", "COMPONENT", "VIDCONFIGURATION", newChangeManagementModalController]);
+        "$log", "$scope", "_", "COMPONENT", "VIDCONFIGURATION","DataService","featureFlags", newChangeManagementModalController]);
 
-    function newChangeManagementModalController($uibModalInstance, $uibModal,$q, AaiService, changeManagementService, Upload, $log, $scope, _, COMPONENT, VIDCONFIGURATION) {
+    function newChangeManagementModalController($uibModalInstance, $uibModal,$q, AaiService, changeManagementService, Upload, $log, $scope, _, COMPONENT, VIDCONFIGURATION, DataService, featureFlags) {
 
         var vm = this;
         vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
@@ -23,11 +23,29 @@
 
         vm.softwareVersionRegex = "[-a-zA-Z0-9\.]+";
 
+        var attuid;
+
+        function fetchAttUid() {
+            var defer = $q.defer();
+            if (attuid) {
+                defer.resolve(attuid);
+            } else {
+                AaiService.getLoggedInUserID(function (response) {
+                        attuid = response.data;
+                        defer.resolve(attuid);
+                    },
+                    function (err) {
+                        defer.reject(err);
+                    });
+            }
+            return defer.promise;
+        }
+
         var init = function () {
             vm.changeManagement = {};
 
             loadServicesCatalog();
-            registerVNFNamesWatcher();
+            fetchAttUid().then(registerVNFNamesWatcher);
             vm.loadSubscribers();
         };
 
@@ -115,14 +133,11 @@
                     modelCustomizationName: csarVNF.modelCustomizationName,
                     modelCustomizationId: csarVNF.customizationUuid
                 },
-                cloudConfiguration: {
-                    lcpCloudRegionId: "mdt1",
-                    tenantId: "88a6ca3ee0394ade9403f075db23167e"
-                },
+                cloudConfiguration: selectionVNF.cloudConfiguration || {},
                 requestInfo: {
                     source: "VID",
                     suppressRollback: false,
-                    requestorId: "az2016"
+                    requestorId: attuid
                 },
                 relatedInstanceList: [
                     {
@@ -161,13 +176,13 @@
                     return data;
                 }]
             })
-            .then(function (configUpdateResponse) {
-                vm.changeManagement.configUpdateFile = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
-                defer.resolve(true);
-            })
-            .catch(function (error) {
-                defer.resolve(false);
-            });
+                .then(function (configUpdateResponse) {
+                    vm.changeManagement.configUpdateFile = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
+                    defer.resolve(true);
+                })
+                .catch(function (error) {
+                    defer.resolve(false);
+                });
             return defer.promise;
         };
 
@@ -350,6 +365,9 @@
 				vm.changeManagement.policyYN = "Y";
 				vm.changeManagement.sniroYN = "Y";
 
+			            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) {
+			                vm.changeManagement.testApi = DataService.getMsoRequestParametersTestApi();
+			            }
 				var data = {
 					widgetName: 'Portal-Common-Scheduler',
 					widgetData: vm.changeManagement,
@@ -456,11 +474,13 @@
             vm.serviceInstancesToGetVersions = [];
             var versions = [];
             _.forEach(vm.vnfs, function (vnf) {
-                if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']) {
-
+                if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']
+                && vnf.properties["model-invariant-id"]
+                && vnf.properties["model-version-id"]) {
                     vm.serviceInstancesToGetVersions.push({
-                        "model-invariant-id": vnf.properties["model-invariant-id"],
-                        "model-version-id": vnf.properties["model-version-id"] }
+                            "model-invariant-id": vnf.properties["model-invariant-id"],
+                            "model-version-id": vnf.properties["model-version-id"]
+                        }
                     );
 
                     versions.push(vnf.properties["model-invariant-id"]);

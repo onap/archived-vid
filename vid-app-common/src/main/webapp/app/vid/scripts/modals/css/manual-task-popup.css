@@ -1,0 +1,10 @@
+.modal {
+    position: inherit;
+    text-align: left;
+}
+.modal-dialog {
+    position: absolute;
+    right: 0;
+    display: inline;
+    margin-top: -200px;
+}

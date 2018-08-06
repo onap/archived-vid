@@ -63,29 +63,24 @@
  * string for some known conditions.
  */
 
-var UtilityService = function($log, DataService, PARAMETER) {
+var UtilityService = function($log, DataService, PARAMETER, _) {
 
     var _this = this;
+
+    function hasCustomizationUuidFields(mapOfVfs) {
+        return _.some(mapOfVfs, function (o) {
+            return _.has(o, "customizationUuid");
+        });
+    }
+
     var convertModel = function (serviceModel) {
 
-        var isNewFlow = false;
+        var isNewFlow =
+			hasCustomizationUuidFields(serviceModel.networks)
+			|| hasCustomizationUuidFields(serviceModel.pnfs)
+			|| hasCustomizationUuidFields(serviceModel.vnfs)
+			|| hasCustomizationUuidFields(serviceModel.configurations);
 
-        for (var networkCustomizationName in serviceModel.networks) {
-            var networkModel = serviceModel.networks[networkCustomizationName];
-            if ( networkModel.customizationUuid != null ) {
-                isNewFlow = true;
-                break;
-            }
-        }
-        if ( !isNewFlow ) {
-            for (var vnfCustomizationName in serviceModel.vnfs) {
-                var vnfModel = serviceModel.vnfs[vnfCustomizationName];
-                if ( vnfModel.customizationUuid != null ) {
-                    isNewFlow = true;
-                    break;
-                }
-            }
-        }
         if ( isNewFlow ) {
             return (convertNewModel (serviceModel) );
         }
@@ -179,7 +174,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
         	element.isPnf= true;
         	element.modelCustomizationName= key;
         });
-        var mergedVnfs = Object.assign(serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
+        var mergedVnfs = Object.assign({}, serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
 
 		for (var vnfCustomizationName in mergedVnfs) {
 			var vnfModel = mergedVnfs[vnfCustomizationName];
@@ -279,13 +274,13 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				convertedAsdcModel.vnfs[vnfCustomizationUuid]["nfFunction"] = vnf_function;
 				convertedAsdcModel.vnfs[vnfCustomizationUuid]["nfCode"] = vnf_code;
 				//
-				for (var vfModuleCustomizationName in serviceModel.vnfs[vnfCustomizationName].vfModules) {
-					var vfModuleModel = serviceModel.vnfs[vnfCustomizationName].vfModules[vfModuleCustomizationName];
+				for (var vfModuleCustomizationName in vnfModel.vfModules) {
+					var vfModuleModel = vnfModel.vfModules[vfModuleCustomizationName];
 					convertedAsdcModel.vnfs[vnfCustomizationUuid].vfModules[vfModuleModel.customizationUuid] = vfModuleModel;
 				}
 				
-				for (var volumeGroupCustomizationName in serviceModel.vnfs[vnfCustomizationName].volumeGroups) {
-					var volumeGroupModel = serviceModel.vnfs[vnfCustomizationName].volumeGroups[volumeGroupCustomizationName];
+				for (var volumeGroupCustomizationName in mergedVnfs[vnfCustomizationName].volumeGroups) {
+					var volumeGroupModel = mergedVnfs[vnfCustomizationName].volumeGroups[volumeGroupCustomizationName];
 					convertedAsdcModel.vnfs[vnfCustomizationUuid].volumeGroups[volumeGroupModel.customizationUuid] = volumeGroupModel;
 				}
 			}
@@ -391,7 +386,7 @@ var UtilityService = function($log, DataService, PARAMETER) {
             element.isPnf= true;
             element.modelCustomizationName= key;
         });
-        var mergedVnfs = Object.assign(serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
+        var mergedVnfs = Object.assign({}, serviceModel.vnfs, serviceModel.configurations, serviceModel.pnfs);
 
 		for (var vnfCustomizationName in mergedVnfs) {
 			var vnfModel = mergedVnfs[vnfCustomizationName];
@@ -458,13 +453,13 @@ var UtilityService = function($log, DataService, PARAMETER) {
 				convertedAsdcModel.vnfs[vnfModel.uuid].displayInputs=vnfModelDisplayInputs;
 			}
 			
-			for (var vfModuleCustomizationName in serviceModel.vnfs[vnfCustomizationName].vfModules) {
-				var vfModuleModel = serviceModel.vnfs[vnfCustomizationName].vfModules[vfModuleCustomizationName];
+			for (var vfModuleCustomizationName in vnfModel.vfModules) {
+				var vfModuleModel = vnfModel.vfModules[vfModuleCustomizationName];
 				convertedAsdcModel.vnfs[vnfModel.uuid].vfModules[vfModuleModel.uuid] = vfModuleModel;
 			}
 			
-			for (var volumeGroupCustomizationName in serviceModel.vnfs[vnfCustomizationName].volumeGroups) {
-				var volumeGroupModel = serviceModel.vnfs[vnfCustomizationName].volumeGroups[volumeGroupCustomizationName];
+			for (var volumeGroupCustomizationName in vnfModel.volumeGroups) {
+				var volumeGroupModel = vnfModel.volumeGroups[volumeGroupCustomizationName];
 				convertedAsdcModel.vnfs[vnfModel.uuid].volumeGroups[volumeGroupModel.uuid] = volumeGroupModel;
 			}
 		}
@@ -682,4 +677,4 @@ var UtilityService = function($log, DataService, PARAMETER) {
 }
 
 //app.factory("UtilityService", UtilityService);
-appDS2.factory("UtilityService", [ "$log", "DataService", "PARAMETER", UtilityService ]);
+appDS2.factory("UtilityService", [ "$log", "DataService", "PARAMETER", "_", UtilityService ]);

@@ -85,11 +85,11 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 	/*
 	 * Max number of times that VID will poll MSO for a given request status
 	 */
-	var MSO_MAX_POLLS = 10;
+	var MSO_MAX_POLLS = 1440;
 	/*
 	 * Number of msecs that VID will wait between MSO polls.
 	 */
-	var MSO_POLLING_INTERVAL_MSECS = 10000;
+	var MSO_POLLING_INTERVAL_MSECS = 200;
 	
 	var SCHEDULER_POLLING_INTERVAL_MSECS = 10000;
 	
@@ -109,6 +109,8 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 
 	var SCALE_OUT_CONTROLLERS = ["", "SDNC", "APPC"];
 	
+	var SDNC_SHOW_ASSIGNMENTS_URL = "https://sdnc.api.simpledemo.onap.org:8448/configAdapter/index#/resource_manager/<SERVICE_INSTANCE_ID>";
+	
     return {
     	ASDC_MODEL_STATUS : ASDC_MODEL_STATUS,
     	MSO_MAX_POLLS : MSO_MAX_POLLS,
@@ -122,6 +124,7 @@ appDS2.constant("VIDCONFIGURATION", (function() {
     	COMPONENT_LIST_NAMED_QUERY_ID : COMPONENT_LIST_NAMED_QUERY_ID,
         SCHEDULER_CALLBACK_URL: SCHEDULER_CALLBACK_URL,
         SCHEDULER_PORTAL_URL: SCHEDULER_PORTAL_URL,
+	        SDNC_SHOW_ASSIGNMENTS_URL: SDNC_SHOW_ASSIGNMENTS_URL,
 		SCALE_OUT_CONTROLLERS: SCALE_OUT_CONTROLLERS
     };
 })())

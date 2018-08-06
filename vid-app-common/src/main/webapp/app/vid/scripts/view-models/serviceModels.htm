@@ -17,7 +17,6 @@
   limitations under the License.
   ============LICENSE_END=========================================================
   -->
-
 <link rel="stylesheet" type="text/css" href="app/vid/styles/serviceModels.css" />
 <div popup-window class="popupContents" ngx-show="{{popup.isTablePopUpVisible}}" ng-cloak>
 	<div ng-include="'app/vid/scripts/view-models/previousVersionDialog.htm'"/>
@@ -42,8 +41,7 @@
 
 	<h1 class="heading1" style="margin-top:20px;">Browse SDC Service Models</h1>
 	<div style="margin-top:30px" ng-init="getServiceModels();">
-		
-		<table att-table table-data="services" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
+		<table data-tests-id="serviceModelsTable" id="sdcModelsTable" att-table table-data="services" view-per-page="viewPerPage" current-page="currentPage" search-category="searchCategory" search-string="searchString" total-page="totalPage">
 		    <thead  att-table-row type="header">
 				<tr>
 					<th att-table-header key="action">Action</th>
@@ -58,21 +56,21 @@
 					<th att-table-header key="actions">Action</th>
 		        </tr>
 		    </thead>
-		    <tbody att-table-row type="body" row-repeat="service in services">
-		        <tr>
-		        	<td att-table-body ><button class="deploy-service-class" type=button data-tests-id="deploy-{{service['uuid']}}" ng-click="deployService(service)" att-button btn-type="{{deployButtonType}}" size="small">Deploy</button></td>
-	            	<td att-table-body ng-bind="service['uuid']"></td>
-	            	<td att-table-body ng-bind="service['invariantUUID']"></td>
-	            	<td att-table-body ng-bind="service['name']"></td>
-	            	<td att-table-body ng-bind="service['version']"></td>
-	            	<td att-table-body ng-bind="service['category']"></td>
-	            	<td att-table-body ng-bind="service['distributionStatus']"></td>
-	            	<td att-table-body ng-bind="service['lastUpdaterUserId']"></td>
-	            	<td att-table-body ng-bind="service['toscaModelUrl']"></td>
-					<td att-table-body ng-show="service.hasPreviousVersion"><button type=button ng-click="loadPreviousVersionData(service['invariantUUID'],service['name'],service['version'])" att-button btn-type="primary" size="small">Previous Versions</button></td>
-	            	<td att-table-body ng-show="!service.hasPreviousVersion">&nbsp;</td>
-		        </tr>     
-		    </tbody>	  
+			<tbody att-table-row type="body" row-repeat="service in services">
+				<tr class="sdcServiceModel" data-tests-id="Browse_SDC_Service_Models-uuid-{{service['uuid']}}">
+					<td class="deploy" att-table-body ><button class="deploy-service-class" type=button data-tests-id="deploy-{{service['uuid']}}" ng-click="deployService(service)" att-button btn-type="{{deployButtonType}}" size="small">Deploy</button></td>
+					<td class="uuid" att-table-body ng-bind="service['uuid']"></td>
+					<td class="invariantUUID" att-table-body data-tests-id="Invariant-{{service['invariantUUID']}}" ng-bind="service['invariantUUID']"></td>
+					<td class="name" att-table-body ng-bind="service['name']"></td>
+					<td class="version" att-table-body ng-bind="service['version']"></td>
+					<td class="category" att-table-body ng-bind="service['category']"></td>
+					<td class="distributionStatus" att-table-body ng-bind="service['distributionStatus']"></td>
+					<td class="lastUpdaterUserId" att-table-body ng-bind="service['lastUpdaterUserId']"></td>
+					<td class="toscaModelUrl" att-table-body ng-bind="service['toscaModelUrl']"></td>
+					<td class="PreviousVersion" att-table-body data-tests-id="PreviousVersion-{{service['invariantUUID']}}" ng-show="service.hasPreviousVersion"><button type=button ng-click="loadPreviousVersionData(service['invariantUUID'],service['name'],service['version'])" att-button btn-type="primary" size="small">Previous Versions</button></td>
+					<td class="hasPreviousVersion" att-table-body ng-show="!service.hasPreviousVersion">&nbsp;</td>
+				</tr>
+			</tbody>
 		</table>
 		<table width='100%'>
 			<tr>
@@ -91,7 +89,7 @@
 					</td>
 			</tr>
 		</table>
-		
+
 	</div>
 	</div>
 

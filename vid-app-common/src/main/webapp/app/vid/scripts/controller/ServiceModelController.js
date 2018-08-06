@@ -22,17 +22,30 @@
 	'use strict';
 
 	appDS2.controller("ServiceModelController", function ($scope, $http, $location, COMPONENT, VIDCONFIGURATION, FIELD, DataService, vidService,
-			PropertyService, UtilityService) {
+			PropertyService, UtilityService, AsdcService,$timeout) {
 
 		$scope.popup = {};
-		
+		var defaultViewPerPage = 10;
 	//	var baseEndpoint = "vid";
 		var pathQuery = COMPONENT.SERVICES_DIST_STATUS_PATH + VIDCONFIGURATION.ASDC_MODEL_STATUS;
 		
 		if ( VIDCONFIGURATION.ASDC_MODEL_STATUS === FIELD.STATUS.ALL) {
 			pathQuery = COMPONENT.SERVICES_PATH;
 		}
-		
+        window.addEventListener("message", receiveMessage, false);
+
+		function receiveMessage(event){
+            if(event.data == 'navigateTo') {
+                $location.path('/models/services').search({});
+                $scope.$apply();
+                $scope.rememberFilter = true;
+            }
+            if(event.data == 'navigateToInstantiationStatus') {
+                $location.path('/instantiationStatus').search({});
+                $scope.$apply();
+            }
+		}
+
 		$scope.getServiceModels = function() {
 			$scope.status = FIELD.STATUS.FETCHING_SERVICE_CATALOG_ASDC;
 
@@ -41,16 +54,28 @@
 				$scope.services = [];
 				if (response.data && angular.isArray(response.data.services)) {
 					wholeData = response.data.services;
-					$scope.services = $scope.filterDataWithHigherVersion(wholeData);
-					$scope.viewPerPage=10;
-					$scope.totalPage=$scope.services.length/$scope.viewPerPage;
-					$scope.sortBy=COMPONENT.NAME;
-					$scope.scrollViewPerPage=2;
-					$scope.currentPage=1;
-					$scope.searchCategory;
-					$scope.currentPageNum=1;
-					$scope.isSpinnerVisible = false;
-					$scope.isProgressVisible = false;
+                    $scope.services = $scope.filterDataWithHigherVersion(wholeData);
+                    $scope.viewPerPage = defaultViewPerPage;
+                    $scope.totalPage=$scope.services.length/$scope.viewPerPage;
+                    $scope.sortBy=COMPONENT.NAME;
+                    $scope.scrollViewPerPage=2;
+                    $scope.currentPage=1;
+                    $scope.currentPageNum=1;
+                    $scope.isSpinnerVisible = false;
+                    $scope.isProgressVisible = false;
+                    if (sessionStorage.getItem("searchKey")!='undefined' && ($scope.rememberFilter)) {
+                        var searchKey = JSON.parse(sessionStorage.getItem("searchKey"));
+                        $scope.searchString = searchKey.searchString || '';
+                        $scope.viewPerPage = searchKey.viewPerPage || defaultViewPerPage;
+                        $scope.totalPage = $scope.services.length / $scope.viewPerPage;
+                        $timeout(function () {
+                        	// the table controller handles the current page once
+							// data is loaded, therefore we're delying the paging
+							// override
+                            $scope.currentPage = $scope.currentPageNum = searchKey.currentPage ? parseInt(searchKey.currentPage) : 1;
+                        }, 0);
+                        $scope.rememberFilter = false;
+                    }
 				} else {
 					$scope.status = FIELD.STATUS.FAILED_SERVICE_MODELS_ASDC;
 					$scope.error = true;
@@ -99,25 +124,32 @@
     		
     		//PropertyService.setMsoBaseUrl("testmso");
     		PropertyService.setServerResponseTimeoutMsec(30000);
-        }
+        };
 		
 		$scope.prevPage = function() {
 			$scope.currentPage--;
-		}
+		};
 		
 		$scope.nextPage = function() {
 			$scope.currentPage++;
-		}
+		};
+
+
 		
 		$scope.createType = COMPONENT.A_LA_CARTE;
 		$scope.deployService = function(service) {
-
+			var searchKey = {
+				searchString: $scope.searchString,
+                viewPerPage: $scope.viewPerPage,
+                currentPage: $scope.currentPage
+			};
+			sessionStorage.setItem("searchKey",JSON.stringify(searchKey));
 
 			console.log("Instantiating SDC service " + service.uuid);
-			
+
 			$http.get(COMPONENT.SERVICES_PATH + service.uuid)
 				.then(function successCallback(getServiceResponse) {
-					
+
 					var serviceModel = getServiceResponse.data;
 
 					//VID-233 bug fix when models doesn't exists
@@ -157,41 +189,42 @@
 					DataService.setALaCarte (true);
 					$scope.createType = COMPONENT.A_LA_CARTE;
 					var broadcastType = COMPONENT.CREATE_COMPONENT;
-					
-					if (UtilityService.arrayContains (VIDCONFIGURATION.MACRO_SERVICES, serviceModel.service.invariantUuid )) {
-						DataService.setALaCarte (false);
-						$scope.createType = COMPONENT.MACRO;
-						var convertedAsdcModel = UtilityService.convertModel(serviceModel);
-						
-						//console.log ("display inputs "); 
-						//console.log (JSON.stringify ( convertedAsdcModel.completeDisplayInputs));
-						
-						DataService.setModelInfo(COMPONENT.SERVICE, {
-							"modelInvariantId": serviceModel.service.invariantUuid,
-							"modelVersion": serviceModel.service.version,
-							"modelNameVersionId": serviceModel.service.uuid,
-							"modelName": serviceModel.service.name,
-							"description": serviceModel.service.description,
-							"category":serviceModel.service.category,
-							"serviceEcompNaming": serviceModel.service.serviceEcompNaming,
-							"inputs": serviceModel.service.inputs,
-							"serviceType": serviceModel.service.serviceType,
-							"serviceRole": serviceModel.service.serviceRole,
-							"displayInputs": convertedAsdcModel.completeDisplayInputs
-						});
-					};
-					
+                    if (AsdcService.isMacro(serviceModel)) {
+                        DataService.setALaCarte(false);
+                        if(AsdcService.shouldExcludeMacroFromAsyncInstatiationFlow(serviceModel)){
+                        	DataService.setShouldExcludeMacroFromAsyncInstatiationFlow(true);
+                            $scope.createType = COMPONENT.MACRO;
+                            var convertedAsdcModel = UtilityService.convertModel(serviceModel);
+
+                            DataService.setModelInfo(COMPONENT.SERVICE, {
+                                "modelInvariantId": serviceModel.service.invariantUuid,
+                                "modelVersion": serviceModel.service.version,
+                                "modelNameVersionId": serviceModel.service.uuid,
+                                "modelName": serviceModel.service.name,
+                                "description": serviceModel.service.description,
+                                "category": serviceModel.service.category,
+                                "serviceEcompNaming": serviceModel.service.serviceEcompNaming,
+                                "inputs": serviceModel.service.inputs,
+                                "serviceType": serviceModel.service.serviceType,
+                                "serviceRole": serviceModel.service.serviceRole,
+                                "displayInputs": convertedAsdcModel.completeDisplayInputs
+                            });
+
+                        }
+                    }
+
 					$scope.$broadcast(broadcastType, {
 					    componentId : COMPONENT.SERVICE,
+                        modelNameVersionId: serviceModel.service.uuid,
 					    callbackFunction : function(response) {
 					    	if (response.isSuccessful) {
 								vidService.setModel(serviceModel);
-								
+
 								var subscriberId = FIELD.STATUS.NOT_FOUND;
 								var serviceType = FIELD.STATUS.NOT_FOUND;
-								
+
 								var serviceInstanceId = response.instanceId;
-								
+
 								for (var i = 0; i < response.control.length; i++) {
 									if (response.control[i].id == COMPONENT.SUBSCRIBER_NAME) {
 										subscriberId = response.control[i].value;
@@ -199,14 +232,13 @@
 										serviceType = response.control[i].value;
 									}
 								}
-								
-								
+
+
 								$scope.refreshSubs(subscriberId,serviceType,serviceInstanceId);
-							
+
 					    	}
 					    }
 					});
-					
 				}, function errorCallback(response) {
 					console.log("Error: " + response);
 				});
@@ -231,7 +263,7 @@
 			    callbackFunction : function(response) {
 			    }
 			});
-		}
+		};
 
 		$scope.refreshSubs = function(subscriberId, serviceType, serviceInstanceId) {
 			$scope.status = FIELD.STATUS.FETCHING_SUBSCRIBER_LIST_AAI;
@@ -243,7 +275,7 @@
 			}).then(function(response){
 				
 				if (response.data.status < 200 || response.data.status > 202) {
-					$scope.showError(FIELD.ERROR.MSO)
+					$scope.showError(FIELD.ERROR.MSO);
 					return;
 				}
 

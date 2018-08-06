@@ -20,7 +20,7 @@
 
 "use strict";
 
-var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONENT, FIELD, $q) {
+var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONENT, FIELD, $q, featureFlags) {
 
     function getServiceInstance(serviceInstanceIdentifier, findBy) {
         serviceInstanceIdentifier.trim();
@@ -44,9 +44,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             });
 
         return deferred.promise;
-    };
-
-
+    }
     function getGlobalCustomerIdFromServiceInstanceResponse(response) {
         var globalCustomerId = "";
         if (angular.isArray(response.data[FIELD.ID.RESULT_DATA])) {
@@ -69,7 +67,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             timeout : PropertyService.getServerResponseTimeoutMsec()
         }).then(function (response) {
             var displayData = response.data[FIELD.ID.SERVICE_INSTANCES];
-            if (!displayData.length) {
+            if (!displayData || !displayData.length) {
                 displayData = [{
                     globalCustomerId 	: null,
                     subscriberName   	: null,
@@ -115,7 +113,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 COMPONENT.FORWARD_SLASH + encodeURIComponent(globalCustomerId) +
                 COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceType) +
                 COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceInstanceId);
-            $http.get(url, {}, {
+            return $http.get(url, {}, {
 
 
                 timeout : PropertyService.getServerResponseTimeoutMsec()
@@ -167,6 +165,26 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             }, function(response) {
                 errorCallback(response);
             });
+        },
+
+        getCRInformationByInstanceId : function (serviceInstanceId) {
+
+            var deferred = $q.defer();
+
+            var url = COMPONENT.AAI_GET_CR_INSTANCE +
+                COMPONENT.FORWARD_SLASH + encodeURIComponent(serviceInstanceId);
+            $http.get(url, {}, {
+                timeout : PropertyService.getServerResponseTimeoutMsec()
+            }).then(function(response) {
+                if (response.data != null) {
+                    deferred.resolve(response);
+                } else {
+                    deferred.resolve(response);
+                }
+            }, function(response) {
+                deferred.resolve(response);
+            });
+            return deferred.promise;
         },
 
         searchServiceInstances: searchServiceInstances,
@@ -329,6 +347,44 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             });
         },
 
+        getPortMirroringData : function (ids) {
+            var defer = $q.defer();
+            if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_REGION_ID_FROM_REMOTE)){
+                var url = COMPONENT.AAI_GET_PORT_MIRRORING_CONFIGS_DATA +'?configurationIds=' +  ids.join(',');
+                $http.get(url).then(function(res){
+                    defer.resolve(res);
+                }).catch(function(err) {
+                    $log.error(err);
+                    defer.resolve({});
+                });
+            }else {
+                var staticConfigurationData = {};
+                angular.forEach(ids, function(id) {
+                    staticConfigurationData[id] = {
+                        "cloudRegionId": "mdt1"
+                    }
+                });
+                defer.resolve({
+                    "data": staticConfigurationData
+                });
+            }
+
+            return defer.promise;
+
+        },
+
+        getPortMirroringSourcePorts : function (ids) {
+            var defer = $q.defer();
+            var url = COMPONENT.AAI_GET_PORT_MIRRORING_SOURCE_PORTS +'?configurationIds=' +  ids.join(',');
+            $http.get(url).then(function(res){
+                defer.resolve(res);
+            }).catch(function(err) {
+                $log.error(err);
+                defer.resolve({});
+            });
+            return defer.promise;
+        },
+
         getSubscriptionServiceTypeList : function(globalCustomerId,
                                                   successCallbackFunction) {
             $log
@@ -444,11 +500,12 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 } else {
                     successCallbackFunction([]);
                 }
-            },function(failure){console.log("failure")})["catch"]
-                if(catchCallbackFunction) {
+            })["catch"] (function(response, status) {
+                if (catchCallbackFunction) {
                     catchCallbackFunction();
                 }
-            (UtilityService.runHttpErrorHandler);
+                UtilityService.runHttpErrorHandler(response, status);
+            })
         },
         getServices : function(successCallbackFunction) {
             $log
@@ -565,7 +622,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             var deferred = $q.defer();
 
             if (UtilityService.hasContents(modelInvariantId)) {
-                var body = {"versions" : modelInvariantId}
+                var body = {"versions": modelInvariantId};
                 $http.post(( COMPONENT.AAI_GET_VERSION_BY_INVARIANT_ID),body)
 
                     .success(function (response) {
@@ -657,8 +714,36 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             });
 
             return deferred.promise;
+        },
+
+        getInstanceGroupsByVNFInstanceId: function (vnf_instance_id, successCallback, errorCallback) {
+            var url = COMPONENT.AAI_GET_INSTANCE_GROUPS_BY_VNF_INSTANCE_ID_PATH + "/" + vnf_instance_id;
+
+            $http.get(url, {}, {
+                timeout: PropertyService.getServerResponseTimeoutMsec()
+            }).then(function (response) {
+                successCallback(response);
+            }, function (response) {
+                errorCallback(response);
+            });
+        },
+
+        postPOMBAverificationRequest: function (url, data, config) {
+            $http.post(url, data, config)
+                .success(function (data, status, headers, config) {
+                    //If at some point in the future the result should be handled - this should be the entry point.
+                    log.debug("POMBA was called successfully with data: " + data);
+                })
+                .error(function (data, status, header, config) {
+                    log.debug("Error: " +
+                        "Data: " + data +
+                        "status: " + status +
+                        "headers: " + header +
+                        "config: " + config);
+                });
         }
-    }};
+    }
+};
 
 appDS2.factory("AaiService", ["$http", "$log", "PropertyService",
-    "UtilityService", "COMPONENT", "FIELD", "$q", AaiService]);
+    "UtilityService", "COMPONENT", "FIELD", "$q", "featureFlags", AaiService]);

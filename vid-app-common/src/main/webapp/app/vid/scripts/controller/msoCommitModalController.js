@@ -21,7 +21,7 @@
 "use strict";
 
 var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeout, $window, $log,
-		MsoService, PropertyService, UtilityService, DataService, $uibModalInstance, msoType, requestParams, vidService) {
+		MsoService, PropertyService, UtilityService, DataService, $uibModalInstance, msoType, requestParams, configuration, vidService, featureFlags) {
 
     $scope.isSpinnerVisible = true;
     $scope.isProgressVisible = true;
@@ -153,12 +153,14 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
 
     var init = function(msoType) {
         switch(msoType) {
+            case COMPONENT.MSO_DELETE_CONFIGURATION_REQ :
+                return MsoService.deleteConfiguration(requestParams, configuration);
             case COMPONENT.MSO_CREATE_REQ:
                 return MsoService.createConfigurationInstance(requestParams);
             case  COMPONENT.MSO_CHANGE_CONFIG_STATUS_REQ:
-                return MsoService.toggleConfigurationStatus(requestParams);
+                return MsoService.toggleConfigurationStatus(requestParams, configuration);
             case COMPONENT.MSO_CHANGE_PORT_STATUS_REQ:
-                return MsoService.togglePortStatus(requestParams);
+                return MsoService.togglePortStatus(requestParams, configuration);
             case COMPONENT.MSO_CREATE_REALATIONSHIP:
                 return MsoService.associatePnf(requestParams);
             case COMPONENT.MSO_REMOVE_RELATIONSHIP:
@@ -223,6 +225,7 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
 
     _this.msoRequestType = msoType;
 
+
     init(_this.msoRequestType)
         .then(function (response) {
             successCallbackFunction(response);
@@ -233,5 +236,5 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
 };
 
 appDS2.controller("msoCommitModalController", [ "COMPONENT", "FIELD", "$scope", "$http", "$timeout",
-		"$window", "$log", "MsoService", "PropertyService", "UtilityService", "DataService", "$uibModalInstance", "msoType", "requestParams", "vidService",
+		"$window", "$log", "MsoService", "PropertyService", "UtilityService", "DataService", "$uibModalInstance", "msoType", "requestParams", "configuration", "vidService", "featureFlags",
     msoCommitModalController ]);
