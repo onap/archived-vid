@@ -70,6 +70,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_985c9a27",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpServerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 3885
+      },
+      "writtenOn": "2018-08-08T11:12:16Z",
+      "side": 1,
+      "message": "could be extracted",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_7d5ad084",
         "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpsServerTest.java",
         "patchSetId": 9
