@@ -16,6 +16,91 @@
       "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_9d11ecae",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-08T09:36:32Z",
+      "side": 1,
+      "message": "Warn/error logger could be useful for troubleshooting.",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_fdaca08e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpServerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-08T09:36:32Z",
+      "side": 1,
+      "message": "It would be good to have creating of SyncRestClient fail case tested.",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_7dddf041",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpServerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-08T09:36:32Z",
+      "side": 1,
+      "message": "Can be converted to class member and moved to setUp.",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_7d5ad084",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpsServerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-08T09:36:32Z",
+      "side": 1,
+      "message": "It is worth adding fail case with attempt to use http protocol.",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_dd7e84e4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpsServerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-08T09:36:32Z",
+      "side": 1,
+      "message": "Could be converted to class member and initialized in setUp.",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
