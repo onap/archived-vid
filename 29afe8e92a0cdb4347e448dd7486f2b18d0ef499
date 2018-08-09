@@ -19,6 +19,41 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_e087140e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-08-09T10:41:11Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "1a76adc5_e2cc0138",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_409fe85f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-08-09T10:41:11Z",
+      "side": 1,
+      "message": "Bad function name. I understand retry as repeat *as is* after failure. Also, it is private so I will not bother to use longer name.",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_9d11ecae",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 9
@@ -30,6 +65,40 @@
       "writtenOn": "2018-08-08T09:36:32Z",
       "side": 1,
       "message": "Warn/error logger could be useful for troubleshooting.",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a0927c55",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-08-09T10:41:11Z",
+      "side": 1,
+      "message": "Why you would do it?",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e0b074f6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-08-09T10:41:11Z",
+      "side": 1,
+      "message": "Do we really want use default client when something goes wrong?",
       "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
