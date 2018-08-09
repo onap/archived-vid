@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_80d180fd",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-08-09T10:50:44Z",
+      "side": 1,
+      "message": "[edit] clarification: feel free to use longer name if needed",
+      "parentUuid": "1a76adc5_409fe85f",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_9d11ecae",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 9
