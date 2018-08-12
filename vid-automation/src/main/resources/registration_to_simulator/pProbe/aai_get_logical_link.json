@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v11/network/logical-links/logical-link/SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961"
+    "path": "/aai/v../network/logical-links/logical-link/SANITY6758cce9.LAG1992.SANITY6785cce9.LAG1961"
   },
   "simulatorResponse": {
     "responseCode": 200,

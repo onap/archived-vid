@@ -1,0 +1,77 @@
+{
+  "modelInfo": {
+    "modelInvariantId": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+    "modelVersionId": "5c9e863f-2716-467b-8799-4a67f378dcaa",
+    "modelName": "AIM_TRANSPORT_00004",
+    "modelVersion": "1.0"
+  },
+  "owningEntityId" : "someID",
+  "owningEntityName": "someName",
+  "projectName" : "myProject",
+  "globalSubscriberId":  "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriberName":  "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "productFamilyId" : "myProductFamilyId",
+  "instanceName" : "SERVICE_NAME",
+  "isUserProvidedNaming":"true",
+  "subscriptionServiceType" : "mySubType",
+  "lcpCloudRegionId" : "mtn3",
+  "tenantId" : "greatTenant",
+  "tenantName" : "greatTenant",
+  "aicZoneId" : "NFT1",
+  "aicZoneName" : "NFTJSSSS-NFT1",
+  "bulkSize": "BULK_SIZE",
+  "pause" : "IS_PAUSE_VALUE",
+  "rollbackOnFailure": "true",
+  "vnfs": {
+    "2016-73_MOW-AVPN-vPE-BV-L-name": {
+      "modelInfo": {
+        "modelCustomizationName": "2016-73_MOW-AVPN-vPE-BV-L 0",
+        "modelCustomizationId": "ab153b6e-c364-44c0-bef6-1f2982117f04",
+        "modelVersionId": "7f40c192-f63c-463e-ba94-286933b895f8",
+        "modelName": "2016-73_MOW-AVPN-vPE-BV-L"
+      },
+      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "instanceName": "VNF_NAME",
+      "isUserProvidedNaming":"true",
+      "platformName": "platformName",
+      "lineOfBusinessName": "lineOfBusinessName",
+      "lcpCloudRegionId": "mdt1",
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e",
+      "instanceParams": null,
+      "vfModules": {
+        "201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0": {
+          "201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0": {
+            "modelInfo": {
+              "modelCustomizationId": "a25e8e8c-58b8-4eec-810c-97dcc1f5cb7f",
+              "modelVersionId": "4c75f813-fa91-45a4-89d0-790ff5f1ae79",
+              "modelName": "201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0"
+            },
+            "instanceName": "VFM_NAME1",
+            "instanceParams": [
+              {
+                "vmx_int_net_len": "24"
+              }
+            ]
+          }},
+        "201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-1": {
+          "201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1": {
+            "modelInfo": {
+              "modelCustomizationId": "72d9d1cd-f46d-447a-abdb-451d6fb05fa8",
+              "modelVersionId": "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
+              "modelName": "201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1"
+            },
+            "instanceName": "VFM_NAME2",
+            "volumeGroupName" : "VG_NAME",
+            "instanceParams": [
+              {
+                "vre_a_volume_size_0": "100",
+                "availability_zone_0": "mtpocdv-kvm-az01"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+

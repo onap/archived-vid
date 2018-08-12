@@ -21,6 +21,7 @@
                 "model-version-id":"76e908e0-5201-44d2-a3e2-9e6128d05820",
                 "model-name":"mdns_2017_1011",
                 "model-version":"1.0",
+                "distribution-status": "DISTRIBUTION_COMPLETE_ERROR",
                 "model-description":"mdns_2017_1011",
                 "resource-version":"1507747452925",
                 "model-elements":{
@@ -343,6 +344,7 @@
                 "model-name": "mdns_2017_1011",
                 "model-version": "1.0",
                 "model-description": "mdns_2017_1011",
+                "distribution-status": "DISTRIBUTION_COMPLETE_ERROR",
                 "resource-version": "1507747452925",
                 "model-elements": {
                   "model-element": [

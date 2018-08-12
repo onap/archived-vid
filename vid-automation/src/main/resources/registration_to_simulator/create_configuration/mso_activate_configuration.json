@@ -1,0 +1,77 @@
+[{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/serviceInstances/v6/c187e9fe-40c3-4862-b73e-84ff056205f6/configurations/9533-config-LB1113/<ACTION>",
+    "body": {
+      "requestDetails": {
+        "modelInfo": {
+          "modelType": "configuration",
+          "modelInvariantId": "model-invariant-id-9533",
+          "modelVersionId": "model-version-id-9533",
+          "modelCustomizationId": "08a181aa-72eb-435f-9593-e88a3ad0a86b"
+        },
+        "cloudConfiguration": {
+          "lcpCloudRegionId": "mdt1"
+        },
+        "requestInfo": {
+          "source": "VID",
+          "requestorId": "us16807000"
+        },
+        "relatedInstanceList": [
+          {
+            "relatedInstance": {
+              "instanceId": "c187e9fe-40c3-4862-b73e-84ff056205f6",
+              "modelInfo": {
+                "modelType": "service",
+                "modelInvariantId": "b7d923c9-6175-41f1-91ba-4565c4953408",
+                "modelVersionId": "ee6d61be-4841-4f98-8f23-5de9da846ca7",
+                "modelName": "ServiceContainerMultiplepProbes",
+                "modelVersion": "1.0"
+              }
+            }
+          }
+        ],
+        "requestParameters": {
+          "userParams": []
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 202,
+    "body": {
+      "requestReferences": {
+        "instanceId": "314cc766-b673-4a50-b9c5-471f68914585",
+        "requestId": "314cc766-b673-4a50-b9c5-471f68914585"
+      }
+    }
+  }
+},
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/mso/orchestrationRequests/v./314cc766-b673-4a50-b9c5-471f68914585"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "request": {
+          "requestId": "311cc766-b673-4a50-b9c5-471f68914586",
+          "startTime": "Mon, 23 Oct 2017 23:28:39 GMT",
+          "requestScope": "service",
+          "requestType": "addRelationships",
+          "instanceReferences": {
+            "serviceInstanceId": "3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+            "requestorId": "1"
+          },
+          "requestStatus": {
+            "requestState": "COMPLETE",
+            "statusMessage": "Success",
+            "percentProgress": 100,
+            "finishTime": "Mon, 23 Oct 2017 23:28:39 GMT"
+          }
+        }
+      }
+    }
+  }
+]

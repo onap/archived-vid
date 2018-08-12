@@ -1,0 +1,17 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/serviceInstances/v.",
+    "body": {
+      "requestDetails": {
+        "requestParameters": {
+          "testApi": "GR_API"
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 202,
+    "body": {"requestReferences":{"instanceId":"f8791436-8d55-4fde-b4d5-72dd2cf13cfb","requestId":"c0011670-0e1a-4b74-945d-8bf5aede1d9c"}}
+  }
+}

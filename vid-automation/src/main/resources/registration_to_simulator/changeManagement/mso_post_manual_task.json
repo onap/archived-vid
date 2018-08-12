@@ -1,0 +1,15 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/mso/tasks/v1/[a-fA-F0-9-]*/complete"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "taskRequestReference": {
+        "taskId": "daf4dd84-b77a-42da-a051-3239b7a9392c"
+      }
+
+    }
+  }
+}

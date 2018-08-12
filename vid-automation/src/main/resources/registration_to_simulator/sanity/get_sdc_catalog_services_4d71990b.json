@@ -1,0 +1,38 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v./catalog/services/4d71990b-d8ad-4510-ac61-496288d9078e/toscaModel"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "file": "csar15782222_invariantUUIDMacro.zip"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/4d71990b-d8ad-4510-ac61-496288d9078e/metadata"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "responseHeaders": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "uuid": "4d71990b-d8ad-4510-ac61-496288d9078e",
+        "invariantUUID": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+        "name": "vidmacrofalsenaming",
+        "version": "1.0",
+        "toscaModelURL": "./csar15782222_invariantUUIDMacro.zip",
+        "category": "Network Connectivityv",
+        "lifecycleState": "CERTIFIED",
+        "lastUpdaterUserId": "rg276b",
+        "lastUpdaterFullName": null,
+        "distributionStatus": "DISTRIBUTED",
+        "artifacts": null,
+        "resources": null
+      }
+    }
+  }
+]

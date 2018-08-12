@@ -1,0 +1,32 @@
+﻿payload,configuration,,,configuration-string,"   <configuration xmlns=""http://xml.juniper.net/xnm/1.1/xnm""
+    xmlns:a=""http://xml.juniper.net/junos/15.1X49/junos"" >
+            <version>15.1X49-D50.3</version>
+            <groups>
+                <name>node0</name>
+                <system>
+                    <host-name>$node0_hostname</host-name>
+                    <backup-router>
+                        <address>$node0_backup_router_address</address>
+                        <destination>0.0.0.0/0</destination>
+             </backup-router>
+                </system>
+     </groups>
+    </configuration>"
+payload,configuration,,,configuration-json,"{
+   ""version"": ""15.1X49-D50.3"",
+   ""groups"": {
+      ""name"": ""node0"",
+      ""system"": {
+         ""host-name"": ""$node0_hostname"",
+         ""backup-router"": {
+            ""address"": ""$node0_backup_router_address"",
+            ""destination"": ""0.0.0.0/0""
+         }
+      }
+   }
+}"
+,,,,,
+payload,configuration-parameters,,,node0_hostname,dbtx0001vm001
+payload,configuration-parameters,,,node0_backup_router_address,135.25.69.33
+payload,configuration-parameters,,,node0_tacplus_server_name1,134.85.215.181
+,,,,,

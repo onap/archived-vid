@@ -1,0 +1,74 @@
+{
+  "simulatorRequest": {
+    "method": "PUT",
+    "path": "/aai/v../query",
+    "body": "{\"start\" : \"service-design-and-creation\/models\/\", \"query\" : \"query\/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}",
+    "queryParams": {
+      "format": [
+        "resource"
+      ]
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "results": [
+        {
+          "model": {
+            "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+            "model-type": "resource",
+            "resource-version": "1500138206526",
+            "model-vers": {
+              "model-ver": [
+                {
+                  "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e",
+                  "model-name": "vidmacrofalsenaming",
+                  "model-version": "1.0",
+                  "model-description": "lustre settler sideways volcanic eight cellular",
+                  "resource-version": "1500137463984",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "model-element",
+                        "relationship-label": "isA",
+                        "related-link": "/aai/v12/service-design-and-creation/models/model/l2-bridge-for-wan-connector-model-id-ps-02/model-vers/model-ver/l2-bridge-for-wan-connector-resource-id-ps-02/model-elements/model-element/e874da22-729d-47bd-8c08-d596fd9c213d/model-elements/model-element/ccbb65b8-2faf-4f5f-80d9-804bb50f1455",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "model.model-invariant-id",
+                            "relationship-value": "l2-bridge-for-wan-connector-model-id-ps-02"
+                          },
+                          {
+                            "relationship-key": "model-ver.model-version-id",
+                            "relationship-value": "l2-bridge-for-wan-connector-resource-id-ps-02"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": {
+            "model-invariant-id": "get_sdc_catalog_services_2f80c596",
+            "model-type": "resource",
+            "resource-version": "1500138206526",
+            "model-vers": {
+              "model-ver": [
+                {
+                  "model-version-id": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+                  "model-name": "not important",
+                  "model-version": "1.0",
+                  "model-description": "decontamination arm circus ammonia hump edge",
+                  "resource-version": "1500137463984"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

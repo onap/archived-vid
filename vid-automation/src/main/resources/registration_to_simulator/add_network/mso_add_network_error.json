@@ -1,0 +1,52 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/serviceInstances/v./d198cc45-158b-480e-8d2c-03943c51268e/networks",
+    "body":
+    {
+      "requestDetails": {
+        "requestInfo": {
+          "instanceName": "<SERVICE_INSTANCE_NAME>",
+          "source": "VID",
+          "suppressRollback": false,
+          "requestorId": "mo57174000",
+          "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+        },
+        "modelInfo": {
+          "modelType": "network",
+          "modelInvariantId": "de01afb5-532b-451d-aac4-ff9ff0644060",
+          "modelVersionId": "ac815c68-35b7-4ea4-9d04-92d2f844b27c",
+          "modelName": "AIC30_CONTRAIL_BASIC",
+          "modelVersion": "3.0",
+          "modelCustomizationId": "e94d61f7-b4b2-489a-a4a7-30b1a1a80daf",
+          "modelCustomizationName": "AIC30_CONTRAIL_BASIC 0"
+        },
+        "requestParameters": {
+          "testApi": "GR_API",
+          "userParams": []
+        },
+        "cloudConfiguration": {
+          "lcpCloudRegionId": "One",
+          "tenantId": "c630e297a3ae486497d63eacec1d7c14"
+        },
+        "relatedInstanceList": [
+          {
+            "relatedInstance": {
+              "instanceId": "d198cc45-158b-480e-8d2c-03943c51268e",
+              "modelInfo": {
+                "modelType": "service",
+                "modelName": "Using VID for VoIP Network Instantiations Shani",
+                "modelInvariantId": "5b9c0f33-eec1-484a-bf77-736a6644d7a8",
+                "modelVersion": "1.0",
+                "modelVersionId": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 500
+  }
+}

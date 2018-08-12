@@ -1,0 +1,12 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/aai/search/named-query"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+        "inventory-response-item":[{"model-name":"ServicevMMSCPID298109","service-instance":{"service-instance-id":"537d3eb0-b7ab-4fe8-a438-6166ab6af49b","service-instance-name":"ggghhh"},"extra-properties":{},"inventory-response-items":{"inventory-response-item":[{"model-name":"VSP1710PID298109_vMMSC","generic-vnf":{"vnf-id":"0eb38f69-d96b-4d5e-b8c9-3736c292f0f7","vnf-name":"ssgsg","vnf-type":"ServicevMMSCPID298109/VSP1710PID298109_vMMSC 0","service-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb","prov-status":"PREPROV","orchestration-status":"Created","in-maint":false,"is-closed-loop-disabled":false,"resource-version":"1506517656216","model-invariant-id":"e7961100-cde6-4b5a-bcda-b8945086950a","model-version-id":"959a7ba0-89ee-4984-9af6-65d5bdda4b0e","model-customization-id":"6b8fc7dc-2db1-4283-a222-b07d10595495","nf-type":"MOBILITY MESSAGING ","nf-function":"Multimedia Message Service Center ","nf-role":"VMMSC","nf-naming-code":"null"},"extra-properties":{}}]}}]
+    }
+  }
+}

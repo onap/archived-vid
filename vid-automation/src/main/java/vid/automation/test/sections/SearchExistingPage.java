@@ -4,6 +4,10 @@ import org.junit.Assert;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Wait;
+
+import static org.testng.Assert.assertTrue;
 
 
 /**
@@ -11,6 +15,8 @@ import vid.automation.test.Constants;
  */
 
 public class SearchExistingPage extends VidBasePage {
+
+    public static final String PROJECT_NAME = "Project Name";
 
     public SearchExistingPage() {}
 
@@ -40,6 +46,7 @@ public class SearchExistingPage extends VidBasePage {
     private void startSearchByInstanceIdentifier(String text) {
         WebElement textInputWebElement = GeneralUIUtils.getWebElementByTestID(Constants.EditExistingInstance.SEARCH_FOR_EXISTING_INSTANCES_INPUT, 30);
         Assert.assertTrue(textInputWebElement != null);
+        textInputWebElement.clear();
         textInputWebElement.sendKeys(text);
         clickSubmitButton();
     }
@@ -47,6 +54,23 @@ public class SearchExistingPage extends VidBasePage {
     public void searchForInstanceByName(String name) {
         selectSearchByName();
         startSearchByInstanceIdentifier(name);
+    }
+
+    public void searchByProject(String projectName) {
+        assertTrue(Wait.waitByClassAndText("fn-ebz-text-label", PROJECT_NAME, 1), "Failed to find label "+PROJECT_NAME); //Test bug VID-495468
+        selectValueDDL(Constants.EditExistingInstance.SELECT_PROJECT_ID, projectName);
+    }
+
+    public void searchByOwningEntity(String oeName) {
+        selectValueDDL(Constants.EditExistingInstance.SELECT_OWNING_ENTITY_ID, oeName);
+    }
+
+    private void selectValueDDL(String ddlId, String value) {
+        Click.byId(ddlId);
+        GeneralUIUtils.ultimateWait();
+        Click.byText(value);
+        //click again on the element that will not cover the submit button
+        Click.byId(ddlId);
     }
 
     public void checkForEditButtons() {

@@ -1,6 +1,6 @@
 package vid.automation.test.model;
 
-import vid.automation.test.model.Credentials;
+import com.google.common.base.MoreObjects;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,19 @@ import java.util.ArrayList;
  */
 public class User {
     public Credentials credentials;
-    public ArrayList<String> subscribers;
+    public ArrayList<String> subscriberNames;
     public ArrayList<String> serviceTypes;
     public ArrayList<String> tenants;
+    public ArrayList<String> roles;
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("credentials", credentials)
+                .add("subscriberNames", subscriberNames)
+                .add("serviceTypes", serviceTypes)
+                .add("tenants", tenants)
+                .add("roles", roles)
+                .toString();
+    }
 }

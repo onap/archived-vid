@@ -1,0 +1,45 @@
+{
+  "categories": [
+    {
+      "name": "xxx1",
+      "categoryId": "1"
+    },
+    {
+      "name": "yyy1",
+      "categoryId": "2"
+    },
+    {
+      "name": "zzz1",
+      "categoryId": "3"
+    },
+    {
+      "name": "aaa1",
+      "categoryId": "4"
+    },
+    {
+      "name": "platform",
+      "categoryId": "1"
+    },
+    {
+      "name": "DFW",
+      "categoryId": "2"
+    },
+    {
+      "name": "ECOMP",
+      "categoryId": "3"
+    },
+    {
+      "name": "Wireline",
+      "categoryId": "4"
+    },
+    {
+      "name": "MetroPacketCore",
+      "appId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+      "categoryId": "4"
+    },
+    {
+      "name": "x1",
+      "categoryId": "2"
+    }
+  ]
+}

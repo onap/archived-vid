@@ -1,0 +1,86 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite verbose="1" name="VID UI Tests" annotations="JDK">
+    <listeners>
+        <listener class-name="vid.automation.test.infra.FeatureTogglingTestngTransformer"/>
+    </listeners>
+    <test name="test">
+        <method-selectors>
+            <method-selector>
+                <script language="beanshell">
+                    <![CDATA[
+                        String [] exclusionGroups = new String [] {
+                            "shouldBeMigratedToWorkWithSimulator",
+                            "underDevelopment",
+                            "Angular2Tests",
+                            "worksOnlyWithLocalhostVID",
+                            "worksOnlyWithLocalASDC"
+                        };
+                        String [] classes2 = new String [] {
+                            "vid.automation.test.test.AddNetworkTest",
+                            "vid.automation.test.test.ALaCarteflowTest",
+                            "vid.automation.test.test.AssociatePnfTest",
+                            "vid.automation.test.test.BrowseASDCTest",
+                            "vid.automation.test.test.ChangeManagementTest",
+                            "vid.automation.test.test.CreateNewInstanceTest",
+                            "vid.automation.test.test.CreatePortMirroringConfigurationTest"
+                        };
+                        String [] classes3 = new String [] {
+                            "vid.automation.test.test.DrawingBoardTest"
+                        };
+                        String [] classes4 = new String [] {
+                            "vid.automation.test.test.NewServiceInstanceTest"
+                        };
+
+                        int selectPart = 0;
+
+                        for (g: exclusionGroups) {
+                            if (groups.containsKey(g)) return false;
+                        }
+
+                        if (selectPart == 0) return true;
+
+                        methodClass = method.getDeclaringClass().toString();
+                        for (c: classes2) {
+                            if (methodClass.contains(c)) return selectPart==2;
+                        }
+                        for (c: classes3) {
+                            if (methodClass.contains(c)) return selectPart==3;
+                        }
+                        for (c: classes4) {
+                            if (methodClass.contains(c)) return selectPart==4;
+                        }
+                        // else
+                        return selectPart==1;
+                    ]]>
+                </script>
+            </method-selector>
+        </method-selectors>
+        <groups>
+            <run>
+                <!-- These tests are legacy tests that should be converted from
+                working against IST to working against vid's 3rd party simulator-->
+                <exclude name="shouldBeMigratedToWorkWithSimulator"/>
+
+                <!-- These tests require the settings in asdc.properties to be like
+                asdc.client.type=LOCAL so cannot run on pipeline-->
+                <exclude name="worksOnlyWithLocalASDC"/>
+
+                <!-- these tests call to MaintenanceController which is restricted to
+                localhost, so it can not run on jenkins pipeline -->
+                <exclude name="worksOnlyWithLocalhostVID"/>
+
+                <!-- angular2 is not supported in CI yet. These tests can run only on
+                developers environment -->
+                <exclude name="Angular2Tests"/>
+
+                <!-- tests and features that are still under development but are pushed to develop -->
+                <exclude name="underDevelopment"/>
+
+            </run>
+        </groups>
+        <packages>
+            <package name="vid.automation.test.test.*"/>
+        </packages>
+    </test>
+</suite>

@@ -1,0 +1,38 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/mso_unassign_svc_instance/c187e9fe-40c3-4862-b73e-84ff056205f6",
+    //localhost:8080/vid/mso/mso_unassign_svc_instance/c187e9fe-40c3-4862-b73e-84ff056205f6
+    "body": {
+      "requestDetails": {
+        "cloudConfiguration": {
+          "lcpCloudRegionId": "mdt1"
+        },
+        "modelInfo": {
+          "modelCustomizationId": "08a181aa-72eb-435f-9593-e88a3ad0a86b",
+          "modelInvariantId": "b7d923c9-6175-41f1-91ba-4565c4953408",
+          "modelVersionId": "model-version-id-9533",
+          "modelType": "service"
+        },
+        "requestInfo": {
+          "source": "VID",
+          "requestorId": "16807000"
+        },
+        "requestParameters": {
+          "aLaCarte": "false",
+          "userParams": []
+        }
+      }
+    }
+  }
+  ,
+  "simulatorResponse": {
+    "responseCode": 202,
+    "body": {
+      "requestReferences": {
+        "instanceId": "c187e9fe-40c3-4862-b73e-84ff056205f6",
+        "requestId": "314cc766-b673-4a50-b9c5-471f68914585"
+      }
+    }
+  }
+}

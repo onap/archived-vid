@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v11/network/pnfs/pnf/MX_960-F722"
+    "path": "/aai/v../network/pnfs/pnf/MX_960-F722"
   } ,
   "simulatorResponse": {
     "responseCode": 500,

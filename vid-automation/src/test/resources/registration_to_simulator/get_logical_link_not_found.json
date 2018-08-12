@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v12/network/logical-links/logical-link/tesai371ve2:ae10|tesaaisdgraclz1a1:po100"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 404,
+    "body": "{\"requestError\": {\"serviceException\": {\"messageId\": \"SVC3001\", \"text\": \"Resource not found for %1 using id %2 (msg=%3) (ec=%4)\", \"variables\": [\"GET\", \"business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/ MISVPN Transport/service-instances/service-instance/4ea864f2-b946-473a-b51c-51a7c10b8391\", \"Node Not Found:No Node of type service-instance found at: business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/ MISVPN Transport/service-instances/service-instance/4ea864f2-b946-473a-b51c-51a7c10b8391\", \"ERR.5.4.6114\"]}}}"
+  }
+}

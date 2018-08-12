@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/vidSimulator/getSomeFile"
+} ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "file": "csar15782222_invariantUUIDMacro.zip"
+  }
+}

@@ -1,7 +1,33 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite thread-count="1" verbose="1" name="VID Suite" annotations="JDK" parallel="tests">
+<suite verbose="1" name="VID UI Tests" annotations="JDK">
+    <listeners>
+        <listener class-name="vid.automation.test.infra.FeatureTogglingTestngTransformer"/>
+    </listeners>
     <test name="test">
+        <groups>
+            <run>
+                <!-- These tests are legacy tests that should be converted from
+                working against IST to working against vid's 3rd party simulator-->
+                <exclude name="shouldBeMigratedToWorkWithSimulator"/>
+
+                <!-- These tests require the settings in asdc.properties to be like
+                asdc.client.type=LOCAL so cannot run on pipeline-->
+                <exclude name="worksOnlyWithLocalASDC"/>
+
+                <!-- these tests call to MaintenanceController which is restricted to
+                localhost, so it can not run on jenkins pipeline -->
+                <exclude name="worksOnlyWithLocalhostVID"/>
+
+                <!-- angular2 is not supported in CI yet. These tests can run only on
+                developers environment -->
+                <exclude name="Angular2Tests"/>
+
+                <!-- tests and features that are still under development but are pushed to develop -->
+                <exclude name="underDevelopment"/>
+
+            </run>
+        </groups>
         <packages>
             <package name="vid.automation.test.test.*"/>
         </packages>

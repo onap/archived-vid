@@ -1,0 +1,63 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": ".*/serviceInstances/v./SERVICE_INSTANCE_ID/vnfs",
+    "body": {
+      "requestDetails": {
+        "requestInfo": {
+          "instanceName": "INSTANCE_NAME",
+          "source": "VID",
+          "suppressRollback": false,
+          "requestorId": "mo37915000",
+          "productFamilyId": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034"
+        },
+        "modelInfo": {
+          "modelType": "vnf",
+          "modelInvariantId": "e7961100-cde6-4b5a-bcda-b8945086950a",
+          "modelVersionId": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
+          "modelName": "VSP1710PID298109_vMMSC",
+          "modelVersion": "1.0",
+          "modelCustomizationId": "6b8fc7dc-2db1-4283-a222-b07d10595495",
+          "modelCustomizationName": "VSP1710PID298109_vMMSC 0"
+        },
+        "requestParameters": {
+          "userParams": [],
+          "testApi": "GR_API"
+        },
+        "cloudConfiguration": {
+          "lcpCloudRegionId": "some legacy region",
+          "tenantId": "092eb9e8e4b7412e8787dd091bc58e86"
+        },
+        <LOB>"lineOfBusiness": {"lineOfBusinessName": "ECOMP"},</LOB>
+        "platform": {
+          "platformName": "platform"
+        },
+        "relatedInstanceList": [{
+          "relatedInstance": {
+            "instanceId": "SERVICE_INSTANCE_ID",
+            "modelInfo": {
+              "modelType": "service",
+              "modelName": "ServicevMMSCPID298109",
+              "modelInvariantId": "a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
+              "modelVersion": "1.0",
+              "modelVersionId": "aa2f8e9c-9e47-4b15-a95c-4a93855ac61b"
+            }
+          }
+        }
+        ]
+      }
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 202,
+    "responseHeaders": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "requestReferences": {
+        "instanceId": "SERVICE_INSTANCE_ID",
+        "requestId": "dbe54591-c8ed-46d3-abc7-d3a24873dfbd"
+      }
+    }
+  }
+}

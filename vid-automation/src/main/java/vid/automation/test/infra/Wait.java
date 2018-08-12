@@ -1,5 +1,6 @@
 package vid.automation.test.infra;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -21,7 +22,7 @@ public class Wait {
                 }
             }
             catch (Throwable t) {
-                System.out.println("a retry failed duo to:" +t.getMessage());
+                System.out.println(String.format("a retry failed due to: %s %s", t, t.getMessage()));
             }
             try {
                 intervalUnit.sleep(interval);
@@ -37,7 +38,20 @@ public class Wait {
     }
 
     public static boolean waitByClassAndText(String className, String text, int timeoutInSeconds) {
-        return waitFor((x->Get.byClassAndText(className,text)!=null),null, timeoutInSeconds, 1);
+        return waitFor((x->Get.byClassAndText(className, text, 1)!=null), null, timeoutInSeconds, 1);
+    }
+
+    public static boolean waitByClassAndTextXpathOnly(String className, String text, int timeoutInSeconds) {
+        try {
+            return CollectionUtils.isNotEmpty(
+                    GeneralUIUtils.getWebElementsListByContainsClassNameAndText(className, text, timeoutInSeconds));
+        }
+        catch (RuntimeException exception) {
+            System.out.println(
+                String.format("Failed to waitByClassAndText, after %d seconds. Class name: %s, Text: %s. Cause: %s",
+                    timeoutInSeconds, className, text, exception.toString()));
+            return false;
+        }
     }
 
     public static boolean waitByTestId(String dataTestId,  int timeoutInSeconds) {

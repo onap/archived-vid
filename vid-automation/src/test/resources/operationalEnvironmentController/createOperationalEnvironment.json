@@ -1,0 +1,8 @@
+{
+  "instanceName": "newNameForTest",
+  "ecompInstanceId": "cc6928c8-f80a-4189-8c96-7c0a9b0c05d4",
+  "ecompInstanceName":"myOpEnv",
+  "operationalEnvironmentType": "VNF",
+  "tenantContext": "Test",
+  "workloadContext": "VNF_E2E-IST"
+}

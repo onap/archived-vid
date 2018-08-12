@@ -1,0 +1,38 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/ee6d61be-4841-4f98-8f23-5de9da846ca7/toscaModel"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "file": "pm1111.zip"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/ee6d61be-4841-4f98-8f23-5de9da846ca7/metadata"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "responseHeaders": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "uuid": "ee6d61be-4841-4f98-8f23-5de9da846ca7",
+        "invariantUUID": "b7d923c9-6175-41f1-91ba-4565c4953408",
+        "name": "Multiple pProbes",
+        "version": "1.0",
+        "toscaModelURL": "./pm1111.zip",
+        "category": "Mobility",
+        "lifecycleState": "CERTIFIED",
+        "lastUpdaterUserId": "rg276b",
+        "lastUpdaterFullName": null,
+        "distributionStatus": "DISTRIBUTED",
+        "artifacts": null,
+        "resources": null
+      }
+    }
+  }
+]

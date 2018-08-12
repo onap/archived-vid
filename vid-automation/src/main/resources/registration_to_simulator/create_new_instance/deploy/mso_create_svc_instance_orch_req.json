@@ -1,0 +1,27 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/mso/orchestrationRequests/v./678cc766-b673-4a50-b9c5-471f68914590"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "request": {
+        "requestId": "678cc766-b673-4a50-b9c5-471f68914590",
+        "startTime": "Mon, 23 Oct 2017 23:28:39 GMT",
+        "requestScope": "service",
+        "requestType": "createInstance",
+        "instanceReferences": {
+          "serviceInstanceId": "72755305-71a5-499f-81be-7a62ff5de987",
+          "requestorId": "1"
+        },
+        "requestStatus": {
+          "requestState": "COMPLETE",
+          "statusMessage": "Service Instance was created successfully.",
+          "percentProgress": 100,
+          "finishTime": "Mon, 23 Oct 2017 23:28:39 GMT"
+        }
+      }
+    }
+  }
+}

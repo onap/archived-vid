@@ -1,0 +1,21 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/serviceInstances/v6/f36f5734-e9df-4fbf-9f35-61be13f028a1/configurations/a53c9ca8-8986-44da-9e5e-9e4179e6c78a/activate",
+    "body": {
+      "val": "dummy payload"
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 202,
+    "responseHeaders": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "requestReferences": {
+        "instanceId": "f36f5734-e9df-4fbf-9f35-61be13f028a1",
+        "requestId": "b6dc9806-b094-42f7-9386-a48de8218ce8"
+      }
+    }
+  }
+}

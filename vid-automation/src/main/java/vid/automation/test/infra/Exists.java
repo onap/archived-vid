@@ -1,6 +1,8 @@
 package vid.automation.test.infra;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
 
 public class Exists {
@@ -27,6 +29,14 @@ public class Exists {
     public static boolean modal() {
         try {
             return Get.byCssSelector(Constants.Modals.modalClass) != null;
+        } catch (NoSuchElementException exception) {
+            return false;
+        }
+    }
+
+    public static boolean tagNameInAnotherElement(WebElement parent, String tagName) {
+        try {
+            return parent.findElement(By.tagName(tagName)) != null;
         } catch (NoSuchElementException exception) {
             return false;
         }
