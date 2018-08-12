@@ -5,14 +5,14 @@ import org.junit.Assert;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.springframework.http.HttpStatus;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.*;
 import vid.automation.test.model.Environment;
 import vid.automation.test.sections.SideMenu;
-import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
-
 import vid.automation.test.sections.TestEnvironmentPage;
 import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.services.SimulatorApi;
@@ -21,9 +21,7 @@ import vid.automation.test.utils.ReadFile;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static vid.automation.test.Constants.TestEnvironments.REFRESH_BUTTON;
 
 
@@ -67,10 +65,24 @@ public class EnvironmentsTest extends VidBaseTestCase {
     public static final String ENV_ID_FOR_DEACTIVATION = "f07ca256-96dd-40ad-b4d2-7a77e2a974ec";
     private VidBasePage vidBasePage = new VidBasePage();
 
-    public static enum FailureType {
+    public enum FailureType {
         ACTIVATION_FAILURE,
         DEACTIVATION_FAILURE,
         GET_STATUS_FAILURE
+    }
+
+    @BeforeClass
+    //Sometimes we clear registration while we are in view/edit page
+    //And there is alert so we can not navigate any more.
+    //So we first navigate to welcome page, and only the, clear registration
+    public void navigateToWelcome() {
+        SideMenu.navigateToWelcomePage();
+    }
+
+    @BeforeMethod
+    private void clearAllSimulatorExpectations() {
+        SimulatorApi.clearAll();
+        SimulatorApi.registerExpectation("ecompportal_getSessionSlotCheckInterval.json", SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     @Test
@@ -88,8 +100,8 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testTable() throws Exception {
-        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON);
+    public void testTable() {
+        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         Map <String, List<String>> file = ReadFile.getJsonFile(ENVIRONMENTS_CONF, Map.class);
         String tableId = Constants.TestEnvironments.ENVIRONMENTS_TABLE;
@@ -104,8 +116,8 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testSortTable() throws Exception {
-        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON, RegistrationStrategy.CLEAR_THEN_SET);
+    public void testSortTable() {
+        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         Map <String, List<String>> file = ReadFile.getJsonFile(ENVIRONMENTS_CONF, Map.class);
         String tableId = Constants.TestEnvironments.ENVIRONMENTS_TABLE;
@@ -118,8 +130,8 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testFilterTable() throws Exception {
-        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON, RegistrationStrategy.CLEAR_THEN_SET);
+    public void testFilterTable() {
+        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         Map <String, List<String>> file = ReadFile.getJsonFile(ENVIRONMENTS_CONF, Map.class);
         String tableId = Constants.TestEnvironments.ENVIRONMENTS_TABLE;
@@ -133,8 +145,8 @@ public class EnvironmentsTest extends VidBaseTestCase {
 
 
     @Test
-    public void testEmptyTableMessage() throws Exception {
-        SimulatorApi.registerExpectation(GET_EMPTY_OPERATIONAL_ENVIRONMENT_JSON);
+    public void testEmptyTableMessage() {
+        SimulatorApi.registerExpectation(GET_EMPTY_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         SideMenu.navigateToTestEnvironmentsPage();
         boolean emptyTableMessage = Exists.byTestId(Constants.TestEnvironments.NO_DATA_MESSAGE);
@@ -145,8 +157,8 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testErrorMessage() throws Exception {
-        SimulatorApi.registerExpectation(GET_ERROR_OPERATIONAL_ENVIRONMENT_JSON);
+    public void testErrorMessage() {
+        SimulatorApi.registerExpectation(GET_ERROR_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         SideMenu.navigateToTestEnvironmentsPage();
         boolean errorMessage = Exists.byTestId(Constants.TestEnvironments.ERROR_MESSAGE);
@@ -157,12 +169,12 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testNewEnvironmentPopup() throws Exception {
-        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON, RegistrationStrategy.CLEAR_THEN_SET);
-        SimulatorApi.registerExpectation(POST_OPERATIONAL_ENVIRONMENT_JSON);
+    public void testNewEnvironmentPopup() {
+        SimulatorApi.registerExpectation(GET_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectation(POST_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.registerExpectation("environment/status/get_cloud_resources_request_status.json",
                 ImmutableMap.of("status_message", Constants.TestEnvironments.environmentCreatedSuccesfullyMessage,
-                        "REQUEST-TYPE","Create"));
+                        "REQUEST-TYPE","Create"), SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         Environment environment = ReadFile.getJsonFile(NEW_ENVIRONMENT_CONF, Environment.class);
         SideMenu.navigateToTestEnvironmentsPage();
@@ -203,7 +215,7 @@ public class EnvironmentsTest extends VidBaseTestCase {
         Map <String, List<String>> file = ReadFile.getJsonFile(ENVIRONMENTS_CONF, Map.class);
         String tableId = Constants.TestEnvironments.ENVIRONMENTS_TABLE;
         SimulatorApi.registerExpectation(GET_FULL_OPERATIONAL_ENVIRONMENT_JSON,
-                ImmutableMap.of("new_name", environment.operationalEnvironmentName, "new_tenant", environment.tenantContext, "new_ecomp_id", environment.EcompEnvironmentId, "new_ecomp_name", environment.EcompEnvironmentName, "new_workload_context", environment.workloadContext), RegistrationStrategy.CLEAR_THEN_SET);
+                ImmutableMap.of("new_name", environment.operationalEnvironmentName, "new_tenant", environment.tenantContext, "new_ecomp_id", environment.EcompEnvironmentId, "new_ecomp_name", environment.EcompEnvironmentName, "new_workload_context", environment.workloadContext), SimulatorApi.RegistrationStrategy.APPEND);
         Click.byTestId(REFRESH_BUTTON);
         Wait.angularHttpRequestsLoaded();
         List<List<String>> body = Get.tableBodyValuesByTestId(tableId);
@@ -212,11 +224,12 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testAaiErrorNewEnvironmentPopup() throws Exception {
-        SimulatorApi.registerExpectation(GET_ERROR_OPERATIONAL_ENVIRONMENT_JSON);
+    public void testAaiErrorNewEnvironmentPopup() {
+        SimulatorApi.registerExpectation(GET_ERROR_OPERATIONAL_ENVIRONMENT_JSON, SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         SideMenu.navigateToTestEnvironmentsPage();
         Click.byTestId(Constants.TestEnvironments.HEADLINE_NEW_BUTTON);
+        Wait.modalToBeDisplayed();
         Assert.assertTrue(Exists.byTestId(Constants.TestEnvironments.NEW_ENVIRONMENT_FORM));
         GeneralUIUtils.ultimateWait();
         boolean errorMessage = Exists.byTestId(Constants.TestEnvironments.POPUP_ERROR_MESSAGE);
@@ -252,19 +265,19 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testApplicationEnvironmentActivation() throws Exception {
+    public void testApplicationEnvironmentActivation() {
         String envId = ENV_ID_FOR_ACTIVATION;
-        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json");
+        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json", SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.registerExpectation("environment/activate/post_activate_operational_environment.json",
-                ImmutableMap.of("ENV-UUID", envId));
+                ImmutableMap.of("ENV-UUID", envId), SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.registerExpectation("environment/status/get_cloud_resources_request_status.json",
                 ImmutableMap.of("status_message", Constants.TestEnvironments.environmentActivatedSuccesfullyMessage,
-                        "REQUEST-TYPE","Activate"));
+                        "REQUEST-TYPE","Activate"), SimulatorApi.RegistrationStrategy.APPEND);
         clickOnActivationButtonAndUploadFile(envId, "manifest.json");
 
         Click.byId(Constants.generalSubmitButtonId);
         SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json",
-                ImmutableMap.of("Deactivate", "Activate"));
+                ImmutableMap.of("Deactivate", "Activate"), SimulatorApi.RegistrationStrategy.APPEND);
 
         boolean waitForTextResult = Wait.waitByClassAndText("status", Constants.TestEnvironments.environmentActivatedSuccesfullyMessage, 60);
         assertTrue(Constants.TestEnvironments.environmentActivatedSuccesfullyMessage + " message didn't appear on time", waitForTextResult);
@@ -287,17 +300,17 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testApplicationEnvironmentDeactivation() throws Exception {
+    public void testApplicationEnvironmentDeactivation() {
         String envId  = ENV_ID_FOR_DEACTIVATION;
-        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json");
+        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json", SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.registerExpectation("environment/deactivate/post_deactivate_operational_environment.json",
-                ImmutableMap.of("ENV-UUID", envId));
+                ImmutableMap.of("ENV-UUID", envId), SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.registerExpectation("environment/status/get_cloud_resources_request_status.json",
                 ImmutableMap.of("status_message", Constants.TestEnvironments.environmentDeactivatedSuccesfullyMessage,
-                        "REQUEST-TYPE","Deactivate"));
+                        "REQUEST-TYPE","Deactivate"), SimulatorApi.RegistrationStrategy.APPEND);
         deactivateEnv(envId);
 
-        SimulatorApi.registerExpectation("environment/deactivate/get_operational_environments_aai1.json");
+        SimulatorApi.registerExpectation("environment/deactivate/get_operational_environments_aai1.json", SimulatorApi.RegistrationStrategy.APPEND);
         GeneralUIUtils.findAndWaitByText(Constants.TestEnvironments.environmentDeactivatedSuccesfullyMessage, 60);
 
         vidBasePage.clickCloseButton();
@@ -330,7 +343,7 @@ public class EnvironmentsTest extends VidBaseTestCase {
                 {"bad_manifest_structure.json","Manifest structure is wrong"},
                 {"manifest_with_wrong_recovery_action.json",  "Wrong value for RecoveryAction in manifest. Allowed options are: abort,retry,skip. Wrong value is: leave"}
         };
-    };
+    }
 
     @Test
     public void testApplicationEnvironmentActivationBadManifestStructure() throws Exception {
@@ -340,22 +353,23 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     //@Test(dataProvider = "badManifestProvider") TODO : use data provider here (for some reason not work with ui-ci framework)
-    public void testApplicationEnvironmentActivationBadManifestStructure(String badManifestFileName, String exceptedErrorMsg) throws Exception {
-        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json");
+    public void testApplicationEnvironmentActivationBadManifestStructure(String badManifestFileName, String exceptedErrorMsg) {
+        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json", SimulatorApi.RegistrationStrategy.APPEND);
         clickOnActivationButtonAndUploadFile(ENV_ID_FOR_ACTIVATION, badManifestFileName);
         WebElement attachButton = Get.byId("submit");
         assertEquals("Wrong text for submit button in activate modal", "Attach", attachButton.getText());
         attachButton.click();
         boolean waitForTextResult = Wait.waitByClassAndText("error", exceptedErrorMsg, 30);
         assertTrue(exceptedErrorMsg+ " message didn't appear on time", waitForTextResult);
-        vidBasePage.clickCloseButton();
         GeneralUIUtils.ultimateWait();
+        vidBasePage.clickCloseButton();
+        Wait.modalToDisappear();
         SideMenu.navigateToTestEnvironmentsPage();
     }
 
     @Test
-    public void testApplicationEnvironmentActivationNonJsonManifest() throws Exception {
-        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json");
+    public void testApplicationEnvironmentActivationNonJsonManifest() {
+        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json", SimulatorApi.RegistrationStrategy.APPEND);
         String fileName = "non_valid_json.json";
         clickOnActivationButtonAndUploadFile(ENV_ID_FOR_ACTIVATION, fileName);
         WebElement errorLabel = Get.byId("errorLabel");
@@ -370,25 +384,30 @@ public class EnvironmentsTest extends VidBaseTestCase {
         WebElement activationButton = TestEnvironmentPage.getTestEnvironmentActivationButton(envId);
         assertTrue("Failed to find Activate button for test env with id: "+envId, activationButton.isDisplayed());
         activationButton.click();
-        Input.file("applicationEnvironment/"+inputFileName, "testEnvManifestFileInput");
+        updateEnvManifestFile(inputFileName);
         WebElement manifestFileName = Get.byId("manifestFileName");
         assertEquals("Manifest file name is wrong in test environment activation modal", inputFileName, manifestFileName.getText());
     }
 
+    private void updateEnvManifestFile(String inputFileName) {
+        Input.file("applicationEnvironment/"+inputFileName, "testEnvManifestFileInput");
+        GeneralUIUtils.ultimateWait();
+    }
+
     @Test
-    public void testAttachManifestFileHappyFlow() throws Exception {
+    public void testAttachManifestFileHappyFlow() {
         String envId = ENV_ID_FOR_ACTIVATION;
         SimulatorApi.registerExpectation("environment/activate/post_activate_operational_environment.json",
-                ImmutableMap.of("ENV-UUID", envId));
-        SimulatorApi.registerExpectation("environment/attachManifest/get_attachable_operational_environment.json");
+                ImmutableMap.of("ENV-UUID", envId), SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectation("environment/attachManifest/get_attachable_operational_environment.json", SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.registerExpectation("environment/status/get_cloud_resources_request_status.json",
-                ImmutableMap.of("status_message", Constants.TestEnvironments.environmentActivatedSuccesfullyMessage));
+                ImmutableMap.of("status_message", Constants.TestEnvironments.environmentActivatedSuccesfullyMessage), SimulatorApi.RegistrationStrategy.APPEND);
         vidBasePage.refreshPage();
         SideMenu.navigateToTestEnvironmentsPage();
         WebElement attachButton = TestEnvironmentPage.getTestEnvironmentAttachButton(ENV_ID_FOR_ACTIVATION);
         attachButton.click();
 
-        Input.file("applicationEnvironment/manifest.json", "testEnvManifestFileInput");
+        updateEnvManifestFile("manifest.json");
 
         Click.byId(Constants.generalSubmitButtonId);
 
@@ -407,23 +426,23 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
 
-    public void testApplicationEnvironmentActivationErrorResponseFromMso(HttpStatus errorStatus, String payload, FailureType failureType) throws Exception {
+    public void testApplicationEnvironmentActivationErrorResponseFromMso(HttpStatus errorStatus, String payload, FailureType failureType) {
 
         String envId = ENV_ID_FOR_ACTIVATION;
-        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json");
+        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json", SimulatorApi.RegistrationStrategy.APPEND);
         switch (failureType) {
             case ACTIVATION_FAILURE:
                 SimulatorApi.registerExpectation("environment/activate/mso_error_response_for_post_operational_environment.json",
-                        ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId));
+                        ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId), SimulatorApi.RegistrationStrategy.APPEND);
                 break;
             case GET_STATUS_FAILURE:
                 SimulatorApi.registerExpectation("environment/activate/post_activate_operational_environment.json",
-                        ImmutableMap.of("ENV-UUID", envId));
+                        ImmutableMap.of("ENV-UUID", envId), SimulatorApi.RegistrationStrategy.APPEND);
                 break;
         }
 
         SimulatorApi.registerExpectation("environment/status/get_cloud_resources_request_status_bad_response.json",
-                ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId));
+                ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId), SimulatorApi.RegistrationStrategy.APPEND);
 
         clickOnActivationButtonAndUploadFile(envId, "manifest.json");
         Click.byId(Constants.generalSubmitButtonId);
@@ -449,22 +468,22 @@ public class EnvironmentsTest extends VidBaseTestCase {
         testApplicationEnvironmentDeactivationErrorResponseFromMso(HttpStatus.BAD_REQUEST, payload, FailureType.GET_STATUS_FAILURE);
     }
 
-    public void testApplicationEnvironmentDeactivationErrorResponseFromMso(HttpStatus errorStatus, String payload, FailureType failureType) throws Exception {
+    public void testApplicationEnvironmentDeactivationErrorResponseFromMso(HttpStatus errorStatus, String payload, FailureType failureType) {
         String envId  = ENV_ID_FOR_DEACTIVATION;
         payload = payload.replace("REASON", errorStatus.getReasonPhrase());
-        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json");
+        SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json", SimulatorApi.RegistrationStrategy.APPEND);
         switch (failureType) {
             case DEACTIVATION_FAILURE:
                 SimulatorApi.registerExpectation("environment/deactivate/error_deactivate_operational_environment.json",
-                        ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId,"ERROR_PAYLOAD", payload));
+                        ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId,"ERROR_PAYLOAD", payload), SimulatorApi.RegistrationStrategy.APPEND);
                 break;
             case GET_STATUS_FAILURE:
                 SimulatorApi.registerExpectation("environment/deactivate/post_deactivate_operational_environment.json",
-                        ImmutableMap.of("ENV-UUID", envId));
+                        ImmutableMap.of("ENV-UUID", envId), SimulatorApi.RegistrationStrategy.APPEND);
                 break;
         }
         SimulatorApi.registerExpectation("environment/status/get_cloud_resources_request_status_bad_response.json",
-                ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId, "ERROR_PAYLOAD", payload));
+                ImmutableMap.of("ERROR_CODE", errorStatus.value(), "ENV-UUID", envId, "ERROR_PAYLOAD", payload), SimulatorApi.RegistrationStrategy.APPEND);
         deactivateEnv(envId);
 
         Wait.waitByClassAndText("error", "System failure", 60);

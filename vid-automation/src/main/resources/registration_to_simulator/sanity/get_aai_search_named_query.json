@@ -1,0 +1,12 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/aai/search/named-query"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inventory-response-item":[{"model-name":"mdns_2017_1011_IST_Service","service-instance":{"service-instance-id":"ec884145-dbe8-4228-8165-f0c4d7123f8b","service-instance-name":"abc_mdns_2017_1011_IST_Service_CSI"},"extra-properties":{},"inventory-response-items":{"inventory-response-item":[{"model-name":"mdns_2017_1011_IST_Vf","generic-vnf":{"vnf-id":"e83e7a37-733a-4fbe-b015-67dbc8a6c1cc","vnf-name":"abc_mdns_2017_1011_IST_Service_CVNF","vnf-type":"mdns_2017_1011_IST_Service/mdns_2017_1011_IST_Vf 0","service-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb","prov-status":"PREPROV","orchestration-status":"Created","in-maint":false,"is-closed-loop-disabled":false,"resource-version":"1509987660553","model-invariant-id":"b22715a2-4ec1-4e2f-bf4f-d79fa9519707","model-version-id":"e54ac8ab-746b-494d-918a-efab23a50e0d","model-customization-id":"efa526df-e1f5-4fda-9e0d-475cb5e44e4f","nf-type":"null","nf-function":"null","nf-role":"null","nf-naming-code":"null"},"extra-properties":{}}]}}]
+    }
+  }
+}

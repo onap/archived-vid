@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v12/network/pnfs/pnf/DEAAI78"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 500,
+    "body": "ERROR_PAYLOAD"
+  }
+}

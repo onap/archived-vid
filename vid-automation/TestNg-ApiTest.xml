@@ -1,0 +1,29 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite verbose="1" name="VID API Tests" annotations="JDK">
+
+    <listeners>
+        <listener class-name="vid.automation.test.infra.FeatureTogglingTestngTransformer" />
+    </listeners>
+
+    <test name="test">
+        <groups>
+            <run>
+                <!-- These tests require the settings in asdc.properties to be like
+                asdc.client.type=LOCAL so cannot run on pipeline-->
+                <exclude name="worksOnlyWithLocalASDC"/>
+
+                <!-- these tests call to MaintenanceController which is restricted to
+                localhost, so it can not run on jenkins pipeline -->
+                <exclude name="worksOnlyWithLocalhostVID"/>
+
+                <!-- tests and features that are still under development but are pushed to develop -->
+                <exclude name="underDevelopment"/>
+
+            </run>
+        </groups>
+        <packages>
+            <package name="org.opencomp.vid.*"/>
+        </packages>
+    </test>
+</suite>

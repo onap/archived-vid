@@ -1,11 +1,13 @@
 package vid.automation.test.infra;
 
+import org.junit.Assert;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Get {
     public static WebElement byId(String id) {
@@ -24,11 +26,44 @@ public class Get {
         }
     }
 
+    public static WebElement byXpath(String xpath) {
+        try {
+            return GeneralUIUtils.getWebElementBy(By.xpath(xpath));
+        } catch (Exception var2) {
+            return null;
+        }
+    }
 
+    public static WebElement byXpath(String xpath, int timeout) {
+        try {
+            return GeneralUIUtils.getWebElementBy(By.xpath(xpath), timeout);
+        } catch (Exception var2) {
+            return null;
+        }
+    }
+
+
+    public static List<WebElement> multipleElementsByTestId(String dataTestId) {
+        try {
+            return GeneralUIUtils.getWebElementsListByTestID(dataTestId);
+        } catch (Exception var2) {
+            return null;
+        }
+    }
 
     public static WebElement byClassAndText(String className, String text) {
+        return byClassAndText(className, text, null);
+    }
+
+    public static WebElement byClassAndText(String className, String text, Integer timeoutInSeconds) {
         WebElement result = null;
-        List<WebElement> elements = GeneralUIUtils.getWebElementsListByContainsClassName(className);
+        List<WebElement> elements;
+        if (timeoutInSeconds!=null) {
+            elements = GeneralUIUtils.getWebElementsListByContainsClassName(className, timeoutInSeconds);
+        }
+        else {
+            elements = GeneralUIUtils.getWebElementsListByContainsClassName(className);
+        }
 
         for(WebElement element : elements) {
             if (element.getText().contains(text)) {
@@ -54,6 +89,7 @@ public class Get {
         return GeneralUIUtils.getSelectedElementFromDropDown(dataTestId).getText();
     }
 
+
     public static List<WebElement> byClass(String className) {
         return GeneralUIUtils.getWebElementsListByContainsClassName(className);
     }
@@ -77,7 +113,7 @@ public class Get {
             return null;
         }
     }
-
+    
     private static List<List<String>> tableValuesById(String tableId, String section, String column) {
         List<WebElement> rows = rowsByTableId(tableId, section, column);
         if(rows != null) {
@@ -92,4 +128,28 @@ public class Get {
             return null;
         }
     }
+    public static String alertText() {
+        WebDriverWait wait = new WebDriverWait(GeneralUIUtils.getDriver(), 2);
+        wait.until(alertIsPresent());
+        Alert alert = GeneralUIUtils.getDriver().switchTo().alert();
+        Assert.assertTrue(alert != null);
+        return alert.getText();
+    }
+    
+	public static Function<WebDriver, Alert> alertIsPresent() {
+		return new Function<WebDriver, Alert>() {
+			public String toString() {
+				return "alert to be present";
+			}
+
+			@Override
+			public Alert apply(WebDriver driver) {
+				try {
+					return driver.switchTo().alert();
+				} catch (NoAlertPresentException arg2) {
+					return null;
+				}
+			}
+		};
+	}
 }

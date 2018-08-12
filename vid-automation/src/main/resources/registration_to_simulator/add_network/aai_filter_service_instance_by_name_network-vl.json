@@ -1,0 +1,21 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../search/nodes-query",
+    "queryParams": {
+      "search-node-type": "service-instance",
+      "filter": "service-instance-name:EQUALS:"
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "result-data": [
+        {
+          "resource-type": "service-instance",
+          "resource-link": "/aai/v11/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Mobility/service-instances/service-instance/d198cc45-158b-480e-8d2c-03943c51268e"
+        }
+      ]
+    }
+  }
+}

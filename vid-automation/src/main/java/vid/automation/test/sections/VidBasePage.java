@@ -1,16 +1,27 @@
 package vid.automation.test.sections;
 
+import com.aventstack.extentreports.Status;
 import org.junit.Assert;
+import org.openecomp.sdc.ci.tests.execute.setup.ExtentTestActions;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.Click;
-import vid.automation.test.infra.SelectOption;
-import vid.automation.test.infra.Wait;
+import vid.automation.test.infra.*;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Function;
+
+import static org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
 
 public class VidBasePage {
 
@@ -19,15 +30,28 @@ public class VidBasePage {
         return this;
     }
 
-    public void generateAndSetInstanceName(String prefix) {
+
+    public VidBasePage setLegacyRegion(String name) {
+        setInputText(Constants.ViewEdit.LEGACY_REGION_INPUT_TESTS_ID, name);
+        return this;
+    }
+
+    public String generateAndSetInstanceName(String prefix) {
         String instanceName = generateInstanceName(prefix);
         setInstanceName(instanceName);
+        return instanceName;
     }
 
     public VidBasePage setInputText(String inputTestsId, String text) {
         WebElement instanceNameInput = GeneralUIUtils.getInputElement(inputTestsId);
         instanceNameInput.sendKeys(text);
         return this;
+    }
+
+    public String getInputValue(String inputTestsId) {
+        WebElement instanceNameInput = GeneralUIUtils.getInputElement(inputTestsId);
+        String value =instanceNameInput.getAttribute("value");
+        return value;
     }
 
     public String generateInstanceName(String prefix) {
@@ -40,9 +64,25 @@ public class VidBasePage {
         SelectOption.byTestIdAndVisibleText(serviceType, Constants.SERVICE_TYPE_SELECT_TESTS_ID);
         return this;
     }
+    public VidBasePage selectFromDropdownByTestId(String itemTestId, String dropdownButtonTestId) {
+        GeneralUIUtils.clickOnElementByTestId(dropdownButtonTestId, 60);
+        Assert.assertTrue(String.format(Constants.ViewEdit.OPTION_IN_DROPDOWN_NOT_EXISTS,itemTestId, dropdownButtonTestId),GeneralUIUtils.getWebElementByTestID(itemTestId) != null );
+        GeneralUIUtils.clickOnElementByTestId(itemTestId, 60);
+        return this;
+    }
+    public VidBasePage noOptionDropdownByTestId( String dropdownButtonTestId) {
+        List<WebElement> selectList= SelectOption.getList(dropdownButtonTestId);
+        Assert.assertTrue("The Select Input "+ dropdownButtonTestId+" should be empty",selectList.size()==1);
+        return this;
+    }
 
     public static void selectSubscriberById(String subscriberId) {
         SelectOption.byValue(subscriberId, Constants.SUBSCRIBER_NAME_SELECT_TESTS_ID);
+    }
+
+    public VidBasePage selectSubscriberByName(String subscriberName) {
+        SelectOption.byTestIdAndVisibleText(subscriberName, Constants.SUBSCRIBER_NAME_SELECT_TESTS_ID);
+        return this;
     }
 
     public VidBasePage selectProductFamily(String productFamily) {
@@ -56,19 +96,41 @@ public class VidBasePage {
     }
 
     public VidBasePage clickDeployServiceButtonByServiceUUID(String serviceUUID) {
-        setInputText(Constants.BROWSE_SEARCH, serviceUUID);
+        Input.replaceText(serviceUUID, Constants.BROWSE_SEARCH);
         String elementTestId = Constants.DEPLOY_BUTTON_TESTS_ID_PREFIX + serviceUUID;
         GeneralUIUtils.clickOnElementByTestId(elementTestId, 30);
         GeneralUIUtils.ultimateWait();
+
+        screenshotDeployDialog(serviceUUID);
+
         return this;
     }
+
+    public void screenshotDeployDialog(String serviceUUID) {
+        try {
+            GeneralUIUtils.ultimateWait();
+            GeneralUIUtils.ultimateWait(); // better screenshot
+            String screenshotName = "deployService-" + serviceUUID;
+            ExtentTestActions.addScreenshot(Status.INFO, screenshotName, screenshotName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public VidBasePage clickEditViewByInstanceId(String instanceId) {
         String elementTestId = Constants.VIEW_EDIT_TEST_ID_PREFIX + instanceId;
         GeneralUIUtils.clickOnElementByTestId(elementTestId, 100);
-        GeneralUIUtils.ultimateWait();
+
         return this;
     }
+
+    public Boolean checkEditOrViewExistsByInstanceId(String instanceId) {
+        String elementTestId = Constants.VIEW_EDIT_TEST_ID_PREFIX + instanceId;
+        return Exists.byTestId(elementTestId);
+    }
+
+
 
     public VidBasePage clickSubmitButton() {
         GeneralUIUtils.clickOnElementByText(Constants.SUBMIT_BUTTON_TEXT, 30);
@@ -80,16 +142,36 @@ public class VidBasePage {
         return this;
     }
 
+    public VidBasePage clickCancelButtonByTestID() {
+        GeneralUIUtils.clickOnElementByTestId(Constants.CANCEL_BUTTON_TEST_ID, 30);
+        return this;
+    }
+
 
     public VidBasePage clickConfirmButton() {
         GeneralUIUtils.clickOnElementByTestId(Constants.CONFIRM_BUTTON_TESTS_ID, 30);
         return this;
     }
 
-    public VidBasePage clickCloseButton() {
-        GeneralUIUtils.clickOnElementByText(Constants.CLOSE_BUTTON_TEXT, 30);
+    public VidBasePage clickConfirmButtonInResumeDelete() {
+        GeneralUIUtils.clickOnElementByTestId(Constants.CONFIRM_RESUME_DELETE_TESTS_ID);
         return this;
     }
+
+    public VidBasePage clickCommitCloseButton() {
+        GeneralUIUtils.clickOnElementByTestId(Constants.COMMIT_CLOSE_BUTTON_ID, 30);
+        return this;
+    }
+
+    public VidBasePage clickCloseButton() {
+        return clickCloseButton(30);
+    }
+
+    public VidBasePage clickCloseButton(int customTimeout) {
+        GeneralUIUtils.clickOnElementByText(Constants.CLOSE_BUTTON_TEXT, customTimeout);
+        return this;
+    }
+
 
     public VidBasePage selectLcpRegion(String lcpRegion) {
         SelectOption.byValue(lcpRegion, Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID);
@@ -106,27 +188,107 @@ public class VidBasePage {
         return this;
     }
 
+    public VidBasePage selectRollbackOption(boolean rollback) {
+        SelectOption.byValue(String.valueOf(rollback) , Constants.ViewEdit.ROLLBACK_TEST_ID);
+        return this;
+    }
+
+    public VidBasePage selectPlatform(String platform) {
+        SelectOption.byValue(platform, Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
+        return this;
+    }
+
+    public VidBasePage selectLineOfBusiness(String lob) {
+        SelectOption.byValue(lob, Constants.OwningEntity.LOB_SELECT_TEST_ID);
+        return this;
+    }
+
     public void assertButtonState(String dataTestId, boolean shouldBeEnabled) {
+        assertButtonStateInternal(dataTestId, shouldBeEnabled,
+                (dataTestIdInner) -> GeneralUIUtils.getWebElementByTestID(dataTestIdInner, 60));
+    }
+
+    public void assertButtonStateEvenIfButtonNotVisible(String dataTestId, boolean shouldBeEnabled) {
+        // getInputElement is quite similar to getWebElementByTestID, but doesn't use
+        // the visibility predicate, so button is reachable bhind the grayed-out panel
+        assertButtonStateInternal(dataTestId, shouldBeEnabled,
+                (dataTestIdInner) -> GeneralUIUtils.getInputElement(dataTestIdInner));
+    }
+
+    protected void assertButtonStateInternal(String dataTestId, boolean shouldBeEnabled, Function<String,WebElement> strategy) {
         GeneralUIUtils.ultimateWait();
-        WebElement webElement = GeneralUIUtils.getWebElementByTestID(dataTestId, 60);
-        boolean enabledElement= webElement.getAttribute("disabled")==null?true:false;
+        boolean enabledElement= strategy.apply(dataTestId).getAttribute("disabled") == null;
         if(shouldBeEnabled) {
-            Assert.assertTrue(String.format(Constants.ViewEdit.ENABLE_ERROR_MESSAGE,dataTestId), enabledElement);
+            Assert.assertTrue(String.format(Constants.ViewEdit.DISABLE_ERROR_MESSAGE,dataTestId), enabledElement);
         }else{
-            Assert.assertFalse(String.format(Constants.ViewEdit.DISABLE_ERROR_MESSAGE,dataTestId),enabledElement);
+            Assert.assertFalse(String.format(Constants.ViewEdit.ENABLE_ERROR_MESSAGE,dataTestId),enabledElement);
         }
 
     }
     public VidBasePage assertMsoRequestModal(String statusMsg) {
-        boolean waitForTextResult = Wait.waitByClassAndText("status", statusMsg, 60);
+        boolean waitForTextResult = Wait.waitByClassAndText("status", statusMsg, 20);
         Assert.assertTrue(statusMsg + " message didn't appear on time", waitForTextResult);
 
         return this;
     }
 
     public VidBasePage refreshPage() {
-        GeneralUIUtils.getDriver().navigate().refresh();
+        getDriver().navigate().refresh();
         return this;
     }
+
+    public String navigateTo(String path) {
+        String envUrl = System.getProperty("ENV_URL");
+        URI uri;
+        try {
+            uri = new URI(envUrl);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        String target = uri.resolve(path).toString();
+
+        getDriver().navigate().to(target);
+        GeneralUIUtils.ultimateWait();
+
+        return target;
+    }
+
+    public String getTextByTestID(String testId){
+        WebElement webElement= GeneralUIUtils.getWebElementByTestID(testId);
+        return webElement.getText();
+    }
+
+    public void checkAndCloseAlert(String expectedText) {
+       String alertText= Get.alertText();
+       Assert.assertEquals(expectedText, alertText);
+       Click.acceptAlert();
+    }
+    public void goToIframe() {
+        final long start = System.currentTimeMillis();
+        goOutFromIframe();
+        GeneralUIUtils.ultimateWait();
+        System.out.println("ultimateWait waited " + (System.currentTimeMillis() - start));
+        final WebDriver iframeReady = new WebDriverWait(getDriver(), 10).until(
+                ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.tagName("iframe"))
+        );
+        Assert.assertNotNull("failed going into iframe", iframeReady);
+
+        final long start2 = System.currentTimeMillis();
+        GeneralUIUtils.ultimateWait();
+        System.out.println("ultimateWait waited " + (System.currentTimeMillis() - start2));
+    }
+
+    public void goOutFromIframe(){
+        getDriver().switchTo().defaultContent();
+    }
+
+
+
+
+
+    public static WebDriverWait waitUntilDriverIsReady(int time) {
+        return new WebDriverWait(getDriver(), (long)time);
+    }
+
 
 }

@@ -1,0 +1,36 @@
+{
+  "simulatorRequest": {
+    "method": "DELETE",
+    "path": "/mso/serviceInstances/v6/c187e9fe-40c3-4862-b73e-84ff056205f6/configurations/9533-config-LB1113",
+    "body": {
+      "requestDetails": {
+        "cloudConfiguration": {
+          "lcpCloudRegionId": "mdt1"
+        },
+        "modelInfo": {
+          "modelCustomizationId": "08a181aa-72eb-435f-9593-e88a3ad0a86b",
+          "modelInvariantId": "model-invariant-id-9533",
+          "modelVersionId": "model-version-id-9533",
+          "modelType": "configuration"
+        },
+        "requestInfo": {
+          "source": "VID",
+          "requestorId": "us16807000"
+        },
+        "requestParameters": {
+          "userParams": []
+        }
+      }
+    }
+  }
+  ,
+  "simulatorResponse": {
+    "responseCode": 202,
+    "body": {
+      "requestReferences": {
+        "instanceId": "c187e9fe-40c3-4862-b73e-84ff056205f6",
+        "requestId": "314cc766-b673-4a50-b9c5-471f68914585"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "requestDetails": {
+    "modelInfo": {
+      "modelType": "service",
+      "modelInvariantId": "b7d923c9-6175-41f1-91ba-4565c4953408",
+      "modelVersionId": "ee6d61be-4841-4f98-8f23-5de9da846ca7",
+      "modelName": "ServiceContainerMultiplepProbes",
+      "modelVersion": "1.0"
+    },
+    "requestInfo": {
+      "source": "VID",
+      "requestorId": "16807000"
+    },
+    "requestParameters": {
+      "testApi": "GR_API",
+      "aLaCarte": false
+    }
+  }
+}

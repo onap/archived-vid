@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/aai/v11/search/named-query",
+    "path": "/aai/search/named-query",
     "body": {
       "instance-filters":{
         "instance-filter":[
@@ -84,7 +84,7 @@
                       "vf-module":{
                         "vf-module-id":"f2805715-e24f-4c8a-9eb3-6c618da7691d",
                         "vf-module-name":"aa",
-                        "orchestration-status":"PendingCreate",
+                        "orchestration-status":"pendingactivation",
                         "is-base-vf-module":true,
                         "resource-version":"1504770843380",
                         "model-invariant-id":"df35ebf5-880b-4052-b4dc-5fbf38a423ca",
@@ -101,7 +101,7 @@
                       "vf-module":{
                         "vf-module-id":"f91515e5-cf8d-4abf-aacc-5bc5c5a47f09",
                         "vf-module-name":"gg",
-                        "orchestration-status":"PendingCreate",
+                        "orchestration-status":"assiGned",
                         "is-base-vf-module":false,
                         "resource-version":"1504694876599",
                         "model-invariant-id":"eb5a1e09-7f46-4f1c-ab7a-b017bad95261",
@@ -351,27 +351,47 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
-                "generic-vnf":{
-                  "vnf-id":"27cc0914-70be-453e-b552-3df6b1d6cda9",
-                  "vnf-name":"yh",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
-                  "service-id":"db171b8f-115c-4992-a2e3-ee04cae357e0",
-                  "prov-status":"PREPROV",
-                  "orchestration-status":"Created",
-                  "in-maint":false,
-                  "is-closed-loop-disabled":false,
-                  "resource-version":"1504507324472",
-                  "model-invariant-id":"af94e0b5-454c-4fd8-b62b-ef27632afd22",
-                  "model-version-id":"3d2657a7-6816-4662-93f0-26e315611336",
-                  "model-customization-id":"d279139c-4b85-48ff-8ac4-9b83a6fc6da7",
-                  "nf-type":"",
-                  "nf-function":"",
-                  "nf-role":"",
-                  "nf-naming-code":""
+                "l3-network": {
+                  "network-id": "6adc05e4-85c6-4f91-aa5a-1eb9546c4369",
+                  "network-name": "APP-C-DND_vEPDG-FN_hsl_fn_net_1",
+                  "network-type": "CONTRAIL30_BASIC",
+                  "network-role": "hsl",
+                  "network-technology": "contrail",
+                  "neutron-network-id": "41a61725-f623-4166-bc84-e76a219cca9d",
+                  "is-bound-to-vpn": false,
+                  "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+                  "network-role-instance": 0,
+                  "resource-version": "1511279493784",
+                  "orchestration-status": "Created",
+                  "heat-stack-id": "APP-C-DND_vEPDG-FN_hsl_fn_net_1/af134fb1-8ce3-4d41-88d9-8a83f5f79776",
+                  "contrail-network-fqdn": "default-domain:APP-C-DND:APP-C-DND_vEPDG-FN_hsl_fn_net_1",
+                  "physical-network-name": "leave blank",
+                  "is-provider-network": false,
+                  "is-shared-network": true,
+                  "is-external-network": false
                 },
-                "extra-properties":{
-
+                "extra-properties": {},
+                "inventory-response-items": {
+                  "inventory-response-item": [
+                    {
+                      "subnet": {
+                        "subnet-id": "1254dd9b-e689-4075-a089-f0deeb23c00c",
+                        "subnet-name": "APP-C-DND_vEPDG-FN_hsl_fn_net_1_subnet_1",
+                        "neutron-subnet-id": "7b5ea34d-fb95-4278-a148-4f6677ebe866",
+                        "gateway-address": "107.243.49.1",
+                        "network-start-address": "107.243.49.0",
+                        "cidr-mask": "26",
+                        "ip-version": "4",
+                        "orchestration-status": "Created",
+                        "dhcp-enabled": true,
+                        "dhcp-start": "107.243.49.3",
+                        "dhcp-end": "107.243.49.62",
+                        "ip-assignment-direction": "false",
+                        "resource-version": "1511279493791"
+                      },
+                      "extra-properties": {}
+                    }
+                  ]
                 }
               }
             ]

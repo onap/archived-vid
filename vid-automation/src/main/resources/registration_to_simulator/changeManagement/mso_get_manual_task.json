@@ -1,0 +1,33 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/mso/tasks/v1",
+    "queryParams" :  {
+      "originalRequestId": "[a-fA-F0-9-]*"
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "taskList": [
+        {
+          "taskId": "daf4dd84-b77a-42da-a051-3239b7a9392c",
+          "type": "fallout",
+          "nfRole": "vSCP",
+          "subscriptionServiceType": "Mobility",
+          "originalRequestId": "d352c70d-5ef8-4977-9ea8-4c8cbe860422",
+          "originalRequestorId": "ss835w",
+          "errorSource": "A&AI",
+          "errorCode": "404",
+          "errorMessage": "Failed in A&AI 404",
+          "validResponses": [
+            "rollback",
+            "abort",
+            "skip",
+            "retry"
+          ]
+        }
+      ]
+    }
+  }
+}

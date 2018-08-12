@@ -1,0 +1,21 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../search/nodes-query",
+    "queryParams": {
+      "search-node-type": "service-instance",
+      "filter": "service-instance-id:EQUALS:9caf5581-40ab-47be-b1f1-909a87724add"
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "result-data": [
+        {
+          "resource-type": "service-instance",
+          "resource-link": "/aai/v12/business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/VDNS/service-instances/service-instance/9caf5581-40ab-47be-b1f1-909a87724add"
+        }
+      ]
+    }
+  }
+}

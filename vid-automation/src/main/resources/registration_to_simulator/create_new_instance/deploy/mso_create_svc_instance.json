@@ -1,0 +1,49 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/serviceInstances/v.",
+    "body": {
+      "requestDetails": {
+        "requestInfo": {
+          "instanceName": "<INSTANCE_NAME>",
+          "source": "VID",
+          "suppressRollback": false,
+          "requestorId": "us16807000"
+        },
+        "modelInfo": {
+          "modelType": "service",
+          "modelInvariantId": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+          "modelVersionId": "418f32e5-484a-4073-8fa9-fab7d497459f",
+          "modelName": "1707vidnf",
+          "modelVersion": "9.0"
+        },
+        "requestParameters": {
+          "userParams": [],
+          "subscriptionServiceType": "VIRTUAL USP",
+          "aLaCarte": true,
+          "testApi": "GR_API"
+        },
+        "subscriberInfo": {
+          "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+          "subscriberName": "USP VOICE"
+        },
+        "owningEntity": {
+          "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+          "owningEntityName": "MetroPacketCore"
+        },
+        "project": {
+          "projectName": "x1"
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "requestReferences": {
+        "instanceId": "72755305-71a5-499f-81be-7a62ff5de987",
+        "requestId": "678cc766-b673-4a50-b9c5-471f68914590"
+      }
+    }
+  }
+}

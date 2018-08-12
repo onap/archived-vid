@@ -1,20 +1,26 @@
 package vid.automation.test.test;
 
 
-//import com.sun.tools.internal.jxc.ap.Const;
-
+import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
+import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.testng.annotations.*;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.*;
+import vid.automation.test.model.User;
 import vid.automation.test.sections.ChangeManagementPage;
 import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.utils.DB_CONFIG;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,6 +39,7 @@ import static org.hamcrest.core.IsNot.not;
 
 public class ChangeManagementTest extends VidBaseTestCase {
 
+    public static final  String SCHEDULED_ID = "0b87fe60-50b0-4bac-a0a7-49e951b0ba9e";
     @Test
     public void testLeftPanelChangeManagementButton() {
         Assert.assertTrue(Wait.byText(Constants.SideMenu.VNF_CHANGES));
@@ -58,8 +65,6 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalWorkFlowInputId));
         Assert.assertTrue(Exists.byId(Constants.generalSubmitButtonId));
         Assert.assertTrue(Exists.byId(Constants.generalCancelButtonId));
-        Click.byId(Constants.generalCancelButtonId);
-        Wait.modalToDisappear();
     }
 
     private void openAndFill1stScreen(String vnfName, String vnfTargetVersion, String workflow) {
@@ -67,7 +72,6 @@ public class ChangeManagementTest extends VidBaseTestCase {
         String serviceType = VNF_DATA_WITH_IN_PLACE.serviceType;
         String vnfType = VNF_DATA_WITH_IN_PLACE.vnfType;
         String vnfSourceVersion = VNF_DATA_WITH_IN_PLACE.vnfSourceVersion;
-
         ChangeManagementPage.openNewChangeManagementModal();
         Wait.angularHttpRequestsLoaded();
         ChangeManagementPage.selectSubscriberById(subscriberId);
@@ -80,7 +84,11 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Wait.angularHttpRequestsLoaded();
         Click.byId(Constants.ChangeManagement.newModalVNFNameInputId);
         Click.byText(vnfName);
+        // close the multi-select
+        Click.byId(Constants.ChangeManagement.newModalVNFNameInputId);
         Wait.angularHttpRequestsLoaded();
+        GeneralUIUtils.ultimateWait();
+
         if (vnfTargetVersion != null) {
             SelectOption.byClassAndVisibleText(Constants.ChangeManagement.newModalTargetVersionInputsClass, vnfTargetVersion);
             Wait.angularHttpRequestsLoaded();
@@ -94,15 +102,6 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Wait.byText(Constants.ChangeManagement.schedulerModalNowLabel);
         Click.byText(Constants.ChangeManagement.schedulerModalNowLabel);
 
-//        Click.byId(Constants.ChangeManagement.schedulerModalStartDateInputId); //next month must be in the future
-//        Click.byClass(Constants.ChangeManagement.schedulerModalNextMonthButtonClass);
-//        Wait.byText(startDate);
-//        Click.byText(startDate);
-//
-//        Click.byId(Constants.ChangeManagement.schedulerModalEndDateInputId); //next month must be in the future
-//        Click.byClass(Constants.ChangeManagement.schedulerModalNextMonthButtonClass);
-//        Wait.byText(endDate);
-//        Click.byText(endDate);
 
         SelectOption.byValue(Constants.ChangeManagement.schedulerModalHoursOption, Constants.ChangeManagement.schedulerModalTimeUnitSelectId);
 
@@ -116,22 +115,9 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     }
 
-    static class DB_CONFIG {
-        static String url = String.format("jdbc:mariadb://%s:%d/vid_portal",
-                System.getProperty("DB_HOST", System.getProperty("VID_HOST", "127.0.0.1" )),
-                Integer.valueOf(System.getProperty("DB_PORT", "3306"))
-        );
-        static String username = "euser";
-        static String password = "euser";
-
-        static final int userId = 822;
-        static final int roleVFlowLogicId = 10822;
-        static final int roleMobilityId = 11822;
+    static class VNF_DATA_WITH_IN_PLACE {
         static final int vnfZrdm3amdns02test2Id = 11822;
         static final int vnfHarrisonKrisId = 12822;
-    }
-
-    static class VNF_DATA_WITH_IN_PLACE {
         static String subscriberId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
         static String serviceType = "vFlowLogic";
         static String vnfType = "vMobileDNS";
@@ -142,26 +128,20 @@ public class ChangeManagementTest extends VidBaseTestCase {
     }
 
     @AfterClass
-    protected void dropUser822() {
+    protected void dropSpecialVNFs() {
         System.out.println("Connecting database...");
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.url, DB_CONFIG.username, DB_CONFIG.password)) {
             System.out.println("Database connected!");
+
             Statement stmt = connection.createStatement();
-            stmt.addBatch("DELETE FROM `fn_user_role` WHERE `USER_ID` = " + DB_CONFIG.userId);
-            stmt.addBatch("DELETE FROM `fn_role` WHERE `ROLE_ID` = " + DB_CONFIG.roleVFlowLogicId);
-            stmt.addBatch("DELETE FROM `fn_role` WHERE `ROLE_ID` = " + DB_CONFIG.roleMobilityId);
-            stmt.addBatch("DELETE FROM `fn_user` WHERE `USER_ID` = " + DB_CONFIG.userId);
+            stmt.addBatch("DELETE FROM `vid_vnf_workflow` WHERE `VNF_DB_ID` = " + VNF_DATA_WITH_IN_PLACE.vnfZrdm3amdns02test2Id);
+            stmt.addBatch("DELETE FROM `vid_vnf` WHERE `VNF_DB_ID` = " + VNF_DATA_WITH_IN_PLACE.vnfZrdm3amdns02test2Id);
             int[] executeBatch = stmt.executeBatch();
 
             stmt = connection.createStatement();
-            stmt.addBatch("DELETE FROM `vid_vnf_workflow` WHERE `VNF_DB_ID` = " + DB_CONFIG.vnfZrdm3amdns02test2Id);
-            stmt.addBatch("DELETE FROM `vid_vnf` WHERE `VNF_DB_ID` = " + DB_CONFIG.vnfZrdm3amdns02test2Id);
-            executeBatch = stmt.executeBatch();
-
-            stmt = connection.createStatement();
-            stmt.addBatch("DELETE FROM `vid_vnf_workflow` WHERE `VNF_DB_ID` = " + DB_CONFIG.vnfHarrisonKrisId);
-            stmt.addBatch("DELETE FROM `vid_vnf` WHERE `VNF_DB_ID` = " + DB_CONFIG.vnfHarrisonKrisId);
+            stmt.addBatch("DELETE FROM `vid_vnf_workflow` WHERE `VNF_DB_ID` = " + VNF_DATA_WITH_IN_PLACE.vnfHarrisonKrisId);
+            stmt.addBatch("DELETE FROM `vid_vnf` WHERE `VNF_DB_ID` = " + VNF_DATA_WITH_IN_PLACE.vnfHarrisonKrisId);
             executeBatch = stmt.executeBatch();
 
         } catch (SQLException e) {
@@ -171,22 +151,37 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     @BeforeClass
     protected void registerToSimulator() {
-        SimulatorApi.registerExpectation(
+        SimulatorApi.clearAll();
+        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
                 "changeManagement/ecompportal_getSessionSlotCheckInterval.json"
-                , "changeManagement/get_aai_get_subscribers.json"
-                , "changeManagement/get_aai_sub_details.json"
-                , "changeManagement/get_scheduler_details_short.json"
-                , "changeManagement/get_sdc_catalog_services_2f80c596.json"
-                , "changeManagement/get_service-design-and-creation.json"
-                , "changeManagement/get_vnf_data_by_globalid_and_service_type.json"
-                , "changeManagement/service-design-and-creation.json"
+                        , "changeManagement/get_aai_get_subscribers.json"
+                        , "changeManagement/get_aai_sub_details.json"
+                        , "changeManagement/get_sdc_catalog_services_2f80c596.json"
+                        , "changeManagement/get_service-design-and-creation.json"
+                        , "changeManagement/get_vnf_data_by_globalid_and_service_type.json"
+                        , "changeManagement/service-design-and-creation.json"
+                        , "changeManagement/mso_get_manual_task.json"
+                        , "changeManagement/mso_post_manual_task.json"
+        );
+
+        registerDefaultTablesData();
+    }
+
+    private void registerDefaultTablesData() {
+        SimulatorApi.registerExpectation(
+                new String[] {"changeManagement/get_scheduler_details_short.json",
+                        "changeManagement/mso_get_change_managements.json"
+                        ,"changeManagement/delete_scheduled_task.json"},
+                ImmutableMap.of(
+                        "<SCHEDULE_ID>", SCHEDULED_ID,
+                        "<IN_PROGRESS_DATE>", "Fri, 08 Sep 2017 19:34:32 GMT"), SimulatorApi.RegistrationStrategy.APPEND
         );
     }
 
     @BeforeClass
-    protected void prepareUser822() {
+    protected void prepareSpecialVNFs() {
 
-        dropUser822();
+        dropSpecialVNFs();
 
         System.out.println("Connecting database...");
 
@@ -195,32 +190,21 @@ public class ChangeManagementTest extends VidBaseTestCase {
             System.out.println("Database connected!");
 
             ///////////////////////////////
-            // Add user with specific roles
+            // Add 2 vnfs with some workflows
             Statement stmt = connection.createStatement();
-            stmt.addBatch("INSERT INTO `fn_user` (`USER_ID`, `ORG_USER_ID`, `LOGIN_ID`, `LOGIN_PWD`) VALUES (" + DB_CONFIG.userId + ", 'Porfirio Gerhardt', '"+ DB_CONFIG.userId +"', '"+ DB_CONFIG.userId +"')");
-            stmt.addBatch("INSERT INTO `fn_role` (`ROLE_ID`, `ROLE_NAME`, `ACTIVE_YN`, `PRIORITY`) VALUES (" + DB_CONFIG.roleVFlowLogicId + ", 'PACKET CORE___vFlowLogic', 'Y', 5)");
-            stmt.addBatch("INSERT INTO `fn_role` (`ROLE_ID`, `ROLE_NAME`, `ACTIVE_YN`, `PRIORITY`) VALUES (" + DB_CONFIG.roleMobilityId + ", 'PACKET CORE___Mobility', 'Y', 5)");
-            stmt.addBatch("INSERT INTO `fn_user_role` (`USER_ID`, `ROLE_ID`, `PRIORITY`, `APP_ID`) VALUES (" + DB_CONFIG.userId + ", 16, NULL, 1)");
-            stmt.addBatch("INSERT INTO `fn_user_role` (`USER_ID`, `ROLE_ID`, `PRIORITY`, `APP_ID`) VALUES (" + DB_CONFIG.userId + ", " + DB_CONFIG.roleVFlowLogicId + ", NULL, 1)");
-            stmt.addBatch("INSERT INTO `fn_user_role` (`USER_ID`, `ROLE_ID`, `PRIORITY`, `APP_ID`) VALUES (" + DB_CONFIG.userId + ", " + DB_CONFIG.roleMobilityId + ", NULL, 1)");
+            stmt.addBatch("INSERT INTO `vid_vnf` (`VNF_DB_ID`, `VNF_APP_UUID`, `VNF_APP_INVARIANT_UUID`) " +
+                    "VALUES (" + VNF_DATA_WITH_IN_PLACE.vnfZrdm3amdns02test2Id + ", '76e908e0-5201-44d2-a3e2-9e6128d05820', '72e465fe-71b1-4e7b-b5ed-9496118ff7a8')");
+            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + VNF_DATA_WITH_IN_PLACE.vnfZrdm3amdns02test2Id + ", 2)");
+            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + VNF_DATA_WITH_IN_PLACE.vnfZrdm3amdns02test2Id + ", 3)");
+            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + VNF_DATA_WITH_IN_PLACE.vnfZrdm3amdns02test2Id + ", 4)");
             int[] executeBatch = stmt.executeBatch();
             assertThat(Ints.asList(executeBatch), everyItem(greaterThan(0)));
 
-            ///////////////////////////////
-            // Add 2 vnfs with some workflows
             stmt = connection.createStatement();
             stmt.addBatch("INSERT INTO `vid_vnf` (`VNF_DB_ID`, `VNF_APP_UUID`, `VNF_APP_INVARIANT_UUID`) " +
-                    "VALUES (" + DB_CONFIG.vnfZrdm3amdns02test2Id + ", '76e908e0-5201-44d2-a3e2-9e6128d05820', '72e465fe-71b1-4e7b-b5ed-9496118ff7a8')");
-            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + DB_CONFIG.vnfZrdm3amdns02test2Id + ", 2)");
-            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + DB_CONFIG.vnfZrdm3amdns02test2Id + ", 3)");
-            executeBatch = stmt.executeBatch();
-            assertThat(Ints.asList(executeBatch), everyItem(greaterThan(0)));
-
-            stmt = connection.createStatement();
-            stmt.addBatch("INSERT INTO `vid_vnf` (`VNF_DB_ID`, `VNF_APP_UUID`, `VNF_APP_INVARIANT_UUID`) " +
-                    "VALUES (" + DB_CONFIG.vnfHarrisonKrisId + ", '0903e1c0-8e03-4936-b5c2-260653b96413', '00beb8f9-6d39-452f-816d-c709b9cbb87d')");
-            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + DB_CONFIG.vnfHarrisonKrisId + ", 1)");
-            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + DB_CONFIG.vnfHarrisonKrisId + ", 2)");
+                    "VALUES (" + VNF_DATA_WITH_IN_PLACE.vnfHarrisonKrisId + ", '0903e1c0-8e03-4936-b5c2-260653b96413', '00beb8f9-6d39-452f-816d-c709b9cbb87d')");
+            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + VNF_DATA_WITH_IN_PLACE.vnfHarrisonKrisId + ", 1)");
+            stmt.addBatch("INSERT INTO `vid_vnf_workflow` (`VNF_DB_ID`, `WORKFLOW_DB_ID`) VALUES (" + VNF_DATA_WITH_IN_PLACE.vnfHarrisonKrisId + ", 2)");
             executeBatch = stmt.executeBatch();
             assertThat(Ints.asList(executeBatch), everyItem(greaterThan(0)));
 
@@ -232,9 +216,97 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     @Override
     protected UserCredentials getUserCredentials() {
-            return new UserCredentials("" + DB_CONFIG.userId, "" + DB_CONFIG.userId, "", "", "");
+
+        String userName = Constants.Users.MOBILITY_VMMSC;
+        User user = usersService.getUser(userName);
+        return new UserCredentials(user.credentials.userId, user.credentials.password, userName, "", "");
     }
 
+    private void updateConfigFile(String fileName) {
+        Assert.assertFalse(Exists.byId(Constants.ChangeManagement.newModalConfigUpdateInputId));
+        openAndFill1stScreen(VNF_DATA_WITH_IN_PLACE.vnfName, VNF_DATA_WITH_IN_PLACE.vnfTargetVersion, "VNF Config Update");
+        Assert.assertFalse(Get.byId(Constants.generalSubmitButtonId).isEnabled());
+        Input.file("changeManagement/" + fileName, Constants.ChangeManagement.newModalConfigUpdateInputId);
+        GeneralUIUtils.ultimateWait();
+    }
+
+    @Test
+    public void regretToCancelWorkflowOnPendingPopUp() {
+        updateSimulatorWithParametersOfScheduledJod("get_scheduler_details_short.json");
+        ChangeManagementPage.openChangeManagementPage();
+
+        Wait.angularHttpRequestsLoaded();
+        ChangeManagementPage.clickOnRefreshButton();
+
+        GeneralUIUtils.ultimateWait();
+        clickAndAssertOnCancelButton(SCHEDULED_ID);
+        Click.byClass("pull-right modal-close");
+        //TODO: if refresh button functional will be change to refactor next line.
+        ChangeManagementPage.clickOnRefreshButton();
+
+        assertAndCheckStatusCellOnDeletedSheduledJob(SCHEDULED_ID, "cancel-action icon-pending");
+    }
+
+    @Test
+    public void clickOnScheduledJob_SuccessfulMessageAppear() {
+        ChangeManagementPage.openChangeManagementPage();
+//        Wait.angularHttpRequestsLoaded();
+        GeneralUIUtils.ultimateWait();
+        clickAndAssertOnCancelButton(SCHEDULED_ID);
+        updateSimulatorWithParametersOfScheduledJod("get_scheduler_details_short_with_after_cancel" +
+                ".json");
+
+        clickAndAssertClickOnCancelWorkflowButtonOnPendingPopUp();
+
+        GeneralUIUtils.ultimateWait();
+        //TODO: To develop automatic table refresh to avoid click on refresh button.
+        ChangeManagementPage.clickOnRefreshButton();
+        assertCorrectJobDeleted("ctsf0002v");
+
+        assertAndCheckStatusCellOnDeletedSheduledJob(SCHEDULED_ID, "ng-hide");
+
+
+    }
+
+    private void clickAndAssertOnCancelButton(String scheduledID){
+        Wait.waitByTestId("icon-status-"+ scheduledID, 5);
+        Click.byTestId("icon-status-"+ scheduledID);
+        GeneralUIUtils.ultimateWait();
+        WebElement cancelPendingConfirmationMessage = Get.byTestId("btn-cancel-workflow");
+        assertThat(cancelPendingConfirmationMessage.getText(),containsString("Are you sure you want to delete workflow"));
+    }
+    private void clickAndAssertClickOnCancelWorkflowButtonOnPendingPopUp() {
+
+        try {
+            Click.byClass(Constants.ChangeManagement.pendingModalCancelWorkflowButtonClass);
+            GeneralUIUtils.ultimateWait();
+            Assert.assertTrue(Exists.byClassAndText(Constants.generalModalTitleClass, "Success"));
+        } finally {
+            if (Exists.byClassAndText("modal-title", "Pending")){
+                Click.byClass("pull-right modal-close");
+            }
+        }
+        Click.byClassAndVisibleText("btn","OK");
+    }
+
+    private void assertCorrectJobDeleted (String vnfName){
+        WebElement canceledScheduledJobRow = GeneralUIUtils.getWebElementByTestID("pending-table-cm-row");
+        String scheduledVnfName = ((RemoteWebElement) canceledScheduledJobRow).findElementsByTagName("td").get(1).getText();
+        String scheduledState = ((RemoteWebElement) canceledScheduledJobRow).findElementsByTagName("td").get(5).getText();
+        Assert.assertEquals(vnfName, scheduledVnfName);
+        Assert.assertEquals("Deleted", scheduledState);
+    }
+
+    private void assertAndCheckStatusCellOnDeletedSheduledJob(String scheduledId, String classString){
+        boolean isNotDisplayed = GeneralUIUtils.waitForElementInVisibilityByTestId("icon-status-" + scheduledId, 5);
+        Assert.assertTrue(isNotDisplayed);
+    }
+    public void updateSimulatorWithParametersOfScheduledJod(String jasonFile){
+        SimulatorApi.registerExpectation(
+                new String[] {"changeManagement/"+jasonFile},
+                ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), SimulatorApi.RegistrationStrategy.APPEND
+        );
+    }
 
     @Test
     public void testWorkflowVNFInPlaceSoftwareUpdateNotInWorkflowsListWhenNotExpected() {
@@ -356,26 +428,41 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 , {"78058488", "n", "WkH"}
         };
     }
+    
+    // Deleted testVidToMsoCallbackDataWithInPlaceSWUpdate test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
 
-    @Test(dataProvider = "dataForUpdateWorkflowPartialWithInPlace")
-    public void testVidToMsoCallbackDataWithInPlaceSWUpdate(String operationsTimeout, String existingSwVersion, String newSwVersion) {
 
-        openAndFill1stScreenWithWorkflowVNFInPlaceSoftwareUpdate();
-        fillVNFInPlace3Fields(operationsTimeout, existingSwVersion, newSwVersion);
 
-        String payload = "\"payload\":\"{\\\"existing-software-version\\\":\\\""+ existingSwVersion +"\\\",\\\"new-software-version\\\":\\\""+ newSwVersion +"\\\",\\\"operation-timeout\\\":\\\""+ operationsTimeout +"\\\"}\",";
-
-        assertThatVidToMsoCallbackDataIsOk(VNF_DATA_WITH_IN_PLACE.workflowName, payload);
-    }
+    // Deleted testUploadConfigUpdateFile test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
 
     @Test
-    public void testVidToMsoCallbackData() {
-        String workflow = "Replace";
-
-        openAndFill1stScreen(VNF_DATA_WITH_IN_PLACE.vnfName, VNF_DATA_WITH_IN_PLACE.vnfTargetVersion, workflow);
-
-        assertThatVidToMsoCallbackDataIsOk(workflow, "");
+    public void testUploadConfigUpdateNonCsvFile() {
+        String fileName = "non-valid.json";
+        updateConfigFile(fileName);
+        WebElement errorLabel = Get.byId("errorLabel");
+        Assert.assertEquals("wrong error message for non csv file", "Invalid file type. Please select a file with a CSV extension.", errorLabel.getText());
+        Assert.assertFalse(Get.byId(Constants.generalSubmitButtonId).isEnabled());
     }
+
+    @Test(dataProvider = "invalidCsvFiles")
+    public void testUploadInvalidConfigUpdateFile(String fileName) {
+        updateConfigFile(fileName);
+        WebElement errorLabel = Get.byId("errorContentLabel");
+        Assert.assertEquals("wrong error message for non csv file", "Invalid file structure.", errorLabel.getText());
+        Assert.assertFalse(Get.byId(Constants.generalSubmitButtonId).isEnabled());
+    }
+
+    @DataProvider
+    public static Object[][] invalidCsvFiles() {
+        return new Object[][] {
+                {"emptyFile.csv"},
+                {"withoutPayload.csv"},
+                {"withoutConfigurationParameters.csv"},
+                {"withoutRequestParameters.csv"}
+        };
+    }
+
+    // Deleted testVidToMsoCallbackData test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
 
     private void assertThatVidToMsoCallbackDataIsOk(String workflow, String payload) {
         Assert.assertTrue(Get.byId(Constants.generalSubmitButtonId).isEnabled());
@@ -439,8 +526,43 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @Test
     public void testMainDashboardTableContent() {
         ChangeManagementPage.openChangeManagementPage();
-
+        GeneralUIUtils.ultimateWait();
+        List<WebElement> webElements = Get.multipleElementsByTestId(Constants.ChangeManagement.activeTableRowId);
+        assertThat("List of pending workflows is empty",webElements,is(not(empty())));
         //TODO: After scheduler will be ready than we will examine if the content is valid.
+    }
+
+
+    @Test
+    public void testOnlyOneModalIsOpen() throws Exception {
+
+        updateSimulatorWithParametersOfScheduledJod("mso_get_change_managements.json");
+
+        ChangeManagementPage.openChangeManagementPage();
+
+        Wait.byText("ReplaceVnfInfra");
+        GeneralUIUtils.ultimateWait();
+
+
+
+        List<WebElement> elements = Get.byClass(Constants.ChangeManagement.pendingIconClass);
+        Assert.assertTrue(elements != null && elements.size() > 0);
+
+        ((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView();", elements.get(0));
+
+
+        elements.get(0).click();
+
+        GeneralUIUtils.ultimateWait();
+
+        elements = Get.byClass(Constants.ChangeManagement.pendingIconClass);
+        Assert.assertTrue(elements != null && elements.size() > 0);
+        elements.get(2).click();
+
+        GeneralUIUtils.ultimateWait();
+        List<WebElement> webElements = Get.byClass("modal-dialog");
+        Assert.assertTrue(webElements.size() == 1);
+
     }
 
     @Test(enabled = false)
@@ -543,6 +665,23 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Click.byClass(Constants.generalCloseModalButtonClass);
         Wait.modalToDisappear();
         //TODO check the workflow deleted from table/changed to deleted action
+    }
+
+    @Test
+    public void testRefreshPageButton() {
+        ChangeManagementPage.openChangeManagementPage();
+        GeneralUIUtils.ultimateWait();
+        List<WebElement> pendingRows = Get.multipleElementsByTestId(Constants.ChangeManagement.pendingTableRowId);
+        List<WebElement> activeRows = Get.multipleElementsByTestId(Constants.ChangeManagement.activeTableRowId);
+        assertThat("The pending table has no content",pendingRows, is(not(empty())));
+        assertThat("The active table has no content",activeRows, is(not(empty())));
+        Click.byTestId(Constants.ChangeManagement.refreshBtnTestId);
+        GeneralUIUtils.ultimateWait();
+        pendingRows = Get.multipleElementsByTestId(Constants.ChangeManagement.pendingTableRowId);
+        assertThat("The pending table has no content",pendingRows, is(not(empty())));
+        assertThat("The active table has no content",activeRows, is(not(empty())));
+        //return the register requests to the default state
+        registerDefaultTablesData();
     }
 
     private String getExpectedVidToMsoCallbackData(String modelInvariantId, String vnfInstanceId, String vnfName, String vnfTargetVersion, String workflow, String payload) {

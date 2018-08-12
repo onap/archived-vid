@@ -1,0 +1,47 @@
+{
+  "simulatorRequest": {
+    "method": "PUT",
+    "path": "/aai/v../query",
+    "queryParams" : {
+      "format": ["simple"]
+    },
+    "body": {
+      "start": "/business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL%20USP/service-instances?model-version-id=8a84e59b-45fe-4851-8ff1-34225a0b32c3&model-invariant-id=83b458fd-5dd3-419b-a9e3-7335814a0911",
+      "query": "query/pnf-fromModel-byRegion?cloudRegionId=AAIAIC25&equipVendor=Cisco&equipModel=Nexus%203048-TP"
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+  "results":[
+    {
+      "id":"901128280",
+      "node-type":"pnf",
+      "url":"/aai/v12/network/pnfs/pnf/AS-pnf2-10219--as988q",
+      "properties":{
+        "pnf-name":"AS-pnf2-10219--as988q",
+        "equip-type":"Switch",
+        "equip-vendor":"Cisco",
+        "equip-model":"Nexus3048-TP",
+        "in-maint":false,
+        "resource-version":"1508776538192"
+      },
+      "related-to":[
+        {
+          "id":"532488360",
+          "relationship-label":"uses",
+          "node-type":"service-instance",
+          "url":"/aai/v12/business/customers/customer/customer-10219-as988q/service-subscriptions/service-subscription/serviceSub2-test-10219-as988q/service-instances/service-instance/serviceIns2-test-10219-as988q"
+        },
+        {
+          "id":"860164248",
+          "relationship-label":"locatedIn",
+          "node-type":"complex",
+          "url":"/aai/v12/cloud-infrastructure/complexes/complex/complex-10219--as988q"
+        }
+      ]
+    }
+  ]
+}
+}
+}

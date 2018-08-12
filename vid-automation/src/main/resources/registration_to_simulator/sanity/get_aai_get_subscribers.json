@@ -1,0 +1,47 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../business/customers",
+    "queryParams" :  {
+      "subscriber-type": [ "INFRA" ],
+      "depth": [ "0" ]
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "customer":[
+        {
+          "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+          "subscriber-name":"FIREWALL/MISC",
+          "subscriber-type":"INFRA",
+          "resource-version":"1494254802147"
+        },
+        {
+          "global-customer-id":"VidE2ETest",
+          "subscriber-name":"VidTest20161020",
+          "subscriber-type":"INFRA",
+          "resource-version":"1494254856862"
+        },
+        {
+          "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+          "subscriber-name":"Mobility",
+          "subscriber-type":"INFRA",
+          "resource-version":"1494255056308"
+        },
+        {
+          "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+          "subscriber-name":"PACKET CORE",
+          "subscriber-type":"INFRA",
+          "resource-version":"1506548476111"
+        },
+        {
+          "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+          "subscriber-name":"USP VOICE",
+          "subscriber-type":"INFRA",
+          "resource-version":"1494254832007"
+        }
+      ]
+    }
+  }
+}

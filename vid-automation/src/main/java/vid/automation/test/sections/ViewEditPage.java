@@ -8,6 +8,11 @@ import vid.automation.test.Constants;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
 import vid.automation.test.infra.Wait;
+import org.hamcrest.core.Is;
+
+import static org.hamcrest.core.Is.is;
+
+import java.util.List;
 
 /**
  * Created by itzikliderman on 13/06/2017.
@@ -16,6 +21,29 @@ public class ViewEditPage extends VidBasePage {
     public ViewEditPage selectNodeInstanceToAdd(String vnfName) {
         selectFromDropdownByTestId(Constants.ViewEdit.VNF_OPTION_TEST_ID_PREFIX + vnfName,
                 Constants.ViewEdit.ADD_VNF_BUTTON_TEST_ID);
+        return this;
+    }
+
+    public ViewEditPage selectVfModuleToAdd(String vfModuleName) {
+        selectFromDropdownByTestId(Constants.ViewEdit.VF_MODULE_OPTION_TEST_ID_PREFIX + vfModuleName,
+                Constants.ViewEdit.ADD_VF_MODULE_BUTTON_TEST_ID);
+        return this;
+    }
+
+    public ViewEditPage clickResumeButton(String instanceName) {
+        //instanceName = "my_vfModule";
+        String instanceId = Constants.ViewEdit.VF_MODULE_RESUME_ID_PREFIX + instanceName;
+        checkIfExistResumeButton(instanceName,true);
+        GeneralUIUtils.clickOnElementByTestId(instanceId);
+        return this;
+    }
+
+
+    public ViewEditPage checkIfExistResumeButton(String instanceName, Boolean expected) {
+        //instanceName = "my_vfModule";
+        String instanceId = Constants.ViewEdit.VF_MODULE_RESUME_ID_PREFIX + instanceName;
+        WebElement resumeButton = GeneralUIUtils.getWebElementByTestID(instanceId, 30);
+        Assert.assertThat(resumeButton != null, is(expected));
         return this;
     }
 
@@ -31,10 +59,9 @@ public class ViewEditPage extends VidBasePage {
         return this;
     }
 
-    public ViewEditPage selectFromDropdownByTestId(String itemTestId, String dropdownButtonTestId) {
-        GeneralUIUtils.clickOnElementByTestId(dropdownButtonTestId, 60);
-        Assert.assertTrue(String.format(Constants.ViewEdit.OPTION_IN_DROPDOWN_NOT_EXISTS,dropdownButtonTestId,"Add network instance"),GeneralUIUtils.getWebElementByTestID(itemTestId) != null );
-        GeneralUIUtils.clickOnElementByTestId(itemTestId, 60);
+    public ViewEditPage selectNetworkToAdd(String networkName) {
+        selectFromDropdownByTestId(Constants.ViewEdit.NETWORK_OPTION_TEST_ID_PREFIX + networkName,
+                Constants.ViewEdit.ADD_NETWORK_BUTTON_TEST_ID);
         return this;
     }
 
@@ -55,6 +82,7 @@ public class ViewEditPage extends VidBasePage {
 
     public ViewEditPage selectTenant(String tenant){
         SelectOption.byValue(tenant, Constants.ViewEdit.TENANT_SELECT_TESTS_ID);
+       // GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.TENANT_SELECT_TESTS_ID, 60);
         return this;
     }
 
@@ -62,6 +90,17 @@ public class ViewEditPage extends VidBasePage {
         GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.ACTIVATE_BUTTON_TEST_ID, 60);
         return this;
     }
+
+    public VidBasePage clickInfoButton() {
+        GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.INFOSERVICEBUTTON, 30);
+        return this;
+    }
+
+    public VidBasePage clickDeleteButton() {
+        GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.DELETESERVICEBUTTON, 3);
+        return this;
+    }
+
 
     public WebElement getPnf(String pnfName) {
         WebElement pnfElement = Get.byClassAndText("tree-node", "PNF: " + pnfName);
@@ -79,6 +118,22 @@ public class ViewEditPage extends VidBasePage {
 
     public VidBasePage clickDeactivateButton() {
         GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.DEACTIVATE_BUTTON_TEST_ID, 30);
+        return this;
+    }
+
+    public ViewEditPage selectLineOfBusiness(String lineOfBusiness) {
+        try {
+            SelectOption.selectFirstTwoOptionsFromMultiselectById(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return this;
+        }
+        //TODO multi SelectOption.byValue(lineOfBusiness, Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
+        return this;
+    }
+
+    public ViewEditPage selectPlatform(String platform) {
+        SelectOption.byValue(platform, Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
         return this;
     }
 }

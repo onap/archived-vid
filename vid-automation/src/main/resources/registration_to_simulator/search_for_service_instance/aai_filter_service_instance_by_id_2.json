@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v11/search/nodes-query",
+    "path": "/aai/v../search/nodes-query",
     "queryParams": {
       "search-node-type": "service-instance",
       "filter": "service-instance-id:EQUALS:f36f5734-e9df-4fbf-9f35-61be13f028a1"

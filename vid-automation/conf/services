@@ -1,4 +1,5 @@
-{ "services": {
+{
+"services": {
   "c079d859-4d81-4add-a9c3-94551f96e2b0": {
     "type":"vnf",
     "uuid": "418f32e5-484a-4073-8fa9-fab7d497459f",
@@ -9,6 +10,16 @@
     "description": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code.",
     "serviceRole" : "pnf"
   },
+  "c079d859-4d81-4add-a9c3-94551f96e2b1": {
+      "type":"",
+      "uuid": "418f32e5-484a-4073-8fa9-fab7d497459f",
+      "invariantUuid": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+      "name": "1707vidnf",
+      "version": "9.0",
+      "category": "",
+      "description": "",
+      "serviceRole" : ""
+  },
   "f39389e4-2a9c-4085-8ac3-04aea9c651be": {
     "type" : "pnf",
     "uuid": "f39389e4-2a9c-4085-8ac3-04aea9c651be",
@@ -18,5 +29,25 @@
     "category": "Network L1-3",
     "description": "macro model",
     "serviceRole": "pnf"
-  }}
+  },
+  "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd": {
+    "type" : "pnf",
+    "uuid": "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
+    "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+    "name": "action-data",
+    "version": "1.0",
+    "category": "Network L1-3",
+    "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+    "serviceRole": "Testing"
+  },
+  "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd": {
+      "type" : "pnf",
+      "uuid": "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
+      "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+      "name": "action-data",
+      "version": "1.0",
+      "category": "Network L1-3",
+      "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+      "serviceRole": "Testing"
+    }}
 }

@@ -1,0 +1,468 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL USP"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "service-type": "VIRTUAL USP",
+      "resource-version": "1494001853297",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/fe4400a8e96e4caa85ccdca8a850255b",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn6"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "fe4400a8e96e4caa85ccdca8a850255b"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "IST_Automation_AAI_updated"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/a259ae7b7c3f493cb3d91f95a7c18149",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn6"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "a259ae7b7c3f493cb3d91f95a7c18149"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "IST_VID_DND"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn16/tenants/tenant/a259ae7b7c3f493cb3d91f95a7c18149",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn16"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "a259ae7b7c3f493cb3d91f95a7c18149"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "IST_VID_DND"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/fusion/Two/tenants/tenant/d3b49834f7164cbe831bfbfa35ef649b",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "fusion"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "Two"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "d3b49834f7164cbe831bfbfa35ef649b"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "fusion-admin-mitaka"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/fusion/One/tenants/tenant/c630e297a3ae486497d63eacec1d7c14",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "fusion"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "One"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "c630e297a3ae486497d63eacec1d7c14"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "fusion-admin-icehouse"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/c2609b7252b6484d89432611cfb2491b",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn6"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "c2609b7252b6484d89432611cfb2491b"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "ECOM_Tenant_DND"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/fusion/One/tenants/tenant/d3b49834f7164cbe831bfbfa35ef649b",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "fusion"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "One"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "d3b49834f7164cbe831bfbfa35ef649b"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "fusion-admin-mitaka"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1eddb590b7f04e9890bceeef9e591333",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn6"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "1eddb590b7f04e9890bceeef9e591333"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APP-C-DND"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3ae175bf8f574740b1f41588500d7d29",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23b"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "3ae175bf8f574740b1f41588500d7d29"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-02D"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/579d80c0cf754d1e9f1ddc2cdc1701e3",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn6"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "579d80c0cf754d1e9f1ddc2cdc1701e3"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "ECOM_FirstNet1_DND"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/72a26aabf7424ad3acd5145224f122d8",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23b"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "72a26aabf7424ad3acd5145224f122d8"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-02B"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23a/tenants/tenant/d0a030fc9fd942c88d8bbb3165c96456",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23a"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "d0a030fc9fd942c88d8bbb3165c96456"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-01B"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/87dbe25f3a6149dab53a742c25c90bb6",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23b"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "87dbe25f3a6149dab53a742c25c90bb6"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-02A"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/2cd3ca9abd25492eb0c6a44bc95fe714",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn6"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "2cd3ca9abd25492eb0c6a44bc95fe714"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "ECOM_FirstNet2_DND"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23a/tenants/tenant/2889dda86a19400097284de529cd950e",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23a"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "2889dda86a19400097284de529cd950e"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-01C"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23b"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "3e9a20a3e89e45f884e09df0cc2d2d2a"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-02C"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23a/tenants/tenant/de1096c250564451a5e48370a78a7b1f",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23a"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "de1096c250564451a5e48370a78a7b1f"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-01D"
+              }
+            ]
+          },
+          {
+            "related-to": "tenant",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23a/tenants/tenant/e6beab145f6b49098277ac163ac1b4f3",
+            "relationship-data": [
+              {
+                "relationship-key": "cloud-region.cloud-owner",
+                "relationship-value": "att-aic"
+              },
+              {
+                "relationship-key": "cloud-region.cloud-region-id",
+                "relationship-value": "mtn23a"
+              },
+              {
+                "relationship-key": "tenant.tenant-id",
+                "relationship-value": "e6beab145f6b49098277ac163ac1b4f3"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "tenant.tenant-name",
+                "property-value": "APPC-24595-T-IST-01A"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+

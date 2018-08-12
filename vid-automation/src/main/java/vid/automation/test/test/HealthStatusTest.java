@@ -1,0 +1,66 @@
+package vid.automation.test.test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import org.opencomp.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.opencomp.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Wait;
+import vid.automation.test.sections.VidBasePage;
+import vid.automation.test.services.SimulatorApi;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertTrue;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+
+public class HealthStatusTest extends VidBaseTestCase {
+
+    private VidBasePage vidBasePage = new VidBasePage();
+
+    @DataProvider
+    public static Object[][] aaiHealthStatusProvider() {
+        return new Object[][]{
+                {ImmutableList.of(new PresetGetSessionSlotCheckIntervalGet()),
+                        "border-not-ok", "No subscriber received", 404},
+                {ImmutableList.of(new PresetGetSessionSlotCheckIntervalGet(), new PresetAAIGetSubscribersGet()),
+                        "border-is-ok", "OK", 200}
+
+        };
+    }
+
+
+    @Test(dataProvider = "aaiHealthStatusProvider")
+    public void testAaiHealthStatus(Collection<BasePreset> presets, String cssName, String description, int httpCode) throws IOException {
+        SimulatorApi.registerExpectationFromPresets(presets, CLEAR_THEN_SET);
+        refreshStatus();
+        assertTrue(Wait.waitByClassAndTextXpathOnly(cssName, "AAI", 10)); //instead of ultimate wait
+        RemoteWebElement componentName = (RemoteWebElement)Get.byTestId("component-name-AAI");
+        assertThat("Wrong component name", componentName.getText(), equalTo("AAI"));
+        assertThat("Wrong css for component name", componentName.getAttribute("class"), containsString(cssName));
+        ObjectMapper objectMapper = new ObjectMapper();
+        RemoteWebElement componentMetadata = ((RemoteWebElement) Get.byTestId("component-metadata-AAI"));
+        assertThat("Wrong css for component details", componentName.getAttribute("class"), containsString(cssName));
+        Map<String, Object> details =  objectMapper.readValue(componentMetadata.findElementsByTagName("pre").get(0).getText(), Map.class);
+        assertThat(details.get("description"), equalTo(description));
+        assertThat(details.get("httpMethod"), equalTo("GET"));
+        assertThat(details.get("httpCode"), equalTo(httpCode));
+    }
+
+    private void refreshStatus() {
+        vidBasePage.navigateTo("app/ui/#/healthStatus");
+        Click.byClass("icon-refresh");
+
+    }
+
+}

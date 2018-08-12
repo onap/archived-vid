@@ -1,8 +1,8 @@
 {
   "simulatorRequest": {
     "method": "PUT",
-    "path": "/aai/query",
-    "body": "{\"start\" : \"service-design-and-creation\/models\/\", \"query\" : \"query\/servceModelsbyDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}",
+    "path": "/aai/v../query",
+    "body": "{\"start\" : \"service-design-and-creation\/models\/\", \"query\" : \"query\/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}",
     "queryParams": {
       "format": [
         "resource"

@@ -1,0 +1,233 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../network/zones"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "zone": [
+        {
+          "zone-id": "NFT1",
+          "zone-name": "NFTJSSSS-NFT1"
+        },
+        {
+          "zone-id": "JAG1",
+          "zone-name": "YUDFJULP-JAG1"
+        },
+        {
+          "zone-id": "YYY1",
+          "zone-name": "UUUAIAAI-YYY1"
+        },
+        {
+          "zone-id": "BAN1",
+          "zone-name": "VSDKYUTP-BAN1"
+        },
+        {
+          "zone-id": "DKJ1",
+          "zone-name": "DKJSJDKA-DKJ1"
+        },
+        {
+          "zone-id": "MCS1",
+          "zone-name": "ASACMAMS-MCS1"
+        },
+        {
+          "zone-id": "UIO1",
+          "zone-name": "uioclli1-UIO1"
+        },
+        {
+          "zone-id": "RAJ1",
+          "zone-name": "YGBIJNLQ-RAJ1"
+        },
+        {
+          "zone-id": "OPA1",
+          "zone-name": "opaclli1-OPA1"
+        },
+        {
+          "zone-id": "SDE1",
+          "zone-name": "ZXCVBNMA-SDE1"
+        },
+        {
+          "zone-id": "VEN2",
+          "zone-name": "FGHJUHIL-VEN2"
+        },
+        {
+          "zone-id": "ORL1",
+          "zone-name": "ORLDFLMA-ORL1"
+        },
+        {
+          "zone-id": "JAD1",
+          "zone-name": "JADECLLI-JAD1"
+        },
+        {
+          "zone-id": "ZXL1",
+          "zone-name": "LWLWCANN-ZXL1"
+        },
+        {
+          "zone-id": "CKL1",
+          "zone-name": "CLKSKCKK-CKL1"
+        },
+        {
+          "zone-id": "SDF1",
+          "zone-name": "sdfclli1-SDF1"
+        },
+        {
+          "zone-id": "RAD1",
+          "zone-name": "RADICAL1-RAD1"
+        },
+        {
+          "zone-id": "KIT1",
+          "zone-name": "BHYJFGLN-KIT1"
+        },
+        {
+          "zone-id": "REL1",
+          "zone-name": "INGERFGT-REL1"
+        },
+        {
+          "zone-id": "JNL1",
+          "zone-name": "CJALSDAC-JNL1"
+        },
+        {
+          "zone-id": "OLK1",
+          "zone-name": "OLKOLKLS-OLK1"
+        },
+        {
+          "zone-id": "CHI1",
+          "zone-name": "CHILLIWE-CHI1"
+        },
+        {
+          "zone-id": "UUU4",
+          "zone-name": "UUUAAAUU-UUU4"
+        },
+        {
+          "zone-id": "TUF1",
+          "zone-name": "TUFCLLI1-TUF1"
+        },
+        {
+          "zone-id": "KJN1",
+          "zone-name": "CKALDKSA-KJN1"
+        },
+        {
+          "zone-id": "SAM1",
+          "zone-name": "SNDGCA64-SAN1"
+        },
+        {
+          "zone-id": "SCK1",
+          "zone-name": "SCKSCKSK-SCK1"
+        },
+        {
+          "zone-id": "HJH1",
+          "zone-name": "AOEEQQQD-HJH1"
+        },
+        {
+          "zone-id": "HGD1",
+          "zone-name": "SDFQWHGD-HGD1"
+        },
+        {
+          "zone-id": "KOR1",
+          "zone-name": "HYFLNBVT-KOR1"
+        },
+        {
+          "zone-id": "ATL43",
+          "zone-name": "AICLOCID-ATL43"
+        },
+        {
+          "zone-id": "ATL54",
+          "zone-name": "AICFTAAI-ATL54"
+        },
+        {
+          "zone-id": "ATL66",
+          "zone-name": "CLLIAAII-ATL66"
+        },
+        {
+          "zone-id": "VEL1",
+          "zone-name": "BNMLKUIK-VEL1"
+        },
+        {
+          "zone-id": "ICC1",
+          "zone-name": "SANJITAT-ICC1"
+        },
+        {
+          "zone-id": "MNT11",
+          "zone-name": "WSXEFBTH-MNT11"
+        },
+        {
+          "zone-id": "DEF2",
+          "zone-name": "WSBHGTYL-DEF2"
+        },
+        {
+          "zone-id": "MAD11",
+          "zone-name": "SDFQWGKL-MAD11"
+        },
+        {
+          "zone-id": "OLG1",
+          "zone-name": "OLHOLHOL-OLG1"
+        },
+        {
+          "zone-id": "GAR1",
+          "zone-name": "NGFVSJKO-GAR1"
+        },
+        {
+          "zone-id": "SAN22",
+          "zone-name": "GNVLSCTL-SAN22"
+        },
+        {
+          "zone-id": "HRG1",
+          "zone-name": "HRGHRGGS-HRG1"
+        },
+        {
+          "zone-id": "JCS1",
+          "zone-name": "JCSJSCJS-JCS1"
+        },
+        {
+          "zone-id": "DHA12",
+          "zone-name": "WSXEDECF-DHA12"
+        },
+        {
+          "zone-id": "HJE1",
+          "zone-name": "AOEEWWWD-HJE1"
+        },
+        {
+          "zone-id": "NCA1",
+          "zone-name": "NCANCANN-NCA1"
+        },
+        {
+          "zone-id": "IOP1",
+          "zone-name": "iopclli1-IOP1"
+        },
+        {
+          "zone-id": "RTY1",
+          "zone-name": "rtyclli1-RTY1"
+        },
+        {
+          "zone-id": "KAP1",
+          "zone-name": "HIOUYTRQ-KAP1"
+        },
+        {
+          "zone-id": "ZEN1",
+          "zone-name": "ZENCLLI1-ZEN1"
+        },
+        {
+          "zone-id": "HKA1",
+          "zone-name": "JAKHLASS-HKA1"
+        },
+        {
+          "zone-id": "CQK1",
+          "zone-name": "CQKSCAKK-CQK1"
+        },
+        {
+          "zone-id": "SAI1",
+          "zone-name": "UBEKQLPD-SAI1"
+        },
+        {
+          "zone-id": "ERT1",
+          "zone-name": "ertclli1-ERT1"
+        },
+        {
+          "zone-id": "IBB1",
+          "zone-name": "PLMKOIJU-IBB1"
+        }
+      ]
+    }
+  }
+}

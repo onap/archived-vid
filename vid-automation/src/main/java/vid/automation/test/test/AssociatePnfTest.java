@@ -5,23 +5,15 @@ import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.Click;
-import vid.automation.test.infra.Exists;
-import vid.automation.test.infra.Get;
 import vid.automation.test.infra.Wait;
-import vid.automation.test.model.User;
 import vid.automation.test.sections.PnfSearchAssociationPage;
 import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
-import vid.automation.test.services.UsersService;
-
-import java.io.IOException;
 
 public class AssociatePnfTest extends VidBaseTestCase {
 
-    private UsersService usersService = new UsersService();
     private VidBasePage vidBasePage = new VidBasePage();
     private ViewEditPage viewEditPage = new ViewEditPage();
     private PnfSearchAssociationPage pnfSearchAssociationPage =  new PnfSearchAssociationPage();
@@ -29,21 +21,18 @@ public class AssociatePnfTest extends VidBaseTestCase {
     private String pnfInstanceName = "MX_960-F722";
     private String pnfModelName = "pnf 0";
 
-    public AssociatePnfTest() throws IOException { }
-    //work with Simulator & asdc client
     @Test
     public void testAssociatePnf() throws Exception {
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.associatePnf();
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
-        relogin(user.credentials);
+
         goToExistingInstanceById(serviceInstanceId);//vid-test-444
         addPNF(pnfModelName);//vid-test-444
         searchPNF(pnfInstanceName);
         testResultSearchPNF();
         associatePNF();
-        vidBasePage.assertMsoRequestModal("COMPLETE - Success");
+        vidBasePage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
         vidBasePage.clickCloseButton();
     }
 
@@ -52,8 +41,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.associatePnfError();
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
-        relogin(user.credentials);
+
         goToExistingInstanceById(serviceInstanceId);
         addPNF(pnfModelName);
         searchPNF(pnfInstanceName);
@@ -66,8 +54,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.associatePnfError();
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
-        relogin(user.credentials);
+
         goToExistingInstanceById(serviceInstanceId);
         String pnfName= "pnf 1";
         GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.ADD_VNF_BUTTON_TEST_ID, 60);
@@ -81,8 +68,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.associatePnfError();
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
-        relogin(user.credentials);
+
         goToExistingInstanceById(serviceInstanceId);
         addPNF(pnfModelName);
         searchPNF("AAAAA");
@@ -128,41 +114,41 @@ public class AssociatePnfTest extends VidBaseTestCase {
     private void checkServiceModelInfo() {
         Wait.angularHttpRequestsLoaded();
         //Service name
-        String elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.SERVIICE_NAME_KEY;
+        String elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.SERVIICE_NAME_KEY;
         String infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"Demo Service 1");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"Demo Service 1");
         //model name
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.MODEL_NAME;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.MODEL_NAME;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"Test Pnf");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"Test Pnf");
         //service instance name
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.SERVICE_INSTANCE_NAME;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.SERVICE_INSTANCE_NAME;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"vid-test-444");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"vid-test-444");
         //Model Invariant UUID
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.MODEL_INVARIANT_UUID;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.MODEL_INVARIANT_UUID;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"61eba322-c758-48f6-8942-1a7625aaaffb");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"61eba322-c758-48f6-8942-1a7625aaaffb");
         //ubscriber NameModel Invariant UUID
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.SUBSCRIBER_NAME_KEY;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.SUBSCRIBER_NAME_KEY;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"USP VOICE");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"USP VOICE");
         //Model Version
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.MODEL_VERSION;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.MODEL_VERSION;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"0.1");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"0.1");
         //Model UUID
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.MODEL_UUID;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.MODEL_UUID;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"089b1c03-ff6b-4914-8c20-a7de3d375e8d");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"089b1c03-ff6b-4914-8c20-a7de3d375e8d");
         //Model Customization UUID
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.MODEL_CUSTOMIZATION_UUID;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.MODEL_CUSTOMIZATION_UUID;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"cabf6d26-c362-4444-ba06-f850e8af2d35");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"cabf6d26-c362-4444-ba06-f850e8af2d35");
         //Resource Name
-        elementTestId = Constants.serviceModelInfo.INFO_TEST_ID_PREFIX + Constants.serviceModelInfo.RESOURCE_NAME;
+        elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.RESOURCE_NAME;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.serviceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,pnfModelName);
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,pnfModelName);
      }
 
     private void checkPnfProperties() {

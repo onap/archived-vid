@@ -1,0 +1,18 @@
+<aspectj>
+    <aspects>
+        <aspect name="com.att.automation.common.report_portal_integration.aspects.StepAspects"/>
+        <aspect name="com.att.automation.common.report_portal_integration.aspects.WebDriverAspects"/>
+        <aspect name="com.att.automation.common.report_portal_integration.aspects.AssertAspects"/>
+        <aspect name="com.att.automation.common.report_portal_integration.aspects.WireMockAspects"/>
+        <aspect name="com.att.automation.common.report_portal_integration.aspects.RestAssuredAspects"/>
+        <aspect name="com.att.automation.common.report_portal_integration.aspects.ReportPortalAspects"/>
+        <aspect name="com.att.automation.common.report_portal_integration.aspects.LatticeAspects"/>
+    </aspects>
+    <weaver options="-Xset:weaveJavaxPackages=true -warn:none -Xlint:ignore">
+        <include within="vid.automation..*"/>
+        <include within="org.opencomp..*"/>
+        <include within="com.att.automation..*"/>
+        <include within="com.epam..*"/>
+        <include within="org.testng.TestNG"/>
+    </weaver>
+</aspectj>

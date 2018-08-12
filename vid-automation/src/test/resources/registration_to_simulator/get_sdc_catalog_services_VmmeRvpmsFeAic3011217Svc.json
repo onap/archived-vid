@@ -1,0 +1,38 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v./catalog/services/245562de-3984-49ef-a708-6c9d7cfcabd1/toscaModel"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "file": "service-VmmeRvpmsFeAic3011217Svc-csar.csar.zip"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/245562de-3984-49ef-a708-6c9d7cfcabd1/metadata"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "responseHeaders": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "uuid": "245562de-3984-49ef-a708-6c9d7cfcabd1",
+        "invariantUUID": "124216d6-71d0-41c8-ac81-0c5acfee514a",
+        "name": "vMMEvProbe_FE_AIC3-11.2.1_VF",
+        "version": "1.0",
+        "toscaModelURL": "./service-VmmeRvpmsFeAic3011217Svc-csar.csar.zip",
+        "category": "Application L4+",
+        "lifecycleState": "CERTIFIED",
+        "lastUpdaterUserId": "rg276b",
+        "lastUpdaterFullName": null,
+        "distributionStatus": "DISTRIBUTED",
+        "artifacts": null,
+        "resources": null
+      }
+    }
+  }
+]

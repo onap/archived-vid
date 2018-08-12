@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/serviceInstances/v6/f36f5734-e9df-4fbf-9f35-61be13f028a1/removeRelationships"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 404,
+    "body": ""
+  }
+}

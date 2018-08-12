@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/AIM Transport/service-instances/service-instance/f36f5734-e9df-4fbf-9f35-61be13f028a1"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": "{\"service-instance-id\":\"5e72ff6e-8bab-4ec7-bfc9-54f58c01a666\",\"service-instance-name\":\"MISVPN_TRANSPORT_00001\",\"service-type\":\"TRANSPORT\",\"service-role\":\"MISVPN\",\"environment-context\":\"General_Revenue-Bearing\",\"workload-context\":\"Production\",\"model-invariant-id\":\"6ffab618-bc86-46b4-bc8c-685ee48b316a\",\"model-version-id\":\"2f2ae06d-02e8-45ba-a54b-597f66830558\",\"resource-version\":\"1508513387222\",\"orchestration-status\":\"Active\",\"relationship-list\":{\"relationship\":[{\"related-to\":\"zone\",\"related-link\":\"/aai/v11/network/zones/zone/TAT37\",\"relationship-data\":[{\"relationship-key\":\"zone.zone-id\",\"relationship-value\":\"TAT37\"}],\"related-to-property\":[{\"property-key\":\"zone.zone-name\",\"property-value\":\"TESAAISD-TAT37\"}]},{\"related-to\":\"pnf\",\"related-link\":\"/aai/v11/network/pnfs/pnf/tesaaisdgraclz1a1\",\"relationship-data\":[{\"relationship-key\":\"pnf.pnf-name\",\"relationship-value\":\"tesaaisdgraclz1a1\"}]},{\"related-to\":\"pnf\",\"related-link\":\"/aai/v11/network/pnfs/pnf/tesai371ve2\",\"relationship-data\":[{\"relationship-key\":\"pnf.pnf-name\",\"relationship-value\":\"tesai371ve2\"}]}]}}"
+  }
+}

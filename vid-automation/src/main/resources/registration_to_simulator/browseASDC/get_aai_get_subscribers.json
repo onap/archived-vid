@@ -1,0 +1,35 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../business/customers",
+    "queryParams" :  {
+      "subscriber-type": [ "INFRA" ],
+      "depth": [ "0" ]
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "customer":[
+        {
+          "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+          "subscriber-name":"Mobility",
+          "subscriber-type":"INFRA",
+          "resource-version":"1494255056308"
+        },
+        {
+          "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fc",
+          "subscriber-name":"PACKET CORE",
+          "subscriber-type":"INFRA",
+          "resource-version":"1506548476111"
+        },
+        {
+          "global-customer-id":"e433710f-9217-458d-a79d-1c7aff376d89",
+          "subscriber-name":"USP VOICE",
+          "subscriber-type":"INFRA",
+          "resource-version":"1494254832007"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v./catalog/services/418f32e5-484a-4073-8fa9-fab7d497459f/toscaModel"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "file": "1707vidnf.zip"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/418f32e5-484a-4073-8fa9-fab7d497459f/metadata"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "responseHeaders": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "uuid": "418f32e5-484a-4073-8fa9-fab7d497459f",
+        "invariantUUID": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+        "name": "1707vidnf",
+        "version": "9.0",
+        "toscaModelURL": "./1707vidnf.zip",
+        "category": "Mobility",
+        "lifecycleState": "CERTIFIED",
+        "lastUpdaterUserId": "ar1190",
+        "lastUpdaterFullName": "ARIEL RUBINSTEIN",
+        "distributionStatus": "DISTRIBUTED",
+        "artifacts": null,
+        "resources": null
+      }
+    }
+  }
+]

@@ -1,0 +1,7 @@
+﻿﻿payload,request-parameters,,,vnf-name,ibcx0099v
+payload,request-parameters,[vm],,vm-name,ibcx0001vm001
+payload,request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm001dbg001
+payload,request-parameters,[vm],[vnfc],vnfc-function-code,dbg
+payload,request-parameters,[vm],,vm-name,ibcx0001vm002
+payload,request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm002dbg001
+payload,configuration-parameters,,,node0_hostname,dbtx0001vm001
