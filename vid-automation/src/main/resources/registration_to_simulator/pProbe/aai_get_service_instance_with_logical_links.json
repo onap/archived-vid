@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v11/business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL+USP/service-instances/service-instance/3f93c7cb-2fd0-4557-9514-e189b7b04f9d"
+    "path": "/aai/v../business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL.USP/service-instances/service-instance/3f93c7cb-2fd0-4557-9514-e189b7b04f9d"
   } ,
   "simulatorResponse": {
     "responseCode": 200,

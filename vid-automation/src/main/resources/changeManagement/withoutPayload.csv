@@ -1,0 +1,14 @@
+﻿request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm001dbg001
+request-parameters,[vm],[vnfc],vnfc-function-code,dbg
+request-parameters,[vm],[vnfc],vnfc-type,DBE-VM #1
+request-parameters,[vm],[vnfc],group-notation,ibcx0001vm001dbg001pair
+request-parameters,[vm],[vnfc],ipaddress-v4-oam-vip,135.21.166.39
+request-parameters,[vm],,vm-name,ibcx0001vm002
+request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm002dbg001
+request-parameters,[vm],[vnfc],vnfc-function-code,dbg
+request-parameters,[vm],[vnfc],vnfc-type,DBE-VM #1
+request-parameters,[vm],[vnfc],group-notation,ibcx0001vm001dbg001pair
+configuration-parameters,,,rg_vpn2infra_static_route_next_hop2,192.168.1.5
+configuration-parameters,,,rg_vpn2infra_static_route_name3,64.181.12.1/32
+configuration-parameters,,,rg_vpn2infra_static_route_next_hop3,192.168.1.5
+,,,,,

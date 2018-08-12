@@ -1,31 +1,90 @@
-{
-  "users": {
-    "readonly": {
-      "credentials": {
-        "userId": "2",
-        "password": "2"
-      },
-      "subscribers": null,
-      "serviceTypes": null,
-      "tenants": null
-    },
-    "uspVoiceVirtualUsp": {
-      "credentials": {
-        "userId": "1",
-        "password": "1"
-      },
-      "subscribers": ["e433710f-9217-458d-a79d-1c7aff376d89"],
-      "serviceTypes": ["VIRTUAL USP"],
-      "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
-    },
-    "mobilityMobility": {
-      "credentials": {
-        "userId": "3",
-        "password": "3"
-      },
-      "subscribers": ["a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"],
-      "serviceTypes": ["Mobility"],
-      "tenants": null
+    {
+      "users": {
+        "readonly": {
+          "credentials": {
+            "userId": "2",
+            "password": "2"
+          },
+          "serviceTypes": null,
+          "tenants": null
+        },
+        "uspVoiceVirtualUsp": {
+          "credentials": {
+            "userId": "1",
+            "password": "1"
+          },
+          "roles": ["USP VOICE___VIRTUAL USP", "MSO_1610_ST___MSO-dev-service-type", "MSO_1610_ST___VIRTUAL USP"],
+          "subscriberNames": ["USP VOICE", "MSO_1610_ST"],
+          "serviceTypes": ["VIRTUAL USP", "MSO-dev-service-type"],
+          "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
+        },
+        "mobilityMobility": {
+          "credentials": {
+            "userId": "3",
+            "password": "3"
+          },
+          "roles": ["Mobility___Mobility"],
+          "subscriberNames": ["Mobility"],
+          "serviceTypes": ["Mobility"],
+          "tenants": ["c630e297a3ae486497d63eacec1d7c14", "d3b49834f7164cbe831bfbfa35ef649b"]
+        },
+        "FIREWALL_AIM_Trans": {
+           "credentials": {
+             "userId": "667",
+             "password": "667"
+           },
+           "roles": ["FIREWALL/MISC___AIM Transport"],
+           "subscriberNames": ["FIREWALL/MISC"],
+           "serviceTypes": ["AIM Transport"],
+           "tenants": null
+         },
+        "mobilityVMMSC": {
+          "credentials": {
+            "userId": "4",
+            "password": "4"
+          },
+          "roles": ["Mobility___vMMSC", "Mobility___vFlowLogic"],
+          "subscriberNames": ["Mobility"],
+          "serviceTypes": ["vMMSC", "vFlowLogic"],
+          "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
+        },
+        "Porfirio Gerhardt": {
+          "credentials": {
+            "userId": "822",
+            "password": "822"
+          },
+          "roles": [
+            "PACKET CORE___Mobility",
+            "PACKET CORE___vFlowLogic"
+
+          ],
+          "subscriberNames": ["PACKET CORE"],
+          "serviceTypes": ["Mobility", "vFlowLogic"],
+          "tenants": null
+        },
+        "Mobility vFlowLogic": {
+          "credentials": {
+            "userId": "321",
+            "password": "312"
+          },
+          "roles": [
+            "Mobility___vFlowLogic"
+          ],
+          "subscriberNames": ["Mobility"],
+          "serviceTypes": ["vFlowLogic"],
+          "tenants": null
+        },
+        "Mobility_with_tenant" : {
+          "credentials": {
+            "userId": "321",
+            "password": "312"
+          },
+          "roles": [
+            "Mobility___vMMSC___test-mtn6-09"
+          ],
+          "subscriberNames": ["Mobility"],
+          "serviceTypes": ["vFlowLogic"],
+          "tenants": null
+        }
+      }
     }
-  }
-}

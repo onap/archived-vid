@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v12/network/logical-links/logical-link/tesai371ve2:ae10|tesaaisdgraclz1a1:po100"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": "{\"link-name\":\"tesai371ve2:ae10|tesaaisdgraclz1a1:po100\",\"in-maint\":false,\"link-type\":\"LAG\",\"resource-version\":\"1508364831589\",\"relationship-list\":{\"relationship\":[{\"related-to\":\"lag-interface\",\"related-link\":\"/aai/v11/network/pnfs/pnf/tesaaisdgraclz1a1/lag-interfaces/lag-interface/po100\",\"relationship-data\":[{\"relationship-key\":\"pnf.pnf-name\",\"relationship-value\":\"tesaaisdgraclz1a1\"},{\"relationship-key\":\"lag-interface.interface-name\",\"relationship-value\":\"po100\"}]},{\"related-to\":\"service-instance\",\"related-link\":\"/aai/v11/business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/MISVPN%20Transport/service-instances/service-instance/5e72ff6e-8bab-4ec7-bfc9-54f58c01a666\",\"relationship-data\":[{\"relationship-key\":\"customer.global-customer-id\",\"relationship-value\":\"31739f3e-526b-11e6-beb8-9e71128cae77\"},{\"relationship-key\":\"service-subscription.service-type\",\"relationship-value\":\"MISVPN Transport\"},{\"relationship-key\":\"service-instance.service-instance-id\",\"relationship-value\":\"5e72ff6e-8bab-4ec7-bfc9-54f58c01a666\"}],\"related-to-property\":[{\"property-key\":\"service-instance.service-instance-name\",\"property-value\":\"MISVPN_TRANSPORT_00001\"}]},{\"related-to\":\"lag-interface\",\"related-link\":\"/aai/v11/network/pnfs/pnf/tesai371ve2/lag-interfaces/lag-interface/ae10\",\"relationship-data\":[{\"relationship-key\":\"pnf.pnf-name\",\"relationship-value\":\"tesai371ve2\"},{\"relationship-key\":\"lag-interface.interface-name\",\"relationship-value\":\"ae10\"}]}]}}"
+  }
+}

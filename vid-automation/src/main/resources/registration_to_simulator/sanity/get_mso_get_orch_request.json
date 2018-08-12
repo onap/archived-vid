@@ -1,0 +1,10 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/mso/orchestrationRequests/v./c0011670-0e1a-4b74-945d-8bf5aede1d9c"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {"request":{"requestId":"c0011670-0e1a-4b74-945d-8bf5aede1d9c","startTime":"Mon, 11 Dec 2017 07:27:49 GMT","requestScope":"service","requestType":"createInstance","instanceReferences":{"serviceInstanceId":"f8791436-8d55-4fde-b4d5-72dd2cf13cfb","serviceInstanceName":"asdfasdf234234asdf","requestorId":"il883e"},"requestStatus":{"requestState":"COMPLETE","statusMessage":"Service Instance was created successfully.","percentProgress":100,"finishTime":"Mon, 11 Dec 2017 07:27:53 GMT"}}}
+  }
+}

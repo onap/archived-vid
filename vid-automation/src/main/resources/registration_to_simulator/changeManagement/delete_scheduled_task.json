@@ -1,0 +1,9 @@
+{
+  "simulatorRequest": {
+    "method": "DELETE",
+    "path": "/scheduler/v1/ChangeManagement/schedules/<SCHEDULE_ID>"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 204
+  }
+}

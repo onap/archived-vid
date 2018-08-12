@@ -10,7 +10,7 @@ import vid.automation.test.model.Service;
 public class CreateNewInstancePage extends VidBasePage {
 
     public CreateNewInstancePage clickCloseButton() {
-        GeneralUIUtils.clickOnElementByTestId(Constants.BrowseASDC.MSO_COMMIT_DIALOG_CLOSE_BUTTON, 30);
+        GeneralUIUtils.clickOnElementByTestId(Constants.MSO_COMMIT_DIALOG_CLOSE_BUTTON, 30);
         return this;
     }
 

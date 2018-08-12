@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v12/cloud-infrastructure/operational-environments"
+    "path": "/aai/v../cloud-infrastructure/operational-environments"
   } ,
   "simulatorResponse": {
     "responseCode": 200,
@@ -27,7 +27,7 @@
               ],
               "related-to-property": [
                 {
-                  "property-key": "operational-environment.operational-name",
+                  "property-key": "operational-environment.operational-environment-name",
                   "property-value": "Name of the ECOMP Operational Environment"
                 }
               ]
@@ -56,7 +56,7 @@
               ],
               "related-to-property": [
                 {
-                  "property-key": "operational-environment.operational-name",
+                  "property-key": "operational-environment.operational-environment-name",
                   "property-value": "Name of the ECOMP Operational Environment"
                 }
               ]

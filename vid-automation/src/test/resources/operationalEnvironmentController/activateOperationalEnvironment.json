@@ -1,0 +1,13 @@
+{
+  "relatedInstanceId": "1117887f-068f-46d7-9e43-9b73bef17af8",
+  "relatedInstanceName": "managing ECOMP Operational Environment",
+  "workloadContext": "VNF_E2E-IST",
+  "manifest": {
+    "serviceModelList": [
+      {
+        "serviceModelVersionId": "6fad4be0-a433-42f3-ba24-e1cfaf3ada72",
+        "recoveryAction": "retry"
+      }
+    ]
+  }
+}

@@ -32,7 +32,7 @@
                   ],
                   "related-to-property": [
                     {
-                      "property-key": "operational-environment.operational-name",
+                      "property-key": "operational-environment.operational-environment-name",
                       "property-value": "Name of the ECOMP Operational Environment"
                     }
                   ]
@@ -61,7 +61,7 @@
                   ],
                   "related-to-property": [
                     {
-                      "property-key": "operational-environment.operational-name",
+                      "property-key": "operational-environment.operational-environment-name",
                       "property-value": "Name of the ECOMP Operational Environment"
                     }
                   ]
@@ -90,7 +90,7 @@
                   ],
                   "related-to-property": [
                     {
-                      "property-key": "operational-environment.operational-name",
+                      "property-key": "operational-environment.operational-environment-name",
                       "property-value": "Name of the ECOMP Operational Environment"
                     }
                   ]

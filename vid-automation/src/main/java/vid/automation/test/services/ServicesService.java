@@ -3,7 +3,10 @@ package vid.automation.test.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openecomp.sdc.ci.tests.utilities.FileHandling;
 import vid.automation.test.model.Service;
+import vid.automation.test.model.ServiceModel;
+import vid.automation.test.model.ServiceModelsList;
 import vid.automation.test.model.ServicesObject;
+import vid.automation.test.utils.ReadFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,13 +17,14 @@ import java.util.HashMap;
  */
 public class ServicesService {
     private HashMap<String, Service> services;
+    private HashMap<String, ServiceModel> serviceModels;
 
-    public ServicesService() throws IOException {
+    public ServicesService() {
         services = getServicesFromJson();
-
+        serviceModels = getServiceInstancesFromJson();
     }
 
-    HashMap<String, Service> getServicesFromJson() throws IOException {
+    HashMap<String, Service> getServicesFromJson() {
         String fileName = "services";
         ObjectMapper mapper = new ObjectMapper();
         ServicesObject servicesObject;
@@ -41,7 +45,15 @@ public class ServicesService {
         }
     }
 
+    HashMap<String, ServiceModel> getServiceInstancesFromJson() {
+        return ReadFile.getJsonFile("serviceModels", ServiceModelsList.class).serviceModels;
+    }
+
     public Service getService(String serviceId) {
         return services.get(serviceId);
+    }
+
+    public ServiceModel getServiceModel(String modelUUID) {
+        return (ServiceModel) serviceModels.get(modelUUID);
     }
 }

@@ -1,0 +1,24 @@
+{
+  "requestDetails": {
+    "modelInfo": {
+      "modelType": "service",
+      "modelInvariantId": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+      "modelVersionId": "5c9e863f-2716-467b-8799-4a67f378dcaa",
+      "modelName": "AIM_TRANSPORT_00004",
+      "modelVersion": "1.0"
+    },
+    "requestInfo": {
+      "source": "VID",
+      "requestorId": "1"
+    },
+    "requestParameters": {
+      "userParams": [
+        {
+          "name": "ABC11",
+          "value": "someValue"
+        }
+      ]
+    }
+  }
+}
+

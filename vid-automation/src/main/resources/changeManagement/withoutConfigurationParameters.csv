@@ -1,0 +1,44 @@
+﻿payload,request-parameters,,,vnf-name,ibcx0099v
+payload,request-parameters,,,vnf-host-ip-address,135.99.99.00
+payload,request-parameters,,,vnf-type,vUSP - vDBE-IPX HUB
+payload,request-parameters,[vm],,vm-name,ibcx0001vm001
+payload,request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm001dbg001
+payload,request-parameters,[vm],[vnfc],vnfc-function-code,dbg
+payload,request-parameters,[vm],[vnfc],vnfc-type,DBE-VM #1
+payload,request-parameters,[vm],[vnfc],group-notation,ibcx0001vm001dbg001pair
+payload,request-parameters,[vm],[vnfc],ipaddress-v4-oam-vip,135.21.166.39
+payload,request-parameters,[vm],,vm-name,ibcx0001vm002
+payload,request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm002dbg001
+payload,request-parameters,[vm],[vnfc],vnfc-function-code,dbg
+payload,request-parameters,[vm],[vnfc],vnfc-type,DBE-VM #1
+payload,request-parameters,[vm],[vnfc],group-notation,ibcx0001vm001dbg001pair
+,,,,,
+payload,request-parameters,,,template-name,vdbe_template1
+payload,configuration,,,configuration-string,"   <configuration xmlns=""http://xml.juniper.net/xnm/1.1/xnm"" 
+    xmlns:a=""http://xml.juniper.net/junos/15.1X49/junos"" >
+            <version>15.1X49-D50.3</version>
+            <groups>
+                <name>node0</name>
+                <system>
+                    <host-name>$node0_hostname</host-name>
+                    <backup-router>
+                        <address>$node0_backup_router_address</address>
+                        <destination>0.0.0.0/0</destination>
+             </backup-router>
+                </system>
+     </groups>
+    </configuration>"
+payload,configuration,,,configuration-json,"{
+   ""version"": ""15.1X49-D50.3"",
+   ""groups"": {
+      ""name"": ""node0"",
+      ""system"": {
+         ""host-name"": ""$node0_hostname"",
+         ""backup-router"": {
+            ""address"": ""$node0_backup_router_address"",
+            ""destination"": ""0.0.0.0/0""
+         }
+      }
+   }
+}"
+,,,,,

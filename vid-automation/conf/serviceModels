@@ -1,0 +1,38 @@
+{ "serviceModels": {
+    "959a7ba0-89ee-4984-9af6-65d5bdda4b0e": {
+        "serviceName":	"ServicevMMSCPID298109",
+        "subscriberName": "Mobility",
+        "serviceInstanceName": "ggghhh",
+        "modelName": "VSP1710PID298109_vMMSC",
+        "modelInvariantUuid":	"e7961100-cde6-4b5a-bcda-b8945086950a",
+        "modelVersion": "1.0",
+        "modelUuid": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
+        "modelCustomizationUuid":	"6b8fc7dc-2db1-4283-a222-b07d10595495",
+        "resourceName": "VSP1710PID298109_vMMSC 0",
+        "nfType": "MOBILITY MESSAGING",
+        "nfRole": "VMMSC",
+        "nfFunction": "Multimedia Message Service Center",
+        "nfNamingCode": "MMSC"
+  },
+     "d205e01d-e5da-4e68-8c52-f95cb0607959": {
+          "serviceName":	"ServicevMMSCPID298109",
+          "subscriberName": "Mobility",
+          "serviceInstanceName": "ggghhh",
+          "modelName": "Vsp1710pid298109Vmmsc..mmsc_mod1_ltm..module-8",
+          "modelInvariantUuid":	"d9f9c851-9543-476e-b3c2-a2e5284a26aa",
+          "modelVersion": "1",
+          "modelUuid": "d205e01d-e5da-4e68-8c52-f95cb0607959",
+          "modelCustomizationUuid":	"e81b58ce-ae9b-4bde-9f81-9962a5007756"
+   },
+      "13f022c4-651e-4326-b8e1-61e9a8c7a7ad": {
+             "serviceName":	"ServicevMMSCPID298109",
+             "subscriberName": "Mobility",
+             "serviceInstanceName": "ggghhh",
+             "modelName": "Vsp1710pid298109Vmmsc..mmsc_mod6_eca_oam..module-3",
+             "modelInvariantUuid":	"6931e88a-fbcc-4ca9-8583-876b669c3106",
+             "modelVersion": "1",
+             "modelUuid": "13f022c4-651e-4326-b8e1-61e9a8c7a7ad",
+             "modelCustomizationUuid":  "020af091-cc66-46db-876c-02f14b4a795f"
+        }
+      }
+}

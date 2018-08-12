@@ -2,8 +2,13 @@ package vid.automation.test.infra;
 
 import org.junit.Assert;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -35,10 +40,24 @@ public class Click {
         elements.get(0).click();
     }
 
+    public static void byXpath(String xpath) {
+        WebElement element = Get.byXpath(xpath);
+        Assert.assertNotNull(element);
+        element.click();
+    }
+
+
     public static void onFirstSelectOptionById(String id) {
         Select selectlist = new Select(Get.byId(id));
         if(selectlist.getOptions().size() > 1) {
             selectlist.selectByIndex(1);
+        }
+    }
+
+    public static void onFirstSelectOptionByTestId(String dataTestId) {
+        Select selectList = new Select(Get.byTestId(dataTestId));
+        if(selectList.getOptions().size() > 1) {
+            selectList.selectByIndex(1);
         }
     }
 
@@ -50,5 +69,18 @@ public class Click {
                 selectlist.selectByIndex(1);
             }
         });
+    }
+
+    public static void byClassAndVisibleText(String className, String text ) {
+        WebElement element = Get.byClassAndText(className, text);
+        element.click();
+    }
+
+
+
+    public static void acceptAlert() {
+        Alert alert = GeneralUIUtils.getDriver().switchTo().alert();
+        Assert.assertTrue(alert != null);
+        alert.accept();
     }
 }

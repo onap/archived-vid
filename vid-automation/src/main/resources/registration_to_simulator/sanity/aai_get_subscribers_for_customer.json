@@ -1,0 +1,734 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+    "queryParams": {
+      "depth": 2
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "global-customer-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "subscriber-name": "FIREWALL/MISC",
+      "subscriber-type": "INFRA",
+      "resource-version": "1494001772223",
+      "service-subscriptions": {
+        "service-subscription": [
+          {
+            "service-type": "VDNS",
+            "resource-version": "1494001850040",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "d69c6add-c114-4dd8-9bfc-bb51c7989e93",
+                  "service-instance-name": "test123",
+                  "model-invariant-id": "c73dd832-d1eb-4c3a-bd04-00353c032209",
+                  "model-version-id": "f9253bf0-3b74-4f6b-a966-697bc599691c",
+                  "resource-version": "1494002069377"
+                },
+                {
+                  "service-instance-id": "9caf5581-40ab-47be-b1f1-909a87724add",
+                  "service-instance-name": "vidfirewallvdnstest",
+                  "model-invariant-id": "732263bd-0655-428d-a347-d65676d1a949",
+                  "resource-version": "1494002023060"
+                },
+                {
+                  "service-instance-id": "916538e5-91d2-45f2-a0b4-2b1804361262",
+                  "service-instance-name": "test5645543454",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "240376de-870e-48df-915a-31f140eedd2c",
+                  "resource-version": "1499866361973",
+                  "orchestration-status": "Active"
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "VNTPS",
+            "resource-version": "1494001936936",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "99deef90-f034-438d-949c-069c22558657",
+                  "service-instance-name": "Lital-S-1707094-VID",
+                  "model-invariant-id": "331a194d-9248-4533-88bc-62c812ccb5c1",
+                  "model-version-id": "171b3887-e73e-479d-8ef8-2690bf74f2aa",
+                  "resource-version": "1500880984100",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "14cbb92e-1ba6-46a6-893c-05f817ea81ec",
+                  "service-instance-name": "MobilityServer_Instance10-26",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "1e34a014-6fd9-4b1c-9038-b2b885b93143",
+                  "model-version-id": "8a380513-8a3e-4603-8558-67c1c7231e66",
+                  "resource-version": "1509049693156",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "owning-entity",
+                        "related-link": "/aai/v11/business/owning-entities/owning-entity/3215397d-435d-4892-8e4f-7321a4269a16",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "3215397d-435d-4892-8e4f-7321a4269a16"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "47e0d120-0b7f-412c-9e5b-e26cfdc3b656",
+                  "service-instance-name": "Lital-Test-VID-Service",
+                  "model-invariant-id": "41543dd0-43c5-4346-bc52-d9883566d9aa",
+                  "model-version-id": "420731a2-72f2-4786-9ba1-fd94f19a81cf",
+                  "resource-version": "1500795793085",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "5d521981-33be-4bb5-bb20-5616a9c52a5a",
+                  "service-instance-name": "dfgh",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "331a194d-9248-4533-88bc-62c812ccb5c1",
+                  "model-version-id": "171b3887-e73e-479d-8ef8-2690bf74f2aa",
+                  "resource-version": "1508832105498",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "related-link": "/aai/v11/business/projects/project/Nimbus",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Nimbus"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "related-link": "/aai/v11/business/owning-entities/owning-entity/4d4ecf59-41f1-40d4-818d-885234680a42",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "4d4ecf59-41f1-40d4-818d-885234680a42"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "VCDN",
+            "resource-version": "1494001943182"
+          },
+          {
+            "service-type": "MISVPN Transport",
+            "resource-version": "1505859178418",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "4ea864f2-b946-473a-b51c-51a7c10b8391",
+                  "service-instance-name": "shaniiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1508226188903",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "related-link": "/aai/v11/business/projects/project/project1",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "project1"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "related-link": "/aai/v11/business/owning-entities/owning-entity/f160c875-ddd1-4ef5-84d8-d098784daa3a",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "f160c875-ddd1-4ef5-84d8-d098784daa3a"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "related-link": "/aai/v11/network/generic-vnfs/generic-vnf/a0032f81-53e1-41f6-bc1a-de91ce1009f3",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "a0032f81-53e1-41f6-bc1a-de91ce1009f3"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "adding_VNF"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "8b1b8793-467d-4e5b-9ff4-06abb40ec841",
+                  "service-instance-name": "fgghgyy_shani",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "5b9c0f33-eec1-484a-bf77-736a6644d7a8",
+                  "model-version-id": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6",
+                  "resource-version": "1510817054514",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "owning-entity",
+                        "related-link": "/aai/v11/business/owning-entities/owning-entity/2356a43d-ed56-43b6-aefc-8391b82588c9",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "2356a43d-ed56-43b6-aefc-8391b82588c9"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "928d5560-4526-4721-8703-bcfc65177067",
+                  "service-instance-name": "ServicePnf_30",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "43596836-ae36-4608-a987-6608ede10dac",
+                  "model-version-id": "7fe0b7d7-8f20-4981-a4df-1fc3318defcc",
+                  "resource-version": "1510827189590",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/928d5560-4526-4721-8703-bcfc65177067/service-data/service-topology/",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "08a1a701-608f-4ac0-bc53-ba89dc2b06b2",
+                  "service-instance-name": "ServicePnf_28",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "43596836-ae36-4608-a987-6608ede10dac",
+                  "model-version-id": "7fe0b7d7-8f20-4981-a4df-1fc3318defcc",
+                  "resource-version": "1510673823477",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/08a1a701-608f-4ac0-bc53-ba89dc2b06b2/service-data/service-topology/",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "15477731-6cd4-417f-bcc3-f4ed63c2e452",
+                  "service-instance-name": "s4anity",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "5b9c0f33-eec1-484a-bf77-736a6644d7a8",
+                  "model-version-id": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6",
+                  "resource-version": "1509889804126",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "owning-entity",
+                        "related-link": "/aai/v11/business/owning-entities/owning-entity/e8016bed-4740-4bd3-a591-96f8788766ae",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "e8016bed-4740-4bd3-a591-96f8788766ae"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "fafbf383-a04c-4a70-93ea-901582ca199b",
+                  "service-instance-name": "verten",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "87439333-fe61-4b09-8475-f2ced53d425b",
+                  "resource-version": "1508995251487",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "owning-entity",
+                        "related-link": "/aai/v11/business/owning-entities/owning-entity/4b65b294-1eb8-47ba-bd80-356004d4f0ed",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "4b65b294-1eb8-47ba-bd80-356004d4f0ed"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm3/tenants/tenant/0c48431cea8c460c998f57ed91515293",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "att-aic"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "rdm3"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "0c48431cea8c460c998f57ed91515293"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "sanity_test_tenant-746626838"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "AIM Transport",
+            "resource-version": "1505859153563",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "c4743f14-1738-4d16-8773-1cfbe0c76c9b",
+                  "service-instance-name": "ShaniService2",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "713783d5-9e21-49c5-86f1-77dc331586a2",
+                  "model-version-id": "a50a43bb-4ac8-410c-acf3-c30aa39dd109",
+                  "resource-version": "1506438228686",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "000ef706-dc5b-4d3c-afc6-160b0474f2ef",
+                  "service-instance-name": "version1",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "713783d5-9e21-49c5-86f1-77dc331586a2",
+                  "model-version-id": "a50a43bb-4ac8-410c-acf3-c30aa39dd109",
+                  "resource-version": "1506436202840",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "f36f5734-e9df-4fbf-9f35-61be13f028a2",
+                  "service-instance-name": "AIM_TRANSPORT_00014",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "b6614ae6-e52d-44ed-9932-aae697624543",
+                  "resource-version": "1509397929011",
+                  "orchestration-status": "Created",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "zone",
+                        "related-link": "/aai/v11/network/zones/zone/ABC15",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "zone.zone-id",
+                            "relationship-value": "ABC15"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "zone.zone-name",
+                            "property-value": "AAITESAN-ABC15"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "logical-link",
+                        "related-link": "/aai/v11/network/logical-links/logical-link/SANITY7656cce9%3ALAG2295%7CSANITY7686cce9%3ALAG2264",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "logical-link.link-name",
+                            "relationship-value": "SANITY7656cce9:LAG2295|SANITY7686cce9:LAG2264"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "facfdfb3-174d-46a5-8a9f-8251f21ee5ea",
+                  "service-instance-name": "AIM_TRANSPORT_00003",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "b6614ae6-e52d-44ed-9932-aae697624543",
+                  "resource-version": "1509395666918",
+                  "orchestration-status": "Created"
+                },
+                {
+                  "service-instance-id": "f36f5734-e9df-4fbf-9f35-61be13f028a1",
+                  "service-instance-name": "AIM_TRANSPORT_00004",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "5c9e863f-2716-467b-8799-4a67f378dcaa",
+                  "resource-version": "1508330555658",
+                  "orchestration-status": "<ORCH_STATUS>",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "zone",
+                        "related-link": "/aai/v11/network/zones/zone/ABC11",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "zone.zone-id",
+                            "relationship-value": "ABC11"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "zone.zone-name",
+                            "property-value": "ATLSANAI-ABC11"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "logical-link",
+                        "related-link": "/aai/v11/network/logical-links/logical-link/SANITY6758cce9%3ALAG1992%7CSANITY6785cce9%3ALAG1961",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "logical-link.link-name",
+                            "relationship-value": "SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "logical-link",
+                        "related-link": "/aai/v11/network/logical-links/logical-link/SANITY6757cce9%3ALAG1989%7CSANITY6785cce9%3ALAG1958",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "logical-link.link-name",
+                            "relationship-value": "SANITY6757cce9:LAG1989|SANITY6785cce9:LAG1958"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "377f3202-e183-44a0-85e5-29a7e71603be",
+                  "service-instance-name": "AIM_TRANSPORT_00002",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "model-invariant-id": "100cbe0e-ceb2-41e9-8918-eab9f7aa05bd",
+                  "model-version-id": "32228134-a561-49ba-93af-735bc2d78e5e",
+                  "resource-version": "1508448142346",
+                  "orchestration-status": "PendingDelete"
+                },
+                {
+                  "service-instance-id": "f36f5734-e9df-4fbf-9f35-61be13f028a4",
+                  "service-instance-name": "AIM_TRANSPORT_00015",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "b6614ae6-e52d-44ed-9932-aae697624543",
+                  "resource-version": "1509470124946",
+                  "orchestration-status": "Created"
+                },
+                {
+                  "service-instance-id": "f36f5734-e9df-4fbf-9f35-61be13f028a5",
+                  "service-instance-name": "AIM_TRANSPORT_00017",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "b6614ae6-e52d-44ed-9932-aae697624543",
+                  "resource-version": "1509470281154",
+                  "orchestration-status": "Created",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "zone",
+                        "related-link": "/aai/v11/network/zones/zone/ABC15",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "zone.zone-id",
+                            "relationship-value": "ABC15"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "zone.zone-name",
+                            "property-value": "AAITESAN-ABC15"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "logical-link",
+                        "related-link": "/aai/v11/network/logical-links/logical-link/SANITY7658cce9%3ALAG2293%7CSANITY7685cce9%3ALAG2262",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "logical-link.link-name",
+                            "relationship-value": "SANITY7658cce9:LAG2293|SANITY7685cce9:LAG2262"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "f36f5734-e9df-4fbf-9f35-61be13f028a7",
+                  "service-instance-name": "AIM_TRANSPORT_00019",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "b6614ae6-e52d-44ed-9932-aae697624543",
+                  "resource-version": "1509470436456",
+                  "orchestration-status": "Created",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "zone",
+                        "related-link": "/aai/v11/network/zones/zone/ABC15",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "zone.zone-id",
+                            "relationship-value": "ABC15"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "zone.zone-name",
+                            "property-value": "AAITESAN-ABC15"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "logical-link",
+                        "related-link": "/aai/v11/network/logical-links/logical-link/SANITY7657cce9%3ALAG2289%7CSANITY7685cce9%3ALAG2258",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "logical-link.link-name",
+                            "relationship-value": "SANITY7657cce9:LAG2289|SANITY7685cce9:LAG2258"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "f36f5734-e9df-4fbf-9f35-61be13f028a3",
+                  "service-instance-name": "AIM_TRANSPORT_00015",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "b6614ae6-e52d-44ed-9932-aae697624543",
+                  "resource-version": "1509399074465",
+                  "orchestration-status": "Created",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "zone",
+                        "related-link": "/aai/v11/network/zones/zone/ABC15",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "zone.zone-id",
+                            "relationship-value": "ABC15"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "zone.zone-name",
+                            "property-value": "AAITESAN-ABC15"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "logical-link",
+                        "related-link": "/aai/v11/network/logical-links/logical-link/SANITY7656cce9%3ALAG2294%7CSANITY7686cce9%3ALAG2263",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "logical-link.link-name",
+                            "relationship-value": "SANITY7656cce9:LAG2294|SANITY7686cce9:LAG2263"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "181edf1e-725d-47af-ab3f-6b4e297032ab",
+                  "service-instance-name": "ServicePnf_26",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "43596836-ae36-4608-a987-6608ede10dac",
+                  "model-version-id": "7fe0b7d7-8f20-4981-a4df-1fc3318defcc",
+                  "resource-version": "1510673032572",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/181edf1e-725d-47af-ab3f-6b4e297032ab/service-data/service-topology/",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "facfdfb3-174d-46a5-8a9f-8251f21zz5yz",
+                  "service-instance-name": "AIM_TRANSPORT_00013",
+                  "service-type": "TRANSPORT",
+                  "service-role": "AIM",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb",
+                  "model-version-id": "b6614ae6-e52d-44ed-9932-aae697624543",
+                  "resource-version": "1509396039342",
+                  "orchestration-status": "Created"
+                },
+                {
+                  "service-instance-id": "4759b4f0-3350-40b0-9e06-2bebdacb21d8",
+                  "service-instance-name": "ServicePnf_27",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "43596836-ae36-4608-a987-6608ede10dac",
+                  "model-version-id": "7fe0b7d7-8f20-4981-a4df-1fc3318defcc",
+                  "resource-version": "1510673651875",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/4759b4f0-3350-40b0-9e06-2bebdacb21d8/service-data/service-topology/",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "1cc01b8b-7604-4fd3-8cb2-f01466407f76",
+                  "service-instance-name": "ServicePnf_29",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "43596836-ae36-4608-a987-6608ede10dac",
+                  "model-version-id": "7fe0b7d7-8f20-4981-a4df-1fc3318defcc",
+                  "resource-version": "1510826917947",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/1cc01b8b-7604-4fd3-8cb2-f01466407f76/service-data/service-topology/",
+                  "orchestration-status": "Active"
+                },
+                {
+                  "service-instance-id": "e67d0806-95c9-41a5-86a7-3920c1bdf69f",
+                  "service-instance-name": "dfgfgg",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+                  "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e",
+                  "resource-version": "1510817944682",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "related-link": "/aai/v11/business/projects/project/Nimbus",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Nimbus"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "related-link": "/aai/v11/business/owning-entities/owning-entity/ab18aa18-9644-441d-be6e-af6cadbc21ab",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "ab18aa18-9644-441d-be6e-af6cadbc21ab"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm3/tenants/tenant/0c48431cea8c460c998f57ed91515293",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "att-aic"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "rdm3"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "0c48431cea8c460c998f57ed91515293"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "sanity_test_tenant-746626838"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

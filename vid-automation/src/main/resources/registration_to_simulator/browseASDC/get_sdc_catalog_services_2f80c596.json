@@ -1,0 +1,38 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd/toscaModel"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "file": "2f80c596-instantiationTypeMacro.zip"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd/metadata"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "responseHeaders": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "uuid": "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
+        "invariantUUID": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+        "name": "action-data",
+        "version": "1.0",
+        "toscaModelURL": "./2f80c596.zip",
+        "category": "Mobility",
+        "lifecycleState": "CERTIFIED",
+        "lastUpdaterUserId": "rg276b",
+        "lastUpdaterFullName": null,
+        "distributionStatus": "DISTRIBUTED",
+        "artifacts": null,
+        "resources": null
+      }
+    }
+  }
+]

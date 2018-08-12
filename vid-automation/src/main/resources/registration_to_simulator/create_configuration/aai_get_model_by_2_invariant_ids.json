@@ -1,0 +1,300 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../service-design-and-creation/models",
+    "queryParams": {
+      "model-invariant-id": [
+        "51f2c559-1aba-4fd4-bbf9-8cbbef85ff2a",
+        "51f2c559-1aba-4fd4-bbf9-8cbbef85ff2a"
+      ],
+      "depth": [
+        "2"
+      ]
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "model": [
+        {
+          "model-invariant-id": "51f2c559-1aba-4fd4-bbf9-8cbbef85ff2a",
+          "model-type": "resource",
+          "resource-version": "1507472057666",
+          "model-vers": {
+            "model-ver": [
+              {
+                "model-version-id": "cb05b259-9f26-4b33-b96c-13c2c202c091",
+                "model-name": "vf_vEPDG",
+                "model-version": "2.0",
+                "model-description": "vEPDG",
+                "distribution-status": "DISTRIBUTION_COMPLETE_ERROR",
+                "resource-version": "1507649620979",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "ccbc6dc9-58ad-4082-a81f-630114d99a70",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1507649620982",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "related-link": "/aai/v11/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "related-link": "/aai/v11/service-design-and-creation/models/model/d661b5fd-e0be-457e-a5ca-e345621af761/model-vers/model-ver/6019af4d-1902-47b1-a7ee-4609c198bf37/model-elements/model-element/8cf71918-6cce-4e01-8049-3f980f8f2b00/model-elements/model-element/4703eeb3-7200-4546-aff2-6e942ac0c0e1",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "d661b5fd-e0be-457e-a5ca-e345621af761"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "6019af4d-1902-47b1-a7ee-4609c198bf37"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "8cf71918-6cce-4e01-8049-3f980f8f2b00"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "4703eeb3-7200-4546-aff2-6e942ac0c0e1"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "model-version-id": "eb5f56bf-5855-4e61-bd00-3e19a953bf02",
+                "model-name": "vf_vEPDG",
+                "model-version": "1.0",
+                "model-description": "vEPDG",
+                "resource-version": "1507472057702",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "18881687-8dab-4ec8-ab65-ebf8f95a6599",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1507472057707",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "related-link": "/aai/v11/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "related-link": "/aai/v11/service-design-and-creation/models/model/d661b5fd-e0be-457e-a5ca-e345621af761/model-vers/model-ver/de6f879b-37a9-44a5-97ed-cd52cc14bc47/model-elements/model-element/7a074be4-fcf1-46a5-88ee-41a7c7a6faab/model-elements/model-element/72f0adb5-5294-46f7-8085-a8aee9cb5f49",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "d661b5fd-e0be-457e-a5ca-e345621af761"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "de6f879b-37a9-44a5-97ed-cd52cc14bc47"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "7a074be4-fcf1-46a5-88ee-41a7c7a6faab"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "72f0adb5-5294-46f7-8085-a8aee9cb5f49"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "model-version-id": "b7f2e8fb-ac71-4ea0-a801-06ef1479ea84",
+                "model-name": "vf_vEPDG",
+                "model-version": "4.0",
+                "model-description": "vEPDG_Up",
+                "resource-version": "1508954433176",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "4ed7025a-d37b-444f-8008-5c7c41d76d47",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1508954433179",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "related-link": "/aai/v11/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "related-link": "/aai/v11/service-design-and-creation/models/model/d661b5fd-e0be-457e-a5ca-e345621af761/model-vers/model-ver/0e3f3390-48dd-4640-aed7-0eb873d40a97/model-elements/model-element/106d11a5-2b8c-4586-a56d-ee387e822757/model-elements/model-element/3d7e724a-6f05-4111-8b22-78d024c53081",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "d661b5fd-e0be-457e-a5ca-e345621af761"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "0e3f3390-48dd-4640-aed7-0eb873d40a97"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "106d11a5-2b8c-4586-a56d-ee387e822757"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "3d7e724a-6f05-4111-8b22-78d024c53081"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "model-version-id": "57aa616f-8713-443b-81eb-10c472efebcc",
+                "model-name": "vf_vEPDG",
+                "model-version": "5.0",
+                "model-description": "vEPDG_Up",
+                "resource-version": "1509570916147",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "49899999-076d-456b-915c-078d1b2a05b3",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1509570916150",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "related-link": "/aai/v11/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "related-link": "/aai/v11/service-design-and-creation/models/model/d661b5fd-e0be-457e-a5ca-e345621af761/model-vers/model-ver/03655348-0148-4482-b0b7-a5de71ab6264/model-elements/model-element/e97f008f-fc19-4b6e-8842-e54ec6eafb6e/model-elements/model-element/cfc574f2-6869-41d3-bfae-42b54b711568",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "d661b5fd-e0be-457e-a5ca-e345621af761"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "03655348-0148-4482-b0b7-a5de71ab6264"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "e97f008f-fc19-4b6e-8842-e54ec6eafb6e"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "cfc574f2-6869-41d3-bfae-42b54b711568"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

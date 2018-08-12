@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/ecomp/mso/infra/orchestrationRequests/v5/311cc766-b673-4a50-b9c5-471f68914586"
+    "path": "/mso/orchestrationRequests/v./311cc766-b673-4a50-b9c5-471f68914586"
   },
   "simulatorResponse": {
     "responseCode": 200,
