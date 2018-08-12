@@ -21,6 +21,23 @@
 		<docker.verbose>true</docker.verbose>
 	</properties>
 
+	<profiles>
+
+		<profile>
+			<id>docker-proxy</id>
+			<!-- activate profile if environment variable `http_proxy` is set -->
+			<activation>
+				<property>
+					<name>env.http_proxy</name>
+				</property>
+			</activation>
+			<properties>
+				<docker.buildArg.http_proxy>${env.http_proxy}</docker.buildArg.http_proxy>
+			</properties>
+		</profile>
+
+	</profiles>
+
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
