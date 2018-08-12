@@ -56,6 +56,20 @@
     </repository>
   </repositories>
 
+  <distributionManagement>
+				<repository>
+					<id>ecomp-releases</id>
+					<name>VID Release Repository</name>
+					<url>${nexusproxy}/${releaseNexusPath}</url>
+				</repository>
+				<snapshotRepository>
+					<id>ecomp-snapshots</id>
+					<name>VID Snapshot Repository</name>
+					<url>${nexusproxy}/${snapshotNexusPath}</url>
+				</snapshotRepository>
+
+  </distributionManagement>
+
   <profiles>
     <profile>
       <id>if-not-webpack</id>
