@@ -9,6 +9,7 @@ import org.mockserver.model.HttpResponse;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
+import org.mockserver.model.JsonBody;
 import org.openecomp.simulator.errorHandling.VidSimulatorException;
 import org.openecomp.simulator.model.SimulatorRequestResponseExpectation;
 import org.slf4j.Logger;
@@ -30,12 +31,13 @@ import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.matchers.Times.exactly;
@@ -50,6 +52,7 @@ public class SimulatorController {
     private String mockServerHost;
     private Integer mockServerPort;
     private Boolean enablePresetRegistration;
+    private volatile boolean isInitialized = false;
 
 
     Logger logger = LoggerFactory.getLogger(SimulatorController.class);
@@ -60,11 +63,14 @@ public class SimulatorController {
         setProperties();
         mockServer = startClientAndServer(mockServerPort);
         presetRegister();
+        isInitialized = true;
+        logger.info("VID Simulator started successfully");
     }
 
     @PreDestroy
     public void tearDown(){
         logger.info("Stopping VID Simulator....");
+        isInitialized = false;
         mockServer.stop();
     }
 
@@ -77,30 +83,34 @@ public class SimulatorController {
         }
         ClassLoader cl = this.getClass().getClassLoader();
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
-        Resource[] resources;
+        List<Path> resources = new ArrayList<>();
         try {
-            resources = resolver.getResources("/preset_registration/*.json");
+            File presetDir = resolver.getResource("/preset_registration/").getFile();
+            if (presetDir.exists() && presetDir.isDirectory()) {
+                resources = Files.walk(Paths.get(presetDir.getPath()))
+                        .filter(p -> p.toString().endsWith(".json"))
+                        .collect(Collectors.toList());
+            } else {
+                logger.error("preset_registration directory is not exists");
+            }
         } catch (IOException e) {
             logger.error("Error performing preset registration, error: ", e);
             return;
         }
-        logger.info("Starting preset registrations, number of requests: {}", resources.length);
-        for (Resource resource: resources){
-            File file;
+        logger.info("Starting preset registrations, number of requests: {}", resources.size());
+        for (Path resource: resources){
             String content;
             try {
-                file = resource.getFile();
-                content = new Scanner(file).useDelimiter("\\Z").next();
+                content = new Scanner(resource).useDelimiter("\\Z").next();
             } catch (IOException e){
-                logger.error("Error reading preset registration file {},skipping to next one. Error: ", resource.getFilename(), e);
+                logger.error("Error reading preset registration file {}, skipping to next one. Error: ", resource.getFileName(), e);
                 continue;
             }
-            //registrating the preset request
+            //register the preset request
             try {
                 register(content);
             } catch (VidSimulatorException e) {
-                logger.error("Error proceeding preset registration file {},skipping to next one. Check if the JSON is in correct format. Error: ", resource.getFilename(), e);
-                continue;
+                logger.error("Error proceeding preset registration file {},skipping to next one. Check if the JSON is in correct format. Error: ", resource.getFileName(), e);
             }
         }
     }
@@ -132,6 +142,11 @@ public class SimulatorController {
             return new ResponseEntity<>("Registration failure! Error: "+e.getMessage(),HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Registration successful!",HttpStatus.OK);
+    }
+
+    @RequestMapping(value = {"/echo"}, method = RequestMethod.GET)
+    ResponseEntity echo(HttpServletRequest request) {
+        return isInitialized ? new ResponseEntity<>("",HttpStatus.OK) : new ResponseEntity<>("",HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 //    @RequestMapping(value = {"/registerToVidSimulator"}, method = RequestMethod.GET)
@@ -179,12 +194,12 @@ public class SimulatorController {
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
         //TODO encode only characters like spaces, not slashes
-        try {
+       /* try {
             restOfTheUrl = URLEncoder.encode(restOfTheUrl, "UTF-8");
             restOfTheUrl = restOfTheUrl.replaceAll("%2F", "/");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
         StringBuilder sb = new StringBuilder();
         sb.append(mockServerProtocol+"://"+mockServerHost+":"+mockServerPort+"/"+restOfTheUrl);
@@ -240,7 +255,7 @@ public class SimulatorController {
         }
         String body = expectationModel.getSimulatorRequest().getBody();
         if (body != null) {
-            request.withBody(body);
+            request.withBody(new JsonBody(body));
         }
 
         //Queryparams

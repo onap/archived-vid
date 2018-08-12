@@ -1,8 +1,8 @@
 {
   "simulatorRequest": {
     "method": "PUT",
-    "path": "/aai/query",
-    "body": "{\"start\" : \"service-design-and-creation\/models\/\", \"query\" : \"query\/servceModelsbyDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}",
+    "path": "/aai/v../query",
+    "body": "{\"start\" : \"service-design-and-creation\/models\/\", \"query\" : \"query\/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}",
     "queryParams": {
       "format": [
         "resource"
@@ -69,6 +69,20 @@
                   "model-version-id": "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
                   "model-name": "action-data",
                   "model-version": "1.0",
+                  "model-description": "decontamination arm circus ammonia hump edge",
+                  "resource-version": "1500137463984"
+                },
+                {
+                  "model-version-id": "2590c596-27e5-4ca9-b5bb-e03a7fd4c0fc",
+                  "model-name": "action-data",
+                  "model-version": "3.0",
+                  "model-description": "decontamination arm circus ammonia hump edge",
+                  "resource-version": "1500137463984"
+                },
+                {
+                  "model-version-id": "6790c596-27e5-4ca9-b5bb-e03a7fd4c0ee",
+                  "model-name": "action-data",
+                  "model-version": "2.0",
                   "model-description": "decontamination arm circus ammonia hump edge",
                   "resource-version": "1500137463984"
                 }
@@ -310,6 +324,42 @@
                   "model-version-id": "ff2ae348-214a-11e7-93ae-92361f002673",
                   "model-name": "vSAMP10aDEV::base::module-0",
                   "model-version": "1.0",
+                  "model-description": "MACRO_vSAMP_module",
+                  "resource-version": "1492630209769"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": {
+            "model-invariant-id": "3a97db99-c4bb-498a-a13a-38f65f1ced3d",
+            "model-type": "resource",
+            "resource-version": "1492630209768",
+            "model-vers": {
+              "model-ver": [
+                {
+                  "model-version-id": "ff2ae348-214a-11e7-93ae-92361f002673",
+                  "model-name": "vSAMP10aDEV::base::module-0",
+                  "model-version": "9.0",
+                  "model-description": "MACRO_vSAMP_module",
+                  "resource-version": "1492630209769"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": {
+            "model-invariant-id": "3a97db99-c4bb-498a-a13a-38f65f1ced3d",
+            "model-type": "resource",
+            "resource-version": "1492630209768",
+            "model-vers": {
+              "model-ver": [
+                {
+                  "model-version-id": "ff2ae348-214a-11e7-93ae-92361f002673",
+                  "model-name": "vSAMP10aDEV::base::module-0",
+                  "model-version": "10.0",
                   "model-description": "MACRO_vSAMP_module",
                   "resource-version": "1492630209769"
                 }

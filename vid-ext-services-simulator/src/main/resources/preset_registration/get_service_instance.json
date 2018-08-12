@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v11/business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/AIM+Transport/service-instances/service-instance/f36f5734-e9df-4fbf-9f35-61be13f028a1"
+    "path": "/aai/v../business/customers/customer/31739f3e-526b-11e6-beb8-9e71128cae77/service-subscriptions/service-subscription/AIM Transport/service-instances/service-instance/f36f5734-e9df-4fbf-9f35-61be13f028a1"
   } ,
   "simulatorResponse": {
     "responseCode": 200,

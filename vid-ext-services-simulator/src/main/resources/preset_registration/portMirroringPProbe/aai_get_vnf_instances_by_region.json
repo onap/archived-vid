@@ -1,0 +1,206 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "PUT",
+      "path": "/aai/v../query",
+      "queryParams": {
+        "format": [
+          "simple"
+        ]
+      },
+      "body": {
+        "start": "/business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL%20USP/service-instances?model-version-id=2a2ea15f-07c6-4b89-bfca-e8aba39a34d6&model-invariant-id=a7eac2b3-8444-40ee-92e3-b3359b32445c",
+        "query": "query/queryvnfFromModelbyRegion?cloudRegionId=AAIAIC25"
+      }
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "results": [
+          {
+            "id": "2705559632",
+            "node-type": "generic-vnf",
+            "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7",
+            "properties": {
+              "vnf-id": "9be14a4f-7367-4cf9-96a1-f08f10f485a7",
+              "vnf-name": "zmtn6aepdg01",
+              "vnf-type": "Service_vEPDG/vf_vEPDG 0",
+              "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+              "prov-status": "PREPROV",
+              "orchestration-status": "Created",
+              "in-maint": false,
+              "is-closed-loop-disabled": false,
+              "resource-version": "1507823063273",
+              "model-invariant-id": "51f2c559-1aba-4fd4-bbf9-8cbbef85ff2a",
+              "model-version-id": "cb05b259-9f26-4b33-b96c-13c2c202c091",
+              "model-customization-id": "35aeaae9-74f7-4b6a-adda-65edb0110361",
+              "nf-type": "null",
+              "nf-function": "null",
+              "nf-role": "null",
+              "nf-naming-code": "null"
+            },
+            "related-to": [
+              {
+                "id": "2253160504",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/a7dbb16b7-8d80-4087-8152-53f75efb1768"
+              },
+              {
+                "id": "2253164600",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/a7dbb16b7-8d80-4087-8152-53f75efb1769"
+              },
+              {
+                "id": "2662895752",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/a7dbb16b7-8d80-4087-8152-53f75efb1770"
+              },
+              {
+                "id": "2827526240",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/7dbb16b7-8d80-4087-8152-53f75efb1768"
+              },
+              {
+                "id": "2541699144",
+                "node-type": "service-instance",
+                "url": "/aai/v11/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Mobility/service-instances/service-instance/b27d786a-eebf-4c79-b504-3f1e1a6b9651"
+              },
+              {
+                "id": "2376065248",
+                "node-type": "vserver",
+                "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1eddb590b7f04e9890bceeef9e591333/vservers/vserver/a9ee2ed3-9986-4bc5-92d3-a3efdfe4752d"
+              },
+              {
+                "id": "2376069344",
+                "node-type": "vserver",
+                "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1eddb590b7f04e9890bceeef9e591333/vservers/vserver/a9ee2ed3-9986-4bc5-92d3-a3efdfe4753d"
+              },
+              {
+                "id": "2662899848",
+                "node-type": "vserver",
+                "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1eddb590b7f04e9890bceeef9e591333/vservers/vserver/a9ee2ed3-9986-4bc5-92d3-a3efdfe4754d"
+              },
+              {
+                "id": "2662903944",
+                "node-type": "vnfc",
+                "url": "/aai/v11/network/vnfcs/vnfc/zmtn6aefdg01vlb001"
+              },
+              {
+                "id": "2826555472",
+                "node-type": "vnfc",
+                "url": "/aai/v11/network/vnfcs/vnfc/zmtn6aefdg01vmg001"
+              },
+              {
+                "id": "2826567688",
+                "node-type": "vnfc",
+                "url": "/aai/v11/network/vnfcs/vnfc/zmtn6aefdg01oam001"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "PUT",
+      "path": "/aai/v../query",
+      "queryParams": {
+        "format": [
+          "simple"
+        ]
+      },
+      "body": {
+        "start": "/business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL%20USP/service-instances?model-version-id=2a2ea15f-07c6-4b89-bfca-e8aba39a34d6&model-invariant-id=a7eac2b3-8444-40ee-92e3-b3359b32445c",
+        "query": "query/queryvnfFromModelbyRegion?cloudRegionId=mtn6"
+      }
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "results": [
+          {
+            "id": "2705559632",
+            "node-type": "generic-vnf",
+            "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7",
+            "properties": {
+              "vnf-id": "9be14a4f-7367-4cf9-96a1-f08f10f485a7",
+              "vnf-name": "zmtn6aepdg01",
+              "vnf-type": "Service_vEPDG/vf_vEPDG 0",
+              "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+              "prov-status": "PREPROV",
+              "orchestration-status": "Created",
+              "in-maint": false,
+              "is-closed-loop-disabled": false,
+              "resource-version": "1507823063273",
+              "model-invariant-id": "51f2c559-1aba-4fd4-bbf9-8cbbef85ff2a",
+              "model-version-id": "cb05b259-9f26-4b33-b96c-13c2c202c091",
+              "model-customization-id": "35aeaae9-74f7-4b6a-adda-65edb0110361",
+              "nf-type": "null",
+              "nf-function": "null",
+              "nf-role": "null",
+              "nf-naming-code": "null"
+            },
+            "related-to": [
+              {
+                "id": "2253160504",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/a7dbb16b7-8d80-4087-8152-53f75efb1768"
+              },
+              {
+                "id": "2253164600",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/a7dbb16b7-8d80-4087-8152-53f75efb1769"
+              },
+              {
+                "id": "2662895752",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/a7dbb16b7-8d80-4087-8152-53f75efb1770"
+              },
+              {
+                "id": "2827526240",
+                "node-type": "vf-module",
+                "url": "/aai/v11/network/generic-vnfs/generic-vnf/9be14a4f-7367-4cf9-96a1-f08f10f485a7/vf-modules/vf-module/7dbb16b7-8d80-4087-8152-53f75efb1768"
+              },
+              {
+                "id": "2541699144",
+                "node-type": "service-instance",
+                "url": "/aai/v11/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Mobility/service-instances/service-instance/b27d786a-eebf-4c79-b504-3f1e1a6b9651"
+              },
+              {
+                "id": "2376065248",
+                "node-type": "vserver",
+                "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1eddb590b7f04e9890bceeef9e591333/vservers/vserver/a9ee2ed3-9986-4bc5-92d3-a3efdfe4752d"
+              },
+              {
+                "id": "2376069344",
+                "node-type": "vserver",
+                "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1eddb590b7f04e9890bceeef9e591333/vservers/vserver/a9ee2ed3-9986-4bc5-92d3-a3efdfe4753d"
+              },
+              {
+                "id": "2662899848",
+                "node-type": "vserver",
+                "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1eddb590b7f04e9890bceeef9e591333/vservers/vserver/a9ee2ed3-9986-4bc5-92d3-a3efdfe4754d"
+              },
+              {
+                "id": "2662903944",
+                "node-type": "vnfc",
+                "url": "/aai/v11/network/vnfcs/vnfc/zmtn6aefdg01vlb001"
+              },
+              {
+                "id": "2826555472",
+                "node-type": "vnfc",
+                "url": "/aai/v11/network/vnfcs/vnfc/zmtn6aefdg01vmg001"
+              },
+              {
+                "id": "2826567688",
+                "node-type": "vnfc",
+                "url": "/aai/v11/network/vnfcs/vnfc/zmtn6aefdg01oam001"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+]

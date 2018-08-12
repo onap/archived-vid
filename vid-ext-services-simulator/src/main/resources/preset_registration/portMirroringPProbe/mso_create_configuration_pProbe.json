@@ -1,0 +1,15 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/serviceInstances/v./c187e9fe-40c3-4862-b73e-84ff056205f6/configurations[\/]?"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "requestReferences": {
+        "instanceId": "c187e9fe-40c3-4862-b73e-84ff056205f6",
+        "requestId": "314cc766-b673-4a50-b9c5-471f68914585"
+      }
+    }
+  }
+}

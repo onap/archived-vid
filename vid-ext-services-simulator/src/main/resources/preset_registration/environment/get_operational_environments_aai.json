@@ -1,0 +1,165 @@
+[{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../cloud-infrastructure/operational-environments",
+    "queryParams": {
+      "operational-environment-type" : "VNF"
+    }
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "operational-environment":[
+        {
+          "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ea",
+          "operational-environment-name": "operational_environment_ea",
+          "operational-environment-type": "VNF",
+          "operational-environment-status": "Activate",
+          "tenant-context": "Test",
+          "workload-context": "VNF_Development",
+          "resource-version": "1505228226913",
+          "relationship-list": {
+            "relationship": [
+              {
+                "related-to": "operational-environment",
+                "related-link": "string",
+                "relationship-data": [
+                  {
+                    "relationship-key": "operational-environment.operational-environment-id",
+                    "relationship-value": "f07ca256-96dd-40ad-b4d2-7a77e2a974ea"
+                  }
+                ],
+                "related-to-property": [
+                  {
+                    "property-key": "operational-environment.operational-environment-name",
+                    "property-value": "operational_environment_ecomp_ea"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974eb",
+          "operational-environment-name": "operational_environment_eb",
+          "operational-environment-type": "VNF",
+          "operational-environment-status": "Deactivate",
+          "tenant-context": "Test",
+          "workload-context": "VNF_Development",
+          "resource-version": "1505228226913",
+          "relationship-list": {
+            "relationship":[
+              {
+                "related-to": "operational-environment",
+                "related-link": "string",
+                "relationship-data": [
+                  {
+                    "relationship-key": "operational-environment.operational-environment-id",
+                    "relationship-value": "f07ca256-96dd-40ad-b4d2-7a77e2a974eb"
+                  }
+                ],
+                "related-to-property": [
+                  {
+                    "property-key": "operational-environment.operational-environment-name",
+                    "property-value": "operational_environment_ecomp_eb"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ec",
+          "operational-environment-name": "operational_environment_ec",
+          "operational-environment-type": "VNF",
+          "operational-environment-status": "Activate",
+          "tenant-context": "Test",
+          "workload-context": "ECOMP_Development",
+          "resource-version": "1505228226912",
+          "relationship-list": {
+            "relationship":[
+              {
+                "related-to": "operational-environment",
+                "related-link": "string",
+                "relationship-data": [
+                  {
+                    "relationship-key": "operational-environment.operational-environment-id",
+                    "relationship-value": "f07ca256-96dd-40ad-b4d2-7a77e2a974ec"
+                  }
+                ],
+                "related-to-property": [
+                  {
+                    "property-key": "operational-environment.operational-environment-name",
+                    "property-value": "operational_environment_ecomp_ec"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ed",
+          "operational-environment-name": "operational_environment_ed",
+          "operational-environment-type": "VNF",
+          "operational-environment-status": "Activate",
+          "tenant-context": "Test",
+          "workload-context": "ECOMP_Development",
+          "resource-version": "1505228226912",
+          "relationship-list": {
+            "relationship":[
+              {
+                "related-to": "operational-environment",
+                "related-link": "string",
+                "relationship-data": [
+                  {
+                    "relationship-key": "operational-environment.operational-environment-id",
+                    "relationship-value": "f07ca256-96dd-40ad-b4d2-7a77e2a974ed"
+                  }
+                ],
+                "related-to-property": [
+                  {
+                    "property-key": "operational-environment.operational-environment-name",
+                    "property-value": "operational_environment_ecomp_ed"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]}
+  }
+},
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/aai/v../cloud-infrastructure/operational-environments",
+      "queryParams": {
+        "operational-environment-type": "ECOMP"
+      }
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "operational-environment": [
+          {
+            "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ec",
+            "operational-environment-name": "operational_environment_ec",
+            "operational-environment-type": "ECOMP",
+            "operational-environment-status": "Activate",
+            "tenant-context": "ECOMP Test",
+            "workload-context": "ECOMP_Development",
+            "resource-version": "1505228226912"
+          },
+          {
+            "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ed",
+            "operational-environment-name": "operational_environment_ed",
+            "operational-environment-type": "ECOMP",
+            "operational-environment-status": "Activate",
+            "tenant-context": "ECOMP Test",
+            "workload-context": "ECOMP_Development",
+            "resource-version": "1505228226912"
+          }
+        ]
+      }
+    }
+  }]

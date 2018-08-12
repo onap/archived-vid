@@ -1,0 +1,18 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/mso/cloudResources/v1/operationalEnvironments"
+} ,
+  "simulatorResponse": {
+    "responseCode": 202,
+    "responseHeaders": {
+      "Content-Type": "application/json"
+    },
+    "body":{
+      "requestReferences": {
+        "instanceId": "f07ca256-96dd-40ad-b4d2-7a77e2a974ef",
+        "requestId": "dbe54591-c8ed-46d3-abc7-d3a24873dfbc"
+      }
+    }
+  }
+}

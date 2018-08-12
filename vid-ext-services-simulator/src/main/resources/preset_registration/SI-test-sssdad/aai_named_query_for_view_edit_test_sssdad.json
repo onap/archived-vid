@@ -1,0 +1,65 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/aai/search/named-query",
+    "body": {
+      "instance-filters": {
+        "instance-filter": [
+          {
+            "customer": {
+              "global-customer-id": "e433710f-9217-458d-a79d-1c7aff376d89"
+            },
+            "service-instance": {
+              "service-instance-id": "c187e9fe-40c3-4862-b73e-84ff056205f6"
+            },
+            "service-subscription": {
+              "service-type": "VIRTUAL USP"
+            }
+          }
+        ]
+      },
+      "query-parameters": {
+        "named-query": {
+          "named-query-uuid": "0367193e-c785-4d5f-9cb8-7bc89dc9ddb7"
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inventory-response-item": [
+        {
+          "model-name": "0eOHz2Yh8WJcBYzKy079",
+          "service-instance": {
+            "service-instance-id": "c187e9fe-40c3-4862-b73e-84ff056205f6",
+            "service-instance-name": "test_sssdad"
+          },
+          "extra-properties": {},
+          "inventory-response-items": {
+            "inventory-response-item": [
+              {
+                "model-name": "Proxy-Config-Instance",
+                "configuration": {
+                  "configuration-id": "9533-config-LB1113",
+                  "configuration-name": "dummy_instance",
+                  "configuration-type": "configuration-type-9533",
+                  "configuration-sub-type": "configuration-sub-type-9533",
+                  "model-invariant-id": "model-invariant-id-9533",
+                  "model-version-id": "model-version-id-9533",
+                  "orchestration-status": "Inactive",
+                  "operational-status": "",
+                  "configuration-selflink": "",
+                  "model-customization-id": "model-customization-id-9533",
+                  "resource-version": "1504038855716"
+                },
+                "extra-properties": {
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

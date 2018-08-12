@@ -1,0 +1,69 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/aai/search/named-query",
+    "body": {
+      "instance-filters": {
+        "instance-filter": [
+          {
+            "customer": {
+              "global-customer-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+            },
+            "service-instance": {
+              "service-instance-id": "d198cc45-158b-480e-8d2c-03943c51268e"
+            },
+            "service-subscription": {
+              "service-type": "Mobility"
+            }
+          }
+        ]
+      },
+      "query-parameters": {
+        "named-query": {
+          "named-query-uuid": "0367193e-c785-4d5f-9cb8-7bc89dc9ddb7"
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inventory-response-item": [
+        {
+          "model-name": "0eOHz2Yh8WJcBYzKy079",
+          "service-instance": {
+            "service-instance-id": "c187e9fe-40c3-4862-b73e-84ff056205f6",
+            "service-instance-name": "test_sssdad"
+          },
+          "extra-properties": {},
+          "inventory-response-items": {
+            "inventory-response-item": [
+              {
+                "model-name": "AutonGfXd6QC2vPUrgg",
+                "generic-vnf": {
+                  "vnf-id": "8715ea55-6fcf-45b5-b42b-2ca37ec3cb39",
+                  "vnf-name": "sedawsdsda",
+                  "vnf-type": "0eOHz2Yh8WJcBYzKy079/AutonGfXd6QC2vPUrgg 0",
+                  "service-id": "e433710f-9217-458d-a79d-1c7aff376d89",
+                  "prov-status": "PREPROV",
+                  "orchestration-status": "Created",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1503919965335",
+                  "model-invariant-id": "451bdde0-7dd5-4ef4-a0a7-9c0f5a717ae3",
+                  "model-version-id": "a67150f4-8eeb-4b84-a8d1-8060d181eeaa",
+                  "model-customization-id": "368c50f4-5b5c-46a9-b976-1393cd96ce22",
+                  "nf-type": "",
+                  "nf-function": "",
+                  "nf-role": "",
+                  "nf-naming-code": ""
+                },
+                "extra-properties": {}
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

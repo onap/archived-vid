@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.openecomp.vid</groupId>
+    <groupId>org.onap.vid</groupId>
     <artifactId>vid-ext-services-simulator</artifactId>
     <version>1.0.0</version>
     <name>VID Simulator</name>
@@ -25,68 +25,11 @@
         <stagingNexusPath>content/repositories/staging/</stagingNexusPath>
         <snapshotNexusPath>content/repositories/snapshots/</snapshotNexusPath>
         <releaseNexusPath>content/repositories/releases/</releaseNexusPath>
+
+        <!-- "none" will skip cobertura by default; enable the profile "cobertura" to enable it -->
+        <coberturaBuildPhase>none</coberturaBuildPhase>
     </properties>
 
-
-    <repositories>
-        <repository>
-            <!-- Snapshots repository has ECOMP snapshot artifacts -->
-            <id>att-mavencentral-ecomp-snapshots-repo</id>
-            <name>ATT Maven Central - Snapshots</name>
-            <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/att-repository-snapshots/</url>
-        </repository>
-        <repository>
-            <id>onap-staging</id>
-            <name>ONAP - Staging Repository</name>
-            <url>${nexusproxy}/${stagingNexusPath}</url>
-        </repository>
-        <repository>
-            <!-- Releases repository has ECOMP release artifacts -->
-            <id>att-mavencentral-ecomp-releases-repo</id>
-            <name>ATT Maven Central - Releases</name>
-            <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/att-repository-releases/</url>
-        </repository>
-        <repository>
-            <!-- Third party repository has Oracle and other jars -->
-            <id>att-mavencentral-3rd-repo</id>
-            <name>ATT Maven Central - Third Party</name>
-            <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/att-repository-3rd-party/</url>
-        </repository>
-        <repository>
-            <!-- Service Assurance group has UEB/Cambria jars -->
-            <id>att-mavencentral-sa-group</id>
-            <name>ATT Maven Central - Service Assurance Group</name>
-            <url>http://mavencentral.it.att.com:8084/nexus/content/groups/2020SAPC/</url>
-        </repository>
-        <repository>
-            <!-- SWM repository has EELF jars -->
-            <id>att-swm-repo</id>
-            <name>ATT SWM Repository</name>
-            <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/swm-releases</url>
-        </repository>
-
-        <repository>
-            <!-- Public repository has ECOMP jars -->
-            <id>att-mavencentral-public</id>
-            <name>ATT Maven Central - Public Group</name>
-            <url>http://mavencentral.it.att.com:8084/nexus/content/groups/att-public-group</url>
-        </repository>
-        <repository>
-            <id>ecomp-releases</id>
-            <name>OpenECOMP - Release Repository</name>
-            <url>${nexusproxy}/${releaseNexusPath}</url>
-        </repository>
-        <repository>
-            <id>ecomp-snapshots</id>
-            <name>OpenECOMP - Snapshot Repository</name>
-            <url>${nexusproxy}/${snapshotNexusPath}</url>
-        </repository>
-        <!--repository>
-            <id>ecomp-public</id>
-            <name>ecomp onap public Repository</name>
-            <url>https://nexus.onap.org/content/groups/public</url>
-        </repository-->
-    </repositories>
 
     <!--distributionManagement>
         <repository>
@@ -121,22 +64,6 @@
 
             <repositories>
                 <repository>
-                    <id>ecomp-releases</id>
-                    <name>VID Release Repository</name>
-                    <url>${nexusproxy}${releaseNexusPath}</url>
-                </repository>
-                <repository>
-                    <id>ecomp-snapshots</id>
-                    <name>VID Snapshot Repository</name>
-                    <url>${nexusproxy}${snapshotNexusPath}</url>
-                </repository>
-                <repository>
-                    <id>ecomp-staging</id>
-                    <name>VID Staging Repository</name>
-                    <url>${nexusproxy}${stagingNexusPath}</url>
-                </repository>
-                <repository>
-                    <!-- Snapshots repository has ECOMP snapshot artifacts -->
                     <id>oss-snapshots</id>
                     <name>oss Central - Snapshots</name>
                     <url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
@@ -145,7 +72,7 @@
         </profile>
 
         <profile>
-            <id>att-internal</id>
+            <id>default</id>
 
 
         </profile>
@@ -171,190 +98,10 @@
         </profile>
 
         <profile>
-            <id>att-internal-jenkins</id>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <formats>
-                                <format>xml</format>
-                            </formats>
-                            <check>false</check>
-
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>cobertura</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>3.0.0</version>
-                        <configuration>
-                            <!-- Build a jar with all the Java classes -->
-                            <attachClasses>true</attachClasses>
-                            <!-- Do not put any jars in the war -->
-                            <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>att-internal-jenkins-noSwm</id>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <formats>
-                                <format>xml</format>
-                            </formats>
-                            <check>false</check>
-
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>cobertura</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>att-internal-general-build</id>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <formats>
-                                <format>xml</format>
-                            </formats>
-                            <check>false</check>
-
-                        </configuration>
-
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>cobertura</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>att-internal-install-only</id>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <formats>
-                                <format>xml</format>
-                            </formats>
-                            <check>false</check>
-
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>cobertura</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>att-internal-no-swm</id>
-
-            <build>
-                <plugins>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <id>cobertura</id>
+            <properties>
+                <coberturaBuildPhase>package</coberturaBuildPhase>
+            </properties>
         </profile>
     </profiles>
 
@@ -379,6 +126,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.8.7</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.2.11</version>
         </dependency>
     </dependencies>
 

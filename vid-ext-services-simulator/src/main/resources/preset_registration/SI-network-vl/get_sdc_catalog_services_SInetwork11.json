@@ -1,0 +1,38 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/b75e0d22-05ff-4448-9266-5f0d4e1dbbd6/toscaModel"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "file": "service-network-vl.zip"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/b75e0d22-05ff-4448-9266-5f0d4e1dbbd6/metadata"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "responseHeaders": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "uuid": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6",
+        "invariantUUID": "5b9c0f33-eec1-484a-bf77-736a6644d7a8",
+        "name": "Using VID for VoIP Network Instantiations Shani",
+        "version": "1.0",
+        "toscaModelURL": "./service-network-vl.zip",
+        "category": "VoIP Call Control",
+        "lifecycleState": "CERTIFIED",
+        "lastUpdaterUserId": "sf266t",
+        "lastUpdaterFullName": "SHANI FRANCO DE-CAFE",
+        "distributionStatus": "DISTRIBUTED",
+        "artifacts": null,
+        "resources": null
+      }
+    }
+  }
+]

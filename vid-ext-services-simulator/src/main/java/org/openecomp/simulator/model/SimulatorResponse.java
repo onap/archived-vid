@@ -5,11 +5,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SimulatorResponse {
     private int responseCode;
     private Map<String, String> responseHeaders;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String body;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String file;
 
     public int getResponseCode() {

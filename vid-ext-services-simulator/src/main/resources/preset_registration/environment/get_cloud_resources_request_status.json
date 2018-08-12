@@ -1,0 +1,119 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/mso/cloudResourcesRequests/v1",
+      "queryParams" :  {
+        "requestId": [ "dbe54591-c8ed-46d3-abc7-d3a24873dfbd" ]
+      }
+    } ,
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "request": {
+          "requestId": "3212b08c-0dcd-4d20-8c84-d3a24873dfbd",
+          "startTime": "Thu, 02 Jun 2017 02:51:59 GMT",
+          "instanceReferences": {
+            "operationalEnvironmentInstanceId": "bc305d54-75b4-431b-adb2-eb6b9e546014"
+          },
+          "requestScope": "operationalEnvironment",
+          "requestType": "deactivate",
+          "requestDetails": {
+            "requestInfo": {
+              "resourceType": "operationalEnvironment",
+              "source": "VID",
+              "requestorId": "az2017"
+            },
+            "requestParameters": {
+              "operationalEnvironmentType": "VNF"
+            }
+          },
+          "requestStatus": {
+            "timestamp": "Thu, 02 Jun 2017 02:53:39 GMT",
+            "requestState": "COMPLETE",
+            "statusMessage": "Operational Environment successfully deactivated",
+            "percentProgress": "100"
+          }
+        }
+      }
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/mso/cloudResourcesRequests/v1",
+      "queryParams" :  {
+        "requestId": [ "dbe54591-c8ed-46d3-abc7-d3a24873dfbf" ]
+      }
+    } ,
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "request": {
+          "requestId": "3212b08c-0dcd-4d20-8c84-d3a24873dfbf",
+          "startTime": "Thu, 02 Jun 2017 02:51:59 GMT",
+          "instanceReferences": {
+            "operationalEnvironmentInstanceId": "bc305d54-75b4-431b-adb2-eb6b9e546014"
+          },
+          "requestScope": "operationalEnvironment",
+          "requestType": "activate",
+          "requestDetails": {
+            "requestInfo": {
+              "resourceType": "operationalEnvironment",
+              "source": "VID",
+              "requestorId": "az2017"
+            },
+            "requestParameters": {
+              "operationalEnvironmentType": "VNF"
+            }
+          },
+          "requestStatus": {
+            "timestamp": "Thu, 02 Jun 2017 02:53:39 GMT",
+            "requestState": "COMPLETE",
+            "statusMessage": "Operational Environment successfully activated",
+            "percentProgress": "100"
+          }
+        }
+      }
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/mso/cloudResourcesRequests/v1",
+      "queryParams" :  {
+        "requestId": [ "dbe54591-c8ed-46d3-abc7-d3a24873dfbc" ]
+      }
+    } ,
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "request": {
+          "requestId": "3212b08c-0dcd-4d20-8c84-d3a24873dfbc",
+          "startTime": "Thu, 02 Jun 2017 02:51:59 GMT",
+          "instanceReferences": {
+            "operationalEnvironmentInstanceId": "bc305d54-75b4-431b-adb2-eb6b9e546014"
+          },
+          "requestScope": "operationalEnvironment",
+          "requestType": "create",
+          "requestDetails": {
+            "requestInfo": {
+              "resourceType": "operationalEnvironment",
+              "source": "VID",
+              "requestorId": "az2017"
+            },
+            "requestParameters": {
+              "operationalEnvironmentType": "VNF"
+            }
+          },
+          "requestStatus": {
+            "timestamp": "Thu, 02 Jun 2017 02:53:39 GMT",
+            "requestState": "COMPLETE",
+            "statusMessage": "Operational Environment successfully created",
+            "percentProgress": "100"
+          }
+        }
+      }
+    }
+  }
+]
