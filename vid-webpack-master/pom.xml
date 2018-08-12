@@ -35,46 +35,9 @@
 
   <repositories>
     <repository>
-      <!-- Snapshots repository has ECOMP snapshot artifacts -->
-      <id>att-mavencentral-ecomp-snapshots-repo</id>
-      <name>ATT Maven Central - Snapshots</name>
-      <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/att-repository-snapshots/</url>
-    </repository>
-    <repository>
       <id>onap-staging</id>
       <name>ONAP - Staging Repository</name>
       <url>${nexusproxy}/${stagingNexusPath}</url>
-    </repository>
-    <repository>
-      <!-- Releases repository has ECOMP release artifacts -->
-      <id>att-mavencentral-ecomp-releases-repo</id>
-      <name>ATT Maven Central - Releases</name>
-      <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/att-repository-releases/</url>
-    </repository>
-    <repository>
-      <!-- Third party repository has Oracle and other jars -->
-      <id>att-mavencentral-3rd-repo</id>
-      <name>ATT Maven Central - Third Party</name>
-      <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/att-repository-3rd-party/</url>
-    </repository>
-    <repository>
-      <!-- Service Assurance group has UEB/Cambria jars -->
-      <id>att-mavencentral-sa-group</id>
-      <name>ATT Maven Central - Service Assurance Group</name>
-      <url>http://mavencentral.it.att.com:8084/nexus/content/groups/2020SAPC/</url>
-    </repository>
-    <repository>
-      <!-- SWM repository has EELF jars -->
-      <id>att-swm-repo</id>
-      <name>ATT SWM Repository</name>
-      <url>http://mavencentral.it.att.com:8084/nexus/content/repositories/swm-releases</url>
-    </repository>
-
-    <repository>
-      <!-- Public repository has ECOMP jars -->
-      <id>att-mavencentral-public</id>
-      <name>ATT Maven Central - Public Group</name>
-      <url>http://mavencentral.it.att.com:8084/nexus/content/groups/att-public-group</url>
     </repository>
     <repository>
       <id>ecomp-releases</id>
@@ -92,20 +55,6 @@
       <url>https://nexus.onap.org/content/groups/public</url>
     </repository>
   </repositories>
-
-  <distributionManagement>
-    <repository>
-      <id>vid-releases</id>
-      <name>VID Release Repository</name>
-      <url>https://162.242.254.138:8443/repository/maven-releases</url>
-    </repository>
-
-    <snapshotRepository>
-      <id>vid-snapshots</id>
-      <name>VID Snapshot Repository</name>
-      <url>https://162.242.254.138:8443/repository/maven-snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <profiles>
     <profile>
@@ -183,9 +132,6 @@
                   <arguments>install</arguments>
                   <environmentVariables>
                     <CYPRESS_INSTALL_BINARY>0</CYPRESS_INSTALL_BINARY>
-                    <NO_PROXY>.att.com</NO_PROXY>
-                    <http_proxy>http://one.proxy.att.com:8080</http_proxy>
-                    <https_proxy>http://one.proxy.att.com:8080</https_proxy> <!-- for cypress install -->
                   </environmentVariables>
                 </configuration>
               </execution>

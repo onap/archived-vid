@@ -33,3 +33,8 @@ deliveries/target/
 /vid-app-common/.idea/vid-app-common.iml
 /vid-app-common/.idea/workspace.xml
 /vid-app-common/.settings/org.eclipse.core.resources.prefs
+/vid-webpack-master/target/antrun/build-main.xml
+/vid-webpack-master/target/maven-archiver/pom.properties
+/vid-webpack-master/target/vid-webpack-master.war
+/vid-webpack-master/target/vid-webpack-master/app/ui/NO-WEBPACK.txt
+/vid-webpack-master/target/vid-webpack-master/WEB-INF/web.xml
