@@ -1,4 +1,4 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import java.util.Iterator;
 import java.util.Spliterator;

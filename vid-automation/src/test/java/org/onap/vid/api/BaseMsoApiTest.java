@@ -1,9 +1,9 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import com.att.automation.common.report_portal_integration.annotations.Step;
 import com.google.common.collect.ImmutableMap;
 import org.json.JSONException;
-import org.opencomp.vid.model.mso.MsoResponseWrapper2;
+import org.onap.vid.model.mso.MsoResponseWrapper2;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.http.HttpMethod;

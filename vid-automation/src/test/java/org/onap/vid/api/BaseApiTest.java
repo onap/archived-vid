@@ -1,4 +1,4 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import com.att.automation.common.report_portal_integration.listeners.ReportPortalListener;
 import com.fasterxml.jackson.core.JsonProcessingException;

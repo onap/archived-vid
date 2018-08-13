@@ -1,10 +1,9 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 

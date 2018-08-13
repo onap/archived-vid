@@ -1,9 +1,9 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
-import org.opencomp.vid.model.category.AddCategoryOptionsRequest;
-import org.opencomp.vid.model.category.CategoryParameterOption;
-import org.opencomp.vid.model.category.CategoryParameterOptionRep;
-import org.opencomp.vid.model.category.CategoryParametersResponse;
+import org.onap.vid.model.category.AddCategoryOptionsRequest;
+import org.onap.vid.model.category.CategoryParameterOption;
+import org.onap.vid.model.category.CategoryParameterOptionRep;
+import org.onap.vid.model.category.CategoryParametersResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.Assert;
@@ -17,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

@@ -1,14 +1,25 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.apache.commons.text.StringEscapeUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.opencomp.simulator.presetGenerator.presets.aai.*;
-import org.opencomp.vid.model.aai.AaiResponse;
-import org.opencomp.vid.model.mso.OperationalEnvironmentList;
-import org.opencomp.vid.more.LoggerFormatTest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIBadBodyForGetServicesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegion;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsInvalidRequest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsRequiredMissing;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePortsError;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.vid.model.aai.AaiResponse;
+import org.onap.vid.model.mso.OperationalEnvironmentList;
+import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -26,7 +37,7 @@ import java.net.URISyntaxException;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
-import static org.opencomp.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
+import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 

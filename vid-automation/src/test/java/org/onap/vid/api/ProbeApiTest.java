@@ -1,13 +1,13 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Assert;
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGetInvalidResponse;
-import org.opencomp.vid.model.probe.ExternalComponentStatus;
-import org.opencomp.vid.model.probe.HttpRequestMetadata;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGetInvalidResponse;
+import org.onap.vid.model.probe.ExternalComponentStatus;
+import org.onap.vid.model.probe.HttpRequestMetadata;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

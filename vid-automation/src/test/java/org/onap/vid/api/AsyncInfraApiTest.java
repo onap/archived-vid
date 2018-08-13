@@ -1,11 +1,11 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import net.codestory.http.WebServer;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.opencomp.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.opencomp.vid.more.LoggerFormatTest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.Assert;
@@ -25,7 +25,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;

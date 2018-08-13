@@ -1,4 +1,4 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;

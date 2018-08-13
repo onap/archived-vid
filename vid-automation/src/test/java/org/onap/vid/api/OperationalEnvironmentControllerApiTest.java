@@ -1,4 +1,4 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

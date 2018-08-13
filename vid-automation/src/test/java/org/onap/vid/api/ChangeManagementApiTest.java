@@ -1,8 +1,25 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import org.onap.vid.model.mso.ChangeManagementRequest;
+import org.onap.vid.model.mso.ChangeManagementRequestDetails;
+import org.onap.vid.model.mso.CloudConfiguration;
+import org.onap.vid.model.mso.MsoExceptionResponse;
+import org.onap.vid.model.mso.MsoResponseWrapper2;
+import org.onap.vid.model.mso.RelatedInstance;
+import org.onap.vid.model.mso.RelatedInstanceList;
+import org.onap.vid.model.mso.RequestInfo;
+import org.onap.vid.model.mso.RequestParameters;
+import org.onap.vid.model.workflow.GetVnfWorkflowRelationRequest;
+import org.onap.vid.model.workflow.GetWorkflowsResponse;
+import org.onap.vid.model.workflow.VnfDetails;
+import org.onap.vid.model.workflow.VnfDetailsWithWorkflows;
+import org.onap.vid.model.workflow.VnfWorkflowRelationAllResponse;
+import org.onap.vid.model.workflow.VnfWorkflowRelationRequest;
+import org.onap.vid.model.workflow.VnfWorkflowRelationResponse;
+import org.onap.vid.model.workflow.WorkflowsDetail;
 import org.opencomp.vid.model.mso.*;
 import org.opencomp.vid.model.workflow.*;
 import org.springframework.http.HttpStatus;
@@ -33,7 +50,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.opencomp.vid.api.TestUtils.getNestedPropertyInMap;
+import static org.onap.vid.api.TestUtils.getNestedPropertyInMap;
 
 
 //This is integration test that require running tomcat
@@ -291,7 +308,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
     private void assertForHappyPath(VnfIds vnfIds, MsoResponseWrapper2 body, String requestType) {
         Assert.assertEquals(body.getStatus(), 202, requestType + " failed with wrong http status");
         Assert.assertEquals(
-                getNestedPropertyInMap(body.getEntity(), "requestReferences/instanceId"),
+                TestUtils.getNestedPropertyInMap(body.getEntity(), "requestReferences/instanceId"),
                 vnfIds.serviceInstanceId,
                 String.format("Failed to find instanceId: %s in " + requestType + " response.  Actual body:%s",
                         vnfIds.serviceInstanceId, body.getEntity()));
@@ -319,13 +336,13 @@ public class ChangeManagementApiTest extends BaseApiTest {
         MsoResponseWrapper2 body = callChangeManagementUpdate(vnfIds, expectationPath, MsoResponseWrapper2.class, requestType);
         Assert.assertEquals(body.getStatus(), 409, requestType + " failed with wrong http status");
         Assert.assertEquals(
-                getNestedPropertyInMap(body.getEntity(), "serviceException/messageId"),
+                TestUtils.getNestedPropertyInMap(body.getEntity(), "serviceException/messageId"),
                 "SVC2000",
                 String.format("Failed to find messageId: %s in " + requestType + " response.  Actual body:%s",
                         "SVC2000", body.getEntity()));
 
 
-        assertThat(getNestedPropertyInMap(body.getEntity(), "serviceException/text"), containsString(vnfIds.vnfInstanceId));
+        assertThat(TestUtils.getNestedPropertyInMap(body.getEntity(), "serviceException/text"), containsString(vnfIds.vnfInstanceId));
     }
 
     private void testChangeManagement404Error(String expectationPath, String requestType) throws IOException {
@@ -406,7 +423,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
     {
         ChangeManagementRequestDetails requestDetails = new ChangeManagementRequestDetails();
 
-//        org.openecomp.vid.domain.mso.CloudConfiguration cloudConfiguration = new org.openecomp.vid.domain.mso.CloudConfiguration();
+//        org.onap.vid.domain.mso.CloudConfiguration cloudConfiguration = new org.onap.vid.domain.mso.CloudConfiguration();
 //        cloudConfiguration.setLcpCloudRegionId("mdt1");
 //        cloudConfiguration.setTenantId("88a6ca3ee0394ade9403f075db23167e");
 //        requestDetails.setCloudConfiguration(cloudConfiguration);

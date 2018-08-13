@@ -1,17 +1,16 @@
-package org.opencomp.vid.api;
+package org.onap.vid.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.opencomp.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
-import org.opencomp.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
 
 import java.io.IOException;
