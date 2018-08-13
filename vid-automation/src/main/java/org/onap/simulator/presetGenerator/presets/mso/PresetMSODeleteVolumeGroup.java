@@ -1,4 +1,4 @@
-package org.opencomp.simulator.presetGenerator.presets.mso;
+package org.onap.simulator.presetGenerator.presets.mso;
 
 public class PresetMSODeleteVolumeGroup extends PresetMSOBaseDelete {
     private final String serviceInstanceId;

@@ -1,7 +1,7 @@
-package org.opencomp.simulator.presetGenerator.presets.mso;
+package org.onap.simulator.presetGenerator.presets.mso;
 
 import org.apache.commons.lang3.StringUtils;
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.springframework.http.HttpMethod;
 
 /**

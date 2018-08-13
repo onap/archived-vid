@@ -1,6 +1,6 @@
-package org.opencomp.simulator.presetGenerator.presets.mso;
+package org.onap.simulator.presetGenerator.presets.mso;
 
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.springframework.http.HttpMethod;
 
 public class PresetMSODeleteInstanceOrchestrationRequestGet extends BaseMSOPreset {

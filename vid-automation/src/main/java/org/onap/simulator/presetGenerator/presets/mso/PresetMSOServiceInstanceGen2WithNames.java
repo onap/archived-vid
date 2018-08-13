@@ -1,8 +1,8 @@
-package org.opencomp.simulator.presetGenerator.presets.mso;
+package org.onap.simulator.presetGenerator.presets.mso;
 
 import java.util.Map;
 
-import static org.opencomp.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.*;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.*;
 
 public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBaseCreateServiceInstancePost{
 

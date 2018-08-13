@@ -1,4 +1,4 @@
-package org.opencomp.simulator.presetGenerator.presets.mso;
+package org.onap.simulator.presetGenerator.presets.mso;
 
 public class PresetMSOCreateVfModuleInstancePost extends PresetMSOBaseCreateServiceInstancePost{
     private String serviceInstanceId;

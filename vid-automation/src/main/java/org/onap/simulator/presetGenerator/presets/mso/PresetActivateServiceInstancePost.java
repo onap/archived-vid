@@ -1,6 +1,6 @@
-package org.opencomp.simulator.presetGenerator.presets.mso;
+package org.onap.simulator.presetGenerator.presets.mso;
 
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BaseMSOPresetServiceInstanceOperationsPost;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPresetServiceInstanceOperationsPost;
 
 /**
  * Created by itzikliderman on 13/12/2017.
