@@ -1,4 +1,4 @@
-package org.opencomp.simulator.presetGenerator.presets.model;
+package org.onap.simulator.presetGenerator.presets.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpMethod;

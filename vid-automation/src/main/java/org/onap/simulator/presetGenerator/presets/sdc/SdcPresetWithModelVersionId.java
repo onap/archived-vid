@@ -1,6 +1,6 @@
-package org.opencomp.simulator.presetGenerator.presets.sdc;
+package org.onap.simulator.presetGenerator.presets.sdc;
 
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BaseSDCPreset;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseSDCPreset;
 
 public abstract class SdcPresetWithModelVersionId extends BaseSDCPreset {
 

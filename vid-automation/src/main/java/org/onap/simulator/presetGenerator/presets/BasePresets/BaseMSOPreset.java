@@ -1,4 +1,4 @@
-package org.opencomp.simulator.presetGenerator.presets.BasePresets;
+package org.onap.simulator.presetGenerator.presets.BasePresets;
 
 import vid.automation.test.infra.Features;
 

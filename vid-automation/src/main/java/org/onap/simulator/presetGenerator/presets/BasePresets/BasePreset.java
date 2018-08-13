@@ -1,6 +1,6 @@
-package org.opencomp.simulator.presetGenerator.presets.BasePresets;
+package org.onap.simulator.presetGenerator.presets.BasePresets;
 
-import org.opencomp.simulator.presetGenerator.presets.model.RegistrationRequest;
+import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
 import org.springframework.http.HttpMethod;
 
 import java.util.HashMap;

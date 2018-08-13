@@ -1,6 +1,6 @@
-package org.opencomp.simulator.presetGenerator.presets.ecompportal_att;
+package org.onap.simulator.presetGenerator.presets.ecompportal_att;
 
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BaseEcompPortalPreset;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseEcompPortalPreset;
 import org.springframework.http.HttpMethod;
 
 public class PresetGetSessionSlotCheckIntervalGet extends BaseEcompPortalPreset {

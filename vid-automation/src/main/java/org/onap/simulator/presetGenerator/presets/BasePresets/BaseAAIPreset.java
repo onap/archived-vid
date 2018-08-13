@@ -1,4 +1,4 @@
-package org.opencomp.simulator.presetGenerator.presets.BasePresets;
+package org.onap.simulator.presetGenerator.presets.BasePresets;
 
 /**
  * Created by itzikliderman on 27/12/2017.

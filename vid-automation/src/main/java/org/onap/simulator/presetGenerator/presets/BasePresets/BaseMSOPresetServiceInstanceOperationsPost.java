@@ -1,4 +1,4 @@
-package org.opencomp.simulator.presetGenerator.presets.BasePresets;
+package org.onap.simulator.presetGenerator.presets.BasePresets;
 
 import org.springframework.http.HttpMethod;
 

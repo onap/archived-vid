@@ -1,4 +1,4 @@
-package org.opencomp.simulator.presetGenerator.presets.sdc;
+package org.onap.simulator.presetGenerator.presets.sdc;
 
 import org.springframework.http.HttpMethod;
 
