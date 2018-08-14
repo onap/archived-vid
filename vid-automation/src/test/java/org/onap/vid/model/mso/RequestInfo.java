@@ -1,5 +1,5 @@
 
-package org.opencomp.vid.model.mso;
+package org.onap.vid.model.mso;
 
 import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;

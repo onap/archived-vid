@@ -18,7 +18,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.opencomp.vid.model.mso;
+package org.onap.vid.model.mso;
 
 /**
  * The Class ExceptionResponse.

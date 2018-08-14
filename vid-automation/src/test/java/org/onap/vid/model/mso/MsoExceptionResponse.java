@@ -1,4 +1,4 @@
-package org.opencomp.vid.model.mso;
+package org.onap.vid.model.mso;
 
 public class MsoExceptionResponse {
 

@@ -18,7 +18,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.opencomp.vid.model.mso;
+package org.onap.vid.model.mso;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
