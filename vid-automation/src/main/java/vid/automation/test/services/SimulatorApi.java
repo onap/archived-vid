@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.opencomp.simulator.presetGenerator.presets.model.RegistrationRequest;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
 import org.springframework.http.HttpStatus;
 import vid.automation.test.utils.ReadFile;
 

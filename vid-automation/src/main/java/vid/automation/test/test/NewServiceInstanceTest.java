@@ -2,9 +2,9 @@ package vid.automation.test.test;
 
 import com.google.common.collect.*;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.opencomp.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateServiceInstancePost;
-import org.opencomp.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
-import org.opencomp.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateServiceInstancePost;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;

@@ -2,10 +2,22 @@ package vid.automation.test.services;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.opencomp.simulator.presetGenerator.presets.aai.*;
-import org.opencomp.simulator.presetGenerator.presets.mso.*;
-import org.opencomp.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
-import org.opencomp.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByOwningEntity;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByProject;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleInstancePost;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteInstanceOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteNetwork;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteService;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVfModule;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVnf;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVolumeGroup;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import vid.automation.test.Constants;
 
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;

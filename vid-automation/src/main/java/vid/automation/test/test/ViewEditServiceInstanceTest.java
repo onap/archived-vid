@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Before;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

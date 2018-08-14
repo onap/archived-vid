@@ -1,11 +1,11 @@
 package vid.automation.test.test;
 
 import com.google.common.collect.ImmutableList;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
-import org.opencomp.simulator.presetGenerator.presets.mso.PresetMSOCreateVNFInstancePost;
-import org.opencomp.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVNFInstancePost;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -18,7 +18,6 @@ import vid.automation.test.infra.Click;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
-import vid.automation.test.sections.DrawingBoardPage;
 import vid.automation.test.sections.SearchExistingPage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
@@ -36,7 +35,6 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
 import static vid.automation.test.infra.Features.FLAG_COLLECTION_RESOURCE_SUPPORT;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 
 @FeatureTogglingTest(FLAG_COLLECTION_RESOURCE_SUPPORT)
 public class SubInterfaceTest extends CreateInstanceDialogBaseTest {

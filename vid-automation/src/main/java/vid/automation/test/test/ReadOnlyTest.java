@@ -1,7 +1,7 @@
 package vid.automation.test.test;
 
 import org.junit.Assert;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
 import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
 import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;

@@ -2,9 +2,9 @@ package vid.automation.test.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-import org.opencomp.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.opencomp.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
