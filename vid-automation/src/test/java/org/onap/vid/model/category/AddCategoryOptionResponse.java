@@ -1,6 +1,6 @@
-package org.opencomp.vid.model.category;
+package org.onap.vid.model.category;
 
-import org.opencomp.vid.model.workflow.ListOfErrorsResponse;
+import org.onap.vid.model.workflow.ListOfErrorsResponse;
 
 import java.util.List;
 

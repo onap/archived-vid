@@ -1,11 +1,8 @@
-package org.opencomp.vid.model.asyncInstantiation;
+package org.onap.vid.model.asyncInstantiation;
 
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import vid.automation.test.model.JobStatus;
 
-import java.util.Date;
 import java.util.UUID;
 
 

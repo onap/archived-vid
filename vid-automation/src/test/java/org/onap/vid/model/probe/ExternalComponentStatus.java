@@ -1,4 +1,4 @@
-package org.opencomp.vid.model.probe;
+package org.onap.vid.model.probe;
 
 public class ExternalComponentStatus {
     public enum Component {AAI, MSO}

@@ -1,24 +1,18 @@
-package org.opencomp.vid.more;
+package org.onap.vid.more;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.opencomp.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.opencomp.vid.api.BaseApiTest;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.vid.api.BaseApiTest;
 import org.springframework.web.client.RestTemplate;
-import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.services.SimulatorApi;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;

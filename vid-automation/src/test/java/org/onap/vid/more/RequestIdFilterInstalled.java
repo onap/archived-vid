@@ -1,12 +1,12 @@
-package org.opencomp.vid.more;
+package org.onap.vid.more;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.opencomp.vid.api.BaseApiTest;
-import org.opencomp.vid.api.OperationalEnvironmentControllerApiTest;
-import org.opencomp.vid.api.ServiceInstanceMsoApiTest;
+import org.onap.vid.api.OperationalEnvironmentControllerApiTest;
+import org.onap.vid.api.BaseApiTest;
+import org.onap.vid.api.ServiceInstanceMsoApiTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,8 +21,8 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.opencomp.vid.api.CategoryParametersApiTest.GET_CATEGORY_PARAMETER_PROPERTIES;
-import static org.opencomp.vid.api.pProbeMsoApiTest.MSO_CREATE_CONFIGURATION;
+import static org.onap.vid.api.CategoryParametersApiTest.GET_CATEGORY_PARAMETER_PROPERTIES;
+import static org.onap.vid.api.pProbeMsoApiTest.MSO_CREATE_CONFIGURATION;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 

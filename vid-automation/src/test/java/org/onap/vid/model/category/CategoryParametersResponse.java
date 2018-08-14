@@ -1,4 +1,4 @@
-package org.opencomp.vid.model.category;
+package org.onap.vid.model.category;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

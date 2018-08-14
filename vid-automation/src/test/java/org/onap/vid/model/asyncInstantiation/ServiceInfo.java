@@ -1,4 +1,4 @@
-package org.opencomp.vid.model.asyncInstantiation;
+package org.onap.vid.model.asyncInstantiation;
 
 
 import vid.automation.test.model.JobStatus;

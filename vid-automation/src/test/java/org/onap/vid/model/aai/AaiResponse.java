@@ -1,7 +1,7 @@
-package org.opencomp.vid.model.aai;
+package org.onap.vid.model.aai;
 
 import com.google.common.base.MoreObjects;
-import org.opencomp.vid.model.mso.ProxyResponse;
+import org.onap.vid.model.mso.ProxyResponse;
 
 /**
  * Created by Oren on 7/10/17.

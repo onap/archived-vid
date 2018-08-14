@@ -1,4 +1,4 @@
-package org.opencomp.vid.model.category;
+package org.onap.vid.model.category;
 
 public class CategoryParameterOptionRep {
 

@@ -1,4 +1,4 @@
-package org.opencomp.vid.model.workflow;
+package org.onap.vid.model.workflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
