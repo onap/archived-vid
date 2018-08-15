@@ -10,7 +10,7 @@
         vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
         vm.configUpdatePatternError = "Invalid file type. Please select a file with a CSV extension.";
         vm.configUpdateContentError = "Invalid file structure.";
-        vm.controllers = VIDCONFIGURATION.SCALE_OUT_CONTROLLERS;
+        
         vm.wizardStep = 1;
         vm.nextStep = function(){
             vm.wizardStep++;
@@ -225,7 +225,6 @@
 							'operations_timeout':changeManagement.operationTimeout
 						};
 						requestParametersData = {
-                            controllerType: changeManagement.controllerType,
                             payload: JSON.stringify(payloadObj)
 						}
 					}else if(workflowType=="VNF Config Update"){
@@ -237,13 +236,11 @@
 
                         if(moduleToScale.userParams) {
                             requestParametersData = {
-                                controllerType: changeManagement.controllerType,
                                 userParams: moduleToScale.userParams
                                 //,usePreload: true
                             }
                         }else{
                             requestParametersData = {
-                                controllerType: changeManagement.controllerType,
                                 userParams: []
                                 //,usePreload: false
                             }

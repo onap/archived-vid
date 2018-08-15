@@ -84,14 +84,6 @@
             </div>
 
         </div>
-        <div ng-if="vm.isScaleOut() || vm.shouldShowVnfInPlaceFields()">
-            <div class="form-group">
-                <label class="control-label">Controller Type</label>
-                <select class="form-control" ng-model="vm.changeManagement.controllerType" name="controllerType" id="controllerType"
-                        ng-options="o as o for o in vm.controllers">
-                </select>
-            </div>
-        </div>
     </div>
 
     <div class="modal-body step2 scale-out-modules" ng-if="vm.wizardStep === 2">
