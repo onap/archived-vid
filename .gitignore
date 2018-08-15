@@ -38,3 +38,8 @@ deliveries/target/
 /vid-webpack-master/target/vid-webpack-master.war
 /vid-webpack-master/target/vid-webpack-master/app/ui/NO-WEBPACK.txt
 /vid-webpack-master/target/vid-webpack-master/WEB-INF/web.xml
+/vid-automation/.classpath
+/vid-automation/.project
+/vid-automation/.settings/org.eclipse.jdt.core.prefs
+/vid-automation/.settings/org.eclipse.m2e.core.prefs
+/vid-ext-services-simulator/.gitignore

@@ -40,3 +40,4 @@ buildNumber.properties
 target/*
 *.iml
 ExtentReport
+/bin/
