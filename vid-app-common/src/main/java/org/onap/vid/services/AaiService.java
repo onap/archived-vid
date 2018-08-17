@@ -1,18 +1,25 @@
 package org.onap.vid.services;
 
+import com.mashape.unirest.http.HttpResponse;
+import java.io.IOException;
+import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
-import org.onap.vid.aai.SubscriberFilteredResults;
+import org.onap.vid.aai.ResponseWithRequestInfo;
+import org.onap.vid.aai.Services;
+import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetNetworkCollectionDetails;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
+import org.onap.vid.aai.model.AaiGetPnfResponse;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
+import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.roles.RoleValidator;
 
-import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,47 +29,47 @@ import java.util.List;
 public interface AaiService {
 
 
-    SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator);
+    HttpResponse<SubscriberList> getFullSubscriberList(RoleValidator roleValidator);
 
-    AaiResponse getSubscriberData(String subscriberId, RoleValidator roleValidator);
+    HttpResponse<Services> getSubscriberData(String subscriberId, RoleValidator roleValidator);
 
     AaiResponse getServiceInstanceSearchResults(String subscriberId, String instanceIdentifier, RoleValidator roleProvider, List<String> owningEntities, List<String> projects);
 
-    AaiResponse<SubscriberList> getFullSubscriberList();
+    HttpResponse<SubscriberList> getFullSubscriberList();
 
-    AaiResponse getServices(RoleValidator roleValidator);
+    HttpResponse<GetServicesAAIRespone> getServices(RoleValidator roleValidator);
     
-    AaiResponse getAaiZones();
+    HttpResponse<AicZones> getAaiZones();
 
-    AaiResponse getNetworkCollectionDetails(String serviceInstanceId);
+    HttpResponse<AaiGetNetworkCollectionDetails> getNetworkCollectionDetails(String serviceInstanceId);
 
-    AaiResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction);
+    HttpResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction);
 
-    AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus);
+    HttpResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus);
 
     AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId);
 
-    Response getVNFData(String globalSubscriberId, String serviceType);
+    HttpResponse<String> getVNFData(String globalSubscriberId, String serviceType);
 
-    AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType, RoleValidator roleValidator);
+    HttpResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType, RoleValidator roleValidator);
 
-    AaiResponse getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId);
+    HttpResponse<AaiGetVnfResponse> getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId);
 
-    AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion);
+    HttpResponse<AaiGetVnfResponse> getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion);
 
-    Response getVersionByInvariantId(List<String> modelInvariantId);
+    HttpResponse<ResponseWithRequestInfo> getVersionByInvariantId(List<String> modelInvariantId);
 
     Collection<Service> getServicesByDistributionStatus();
 
-    AaiResponse<Pnf> getSpecificPnf(String pnfId);
+    HttpResponse<Pnf> getSpecificPnf(String pnfId);
 
     List<String> getServiceInstanceAssociatedPnfs(String globalCustomerId, String serviceType, String serviceInstanceId);
 
-    AaiResponse getPNFData(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion, String equipVendor, String equipModel);
+    HttpResponse<AaiGetPnfResponse> getPNFData(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion, String equipVendor, String equipModel);
 
     AaiResponseTranslator.PortMirroringConfigData getPortMirroringConfigData(String configurationId);
 
     List<PortDetailsTranslator.PortDetails> getPortMirroringSourcePorts(String configurationId);
 
-    AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId);
+    AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId) throws IOException;
 }

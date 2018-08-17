@@ -2,6 +2,7 @@ package org.onap.vid.roles;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mashape.unirest.http.HttpResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.aai.AaiResponse;
@@ -40,8 +41,8 @@ public class RoleProvider {
 
     public void init() {
         LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method started");
-        AaiResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
-        subscribers = subscribersResponse.getT();
+        HttpResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
+        subscribers = subscribersResponse.getBody();
         LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method finished");
     }
 
