@@ -1,10 +1,17 @@
 package org.onap.vid.services;
 
 import com.google.common.collect.ImmutableMap;
+import com.mashape.unirest.http.HttpResponse;
+import io.vavr.control.Try;
+import java.io.IOException;
+import lombok.val;
+import lombok.var;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.InvalidAAIResponseException;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
@@ -60,7 +67,7 @@ public class AsyncInstantiationBusinessLogicImpl implements AsyncInstantiationBu
 
     private SessionFactory sessionFactory;
 
-    private AaiClientInterface aaiClient;
+    private AaiOverTLSClientInterface aaiClientOverTLS;
 
     private int maxRetriesGettingFreeNameFromAai = MAX_RETRIES_GETTING_FREE_NAME_FROM_AAI;
 
@@ -82,12 +89,12 @@ public class AsyncInstantiationBusinessLogicImpl implements AsyncInstantiationBu
                                                JobAdapter jobAdapter,
                                                JobsBrokerService jobService,
                                                SessionFactory sessionFactory,
-                                               AaiClientInterface aaiClient) {
+                                               AaiOverTLSClientInterface aaiOverTLSClientInterface) {
         this.dataAccessService = dataAccessService;
         this.jobAdapter = jobAdapter;
         this.jobService = jobService;
         this.sessionFactory = sessionFactory;
-        this.aaiClient = aaiClient;
+        this.aaiClientOverTLS = aaiOverTLSClientInterface;
     }
 
     @Override
@@ -476,11 +483,17 @@ public class AsyncInstantiationBusinessLogicImpl implements AsyncInstantiationBu
     }
 
     private boolean isNameFreeInAai(String name, ResourceType resourceType) throws InvalidAAIResponseException {
-        AaiResponse<AaiNodeQueryResponse> aaiResponse = aaiClient.searchNodeTypeByName(name, resourceType);
-        if (aaiResponse.getHttpCode() > 399 || aaiResponse.getT() == null) {
-            throw new InvalidAAIResponseException(aaiResponse);
+        val aaiNodeQueryResponseHttpResponse = aaiClientOverTLS
+            .searchNodeTypeByName(name, resourceType);
+        if (aaiNodeQueryResponseHttpResponse.getStatus() > 399 || aaiNodeQueryResponseHttpResponse.getBody() == null){
+            try {
+                String message = IOUtils.toString(aaiNodeQueryResponseHttpResponse.getRawBody(), "UTF-8");
+                throw new InvalidAAIResponseException(aaiNodeQueryResponseHttpResponse.getStatus(), message);
+            } catch (IOException e) {
+                throw new InvalidAAIResponseException(aaiNodeQueryResponseHttpResponse.getStatus(), aaiNodeQueryResponseHttpResponse.getStatusText());
+            }
         }
-        return CollectionUtils.isEmpty(aaiResponse.getT().resultData);
+        return CollectionUtils.isEmpty(aaiNodeQueryResponseHttpResponse.getBody().resultData);
     }
 
 }

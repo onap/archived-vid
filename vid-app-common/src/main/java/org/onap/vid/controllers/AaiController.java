@@ -20,19 +20,27 @@
 
 package org.onap.vid.controllers;
 
+import com.mashape.unirest.http.HttpResponse;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
+import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.aai.ServiceInstancesSearchResults;
-import org.onap.vid.aai.SubscriberData;
-import org.onap.vid.aai.SubscriberFilteredResults;
+import org.onap.vid.aai.Services;
+import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetNetworkCollectionDetails;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
+import org.onap.vid.aai.model.AaiGetPnfResponse;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
+import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.model.SubscriberList;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleProvider;
@@ -116,8 +124,8 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = {"/aai_get_aic_zones"}, method = RequestMethod.GET)
     public ResponseEntity<String> getAicZones(HttpServletRequest request) throws IOException {
         LOGGER.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== getAicZones controller start");
-        AaiResponse response = aaiService.getAaiZones();
-        return aaiResponseToResponseEntity(response);
+        HttpResponse<AicZones> response = aaiService.getAaiZones();
+        return httpResponseToResponseEntity(response);
     }
 
     @RequestMapping(value = {"/aai_get_aic_zone_for_pnf/{globalCustomerId}/{serviceType}/{serviceId}"}, method = RequestMethod.GET)
@@ -156,8 +164,8 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> doGetServices(HttpServletRequest request) throws IOException {
         RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
 
-        AaiResponse subscriberList = aaiService.getServices(roleValidator);
-        ResponseEntity<String> responseEntity = aaiResponseToResponseEntity(subscriberList);
+        HttpResponse<GetServicesAAIRespone> subscriberList = aaiService.getServices(roleValidator);
+        ResponseEntity<String> responseEntity = httpResponseToResponseEntity(subscriberList);
 
         return responseEntity;
     }
@@ -167,15 +175,26 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> getVersionByInvariantId(HttpServletRequest request, @RequestBody VersionByInvariantIdsRequest versions) {
         ResponseEntity<String> responseEntity;
         ObjectMapper objectMapper = new ObjectMapper();
-
-        Response result = aaiService.getVersionByInvariantId(versions.versions);
-
-        return new ResponseEntity<String>(result.readEntity(String.class), HttpStatus.OK);
+        HttpResponse<ResponseWithRequestInfo> result = aaiService.getVersionByInvariantId(versions.versions);
+        return new ResponseEntity<String>(result.getBody().getResponse().readEntity(String.class), HttpStatus.OK);
     }
 
 
-    private ResponseEntity<String> aaiResponseToResponseEntity(AaiResponse aaiResponseData)
+    private ResponseEntity<String> httpResponseToResponseEntity(HttpResponse responseData)
             throws IOException {
+        ResponseEntity<String> responseEntity;
+        ObjectMapper objectMapper = new ObjectMapper();
+        if (responseData.getStatus() == 200) {
+            responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(responseData.getBody()), HttpStatus.OK);
+        } else {
+            String message =IOUtils.toString(responseData.getRawBody(), "UTF-8");
+            responseEntity = new ResponseEntity<>(message, HttpStatus.valueOf(responseData.getStatus()));
+        }
+        return responseEntity;
+    }
+
+    private ResponseEntity<String> aaiResponseToResponseEntity(AaiResponse aaiResponseData)
+        throws IOException {
         ResponseEntity<String> responseEntity;
         ObjectMapper objectMapper = new ObjectMapper();
         if (aaiResponseData.getHttpCode() == 200) {
@@ -260,14 +279,18 @@ public class AaiController extends RestrictedBaseController {
     public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(@RequestParam(value="operationalEnvironmentType", required = false) String operationalEnvironmentType,
                                                            @RequestParam(value="operationalEnvironmentStatus", required = false) String operationalEnvironmentStatus) {
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "start {}({}, {})", getMethodName(), operationalEnvironmentType, operationalEnvironmentStatus);
-        AaiResponse<OperationalEnvironmentList> response = aaiService.getOperationalEnvironments(operationalEnvironmentType,operationalEnvironmentStatus);
-        if (response.getHttpCode() != 200) {
-            String errorMessage = getAaiErrorMessage(response.getErrorMessage());
-            if(errorMessage != null) {
-                response = new AaiResponse<OperationalEnvironmentList>(response.getT(), errorMessage, response.getHttpCode());
+        HttpResponse<OperationalEnvironmentList> operationalEnvironments = aaiService
+            .getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
+        AaiResponse<OperationalEnvironmentList> response = null;
+        String errorMessage = null;
+        if (operationalEnvironments.getStatus() != 200) {
+            try {
+                errorMessage = IOUtils.toString(operationalEnvironments.getRawBody(), "UTF-8");
+            } catch (IOException e) {
+                errorMessage = operationalEnvironments.getStatusText();
             }
         }
-
+        response = new AaiResponse<>(operationalEnvironments.getBody(), errorMessage, operationalEnvironments.getStatus());
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), response);
         return response;
     }
@@ -284,14 +307,13 @@ public class AaiController extends RestrictedBaseController {
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity<String> responseEntity;
         RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
-        SubscriberFilteredResults subscriberList = aaiService.getFullSubscriberList(roleValidator);
-        if (subscriberList.getHttpCode() == 200) {
-            responseEntity = new ResponseEntity<String>(objectMapper.writeValueAsString(subscriberList.getSubscriberList()), HttpStatus.OK);
+        HttpResponse<SubscriberList> subscriberList = aaiService.getFullSubscriberList(roleValidator);
+        if (subscriberList.getStatus() == 200) {
+            responseEntity = new ResponseEntity<String>(objectMapper.writeValueAsString(subscriberList.getBody()), HttpStatus.OK);
         } else {
-            responseEntity = new ResponseEntity<String>(subscriberList.getErrorMessage(), HttpStatus.valueOf(subscriberList.getHttpCode()));
+            String error = IOUtils.toString(subscriberList.getRawBody(), "UTF-8");
+            responseEntity = new ResponseEntity<String>(error, HttpStatus.valueOf(subscriberList.getStatus()));
         }
-
-
         return responseEntity;
     }
 
@@ -303,8 +325,7 @@ public class AaiController extends RestrictedBaseController {
                                                                      @PathVariable("globalCustomerId") String globalCustomerId,
                                                                      @PathVariable("serviceType") String serviceType) {
 
-        Response resp = aaiService.getVNFData(globalCustomerId, serviceType);
-        return convertResponseToResponseEntity(resp);
+        return convertResponseToResponseEntity(aaiService.getVNFData(globalCustomerId, serviceType));
     }
 
 
@@ -341,16 +362,13 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_sub_details/{subscriberId}", method = RequestMethod.GET)
     public ResponseEntity<String> GetSubscriberDetails(HttpServletRequest request, @PathVariable("subscriberId") String subscriberId) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        ResponseEntity responseEntity;
         List<Role> roles = roleProvider.getUserRoles(request);
         RoleValidator roleValidator = new RoleValidator(roles);
-        AaiResponse<SubscriberData> subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator);
-        String httpMessage = subscriberData.getT() != null ?
-                objectMapper.writeValueAsString(subscriberData.getT()) :
-                subscriberData.getErrorMessage();
-
-        responseEntity = new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(subscriberData.getHttpCode()));
-        return responseEntity;
+        HttpResponse<Services> subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator);
+        String httpMessage = subscriberData.getBody() != null ?
+                objectMapper.writeValueAsString(subscriberData.getBody()) :
+                IOUtils.toString(subscriberData.getRawBody(), "UTF-8");
+        return new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(subscriberData.getStatus()));
     }
 
     /**
@@ -420,9 +438,16 @@ public class AaiController extends RestrictedBaseController {
             @PathVariable("globalCustomerId") String globalCustomerId,
             @PathVariable("serviceType") String serviceType,
             @PathVariable("serviceInstanceId") String serviceInstanceId) {
-
-        return aaiService.getVNFData(globalCustomerId, serviceType, serviceInstanceId);
-
+        HttpResponse<AaiGetVnfResponse> vnfData = aaiService.getVNFData(globalCustomerId, serviceType, serviceInstanceId);
+        String errorMessage = null;
+        if (vnfData.getStatus() != 200) {
+            try {
+                errorMessage = IOUtils.toString(vnfData.getRawBody(), "UTF-8");
+            } catch (IOException e) {
+                errorMessage = vnfData.getStatusText();
+            }
+        }
+        return new AaiResponse<>(vnfData.getBody().toString(), errorMessage, vnfData.getStatus());
     }
 
 
@@ -454,19 +479,19 @@ public class AaiController extends RestrictedBaseController {
             @PathVariable("modelInvariantId") String modelInvariantId,
             @PathVariable("cloudRegion") String cloudRegion) {
 
-        AaiResponse<String> resp = aaiService.getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
-        return new ResponseEntity<String>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
+        HttpResponse<AaiGetVnfResponse> resp = aaiService.getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
+        return new ResponseEntity<String>(resp.getBody().toString(), HttpStatus.valueOf(resp.getStatus()));
     }
 
     @RequestMapping(value = "/aai_get_network_collection_details/{serviceInstanceId}", method = RequestMethod.GET)
     public ResponseEntity<String> getNetworkCollectionDetails(@PathVariable("serviceInstanceId") String serviceInstanceId) throws IOException {
         com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
-        AaiResponse<String> resp = aaiService.getNetworkCollectionDetails(serviceInstanceId);
+        HttpResponse<AaiGetNetworkCollectionDetails> resp = aaiService.getNetworkCollectionDetails(serviceInstanceId);
 
-        String httpMessage = resp.getT() != null ?
-                objectMapper.writeValueAsString(resp.getT()) :
-                resp.getErrorMessage();
-        return new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(resp.getHttpCode()));
+        String httpMessage = resp.getBody() != null ?
+                objectMapper.writeValueAsString(resp.getBody()) :
+                IOUtils.toString(resp.getRawBody(), "UTF-8");
+        return new ResponseEntity<>(httpMessage, HttpStatus.valueOf(resp.getStatus()));
     }
 
     @RequestMapping(value = "/aai_get_instance_groups_by_cloudregion/{cloudOwner}/{cloudRegionId}/{networkFunction}", method = RequestMethod.GET)
@@ -474,12 +499,12 @@ public class AaiController extends RestrictedBaseController {
                                                                  @PathVariable("cloudRegionId") String cloudRegionId,
                                                                  @PathVariable("networkFunction") String networkFunction) throws IOException {
         com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
-        AaiResponse<AaiGetInstanceGroupsByCloudRegion> resp = aaiService.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
+        HttpResponse<AaiGetInstanceGroupsByCloudRegion> resp = aaiService.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
 
-        String httpMessage = resp.getT() != null ?
-                objectMapper.writeValueAsString(resp.getT()) :
-                resp.getErrorMessage();
-        return new ResponseEntity<String>(httpMessage, HttpStatus.valueOf(resp.getHttpCode()));
+        String httpMessage = resp.getBody() != null ?
+                objectMapper.writeValueAsString(resp.getBody()) :
+                IOUtils.toString(resp.getRawBody(), "UTF-8");
+        return new ResponseEntity<>(httpMessage, HttpStatus.valueOf(resp.getStatus()));
     }
 
     @RequestMapping(value = "/aai_get_by_uri/**", method = RequestMethod.GET)
@@ -518,19 +543,16 @@ public class AaiController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/aai_get_pnfs/pnf/{pnf_id}", method = RequestMethod.GET)
     public ResponseEntity getSpecificPnf(@PathVariable("pnf_id") String pnfId) {
-        //logger.trace(EELFLoggerDelegate.debugLogger, "start {}({})", getMethodName(), pnfId);
-        AaiResponse<Pnf> resp;
+        HttpResponse<Pnf> resp;
         ResponseEntity<Pnf> re;
         try {
             resp = aaiService.getSpecificPnf(pnfId);
-            re = new ResponseEntity<Pnf>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
+            re = new ResponseEntity<>(resp.getBody(), HttpStatus.valueOf(resp.getStatus()));
         } catch (Exception e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        //logger.trace(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), resp.getHttpCode());
         return re;
     }
-
 
     /**
      * Obtain tenants for a given service type.
@@ -542,17 +564,18 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_get_tenants/{global-customer-id}/{service-type}", method = RequestMethod.GET)
     public ResponseEntity<String> viewEditGetTenantsFromServiceType(HttpServletRequest request,
                                                                     @PathVariable("global-customer-id") String globalCustomerId, @PathVariable("service-type") String serviceType) {
-
         ResponseEntity responseEntity;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Role> roles = roleProvider.getUserRoles(request);
             RoleValidator roleValidator = new RoleValidator(roles);
-            AaiResponse<GetTenantsResponse[]> response = aaiService.getTenants(globalCustomerId, serviceType, roleValidator);
-            if (response.getHttpCode() == 200) {
-                responseEntity = new ResponseEntity<String>(objectMapper.writeValueAsString(response.getT()), HttpStatus.OK);
+            HttpResponse<GetTenantsResponse[]> tenants = aaiService
+                .getTenants(globalCustomerId, serviceType, roleValidator);
+            if (tenants.getStatus()== 200) {
+                responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(tenants.getBody()), HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<String>(response.getErrorMessage(), HttpStatus.valueOf(response.getHttpCode()));
+                String message = IOUtils.toString(tenants.getRawBody(), "UTF-8");
+                responseEntity = new ResponseEntity<String>(message, HttpStatus.valueOf(tenants.getStatus()));
             }
         } catch (Exception e) {
             responseEntity = new ResponseEntity<String>("Unable to proccess getTenants reponse", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -570,8 +593,8 @@ public class AaiController extends RestrictedBaseController {
             @PathVariable("equipVendor") String equipVendor,
             @PathVariable("equipModel") String equipModel) {
 
-        AaiResponse<String> resp = aaiService.getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel);
-        return new ResponseEntity<String>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
+        HttpResponse<AaiGetPnfResponse> resp = aaiService.getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel);
+        return new ResponseEntity<>(resp.getBody().toString(), HttpStatus.valueOf(resp.getStatus()));
     }
 
     @RequestMapping(value = "/aai_getPortMirroringConfigsData", method = RequestMethod.GET)
@@ -599,6 +622,16 @@ public class AaiController extends RestrictedBaseController {
             respEnt = new ResponseEntity<String>("Failed to fetch data from A&AI, check server logs for details.", HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             respEnt = new ResponseEntity<String>(resp.readEntity(String.class), HttpStatus.valueOf(resp.getStatus()));
+        }
+        return respEnt;
+    }
+
+    private ResponseEntity<String> convertResponseToResponseEntity(HttpResponse<String> resp) {
+        ResponseEntity<String> respEnt;
+        if (resp == null) {
+            respEnt = new ResponseEntity<>("Failed to fetch data from A&AI, check server logs for details.", HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            respEnt = new ResponseEntity<>(resp.getBody(), HttpStatus.valueOf(resp.getStatus()));
         }
         return respEnt;
     }

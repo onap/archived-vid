@@ -1,7 +1,10 @@
 package org.onap.vid.services;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import java.io.IOException;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
-import org.codehaus.jackson.JsonNode;
 import org.onap.vid.aai.*;
 import org.onap.vid.aai.ServiceInstance;
 import org.onap.vid.aai.ServiceSubscription;
@@ -22,7 +25,6 @@ import org.onap.vid.utils.Intersection;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -42,10 +44,13 @@ public class AaiServiceImpl implements AaiService {
     private int indexOfSubscriberName = 6;
 
     @Autowired
-    private AaiClientInterface aaiClient;
+    private AaiOverTLSClientInterface aaiOverTLSClientInterface;
 
     @Autowired
     private AaiResponseTranslator aaiResponseTranslator;
+
+    @Autowired
+    private PortDetailsTranslator portDetailsTranslator;
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
 
@@ -85,10 +90,11 @@ public class AaiServiceImpl implements AaiService {
     }
 
     private List<ServiceInstanceSearchResult> getServicesByOwningEntityId(List<String> owningEntities, RoleValidator roleValidator) {
-        AaiResponse<OwningEntityResponse> owningEntityResponse = aaiClient.getServicesByOwningEntityId(owningEntities);
+        HttpResponse<OwningEntityResponse> servicesByOwningEntityId = aaiOverTLSClientInterface
+            .getServicesByOwningEntityId(owningEntities);
         List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
-        if (owningEntityResponse.getT() != null) {
-            for (OwningEntity owningEntity : owningEntityResponse.getT().getOwningEntity()) {
+        if (servicesByOwningEntityId.getBody() != null) {
+            for (OwningEntity owningEntity : servicesByOwningEntityId.getBody().getOwningEntity()) {
                 if (owningEntity.getRelationshipList() != null) {
                     serviceInstanceSearchResultList = convertRelationshipToSearchResult(owningEntity, serviceInstanceSearchResultList, roleValidator);
                 }
@@ -98,10 +104,11 @@ public class AaiServiceImpl implements AaiService {
     }
 
     private List<ServiceInstanceSearchResult> getServicesByProjectNames(List<String> projectNames, RoleValidator roleValidator) {
-        AaiResponse<ProjectResponse> projectByIdResponse = aaiClient.getServicesByProjectNames(projectNames);
+        HttpResponse<ProjectResponse> servicesByProjectNames = aaiOverTLSClientInterface
+            .getServicesByProjectNames(projectNames);
         List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
-        if (projectByIdResponse.getT() != null) {
-            for (Project project : projectByIdResponse.getT().getProject()) {
+        if (servicesByProjectNames.getBody() != null) {
+            for (Project project : servicesByProjectNames.getBody().getProject()) {
                 if (project.getRelationshipList() != null) {
                     serviceInstanceSearchResultList = convertRelationshipToSearchResult(project, serviceInstanceSearchResultList, roleValidator);
                 }
@@ -161,34 +168,30 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator) {
-        AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();
-
-        return new SubscriberFilteredResults(roleValidator, subscriberResponse.getT(),
-                subscriberResponse.getErrorMessage(),
-                subscriberResponse.getHttpCode());
+    public HttpResponse<SubscriberList> getFullSubscriberList(RoleValidator roleValidator) {
+        return aaiOverTLSClientInterface.getAllSubscribers();
     }
 
     @Override
-    public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus) {
-        return aaiClient.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
+    public HttpResponse<OperationalEnvironmentList> getOperationalEnvironments(String operationalEnvironmentType, String operationalEnvironmentStatus) {
+        return aaiOverTLSClientInterface.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
     }
 
     @Override
-    public AaiResponse<SubscriberList> getFullSubscriberList() {
-        return aaiClient.getAllSubscribers();
+    public HttpResponse<SubscriberList> getFullSubscriberList() {
+        return aaiOverTLSClientInterface.getAllSubscribers();
     }
 
     @Override
-    public AaiResponse getSubscriberData(String subscriberId, RoleValidator roleValidator) {
-        AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId);
-        String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
-        for (ServiceSubscription serviceSubscription : subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
+    public HttpResponse<Services> getSubscriberData(String subscriberId, RoleValidator roleValidator) {
+        HttpResponse<Services> subscriberData = aaiOverTLSClientInterface.getSubscriberData(subscriberId);
+        Services services = subscriberData.getBody();
+        String subscriberGlobalId = services.globalCustomerId;
+        for (ServiceSubscription serviceSubscription : services.serviceSubscriptions.serviceSubscription) {
             String serviceType = serviceSubscription.serviceType;
             serviceSubscription.isPermitted = roleValidator.isServicePermitted(subscriberGlobalId, serviceType);
         }
-        return subscriberResponse;
-
+        return subscriberData;
     }
 
     @Override
@@ -215,10 +218,10 @@ public class AaiServiceImpl implements AaiService {
 
 
     private List<ServiceInstanceSearchResult> getServicesBySubscriber(String subscriberId, String instanceIdentifier, RoleValidator roleValidator) {
-        AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId);
-        String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
-        String subscriberName = subscriberResponse.getT().subscriberName;
-        ServiceSubscriptions serviceSubscriptions = subscriberResponse.getT().serviceSubscriptions;
+        HttpResponse<Services> subscriberResponse = aaiOverTLSClientInterface.getSubscriberData(subscriberId);
+        String subscriberGlobalId = subscriberResponse.getBody().globalCustomerId;
+        String subscriberName = subscriberResponse.getBody().subscriberName;
+        ServiceSubscriptions serviceSubscriptions = subscriberResponse.getBody().serviceSubscriptions;
 
         return getSearchResultsForSubscriptions(serviceSubscriptions, subscriberId, instanceIdentifier, roleValidator, subscriberGlobalId, subscriberName);
 
@@ -265,9 +268,9 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public Response getVersionByInvariantId(List<String> modelInvariantId) {
+    public HttpResponse<ResponseWithRequestInfo> getVersionByInvariantId(List<String> modelInvariantId) {
         try {
-            return aaiClient.getVersionByInvariantId(modelInvariantId);
+            return aaiOverTLSClientInterface.getVersionByInvariantId(modelInvariantId);
         } catch (Exception e) {
             LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to getVersionByInvariantId from A&AI", e);
         }
@@ -275,22 +278,20 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public AaiResponse<Pnf> getSpecificPnf(String pnfId) {
-        return aaiClient.getSpecificPnf(pnfId);
+    public HttpResponse<Pnf> getSpecificPnf(String pnfId) {
+        return aaiOverTLSClientInterface.getSpecificPnf(pnfId);
     }
 
     @Override
-    public AaiResponse getPNFData(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion, String equipVendor, String equipModel) {
-        return aaiClient.getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel);
+    public HttpResponse<AaiGetPnfResponse> getPNFData(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion, String equipVendor, String equipModel) {
+        return aaiOverTLSClientInterface.getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel);
     }
 
-
-
     @Override
-    public AaiResponse getServices(RoleValidator roleValidator) {
-        AaiResponse<GetServicesAAIRespone> subscriberResponse = aaiClient.getServices();
-        if (subscriberResponse.getT() != null) {
-            for (org.onap.vid.aai.model.AaiGetServicesRequestModel.Service service : subscriberResponse.getT().service) {
+    public HttpResponse<GetServicesAAIRespone> getServices(RoleValidator roleValidator) {
+        HttpResponse<GetServicesAAIRespone> subscriberResponse = aaiOverTLSClientInterface.getServices();
+        if (subscriberResponse.getBody() != null) {
+            for (org.onap.vid.aai.model.AaiGetServicesRequestModel.Service service : subscriberResponse.getBody().service) {
                 service.isPermitted = true;
             }
         }
@@ -298,82 +299,80 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType, RoleValidator roleValidator) {
-        AaiResponse<GetTenantsResponse[]> aaiGetTenantsResponse = aaiClient.getTenants(globalCustomerId, serviceType);
-        GetTenantsResponse[] tenants = aaiGetTenantsResponse.getT();
+    public HttpResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType, RoleValidator roleValidator) {
+        HttpResponse<GetTenantsResponse[]> tenantsResponse = aaiOverTLSClientInterface.getTenants(globalCustomerId, serviceType);
+        GetTenantsResponse[] tenants = tenantsResponse.getBody();
         if (tenants != null) {
             for (int i = 0; i < tenants.length; i++) {
                 tenants[i].isPermitted = roleValidator.isTenantPermitted(globalCustomerId, serviceType, tenants[i].tenantName);
             }
         }
-        return aaiGetTenantsResponse;
-
-
+        return tenantsResponse;
     }
 
     @Override
-    public AaiResponse getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId) {
-        return aaiClient.getVNFData(globalSubscriberId, serviceType, serviceInstanceId);
+    public HttpResponse<AaiGetVnfResponse> getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId) {
+        return aaiOverTLSClientInterface.getVNFData(globalSubscriberId, serviceType, serviceInstanceId);
     }
 
     @Override
-    public Response getVNFData(String globalSubscriberId, String serviceType) {
-        return aaiClient.getVNFData(globalSubscriberId, serviceType);
+    public HttpResponse<String> getVNFData(String globalSubscriberId, String serviceType) {
+        return aaiOverTLSClientInterface.getVNFData(globalSubscriberId, serviceType);
     }
 
     @Override
-    public AaiResponse getAaiZones() {
-        return (AaiResponse<AicZones>) aaiClient.getAllAicZones();
+    public HttpResponse<AicZones> getAaiZones() {
+        return aaiOverTLSClientInterface.getAllAicZones();
     }
 
     @Override
     public AaiResponse getAicZoneForPnf(String globalCustomerId, String serviceType, String serviceId) {
         String aicZone = "";
 
-        AaiResponse<ServiceRelationships> serviceInstanceResp = aaiClient.getServiceInstance(globalCustomerId, serviceType, serviceId);
-        if (serviceInstanceResp.getT() != null) {
-            List<String> aicZoneList = getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "zone", "zone.zone-id");
+        HttpResponse<ServiceRelationships> serviceInstanceResp = aaiOverTLSClientInterface.getServiceInstance(globalCustomerId, serviceType, serviceId);
+        if (serviceInstanceResp.getBody() != null) {
+            List<String> aicZoneList = getRelationshipDataByType(serviceInstanceResp.getBody().getRelationshipList(), "zone", "zone.zone-id");
             if (!aicZoneList.isEmpty()) {
                 aicZone = aicZoneList.get(0);
             } else {
                 LOGGER.warn("aic zone not found for service instance " + serviceId);
             }
         } else {
-            if (serviceInstanceResp.getErrorMessage() != null) {
-                LOGGER.error("get service instance {} return error {}", serviceId, serviceInstanceResp.getErrorMessage());
-                return new AaiResponse(aicZone , serviceInstanceResp.getErrorMessage() ,serviceInstanceResp.getHttpCode());
-            } else {
+            try {
+                String message = IOUtils.toString(serviceInstanceResp.getRawBody(), "UTF-8");
+                LOGGER.error("get service instance {} return error {}", serviceId, message);
+                return new AaiResponse(aicZone , message, serviceInstanceResp.getStatus());
+            } catch (IOException e) {
                 LOGGER.warn("get service instance {} return empty body", serviceId);
-                return new AaiResponse(aicZone , "get service instance " + serviceId + " return empty body" ,serviceInstanceResp.getHttpCode());
+                return new AaiResponse(aicZone , "get service instance " + serviceId + " return empty body", serviceInstanceResp.getStatus());
             }
         }
-
         return new AaiResponse(aicZone , null ,HttpStatus.SC_OK);
     }
 
     @Override
-    public AaiResponse getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion) {
-        return aaiClient.getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
+    public HttpResponse<AaiGetVnfResponse> getNodeTemplateInstances(String globalCustomerId, String serviceType, String modelVersionId, String modelInvariantId, String cloudRegion) {
+        return aaiOverTLSClientInterface.getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
     }
 
     @Override
-    public AaiResponse getNetworkCollectionDetails(String serviceInstanceId){
-        AaiResponse<AaiGetNetworkCollectionDetails> getNetworkCollectionDetailsAaiResponse = aaiClient.getNetworkCollectionDetails(serviceInstanceId);
+    public HttpResponse<AaiGetNetworkCollectionDetails> getNetworkCollectionDetails(String serviceInstanceId){
+        HttpResponse<AaiGetNetworkCollectionDetails> getNetworkCollectionDetailsAaiResponse = aaiOverTLSClientInterface.getNetworkCollectionDetails(serviceInstanceId);
         return getNetworkCollectionDetailsAaiResponse;
     }
 
     @Override
-    public AaiResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction){
-        AaiResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegionResponse = aaiClient.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
+    public HttpResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction){
+        HttpResponse<AaiGetInstanceGroupsByCloudRegion> getInstanceGroupsByCloudRegionResponse = aaiOverTLSClientInterface.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
         return getInstanceGroupsByCloudRegionResponse;
     }
 
     @Override
     public Collection<Service> getServicesByDistributionStatus() {
-        AaiResponse<GetServiceModelsByDistributionStatusResponse> serviceModelsByDistributionStatusResponse = aaiClient.getServiceModelsByDistributionStatus();
+        HttpResponse<GetServiceModelsByDistributionStatusResponse> serviceModelsByDistributionStatusResponse = aaiOverTLSClientInterface.getServiceModelsByDistributionStatus();
         Collection<Service> services = new ArrayList<>();
-        if (serviceModelsByDistributionStatusResponse.getT() != null) {
-            List<Result> results = serviceModelsByDistributionStatusResponse.getT().getResults();
+        if (serviceModelsByDistributionStatusResponse.getBody() != null) {
+            List<Result> results = serviceModelsByDistributionStatusResponse.getBody().getResults();
             for (Result result : results) {
                 if(result.getModel() != null) {
                     List<Service> service = convertModelToService(result.getModel());
@@ -388,20 +387,21 @@ public class AaiServiceImpl implements AaiService {
     public List<String> getServiceInstanceAssociatedPnfs(String globalCustomerId, String serviceType, String serviceInstanceId) {
         List<String> pnfs = new ArrayList<>();
 
-        AaiResponse<ServiceRelationships> serviceInstanceResp = aaiClient.getServiceInstance(globalCustomerId, serviceType, serviceInstanceId);
-        if (serviceInstanceResp.getT() != null) {
+        HttpResponse<ServiceRelationships> serviceInstanceResp = aaiOverTLSClientInterface.getServiceInstance(globalCustomerId, serviceType, serviceInstanceId);
+        if (serviceInstanceResp.getBody() != null) {
 
             addPnfsToListViaLogicalLinks(pnfs, serviceInstanceResp);
             addPnfsToListViaDirectRelations(pnfs, serviceInstanceResp);
 
             if (pnfs.isEmpty()) {
                 LOGGER.warn("no pnf direct relation found for service id:" + serviceInstanceId+
-                        " name: "+serviceInstanceResp.getT().getServiceInstanceName());
+                        " name: "+serviceInstanceResp.getBody().getServiceInstanceName());
             }
         } else {
-            if (serviceInstanceResp.getErrorMessage() != null) {
-                LOGGER.error("get service instance {} return error {}", serviceInstanceId, serviceInstanceResp.getErrorMessage());
-            } else {
+            try {
+                String error = IOUtils.toString(serviceInstanceResp.getRawBody(), "UTF-8");
+                LOGGER.error("get service instance {} return error {}", serviceInstanceId, error);
+            } catch (IOException e) {
                 LOGGER.warn("get service instance {} return empty body", serviceInstanceId);
             }
         }
@@ -411,17 +411,18 @@ public class AaiServiceImpl implements AaiService {
 
     @Override
     public AaiResponseTranslator.PortMirroringConfigData getPortMirroringConfigData(String configurationId) {
-        AaiResponse<JsonNode> aaiResponse = aaiClient.getCloudRegionAndSourceByPortMirroringConfigurationId(configurationId);
+        HttpResponse<JsonNode> aaiResponse = aaiOverTLSClientInterface.getCloudRegionAndSourceByPortMirroringConfigurationId(configurationId);
         return aaiResponseTranslator.extractPortMirroringConfigData(aaiResponse);
     }
 
     @Override
-    public AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId){
-        AaiResponse<AaiGetRelatedInstanceGroupsByVnfId> aaiResponse = aaiClient.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
-        if(aaiResponse.getHttpCode() == HttpStatus.SC_OK){
-            return new AaiResponse(convertGetInstanceGroupsResponseToSimpleResponse(aaiResponse.getT()), aaiResponse.getErrorMessage(), aaiResponse.getHttpCode());
+    public AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId) throws IOException {
+        HttpResponse<AaiGetRelatedInstanceGroupsByVnfId> aaiResponse = aaiOverTLSClientInterface.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
+        String error = null;
+        if(aaiResponse.getStatus() != HttpStatus.SC_OK){
+            error = IOUtils.toString(aaiResponse.getRawBody(), "UTF-8");
         }
-        return aaiClient.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
+        return new AaiResponse(convertGetInstanceGroupsResponseToSimpleResponse(aaiResponse.getBody()), error, aaiResponse.getStatus());
     }
 
     private List<InstanceGroupInfo> convertGetInstanceGroupsResponseToSimpleResponse(AaiGetRelatedInstanceGroupsByVnfId response) {
@@ -443,16 +444,18 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public  List<PortDetailsTranslator.PortDetails> getPortMirroringSourcePorts(String configurationId){
-        return aaiClient.getPortMirroringSourcePorts(configurationId);
+    public  List<PortDetailsTranslator.PortDetails> getPortMirroringSourcePorts(String configurationId) {
+        HttpResponse<AaiGetPortMirroringSourcePorts> portMirroringSourcePorts = aaiOverTLSClientInterface
+            .getPortMirroringSourcePorts(configurationId);
+        return portDetailsTranslator.extractPortDetails(portMirroringSourcePorts);
     }
 
-    private void addPnfsToListViaDirectRelations(List<String> pnfs, AaiResponse<ServiceRelationships> serviceInstanceResp) {
-        pnfs.addAll(getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "pnf", "pnf.pnf-name"));
+    private void addPnfsToListViaDirectRelations(List<String> pnfs, HttpResponse<ServiceRelationships> serviceInstanceResp) {
+        pnfs.addAll(getRelationshipDataByType(serviceInstanceResp.getBody().getRelationshipList(), "pnf", "pnf.pnf-name"));
     }
 
-    private void addPnfsToListViaLogicalLinks(List<String> pnfs, AaiResponse<ServiceRelationships> serviceInstanceResp) {
-        List<String> logicalLinks = getRelationshipDataByType(serviceInstanceResp.getT().getRelationshipList(), "logical-link", "logical-link.link-name");
+    private void addPnfsToListViaLogicalLinks(List<String> pnfs, HttpResponse<ServiceRelationships> serviceInstanceResp) {
+        List<String> logicalLinks = getRelationshipDataByType(serviceInstanceResp.getBody().getRelationshipList(), "logical-link", "logical-link.link-name");
         for (String logicalLink : logicalLinks) {
             String link;
             try {
@@ -461,20 +464,19 @@ public class AaiServiceImpl implements AaiService {
                 LOGGER.error("Failed to encode logical link: " + logicalLink, e);
                 continue;
             }
-
-            AaiResponse<LogicalLinkResponse> logicalLinkResp = aaiClient.getLogicalLink(link);
-            if (logicalLinkResp.getT() != null) {
-                //lag-interface is the key for pnf - approved by Bracha
-                List<String> linkPnfs = getRelationshipDataByType(logicalLinkResp.getT().getRelationshipList(), "lag-interface", "pnf.pnf-name");
+            HttpResponse<LogicalLinkResponse> logicalLinkResp = aaiOverTLSClientInterface.getLogicalLink(link);
+            if (logicalLinkResp.getBody() != null) {
+                List<String> linkPnfs = getRelationshipDataByType(logicalLinkResp.getBody().getRelationshipList(), "lag-interface", "pnf.pnf-name");
                 if (!linkPnfs.isEmpty()) {
                     pnfs.addAll(linkPnfs);
                 } else {
                     LOGGER.warn("no pnf found for logical link " + logicalLink);
                 }
             } else {
-                if (logicalLinkResp.getErrorMessage() != null) {
-                    LOGGER.error("get logical link " + logicalLink + " return error", logicalLinkResp.getErrorMessage());
-                } else {
+                try {
+                    String error = IOUtils.toString(logicalLinkResp.getRawBody(), "UTF-8");
+                    LOGGER.error("get logical link " + logicalLink + " return error", error);
+                } catch (IOException e) {
                     LOGGER.warn("get logical link " + logicalLink + " return empty body");
                 }
             }
@@ -492,8 +494,6 @@ public class AaiServiceImpl implements AaiService {
                 );
             }
         }
-
-
         return relationshipValues;
     }
 }

@@ -1,7 +1,15 @@
 package org.onap.vid.aai;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.mashape.unirest.http.HttpResponse;
+import java.io.IOException;
+import java.util.Iterator;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -11,6 +19,10 @@ public class AaiResponseTranslator {
 
     public PortMirroringConfigData extractPortMirroringConfigData(AaiResponse<JsonNode> aaiResponse) {
         return extractErrorResponseIfHttpError(aaiResponse).orElseGet(() -> extractPortMirroringConfigData(aaiResponse.getT()));
+    }
+
+    public PortMirroringConfigData extractPortMirroringConfigData(HttpResponse<com.mashape.unirest.http.JsonNode> aaiResponse) {
+        return extractErrorResponseIfHttpError(aaiResponse).orElseGet(() -> extractPortMirroringConfigData(aaiResponse.getBody()));
     }
 
     public PortMirroringConfigData extractPortMirroringConfigData(JsonNode cloudRegionAndSourceFromConfigurationResponse) {
@@ -30,6 +42,29 @@ public class AaiResponseTranslator {
                 return getPortMirroringConfigData(payload, resultNode);
             }
         }
+        return new PortMirroringConfigDataError("Root node 'results' has no node where 'node-TYPE' is 'cloud-region'", payload.toString());
+    }
+
+    public PortMirroringConfigData extractPortMirroringConfigData(com.mashape.unirest.http.JsonNode cloudRegionAndSourceFromConfigurationResponse) {
+        JSONObject payload = cloudRegionAndSourceFromConfigurationResponse.getObject();
+        if (payload == null) {
+            return new PortMirroringConfigDataError("Response payload is null", null);
+        }
+
+        JSONArray results = payload.getJSONArray("results");
+
+        if (results == null) {
+            return new PortMirroringConfigDataError("Root node 'results' is missing", payload.toString());
+        }
+
+        for (int i=0; i<results.length(); i++){
+            JSONObject jsonObject = results.getJSONObject(i);
+            String nodeType = jsonObject.getString("node-type");
+            if (nodeType != null && nodeType.equals("cloud-region")){
+                return getPortMirroringConfigData(payload, jsonObject);
+            }
+        }
+
         return new PortMirroringConfigDataError("Root node 'results' has no node where 'node-TYPE' is 'cloud-region'", payload.toString());
     }
 
@@ -56,6 +91,25 @@ public class AaiResponseTranslator {
         return new PortMirroringConfigDataOk(cloudRegionId);
     }
 
+    private PortMirroringConfigData getPortMirroringConfigData(JSONObject payload, JSONObject resultNode) {
+        final JSONObject properties;
+        if (resultNode.isNull("properties")) {
+                    final String message = "The node-type 'cloud-region' does not contain a 'properties' node";
+            return new PortMirroringConfigDataError(message, payload.toString());
+        }else{
+            properties = resultNode.getJSONObject("properties");
+            if (properties.isNull("cloud-region-id")){
+                return new PortMirroringConfigDataError("The node-type 'cloud-region' does not contain the property 'cloud-region-id'", payload.toString());
+            }else{
+                String cloudRegionId = properties.getString("cloud-region-id");
+                if (StringUtils.isBlank(cloudRegionId)) {
+                    return new PortMirroringConfigDataError("Node 'properties.cloud-region-id' of node-type 'cloud-region' is blank", payload.toString());
+                }
+                return new PortMirroringConfigDataOk(cloudRegionId);
+            }
+        }
+    }
+
     private Optional<PortMirroringConfigData> extractErrorResponseIfHttpError(AaiResponse aaiResponse) {
         if (aaiResponse.getHttpCode() != org.springframework.http.HttpStatus.OK.value()) {
             final String errorMessage = aaiResponse.getErrorMessage();
@@ -63,6 +117,21 @@ public class AaiResponseTranslator {
                     "Got " + aaiResponse.getHttpCode() + " from aai",
                     errorMessage != null ? errorMessage : null)
             );
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<PortMirroringConfigData> extractErrorResponseIfHttpError(HttpResponse aaiResponse) {
+        if (aaiResponse.getStatus() != org.springframework.http.HttpStatus.OK.value()) {
+            try {
+                String error = IOUtils.toString(aaiResponse.getRawBody(), "UTF-8");
+                return Optional.of(new PortMirroringConfigDataError(
+                    "Got " + aaiResponse.getStatus() + " from aai", error));
+            } catch (IOException e) {
+                return Optional.of(new PortMirroringConfigDataError(
+                    "Got " + aaiResponse.getStatus() + " from aai",null));
+            }
         } else {
             return Optional.empty();
         }
