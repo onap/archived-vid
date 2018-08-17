@@ -3,6 +3,7 @@ package org.onap.vid.config;
 import org.hibernate.SessionFactory;
 import org.mockito.Mockito;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobsBrokerService;
@@ -66,7 +67,7 @@ public class JobCommandsConfigWithMockedMso {
                                                                            JobAdapter jobAdapter,
                                                                            JobsBrokerService jobsBrokerService,
                                                                            SessionFactory sessionFactory,
-                                                                           AaiClientInterface aaiClient) {
+                                                                           AaiOverTLSClientInterface aaiClient) {
         return new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapter, jobsBrokerService, sessionFactory, aaiClient);
     }
 
