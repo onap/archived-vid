@@ -2,6 +2,10 @@ package org.onap.vid.aai.model;
 
 
 import com.google.common.collect.ImmutableList;
+import com.mashape.unirest.http.HttpResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.properties.Features;
 import org.togglz.core.manager.FeatureManager;
@@ -97,12 +101,43 @@ public class PortDetailsTranslator {
         }
     }
 
+    private static Optional<List<PortDetails>> extractErrorResponseIfHttpError(HttpResponse aaiResponse) {
+        if (aaiResponse.getStatus() != org.springframework.http.HttpStatus.OK.value()) {
+            String error = null;
+            try {
+                error = IOUtils.toString(aaiResponse.getRawBody(), "UTF-8");
+            } catch (IOException e) {
+                error = "Empty response received.";
+            }
+            return Optional.of(ImmutableList.of(new PortDetailsError(
+                    "Got " + aaiResponse.getStatus() + " from aai", error)
+            ));
+        } else {
+            return Optional.empty();
+        }
+    }
+
     public List<PortDetails> extractPortDetailsInternal(AaiGetPortMirroringSourcePorts aaiGetPortsResponse, String rawPayload){
         List<SimpleResult> filteredResult = getFilteredPortList(aaiGetPortsResponse.getResults());
 
         return filteredResult.stream()
                 .map(SimpleResult::getProperties)
                 .map(p -> extractPortDetailsFromProperties(p, rawPayload))
+                .collect(Collectors.toList());
+    }
+
+    public List<PortDetails> extractPortDetailsInternal(HttpResponse<AaiGetPortMirroringSourcePorts> aaiResponse){
+        List<SimpleResult> filteredResult = getFilteredPortList(aaiResponse.getBody().getResults());
+        String error = null;
+        try {
+            error = IOUtils.toString(aaiResponse.getRawBody(), "UTF-8");
+        } catch (IOException e) {
+            error = "Empty response received.";
+        }
+        String finalError = error;
+        return filteredResult.stream()
+                .map(SimpleResult::getProperties)
+                .map(p -> extractPortDetailsFromProperties(p, finalError))
                 .collect(Collectors.toList());
     }
 
@@ -132,7 +167,10 @@ public class PortDetailsTranslator {
 
     public List<PortDetails> extractPortDetails(AaiResponse<AaiGetPortMirroringSourcePorts> aaiGetPortsResponse, String rawPayload){
         return extractErrorResponseIfHttpError(aaiGetPortsResponse, rawPayload).orElseGet(() -> extractPortDetailsInternal(aaiGetPortsResponse.getT(), rawPayload));
+    }
 
+    public List<PortDetails> extractPortDetails(HttpResponse<AaiGetPortMirroringSourcePorts> aaiGetPortsResponse) {
+        return extractErrorResponseIfHttpError(aaiGetPortsResponse).orElseGet(() -> extractPortDetailsInternal(aaiGetPortsResponse));
     }
 
 }
