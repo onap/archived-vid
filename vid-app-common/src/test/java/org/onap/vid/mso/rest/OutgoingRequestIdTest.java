@@ -2,9 +2,13 @@ package org.onap.vid.mso.rest;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.util.AAIRestInterface;
-import org.onap.vid.asdc.rest.RestfulAsdcClient;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.controller.filter.PromiseEcompRequestIdFilter;
 import org.onap.vid.mso.RestMsoImplementation;
@@ -27,10 +31,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.mock;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.matchesPattern;
 
 
 public class OutgoingRequestIdTest {
@@ -42,7 +49,6 @@ public class OutgoingRequestIdTest {
     @InjectMocks
     private AAIRestInterface aaiRestInterface;
 
-    private RestfulAsdcClient restfulAsdcClient = new RestfulAsdcClient.Builder(mock(Client.class), null).build();
 
     @Captor
     private ArgumentCaptor<MultivaluedMap<String, Object>> multivaluedMapArgumentCaptor;
@@ -55,23 +61,6 @@ public class OutgoingRequestIdTest {
     @BeforeMethod
     private void putRequestInSpringContext() {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes((HttpServletRequest) PromiseEcompRequestIdFilter.wrapIfNeeded(new MockHttpServletRequest())));
-    }
-
-    @DataProvider
-    public Object[][] sdcMethods() {
-        return Stream.<ThrowingConsumer<RestfulAsdcClient>>of(
-                client -> client.getService(randomUUID()),
-                client -> client.getServiceToscaModel(randomUUID())
-        ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
-    }
-
-    @Test(dataProvider = "sdcMethods")
-    public void sdc(Consumer<RestfulAsdcClient> f) throws Exception {
-        final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(restfulAsdcClient);
-
-        f.accept(restfulAsdcClient);
-
-        verifyRequestIdHeaderWasAdded(mocks.getFakeBuilder());
     }
 
     @DataProvider
