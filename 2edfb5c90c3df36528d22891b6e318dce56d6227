@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_6e6e6a98",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/AsdcClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-20T14:53:24Z",
+      "side": 1,
+      "message": "Those consts are not specific to SDC client. Please move it to common place so all clients can use them.",
+      "revId": "2edfb5c90c3df36528d22891b6e318dce56d6227",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ae13220c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/AsdcClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-20T14:53:24Z",
+      "side": 1,
+      "message": "I don\u0027t see reason it\u0027s done in here. Please move it to SdcRestClient. That\u0027s the only class that uses it.",
+      "revId": "2edfb5c90c3df36528d22891b6e318dce56d6227",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
