@@ -29,7 +29,17 @@ import java.util.UUID;
  * The Interface AsdcClient.
  */
 public interface AsdcClient {
+	class HEADERS {
+		public static final String CONTENT_TYPE = "Content-Type";
+		public static final String AUTHORIZATION = "Authorization";
+		public static final String X_ECOMP_INSTANCE_ID = "X-ECOMP-InstanceID";
 
+	}
+
+	class URIS{
+		public static final String METADATA_URL_TEMPLATE = "%s%s/%s/metadata";
+		public static final String TOSCA_MODEL_URL_TEMPLATE = "%s%s/%s/toscaModel";
+	}
 	/**
 	 * Gets the service.
 	 *

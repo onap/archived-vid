@@ -60,7 +60,7 @@ public class SyncRestClient implements SyncRestClientInterface {
     private static final String CANNOT_INITIALIZE_CUSTOM_HTTP_CLIENT = "Cannot initialize custom http client from current configuration. Using default one.";
     private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SyncRestClient.class);
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss:SSSS");
-    private static final String[] SUPPORTED_PROTOCOLS = {"TLSv1", "TLSv1.2"};
+    private static final String[] SUPPORTED_SSL_VERSIONS = {"TLSv1", "TLSv1.2"};
     private static final String HTTPS_SCHEMA = "https://";
     private static final String HTTP_SCHEMA = "http://";
 
@@ -80,8 +80,8 @@ public class SyncRestClient implements SyncRestClientInterface {
     }
 
     @Override
-    public <T> HttpResponse<T> post(String url, Map<String, String> headers, Object body, Class<T> aClass) {
-        return callWithRetry(url, url2 -> Unirest.post(url2).headers(headers).body(body).asObject(aClass));
+    public <T> HttpResponse<T> post(String url, Map<String, String> headers, Object body, Class<T> responseClass) {
+        return callWithRetry(url, url2 -> Unirest.post(url2).headers(headers).body(body).asObject(responseClass));
     }
 
     @Override
@@ -94,11 +94,11 @@ public class SyncRestClient implements SyncRestClientInterface {
     }
 
     @Override
-    public <T> HttpResponse<T> get(String url, Map<String, String> headers, Map<String, String> routeParams, Class<T> aClass) {
+    public <T> HttpResponse<T> get(String url, Map<String, String> headers, Map<String, String> routeParams, Class<T> responseClass) {
         return callWithRetry(url, url2 -> {
             val getRequest = Unirest.get(url2).headers(headers);
             routeParams.forEach(getRequest::routeParam);
-            return getRequest.asObject(aClass);
+            return getRequest.asObject(responseClass);
         });
     }
 
@@ -182,7 +182,7 @@ public class SyncRestClient implements SyncRestClientInterface {
     private SSLConnectionSocketFactory allowTLSProtocols(SSLContext sslcontext) {
         return new SSLConnectionSocketFactory(
             sslcontext,
-            SUPPORTED_PROTOCOLS,
+                SUPPORTED_SSL_VERSIONS,
             null,
             SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
     }
