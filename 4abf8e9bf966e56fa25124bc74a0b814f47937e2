@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_fd81d28f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:25:54Z",
+      "side": 1,
+      "message": "is it temporary?",
+      "range": {
+        "startLine": 187,
+        "startChar": 39,
+        "endLine": 187,
+        "endChar": 66
+      },
+      "revId": "4abf8e9bf966e56fa25124bc74a0b814f47937e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_1d7daeb1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClientInterface.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:25:54Z",
+      "side": 1,
+      "message": "license is missing",
+      "revId": "4abf8e9bf966e56fa25124bc74a0b814f47937e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
