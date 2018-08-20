@@ -250,7 +250,14 @@
 		    <artifactId>opencsv</artifactId>
 		    <version>4.1</version>
 		</dependency>
-			
+
+		<!-- HTTP client -->
+		<dependency>
+			<groupId>com.xebialabs.restito</groupId>
+			<artifactId>restito</artifactId>
+			<version>0.9.3</version>
+			<scope>test</scope>
+		</dependency>
 			
 		<!-- SDK overlay war -->
 
@@ -502,5 +509,11 @@
 	            <artifactId>togglz-spring-core</artifactId>
 	            <version>2.5.0.Final</version>
 	        </dependency>
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-core</artifactId>
+				<version>3.10.0</version>
+				<scope>compile</scope>
+		 	</dependency>
 		</dependencies>
 </project>
