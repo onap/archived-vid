@@ -22,29 +22,37 @@
 package org.onap.vid.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.vid.aai.*;
+import org.onap.vid.aai.AaiClient;
+import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.PombaClientImpl;
+import org.onap.vid.aai.PombaClientInterface;
+import org.onap.vid.aai.PombaRestInterface;
 import org.onap.vid.aai.model.PortDetailsTranslator;
-import org.onap.vid.aai.util.*;
+import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.SSLContextProvider;
+import org.onap.vid.aai.util.ServletRequestHelper;
+import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
-import org.onap.vid.asdc.rest.RestfulAsdcClient;
-import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.asdc.rest.SdcRestClient;
+import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.properties.AsdcClientConfiguration;
-import org.onap.vid.services.*;
+import org.onap.vid.services.AaiService;
+import org.onap.vid.services.AaiServiceImpl;
+import org.onap.vid.services.PombaService;
+import org.onap.vid.services.PombaServiceImpl;
+import org.onap.vid.services.VidService;
+import org.onap.vid.services.VidServiceImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.togglz.core.manager.FeatureManager;
 
-import javax.net.ssl.SSLContext;
 import javax.servlet.ServletContext;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 
 @Configuration
 public class WebConfig {
@@ -117,35 +125,18 @@ public class WebConfig {
     }
 
     @Bean
-    public AsdcClient asdcClient(AsdcClientConfiguration asdcClientConfig) {
+    public AsdcClient sdcClient(AsdcClientConfiguration asdcClientConfiguration, SyncRestClientInterface syncRestClient) {
+        String auth = asdcClientConfiguration.getAsdcClientAuth();
+        String host = asdcClientConfiguration.getAsdcClientHost();
+        String protocol = asdcClientConfiguration.getAsdcClientProtocol();
+        int port = asdcClientConfiguration.getAsdcClientPort();
 
-        final String protocol = asdcClientConfig.getAsdcClientProtocol();
-        final String host = asdcClientConfig.getAsdcClientHost();
-        final int port = asdcClientConfig.getAsdcClientPort();
-        final String auth = asdcClientConfig.getAsdcClientAuth();
-        Client cl = null;
-        if (protocol.equalsIgnoreCase("https")) {
-            try {
-                SSLContext ctx = SSLContext.getInstance("TLSv1.2");
-                ctx.init(null, null, null);
-                cl = ClientBuilder.newBuilder().sslContext(ctx).build();
-            } catch (NoSuchAlgorithmException n) {
-                throw new GenericUncheckedException("SDC Client could not be instantiated due to unsupported protocol TLSv1.2", n);
-            } catch (KeyManagementException k) {
-                throw new GenericUncheckedException("SDC Client could not be instantiated due to a key management exception", k);
-            }
-        } else {
-            cl = ClientBuilder.newBuilder().build();
-        }
+        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth, syncRestClient);
+    }
 
-        try {
-            final URI uri = new URI(protocol + "://" + host + ":" + port + "/");
-            return new RestfulAsdcClient.Builder(cl, uri)
-                    .auth(auth)
-                    .build();
-        } catch (URISyntaxException e) {
-            throw new GenericUncheckedException("SDC Client could not be instantiated due to a syntax error in the URI", e);
-        }
+    @Bean
+    public SyncRestClientInterface syncRestClient() {
+        return new SyncRestClient();
     }
 
     @Bean
