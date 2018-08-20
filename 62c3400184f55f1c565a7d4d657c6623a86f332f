@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "1a76adc5_33477b4d",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-20T11:53:12Z",
+      "side": 1,
+      "message": "those to have nothing to do with http clients. Move them to different section",
+      "revId": "62c3400184f55f1c565a7d4d657c6623a86f332f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_f303430b",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 11
