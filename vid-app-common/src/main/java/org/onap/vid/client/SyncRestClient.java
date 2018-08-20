@@ -60,7 +60,7 @@ public class SyncRestClient implements SyncRestClientInterface {
     private static final String CANNOT_INITIALIZE_CUSTOM_HTTP_CLIENT = "Cannot initialize custom http client from current configuration. Using default one.";
     private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SyncRestClient.class);
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss:SSSS");
-    private static final String[] SUPPORTED_PROTOCOLS = {"TLSv1", "TLSv1.2"};
+    public static final String[] SUPPORTED_PROTOCOLS = {"TLSv1", "TLSv1.2"};
     private static final String HTTPS_SCHEMA = "https://";
     private static final String HTTP_SCHEMA = "http://";
 
