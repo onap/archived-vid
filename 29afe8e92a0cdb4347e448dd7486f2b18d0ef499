@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_9308ca92",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-21T06:20:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e087140e",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_409fe85f",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 9
@@ -89,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_73c88e22",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-21T06:20:21Z",
+      "side": 1,
+      "message": "Agree/added.",
+      "parentUuid": "1a76adc5_9d11ecae",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a0927c55",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 9
@@ -106,6 +142,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_330d3691",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-21T06:20:21Z",
+      "side": 1,
+      "message": "Its temporal solution as at least for now some other components provides APIs only over http. But still - to finish this task we need to provide a clients for all external services",
+      "parentUuid": "1a76adc5_a0927c55",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e0b074f6",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 9
@@ -117,6 +171,24 @@
       "writtenOn": "2018-08-09T10:41:11Z",
       "side": 1,
       "message": "Do we really want use default client when something goes wrong?",
+      "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_b3770602",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-21T06:20:21Z",
+      "side": 1,
+      "message": "Assuming that we have a functionality to retry the call over http - yes, its wanted to have such fallback.",
+      "parentUuid": "1a76adc5_e0b074f6",
       "revId": "29afe8e92a0cdb4347e448dd7486f2b18d0ef499",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
