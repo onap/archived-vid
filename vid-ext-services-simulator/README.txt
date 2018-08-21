@@ -254,7 +254,7 @@ Running - sunny flow:
     GET /vidSimulator/scheduler/testApiGet HTTP/1.1
     Host: localhost:7080
     Content-Type: application/json
-    X-Simulator-Id: pavelId
+    X-Simulator-Id: pavelIdGet
     Cache-Control: no-cache
 
     Response:

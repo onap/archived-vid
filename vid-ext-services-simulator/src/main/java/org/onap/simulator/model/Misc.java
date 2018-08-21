@@ -1,4 +1,4 @@
-package org.openecomp.simulator.model;
+package org.onap.simulator.model;
 
 public class Misc {
     private Integer numberOfTimes;

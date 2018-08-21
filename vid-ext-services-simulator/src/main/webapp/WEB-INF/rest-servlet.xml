@@ -9,5 +9,5 @@
 
 
     <context:component-scan
-            base-package="org.openecomp.simulator" />
+            base-package="org.onap.simulator" />
 </beans>
