@@ -1,4 +1,4 @@
-package org.openecomp.simulator.controller;
+package org.onap.simulator.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +10,8 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import org.mockserver.model.JsonBody;
-import org.openecomp.simulator.errorHandling.VidSimulatorException;
-import org.openecomp.simulator.model.SimulatorRequestResponseExpectation;
+import org.onap.simulator.errorHandling.VidSimulatorException;
+import org.onap.simulator.model.SimulatorRequestResponseExpectation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;

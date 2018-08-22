@@ -1,4 +1,4 @@
-package org.openecomp.simulator.model;
+package org.onap.simulator.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;

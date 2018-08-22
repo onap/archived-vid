@@ -1,4 +1,4 @@
-package org.openecomp.simulator.errorHandling;
+package org.onap.simulator.errorHandling;
 
 public class VidSimulatorException extends Exception {
 
