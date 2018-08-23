@@ -1,23 +1,22 @@
 package org.onap.vid.scheduler;
 
 import com.att.eelf.configuration.EELFLogger;
-import org.apache.commons.codec.binary.Base64;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import io.joshworks.restclient.http.HttpResponse;
 import org.eclipse.jetty.util.security.Password;
-import org.onap.vid.aai.util.HttpClientMode;
-import org.onap.vid.aai.util.HttpsAuthClient;
-import org.onap.vid.client.HttpBasicClient;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.utils.Logging;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.client.SyncRestClientInterface;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.Response;
+import java.util.Base64;
 import java.util.Collections;
+import java.util.Map;
 import java.util.function.Function;
 
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
@@ -25,97 +24,56 @@ import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 @Service
 public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
 
-    private Client client = null;
-    private Function<String, String> propertyGetter;
-
-    @Autowired
-    HttpsAuthClient httpsAuthClient;
-
-    private MultivaluedHashMap<String, Object> commonHeaders;
-
-    /** The logger. */
-    private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SchedulerRestInterface.class);
     final private static EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("scheduler");
+    /**
+     * The logger.
+     */
+    private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SchedulerRestInterface.class);
+    private SyncRestClientInterface syncRestClient;
+    private Function<String, String> propertyGetter;
+    private Map<String, String> commonHeaders;
 
-    public SchedulerRestInterface(){
+    public SchedulerRestInterface() {
         this.propertyGetter = SystemProperties::getProperty;
     }
 
-    public SchedulerRestInterface(Function<String, String> propertyGetter){
+    public SchedulerRestInterface(Function<String, String> propertyGetter) {
         this.propertyGetter = propertyGetter;
+    }
+
+    private static String getDeobfuscatedPassword(String password) {
+        return password.contains("OBF:") ? Password.deobfuscate(password) : password;
     }
 
     public void initRestClient() {
         logger.info("Starting to initialize rest client ");
+        String authStringEnc = calcEncodedAuthString();
 
-        final String username;
-        final String password;
+        commonHeaders = Maps.newHashMap();
+        commonHeaders.put("Authorization", "Basic " + authStringEnc);
 
-		/*Setting user name based on properties*/
-        String retrievedUsername = propertyGetter.apply(SchedulerProperties.SCHEDULER_USER_NAME_VAL);
-        if(retrievedUsername.isEmpty()) {
-            username = "";
-        } else {
-            username = retrievedUsername;
-        }
-
-		/*Setting password based on properties*/
-        String retrievedPassword = propertyGetter.apply(SchedulerProperties.SCHEDULER_PASSWORD_VAL);
-        if(retrievedPassword.isEmpty()) {
-            password = "";
-        } else {
-            if (retrievedPassword.contains("OBF:")) {
-                password = Password.deobfuscate(retrievedPassword);
-            } else {
-                password = retrievedPassword;
-            }
-        }
-
-        String authString = username + ":" + password;
-
-        byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
-        String authStringEnc = new String(authEncBytes);
-
-        commonHeaders = new MultivaluedHashMap<> ();
-        commonHeaders.put("Authorization", Collections.singletonList("Basic " + authStringEnc));
-
-        try {
-            if ( !username.isEmpty() ) {
-                client = httpsAuthClient.getClient(HttpClientMode.WITHOUT_KEYSTORE);
-            }
-            else {
-
-                client = HttpBasicClient.getClient();
-            }
-        } catch (Exception e) {
-            logger.error(" <== Unable to initialize rest client ", e);
-        }
+        syncRestClient = new SyncRestClient();
 
         logger.info("\t<== Client Initialized \n");
     }
 
-    public <T> void Get (T t, String sourceId, String path, org.onap.vid.scheduler.RestObject<T> restObject ) {
+    public <T> void Get(T t, String sourceId, String path, org.onap.vid.scheduler.RestObject<T> restObject) {
 
         String methodName = "Get";
-        String url = String.format("%s%s",propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
+        String url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
         initRestClient();
         Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
-        final Response cres = client.target(url)
-                .request()
-                .accept("application/json")
-                .headers(commonHeaders)
-                .header(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
-                .get();
+        final HttpResponse<T> cres = ((HttpResponse<T>) syncRestClient.get(url, ImmutableMap.<String, String>builder().putAll(commonHeaders).put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId()).build(), Collections.emptyMap(), t.getClass()));
         Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, cres);
         int status = cres.getStatus();
-        restObject.setStatusCode (status);
+        restObject.setStatusCode(status);
 
         if (status == 200) {
-            t = (T) cres.readEntity(t.getClass());
+            t = cres.getBody();
             restObject.set(t);
 
         } else {
-            throw new GenericUncheckedException(String.format("%s with status=%d, url=%s", methodName, status,url));
+            throw new GenericUncheckedException(String.format("%s with status=%d, url=%s", methodName, status, url));
         }
 
     }
@@ -124,27 +82,32 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
 
         initRestClient();
 
-        String url = String.format( "%s%s",propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
+        String url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
         Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
-        Response cres = client.target(url)
-                .request()
-                .accept("application/json")
-                .headers(commonHeaders)
-                .header(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
-                .delete();
+        final HttpResponse<T> cres = (HttpResponse<T>) syncRestClient.delete(url, ImmutableMap.<String, String>builder().putAll(commonHeaders).put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId()).build(), t.getClass());
+
         Logging.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
 
         int status = cres.getStatus();
         restObject.setStatusCode(status);
 
-        t = (T) cres.readEntity(t.getClass());
+        t = cres.getBody();
         restObject.set(t);
 
     }
 
-    public <T> T getInstance(Class<T> clazz) throws IllegalAccessException, InstantiationException
-    {
+    public <T> T getInstance(Class<T> clazz) throws IllegalAccessException, InstantiationException {
         return clazz.newInstance();
+    }
+
+    private String calcEncodedAuthString() {
+        String retrievedUsername = propertyGetter.apply(SchedulerProperties.SCHEDULER_USER_NAME_VAL);
+        final String username = retrievedUsername.isEmpty() ? "" : retrievedUsername;
+
+        String retrievedPassword = propertyGetter.apply(SchedulerProperties.SCHEDULER_PASSWORD_VAL);
+        final String password = retrievedPassword.isEmpty() ? "" : getDeobfuscatedPassword(retrievedPassword);
+
+        return Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
     }
 
 }
