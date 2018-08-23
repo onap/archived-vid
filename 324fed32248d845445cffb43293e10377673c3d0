@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_22f874e4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-23T08:29:52Z",
+      "side": 1,
+      "message": "Https and http constants can be moved to interface as static members.",
+      "revId": "324fed32248d845445cffb43293e10377673c3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_02cc58bb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-23T08:29:52Z",
+      "side": 1,
+      "message": "This method can be extracted and moved to interface as static one, then it will be possible to implement every rest method without concrete client (maybe it will be good to get rid of one layer of abstraction here, so SyncRestClient class?)",
+      "revId": "324fed32248d845445cffb43293e10377673c3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_82c5c83d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClientInterface.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-23T08:29:52Z",
+      "side": 1,
+      "message": "It would be good to add Closeable as superinterface and implement it in concrete classes.",
+      "revId": "324fed32248d845445cffb43293e10377673c3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
