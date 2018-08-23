@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_a2e1e49b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-23T09:21:00Z",
+      "side": 1,
+      "message": "Not sure is it really needed in other clients implementation. If someday someone will decide to prepare another client based on this particular interface and will need such consts he will be able to move it to the interface as well.",
+      "parentUuid": "1a76adc5_22f874e4",
+      "revId": "324fed32248d845445cffb43293e10377673c3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_02cc58bb",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
         "patchSetId": 17
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_629aec15",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-23T09:21:00Z",
+      "side": 1,
+      "message": "We decided to introduce wrapper for unirests api to gather all the specific code inside our implementation, so we wont get rid of this abstract layer here anyway. More of that this method is very temporal cause it just gives us a simple fallback till the time when every used-here service will be provided via https.",
+      "parentUuid": "1a76adc5_02cc58bb",
+      "revId": "324fed32248d845445cffb43293e10377673c3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_82c5c83d",
         "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClientInterface.java",
         "patchSetId": 17
@@ -47,6 +83,24 @@
       "writtenOn": "2018-08-23T08:29:52Z",
       "side": 1,
       "message": "It would be good to add Closeable as superinterface and implement it in concrete classes.",
+      "revId": "324fed32248d845445cffb43293e10377673c3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_22a4f455",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClientInterface.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-23T09:21:00Z",
+      "side": 1,
+      "message": "Agree, noted and I will add this in next proposed pull request.",
+      "parentUuid": "1a76adc5_82c5c83d",
       "revId": "324fed32248d845445cffb43293e10377673c3d0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
