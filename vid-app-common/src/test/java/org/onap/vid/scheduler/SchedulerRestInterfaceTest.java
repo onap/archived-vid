@@ -21,27 +21,22 @@
 
 package org.onap.vid.scheduler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xebialabs.restito.semantics.Action;
+import org.glassfish.grizzly.http.util.HttpStatus;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.onap.vid.aai.util.HttpClientMode;
-import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.testUtils.StubServerUtil;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterMethod;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -49,33 +44,25 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class SchedulerRestInterfaceTest {
 
-    private static final String USR_PWD_AUTH_STRING = "c2FtcGxlOnBhUyR3MFJk";
-    private static final String APPLICATION_JSON = "application/json";
-    private static MultivaluedHashMap<String, Object> commonHeaders = new MultivaluedHashMap<>();
+    private static final String SAMPLE_USERNAME = "sample";
+    private static final String SAMPLE_PASSWORD = "paS$w0Rd";
+    private static final String SAMPLE_SCHEDULER_SERVER_URL = "http://localhost";
+    private static final String SAMPLE_SOURCE_ID = "AAI";
+    private static final JSONParser JSON_PARSER = new JSONParser();
+    private static final String RESPONSE_CONTENT = "\"schedules\": \"SAMPLE STRING\"";
+    private static final String ERROR_RESPONSE = "\"error\": \"Internal server error!\"";
+    private static Map<String, String> DUMMY_SYSTEM_PROPERTIES = new HashMap<String, String>() {{
+        put(SchedulerProperties.SCHEDULER_USER_NAME_VAL, SAMPLE_USERNAME);
+        put(SchedulerProperties.SCHEDULER_PASSWORD_VAL, SAMPLE_PASSWORD);
+        put(SchedulerProperties.SCHEDULER_SERVER_URL_VAL, SAMPLE_SCHEDULER_SERVER_URL);
+    }};
     private static StubServerUtil serverUtil;
-    private String sampleBaseUrl;
-    @Mock
-    private HttpsAuthClient mockedHttpsAuthClient;
-    @Mock
-    private Client mockedClient;
-    @Mock
-    private Invocation.Builder mockedBuilder;
-    @Mock
-    private Response mockedResponse;
-    @Mock
-    private WebTarget mockedWebTarget;
-
-    @Mock
-    private Function<String, String> propertyGetter;
-
-    @InjectMocks
-    private SchedulerRestInterface schedulerInterface = new SchedulerRestInterface();
+    private static SchedulerRestInterface schedulerInterface = new SchedulerRestInterface((key) -> DUMMY_SYSTEM_PROPERTIES.get(key));
 
     @BeforeClass
     public static void setUpClass() {
         serverUtil = new StubServerUtil();
         serverUtil.runServer();
-        commonHeaders.put("Authorization", Collections.singletonList("Basic " + USR_PWD_AUTH_STRING));
     }
 
     @AfterClass
@@ -83,76 +70,67 @@ public class SchedulerRestInterfaceTest {
         serverUtil.stopServer();
     }
 
-    @BeforeMethod
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
 
-        sampleBaseUrl = serverUtil.constructTargetUrl("http", "");
+    @AfterMethod
+    public void tearDown() {
+        serverUtil.stopServer();
     }
 
     @Test
-    public void testShouldGetOKWhenStringIsExpected() throws IOException, GeneralSecurityException {
-        String sampleSourceId = "AAI";
+    public void testShouldGetOKWhenStringIsExpected() throws JsonProcessingException, ParseException {
+        prepareEnvForTest();
         RestObject<String> sampleRestObj = new RestObject<>();
-        String resultHolder = "";
+        serverUtil.prepareGetCall("/test", RESPONSE_CONTENT, Action.ok());
 
-        String responseContent = "sample : SAMPLE RESULT STRING";
-        Mockito.doReturn(mockedClient).when(mockedHttpsAuthClient).getClient(HttpClientMode.WITHOUT_KEYSTORE);
-        Mockito.doReturn("sample").when(propertyGetter).apply(SchedulerProperties.SCHEDULER_USER_NAME_VAL);
-        Mockito.doReturn("paS$w0Rd").when(propertyGetter).apply(SchedulerProperties.SCHEDULER_PASSWORD_VAL);
-        Mockito.doReturn(sampleBaseUrl).when(propertyGetter).apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL);
-        Mockito.doReturn(200).when(mockedResponse).getStatus();
-        Mockito.doReturn(responseContent).when(mockedResponse).readEntity(String.class);
-        Mockito.doReturn(mockedResponse).when(mockedBuilder).get();
-        Mockito.when(mockedBuilder.header(Matchers.any(), Matchers.any())).thenReturn(mockedBuilder);
-        Mockito.doReturn(mockedBuilder).when(mockedBuilder).headers(commonHeaders);
-        Mockito.doReturn(mockedBuilder).when(mockedBuilder).accept(APPLICATION_JSON);
-        Mockito.doReturn(mockedBuilder).when(mockedWebTarget).request();
-        Mockito.doReturn(mockedWebTarget).when(mockedClient).target(sampleBaseUrl + "test");
+        schedulerInterface.Get("", SAMPLE_SOURCE_ID, "", sampleRestObj);
 
-        serverUtil.prepareGetCall("/test", responseContent, Action.ok());
-
-        schedulerInterface.Get(resultHolder, sampleSourceId, "test", sampleRestObj);
-
-        assertResponseData(sampleRestObj, responseContent, 200);
+        assertResponseHasExpectedBodyAndStatus(sampleRestObj, RESPONSE_CONTENT, 200);
     }
 
+    @Test(expected = GenericUncheckedException.class)
+    public void shouldRaiseExceptionWhenErrorOccursDuringGet() throws JsonProcessingException {
+        prepareEnvForTest();
+        RestObject<String> sampleRestObj = new RestObject<>();
+
+        serverUtil.prepareGetCall("/test", ERROR_RESPONSE, Action.status(HttpStatus.INTERNAL_SERVER_ERROR_500));
+
+        schedulerInterface.Get("", SAMPLE_SOURCE_ID, "", sampleRestObj);
+    }
 
     @Test
-    public void testShouldDeleteSuccessfully() throws IOException, GeneralSecurityException {
-        String sampleTargetUrl = serverUtil.constructTargetUrl("http", "");
-        String sampleSourceId = "AAI";
+    public void shouldDeleteResourceSuccessfully() throws JsonProcessingException, ParseException {
+        prepareEnvForTest();
         RestObject<String> sampleRestObj = new RestObject<>();
-        String resultHolder = "";
+        serverUtil.prepareDeleteCall("/test", RESPONSE_CONTENT, Action.ok());
 
-        String responseContent = "sample : SAMPLE RESULT STRING";
-        Mockito.doReturn(mockedClient).when(mockedHttpsAuthClient).getClient(HttpClientMode.WITHOUT_KEYSTORE);
-        Mockito.doReturn("sample").when(propertyGetter).apply(SchedulerProperties.SCHEDULER_USER_NAME_VAL);
-        Mockito.doReturn("paS$w0Rd").when(propertyGetter).apply(SchedulerProperties.SCHEDULER_PASSWORD_VAL);
-        Mockito.doReturn(sampleTargetUrl).when(propertyGetter).apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL);
-        Mockito.doReturn(200).when(mockedResponse).getStatus();
-        Mockito.doReturn(responseContent).when(mockedResponse).readEntity(String.class);
-        Mockito.doReturn(mockedResponse).when(mockedBuilder).delete();
-        Mockito.when(mockedBuilder.header(Matchers.any(), Matchers.any())).thenReturn(mockedBuilder);
-        Mockito.doReturn(mockedBuilder).when(mockedBuilder).headers(commonHeaders);
-        Mockito.doReturn(mockedBuilder).when(mockedBuilder).accept(APPLICATION_JSON);
-        Mockito.doReturn(mockedBuilder).when(mockedWebTarget).request();
-        Mockito.doReturn(mockedWebTarget).when(mockedClient).target(sampleTargetUrl + "test");
+        schedulerInterface.Delete("", SAMPLE_SOURCE_ID, "", sampleRestObj);
 
-        serverUtil.prepareDeleteCall("/test", responseContent, Action.ok());
+        assertResponseHasExpectedBodyAndStatus(sampleRestObj, RESPONSE_CONTENT, 200);
+    }
 
-        schedulerInterface.Delete(resultHolder, sampleSourceId, "test", sampleRestObj);
+    @Test
+    public void shouldRaiseExceptionWhenErrorOccursDuringDelete() throws JsonProcessingException, ParseException {
+        prepareEnvForTest();
+        RestObject<String> sampleRestObj = new RestObject<>();
+        serverUtil.prepareDeleteCall("/test", ERROR_RESPONSE, Action.status(HttpStatus.INTERNAL_SERVER_ERROR_500));
 
-        assertResponseData(sampleRestObj, responseContent, 200);
+        schedulerInterface.Delete("", SAMPLE_SOURCE_ID, "", sampleRestObj);
+
+        assertResponseHasExpectedBodyAndStatus(sampleRestObj, ERROR_RESPONSE, 500);
     }
 
 
-    private void assertResponseData(RestObject<String> sampleRestObj, String expectedResponse, int expectedStatusCode) {
+    private void assertResponseHasExpectedBodyAndStatus(RestObject<String> sampleRestObj, String expectedResponse, int expectedStatusCode) throws ParseException {
+        Object parsedResult = JSON_PARSER.parse(sampleRestObj.get());
 
         assertThat(sampleRestObj.getStatusCode()).isEqualTo(expectedStatusCode);
-        assertThat(sampleRestObj.get()).isInstanceOf(String.class).isEqualTo(expectedResponse);
+        assertThat(parsedResult).isInstanceOf(String.class).isEqualTo(expectedResponse);
         assertThat(sampleRestObj.getUUID()).isNull();
 
     }
 
+    private void prepareEnvForTest() {
+        String targetUrl = serverUtil.constructTargetUrl("http", "test");
+        DUMMY_SYSTEM_PROPERTIES.put(SchedulerProperties.SCHEDULER_SERVER_URL_VAL, targetUrl);
+    }
 }

@@ -1,16 +1,16 @@
 package org.onap.vid.mso;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.net.URL;
@@ -18,7 +18,7 @@ import java.net.URL;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-@Test
+@RunWith(MockitoJUnitRunner.class)
 public class MsoBusinessLogicTest {
 
     @InjectMocks
@@ -26,11 +26,6 @@ public class MsoBusinessLogicTest {
 
     @Mock
     private MsoInterface msoClient;
-
-    @BeforeMethod
-    public void initMocks(){
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void testCreateInstance() throws Exception {

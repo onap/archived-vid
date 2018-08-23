@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
+import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -98,6 +99,15 @@ public class Logging {
         }
         catch (ProcessingException | IllegalStateException e) {
             logger.debug("Received {} {} Status: {} . Failed to read response as {}", method.name(), url, response.getStatus(), entityClass.getName());
+        }
+    }
+
+    public static <T> void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final HttpResponse<T> response) {
+        try {
+            logger.debug("Received {} {} Status: {} . Body: {}", method.name(), url, response.getStatus(), response.getBody());
+        }
+        catch (ProcessingException | IllegalStateException e) {
+            logger.debug("Received {} {} Status: {} . Failed to read response", method.name(), url, response.getStatus());
         }
     }
 
