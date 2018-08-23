@@ -37,7 +37,6 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
     private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SchedulerRestInterface.class);
     final private static EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("scheduler");
 
-    @Autowired
     public SchedulerRestInterface(){
         this.propertyGetter = SystemProperties::getProperty;
     }

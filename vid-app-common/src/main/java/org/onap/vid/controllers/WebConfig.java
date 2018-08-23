@@ -30,6 +30,8 @@ import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.rest.RestfulAsdcClient;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.properties.AsdcClientConfiguration;
+import org.onap.vid.scheduler.SchedulerRestInterface;
+import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.onap.vid.services.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -161,5 +163,10 @@ public class WebConfig {
     @Bean
     public PombaClientInterface getVerifyServiceInstanceClientInterface() {
         return new PombaClientImpl();
+    }
+
+    @Bean
+    public SchedulerRestInterfaceIfc getSchedulerRestInterface(){
+        return new SchedulerRestInterface();
     }
 }
