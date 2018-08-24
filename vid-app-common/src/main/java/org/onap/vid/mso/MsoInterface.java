@@ -1,5 +1,29 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
 package org.onap.vid.mso;
 
+import io.joshworks.restclient.http.HttpResponse;
+import io.joshworks.restclient.http.mapper.ObjectMapper;
+import lombok.SneakyThrows;
+import org.onap.vid.aai.util.CustomJacksonJaxBJsonProvider;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.mso.rest.RequestDetails;
 
@@ -62,7 +86,7 @@ public interface MsoInterface {
 
     MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint);
 
-    void getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject);
+    MsoResponseWrapper getOrchestrationRequest(String endpoint);
 
     MsoResponseWrapper getOrchestrationRequestsForDashboard(String t , String sourceId , String endpoint , RestObject restObject);
 
@@ -87,5 +111,28 @@ public interface MsoInterface {
     MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint);
 
     MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath);
+
+    <T> HttpResponse<T> get(String path, Class<T> responseClass);
+
+    <T> HttpResponse<T> post(String path, RequestDetailsWrapper<?> requestDetailsWrapper,
+      Class<T> responseClass);
+
+    static ObjectMapper objectMapper() {
+      return new ObjectMapper() {
+        CustomJacksonJaxBJsonProvider mapper = new CustomJacksonJaxBJsonProvider();
+
+        @SneakyThrows
+        @Override
+        public <T> T readValue(String s, Class<T> aClass) {
+          return mapper.getMapper().readValue(s, aClass);
+        }
+
+        @SneakyThrows
+        @Override
+        public String writeValue(Object o) {
+          return mapper.getMapper().writeValueAsString(o);
+        }
+      };
+    }
 }
 

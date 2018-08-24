@@ -1,20 +1,40 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
 package org.onap.vid.controllers;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+import io.joshworks.restclient.http.HttpResponse;
+import java.util.HashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.model.ExceptionResponse;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoBusinessLogic;
+import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.MsoResponseWrapper2;
-import org.onap.vid.mso.RestMsoImplementation;
-import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
-import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -24,7 +44,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -39,14 +58,14 @@ import static org.onap.vid.utils.Logging.getMethodName;
 @RequestMapping("operationalEnvironment")
 public class OperationalEnvironmentController extends VidRestrictedBaseController {
 
-    private final RestMsoImplementation restMso;
+    private final MsoInterface restMso;
     private final MsoBusinessLogic msoBusinessLogic;
 
     private static final Pattern RECOVERY_ACTION_MESSAGE_PATTERN = Pattern.compile("String value \'(.*)\': value not");
 
 
     @Autowired
-    public OperationalEnvironmentController(MsoBusinessLogic msoBusinessLogic, MsoRestClientNew msoClientInterface) {
+    public OperationalEnvironmentController(MsoBusinessLogic msoBusinessLogic, MsoInterface msoClientInterface) {
         this.restMso = msoClientInterface;
         this.msoBusinessLogic = msoBusinessLogic;
     }
@@ -57,8 +76,8 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         String userId = ControllersUtils.extractUserId(request);
         RequestDetailsWrapper<OperationEnvironmentRequestDetails> requestDetailsWrapper = msoBusinessLogic.convertParametersToRequestDetails(operationalEnvironment, userId);
         String path = msoBusinessLogic.getOperationalEnvironmentCreationPath();
-        RestObject<RequestReferencesContainer> msoResponse = restMso.PostForObject(requestDetailsWrapper, "",
-                path, RequestReferencesContainer.class);
+
+        HttpResponse<RequestReferencesContainer> msoResponse = restMso.post(path, requestDetailsWrapper, RequestReferencesContainer.class);
         debugEnd(msoResponse);
         return new MsoResponseWrapper2<>(msoResponse);
     }
@@ -83,8 +102,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         String path = msoBusinessLogic.getOperationalEnvironmentActivationPath(activateInfo);
         RequestDetailsWrapper<RequestDetails> requestDetailsWrapper = msoBusinessLogic.createOperationalEnvironmentActivationRequestDetails(activateInfo);
 
-        RestObject<RequestReferencesContainer> msoResponse = restMso.PostForObject(requestDetailsWrapper, "",
-                path, RequestReferencesContainer.class);
+        HttpResponse<RequestReferencesContainer> msoResponse = restMso.post(path, requestDetailsWrapper, RequestReferencesContainer.class);
 
         debugEnd(msoResponse);
         return new MsoResponseWrapper2<>(msoResponse);
@@ -105,8 +123,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         String path = msoBusinessLogic.getOperationalEnvironmentDeactivationPath(deactivateInfo);
         RequestDetailsWrapper<RequestDetails> requestDetailsWrapper =  msoBusinessLogic.createOperationalEnvironmentDeactivationRequestDetails(deactivateInfo);
 
-        RestObject<RequestReferencesContainer> msoResponse = restMso.PostForObject(requestDetailsWrapper, "",
-                path, RequestReferencesContainer.class);
+        HttpResponse<RequestReferencesContainer> msoResponse = restMso.post(path, requestDetailsWrapper, RequestReferencesContainer.class);
 
         debugEnd(msoResponse);
         return new MsoResponseWrapper2<>(msoResponse);
@@ -120,7 +137,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         verifyIsNotEmpty(requestId, "requestId");
         String path = msoBusinessLogic.getCloudResourcesRequestsStatusPath(requestId);
 
-        final RestObject<HashMap> msoResponse = restMso.GetForObject("", path, HashMap.class);
+        HttpResponse<HashMap> msoResponse = restMso.get(path, HashMap.class);
 
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), msoResponse);
         return new MsoResponseWrapper2<>(msoResponse);
@@ -322,7 +339,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         }
     }
 
-    private void debugEnd(RestObject<RequestReferencesContainer> msoResponse) {
+    private void debugEnd(HttpResponse<RequestReferencesContainer> msoResponse) {
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodCallerName(), msoResponse);
     }
 

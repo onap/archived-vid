@@ -1,7 +1,28 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
 package org.onap.vid.job.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.vid.aai.exceptions.InvalidAAIResponseException;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.exceptions.MaxRetriesException;
@@ -10,8 +31,7 @@ import org.onap.vid.job.JobCommand;
 import org.onap.vid.job.NextCommand;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
-import org.onap.vid.mso.RestMsoImplementation;
-import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.model.ServiceInstantiationRequestDetails;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
@@ -40,7 +60,7 @@ public class ServiceInstantiationCommand implements JobCommand {
     private AuditService auditService;
 
     @Inject
-    private RestMsoImplementation restMso;
+    private MsoInterface restMso;
 
     private UUID uuid;
     private ServiceInstantiation serviceInstantiationRequest;
@@ -78,13 +98,14 @@ public class ServiceInstantiationCommand implements JobCommand {
 
         String path = asyncInstantiationBL.getServiceInstantiationPath(serviceInstantiationRequest);
 
-        RestObject<RequestReferencesContainer> msoResponse = restMso.PostForObject(requestDetailsWrapper, "",
-                path, RequestReferencesContainer.class);
+        HttpResponse<RequestReferencesContainer> msoResponse = restMso.post(path,
+            requestDetailsWrapper, RequestReferencesContainer.class);
 
-        if (msoResponse.getStatusCode() >= 200 && msoResponse.getStatusCode() < 400) {
+
+        if (msoResponse.getStatus() >= 200 && msoResponse.getStatus() < 400) {
             final Job.JobStatus jobStatus = Job.JobStatus.IN_PROGRESS;
-            final String requestId = msoResponse.get().getRequestReferences().getRequestId();
-            final String instanceId = msoResponse.get().getRequestReferences().getInstanceId();
+            final String requestId = msoResponse.getBody().getRequestReferences().getRequestId();
+            final String instanceId = msoResponse.getBody().getRequestReferences().getInstanceId();
             asyncInstantiationBL.auditVidStatus(uuid, jobStatus);
             setInitialRequestAuditStatusFromMso(requestId);
             asyncInstantiationBL.updateServiceInfo(uuid, x-> {
@@ -94,7 +115,8 @@ public class ServiceInstantiationCommand implements JobCommand {
 
             return new NextCommand(jobStatus, new InProgressStatusCommand(uuid, requestId));
         } else {
-            auditService.setFailedAuditStatusFromMso(uuid,null, msoResponse.getStatusCode(),msoResponse.getRaw());
+            auditService.setFailedAuditStatusFromMso(uuid,null, msoResponse.getStatus(),
+                msoResponse.getBody().toString());
             return handleCommandFailed();
         }
 

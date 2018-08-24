@@ -3,13 +3,14 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +23,8 @@ package org.onap.vid.mso;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.joshworks.restclient.http.HttpResponse;
+import org.apache.commons.lang3.ObjectUtils;
 import org.glassfish.jersey.client.ClientResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
@@ -88,8 +91,17 @@ public class MsoUtil {
 		}
 		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp_str, status );
 		return (w);
-	}	
-	
+	}
+
+	public static <T> MsoResponseWrapper wrapResponse (HttpResponse<T> rs) {
+		MsoResponseWrapper w = new MsoResponseWrapper();
+		w.setStatus (rs.getStatus());
+		if(rs.getRawBody() != null) {
+			w.setEntity(ObjectUtils.toString(rs.getBody()));
+		}
+		return w;
+	}
+
 	/**
 	 * Convert pojo to string.
 	 *
