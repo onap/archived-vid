@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c8219ab5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_089eb256",
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c878ba2d",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
         "patchSetId": 1
@@ -59,6 +77,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_4836ea04",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "The proper place for this constant would be org.onap.portalsdk.core.util.SystemProperties class. This header has nothing to do with implementation of SyncRestClient. Headers are being passed to SyncRestClient as a parameter on each HTTP call.",
+      "parentUuid": "1a76adc5_c8c67a49",
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c89f5a4f",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
         "patchSetId": 1
@@ -76,6 +112,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_e83c96e4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c89f5a4f",
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_68ae4687",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
         "patchSetId": 1
@@ -87,6 +141,24 @@
       "writtenOn": "2018-08-24T09:20:20Z",
       "side": 1,
       "message": "Do we need those finals? They\u0027re not bad but also bring no value.",
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0840f254",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_68ae4687",
       "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -116,6 +188,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_a8269ecc",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_288a8e1b",
+      "range": {
+        "startLine": 74,
+        "startChar": 7,
+        "endLine": 80,
+        "endChar": 19
+      },
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_08031274",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
         "patchSetId": 1
@@ -127,6 +223,24 @@
       "writtenOn": "2018-08-24T09:20:20Z",
       "side": 1,
       "message": "this  will start/stop server before/after each test. If possible please create method that does that only once before/after all test scenarios in this class (@BeforeClass\n).",
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_281a8e7d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_08031274",
       "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -167,6 +281,54 @@
       "writtenOn": "2018-08-24T09:20:20Z",
       "side": 1,
       "message": "definitely",
+      "parentUuid": "1a76adc5_08b0f2f2",
+      "range": {
+        "startLine": 472,
+        "startChar": 1,
+        "endLine": 551,
+        "endChar": 5
+      },
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_481d8a72",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_a8f9be81",
+      "range": {
+        "startLine": 472,
+        "startChar": 1,
+        "endLine": 551,
+        "endChar": 5
+      },
+      "revId": "9048081b323472bcd451b7b8e7c4d795d8f6b4bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e8133664",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-08-24T11:11:33Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "1a76adc5_08b0f2f2",
       "range": {
         "startLine": 472,
