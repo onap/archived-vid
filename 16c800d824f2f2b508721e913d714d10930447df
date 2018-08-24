@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_88ee42b3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/AsdcClient.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T09:26:11Z",
+      "side": 1,
+      "message": "Move to generic client",
+      "revId": "16c800d824f2f2b508721e913d714d10930447df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_457b3af5",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/rest/SdcRestClientITTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T09:26:11Z",
+      "side": 1,
+      "message": "creating this client before each test is not necessary.",
+      "revId": "16c800d824f2f2b508721e913d714d10930447df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_48302a56",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/rest/SdcRestClientITTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T09:26:11Z",
+      "side": 1,
+      "message": "assertThatRequestHasRequiredHeaders",
+      "revId": "16c800d824f2f2b508721e913d714d10930447df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_282daefe",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/rest/SdcRestClientITTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T09:26:11Z",
+      "side": 1,
+      "message": "use consts from generic client.",
+      "revId": "16c800d824f2f2b508721e913d714d10930447df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
