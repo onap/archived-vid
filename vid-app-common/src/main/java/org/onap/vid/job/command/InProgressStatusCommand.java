@@ -1,12 +1,32 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
 package org.onap.vid.job.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.job.JobCommand;
 import org.onap.vid.job.NextCommand;
-import org.onap.vid.mso.RestMsoImplementation;
-import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
@@ -32,7 +52,7 @@ public class InProgressStatusCommand implements JobCommand {
     private AsyncInstantiationBusinessLogic asyncInstantiationBL;
 
     @Inject
-    private RestMsoImplementation restMso;
+    private MsoInterface restMso;
 
     @Inject
     private AuditService auditService;
@@ -53,20 +73,22 @@ public class InProgressStatusCommand implements JobCommand {
 
         try {
             String path = asyncInstantiationBL.getOrchestrationRequestsPath()+"/"+requestId;
-            RestObject<AsyncRequestStatus> msoResponse = restMso.GetForObject("", path, AsyncRequestStatus.class);
+            HttpResponse<AsyncRequestStatus> msoResponse = restMso.get(path, AsyncRequestStatus.class);
+
+
             JobStatus jobStatus;
-            if (msoResponse.getStatusCode() >= 400 || msoResponse.get() == null) {
-                auditService.setFailedAuditStatusFromMso(jobUuid, requestId, msoResponse.getStatusCode(), msoResponse.getRaw());
+            if (msoResponse.getStatus() >= 400 || msoResponse.getBody() == null) {
+                auditService.setFailedAuditStatusFromMso(jobUuid, requestId, msoResponse.getStatus(), msoResponse.getBody().toString());
                 LOGGER.error(EELFLoggerDelegate.errorLogger,
                         "Failed to get orchestration status for {}. Status code: {},  Body: {}",
-                        requestId, msoResponse.getStatusCode(), msoResponse.getRaw());
+                        requestId, msoResponse.getStatus(), msoResponse.getRawBody().toString());
                 return new NextCommand(JobStatus.IN_PROGRESS, this);
             }
             else {
-                jobStatus = asyncInstantiationBL.calcStatus(msoResponse.get());
+                jobStatus = asyncInstantiationBL.calcStatus(msoResponse.getBody());
             }
 
-            asyncInstantiationBL.auditMsoStatus(jobUuid,msoResponse.get().request);
+            asyncInstantiationBL.auditMsoStatus(jobUuid,msoResponse.getBody().request);
 
 
             if (jobStatus == JobStatus.FAILED) {
