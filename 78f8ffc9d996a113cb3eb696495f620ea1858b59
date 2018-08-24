@@ -73,6 +73,91 @@
       "revId": "78f8ffc9d996a113cb3eb696495f620ea1858b59",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_48d82a53",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scheduler/SchedulerRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T08:54:25Z",
+      "side": 1,
+      "message": "use ImmutableMap.builder()",
+      "revId": "78f8ffc9d996a113cb3eb696495f620ea1858b59",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e8ded63e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scheduler/SchedulerRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T08:54:25Z",
+      "side": 1,
+      "message": "is it needed?",
+      "revId": "78f8ffc9d996a113cb3eb696495f620ea1858b59",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_08e23203",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scheduler/SchedulerRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T08:54:25Z",
+      "side": 1,
+      "message": "Remove method prepareEnvForTest() and move all it\u0027s logic to setUp()",
+      "revId": "78f8ffc9d996a113cb3eb696495f620ea1858b59",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_68f2c6d3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scheduler/SchedulerRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T08:54:25Z",
+      "side": 1,
+      "message": "by name of this object you should be able to say what are you testing. Maybe rename to restScheduler.",
+      "revId": "78f8ffc9d996a113cb3eb696495f620ea1858b59",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_88ede2f1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scheduler/SchedulerRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-24T08:54:25Z",
+      "side": 1,
+      "message": "This assertion should tell what is checked. In this case it\u0027s not obvious. Either rename assertion to tell exacly what it does or add:\n\n\u003e assertThat(sampleRestObj.getStatusCode()).isEqualTo(expectedStatusCode);\nassertThat(parsedResult).isInstanceOf(String.class).isEqualTo(expectedResponse);\nassertThat(sampleRestObj.getUUID()).isNull();\n\nto each test. Since those are tests I prefer second option.",
+      "revId": "78f8ffc9d996a113cb3eb696495f620ea1858b59",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
