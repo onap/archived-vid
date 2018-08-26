@@ -62,7 +62,7 @@
 									<descriptor>assembly/assembly-for-plugin.xml</descriptor>
 								</assembly>
 								<tags>
-								  <tag>2.0-STAGING-latest</tag>
+								  <tag>3.0-STAGING-latest</tag>
 								</tags>
 								    
 							</build>
