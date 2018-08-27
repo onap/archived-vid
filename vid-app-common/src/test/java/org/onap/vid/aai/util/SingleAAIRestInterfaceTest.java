@@ -302,6 +302,7 @@ public class SingleAAIRestInterfaceTest {
         when(systemPropertyHelper.getAAIVIDUsername()).thenReturn(Optional.of("user"));
         when(systemPropertyHelper.getEncodedCredentials()).thenReturn("someCredentials");
         when(systemPropertyHelper.getFullServicePath(Mockito.anyString())).thenReturn("http://localhost/path");
+        when(systemPropertyHelper.getServiceBasePath(Mockito.anyString())).thenReturn("http://localhost/path");
     }
 
 }

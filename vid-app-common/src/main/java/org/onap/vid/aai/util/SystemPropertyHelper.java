@@ -38,6 +38,10 @@ public class SystemPropertyHelper {
         return getSystemProperty(AAIProperties.AAI_SERVER_URL);
     }
 
+    public Optional<String> getAAIServerBaseUrl(){
+        return getSystemProperty(AAIProperties.AAI_SERVER_URL_BASE);
+    }
+
     public Optional<String> getAAIVIDUsername(){
         return getSystemProperty(AAIProperties.AAI_VID_USERNAME);
     }
@@ -68,6 +72,10 @@ public class SystemPropertyHelper {
 
     public String getFullServicePath(String path) {
         return getAAIServerUrl().orElse("") + path;
+    }
+
+    public String getServiceBasePath(String path) {
+        return getAAIServerBaseUrl().orElse("") + path;
     }
 
     public String getEncodedCredentials() throws InvalidPropertyException, UnsupportedEncodingException {

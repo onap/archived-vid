@@ -309,7 +309,7 @@ public class AAIRestInterface {
 	 */
 	public Response RestPost(String fromAppId, String path, String payload, boolean xml) {
 		String methodName = "RestPost";
-		String url=systemPropertyHelper.getFullServicePath(path);
+		String url=systemPropertyHelper.getServiceBasePath(path);
 		String transId = UUID.randomUUID().toString();
 		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 
@@ -317,7 +317,7 @@ public class AAIRestInterface {
 		try {
 			initRestClient();
 			Logging.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
-			response = authenticateRequest(client.target(systemPropertyHelper.getFullServicePath(path))
+			response = authenticateRequest(client.target(systemPropertyHelper.getServiceBasePath(path))
 					.request()
                     .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
 					.header(TRANSACTION_ID_HEADER, transId)
