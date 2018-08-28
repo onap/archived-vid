@@ -27,6 +27,7 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -66,6 +67,8 @@ public class AAIRestInterface {
 	protected HttpsAuthClient httpsAuthClientFactory;
 	private final ServletRequestHelper servletRequestHelper;
 	private final SystemPropertyHelper systemPropertyHelper;
+	private final BaseUrlProvider urlProvider;
+	private final BaseUrlProvider baseUrlProvider;
 
 	protected static final String START_STRING = " start";
 	protected static final String TRANSACTION_ID_HEADER = "X-TransactionId";
@@ -73,10 +76,12 @@ public class AAIRestInterface {
 	protected static final String SUCCESSFUL_API_MESSAGE = " REST api call was successful!";
 	protected static final String URL_DECLARATION = ", url=";
 
-	public AAIRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
+	public AAIRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper, BaseUrlProvider urlProvider, BaseUrlProvider baseUrlProvider) {
 		this.httpsAuthClientFactory = httpsAuthClientFactory;
 		this.servletRequestHelper = servletRequestHelper;
 		this.systemPropertyHelper = systemPropertyHelper;
+		this.urlProvider = urlProvider;
+		this.baseUrlProvider = baseUrlProvider;
 		initRestClient();
 	}
 
@@ -84,11 +89,13 @@ public class AAIRestInterface {
 	 * For testing purpose
 	 */
 	AAIRestInterface(Optional<Client> client,
-					 HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper){
+					 HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper, BaseUrlProvider serverUrlProvider, BaseUrlProvider serverBaseUrlProvider) {
 		this.httpsAuthClientFactory = httpsAuthClientFactory;
 		this.servletRequestHelper = servletRequestHelper;
 		this.systemPropertyHelper = systemPropertyHelper;
-		if (client != null && client.isPresent()){
+		this.urlProvider = serverUrlProvider;
+		this.baseUrlProvider = serverBaseUrlProvider;
+		if (client != null && client.isPresent()) {
 			this.client = client.get();
 		}
 
@@ -166,7 +173,7 @@ public class AAIRestInterface {
 
 	public ResponseWithRequestInfo RestGet(String fromAppId, String transId, String requestUri, boolean xml, boolean propagateExceptions) {
         String methodName = "RestGet";
-		String url = systemPropertyHelper.getFullServicePath(requestUri);
+		String url = urlProvider.getBaseUrl()+requestUri;
 		try {
 			initRestClient(propagateExceptions);
 
@@ -222,7 +229,7 @@ public class AAIRestInterface {
 		transId += ":" + UUID.randomUUID().toString();
 		logger.debug(methodName + START_STRING);
 		Boolean response = false;
-		String url = systemPropertyHelper.getFullServicePath(path);;
+		String url = urlProvider.getBaseUrl()+path;
 		try {
 
 			initRestClient();
@@ -267,7 +274,7 @@ public class AAIRestInterface {
 	 */
 	public Response RestPut(String fromAppId, String path, String payload, boolean xml) {
 		String methodName = "RestPut";
-		String url=systemPropertyHelper.getFullServicePath(path);
+        String url = urlProvider.getBaseUrl()+path;
 		String transId = UUID.randomUUID().toString();
 		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 
@@ -309,7 +316,7 @@ public class AAIRestInterface {
 	 */
 	public Response RestPost(String fromAppId, String path, String payload, boolean xml) {
 		String methodName = "RestPost";
-		String url=systemPropertyHelper.getServiceBasePath(path);
+        String url = baseUrlProvider.getBaseUrl()+path;
 		String transId = UUID.randomUUID().toString();
 		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 
