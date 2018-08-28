@@ -40,15 +40,17 @@ import org.onap.vid.asdc.rest.SdcRestClient;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.properties.AsdcClientConfiguration;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.PombaService;
 import org.onap.vid.services.PombaServiceImpl;
 import org.onap.vid.services.VidService;
 import org.onap.vid.services.VidServiceImpl;
+import org.onap.vid.properties.VidProperties;
 import org.onap.vid.scheduler.SchedulerRestInterface;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
-import org.onap.vid.services.*;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +58,7 @@ import org.togglz.core.manager.FeatureManager;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.util.function.Supplier;
 
 @Configuration
 public class WebConfig {
@@ -127,14 +130,23 @@ public class WebConfig {
         return new HttpsAuthClient(certFilePath, systemPropertyHelper, sslContextProvider);
     }
 
-    @Bean
-    public AsdcClient sdcClient(AsdcClientConfiguration asdcClientConfiguration, SyncRestClientInterface syncRestClient) {
-        String auth = asdcClientConfiguration.getAsdcClientAuth();
-        String host = asdcClientConfiguration.getAsdcClientHost();
-        String protocol = asdcClientConfiguration.getAsdcClientProtocol();
-        int port = asdcClientConfiguration.getAsdcClientPort();
+//    @Bean
+//    public AsdcClient sdcClient(AsdcClientConfiguration asdcClientConfiguration, SyncRestClientInterface syncRestClient) {
+//        String auth = asdcClientConfiguration.getAsdcClientAuth();
+//        String host = asdcClientConfiguration.getAsdcClientHost();
+//        String protocol = asdcClientConfiguration.getAsdcClientProtocol();
+//        int port = asdcClientConfiguration.getAsdcClientPort();
+//
+//        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth, syncRestClient);
+//    }
 
-        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth, syncRestClient);
+    @Bean
+    public AsdcClient sdcClient(@Qualifier("sdcSecuredPropertiesProvider") Supplier<String> getSdcSecuredPropertiesProvider,
+                                @Qualifier("sdcUnsecuredPropertiesProvider") Supplier<String> getSdcUnsecuredPropertiesProvider,
+                                SyncRestClientInterface syncRestClient, FeatureManager featureManager, AsdcClientConfiguration asdcClientConfiguration) {
+
+        BaseUrlProvider baseUrlProvider = new BaseUrlProvider(featureManager, getSdcSecuredPropertiesProvider, getSdcUnsecuredPropertiesProvider);
+        return new SdcRestClient(baseUrlProvider, asdcClientConfiguration.asdcClientAuth, syncRestClient);
     }
 
     @Bean
@@ -160,5 +172,56 @@ public class WebConfig {
     @Bean
     public SchedulerRestInterfaceIfc getSchedulerRestInterface(){
         return new SchedulerRestInterface();
+    }
+
+
+    @Bean(name = "sdcSecuredPropertiesProvider")
+    public Supplier<String> getSdcSecuredPropertiesProvider(AsdcClientConfiguration asdcClientConfig) {
+        return () -> asdcClientConfig.getAsdcClientSecuredProtocol() + "://" + asdcClientConfig.getAsdcClientHost() + ":" + asdcClientConfig.getAsdcClientSecuredPort() + "/";
+    }
+
+    @Bean(name = "sdcUnsecuredPropertiesProvider")
+    public Supplier<String> getSdcUnsecuredPropertiesProvider(AsdcClientConfiguration asdcClientConfig) {
+        return () -> asdcClientConfig.getAsdcClientProtocol() + "://" + asdcClientConfig.getAsdcClientHost() + ":" + asdcClientConfig.getAsdcClientPort() + "/";
+    }
+
+    @Bean(name = "securedSchedulerPropertiesProvider")
+    public Supplier<String> getSecuredSchedulerPropertiesProvider() {
+        return () -> VidProperties.getProperty("scheduler.server.url");
+    }
+
+    @Bean(name = "unsecuredSchedulerPropertiesProvider")
+    public Supplier<String> getUnsecuredSchedulerPropertiesProvider() {
+        return () -> VidProperties.getProperty("scheduler.server.url.unsecured");
+    }
+
+    @Bean(name = "securedMsoPropertiesProvider")
+    public Supplier<String> getSecuredMsoPropertiesProvider() {
+        return () -> VidProperties.getProperty("mso.server.url");
+    }
+
+    @Bean(name = "unsecuredMsoPropertiesProvider")
+    public Supplier<String> getUnsecuredMsoPropertiesProvider() {
+        return () -> VidProperties.getProperty("mso.server.url.unsecured");
+    }
+
+    @Bean(name = "securedAaiBasePropertiesProvider")
+    public Supplier<String> getSecuredAaiBasePropertiesProvider() {
+        return () -> VidProperties.getProperty("aai.server.url.base");
+    }
+
+    @Bean(name = "unsecuredAaiBasePropertiesProvider")
+    public Supplier<String> getUnsecuredAaiBasePropertiesProvider() {
+        return () -> VidProperties.getProperty("aai.server.url.base.unsecured");
+    }
+
+    @Bean(name = "securedAaiPropertiesProvider")
+    public Supplier<String> getSecuredAaiPropertiesProvider() {
+        return () -> VidProperties.getProperty("aai.server.url");
+    }
+
+    @Bean(name = "unsecuredAaiPropertiesProvider")
+    public Supplier<String> getUnsecuredAaiPropertiesProvider() {
+        return () -> VidProperties.getProperty("aai.server.url.unsecured");
     }
 }
