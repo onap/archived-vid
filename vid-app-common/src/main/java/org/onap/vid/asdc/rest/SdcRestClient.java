@@ -29,6 +29,7 @@ import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.model.ModelConstants;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
@@ -55,7 +56,7 @@ import static org.onap.vid.utils.Logging.logRequest;
 
 public class SdcRestClient implements AsdcClient {
 
-    private String baseUrl;
+    private BaseUrlProvider baseUrlProvider;
     private String path;
     private String auth;
     private static final EELFLogger LOGGER = Logging.getRequestsLogger("asdc");
@@ -63,17 +64,17 @@ public class SdcRestClient implements AsdcClient {
     private SyncRestClientInterface syncRestClient;
 
 
-    public SdcRestClient(String baseUrl, String auth, SyncRestClientInterface client) {
+    public SdcRestClient(BaseUrlProvider baseUrlProvider, String auth, SyncRestClientInterface client) {
         this.syncRestClient = client;
         this.auth = auth;
-        this.baseUrl = baseUrl;
+        this.baseUrlProvider=baseUrlProvider;
         this.path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH, ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
     }
 
 
     @Override
     public Service getService(UUID uuid) throws AsdcCatalogException {
-        String finalUrl = String.format(METADATA_URL_TEMPLATE, baseUrl, path, uuid);
+        String finalUrl = String.format(METADATA_URL_TEMPLATE, baseUrlProvider.getBaseUrl(), path, uuid);
         logRequest(LOGGER, HttpMethod.GET, finalUrl);
 
         return Try
@@ -85,7 +86,7 @@ public class SdcRestClient implements AsdcClient {
 
     @Override
     public Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException {
-        String finalUrl = String.format(TOSCA_MODEL_URL_TEMPLATE, baseUrl, path, uuid);
+        String finalUrl = String.format(TOSCA_MODEL_URL_TEMPLATE, baseUrlProvider.getBaseUrl(), path, uuid);
         logRequest(LOGGER, HttpMethod.GET, finalUrl);
 
         InputStream inputStream = Try

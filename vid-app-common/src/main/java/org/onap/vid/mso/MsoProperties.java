@@ -35,6 +35,8 @@ public class MsoProperties extends SystemProperties {
 	//VID Properties related to MSO
 	public static final String MSO_SERVER_URL = "mso.server.url";
 
+	public static final String MSO_SERVER_URL_UNSECURED ="mso.server.url.unsecured";
+
 	/** The Constant MSO_DME2_SERVER_URL. */
 	public static final String MSO_DME2_SERVER_URL = "mso.dme2.server.url";
 

@@ -10,6 +10,7 @@ public class SchedulerProperties extends SystemProperties {
 	public static final String SCHEDULER_PASSWORD_VAL = "scheduler.password";
 	
 	public static final String SCHEDULER_SERVER_URL_VAL = "scheduler.server.url";
+	public static final String SCHEDULER_SERVER_URL_UNSECURED_VAL="scheduler.server.url.unsecured";
 
 	public static final String SCHEDULER_GET_SCHEDULES = "scheduler.get.schedules";
 

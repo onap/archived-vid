@@ -34,9 +34,11 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.testUtils.StubServerUtil;
 
 import javax.net.ssl.SSLContext;
@@ -57,6 +59,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
@@ -73,7 +76,11 @@ public class SdcRestClientITTest {
         stubServer.runSecuredServer();
         SyncRestClient syncRestClient = new SyncRestClient(createNaiveHttpClient());
         String serverUrl = stubServer.constructTargetUrl("https", "");
-        sdcRestClient = new SdcRestClient(serverUrl, "", syncRestClient);
+
+        BaseUrlProvider baseUrlProvider= Mockito.mock(BaseUrlProvider.class);
+        doReturn(serverUrl).when(baseUrlProvider).getBaseUrl();
+
+        sdcRestClient = new SdcRestClient(baseUrlProvider, "", syncRestClient);
     }
 
     @AfterClass

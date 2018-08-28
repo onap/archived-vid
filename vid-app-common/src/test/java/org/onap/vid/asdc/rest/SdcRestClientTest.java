@@ -29,6 +29,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.properties.BaseUrlProvider;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -64,6 +65,9 @@ public class SdcRestClientTest {
     @Mock
     private InputStream inputStream;
 
+    @Mock
+    private BaseUrlProvider baseUrlProvider;
+
     private UUID randomId;
 
     private Service sampleService;
@@ -75,7 +79,7 @@ public class SdcRestClientTest {
     public void setUp() {
         randomId = UUID.randomUUID();
         sampleService = createTestService();
-        restClient = new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, mockedSyncRestClient);
+        restClient = new SdcRestClient(baseUrlProvider, SAMPLE_AUTH, mockedSyncRestClient);
     }
 
 

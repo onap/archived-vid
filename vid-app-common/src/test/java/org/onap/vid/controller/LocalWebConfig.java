@@ -29,6 +29,7 @@ import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.util.*;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.VidService;
@@ -87,8 +88,9 @@ public class LocalWebConfig {
     }
 
     @Bean(name = "aaiRestInterface")
-    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper, FeatureManager featureManager) {
+        BaseUrlProvider urlProvider = new BaseUrlProvider(featureManager, () -> "http://localhost:8080", () -> "http://localhost:8080");
+        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper, urlProvider, urlProvider);
     }
 
     @Bean
