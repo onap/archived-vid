@@ -23,6 +23,7 @@ package org.onap.vid.aai;
 
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.util.*;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 
@@ -36,8 +37,9 @@ import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 public class PombaRestInterface extends AAIRestInterface {
 
-    public PombaRestInterface (HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        super(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public PombaRestInterface (HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper,
+                               BaseUrlProvider serverBaseUrlProvider,BaseUrlProvider serverUrlProvider) {
+        super(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper,serverUrlProvider,serverBaseUrlProvider);
     }
 
     private Client client = null;

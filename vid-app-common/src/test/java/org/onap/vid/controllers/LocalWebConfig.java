@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.local.LocalAsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
