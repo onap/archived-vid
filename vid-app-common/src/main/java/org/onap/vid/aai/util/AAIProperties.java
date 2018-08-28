@@ -64,5 +64,8 @@ public class AAIProperties extends SystemProperties {
 
 	/** The Constant AAI_USE_CLIENT_CERT */
 	public static final String AAI_USE_CLIENT_CERT = "aai.use.client.cert";
-	
+
+	public static final String AAI_SERVER_URL_BASE_UNSECURED = "aai.server.url.base.unsecured";
+
+	public static final String AAI_SERVER_URL_UNSECURED = "aai.server.url.unsecured";
 }
