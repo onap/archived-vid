@@ -10,6 +10,7 @@ import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -29,13 +30,16 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
     private SyncRestClientInterface syncRestClient;
     private Function<String, String> propertyGetter;
     private Map<String, String> commonHeaders;
+    private BaseUrlProvider baseUrlProvider;
 
-    public SchedulerRestInterface() {
+    public SchedulerRestInterface(BaseUrlProvider baseUrlProvider) {
         this.propertyGetter = SystemProperties::getProperty;
+        this.baseUrlProvider=baseUrlProvider;
     }
 
-    public SchedulerRestInterface(Function<String, String> propertyGetter) {
+    public SchedulerRestInterface(Function<String, String> propertyGetter, BaseUrlProvider baseUrlProvider) {
         this.propertyGetter = propertyGetter;
+        this.baseUrlProvider=baseUrlProvider;
     }
 
     public void initRestClient() {
@@ -53,7 +57,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
     public <T> void Get(T t, String sourceId, String path, org.onap.vid.scheduler.RestObject<T> restObject) {
         initRestClient();
         String methodName = "Get";
-        String url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
+        String url = String.format("%s%s", baseUrlProvider.getBaseUrl(), path);
         Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
         Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
                 .putAll(commonHeaders)
@@ -75,7 +79,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
 
     public <T> void Delete(T t, String sourceID, String path, org.onap.vid.scheduler.RestObject<T> restObject) {
         initRestClient();
-        String url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
+        String url = String.format("%s%s", baseUrlProvider.getBaseUrl(), path);
         Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
         Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
                 .putAll(commonHeaders)

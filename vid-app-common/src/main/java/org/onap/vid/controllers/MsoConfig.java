@@ -30,9 +30,13 @@ import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.rest.MsoRestClientNew;
+import org.onap.vid.properties.BaseUrlProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.togglz.core.manager.FeatureManager;
+
+import java.util.function.Supplier;
 
 
 @Configuration
@@ -49,20 +53,33 @@ public class MsoConfig {
     }
 
     @Bean
-    public MsoRequestFactory createRequestDetailsFactory(){
+    public MsoRequestFactory createRequestDetailsFactory() {
         return new MsoRequestFactory();
     }
 
     @Bean
-    public MsoInterface getMsoClient(){
-        return new MsoRestClientNew(new SyncRestClient(MsoInterface.objectMapper()), SystemProperties.getProperty(
-            MsoProperties.MSO_SERVER_URL));
+    public MsoInterface getMsoClient(
+            @Qualifier("securedMsoPropertiesProvider") Supplier<String> getMsoSecuredPropertiesProvider,
+            @Qualifier("unsecuredMsoPropertiesProvider") Supplier<String> getMsoUnsecuredPropertiesProvider, FeatureManager featureManager) {
+
+        BaseUrlProvider baseUrlProvider = new BaseUrlProvider(featureManager, getMsoSecuredPropertiesProvider, getMsoUnsecuredPropertiesProvider);
+        return new MsoRestClientNew(new SyncRestClient(MsoInterface.objectMapper()), baseUrlProvider);
     }
 
     @Bean
-    public MsoBusinessLogic getMsoBusinessLogic(MsoInterface msoClient, FeatureManager featureManager){
+    public MsoBusinessLogic getMsoBusinessLogic(MsoInterface msoClient, FeatureManager featureManager) {
         return new MsoBusinessLogicImpl(msoClient, featureManager);
     }
 
+
+    @Bean(name = "securedMsoPropertiesProvider")
+    public Supplier<String> getSecuredMsoPropertiesProvider() {
+        return () -> MsoProperties.MSO_SERVER_URL;
+    }
+
+    @Bean(name = "unsecuredMsoPropertiesProvider")
+    public Supplier<String> getUnsecuredMsoPropertiesProvider() {
+        return () -> MsoProperties.MSO_SERVER_URL_UNSECURED;
+    }
 
 }

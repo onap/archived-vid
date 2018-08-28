@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.client.SyncRestClient;
@@ -35,21 +36,25 @@ import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.properties.AsdcClientConfiguration;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.onap.vid.testUtils.RegExMatcher;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 import javax.inject.Inject;
 import java.net.URL;
+import java.util.function.Supplier;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -116,11 +121,17 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
     @Configuration
     public static class TestMsoConfig extends MsoConfig {
 
+        @Mock
+        private BaseUrlProvider baseUrlProvider;
+
         @Override
-        public MsoRestClientNew getMsoClient() {
-            MsoRestClientNew spyClient = spy(new MsoRestClientNew(new SyncRestClient(), ""));
+        public MsoRestClientNew getMsoClient(
+                @Qualifier("securedMsoPropertiesProvider") Supplier<String> getMsoSecuredPropertiesProvider,
+                @Qualifier("unsecuredMsoPropertiesProvider") Supplier<String> getMsoUnsecuredPropertiesProvider, FeatureManager featureManager){
+            MsoRestClientNew spyClient = spy(new MsoRestClientNew(new SyncRestClient(), baseUrlProvider));
             return spyClient;
         }
+
 
         @Bean
         public ChangeManagementService getChangeManagementService(DataAccessService dataAccessService, MsoBusinessLogic msoInterface, SchedulerRestInterfaceIfc schedulerRestInterface) {
