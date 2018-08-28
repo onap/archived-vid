@@ -39,6 +39,8 @@ import org.onap.vid.mso.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.utils.Logging;
 
 
@@ -54,16 +56,16 @@ public class MsoRestClientNew implements MsoInterface {
     final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
     private static final String START = " start";
     private final SyncRestClient client;
-    private final String baseUrl;
+    private final BaseUrlProvider baseUrlProvider;
     private final Map<String, String> commonHeaders;
     /**
      * The logger.
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
 
-    public MsoRestClientNew(SyncRestClient client, String baseUrl) {
+    public MsoRestClientNew(SyncRestClient client, BaseUrlProvider baseUrlProvider) {
         this.client = client;
-        this.baseUrl = baseUrl;
+        this.baseUrlProvider = baseUrlProvider;
         this.commonHeaders = initCommonHeaders();
     }
 
@@ -71,7 +73,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper createSvcInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "createSvcInstance ";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return createInstance(requestDetails, path);
     }
@@ -80,7 +82,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint) {
         String methodName = "createE2eSvcInstance ";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return createInstance(requestDetails, path);
     }
@@ -90,7 +92,7 @@ public class MsoRestClientNew implements MsoInterface {
 
         String methodName = "createVnf";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return createInstance(requestDetails, path);
     }
@@ -100,7 +102,7 @@ public class MsoRestClientNew implements MsoInterface {
 
         String methodName = "createNwInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return createInstance(requestDetails, path);
     }
@@ -109,7 +111,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "createVolumeGroupInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return createInstance(requestDetails, path);
     }
@@ -118,7 +120,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "createVfModuleInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return createInstance(requestDetails, path);
     }
@@ -127,7 +129,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper scaleOutVFModuleInstance(RequestDetailsWrapper requestDetailsWrapper, String endpoint) {
         String methodName = "scaleOutVFModuleInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
         return createInstance(requestDetailsWrapper, path);
     }
 
@@ -135,7 +137,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String endpoint) {
         String methodName = "createConfigurationInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return createInstance(requestDetailsWrapper, path);
     }
@@ -144,7 +146,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint) {
         String methodName = "deleteE2eSvcInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
         return deleteInstance(requestDetails, path);
     }
 
@@ -152,7 +154,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteSvcInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
         return deleteInstance(requestDetails, path);
     }
 
@@ -168,7 +170,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteVnf";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return deleteInstance(requestDetails, path);
     }
@@ -177,7 +179,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteVfModule";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return deleteInstance(requestDetails, path);
     }
@@ -186,7 +188,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteVolumeGroupInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return deleteInstance(requestDetails, path);
     }
@@ -195,21 +197,21 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint) {
         String methodName = "deleteNwInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         return deleteInstance(requestDetails, path);
     }
 
     @Override
     public MsoResponseWrapper getOrchestrationRequest(String endpoint) {
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
         return MsoUtil.wrapResponse(response);
     }
 
     public MsoResponseWrapper getManualTasks(String endpoint) {
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
         return MsoUtil.wrapResponse(response);
@@ -237,7 +239,7 @@ public class MsoRestClientNew implements MsoInterface {
         logger.debug(dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
-            String path = baseUrl + endpoint;
+            String path = baseUrlProvider.getBaseUrl() + endpoint;
 
             MsoResponseWrapper w =getManualTasks(path);
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
@@ -256,7 +258,7 @@ public class MsoRestClientNew implements MsoInterface {
         String methodName = "completeManualTask";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Complete ");
         try {
-            String path = baseUrl + endpoint;
+            String path = baseUrlProvider.getBaseUrl() + endpoint;
 
             HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
@@ -275,7 +277,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String endpoint) {
         String methodName = "replaceVnf";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
         return replaceInstance(requestDetails, path);
     }
 
@@ -284,7 +286,7 @@ public class MsoRestClientNew implements MsoInterface {
         String methodName = "deleteConfiguration";
         logger.debug(EELFLoggerDelegate.debugLogger,
                 dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + pmc_endpoint;
+        String path = baseUrlProvider.getBaseUrl() + pmc_endpoint;
 
         return deleteInstance(requestDetailsWrapper, path);
     }
@@ -295,7 +297,7 @@ public class MsoRestClientNew implements MsoInterface {
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
-            String path = baseUrl + endpoint;
+            String path = baseUrlProvider.getBaseUrl() + endpoint;
 
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== "
                   + methodName + " calling change configuration active status, path =[" + path + "]");
@@ -314,7 +316,7 @@ public class MsoRestClientNew implements MsoInterface {
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
 
         try {
-            String path = baseUrl + endpoint;
+            String path = baseUrlProvider.getBaseUrl() + endpoint;
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== "
                 + methodName + " calling change port configuration status, path =[" + path + "]");
             HttpResponse<String> response = client.post(path, commonHeaders, request, String.class);
@@ -328,7 +330,7 @@ public class MsoRestClientNew implements MsoInterface {
 
     @Override
     public MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint) {
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
         HttpResponse<RequestReferencesContainer> response = client.post(path, commonHeaders, requestDetails, RequestReferencesContainer.class);
         return MsoUtil.wrapResponse(response);
     }
@@ -366,7 +368,7 @@ public class MsoRestClientNew implements MsoInterface {
     public MsoResponseWrapper updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String endpoint) {
         String methodName = "updateVnf";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        String path = baseUrl + endpoint;
+        String path = baseUrlProvider.getBaseUrl() + endpoint;
 
         RequestDetailsWrapper wrapper = new RequestDetailsWrapper();
         wrapper.requestDetails = new MsoRequestDetails(requestDetails);
@@ -398,7 +400,7 @@ public class MsoRestClientNew implements MsoInterface {
         String methodName = "activateServiceInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start ");
         try {
-            String path = baseUrl + endpoint;
+            String path = baseUrlProvider.getBaseUrl() + endpoint;
             HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w =" + w.getResponse());
@@ -417,7 +419,7 @@ public class MsoRestClientNew implements MsoInterface {
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Remove relationship from service instance, path =[" + endpoint + "]");
-            String path = baseUrl + endpoint;
+            String path = baseUrlProvider.getBaseUrl() + endpoint;
             HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
             return MsoUtil.wrapResponse(response);
         } catch (Exception e) {
@@ -434,7 +436,7 @@ public class MsoRestClientNew implements MsoInterface {
 
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Add relationship to service instance, path =[" + addRelationshipsPath + "]");
-            String path = baseUrl + addRelationshipsPath;
+            String path = baseUrlProvider.getBaseUrl() + addRelationshipsPath;
 
             HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
             return MsoUtil.wrapResponse(response);

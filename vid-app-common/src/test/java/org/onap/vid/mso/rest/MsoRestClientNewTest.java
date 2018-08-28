@@ -27,6 +27,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controllers.MsoController;
 import org.onap.vid.mso.MsoInterface;
@@ -43,6 +45,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.UUID;
+import org.onap.vid.properties.BaseUrlProvider;
+
+import static org.mockito.Mockito.doReturn;
 
 import static org.onap.vid.controllers.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.controllers.MsoController.VNF_INSTANCE_ID;
@@ -66,6 +71,8 @@ public class MsoRestClientNewTest {
     private static final String SAMPLE_REQUEST_ID = "7777";
 
 
+    private static BaseUrlProvider baseUrlProvider =Mockito.mock(BaseUrlProvider.class);
+
     @BeforeClass
     public static void start() throws IOException {
         server = new StubServer().run();
@@ -84,7 +91,7 @@ public class MsoRestClientNewTest {
         msoCreateServiceInstanceJson =
                 String.join("\n", Files.readAllLines(msoServiceInstantiationJsonFilePath));
         msoScaleOutVfModule = String.join("\n", Files.readAllLines(scaleOutJsonFilePath));
-
+        doReturn("http://localhost:"+server.getPort()).when(baseUrlProvider).getBaseUrl();
     }
 
     @AfterClass
@@ -93,10 +100,6 @@ public class MsoRestClientNewTest {
         securedServer.stop();
     }
 
-
-    private String baseUrl() {
-        return String.format("http://localhost:%d", server.getPort());
-    }
 
     @Test
     public void testCreateSvcInstance() throws Exception {
@@ -466,10 +469,10 @@ public class MsoRestClientNewTest {
     }
 
     private MsoRestClientNew msoRestClient() {
-        return new MsoRestClientNew(new SyncRestClient(MsoInterface.objectMapper()), baseUrl());
+        return new MsoRestClientNew(new SyncRestClient(MsoInterface.objectMapper()), baseUrlProvider);
     }
 
     private MsoRestClientNew createTestSubject() {
-        return new MsoRestClientNew(null, "");
+        return new MsoRestClientNew(null, baseUrlProvider);
     }
 }

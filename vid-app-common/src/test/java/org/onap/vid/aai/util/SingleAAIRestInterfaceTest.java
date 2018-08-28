@@ -27,6 +27,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.testng.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +67,9 @@ public class SingleAAIRestInterfaceTest {
     @Mock
     private SystemPropertyHelper systemPropertyHelper;
 
+    @Mock
+    private BaseUrlProvider baseUrlProvider;
+
     private AAIRestInterface testSubject;
 
     @Before
@@ -76,11 +80,12 @@ public class SingleAAIRestInterfaceTest {
         when(webTarget.request()).thenReturn(builder);
         when(builder.accept(Mockito.anyString())).thenReturn(builder);
         when(builder.header(Mockito.anyString(), Mockito.anyString())).thenReturn(builder);
+        when(baseUrlProvider.getBaseUrl()).thenReturn(HTTP_LOCALHOST);
         when(servletRequestHelper.extractOrGenerateRequestId()).thenReturn(UUID.randomUUID().toString());
     }
 
     private AAIRestInterface createTestSubject() {
-        return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper);
+        return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper,baseUrlProvider,baseUrlProvider);
     }
 
     @Test

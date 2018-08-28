@@ -24,6 +24,7 @@ package org.onap.vid.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiOverTLSClient;
@@ -34,6 +35,7 @@ import org.onap.vid.aai.PombaClientImpl;
 import org.onap.vid.aai.PombaClientInterface;
 import org.onap.vid.aai.PombaRestInterface;
 import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.util.AAIProperties;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.aai.util.SSLContextProvider;
@@ -45,6 +47,8 @@ import org.onap.vid.asdc.rest.SdcRestClient;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.properties.AsdcClientConfiguration;
+import org.onap.vid.properties.BaseUrlProvider;
+import org.onap.vid.scheduler.SchedulerProperties;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.PombaService;
@@ -60,6 +64,7 @@ import org.togglz.core.manager.FeatureManager;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.util.function.Supplier;
 
 @Configuration
 public class WebConfig {
@@ -101,13 +106,17 @@ public class WebConfig {
     }
 
     @Bean(name = "aaiRestInterface")
-    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper,
+                                             @Qualifier("aaiServerBaseUrlProvider") BaseUrlProvider getAaiServerBaseUrlProvider,
+                                             @Qualifier("aaiServerUrlProvider") BaseUrlProvider getAaiServerUrlProvider) {
+        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper, getAaiServerUrlProvider, getAaiServerBaseUrlProvider);
     }
 
     @Bean
-    public PombaRestInterface getPombaRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        return new PombaRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public PombaRestInterface getPombaRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper,
+                                                    @Qualifier("aaiServerBaseUrlProvider") BaseUrlProvider getAaiServerBaseUrlProvider,
+                                                    @Qualifier("aaiServerUrlProvider") BaseUrlProvider getAaiServerUrlProvider) {
+        return new PombaRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper,getAaiServerUrlProvider,getAaiServerBaseUrlProvider);
     }
 
     @Bean
@@ -132,13 +141,12 @@ public class WebConfig {
     }
 
     @Bean
-    public AsdcClient sdcClient(AsdcClientConfiguration asdcClientConfiguration, SyncRestClientInterface syncRestClient) {
-        String auth = asdcClientConfiguration.getAsdcClientAuth();
-        String host = asdcClientConfiguration.getAsdcClientHost();
-        String protocol = asdcClientConfiguration.getAsdcClientProtocol();
-        int port = asdcClientConfiguration.getAsdcClientPort();
+    public AsdcClient sdcClient(@Qualifier("sdcSecuredPropertiesProvider") Supplier<String> getSdcSecuredPropertiesProvider,
+                                @Qualifier("sdcUnsecuredPropertiesProvider") Supplier<String> getSdcUnsecuredPropertiesProvider,
+                                SyncRestClientInterface syncRestClient, FeatureManager featureManager, AsdcClientConfiguration asdcClientConfiguration) {
 
-        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth, syncRestClient);
+        BaseUrlProvider baseUrlProvider = new BaseUrlProvider(featureManager, getSdcSecuredPropertiesProvider, getSdcUnsecuredPropertiesProvider);
+        return new SdcRestClient(baseUrlProvider, asdcClientConfiguration.asdcClientAuth, syncRestClient);
     }
 
     @Bean
@@ -161,9 +169,67 @@ public class WebConfig {
         return new PombaClientImpl();
     }
 
-    @Bean
-    public SchedulerRestInterfaceIfc getSchedulerRestInterface(){
-        return new SchedulerRestInterface();
+    @Bean(name = "sdcSecuredPropertiesProvider")
+    public Supplier<String> getSdcSecuredPropertiesProvider(AsdcClientConfiguration asdcClientConfig) {
+        return () -> asdcClientConfig.getAsdcClientSecuredProtocol() + "://" + asdcClientConfig.getAsdcClientHost() + ":" + asdcClientConfig.getAsdcClientSecuredPort() + "/";
+    }
+
+    @Bean(name = "sdcUnsecuredPropertiesProvider")
+    public Supplier<String> getSdcUnsecuredPropertiesProvider(AsdcClientConfiguration asdcClientConfig) {
+        return () -> asdcClientConfig.getAsdcClientProtocol() + "://" + asdcClientConfig.getAsdcClientHost() + ":" + asdcClientConfig.getAsdcClientPort() + "/";
+    }
+
+    @Bean(name = "securedSchedulerPropertiesProvider")
+    public Supplier<String> getSecuredSchedulerPropertiesProvider() {
+        return () -> SystemProperties.getProperty(SchedulerProperties.SCHEDULER_SERVER_URL_VAL);
+    }
+
+    @Bean(name = "unsecuredSchedulerPropertiesProvider")
+    public Supplier<String> getUnsecuredSchedulerPropertiesProvider() {
+        return () -> SystemProperties.getProperty(SchedulerProperties.SCHEDULER_SERVER_URL_UNSECURED_VAL);
+    }
+
+
+    @Bean(name = "securedAaiBasePropertiesProvider")
+    public Supplier<String> getSecuredAaiBasePropertiesProvider() {
+        return  ()-> SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL_BASE);
+    }
+
+    @Bean(name = "unsecuredAaiBasePropertiesProvider")
+    public Supplier<String> getUnsecuredAaiBasePropertiesProvider() {
+        return () -> SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL_BASE_UNSECURED);
+    }
+
+    @Bean(name = "securedAaiPropertiesProvider")
+    public Supplier<String> getSecuredAaiPropertiesProvider() {
+        return () -> SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL);
+    }
+
+    @Bean(name = "unsecuredAaiPropertiesProvider")
+    public Supplier<String> getUnsecuredAaiPropertiesProvider() {
+        return () -> SystemProperties.getProperty(AAIProperties.AAI_SERVER_URL_UNSECURED);
+    }
+
+    @Bean(name = "aaiServerBaseUrlProvider")
+    public BaseUrlProvider getAaiServerBaseUrlProvider(FeatureManager featureManager,
+                                                       @Qualifier("securedAaiBasePropertiesProvider") Supplier<String> getSecuredAaiBaseServerPropertiesProvider,
+                                                       @Qualifier("unsecuredAaiBasePropertiesProvider") Supplier<String> getUnsecuredAaiBasedServerPropertiesProvider) {
+        return new BaseUrlProvider(featureManager, getSecuredAaiBaseServerPropertiesProvider, getUnsecuredAaiBasedServerPropertiesProvider);
+    }
+
+    @Bean(name = "aaiServerUrlProvider")
+    public BaseUrlProvider getAaiServerUrlProvider(FeatureManager featureManager,
+                                                   @Qualifier("securedAaiPropertiesProvider") Supplier<String> getSecuredAaiBaseServerPropertiesProvider,
+                                                   @Qualifier("unsecuredAaiPropertiesProvider") Supplier<String> getUnsecuredAaiBasedServerPropertiesProvider) {
+        return new BaseUrlProvider(featureManager, getSecuredAaiBaseServerPropertiesProvider, getUnsecuredAaiBasedServerPropertiesProvider);
+    }
+
+    @Bean(name = "schedulerUrlProvider")
+    public BaseUrlProvider getSchedulerPropertiesProvider(
+            @Qualifier("securedSchedulerPropertiesProvider") Supplier<String> getSecuredSchedulerPropertiesProvider,
+            @Qualifier("unsecuredSchedulerPropertiesProvider") Supplier<String> getUnsecuredSchedulerPropertiesProvider,
+            FeatureManager featureManager) {
+        return  new BaseUrlProvider(featureManager, getSecuredSchedulerPropertiesProvider, getUnsecuredSchedulerPropertiesProvider);
     }
 
 

@@ -62,6 +62,15 @@ public class AsdcClientConfiguration {
 	@Value("${asdc.client.rest.protocol}")
 	public String asdcClientProtocol;
 
+	/** The asdc client secured protocol. */
+	@Value("${asdc.client.rest.protocol.secured}")
+	public String asdcClientSecuredProtocol;
+
+
+	/** The asdc client secured port. */
+	@Value("${asdc.client.rest.port.secured}")
+	public String asdcClientSecuredPort;
+
 	/**
 	 * Gets the asdc client type.
 	 *
@@ -105,6 +114,14 @@ public class AsdcClientConfiguration {
 	 */
 	public String getAsdcClientProtocol() {
 		return asdcClientProtocol;
+	}
+
+	public String getAsdcClientSecuredProtocol(){
+		return asdcClientSecuredProtocol;
+	}
+
+	public String getAsdcClientSecuredPort(){
+		return asdcClientSecuredPort;
 	}
 
 	/**
