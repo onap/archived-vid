@@ -32,6 +32,8 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controllers.MsoController;
 import org.onap.vid.mso.MsoInterface;
@@ -39,6 +41,9 @@ import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.RestObject;
+import org.onap.vid.properties.BaseUrlProvider;
+
+import static org.mockito.Mockito.doReturn;
 
 public class MsoRestClientNewTest {
 
@@ -57,6 +62,8 @@ public class MsoRestClientNewTest {
     private static final String SAMPLE_REQUEST_ID = "7777";
 
 
+    private static BaseUrlProvider baseUrlProvider =Mockito.mock(BaseUrlProvider.class);
+
     @BeforeClass
     public static void start() throws IOException {
         server = new StubServer().run();
@@ -72,6 +79,7 @@ public class MsoRestClientNewTest {
             Paths.get("src", "test", "resources", "payload_jsons", "mso_service_instantiation.json");
         msoCreateServiceInstanceJson =
             String.join("\n", Files.readAllLines(msoServiceInstantiationJsonFilePath));
+        doReturn("http://localhost:"+ server.getPort()).when(baseUrlProvider).getBaseUrl();
     }
 
     @AfterClass
@@ -80,10 +88,6 @@ public class MsoRestClientNewTest {
         securedServer.stop();
     }
 
-
-    private String baseUrl() {
-        return String.format("http://localhost:%d", server.getPort());
-    }
 
     @Test
     public void testCreateSvcInstance() throws Exception {
@@ -435,10 +439,10 @@ public class MsoRestClientNewTest {
     }
 
     private MsoRestClientNew msoRestClient() {
-        return new MsoRestClientNew(new SyncRestClient(MsoInterface.objectMapper()), baseUrl());
+        return new MsoRestClientNew(new SyncRestClient(MsoInterface.objectMapper()), baseUrlProvider);
     }
 
     private MsoRestClientNew createTestSubject() {
-        return new MsoRestClientNew(null, "");
+        return new MsoRestClientNew(null, baseUrlProvider);
     }
 }

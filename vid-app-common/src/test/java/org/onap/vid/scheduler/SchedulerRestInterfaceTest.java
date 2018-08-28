@@ -30,8 +30,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.onap.vid.testUtils.StubServerUtil;
 import org.testng.annotations.AfterMethod;
 
@@ -39,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.doReturn;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,7 +49,6 @@ public class SchedulerRestInterfaceTest {
 
     private static final String SAMPLE_USERNAME = "sample";
     private static final String SAMPLE_PASSWORD = "paS$w0Rd";
-    private static final String SAMPLE_SCHEDULER_SERVER_URL = "http://localhost";
     private static final String SAMPLE_SOURCE_ID = "AAI";
     private static final JSONParser JSON_PARSER = new JSONParser();
     private static final String RESPONSE_CONTENT = "\"schedules\": \"SAMPLE STRING\"";
@@ -54,13 +56,17 @@ public class SchedulerRestInterfaceTest {
     private static Map<String, String> DUMMY_SYSTEM_PROPERTIES = new HashMap<String, String>() {{
         put(SchedulerProperties.SCHEDULER_USER_NAME_VAL, SAMPLE_USERNAME);
         put(SchedulerProperties.SCHEDULER_PASSWORD_VAL, SAMPLE_PASSWORD);
-        put(SchedulerProperties.SCHEDULER_SERVER_URL_VAL, SAMPLE_SCHEDULER_SERVER_URL);
     }};
+    private static BaseUrlProvider baseUrlProvider = Mockito.mock(BaseUrlProvider.class);
+
     private static StubServerUtil serverUtil;
-    private static SchedulerRestInterface schedulerInterface = new SchedulerRestInterface((key) -> DUMMY_SYSTEM_PROPERTIES.get(key));
+    private static SchedulerRestInterface schedulerInterface;
 
     @BeforeClass
     public static void setUpClass() {
+
+
+        schedulerInterface = new SchedulerRestInterface((key) -> DUMMY_SYSTEM_PROPERTIES.get(key), baseUrlProvider);
         serverUtil = new StubServerUtil();
         serverUtil.runServer();
     }
@@ -131,6 +137,6 @@ public class SchedulerRestInterfaceTest {
 
     private void prepareEnvForTest() {
         String targetUrl = serverUtil.constructTargetUrl("http", "test");
-        DUMMY_SYSTEM_PROPERTIES.put(SchedulerProperties.SCHEDULER_SERVER_URL_VAL, targetUrl);
+        doReturn(targetUrl).when(baseUrlProvider).getBaseUrl();
     }
 }

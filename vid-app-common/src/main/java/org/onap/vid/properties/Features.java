@@ -22,7 +22,9 @@ public enum Features implements Feature {
     FLAG_COLLECTION_RESOURCE_SUPPORT,
     FLAG_SHOW_ASSIGNMENTS,
     FLAG_SHOW_VERIFY_SERVICE,
-    FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD;
+    FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD,
+    FLAG_SECURED_ENDPOINTS;
+
 
     public boolean isActive() {
         return FeatureContext.getFeatureManager().isActive(this);
