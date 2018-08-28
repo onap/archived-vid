@@ -23,6 +23,7 @@ package org.onap.vid.mso.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.mockito.Mock;
 import org.onap.vid.changeManagement.RequestDetails;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.domain.mso.CloudConfiguration;
@@ -34,6 +35,7 @@ import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.controllers.LocalWebConfig;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.properties.BaseUrlProvider;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.Test;
@@ -45,7 +47,10 @@ import org.togglz.core.manager.FeatureManager;
 public class MsoRestClientTest {
 
 
-    private MsoBusinessLogic msoBusinessLogic = new MsoBusinessLogicImpl(new MsoRestClientNew(new SyncRestClient(), ""), null);
+    @Mock
+    private BaseUrlProvider baseUrlProvider;
+
+    private MsoBusinessLogic msoBusinessLogic = new MsoBusinessLogicImpl(new MsoRestClientNew(new SyncRestClient(), baseUrlProvider), null);
     private ObjectMapper om = new ObjectMapper();
 
     @Test

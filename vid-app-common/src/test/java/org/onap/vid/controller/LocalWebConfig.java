@@ -88,7 +88,7 @@ public class LocalWebConfig {
 
     @Bean(name = "aaiRestInterface")
     public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper, null, null);
     }
 
     @Bean
