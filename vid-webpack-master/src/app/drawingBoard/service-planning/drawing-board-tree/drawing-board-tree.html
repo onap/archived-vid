@@ -1,0 +1,96 @@
+<error-msg></error-msg>
+<div class="drawing-board-tree" style="height: calc(100vh - 55px);">
+  <div *ngIf="nodes?.length == 0" style="text-align: center;    margin-top: 50px;">
+    <no-content-message-and-icon class="span-over"
+                                 data-title="Please add objects (VNFs, network, modules etc.)"
+                                 title2="from the left tree to design the service instance"
+                                 subtitle="Once done, click Deploy to start instantiation"
+                                 iconPath="./assets/img/UPLOAD.svg"
+                                 iconClass="upload-icon-service-planing"></no-content-message-and-icon>
+  </div>
+  <div class="tree-header" *ngIf="nodes?.length > 0">
+    <div class="title-tree">Instance:</div>
+    <search-component (updateNodes)="updateNodes($event)"
+                        [nodes]="nodes" [tree]="tree"
+                        [inputTestId]="'search-right-tree'"
+                        *ngIf="drawingBoardTreeService.isViewEditFlagTrue()"></search-component>
+  </div>
+  <tree-root [attr.data-tests-id]="'drawing-board-tree'" #tree [nodes]="nodes" [options]="options"
+             id="drawing-board-tree">
+
+    <ng-template #treeNodeTemplate let-node let-index="index" >
+       <div [attr.id]="getNodeId(node)" [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName" (click)="selectNode(node)" >
+         <custom-popover class="failed-popover-wrap" *ngIf= "node?.data?.isFailed"  [value]= "node?.data?.statusMessage" [placement]="'left'" [popoverType]="'error'">
+          <div class="failed-msg" [attr.data-tests-id]="'failed-error-message'" *ngIf= "node?.data?.isFailed">Failed</div>
+         </custom-popover>
+          <div class="instance-type" style="position: relative;">
+            <div *ngIf="node?.data?.action == 'Create'" class="notShowOnViewMode notShowOnCreateMode newIcon"></div>
+            <div><span title="{{node.data.type}}" [attr.data-tests-id]="'node-type-indicator'">{{node?.data?.typeName}}</span></div>
+          </div>
+          <div class="model-info">
+          <span class="header-info">
+            <span class="property-name">
+              <span class="auto-name"
+                    [ngClass]="{'text_decoration' : drawingBoardTreeService.isTextDecoration(node)}"
+                    [innerHtml]="getNodeName(node, filterValue) | safe : 'html'"
+                    [attr.data-tests-id]="'node-name'"
+              ></span>
+            </span>
+          </span>
+            <tree-node-header-properties
+              *ngIf="(node?.data?.action !== 'Create' || node?.data?.parentType === 'VnfGroup') && !node?.data?.isFailed"
+              [properties]="node.data.statusProperties"></tree-node-header-properties>
+          </div>
+          <div class="scaling invalid" *ngIf="node?.data?.errors?.scalingError" [attr.data-tests-id]="'scaling-policy'">
+            <span>Limit</span><span>{{node?.data?.limitMembers}}</span>
+          </div>
+          <div class="model-actions notShowOnViewMode">
+          <span class="icon-browse"
+                [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-menu-btn'"
+                (click)="onContextMenu($event, node)">
+          <context-menu>
+            <ng-template *ngFor="let contextMenuOption of contextMenuOptions"
+                         contextMenuItem (execute)="executeMenuAction(contextMenuOption.methodName)"
+                         [visible]="isVisible(currentNode, contextMenuOption.methodName)"
+                         [enabled]="isEnabled(currentNode, serviceModelId, contextMenuOption.methodName)">
+              <div [attr.data-tests-id]="contextMenuOption.dataTestId">
+                <div style="float: left;margin-top: 3px;">
+                  <svg-icon
+                    [ngClass]="contextMenuOption.iconClass"
+                    class="icon-edit"
+                    [size]="'small'"
+                    [name]="contextMenuOption.iconClass">
+                </svg-icon></div>
+                <div style="padding-left: 25px;">{{contextMenuOption.label}}</div>
+              </div>
+            </ng-template>
+          </context-menu>
+          </span>
+            <span
+              *ngIf="drawingBoardTreeService.isVNFMissingData(node, serviceModelId)"
+              tooltip="{{ missingDataTooltip }}"
+              tooltipPlacement="left"
+              [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"
+              class="icon-alert" >
+              <svg-icon
+                [mode]="'warning'"
+                [testId]="'icon-alert'"
+                [size]="'medium'"
+                [name]="'alert-triangle-o'">
+              </svg-icon>
+            </span>
+
+            <!--<span *ngIf="drawingBoardTreeService.isVNFMissingData(node, serviceModelId)" class="icon-alert"-->
+                  <!--tooltip="{{ missingDataTooltip }}" tooltipPlacement="left"-->
+                  <!--[attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>-->
+            <span *ngIf="drawingBoardTreeService.isVFModuleMissingData(node, serviceModelId)" class="icon-alert"
+                  tooltip="{{ missingDataTooltip }}" tooltipPlacement="left"
+                  [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>
+          </div>
+        </div >
+      </ng-template>
+  </tree-root>
+</div>
+
+
+

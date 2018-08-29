@@ -1,0 +1,47 @@
+<div class="available-models-tree" style="height: calc(100vh - 55px);">
+  <div class="models-tree-header">
+    <h5>
+      <span class="main" >MODEL <span class="sub-title">(from SDC)</span>:</span>
+      <span id="service-model-name">{{service | serviceInfo: _store: serviceModelId : 'name'}}</span>
+    </h5>
+    <search-component (updateNodes)="updateNodes($event)"
+                      [nodes]="nodes" [tree]="tree? tree: {}"
+                      [inputTestId]="'search-left-tree'"
+                      *ngIf="nodes?.length > 0"></search-component>
+  </div>
+  <div class="available-models-content-wrapper" *ngIf="nodes?.length > 0" >
+    <tree-root #tree [attr.data-tests-id]="'available-models-tree'" [nodes]="nodes" [options]="options" id="available-models-tree">
+      <ng-template #treeNodeTemplate let-node let-index="index">
+        <div [attr.data-tests-id]="'node-'+node.data.name" (click)="selectNode(node)" [ngClass]="{'selected': index , 'isParent': node.data.type !== 'VFmodule' , 'isChild': node.data.type === 'VFmodule' }">
+          <span class="vf-type" title="{{node.data.type}}" [attr.data-tests-id]="'node-type-indicator'" >{{node?.data?.typeName}}</span>
+          <div class="model-info">
+          <span class="header-info">
+            <span class="property-name">
+              <span class="auto-name"
+                    [innerHtml]="getNodeName(node, filterValue) | safe : 'html'"
+                    [attr.data-tests-id]="'node-name'"
+              ></span>
+            </span>
+          </span>
+          </div>
+          <span class="actions">
+            <span class="number-button" *ngIf="node.data.getNodeCount(node, serviceModelId) > 0">
+              <span [attr.data-tests-id]="'numberButton'">{{node.data.getNodeCount(node, this.serviceModelId)}}</span>
+            </span>
+            <span class="icon-v" *ngIf="node?.data?.showNodeIcons(node, serviceModelId)?.vIcon">
+                <svg-icon
+                  [mode]="'secondary'"
+                  [name]="'maximum'">
+              </svg-icon>
+            </span>
+            <span class="icon-plus" *ngIf="node?.data?.showNodeIcons(node, serviceModelId)?.addIcon">
+              <span tooltip="Add" [attr.data-tests-id]="'node-'+node.data.name+'-add-btn'" (click)="onClickAdd(node, serviceModelId)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </span>
+            </span>
+          </span>
+        </div>
+      </ng-template>
+    </tree-root>
+  </div>
+</div>

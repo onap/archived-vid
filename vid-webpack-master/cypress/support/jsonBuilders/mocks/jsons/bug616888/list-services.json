@@ -1,0 +1,47 @@
+{
+  "services": [
+    {
+      "uuid": "ee6d61be-4841-4f98-8f23-5de9da846ca7",
+      "invariantUUID": "b7d923c9-6175-41f1-91ba-4565c4953408",
+      "name": "ServiceContainerMultiplepProbes",
+      "version": "1.0",
+      "toscaModelURL": null,
+      "category": "service",
+      "lifecycleState": null,
+      "lastUpdaterUserId": null,
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+      "artifacts": null,
+      "resources": null
+    },
+    {
+      "uuid": "bd8ffd14-da36-4f62-813c-6716ba9f4354",
+      "invariantUUID": "b1f489c0-2aa0-47e1-ba6c-98658d6945bf",
+      "name": "Dror_service1806_Macro_NW",
+      "version": "1.0",
+      "toscaModelURL": null,
+      "category": "service",
+      "lifecycleState": null,
+      "lastUpdaterUserId": null,
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+      "artifacts": null,
+      "resources": null
+    },
+    {
+      "uuid": "74fa72dd-012b-49c3-800d-06b12bcaf1a0",
+      "invariantUUID": "bceeaff9-5716-42bf-8fa1-8c6f720cf61d",
+      "name": "Dror_service1806_Macro1",
+      "version": "2.0",
+      "toscaModelURL": null,
+      "category": "service",
+      "lifecycleState": null,
+      "lastUpdaterUserId": null,
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+      "artifacts": null,
+      "resources": null
+    }
+  ],
+  "readOnly": false
+}

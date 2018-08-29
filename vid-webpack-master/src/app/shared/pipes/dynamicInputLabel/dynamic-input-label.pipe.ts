@@ -7,6 +7,6 @@ export class DynamicInputLabelPipe implements PipeTransform {
     let uppercase_vnf = split_label.replace(/\bvnf\b/ig, 'VNF');
     let uppercase_nf = uppercase_vnf.replace(/\bnf\b/ig, 'NF');
     let capitalize_sentence = uppercase_nf.charAt(0).toUpperCase() + uppercase_nf.slice(1);
-    return capitalize_sentence + ':*';
+    return capitalize_sentence + ':';
   }
 }

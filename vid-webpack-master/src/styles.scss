@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 // styles in src/style directory are applied to the whole page
 
-@import "app/drawingBoard/drawing-board-tree/drawing-board-tree";
-@import "app/drawingBoard/available-models-tree/available-models-tree.component";
-@import "../node_modules/sdc-ui/css/style.css";
+@import "app/drawingBoard/service-planning/drawing-board-tree/drawing-board-tree";
+@import "app/drawingBoard/service-planning/available-models-tree/available-models-tree.component";
+@import "../node_modules/onap-ui-common/lib/style.css";
 //body {
 //  [ui-view="content"] {
 //    height: 100%;
@@ -169,3 +169,69 @@ body {
   -moz-user-select: element !important;
   -ms-user-select: element !important;
   user-select: element !important;}
+
+
+.sdc-modal .sdc-modal__wrapper .sdc-modal__header{
+  height: 45px !important;
+}
+
+#VIEW{
+  .notShowOnViewMode {
+    display: none !important;
+  }
+}
+
+#RETRY{
+  .notShowOnRetryMode {
+    display: none !important;
+  }
+}
+
+#CREATE{
+  .notShowOnCreateMode {
+    display: none !important;
+  }
+}
+
+tooltip-template {
+  position: absolute;
+  z-index: 9000;
+}
+
+.sdc-checkbox label {
+  display: inline !important;
+}
+
+sdc-checkbox {
+  vertical-align: middle !important;
+}
+
+
+.popover.error {
+  border-top: 4px solid #cf2a2a !important;
+  border-radius: 0;
+  padding: 0px 10px 0px 10px;
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.popover.success {
+  border-top: 4px solid #4ca90c !important;
+  border-radius: 0;
+  padding: 0px 10px 0px 10px;
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.popover.custom {
+  border-top: 4px solid #009fdb !important;
+  border-radius: 0;
+  padding: 0px 10px 0px 10px;
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.popover.warning {
+  border-top: 4px solid #ffb81c !important;
+  border-radius: 0;
+  padding: 0px 10px 0px 10px;
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.5);
+}
+

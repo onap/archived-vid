@@ -1,0 +1,22 @@
+<div class="details-item file-form-control">
+  <label [ngClass]="{'required': data.isRequired()}" for="{{data?.controlName}}">{{data?.displayName}}:</label>
+  <label for="{{data?.controlName}}" class="file-input-wrapper" [ngClass]="{'file-uploaded': fileUploader.files && fileUploader.files[0] || data.selectedFile != data.placeHolder}">
+    <span data-tests-id="file-name" class="file-name">
+      {{ fileUploader.files && fileUploader.files[0] ? fileUploader.files[0].name : data.selectedFile}}
+    </span>
+     <input id="{{data?.controlName}}"
+           name="{{data?.controlName}}"
+           class="form-control input-text"
+           [formControl]="form?.controls[data?.controlName]"
+           [ngClass]="{'error-style' : form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors}"
+           type="file"
+           #fileUploader
+           accept="{{data?.acceptedExtentions}}"
+           (change)="data?.onChange($event.target.files, form)">
+    <input *ngFor="let hiddenFile of data?.hiddenFile" type="hidden" id="{{hiddenFile.controlName}}" name="{{hiddenFile.controlName}}"
+           [formControl]="form?.controls[hiddenFile.controlName]"/>
+    <span class="delete" data-tests-id="remove-uploaded-file" (click)="onDelete($event, data, form)">X</span>
+    <span class="icon-browse"></span>
+  </label>
+</div>
+

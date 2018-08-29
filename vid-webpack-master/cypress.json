@@ -5,8 +5,13 @@
   "pageLoadTimeout" : 100000,
   "defaultCommandTimeout" : 10000,
   "responseTimeout" : 100000,
+  "trashAssetsBeforeRuns": false,
+  "video": false,
+  "viewportWidth": 1920,
+  "viewportHeight": 1080,
 	"reporterOptions": {
-		"mochaFile": "cypress/junitreport.xml",
-		"toConsole": true
+		"mochaFile": "cypress/reports/TEST-cypress-[hash].xml",
+		"toConsole": true,
+		"testCaseSwitchClassnameAndName": true
 	}
 }

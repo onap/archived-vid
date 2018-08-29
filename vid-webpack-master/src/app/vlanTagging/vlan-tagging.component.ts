@@ -1,19 +1,17 @@
-import {formasync} from './../components/form-async/form-async.component';
+import {Formasync} from './form-async/form-async.component';
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {NetworkSelectorComponent} from "./network-selector/network-selector.component";
 import {NgRedux, select} from "@angular-redux/store";
-import {AppState} from "../store/reducers";
+import {AppState} from "../shared/store/reducers";
 import {ActivatedRoute} from "@angular/router";
-import {
-  loadServiceAccordingToUuid, loadAaiNetworkAccordingToNetworkCF,
-  loadUserId
-} from "../services/aaiService/aai.actions";
+import {loadServiceAccordingToUuid, loadAaiNetworkAccordingToNetworkCF, loadUserId} from "../shared/services/aaiService/aai.actions";
 import {createRequest} from "../factories/mso.factory";
-import {Observable} from "rxjs/Observable";
 import {VNFModel} from "../shared/models/vnfModel";
 import {VfcInstanceGroupProperties} from "../shared/models/vfcInstanceGroupProperties";
-import * as _ from "lodash";
 import {ModelInformationItem} from "../shared/components/model-information/model-information.component";
+import {Observable} from "rxjs";
+import {RootEpics} from "../shared/store/epics";
+import * as _ from "lodash";
 
 enum WizardSteps {
   one,
@@ -33,12 +31,15 @@ const buttonTextCancel = "Cancel";
 
 export class VlanTaggingComponent implements OnInit {
   constructor(private store: NgRedux<AppState>,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              rootEpics: RootEpics) {
     this.nextButtonText = buttonTextNext;
     this.cancelButtonText = buttonTextCancel;
     this.currentStep = WizardSteps.one;
+    rootEpics.createEpics();
   }
 
+  subscriberId: string;
   subscriberName: string;
   serviceKey: string;
   serviceType: string;
@@ -47,11 +48,11 @@ export class VlanTaggingComponent implements OnInit {
   serviceModelId: string;
   modelInfoItems: Array<ModelInformationItem>;
   groups: Array<Array<ModelInformationItem>>;
+  params : any;
   currentStep: WizardSteps;
   nextButtonText: string;
   cancelButtonText: string;
   wizardSteps = WizardSteps;
-  cloudOwner: string;
   cloudRegionId: string;
   serviceInstanceId : string;
   model: VNFModel;
@@ -72,8 +73,8 @@ export class VlanTaggingComponent implements OnInit {
 
   @ViewChild(NetworkSelectorComponent)
   public networkSelectorComponent: NetworkSelectorComponent;
-  @ViewChild(formasync)
-  public formAsync: formasync;
+  @ViewChild(Formasync)
+  public formAsync: Formasync;
 
 
   deploySubInterface() {
@@ -101,15 +102,15 @@ export class VlanTaggingComponent implements OnInit {
     this.store.dispatch(loadUserId());
     this.userIdObs.subscribe(res => this.userId = res);
     this.route.queryParams.subscribe(params => {
+      this.params = params;
       this.serviceModelId = params["serviceModelId"];
-      this.subscriberName = params["subscriberName"];
+      this.subscriberId = params["globalCustomerId"];
       this.serviceType = params["serviceType"];
       this.serviceKey = params["serviceInstanceID"];
       this.vnfKey = params["modelCustomizationName"];
       this.serviceInstanceId = params["serviceInstanceID"];
       this.serviceInstanceName = params["serviceInstanceName"];
       this.modelCustomizationId = params["modelCustomizationId"];
-      this.cloudOwner = params["globalCustomerId"];
       this.store.dispatch(loadServiceAccordingToUuid(this.serviceModelId));
       this.serviceHierarchyObserable.subscribe(data => {
         this.serviceHirarchy = data;
@@ -143,7 +144,7 @@ export class VlanTaggingComponent implements OnInit {
         this.groups.map(group => {
           let networkName = _.find(group, (groupElements: ModelInformationItem) => groupElements.testsId === "networkCollectionFunction");
           this.store.dispatch(
-            loadAaiNetworkAccordingToNetworkCF(networkName["values"][0], this.cloudOwner, this.formAsync.serviceInstance.lcpRegion)
+            loadAaiNetworkAccordingToNetworkCF(networkName["values"][0], this.formAsync.serviceInstance.cloudOwner, this.formAsync.serviceInstance.lcpRegion)
           );
         });
         this.currentStep = WizardSteps.two;

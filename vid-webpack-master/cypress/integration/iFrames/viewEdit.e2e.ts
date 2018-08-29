@@ -1,10 +1,10 @@
 ///<reference path="../../../node_modules/cypress/types/index.d.ts"/> / <reference types="Cypress" />
-import { JsonBuilder } from '../../support/jsonBuilders/jsonBuilder';
-import { PnfModel } from '../../support/jsonBuilders/models/pnf.model';
-import { ServiceModel } from '../../support/jsonBuilders/models/service.model';
-import { AaiServiceInstancesModel } from '../../support/jsonBuilders/models/serviceInstances.model';
-import { AAISubDetailsModel } from '../../support/jsonBuilders/models/aaiSubDetails.model';
-import { AAISubViewEditModel } from '../../support/jsonBuilders/models/aaiSubViewEdit.model';
+import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
+import {PnfModel} from '../../support/jsonBuilders/models/pnf.model';
+import {ServiceModel} from '../../support/jsonBuilders/models/service.model';
+import {AaiServiceInstancesModel} from '../../support/jsonBuilders/models/serviceInstances.model';
+import {AAISubDetailsModel} from '../../support/jsonBuilders/models/aaiSubDetails.model';
+import {AAISubViewEditModel} from '../../support/jsonBuilders/models/aaiSubViewEdit.model';
 
 describe('View Edit Page', function () {
   describe('basic UI tests', () => {
@@ -25,10 +25,79 @@ describe('View Edit Page', function () {
           "service-complexService",
           changeServiceModel)
       });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicFabricConfigService.json').then((res) => {
+        jsonBuilderAAIService.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d671234",
+          200, 0,
+          "service-FabricConfig", changeFabric)
+      });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/activeFabricConfigService.json').then((res) => {
+        jsonBuilderAAIService.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d675678",
+          200, 0,
+          "service-FabricConfig", changeFabric)
+      });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/createdFabricConfigService.json').then((res) => {
+        jsonBuilderAAIService.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d679000",
+          200, 0,
+          "service-FabricConfig", changeFabric)
+      });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/deactivatedFabricConfigService.json').then((res) => {
+        jsonBuilderAAIService.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d671000",
+          200, 0,
+          "service-FabricConfig", changeFabric)
+      });
+
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForComplexService.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
-          Cypress.config('baseUrl') + "/aai_sub_viewedit/**",
+          Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+          200,
+          0,
+          "aai-sub-view-edit")
+      });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForFabricConfigService.json').then((res) => {
+        jsonBuilderAAISubViewEditModel.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f61234",
+          200,
+          0,
+          "aai-sub-view-edit")
+      });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForActiveFabricConfigService.json').then((res) => {
+        jsonBuilderAAISubViewEditModel.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f65678",
+          200,
+          0,
+          "aai-sub-view-edit")
+      });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForCreatedFabricConfigService.json').then((res) => {
+        jsonBuilderAAISubViewEditModel.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f69000",
+          200,
+          0,
+          "aai-sub-view-edit")
+      });
+
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForDeactivatedFabricConfigService.json').then((res) => {
+        jsonBuilderAAISubViewEditModel.basicJson(
+          res,
+          Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f61000",
           200,
           0,
           "aai-sub-view-edit")
@@ -82,11 +151,16 @@ describe('View Edit Page', function () {
       cy.login();
     });
 
+    afterEach(() => {
+      cy.screenshot();
+    });
 
     it(`should display service model name and version on each info form`, function () {
       let typesToIncludeModel:Array<string> = ['service', 'vnf', 'vfmodule', 'volume-group', 'network'];
       cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
+      cy.wait('@aai_getPortMirroringConfigsDate - empty response');
+      cy.get('div').contains('VOLUME GROUP: f'); // waits for the view/edit to be ready after ports' redraw
       typesToIncludeModel.forEach((type) => {
         cy.get('.' + type + '-info').click({force: true});
         cy.getElementByDataTestsId("Model Version").contains('1.0');
@@ -94,7 +168,44 @@ describe('View Edit Page', function () {
         cy.getElementByDataTestsId("detailsCloseBtn").click();
       });
     });
+
+    it(`Check fabric configuration service with some configuration with diff orchStatus`, function () {
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f61234&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671234&isPermitted=true');
+      cy.wait('@service-FabricConfig');
+      cy.get('.error-msg').should("be.visible").should('contain','Activate fabric configuration button is not available as some of the configuration objects are not in Assigned status. Check MSO logs for the reasons for this abnormal case.');
+      cy.getElementByDataTestsId("activateFabricConfigurationButton").should('have.attr', 'disabled');
+      cy.getElementByDataTestsId("activateButton").should("not.be.visible");
+    });
+
+    it(`Check fabric configuration service with active status`, function () {
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f65678&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671234&isPermitted=true');
+      cy.wait('@service-FabricConfig');
+      cy.getElementByDataTestsId("activateFabricConfigurationButton").should('not.be.visible');
+      cy.getElementByDataTestsId("activateButton").should('have.attr', 'disabled');
+      cy.getElementByDataTestsId("deactivateButton").should("be.visible");
+    });
+
+    it(`Check fabric configuration service with created status`, function () {
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f69000&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d679000&isPermitted=true');
+      cy.wait('@service-FabricConfig');
+      cy.getElementByDataTestsId("activateFabricConfigurationButton").should('not.be.visible');
+      cy.getElementByDataTestsId("activateButton").should('have.attr', 'disabled');
+      cy.getElementByDataTestsId("deactivateButton").should("be.visible");
+    });
+
+    it(`Check fabric configuration service with pendingdeLete status`, function () {
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f61000&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671000&isPermitted=true');
+      cy.wait('@service-FabricConfig');
+      cy.getElementByDataTestsId("activateFabricConfigurationButton").should('not.be.visible');
+      cy.getElementByDataTestsId("activateButton").should('not.have.attr', 'disabled');
+      cy.getElementByDataTestsId("deactivateButton").should('have.attr', 'disabled');
+    });
   });
+
+  function changeFabric(serviceModel: ServiceModel) {
+    serviceModel.service.uuid = "6e59c5de-f052-46fa-aa7e-2fca9d671234";
+    return serviceModel;
+  }
 
   function changeServiceModel(serviceModel: ServiceModel) {
     serviceModel.service.uuid = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
@@ -109,7 +220,7 @@ describe('View Edit Page', function () {
         "inputs": {},
         "commands": {},
         "properties": {
-          "gpb2_Internal2_mac": "00:80:37:0E:02:22",
+          "gpb2_Internal2_mac": "00:11:22:EF:AC:DF",
           "sctp-b-ipv6-egress_src_start_port": "0",
           "sctp-a-ipv6-egress_rule_application": "any",
           "Internal2_allow_transit": "true",
@@ -117,9 +228,9 @@ describe('View Edit Page', function () {
           "sctp-a-egress_rule_application": "any",
           "sctp-b-ingress_action": "pass",
           "sctp-b-ingress_rule_protocol": "icmp",
-          "ncb2_Internal1_mac": "00:80:37:0E:0F:12",
+          "ncb2_Internal1_mac": "00:11:22:EF:AC:DF",
           "sctp-b-ipv6-ingress-src_start_port": "0.0",
-          "ncb1_Internal2_mac": "00:80:37:0E:09:12",
+          "ncb1_Internal2_mac": "00:11:22:EF:AC:DF",
           "fsb_volume_size_0": "320.0",
           "sctp-b-egress_src_addresses": "local",
           "sctp-a-ipv6-ingress_ethertype": "IPv4",
@@ -138,12 +249,12 @@ describe('View Edit Page', function () {
           "sctp-a-ipv6-ingress_src_subnet_prefix": "0.0.0.0",
           "sctp-b-egress-dst_start_port": "0.0",
           "ncb_flavor_name": "nv.c20r64d1",
-          "gpb1_Internal1_mac": "00:80:37:0E:01:22",
+          "gpb1_Internal1_mac": "00:11:22:EF:AC:DF",
           "sctp-b-egress_dst_subnet_prefix_len": "0.0",
-          "Internal2_net_cidr": "169.255.0.0",
+          "Internal2_net_cidr": "10.0.0.10",
           "sctp-a-ingress-dst_start_port": "0.0",
           "sctp-a-egress-dst_start_port": "0.0",
-          "fsb1_Internal2_mac": "00:80:37:0E:0B:12",
+          "fsb1_Internal2_mac": "00:11:22:EF:AC:DF",
           "sctp-a-egress_ethertype": "IPv4",
           "vlc_st_service_mode": "in-network-nat",
           "sctp-a-ipv6-egress_ethertype": "IPv4",
@@ -153,10 +264,10 @@ describe('View Edit Page', function () {
           "sctp-a-ingress-src_subnet_prefix_len": "0.0",
           "sctp-b-ipv6-ingress-src_end_port": "65535.0",
           "sctp-b-name": "epc-sctp-b-ipv4v6-sec-group",
-          "fsb2_Internal1_mac": "00:80:37:0E:0D:12",
+          "fsb2_Internal1_mac": "00:11:22:EF:AC:DF",
           "sctp-a-ipv6-ingress-src_start_port": "0.0",
           "sctp-b-ipv6-egress_ethertype": "IPv4",
-          "Internal1_net_cidr": "169.253.0.0",
+          "Internal1_net_cidr": "10.0.0.10",
           "sctp-a-egress_dst_subnet_prefix": "0.0.0.0",
           "fsb_flavor_name": "nv.c20r64d1",
           "sctp_rule_protocol": "132",
@@ -164,7 +275,7 @@ describe('View Edit Page', function () {
           "sctp-a-ipv6-ingress_rule_application": "any",
           "ecomp_generated_naming": "true",
           "sctp-a-IPv6_ethertype": "IPv6",
-          "vlc2_Internal1_mac": "00:80:37:0E:02:12",
+          "vlc2_Internal1_mac": "00:11:22:EF:AC:DF",
           "vlc_st_virtualization_type": "virtual-machine",
           "sctp-b-ingress-dst_start_port": "0.0",
           "sctp-b-ingress-dst_end_port": "65535.0",
@@ -182,7 +293,7 @@ describe('View Edit Page', function () {
           "Internal2_shared": "false",
           "sctp-a-ipv6-egress_dst_subnet_prefix_len": "0",
           "Internal2_rpf": "disable",
-          "vlc1_Internal1_mac": "00:80:37:0E:01:12",
+          "vlc1_Internal1_mac": "00:11:22:EF:AC:DF",
           "sctp-b-ipv6-egress_src_end_port": "65535",
           "sctp-a-ipv6-egress_src_addresses": "local",
           "sctp-a-ingress-dst_end_port": "65535.0",
@@ -192,41 +303,41 @@ describe('View Edit Page', function () {
           "sctp-a-dst_subnet_prefix_v6": "::",
           "pxe_image_name": "MME_PXE-Boot_16ACP04_GA.qcow2",
           "vlc_st_interface_type_gtp": "other0",
-          "ncb1_Internal1_mac": "00:80:37:0E:09:12",
+          "ncb1_Internal1_mac": "00:11:22:EF:AC:DF",
           "sctp-b-src_subnet_prefix_v6": "::",
           "sctp-a-egress_dst_subnet_prefix_len": "0.0",
           "int1_sec_group_name": "int1-sec-group",
           "Internal1_dhcp": "false",
           "sctp-a-ipv6-egress_dst_end_port": "65535",
           "Internal2_forwarding_mode": "l2",
-          "fsb2_Internal2_mac": "00:80:37:0E:0D:12",
+          "fsb2_Internal2_mac": "00:11:22:EF:AC:DF",
           "sctp-b-egress_dst_subnet_prefix": "0.0.0.0",
           "Internal1_net_cidr_len": "17",
-          "gpb2_Internal1_mac": "00:80:37:0E:02:22",
+          "gpb2_Internal1_mac": "00:11:22:EF:AC:DF",
           "sctp-b-ingress-src_subnet_prefix_len": "0.0",
           "sctp-a-ingress_dst_addresses": "local",
           "sctp-a-egress_action": "pass",
           "fsb_volume_type_0": "SF-Default-SSD",
-          "ncb2_Internal2_mac": "00:80:37:0E:0F:12",
+          "ncb2_Internal2_mac": "00:11:22:EF:AC:DF",
           "vlc_st_interface_type_sctp_a": "left",
           "vlc_st_interface_type_sctp_b": "right",
           "sctp-a-src_subnet_prefix_v6": "::",
           "vlc_st_version": "2",
           "sctp-b-egress_ethertype": "IPv4",
           "sctp-a-ingress_rule_application": "any",
-          "gpb1_Internal2_mac": "00:80:37:0E:01:22",
+          "gpb1_Internal2_mac": "00:11:22:EF:AC:DF",
           "instance_ip_family_v6": "v6",
           "sctp-a-ipv6-egress_src_start_port": "0",
           "sctp-b-ingress-src_start_port": "0.0",
           "sctp-b-ingress_dst_addresses": "local",
-          "fsb1_Internal1_mac": "00:80:37:0E:0B:12",
+          "fsb1_Internal1_mac": "00:11:22:EF:AC:DF",
           "vlc_st_interface_type_oam": "management",
           "multi_stage_design": "false",
           "oam_sec_group_name": "oam-sec-group",
-          "Internal2_net_gateway": "169.255.0.3",
+          "Internal2_net_gateway": "10.0.0.10",
           "sctp-a-ipv6-ingress-dst_end_port": "65535",
           "sctp-b-ipv6-egress-dst_start_port": "0",
-          "Internal1_net_gateway": "169.253.0.3",
+          "Internal1_net_gateway": "10.0.0.10",
           "sctp-b-ipv6-egress_rule_protocol": "any",
           "gtp_sec_group_name": "gtp-sec-group",
           "sctp-a-ipv6-egress_dst_subnet_prefix": "0.0.0.0",
@@ -248,7 +359,7 @@ describe('View Edit Page', function () {
           "vlc_st_service_type": "firewall",
           "sctp-b-ipv6-egress_dst_end_port": "65535",
           "sctp-b-ipv6-ingress-dst_start_port": "0",
-          "vlc2_Internal2_mac": "00:80:37:0E:02:12",
+          "vlc2_Internal2_mac": "00:11:22:EF:AC:DF",
           "vlc_st_availability_zone": "true",
           "fsb_volume_image_name_1": "MME_FSB2_16ACP04_GA.qcow2",
           "sctp-b-ingress-src_subnet_prefix": "0.0.0.0",
@@ -260,7 +371,7 @@ describe('View Edit Page', function () {
           "sctp-b-ipv6-ingress_dst_addresses": "local",
           "sctp-b-ipv6-egress_dst_subnet_prefix": "0.0.0.0",
           "sctp-b-ipv6-ingress_ethertype": "IPv4",
-          "vlc1_Internal2_mac": "00:80:37:0E:01:12",
+          "vlc1_Internal2_mac": "00:11:22:EF:AC:DF",
           "sctp-a-ingress-src_subnet_prefix": "0.0.0.0",
           "sctp-a-ipv6-ingress_action": "pass",
           "Internal1_rpf": "disable",

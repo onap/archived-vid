@@ -6,5 +6,7 @@ export class AuditStatus{
   jobStatus :string;
   source: string;
   requestId: string;
-  additionalInfo :any
+  additionalInfo :any;
+  instanceName: string;
+  instanceType : string;
 }

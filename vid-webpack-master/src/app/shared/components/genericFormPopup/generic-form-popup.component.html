@@ -1,0 +1,70 @@
+<div id="instance-popup" class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button"
+              class="close"
+              (click)="formPopupDetails?.onCancel(formPopupDetails.that,dynamicForm)" >&times;
+      </button>
+      <span [attr.data-tests-id]="'create-modal-title'"
+            class="modal-title">{{formPopupDetails?.title}}
+      </span>
+    </div>
+    <div class="modal-body popup-content">
+
+      <div class="header-left">
+        <div>MODEL: <span>"{{formPopupDetails?.leftSubTitle}}"</span></div>
+      </div>
+
+      <div class="header-right">
+        {{formPopupDetails?.rightSubTitle}}
+      </div>
+
+
+      <label class="quantity-label" *ngIf="formPopupDetails?.UUIDData['type'] == 'service'">Qty:</label>
+      <div class="quantity" *ngIf="formPopupDetails?.UUIDData['type'] == 'service'">
+        <select [disabled]="formPopupDetails?.UUIDData['isMacro'] !== true"
+                class="quantity-select"
+                [(ngModel)]="formPopupDetails.UUIDData['bulkSize']"
+                name="quantity"
+                id="quantity-select"
+                required>
+          <option *ngFor="let qty of quantityOptions" [value]="qty">{{qty}}</option>
+        </select>
+      </div>
+
+      <div class="model-information">
+        <model-information [modelInformationItems]="formPopupDetails?.modelInformationItems"></model-information>
+      </div>
+
+      <div  class="instance-form">
+        <div style="position: relative;height: 100%;overflow: auto;">
+          <label id="notification-area"  *ngIf="shouldShowNotification() == true" style="color: #959595;font-size: 12px;left: 30px;margin-left: 30px;">Data entered will apply to all service instances</label>
+          <generic-form  [formControls]="formPopupDetails?.formControlList"
+                         [dynamicInputs]="formPopupDetails?.dynamicInputsControlList"
+                         (onFormChanged)="dynamicForm = $event" ></generic-form>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer row" style="padding: 0">
+      <div class="col-md-6">
+        <div *ngIf="hasSomeError(formPopupDetails, dynamicForm) == true">
+          <form-general-error [message]="errorMsg"></form-general-error>
+        </div>
+      </div>
+      <div class="col-md-6" style="padding: 15px;padding-right: 35px;">
+        <button
+          [attr.data-tests-id]="'cancelButton'"
+          type="button" class="btn btn-default cancel"
+          (click)="formPopupDetails.onCancel(formPopupDetails.that, dynamicForm)"><span>Cancel</span></button>
+
+        <input type="submit"
+               value="Set"
+               data-tests-id="form-set"
+               class="btn btn-success submit"
+               [disabled]="!dynamicForm?.valid"
+               (click)="formPopupDetails.onSubmit(formPopupDetails.that, dynamicForm, servicesQty)">
+      </div>
+    </div>
+  </div>
+</div>

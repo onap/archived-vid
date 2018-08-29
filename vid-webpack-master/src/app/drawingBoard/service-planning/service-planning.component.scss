@@ -2,6 +2,8 @@
 .service-planning-content {
   display: flex;
   flex: 1;
+  position: relative;
+  z-index: 0;
 }
 
 .span-over {
@@ -13,4 +15,14 @@
 :host ::ng-deep .upload-icon-service-planing {
   height: 117px;
   margin-top: 32px;
+}
+
+component-info {
+  border-left: 1px solid #D2D2D2;
+  height: calc(100vh - 60px);
+  overflow: auto;
+
+  &.col-md-2{
+    padding: 0;
+  }
 }

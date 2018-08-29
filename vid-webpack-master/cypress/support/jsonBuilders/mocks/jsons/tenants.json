@@ -1,0 +1,233 @@
+[
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "USP-SIP-IC-24335-T-01",
+    "tenantID": "092eb9e8e4b7412e8787dd091bc58e86",
+    "cloudRegionID": "JANET25",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN Web Tool-15-D-testalexandria",
+    "tenantID": "bae71557c5bb4d5aac6743a4e5f1d054",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN Web Tool-15-D-STTest2",
+    "tenantID": "229bcdc6eaeb4ca59d55221141d01f8e",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN Web Tool-15-D-SSPtestcustome",
+    "tenantID": "1178612d2b394be4834ad77f567c0af2",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN Web Tool-15-D-UncheckedEcopm",
+    "tenantID": "19c5ade915eb461e8af52fb2fd8cd1f2",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN Web Tool-15-D-dfsdf",
+    "tenantID": "de007636e25249238447264a988a927b",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN/SMS-16-D-Multiservices1",
+    "tenantID": "62f29b3613634ca6a3065cbe0e020c44",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN Web Tool-15-D-SSPST66",
+    "tenantID": "649289e30d3244e0b48098114d63c2aa",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AIN Web Tool-15-D-ASSPST47",
+    "tenantID": "3f21eeea6c2c486bba31dab816c05a32",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "CESAR-100-D-sspjg67246",
+    "tenantID": "f60ce21d3ee6427586cff0d22b03b773",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "CESAR-100-D-sspjg68359",
+    "tenantID": "8774659e425f479895ae091bb5d46560",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-D-iftach",
+    "tenantID": "624eb554b0d147c19ff8885341760481",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "CESAR-100-D-sspjg612401",
+    "tenantID": "214f55f5fc414c678059c383b03e4962",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "CESAR-100-D-sspjg621340",
+    "tenantID": "c90666c291664841bb98e4d981ff1db5",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "sspjg621351cloned",
+    "tenantID": "ce5b6bc5c7b348e1bf4b91ac9a174278",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-D-eteancomp",
+    "tenantID": "b386b768a3f24c8e953abbe0b3488c02",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-T-SPFET",
+    "tenantID": "dc6c4dbfd225474e9deaadd34968646c",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-X-eeweww",
+    "tenantID": "02cb5030e9914aa4be120bd9ed1e19eb",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "CESAR-100-D-spjg61909",
+    "tenantID": "f2f3830e4c984d45bcd00e1a04158a79",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "CESAR-100-D-sspjg621512cloned",
+    "tenantID": "05b91bd5137f4929878edd965755c06d",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-X-vdr",
+    "tenantID": "7002fbe8482d4a989ddf445b1ce336e0",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-D-ssasa",
+    "tenantID": "4008522be43741dcb1f5422022a2aa0b",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-D-PFNPT",
+    "tenantID": "f44e2e96a1b6476abfda2fa407b00169",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-X-vdre",
+    "tenantID": "b69a52bec8a84669a37a1e8b72708be7",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "AINWebTool-15-X-NONPODECOMP",
+    "tenantID": "fac7d9fd56154caeb9332202dcf2969f",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "DN5242-Nov16-T5",
+    "tenantID": "2d34d8396e194eb49969fd61ffbff961",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "ro-T11",
+    "tenantID": "cb42a77ff45b48a8b8deb83bb64acc74",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "ro-T112",
+    "tenantID": "fa45ca53c80b492fa8be5477cd84fc2b",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "DN5242-Nov21-T1",
+    "tenantID": "4914ab0ab3a743e58f0eefdacc1dde77",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "test-hvf6-09",
+    "tenantID": "d0a3e3f2964542259d155a81c41aadc3",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "DN5242-Nov16-T3",
+    "tenantID": "cbb99fe4ada84631b7baf046b6fd2044",
+    "cloudRegionID": "hvf6",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "DN5242-Nov16-T3XXX",
+    "tenantID": "cbb99fe4ada84631b7baf046b6fd2XXX",
+    "cloudRegionID": "olson3",
+    "is-permitted": true
+  },
+  {
+    "cloudOwner": "irma-aic",
+    "tenantName": "DN5242-Nov16-T3YYY",
+    "tenantID": "cbb99fe4ada84631b7baf046b6fd2YYY",
+    "cloudRegionID": "olson5a",
+    "is-permitted": true
+  }
+]

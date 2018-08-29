@@ -58,3 +58,6 @@ __build__/**
 # IDE #
 .idea/
 *.swp
+
+# Cypress screenshot #
+/cypress/screenshots

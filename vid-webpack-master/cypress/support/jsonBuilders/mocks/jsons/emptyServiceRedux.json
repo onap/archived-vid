@@ -40,22 +40,24 @@
             "inputs": {},
             "commands": {},
             "properties": {
+              "max_instances" : 10,
+              "min_instances"  : 1,
               "vmxvre_retype": "RE-VMX",
               "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
               "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
               "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
               "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
               "int_ctl_net_name": "VMX-INTXI",
-              "vmx_int_ctl_prefix": "128.0.0.0",
+              "vmx_int_ctl_prefix": "10.0.0.10",
               "sriov43_net_id": "da349ca1-6de9-4548-be88-2d88e99bfef5",
               "sriov42_net_id": "760669ba-013d-4d9b-b0e7-4151fe2e6279",
               "sriov41_net_id": "25ad52d5-c165-40f8-b3b0-ddfc2373280a",
               "nf_type": "vPE",
-              "vmxvpfe_int_ctl_ip_1": "128.0.0.16",
+              "vmxvpfe_int_ctl_ip_1": "10.0.0.10",
               "is_AVPN_service": "false",
               "vmx_RSG_name": "vREXI-affinity",
               "vmx_int_ctl_forwarding": "l2",
-              "vmxvre_oam_ip_0": "10.40.123.5",
+              "vmxvre_oam_ip_0": "10.0.0.10",
               "vmxvpfe_sriov44_0_port_mac": "00:11:22:EF:AC:DF",
               "vmxvpfe_sriov41_0_port_vlanstrip": "false",
               "vmxvpfe_sriov42_0_port_vlanfilter": "4001",
@@ -84,8 +86,8 @@
               "vf_module_id": "123",
               "nf_function": "JAI",
               "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
-              "vmxvre_int_ctl_ip_0": "128.0.0.1",
-              "ecomp_generated_naming": "true",
+              "vmxvre_int_ctl_ip_0": "10.0.0.10",
+              "ecomp_generated_naming": "false",
               "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
               "vnf_name": "mtnj309me6vre",
               "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
@@ -106,7 +108,7 @@
               "vmxvre_volume_size_0": "45.0",
               "vmxvre_volume_size_1": "50.0",
               "vmxvpfe_sriov42_0_port_broadcastallow": "true",
-              "vmxvre_oam_gateway": "10.40.123.1",
+              "vmxvre_oam_gateway": "10.0.0.10",
               "vmxvre_volume_name_1": "vREXI_FAVolume",
               "vmxvre_ore_present": "0",
               "vmxvre_volume_name_0": "vREXI_FBVolume",
@@ -140,22 +142,24 @@
             "inputs": {},
             "commands": {},
             "properties": {
+              "max_instances" : 10,
+              "min_instances"  : 1,
               "vmxvre_retype": "RE-VMX",
               "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
               "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
               "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
               "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
               "int_ctl_net_name": "VMX-INTXI",
-              "vmx_int_ctl_prefix": "128.0.0.0",
+              "vmx_int_ctl_prefix": "10.0.0.10",
               "sriov43_net_id": "da349ca1-6de9-4548-be88-2d88e99bfef5",
               "sriov42_net_id": "760669ba-013d-4d9b-b0e7-4151fe2e6279",
               "sriov41_net_id": "25ad52d5-c165-40f8-b3b0-ddfc2373280a",
               "nf_type": "vPE",
-              "vmxvpfe_int_ctl_ip_1": "128.0.0.16",
+              "vmxvpfe_int_ctl_ip_1": "10.0.0.10",
               "is_AVPN_service": "false",
               "vmx_RSG_name": "vREXI-affinity",
               "vmx_int_ctl_forwarding": "l2",
-              "vmxvre_oam_ip_0": "10.40.123.5",
+              "vmxvre_oam_ip_0": "10.0.0.10",
               "vmxvpfe_sriov44_0_port_mac": "00:11:22:EF:AC:DF",
               "vmxvpfe_sriov41_0_port_vlanstrip": "false",
               "vmxvpfe_sriov42_0_port_vlanfilter": "4001",
@@ -184,7 +188,7 @@
               "vf_module_id": "123",
               "nf_function": "JAI",
               "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
-              "vmxvre_int_ctl_ip_0": "128.0.0.1",
+              "vmxvre_int_ctl_ip_0": "10.0.0.10",
               "ecomp_generated_naming": "true",
               "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
               "vnf_name": "mtnj309me6vre",
@@ -206,7 +210,7 @@
               "vmxvre_volume_size_0": "45.0",
               "vmxvre_volume_size_1": "50.0",
               "vmxvpfe_sriov42_0_port_broadcastallow": "true",
-              "vmxvre_oam_gateway": "10.40.123.1",
+              "vmxvre_oam_gateway": "10.0.0.10",
               "vmxvre_volume_name_1": "vREXI_FAVolume",
               "vmxvre_ore_present": "0",
               "vmxvre_volume_name_0": "vREXI_FBVolume",
@@ -240,22 +244,24 @@
             "inputs": {},
             "commands": {},
             "properties": {
+              "max_instances" : 10,
+              "min_instances"  : 1,
               "vmxvre_retype": "RE-VMX",
               "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
               "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
               "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
               "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
               "int_ctl_net_name": "VMX-INTXI",
-              "vmx_int_ctl_prefix": "128.0.0.0",
+              "vmx_int_ctl_prefix": "10.0.0.10",
               "sriov43_net_id": "da349ca1-6de9-4548-be88-2d88e99bfef5",
               "sriov42_net_id": "760669ba-013d-4d9b-b0e7-4151fe2e6279",
               "sriov41_net_id": "25ad52d5-c165-40f8-b3b0-ddfc2373280a",
               "nf_type": "vPE",
-              "vmxvpfe_int_ctl_ip_1": "128.0.0.16",
+              "vmxvpfe_int_ctl_ip_1": "10.0.0.10",
               "is_AVPN_service": "false",
               "vmx_RSG_name": "vREXI-affinity",
               "vmx_int_ctl_forwarding": "l2",
-              "vmxvre_oam_ip_0": "10.40.123.5",
+              "vmxvre_oam_ip_0": "10.0.0.10",
               "vmxvpfe_sriov44_0_port_mac": "00:11:22:EF:AC:DF",
               "vmxvpfe_sriov41_0_port_vlanstrip": "false",
               "vmxvpfe_sriov42_0_port_vlanfilter": "4001",
@@ -284,8 +290,8 @@
               "vf_module_id": "123",
               "nf_function": "JAI",
               "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
-              "vmxvre_int_ctl_ip_0": "128.0.0.1",
-              "ecomp_generated_naming": "true",
+              "vmxvre_int_ctl_ip_0": "10.0.0.10",
+              "ecomp_generated_naming": "false",
               "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
               "vnf_name": "mtnj309me6vre",
               "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
@@ -306,7 +312,7 @@
               "vmxvre_volume_size_0": "45.0",
               "vmxvre_volume_size_1": "50.0",
               "vmxvpfe_sriov42_0_port_broadcastallow": "true",
-              "vmxvre_oam_gateway": "10.40.123.1",
+              "vmxvre_oam_gateway": "10.0.0.10",
               "vmxvre_volume_name_1": "vREXI_FAVolume",
               "vmxvre_ore_present": "0",
               "vmxvre_volume_name_0": "vREXI_FBVolume",
@@ -815,16 +821,16 @@
               "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
               "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
               "int_ctl_net_name": "VMX-INTXI",
-              "vmx_int_ctl_prefix": "128.0.0.0",
+              "vmx_int_ctl_prefix": "10.0.0.10",
               "sriov43_net_id": "da349ca1-6de9-4548-be88-2d88e99bfef5",
               "sriov42_net_id": "760669ba-013d-4d9b-b0e7-4151fe2e6279",
               "sriov41_net_id": "25ad52d5-c165-40f8-b3b0-ddfc2373280a",
               "nf_type": "ROUTER",
-              "vmxvpfe_int_ctl_ip_1": "128.0.0.16",
+              "vmxvpfe_int_ctl_ip_1": "10.0.0.10",
               "is_AVPN_service": "false",
               "vmx_RSG_name": "vREXI-affinity",
               "vmx_int_ctl_forwarding": "l2",
-              "vmxvre_oam_ip_0": "10.40.123.5",
+              "vmxvre_oam_ip_0": "10.0.0.10",
               "vmxvpfe_sriov44_0_port_mac": "00:11:22:EF:AC:DF",
               "vmxvpfe_sriov41_0_port_vlanstrip": "false",
               "vmxvpfe_sriov42_0_port_vlanfilter": "4001",
@@ -854,7 +860,7 @@
               "vf_module_id": "123",
               "nf_function": "ADIOD vPE",
               "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
-              "vmxvre_int_ctl_ip_0": "128.0.0.1",
+              "vmxvre_int_ctl_ip_0": "10.0.0.10",
               "ecomp_generated_naming": "true",
               "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
               "vnf_name": "mtnj309me6vre",
@@ -876,7 +882,7 @@
               "vmxvre_volume_size_0": "45.0",
               "vmxvre_volume_size_1": "50.0",
               "vmxvpfe_sriov42_0_port_broadcastallow": "true",
-              "vmxvre_oam_gateway": "10.40.123.1",
+              "vmxvre_oam_gateway": "10.0.0.10",
               "vmxvre_volume_name_1": "vREXI_FAVolume",
               "vmxvre_ore_present": "0",
               "vmxvre_volume_name_0": "vREXI_FBVolume",
@@ -1402,6 +1408,8 @@
     },
     "serviceInstance": {
       "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd": {
+        "existingVNFCounterMap": {},
+        "existingNetworksCounterMap" : {},
         "vnfs": {},
         "instanceParams": [
           {
@@ -1410,11 +1418,11 @@
         ],
         "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
         "productFamilyId": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
-        "subscriptionServiceType": "VIRTUAL USP",
-        "lcpCloudRegionId": "AAIAIC25",
+        "subscriptionServiceType": "TYLER SILVIA",
+        "lcpCloudRegionId": "JANET25",
         "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
         "aicZoneId": "JAG1",
-        "projectName": "DFW",
+        "projectName": "WATKINS",
         "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
         "bulkSize": 1,
         "modelInfo": {
@@ -1424,36 +1432,37 @@
           "modelName": "action-data",
           "modelVersion": "1.0"
         },
-        "isUserProvidedNaming": false,
+        "isEcompGeneratedNaming": true,
         "tenantName": "USP-SIP-IC-24335-T-01",
-        "aicZoneName": "YUDFJULP-JAG1"
+        "aicZoneName": "YUDFJULP-JAG1",
+        "existingNames": {}
       }
     },
     "lcpRegionsAndTenants": {
       "lcpRegionList": [
         {
-          "id": "AAIAIC25",
-          "name": "AAIAIC25",
+          "id": "JANET25",
+          "name": "JANET25",
           "isPermitted": true
         },
         {
-          "id": "mtn6",
-          "name": "mtn6",
+          "id": "hvf6",
+          "name": "hvf6",
           "isPermitted": true
         }
       ],
       "lcpRegionsTenantsMap": {
-        "AAIAIC25": [
+        "JANET25": [
           {
             "id": "092eb9e8e4b7412e8787dd091bc58e86",
             "name": "USP-SIP-IC-24335-T-01",
             "isPermitted": true
           }
         ],
-        "mtn6": [
+        "hvf6": [
           {
             "id": "bae71557c5bb4d5aac6743a4e5f1d054",
-            "name": "AIN Web Tool-15-D-testgamma",
+            "name": "AIN Web Tool-15-D-testalexandria",
             "isPermitted": true
           },
           {
@@ -1593,7 +1602,7 @@
           },
           {
             "id": "d0a3e3f2964542259d155a81c41aadc3",
-            "name": "test-mtn6-09",
+            "name": "test-hvf6-09",
             "isPermitted": true
           },
           {
@@ -1607,34 +1616,34 @@
     "subscribers": [
       {
         "id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-        "name": "Mobility",
+        "name": "Emanuel",
         "isPermitted": false
       },
       {
         "id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fc",
-        "name": "PACKET CORE",
+        "name": "JULIO ERICKSON",
         "isPermitted": false
       },
       {
         "id": "e433710f-9217-458d-a79d-1c7aff376d89",
-        "name": "USP VOICE",
+        "name": "SILVIA ROBBINS",
         "isPermitted": true
       }
     ],
     "productFamilies": [
       {
         "id": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
-        "name": "DHV",
+        "name": "SCOTTIE",
         "isPermitted": true
       },
       {
         "id": "17cc1042-527b-11e6-beb8-9e71128cae77",
-        "name": "FLEXREACH",
+        "name": "IGNACIO",
         "isPermitted": true
       },
       {
         "id": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
-        "name": "Netbond",
+        "name": "Christie",
         "isPermitted": true
       },
       {
@@ -1643,8 +1652,8 @@
         "isPermitted": true
       },
       {
-        "id": "vRRaaS",
-        "name": "vRRaaS",
+        "id": "vTerrance",
+        "name": "vTerrance",
         "isPermitted": true
       },
       {
@@ -1654,7 +1663,7 @@
       },
       {
         "id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-        "name": "Mobility",
+        "name": "Emanuel",
         "isPermitted": true
       },
       {
@@ -1664,7 +1673,7 @@
       },
       {
         "id": "db171b8f-115c-4992-a2e3-ee04cae357e0",
-        "name": "FIRSTNET",
+        "name": "LINDSEY",
         "isPermitted": true
       },
       {
@@ -1673,18 +1682,18 @@
         "isPermitted": true
       },
       {
-        "id": "vHNGWaas",
+        "id": "vRosemarie",
         "name": "HNGATEWAY",
         "isPermitted": true
       },
       {
         "id": "vHNPaas",
-        "name": "HNPORTAL",
+        "name": "WILKINS",
         "isPermitted": true
       },
       {
         "id": "e433710f-9217-458d-a79d-1c7aff376d89",
-        "name": "VIRTUAL USP",
+        "name": "TYLER SILVIA",
         "isPermitted": true
       },
       {
@@ -1693,18 +1702,18 @@
         "isPermitted": true
       },
       {
-        "id": "VIPRaaS",
-        "name": "vIPRaaS",
+        "id": "Cisneros",
+        "name": "vMuriel",
         "isPermitted": true
       },
       {
         "id": "0ee8c1bc-7cbd-4b0a-a1ac-e9999255abc1",
-        "name": "WAN Bonding",
+        "name": "CARA Griffin",
         "isPermitted": true
       },
       {
         "id": "c7611ebe-c324-48f1-8085-94aef0c6ef3d",
-        "name": "HOSTED COMMUNICATIONS",
+        "name": "DARREN MCGEE",
         "isPermitted": true
       },
       {
@@ -1713,23 +1722,23 @@
         "isPermitted": true
       },
       {
-        "id": "vVIGaaS",
-        "name": "vVIGaaS",
+        "id": "vSalvatore",
+        "name": "vSalvatore",
         "isPermitted": true
       },
       {
         "id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4",
-        "name": "uCPE-VMS",
+        "name": "Josefina",
         "isPermitted": true
       },
       {
-        "id": "vPEaaS",
-        "name": "vPEaaS",
+        "id": "vHubbard",
+        "name": "vHubbard",
         "isPermitted": true
       },
       {
         "id": "12a96a9d-4b4c-4349-a950-fe1159602621",
-        "name": "HOSTED COMMUNICATIONS",
+        "name": "DARREN MCGEE",
         "isPermitted": true
       }
     ],
@@ -1737,22 +1746,22 @@
       "e433710f-9217-458d-a79d-1c7aff376d89": [
         {
           "id": "0",
-          "name": "vFlowLogic",
+          "name": "vRichardson",
           "isPermitted": false
         },
         {
           "id": "1",
-          "name": "VIRTUAL USP",
+          "name": "TYLER SILVIA",
           "isPermitted": true
         },
         {
           "id": "2",
-          "name": "Mobility",
+          "name": "Emanuel",
           "isPermitted": false
         },
         {
           "id": "3",
-          "name": "vBNG",
+          "name": "vJamie",
           "isPermitted": false
         },
         {
@@ -1762,7 +1771,7 @@
         },
         {
           "id": "5",
-          "name": "Nimbus",
+          "name": "Kennedy",
           "isPermitted": false
         },
         {
@@ -1817,17 +1826,17 @@
         },
         {
           "id": "16",
-          "name": "FIRSTNET",
+          "name": "LINDSEY",
           "isPermitted": false
         },
         {
           "id": "17",
-          "name": "ACTIVE_CHARGE",
+          "name": "JOHANNA_SANTOS",
           "isPermitted": false
         },
         {
           "id": "18",
-          "name": "vHSS",
+          "name": "vCarroll",
           "isPermitted": false
         }
       ]
@@ -2610,17 +2619,17 @@
         },
         {
           "id": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
-          "name": "MetroPacketCore"
+          "name": "WayneHolland"
         },
         {
-          "id": "Wireline",
-          "name": "Wireline"
+          "id": "Melissa",
+          "name": "Melissa"
         }
       ],
       "projectList": [
         {
-          "id": "DFW",
-          "name": "DFW"
+          "id": "WATKINS",
+          "name": "WATKINS"
         },
         {
           "id": "x1",
@@ -2633,8 +2642,8 @@
       ],
       "lineOfBusinessList": [
         {
-          "id": "ECOMP",
-          "name": "ECOMP"
+          "id": "ONAP",
+          "name": "ONAP"
         },
         {
           "id": "zzz1",

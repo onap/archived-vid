@@ -23,5 +23,19 @@ export class ServiceModel{
   vfModules: Object;
   volumeGroups: Object;
   pnfs:Object;
+  vnfGroups: Object;
+
+  constructor(){
+    this.service = <any>{};
+    this.vnfs = {};
+    this.networks= {};
+    this.collectionResource = {};
+    this.configurations = {};
+    this.serviceProxies = {};
+    this.vfModules = {};
+    this.volumeGroups = {};
+    this.pnfs = {};
+    this.vnfGroups = {};
+  }
 
 }

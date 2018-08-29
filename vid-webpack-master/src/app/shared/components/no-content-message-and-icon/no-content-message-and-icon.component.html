@@ -1,5 +1,6 @@
 <div class="width-100">
-  <div class="text-title" [ngClass]="titleClass">{{title}}</div>
-  <div class="text-subtitle" [ngClass]="subtitleClass">{{subtitle}}</div>
+  <div class="text-title" [ngClass]="titleClass" [attr.data-tests-id]="'text-title'">{{title}}</div>
+  <div class="text-title" [ngClass]="titleClass" [attr.data-tests-id]="'text-title2'">{{title2}}</div>
+  <div class="text-subtitle" [ngClass]="subtitleClass" [attr.data-tests-id]="'text-subtitle'">{{subtitle}}</div>
   <img  id="not-node-img-id" src="{{iconPath}}" alt="" class="no-content-icon" [ngClass]="iconClass" data-tests-id="no-content-icon">
 </div>

@@ -6,11 +6,21 @@
     "module": "commonjs",
     "types": [
       "jasmine",
-      "node"
+      "node",
+      "jest"
+    ]
+  },
+  "paths": {
+    "@angular/*" : [
+      "../node_modules/@angular/*"
+    ],
+    "rxjs/*" : [
+      "../node_modules/rxjs/*"
     ]
   },
   "files": [
-    "test.ts"
+    "test.ts",
+    "polyfills.ts"
   ],
   "include": [
     "**/*.spec.ts",

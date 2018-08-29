@@ -34,9 +34,10 @@ export module Constants {
     public static AAI_GET_SERVICES_BY_TYPE = 'aai_get_models_by_service_type';
     public static AAI_GET_TENANTS = '../../aai_get_tenants/';
     public static AAI_SUB_DETAILS_PATH = '../../aai_sub_details/';
+    public static AAI_GET_SERVICE_INSTANCE_TOPOLOGY_PATH = '../../aai_get_service_instance_topology/';
+    public static AAI_GET_SERVICE_GROUP_MEMBERS_PATH = '../../aai_search_group_members/';
     public static AAI_GET_VERSION_BY_INVARIANT_ID = 'aai_get_version_by_invariant_id/';
     public static SEARCH_SERVICE_INSTANCES = 'search_service_instances';
-    public static AAI_GET_VNF_DATA_PATH = 'aai_get_vnf_data/';
     public static AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE = 'get_vnf_data_by_globalid_and_service_type/';
     public static AAI_GET_SERVICES_BY_OWNING_ENTITY_ID = 'aai_get_services_by_owning_entity_id';
     public static AAI_GET_VNF_INFO = 'aai_get_vnf_information';
@@ -87,10 +88,12 @@ export module Constants {
     public static WELCOME_PATH = 'welcome.htm';
     public static IS_PERMITTED_SUB_PATH = '&isPermitted=';
     public static SERVICES_JOB_INFO_PATH = '../../asyncInstantiation';
+    public static SERVICES_RETRY_TOPOLOGY = '../../asyncInstantiation/bulkForRetry';
     public static CONFIGURATION_PATH = '../../get_property/{name}/defaultvalue';
     public static SERVICES_JOB_AUDIT_PATH = '/auditStatus';
     public static SERVICES_PROBE_PATH = "../../probe";
     public static FEATURES_FLAG_PATH ="../../flags";
+    public static AUDIT_STATUS_FOR_RETRY_PATH = '../../asyncInstantiation/auditStatusForRetry';
 
     // Test Environment Urls =
     public static OPERATIONAL_ENVIRONMENT_CREATE = 'operationalEnvironment/create';
@@ -283,5 +286,9 @@ export module Constants {
 
   export class AuditInfoModal{
     public static TITLE = 'Service Instantiation Information';
+  }
+
+  export class LegacyRegion {
+    public static MEGA_REGION = ['JANET25'];
   }
 }

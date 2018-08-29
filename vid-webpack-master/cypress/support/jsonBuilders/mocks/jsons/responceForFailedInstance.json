@@ -1,0 +1,12 @@
+{
+  "id":null,
+  "jobId":null,
+  "instanceName":null,
+  "instanceType":null,
+  "jobStatus":"FAILED",
+  "source":null,
+  "requestId":null,
+  "additionalInfo":"Http Code:500, RAW DATA FROM MSO",
+  "final":false,
+  "createdDate":1549198388000
+}

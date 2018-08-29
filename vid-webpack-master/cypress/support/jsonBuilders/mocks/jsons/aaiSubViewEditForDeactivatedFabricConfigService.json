@@ -1,0 +1,52 @@
+{
+  "inventory-response-item": [
+    {
+      "model-name": "0eOHz2Yh8WJcBYzKy0791234",
+      "service-instance": {
+        "service-instance-id": "c187e9fe-40c3-4862-b73e-84ff056205f61000",
+        "service-instance-name": "test_fabric_config"
+      },
+      "extra-properties": {},
+      "inventory-response-items": {
+        "inventory-response-item": [
+          {
+            "model-name": "Fabric-Configuration-Instance",
+            "configuration": {
+              "configuration-id": "1-fabric-config-LB1113",
+              "configuration-name": "dummy_instance_1",
+              "configuration-type": "fabric-configuration-type-1",
+              "configuration-sub-type": "fabric-configuration-sub-type-1",
+              "model-invariant-id": "model-invariant-id-1",
+              "model-version-id": "model-version-id-1",
+              "orchestration-status": "Active",
+              "operational-status": "",
+              "configuration-selflink": "",
+              "model-customization-id": "model-customization-id-1",
+              "resource-version": "1504038855716"
+            },
+            "extra-properties": {
+            }
+          },
+          {
+            "model-name": "Fabric-Configuration-Instance",
+            "configuration": {
+              "configuration-id": "2-fabric-config-LB1113",
+              "configuration-name": "dummy_instance_2",
+              "configuration-type": "fabric-configuration-type-2",
+              "configuration-sub-type": "fabric-configuration-sub-type-2",
+              "model-invariant-id": "model-invariant-id-2",
+              "model-version-id": "model-version-id-2",
+              "orchestration-status": "Assigned",
+              "operational-status": "",
+              "configuration-selflink": "",
+              "model-customization-id": "model-customization-id-2",
+              "resource-version": "1504038855712"
+            },
+            "extra-properties": {
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

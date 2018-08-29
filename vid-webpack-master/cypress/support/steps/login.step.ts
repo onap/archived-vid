@@ -32,7 +32,6 @@ function login(): void {
       currentLoginCookies = res;
     });
   }
-
 }
 
 function openIframe(iframeUrl : string): void {

@@ -1,0 +1,21 @@
+<div class="details-item" *ngIf="data != null && form != null">
+  <label [ngClass]="{'required': data.isRequired()}"
+         for="{{data?.dataTestId}}-select">{{data?.displayName}}:</label>
+  <select class="form-control input-text"
+          id="{{data?.dataTestId}}-select"
+          [attr.data-tests-id]="data?.dataTestId"
+          name="{{data?.name}}"
+          [formControl]="form.controls[data.controlName]"
+          [ngClass]="{'error-style' : (form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors) || data?.hasEmptyOptions ,
+                      'grayColor': form?.controls[data?.controlName]?.value == null || form?.controls[data?.controlName]?.value == undefined,
+                      'blackColor' : form?.controls[data?.controlName]?.value != null}"
+          (blur)="data.onBlur()">
+
+    <option [value]="null" hidden>{{data?.placeHolder}}</option>
+    <option *ngFor="let option of data?.options$ | orderBy : {property : 'name', direction : 1} ; let i = index" class="{{option?.id}} {{data?.dataTestId}}Option"
+            [value]="option[data.ngValue]" [disabled]="!option?.isPermitted && option?.isPermitted != undefined">{{option.name}}
+    </option>
+  </select>
+  <form-control-error *ngIf="data?.hasEmptyOptions" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+</div>
+

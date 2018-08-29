@@ -1,0 +1,8 @@
+export enum FormControlType{
+  MULTI_SELECT = 'MULTI_SELECT',
+  FILE = 'FILE',
+  NUMBER = 'NUMBER',
+  INPUT = 'INPUT',
+  DROPDOWN = 'DROPDOWN',
+  CHECKBOX = 'CHECKBOX'
+}

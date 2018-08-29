@@ -1,0 +1,24 @@
+.status-properties{
+  display: inline-block;
+  font-family: OpenSans-Regular;
+  font-size: 12px;
+  padding-top: 3px;
+  .status-property-name{
+    color: #5A5A5A;
+    &.mark{
+      background-color: #959595;
+      color: #ffffff;
+    }
+  }
+  .status-property-value{
+    color: #191919;
+  }
+  .separator{
+    padding: 0 8px;
+  }
+  &:last-child .separator{
+    display: none;
+  }
+
+}
+

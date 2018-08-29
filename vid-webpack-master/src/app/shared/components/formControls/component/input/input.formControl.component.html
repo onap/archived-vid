@@ -1,0 +1,25 @@
+<div class="details-item" *ngIf="data?.isVisible">
+  <label
+    [tooltip]="data?.tooltip ? data.tooltip : null"
+    id="{{data?.dataTestId}}-label"
+    [ngClass]="{'required' : data?.isRequired()}">
+    {{data?.displayName}}: </label>
+  <input
+    #customInput
+
+    [disabled]="data?.isDisabled ? data.isDisabled : false"
+    [type]="data?.inputType ? data?.inputType : 'text'"
+    [attr.data-tests-id]="data?.dataTestId"
+    class="form-control input-text"
+    id="{{data?.dataTestId}}"
+    [placeholder]="data?.placeHolder ? data?.placeHolder : ''"
+    [formControl]="form?.controls[data?.controlName]"
+    [ngClass]="{'error-style' : form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors}"
+    minlength="{{data?.minLength}}"
+    maxlength="{{data?.maxLength}}"
+    (blur)="data.onBlur($event, form)"
+    (keypress)="data?.onKeypress($event)">
+</div>
+
+
+

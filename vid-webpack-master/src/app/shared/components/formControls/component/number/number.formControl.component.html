@@ -1,0 +1,13 @@
+<div>
+  <div class="details-item" *ngIf="data != null && form != null">
+    <label [ngClass]="{'required': data.isRequired()}"
+           for="{{data?.dataTestId}}">{{data?.displayName}}:</label>
+    <input id="{{data?.dataTestId}}" [attr.data-tests-id]="data?.dataTestId"
+           name="{{data?.controlName}}" class="form-control input-text"
+           [formControl]="form.controls[data.controlName]" type="number"
+           placeholder="{{data?.placeHolder}}" title="{{data?.tooltip}}"
+           [ngClass]="{'error-style' : form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors}"
+           min="{{data?.min}}" max="{{data?.max}}">
+  </div>
+</div>
+

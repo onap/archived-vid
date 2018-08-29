@@ -1,0 +1,290 @@
+{
+  "global-customer-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriber-name": "Emanuel",
+  "subscriber-type": "INFRA",
+  "resource-version": "1494001894192",
+  "service-subscriptions": {
+    "service-subscription": [
+      {
+        "service-type": "vMOG",
+        "resource-version": "1494001922173",
+        "service-instances": {
+          "service-instance": [
+            {
+              "service-instance-id": "8fa0d88e-5032-44bd-9b20-aa4ae6a367e9",
+              "service-instance-name": "portmirror123",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1518423771488",
+              "orchestration-status": "Active",
+              "model-invariant-id": "a1ac367e-3f20-43cb-801e-5cb381aef876",
+              "model-version-id": "bf0b17cd-8d34-423f-898f-197e1e1f28d3"
+            },
+            {
+              "service-instance-id": "b1dd14d1-4c8c-4c34-a96e-2064647ff57b",
+              "service-instance-name": "testing1",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1498998455761",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "ef4b81a1-bcff-4f97-b449-6b619b673ecb"
+            },
+            {
+              "service-instance-id": "5da732cc-548a-4732-ad2c-e7e7af3bcb85",
+              "service-instance-name": "aaa",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1499067629537",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "ef4b81a1-bcff-4f97-b449-6b619b673ecb"
+            },
+            {
+              "service-instance-id": "a16c64e3-dfa7-47c4-8c46-668e2030c304",
+              "service-instance-name": "shayTes2",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500193374856",
+              "orchestration-status": "Active",
+              "model-invariant-id": "74b2fa72-e3b9-4942-8448-983a4b50891a",
+              "model-version-id": "0c4b6e10-9e86-4eeb-9794-7649a8283a88"
+            },
+            {
+              "service-instance-id": "68ba015f-44d2-469a-bc1a-7e8883872047",
+              "service-instance-name": "cps_internal_ap7134_rk_01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1516735672227",
+              "orchestration-status": "Active",
+              "model-invariant-id": "fa722b27-b7b1-4b55-8b4c-e2a128886707",
+              "model-version-id": "8022d5fb-14e7-4540-8936-e267cc85a65e"
+            },
+            {
+              "service-instance-id": "6293cd8e-ccc8-4280-9090-0d70212e3bc7",
+              "service-instance-name": "test_instance_123",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1526474108399",
+              "orchestration-status": "Active",
+              "model-invariant-id": "2fa617d0-50b3-4d74-861d-4b39301acd2c",
+              "model-version-id": "ae5d24f4-f602-46d0-9a62-ed3f28928b50"
+            },
+            {
+              "service-instance-id": "38ecafec-3866-4761-8a8c-fc494ef113ab",
+              "service-instance-name": "AMIR-VLAT-TEST1",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1529827612270",
+              "orchestration-status": "Active",
+              "model-invariant-id": "a8c50d3e-4432-4995-a4f8-4ea5f8f429c5",
+              "model-version-id": "36408993-d5b7-4fde-85ec-a90b368bf809"
+            },
+            {
+              "service-instance-id": "679e4e64-9e0d-4ece-99aa-ec6e7ff76bf4",
+              "service-instance-name": "test_instance_1",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1526473794492",
+              "orchestration-status": "Active",
+              "model-invariant-id": "2fa617d0-50b3-4d74-861d-4b39301acd2c",
+              "model-version-id": "ae5d24f4-f602-46d0-9a62-ed3f28928b50"
+            },
+            {
+              "service-instance-id": "07b0e569-a3d6-4896-95d7-26329b9e1770",
+              "service-instance-name": "Sanity_Testing_Macro_Inst_05032018_01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1525380034682",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d7b48529-6ae2-49f0-8633-b29e7cd4d4ce",
+              "model-version-id": "857d46ad-f4a0-4a8f-b03b-036801962288"
+            },
+            {
+              "service-instance-id": "77db498d-81bd-4915-85b7-bf9162297d55",
+              "service-instance-name": "RG_3-13_VidnfModel",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1520963958394",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "5229f73d-49d5-4cff-a61c-a37b8e3b529e"
+            },
+            {
+              "service-instance-id": "cea96d45-d447-4167-8c61-b201b32bc86f",
+              "service-instance-name": "Ayub_Sanity_Feb12",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1518459729277",
+              "orchestration-status": "Active",
+              "model-invariant-id": "35340388-0b82-4d3a-823d-cbddf842be52",
+              "model-version-id": "4e799efd-fd78-444d-bc25-4a3cde2f8cb0"
+            },
+            {
+              "service-instance-id": "a9ef8949-d734-4521-a187-776819fa06f5",
+              "service-instance-name": "Testing_VNF_010",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1520003561992",
+              "orchestration-status": "Active",
+              "model-invariant-id": "70ac3517-e462-4f2a-afee-85bea7a32d3b",
+              "model-version-id": "c2bee847-48ba-4025-9412-100a5eb9d065"
+            },
+            {
+              "service-instance-id": "7f10ffe2-548f-4168-8722-b782d05675b7",
+              "service-instance-name": "vMOG_SVC_UPDATED_FLAV_OAM_rk_01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1516201909882",
+              "orchestration-status": "Active",
+              "model-invariant-id": "f959945d-7861-47d4-9230-2d1630da64a7",
+              "model-version-id": "e3f2698a-2d6c-434f-a9e6-486ce373cb75"
+            },
+            {
+              "service-instance-id": "7b9522cd-4ca7-48dc-aa6f-1b452d218558",
+              "service-instance-name": "Test997_1",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1530173862887",
+              "orchestration-status": "Active",
+              "model-invariant-id": "3d8a7716-4c1d-4dff-aff6-f415ed29d169",
+              "model-version-id": "b24e9a7e-0f2b-45dd-8ccf-e24a0483e653"
+            },
+            {
+              "service-instance-id": "e4c16d2e-ad49-4606-bfe7-e94bc6d3a65c",
+              "service-instance-name": "SI_Test_vidnf_10",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1496862990215",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "8379faac-f636-4792-a583-942a963f74d3"
+            },
+            {
+              "service-instance-id": "e07e88c3-f200-4740-87d4-272fa230179b",
+              "service-instance-name": "Viv+IST+demo+practice",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001827395",
+              "orchestration-status": null,
+              "model-invariant-id": "8b4b5a61-a9ba-4e93-a62d-f185fc3087f1",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "3039ab56-5685-4766-b89c-0e46825c30a8",
+              "service-instance-name": "vMOG_mm779p_Service_WA_rk_01_rk_01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1516025801425",
+              "orchestration-status": "Active",
+              "model-invariant-id": "1a27948c-7e8f-4ddc-9d39-743728ade3e1",
+              "model-version-id": "fa6e6dff-070e-449b-90ff-fab42ba8aee3"
+            },
+            {
+              "service-instance-id": "246a275d-da23-4f27-90a9-7b92411daa7f",
+              "service-instance-name": "Lital-Service-VID",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1500792529406",
+              "orchestration-status": "Active",
+              "model-invariant-id": "35eeaa7e-9b0b-458b-8e73-066d43232b6a",
+              "model-version-id": "cb03c617-fd15-4ba3-beab-383e3eb80964"
+            },
+            {
+              "service-instance-id": "816fa49b-b217-4241-ab66-a4ebc6128670",
+              "service-instance-name": "test-9345349",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1508770603156",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f"
+            },
+            {
+              "service-instance-id": "6521fd4c-c5a2-4014-818b-f255b4b57941",
+              "service-instance-name": "Sanity_Test_Feb12",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1518461825378",
+              "orchestration-status": "Active",
+              "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+              "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f"
+            },
+            {
+              "service-instance-id": "7a0143f2-9642-4578-a067-e0a5d9c8046c",
+              "service-instance-name": "vMOG_Network_OAM_rk_01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1516741188293",
+              "orchestration-status": "Active",
+              "model-invariant-id": "862cda6c-d512-4979-8411-9927d944011c",
+              "model-version-id": "c0693f19-4d66-45ba-b53e-594314c915a4"
+            },
+            {
+              "service-instance-id": "a8ba2fc3-21d2-4853-b94e-f516bee76a66",
+              "service-instance-name": "test_macro_instantiation_01",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1518468689517",
+              "orchestration-status": "Active",
+              "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+              "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e"
+            },
+            {
+              "service-instance-id": "13695dfb-db99-4c2f-905e-fe7bf2fc7b9f",
+              "service-instance-name": "FIRSTNET_DEMO",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1520879927295",
+              "orchestration-status": "Active",
+              "model-invariant-id": "34615cd5-3a9c-4237-81b9-cd06ff58a9a6",
+              "model-version-id": "a1528afd-0ebd-485a-b626-3b43000b60d1"
+            },
+            {
+              "service-instance-id": "6cf3bfc6-3737-4d81-b671-2e98302c2301",
+              "service-instance-name": "vMOG_mm779p_Service_WA_Inst",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1520272697916",
+              "orchestration-status": "Active",
+              "model-invariant-id": "1a27948c-7e8f-4ddc-9d39-743728ade3e1",
+              "model-version-id": "fa6e6dff-070e-449b-90ff-fab42ba8aee3"
+            },
+            {
+              "service-instance-id": "78b5ed16-ce98-4259-bb0d-e2cf7f2b8595",
+              "service-instance-name": "SVCTestSS",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1494001864868",
+              "orchestration-status": null,
+              "model-invariant-id": "4111e6e7-ad99-4b07-a143-e60c47295936",
+              "model-version-id": null
+            },
+            {
+              "service-instance-id": "9ac30ab4-f4bc-4905-9175-1abf0d853008",
+              "service-instance-name": "RG_3-6_VMOG_ServiceInstance",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1520370735401",
+              "orchestration-status": "Active",
+              "model-invariant-id": "1a27948c-7e8f-4ddc-9d39-743728ade3e1",
+              "model-version-id": "fa6e6dff-070e-449b-90ff-fab42ba8aee3"
+            },
+            {
+              "service-instance-id": "9cdd1b2a-43a7-47bc-a88e-759ba2399f0b",
+              "service-instance-name": "Network_repl_vMOG_rk",
+              "persona-model-id": null,
+              "persona-model-version": null,
+              "resource-version": "1516045827731",
+              "orchestration-status": "Active",
+              "model-invariant-id": "92a72881-0a97-4d16-8c29-4831062e7e9b",
+              "model-version-id": "5a3ad576-c01d-4bed-8194-0e72b4a3d020"
+            }
+          ]
+        },
+        "is-permitted": true
+      }
+
+    ]
+  }
+}

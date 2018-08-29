@@ -9,7 +9,7 @@
   <span (serviceInstamce)="onServiceInstanceChange($event)"></span>
   <div class="content-wrapper">
     <div class="left-side">
-      <formasync [hidden]="currentStep === wizardSteps.two" [model]="model" class="form"></formasync>
+      <formasync [hidden]="currentStep === wizardSteps.two" [params]="params"  [model]="model" class="form"></formasync>
       <app-network-selector [hidden]="currentStep === wizardSteps.one" class="form-wrapper" [groups]="groups"></app-network-selector>
     </div>
 

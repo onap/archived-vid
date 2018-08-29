@@ -1,18 +1,10 @@
-import {Directive, ElementRef} from '@angular/core';
+import {Directive, ElementRef, HostBinding, HostListener} from '@angular/core';
 
 @Directive({
-  selector: '[patternInput]',
-  host: {
-    '(keypress)': 'onKeypress($event)'
-  }
+  selector: '[patternInput]'
 })
 export class InputPreventionPatternDirective{
-  inputElement : ElementRef;
-  constructor(el: ElementRef) {
-    this.inputElement = el;
-  }
-
-  onKeypress(event: KeyboardEvent) {
+  @HostListener('keypress', ['$event']) onKeypress(event: KeyboardEvent) {
     const pattern = new RegExp(this.inputElement.nativeElement.pattern);
     if(pattern){
       if(!pattern.test(event['key'])){
@@ -20,5 +12,10 @@ export class InputPreventionPatternDirective{
       }
     }
     return event;
+  }
+
+  inputElement : ElementRef;
+  constructor(el: ElementRef) {
+    this.inputElement = el;
   }
 }

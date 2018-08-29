@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {NgRedux, select} from "@angular-redux/store";
-import {AppState} from "../../store/reducers";
+import {AppState} from "../../shared/store/reducers";
 import {ModelInformationItem} from "../../shared/components/model-information/model-information.component";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {NgForm} from "@angular/forms";
 import * as _ from 'lodash';
 

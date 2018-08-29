@@ -1,18 +1,16 @@
 import {Injectable} from "@angular/core";
-import {Subject} from "rxjs/Subject";
-import { MessageBoxService } from '../messageBox/messageBox.service';
-import { MessageBoxData, ModalSize, ModalType } from '../messageBox/messageBox.data';
-
+import {MessageBoxService } from '../messageBox/messageBox.service';
+import {MessageBoxData} from '../messageBox/messageBox.data';
+import { SdcUiCommon} from "onap-ui-angular";
 @Injectable()
 export class ErrorService {
   static showErrorWithMessage(error : ErrorMessage) : void {
     setTimeout(()=>{
         let messageBoxData : MessageBoxData = new MessageBoxData(
-          error.title,  // modal title
+          error.title,
           error.text,
-
-          ModalType.error,
-          ModalSize.medium,
+          SdcUiCommon.ModalType.error,
+          SdcUiCommon.ModalSize.medium,
           [
             {text:"Close", size:"large", closeModal:true}
           ]);
@@ -33,3 +31,4 @@ export class ErrorMessage {
     this.errorNumber = errorNumber;
   }
 }
+

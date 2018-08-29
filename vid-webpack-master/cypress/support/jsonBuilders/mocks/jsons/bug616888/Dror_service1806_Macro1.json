@@ -1,0 +1,192 @@
+{
+  "service": {
+    "uuid": "74fa72dd-012b-49c3-800d-06b12bcaf1a0",
+    "invariantUuid": "bceeaff9-5716-42bf-8fa1-8c6f720cf61d",
+    "name": "Dror_service1806_Macro1",
+    "version": "2.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": "b",
+    "serviceRole": "c",
+    "description": "test",
+    "serviceEcompNaming": "false",
+    "instantiationType": "Macro",
+    "inputs": {}
+  },
+  "vnfs": {
+    "092017_VSP_GINGERby11 0": {
+      "uuid": "1ecfa5f1-78c5-41f6-ad34-753ca1fcdc5d",
+      "invariantUuid": "e88d6582-b7e5-4dc6-ac9c-6f7130727a92",
+      "description": "092017_VSP_GINGERby11",
+      "name": "092017_VSP_GINGERby11",
+      "version": "1.0",
+      "customizationUuid": "cc40295f-a834-4f42-b634-32fff9d6489b",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "mmn_volume_name_4": "misc-mn-v-vde",
+        "multi_stage_design": "false",
+        "mmn_volume_size_1": "20.0",
+        "mmn_volume_name_1": "data-mn-v-vdb",
+        "availability_zone_max_count": "1",
+        "mmn_volume_name_3": "backup-mn-v-vdd",
+        "mmn_volume_name_2": "arch-mn-v-vdc",
+        "ecomp_generated_naming": "true",
+        "mmn_volume_size_2": "20.0",
+        "mmn_volume_size_3": "50.0",
+        "mmn_volume_size_4": "20.0"
+      },
+      "type": "VF",
+      "modelCustomizationName": "092017_VSP_GINGERby11 0",
+      "vfModules": {
+        "092017_vsp_gingerby110..092017VspGingerby11..pxmc_vmt..module-1": {
+          "uuid": "96af1531-35b5-44b8-b8e9-17e400cce6fd",
+          "invariantUuid": "be556344-d212-4c88-9fe1-c72003591e78",
+          "customizationUuid": "abb15cf7-174a-4815-86e8-91997b1f07b7",
+          "description": null,
+          "name": "092017VspGingerby11..pxmc_vmt..module-1",
+          "version": "1",
+          "modelCustomizationName": "092017VspGingerby11..pxmc_vmt..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "pxmc_vmt"
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "092017_vsp_gingerby110..092017VspGingerby11..pxmc_mmn..module-2": {
+          "uuid": "2d8bf918-ad4b-42f6-b87d-8cb5c13660b6",
+          "invariantUuid": "19c5c400-9d33-4e69-a0ef-9a26ebe68b3d",
+          "customizationUuid": "6268df2d-74cc-4189-b7b5-7f833b54d457",
+          "description": null,
+          "name": "092017VspGingerby11..pxmc_mmn..module-2",
+          "version": "1",
+          "modelCustomizationName": "092017VspGingerby11..pxmc_mmn..module-2",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "pxmc_mmn"
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        },
+        "092017_vsp_gingerby110..092017VspGingerby11..pxmc_base..module-0": {
+          "uuid": "a3d8289d-7b29-4e0f-8b51-e825bfe54749",
+          "invariantUuid": "dea04dc1-f4fb-435d-80b4-f176d4c15653",
+          "customizationUuid": "e6e4a00e-3fde-459c-9a68-4bf2b35d5e9e",
+          "description": null,
+          "name": "092017VspGingerby11..pxmc_base..module-0",
+          "version": "1",
+          "modelCustomizationName": "092017VspGingerby11..pxmc_base..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "pxmc_base"
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        }
+      },
+      "volumeGroups": {
+        "092017_vsp_gingerby110..092017VspGingerby11..pxmc_mmn..module-2": {
+          "uuid": "2d8bf918-ad4b-42f6-b87d-8cb5c13660b6",
+          "invariantUuid": "19c5c400-9d33-4e69-a0ef-9a26ebe68b3d",
+          "customizationUuid": "6268df2d-74cc-4189-b7b5-7f833b54d457",
+          "description": null,
+          "name": "092017VspGingerby11..pxmc_mmn..module-2",
+          "version": "1",
+          "modelCustomizationName": "092017VspGingerby11..pxmc_mmn..module-2",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "pxmc_mmn"
+          },
+          "inputs": {}
+        }
+      },
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResource": {},
+  "configurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "092017_vsp_gingerby110..092017VspGingerby11..pxmc_vmt..module-1": {
+      "uuid": "96af1531-35b5-44b8-b8e9-17e400cce6fd",
+      "invariantUuid": "be556344-d212-4c88-9fe1-c72003591e78",
+      "customizationUuid": "abb15cf7-174a-4815-86e8-91997b1f07b7",
+      "description": null,
+      "name": "092017VspGingerby11..pxmc_vmt..module-1",
+      "version": "1",
+      "modelCustomizationName": "092017VspGingerby11..pxmc_vmt..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "pxmc_vmt"
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "092017_vsp_gingerby110..092017VspGingerby11..pxmc_base..module-0": {
+      "uuid": "a3d8289d-7b29-4e0f-8b51-e825bfe54749",
+      "invariantUuid": "dea04dc1-f4fb-435d-80b4-f176d4c15653",
+      "customizationUuid": "e6e4a00e-3fde-459c-9a68-4bf2b35d5e9e",
+      "description": null,
+      "name": "092017VspGingerby11..pxmc_base..module-0",
+      "version": "1",
+      "modelCustomizationName": "092017VspGingerby11..pxmc_base..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "pxmc_base"
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "092017_vsp_gingerby110..092017VspGingerby11..pxmc_mmn..module-2": {
+      "uuid": "2d8bf918-ad4b-42f6-b87d-8cb5c13660b6",
+      "invariantUuid": "19c5c400-9d33-4e69-a0ef-9a26ebe68b3d",
+      "customizationUuid": "6268df2d-74cc-4189-b7b5-7f833b54d457",
+      "description": null,
+      "name": "092017VspGingerby11..pxmc_mmn..module-2",
+      "version": "1",
+      "modelCustomizationName": "092017VspGingerby11..pxmc_mmn..module-2",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "pxmc_mmn"
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    }
+  },
+  "volumeGroups": {
+    "092017_vsp_gingerby110..092017VspGingerby11..pxmc_mmn..module-2": {
+      "uuid": "2d8bf918-ad4b-42f6-b87d-8cb5c13660b6",
+      "invariantUuid": "19c5c400-9d33-4e69-a0ef-9a26ebe68b3d",
+      "customizationUuid": "6268df2d-74cc-4189-b7b5-7f833b54d457",
+      "description": null,
+      "name": "092017VspGingerby11..pxmc_mmn..module-2",
+      "version": "1",
+      "modelCustomizationName": "092017VspGingerby11..pxmc_mmn..module-2",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "pxmc_mmn"
+      },
+      "inputs": {}
+    }
+  },
+  "pnfs": {}
+}

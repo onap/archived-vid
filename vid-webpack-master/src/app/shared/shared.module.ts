@@ -1,33 +1,77 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { ServiceInfoService } from './server/serviceInfo/serviceInfo.service';
-import { PopoverModule } from 'ngx-bootstrap';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SvgDirective } from './directives/svg/svg.directive';
-import { PopoverComponent } from './components/popover/popover.component';
-import { EllipsisComponent } from './components/ellipsis/ellipsis.component';
-import { MessageBoxComponent } from './components/messageBox/messageBox.component';
-import { MessageBoxService } from './components/messageBox/messageBox.service';
-import { SdcUiComponentsModule , SdcUiComponents} from 'sdc-ui/lib/angular';
-import { HttpInterceptorService } from './utils/httpInterceptor/httpInterceptor.service';
-import { FormControlErrorComponent } from './components/formControlError/formControlError.component';
-import { InputPreventionPatternDirective } from './directives/inputPrevention/inputPreventionPattern.directive';
-import { FormGeneralErrorsComponent } from './components/formGeneralErrors/formGeneralErrors.component';
-import { NumbersLettersUnderscoreValidator } from './components/validators/numbersLettersUnderscore/numbersLettersUnderscore.validator';
-import { SpinnerComponent } from './components/spinner/spinner.component';
-import { NoContentMessageAndIconComponent } from './components/no-content-message-and-icon/no-content-message-and-icon.component';
-import { ModelInformationComponent } from './components/model-information/model-information.component';
-import { TooltipModule } from 'ngx-tooltip';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {ServiceInfoService} from './server/serviceInfo/serviceInfo.service';
+import {ModalModule, PopoverModule} from 'ngx-bootstrap';
+import {PopoverComponent} from './components/popover/popover.component';
+import {EllipsisComponent} from './components/ellipsis/ellipsis.component';
+import {MessageBoxComponent} from './components/messageBox/messageBox.component';
+import {MessageBoxService} from './components/messageBox/messageBox.service';
+import {HttpInterceptorService} from './utils/httpInterceptor/httpInterceptor.service';
+import {FormControlErrorComponent} from './components/formControlError/formControlError.component';
+import {DropdownFormControlComponent} from "./components/formControls/component/dropdown/dropdown.formControl.component";
+import {InputPreventionPatternDirective} from './directives/inputPrevention/inputPreventionPattern.directive';
+import {FormGeneralErrorsComponent} from './components/formGeneralErrors/formGeneralErrors.component';
+import {SpinnerComponent} from './components/spinner/spinner.component';
+import {NoContentMessageAndIconComponent} from './components/no-content-message-and-icon/no-content-message-and-icon.component';
+import {ModelInformationComponent} from './components/model-information/model-information.component';
+import {TooltipModule} from 'ngx-tooltip';
 import {IframeService} from "./utils/iframe.service";
 import {CapitalizeAndFormatPipe} from "./pipes/capitalize/capitalize-and-format.pipe";
-import { DefaultDataGeneratorService } from './services/defaultDataServiceGenerator/default.data.generator.service';
+import {DefaultDataGeneratorService} from './services/defaultDataServiceGenerator/default.data.generator.service';
 import {ServiceInfoPipe} from "./pipes/serviceInfo/serviceInfo.pipe";
-import {HealthStatusService} from "./server/healthStatusService/health-status.service";
-import {ConfigurationService} from "../services/configuration.service";
-import {FlagsResolve} from "../services/flags.resolve";
+import {ConfigurationService} from "./services/configuration.service";
+import {InputFormControlComponent} from "./components/formControls/component/input/input.formControl.component";
+import {MultiselectFormControlComponent} from "./components/formControls/component/multiselect/multiselect.formControl.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormControlMessageErrorComponent} from "./components/formControls/errorMessage/formControlMessageError.component";
+import {GenericFormPopupComponent} from "./components/genericFormPopup/generic-form-popup.component";
+import {CheckboxFormControlComponent} from "./components/formControls/component/checkbox/checkbox.formControl.component";
+import {GenericFormService} from "./components/genericForm/generic-form.service";
+import {GenericFormComponent} from "./components/genericForm/generic-form.component";
+import {ServiceControlGenerator} from "./components/genericForm/formControlsServices/service.control.generator";
+import {BasicControlGenerator} from "./components/genericForm/formControlsServices/basic.control.generator";
+import {CustomValidators} from "./validators/uniqueName/uniqueName.validator";
+import {FileFormControlComponent} from "./components/formControls/component/file/file.formControl.component";
+import {NumberFormControlComponent} from "./components/formControls/component/number/number.formControl.component";
+import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
+import {VnfControlGenerator} from "./components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator";
+import {NetworkPopupService} from "./components/genericFormPopup/genericFormServices/network/network.popup.service";
+import {NetworkControlGenerator} from "./components/genericForm/formControlsServices/networkGenerator/network.control.generator";
+import {BasicPopupService} from "./components/genericFormPopup/genericFormServices/basic.popup.service";
+import {VfModulePopuopService} from "./components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModuleControlGenerator} from "./components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
+import {OrderByPipe} from "./pipes/order/orderBy.pipe";
+import {ServicePopupService} from "./components/genericFormPopup/genericFormServices/service/service.popup.service";
+import {GenericFormPopupService} from "./components/genericFormPopup/generic-form-popup.service";
+import {FormGeneralErrorsService} from "./components/formGeneralErrors/formGeneralErrors.service";
+import {VnfPopupService} from "./components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
+import {SdcUiComponentsModule, SdcUiServices} from "onap-ui-angular";
+import {SafePipe} from "./pipes/safe/safe.pipe";
+import {ViewEditResolver} from "./resolvers/viewEdit/viewEdit.resolver";
+import {FlagsResolve} from "./resolvers/flag/flag.resolver";
+import {FeatureFlagModule} from "../featureFlag/featureFlag.module";
+import {VnfGroupPopupService} from "./components/genericFormPopup/genericFormServices/vnfGroup/vnfGroup.popup.service";
+import {VnfGroupControlGenerator} from "./components/genericForm/formControlsServices/vnfGroupGenerator/vnfGroup.control.generator";
+import {AuditInfoModalComponent} from "./components/auditInfoModal/auditInfoModal.component";
+import {BootstrapModalModule} from 'ng2-bootstrap-modal';
+import {DataTableModule} from "angular2-datatable";
+import {AuditInfoModalComponentService} from "./components/auditInfoModal/auditInfoModal.component.service";
+import {SearchMembersModalComponent} from "./components/searchMembersModal/search-members-modal.component";
+import {MembersTableComponent} from "./components/searchMembersModal/members-table/members-table.component";
+import {MembersTableService} from "./components/searchMembersModal/members-table/members-table.service";
+import {ObjectToArrayPipe} from "./pipes/objectToArray/objectToArray.pipe";
+import {DataFilterPipe} from "./pipes/dataFilter/data-filter.pipe";
+import {SvgComponent} from "./components/svg/svg-component";
+import {ErrorMsgComponent} from './components/error-msg/error-msg.component';
+import {ErrorMsgService} from "./components/error-msg/error-msg.service";
+import {RetryResolver} from "./resolvers/retry/retry.resolver";
+import {ClickOutsideDirective} from "./directives/clickOutside/clickOutside.directive";
+import {DynamicInputsComponent} from "./components/dynamic-inputs/dynamic-inputs.component";
+import {DynamicInputLabelPipe} from "./pipes/dynamicInputLabel/dynamic-input-label.pipe";
+import {ModelInformationService} from "./components/model-information/model-information.service";
 
 
 @NgModule({
@@ -37,49 +81,119 @@ import {FlagsResolve} from "../services/flags.resolve";
     CommonModule,
     RouterModule,
     PopoverModule.forRoot(),
-    AngularSvgIconModule,
+    FeatureFlagModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule,
     TooltipModule,
     SdcUiComponentsModule,
+    AngularMultiSelectModule,
+    BootstrapModalModule,
+    DataTableModule,
+    ModalModule.forRoot()
   ],
   declarations: [
     PopoverComponent,
-    SvgDirective,
     EllipsisComponent,
     MessageBoxComponent,
     FormControlErrorComponent,
+    DropdownFormControlComponent,
+    MultiselectFormControlComponent,
+    FileFormControlComponent,
+    NumberFormControlComponent,
     InputPreventionPatternDirective,
+    ClickOutsideDirective,
     FormGeneralErrorsComponent,
     SpinnerComponent,
     NoContentMessageAndIconComponent,
     ModelInformationComponent,
     CapitalizeAndFormatPipe,
     ServiceInfoPipe,
+    OrderByPipe,
+    SafePipe,
+    ObjectToArrayPipe,
+    DataFilterPipe,
+    InputFormControlComponent,
+    FormControlMessageErrorComponent,
+    GenericFormPopupComponent,
+    SearchMembersModalComponent,
+    AuditInfoModalComponent,
+    GenericFormComponent,
+    CheckboxFormControlComponent,
+    MembersTableComponent,
+    SvgComponent,
+    ErrorMsgComponent,
+    DynamicInputsComponent,
+    DynamicInputLabelPipe
   ],
   exports: [
     PopoverComponent,
-    SvgDirective,
     EllipsisComponent,
     MessageBoxComponent,
     FormControlErrorComponent,
+    DropdownFormControlComponent,
     InputPreventionPatternDirective,
+    ClickOutsideDirective,
     FormGeneralErrorsComponent,
     SpinnerComponent,
     NoContentMessageAndIconComponent,
     ModelInformationComponent,
     CapitalizeAndFormatPipe,
     ServiceInfoPipe,
+    OrderByPipe,
+    SafePipe,
+    ObjectToArrayPipe,
+    DataFilterPipe,
+    InputFormControlComponent,
+    FormControlMessageErrorComponent,
+    GenericFormPopupComponent,
+    SearchMembersModalComponent,
+    AuditInfoModalComponent,
+    GenericFormComponent,
+    CheckboxFormControlComponent,
+    MembersTableComponent,
+    ErrorMsgComponent,
+    SvgComponent,
+    DynamicInputsComponent,
+    DynamicInputLabelPipe
+  ],
+  entryComponents : [
+    GenericFormPopupComponent,
+    SearchMembersModalComponent
   ],
   providers: [
     ServiceInfoService,
     MessageBoxService,
-    SdcUiComponents.ModalService,
+    SdcUiServices.ModalService,
+    SdcUiServices.LoaderService,
     HttpInterceptorService,
     IframeService,
-    NumbersLettersUnderscoreValidator,
     DefaultDataGeneratorService,
-    HealthStatusService,
     ConfigurationService,
-    FlagsResolve
+    GenericFormService,
+    FlagsResolve,
+    ViewEditResolver,
+    RetryResolver,
+    ServiceControlGenerator,
+    ServicePopupService,
+    VnfControlGenerator,
+    VfModuleControlGenerator,
+    BasicControlGenerator,
+    CustomValidators,
+    NetworkPopupService,
+    VfModulePopuopService,
+    NetworkControlGenerator,
+    VnfGroupControlGenerator,
+    VnfGroupPopupService,
+    BasicPopupService,
+    GenericFormPopupService,
+    FormGeneralErrorsService,
+    VnfPopupService,
+    AuditInfoModalComponentService,
+    VnfPopupService,
+    MembersTableService,
+    ErrorMsgService,
+    DataFilterPipe,
+    ModelInformationService,
   ]
 })
 export class SharedModule {

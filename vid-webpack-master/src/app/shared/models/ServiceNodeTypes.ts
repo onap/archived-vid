@@ -2,7 +2,9 @@ export enum ServiceNodeTypes {
   VF = "VF",
   VFmodule = "VFmodule",
   Network = "Network",
-  Configuration = "Configuration"
+  VL = 'VL',
+  Configuration = "Configuration",
+  VnfGroup = 'VnfGroup'
 }
 
 

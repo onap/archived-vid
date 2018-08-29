@@ -1,6 +1,9 @@
 export class JsonBuilder<T> implements IJsonBuilder<T>{
-  currentValue: T;
+  currentValue?: T;
 
+  constructor(currentValue ?: T){
+    this.currentValue = currentValue;
+  }
   public basicJson(json: JSON, url: string, status: number, delay: number, alias: string, changeResFunc?: Function) : void {
     this.currentValue = <T>JSON.parse(JSON.stringify(json));
     this.currentValue = changeResFunc ? changeResFunc(this.currentValue) : this.currentValue;
@@ -17,9 +20,9 @@ export class JsonBuilder<T> implements IJsonBuilder<T>{
           response: JSON.stringify(this.currentValue)
         }).as(alias);
   }
-  public basicMock(jsonPath: string, url: string) {
+  public basicMock(jsonPath: string, url: string ,changeResFunc?: Function) {
     cy.readFile(jsonPath).then((res) => {
-      this.basicJson(res, url, 200, 0, url,);
+      this.basicJson(res, url, 200, 0, url, changeResFunc);
     })
   }
 }

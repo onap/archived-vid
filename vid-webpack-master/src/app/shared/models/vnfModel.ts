@@ -1,52 +1,27 @@
-import {NodeModel, NodeModelResponseInterface} from "./nodeModel";
-import {VfcInstanceGroupMap} from "./vfcInstanceGroupMap";
+import {
+  Level1Model,
+  Level1ModelProperties,
+  Level1ModelResponseInterface
+} from "./nodeModel";
 
 
-export interface VnfProperties {
-  ecomp_generated_naming: string
+
+export interface VnfProperties extends Level1ModelProperties{
+  ecomp_generated_naming: string;
 }
 
-export interface VNFModelResponseInterface extends NodeModelResponseInterface{
-
-  serviceType: string;
-  serviceRole: string;
-  subCategory: string;
-  customizationUuid: string;
-  serviceEcompNaming: boolean;
-  type: string;
-  modelCustomizationName: string;
+export interface VNFModelResponseInterface extends Level1ModelResponseInterface{
   properties: VnfProperties;
-  vfcInstanceGroups: VfcInstanceGroupMap;
 }
 
-export class VNFModel extends NodeModel{
+export class VNFModel extends Level1Model{
+  properties: VnfProperties;
 
-  serviceType: string;
-  serviceRole: string;
-  subCategory: string;
-  customizationUuid: string;
-  isUserProvidedNaming: boolean;
-  type: string;
-  modelCustomizationName: string;
-  vfcInstanceGroups: VfcInstanceGroupMap;
-
-  constructor(vnfJson?: VNFModelResponseInterface){
+  constructor(vnfJson?: VNFModelResponseInterface) {
     super(vnfJson);
     if (vnfJson) {
-      this.serviceType = vnfJson.serviceType;
-      this.serviceRole = vnfJson.serviceRole;
-      this.subCategory = vnfJson.subCategory;
-      this.customizationUuid = vnfJson.customizationUuid;
-      this.isUserProvidedNaming = this.getIsUserProvidedName(vnfJson);
-      this.type = vnfJson.type;
-      this.modelCustomizationName = vnfJson.modelCustomizationName;
-      this.vfcInstanceGroups = vnfJson.vfcInstanceGroups;
-
+      this.properties = vnfJson.properties;
     }
   }
 
-  private getIsUserProvidedName(vnfJson) {
-    const ecompGeneratedNaming = vnfJson.properties.ecomp_generated_naming;
-    return ecompGeneratedNaming !== undefined && ecompGeneratedNaming === "false";
-  };
 }

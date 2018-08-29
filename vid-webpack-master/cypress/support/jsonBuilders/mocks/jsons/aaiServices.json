@@ -1,46 +1,136 @@
 {
-  "service": {
-    "uuid": "4d71990b-d8ad-4510-ac61-496288d9078e",
-    "invariantUuid": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
-    "name": "vidmacrofalsenaming",
-    "version": "1.0",
-    "toscaModelURL": null,
-    "category": "Network L1-3",
-    "serviceType": "",
-    "serviceRole": "",
-    "description": "vidmacrofalsenaming",
-    "serviceEcompNaming": "false",
-    "instantiationType": "A-La-Carte",
-    "inputs": {}
-  },
-  "vnfs": {},
-  "networks": {
-    "MULTI_PROVIDER_PORT_GROUP 0": {
-      "uuid": "e5d235de-2188-4f9f-a28c-fe38967883f2",
-      "invariantUuid": "b0303003-0abb-454c-9119-8cbe2e09e003",
-      "description": "Creates a neutron multi-provider VLAN network with dummy subnet",
-      "name": "MULTI_PROVIDER_PORT_GROUP",
-      "version": "1.0",
-      "customizationUuid": "0fde4286-ee4c-439d-9556-74b6be6bbc42",
-      "inputs": {},
-      "commands": {},
-      "properties": {
-        "network_assignments": "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
-        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
-        "network_scope": "GLOBAL",
-        "network_ecomp_naming": "{ecomp_generated_naming=true}",
-        "network_type": "MULTI_PROVIDER_PORT_GROUP",
-        "network_technology": "MULTI_GROUP",
-        "network_homing": "{ecomp_selected_instance_node_target=false}"
-      },
-      "type": "VL",
-      "modelCustomizationName": "MULTI_PROVIDER_PORT_GROUP 0"
+  "service": [
+    {
+      "service-id": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
+      "service-description": "SCOTTIE",
+      "resource-version": "1494001985150",
+      "is-permitted": true
+    },
+    {
+      "service-id": "17cc1042-527b-11e6-beb8-9e71128cae77",
+      "service-description": "IGNACIO",
+      "resource-version": "1494001922171",
+      "is-permitted": true
+    },
+    {
+      "service-id": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
+      "service-description": "Christie",
+      "resource-version": "1494001855144",
+      "is-permitted": true
+    },
+    {
+      "service-id": "a4f6f2ae-9bf5-4ed7-b904-06b2099c4bd7",
+      "service-description": "Enhanced Services",
+      "resource-version": "1494001980153",
+      "is-permitted": true
+    },
+    {
+      "service-id": "vTerrance",
+      "service-description": "vTerrance",
+      "resource-version": "1484865266",
+      "is-permitted": true
+    },
+    {
+      "service-id": "323d69d9-2efe-4r45-ay0a-89ea7ard4e6f",
+      "service-description": "vSCP",
+      "resource-version": "1494001903012",
+      "is-permitted": true
+    },
+    {
+      "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "service-description": "Emanuel",
+      "resource-version": "1503954056794",
+      "is-permitted": true
+    },
+    {
+      "service-id": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
+      "service-description": "BVOIP",
+      "resource-version": "1490910089351",
+      "is-permitted": true
+    },
+    {
+      "service-id": "db171b8f-115c-4992-a2e3-ee04cae357e0",
+      "service-description": "LINDSEY",
+      "resource-version": "1490910095155",
+      "is-permitted": true
+    },
+    {
+      "service-id": "LRSI-OSPF",
+      "service-description": "LRSI-OSPF",
+      "resource-version": "1494001863930",
+      "is-permitted": true
+    },
+    {
+      "service-id": "vRosemarie",
+      "service-description": "HNGATEWAY",
+      "resource-version": "1501192849249",
+      "is-permitted": true
+    },
+    {
+      "service-id": "vHNPaas",
+      "service-description": "WILKINS",
+      "resource-version": "1501192982895",
+      "is-permitted": true
+    },
+    {
+      "service-id": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "service-description": "TYLER SILVIA",
+      "resource-version": "1494001802638",
+      "is-permitted": true
+    },
+    {
+      "service-id": "b6a3f28c-eebf-494c-a900-055cc7c874ce",
+      "service-description": "VROUTER",
+      "resource-version": "1492533254036",
+      "is-permitted": true
+    },
+    {
+      "service-id": "Cisneros",
+      "service-description": "vMuriel",
+      "resource-version": "1490910058887",
+      "is-permitted": true
+    },
+    {
+      "service-id": "0ee8c1bc-7cbd-4b0a-a1ac-e9999255abc1",
+      "service-description": "CARA Griffin",
+      "resource-version": "1498053422512",
+      "is-permitted": true
+    },
+    {
+      "service-id": "c7611ebe-c324-48f1-8085-94aef0c6ef3d",
+      "service-description": "DARREN MCGEE",
+      "resource-version": "1494001913639",
+      "is-permitted": true
+    },
+    {
+      "service-id": "e30755dc-5673-4b6b-9dcf-9abdd96b93d1",
+      "service-description": "Transport",
+      "resource-version": "1506361785997",
+      "is-permitted": true
+    },
+    {
+      "service-id": "vSalvatore",
+      "service-description": "vSalvatore",
+      "resource-version": "1494001900545",
+      "is-permitted": true
+    },
+    {
+      "service-id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4",
+      "service-description": "Josefina",
+      "resource-version": "1494001941772",
+      "is-permitted": true
+    },
+    {
+      "service-id": "vHubbard",
+      "service-description": "vHubbard",
+      "resource-version": "1494001988229",
+      "is-permitted": true
+    },
+    {
+      "service-id": "12a96a9d-4b4c-4349-a950-fe1159602621",
+      "service-description": "DARREN MCGEE",
+      "resource-version": "1494001817126",
+      "is-permitted": true
     }
-  },
-  "collectionResource": {},
-  "configurations": {},
-  "serviceProxies": {},
-  "vfModules": {},
-  "volumeGroups": {},
-  "pnfs": {}
+  ]
 }

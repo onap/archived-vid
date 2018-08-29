@@ -1,0 +1,47 @@
+{
+  "service": {
+    "uuid": "5a3ad576-c01d-4bed-8194-0e72b4a3d020",
+    "invariantUuid": "92a72881-0a97-4d16-8c29-4831062e7e9b",
+    "name": "Network_repl_vMOG",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "tbd",
+    "serviceEcompNaming": "true",
+    "instantiationType": "ClientConfig",
+    "inputs": {}
+  },
+  "vnfs": {},
+  "networks": {
+    "CONTRAIL30_BASIC 0": {
+      "uuid": "2920cd06-f585-436b-a002-c3081f6a91b3",
+      "invariantUuid": "56f4e746-c58e-4b76-93d4-6717b8f59205",
+      "description": "Basic contrail 3.0.x L3 network for AIC 3.x sites. Keeping for existing mobility networks. ",
+      "name": "CONTRAIL30_BASIC",
+      "version": "3.0",
+      "customizationUuid": "8e2128bf-77e8-4a48-84d0-520c44718161",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "network_role": "NetworkReplVmog.repl",
+        "network_assignments": "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
+        "exVL_naming": "{ecomp_generated_naming=true}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_scope": "Service",
+        "network_type": "CONTRAIL30_BASIC",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
+      },
+      "type": "VL",
+      "modelCustomizationName": "CONTRAIL30_BASIC 0"
+    }
+  },
+  "collectionResource": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {}
+}

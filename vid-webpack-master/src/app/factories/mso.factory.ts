@@ -1,4 +1,12 @@
-import { RequestInfo, RequestDetails, ModelInfo, CloudConfiguration, LineOfBusiness, Platform, RelatedInstanceList, VfcModel } from "./models/requestDetails.model";
+import {
+  CloudConfiguration,
+  LineOfBusiness,
+  ModelInfo,
+  Platform,
+  RelatedInstanceList,
+  RequestDetails,
+  RequestInfo
+} from "./models/requestDetails.model";
 import * as _ from "lodash";
 
 function extractModelInfoFromNodeTemplate(node: any, type: string) {
@@ -33,10 +41,6 @@ function extractPlatform(userInputs: any): Platform {
   return platform;
 }
 
-function extractVfcGroupModelAccordingToUuid(vnfModel: any, vfcUuid: string) {
-  return _.find(vnfModel.vfcInstanceGroups, { uuid: vfcUuid });
-}
-
 function extractLineOfBusiness(userInputs: any) {
   let lob: LineOfBusiness = <LineOfBusiness>{};
   lob.lineOfBusinessName = userInputs["lineOfBusiness"];
@@ -50,13 +54,9 @@ function extractCloudConfiguration(userInputs: any) {
   return cloudConfig;
 }
 
-function extractModelInfoFromVfcNode(vfcModel: VfcModel): ModelInfo {
+function extractModelInfoFromVfcNode(): ModelInfo {
   let modelinfo: ModelInfo = <ModelInfo>{};
-  modelinfo.modelName = vfcModel.name;
-  modelinfo.modelType = "networkCollection";
-  modelinfo.modelVersion = vfcModel.version;
-  modelinfo.modelVersionId = vfcModel.uuid;
-  modelinfo.modelInvariantId = vfcModel.invariantUuid;
+  modelinfo.modelType = "networkInstanceGroup";
   return modelinfo;
 }
 
@@ -77,12 +77,10 @@ export function createRequest(userId: string, userInputs: any, service: any, ser
   };
   request.relatedInstanceList.push(serviceRelatedInstance);
   _.forOwn(networkInstanceGroups, function(group) {
-    let modelUuid = group["instance-group"]["model-version-id"];
-    let vfcModel = extractVfcGroupModelAccordingToUuid(service.vnfs[vnfCustomizationName], modelUuid);
     let networkInstanceGroup: RelatedInstanceList = {
       relatedInstance: {
         instanceId: group["instance-group"].id,
-        modelInfo: extractModelInfoFromVfcNode(vfcModel)
+        modelInfo: extractModelInfoFromVfcNode()
       }
     };
     request.relatedInstanceList.push(networkInstanceGroup);

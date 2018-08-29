@@ -8,9 +8,9 @@ import {HealthStatusService} from "../shared/server/healthStatusService/health-s
   styleUrls: ['./health-status.component.scss']
 })
 export class HealthStatusComponent implements OnInit {
-  private componentStatuses: Array<ExternalComponentStatus> = [];
-  private dataIsReady: boolean;
-  private lastUpdatedDate: Date;
+  componentStatuses: Array<ExternalComponentStatus> = [];
+  dataIsReady: boolean;
+  lastUpdatedDate: Date;
 
   constructor(private _healthStatusService: HealthStatusService) {
   }

@@ -30,7 +30,7 @@
 import { Component } from '@angular/core';
 import { MessageBoxData} from './messageBox.data';
 import { MessageBoxService } from './messageBox.service';
-import { SdcUiComponents } from 'sdc-ui/lib/angular';
+import { SdcUiServices} from "onap-ui-angular";
 
 @Component({
   selector: 'message-box',
@@ -38,12 +38,17 @@ import { SdcUiComponents } from 'sdc-ui/lib/angular';
 })
 
 export class MessageBoxComponent {
-  modalService: SdcUiComponents.ModalService;
-
-  constructor(modalService: SdcUiComponents.ModalService, private _messageBoxService : MessageBoxService) {
+  modalService: SdcUiServices.ModalService;
+  isOpened : boolean = false;
+  constructor(modalService: SdcUiServices.ModalService, private _messageBoxService : MessageBoxService) {
     this.modalService = modalService;
+
     MessageBoxService.openModal.subscribe((messageBoxData: MessageBoxData) => {
-      modalService.openModal(this._messageBoxService.setConfig(messageBoxData))
+      if(this.isOpened) return;
+      this.isOpened = true;
+      modalService.openModal(this._messageBoxService.setConfig(messageBoxData)).onDestroy(()=>{
+        this.isOpened = false;
+      })
     });
   }
 }

@@ -1,4 +1,4 @@
-import {ServiceResponseInterface} from "../../services/aaiService/responseInterfaces/getServicesResponseInterface";
+import {ServiceResponseInterface} from "../services/aaiService/responseInterfaces/getServicesResponseInterface";
 
 export class ProductFamily {
   id: string;

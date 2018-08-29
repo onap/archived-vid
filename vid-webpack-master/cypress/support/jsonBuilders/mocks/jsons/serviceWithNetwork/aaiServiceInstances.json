@@ -1,0 +1,14 @@
+{
+  "service-instances": [
+    {
+      "serviceInstanceId": "9cdd1b2a-43a7-47bc-a88e-759ba2399f0b",
+      "globalCustomerId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "serviceType": "vMOG",
+      "serviceInstanceName": "Network_repl_vMOG_rk",
+      "subscriberName": "Emanuel",
+      "aaiModelInvariantId": "92a72881-0a97-4d16-8c29-4831062e7e9b",
+      "aaiModelVersionId": "5a3ad576-c01d-4bed-8194-0e72b4a3d020",
+      "isPermitted": true
+    }
+  ]
+}

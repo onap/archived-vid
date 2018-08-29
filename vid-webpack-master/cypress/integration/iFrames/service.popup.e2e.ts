@@ -13,40 +13,71 @@ describe('Service popup', function () {
       })
     });
 
+    afterEach(() => {
+      cy.screenshot();
+    });
+
+    it('a-la-carte service instantiation popup has all required fields ', function () {
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
+        res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.instantiationType = 'A-LA-Carte';
+        cy.setReduxState(<any>res1);
+        cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+        cy.isElementContainsAttr('form-set', 'disabled');
+        cy.get('label').contains('Instance name:').should('not.have.class', 'required')
+          .get('label').contains('Subscriber name:').should('have.class', 'required')
+          .get('label').contains('Service type:').should('have.class', 'required')
+          .get('label').contains('Owning entity:').should('have.class', 'required')
+          .get('label').contains('Project').should('not.have.class', 'required')
+          .get('label').contains('Rollback on failure').should('have.class', 'required');
+      });
+    });
+
+    it('a-la-carte service instantiation popup has Instance name as required', function () {
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
+        res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.instantiationType = 'A-LA-Carte';
+        let isEcompNaming = false;
+        res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.serviceEcompNaming = isEcompNaming.toString();
+        cy.setReduxState(<any>res1);
+        cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+        cy.isElementContainsAttr('form-set', 'disabled');
+        cy.get('label').contains('Instance name:').should('have.class', 'required');
+      });
+    });
+
     it('should contains basic selects with required astrix', function () {
       cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
-      cy.isElementContainsAttr('service-form-set', 'disabled');
+      cy.isElementContainsAttr('form-set', 'disabled');
       cy.get('label').contains('Subscriber name:').should('have.class', 'required')
         .get('label').contains('Service type:').should('have.class', 'required')
         .get('label').contains('LCP region:').should('have.class', 'required')
         .get('label').contains('Tenant:').should('have.class', 'required')
         .get('label').contains('Owning entity:').should('have.class', 'required')
         .get('label').contains('Product family:').should('have.class', 'required')
-        .get('label').contains('AIC Zone:').should('not.have.class', 'required')
+        .get('label').contains('AIC zone:').should('not.have.class', 'required')
         .get('label').contains('Project').should('not.have.class', 'required')
-        .get('label').contains('Rollback On Failure').should('have.class', 'required');
+        .get('label').contains('Rollback on failure').should('have.class', 'required');
     });
 
     it('should be able fill all selects', function () {
       cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
 
-      cy.selectDropdownOptionByText('subscriberName', 'USP VOICE');
-      cy.selectDropdownOptionByText('serviceType', 'VIRTUAL USP');
-      cy.selectDropdownOptionByText('productFamily', 'VIRTUAL USP');
-      cy.selectDropdownOptionByText('lcpRegion', 'mtn6');
-      cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testgamma');
+      cy.selectDropdownOptionByText('subscriberName', 'SILVIA ROBBINS');
+      cy.selectDropdownOptionByText('serviceType', 'TYLER SILVIA');
+      cy.selectDropdownOptionByText('productFamily', 'TYLER SILVIA');
+      cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
+      cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
       cy.selectDropdownOptionByText('aic_zone', 'NFTJSSSS-NFT1');
-      cy.selectDropdownOptionByText('project', 'DFW');
+      cy.selectDropdownOptionByText('project', 'WATKINS');
       cy.selectDropdownOptionByText('owningEntity', 'aaa1');
       cy.selectDropdownOptionByText('rollback', 'Rollback');
 
     });
 
     it('should display error when api return empty data', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/categoryParametres.json').then((res)=>{
-        res.categoryParameters.owningEntity = [];
-        cy.initCategoryParameter(<any>res);
-
+      cy.initCategoryParameter(<any>{});
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
+        res1.service.categoryParameters.owningEntityList = [];
+        cy.setReduxState(<any>res1);
         cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
 
         cy.get('.message').contains('No results for this request. Please change criteria.');
@@ -55,3 +86,4 @@ describe('Service popup', function () {
     });
   });
 });
+
