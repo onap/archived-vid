@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_7f5a6451",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/AsdcClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-29T11:58:01Z",
+      "side": 1,
+      "message": "I would rather move constants to concrete class where those are actually used - I don\u0027t see any reason to have it here.",
+      "revId": "17e8b54e83547d8dc37c335c5df1b989f8b5ff3c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ff4e7495",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/rest/SdcRestClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-08-29T11:58:01Z",
+      "side": 1,
+      "message": "targetUrl",
+      "revId": "17e8b54e83547d8dc37c335c5df1b989f8b5ff3c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
