@@ -39,6 +39,7 @@ import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.aai.util.AAIProperties;
 import org.onap.vid.client.SyncRestClientInterface;
+import org.onap.vid.model.SubscriberList;
 
 public class AaiOverTLSClient implements AaiOverTLSClientInterface {
 
@@ -67,6 +68,12 @@ public class AaiOverTLSClient implements AaiOverTLSClientInterface {
     public HttpResponse<AaiNodeQueryResponse> searchNodeTypeByName(String name, ResourceType type) {
         val uri = urlBase + String.format(URIS.NODE_TYPE_BY_NAME, type.getAaiFormat(), type.getNameFilter(), name);
         return syncRestClient.get(uri, getRequestHeaders(), Collections.emptyMap(), AaiNodeQueryResponse.class);
+    }
+
+    @Override
+    public HttpResponse<SubscriberList> getAllSubscribers() {
+        val uri = urlBase + String.format(URIS.SUBSCRIBERS, 0);
+        return syncRestClient.get(uri, getRequestHeaders(), Collections.emptyMap(), SubscriberList.class);
     }
 
     private Map<String, String> getRequestHeaders() {

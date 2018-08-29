@@ -24,10 +24,13 @@ import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
+import org.onap.vid.model.SubscriberList;
 
 public interface AaiOverTLSClientInterface {
 
     class URIS {
+
+        static final String SUBSCRIBERS = "business/customers?subscriber-type=INFRA&depth=%s";
         static final String NODE_TYPE_BY_NAME = "search/nodes-query?search-node-type=%s&filter=%s:EQUALS:%s";
     }
 
@@ -42,5 +45,7 @@ public interface AaiOverTLSClientInterface {
     void setUseClientCert(boolean useClientCert);
 
     HttpResponse<AaiNodeQueryResponse> searchNodeTypeByName(String name, ResourceType type);
+
+    HttpResponse<SubscriberList> getAllSubscribers();
 
 }

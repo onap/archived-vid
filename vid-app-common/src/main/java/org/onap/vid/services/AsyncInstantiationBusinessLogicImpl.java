@@ -60,6 +60,7 @@ import org.onap.vid.utils.DaoUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -85,8 +86,6 @@ public class AsyncInstantiationBusinessLogicImpl implements AsyncInstantiationBu
 
     private SessionFactory sessionFactory;
 
-    private AaiClientInterface aaiClient;
-
     private AaiOverTLSClientInterface aaiOverTLSClient;
 
     private int maxRetriesGettingFreeNameFromAai = MAX_RETRIES_GETTING_FREE_NAME_FROM_AAI;
@@ -110,13 +109,11 @@ public class AsyncInstantiationBusinessLogicImpl implements AsyncInstantiationBu
         JobAdapter jobAdapter,
         JobsBrokerService jobService,
         SessionFactory sessionFactory,
-        AaiClientInterface aaiClient,
-        AaiOverTLSClientInterface aaiOverTLSClient) {
+        @Qualifier("aaiClientForFasterXmlMapping")  AaiOverTLSClientInterface aaiOverTLSClient) {
         this.dataAccessService = dataAccessService;
         this.jobAdapter = jobAdapter;
         this.jobService = jobService;
         this.sessionFactory = sessionFactory;
-        this.aaiClient = aaiClient;
         this.aaiOverTLSClient = aaiOverTLSClient;
     }
 

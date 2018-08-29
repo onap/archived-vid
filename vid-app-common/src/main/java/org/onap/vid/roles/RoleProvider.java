@@ -2,7 +2,8 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Modifications Copyright 2018 Nokia
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +23,7 @@ package org.onap.vid.roles;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.aai.AaiResponse;
@@ -58,8 +60,8 @@ public class RoleProvider {
 
     public void init() {
         LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method started");
-        AaiResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
-        subscribers = subscribersResponse.getT();
+        HttpResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
+        subscribers = subscribersResponse.getBody();
         LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method finished");
     }
 
@@ -69,7 +71,7 @@ public class RoleProvider {
         LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Entering to get user role for user " + UserUtils.getUserId(request));
 
         List<Role> roleList = new ArrayList<>();
-        
+
         Map roles = UserUtils.getRoles(request);
         for (Object role : roles.keySet()) {
             org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);

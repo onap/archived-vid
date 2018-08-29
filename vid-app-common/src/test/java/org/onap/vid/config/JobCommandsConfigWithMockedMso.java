@@ -27,7 +27,6 @@ import java.io.IOException;
 import org.hibernate.SessionFactory;
 import org.mockito.Mockito;
 import org.onap.portalsdk.core.service.DataAccessService;
-import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiOverTLSClient;
 import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiOverTLSPropertySupplier;
@@ -123,9 +122,8 @@ public class JobCommandsConfigWithMockedMso {
                                                                            JobAdapter jobAdapter,
                                                                            JobsBrokerService jobsBrokerService,
                                                                            SessionFactory sessionFactory,
-                                                                           AaiClientInterface aaiClient,
                                                                            AaiOverTLSClientInterface aaiOverTLSClientInterface) {
-        return new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapter, jobsBrokerService, sessionFactory, aaiClient, aaiOverTLSClientInterface);
+        return new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapter, jobsBrokerService, sessionFactory, aaiOverTLSClientInterface);
     }
 
     @Bean

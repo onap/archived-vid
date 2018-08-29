@@ -1,7 +1,30 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.services;
 
+import io.joshworks.restclient.http.HttpResponse;
 import jline.internal.Log;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.ServiceSubscription;
 import org.onap.vid.aai.Services;
@@ -9,6 +32,7 @@ import org.onap.vid.model.ModelConstants;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -17,8 +41,13 @@ import java.util.HashMap;
 public class RoleGenaratorServiceImpl implements RoleGeneratorService {
 
     public static final String ROLE_ID_COLUMN = "ROLE_ID";
+
     @Autowired
     AaiClientInterface client;
+
+    @Autowired
+    @Qualifier("aaiClientForCodehausMapping")
+    AaiOverTLSClientInterface aaiOverTLSClient;
 
     public static final String DB_NAME =  "vid_portal";
     public static final String TBL_NAME = "fn_role";
@@ -30,11 +59,11 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
         String query =  "USE " + DB_NAME + ";\r\n" +
                 "SET SQL_SAFE_UPDATES = 0;\r\n";
         try {
-            AaiResponse<SubscriberList> subscribers = client.getAllSubscribers();
+            HttpResponse<SubscriberList> allSubscribers = aaiOverTLSClient.getAllSubscribers();
             if (firstRun) {
-                query += replaceRolesToTempDelimiter("subscriber",buildSubscribersValuesForMappingsTable(subscribers.getT()));
+                query += replaceRolesToTempDelimiter("subscriber",buildSubscribersValuesForMappingsTable(allSubscribers.getBody()));
             }
-            query += addAvailableRolesCombination(firstRun, subscribers);
+            query += addAvailableRolesCombination(firstRun, allSubscribers.getBody());
 
         }
         catch (Exception e) {
@@ -43,10 +72,10 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
         return query;
     }
 
-    private String addAvailableRolesCombination(Boolean firstRun, AaiResponse<SubscriberList> subscribers) {
+    private String addAvailableRolesCombination(Boolean firstRun, SubscriberList subscribers) {
         String query, availableRoles="";
         HashMap<String,String> servicesNames = new HashMap<String,String>();
-        for (Subscriber subscriber: subscribers.getT().customer) {
+        for (Subscriber subscriber: subscribers.customer) {
             AaiResponse<Services> subscriberResponse = client.getSubscriberData(subscriber.globalCustomerId);
             for(ServiceSubscription service: subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
                 servicesNames.put(service.serviceType,"");

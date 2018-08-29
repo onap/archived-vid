@@ -33,11 +33,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.model.SubscriberList;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AaiOverTLSClientTest {
 
-    public static final String SEARCH_NODES_QUERY_SEARCH_NODE_TYPE = "search/nodes-query?search-node-type=generic-vnf&filter=vnf-name:EQUALS:name";
+    private static final String SEARCH_NODES_QUERY_SEARCH_NODE_TYPE = "search/nodes-query?search-node-type=generic-vnf&filter=vnf-name:EQUALS:name";
+    private static final String SUBSCRIBERS = "business/customers?subscriber-type=INFRA&depth=0";
     private AaiOverTLSClient aaiRestClient;
 
     @Mock
@@ -51,12 +53,21 @@ public class AaiOverTLSClientTest {
     }
 
     @Test
-    public void searchNodeTypeByName() {
+    public void testSearchNodeTypeByName() {
         mockPropertyReader();
 
         aaiRestClient.searchNodeTypeByName("name", ResourceType.GENERIC_VNF);
         Mockito.verify(syncRestClient).get(Matchers.contains(SEARCH_NODES_QUERY_SEARCH_NODE_TYPE),
             Matchers.eq(getHeaders()), Matchers.eq(Collections.emptyMap()), Matchers.eq(AaiNodeQueryResponse.class));
+    }
+
+    @Test
+    public void  testGetAllSubscribers(){
+        mockPropertyReader();
+
+        aaiRestClient.getAllSubscribers();
+        Mockito.verify(syncRestClient).get(Matchers.contains(SUBSCRIBERS),
+            Matchers.eq(getHeaders()), Matchers.eq(Collections.emptyMap()), Matchers.eq(SubscriberList.class));
     }
 
     private void mockPropertyReader() {

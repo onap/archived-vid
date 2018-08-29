@@ -22,7 +22,7 @@
 package org.onap.vid.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.joshworks.restclient.http.mapper.ObjectMapper;
 import java.io.IOException;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
@@ -70,8 +70,8 @@ public class WebConfig {
      * @return the object mapper
      */
     @Bean
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
+    public com.fasterxml.jackson.databind.ObjectMapper getObjectMapper() {
+        return new com.fasterxml.jackson.databind.ObjectMapper();
     }
 
 
@@ -166,13 +166,11 @@ public class WebConfig {
         return new SchedulerRestInterface();
     }
 
+    @Bean(name = "aaiClientForFasterXmlMapping")
+    public AaiOverTLSClientInterface getAaiClientForFasterXmlMapping(){
+         ObjectMapper objectMapper = new ObjectMapper() {
 
-    @Bean
-    public AaiOverTLSClientInterface getAaiOverTLSClientInterface() {
-
-        io.joshworks.restclient.http.mapper.ObjectMapper objectMapper = new io.joshworks.restclient.http.mapper.ObjectMapper() {
-
-            ObjectMapper om = new ObjectMapper();
+            com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
 
             @Override
             public <T> T readValue(String s, Class<T> aClass) {
@@ -188,6 +186,36 @@ public class WebConfig {
                 try {
                     return om.writeValueAsString(o);
                 } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        return new AaiOverTLSClient(new SyncRestClient(objectMapper), new AaiOverTLSPropertySupplier());
+    }
+
+
+    @Bean(name = "aaiClientForCodehausMapping")
+    public AaiOverTLSClientInterface getAaiClientForCodehausMapping() {
+
+       ObjectMapper objectMapper = new ObjectMapper() {
+
+            org.codehaus.jackson.map.ObjectMapper om = new org.codehaus.jackson.map.ObjectMapper();
+
+            @Override
+            public <T> T readValue(String s, Class<T> aClass) {
+                try {
+                    return om.readValue(s, aClass);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public String writeValue(Object o) {
+                try {
+                    return om.writeValueAsString(o);
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
