@@ -1,9 +1,11 @@
 FROM tomcat:8.0-jre8
 # add vim and uncomment alias to speedup troubleshooting purpose
 RUN apt-get update && apt-get install -y \
-	openjdk-8-jdk vim
+	openjdk-8-jdk vim net-tools
 
 RUN sed -i 's/# alias/alias/g' /root/.bashrc
+
+RUN mkdir -p ${ROOT_DIR}/etc
 
 ENV JAVA_OPTS="-Xmx1536m -Xms1536m"
 
@@ -52,7 +54,7 @@ ENV VID_ECOMP_SHARED_CONTEXT_REST_URL http://portal.api.simpledemo.onap.org:8989
 ENV VID_CONTACT_US_LINK https://todo_contact_us_link.com
 
 ENV VID_DECRYPTION_KEY AGLDdG4D04BKm2IxIWEr8o=
-ENV VID_UEB_URL_LIST ueb.api.simpledemo.onap.org 
+ENV VID_UEB_URL_LIST ueb.api.simpledemo.onap.org
 ENV VID_UEB_CONSUMER_GROUP VID
 ENV VID_ECOMP_PORTAL_INBOX_NAME ECOMP-PORTAL-INBOX
 ENV VID_UEB_APP_KEY 2Re7Pvdkgw5aeAUD
@@ -69,6 +71,14 @@ ENV VID_MYSQL_DBNAME vid_portal
 ENV VID_MYSQL_USER vidadmin
 ENV VID_MYSQL_MAXCONNECTIONS 5
 ENV VID_MYSQL_PASS Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U
+
+ENV VID_KEYSTORE_FILENAME ${ROOT_DIR}/etc/org.onap.vid.jks
+ENV VID_KEYSTORE_PASSWORD Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U
+ENV VID_TOMCAT_PATH /usr/local/tomcat/conf/
+ENV CATALINA_OPTS "-Dvid.keystore.password=${VID_KEYSTORE_PASSWORD} -Dvid.keyalias=vid@vid.onap.org -Dvid.keystore.filename=${VID_KEYSTORE_FILENAME}"
+
+ADD maven/config/org.onap.vid.jks ${VID_KEYSTORE_FILENAME}
+ADD maven/config/server.xml ${VID_TOMCAT_PATH}
 
 ADD maven/scripts/*.sh /tmp/vid/
 ADD maven/artifacts/vid.war /tmp/vid/stage/
