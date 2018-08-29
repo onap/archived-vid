@@ -21,13 +21,17 @@
 
 package org.onap.vid.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.onap.vid.aai.*;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.util.*;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.rest.RestfulAsdcClient;
+import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.scheduler.SchedulerRestInterface;
@@ -168,5 +172,34 @@ public class WebConfig {
     @Bean
     public SchedulerRestInterfaceIfc getSchedulerRestInterface(){
         return new SchedulerRestInterface();
+    }
+
+    @Bean
+    public AaiOverTLSClientInterface getAaiOverTLSClientInterface() {
+
+        io.joshworks.restclient.http.mapper.ObjectMapper objectMapper = new io.joshworks.restclient.http.mapper.ObjectMapper() {
+
+            ObjectMapper om = new ObjectMapper();
+
+            @Override
+            public <T> T readValue(String s, Class<T> aClass) {
+                try {
+                    return om.readValue(s, aClass)
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public String writeValue(Object o) {
+                try {
+                    return om.writeValueAsString(o);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        return new AaiOverTLSClient(new SyncRestClient(objectMapper), new AaiOverTLSPropertySupplier());
     }
 }

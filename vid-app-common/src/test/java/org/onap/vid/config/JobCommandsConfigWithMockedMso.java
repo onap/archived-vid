@@ -21,13 +21,20 @@
 
 package org.onap.vid.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.hibernate.SessionFactory;
 import org.mockito.Mockito;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiOverTLSClient;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
+import org.onap.vid.aai.AaiOverTLSPropertySupplier;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.aai.util.SSLContextProvider;
 import org.onap.vid.aai.util.SystemPropertyHelper;
+import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.InProgressStatusCommand;
@@ -84,12 +91,41 @@ public class JobCommandsConfigWithMockedMso {
     }
 
     @Bean
+    public AaiOverTLSClientInterface AaiOverTLSClient(){
+        io.joshworks.restclient.http.mapper.ObjectMapper objectMapper = new io.joshworks.restclient.http.mapper.ObjectMapper() {
+
+            ObjectMapper om = new ObjectMapper();
+
+            @Override
+            public <T> T readValue(String s, Class<T> aClass) {
+                try {
+                    return om.readValue(s, aClass)
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public String writeValue(Object o) {
+                try {
+                    return om.writeValueAsString(o);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        return new AaiOverTLSClient(new SyncRestClient(objectMapper), new AaiOverTLSPropertySupplier());
+    }
+
+    @Bean
     public AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic(DataAccessService dataAccessService,
                                                                            JobAdapter jobAdapter,
                                                                            JobsBrokerService jobsBrokerService,
                                                                            SessionFactory sessionFactory,
-                                                                           AaiClientInterface aaiClient) {
-        return new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapter, jobsBrokerService, sessionFactory, aaiClient);
+                                                                           AaiClientInterface aaiClient,
+                                                                           AaiOverTLSClientInterface aaiOverTLSClientInterface) {
+        return new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapter, jobsBrokerService, sessionFactory, aaiClient, aaiOverTLSClientInterface);
     }
 
     @Bean
