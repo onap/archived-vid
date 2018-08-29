@@ -1,8 +1,15 @@
 package org.onap.vid.services;
 
 import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
+import java.io.UnsupportedEncodingException;
 import jersey.repackaged.com.google.common.collect.ImmutableList;
-import org.onap.vid.aai.AaiClientInterface;
+import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.DefaultHttpResponseFactory;
+import org.apache.http.message.BasicStatusLine;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
@@ -13,8 +20,6 @@ import org.onap.vid.model.serviceInstantiation.VfModule;
 import org.onap.vid.model.serviceInstantiation.Vnf;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
-import org.onap.vid.services.AsyncInstantiationBusinessLogic;
-import org.onap.vid.services.AsyncInstantiationBusinessLogicTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.togglz.core.manager.FeatureManager;
 
@@ -48,7 +53,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     protected FeatureManager featureManager;
 
     @Inject
-    protected AaiClientInterface aaiClient;
+    protected AaiOverTLSClientInterface aaiClient;
 
     public ServiceInstantiation generateMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure) {
         ModelInfo modelInfo = createModelInfo();
@@ -174,12 +179,15 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return restObject;
     }
 
-    protected void mockAaiClientAnyNameFree() {
+    protected void mockAaiClientAnyNameFree() throws UnsupportedEncodingException {
         when(aaiClient.searchNodeTypeByName(any(), any())).thenReturn(aaiNodeQueryResponseNameFree());
     }
 
-    protected AaiResponse<AaiNodeQueryResponse> aaiNodeQueryResponseNameFree() {
-        return new AaiResponse<>(new AaiNodeQueryResponse(null),"", 200);
+    protected HttpResponse<AaiNodeQueryResponse> aaiNodeQueryResponseNameFree() throws UnsupportedEncodingException {
+        org.apache.http.HttpResponse response = new DefaultHttpResponseFactory().newHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, null), null);
+        response.setEntity(new StringEntity(""));
+
+        return HttpResponse.fallback(new AaiNodeQueryResponse(null));
     }
 
     protected AaiResponse<AaiNodeQueryResponse> aaiNodeQueryBadResponse() {

@@ -10,4 +10,8 @@ public class InvalidAAIResponseException extends GenericUncheckedException {
     public InvalidAAIResponseException(AaiResponse aaiResponse) {
         super(String.format("errorCode: %d, raw: %s", aaiResponse.getHttpCode(), aaiResponse.getErrorMessage()));
     }
+
+    public InvalidAAIResponseException(int statusCode, String message) {
+        super(String.format("errorCode: %d, raw: %s", statusCode, message));
+    }
 }
