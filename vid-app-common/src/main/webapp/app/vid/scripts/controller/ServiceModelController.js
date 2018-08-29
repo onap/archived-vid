@@ -187,6 +187,7 @@
 						"category":serviceModel.service.category
 					});
 					DataService.setALaCarte (true);
+          DataService.setPnf(!angular.equals(serviceModel.pnfs, {}));
 					$scope.createType = COMPONENT.A_LA_CARTE;
 					var broadcastType = COMPONENT.CREATE_COMPONENT;
                     if (AsdcService.isMacro(serviceModel)) {
