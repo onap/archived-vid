@@ -145,5 +145,5 @@ We have good experience using these editors:
 * [Sublime Text](http://www.sublimetext.com/3) with [Typescript-Sublime-Plugin](https://github.com/Microsoft/Typescript-Sublime-plugin#installation)
 
 # License
+The vid-webpack-master project is provided under the Apache License, version 2.0 (Apache-2.0). It includes code from the angular-webpack template files, which were originally provided under the MIT license.
 
-[MIT](/LICENSE)
