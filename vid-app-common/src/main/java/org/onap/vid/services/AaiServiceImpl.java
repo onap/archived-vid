@@ -1,5 +1,6 @@
 package org.onap.vid.services;
 
+import io.joshworks.restclient.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.codehaus.jackson.JsonNode;
 import org.onap.vid.aai.*;
@@ -30,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * Created by Oren on 7/4/17.
@@ -43,6 +45,10 @@ public class AaiServiceImpl implements AaiService {
 
     @Autowired
     private AaiClientInterface aaiClient;
+
+    @Autowired
+    @Qualifier("aaiClientForCodehausMapping")
+    private AaiOverTLSClientInterface aaiOverTLSClient;
 
     @Autowired
     private AaiResponseTranslator aaiResponseTranslator;
@@ -162,11 +168,13 @@ public class AaiServiceImpl implements AaiService {
 
     @Override
     public SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator) {
-        AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();
-
-        return new SubscriberFilteredResults(roleValidator, subscriberResponse.getT(),
-                subscriberResponse.getErrorMessage(),
-                subscriberResponse.getHttpCode());
+        HttpResponse<SubscriberList> allSubscribers = aaiOverTLSClient.getAllSubscribers();
+        return new SubscriberFilteredResults(
+            roleValidator,
+            allSubscribers.getBody(),
+            allSubscribers.getStatusText(),
+            allSubscribers.getStatus()
+        );
     }
 
     @Override
@@ -175,8 +183,8 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public AaiResponse<SubscriberList> getFullSubscriberList() {
-        return aaiClient.getAllSubscribers();
+    public HttpResponse<SubscriberList> getFullSubscriberList() {
+        return aaiOverTLSClient.getAllSubscribers();
     }
 
     @Override

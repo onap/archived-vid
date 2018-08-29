@@ -1,5 +1,6 @@
 package org.onap.vid.services;
 
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.SubscriberFilteredResults;
@@ -28,7 +29,7 @@ public interface AaiService {
 
     AaiResponse getServiceInstanceSearchResults(String subscriberId, String instanceIdentifier, RoleValidator roleProvider, List<String> owningEntities, List<String> projects);
 
-    AaiResponse<SubscriberList> getFullSubscriberList();
+    HttpResponse<SubscriberList> getFullSubscriberList();
 
     AaiResponse getServices(RoleValidator roleValidator);
     

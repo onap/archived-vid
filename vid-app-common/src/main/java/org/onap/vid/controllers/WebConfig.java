@@ -21,9 +21,14 @@
 
 package org.onap.vid.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.joshworks.restclient.http.mapper.ObjectMapper;
+import java.io.IOException;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiOverTLSClient;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
+import org.onap.vid.aai.AaiOverTLSPropertySupplier;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.PombaClientImpl;
 import org.onap.vid.aai.PombaClientInterface;
@@ -48,7 +53,6 @@ import org.onap.vid.services.VidService;
 import org.onap.vid.services.VidServiceImpl;
 import org.onap.vid.scheduler.SchedulerRestInterface;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
-import org.onap.vid.services.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,8 +70,8 @@ public class WebConfig {
      * @return the object mapper
      */
     @Bean
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
+    public com.fasterxml.jackson.databind.ObjectMapper getObjectMapper() {
+        return new com.fasterxml.jackson.databind.ObjectMapper();
     }
 
 
@@ -160,5 +164,63 @@ public class WebConfig {
     @Bean
     public SchedulerRestInterfaceIfc getSchedulerRestInterface(){
         return new SchedulerRestInterface();
+    }
+
+    @Bean(name = "aaiClientForFasterXmlMapping")
+    public AaiOverTLSClientInterface getAaiClientForFasterXmlMapping(){
+         ObjectMapper objectMapper = new ObjectMapper() {
+
+            com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+
+            @Override
+            public <T> T readValue(String s, Class<T> aClass) {
+                try {
+                    return om.readValue(s, aClass);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public String writeValue(Object o) {
+                try {
+                    return om.writeValueAsString(o);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        return new AaiOverTLSClient(new SyncRestClient(objectMapper), new AaiOverTLSPropertySupplier());
+    }
+
+
+    @Bean(name = "aaiClientForCodehausMapping")
+    public AaiOverTLSClientInterface getAaiClientForCodehausMapping() {
+
+       ObjectMapper objectMapper = new ObjectMapper() {
+
+            org.codehaus.jackson.map.ObjectMapper om = new org.codehaus.jackson.map.ObjectMapper();
+
+            @Override
+            public <T> T readValue(String s, Class<T> aClass) {
+                try {
+                    return om.readValue(s, aClass);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public String writeValue(Object o) {
+                try {
+                    return om.writeValueAsString(o);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        return new AaiOverTLSClient(new SyncRestClient(objectMapper), new AaiOverTLSPropertySupplier());
     }
 }

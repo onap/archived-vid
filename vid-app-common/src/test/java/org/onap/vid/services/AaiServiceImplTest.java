@@ -1,5 +1,6 @@
 package org.onap.vid.services;
 
+import io.joshworks.restclient.http.HttpResponse;
 import java.util.Collection;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class AaiServiceImplTest {
     @Test
     public void testGetFullSubscriberList_1() throws Exception {
         AaiServiceImpl testSubject;
-        AaiResponse<SubscriberList> result;
+        HttpResponse<SubscriberList> result;
 
         // default test
         try {
