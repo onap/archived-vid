@@ -2,8 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
- * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * Copyright (C) 2018 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +18,30 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.aai.exceptions;
+package org.onap.vid.aai;
 
-import org.onap.vid.aai.AaiResponse;
-import org.onap.vid.exceptions.GenericUncheckedException;
+import java.util.UUID;
+import org.eclipse.jetty.util.security.Password;
+import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.util.AAIProperties;
+import org.onap.vid.utils.Logging;
 
-/**
- * Created by Oren on 7/4/17.
- */
-public class InvalidAAIResponseException extends GenericUncheckedException {
-    public InvalidAAIResponseException(AaiResponse aaiResponse) {
-        super(String.format("errorCode: %d, raw: %s", aaiResponse.getHttpCode(), aaiResponse.getErrorMessage()));
+public class AaiOverTLSPropertySupplier {
+
+    public String getUsername() {
+        return SystemProperties.getProperty(AAIProperties.AAI_VID_USERNAME);
     }
 
-    public InvalidAAIResponseException(int statusCode, String message) {
-        super(String.format("errorCode: %d, raw: %s", statusCode, message));
+    public String getPassword() {
+        return Password.deobfuscate(SystemProperties.getProperty(AAIProperties.AAI_VID_PASSWD_X));
     }
+
+    public String getRequestId() {
+        return Logging.extractOrGenerateRequestId();
+    }
+
+    public String getRandomUUID(){
+       return UUID.randomUUID().toString();
+    }
+
 }
