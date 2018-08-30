@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Piotr Darosz <piotr.darosz@nokia.com>
+Code-Review+1: Sandra Koblosz <sandra.koblosz@nokia.com>
+Code-Review+2: Ofir Sonsino <os0695@intl.att.com>
+Submitted-by: Ofir Sonsino <os0695@intl.att.com>
+Submitted-at: Thu, 30 Aug 2018 08:35:12 +0000
+Reviewed-on: https://gerrit.onap.org/r/61311
+Project: vid
+Branch: refs/heads/master
