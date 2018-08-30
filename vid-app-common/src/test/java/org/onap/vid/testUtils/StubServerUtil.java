@@ -23,8 +23,11 @@ package org.onap.vid.testUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.semantics.Action;
+import com.xebialabs.restito.semantics.Call;
 import com.xebialabs.restito.semantics.Condition;
 import com.xebialabs.restito.server.StubServer;
+
+import java.util.List;
 
 import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
 import static com.xebialabs.restito.semantics.Action.contentType;
@@ -48,6 +51,10 @@ public class StubServerUtil {
         stubServer.run();
     }
 
+    public void runSecuredServer(){
+        stubServer.secured().run();
+    }
+
     public void stopServer() {
         stubServer.stop();
     }
@@ -57,10 +64,15 @@ public class StubServerUtil {
         return String.format("%s://localhost:%s/%s", protocol, stubServer.getPort(), relativePath);
     }
 
-    public void prepareGetCall(String path, Object returnObj, Action expectedAction) throws JsonProcessingException {
+    public void prepareGetCall(String path, Action actionToReturn,Object returnObj, Action expectedAction, String contentType) throws JsonProcessingException {
         whenHttp(stubServer)
                 .match(Condition.get(path))
-                .then(expectedAction, jsonContent(returnObj), contentType(APPLICATION_JSON));
+                .then(expectedAction, actionToReturn, contentType(contentType));
+    }
+
+
+    public void prepareGetCall(String path, Object returnObj, Action expectedAction) throws JsonProcessingException {
+        prepareGetCall(path, jsonContent(returnObj),returnObj, expectedAction, APPLICATION_JSON);
     }
 
     public void prepareDeleteCall(String path, Object returnObj, Action expectedAction) throws JsonProcessingException {
@@ -81,6 +93,10 @@ public class StubServerUtil {
                 .match(Condition.put(path),
                         Condition.withPostBodyContaining(objectMapper.writeValueAsString(returnObj)))
                 .then(expectedStatus, jsonContent(returnObj), contentType(APPLICATION_JSON));
+    }
+
+    public List<Call> getServerCalls() {
+        return stubServer.getCalls();
     }
 
     private Action jsonContent(Object returnObj) throws JsonProcessingException {

@@ -29,7 +29,10 @@ import java.util.UUID;
  * The Interface AsdcClient.
  */
 public interface AsdcClient {
-
+	class URIS{
+		public static final String METADATA_URL_TEMPLATE = "%s%s/%s/metadata";
+		public static final String TOSCA_MODEL_URL_TEMPLATE = "%s%s/%s/toscaModel";
+	}
 	/**
 	 * Gets the service.
 	 *
