@@ -1,20 +1,41 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
 package org.onap.vid.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controllers.MsoConfig;
 import org.onap.vid.controllers.WebConfig;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoBusinessLogic;
-import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
-import org.onap.vid.services.ChangeManagementService;
-import org.onap.vid.services.ChangeManagementServiceImpl;
 import org.onap.vid.testUtils.RegExMatcher;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
@@ -47,23 +68,22 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
     @Inject
     private ChangeManagementService changeManagementService;
     @Inject
-    private MsoRestClientNew restClientUnderTest;
+    private MsoInterface restClientUnderTest;
 
    // @Test
     void testInPlaceSoftwareUpdateRequest() throws Exception {
 
 
-        doReturn(new RestObject<RequestReferencesContainer>()).when(restClientUnderTest).PostForObject(anyObject(), anyString(), anyString(), anyObject());
+        doReturn(new HttpResponse<>(anyObject(), RequestReferencesContainer.class, anyObject())).when(restClientUnderTest).post(anyString(), anyObject(), anyObject());
 
         URL requestJsonUrl = this.getClass().getResource("/services/change_management_software_update_request.json");
         ChangeManagementRequest changeManagementRequest = objectMapper.readValue(requestJsonUrl, ChangeManagementRequest.class);
         changeManagementService.doChangeManagement(changeManagementRequest, "vidVnf");
 
         ArgumentCaptor<String> endpointCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> sourceIdCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Object> requestCaptor = ArgumentCaptor.forClass(Object.class);
+        ArgumentCaptor<RequestDetailsWrapper> requestCaptor = ArgumentCaptor.forClass(RequestDetailsWrapper.class);
         ArgumentCaptor<Class> responseTypeCaptor = ArgumentCaptor.forClass(Class.class);
-        verify(restClientUnderTest).PostForObject(requestCaptor.capture(), sourceIdCaptor.capture(), endpointCaptor.capture(), responseTypeCaptor.capture());
+        verify(restClientUnderTest).post(endpointCaptor.capture(), requestCaptor.capture(), responseTypeCaptor.capture());
 
         org.onap.vid.changeManagement.RequestDetails expectedRequest = changeManagementRequest.getRequestDetails().get(0);
 
@@ -73,7 +93,7 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
         String regEx = String.format("/serviceInstances/v[0-9]+/%s/vnfs/%s/inPlaceSoftwareUpdate", serviceInstanceId, vnfInstanceId);
         assertThat(endpointCaptor.getValue(), RegExMatcher.matchesRegEx(regEx));
         assertThat(requestCaptor.getValue(), instanceOf(RequestDetails.class));
-        RequestDetails actualRequest = ((RequestDetails) requestCaptor.getValue());
+        RequestDetails actualRequest = ((RequestDetails) requestCaptor.getValue().requestDetails);
 
         assertThat(actualRequest.getCloudConfiguration().getTenantId(), equalTo(expectedRequest.getCloudConfiguration().getTenantId()));
         assertThat(actualRequest.getCloudConfiguration().getLcpCloudRegionId(), equalTo(expectedRequest.getCloudConfiguration().getLcpCloudRegionId()));
@@ -98,7 +118,7 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
 
         @Override
         public MsoRestClientNew getMsoClient() {
-            MsoRestClientNew spyClient = spy(new MsoRestClientNew());
+            MsoRestClientNew spyClient = spy(new MsoRestClientNew(new SyncRestClient(), ""));
             return spyClient;
         }
 

@@ -29,7 +29,7 @@
       "requestorId": "az2016"
     },
     "requestParameters": {
-      "subscriptionServiceType":"MOG", //   "subscriptionServiceType":"VMX",
+      "subscriptionServiceType":"MOG",
       "aLaCarte": false,
       "userParams": [{
         "name": "TODO",
