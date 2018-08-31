@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_3b4712be",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/LocalWebConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-08-31T08:39:48Z",
+      "side": 1,
+      "message": "Those empty props will cause NullPointerException when someone would like to use LocalWebConfig",
+      "revId": "3e019b82331876b5e81854dde5023d1e73f67417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
