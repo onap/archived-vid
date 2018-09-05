@@ -26,6 +26,20 @@
 			<directory>src/main/scripts</directory>
 			<outputDirectory>scripts</outputDirectory>
 		</fileSet>
+		<fileSet>
+			<includes>
+				<include>server.xml</include>
+			</includes>
+			<directory>../epsdk-app-onap/src/main/resources</directory>
+			<outputDirectory>config</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<includes>
+				<include>org.onap.vid.jks</include>
+			</includes>
+			<directory>../epsdk-app-onap/src/main/webapp/WEB-INF/cert</directory>
+			<outputDirectory>config</outputDirectory>
+		</fileSet>
 	</fileSets>
 	
 </assembly>
