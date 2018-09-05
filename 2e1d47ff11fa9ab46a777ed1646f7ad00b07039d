@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_08a3dc4f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/PombaRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "serverBaseUrlProvider,BaseUrlProvider\n\nspace\n\nsystemPropertyHelper,serverUrlProvider,serverBaseUrlProvider\n\nspace",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c88884c7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "BaseUrlProvider urlProvider\nBaseUrlProvider baseUrlProvider\n\nWhy do we have a class that says \"I\u0027ll give you some kind of a base url\" and then it is used twice to produce 2 different values?\n\nInconsistency.",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_689130f0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "urlProvider.getBaseUrl()+requestUri\n\nspace",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_888e0ccf",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "String url \u003d urlProvider.getBaseUrl()+path;\n\nspace",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_28bfb862",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "same",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_48c474f4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/util/AAIRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "same",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_08bafc6d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/WebConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "2 spaces",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a8b2e891",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoProperties.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "space",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c8af2429",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/AsdcClientConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "2 enters",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_68a85020",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/scheduler/SchedulerProperties.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "space",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_88a5ac48",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/scheduler/SchedulerRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "space",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_2866d82a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/scheduler/SchedulerRestInterface.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "space",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_486b14f2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/SingleAAIRestInterfaceTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "space",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_08719cdf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scheduler/SchedulerRestInterfaceTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "enters",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_68fa9044",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/ChangeManagementServiceUnitTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:23:50Z",
+      "side": 1,
+      "message": "getMsoSecuredPropertiesProvider -\u003e msoSecuredPropertiesProvider\ngetMsoUnsecuredPropertiesProvider -\u003e msoUnsecuredPropertiesProvider",
+      "revId": "2e1d47ff11fa9ab46a777ed1646f7ad00b07039d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
