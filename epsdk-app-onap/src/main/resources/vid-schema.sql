@@ -1378,7 +1378,20 @@ CREATE TABLE IF NOT EXISTS `vid_category_parameter_option` (
   CONSTRAINT `FK_OWNING_ENTITY_OPTIONS_TO_OE` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `vid_openecomp_epsdk`.`vid_category_parameter` (`CATEGORY_ID`)
 ) COLLATE='utf8_bin' ENGINE=InnoDB AUTO_INCREMENT=25;
 
+CREATE TABLE IF NOT EXISTS `vid_job` (
+  `JOB_ID`        BINARY(16)   NOT NULL PRIMARY KEY,
+  `CREATED_DATE`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `MODIFIED_DATE` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `JOB_STATUS`    VARCHAR(50)  NULL COLLATE 'utf8_bin',
+  `JOB_TYPE`      VARCHAR(50)  NULL COLLATE 'utf8_bin',
+  `JOB_DATA`      MEDIUMTEXT   NULL COLLATE 'utf8_bin',
+  `PARENT_JOB_ID` BINARY(16)   NULL,
+  `TAKEN_BY`      VARCHAR(100) NULL COLLATE 'utf8_bin',
+  CONSTRAINT `FK_OWNING_VID_JOB_PARENT` FOREIGN KEY (`PARENT_JOB_ID`) REFERENCES `vid_openecomp_epsdk`.`vid_job` (`JOB_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+ALTER TABLE `vid_job`
+  ADD COLUMN if NOT EXISTS `TAKEN_BY` VARCHAR (100) COLLATE 'utf8_bin';
 -- ----------------------------------------------------------------------------
 -- View vid_openecomp_epsdk.v_url_access
 -- ----------------------------------------------------------------------------
