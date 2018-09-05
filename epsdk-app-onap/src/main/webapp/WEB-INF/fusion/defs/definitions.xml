@@ -116,7 +116,7 @@
     -->
     <definition name="collaboration" template="/WEB-INF/fusion/jsp/webrtc/collaboration.jsp"/>
     <definition name="user_profile_list" template="/app/fusion/scripts/view-models/admin-page/profile.html"/>
-    <definition name="admin" template="/app/fusion/scripts/view-models/admin-page/admin.html"/>
+    <definition name="admin" template="/app/fusion/scripts/DS2-view-models/ds2-admin/admin.html" />
     <definition name="workflows" template="/app/fusion/scripts/view-models/workflows/workflow-landing.html"/>
     
         <definition extends="ebz_template" name="report_wizard">   

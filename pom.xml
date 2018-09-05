@@ -70,6 +70,7 @@
 			<id>docker</id>
 			<modules>
 				<module>vid-app-common</module>
+				<module>vid-webpack-master</module>
 				<module>epsdk-app-onap</module>
 				<module>deliveries</module>
 			</modules>

@@ -1,6 +1,5 @@
 package org.onap.vid.policy;
 
-import org.apache.poi.hssf.record.formula.functions.T;
 import org.glassfish.jersey.client.ClientResponse;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,12 +34,10 @@ public class PolicyUtilTest {
 
 	@Test
 	public void testConvertPojoToString() throws Exception {
-		T t = null;
 		String result;
 
 		// test 1
-		t = null;
-		result = PolicyUtil.convertPojoToString(t);
+		result = PolicyUtil.convertPojoToString(null);
 		Assert.assertEquals("", result);
 	}
 
