@@ -35,7 +35,7 @@ import org.onap.vid.config.DataSourceConfig;
 import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
 import org.onap.vid.mso.MsoOperationalEnvironmentTest;
 import org.onap.vid.services.AsyncInstantiationBaseTest;
-import org.onap.portalsdk.core.FusionObject;
+import org.onap.portalsdk.core.domain.FusionObject;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;

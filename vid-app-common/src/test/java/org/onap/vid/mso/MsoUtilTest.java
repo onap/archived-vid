@@ -1,6 +1,5 @@
 package org.onap.vid.mso;
 
-import org.apache.poi.hssf.record.formula.functions.T;
 import org.glassfish.jersey.client.ClientResponse;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,12 +33,10 @@ public class MsoUtilTest {
 
 	@Test
 	public void testConvertPojoToString() throws Exception {
-		T t = null;
 		String result;
 
 		// test 1
-		t = null;
-		result = MsoUtil.convertPojoToString(t);
+		result = MsoUtil.convertPojoToString(null);
 		Assert.assertEquals("", result);
 	}
 

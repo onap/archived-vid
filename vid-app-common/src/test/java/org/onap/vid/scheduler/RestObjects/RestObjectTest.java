@@ -1,6 +1,5 @@
 package org.onap.vid.scheduler.RestObjects;
 
-import org.apache.poi.hssf.record.formula.functions.T;
 import org.junit.Test;
 
 
@@ -14,11 +13,10 @@ public class RestObjectTest {
 	@Test
 	public void testSet() throws Exception {
 		RestObject testSubject;
-		T t = null;
 
 		// default test
 		testSubject = createTestSubject();
-		testSubject.set(t);
+		testSubject.set(null);
 	}
 
 

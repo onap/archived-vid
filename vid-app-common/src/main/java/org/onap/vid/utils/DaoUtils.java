@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.portalsdk.core.FusionObject;
+import org.onap.portalsdk.core.domain.FusionObject;
 
 import java.util.HashMap;
 import java.util.function.Function;

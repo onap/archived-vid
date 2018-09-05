@@ -561,7 +561,10 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_function` (
   `FUNCTION_CD` VARCHAR(30) NOT NULL,
   `FUNCTION_NAME` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`FUNCTION_CD`))
+  `type` VARCHAR(20) NOT NULL,
+  `action` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`FUNCTION_CD`),
+  CONSTRAINT `function` UNIQUE (FUNCTION_CD,TYPE,ACTION))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -1381,4 +1384,3 @@ CREATE TABLE IF NOT EXISTS `vid_category_parameter_option` (
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_url_access` AS select distinct `m`.`ACTION` AS `URL`,`m`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_menu` `m` where (`m`.`ACTION` is not null) union select distinct `t`.`ACTION` AS `URL`,`t`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_tab` `t` where (`t`.`ACTION` is not null) union select `r`.`RESTRICTED_URL` AS `URL`,`r`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_restricted_url` `r`;
 SET FOREIGN_KEY_CHECKS = 1;
-
