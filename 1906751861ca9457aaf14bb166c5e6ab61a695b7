@@ -1,0 +1,8 @@
+Code-Review+1: Krzysztof Kurczewski <krzysztof.kurczewski@nokia.com>
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Ofir Sonsino <os0695@intl.att.com>
+Submitted-by: Ofir Sonsino <os0695@intl.att.com>
+Submitted-at: Thu, 06 Sep 2018 07:17:49 +0000
+Reviewed-on: https://gerrit.onap.org/r/64905
+Project: vid
+Branch: refs/heads/master
