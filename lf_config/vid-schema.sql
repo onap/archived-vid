@@ -561,7 +561,10 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `vid_openecomp_epsdk`.`fn_function` (
   `FUNCTION_CD` VARCHAR(30) NOT NULL,
   `FUNCTION_NAME` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`FUNCTION_CD`))
+  `type` VARCHAR(20) NOT NULL,
+  `action` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`FUNCTION_CD`),
+  CONSTRAINT `function` UNIQUE (FUNCTION_CD,TYPE,ACTION))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -1375,10 +1378,22 @@ CREATE TABLE IF NOT EXISTS `vid_category_parameter_option` (
   CONSTRAINT `FK_OWNING_ENTITY_OPTIONS_TO_OE` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `vid_openecomp_epsdk`.`vid_category_parameter` (`CATEGORY_ID`)
 ) COLLATE='utf8_bin' ENGINE=InnoDB AUTO_INCREMENT=25;
 
+CREATE TABLE IF NOT EXISTS `vid_job` (
+  `JOB_ID`        BINARY(16)   NOT NULL PRIMARY KEY,
+  `CREATED_DATE`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `MODIFIED_DATE` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `JOB_STATUS`    VARCHAR(50)  NULL COLLATE 'utf8_bin',
+  `JOB_TYPE`      VARCHAR(50)  NULL COLLATE 'utf8_bin',
+  `JOB_DATA`      MEDIUMTEXT   NULL COLLATE 'utf8_bin',
+  `PARENT_JOB_ID` BINARY(16)   NULL,
+  `TAKEN_BY`      VARCHAR(100) NULL COLLATE 'utf8_bin',
+  CONSTRAINT `FK_OWNING_VID_JOB_PARENT` FOREIGN KEY (`PARENT_JOB_ID`) REFERENCES `vid_openecomp_epsdk`.`vid_job` (`JOB_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+ALTER TABLE `vid_job`
+  ADD COLUMN if NOT EXISTS `TAKEN_BY` VARCHAR (100) COLLATE 'utf8_bin';
 -- ----------------------------------------------------------------------------
 -- View vid_openecomp_epsdk.v_url_access
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_url_access` AS select distinct `m`.`ACTION` AS `URL`,`m`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_menu` `m` where (`m`.`ACTION` is not null) union select distinct `t`.`ACTION` AS `URL`,`t`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_tab` `t` where (`t`.`ACTION` is not null) union select `r`.`RESTRICTED_URL` AS `URL`,`r`.`FUNCTION_CD` AS `FUNCTION_CD` from `fn_restricted_url` `r`;
 SET FOREIGN_KEY_CHECKS = 1;
-
