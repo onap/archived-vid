@@ -180,6 +180,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 */
 	@Bean // ANNOTATION COMMENTED OUT
 	// APPLICATIONS REQUIRING QUARTZ SHOULD RESTORE ANNOTATION
+	@DependsOn("dataSourceInitializer")
 	public SchedulerFactoryBean schedulerFactoryBean() throws Exception {
 		SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
 		scheduler.setTriggers(schedulerRegistryAdapter.getTriggers());
