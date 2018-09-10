@@ -245,7 +245,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
             }
 
             //if service model has a pnf, add a PNF ID parameter
-            if (DataService.getPnf()) {
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_PNP_INSTANTIATION) && DataService.getPnf()) {
                 parameterList = parameterList.concat([ FIELD.PARAMETER.PNF_ID ]);
             }
         }
