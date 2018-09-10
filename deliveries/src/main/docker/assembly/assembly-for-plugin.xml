@@ -36,6 +36,7 @@
 		<fileSet>
 			<includes>
 				<include>org.onap.vid.jks</include>
+				<include>org.onap.vid.trust.jks</include>
 			</includes>
 			<directory>../epsdk-app-onap/src/main/webapp/WEB-INF/cert</directory>
 			<outputDirectory>config</outputDirectory>
