@@ -30,9 +30,7 @@ ENV VID_AAI_PORT 8443
 ENV VID_APP_DISPLAY_NAME VID
 ENV VID_ECOMP_SHARED_CONTEXT_REST_URL https://portal.api.simpledemo.onap.org:8080/onapportal/context
 ENV VID_MSO_SERVER_URL http://vm1.mso.simpledemo.onap.org:8080
-ENV VID_TRUSTSTORE_FILE ${ROOT_DIR}/etc/vid_keystore.jks
 ENV VID_MYLOGIN_FEED_DIRECTORY /tmp/MyLogins
-ENV VID_TRUSTSTORE_PASS 5c84906b14912dbe96154e09b1e1db90e31f8dedb08e3e6c9f17da3f926cb67b33e4229cc1fe0f59c996d2e38b8ded42
 ENV VID_MSO_USER InfraPortalClient
 ENV VID_MSO_PASS OBF:1ih71i271vny1yf41ymf1ylz1yf21vn41hzj1icz
 ENV MSO_DME2_CLIENT_TIMEOUT 10000
@@ -74,10 +72,13 @@ ENV VID_MYSQL_PASS Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U
 
 ENV VID_KEYSTORE_FILENAME ${ROOT_DIR}/etc/org.onap.vid.jks
 ENV VID_KEYSTORE_PASSWORD Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U
+ENV VID_TRUSTSTORE_FILENAME ${ROOT_DIR}/etc/org.onap.vid.trust.jks
+ENV VID_TRUSTSTORE_PASSWORD OBF:1dx01j0e1hs01t981mis1dws156s1ojc1qjc1zsx1pw31qob1qr71pyj1zst1qhy1ojq156i1dua1mm21tb61hvi1j0g1du2
 ENV VID_TOMCAT_PATH /usr/local/tomcat/conf/
 ENV CATALINA_OPTS "-Dvid.keystore.password=${VID_KEYSTORE_PASSWORD} -Dvid.keyalias=vid@vid.onap.org -Dvid.keystore.filename=${VID_KEYSTORE_FILENAME}"
 
 ADD maven/config/org.onap.vid.jks ${VID_KEYSTORE_FILENAME}
+ADD maven/config/org.onap.vid.trust.jks ${VID_TRUSTSTORE_FILENAME}
 ADD maven/config/server.xml ${VID_TOMCAT_PATH}
 
 ADD maven/scripts/*.sh /tmp/vid/

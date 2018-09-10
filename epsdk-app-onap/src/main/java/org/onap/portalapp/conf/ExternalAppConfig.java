@@ -57,6 +57,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -180,6 +181,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 */
 	@Bean // ANNOTATION COMMENTED OUT
 	// APPLICATIONS REQUIRING QUARTZ SHOULD RESTORE ANNOTATION
+	@DependsOn("dataSourceInitializer")
 	public SchedulerFactoryBean schedulerFactoryBean() throws Exception {
 		SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
 		scheduler.setTriggers(schedulerRegistryAdapter.getTriggers());
