@@ -54,12 +54,7 @@ import org.onap.portalsdk.core.util.CacheManager;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -180,6 +175,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 */
 	@Bean // ANNOTATION COMMENTED OUT
 	// APPLICATIONS REQUIRING QUARTZ SHOULD RESTORE ANNOTATION
+	@DependsOn("dataSourceInitializer")
 	public SchedulerFactoryBean schedulerFactoryBean() throws Exception {
 		SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
 		scheduler.setTriggers(schedulerRegistryAdapter.getTriggers());
