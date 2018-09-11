@@ -14,13 +14,6 @@
 		</fileSet>
 		<fileSet>
 			<includes>
-				<include>vid-pre-init.sql</include>
-			</includes>
-			<directory>../epsdk-app-onap/src/main/resources</directory>
-			<outputDirectory>scripts</outputDirectory>
-		</fileSet>
-		<fileSet>
-			<includes>
 				<include>*.sh</include>
 			</includes>
 			<directory>src/main/scripts</directory>

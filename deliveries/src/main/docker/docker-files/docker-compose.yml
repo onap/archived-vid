@@ -17,7 +17,6 @@ services:
             - "3306:3306"
         volumes:
             - ../../../../../lf_config/vid-my.cnf:/etc/mysql/my.cnf
-            - ../../../../../lf_config/vid-schema.sql:/docker-entrypoint-initdb.d/vid-schema.sql
             - /var/lib/mysql
         environment:
             MYSQL_DATABASE: vid_openecomp_epsdk
