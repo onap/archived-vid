@@ -428,6 +428,24 @@
               ]
             }
           }
+        },
+        {
+          "model": {
+            "model-invariant-id": "any-id",
+            "model-type": "resource",
+            "resource-version": "10001",
+            "model-vers": {
+              "model-ver": [
+                {
+                  "model-version-id": "83d587e1-742d-4cb0-b087-3963b012dfe3",
+                  "model-name": "pnf-test",
+                  "model-version": "1.0",
+                  "model-description": "Should ask about CorrelationId",
+                  "resource-version": "200021"
+                }
+              ]
+            }
+          }
         }
       ]
     }
