@@ -5,6 +5,7 @@
       "source": "VID",
       "requestorId": "<userId>"
     },
+    "configurationParameters" : [ ],
     "relatedInstanceList": [
       {
         "relatedInstance": {

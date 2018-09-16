@@ -26,6 +26,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.onap.vid.domain.mso.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,8 @@ import java.util.Map;
         "relatedModelList",
         "requestInfo",
         "subscriberInfo",
-        "requestParameters"
+        "requestParameters",
+        "configurationParameters"
 })
 public class RequestDetails{
 
@@ -70,6 +72,9 @@ public class RequestDetails{
     /** The request parameters. */
     @JsonProperty("requestParameters")
     private RequestParameters requestParameters;
+
+    @JsonProperty("configurationParameters")
+    protected List<Map<String, String>> configurationParameters = new ArrayList<>();
 
     /** The additional properties. */
     @JsonIgnore
@@ -198,12 +203,31 @@ public class RequestDetails{
         this.additionalProperties.put(name, value);
     }
 
+    @JsonProperty("configurationParameters")
+    public List<Map<String, String>> getConfigurationParameters() {
+        return configurationParameters;
+    }
+
+    @JsonProperty("configurationParameters")
+    public void setConfigurationParameters(List<Map<String, String>> configurationParameters) {
+        this.configurationParameters = configurationParameters;
+    }
+
     /* (non-Javadoc)
      * @see org.onap.vid.domain.mso.RequestDetails#hashCode()
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(cloudConfiguration).append(modelInfo).append(relatedInstanceList).append(requestInfo).append(getRequestParameters()).append(subscriberInfo).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder()
+                .append(cloudConfiguration)
+                .append(modelInfo)
+                .append(relatedInstanceList)
+                .append(requestInfo)
+                .append(getRequestParameters())
+                .append(subscriberInfo)
+                .append(additionalProperties)
+                .append(configurationParameters.hashCode())
+                .toHashCode();
     }
 
     /* (non-Javadoc)
@@ -214,11 +238,20 @@ public class RequestDetails{
         if (other == this) {
             return true;
         }
-        if ((other instanceof RequestDetails) == false) {
+        if (!(other instanceof RequestDetails)) {
             return false;
         }
         RequestDetails rhs = ((RequestDetails) other);
-        return new EqualsBuilder().append(cloudConfiguration, rhs.cloudConfiguration).append(modelInfo, rhs.modelInfo).append(relatedInstanceList, rhs.relatedInstanceList).append(requestInfo, rhs.requestInfo).append(getRequestParameters(), rhs.getRequestParameters()).append(subscriberInfo, rhs.subscriberInfo).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder()
+                .append(cloudConfiguration, rhs.cloudConfiguration)
+                .append(modelInfo, rhs.modelInfo)
+                .append(relatedInstanceList, rhs.relatedInstanceList)
+                .append(requestInfo, rhs.requestInfo)
+                .append(getRequestParameters(), rhs.getRequestParameters())
+                .append(subscriberInfo, rhs.subscriberInfo)
+                .append(additionalProperties, rhs.additionalProperties)
+                .append(configurationParameters, rhs.configurationParameters)
+                .isEquals();
     }
 
     public RequestParameters getRequestParameters() {
