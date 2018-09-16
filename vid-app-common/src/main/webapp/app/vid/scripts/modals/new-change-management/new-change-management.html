@@ -58,6 +58,10 @@
                 <option value="" disabled>Select workflow</option>
             </select>
         </div>
+        <div class="form-group" ng-if="vm.isScaleOut()">
+            <label class="control-label">Configuration Parameters</label>
+            <input type="text" name="configurationParameters" ng-model="vm.changeManagement.userParams" id="configuration-parameters" required>
+        </div>
         <div class="form-group" ng-if="vm.isConfigUpdate()">
             <label class="control-label">Attach configuration file</label>
             <div class="file-wrapper">
