@@ -380,7 +380,9 @@
                     if(vm.changeManagement.workflow==="VNF Scale Out") {
                         dataToSo = JSON.parse(dataToSo);
                         dataToSo = {requestDetails: dataToSo.requestDetails[0]};
-                        changeManagementService.postChangeManagementScaleOutNow(dataToSo, vm.changeManagement.vnfNames[0]["service-instance-node"][0].properties["service-instance-id"], vm.changeManagement.vnfNames[0].id);
+                        changeManagementService.postChangeManagementScaleOutNow(dataToSo,
+                            vm.changeManagement.vnfNames[0]["service-instance-node"][0].properties["service-instance-id"],
+                            vm.changeManagement.vnfNames[0].id);
                     }else{
                         //TODO: foreach
                         var vnfName = vm.changeManagement.vnfNames[0].name;
