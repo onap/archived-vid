@@ -5,6 +5,7 @@
       "source": "VID",
       "requestorId": "<userId>"
     },
+    "configurationParameters" : [ ],
     "requestParameters": {
       "operationalEnvironmentType": "VNF"
     }
