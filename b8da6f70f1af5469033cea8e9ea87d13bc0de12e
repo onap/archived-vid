@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_07a7fda7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-19T09:53:19Z",
+      "side": 1,
+      "message": "Instead of moving this to constructor, I\u0027d strongly suggest keeping previous, no-arg version. There is no need for parameterization since test properties can still be provided",
+      "parentUuid": "1a76adc5_e701a1af",
+      "range": {
+        "startLine": 199,
+        "startChar": 44,
+        "endLine": 199,
+        "endChar": 91
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_6798316a",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 1
