@@ -25,6 +25,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6798316a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-19T09:48:01Z",
+      "side": 1,
+      "message": "-There is no need to have two separate (java and mockmvc) unit tests for the commit version implementation. This can and should be done tests as part of one invocation. The code is never invoked as part of simple method invocation, but only as a rest endpoint invocation. The same approach should be considered from a test perspective.\n\n-GitRepositoryState object should be asserted as part of the endpoint invocation which also checks correct json mapping. This can be done as part of the mockMvc fluent API.\n\n-The tested HealthCheckController class instantiation is duplicated in every unit test. I\u0027d suggest declaration to a field with @Before setUp method introduced for creating it. the MockMvc creation can also be moved here.\n\n-I would suggest leaving the getCommitInfo no-arg. No need to pass the properties file. Otherwise this suggests that a different file name can be passed, which if I\u0027m not mistaken does not happen. This requires renaming testgit.properties to git.properties.",
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_471e550d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 1
