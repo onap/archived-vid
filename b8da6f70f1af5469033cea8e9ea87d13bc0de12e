@@ -2,6 +2,167 @@
   "comments": [
     {
       "key": {
+        "uuid": "1a76adc5_c731055b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "You can remove those useless javadocs",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 7
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_6734b149",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 7
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_476bb51d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "static final. Also is there any reason for this to be package-private?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 16
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c77fc5de",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "This should be in javadoc, not in simple comment",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 72
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a77c09ed",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "Are those setters even used anywhere? Why not have HealthStatus be an immutable class?",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 9
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_27579959",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "This method does not throw IOException.",
+      "range": {
+        "startLine": 126,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 70
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_07713d0b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "No reason for this variable - just return in try and in catch",
+      "range": {
+        "startLine": 142,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 41
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e701a1af",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 1
@@ -49,6 +210,75 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_87378d4c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "Change tabs to spaces ;)",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 1
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a715e99c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "There is no reason to have such a method. Either have it in @Before method or directly inlined in tests.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 2
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_274239ae",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "Those tests are useless, IMO they should be removed.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 2
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_6798316a",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 1
@@ -84,6 +314,29 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_473df529",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "Check out assertJ - assertions are much more cleaner with it.\n\nFor example:\nassertThat(restult.getCommitId()).isEqualTo(\"123987\");",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 67
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_471e550d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 1
@@ -95,6 +348,29 @@
       "writtenOn": "2018-09-19T09:20:51Z",
       "side": 1,
       "message": "Maybe assert json body, then we can remove first test",
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e74761ba",
+        "filename": "vid-app-common/src/test/resources/testgit.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-19T10:52:28Z",
+      "side": 1,
+      "message": "I\u0027d use simpler values, 123987 is kinda strange",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 42
+      },
       "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
