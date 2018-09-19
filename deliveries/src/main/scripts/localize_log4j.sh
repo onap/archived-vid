@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/log4j.properties
-TEMPLATE_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/log4j_template.properties
+FINAL_CONFIG_FILE=$1/conf/log4j.properties
+TEMPLATE_CONFIG_FILE=$1/conf/log4j_template.properties
 
 echo "Localizing the VID log4j configuration"
 

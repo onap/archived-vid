@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/quartz.properties
-TEMPLATE_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/quartz_template.properties
+FINAL_CONFIG_FILE=$1/conf/quartz.properties
+TEMPLATE_CONFIG_FILE=$1/conf/quartz_template.properties
 
 echo "Localizing the VID quartz configuration"
 

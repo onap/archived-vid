@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=/tmp/vid/stage/WEB-INF/classes/cache.ccf
-TEMPLATE_CONFIG_FILE=/tmp/vid/stage/WEB-INF/classes/cache_template.ccf
+FINAL_CONFIG_FILE=$1/classes/cache.ccf
+TEMPLATE_CONFIG_FILE=$1/classes/cache_template.ccf
 
 echo "Localizing the VID cache configuration"
 

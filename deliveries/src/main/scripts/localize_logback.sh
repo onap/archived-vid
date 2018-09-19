@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=/tmp/vid/stage/WEB-INF/classes/logback.xml
-TEMPLATE_CONFIG_FILE=/tmp/vid/stage/WEB-INF/classes/logback_template.xml
+FINAL_CONFIG_FILE=$1/classes/logback.xml
+TEMPLATE_CONFIG_FILE=$1/classes/logback_template.xml
 
 echo "Localizing the VID logback configuration"
 

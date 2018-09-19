@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=/tmp/vid/stage/WEB-INF/classes/portal.properties
-TEMPLATE_CONFIG_FILE=/tmp/vid/stage/WEB-INF/classes/portal_template.properties
+FINAL_CONFIG_FILE=$1/classes/portal.properties
+TEMPLATE_CONFIG_FILE=$1/classes/portal_template.properties
 
 echo "Localizing the VID portal configuration"
 

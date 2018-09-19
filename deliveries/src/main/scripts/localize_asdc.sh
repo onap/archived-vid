@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/asdc.properties
-TEMPLATE_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/asdc_template.properties
+FINAL_CONFIG_FILE=$1/conf/asdc.properties
+TEMPLATE_CONFIG_FILE=$1/conf/asdc_template.properties
 
 echo "Localizing the ASDC client configuration"
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/system.properties
-TEMPLATE_CONFIG_FILE=/tmp/vid/stage/WEB-INF/conf/system_template.properties
+FINAL_CONFIG_FILE=$1/conf/system.properties
+TEMPLATE_CONFIG_FILE=$1/conf/system_template.properties
 
 echo "Localizing the VID system configuration"
 
