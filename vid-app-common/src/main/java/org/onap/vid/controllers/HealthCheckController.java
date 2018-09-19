@@ -25,7 +25,8 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.dao.FnAppDoaImpl;
 import org.onap.vid.model.GitRepositoryState;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,151 +49,39 @@ import java.util.Properties;
 @RequestMapping("/")
 public class HealthCheckController extends UnRestrictedBaseController {
 
-    /**
-     * The logger.
-     */
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(HealthCheckController.class);
-
-    /**
-     * The Constant dateFormat.
-     */
-    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-
-    private static final String HEALTH_CHECK_PATH = "/healthCheck";
+    private static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
     private static final String GIT_PROPERTIES_FILENAME = "git.properties";
+    private FnAppDoaImpl fnAppDoaImpl;
 
-    /**
-     * Model for JSON response with health-check results.
-     */
-    public class HealthStatus {
-        // Either 200 or 500
-        public int statusCode;
-
-        // Additional detail in case of error, empty in case of success.
-        public String message;
-
-        public String date;
-
-        public HealthStatus(int code, String msg) {
-            this.statusCode = code;
-            this.message = msg;
-        }
-
-        public HealthStatus(int code, String date, String msg) {
-            this.statusCode = code;
-            this.message = msg;
-            this.date = date;
-        }
-
-        public int getStatusCode() {
-            return statusCode;
-        }
-
-        public void setStatusCode(int code) {
-            this.statusCode = code;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String msg) {
-            this.message = msg;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
+    @Autowired
+    public HealthCheckController(FnAppDoaImpl fnAppDoaImpl) {
+        this.fnAppDoaImpl = fnAppDoaImpl;
     }
-
-    @SuppressWarnings("unchecked")
-    public int getProfileCount(String driver, String URL, String username, String password) {
-        FnAppDoaImpl doa = new FnAppDoaImpl();
-        int count = doa.getProfileCount(driver, URL, username, password);
-        return count;
-    }
-
 
     /**
      * Obtain the HealthCheck Status from the System.Properties file.
      * Used by IDNS for redundancy
      *
      * @return ResponseEntity The response entity
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @RequestMapping(value = "/healthCheck", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public HealthStatus gethealthCheckStatusforIDNS() {
-
-        String driver = SystemProperties.getProperty("db.driver");
-        String URL = SystemProperties.getProperty("db.connectionURL");
-        String username = SystemProperties.getProperty("db.userName");
-        String password = SystemProperties.getProperty("db.password");
-
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "driver ::" + driver);
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "URL::" + URL);
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "username::" + username);
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "password::" + password);
-
-
-        HealthStatus healthStatus = null;
-        try {
-            LOGGER.debug(EELFLoggerDelegate.debugLogger, "Performing health check");
-            int count = getProfileCount(driver, URL, username, password);
-            LOGGER.debug(EELFLoggerDelegate.debugLogger, "count:::" + count);
-            healthStatus = new HealthStatus(200, "health check succeeded");
-        } catch (Exception ex) {
-
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to perform health check", ex);
-            healthStatus = new HealthStatus(500, "health check failed: " + ex.toString());
-        }
-        return healthStatus;
+    public HealthStatus getHealthCheckStatusForIDNS() {
+        return createCorrespondingStatus();
     }
 
     /**
      * Obtain the  HealthCheck Status from the System.Properties file.
      *
      * @return ResponseEntity The response entity
-     * @throws IOException Signals that an I/O exception has occurred.
-     *                     Project :
      */
     @RequestMapping(value = "rest/healthCheck/{User-Agent}/{X-ECOMP-RequestID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public HealthStatus getHealthCheck(
             @PathVariable("User-Agent") String UserAgent,
             @PathVariable("X-ECOMP-RequestID") String ECOMPRequestID) {
-
-        String driver = SystemProperties.getProperty("db.driver");
-        String URL = SystemProperties.getProperty("db.connectionURL");
-        String username = SystemProperties.getProperty("db.userName");
-        String password = SystemProperties.getProperty("db.password");
-
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "driver ::" + driver);
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "URL::" + URL);
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "username::" + username);
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "password::" + password);
-
-
-        HealthStatus healthStatus = null;
-        try {
-            LOGGER.debug(EELFLoggerDelegate.debugLogger, "Performing health check");
-            LOGGER.debug(EELFLoggerDelegate.debugLogger, "User-Agent" + UserAgent);
-            LOGGER.debug(EELFLoggerDelegate.debugLogger, "X-ECOMP-RequestID" + ECOMPRequestID);
-
-
-            int count = getProfileCount(driver, URL, username, password);
-
-            LOGGER.debug(EELFLoggerDelegate.debugLogger, "count:::" + count);
-            healthStatus = new HealthStatus(200, dateFormat.format(new Date()), "health check succeeded");
-        } catch (Exception ex) {
-
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to perform health check", ex);
-            healthStatus = new HealthStatus(500, dateFormat.format(new Date()), "health check failed: " + ex.toString());
-        }
-        return healthStatus;
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "User-Agent" + UserAgent);
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "X-ECOMP-RequestID" + ECOMPRequestID);
+        return createCorrespondingStatus();
     }
 
     @RequestMapping(value = "/commitInfo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -199,6 +89,75 @@ public class HealthCheckController extends UnRestrictedBaseController {
         Properties properties = new Properties();
         properties.load(getClass().getClassLoader().getResourceAsStream(GIT_PROPERTIES_FILENAME));
         return new GitRepositoryState(properties);
+    }
+
+    private HealthStatus createCorrespondingStatus() {
+        logData();
+        try {
+            int count = fnAppDoaImpl.getProfileCount(getUrl(), getUsername(), getPassword());
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "count:::" + count);
+            return okStatus();
+        } catch (Exception ex) {
+            String errorMsg = ex.getMessage();
+            LOGGER.error(EELFLoggerDelegate.errorLogger, errorMsg);
+            return errorStatus(errorMsg);
+        }
+    }
+
+    private void logData() {
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "Performing health check");
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "URL::" + getUrl());
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "username::" + getUsername());
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "password::" + getPassword());
+    }
+
+    private HealthStatus okStatus() {
+        return new HealthStatus(HttpStatus.OK, dateFormat.format(new Date()), "health check succeeded");
+    }
+
+    private HealthStatus errorStatus(String msg) {
+        return new HealthStatus(HttpStatus.INTERNAL_SERVER_ERROR, dateFormat.format(
+                new Date()), "health check failed: " + msg);
+    }
+
+    private String getUrl() {
+        return SystemProperties.getProperty("db.connectionURL");
+    }
+
+    private String getUsername() {
+        return SystemProperties.getProperty("db.userName");
+    }
+
+    private String getPassword() {
+        return SystemProperties.getProperty("db.password");
+    }
+
+    /**
+     * Model for JSON response with health-check results.
+     */
+    public static final class HealthStatus {
+
+        private final int statusCode;
+        private final String detailedMsg;
+        private final String date;
+
+        public HealthStatus(HttpStatus code, String date, String detailedMsg) {
+            this.statusCode = code.value();
+            this.detailedMsg = detailedMsg;
+            this.date = date;
+        }
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public String getDetailedMsg() {
+            return detailedMsg;
+        }
+
+        public String getDate() {
+            return date;
+        }
     }
 }
 
