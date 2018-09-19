@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_e701a1af",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-09-19T09:20:51Z",
+      "side": 1,
+      "message": "Try move to c-tor instead",
+      "range": {
+        "startLine": 199,
+        "startChar": 44,
+        "endLine": 199,
+        "endChar": 91
+      },
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_471e550d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-09-19T09:20:51Z",
+      "side": 1,
+      "message": "Maybe assert json body, then we can remove first test",
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
