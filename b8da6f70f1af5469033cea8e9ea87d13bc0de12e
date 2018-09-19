@@ -66,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_67afd17d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-19T09:55:22Z",
+      "side": 1,
+      "message": "if implementation class construction is moved, other unit tests should be aligned accordingly",
+      "parentUuid": "1a76adc5_6798316a",
+      "revId": "b8da6f70f1af5469033cea8e9ea87d13bc0de12e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_471e550d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 1
