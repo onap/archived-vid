@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_907fbcdf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-20T06:20:57Z",
+      "side": 1,
+      "message": "Make this field private as well :)",
+      "revId": "4942e0e91fb958f3c385316c3eadd2a962589a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
