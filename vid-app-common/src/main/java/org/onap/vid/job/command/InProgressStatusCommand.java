@@ -23,6 +23,7 @@ package org.onap.vid.job.command;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.job.JobCommand;
 import org.onap.vid.job.NextCommand;
@@ -30,13 +31,13 @@ import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -68,33 +69,38 @@ public class InProgressStatusCommand implements JobCommand {
         init(jobUuid, requestId);
     }
 
+    InProgressStatusCommand(AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic, MsoInterface msoInterface, AuditService auditService, UUID jobUuid, String requestId) {
+        this(jobUuid, requestId);
+        this.asyncInstantiationBL = asyncInstantiationBusinessLogic;
+        this.restMso = msoInterface;
+        this.auditService = auditService;
+    }
+
     @Override
     public NextCommand call() {
 
         try {
-            String path = asyncInstantiationBL.getOrchestrationRequestsPath()+"/"+requestId;
+            String path = asyncInstantiationBL.getOrchestrationRequestsPath() + "/" + requestId;
             HttpResponse<AsyncRequestStatus> msoResponse = restMso.get(path, AsyncRequestStatus.class);
 
 
             JobStatus jobStatus;
             if (msoResponse.getStatus() >= 400 || msoResponse.getBody() == null) {
-                auditService.setFailedAuditStatusFromMso(jobUuid, requestId, msoResponse.getStatus(), msoResponse.getBody().toString());
+                auditService.setFailedAuditStatusFromMso(jobUuid, requestId, msoResponse.getStatus(), Objects.toString(msoResponse.getBody()));
                 LOGGER.error(EELFLoggerDelegate.errorLogger,
                         "Failed to get orchestration status for {}. Status code: {},  Body: {}",
-                        requestId, msoResponse.getStatus(), msoResponse.getRawBody().toString());
+                        requestId, msoResponse.getStatus(), Objects.toString(msoResponse.getRawBody()));
                 return new NextCommand(JobStatus.IN_PROGRESS, this);
-            }
-            else {
+            } else {
                 jobStatus = asyncInstantiationBL.calcStatus(msoResponse.getBody());
             }
 
-            asyncInstantiationBL.auditMsoStatus(jobUuid,msoResponse.getBody().request);
+            asyncInstantiationBL.auditMsoStatus(jobUuid, msoResponse.getBody().request);
 
 
             if (jobStatus == JobStatus.FAILED) {
                 asyncInstantiationBL.handleFailedInstantiation(jobUuid);
-            }
-            else {
+            } else {
                 asyncInstantiationBL.updateServiceInfoAndAuditStatus(jobUuid, jobStatus);
             }
             //in case of JobStatus.PAUSE we leave the job itself as IN_PROGRESS, for keep tracking job progress
@@ -127,6 +133,5 @@ public class InProgressStatusCommand implements JobCommand {
     public Map<String, Object> getData() {
         return ImmutableMap.of("requestId", requestId);
     }
-
 
 }
