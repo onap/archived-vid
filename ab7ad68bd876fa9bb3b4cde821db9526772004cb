@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_968ed42c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-20T10:58:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_704d4099",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 13
+      },
+      "revId": "ab7ad68bd876fa9bb3b4cde821db9526772004cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_90501c33",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_368100fb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-20T10:58:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_90501c33",
+      "range": {
+        "startLine": 62,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 13
+      },
+      "revId": "ab7ad68bd876fa9bb3b4cde821db9526772004cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_5046047c",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2018-09-20T07:31:41Z",
       "side": 1,
       "message": "HealthStatus has only two proper objects types, make c-tor  private and build objects via static methods, one for succes, one for failure.",
+      "range": {
+        "startLine": 160,
+        "startChar": 19,
+        "endLine": 160,
+        "endChar": 98
+      },
+      "revId": "ab7ad68bd876fa9bb3b4cde821db9526772004cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_f6a5c8a1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-20T10:58:04Z",
+      "side": 1,
+      "message": "It would require 4 static methods - two for both date and no-date constructors. Moving to one constructor can be reconsidered in the future if confirmed with Ofir.",
+      "parentUuid": "1a76adc5_5046047c",
       "range": {
         "startLine": 160,
         "startChar": 19,
