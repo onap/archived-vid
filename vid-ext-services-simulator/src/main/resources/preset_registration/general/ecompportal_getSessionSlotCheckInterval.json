@@ -2,7 +2,7 @@
   {
     "simulatorRequest": {
       "method": "GET",
-      "path": "/ecompportal_att/auxapi//getSessionSlotCheckInterval"
+      "path": "/ecompportal_att/auxapi/v[0-9]+/getSessionSlotCheckInterval"
     },
     "simulatorResponse": {
       "responseCode": 200,
