@@ -140,6 +140,30 @@
       "revId": "ab7ad68bd876fa9bb3b4cde821db9526772004cb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ade37ea2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-20T15:57:56Z",
+      "side": 1,
+      "message": "This would be a good idea, definitely a readability improvement when api states what it does and the number of outcomes is very limited. Unfortunately static members cannot be added to inner non-static classes, because they depend on the surrounding instance. Also I think it would be good to limit the number of constructors from 4 to 2 and always create the date object (as Asia mentioned)",
+      "parentUuid": "1a76adc5_5046047c",
+      "range": {
+        "startLine": 160,
+        "startChar": 19,
+        "endLine": 160,
+        "endChar": 98
+      },
+      "revId": "ab7ad68bd876fa9bb3b4cde821db9526772004cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
