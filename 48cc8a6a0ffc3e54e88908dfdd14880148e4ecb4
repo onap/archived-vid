@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_76e0d8cc",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-09-20T11:04:09Z",
+      "side": 1,
+      "message": "HealthStatus can take StatusCode and do dirty work in c-tor",
+      "range": {
+        "startLine": 130,
+        "startChar": 36,
+        "endLine": 130,
+        "endChar": 65
+      },
+      "revId": "48cc8a6a0ffc3e54e88908dfdd14880148e4ecb4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
