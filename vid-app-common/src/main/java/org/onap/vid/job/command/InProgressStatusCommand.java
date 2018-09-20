@@ -23,6 +23,7 @@ package org.onap.vid.job.command;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
+import org.apache.commons.lang3.ObjectUtils;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.job.JobCommand;
 import org.onap.vid.job.NextCommand;
@@ -37,6 +38,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -68,6 +70,13 @@ public class InProgressStatusCommand implements JobCommand {
         init(jobUuid, requestId);
     }
 
+    InProgressStatusCommand(AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,MsoInterface msoInterface,AuditService auditService,UUID jobUuid,String requestId){
+        this(jobUuid,requestId);
+        this.asyncInstantiationBL=asyncInstantiationBusinessLogic;
+        this.restMso=msoInterface;
+        this.auditService=auditService;
+    }
+
     @Override
     public NextCommand call() {
 
@@ -78,17 +87,16 @@ public class InProgressStatusCommand implements JobCommand {
 
             JobStatus jobStatus;
             if (msoResponse.getStatus() >= 400 || msoResponse.getBody() == null) {
-                auditService.setFailedAuditStatusFromMso(jobUuid, requestId, msoResponse.getStatus(), msoResponse.getBody().toString());
+                auditService.setFailedAuditStatusFromMso(jobUuid, requestId, msoResponse.getStatus(), Objects.toString(msoResponse.getBody()));
                 LOGGER.error(EELFLoggerDelegate.errorLogger,
                         "Failed to get orchestration status for {}. Status code: {},  Body: {}",
-                        requestId, msoResponse.getStatus(), msoResponse.getRawBody().toString());
+                        requestId, msoResponse.getStatus(), Objects.toString(msoResponse.getRawBody()));
                 return new NextCommand(JobStatus.IN_PROGRESS, this);
-            }
-            else {
+            } else {
                 jobStatus = asyncInstantiationBL.calcStatus(msoResponse.getBody());
             }
 
-            asyncInstantiationBL.auditMsoStatus(jobUuid,msoResponse.getBody().request);
+            asyncInstantiationBL.auditMsoStatus(jobUuid, msoResponse.getBody().request);
 
 
             if (jobStatus == JobStatus.FAILED) {
@@ -127,6 +135,5 @@ public class InProgressStatusCommand implements JobCommand {
     public Map<String, Object> getData() {
         return ImmutableMap.of("requestId", requestId);
     }
-
 
 }

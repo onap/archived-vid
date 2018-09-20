@@ -42,6 +42,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -73,6 +74,14 @@ public class ServiceInstantiationCommand implements JobCommand {
         init(uuid, serviceInstantiationRequest, userId);
     }
 
+    ServiceInstantiationCommand(AsyncInstantiationBusinessLogic asyncInstantiationBL, AuditService auditService, MsoInterface msoInterface,
+                                UUID uuid, ServiceInstantiation serviceInstantiation, String userId) {
+        this(uuid, serviceInstantiation, userId);
+        this.asyncInstantiationBL = asyncInstantiationBL;
+        this.auditService = auditService;
+        this.restMso = msoInterface;
+    }
+
     @Override
     public NextCommand call() {
         RequestDetailsWrapper<ServiceInstantiationRequestDetails> requestDetailsWrapper ;
@@ -81,7 +90,6 @@ public class ServiceInstantiationCommand implements JobCommand {
                     uuid, serviceInstantiationRequest, userId
             );
         }
-
         //Aai return bad response while checking names uniqueness
         catch (InvalidAAIResponseException exception) {
             LOGGER.error("Failed to check name uniqueness in AAI. VID will try again later", exception);
@@ -116,7 +124,7 @@ public class ServiceInstantiationCommand implements JobCommand {
             return new NextCommand(jobStatus, new InProgressStatusCommand(uuid, requestId));
         } else {
             auditService.setFailedAuditStatusFromMso(uuid,null, msoResponse.getStatus(),
-                msoResponse.getBody().toString());
+                    Objects.toString(msoResponse.getBody()));
             return handleCommandFailed();
         }
 
