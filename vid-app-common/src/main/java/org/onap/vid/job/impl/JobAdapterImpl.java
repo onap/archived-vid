@@ -33,14 +33,10 @@ public class JobAdapterImpl implements JobAdapter {
     }
 
     @Override
-    public Job createJob(JobType jobType, AsyncJobRequest request, UUID templateId, String userId, Integer indexInBulk){
-        JobDaoImpl job = new JobDaoImpl();
-        job.setStatus(Job.JobStatus.PENDING);
-        job.setTypeAndData(jobType, ImmutableMap.of(
+    public Job createJob(JobType jobType, AsyncJobRequest request, UUID templateId, String userId, Integer indexInBulk) {
+        JobDaoImpl job = createJob(jobType, templateId, indexInBulk, ImmutableMap.of(
                 "request", request,
                 "userId", userId));
-        job.setTemplateId(templateId);
-        job.setIndexInBulk(indexInBulk);
         job.setUserId(userId);
         return job;
     }
@@ -59,14 +55,17 @@ public class JobAdapterImpl implements JobAdapter {
         List<Job> jobList = new ArrayList<>(count + 1);
         UUID templateId = UUID.randomUUID();
         for (int i = 0; i < count; i++) {
-            Job child = new JobDaoImpl();
-            child.setTypeAndData(jobType, bulkRequest);
-            child.setStatus(Job.JobStatus.PENDING);
-            child.setTemplateId(templateId);
-            child.setIndexInBulk(i);
-            jobList.add(child);
+            jobList.add(createJob(jobType, templateId, i, bulkRequest));
         }
         return jobList;
     }
 
+    private JobDaoImpl createJob(JobType jobType, UUID templateId, Integer indexInBulk, Map<String, Object> data) {
+        JobDaoImpl job = new JobDaoImpl();
+        job.setStatus(Job.JobStatus.PENDING);
+        job.setTypeAndData(jobType, data);
+        job.setTemplateId(templateId);
+        job.setIndexInBulk(indexInBulk);
+        return job;
+    }
 }
