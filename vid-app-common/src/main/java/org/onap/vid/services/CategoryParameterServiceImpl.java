@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryParameterServiceImpl implements CategoryParameterService {
 
+    public static final String OPTION_S_ALREADY_EXIST_FOR_CATEGORY_S = "Option %s already exist for category %s";
     @Autowired
     private DataAccessService dataAccessService;
 
@@ -68,7 +69,7 @@ public class CategoryParameterServiceImpl implements CategoryParameterService {
         Set<String> categoryOptions = categoryParameter.getOptions().stream().map(CategoryParameterOption::getName).collect(Collectors.toSet());
         for (String optionName : optionsRequest.options) {
             if (categoryOptions.contains(optionName)) {
-                response.getErrors().add(String.format("Option %s already exist for category %s", optionName, categoryName));
+                response.getErrors().add(String.format(OPTION_S_ALREADY_EXIST_FOR_CATEGORY_S, optionName, categoryName));
                 continue;
             }
             String appId = categoryParameter.isIdSupported() ? UUID.randomUUID().toString() : optionName;

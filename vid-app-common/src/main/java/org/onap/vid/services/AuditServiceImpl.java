@@ -16,12 +16,12 @@ public class AuditServiceImpl implements AuditService{
 
     @Inject
     private AsyncInstantiationBusinessLogic asyncInstantiationBL;
+    public static final String FAILED_MSO_REQUEST_STATUS = "FAILED";
 
     @Override
     public void setFailedAuditStatusFromMso(UUID jobUuid, String requestId, int statusCode, String msoResponse){
-        final String failedMsoRequestStatus = "FAILED";
         String additionalInfo = formatExceptionAdditionalInfo(statusCode, msoResponse);
-        asyncInstantiationBL.auditMsoStatus(jobUuid, failedMsoRequestStatus, requestId, additionalInfo);
+        asyncInstantiationBL.auditMsoStatus(jobUuid, FAILED_MSO_REQUEST_STATUS, requestId, additionalInfo);
     }
 
     private String formatExceptionAdditionalInfo(int statusCode, String msoResponse) {
