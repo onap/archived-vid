@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_13988c69",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/CategoryParameterServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-09-21T13:15:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_53e84416",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 68
+      },
+      "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_33f7c8f7",
         "filename": "vid-app-common/src/test/java/org/onap/vid/services/AuditServiceImplTest.java",
         "patchSetId": 1
@@ -36,6 +60,24 @@
       "writtenOn": "2018-09-21T12:13:09Z",
       "side": 1,
       "message": "missing licence? (idk if this aplies also for testcases)",
+      "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_339d885a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AuditServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-09-21T13:15:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_33f7c8f7",
       "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_d3a1b496",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/BulkInstantiationServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-09-21T13:15:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_93e57c3a",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_73d46047",
         "filename": "vid-app-common/src/test/java/org/onap/vid/services/CategoryParameterServiceImplTest.java",
         "patchSetId": 1
@@ -76,6 +142,30 @@
       "writtenOn": "2018-09-21T12:13:09Z",
       "side": 1,
       "message": "maybe create method which creates categoryParameter list with one argument (OPTION_NAME) and use also in other tests",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 37
+      },
+      "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_93ab3c75",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/CategoryParameterServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-09-21T13:15:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_73d46047",
       "range": {
         "startLine": 77,
         "startChar": 0,
@@ -123,6 +213,54 @@
       "side": 1,
       "message": "i\u0027ve checked that and testNG doesn\u0027t require static method",
       "parentUuid": "1a76adc5_93bc9c08",
+      "range": {
+        "startLine": 23,
+        "startChar": 2,
+        "endLine": 23,
+        "endChar": 14
+      },
+      "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_73ba20c2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/PombaServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-09-21T13:15:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_93bc9c08",
+      "range": {
+        "startLine": 23,
+        "startChar": 2,
+        "endLine": 23,
+        "endChar": 14
+      },
+      "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_53b5a4ce",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/PombaServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2018-09-21T13:15:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_13572ccc",
       "range": {
         "startLine": 23,
         "startChar": 2,
