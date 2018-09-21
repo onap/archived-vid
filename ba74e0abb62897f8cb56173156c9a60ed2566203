@@ -108,6 +108,30 @@
       "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_13572ccc",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/PombaServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-09-21T12:22:39Z",
+      "side": 1,
+      "message": "i\u0027ve checked that and testNG doesn\u0027t require static method",
+      "parentUuid": "1a76adc5_93bc9c08",
+      "range": {
+        "startLine": 23,
+        "startChar": 2,
+        "endLine": 23,
+        "endChar": 14
+      },
+      "revId": "ba74e0abb62897f8cb56173156c9a60ed2566203",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
