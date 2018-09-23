@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_c7f7ae58",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-09-23T07:11:29Z",
+      "side": 1,
+      "message": "Is this according to SO Interface agreement?",
+      "range": {
+        "startLine": 169,
+        "startChar": 31,
+        "endLine": 169,
+        "endChar": 52
+      },
+      "revId": "1281d76e0f11d83125ab8383755fe8f64fbf99b9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8799b621",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-09-23T07:11:29Z",
+      "side": 1,
+      "message": "Should verify undefined? before \"if\"",
+      "range": {
+        "startLine": 385,
+        "startChar": 26,
+        "endLine": 387,
+        "endChar": 64
+      },
+      "revId": "1281d76e0f11d83125ab8383755fe8f64fbf99b9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_279ea208",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-09-23T07:11:29Z",
+      "side": 1,
+      "message": "is configurationParameters part of the userParams? is this according to SO?",
+      "range": {
+        "startLine": 63,
+        "startChar": 72,
+        "endLine": 63,
+        "endChar": 102
+      },
+      "revId": "1281d76e0f11d83125ab8383755fe8f64fbf99b9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
