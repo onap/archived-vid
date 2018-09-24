@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_8d6235ac",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-09-24T10:26:23Z",
+      "side": 1,
+      "message": "changed to /serviceInstantiation/v7/serviceInstances/\u003c..\u003e\ni\u0027ve checked on Windriver and this endpoint is available",
+      "parentUuid": "1a76adc5_c7f7ae58",
+      "range": {
+        "startLine": 169,
+        "startChar": 31,
+        "endLine": 169,
+        "endChar": 52
+      },
+      "revId": "1281d76e0f11d83125ab8383755fe8f64fbf99b9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_8799b621",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 5
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ad6a917f",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-09-24T10:26:23Z",
+      "side": 1,
+      "message": "only formatting was changed here",
+      "parentUuid": "1a76adc5_8799b621",
+      "range": {
+        "startLine": 385,
+        "startChar": 26,
+        "endLine": 387,
+        "endChar": 64
+      },
+      "revId": "1281d76e0f11d83125ab8383755fe8f64fbf99b9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_279ea208",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
         "patchSetId": 5
@@ -59,6 +107,30 @@
       "writtenOn": "2018-09-23T07:11:29Z",
       "side": 1,
       "message": "is configurationParameters part of the userParams? is this according to SO?",
+      "range": {
+        "startLine": 63,
+        "startChar": 72,
+        "endLine": 63,
+        "endChar": 102
+      },
+      "revId": "1281d76e0f11d83125ab8383755fe8f64fbf99b9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ed708975",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-09-24T10:26:23Z",
+      "side": 1,
+      "message": "changed to configurationParameters",
+      "parentUuid": "1a76adc5_279ea208",
       "range": {
         "startLine": 63,
         "startChar": 72,
