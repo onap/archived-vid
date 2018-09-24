@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6f7a3689",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-24T08:04:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_8dc00251",
+      "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_ed4176a9",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2018-09-20T15:57:56Z",
       "side": 1,
       "message": "1. please change this class from inner nested to static nested. Basically non-static inner classes have a relation with the surrounding instance (can access its members, can cause serialization issues etc) and is not the best for encapsulation. Joshua Bloch has given a good reason in Effective java:) efectivejava.blogspot.com/2013/07/item-22-favor-static-member-classes.html\n\nAlso remember that inner classes cannot define static members. So static factory methods and constants cannot be added.\n\nAs a general rule of thumb it\u0027s always better to use nested static classes.\n\n2. For readability purposes move this class definition to the end of the class, after all the methods that use it.",
+      "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_6fa1d6f6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-24T08:04:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_ed4176a9",
       "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_2fa75e0c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-24T08:04:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_8d1802d4",
+      "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_60d6cd29",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 4
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_8fb79239",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-24T08:04:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_60d6cd29",
+      "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_adab7e73",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 4
@@ -81,6 +153,24 @@
       "writtenOn": "2018-09-20T15:57:56Z",
       "side": 1,
       "message": "Method name - should be camelcase - getHealth... :)",
+      "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_82c0c4e1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-24T08:04:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_adab7e73",
       "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_4f85fa57",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-24T08:04:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_0d007232",
+      "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_cdf59a51",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 4
@@ -132,6 +240,24 @@
       "writtenOn": "2018-09-20T15:57:56Z",
       "side": 1,
       "message": "The 200 OK status can be replaced with spring HttpStatus Code constant :)",
+      "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_6f88f670",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-24T08:04:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_cdf59a51",
       "revId": "d578454e8147f41db7fbeabfa7bf2f4f8ef80527",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
