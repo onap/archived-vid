@@ -9,6 +9,10 @@ public class AddCategoryOptionResponse extends ListOfErrorsResponse {
     public AddCategoryOptionResponse() {
     }
 
+    public AddCategoryOptionResponse(String error) {
+        errors.add(error);
+    }
+
     public AddCategoryOptionResponse(List<String> errors) {
         super(errors);
     }

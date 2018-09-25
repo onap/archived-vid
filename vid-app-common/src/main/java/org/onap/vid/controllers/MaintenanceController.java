@@ -14,12 +14,14 @@ import org.onap.vid.services.CategoryParameterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ForbiddenException;
-import java.util.Arrays;
-import java.util.Collections;
 
 import static org.onap.vid.utils.Logging.getMethodCallerName;
 
@@ -28,108 +30,99 @@ import static org.onap.vid.utils.Logging.getMethodCallerName;
  */
 
 @RestController
-@RequestMapping(MaintenanceController.MAINTENANCE)
+@RequestMapping("maintenance")
 public class MaintenanceController extends UnRestrictedBaseController {
 
-    public static final String MAINTENANCE = "maintenance";
+    private CategoryParameterService categoryParameterService;
+    private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(MaintenanceController.class);
 
     @Autowired
-    protected CategoryParameterService categoryParameterService;
-    private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(MaintenanceController.class);
+    public MaintenanceController(CategoryParameterService categoryParameterService) {
+        this.categoryParameterService = categoryParameterService;
+    }
 
     /**
      * Add list of options to one category parameter
-     * @param request the request
-     * @return the new option
-     * @throws Exception the exception
      */
     @RequestMapping(value = "/category_parameter/{categoryName}", method = RequestMethod.POST)
-    public ResponseEntity addCategoryOptions (
-            HttpServletRequest request, @PathVariable String categoryName, @RequestBody AddCategoryOptionsRequest option) {
+    public ResponseEntity addCategoryOptions(@PathVariable String categoryName, @RequestBody AddCategoryOptionsRequest option) {
         debugStartLog();
         try {
             AddCategoryOptionResponse response = categoryParameterService.createCategoryParameterOptions(categoryName, option);
-            HttpStatus httpStatus = response.getErrors().size()>0 ? HttpStatus.MULTI_STATUS : HttpStatus.OK;
+            HttpStatus httpStatus = response.getErrors().size() > 0 ? HttpStatus.MULTI_STATUS : HttpStatus.OK;
             debugEndLog(response);
-            return new ResponseEntity<>(response, httpStatus);
-        }
-        catch (CategoryParameterServiceImpl.UnfoundedCategoryException exception) {
-            return new ResponseEntity<>(new AddCategoryOptionResponse(Collections.singletonList(exception.getMessage())), HttpStatus.NOT_FOUND);
-        }
-        catch (Exception exception) {
+            return createResponseWithBody(httpStatus, response);
+        } catch (CategoryParameterServiceImpl.UnfoundedCategoryException exception) {
+            return createResponseWithBody(HttpStatus.NOT_FOUND, new AddCategoryOptionResponse(exception.getMessage()));
+        } catch (Exception exception) {
             LOGGER.error("failed to add option to parameter category " + categoryName, exception);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return createResponseWithoutBody(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @RequestMapping(value = "/category_parameter/{categoryName}", method = RequestMethod.PUT)
-    public ResponseEntity updateNameForOption (
-            HttpServletRequest request, @PathVariable String categoryName, @RequestBody CategoryParameterOptionRep option) {
+    public ResponseEntity updateNameForOption(@PathVariable String categoryName, @RequestBody CategoryParameterOptionRep option) {
         debugStartLog();
         try {
             AddCategoryOptionResponse response = categoryParameterService.updateCategoryParameterOption(categoryName, option);
-            HttpStatus httpStatus = response.getErrors().size()>0 ? HttpStatus.MULTI_STATUS : HttpStatus.OK;
+            HttpStatus httpStatus = response.getErrors().size() > 0 ? HttpStatus.MULTI_STATUS : HttpStatus.OK;
             debugEndLog(response);
-            return new ResponseEntity<>(response, httpStatus);
-        }
-        catch (ForbiddenException exception) {
-            return new ResponseEntity<>(new AddCategoryOptionResponse(Collections.singletonList(exception.getMessage())), HttpStatus.FORBIDDEN);
-        }
-        catch (CategoryParameterServiceImpl.UnfoundedCategoryException|CategoryParameterServiceImpl.UnfoundedCategoryOptionException exception) {
-            return new ResponseEntity<>(new AddCategoryOptionResponse(Collections.singletonList(exception.getMessage())), HttpStatus.NOT_FOUND);
-        }
-        catch (CategoryParameterServiceImpl.AlreadyExistOptionNameException exception) {
-            return new ResponseEntity<>(new AddCategoryOptionResponse(Collections.singletonList(exception.getMessage())), HttpStatus.CONFLICT);
-        }
-        catch (Exception exception) {
+            return createResponseWithBody(httpStatus, response);
+        } catch (ForbiddenException exception) {
+            return createResponseWithBody(HttpStatus.FORBIDDEN, new AddCategoryOptionResponse(exception.getMessage()));
+        } catch (CategoryParameterServiceImpl.UnfoundedCategoryException | CategoryParameterServiceImpl.UnfoundedCategoryOptionException exception) {
+            return createResponseWithBody(HttpStatus.NOT_FOUND, new AddCategoryOptionResponse(exception.getMessage()));
+
+        } catch (CategoryParameterServiceImpl.AlreadyExistOptionNameException exception) {
+            return createResponseWithBody(HttpStatus.CONFLICT, new AddCategoryOptionResponse(exception.getMessage()));
+
+        } catch (Exception exception) {
             LOGGER.error("failed to update option to parameter category " + categoryName, exception);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return createResponseWithoutBody(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Gets the owning entity properties.
-     * @param request the request
-     * @return the property
-     * @throws Exception the exception
      */
     @RequestMapping(value = "/category_parameter", method = RequestMethod.GET)
-    public ResponseEntity getCategoryParameter(HttpServletRequest request, @RequestParam(value="familyName", required = true) Family familyName) {
+    public ResponseEntity getCategoryParameter(@RequestParam(value = "familyName", required = true) Family familyName) {
         debugStartLog();
         try {
             CategoryParametersResponse response = categoryParameterService.getCategoryParameters(familyName);
             debugEndLog(response);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        catch (Exception exception) {
+            return ResponseEntity.ok().body(response);
+        } catch (Exception exception) {
             LOGGER.error("failed to retrieve category parameter list from DB.", exception);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-
     /**
      * Delete option of the category.
-     * @param request the request
-     * @throws Exception the exception
      */
-    @RequestMapping(value = "/delete_category_parameter/{categoryName}", method = RequestMethod.POST)
-    public ResponseEntity deleteCategoryOption (
-            HttpServletRequest request, @PathVariable String categoryName, @RequestBody CategoryParameterOption option) {
+    @RequestMapping(value = "/delete_category_parameter/{categoryName}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteCategoryOption(@PathVariable String categoryName, @RequestBody CategoryParameterOption option) {
         debugStartLog();
 
         try {
             categoryParameterService.deleteCategoryOption(categoryName, option);
             debugEndLog(HttpStatus.OK);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (CategoryParameterServiceImpl.UnfoundedCategoryException exception) {
-            return new ResponseEntity<>(new AddCategoryOptionResponse(Arrays.asList(exception.getMessage())), HttpStatus.NOT_FOUND);
-        }
-        catch (Exception exception) {
+            return ResponseEntity.ok().build();
+        } catch (CategoryParameterServiceImpl.UnfoundedCategoryException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AddCategoryOptionResponse(exception.getMessage()));
+        } catch (Exception exception) {
             LOGGER.error("failed to add/update owning entity option", exception);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    private ResponseEntity createResponseWithBody(HttpStatus status, AddCategoryOptionResponse response) {
+        return ResponseEntity.status(status).body(response);
+    }
+
+    private ResponseEntity createResponseWithoutBody(HttpStatus status) {
+        return ResponseEntity.status(status).build();
     }
 
     private void debugStartLog() {
