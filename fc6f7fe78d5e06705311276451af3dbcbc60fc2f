@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_107635d9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "static modifier - there is no point for these methods to be static. Please remove them from all occurrences.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_cb1ed0bb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "Naming: Personally I avoid naming methods getXXX unless they return encapsulated field values of simple java bean. Otherwise I ten to use different that better represent the action. In this case getXXX is used for getting both the system Properties and create status object. Two different functionalties, same approach to naming. I\u0027d suggest renaming the getOkStatus and getErrorStatus by replacing \"get\" with \"create\". Or maybe even drop the verbs and make it readable in a fluent style: \"return okStatus()\" or \"return errorStatus(msg)\"\nRemember to reorder the methods -\u003e definition comes after last usage",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4b82c0c9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "Rename not exhaustive enough, does not indicate what the method does and it does more than just a simple status return :) Try to think of a more descriptive method name.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_3069f125",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "Suggestion: think of in-lining this invocation without the private method. \nTo tell you the truth I do not see any benefits from having this invocation wrapped in a private method. This method can be just used directly. Although in case of changing the dependency only one line needs changing since the private wrapping method acts as an apdater, still in this case less code would be more preferable.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_eb72ac10",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "Just for the sake of immutability, make the fields final :)",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ab67d424",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDbConnection.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "This class is just a generic connection factory, it has no information about the FnApp or any other DB specificinformation. I\u0027d suggest renaming this to a ConnectionFactory.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8b621815",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDbConnection.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "I\u0027d recommend using guava preconditions for these null checks and just failing in case null values arrive here. Less branched code and quick termination of the flow and avoiding a potential NPE by relying on a null-referenced Connection.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8b9458e9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "The method declares SQLException is thrown, while the implementation rethrows a Exception. A good practice is to catch and rethrow a more specific exception. In this case SQLException.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ebf70c58",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "Would it be possible to reduce the number of nested try clauses to just one ? try-with-resources allows to have several resources opened in one try()",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0bda88e9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "What is the point of doing a rollback when no transaction is ever opened and committed ? The query is a simple select which does not do any updates on the DB. So the rollback is redundant :)",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e66743b6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "Please reorder the field declarations. constants first :)",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c601e7b0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "Method name - ok/nokCaseSetUp is too vague. From a code reader\u0027s perspective there still a neeed to look inside the method to understand what is going - an additional jump. Please rename these methods to something more descriptive i.e:\ngivenProfileCountIs(666) or givenProfileCountThrows(ex)\nAlso reorder these methods, they should be placed after their last usage. Definitely private methods should not be defined at the beginning of a class :)",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c6b7a739",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dao/FnAppDoaImplTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-25T18:07:33Z",
+      "side": 1,
+      "message": "I would rename this to simply: shouldRethrowSQLException",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
