@@ -33,9 +33,13 @@ public class MaintenanceController extends UnRestrictedBaseController {
 
     public static final String MAINTENANCE = "maintenance";
 
-    @Autowired
     protected CategoryParameterService categoryParameterService;
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(MaintenanceController.class);
+
+    @Autowired
+    public MaintenanceController(CategoryParameterService categoryParameterService) {
+        this.categoryParameterService = categoryParameterService;
+    }
 
     /**
      * Add list of options to one category parameter
