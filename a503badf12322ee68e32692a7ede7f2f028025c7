@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_d22f6587",
+        "filename": "docs/offeredapis.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-09-25T07:15:28Z",
+      "side": 1,
+      "message": "Please update",
+      "range": {
+        "startLine": 72,
+        "startChar": 35,
+        "endLine": 72,
+        "endChar": 43
+      },
+      "revId": "a503badf12322ee68e32692a7ede7f2f028025c7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
