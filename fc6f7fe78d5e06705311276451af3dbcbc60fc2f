@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_85ec4491",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_107635d9",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_cb1ed0bb",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 9
@@ -30,6 +48,24 @@
       "writtenOn": "2018-09-25T18:07:33Z",
       "side": 1,
       "message": "Naming: Personally I avoid naming methods getXXX unless they return encapsulated field values of simple java bean. Otherwise I ten to use different that better represent the action. In this case getXXX is used for getting both the system Properties and create status object. Two different functionalties, same approach to naming. I\u0027d suggest renaming the getOkStatus and getErrorStatus by replacing \"get\" with \"create\". Or maybe even drop the verbs and make it readable in a fluent style: \"return okStatus()\" or \"return errorStatus(msg)\"\nRemember to reorder the methods -\u003e definition comes after last usage",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_65e7a8ad",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_cb1ed0bb",
       "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_05f83448",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_4b82c0c9",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_3069f125",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 9
@@ -64,6 +118,24 @@
       "writtenOn": "2018-09-25T18:07:33Z",
       "side": 1,
       "message": "Suggestion: think of in-lining this invocation without the private method. \nTo tell you the truth I do not see any benefits from having this invocation wrapped in a private method. This method can be just used directly. Although in case of changing the dependency only one line needs changing since the private wrapping method acts as an apdater, still in this case less code would be more preferable.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a594e0e8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_3069f125",
       "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c599dc20",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_eb72ac10",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_ab67d424",
         "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDbConnection.java",
         "patchSetId": 9
@@ -98,6 +188,24 @@
       "writtenOn": "2018-09-25T18:07:33Z",
       "side": 1,
       "message": "This class is just a generic connection factory, it has no information about the FnApp or any other DB specificinformation. I\u0027d suggest renaming this to a ConnectionFactory.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_85a3e44e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDbConnection.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_ab67d424",
       "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_085e0913",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDbConnection.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_8b621815",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_8b9458e9",
         "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
         "patchSetId": 9
@@ -132,6 +258,24 @@
       "writtenOn": "2018-09-25T18:07:33Z",
       "side": 1,
       "message": "The method declares SQLException is thrown, while the implementation rethrows a Exception. A good practice is to catch and rethrow a more specific exception. In this case SQLException.",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e59178f2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_8b9458e9",
       "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_45acec35",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_ebf70c58",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_0bda88e9",
         "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
         "patchSetId": 9
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_e5a89822",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_0bda88e9",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e66743b6",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 9
@@ -183,6 +363,24 @@
       "writtenOn": "2018-09-25T18:07:33Z",
       "side": 1,
       "message": "Please reorder the field declarations. constants first :)",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_656c8809",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e66743b6",
       "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -242,6 +440,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_250bf02c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c601e7b0",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c6b7a739",
         "filename": "vid-app-common/src/test/java/org/onap/vid/dao/FnAppDoaImplTest.java",
         "patchSetId": 9
@@ -253,6 +469,24 @@
       "writtenOn": "2018-09-25T18:07:33Z",
       "side": 1,
       "message": "I would rename this to simply: shouldRethrowSQLException",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_45086c2d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dao/FnAppDoaImplTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-26T07:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c6b7a739",
       "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
