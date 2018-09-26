@@ -25,6 +25,7 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.dao.FnAppDoaImpl;
 import org.onap.vid.model.GitRepositoryState;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,6 @@ import java.util.Properties;
 @RequestMapping("/")
 public class HealthCheckController extends UnRestrictedBaseController {
 
-
     /**
      * The logger.
      */
@@ -58,6 +58,7 @@ public class HealthCheckController extends UnRestrictedBaseController {
     final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
     private static final String HEALTH_CHECK_PATH = "/healthCheck";
+    private static final String GIT_PROPERTIES_FILENAME = "git.properties";
 
     /**
      * Model for JSON response with health-check results.
@@ -193,10 +194,10 @@ public class HealthCheckController extends UnRestrictedBaseController {
         return healthStatus;
     }
 
-    @RequestMapping(value = "/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/commitInfo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public GitRepositoryState getCommitInfo() throws IOException {
         Properties properties = new Properties();
-        properties.load(getClass().getClassLoader().getResourceAsStream("git.properties"));
+        properties.load(getClass().getClassLoader().getResourceAsStream(GIT_PROPERTIES_FILENAME));
         return new GitRepositoryState(properties);
     }
 }
