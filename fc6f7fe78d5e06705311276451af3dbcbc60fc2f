@@ -224,6 +224,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_687bfd7b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-09-26T07:01:50Z",
+      "side": 1,
+      "message": "Yes we do not have to know nor expose anything that has to do with the DB and the query inside - from these tests perspective we don\u0027t care about what is going on inside the Dao. But we do care about the api and what value it returns, because it affects the code. I pointed out only the vague name that prepares a test condition. You and I know what ok and nok means. Someone who sees this for the first time has to dive inside the methods to see what it actually means and in this case the mockito implementation is just more descriptive:) I am obviously nitpicking in such simple code, but this approach becomes a problem in more sophisticated code.",
+      "parentUuid": "1a76adc5_4585ccab",
+      "revId": "fc6f7fe78d5e06705311276451af3dbcbc60fc2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c6b7a739",
         "filename": "vid-app-common/src/test/java/org/onap/vid/dao/FnAppDoaImplTest.java",
         "patchSetId": 9
