@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_680bfd7d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-09-26T09:50:46Z",
+      "side": 1,
+      "message": "i\u0027m not a fan of using multiple returns.  I\u0027d rather create new method (f.e. getAuthorizationFromProperties), and here just return (!useClientCert) ? Maps.newHashMap(): getAuthorizationFromProperties;",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 5
+      },
+      "revId": "8e7db0db55f8910b19898d2b401e6ea15e115b33",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
