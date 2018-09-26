@@ -22,6 +22,30 @@
       "revId": "81514934814195389ed1cea1266ac305751bcddb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_68b3fd0a",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/activateOperationalEnvironmentsPayloadToMso.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-09-26T07:57:02Z",
+      "side": 1,
+      "message": "without that tests are failing: https://jenkins.onap.org/job/vid-master-verify-java/384/console",
+      "parentUuid": "1a76adc5_df2f6e87",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 35
+      },
+      "revId": "81514934814195389ed1cea1266ac305751bcddb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
