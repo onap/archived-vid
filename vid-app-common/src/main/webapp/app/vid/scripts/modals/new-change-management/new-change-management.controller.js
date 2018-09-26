@@ -10,7 +10,7 @@
         vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
         vm.configUpdatePatternError = "Invalid file type. Please select a file with a CSV extension.";
         vm.configUpdateContentError = "Invalid file structure.";
-        
+
         vm.wizardStep = 1;
         vm.nextStep = function(){
             vm.wizardStep++;
@@ -193,9 +193,10 @@
 			var result = {};
 			result.requestType = changeManagement.workflow;
 			var workflowType = changeManagement.workflow;
+			var configurationParameters = changeManagement.configurationParameters;
 			result.requestDetails = [];
 			_.forEach(changeManagement.vnfNames, function (vnf) {
-				
+
 				try{
 				var requestInfoData ={};
 				var requestParametersData ={};
@@ -203,13 +204,13 @@
                     return !item.scale;
                 });
 				if (vnf.availableVersions && vnf.availableVersions.length!=0){
-					
+
 					requestInfoData ={
 						source: vnf.availableVersions[0].requestInfo.source,
 						suppressRollback: vnf.availableVersions[0].requestInfo.suppressRollback,
 						requestorId: vnf.availableVersions[0].requestInfo.requestorId
 					}
-					
+
 					if(workflowType=='Update'){
 						requestParametersData = {
 							usePreload: vnf.availableVersions[0].requestParameters.usePreload
@@ -278,7 +279,8 @@
                         cloudConfiguration: vnf.cloudConfiguration,
                         requestInfo: requestInfoData,
                         relatedInstanceList: [],
-                        requestParameters:requestParametersData
+                        requestParameters:requestParametersData,
+                        configurationParameters: JSON.parse(configurationParameters)
                     };
                     requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
                 }else{
@@ -297,7 +299,8 @@
                         cloudConfiguration: vnf.cloudConfiguration,
                         requestInfo: requestInfoData,
                         relatedInstanceList: [],
-                        requestParameters:requestParametersData
+                        requestParameters:requestParametersData,
+                        configurationParameters: []
                     };
                 }
 
@@ -352,7 +355,6 @@
 			});
 			return JSON.stringify(result);
 		}
-		
         vm.openModal = function () {
             if(vm.hasScheduler) { //scheduling supported
 				$scope.widgetParameter = ""; // needed by the scheduler?
@@ -370,7 +372,7 @@
 					widgetData: vm.changeManagement,
 					widgetParameter: $scope.widgetParameter
 				};
-			
+
 				window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
 			} else {
 				//no scheduling support
@@ -380,7 +382,9 @@
                     if(vm.changeManagement.workflow==="VNF Scale Out") {
                         dataToSo = JSON.parse(dataToSo);
                         dataToSo = {requestDetails: dataToSo.requestDetails[0]};
-                        changeManagementService.postChangeManagementScaleOutNow(dataToSo, vm.changeManagement.vnfNames[0]["service-instance-node"][0].properties["service-instance-id"], vm.changeManagement.vnfNames[0].id);
+                        changeManagementService.postChangeManagementScaleOutNow(dataToSo,
+                            vm.changeManagement.vnfNames[0]["service-instance-node"][0].properties["service-instance-id"],
+                            vm.changeManagement.vnfNames[0].id);
                     }else{
                         //TODO: foreach
                         var vnfName = vm.changeManagement.vnfNames[0].name;
@@ -649,7 +653,7 @@
         vm.isConfigUpdate = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfConfigUpdate;
         }
-		
+
         vm.isScaleOut = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfScaleOut;
         }
