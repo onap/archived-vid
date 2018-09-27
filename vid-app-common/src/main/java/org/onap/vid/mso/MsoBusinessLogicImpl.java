@@ -175,6 +175,19 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
     @Override
+    public MsoResponseWrapper scaleOutVfModuleInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
+        String methodName = "scaleOutVfModuleInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+
+        String endpoint;
+        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_SCALE_OUT);
+
+        String partial_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        String vf_module_endpoint = partial_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+
+        return msoClientInterface.createVfModuleInstance(requestDetails, vf_module_endpoint);
+    }
+    @Override
     public MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String serviceInstanceId) {
         String methodName = "createConfigurationInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);

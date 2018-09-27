@@ -99,6 +99,8 @@ public class MsoProperties extends SystemProperties {
 	/** The Constant MSO_REST_API_VF_MODULE_INSTANCE. */
 	public static final String MSO_REST_API_VF_MODULE_INSTANCE = "mso.restapi.vf.module.instance";
 
+	public static final String MSO_REST_API_VF_MODULE_SCALE_OUT = "mso.restapi.vf.module.scaleout";
+
 	/** The Constant MSO_REST_API_VOLUME_GROUP_INSTANCE. */
 	public static final String MSO_REST_API_VOLUME_GROUP_INSTANCE = "mso.restapi.volume.group.instance"; //serviceInstances/v2/{serviceInstanceId}/volumeGroups
 
