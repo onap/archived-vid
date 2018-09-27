@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "1a76adc5_916d5dcf",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-27T13:57:43Z",
+      "side": 1,
+      "message": "Why is password logged here? Such tihngs should never happen in logs and are potential security issue.",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 83
+      },
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_51402535",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-27T13:57:43Z",
+      "side": 1,
+      "message": "I think this class should be in separate .java file.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 9
+      },
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_513905d7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-27T13:57:43Z",
+      "side": 1,
+      "message": "Avoid using string concatenation in logs. This is quite heavy operation and, if debug logs are disabled, are still being executed. However I don\u0027t know if this is possible with this stupid logger.",
+      "range": {
+        "startLine": 46,
+        "startChar": 57,
+        "endLine": 46,
+        "endChar": 81
+      },
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_ae459818",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 11
@@ -13,6 +82,29 @@
       "writtenOn": "2018-09-27T12:05:57Z",
       "side": 1,
       "message": "Typo in Estabilished :) should be Established :)",
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_9108fd29",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-09-27T13:57:43Z",
+      "side": 1,
+      "message": "You can static import those values. Will look cleaner imo.",
+      "range": {
+        "startLine": 46,
+        "startChar": 58,
+        "endLine": 46,
+        "endChar": 71
+      },
       "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
