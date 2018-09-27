@@ -299,8 +299,7 @@
                         cloudConfiguration: vnf.cloudConfiguration,
                         requestInfo: requestInfoData,
                         relatedInstanceList: [],
-                        requestParameters:requestParametersData,
-                        configurationParameters: []
+                        requestParameters:requestParametersData
                     };
                 }
 
