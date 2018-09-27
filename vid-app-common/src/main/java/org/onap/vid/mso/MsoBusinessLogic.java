@@ -28,6 +28,8 @@ public interface MsoBusinessLogic {
 
     MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
+    MsoResponseWrapper scaleOutVfModuleInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
+
     MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String serviceInstanceId);
 
     MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String serviceInstanceId, String serviceStatus);

@@ -102,7 +102,7 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
                         break;
                     }
                     case ChangeManagementRequest.SCALE_OUT:{
-                        msoResponseWrapperObject = msoBusinessLogic.createVfModuleInstance(currentRequestDetails, serviceInstanceId, vnfInstanceId);
+                        msoResponseWrapperObject = msoBusinessLogic.scaleOutVfModuleInstance(currentRequestDetails, serviceInstanceId, vnfInstanceId);
                         break;
                     }
 					default:
