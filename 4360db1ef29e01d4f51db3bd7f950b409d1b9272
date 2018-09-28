@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_dd1684a7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-28T05:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_916d5dcf",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 83
+      },
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_51402535",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
         "patchSetId": 11
@@ -36,6 +60,30 @@
       "writtenOn": "2018-09-27T13:57:43Z",
       "side": 1,
       "message": "I think this class should be in separate .java file.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 9
+      },
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_7d0bb07d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/HealthCheckController.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-28T05:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_51402535",
       "range": {
         "startLine": 135,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_9d100caa",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dao/FnAppDoaImpl.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-28T05:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_513905d7",
+      "range": {
+        "startLine": 46,
+        "startChar": 57,
+        "endLine": 46,
+        "endChar": 81
+      },
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_ae459818",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 11
@@ -88,6 +160,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_3d3e982a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-28T05:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_ae459818",
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_9108fd29",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
         "patchSetId": 11
@@ -99,6 +189,30 @@
       "writtenOn": "2018-09-27T13:57:43Z",
       "side": 1,
       "message": "You can static import those values. Will look cleaner imo.",
+      "range": {
+        "startLine": 46,
+        "startChar": 58,
+        "endLine": 46,
+        "endChar": 71
+      },
+      "revId": "4360db1ef29e01d4f51db3bd7f950b409d1b9272",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_1d45dcb2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/HealthCheckControllerTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-09-28T05:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_9108fd29",
       "range": {
         "startLine": 46,
         "startChar": 58,
