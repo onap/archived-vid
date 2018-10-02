@@ -23,6 +23,7 @@ package org.onap.vid.client;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
 import io.joshworks.restclient.http.RestClient;
+import io.joshworks.restclient.http.exceptions.RestClientException;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -39,7 +40,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.KeyManagementException;
 import java.security.cert.CertificateException;
-import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLException;
 import java.security.KeyStoreException;
 import java.text.SimpleDateFormat;
 import javax.net.ssl.SSLContext;
@@ -150,13 +151,13 @@ public class SyncRestClient implements SyncRestClientInterface {
 
     @SneakyThrows
     private <T> HttpResponse<T> callWithRetryOverHttp(String url,
-        CheckedFunction1<String, HttpResponse<T>> httpRequest) {
+                                                      CheckedFunction1<String, HttpResponse<T>> httpRequest) {
         try {
             return httpRequest.apply(url);
-        } catch (Exception e) {
-            if (e.getCause() instanceof SSLHandshakeException) {
+        } catch (RestClientException e) {
+            if (e.getCause() instanceof SSLException) {
                 logger.warn(EELFLoggerDelegate.debugLogger,
-                    DATE_FORMAT.format(new Date()) + TRY_TO_CALL_OVER_HTTP, e);
+                        DATE_FORMAT.format(new Date()) + TRY_TO_CALL_OVER_HTTP, e);
                 return httpRequest.apply(url.replaceFirst(HTTPS_SCHEMA, HTTP_SCHEMA));
             }
             throw e;
