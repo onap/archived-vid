@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_0bc4ce90",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/InProgressStatusCommand.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-10-03T15:11:39Z",
+      "side": 1,
+      "message": "reformat",
+      "revId": "0c05d0a06227f9b2943ed774881eef6568a408be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
