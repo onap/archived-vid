@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "bada0100_016d8d32",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-04T08:41:30Z",
+      "side": 1,
+      "message": "Why is this protected?",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 64
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_f00b7529",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 1
@@ -110,6 +133,29 @@
         "startChar": 12,
         "endLine": 80,
         "endChar": 144
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_618819e8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-04T08:41:30Z",
+      "side": 1,
+      "message": "Useless javadoc (ditto in other javadocs)",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 38
       },
       "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
@@ -209,6 +255,29 @@
     },
     {
       "key": {
+        "uuid": "bada0100_a165a146",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-04T08:41:30Z",
+      "side": 1,
+      "message": "I think we shouldn\u0027t use package imports.\n\nYou can change that in IntelliJ IDEA in settings under\nEditor \u003e Code Style \u003e Java \u003e Imports",
+      "range": {
+        "startLine": 34,
+        "startChar": 1,
+        "endLine": 34,
+        "endChar": 36
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_aba022f5",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -220,6 +289,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "These constants make me jumping up and down to understand what happens, is this really needed?",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 51
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_c1e465ae",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-04T08:41:30Z",
+      "side": 1,
+      "message": "Agree. Some names are vague. I\u0027d move most of those constants to variables directly in tests.",
+      "parentUuid": "bada0100_aba022f5",
       "range": {
         "startLine": 42,
         "startChar": 4,
@@ -347,6 +440,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_e173a913",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-04T08:41:30Z",
+      "side": 1,
+      "message": "I disagree. Raw json as string is very unreadable in java and json in separate file means that you must jump between test file and json.\n\nThis code is actually prety simple to understand - actually all you need to know is that \"$\" is root element.",
+      "parentUuid": "bada0100_4b7c1673",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 189,
+        "endChar": 113
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_b0ac0d8e",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -386,6 +503,29 @@
         "startChar": 26,
         "endLine": 218,
         "endChar": 47
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_21d8d1ee",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-04T08:41:30Z",
+      "side": 1,
+      "message": "If map can be immutable you can use:\nreturn ImmutableMap.of(TEST_KEY, li);",
+      "range": {
+        "startLine": 234,
+        "startChar": 8,
+        "endLine": 236,
+        "endChar": 19
       },
       "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
