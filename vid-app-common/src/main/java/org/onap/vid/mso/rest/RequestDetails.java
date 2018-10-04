@@ -20,13 +20,21 @@
 
 package org.onap.vid.mso.rest;
 
-import com.fasterxml.jackson.annotation.*;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.onap.vid.domain.mso.*;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.onap.vid.domain.mso.CloudConfiguration;
+import org.onap.vid.domain.mso.ModelInfo;
+import org.onap.vid.domain.mso.RequestInfo;
+import org.onap.vid.domain.mso.RequestParameters;
+import org.onap.vid.domain.mso.SubscriberInfo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +82,7 @@ public class RequestDetails{
     private RequestParameters requestParameters;
 
     @JsonProperty("configurationParameters")
-    protected List<Map<String, String>> configurationParameters = new ArrayList<>();
+    protected List<Map<String, String>> configurationParameters;
 
     /** The additional properties. */
     @JsonIgnore
@@ -226,7 +234,7 @@ public class RequestDetails{
                 .append(getRequestParameters())
                 .append(subscriberInfo)
                 .append(additionalProperties)
-                .append(configurationParameters.hashCode())
+                .append(configurationParameters)
                 .toHashCode();
     }
 
