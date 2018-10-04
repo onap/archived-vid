@@ -1,0 +1,395 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_4b573603",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Check for usages and try inline",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 42
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_f00b7529",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Is this used? Also check other methods",
+      "range": {
+        "startLine": 52,
+        "startChar": 12,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_f024d5c7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "I have feeling that errors are handled in catch block instead here.",
+      "range": {
+        "startLine": 56,
+        "startChar": 12,
+        "endLine": 56,
+        "endChar": 108
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_d02bd192",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Here should be separate c-tor",
+      "range": {
+        "startLine": 61,
+        "startChar": 70,
+        "endLine": 61,
+        "endChar": 119
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6b255aaa",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Handling exception looks very generic. Candidate for method which take status as argument.",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 144
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_0b3a8ecd",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Replace with static factory",
+      "range": {
+        "startLine": 106,
+        "startChar": 12,
+        "endLine": 106,
+        "endChar": 65
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6b5c7a26",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Copy paste error? I think it should be DELETE",
+      "range": {
+        "startLine": 120,
+        "startChar": 96,
+        "endLine": 120,
+        "endChar": 100
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ab94a237",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "ResponseEntity has static builder for that",
+      "range": {
+        "startLine": 128,
+        "startChar": 19,
+        "endLine": 128,
+        "endChar": 54
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_8b743e9d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Is this parameter has more than one element elsewhere?",
+      "range": {
+        "startLine": 131,
+        "startChar": 70,
+        "endLine": 131,
+        "endChar": 107
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_aba022f5",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "These constants make me jumping up and down to understand what happens, is this really needed?",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 51
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_b09e4d62",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Don\u0027t go that way. This is very fragile, don\u0027t depend on other people following convention, they probably won\u0027t.\n\nIf you really, really need to split tests by some criterion just split class however I don\u0027t see benefit of doing this",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 94
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cb61e6d4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Wrap whole expression in method",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 107
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2bac32ed",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "What you testing here? AddCategoryOptionsRequest is mocked anyway. Don\u0027t test it here.",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 88,
+        "endChar": 70
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_4b0f36e2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Method should just return whole object, this map alone is not used anywhere.",
+      "range": {
+        "startLine": 179,
+        "startChar": 28,
+        "endLine": 179,
+        "endChar": 89
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_4b7c1673",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "I think simpler solution here would be comparing result with raw json string. Just think, when you back month after to this test how long will take you to get familiar with that part of code?",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 189,
+        "endChar": 113
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_b0ac0d8e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Is this needed?",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 65
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_90bb09c4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-04T05:42:23Z",
+      "side": 1,
+      "message": "Think about better name. \n\n1) What means basic in this context?\n2) Is this really mock? Name suggests that.\n3) By using \"mvcMock\" and rest of fancy words in name you make me believe this is another legitimate bloated Spring class, I even tried to google it\n\nMy proposition would be like \"prepareAddCategoryRequest\" or something like that.",
+      "range": {
+        "startLine": 218,
+        "startChar": 26,
+        "endLine": 218,
+        "endChar": 47
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
