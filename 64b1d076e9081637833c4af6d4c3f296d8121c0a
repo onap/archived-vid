@@ -25,6 +25,52 @@
     },
     {
       "key": {
+        "uuid": "bada0100_7c4afe84",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 29
+      },
+      "writtenOn": "2018-10-04T13:03:50Z",
+      "side": 1,
+      "message": "wouldn\u0027t this one need to be changed as well ? I haven\u0027t looked at documentation but it seems like from the pattern it should be /onap/so/infra as well ?",
+      "range": {
+        "startLine": 118,
+        "startChar": 27,
+        "endLine": 118,
+        "endChar": 69
+      },
+      "revId": "64b1d076e9081637833c4af6d4c3f296d8121c0a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_9c4fa292",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 29
+      },
+      "writtenOn": "2018-10-04T13:03:50Z",
+      "side": 1,
+      "message": "/onap/so/infra ?",
+      "range": {
+        "startLine": 121,
+        "startChar": 39,
+        "endLine": 121,
+        "endChar": 64
+      },
+      "revId": "64b1d076e9081637833c4af6d4c3f296d8121c0a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_3981f34a",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
         "patchSetId": 5
