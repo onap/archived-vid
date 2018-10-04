@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_61b019f5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_4b573603",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 42
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_016d8d32",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2018-10-04T08:41:30Z",
       "side": 1,
       "message": "Why is this protected?",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 64
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1c92d257",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_016d8d32",
       "range": {
         "startLine": 36,
         "startChar": 4,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_e19ba970",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_f00b7529",
+      "range": {
+        "startLine": 52,
+        "startChar": 12,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_f024d5c7",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "I have feeling that errors are handled in catch block instead here.",
+      "range": {
+        "startLine": 56,
+        "startChar": 12,
+        "endLine": 56,
+        "endChar": 108
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_7cb67ede",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "They are different errors. Handling of exceptions and the \u0027light\u0027 type of errors can be unified in further refactoring as discussed f2f.",
+      "parentUuid": "bada0100_f024d5c7",
       "range": {
         "startLine": 56,
         "startChar": 12,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_7ce99e19",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_d02bd192",
+      "range": {
+        "startLine": 61,
+        "startChar": 70,
+        "endLine": 61,
+        "endChar": 119
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_6b255aaa",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 1
@@ -128,6 +248,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "Handling exception looks very generic. Candidate for method which take status as argument.",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 144
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_fc94ae45",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_6b255aaa",
       "range": {
         "startLine": 80,
         "startChar": 12,
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_9c8d6234",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_618819e8",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 38
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_0b3a8ecd",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 1
@@ -174,6 +342,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "Replace with static factory",
+      "range": {
+        "startLine": 106,
+        "startChar": 12,
+        "endLine": 106,
+        "endChar": 65
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_3cdd5643",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_0b3a8ecd",
       "range": {
         "startLine": 106,
         "startChar": 12,
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_619ed958",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_6b5c7a26",
+      "range": {
+        "startLine": 120,
+        "startChar": 96,
+        "endLine": 120,
+        "endChar": 100
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_ab94a237",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 1
@@ -220,6 +436,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "ResponseEntity has static builder for that",
+      "range": {
+        "startLine": 128,
+        "startChar": 19,
+        "endLine": 128,
+        "endChar": 54
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_9cd80255",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_ab94a237",
       "range": {
         "startLine": 128,
         "startChar": 19,
@@ -255,6 +495,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_fcc90e5b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Yes. For now it can take more than one element in CategoryParameterServiceImpl class. To be decided if it is really necessary, probably not.",
+      "parentUuid": "bada0100_8b743e9d",
+      "range": {
+        "startLine": 131,
+        "startChar": 70,
+        "endLine": 131,
+        "endChar": 107
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_a165a146",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -266,6 +530,30 @@
       "writtenOn": "2018-10-04T08:41:30Z",
       "side": 1,
       "message": "I think we shouldn\u0027t use package imports.\n\nYou can change that in IntelliJ IDEA in settings under\nEditor \u003e Code Style \u003e Java \u003e Imports",
+      "range": {
+        "startLine": 34,
+        "startChar": 1,
+        "endLine": 34,
+        "endChar": 36
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1c79722f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_a165a146",
       "range": {
         "startLine": 34,
         "startChar": 1,
@@ -325,6 +613,54 @@
     },
     {
       "key": {
+        "uuid": "bada0100_01026d3e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_aba022f5",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 51
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_bc75c633",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_c1e465ae",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 51
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_b09e4d62",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -336,6 +672,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "Don\u0027t go that way. This is very fragile, don\u0027t depend on other people following convention, they probably won\u0027t.\n\nIf you really, really need to split tests by some criterion just split class however I don\u0027t see benefit of doing this",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 94
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_21c1b180",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_b09e4d62",
       "range": {
         "startLine": 72,
         "startChar": 4,
@@ -371,6 +731,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_6111f9ab",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_cb61e6d4",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 107
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_2bac32ed",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -394,6 +778,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_81373db0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_2bac32ed",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 88,
+        "endChar": 70
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_4b0f36e2",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -405,6 +813,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "Method should just return whole object, this map alone is not used anywhere.",
+      "range": {
+        "startLine": 179,
+        "startChar": 28,
+        "endLine": 179,
+        "endChar": 89
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_fca26e99",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_4b0f36e2",
       "range": {
         "startLine": 179,
         "startChar": 28,
@@ -464,6 +896,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_1ca0928f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "So let\u0027s wait for a third voice.",
+      "parentUuid": "bada0100_e173a913",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 189,
+        "endChar": 113
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_b0ac0d8e",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -475,6 +931,30 @@
       "writtenOn": "2018-10-04T05:42:23Z",
       "side": 1,
       "message": "Is this needed?",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 65
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_a13cc194",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_b0ac0d8e",
       "range": {
         "startLine": 196,
         "startChar": 8,
@@ -510,6 +990,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_6146d925",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_90bb09c4",
+      "range": {
+        "startLine": 218,
+        "startChar": 26,
+        "endLine": 218,
+        "endChar": 47
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_21d8d1ee",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 1
@@ -521,6 +1025,30 @@
       "writtenOn": "2018-10-04T08:41:30Z",
       "side": 1,
       "message": "If map can be immutable you can use:\nreturn ImmutableMap.of(TEST_KEY, li);",
+      "range": {
+        "startLine": 234,
+        "startChar": 8,
+        "endLine": 236,
+        "endChar": 19
+      },
+      "revId": "b65ff164deb9e54a3ff72dab472e87b78ed7a2fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_5c9e1a58",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-04T12:03:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_21d8d1ee",
       "range": {
         "startLine": 234,
         "startChar": 8,
