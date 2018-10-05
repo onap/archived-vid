@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "bada0100_16ddca70",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-10-05T08:01:35Z",
+      "side": 1,
+      "message": "By the way i don\u0027t understand why you have changed the structure of the so properties.\nyou should have leave the prefix in the mso.server.url so you don\u0027t need to duplicate....",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_f65e0612",
         "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
         "patchSetId": 1
@@ -42,6 +65,52 @@
         "startChar": 25,
         "endLine": 107,
         "endChar": 39
+      },
+      "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_56f3520a",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-10-05T08:01:35Z",
+      "side": 1,
+      "message": "also here you are missing the prefix...\nthis will damaged the ChangeManagement dashboard manual intervention feature",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 35
+      },
+      "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_96e9ba1c",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-10-05T08:01:35Z",
+      "side": 1,
+      "message": "i believe this URL is broken as well as.. this will break PortMirroring feature, not sure if relevant for Casablanca.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 84
       },
       "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
