@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_76cf76b1",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-10-05T08:14:49Z",
+      "side": 1,
+      "message": "I didn\u0027t ,I\u0027ve only touched \u0027mso.restapi.vf.module.instance\u0027 and added \u0027mso.restapi.vf.module.scaleout\u0027.\n\nLast major changes in this file was done in those PRs: https://gerrit.onap.org/r/#/c/56079/1 https://gerrit.onap.org/r/#/c/59667/",
+      "parentUuid": "bada0100_16ddca70",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_f65e0612",
         "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
         "patchSetId": 1
@@ -83,6 +107,30 @@
       "writtenOn": "2018-10-05T08:01:35Z",
       "side": 1,
       "message": "also here you are missing the prefix...\nthis will damaged the ChangeManagement dashboard manual intervention feature",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 35
+      },
+      "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_16c4ea90",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-10-05T08:14:49Z",
+      "side": 1,
+      "message": "i can fix that but nothing was changed here since https://gerrit.onap.org/r/#/c/56079/1",
+      "parentUuid": "bada0100_56f3520a",
       "range": {
         "startLine": 117,
         "startChar": 0,
