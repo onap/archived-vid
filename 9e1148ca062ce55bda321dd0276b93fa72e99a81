@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_16414a39",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-05T07:48:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_5ca4da56",
+      "range": {
+        "startLine": 59,
+        "startChar": 19,
+        "endLine": 59,
+        "endChar": 44
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_bcfb8646",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_16686ab9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-05T07:48:56Z",
+      "side": 1,
+      "message": "It is currently used not only for exceptions but also for multi_status. It can be refactored in the future as it requires CategoryParameterService changes.",
+      "parentUuid": "bada0100_bcfb8646",
+      "range": {
+        "startLine": 74,
+        "startChar": 64,
+        "endLine": 74,
+        "endChar": 117
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_dc8f6acb",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2018-10-05T06:51:46Z",
       "side": 1,
       "message": "Make sure to update docs if any exists",
+      "range": {
+        "startLine": 104,
+        "startChar": 96,
+        "endLine": 104,
+        "endChar": 102
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_7673f6b1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-05T07:48:56Z",
+      "side": 1,
+      "message": "I couldn\u0027t find any docs for this.",
+      "parentUuid": "bada0100_dc8f6acb",
       "range": {
         "startLine": 104,
         "startChar": 96,
@@ -117,6 +189,54 @@
     },
     {
       "key": {
+        "uuid": "bada0100_b6a07ef5",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-05T07:48:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_ab31fb0c",
+      "range": {
+        "startLine": 202,
+        "startChar": 13,
+        "endLine": 202,
+        "endChar": 37
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_d6b8a22c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-05T07:48:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_2b250bc2",
+      "range": {
+        "startLine": 202,
+        "startChar": 60,
+        "endLine": 202,
+        "endChar": 77
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_0b2cc7aa",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 3
@@ -128,6 +248,30 @@
       "writtenOn": "2018-10-05T06:51:46Z",
       "side": 1,
       "message": "Not so much gain after all. Please step back and inline.",
+      "range": {
+        "startLine": 206,
+        "startChar": 17,
+        "endLine": 206,
+        "endChar": 45
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_36ac8eed",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-05T07:48:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_0b2cc7aa",
       "range": {
         "startLine": 206,
         "startChar": 17,
