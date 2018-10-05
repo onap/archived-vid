@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_5ca4da56",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T06:51:46Z",
+      "side": 1,
+      "message": "Gain of this particular method is too small",
+      "range": {
+        "startLine": 59,
+        "startChar": 19,
+        "endLine": 59,
+        "endChar": 44
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_bcfb8646",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T06:51:46Z",
+      "side": 1,
+      "message": "Object can be created inside method, method should take status and exception/exception message.\n\nAlso how about renaming to \"createErrorResponse\"?",
+      "range": {
+        "startLine": 74,
+        "startChar": 64,
+        "endLine": 74,
+        "endChar": 117
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_dc8f6acb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T06:51:46Z",
+      "side": 1,
+      "message": "Make sure to update docs if any exists",
+      "range": {
+        "startLine": 104,
+        "startChar": 96,
+        "endLine": 104,
+        "endChar": 102
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2b250bc2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T06:51:46Z",
+      "side": 1,
+      "message": "Add static import here.\n\nAfter these cleanups we can give up on this separate method and inline it.",
+      "range": {
+        "startLine": 202,
+        "startChar": 60,
+        "endLine": 202,
+        "endChar": 77
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ab31fb0c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T06:51:46Z",
+      "side": 1,
+      "message": "Rename to just `service`. Method name already give hint that this is CategoryParameterService. Also reading it on gerrit is harder due to lack of IDE highlighting, check by yourself :)",
+      "range": {
+        "startLine": 202,
+        "startChar": 13,
+        "endLine": 202,
+        "endChar": 37
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_0b2cc7aa",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T06:51:46Z",
+      "side": 1,
+      "message": "Not so much gain after all. Please step back and inline.",
+      "range": {
+        "startLine": 206,
+        "startChar": 17,
+        "endLine": 206,
+        "endChar": 45
+      },
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
