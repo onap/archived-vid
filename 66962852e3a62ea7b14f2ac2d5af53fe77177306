@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_565832fa",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-10-05T08:46:11Z",
+      "side": 1,
+      "message": "what about oom/kubernetes/vid/templates/deployment.yaml?",
+      "revId": "66962852e3a62ea7b14f2ac2d5af53fe77177306",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
