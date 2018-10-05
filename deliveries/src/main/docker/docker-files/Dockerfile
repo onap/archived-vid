@@ -29,7 +29,7 @@ ENV VID_AAI_HOST aai.api.simpledemo.onap.org
 ENV VID_AAI_PORT 8443
 ENV VID_APP_DISPLAY_NAME VID
 ENV VID_ECOMP_SHARED_CONTEXT_REST_URL https://portal.api.simpledemo.onap.org:8080/onapportal/context
-ENV VID_MSO_SERVER_URL http://vm1.mso.simpledemo.onap.org:8080
+ENV VID_MSO_SERVER_URL http://vm1.mso.simpledemo.onap.org:8080/onap/so/infra
 ENV VID_MYLOGIN_FEED_DIRECTORY /tmp/MyLogins
 ENV VID_MSO_USER InfraPortalClient
 ENV VID_MSO_PASS OBF:1ih71i271vny1yf41ymf1ylz1yf21vn41hzj1icz
