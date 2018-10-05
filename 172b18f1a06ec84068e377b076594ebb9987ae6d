@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_f65e0612",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T07:43:41Z",
+      "side": 1,
+      "message": "I see problem. Check out how this prefix is handled in system.properties - it is set in \"mso.server.url\". In docker it is not added hence error.\n\nI think we should unify these paths and I suggest to move prefix to base url instead of repeating it on every mso endpoint.",
+      "range": {
+        "startLine": 107,
+        "startChar": 25,
+        "endLine": 107,
+        "endChar": 39
+      },
+      "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
