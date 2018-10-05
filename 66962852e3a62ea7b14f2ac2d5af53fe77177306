@@ -16,6 +16,24 @@
       "revId": "66962852e3a62ea7b14f2ac2d5af53fe77177306",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_5626f269",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-10-05T09:02:13Z",
+      "side": 1,
+      "message": "we will add it in this pr: https://gerrit.onap.org/r/#/c/69895/",
+      "parentUuid": "bada0100_565832fa",
+      "revId": "66962852e3a62ea7b14f2ac2d5af53fe77177306",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
