@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_b63cfe94",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-05T08:21:07Z",
+      "side": 1,
+      "message": "Could you clarify where you expect to store prefix? In properties right there or in Docker ENV?",
+      "parentUuid": "bada0100_76cf76b1",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "revId": "172b18f1a06ec84068e377b076594ebb9987ae6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_f65e0612",
         "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
         "patchSetId": 1
