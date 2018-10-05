@@ -124,6 +124,14 @@ public class MsoRestClientNew implements MsoInterface {
     }
 
     @Override
+    public MsoResponseWrapper scaleOutVFModuleInstance(RequestDetailsWrapper requestDetailsWrapper, String endpoint) {
+        String methodName = "scaleOutVFModuleInstance";
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        String path = baseUrl + endpoint;
+        return createInstance(requestDetailsWrapper, path);
+    }
+
+    @Override
     public MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String endpoint) {
         String methodName = "createConfigurationInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
