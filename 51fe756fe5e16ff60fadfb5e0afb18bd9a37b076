@@ -1,0 +1,327 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_69f55882",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/category/AddCategoryOptionResponse.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Missing license header. I am aware that this was not added before, but please add it now, indicating that Nokia has only modified it according to the onap FOSS guidelines (see Multiple Contributors section on https://wiki.onap.org/display/DW/Rules+for+implementing+FOSS+in+a+project)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_29ef50b2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Missing license header. I am aware that this was not added before, but please add it now, indicating that Nokia has only modified it according to the onap FOSS guidelines (see Multiple Contributors section on https://wiki.onap.org/display/DW/Rules+for+implementing+FOSS+in+a+project)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_c92b24ea",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Improper member order - please sort the members according to their visibility and ordering rules.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_a98820e8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "the expression \"response.getErrors().size() \u003e 0\" can be simplified -\u003e please use getErrors().isEmpty() method. I\u0027d also recommend avoiding negation in the test condition for the sake of readability and just switch the evaluated values",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cc4d7274",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "I would consider implementing a central point for exception catching. While this is not mandatory It may be easier to control similarly handled exceptions. \nI would especially concentrate on the catch(Exception) case, which is common for all methods and is implemented in the same manner. One Hint - all of the code could be mitigated by using the @ExceptionHandler that spring rest provides. This would require significant changes I\u0027d recommend doing this as part of dublin",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_e9f38871",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "There are missing test cases, not all branches have been tested and covered by tests.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_09f28c9a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Missing license header. I am aware that this was not added before, but please add it now, indicating that Nokia has only modified it according to the onap FOSS guidelines (see Multiple Contributors section on https://wiki.onap.org/display/DW/Rules+for+implementing+FOSS+in+a+project)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_895afc81",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "test naming: whenErrors what ?:) Seems as part of the description has been cut off. Please add some some simple information explaining the nature or context of the \"Errors\"",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_294bd0b1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Suggestion - I always recommend using given/willReturn from BDDMockito for a more BDD friendly approach. While this is a preference, in the long run it is more in line with the given/when/then structure. You don\u0027t have to change this, the most important things to remember are:\n1. Stick to one approach without mixing them APIs\n2. Avoid using Mockito.when in case you explicitly provide given/when/then sections. For a pure BDD approach, BDDMockito should be used instead.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_29f9904d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Avoid anyXXX argument matchers when mocking (this should be in bold and capital letters:) ). This breaks the quality of the tests and does not proof the implementation from being changed or having a bug introduced. Since you expect that any type of argument type can satisfy condition of the mocked behavior, you are actually avoiding important parts of the implementation - usage of values. How can you be sure at this point that the input values are really passed to the mocked method ? remember that recording a behavior in a proper way is also an implied verification that the code behaves and works as expected by you. A \"when/given\" statement is a perfect, more readable substitute for any verify() method because the expected behavior won\u0027t be recorded unless the invocation condition (passed args) is met.\n\nSo the big question is - how can I break the code and still have passing tests ? :) in this case by var shadowing.\nSimply do a local assignment of a random String to the categoryName parameter - and the tests will still pass even though we are losing input parameters.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_c9c7a411",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "instead of new ArrayList\u003c\u003e() please use Collections.emptyList() :)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_e9362803",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Why is only the status of the response verified ?what about the body ? This applies to all positive cases (except the for deleteCategory)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ac0eee32",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "What about asserting  the response body ?",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_092feca2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "It would be preferable to have the String.format at the beginning. The result of the concatenation is the expected result value so it\u0027s better to have the expected values defined as soon as it is possible. A quick glance suggests that the testErrorJson is the complete String. Also I\u0027d suggest renaming it: expectedErrorJson. Usually there is no need to add \"test\" words anywhere since we know we are in the scope of a junit :)\n\nApplies to other places as well",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_8c20ca9c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "The assertion is split into two places, as part of the request preparation (the status is checked before acquiring the result) and then the response is asserted as part of the assertThat code. Have you tried doing another andExpect(content) to have a consistent usage of the fluent API ?",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_0c1dba66",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "There are some things that should be rethought:\n1. Are the isMap checks necessary considering you are actually treating it like a map one line below?:)\n2. key1 is defined as as a local variable and hardcoded as part of the jsonPath at the same time.\n3. It would have been much more readable and less complicated to have one expected json defined and tested ine one approach, instead of fragmenting the checks and relying on indexes to acquire the values. What of there are more elements added? you\u0027d have to introduce a lot more duplications. Ideally it would best to create an expected Json Pojo representation and serialize it to json. The structure is part of the test and relying on 3rd party library in this case is totally ok since that\u0027s how the impl works.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_490c1443",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "The categoryName is duplicated everywhere - it should be defined as a constant.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6909d830",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "testContentJson - variable name may be confusing, expecially when compared to the input variables name like testErrorsJson. why the need for naming it as something ambiguous, wouldn\u0027t it be more readable i.e. inputOptionsAsJson or optionsParameterAsJson etc ?:) Basically the idea is that I don\u0027t want to have to read all the variables usages to figure out what it meant for and how it is being used :)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ec04f616",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "I am a little bit on the fence if these preparation methods are needed at all. \nWhile they do encapsulate json stuff, I think inlining the code in a unit method wouldn\u0027t do much harm and additional method jumps could be avoided when reading.\n\nSome suggestions:\n\nFirst off I would suggest extracting some constants. The endpoints in all the preparation methods should be more exposed on a class level as constants (same as categoryName).\nPath building can kept as is. \n\nThe mockMvc.perform method is almost identical between the invocations, the only difference is the http method used. This code can be centralized and kept as a private method with the http method passed as lambda. \n\nAnother tip that can be helpful, especially in cases when dealing with complicated json structures (as request and response) can be the reliance on pojo representations of json objects (the ones used in mapping from/to raw json). This can mean using the ObjectMapper to do it randomly or check MockMvc functionality to do this automatically. It would allow you to have easy and readable assertions based on java objects. Of course this would require additional stuff like a proper equals/hashCode contract implemented etc :)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
