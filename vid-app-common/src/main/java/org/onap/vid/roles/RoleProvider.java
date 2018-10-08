@@ -45,7 +45,7 @@ public class RoleProvider {
         LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method finished");
     }
 
-    public List<Role> getUserRoles(HttpServletRequest request) throws JsonProcessingException {
+    public List<Role> getUserRoles(HttpServletRequest request) {
         String logPrefix = "Role Provider (" + UserUtils.getUserId(request) + ") ==>";
 
         LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Entering to get user role for user " + UserUtils.getUserId(request));

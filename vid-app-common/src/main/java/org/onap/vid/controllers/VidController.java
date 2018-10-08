@@ -47,21 +47,20 @@ public class VidController extends RestrictedBaseController {
 
 	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(VidController.class);
 
-	private final VidService service;
+	private VidService vidService;
+	private AaiService aaiService;
+	private RoleProvider roleProvider;
+	private PombaService pombaService;
 
 	@Autowired
-	public VidController(VidService vidService) {
-		service = vidService;
+	public VidController(VidService vidService, AaiService aaiService, RoleProvider roleProvider, PombaService pombaService) {
+		this.vidService = vidService;
+		this.aaiService = aaiService;
+		this.roleProvider = roleProvider;
+		this.pombaService = pombaService;
 	}
 
-	@Autowired
-	private AaiService aaiService;
 
-	@Autowired
-	RoleProvider roleProvider;
-
-    @Autowired
-	private PombaService pombaService;
 
 //	/**
 //	 * Gets the services.
@@ -97,24 +96,17 @@ public class VidController extends RestrictedBaseController {
 	 *
 	 * @param request the request
 	 * @return the services
-	 * @throws VidServiceUnavailableException the vid service unavailable exception
 	 */
 	@RequestMapping(value={"/rest/models/services"}, method = RequestMethod.GET)
-	public SecureServices getServices(HttpServletRequest request) throws VidServiceUnavailableException {
-		try {
-			LOG.info("Start API for browse ASDC was called");
-			SecureServices secureServices = new SecureServices();
-			List<Role> roles = roleProvider.getUserRoles(request);
-			secureServices.setServices(aaiService.getServicesByDistributionStatus());
-			//Disable roles until AAF integration finishes
-			//secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
-			secureServices.setReadOnly(false);
-			return secureServices;
-		}
-		catch (Exception t) {
-			LOG.debug("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage() + ":", t);
-			throw new VidServiceUnavailableException("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage(), t);
-		}
+	public SecureServices getServices(HttpServletRequest request) {
+		LOG.info("Start API for browse ASDC was called");
+		SecureServices secureServices = new SecureServices();
+		List<Role> roles = roleProvider.getUserRoles(request);
+		secureServices.setServices(aaiService.getServicesByDistributionStatus());
+		//Disable roles until AAF integration finishes
+		//secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
+		secureServices.setReadOnly(false);
+		return secureServices;
 	}
 
 
@@ -127,9 +119,9 @@ public class VidController extends RestrictedBaseController {
 	 * @throws VidServiceUnavailableException the vid service unavailable exception
 	 */
 	@RequestMapping(value={"/rest/models/services/{uuid}"}, method = RequestMethod.GET)
-	public ServiceModel getServices(@PathVariable("uuid") String uuid, HttpServletRequest request) throws VidServiceUnavailableException {
+	public ServiceModel getService(@PathVariable("uuid") String uuid) throws VidServiceUnavailableException {
 		try {
-			return service.getService(uuid);
+			return vidService.getService(uuid);
 		} catch (AsdcCatalogException e) {
 			LOG.error("Failed to retrieve service definitions from SDC. Error: "+e.getMessage() , e);
 			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
@@ -138,24 +130,24 @@ public class VidController extends RestrictedBaseController {
 
 	@RequestMapping(value = "/rest/models/reset", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void invalidateServiceModelCache(HttpServletRequest request) {
-		service.invalidateServiceCache();
+	public void invalidateServiceModelCache() {
+		vidService.invalidateServiceCache();
 	}
 
 	/**
 	 * Gets the services view.
 	 *
-	 * @param request the request
 	 * @return the services view
 	 * @throws VidServiceUnavailableException the vid service unavailable exception
 	 */
+	// FIX ME: Circular view path [serviceModels]: would dispatch back to the current handler URL [/serviceModels] again.
 	@RequestMapping(value={"/serviceModels"}, method=RequestMethod.GET)
-    public ModelAndView getServicesView(HttpServletRequest request) {
+    public ModelAndView getServicesView() {
         return new ModelAndView("serviceModels");
     }
 
     @RequestMapping(value = {"/rest/models/services/verifyService"}, method = RequestMethod.POST)
-	public void verifyServiceInstance(HttpServletRequest request, @RequestBody PombaRequest pombaRequest) {
+	public void verifyServiceInstance(@RequestBody PombaRequest pombaRequest) {
 		pombaService.verify(pombaRequest);
     }
 }
