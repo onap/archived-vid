@@ -1,189 +1,210 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Modifications Copyright 2018 Nokia
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.controllers;
 
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import net.javacrumbs.jsonunit.JsonAssert;
-//import org.apache.commons.io.IOUtils;
-//import org.onap.vid.asdc.AsdcCatalogException;
-//import org.onap.vid.asdc.AsdcClient;
-//import org.onap.vid.asdc.parser.ToscaParserImpl2;
-//import org.onap.vid.model.*;
-//import org.onap.portalsdk.core.util.SystemProperties;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.mock.web.MockServletContext;
-//import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-//import org.springframework.test.context.web.WebAppConfiguration;
-//import org.testng.Assert;
-//import org.testng.annotations.Test;
-//
-//import static org.onap.vid.testUtils.TestUtils.assertJsonStringEqualsIgnoreNulls;
-//
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.nio.file.Path;
-//import java.util.Map;
-//import java.util.UUID;
-//
-////import org.junit.Assert;
-////import org.junit.Ignore;
-////import org.junit.Test;
-////import org.junit.runner.RunWith;
-////import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-//
-//@ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})
-////@RunWith(SpringJUnit4ClassRunner.class)
-//@WebAppConfiguration
-//
-//public class VidControllerTest extends AbstractTestNGSpringContextTests {
-//
-//    @Autowired
-//    MockServletContext context;
-//    @Autowired
-//    private AsdcClient asdcClient;
-//    private ToscaParserImpl2 p2 = new ToscaParserImpl2();
-//    private ObjectMapper om = new ObjectMapper();
-//
-//
-//    @Test
-//    public void assertEqualsBetweenServices() throws Exception {
-//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-//            Service expectedService = mockHelper.getNewServiceModel().getService();
-//            Service actualService = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getService();
-//            assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedService), om.writeValueAsString(actualService));
-//        }
-//    }
-//
-////    @Test
-////    public void assertEqualBetweenObjects() throws Exception {
-////        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-////            final Path csarPath = getCsarPath(mockHelper.getUuid());
-////            System.out.println("Comparing for csar " + csarPath);
-////            ServiceModel actualServiceModel = p2.makeServiceModel(csarPath, getServiceByUuid(mockHelper.getUuid()));
-////            assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(mockHelper.getNewServiceModel()), om.writeValueAsString(actualServiceModel));
-////        }
-////    }
-//
-////    @Test
-////    public void assertEqualsBetweenNetworkNodes() throws Exception {
-////        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-////            Map<String, Network> expectedNetworksMap = mockHelper.getNewServiceModel().getNetworks();
-////            Map<String, Network> actualNetworksMap = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getNetworks();
-////            for (Map.Entry<String, Network> entry : expectedNetworksMap.entrySet()) {
-////                Network expectedNetwork = entry.getValue();
-////                Network actualNetwork = actualNetworksMap.get(entry.getKey());
-////                Assert.assertEquals(expectedNetwork.getModelCustomizationName(), actualNetwork.getModelCustomizationName());
-////                verifyBaseNodeProperties(expectedNetwork, actualNetwork);
-////                compareProperties(expectedNetwork.getProperties(), actualNetwork.getProperties());
-////            }
-////        }
-////    }
-//
-//    //Because we are not supporting the old flow, the JSON are different by definition.
-//    @Test
-//    public void assertEqualsBetweenVnfsOfTosca() throws Exception {
-//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-//            Map<String, VNF> expectedVnfsMap = mockHelper.getNewServiceModel().getVnfs();
-//            Map<String, VNF> actualVnfsMap = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVnfs();
-//            for (Map.Entry<String, VNF> entry : expectedVnfsMap.entrySet()) {
-//                VNF expectedVnf = entry.getValue();
-//                VNF actualVnf = actualVnfsMap.get(entry.getKey());
-//                //need to uncomment these after 1806 merge
-//                //verifyBaseNodeProperties(expectedVnf, actualVnf);
-//                Assert.assertEquals(expectedVnf.getModelCustomizationName(), actualVnf.getModelCustomizationName());
-//                //compareProperties(expectedVnf.getProperties(), actualVnf.getProperties());
-//                //assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedVnf), om.writeValueAsString(actualVnf));
-//            }
-//        }
-//    }
-//
-//    @Test
-//    public void assertEqualsBetweenVolumeGroups() throws Exception {
-//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-//            Map<String, VolumeGroup> actualVolumeGroups = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVolumeGroups();
-//            Map<String, VolumeGroup> expectedVolumeGroups = mockHelper.getNewServiceModel().getVolumeGroups();
-//            JsonAssert.assertJsonEquals(actualVolumeGroups, expectedVolumeGroups);
-//        }
-//    }
-//
-//    @Test
-//    public void assertEqualsBetweenVfModules() throws Exception {
-//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-//            Map<String, VfModule> actualVfModules = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVfModules();
-//            Map<String, VfModule> expectedVfModules = mockHelper.getNewServiceModel().getVfModules();
-//            //need to uncomment after 1906 merge
-//            //JsonAssert.assertJsonEquals(actualVfModules, expectedVfModules);
-//        }
-//    }
-//
-//    /*@Test
-//    public void assertEqualsBetweenPolicyConfigurationNodes() throws Exception {
-//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-//            Map<String, PortMirroringConfig> actualConfigurations = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getConfigurations();
-//            Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getNewServiceModel().getConfigurations();
-//            JsonAssert.assertJsonEquals(actualConfigurations, expectedConfigurations);
-//        }
-//    }*/
-//
-//    @Test
-//    public void assertEqualsBetweenServiceProxyNodes() throws Exception {
-//        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-//            Map<String, ServiceProxy> actualServiceProxies = p2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getServiceProxies();
-//            Map<String, ServiceProxy> expectedServiceProxies = mockHelper.getNewServiceModel().getServiceProxies();
-//            JsonAssert.assertJsonEquals(actualServiceProxies, expectedServiceProxies);
-//        }
-//    }
-//
-//    private void verifyBaseNodeProperties(Node expectedNode, Node actualNode) {
-//        Assert.assertEquals(expectedNode.getName(), actualNode.getName());
-//        Assert.assertEquals(expectedNode.getCustomizationUuid(), actualNode.getCustomizationUuid());
-//        Assert.assertEquals(expectedNode.getDescription(), actualNode.getDescription());
-//        Assert.assertEquals(expectedNode.getInvariantUuid(), actualNode.getInvariantUuid());
-//        Assert.assertEquals(expectedNode.getUuid(), actualNode.getUuid());
-//        Assert.assertEquals(expectedNode.getVersion(), actualNode.getVersion());
-//    }
-//
-//    private void compareProperties(Map<String, String> expectedProperties, Map<String, String> actualProperties) {
-//        for (Map.Entry<String, String> property : expectedProperties.entrySet()) {
-//            String expectedValue = property.getValue();
-//            String key = property.getKey();
-//            String actualValue = actualProperties.get(key);
-//            Assert.assertEquals(expectedValue, actualValue);
-//        }
-//    }
-//
-//    private ToscaParserMockHelper[] getExpectedServiceModel() throws IOException {
-//        ToscaParserMockHelper[] mockHelpers = {
-//                new ToscaParserMockHelper(Constants.vlUuid, Constants.vlFilePath),
-//                new ToscaParserMockHelper(Constants.vfUuid, Constants.vfFilePath),
-//                new ToscaParserMockHelper(Constants.configurationUuid, Constants.configurationFilePath),
-//        };
-//        for (ToscaParserMockHelper mockHelper : mockHelpers) {
-//            InputStream jsonFile = VidControllerTest.class.getClassLoader().getResourceAsStream(mockHelper.getFilePath());
-//            String expectedJsonAsString = IOUtils.toString(jsonFile);
-//            NewServiceModel newServiceModel1 = om.readValue(expectedJsonAsString, NewServiceModel.class);
-//            mockHelper.setNewServiceModel(newServiceModel1);
-//        }
-//        return mockHelpers;
-//    }
-//
-//    private Path getCsarPath(String uuid) throws AsdcCatalogException {
-//        return asdcClient.getServiceToscaModel(UUID.fromString(uuid));
-//    }
-//
-//    private org.onap.vid.asdc.beans.Service getServiceByUuid(String uuid) throws AsdcCatalogException {
-//        return asdcClient.getService(UUID.fromString(uuid));
-//    }
-//
-//    public class Constants {
-//        public static final String configurationUuid = "ee6d61be-4841-4f98-8f23-5de9da846ca7";
-//        public static final String configurationFilePath = "policy-configuration-csar.JSON";
-//        static final String vfUuid = "48a52540-8772-4368-9cdb-1f124ea5c931";
-//        static final String vlUuid = "cb49608f-5a24-4789-b0f7-2595473cb997";
-//        //        public static final String PNFUuid = "68101369-6f08-4e99-9a28-fa6327d344f3";
-//        static final String vfFilePath = "vf-csar.JSON";
-//        static final String vlFilePath = "vl-csar.JSON";
-////        public static final String PNFFilePath = "/Users/Oren/Git/Att/vid_internal/vid-app-common/src/main/resources/pnf.csar";
-//
-//    }
-//
-//}
+
+import static java.util.stream.Collectors.toMap;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.not;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.IntStream;
+import javax.ws.rs.core.MediaType;
+import org.apache.log4j.BasicConfigurator;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.asdc.beans.SecureServices;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.asdc.beans.ServiceBuilder;
+import org.onap.vid.model.CR;
+import org.onap.vid.model.Network;
+import org.onap.vid.model.Node;
+import org.onap.vid.model.PombaInstance.PombaRequest;
+import org.onap.vid.model.PombaInstance.ServiceInstance;
+import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.ServiceProxy;
+import org.onap.vid.model.VNF;
+import org.onap.vid.model.VfModule;
+import org.onap.vid.model.VolumeGroup;
+import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.services.AaiService;
+import org.onap.vid.services.PombaService;
+import org.onap.vid.services.VidService;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+@RunWith(MockitoJUnitRunner.class)
+public class VidControllerTest {
+
+    public static final String REST_MODELS_SERVICES = "/rest/models/services";
+    public static final String REST_MODELS_SERVICES_UUID = "/rest/models/services/{uuid}";
+    public static final String REST_MODELS_RESET = "/rest/models/reset";
+    public static final String REST_MODELS_SERVICES_VERIFY_SERVICE = "/rest/models/services/verifyService";
+    @Mock
+    private VidService vidService;
+    @Mock
+    private AaiService aaiService;
+    @Mock
+    private RoleProvider roleProvider;
+    @Mock
+    private PombaService pombaService;
+
+    private VidController vidController;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
+
+    private String uuid1;
+    private String uuid2;
+    private String uuid3;
+
+    @Before
+    public void setUp() {
+        vidController = new VidController(vidService, aaiService, roleProvider, pombaService);
+        BasicConfigurator.configure();
+        mockMvc = MockMvcBuilders.standaloneSetup(vidController).build();
+        objectMapper = new ObjectMapper();
+
+        uuid1 = UUID.randomUUID().toString();
+        uuid2 = UUID.randomUUID().toString();
+        uuid3 = UUID.randomUUID().toString();
+    }
+
+    @Test
+    public void getServices_shouldReturnService_whenServiceExists() throws Exception {
+        List<Service> services = ImmutableList.of(createService(uuid1, 1), createService(uuid2, 2), createService(uuid3, 3));
+
+        given(aaiService.getServicesByDistributionStatus()).willReturn(services);
+
+        SecureServices secureServices = new SecureServices();
+        secureServices.setServices(services);
+        secureServices.setReadOnly(false);
+
+        mockMvc.perform(get(REST_MODELS_SERVICES)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(secureServices)));
+    }
+
+    @Test
+    public void getService_shouldReturnService_whenNoExceptionIsThrown() throws Exception {
+        ServiceModel model = expectedServiceModel(uuid1);
+
+        given(vidService.getService(uuid1)).willReturn(model);
+
+        mockMvc.perform(get(REST_MODELS_SERVICES_UUID, uuid1)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(model)));
+    }
+
+    @Test
+    public void getService_shouldThrow_whenAsdcCatalogExceptionIsThrown() throws Exception {
+        String testUuid = UUID.randomUUID().toString();
+
+        given(vidService.getService(testUuid)).willThrow(new AsdcCatalogException("error msg"));
+
+        mockMvc.perform(get(REST_MODELS_SERVICES_UUID, testUuid)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isServiceUnavailable());
+    }
+
+    @Test
+    public void invalidateServiceModelCache_shouldReturnAccepted() throws Exception {
+        mockMvc.perform(post(REST_MODELS_RESET)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isAccepted());
+
+        then(vidService).should(times(1)).invalidateServiceCache();
+    }
+
+    @Test
+    public void verifyServiceInstance_shouldReturnOk() throws Exception {
+        PombaRequest pombaRequest = new PombaRequest();
+        pombaRequest.serviceInstanceList = ImmutableList.of(new ServiceInstance());
+
+        mockMvc.perform(post(REST_MODELS_SERVICES_VERIFY_SERVICE)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(pombaRequest)))
+            .andExpect(status().isOk());
+
+        ArgumentCaptor<PombaRequest> argumentCaptor = ArgumentCaptor.forClass(PombaRequest.class);
+        then(pombaService).should(times(1)).verify(argumentCaptor.capture());
+
+        assertThat(pombaRequest).isEqualToComparingFieldByFieldRecursively(argumentCaptor.getValue());
+    }
+
+    private ServiceModel expectedServiceModel(String uuid) {
+        final ServiceModel serviceModel = getModelsByUuid().get(uuid);
+        Assert.assertThat(serviceModel, is(not(nullValue())));
+        return serviceModel;
+    }
+
+    private Service createService(String uuid, int i) {
+        return new ServiceBuilder().setUuid(uuid).setInvariantUUID("invariantUUID" + i)
+            .setCategory("category" + i).setVersion("version" + i).setName("name" + i)
+            .setDistributionStatus("distStatus" + i).setToscaModelURL("toscaModelUrl" + i).build();
+    }
+
+    private ServiceModel createServiceModel(int i) {
+        ServiceModel model = new ServiceModel();
+
+        model.setCollectionResource(ImmutableMap.of("resKey" + i, new CR()));
+        model.setNetworks(ImmutableMap.of("network" + i, new Network()));
+        model.setPnfs(ImmutableMap.of("pnf" + i, new Node()));
+        model.setServiceProxies(ImmutableMap.of("servProxy" + i, new ServiceProxy()));
+        model.setVfModules(ImmutableMap.of("vfmod" + i, new VfModule()));
+        model.setVnfs(ImmutableMap.of("vnf" + i, new VNF()));
+        model.setVolumeGroups(ImmutableMap.of("volgroup" + i, new VolumeGroup()));
+        model.setService(new org.onap.vid.model.Service());
+        return model;
+    }
+
+    private Map<String, ServiceModel> getModelsByUuid() {
+        ServiceModel serviceModel1 = createServiceModel(1);
+        ServiceModel serviceModel2 = createServiceModel(2);
+        ServiceModel serviceModel3 = createServiceModel(3);
+
+        List<ServiceModel> pseudoServiceModels = ImmutableList.of(serviceModel1, serviceModel2, serviceModel3);
+        List<String> uuids = ImmutableList.of(uuid1, uuid2, uuid3);
+        return IntStream.range(0, pseudoServiceModels.size()).boxed()
+            .collect(toMap(i -> uuids.get(i), i -> pseudoServiceModels.get(i)));
+    }
+}

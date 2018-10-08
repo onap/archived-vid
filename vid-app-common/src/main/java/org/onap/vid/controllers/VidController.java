@@ -4,12 +4,14 @@
  * ================================================================================
  * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
+ * Modifications Copyright 2018 Nokia
+ * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,122 +42,75 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-//import org.onap.vid.model.Service;
-
 @RestController
 public class VidController extends RestrictedBaseController {
 
-	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(VidController.class);
+    private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(VidController.class);
 
-	private final VidService service;
-
-	@Autowired
-	public VidController(VidService vidService) {
-		service = vidService;
-	}
-
-	@Autowired
-	private AaiService aaiService;
-
-	@Autowired
-	RoleProvider roleProvider;
+    private final VidService vidService;
+    private final AaiService aaiService;
+    private final RoleProvider roleProvider;
+    private final PombaService pombaService;
 
     @Autowired
-	private PombaService pombaService;
+    public VidController(VidService vidService, AaiService aaiService, RoleProvider roleProvider,
+        PombaService pombaService) {
+        this.vidService = vidService;
+        this.aaiService = aaiService;
+        this.roleProvider = roleProvider;
+        this.pombaService = pombaService;
+    }
 
-//	/**
-//	 * Gets the services.
-//	 *
-//	 * @param request the request
-//	 * @return the services
-//	 * @throws VidServiceUnavailableException the vid service unavailable exception
-//	 */
-//	@RequestMapping(value={"/rest/models/services"}, method = RequestMethod.GET)
-//	public SecureServices getServices(HttpServletRequest request) throws VidServiceUnavailableException {
-//		try {
-//			AaiService aaiService = new AaiServiceImpl();
-//			LOG.info("Start API for browse ASDC was called");
-//			SecureServices secureServices = new SecureServices();
-//			Map<String, String[]> requestParams = request.getParameterMap();
-//			List<Role> roles = roleProvider.getUserRoles(request);
-//			secureServices.setServices(aaiService.getServicesByDistributionStatus());
-//			secureServices.setServices(service.getServices(requestParams));
-//			secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
-//			return secureServices;
-//		} catch (AsdcCatalogException e) {
-//			LOG.error("Failed to retrieve service definitions from SDC", e);
-//			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
-//		} catch (Throwable t) {
-//			LOG.debug("Unexpected error while retrieving service definitions from SDC: " + t.getMessage() + ":", t);
-//			t.printStackTrace();
-//			throw new VidServiceUnavailableException("Unexpected error while retrieving service definitions from SDC: " + t.getMessage(), t);
-//		}
-//	}
-
-	/**
-	 * Gets the services.
-	 *
-	 * @param request the request
-	 * @return the services
-	 * @throws VidServiceUnavailableException the vid service unavailable exception
-	 */
-	@RequestMapping(value={"/rest/models/services"}, method = RequestMethod.GET)
-	public SecureServices getServices(HttpServletRequest request) throws VidServiceUnavailableException {
-		try {
-			LOG.info("Start API for browse ASDC was called");
-			SecureServices secureServices = new SecureServices();
-			List<Role> roles = roleProvider.getUserRoles(request);
-			secureServices.setServices(aaiService.getServicesByDistributionStatus());
-			//Disable roles until AAF integration finishes
-			//secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
-			secureServices.setReadOnly(false);
-			return secureServices;
-		}
-		catch (Exception t) {
-			LOG.debug("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage() + ":", t);
-			throw new VidServiceUnavailableException("Unexpected error while retrieving service definitions from A&AI: " + t.getMessage(), t);
-		}
-	}
+    /**
+     * @param request the request
+     * @return the services
+     */
+    @RequestMapping(value = {"/rest/models/services"}, method = RequestMethod.GET)
+    public SecureServices getServices(HttpServletRequest request) {
+        LOG.info("Start API for browse ASDC was called");
+        SecureServices secureServices = new SecureServices();
+        List<Role> roles = roleProvider.getUserRoles(request);
+        secureServices.setServices(aaiService.getServicesByDistributionStatus());
+        //Disable roles until AAF integration finishes
+        //secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
+        secureServices.setReadOnly(false);
+        return secureServices;
+    }
 
 
+    /**
+     * @param uuid the uuid
+     * @return the services
+     * @throws VidServiceUnavailableException the vid service unavailable exception
+     */
+    @RequestMapping(value = {"/rest/models/services/{uuid}"}, method = RequestMethod.GET)
+    public ServiceModel getService(@PathVariable("uuid") String uuid) throws VidServiceUnavailableException {
+        try {
+            return vidService.getService(uuid);
+        } catch (AsdcCatalogException e) {
+            LOG.error("Failed to retrieve service definitions from SDC. Error: " + e.getMessage(), e);
+            throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
+        }
+    }
 
-	/**
-	 * Gets the services.
-	 *
-	 * @param uuid the uuid
-	 * @return the services
-	 * @throws VidServiceUnavailableException the vid service unavailable exception
-	 */
-	@RequestMapping(value={"/rest/models/services/{uuid}"}, method = RequestMethod.GET)
-	public ServiceModel getServices(@PathVariable("uuid") String uuid, HttpServletRequest request) throws VidServiceUnavailableException {
-		try {
-			return service.getService(uuid);
-		} catch (AsdcCatalogException e) {
-			LOG.error("Failed to retrieve service definitions from SDC. Error: "+e.getMessage() , e);
-			throw new VidServiceUnavailableException("Failed to retrieve service definitions from SDC", e);
-		}
-	}
+    @RequestMapping(value = "/rest/models/reset", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void invalidateServiceModelCache() {
+        vidService.invalidateServiceCache();
+    }
 
-	@RequestMapping(value = "/rest/models/reset", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void invalidateServiceModelCache(HttpServletRequest request) {
-		service.invalidateServiceCache();
-	}
-
-	/**
-	 * Gets the services view.
-	 *
-	 * @param request the request
-	 * @return the services view
-	 * @throws VidServiceUnavailableException the vid service unavailable exception
-	 */
-	@RequestMapping(value={"/serviceModels"}, method=RequestMethod.GET)
-    public ModelAndView getServicesView(HttpServletRequest request) {
+    /**
+     * @return the services view
+     * @throws VidServiceUnavailableException the vid service unavailable exception
+     */
+    // FIX ME: Circular view path [serviceModels]: would dispatch back to the current handler URL [/serviceModels] again.
+    @RequestMapping(value = {"/serviceModels"}, method = RequestMethod.GET)
+    public ModelAndView getServicesView() {
         return new ModelAndView("serviceModels");
     }
 
     @RequestMapping(value = {"/rest/models/services/verifyService"}, method = RequestMethod.POST)
-	public void verifyServiceInstance(HttpServletRequest request, @RequestBody PombaRequest pombaRequest) {
-		pombaService.verify(pombaRequest);
+    public void verifyServiceInstance(@RequestBody PombaRequest pombaRequest) {
+        pombaService.verify(pombaRequest);
     }
 }
