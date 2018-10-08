@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "bada0100_49f8947c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T10:08:23Z",
+      "side": 1,
+      "message": "Missing license header. I am aware that this was not added before, but please add it now, indicating that Nokia has only modified it according to the onap FOSS guidelines (see Multiple Contributors section on https://wiki.onap.org/display/DW/Rules+for+implementing+FOSS+in+a+project)",
+      "revId": "9e1148ca062ce55bda321dd0276b93fa72e99a81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_5ca4da56",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 3
