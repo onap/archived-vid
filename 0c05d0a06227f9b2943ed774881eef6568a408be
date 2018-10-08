@@ -16,6 +16,74 @@
       "revId": "0c05d0a06227f9b2943ed774881eef6568a408be",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ec1dd674",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/InProgressStatusCommandTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-10-08T13:11:54Z",
+      "side": 1,
+      "message": "Consider replacing instantiating inProgressStatusCommand in setup with adding @InjectMock annotation on field.",
+      "revId": "0c05d0a06227f9b2943ed774881eef6568a408be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_7f09862b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/InProgressStatusCommandTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-10-08T13:11:54Z",
+      "side": 1,
+      "message": "Maybe\nassertThat(call.getStatus()).isEqualTo(Job.JobStatus.IN_PROGRESS);\n\nwill be little bit more readable.",
+      "revId": "0c05d0a06227f9b2943ed774881eef6568a408be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_9f254aad",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/ServiceInstantiationCommandTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-10-08T13:11:54Z",
+      "side": 1,
+      "message": "Use @InjectMocks instead of direct instantiating in setUp.",
+      "revId": "0c05d0a06227f9b2943ed774881eef6568a408be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_df875260",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/JobSchedulerInitializerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-10-08T13:11:54Z",
+      "side": 1,
+      "message": "Extract to helper method to cleanup test method.",
+      "revId": "0c05d0a06227f9b2943ed774881eef6568a408be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
