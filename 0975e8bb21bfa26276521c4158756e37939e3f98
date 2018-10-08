@@ -1,0 +1,293 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_4c68a2ba",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Please modify license header to add Nokia",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6c6566e0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Always remove unused imports this also means the commented out ones :)",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ccd01256",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Make the fields final, so that you are sure the references don\u0027t changes once the controller has been constructed.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6cda467a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "What is the reason for removing the exception handling ?",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ecee3622",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "This comment is unnecessary, it does not provide any more explanation beyond what what is already stated by the api naming",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2ce43e3a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "I have some doubts if this code is actually used, considering this and a few unused HttpServletRequest params",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cc9b32c8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/roles/RoleProvider.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Please added license header",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_eca076f6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Please add license header",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_accfceaf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "This class should have a builder, which would be a good future improvement. The passed nulls are very ambiguous.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_8cca0aa0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "I would recommend changing the endpoints to constants since they represent a mostly constant api and should be exposed as more than just a simple inlined string",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_4caf42e4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "I have to repeat my comment from a previous review. The best solution when verifying response would be to rely on the json pojo representation instead of raw json or prepare an expected json result and do a single assertions instead of verifying the whole json structure, especially when you index-based access has be used.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6cac86ee",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Method name: whenNoException what exactly ?:) is thrown from the endpoint, is thrown by the service? Please be more descriptive.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_0cb93a2e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Same issue as in other assertions. Try to find a cleaner solution based on my previous comments.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2c52fedd",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Checking the status only is insufficient, and HttpStatus does not hold any business/functional information as to what went wrong, rather it groups certain types of problems under one status.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6c48062e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "This test is incomplete - won\u0027t I get a ok status even when I remove the vidService invocation ? :)",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_8c58cafb",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "Incomplete unit test, only the rest endpoint invocation is verified, any communication/delegation with the service in the impl is ignored.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6c6fa693",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-08T11:37:26Z",
+      "side": 1,
+      "message": "This model is really complicated. It has many dependencies and has a one to many relationship to other objects meaning it can be really huge. While having an empty model for test purposes may work, there is no reliance here on values that actually have information. Of course designing such a solution would require a lot of boilerplate code. Ideally the ServiceModel should be constructed from a source file which it represents (tosca?) using 3rd party libs and having a resource file. Please check if this can be somehow improved so that we can achieve a sweet spot between readability and a comprehensive test.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
