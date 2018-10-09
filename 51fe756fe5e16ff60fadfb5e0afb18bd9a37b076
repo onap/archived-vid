@@ -291,6 +291,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_1869708b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-09T06:11:29Z",
+      "side": 1,
+      "message": "I disagree. If this isn\u0027t logic related constant why you want treat it \"better\"?\n\nBtw. I would revisit purpose of this variables, I think some of them should be inlined.",
+      "parentUuid": "bada0100_490c1443",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_6909d830",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -302,6 +320,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "testContentJson - variable name may be confusing, expecially when compared to the input variables name like testErrorsJson. why the need for naming it as something ambiguous, wouldn\u0027t it be more readable i.e. inputOptionsAsJson or optionsParameterAsJson etc ?:) Basically the idea is that I don\u0027t want to have to read all the variables usages to figure out what it meant for and how it is being used :)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_38f9d4c8",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-09T06:11:29Z",
+      "side": 1,
+      "message": "Also if we pass JSON by hand I suggest to write it like this \"{\u0027value\u0027: \u0027key\u0027}\" and then make method like:\nString normalizeJson(String)\nto replace single quote to double quotes.",
+      "parentUuid": "bada0100_6909d830",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
