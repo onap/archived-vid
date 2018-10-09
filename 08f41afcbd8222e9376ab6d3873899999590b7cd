@@ -45,6 +45,30 @@
       "revId": "08f41afcbd8222e9376ab6d3873899999590b7cd",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_333a55ce",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-10-09T09:24:30Z",
+      "side": 1,
+      "message": "One just feeds the mocked server and second is for assertion",
+      "parentUuid": "bada0100_380c7442",
+      "range": {
+        "startLine": 457,
+        "startChar": 16,
+        "endLine": 457,
+        "endChar": 74
+      },
+      "revId": "08f41afcbd8222e9376ab6d3873899999590b7cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
