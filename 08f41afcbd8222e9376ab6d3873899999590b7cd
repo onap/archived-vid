@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_7309bd2b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-10-09T09:20:24Z",
+      "side": 1,
+      "message": "Why are we using the same str for expected and actual?",
+      "range": {
+        "startLine": 226,
+        "startChar": 16,
+        "endLine": 226,
+        "endChar": 74
+      },
+      "revId": "08f41afcbd8222e9376ab6d3873899999590b7cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_380c7442",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2018-10-09T09:20:24Z",
+      "side": 1,
+      "message": "Why are we using the same str for expected and actual?",
+      "range": {
+        "startLine": 457,
+        "startChar": 16,
+        "endLine": 457,
+        "endChar": 74
+      },
+      "revId": "08f41afcbd8222e9376ab6d3873899999590b7cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
