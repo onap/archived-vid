@@ -74,6 +74,8 @@ public interface MsoInterface {
 
     MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String endpoint);
 
+    MsoResponseWrapper scaleOutVFModuleInstance(RequestDetailsWrapper requestDetailsWrapper, String endpoint);
+
     MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String endpoint);
 
     MsoResponseWrapper unassignSvcInstance(RequestDetails requestDetails, String endpoint);

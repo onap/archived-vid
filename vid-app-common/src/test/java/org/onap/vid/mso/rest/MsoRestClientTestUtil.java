@@ -20,11 +20,13 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+
 import org.glassfish.grizzly.http.Method;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.mso.MsoResponseWrapper;
 
 class MsoRestClientTestUtil implements AutoCloseable {
@@ -59,6 +61,21 @@ class MsoRestClientTestUtil implements AutoCloseable {
     Assert.assertEquals(expectedResponseStr, actualJson.toString());
     verifyServer(server, endpoint, Method.POST);
 
+  }
+  void executePostCall(String jsonPayload, BiFunction<RequestDetailsWrapper, String, MsoResponseWrapper> func) throws IOException {
+    whenHttp(server)
+            .match(post(endpoint))
+            .then(status(expectedStatus), jsonContent(responsePayload), contentType(MediaType.APPLICATION_JSON));
+
+    RequestDetailsWrapper  sampleRequestDetails =
+            new ObjectMapper().readValue(jsonPayload, RequestDetailsWrapper.class);
+
+    MsoResponseWrapper response = func.apply(sampleRequestDetails, endpoint);
+    JSONObject actualJson = new JSONObject(response.getEntity());
+
+    Assert.assertEquals(expectedStatus.getStatusCode(), response.getStatus());
+    Assert.assertEquals(expectedResponseStr, actualJson.toString());
+    verifyServer(server, endpoint, Method.POST);
   }
 
   void executeDelete(String jsonPayload, BiFunction<RequestDetails, String, MsoResponseWrapper> func)

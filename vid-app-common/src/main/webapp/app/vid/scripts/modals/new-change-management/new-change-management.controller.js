@@ -269,11 +269,15 @@
 				var data;
 				if(workflowType=="VNF Scale Out") {
                     data = {
+                        vnfName: vnf.name,
+                        vnfInstanceId: vnf.id,
                         modelInfo: {
                             modelType: 'vfModule',
                             modelInvariantId: moduleToScale.invariantUuid,
                             modelName: moduleToScale.modelCustomizationName,
                             modelVersion: moduleToScale.version,
+                            modelCustomizationName: moduleToScale.modelCustomizationName,
+                            modelCustomizationId: moduleToScale.customizationUuid,
                             modelVersionId: moduleToScale.uuid
                         },
                         cloudConfiguration: vnf.cloudConfiguration,
@@ -335,6 +339,7 @@
                         var relatedInstance = {
                             instanceId: vnf.id,
                             modelInfo: {
+                                modelCustomizationId: vnf.availableVersions[0].modelInfo.modelCustomizationId,
                                 modelCustomizationName: vnf.availableVersions[0].modelInfo.modelCustomizationName,
                                 modelInvariantId: vnf.availableVersions[0].modelInfo.modelInvariantId,
                                 modelName: vnf.availableVersions[0].modelInfo.modelName,
@@ -377,18 +382,8 @@
 				//no scheduling support
 				var dataToSo = extractChangeManagementCallbackDataStr(vm.changeManagement);
                 if(dataToSo) {
-
-                    if(vm.changeManagement.workflow==="VNF Scale Out") {
-                        dataToSo = JSON.parse(dataToSo);
-                        dataToSo = {requestDetails: dataToSo.requestDetails[0]};
-                        changeManagementService.postChangeManagementScaleOutNow(dataToSo,
-                            vm.changeManagement.vnfNames[0]["service-instance-node"][0].properties["service-instance-id"],
-                            vm.changeManagement.vnfNames[0].id);
-                    }else{
-                        //TODO: foreach
-                        var vnfName = vm.changeManagement.vnfNames[0].name;
-                        changeManagementService.postChangeManagementNow(dataToSo, vnfName);
-                    }
+                    var vnfName = vm.changeManagement.vnfNames[0].name;
+                    changeManagementService.postChangeManagementNow(dataToSo, vnfName);
                 }
 			}
         };

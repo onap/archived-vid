@@ -1,0 +1,67 @@
+{
+    "vnfName":"test",
+    "vnfInstanceId":"123",
+    "relatedInstanceList": [
+      {
+        "relatedInstance": {
+          "instanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+          "modelInfo": {
+            "modelType": "service",
+            "modelInvariantId": "c9817f08-07b2-458b-a02f-cd5407ee7a7b",
+            "modelVersionId": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+            "modelName": "ws-service",
+            "modelVersion": "1.0",
+            "additionalProperties": {}
+          }
+        }
+      },
+      {
+        "relatedInstance": {
+          "instanceId": "980fe98e-47f8-4164-862d-4ebb026cec75",
+          "modelInfo": {
+            "modelType": "vnf",
+            "modelInvariantId": "734f0952-6678-44e7-8918-f9aa4694b687",
+            "modelVersionId": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+            "modelName": "ws-sp",
+            "modelVersion": "1.0",
+            "modelCustomizationName": "ws-sp 0",
+            "modelCustomizationId": "5815868c-35f8-4c5a-b899-e6eb49f52986",
+            "additionalProperties": {}
+          }
+        }
+      }
+    ],
+    "cloudConfiguration": {
+      "lcpCloudRegionId": "RegionOne",
+      "tenantId": "1e097c6713e74fd7ac8e4295e605ee1e",
+      "additionalProperties": {}
+    },
+    "modelInfo": {
+      "modelCustomizationName": "WsSp..base_ws..module-0",
+      "modelCustomizationId": "bfcc8f57-7b56-4be8-a8f1-e44262c83318",
+      "modelInvariantId": "763b1172-b5f5-4062-9d79-2459710fa0bc",
+      "modelVersionId": "53f52586-236b-4d52-a94c-990883e054f0",
+      "modelName": "WsSp..base_ws..module-0",
+      "modelNameVersionId": null,
+      "modelType": "vfModule",
+      "modelVersion": "1",
+      "additionalProperties": {}
+    },
+    "requestInfo": {
+      "instanceName": "ws-test-0310-8_NaN",
+      "source": "VID",
+      "suppressRollback": false,
+      "requestorId": "demo",
+      "additionalProperties": {}
+    },
+    "requestParameters": {
+      "additionalProperties": {}
+    },
+    "configurationParameters": [
+      {
+        "availability-zone": "$.vnf-topology.vnf-resource-assignments.availability-zones.availability-zone[0]",
+        "xtz-123": "$.vnf-topology.vnf-resource-assignments.availability-zones.availability-zone[0]"
+      }
+    ]
+  }
+}
