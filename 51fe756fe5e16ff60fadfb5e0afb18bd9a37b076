@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_6c9326a4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/category/AddCategoryOptionResponse.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_69f55882",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_29ef50b2",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "Missing license header. I am aware that this was not added before, but please add it now, indicating that Nokia has only modified it according to the onap FOSS guidelines (see Multiple Contributors section on https://wiki.onap.org/display/DW/Rules+for+implementing+FOSS+in+a+project)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_4c966296",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_29ef50b2",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_8c576a02",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_c92b24ea",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_a98820e8",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 4
@@ -64,6 +118,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "the expression \"response.getErrors().size() \u003e 0\" can be simplified -\u003e please use getErrors().isEmpty() method. I\u0027d also recommend avoiding negation in the test condition for the sake of readability and just switch the evaluated values",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ac5cae26",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_a98820e8",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -104,6 +176,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_d3ee6922",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_e9f38871",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_09f28c9a",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -115,6 +205,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "Missing license header. I am aware that this was not added before, but please add it now, indicating that Nokia has only modified it according to the onap FOSS guidelines (see Multiple Contributors section on https://wiki.onap.org/display/DW/Rules+for+implementing+FOSS+in+a+project)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ac810e4c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_09f28c9a",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -138,6 +246,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_4c418238",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_895afc81",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_294bd0b1",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -149,6 +275,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "Suggestion - I always recommend using given/willReturn from BDDMockito for a more BDD friendly approach. While this is a preference, in the long run it is more in line with the given/when/then structure. You don\u0027t have to change this, the most important things to remember are:\n1. Stick to one approach without mixing them APIs\n2. Avoid using Mockito.when in case you explicitly provide given/when/then sections. For a pure BDD approach, BDDMockito should be used instead.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_38b0f48a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_294bd0b1",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -172,6 +316,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_3581d68f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_29f9904d",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_c9c7a411",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -183,6 +345,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "instead of new ArrayList\u003c\u003e() please use Collections.emptyList() :)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ac734eb0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_c9c7a411",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -206,6 +386,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_6c7486cf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_e9362803",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_ac0eee32",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -217,6 +415,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "What about asserting  the response body ?",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cc4a5283",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_ac0eee32",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -240,6 +456,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_0c061a21",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_092feca2",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_8c20ca9c",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -257,6 +491,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_7858bcfa",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_8c20ca9c",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_0c1dba66",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -268,6 +520,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "There are some things that should be rethought:\n1. Are the isMap checks necessary considering you are actually treating it like a map one line below?:)\n2. key1 is defined as as a local variable and hardcoded as part of the jsonPath at the same time.\n3. It would have been much more readable and less complicated to have one expected json defined and tested ine one approach, instead of fragmenting the checks and relying on indexes to acquire the values. What of there are more elements added? you\u0027d have to introduce a lot more duplications. Ideally it would best to create an expected Json Pojo representation and serialize it to json. The structure is part of the test and relying on 3rd party library in this case is totally ok since that\u0027s how the impl works.",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_80ce4282",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_0c1dba66",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -309,6 +579,42 @@
     },
     {
       "key": {
+        "uuid": "bada0100_acaa6ed2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_490c1443",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_98bb2072",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_1869708b",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_6909d830",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -344,6 +650,42 @@
     },
     {
       "key": {
+        "uuid": "bada0100_f5310e0c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_38f9d4c8",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cc8fb222",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_6909d830",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_ec04f616",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 4
@@ -355,6 +697,24 @@
       "writtenOn": "2018-10-08T10:08:23Z",
       "side": 1,
       "message": "I am a little bit on the fence if these preparation methods are needed at all. \nWhile they do encapsulate json stuff, I think inlining the code in a unit method wouldn\u0027t do much harm and additional method jumps could be avoided when reading.\n\nSome suggestions:\n\nFirst off I would suggest extracting some constants. The endpoints in all the preparation methods should be more exposed on a class level as constants (same as categoryName).\nPath building can kept as is. \n\nThe mockMvc.perform method is almost identical between the invocations, the only difference is the http method used. This code can be centralized and kept as a private method with the http method passed as lambda. \n\nAnother tip that can be helpful, especially in cases when dealing with complicated json structures (as request and response) can be the reliance on pojo representations of json objects (the ones used in mapping from/to raw json). This can mean using the ObjectMapper to do it randomly or check MockMvc functionality to do this automatically. It would allow you to have easy and readable assertions based on java objects. Of course this would require additional stuff like a proper equals/hashCode contract implemented etc :)",
+      "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_c0e8ca7e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-10T12:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_ec04f616",
       "revId": "51fe756fe5e16ff60fadfb5e0afb18bd9a37b076",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
