@@ -36,6 +36,29 @@
     },
     {
       "key": {
+        "uuid": "bada0100_69cea65c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-11T13:08:52Z",
+      "side": 1,
+      "message": "Change tabs to spaces",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 1
+      },
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_ccd01256",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
         "patchSetId": 1
@@ -47,6 +70,29 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "Make the fields final, so that you are sure the references don\u0027t changes once the controller has been constructed.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_49d162fa",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-11T13:08:52Z",
+      "side": 1,
+      "message": "Remove dead code",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 4
+      },
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -217,6 +263,29 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "Same issue as in other assertions. Try to find a cleaner solution based on my previous comments.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_29d89e1c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-11T13:08:52Z",
+      "side": 1,
+      "message": "Useless comment",
+      "range": {
+        "startLine": 127,
+        "startChar": 93,
+        "endLine": 127,
+        "endChar": 112
+      },
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
