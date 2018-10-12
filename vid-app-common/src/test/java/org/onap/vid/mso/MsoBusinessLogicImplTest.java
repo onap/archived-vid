@@ -2,14 +2,11 @@ package org.onap.vid.mso;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.controllers.MsoController;
+import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.properties.Features;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,13 +19,15 @@ import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.onap.vid.controllers.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.mso.MsoBusinessLogicImpl.validateEndpointPath;
 
@@ -41,7 +40,9 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     private static final String EXPECTED_SCALE_OUT_PATH = "/serviceInstantiation/v7/serviceInstances/1/vnfs/1/vfModules/scaleOut";
     private static final Path PATH_TO_NOT_PROCESSED_SCALE_OUT_REQUEST = Paths.get("src", "test", "resources", "payload_jsons", "scaleOutVfModulePayload.json");
     private static final Path PATH_TO_FINAL_SCALE_OUT_REQUEST = Paths.get("src", "test", "resources", "payload_jsons", "scaleOutVfModulePayloadToMso.json");
-    private static final ObjectMapper OBJECT_MAPPER=new ObjectMapper();
+    private static final Path PATH_TO_EXPECTED_MSO_MODEL_TYPE_REQ = Paths.get("src", "test", "resources", "payload_jsons", "mso_model_info_sample_response.json");
+    private static final Path PATH_TO_EXPECTED_MSO_SCALEOUT_REQ = Paths.get("src", "test", "resources", "payload_jsons", "mso_action_scaleout_sample_response.json");
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @InjectMocks
     private MsoBusinessLogicImpl msoBusinessLogic;
@@ -159,6 +160,36 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         RequestDetailsWrapper actual = requestDetailsWrapperArgumentCaptor.getAllValues().get(0);
 
         assertThat(expectedRequestWrapper.requestDetails).isEqualTo(actual.requestDetails);
+    }
+
+    @Test
+    public void shouldFilterOutOrchestrationRequestsNotAllowedInDashboard() throws IOException {
+        String vnfModelTypeOrchestrationRequests = getFileContentAsString(PATH_TO_EXPECTED_MSO_MODEL_TYPE_REQ);
+        String scaleOutActionOrchestrationRequests = getFileContentAsString(PATH_TO_EXPECTED_MSO_SCALEOUT_REQ);
+
+        MsoResponseWrapper msoResponseWrapperMock = mock(MsoResponseWrapper.class);
+        when(msoInterfaceMock.getOrchestrationRequestsForDashboard(any(String.class), any(String.class), any(String.class), any(RestObject.class)))
+                .thenReturn(msoResponseWrapperMock);
+        when(msoResponseWrapperMock.getEntity()).thenReturn(vnfModelTypeOrchestrationRequests, scaleOutActionOrchestrationRequests);
+
+        List<Request> filteredOrchestrationReqs = msoBusinessLogic.getOrchestrationRequestsForDashboard();
+
+        assertThat(filteredOrchestrationReqs).hasSize(3);
+        assertThat(MsoBusinessLogicImpl.DASHBOARD_ALLOWED_TYPES)
+                .containsAll(filteredOrchestrationReqs
+                        .stream()
+                        .map(el -> el.getRequestType().toUpperCase())
+                        .collect(Collectors.toList()));
+        assertThat(filteredOrchestrationReqs
+                .stream()
+                .map(org.onap.vid.domain.mso.Request::getRequestScope)
+                .collect(Collectors.toList()))
+                .containsOnly("vnf", "vfModule");
+    }
+
+
+    private String getFileContentAsString(Path pathToFile) throws IOException {
+        return new String(Files.readAllBytes(pathToFile));
     }
 
     private org.onap.vid.changeManagement.RequestDetails getScaleOutRequest() throws IOException {

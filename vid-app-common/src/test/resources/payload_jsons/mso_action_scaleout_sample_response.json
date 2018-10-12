@@ -1,0 +1,174 @@
+{
+  "requestList": [
+    {
+      "request": {
+        "requestId": "799d7380-60fe-4b64-9d99-82f6ab09163b",
+        "startTime": "Fri, 12 Oct 2018 08:53:07 GMT",
+        "requestScope": "vfModule",
+        "requestType": "scaleOut",
+        "requestDetails": {
+          "modelInfo": {
+            "modelCustomizationName": "WsSp..base_ws..module-0",
+            "modelInvariantId": "763b1172-b5f5-4062-9d79-2459710fa0bc",
+            "modelType": "vfModule",
+            "modelName": "WsSp..base_ws..module-0",
+            "modelVersion": "1",
+            "modelCustomizationUuid": "bfcc8f57-7b56-4be8-a8f1-e44262c83318",
+            "modelVersionId": "53f52586-236b-4d52-a94c-990883e054f0",
+            "modelCustomizationId": "bfcc8f57-7b56-4be8-a8f1-e44262c83318",
+            "modelUuid": "53f52586-236b-4d52-a94c-990883e054f0",
+            "modelInvariantUuid": "763b1172-b5f5-4062-9d79-2459710fa0bc",
+            "modelInstanceName": "WsSp..base_ws..module-0"
+          },
+          "requestInfo": {
+            "source": "VID",
+            "instanceName": "ws-test-0310-8_NaN",
+            "suppressRollback": false,
+            "requestorId": "demo"
+          },
+          "relatedInstanceList": [
+            {
+              "relatedInstance": {
+                "instanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+                "modelInfo": {
+                  "modelInvariantId": "c9817f08-07b2-458b-a02f-cd5407ee7a7b",
+                  "modelType": "service",
+                  "modelName": "ws-service",
+                  "modelVersion": "1.0",
+                  "modelVersionId": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelUuid": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelInvariantUuid": "c9817f08-07b2-458b-a02f-cd5407ee7a7b"
+                }
+              }
+            },
+            {
+              "relatedInstance": {
+                "instanceId": "980fe98e-47f8-4164-862d-4ebb026cec75",
+                "modelInfo": {
+                  "modelCustomizationName": "ws-sp 0",
+                  "modelInvariantId": "734f0952-6678-44e7-8918-f9aa4694b687",
+                  "modelType": "vnf",
+                  "modelName": "ws-sp",
+                  "modelVersion": "1.0",
+                  "modelCustomizationUuid": "5815868c-35f8-4c5a-b899-e6eb49f52986",
+                  "modelVersionId": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelCustomizationId": "5815868c-35f8-4c5a-b899-e6eb49f52986",
+                  "modelUuid": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelInvariantUuid": "734f0952-6678-44e7-8918-f9aa4694b687",
+                  "modelInstanceName": "ws-sp 0"
+                }
+              }
+            }
+          ],
+          "cloudConfiguration": {
+            "tenantId": "1e097c6713e74fd7ac8e4295e605ee1e",
+            "lcpCloudRegionId": "RegionOne"
+          },
+          "requestParameters": {},
+          "configurationParameters": [
+            {
+              "availability-zone": "$.vnf-topology.vnf-resource-assignments.availability-zones.availability-zone[0]",
+              "xtz-123": "$.vnf-topology.vnf-resource-assignments.availability-zones.availability-zone[0]"
+            }
+          ]
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+          "vnfInstanceId": "980fe98e-47f8-4164-862d-4ebb026cec75",
+          "vfModuleInstanceName": "ws-test-0310-8_NaN",
+          "requestorId": "demo"
+        },
+        "requestStatus": {
+          "requestState": "FAILED",
+          "statusMessage": "No valid vfModuleCustomization is specified",
+          "percentProgress": 100,
+          "finishTime": "Fri, 12 Oct 2018 08:53:07 GMT"
+        }
+      }
+    },
+    {
+      "request": {
+        "requestId": "44b534c7-57b5-42ec-85bb-219167021b34",
+        "startTime": "Fri, 12 Oct 2018 09:08:01 GMT",
+        "requestScope": "vfModule",
+        "requestType": "scaleOut",
+        "requestDetails": {
+          "modelInfo": {
+            "modelCustomizationName": "WsSp..base_ws..module-0",
+            "modelInvariantId": "763b1172-b5f5-4062-9d79-2459710fa0bc",
+            "modelType": "vfModule",
+            "modelName": "WsSp..base_ws..module-0",
+            "modelVersion": "1",
+            "modelCustomizationUuid": "bfcc8f57-7b56-4be8-a8f1-e44262c83318",
+            "modelVersionId": "53f52586-236b-4d52-a94c-990883e054f0",
+            "modelCustomizationId": "bfcc8f57-7b56-4be8-a8f1-e44262c83318",
+            "modelUuid": "53f52586-236b-4d52-a94c-990883e054f0",
+            "modelInvariantUuid": "763b1172-b5f5-4062-9d79-2459710fa0bc",
+            "modelInstanceName": "WsSp..base_ws..module-0"
+          },
+          "requestInfo": {
+            "source": "VID",
+            "instanceName": "ws-test-0310-8_NaN",
+            "suppressRollback": false,
+            "requestorId": "demo"
+          },
+          "relatedInstanceList": [
+            {
+              "relatedInstance": {
+                "instanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+                "modelInfo": {
+                  "modelInvariantId": "c9817f08-07b2-458b-a02f-cd5407ee7a7b",
+                  "modelType": "service",
+                  "modelName": "ws-service",
+                  "modelVersion": "1.0",
+                  "modelVersionId": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelUuid": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelInvariantUuid": "c9817f08-07b2-458b-a02f-cd5407ee7a7b"
+                }
+              }
+            },
+            {
+              "relatedInstance": {
+                "instanceId": "980fe98e-47f8-4164-862d-4ebb026cec75",
+                "modelInfo": {
+                  "modelCustomizationName": "ws-sp 0",
+                  "modelInvariantId": "734f0952-6678-44e7-8918-f9aa4694b687",
+                  "modelType": "vnf",
+                  "modelName": "ws-sp",
+                  "modelVersion": "1.0",
+                  "modelCustomizationUuid": "5815868c-35f8-4c5a-b899-e6eb49f52986",
+                  "modelVersionId": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelCustomizationId": "5815868c-35f8-4c5a-b899-e6eb49f52986",
+                  "modelUuid": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+                  "modelInvariantUuid": "734f0952-6678-44e7-8918-f9aa4694b687",
+                  "modelInstanceName": "ws-sp 0"
+                }
+              }
+            }
+          ],
+          "cloudConfiguration": {
+            "tenantId": "1e097c6713e74fd7ac8e4295e605ee1e",
+            "lcpCloudRegionId": "RegionOne"
+          },
+          "requestParameters": {},
+          "configurationParameters": [
+            {
+              "availability-zone": "$.vnf-topology.vnf-resource-assignments.availability-zones.availability-zone[0]",
+              "xtz-123": "$.vnf-topology.vnf-resource-assignments.availability-zones.availability-zone[0]"
+            }
+          ]
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+          "vnfInstanceId": "980fe98e-47f8-4164-862d-4ebb026cec75",
+          "vfModuleInstanceId": "scaleOut",
+          "vfModuleInstanceName": "ws-test-0310-8_NaN",
+          "requestorId": "demo"
+        },
+        "requestStatus": {
+          "requestState": "FAILED"
+        }
+      }
+    }
+  ]
+}
