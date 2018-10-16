@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_1b32c3a7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_4c68a2ba",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_6c6566e0",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "Always remove unused imports this also means the commented out ones :)",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_db2bdb2e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_6c6566e0",
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_bdbb6471",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_69cea65c",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 1
+      },
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_ccd01256",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
         "patchSetId": 1
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_7b20af49",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_ccd01256",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_49d162fa",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
         "patchSetId": 1
@@ -87,6 +165,30 @@
       "writtenOn": "2018-10-11T13:08:52Z",
       "side": 1,
       "message": "Remove dead code",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 4
+      },
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_c8653ee2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_49d162fa",
       "range": {
         "startLine": 72,
         "startChar": 0,
@@ -127,6 +229,24 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "This comment is unnecessary, it does not provide any more explanation beyond what what is already stated by the api naming",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_5b17ebed",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_ecee3622",
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -184,6 +304,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_f687d15f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_eca076f6",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_accfceaf",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
         "patchSetId": 1
@@ -195,6 +333,24 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "This class should have a builder, which would be a good future improvement. The passed nulls are very ambiguous.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_16db751c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_accfceaf",
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -218,6 +374,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_dbb99bea",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_8cca0aa0",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_4caf42e4",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
         "patchSetId": 1
@@ -229,6 +403,24 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "I have to repeat my comment from a previous review. The best solution when verifying response would be to rely on the json pojo representation instead of raw json or prepare an expected json result and do a single assertions instead of verifying the whole json structure, especially when you index-based access has be used.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_563fbd25",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_4caf42e4",
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -252,6 +444,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_1bbc03bb",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_6cac86ee",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_0cb93a2e",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
         "patchSetId": 1
@@ -263,6 +473,24 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "Same issue as in other assertions. Try to find a cleaner solution based on my previous comments.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_364b19b2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_0cb93a2e",
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -292,6 +520,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_5db0388b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_29d89e1c",
+      "range": {
+        "startLine": 127,
+        "startChar": 93,
+        "endLine": 127,
+        "endChar": 112
+      },
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_2c52fedd",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
         "patchSetId": 1
@@ -303,6 +555,24 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "Checking the status only is insufficient, and HttpStatus does not hold any business/functional information as to what went wrong, rather it groups certain types of problems under one status.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_d64acd82",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "This endpoint method just throws a custom exception with status code SERVICE_UNAVAILABLE in case of an error, we don\u0027t have any other valuable information provided. It\u0027s hard to test the message of the thrown exception, as we don\u0027t call getService() function directly.",
+      "parentUuid": "bada0100_2c52fedd",
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -326,6 +596,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_3655591d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_6c48062e",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_8c58cafb",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
         "patchSetId": 1
@@ -337,6 +625,24 @@
       "writtenOn": "2018-10-08T11:37:26Z",
       "side": 1,
       "message": "Incomplete unit test, only the rest endpoint invocation is verified, any communication/delegation with the service in the impl is ignored.",
+      "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_49416238",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/VidControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-16T13:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_8c58cafb",
       "revId": "0975e8bb21bfa26276521c4158756e37939e3f98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
