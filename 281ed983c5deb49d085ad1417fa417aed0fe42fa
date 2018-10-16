@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_c851be63",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-10-16T15:14:13Z",
+      "side": 1,
+      "message": "Would getOrchestrationRequestsByFilter(\"modelType\", \"vfmodule\") also work ?\nI think it would be easier to understand for other developers if it\u0027s consistent with modelType filtering",
+      "range": {
+        "startLine": 321,
+        "startChar": 101,
+        "endLine": 321,
+        "endChar": 121
+      },
+      "revId": "281ed983c5deb49d085ad1417fa417aed0fe42fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
