@@ -39,7 +39,7 @@
     "angular-tree-component": "7.0.1",
     "angular2-datatable": "0.6.0",
     "angular2-multiselect-dropdown": "2.5.0",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.1.2",
     "core-js": "2.4.1",
     "font-awesome": "^4.7.0",
     "ng-multiselect-dropdown": "0.1.3",
