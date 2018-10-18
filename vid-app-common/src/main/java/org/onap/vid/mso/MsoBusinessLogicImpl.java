@@ -46,7 +46,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.StringUtils.upperCase;
 import static org.onap.vid.changeManagement.ChangeManagementRequest.MsoChangeManagementRequest;
 import static org.onap.vid.controllers.MsoController.*;
@@ -56,10 +60,14 @@ import static org.onap.vid.utils.Logging.debugRequestDetails;
 
 public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
-    public static final String START = " start";
-    public static final String RESOURCE_TYPE = "resourceType";
-    FeatureManager featureManager;
-
+    static final List<String> DASHBOARD_ALLOWED_TYPES = Stream.of(RequestType.REPLACE_INSTANCE,
+            RequestType.UPDATE_INSTANCE,
+            RequestType.APPLY_UPDATED_CONFIG,
+            RequestType.IN_PLACE_SOFTWARE_UPDATE,
+            RequestType.SCALE_OUT)
+            .map(requestType -> requestType.toString().toUpperCase())
+            .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+    private static final String RESOURCE_TYPE = "resourceType";
     /**
      * The Constant dateFormat.
      */
@@ -74,16 +82,16 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     private static final String SOURCE_OPERATIONAL_ENVIRONMENT = "VID";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     /**
+     * The logger.
+     */
+    private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoBusinessLogicImpl.class);
+    /**
      * The Mso REST client
      * This should be replaced with mso client factory.
      */
     private final MsoInterface msoClientInterface;
+    FeatureManager featureManager;
 
-    /**
-     * The logger.
-     */
-    private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoBusinessLogicImpl.class);
-    
     @Autowired
     public MsoBusinessLogicImpl(MsoInterface msoClientInterface, FeatureManager featureManager) {
         this.msoClientInterface = msoClientInterface;
@@ -101,34 +109,26 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     // this function should get params from tosca and send them to instance at mso, then return success response.
     @Override
     public MsoResponseWrapper createSvcInstance(RequestDetails msoRequest) {
-        String methodName = "createSvcInstance ";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("createSvcInstance");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_SVC_INSTANCE);
 
         return msoClientInterface.createSvcInstance(msoRequest, endpoint);
     }
 
     @Override
-    public MsoResponseWrapper createE2eSvcInstance(Object msoRequest){
-        String methodName = "createE2eSvcInstance ";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_E2E_SVC_INSTANCE);
-
+    public MsoResponseWrapper createE2eSvcInstance(Object msoRequest) {
+        logInvocationInDebug("createE2eSvcInstance");
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_E2E_SVC_INSTANCE);
 
         return msoClientInterface.createE2eSvcInstance(msoRequest, endpoint);
-    } 
+    }
 
     @Override
     public MsoResponseWrapper createVnf(RequestDetails requestDetails, String serviceInstanceId) {
-        String methodName = "createVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("createVnf");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
 
         String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         return msoClientInterface.createVnf(requestDetails, vnf_endpoint);
@@ -136,11 +136,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String serviceInstanceId) {
-        String methodName = "createNwInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("createNwInstance");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
 
         String nw_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         return msoClientInterface.createNwInstance(requestDetails, nw_endpoint);
@@ -148,11 +146,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "createVolumeGroupInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("createVolumeGroupInstance");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
 
         String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         vnf_endpoint = vnf_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
@@ -162,11 +158,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "createVfModuleInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("createVfModuleInstance");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
 
         String partial_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         String vf_module_endpoint = partial_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
@@ -176,11 +170,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper scaleOutVfModuleInstance(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "scaleOutVfModuleInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("scaleOutVfModuleInstance");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_SCALE_OUT);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_SCALE_OUT);
 
         String partial_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         String vf_module_endpoint = partial_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
@@ -191,10 +183,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         return msoClientInterface.scaleOutVFModuleInstance(wrapper, vf_module_endpoint);
     }
+
     @Override
     public MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String serviceInstanceId) {
-        String methodName = "createConfigurationInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("createConfigurationInstance");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATIONS);
         endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
@@ -204,24 +196,21 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String serviceInstanceId) {
-        String methodName = "deleteE2eSvcInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deleteE2eSvcInstance");
 
-        String endpoint;
-	 	endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_E2E_SVC_INSTANCE) + "/" + serviceInstanceId;
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_E2E_SVC_INSTANCE) + "/" + serviceInstanceId;
 
         return msoClientInterface.deleteE2eSvcInstance(requestDetails, endpoint);
     }
 
     @Override
     public MsoResponseWrapper deleteSvcInstance(RequestDetails requestDetails, String serviceInstanceId, String serviceStatus) {
-        String methodName = "deleteSvcInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deleteSvcInstance");
         String endpoint;
 
-        if (featureManager.isActive(FLAG_UNASSIGN_SERVICE)){
+        if (featureManager.isActive(FLAG_UNASSIGN_SERVICE)) {
             endpoint = validateEndpointPath(MsoProperties.MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE);
-            if (shouldUnassignService(serviceStatus)){
+            if (shouldUnassignService(serviceStatus)) {
                 logger.debug(EELFLoggerDelegate.debugLogger, "unassign service");
                 String svc_endpoint = endpoint + "/" + serviceInstanceId + "/unassign";
                 return msoClientInterface.unassignSvcInstance(requestDetails, svc_endpoint);
@@ -235,16 +224,14 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
     private boolean shouldUnassignService(String serviceStatus) {
-            return ImmutableList.of("created","pendingdelete","pending-delete", "assigned").contains(serviceStatus.toLowerCase());
+        return ImmutableList.of("created", "pendingdelete", "pending-delete", "assigned").contains(serviceStatus.toLowerCase());
     }
 
     @Override
     public MsoResponseWrapper deleteVnf(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "deleteVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deleteVnf");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
         String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         vnf_endpoint = vnf_endpoint + '/' + vnfInstanceId;
 
@@ -253,14 +240,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper deleteVfModule(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId, String vfModuleId) {
-        String methodName = "deleteVfModule";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deleteVfModule");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
-
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
         String vf__modules_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId).replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-
         String delete_vf_endpoint = vf__modules_endpoint + '/' + vfModuleId;
 
         return msoClientInterface.deleteVfModule(requestDetails, delete_vf_endpoint);
@@ -268,12 +251,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper deleteVolumeGroupInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId, String volumeGroupId) {
-        String methodName = "deleteVolumeGroupInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deleteVolumeGroupInstance");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
-
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
         String svc_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         String vnf_endpoint = svc_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
         String delete_volume_group_endpoint = vnf_endpoint + "/" + volumeGroupId;
@@ -283,12 +263,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String serviceInstanceId, String networkInstanceId) {
-        String methodName = "deleteNwInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deleteNwInstance");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
-
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
         String svc_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         String delete_nw_endpoint = svc_endpoint + "/" + networkInstanceId;
 
@@ -298,7 +275,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public MsoResponseWrapper getOrchestrationRequest(String requestId) {
         String methodName = "getOrchestrationRequest";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug(methodName);
         try {
             String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQ);
             String path = p + "/" + requestId;
@@ -306,8 +283,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             return msoClientInterface.getOrchestrationRequest(path);
 
         } catch (Exception e) {
-            logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logException(methodName, e);
             throw e;
         }
     }
@@ -315,7 +291,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public MsoResponseWrapper getOrchestrationRequests(String filterString) {
         String methodName = "getOrchestrationRequest";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug(methodName);
         try {
             String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
             String path = p + filterString;
@@ -323,8 +299,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             return msoClientInterface.getOrchestrationRequest(path);
 
         } catch (Exception e) {
-            logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logException(methodName, e);
             throw e;
         }
     }
@@ -332,48 +307,51 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public List<Request> getOrchestrationRequestsForDashboard() {
         String methodName = "getOrchestrationRequestsForDashboard";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-        List<Request> filteredOrchestrationRequests = new ArrayList<>();
+        logInvocationInDebug(methodName);
+
+        List<Request> dashboardOrchestrationReqs = new ArrayList<>();
         try {
-            String path = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
-            path += "filter=modelType:EQUALS:vnf";
-            RestObject<String> restObjStr = new RestObject<>();
-            String str = new String();
-            restObjStr.set(str);
+            List<RequestWrapper> vnfOrchestrationReqsWrappers = getOrchestrationRequestsByFilter("modelType", "vnf");
+            dashboardOrchestrationReqs = vnfOrchestrationReqsWrappers.stream()
+                    .filter(reqWrapper -> Objects.nonNull(reqWrapper.getRequest())
+                            && DASHBOARD_ALLOWED_TYPES.contains(upperCase(reqWrapper.getRequest().getRequestType())))
+                    .map(RequestWrapper::getRequest)
+                    .collect(Collectors.toList());
 
-            MsoResponseWrapper msoResponseWrapper = msoClientInterface.getOrchestrationRequestsForDashboard(str, "", path, restObjStr);
-            List<RequestWrapper> allOrchestrationRequests = deserializeOrchestrationRequestsJson(msoResponseWrapper.getEntity());
+            List<RequestWrapper> scaleOutOrchestrationReqWrappers = getOrchestrationRequestsByFilter("action", "scaleOut");
+            List<Request> scaleoutRequests = scaleOutOrchestrationReqWrappers.stream()
+                    .filter(reqWrapper -> Objects.nonNull(reqWrapper.getRequest()))
+                    .map(RequestWrapper::getRequest)
+                    .collect(Collectors.toList());
 
-            final ImmutableList<String> suppoertedRequestTypes = ImmutableList.of(
-                    RequestType.REPLACE_INSTANCE.toString().toUpperCase(),
-                    RequestType.UPDATE_INSTANCE.toString().toUpperCase(),
-                    RequestType.APPLY_UPDATED_CONFIG.toString().toUpperCase(),
-                    RequestType.IN_PLACE_SOFTWARE_UPDATE.toString().toUpperCase()
-            );
-
-            for (RequestWrapper currentRequest : allOrchestrationRequests) {
-                if (currentRequest.getRequest() != null
-                        && "vnf".equalsIgnoreCase(currentRequest.getRequest().getRequestScope())
-                        && suppoertedRequestTypes.contains(upperCase(currentRequest.getRequest().getRequestType()))
-                ) {
-                    filteredOrchestrationRequests.add(currentRequest.getRequest());
-                }
-            }
+            dashboardOrchestrationReqs.addAll(scaleoutRequests);
         } catch (Exception e) {
-            logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logException(methodName, e);
         }
-        return filteredOrchestrationRequests;
+        return dashboardOrchestrationReqs;
+    }
+
+    private String constructOrchestrationRequestFilter(String filterName, String filterValue) {
+        return String.format("%sfilter=%s:EQUALS:%s",
+                SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS), filterName, filterValue);
+    }
+
+    private List<RequestWrapper> getOrchestrationRequestsByFilter(String filterName, String filterValue) {
+        String orchestrationReqPath = constructOrchestrationRequestFilter(filterName, filterValue);
+        RestObject<String> restObjStr = new RestObject<>();
+        String str = new String();
+        restObjStr.set(str);
+        MsoResponseWrapper msoResponseWrapper = msoClientInterface.getOrchestrationRequestsForDashboard(str, "", orchestrationReqPath, restObjStr);
+        return deserializeOrchestrationRequestsJson(msoResponseWrapper.getEntity());
     }
 
     private List<RequestWrapper> deserializeOrchestrationRequestsJson(String orchestrationRequestsJson) {
-        String methodName = "deserializeOrchestrationRequestsJson";
-        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deserializeOrchestrationRequestsJson");
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
-        RequestList requestList = null;
+        RequestList requestList;
         try {
             requestList = mapper.readValue(orchestrationRequestsJson, RequestList.class);
         } catch (IOException e) {
@@ -386,7 +364,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public List<Task> getManualTasksByRequestId(String originalRequestId) {
         String methodName = "getManualTasksByRequestId";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug(methodName);
 
         try {
             String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_MAN_TASKS);
@@ -400,15 +378,13 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             return deserializeManualTasksJson(msoResponseWrapper.getEntity());
 
         } catch (Exception e) {
-            logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logException(methodName, e);
             throw e;
         }
     }
 
     private List<Task> deserializeManualTasksJson(String manualTasksJson) {
-        String methodName = "deserializeManualTasksJson";
-        logger.debug(dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("deserializeManualTasksJson");
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -423,7 +399,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String taskId) {
         String methodName = "completeManualTask";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug(methodName);
         try {
             String p = SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_MAN_TASKS);
             String path = p + "/" + taskId + "/complete";
@@ -437,8 +413,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             return MsoUtil.wrapResponse(restObjStr);
 
         } catch (Exception e) {
-            logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logException(methodName, e);
             throw e;
         }
     }
@@ -446,7 +421,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public MsoResponseWrapper activateServiceInstance(RequestDetails requestDetails, String serviceInstanceId) {
         String methodName = "activateServiceInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug(methodName);
         try {
             String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
             String activateServicePath = serviceEndpoint + "/" + serviceInstanceId + ACTIVATE;
@@ -460,8 +435,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             return MsoUtil.wrapResponse(restObjStr);
 
         } catch (Exception e) {
-            logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logException(methodName, e);
             throw e;
         }
     }
@@ -469,8 +443,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapperInterface updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "updateVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("updateVnf");
 
         String endpoint;
         endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
@@ -481,11 +454,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapperInterface replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "replaceVnf";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("replaceVnf");
 
-        String endpoint;
-        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE);
         String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         vnf_endpoint = vnf_endpoint.replace(VNF_INSTANCE_ID, vnfInstanceId);
         vnf_endpoint = vnf_endpoint.replace(REQUEST_TYPE, MsoChangeManagementRequest.REPLACE);
@@ -506,22 +477,17 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public RequestDetailsWrapper generateConfigMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails) {
         validateUpdateVnfConfig(requestDetails);
-        RequestDetails ConfigUpdateRequest = new RequestDetails();
-        ConfigUpdateRequest.setRequestParameters(requestDetails.getRequestParameters());
-        ConfigUpdateRequest.setRequestInfo(requestDetails.getRequestInfo());
+        RequestDetails configUpdateRequest = new RequestDetails();
+        configUpdateRequest.setRequestParameters(requestDetails.getRequestParameters());
+        configUpdateRequest.setRequestInfo(requestDetails.getRequestInfo());
         RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
-        requestDetailsWrapper.requestDetails = ConfigUpdateRequest;
+        requestDetailsWrapper.requestDetails = configUpdateRequest;
         return requestDetailsWrapper;
     }
 
-
-
-
-
     @Override
     public MsoResponseWrapperInterface updateVnfSoftware(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "updateVnfSoftware";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("updateVnfSoftware");
         String vnf_endpoint = getChangeManagementEndpoint(serviceInstanceId, vnfInstanceId, MsoChangeManagementRequest.SOFTWARE_UPDATE); //workflow name in mso is different than workflow name in vid UI
         RequestDetailsWrapper finalRequestDetails = generateInPlaceMsoRequest(requestDetails);
         return msoClientInterface.changeManagementUpdate(finalRequestDetails, vnf_endpoint);
@@ -529,30 +495,28 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapperInterface updateVnfConfig(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
-        String methodName = "updateVnfConfig";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("updateVnfConfig");
         RequestDetailsWrapper finalRequestDetails = generateConfigMsoRequest(requestDetails);
         String vnf_endpoint = getChangeManagementEndpoint(serviceInstanceId, vnfInstanceId, MsoChangeManagementRequest.CONFIG_UPDATE);
         return msoClientInterface.changeManagementUpdate(finalRequestDetails, vnf_endpoint);
     }
 
     private String getChangeManagementEndpoint(String serviceInstanceId, String vnfInstanceId, String vnfRequestType) {
-        String endpoint  = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE);
         String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         vnf_endpoint = vnf_endpoint.replace(VNF_INSTANCE_ID, vnfInstanceId);
         vnf_endpoint = vnf_endpoint.replace(REQUEST_TYPE, vnfRequestType);
         return vnf_endpoint;
     }
 
-    private Map getChangeManagementPayload(RequestDetails requestDetails, String message){
-        if(requestDetails.getRequestParameters()==null||requestDetails.getRequestParameters().getAdditionalProperties()==null){
+    private Map getChangeManagementPayload(RequestDetails requestDetails, String message) {
+        if (requestDetails.getRequestParameters() == null || requestDetails.getRequestParameters().getAdditionalProperties() == null) {
             throw new BadRequestException(message);
         }
-        Object payloadRaw=requestDetails.getRequestParameters().getAdditionalProperties().get("payload");
-        try{
-            return objectMapper.readValue((String)payloadRaw,Map.class);
-        }
-        catch(Exception exception){
+        Object payloadRaw = requestDetails.getRequestParameters().getAdditionalProperties().get("payload");
+        try {
+            return objectMapper.readValue((String) payloadRaw, Map.class);
+        } catch (Exception exception) {
             throw new BadRequestException(message);
         }
     }
@@ -581,30 +545,12 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         }
     }
 
-    private void validateUpdateVnfConfig(RequestDetails requestDetails) {
-        final String noValidPayloadMsg = "No valid payload in " + ChangeManagementRequest.CONFIG_UPDATE + " request";
-
-        Map payload = getChangeManagementPayload(requestDetails, noValidPayloadMsg);
-        validateConfigUpdateVnfPayloadProperty(payload, noValidPayloadMsg, "request-parameters");
-        validateConfigUpdateVnfPayloadProperty(payload, noValidPayloadMsg, "configuration-parameters");
-    }
-
-    private void validateConfigUpdateVnfPayloadProperty(Map payload, String noValidPayloadMsg, String propertyName) {
-        final String noValidPayloadPropertyMsg = noValidPayloadMsg+ ", "+ propertyName + " property is not valid";
-        if(!payload.containsKey(propertyName)) {
-            throw new BadRequestException( noValidPayloadPropertyMsg);
-        }
-    }
-
     @Override
-    public MsoResponseWrapper deleteConfiguration(
-            org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper,
-            String serviceInstanceId,
-            String configurationId) {
+    public MsoResponseWrapper deleteConfiguration(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper,
+                                                  String serviceInstanceId,
+                                                  String configurationId) {
 
-        String methodName = "deleteConfiguration";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
-
+        logInvocationInDebug("deleteConfiguration");
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATION_INSTANCE);
         endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
         endpoint = endpoint.replace(CONFIGURATION_ID, configurationId);
@@ -619,8 +565,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String configurationId,
             boolean isActivate) {
 
-        String methodName = "setConfigurationActiveStatus";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("setConfigurationActiveStatus");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATION_INSTANCE);
         endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
@@ -633,9 +578,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
     @Override
-    public MsoResponseWrapper setServiceInstanceStatus(RequestDetails requestDetails , String serviceInstanceId, boolean isActivate) {
+    public MsoResponseWrapper setServiceInstanceStatus(RequestDetails requestDetails, String serviceInstanceId, boolean isActivate) {
+        logInvocationInDebug("setServiceInstanceStatus");
         String methodName = "setServiceInstanceStatus";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
         try {
             String serviceEndpoint = validateEndpointPath(MsoProperties.MSO_REST_API_SVC_INSTANCE);
             String endpoint = serviceEndpoint + "/" + serviceInstanceId;
@@ -648,7 +593,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String str = "";
             restObjStr.set(str);
 
-            msoClientInterface.setServiceInstanceStatus(requestDetails , str, "", endpoint, restObjStr);
+            msoClientInterface.setServiceInstanceStatus(requestDetails, str, "", endpoint, restObjStr);
 
             return MsoUtil.wrapResponse(restObjStr);
 
@@ -665,8 +610,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String serviceInstanceId,
             String configurationId,
             boolean isEnable) {
-        String methodName = "setPortOnConfigurationStatus";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("setPortOnConfigurationStatus");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_CONFIGURATION_INSTANCE);
         endpoint = endpoint.replace(SVC_INSTANCE_ID, serviceInstanceId);
@@ -680,7 +624,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
 
     @Override
-    public  RequestDetailsWrapper<RequestDetails> createOperationalEnvironmentActivationRequestDetails(OperationalEnvironmentActivateInfo details) {
+    public RequestDetailsWrapper<RequestDetails> createOperationalEnvironmentActivationRequestDetails(OperationalEnvironmentActivateInfo details) {
         RequestDetails requestDetails = new RequestDetails();
         RequestInfo requestInfo = new RequestInfo();
         requestInfo.setAdditionalProperty(RESOURCE_TYPE, RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT);
@@ -754,7 +698,6 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
 
-
     @Override
     public RequestDetailsWrapper<OperationEnvironmentRequestDetails> convertParametersToRequestDetails(OperationalEnvironmentController.OperationalEnvironmentCreateBody input, String userId) {
         OperationEnvironmentRequestDetails.RequestInfo requestInfo = new OperationEnvironmentRequestDetails.RequestInfo(
@@ -783,8 +726,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String serviceInstanceId) {
-        String methodName = "removeRelationshipFromServiceInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("removeRelationshipFromServiceInstance");
 
         String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
         String removeRelationshipsPath = serviceEndpoint + "/" + serviceInstanceId + "/removeRelationships";
@@ -794,8 +736,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String serviceInstanceId) {
-        String methodName = "addRelationshipToServiceInstance";
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + START);
+        logInvocationInDebug("addRelationshipToServiceInstance");
 
         String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
         String addRelationshipsPath = serviceEndpoint + "/" + serviceInstanceId + "/addRelationships";
@@ -803,8 +744,31 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         return msoClientInterface.addRelationshipToServiceInstance(requestDetails, addRelationshipsPath);
     }
 
+    private void validateUpdateVnfConfig(RequestDetails requestDetails) {
+        final String noValidPayloadMsg = "No valid payload in " + ChangeManagementRequest.CONFIG_UPDATE + " request";
 
-    public enum RequestType {
+        Map payload = getChangeManagementPayload(requestDetails, noValidPayloadMsg);
+        validateConfigUpdateVnfPayloadProperty(payload, noValidPayloadMsg, "request-parameters");
+        validateConfigUpdateVnfPayloadProperty(payload, noValidPayloadMsg, "configuration-parameters");
+    }
+
+    private void validateConfigUpdateVnfPayloadProperty(Map payload, String noValidPayloadMsg, String propertyName) {
+        final String noValidPayloadPropertyMsg = noValidPayloadMsg + ", " + propertyName + " property is not valid";
+        if (!payload.containsKey(propertyName)) {
+            throw new BadRequestException(noValidPayloadPropertyMsg);
+        }
+    }
+
+    private void logInvocationInDebug(String methodName) {
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + "  start");
+    }
+
+    private void logException(String methodName, Exception e) {
+        logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+    }
+
+    enum RequestType {
 
         CREATE_INSTANCE("createInstance"),
         DELETE_INSTANCE("deleteInstance"),
@@ -814,25 +778,21 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         DEACTIVATE_INSTANCE("deactivateInstance"),
         APPLY_UPDATED_CONFIG("applyUpdatedConfig"),
         IN_PLACE_SOFTWARE_UPDATE("inPlaceSoftwareUpdate"),
+        SCALE_OUT("scaleOut"),
         UNKNOWN("unknown"),
         NOT_PROVIDED("not provided");
-        private final String value;
         private static final Map<String, RequestType> CONSTANTS = new HashMap<>();
 
         static {
-            for (RequestType c: values()) {
+            for (RequestType c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
 
+        private final String value;
+
         RequestType(String value) {
             this.value = value;
-        }
-
-        @JsonValue
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         @JsonCreator
@@ -843,6 +803,12 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             } else {
                 return constant;
             }
+        }
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.value;
         }
     }
 }

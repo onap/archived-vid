@@ -1,0 +1,108 @@
+{
+  "requestList": [
+    {
+      "request": {
+        "requestId": "f8c813a2-b22b-4e3d-9be0-8e2d16b1add3",
+        "startTime": "Wed, 03 Oct 2018 13:13:04 GMT",
+        "requestScope": "vnf",
+        "requestType": "createInstance",
+        "requestDetails": {
+          "modelInfo": {
+            "modelCustomizationName": "ws-sp 0",
+            "modelInvariantId": "734f0952-6678-44e7-8918-f9aa4694b687",
+            "modelType": "vnf",
+            "modelName": "ws-sp",
+            "modelVersion": "1.0",
+            "modelCustomizationUuid": "5815868c-35f8-4c5a-b899-e6eb49f52986",
+            "modelVersionId": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+            "modelCustomizationId": "5815868c-35f8-4c5a-b899-e6eb49f52986",
+            "modelUuid": "0e0bb964-e687-4439-9a9e-de9cd1ff5367",
+            "modelInvariantUuid": "734f0952-6678-44e7-8918-f9aa4694b687",
+            "modelInstanceName": "ws-sp 0"
+          },
+          "requestInfo": {
+            "productFamilyId": "61cc3239-5c2e-4762-a281-7422a2e54d5a",
+            "source": "VID",
+            "instanceName": "ws-test-0310-8",
+            "suppressRollback": false,
+            "requestorId": "demo"
+          },
+          "relatedInstanceList": [
+            {
+              "relatedInstance": {
+                "instanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+                "modelInfo": {
+                  "modelInvariantId": "c9817f08-07b2-458b-a02f-cd5407ee7a7b",
+                  "modelType": "service",
+                  "modelName": "ws-service",
+                  "modelVersion": "1.0",
+                  "modelVersionId": "cd3fbd06-6bc8-43a4-b803-933fc2e3cdf7",
+                  "modelUuid": "cd3fbd06-6bc8-43a4-b803-933fc2e3cdf7",
+                  "modelInvariantUuid": "c9817f08-07b2-458b-a02f-cd5407ee7a7b"
+                }
+              }
+            }
+          ],
+          "cloudConfiguration": {
+            "tenantId": "1e097c6713e74fd7ac8e4295e605ee1e",
+            "lcpCloudRegionId": "RegionOne"
+          },
+          "requestParameters": {
+            "testApi": "VNF_API"
+          },
+          "platform": {
+            "platformName": "Demo"
+          },
+          "lineOfBusiness": {
+            "lineOfBusinessName": "Demo"
+          }
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+          "vnfInstanceId": "980fe98e-47f8-4164-862d-4ebb026cec75",
+          "vnfInstanceName": "ws-test-0310-8",
+          "requestorId": "demo"
+        },
+        "requestStatus": {
+          "requestState": "COMPLETE",
+          "statusMessage": "Vnf has been created successfully.",
+          "percentProgress": 100,
+          "finishTime": "Wed, 03 Oct 2018 13:13:09 GMT"
+        }
+      }
+    },
+    {
+      "request": {
+        "requestId": "3447ba35-015d-4d72-9345-d89b1e35b2d6",
+        "startTime": "Thu, 04 Oct 2018 10:35:17 GMT",
+        "requestScope": "vnf",
+        "requestType": "inPlaceSoftwareUpdate",
+        "requestDetails": {
+          "requestInfo": {
+            "source": "VID",
+            "suppressRollback": false,
+            "requestorId": "demo"
+          },
+          "cloudConfiguration": {
+            "tenantId": "1e097c6713e74fd7ac8e4295e605ee1e",
+            "lcpCloudRegionId": "RegionOne"
+          },
+          "requestParameters": {
+            "payload": "{\"existing_software_version\":\"0.7\",\"new_software_version\":\"1.0\",\"operations_timeout\":\"10\"}"
+          }
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "fd84f066-ea75-4b23-acd0-3cf3fce7a99b",
+          "vnfInstanceId": "980fe98e-47f8-4164-862d-4ebb026cec75",
+          "requestorId": "demo"
+        },
+        "requestStatus": {
+          "requestState": "FAILED",
+          "statusMessage": "Cloud Region with cloudRegionId RegionOne does not exist in A&AI",
+          "percentProgress": 100,
+          "finishTime": "Thu, 04 Oct 2018 10:35:21 GMT"
+        }
+      }
+    }
+  ]
+}
