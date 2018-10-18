@@ -16,6 +16,24 @@
       "revId": "c2d5bd28467312a358bff93d7b1873abcd406bff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2bcddd5d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-18T09:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_cb3451e0",
+      "revId": "c2d5bd28467312a358bff93d7b1873abcd406bff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
