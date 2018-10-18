@@ -49,6 +49,7 @@ ENV AAI_VNF_PROV_STATUS PREPROV,NVTPROV,PROV,CAPPED
 ENV VID_ECOMP_REDIRECT_URL  http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/login.htm
 ENV VID_ECOMP_REST_URL http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/auxapi
 ENV VID_ECOMP_SHARED_CONTEXT_REST_URL http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/context
+ENV VID_ROLE_ACCESS_CENTRALIZED local
 ENV VID_CONTACT_US_LINK https://todo_contact_us_link.com
 
 ENV VID_DECRYPTION_KEY AGLDdG4D04BKm2IxIWEr8o=
