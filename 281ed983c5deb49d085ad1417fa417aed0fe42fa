@@ -22,6 +22,30 @@
       "revId": "281ed983c5deb49d085ad1417fa417aed0fe42fa",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_0bfa59bd",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2018-10-18T08:05:27Z",
+      "side": 1,
+      "message": "I\u0027ve found out modelType is represented as requestScope in orchestration request, when using \u0027action\u0027:\u0027scaleOut\u0027 it allows me to filter out other modelTypes as \u0027createInstance\u0027.\nShould also all requests with modelType: vfModule (including scaleOut, createInstance and others) be visible on VNF Changes dashboard?",
+      "parentUuid": "bada0100_c851be63",
+      "range": {
+        "startLine": 321,
+        "startChar": 101,
+        "endLine": 321,
+        "endChar": 121
+      },
+      "revId": "281ed983c5deb49d085ad1417fa417aed0fe42fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
