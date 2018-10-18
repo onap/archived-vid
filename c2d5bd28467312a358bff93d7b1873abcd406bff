@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_cb3451e0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/VidController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-18T09:15:42Z",
+      "side": 1,
+      "message": "Avoid using Systemout in production code. Either remove this or replace with appropriate logger",
+      "revId": "c2d5bd28467312a358bff93d7b1873abcd406bff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
