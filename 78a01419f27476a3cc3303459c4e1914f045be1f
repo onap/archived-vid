@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_97bd066b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/CategoryParameter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-19T14:43:59Z",
+      "side": 1,
+      "message": "We shouldn\u0027t use wildcard imports according to code style guide.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 27
+      },
+      "revId": "78a01419f27476a3cc3303459c4e1914f045be1f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
