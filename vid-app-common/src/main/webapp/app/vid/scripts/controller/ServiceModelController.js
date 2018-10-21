@@ -190,7 +190,7 @@
           DataService.setPnf(!angular.equals(serviceModel.pnfs, {}));
 					$scope.createType = COMPONENT.A_LA_CARTE;
 					var broadcastType = COMPONENT.CREATE_COMPONENT;
-                    if (AsdcService.isMacro(serviceModel)) {
+                    if (AsdcService.isMacro(serviceModel) || DataService.getE2EService()) {
                         DataService.setALaCarte(false);
                         if(AsdcService.shouldExcludeMacroFromAsyncInstatiationFlow(serviceModel)){
                         	DataService.setShouldExcludeMacroFromAsyncInstatiationFlow(true);
