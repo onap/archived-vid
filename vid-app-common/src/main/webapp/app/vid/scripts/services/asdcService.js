@@ -20,7 +20,7 @@
 
 "use strict";
 
-var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCONFIGURATION, COMPONENT, featureFlags) {
+var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCONFIGURATION, COMPONENT, DataService, featureFlags) {
     return {
         getModel: function (modelId, successCallbackFunction) {
             $log.debug("AsdcService:getModel: modelId: " + modelId);
@@ -37,6 +37,8 @@ var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCON
         shouldExcludeMacroFromAsyncInstatiationFlow: function(serviceModel){
             if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ASYNC_INSTANTIATION))
                 return true;
+			if (DataService.getE2EService())
+				return true;
             if (!_.isEmpty(serviceModel.pnfs))
                 return true;
             if (!_.isEmpty(serviceModel.collectionResource))
@@ -72,4 +74,4 @@ var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCON
 }
 
 appDS2.factory("AsdcService", ["$http", "$log", "PropertyService",
-    "UtilityService", "VIDCONFIGURATION","COMPONENT", "featureFlags", AsdcService]);
+    "UtilityService", "VIDCONFIGURATION","COMPONENT", "DataService", "featureFlags", AsdcService]);
