@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Piotr Krysiak <piotr.krysiak@nokia.com>
+Code-Review+1: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Code-Review+2: Ofir Sonsino <os0695@intl.att.com>
+Submitted-by: Ofir Sonsino <os0695@intl.att.com>
+Submitted-at: Sun, 21 Oct 2018 07:52:19 +0000
+Reviewed-on: https://gerrit.onap.org/r/68409
+Project: vid
+Branch: refs/heads/master
