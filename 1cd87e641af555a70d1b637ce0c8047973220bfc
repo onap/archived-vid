@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_bec81e23",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "Agree and it is according to the google java style definition of constant, Done",
+      "parentUuid": "bada0100_45f4c586",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 73
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_058f9dcd",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2018-10-22T15:08:22Z",
       "side": 1,
       "message": "You already have one ObjectMapper as field, no need to create another.",
+      "range": {
+        "startLine": 99,
+        "startChar": 8,
+        "endLine": 99,
+        "endChar": 49
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_7ed2b6d3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_058f9dcd",
       "range": {
         "startLine": 99,
         "startChar": 8,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_fefc6640",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "From a technical perspective it doesn\u0027t matter, a rewrote the second one because I needed to check the exception message :)\nOk I\u0027ll use the same approach everywhere for consistency",
+      "parentUuid": "bada0100_a532510e",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 5
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_85714de2",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
         "patchSetId": 2
@@ -82,6 +154,30 @@
       "writtenOn": "2018-10-22T15:08:22Z",
       "side": 1,
       "message": "After implementing equals in wrapper this could be just .isEqualTo(...\n\nI don\u0027t like isEqualToComparingFieldByField, because it\u0027s using reflection to get all prive fields. This test could be broken if new private field is added to class, that can be different in equal objects.",
+      "range": {
+        "startLine": 141,
+        "startChar": 38,
+        "endLine": 141,
+        "endChar": 69
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_de996220",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "I fully agree, TO should have a proper equals/hashcode impl but I avoided any additional changes outside the unit tests on purpose. This improvement will be done as part of a newer change.",
+      "parentUuid": "bada0100_85714de2",
       "range": {
         "startLine": 141,
         "startChar": 38,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_9ea3da4e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "As I have mentioned this unit tests is not part of my changes, but rather the result of a rebase, so the only changes I have done are to ensure the run after resolving conflicts. Still this test requires some additional refactoring which I did not want to do as part of this ticket.",
+      "parentUuid": "bada0100_c5999520",
+      "range": {
+        "startLine": 273,
+        "startChar": 8,
+        "endLine": 273,
+        "endChar": 64
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_65a0e943",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
         "patchSetId": 2
@@ -128,6 +248,30 @@
       "writtenOn": "2018-10-22T15:08:22Z",
       "side": 1,
       "message": "I think that\n\n   .map(Request::getRequestType)\n   .map(String::toUpperCase)\n\nlooks nicer",
+      "range": {
+        "startLine": 276,
+        "startChar": 16,
+        "endLine": 276,
+        "endChar": 61
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_9e167a54",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "in this case it\u0027s more of a preference, I will leave it as is since this is not part of my changes :)",
+      "parentUuid": "bada0100_65a0e943",
       "range": {
         "startLine": 276,
         "startChar": 16,
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_de1c027a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "bada0100_a54b3186",
+      "range": {
+        "startLine": 278,
+        "startChar": 8,
+        "endLine": 281,
+        "endChar": 42
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_c5e195d1",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
         "patchSetId": 2
@@ -174,6 +342,30 @@
       "writtenOn": "2018-10-22T15:08:22Z",
       "side": 1,
       "message": "Correct me if I\u0027m wrong but it seems that files that are being read here are in resources. This can create problems if you\u0027re running tests from compiled jar. You should read it as resource, not file.",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 5
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1e028a0b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "It shouldn\u0027t be a problem since we access the file as a resource. If inside the jar the resources should be on classpath and are accessed via the classloader resource as seen in the code. The url is wrapped in a Path object and accessed using the helper method Files.readAllBytes for a quick file read. I renamed the parameter name pathToFile to something more meaningful",
+      "parentUuid": "bada0100_c5e195d1",
       "range": {
         "startLine": 285,
         "startChar": 0,
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_9e48ba88",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "using a lambda requires an interface (check my comment below) Unfortunately ArgumentMatcher is an abstract class. Also using fully qualified class names will render the code less readable. For now it has to stay.",
+      "parentUuid": "bada0100_85eced90",
+      "range": {
+        "startLine": 291,
+        "startChar": 4,
+        "endLine": 291,
+        "endChar": 57
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_c564354b",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
         "patchSetId": 2
@@ -220,6 +436,30 @@
       "writtenOn": "2018-10-22T15:08:22Z",
       "side": 1,
       "message": "According to mockito javadoc this should be org.onap.vid.changeManagement.RequestDetailsWrapper, not Object - then casting this in method isn\u0027t necessary.",
+      "range": {
+        "startLine": 301,
+        "startChar": 31,
+        "endLine": 301,
+        "endChar": 37
+      },
+      "revId": "1cd87e641af555a70d1b637ce0c8047973220bfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_dec082e2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-23T08:06:26Z",
+      "side": 1,
+      "message": "This is true, but only for the newer version of mockito \u003e2. \nThe older (currently used) version of Mockito provides ArgumentMatcher as an abstract class which is buggy - even though it is parametrized with a generic type, the Object type is hardcoded in the matches method. In the newer version of Mockito ArgumentMatcher exists as a proper interface. For now this will have to stay. \nFor reference check: https://static.javadoc.io/org.mockito/mockito-core/2.2.9/org/mockito/ArgumentMatcher.html\nThere is even a migration guide :)",
+      "parentUuid": "bada0100_c564354b",
       "range": {
         "startLine": 301,
         "startChar": 31,
