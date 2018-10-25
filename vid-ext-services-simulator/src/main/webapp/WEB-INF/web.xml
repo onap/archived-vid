@@ -11,4 +11,10 @@
         <servlet-name>rest</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
+
+    <!-- comment to use MockServer instead -->
+    <!--<context-param>-->
+        <!--<param-name>spring.profiles.active</param-name>-->
+        <!--<param-value>useWiremock</param-value>-->
+    <!--</context-param>-->
 </web-app>
