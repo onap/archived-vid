@@ -1,0 +1,20 @@
+[
+  {
+    "request": {
+      "method": "GET",
+      "url": "/array/1/request"
+    },
+    "response": {
+      "status": 200
+    }
+  },
+  {
+    "request": {
+      "method": "GET",
+      "url": "/array/2/request"
+    },
+    "response": {
+      "status": 200
+    }
+  }
+]
