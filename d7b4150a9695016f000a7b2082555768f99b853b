@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_e1b4bf36",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-10-25T11:27:39Z",
+      "side": 1,
+      "message": "I think Component anno is redundant here.",
+      "range": {
+        "startLine": 27,
+        "startChar": 1,
+        "endLine": 27,
+        "endChar": 10
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_01978391",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-10-25T11:27:39Z",
+      "side": 1,
+      "message": "it is used only in constructor, it is not necessary to be a field",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 20
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2192c79f",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-10-25T11:27:39Z",
+      "side": 1,
+      "message": "the same as above",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 11
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_e1e27f2e",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-10-25T11:27:39Z",
+      "side": 1,
+      "message": "I think that it would be safer to change this method to private static. When you call non-static method in constructor, it is possible to use the class field that has not been initialised yet.",
+      "range": {
+        "startLine": 80,
+        "startChar": 17,
+        "endLine": 80,
+        "endChar": 31
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_61ce8fb6",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-10-25T11:27:39Z",
+      "side": 1,
+      "message": "this is quite dangerous, you call method in constructor that uses non-static class field (server).",
+      "range": {
+        "startLine": 58,
+        "startChar": 17,
+        "endLine": 58,
+        "endChar": 36
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
