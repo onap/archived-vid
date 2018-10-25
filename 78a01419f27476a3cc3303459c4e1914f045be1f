@@ -22,6 +22,30 @@
       "revId": "78a01419f27476a3cc3303459c4e1914f045be1f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_4f905743",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/CategoryParameter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-25T07:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_97bd066b",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 27
+      },
+      "revId": "78a01419f27476a3cc3303459c4e1914f045be1f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
