@@ -1,0 +1,21 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- mute useless spring stuff -->
+    <logger name="org.springframework" level="WARN"/>
+
+    <!-- mute useless wiremock stuff-->
+    <logger name="org.eclipse.jetty" level="WARN"/>
+    <logger name="/" level="WARN"/>
+    <logger name="/__admin" level="WARN"/>
+
+</configuration>
