@@ -14,6 +14,7 @@ import org.onap.simulator.errorHandling.VidSimulatorException;
 import org.onap.simulator.model.SimulatorRequestResponseExpectation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -42,6 +43,7 @@ import java.util.stream.Collectors;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.matchers.Times.exactly;
 
+@Profile("!useWiremock")
 @RestController
 @Component
 public class SimulatorController {
