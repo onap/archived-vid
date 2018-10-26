@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "bada0100_759c05c1",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "There are no tests for this class",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 31
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_01978391",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -71,6 +94,75 @@
     },
     {
       "key": {
+        "uuid": "bada0100_f596b593",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "Those fields would be private if they were set in constructor",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 28
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_959f29b4",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "This class is dependent on two more specific classes. That\u0027s the violation of dependency invection principle.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 53
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_f5af95e1",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "I\u0027 not sure if I\u0027m correct, but I don\u0027t like starting simulatior in init method. You can\u0027t have this class as a bean without running simulator every time",
+      "range": {
+        "startLine": 51,
+        "startChar": 8,
+        "endLine": 51,
+        "endChar": 32
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_e1e27f2e",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -94,6 +186,75 @@
     },
     {
       "key": {
+        "uuid": "bada0100_5580e145",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "Those properties should be injected. Right now this class does two things - reads property file and as a controller. So it has two reasons to change - that is a violation of single responsibility principle.",
+      "range": {
+        "startLine": 84,
+        "startChar": 12,
+        "endLine": 84,
+        "endChar": 67
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_b5b90d30",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "Again, violation of dependency inversion principle.",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 40
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_357d1d6f",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "this method can be static. It\u0027s bad practise to call non-static methods from constructor.",
+      "range": {
+        "startLine": 51,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 47
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_61ce8fb6",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
         "patchSetId": 1
@@ -110,6 +271,75 @@
         "startChar": 17,
         "endLine": 58,
         "endChar": 36
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_752725b7",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "This lambda isn\u0027t easy to understand. I thought that you\u0027re checking if path leads to file, but it actually checks if file is a file or doesn\u0027t exist.\n\nMy suggestion would be either to implement that literally:\n    file.toFile().isFile() || !file.toFile.exists()\n\nor just create a functions with name isFileOrDoesntExists()",
+      "range": {
+        "startLine": 57,
+        "startChar": 28,
+        "endLine": 57,
+        "endChar": 56
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_b5902d96",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "There can be whitespaces before array starts ;)\n\nAdd test to cover that case.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 55
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_35219d9f",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-10-26T09:46:00Z",
+      "side": 1,
+      "message": "I would change the name of the function to actaully represent what it does.",
+      "range": {
+        "startLine": 8,
+        "startChar": 25,
+        "endLine": 8,
+        "endChar": 38
       },
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
