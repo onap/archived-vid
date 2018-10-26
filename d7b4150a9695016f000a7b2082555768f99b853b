@@ -817,6 +817,30 @@
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_f020034b",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/PresetsLoaderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T15:38:03Z",
+      "side": 1,
+      "message": "Actually, they way junit works is it creates a new instance of the class before running each @Test. So from a JUnit perspective this code and approach is completely fine, no state is shared between the tests (unless you use static).",
+      "parentUuid": "bada0100_300a0b22",
+      "range": {
+        "startLine": 15,
+        "startChar": 40,
+        "endLine": 15,
+        "endChar": 62
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
