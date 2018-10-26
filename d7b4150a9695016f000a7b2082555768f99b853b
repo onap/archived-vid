@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "bada0100_f5955540",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "license header missing",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_e1b4bf36",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -42,6 +59,23 @@
         "endLine": 29,
         "endChar": 31
       },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_75d40520",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "- make logger static final, \n- also rethink the uppercase variable name - is the LOGGER really a constant? is it fully immutable once created ? If not, then change it to lowercase. a constant is more than just \u0027static final\u0027 keywords when it comes to object references. The object itself has to be immutable.",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -140,6 +174,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_552a212d",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "Fully agree, this is a clear sign that no unit tests exist:) Dependency injection can be easily added considering you can use spring to wire the dependencies (of course without breaking encapsulation and testability)",
+      "parentUuid": "bada0100_959f29b4",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 53
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_f5af95e1",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -157,6 +215,57 @@
         "endLine": 51,
         "endChar": 32
       },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_35de7d40",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "A good practice is to use OS-independent path separator logic, instead of string concatenation.",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_f520f54a",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "technically this is not a properly defined rest resource, rather a method type url:) I\u0027d suggest renaming it to a resource: /registration. The methods you can invoke on it can be easily represented with http methods :)",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_151c9912",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "Suggestion: use Spring ExceptionHandler for handling the exception in a cleaner way without relying heavily on a programmatic approach.",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -186,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_d515b1e5",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "This is true that it would have been safer to make this method static and independent from the instance, but at the same time it strongly implies that this logic does not belong in this class and should be provided during construction. This can be done using spring without losing the testable aspect of this class.",
+      "parentUuid": "bada0100_e1e27f2e",
+      "range": {
+        "startLine": 80,
+        "startChar": 17,
+        "endLine": 80,
+        "endChar": 31
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_5580e145",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -203,6 +336,47 @@
         "endLine": 84,
         "endChar": 67
       },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_b51a6d15",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "I second this, SR principle is broken, and properties have to be loaded during construction automatically by the class itself. \nThis should be separated and provided.",
+      "parentUuid": "bada0100_5580e145",
+      "range": {
+        "startLine": 84,
+        "startChar": 12,
+        "endLine": 84,
+        "endChar": 67
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_95d72923",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "If I\u0027m not mistaken the enablePresets flag is not something that is changed during runtime. If the value won\u0027t change after construction, a better design approach would inject the final result during construction into this bean, instead of providing a switch for making the decision. There is no need to have a switch flag at this level because it suggests that something can change in the flow dynamically, which is untrue. Don\u0027t provide conditions for a flow, just provide the flow. It\u0027s crucial to make the decisions as quickly as possible if we can.",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -255,6 +429,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_b5f10dcf",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "It is bad practice but invoking static methods isn\u0027t also a good approach. If something is static it is not part of the class instance, so it may be a good candidate for extraction in proper Dependency Injection. My suggestion, avoid any kind of method invocation (instance nor static) inside a constructor. Use a constructor to provide dependencies only. \nUse block initializers for logic (either instance, which or run after super() or static blocks). They are underused for such purpose and would be better suited for i.e. log configuration.",
+      "parentUuid": "bada0100_357d1d6f",
+      "range": {
+        "startLine": 51,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 47
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_61ce8fb6",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
         "patchSetId": 1
@@ -272,6 +470,74 @@
         "endLine": 58,
         "endChar": 36
       },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_55af8194",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "license header missing",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_95be49d3",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "- add static\n- reconsider uppercase - is the logger really a constant? (see my previous comment)",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_75a2c5af",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "hmm loadPresets is a little misleading here isn\u0027t it? :)\nIt does loadPresets from the files, but also registers them in the simulator. Kind of tricky and not quite clear from the API(public method) standpoint. Please reconsider a slightly different name :)",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_35ac3da0",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "While there is nothing wrong with this class, why not simply use a pure java approach using getResource ? This way we could eliminate an unnecessary Spring import. Just a suggestion :)",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -324,6 +590,74 @@
     },
     {
       "key": {
+        "uuid": "bada0100_55b8e1e4",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "can we change the logic a little bit so that we can have one point leading to where the simulator registration occurs? This can be wrapped in a simple private method call. It is important because a simulator is an outside dependency that is called the same way multiple times.",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1591f951",
+        "filename": "vid-ext-services-simulator/src/main/resources/wiremock.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this file be under the wiremock resource subdir ?",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_559d4158",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "license header missing",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_d59a916d",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "If you have a util class, there usually is one approach to using it - through the static methods it provides. There is no need for relying on instances here.\nDo the following:\n- make it final\n- add a private constructor so that static members are not accessed through references if someone creates an object by mistake",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_35219d9f",
         "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
         "patchSetId": 1
@@ -341,6 +675,98 @@
         "endLine": 8,
         "endChar": 38
       },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_75896525",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "Agree if you needed to add a comment to explain what the method does, just rename the method so that it better expresses the functionality",
+      "parentUuid": "bada0100_35219d9f",
+      "range": {
+        "startLine": 8,
+        "startChar": 25,
+        "endLine": 8,
+        "endChar": 38
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_359afd63",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "license header missing",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1578192a",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "I think the port and simulator instance can be defined in the field",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_d5713145",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "Suggestion - always use static imports, there is no added benefit from writing the class each time. This is especially important in case of many Asserts, because it affects the readability.",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_9593a94e",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/PresetsLoaderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-10-26T12:23:14Z",
+      "side": 1,
+      "message": "license header missing",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
