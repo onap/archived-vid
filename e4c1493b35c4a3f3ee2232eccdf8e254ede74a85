@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_e4836602",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientNewTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-10-29T13:01:02Z",
+      "side": 1,
+      "message": "it looks like stub server doesn\u0027t support body in DELETE request. I\u0027ll mark those tests as ignored (to ublock casablanca) and will try to find how to solve it later.\nIs that ok?",
+      "range": {
+        "startLine": 251,
+        "startChar": 5,
+        "endLine": 251,
+        "endChar": 11
+      },
+      "revId": "e4c1493b35c4a3f3ee2232eccdf8e254ede74a85",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
