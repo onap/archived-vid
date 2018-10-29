@@ -486,7 +486,7 @@ public class MsoRestClientNew implements MsoInterface {
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " calling Delete, path =[" + path + "]");
 
-            HttpResponse<String> response = client.delete(path, commonHeaders, String.class);
+            HttpResponse<String> response = client.delete(path, commonHeaders, request, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
 
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " w=" + w.getResponse());
