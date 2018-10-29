@@ -239,10 +239,11 @@ public class CategoryParameterServiceImplTest {
         CategoryParameterOptionRep optionRepExisting = new CategoryParameterOptionRep(APP_ID_VID, OPTION_NAME);
 
         CategoryParameter categoryParameter = createCategoryParameter(CATEGORY_NAME, true);
+        CategoryParameter anotherCategoryParameter = createCategoryParameter(CATEGORY_NAME, true);
         categoryParameter.getOptions().add(
-            new CategoryParameterOption(APP_ID_VID, UNIQUE_OPTION_NAME, categoryParameter));
+            new CategoryParameterOption(APP_ID_VID, UNIQUE_OPTION_NAME, anotherCategoryParameter));
         categoryParameter.getOptions().add(
-            new CategoryParameterOption(APP_ID_SDC, OPTION_NAME, categoryParameter));
+            new CategoryParameterOption(APP_ID_SDC, OPTION_NAME, anotherCategoryParameter));
         List<CategoryParameter> aList = createCategoryParametersList(categoryParameter);
 
         doReturn(aList).when(dataAccessService).getList(CategoryParameter.class, QUERY_STRING_FOR_CATEGORY_NAME, null, null);
