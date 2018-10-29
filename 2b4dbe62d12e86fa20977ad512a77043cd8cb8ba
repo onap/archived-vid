@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_e4b126e2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/category/AddCategoryOptionResponse.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-29T13:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_04b9cae8",
+      "range": {
+        "startLine": 7,
+        "startChar": 32,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "2b4dbe62d12e86fa20977ad512a77043cd8cb8ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_c4cae26d",
         "filename": "vid-app-common/src/main/java/org/onap/vid/category/AddCategoryOptionsRequest.java",
         "patchSetId": 6
@@ -36,6 +60,30 @@
       "writtenOn": "2018-10-29T12:58:28Z",
       "side": 1,
       "message": "Same",
+      "range": {
+        "startLine": 7,
+        "startChar": 32,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "2b4dbe62d12e86fa20977ad512a77043cd8cb8ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_a4cb1e52",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/category/AddCategoryOptionsRequest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-29T13:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_c4cae26d",
       "range": {
         "startLine": 7,
         "startChar": 32,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_64c5363b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/category/CategoryParameterOptionRep.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-29T13:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_64c9b677",
+      "range": {
+        "startLine": 7,
+        "startChar": 32,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "2b4dbe62d12e86fa20977ad512a77043cd8cb8ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_24a3aeb3",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
         "patchSetId": 6
@@ -82,6 +154,30 @@
       "writtenOn": "2018-10-29T12:58:28Z",
       "side": 1,
       "message": "Same",
+      "range": {
+        "startLine": 7,
+        "startChar": 32,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "2b4dbe62d12e86fa20977ad512a77043cd8cb8ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_84c05a2b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/MaintenanceController.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-29T13:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_24a3aeb3",
       "range": {
         "startLine": 7,
         "startChar": 32,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_24df2e0f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/CategoryParameter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-29T13:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_e4acc6a2",
+      "range": {
+        "startLine": 7,
+        "startChar": 32,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "2b4dbe62d12e86fa20977ad512a77043cd8cb8ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_c4918253",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
         "patchSetId": 6
@@ -128,6 +248,30 @@
       "writtenOn": "2018-10-29T12:58:28Z",
       "side": 1,
       "message": "Same",
+      "range": {
+        "startLine": 7,
+        "startChar": 32,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "2b4dbe62d12e86fa20977ad512a77043cd8cb8ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_44e272d6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/MaintenanceControllerTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-10-29T13:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_c4918253",
       "range": {
         "startLine": 7,
         "startChar": 32,
