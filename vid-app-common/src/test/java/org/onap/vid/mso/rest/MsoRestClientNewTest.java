@@ -24,6 +24,7 @@ import com.xebialabs.restito.server.StubServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.client.SyncRestClient;
@@ -182,7 +183,7 @@ public class MsoRestClientNewTest {
         } catch (Exception e) {
         }
     }
-
+    @Ignore
     @Test
     public void testDeleteSvcInstance() throws Exception {
         String endpoint = props.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
@@ -198,6 +199,7 @@ public class MsoRestClientNewTest {
         }
     }
 
+    @Ignore
     @Test
     public void testDeleteVnf() throws Exception {
         String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VNF_INSTANCE);
@@ -212,6 +214,7 @@ public class MsoRestClientNewTest {
         }
     }
 
+    @Ignore
     @Test
     public void testDeleteVfModule() throws Exception {
         String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
@@ -228,6 +231,7 @@ public class MsoRestClientNewTest {
         }
     }
 
+    @Ignore
     @Test
     public void testDeleteVolumeGroupInstance() throws Exception {
         String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
@@ -244,6 +248,7 @@ public class MsoRestClientNewTest {
         }
     }
 
+    @Ignore
     @Test
     public void testDeleteNwInstance() throws Exception {
         String endpoint = props.getProperty(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);

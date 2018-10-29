@@ -135,6 +135,11 @@ public class SyncRestClient implements SyncRestClientInterface {
     }
 
     @Override
+    public <T> HttpResponse<T> delete(String url, Map<String, String> headers, Object body, Class<T> responseClass) {
+        return callWithRetryOverHttp(url, url2 -> restClient.delete(url2).headers(headers).body(body).asObject(responseClass));
+    }
+
+    @Override
     public <T> HttpResponse<T> delete(String url, Map<String, String> headers, Class<T> responseClass) {
         return callWithRetryOverHttp(url, url2 -> restClient.delete(url2).headers(headers).asObject(responseClass));
     }
