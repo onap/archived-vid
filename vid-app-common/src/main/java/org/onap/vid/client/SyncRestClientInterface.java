@@ -27,6 +27,8 @@ public interface SyncRestClientInterface {
 
     <T> HttpResponse<T> put(String url, Map<String, String> headers, Object body, Class<T> aClass);
 
+    <T> HttpResponse<T> delete(String url, Map<String, String> headers, Object body, Class<T> aClass);
+
     <T> HttpResponse<T> delete(String url, Map<String, String> headers, Class<T> aClass);
 
     HttpResponse<JsonNode> delete(String url, Map<String, String> headers);
