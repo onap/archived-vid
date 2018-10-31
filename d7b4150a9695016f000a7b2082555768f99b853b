@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_845e1a11",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_f5955540",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_e1b4bf36",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2018-10-25T11:27:39Z",
       "side": 1,
       "message": "I think Component anno is redundant here.",
+      "range": {
+        "startLine": 27,
+        "startChar": 1,
+        "endLine": 27,
+        "endChar": 10
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1e9ef156",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_e1b4bf36",
       "range": {
         "startLine": 27,
         "startChar": 1,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_bea485a6",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_759c05c1",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 31
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_75d40520",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_de9f094f",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_75d40520",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_01978391",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -93,6 +177,30 @@
       "writtenOn": "2018-10-25T11:27:39Z",
       "side": 1,
       "message": "it is used only in constructor, it is not necessary to be a field",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 20
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_3eb895c7",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_01978391",
       "range": {
         "startLine": 33,
         "startChar": 16,
@@ -175,6 +283,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_9ea9817d",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_f5d1d5fb",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 28
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_959f29b4",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -210,6 +342,30 @@
       "side": 1,
       "message": "Fully agree, this is a clear sign that no unit tests exist:) Dependency injection can be easily added considering you can use spring to wire the dependencies (of course without breaking encapsulation and testability)",
       "parentUuid": "bada0100_959f29b4",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 53
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_5ebb19c4",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_552a212d",
       "range": {
         "startLine": 43,
         "startChar": 0,
@@ -262,6 +418,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_feb1ade1",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_35de7d40",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_f520f54a",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -279,6 +453,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_1eb591cc",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_f520f54a",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_151c9912",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -290,6 +482,24 @@
       "writtenOn": "2018-10-26T12:23:14Z",
       "side": 1,
       "message": "Suggestion: use Spring ExceptionHandler for handling the exception in a cleaner way without relying heavily on a programmatic approach.",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_becb2552",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_151c9912",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -331,6 +541,30 @@
       "side": 1,
       "message": "This is true that it would have been safer to make this method static and independent from the instance, but at the same time it strongly implies that this logic does not belong in this class and should be provided during construction. This can be done using spring without losing the testable aspect of this class.",
       "parentUuid": "bada0100_e1e27f2e",
+      "range": {
+        "startLine": 80,
+        "startChar": 17,
+        "endLine": 80,
+        "endChar": 31
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_dec62949",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_d515b1e5",
       "range": {
         "startLine": 80,
         "startChar": 17,
@@ -390,6 +624,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_7ec5bd3a",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_b51a6d15",
+      "range": {
+        "startLine": 84,
+        "startChar": 12,
+        "endLine": 84,
+        "endChar": 67
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_95d72923",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
         "patchSetId": 1
@@ -407,6 +665,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_9ec0a12b",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/WireMockController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_95d72923",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_b5b90d30",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
         "patchSetId": 1
@@ -418,6 +694,30 @@
       "writtenOn": "2018-10-26T09:46:00Z",
       "side": 1,
       "message": "Again, violation of dependency inversion principle.",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 40
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_3edf350f",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_b5b90d30",
       "range": {
         "startLine": 26,
         "startChar": 4,
@@ -477,6 +777,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_5ee239d6",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_b5f10dcf",
+      "range": {
+        "startLine": 51,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 47
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_61ce8fb6",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
         "patchSetId": 1
@@ -488,6 +812,30 @@
       "writtenOn": "2018-10-25T11:27:39Z",
       "side": 1,
       "message": "this is quite dangerous, you call method in constructor that uses non-static class field (server).",
+      "range": {
+        "startLine": 58,
+        "startChar": 17,
+        "endLine": 58,
+        "endChar": 36
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_643536d9",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/Simulator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "This method can\u0027t be static like method above. \n\nIt may be dangerous but I would say that this is responsibility of tests to catch that.",
+      "parentUuid": "bada0100_61ce8fb6",
       "range": {
         "startLine": 58,
         "startChar": 17,
@@ -517,6 +865,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_04254aaa",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_55af8194",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_95be49d3",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
         "patchSetId": 1
@@ -528,6 +894,24 @@
       "writtenOn": "2018-10-26T12:23:14Z",
       "side": 1,
       "message": "- add static\n- reconsider uppercase - is the logger really a constant? (see my previous comment)",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_e42126a0",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_95be49d3",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -551,6 +935,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_fee8cdb5",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_75a2c5af",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_35ac3da0",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
         "patchSetId": 1
@@ -568,6 +970,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_24288e85",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_35ac3da0",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_752725b7",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
         "patchSetId": 1
@@ -579,6 +999,30 @@
       "writtenOn": "2018-10-26T09:46:00Z",
       "side": 1,
       "message": "This lambda isn\u0027t easy to understand. I thought that you\u0027re checking if path leads to file, but it actually checks if file is a file or doesn\u0027t exist.\n\nMy suggestion would be either to implement that literally:\n    file.toFile().isFile() || !file.toFile.exists()\n\nor just create a functions with name isFileOrDoesntExists()",
+      "range": {
+        "startLine": 57,
+        "startChar": 28,
+        "endLine": 57,
+        "endChar": 56
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1eecb1c6",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_752725b7",
       "range": {
         "startLine": 57,
         "startChar": 28,
@@ -614,6 +1058,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_bed245fe",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_b5902d96",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 55
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_55b8e1e4",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
         "patchSetId": 1
@@ -625,6 +1093,24 @@
       "writtenOn": "2018-10-26T12:23:14Z",
       "side": 1,
       "message": "can we change the logic a little bit so that we can have one point leading to where the simulator registration occurs? This can be wrapped in a simple private method call. It is important because a simulator is an outside dependency that is called the same way multiple times.",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_decdc95e",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/PresetsLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_55b8e1e4",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -648,6 +1134,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_9ed741ed",
+        "filename": "vid-ext-services-simulator/src/main/resources/wiremock.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "I don\u0027t think so, `wiremock` dir is for framework resources like mappings and binary bodies.",
+      "parentUuid": "bada0100_1591f951",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_559d4158",
         "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
         "patchSetId": 1
@@ -665,6 +1169,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_3e065587",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_559d4158",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_d59a916d",
         "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
         "patchSetId": 1
@@ -676,6 +1198,24 @@
       "writtenOn": "2018-10-26T12:23:14Z",
       "side": 1,
       "message": "If you have a util class, there usually is one approach to using it - through the static methods it provides. There is no need for relying on instances here.\nDo the following:\n- make it final\n- add a private constructor so that static members are not accessed through references if someone creates an object by mistake",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_5e09d993",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_d59a916d",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -729,6 +1269,30 @@
     },
     {
       "key": {
+        "uuid": "bada0100_feff6d65",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/util/JsonUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_75896525",
+      "range": {
+        "startLine": 8,
+        "startChar": 25,
+        "endLine": 8,
+        "endChar": 38
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_359afd63",
         "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
         "patchSetId": 1
@@ -740,6 +1304,24 @@
       "writtenOn": "2018-10-26T12:23:14Z",
       "side": 1,
       "message": "license header missing",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_1e035174",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_359afd63",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -763,6 +1345,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_bef9e581",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_1578192a",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_d5713145",
         "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
         "patchSetId": 1
@@ -780,6 +1380,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_def4e988",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/SimulatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_d5713145",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_9593a94e",
         "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/PresetsLoaderTest.java",
         "patchSetId": 1
@@ -791,6 +1409,24 @@
       "writtenOn": "2018-10-26T12:23:14Z",
       "side": 1,
       "message": "license header missing",
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_7ef37d9e",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/PresetsLoaderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_9593a94e",
       "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -832,6 +1468,30 @@
       "side": 1,
       "message": "Actually, they way junit works is it creates a new instance of the class before running each @Test. So from a JUnit perspective this code and approach is completely fine, no state is shared between the tests (unless you use static).",
       "parentUuid": "bada0100_300a0b22",
+      "range": {
+        "startLine": 15,
+        "startChar": 40,
+        "endLine": 15,
+        "endChar": 62
+      },
+      "revId": "d7b4150a9695016f000a7b2082555768f99b853b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_9eee61b3",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/PresetsLoaderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-10-31T11:03:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_f020034b",
       "range": {
         "startLine": 15,
         "startChar": 40,
