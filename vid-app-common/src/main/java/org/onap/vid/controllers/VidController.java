@@ -106,9 +106,7 @@ public class VidController extends RestrictedBaseController {
 			SecureServices secureServices = new SecureServices();
 			List<Role> roles = roleProvider.getUserRoles(request);
 			secureServices.setServices(aaiService.getServicesByDistributionStatus());
-			//Disable roles until AAF integration finishes
-			//secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
-			secureServices.setReadOnly(false);
+			secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
 			return secureServices;
 		}
 		catch (Exception t) {
