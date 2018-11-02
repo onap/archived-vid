@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_a99ef161",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/WireMockSimulator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "You should never have logic in constructor. In this case - you\u0027re implicitly passing reference to this to other class, while still being in constructor. Change this to fabrication method.",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 30
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_698fa924",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoader.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "Passing boolean to function (or constructor) usually means that function (or class) does two things. In this case - your class either do something or nothing.",
+      "range": {
+        "startLine": 50,
+        "startChar": 56,
+        "endLine": 50,
+        "endChar": 71
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_09793d2f",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoader.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "You\u0027re calling \"getMappingSource(filesRoot)\" twice. Also you have logic in contructor.",
+      "range": {
+        "startLine": 51,
+        "startChar": 14,
+        "endLine": 51,
+        "endChar": 41
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_49874510",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoader.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "Since guava 21.0 com.google.common.base.Predicate is functional interface and then you can omit \"::apply\".",
+      "range": {
+        "startLine": 68,
+        "startChar": 24,
+        "endLine": 68,
+        "endChar": 54
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_a9759133",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoader.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "Why don\u0027t you pass first exception as cause? You\u0027re loosing previous stack trace.\n\nEDIT: this is framework exception. I think you can still log original exception to allow easier debugging.",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 82
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_e9d079f9",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/WireMockSimulatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "Check if correct port is returned. I think it\u0027s better to check if correct port is returned, you shouldn\u0027t care if method .port() was called.",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 28
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_8909ad97",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoaderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "rename to something like urlCaptor",
+      "range": {
+        "startLine": 41,
+        "startChar": 36,
+        "endLine": 41,
+        "endChar": 44
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_6904897e",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoaderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "No need for checking size if you\u0027re checking content next line.",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 37
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_29fe816c",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoaderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-02T12:09:17Z",
+      "side": 1,
+      "message": "NullPointerException is signal that something in application went wrong - it\u0027s good practice to never catch it, but prevent from throwing it.\n\nAlso I would not throw NullPointerException when file is missing.",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 48
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
