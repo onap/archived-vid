@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "9adffdf1_e44ae026",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/WireMockSimulator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-11-02T17:14:10Z",
+      "side": 1,
+      "message": "Change name to reflect intent, ImmutableWireMockServer",
+      "range": {
+        "startLine": 28,
+        "startChar": 13,
+        "endLine": 28,
+        "endChar": 30
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_a99ef161",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/wiremock/WireMockSimulator.java",
         "patchSetId": 2
