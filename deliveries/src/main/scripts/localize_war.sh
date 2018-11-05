@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /tmp/vid/localize_logback.sh $1 || {
+source /tmp/vid/localize_logback.sh || {
 	echo "ERROR: Localizing logback.xml failed"
 	exit 1
 }

@@ -1,7 +1,8 @@
 #!/bin/bash
 
-FINAL_CONFIG_FILE=$1/classes/logback.xml
-TEMPLATE_CONFIG_FILE=$1/classes/logback_template.xml
+BASE_DIR=/etc/onap/vid/conf.d
+FINAL_CONFIG_FILE=${BASE_DIR}/logback.xml
+TEMPLATE_CONFIG_FILE=${BASE_DIR}/logback_template.xml
 
 echo "Localizing the VID logback configuration"
 

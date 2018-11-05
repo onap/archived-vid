@@ -1,13 +1,14 @@
 FROM tomcat:8.0-jre8
+
 # add vim and uncomment alias to speedup troubleshooting purpose
 RUN apt-get update && apt-get install -y \
 	openjdk-8-jdk vim net-tools
 
+COPY conf.d/ /etc/onap/vid/conf.d/
+
 RUN sed -i 's/# alias/alias/g' /root/.bashrc
 
-RUN mkdir -p ${ROOT_DIR}/etc
-
-ENV JAVA_OPTS="-Xmx1536m -Xms1536m"
+ENV JAVA_OPTS="-Xmx1536m -Xms1536m -Dlogback.configurationFile=/etc/onap/vid/conf.d/logback.xml"
 
 ENV ROOT_DIR /opt/app/vid
 
