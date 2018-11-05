@@ -469,6 +469,30 @@
       "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_8e368e02",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoaderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-05T10:09:21Z",
+      "side": 1,
+      "message": "Definetly not NullPointeException. Specification says when NPE should be used: https://docs.oracle.com/javase/8/docs/api/java/lang/NullPointerException.html\n\nI\u0027d suggest custom exception for this case.",
+      "parentUuid": "9adffdf1_eef71a8b",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 48
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
