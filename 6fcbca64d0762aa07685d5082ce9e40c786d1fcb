@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_0e5b7e55",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoaderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-05T10:09:21Z",
+      "side": 1,
+      "message": "This will not be called, because line above throws exception. If you want to check something else after exception is thrown you can use, for example, assertThatThrownBy from AssertJ.",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 47
+      },
+      "revId": "6fcbca64d0762aa07685d5082ce9e40c786d1fcb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
