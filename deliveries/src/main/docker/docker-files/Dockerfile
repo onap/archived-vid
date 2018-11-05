@@ -25,8 +25,7 @@ ENV LOG4J_LOGLEVEL INFO
 ENV LOG4J_APPENDER rollingfile
 ENV LOG4J_LOGS_DIRECTORY ${ROOT_DIR}/logs
 
-ENV VID_AAI_HOST aai.api.simpledemo.onap.org
-ENV VID_AAI_PORT 8443
+ENV VID_AAI_URL https://aai.api.simpledemo.onap.org:8443
 ENV VID_APP_DISPLAY_NAME VID
 ENV VID_ECOMP_SHARED_CONTEXT_REST_URL https://portal.api.simpledemo.onap.org:8080/onapportal/context
 ENV VID_MSO_SERVER_URL http://vm1.mso.simpledemo.onap.org:8080/onap/so/infra

@@ -13,8 +13,7 @@ sed -e 's/${VID_MYSQL_HOST}/'${VID_MYSQL_HOST}'/g' \
 	-e 's/${VID_MYSQL_DBNAME}/'${VID_MYSQL_DBNAME}'/g' \
 	-e 's/${VID_MYSQL_USER}/'${VID_MYSQL_USER}'/g' \
 	-e 's/${VID_MYSQL_PASS}/'${VID_MYSQL_PASS}'/g' \
-	-e 's/${VID_AAI_HOST}/'${VID_AAI_HOST}'/g' \
-	-e 's/${VID_AAI_PORT}/'${VID_AAI_PORT}'/g' \
+	-e 's/${VID_AAI_URL}/'${VID_AAI_URL}'/g' \
 	-e 's/${AAI_USE_CLIENT_CERT}/'${AAI_USE_CLIENT_CERT}'/g' \
 	-e 's/${AAI_VID_UID}/'${AAI_VID_UID}'/g' \
 	-e 's/${AAI_VID_PASSWD_X}/'${AAI_VID_PASSWD_X}'/g' \
