@@ -493,6 +493,30 @@
       "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_d1b51732",
+        "filename": "vid-ext-services-simulator/src/test/java/org/onap/simulator/wiremock/extensions/JsonArrayMappingLoaderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-11-05T11:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_8e368e02",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 48
+      },
+      "revId": "6bb15a08fe9ad86c8963fe1ea2373279bee7644e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
