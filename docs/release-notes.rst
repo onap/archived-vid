@@ -3,6 +3,67 @@
 VID Release Notes
 =================
 
+Version: 3.1.0
+--------------
+
+:Release Date: 2018-11-15
+
+New Features
+------------
+1. PNF plug & play services instantiation.
+2. HTTPS support.
+3. Manual vNF Scale Out enhancements.
+
+**Epics**
+
+-  [`VID-159`_] - AAF integration
+-  [`VID-194`_] - PNF Use case support
+-  [`VID-248`_] - Support scaling use case
+-  [`VID-254`_] - Usability
+-  [`VID-258`_] - Security
+
+.. _VID-159: /browse/VID-159
+.. _VID-194: /browse/VID-194
+.. _VID-248: /browse/VID-248
+.. _VID-254: /browse/VID-254
+.. _VID-258: /browse/VID-258
+
+**Stories**
+
+-  [`VID-166`_] - Improve CSIT coverage
+-  [`VID-203`_] - PNF Plug & Play use case with vCPE flow
+-  [`VID-236`_] - Align OOM templates
+-  [`VID-249`_] - Change Manual Scaling Use Case to use the same SO API that Policy is using in Auto Scaling
+-  [`VID-250`_] - Remove Controller Type from the VID GUI and from the request sent to SO
+-  [`VID-256`_] - Add tutorials/user guides
+-  [`VID-257`_] - AAF integration
+-  [`VID-260`_] - Use HTTPS for external interfaces
+-  [`VID-261`_] - Use HTTPS for internal interfaces
+
+.. _VID-166: /browse/VID-166
+.. _VID-203: /browse/VID-203
+.. _VID-236: /browse/VID-236
+.. _VID-249: /browse/VID-249
+.. _VID-250: /browse/VID-250
+.. _VID-256: /browse/VID-256
+.. _VID-257: /browse/VID-257
+.. _VID-260: /browse/VID-260
+.. _VID-261: /browse/VID-261
+
+**Security Notes**
+
+VID code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The VID open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`_.
+
+Quick Links:
+
+- `VID project page <https://wiki.onap.org/display/DW/Virtual+Infrastructure+Deployment+Project>`_
+- `Passing Badge information for VID <https://bestpractices.coreinfrastructure.org/en/projects/1658>`_
+- `Project Vulnerability Review Table for VID <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`_
+
+**Other**
+
+In order to work properly, VID needs a working instance of SDC, A&AI and SO.
+
 Version: 2.0.0
 --------------
 
