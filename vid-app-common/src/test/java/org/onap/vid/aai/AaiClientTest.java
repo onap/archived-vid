@@ -33,6 +33,7 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
+import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.HttpsAuthClient;
@@ -76,7 +77,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
@@ -88,19 +91,19 @@ public class AaiClientTest {
     private ServletContext servletContext;
 
     @BeforeMethod
-    public void initMocks(){
+    public void initMocks() {
         aaiClientMock = mock(AaiClient.class);
         aaiClientMock.logger = mock(EELFLoggerDelegate.class);
         servletContext = mock(ServletContext.class);
 
         when(servletContext.getRealPath(any(String.class))).thenReturn("");
 
-        when(aaiClientMock.doAaiGet(any(String.class),any(Boolean.class))).thenReturn(null);
+        when(aaiClientMock.doAaiGet(any(String.class), any(Boolean.class))).thenReturn(null);
     }
 
     @DataProvider
     public static Object[][] logicalLinkData() {
-        return new Object[][] {
+        return new Object[][]{
                 {"", "network/logical-links/logical-link/"},
                 {"link", "network/logical-links/logical-link/link"}
         };
@@ -111,21 +114,26 @@ public class AaiClientTest {
 
         when(aaiClientMock.getLogicalLink(any(String.class))).thenCallRealMethod();
         aaiClientMock.getLogicalLink(link);
-        Mockito.verify(aaiClientMock).doAaiGet(argThat(equalToIgnoringCase(expectedUrl)),any(Boolean.class));
+        Mockito.verify(aaiClientMock).doAaiGet(argThat(equalToIgnoringCase(expectedUrl)), any(Boolean.class));
     }
 
     @DataProvider
     public static Object[][] subscribersResults() {
-        return new Object[][] {
-                {new SubscriberList(new ArrayList<Subscriber>() {{ add(new Subscriber());  add(new Subscriber()); }}), true},
-                {new SubscriberList(new ArrayList<Subscriber>() {{ add(new Subscriber()); }}), true},
+        return new Object[][]{
+                {new SubscriberList(new ArrayList<Subscriber>() {{
+                    add(new Subscriber());
+                    add(new Subscriber());
+                }}), true},
+                {new SubscriberList(new ArrayList<Subscriber>() {{
+                    add(new Subscriber());
+                }}), true},
                 {new SubscriberList(new ArrayList<Subscriber>()), false}
         };
     }
 
     @Test(dataProvider = "subscribersResults")
-    public void testProbeAaiGetAllSubscribers_returnsTwoToZeroSubscribers_ResultsAsExpected(SubscriberList subscribers, boolean isAvailable){
-        ExternalComponentStatus expectedStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.AAI,isAvailable, new HttpRequestMetadata(
+    public void testProbeAaiGetAllSubscribers_returnsTwoToZeroSubscribers_ResultsAsExpected(SubscriberList subscribers, boolean isAvailable) {
+        ExternalComponentStatus expectedStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.AAI, isAvailable, new HttpRequestMetadata(
                 HttpMethod.GET,
                 200,
                 "url",
@@ -138,9 +146,9 @@ public class AaiClientTest {
                         HttpMethod.GET, "url", new AaiResponse<>(subscribers, null, 200),
                         "rawData"));
         Mockito.when(aaiClientMock.probeAaiGetAllSubscribers()).thenCallRealMethod();
-        ExternalComponentStatus result  = aaiClientMock.probeAaiGetAllSubscribers();
-        assertThat(statusDataReflected(result),is(statusDataReflected(expectedStatus)));
-        assertThat(requestMetadataReflected(result.getMetadata()),is(requestMetadataReflected(expectedStatus.getMetadata())));
+        ExternalComponentStatus result = aaiClientMock.probeAaiGetAllSubscribers();
+        assertThat(statusDataReflected(result), is(statusDataReflected(expectedStatus)));
+        assertThat(requestMetadataReflected(result.getMetadata()), is(requestMetadataReflected(expectedStatus.getMetadata())));
     }
 
     //serialize fields except of fields we cannot know ahead of time
@@ -159,12 +167,12 @@ public class AaiClientTest {
     @DataProvider
     public static Object[][] rawData() {
         return new Object[][]{
-                {"errorMessage", }, {""}, {null}
+                {"errorMessage",}, {""}, {null}
         };
     }
 
     @Test(dataProvider = "rawData")
-    public void testProbeAaiGetFullSubscribersWithNullResponse_returnsNotAvailableWithErrorRawData(String rawData){
+    public void testProbeAaiGetFullSubscribersWithNullResponse_returnsNotAvailableWithErrorRawData(String rawData) {
         Mockito.when(aaiClientMock.getAllSubscribers(true)).thenReturn(
                 new AaiResponseWithRequestInfo<>(HttpMethod.GET, "url", null,
                         rawData));
@@ -175,7 +183,7 @@ public class AaiClientTest {
 
     @DataProvider
     public static Object[][] exceptions() {
-        return new Object[][] {
+        return new Object[][]{
                 {"NullPointerException", "errorMessage",
                         new ExceptionWithRequestInfo(HttpMethod.GET, "url",
                                 "errorMessage", null, new NullPointerException())},
@@ -188,7 +196,7 @@ public class AaiClientTest {
     }
 
     @Test(dataProvider = "exceptions")
-    public void testProbeAaiGetFullSubscribersWithNullResponse_returnsNotAvailableWithErrorRawData(String description, String expectedRawData, Exception exception){
+    public void testProbeAaiGetFullSubscribersWithNullResponse_returnsNotAvailableWithErrorRawData(String description, String expectedRawData, Exception exception) {
         Mockito.when(aaiClientMock.getAllSubscribers(true)).thenThrow(exception);
         ExternalComponentStatus result = callProbeAaiGetAllSubscribersAndAssertNotAvailable();
         if (exception instanceof ExceptionWithRequestInfo) {
@@ -200,7 +208,7 @@ public class AaiClientTest {
 
     private ExternalComponentStatus callProbeAaiGetAllSubscribersAndAssertNotAvailable() {
         Mockito.when(aaiClientMock.probeAaiGetAllSubscribers()).thenCallRealMethod();
-        ExternalComponentStatus result  = aaiClientMock.probeAaiGetAllSubscribers();
+        ExternalComponentStatus result = aaiClientMock.probeAaiGetAllSubscribers();
         assertFalse(result.isAvailable());
         return result;
     }
@@ -227,7 +235,7 @@ public class AaiClientTest {
         when(aaiClientMock.getTenants(any(String.class), any(String.class))).thenCallRealMethod();
 
         Response generalEmptyResponse = mock(Response.class);
-        when(aaiClientMock.doAaiGet(any(String.class),any(Boolean.class))).thenReturn(generalEmptyResponse);
+        when(aaiClientMock.doAaiGet(any(String.class), any(Boolean.class))).thenReturn(generalEmptyResponse);
 
         AaiResponse response = aaiClientMock.getTenants("subscriberId", "serviceType");
 
@@ -263,14 +271,14 @@ public class AaiClientTest {
         });
 
 
-        when(aaiClientMock.doAaiGet(any(String.class),any(Boolean.class))).thenReturn(generalEmptyResponse);
+        when(aaiClientMock.doAaiGet(any(String.class), any(Boolean.class))).thenReturn(generalEmptyResponse);
 
         AaiResponse<GetTenantsResponse[]> response = aaiClientMock.getTenants("subscriberId", "serviceType");
 
-        Assert.assertTrue(response.t.length> 0);
+        Assert.assertTrue(response.t.length > 0);
     }
 
-    final String tenantResponseRaw ="" +
+    final String tenantResponseRaw = "" +
             "{" +
             "\"service-type\": \"VIRTUAL USP\"," +
             "\"resource-version\": \"1494001841964\"," +
@@ -301,7 +309,7 @@ public class AaiClientTest {
 
     @DataProvider
     public static Object[][] resourceTypesProvider() {
-        return new Object[][] {
+        return new Object[][]{
                 {"service-instance", ResourceType.SERVICE_INSTANCE},
                 {"generic-vnf", ResourceType.GENERIC_VNF},
                 {"vf-module", ResourceType.VF_MODULE}
@@ -313,9 +321,9 @@ public class AaiClientTest {
         String link = "/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Nimbus/service-instances/service-instance/7131d483-b450-406f-8e30-0c650645fc67";
         String json =
                 "{\"result-data\": [{" +
-                    "\"resource-type\": \""+resourceType+"\"," +
-                    "\"resource-link\": \""+ link+ "\"" +
-                "}]}";
+                        "\"resource-type\": \"" + resourceType + "\"," +
+                        "\"resource-link\": \"" + link + "\"" +
+                        "}]}";
 
         AaiNodeQueryResponse nodeQueryResponse = new ObjectMapper().readValue(json, AaiNodeQueryResponse.class);
         assertThat(nodeQueryResponse.resultData.get(0).resourceLink, equalTo(link));
@@ -323,7 +331,7 @@ public class AaiClientTest {
     }
 
     @Test
-    public void aaiNodeQueryEmptyResponseDeserializationTest() throws IOException{
+    public void aaiNodeQueryEmptyResponseDeserializationTest() throws IOException {
         String json = "{}";
         AaiNodeQueryResponse nodeQueryResponse = new ObjectMapper().readValue(json, AaiNodeQueryResponse.class);
         assertNull(nodeQueryResponse.resultData);
@@ -331,7 +339,7 @@ public class AaiClientTest {
 
     @DataProvider
     public static Object[][] nameAndResourceTypeProvider() {
-        return new Object[][] {
+        return new Object[][]{
                 {"SRIOV_SVC", ResourceType.SERVICE_INSTANCE, "search/nodes-query?search-node-type=service-instance&filter=service-instance-name:EQUALS:SRIOV_SVC"},
                 {"b1707vidnf", ResourceType.GENERIC_VNF, "search/nodes-query?search-node-type=generic-vnf&filter=vnf-name:EQUALS:b1707vidnf"},
                 {"connectivity_test", ResourceType.VF_MODULE, "search/nodes-query?search-node-type=vf-module&filter=vf-module-name:EQUALS:connectivity_test"},
@@ -458,6 +466,25 @@ public class AaiClientTest {
         // We're asserting that the legacy behaviour is still in place. Hopefully
         // one day we will remove the non-propagateExceptions case
         assertFalse(propagateExceptions, "calling doAaiGet when propagateExceptions is 'true' must result with an exception (in this test)");
+    }
+
+    @Test
+    public void shouldProperlyReadResponseOnceWhenSubscribersAreNotPresent() {
+        AAIRestInterface restInterface = mock(AAIRestInterface.class);
+        PortDetailsTranslator portDetailsTranslator = mock(PortDetailsTranslator.class);
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(404);
+        when(response.readEntity(String.class)).thenReturn("sampleEntity");
+        when(response.getStatusInfo()).thenReturn(Response.Status.NOT_FOUND);
+        ResponseWithRequestInfo responseWithRequestInfo = new ResponseWithRequestInfo(response, "test", HttpMethod.GET);
+        when(restInterface.RestGet(eq("VidAaiController"), any(String.class),
+                eq("business/customers?subscriber-type=INFRA&depth=0"), eq(false), eq(true))).thenReturn(responseWithRequestInfo);
+        AaiClient aaiClient = new AaiClient(restInterface, portDetailsTranslator);
+
+
+        aaiClient.getAllSubscribers(true);
+
+        verify(response).readEntity(String.class);
     }
 
     @FunctionalInterface

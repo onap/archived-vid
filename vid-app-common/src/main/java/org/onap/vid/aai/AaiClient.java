@@ -413,14 +413,23 @@ public class AaiClient implements AaiClientInterface {
         } else {
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "getSubscribers() resp=" + resp.getStatusInfo().toString());
             if (resp.getStatus() != HttpStatus.SC_OK) {
-                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "Invalid response from AAI");
-                String rawData = resp.readEntity(String.class);
-                subscriberDataResponse = new AaiResponse<>(null, rawData, resp.getStatus());
+                subscriberDataResponse = processFailureResponse(resp,responseBody);
             } else {
                 subscriberDataResponse = processOkResponse(resp, classType, responseBody, omType, propagateExceptions);
             }
         }
         return subscriberDataResponse;
+    }
+
+    private AaiResponse processFailureResponse(Response resp, String responseBody) {
+        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "Invalid response from AAI");
+        String rawData;
+        if (responseBody != null) {
+            rawData = responseBody;
+        } else {
+            rawData = resp.readEntity(String.class);
+        }
+        return new AaiResponse<>(null, rawData, resp.getStatus());
     }
 
     private AaiResponse processOkResponse(Response resp, Class classType, String responseBody, VidObjectMapperType omType, boolean propagateExceptions) {
