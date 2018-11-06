@@ -625,6 +625,12 @@ REPLACE INTO `fn_restricted_url` VALUES ('serviceModels.htm','menu_servicemodels
 --
 INSERT INTO `fn_role` VALUES (1,'System Administrator','Y',1) ON DUPLICATE KEY UPDATE ROLE_NAME='System Administrator', ACTIVE_YN='Y', PRIORITY=1;
 INSERT INTO `fn_role` VALUES (16,'Standard User','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Standard User', ACTIVE_YN='Y', PRIORITY=5;
+INSERT INTO `fn_role` VALUES (17,'Demonstration___vFWCL','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vFWCL', ACTIVE_YN='Y', PRIORITY=5;
+INSERT INTO `fn_role` VALUES (18,'Demonstration___vFW','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vFW', ACTIVE_YN='Y', PRIORITY=5;
+INSERT INTO `fn_role` VALUES (19,'Demonstration___vCPE','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vCPE', ACTIVE_YN='Y', PRIORITY=5;
+INSERT INTO `fn_role` VALUES (20,'Demonstration___vIMS','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vIMS', ACTIVE_YN='Y', PRIORITY=5;
+INSERT INTO `fn_role` VALUES (21,'Demonstration___vLB','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vLB', ACTIVE_YN='Y', PRIORITY=5;
+INSERT INTO `fn_role` VALUES (22,'Demonstration___gNB','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___gNB', ACTIVE_YN='Y', PRIORITY=5;
 
 --
 -- Dumping data for table `fn_role_composite`
@@ -735,3 +741,10 @@ INSERT IGNORE `fn_user_role` VALUES (2,1,NULL,1);
 INSERT IGNORE `fn_user_role` VALUES (3,1,NULL,1);
 INSERT IGNORE `fn_user_role` VALUES (4,1,NULL,1);
 INSERT IGNORE `fn_user_role` VALUES (5,1,NULL,1);
+INSERT IGNORE `fn_user_role` VALUES (1,17,NULL,1);
+INSERT IGNORE `fn_user_role` VALUES (1,18,NULL,1);
+INSERT IGNORE `fn_user_role` VALUES (1,19,NULL,1);
+INSERT IGNORE `fn_user_role` VALUES (1,20,NULL,1);
+INSERT IGNORE `fn_user_role` VALUES (1,21,NULL,1);
+INSERT IGNORE `fn_user_role` VALUES (1,22,NULL,1);
+
