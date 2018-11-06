@@ -22,6 +22,7 @@ package org.onap.vid.model;
  * ============LICENSE_END=========================================================
  */
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -82,7 +83,7 @@ public class CategoryParameter extends VidBaseEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoryParameter")
     public Set<CategoryParameterOption> getOptions() {
-        return options;
+        return Collections.unmodifiableSet(options);
     }
 
     public void setOptions(Set<CategoryParameterOption> options) {
