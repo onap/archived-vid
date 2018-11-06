@@ -69,10 +69,10 @@ public class RoleProvider {
         LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Entering to get user role for user " + UserUtils.getUserId(request));
 
         List<Role> roleList = new ArrayList<>();
-        //Disable roles until AAF integration finishes
-        /*HashMap roles = UserUtils.getRoles(request);
+        
+        Map roles = UserUtils.getRoles(request);
         for (Object role : roles.keySet()) {
-            org.openecomp.portalsdk.core.domain.Role sdkRol = (org.openecomp.portalsdk.core.domain.Role) roles.get(role);
+            org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);
 
             LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Role " + sdkRol.getName() + " is being proccessed");
             try {
@@ -85,11 +85,11 @@ public class RoleProvider {
                 roleList.add(createRoleFromStringArr(roleParts, logPrefix));
                 String msg = String.format(logPrefix + " User %s got permissions %s", UserUtils.getUserId(request), Arrays.toString(roleParts));
                 LOG.debug(EELFLoggerDelegate.debugLogger, msg);
-            } catch (RoleParsingException e) {
+            } catch (Exception e) {
                 LOG.error(logPrefix + " Failed to parse permission");
 
             }
-        }*/
+        }
 
         return roleList;
     }
