@@ -3,10 +3,10 @@
 VID Release Notes
 =================
 
-Version: 3.2.0
+Version: 3.2.1
 --------------
 
-:Release Date: 2018-11-15
+:Release Date: 2018-11-30
 
 New Features
 ------------
