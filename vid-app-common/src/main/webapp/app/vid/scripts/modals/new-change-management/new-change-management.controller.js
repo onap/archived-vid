@@ -94,14 +94,14 @@
 
                                                 _.forEach(newVNFName.vfModules, function (mdl, key) {
                                                     mdl.scale = false; //defaults to not scale unless user changes it
-                                                    if(mdl.properties && mdl.properties.max_vf_module_instances) {
+                                                    if(mdl.properties && mdl.properties.maxCountInstances) {
 
                                                         //how many vf modules of the same customizationId belong to that vnf instance
                                                         mdl.currentCount = _.filter(vm.vfModules, function(item){
                                                             return modulesAaiIds.indexOf(item.id) > -1 && item.properties["model-customization-id"] === mdl.customizationUuid;
                                                         }).length;
 
-                                                        mdl.scalable = mdl.properties.max_vf_module_instances.value - mdl.currentCount > 0;
+                                                        mdl.scalable = mdl.properties.maxCountInstances.value - mdl.currentCount > 0;
                                                     }else{
                                                         mdl.scalable = false;
                                                     }
