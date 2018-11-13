@@ -20,7 +20,7 @@ public class RoleValidatorTest {
         result = testSubject.isMsoRequestValid(mso_request);
     }
 
-    @Test
+    /*@Test
     public void testIsServicePermitted() throws Exception {
         RoleValidator testSubject;
         String subscriberName = "";
@@ -54,6 +54,6 @@ public class RoleValidatorTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.isTenantPermitted(globalCustomerId, serviceType, tenantName);
-    }
+    }*/
 
 }
