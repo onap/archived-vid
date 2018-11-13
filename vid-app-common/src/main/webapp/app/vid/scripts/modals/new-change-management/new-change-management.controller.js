@@ -101,7 +101,7 @@
                                                             return modulesAaiIds.indexOf(item.id) > -1 && item.properties["model-customization-id"] === mdl.customizationUuid;
                                                         }).length;
 
-                                                        mdl.scalable = mdl.properties.maxCountInstances.value - mdl.currentCount > 0;
+                                                        mdl.scalable = mdl.properties.maxCountInstances - mdl.currentCount > 0;
                                                     }else{
                                                         mdl.scalable = false;
                                                     }
