@@ -103,6 +103,20 @@
                 <coberturaBuildPhase>package</coberturaBuildPhase>
             </properties>
         </profile>
+
+        <profile>
+            <id>docker-proxy</id>
+            <!-- activate profile if environment variable `http_proxy` is set -->
+            <activation>
+                <property>
+                    <name>env.http_proxy</name>
+                </property>
+            </activation>
+            <properties>
+                <docker.buildArg.http_proxy>${env.http_proxy}</docker.buildArg.http_proxy>
+            </properties>
+        </profile>
+
     </profiles>
 
     <dependencies>
@@ -146,6 +160,49 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.27.2</version>
+
+                <configuration>
+                    <images>
+                        <image>
+                            <name>onap/vid-simulator</name>
+                            <build>
+                                <cleanup>remove</cleanup>
+                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                                <tags>
+                                    <tag>${project.version}</tag>
+                                    <tag>latest</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>generate-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>push-image</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+
         </plugins>
     </build>
 

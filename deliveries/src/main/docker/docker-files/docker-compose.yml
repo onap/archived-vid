@@ -1,15 +1,21 @@
-version: '3.1'
+version: '3.2'
+
+# Please note this configuration is provided for local development. Do not use it on production.
 
 services:
     vid-server:
-        image: nexus3.onap.org:10001/onap/vid
+        image: onap/vid:latest
         ports:
             - "8080:8080"
-        links:
-            - vid-mariadb:vid-mariadb-docker-instance
         environment:
             VID_MYSQL_DBNAME: vid_openecomp_epsdk
             VID_MYSQL_PASS: YOUR_PASSWORD
+            VID_MYSQL_HOST: vid-mariadb
+            ASDC_CLIENT_REST_PROTOCOL: http
+            ASDC_CLIENT_REST_HOST: vid-simulator
+            ASDC_CLIENT_REST_PORT: 1080
+            VID_AAI_URL: http://vid-simulator:1080
+            VID_MSO_SERVER_URL: http://vid-simulator:1080
 
     vid-mariadb:
         image: mariadb:10
@@ -23,3 +29,6 @@ services:
             MYSQL_USER: vidadmin
             MYSQL_PASSWORD: YOUR_PASSWORD
             MYSQL_ROOT_PASSWORD: ROOT_PASSWORD
+
+    vid-simulator:
+        image: onap/vid-simulator:latest
