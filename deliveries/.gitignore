@@ -1,0 +1,2 @@
+# provide developers possibility to add or override custom properties in compose without polluting code base
+docker-compose.override.yml
