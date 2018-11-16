@@ -18,6 +18,9 @@ system.properties file
 ``db.password``
   The password for the VID database
 
+``role_management_activated``
+  Role management activation flag, "false" by defauly. Change to "true" in order to activate this feature.
+  
 ``aai.server.url.base``
   Base URL for the A&AI server
 
