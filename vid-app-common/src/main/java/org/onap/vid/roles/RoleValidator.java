@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@
 
 package org.onap.vid.roles;
 
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.mso.rest.RequestDetails;
 
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 public class RoleValidator {
 
-    private boolean disableRoles = true;
+    private boolean disableRoles = SystemProperties.getProperty("role_management_activated").equals("false");
     private List<Role> userRoles;
 
     public RoleValidator(List<Role> roles) {
@@ -38,7 +39,7 @@ public class RoleValidator {
     }
 
     public boolean isSubscriberPermitted(String subscriberName) {
-        if (this.disableRoles) return true;
+        if(this.disableRoles) return true;
 
         for (Role role : userRoles) {
             if (role.getSubscribeName().equals(subscriberName))
@@ -48,7 +49,7 @@ public class RoleValidator {
     }
 
     public boolean isServicePermitted(String subscriberName, String serviceType) {
-        if (this.disableRoles) return true;
+        if(this.disableRoles) return true;
 
         for (Role role : userRoles) {
             if (role.getSubscribeName().equals(subscriberName) && role.getServiceType().equals(serviceType))
@@ -58,7 +59,7 @@ public class RoleValidator {
     }
 
     public boolean isMsoRequestValid(RequestDetails mso_request) {
-        if (this.disableRoles) return true;
+        if(this.disableRoles) return true;
 
         try {
             String globalSubscriberIdRequested = (String) ((Map) ((Map) mso_request.getAdditionalProperties().get("requestDetails")).get("subscriberInfo")).get("globalSubscriberId");
@@ -71,7 +72,7 @@ public class RoleValidator {
     }
 
     public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName) {
-        if (this.disableRoles) return true;
+        if(this.disableRoles) return true;
 
         for (Role role : userRoles) {
             if (role.getSubscribeName().equals(globalCustomerId)
