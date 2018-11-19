@@ -25,42 +25,33 @@ import io.joshworks.restclient.http.JsonNode;
 import io.joshworks.restclient.http.RestClient;
 import io.joshworks.restclient.http.exceptions.RestClientException;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import io.joshworks.restclient.request.GetRequest;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.eclipse.jetty.util.security.Password;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.conn.ssl.SSLContexts;
-import io.vavr.CheckedFunction1;
-import lombok.SneakyThrows;
-import lombok.val;
-
-import java.security.UnrecoverableKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.KeyManagementException;
-import java.security.cert.CertificateException;
-import javax.net.ssl.SSLException;
-import java.security.KeyStoreException;
-import java.text.SimpleDateFormat;
-import javax.net.ssl.SSLContext;
-import java.io.FileInputStream;
-import java.security.KeyStore;
-import java.text.DateFormat;
-import java.io.InputStream;
-import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-import java.io.File;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.eclipse.jetty.util.security.Password;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.properties.VidProperties;
 
-public class SyncRestClient implements SyncRestClientInterface {
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.util.Map;
 
-    private static final String CANNOT_INITIALIZE_CUSTOM_HTTP_CLIENT = "Cannot initialize custom http client from current configuration. Using default one.";
-    private static final String TRY_TO_CALL_OVER_HTTP = "SSL Handshake problem occured. Will try to retry over Http.";
+public class SyncRestClient implements SyncRestClientInterface {
     private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SyncRestClient.class);
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss:SSSS");
     private static final String[] SUPPORTED_SSL_VERSIONS = {"TLSv1", "TLSv1.2"};
     private static final String HTTPS_SCHEMA = "https://";
     private static final String HTTP_SCHEMA = "http://";
@@ -91,13 +82,13 @@ public class SyncRestClient implements SyncRestClientInterface {
     @Override
     public <T> HttpResponse<T> post(String url, Map<String, String> headers, Object body, Class<T> responseClass) {
         return callWithRetryOverHttp(url,
-            url2 -> restClient.post(url2).headers(headers).body(body).asObject(responseClass));
+                url2 -> restClient.post(url2).headers(headers).body(body).asObject(responseClass));
     }
 
     @Override
     public HttpResponse<JsonNode> get(String url, Map<String, String> headers, Map<String, String> routeParams) {
         return callWithRetryOverHttp(url, url2 -> {
-            val getRequest = restClient.get(url2).headers(headers);
+            GetRequest getRequest = restClient.get(url2).headers(headers);
             routeParams.forEach(getRequest::routeParam);
             return getRequest.asJson();
         });
@@ -105,9 +96,9 @@ public class SyncRestClient implements SyncRestClientInterface {
 
     @Override
     public <T> HttpResponse<T> get(String url, Map<String, String> headers, Map<String, String> routeParams,
-        Class<T> responseClass) {
+                                   Class<T> responseClass) {
         return callWithRetryOverHttp(url, url2 -> {
-            val getRequest = restClient.get(url2).headers(headers);
+            GetRequest getRequest = restClient.get(url2).headers(headers);
             routeParams.forEach(getRequest::routeParam);
             return getRequest.asObject(responseClass);
         });
@@ -115,9 +106,9 @@ public class SyncRestClient implements SyncRestClientInterface {
 
     @Override
     public HttpResponse<InputStream> getStream(String url, Map<String, String> headers,
-        Map<String, String> routeParams) {
+                                               Map<String, String> routeParams) {
         return callWithRetryOverHttp(url, url2 -> {
-            val getRequest = restClient.get(url2).headers(headers);
+            GetRequest getRequest = restClient.get(url2).headers(headers);
             routeParams.forEach(getRequest::routeParam);
             return getRequest.asBinary();
         });
@@ -131,7 +122,7 @@ public class SyncRestClient implements SyncRestClientInterface {
     @Override
     public <T> HttpResponse<T> put(String url, Map<String, String> headers, Object body, Class<T> responseClass) {
         return callWithRetryOverHttp(url,
-            url2 -> restClient.put(url2).headers(headers).body(body).asObject(responseClass));
+                url2 -> restClient.put(url2).headers(headers).body(body).asObject(responseClass));
     }
 
     @Override
@@ -154,81 +145,100 @@ public class SyncRestClient implements SyncRestClientInterface {
         restClient.shutdown();
     }
 
-    @SneakyThrows
-    private <T> HttpResponse<T> callWithRetryOverHttp(String url,
-                                                      CheckedFunction1<String, HttpResponse<T>> httpRequest) {
+    private <T> HttpResponse<T> callWithRetryOverHttp(String url, HttpRequest<T> httpRequest) {
+        try {
+            return callWithRetryOverHttpThrows(url, httpRequest);
+        } catch (IOException e) {
+            throw new SyncRestClientException("IOException while calling rest service", e);
+        }
+    }
+
+    private <T> HttpResponse<T> callWithRetryOverHttpThrows(String url, HttpRequest<T> httpRequest) throws IOException {
         try {
             return httpRequest.apply(url);
         } catch (RestClientException e) {
-            if (e.getCause() instanceof SSLException) {
-                logger.warn(EELFLoggerDelegate.debugLogger,
-                        DATE_FORMAT.format(new Date()) + TRY_TO_CALL_OVER_HTTP, e);
+            if (hasSslHandshakeProblemOccured(e)) {
+                logger.warn(EELFLoggerDelegate.debugLogger, "SSL Handshake problem occured. Will try to retry over Http.", e);
                 return httpRequest.apply(url.replaceFirst(HTTPS_SCHEMA, HTTP_SCHEMA));
             }
             throw e;
         }
     }
 
+    private boolean hasSslHandshakeProblemOccured(RestClientException exception) {
+        return exception.getCause() instanceof SSLException;
+    }
+
     private ObjectMapper defaultObjectMapper() {
-        val objectMapper = new org.codehaus.jackson.map.ObjectMapper();
+        org.codehaus.jackson.map.ObjectMapper objectMapper = new org.codehaus.jackson.map.ObjectMapper();
 
         return new ObjectMapper() {
             @Override
-            @SneakyThrows
             public <T> T readValue(String value, Class<T> aClass) {
-                return objectMapper.readValue(value, aClass);
+                try {
+                    return objectMapper.readValue(value, aClass);
+                } catch (IOException e) {
+                    throw new SyncRestClientException("IOException while reading value", e);
+                }
             }
 
             @Override
-            @SneakyThrows
             public String writeValue(Object value) {
-                return objectMapper.writeValueAsString(value);
+                try {
+                    return objectMapper.writeValueAsString(value);
+                } catch (IOException e) {
+                    throw new SyncRestClientException("IOException while writing value", e);
+                }
             }
         };
     }
 
     private CloseableHttpClient defaultHttpClient() {
         try {
-            val trustStorePath = SystemProperties.getProperty(VidProperties.VID_TRUSTSTORE_FILENAME);
-            val trustStorePass = SystemProperties.getProperty(VidProperties.VID_TRUSTSTORE_PASSWD_X);
-            val decryptedTrustStorePass = Password.deobfuscate(trustStorePass);
+            String trustStorePath = SystemProperties.getProperty(VidProperties.VID_TRUSTSTORE_FILENAME);
+            String trustStorePass = SystemProperties.getProperty(VidProperties.VID_TRUSTSTORE_PASSWD_X);
+            String decryptedTrustStorePass = Password.deobfuscate(trustStorePass);
 
-            val trustStore = loadTruststore(trustStorePath, decryptedTrustStorePass);
-            val sslContext = trustOwnCACerts(decryptedTrustStorePass, trustStore);
-            val sslSf = allowTLSProtocols(sslContext);
+            KeyStore trustStore = loadTruststore(trustStorePath, decryptedTrustStorePass);
+            SSLContext sslContext = trustOwnCACerts(decryptedTrustStorePass, trustStore);
+            SSLConnectionSocketFactory sslSf = allowTLSProtocols(sslContext);
 
             return HttpClients.custom().setSSLSocketFactory(sslSf).build();
         } catch (IOException | CertificateException | UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            logger.warn(EELFLoggerDelegate.debugLogger,
-                DATE_FORMAT.format(new Date()) + CANNOT_INITIALIZE_CUSTOM_HTTP_CLIENT, e);
+            logger.warn(EELFLoggerDelegate.debugLogger, "Cannot initialize custom http client from current configuration. Using default one.", e);
             return HttpClients.createDefault();
         }
     }
 
     private SSLConnectionSocketFactory allowTLSProtocols(SSLContext sslcontext) {
         return new SSLConnectionSocketFactory(
-            sslcontext,
-            SUPPORTED_SSL_VERSIONS,
-            null,
-            SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                sslcontext,
+                SUPPORTED_SSL_VERSIONS,
+                null,
+                SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
     }
 
     private SSLContext trustOwnCACerts(String trustStorePass, KeyStore trustStore)
-        throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
+            throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
         return SSLContexts.custom()
-            .useTLS()
-            .loadKeyMaterial(trustStore, trustStorePass.toCharArray())
-            .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-            .build();
+                .useTLS()
+                .loadKeyMaterial(trustStore, trustStorePass.toCharArray())
+                .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
+                .build();
     }
 
     private KeyStore loadTruststore(String trustStorePath, String trustStorePass)
-        throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-        val trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+        KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
         try (FileInputStream instream = new FileInputStream(new File(trustStorePath))) {
             trustStore.load(instream, trustStorePass.toCharArray());
         }
         return trustStore;
+    }
+
+    @FunctionalInterface
+    private interface HttpRequest<T> {
+        HttpResponse<T> apply(String url) throws IOException;
     }
 
 }
