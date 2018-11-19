@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class RoleValidator {
 
-    private boolean disableRoles = SystemProperties.getProperty("role_management_activated") == "false";
+    private boolean disableRoles = SystemProperties.getProperty("role_management_activated").equals("false");
     private List<Role> userRoles;
 
     public RoleValidator(List<Role> roles) {
