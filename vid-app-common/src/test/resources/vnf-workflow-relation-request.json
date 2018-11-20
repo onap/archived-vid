@@ -1,0 +1,25 @@
+{
+  "workflowsDetails": [
+    {
+      "vnfDetails": {
+        "UUID": "uuid-1",
+        "invariantUUID": "invariantUuid-1"
+      },
+      "workflowName": "workflow-name-1"
+    },
+    {
+      "vnfDetails": {
+        "UUID": "uuid-1",
+        "invariantUUID": "invariantUuid-1"
+      },
+      "workflowName": "workflow-name-1"
+    },
+    {
+      "vnfDetails": {
+        "UUID": "uuid-1",
+        "invariantUUID": "invariantUuid-1"
+      },
+      "workflowName": "workflow-name-1"
+    }
+  ]
+}
