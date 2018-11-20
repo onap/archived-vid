@@ -24,3 +24,6 @@ Actions
   
 - |  **VoLTE E2E services deployment support** 
   |  VID supports VoLTE E2E services deployment. In order to trigger the E2E flow, the service category in the model (as SDC generates it) has to be set to "E2E Service".
+  
+- |  **Role management support** 
+  |  VID supports role management for its users with AAF integration. This feature is turned off by default. In order to activate it, update "role_management_activated" value in system.properties to "true".
