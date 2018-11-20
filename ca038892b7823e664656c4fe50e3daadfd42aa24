@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_b0d4d647",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-11-20T06:53:50Z",
+      "side": 1,
+      "message": "I don\u0027t like this negation. Either leave old syntax or wrap this in method like `isNotSSLException`",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 55
+      },
+      "revId": "ca038892b7823e664656c4fe50e3daadfd42aa24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
