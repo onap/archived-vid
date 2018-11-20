@@ -585,5 +585,10 @@
 				<version>3.10.0</version>
 				<scope>compile</scope>
 		 	</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava-testlib</artifactId>
+				<version>17.0</version>
+			</dependency>
 		</dependencies>
 </project>
