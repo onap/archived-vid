@@ -22,6 +22,57 @@
       "revId": "ca038892b7823e664656c4fe50e3daadfd42aa24",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_10d7ddee",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClientException.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-21T10:12:23Z",
+      "side": 1,
+      "message": "What is the point of this IOException import ?",
+      "revId": "ca038892b7823e664656c4fe50e3daadfd42aa24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f0db3919",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoException.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-21T10:12:23Z",
+      "side": 1,
+      "message": "What is the point of this import ?:)",
+      "revId": "ca038892b7823e664656c4fe50e3daadfd42aa24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_70ff4968",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoException.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-21T10:12:23Z",
+      "side": 1,
+      "message": "I\u0027d recommend using Throwable instead of Exception - This way you will be consistent with SyncRestClientException that you also introduced and generally Throwable is the type used in decorator constructors in jdk.",
+      "revId": "ca038892b7823e664656c4fe50e3daadfd42aa24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
