@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.onap.vid</groupId>
 	<artifactId>vid-parent</artifactId>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>vid</name>
 
@@ -268,5 +269,4 @@
 			<version>4.5.3</version>
 		</dependency>
 	</dependencies>
-	<version>4.0.0-SNAPSHOT</version>
 </project>
