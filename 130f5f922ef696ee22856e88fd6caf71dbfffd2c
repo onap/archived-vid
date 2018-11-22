@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_bf901a44",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/ChangeManagementController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-22T09:54:13Z",
+      "side": 1,
+      "message": "I think keeping literal string messages in exceptions and logs improves readability over constant strings. I don\u0027t think this change is requied.",
+      "range": {
+        "startLine": 157,
+        "startChar": 46,
+        "endLine": 157,
+        "endChar": 63
+      },
+      "revId": "130f5f922ef696ee22856e88fd6caf71dbfffd2c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_3f40aaa4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-22T09:54:13Z",
+      "side": 1,
+      "message": "Don\u0027t print stacktrace. Even in tests.",
+      "range": {
+        "startLine": 127,
+        "startChar": 20,
+        "endLine": 128,
+        "endChar": 17
+      },
+      "revId": "130f5f922ef696ee22856e88fd6caf71dbfffd2c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_df2f1ef5",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-11-22T09:54:13Z",
+      "side": 1,
+      "message": "You can use name \"array\" here. No need to imitate pirates to save 8 bytes ;)",
+      "range": {
+        "startLine": 262,
+        "startChar": 18,
+        "endLine": 262,
+        "endChar": 21
+      },
+      "revId": "130f5f922ef696ee22856e88fd6caf71dbfffd2c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
