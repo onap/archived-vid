@@ -22,6 +22,30 @@
       "revId": "078c450586fecf520ff58e2a46aff8366da5cb23",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_1921419f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-11-23T08:57:38Z",
+      "side": 1,
+      "message": "agree, for example just remove \u0027has\u0027 and leave sslHandshakeProblemOccured",
+      "parentUuid": "9adffdf1_d5993f20",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 45
+      },
+      "revId": "078c450586fecf520ff58e2a46aff8366da5cb23",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
