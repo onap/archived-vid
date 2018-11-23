@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_d5993f20",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-11-23T06:35:20Z",
+      "side": 1,
+      "message": "`hasSslHandshakeProblemOccured` sounds very strange. Reading it along with if statement is even worse.\n\nI would change it to one of following:\n- if `has handshake error` then ...\n- if `handshake problem occurred` then ...\n- if `caused by handshake error` then ...",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 45
+      },
+      "revId": "078c450586fecf520ff58e2a46aff8366da5cb23",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
