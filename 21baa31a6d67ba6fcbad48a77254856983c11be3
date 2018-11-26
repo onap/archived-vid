@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_d3d152fc",
+        "filename": "deliveries/.gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2018-11-26T18:10:28Z",
+      "side": 1,
+      "message": "I like it.",
+      "revId": "21baa31a6d67ba6fcbad48a77254856983c11be3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
