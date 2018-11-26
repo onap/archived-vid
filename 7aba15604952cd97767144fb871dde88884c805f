@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_8de5eba9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/ChangeManagementRequest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_421032a8",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_220dee90",
         "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/GetVnfWorkflowRelationRequest.java",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2018-11-26T08:03:32Z",
       "side": 1,
       "message": "1. Suggestion: I\u0027d recommend using Objects.equals and Objects hashCode() for implementing the contract (available since jdk7). The main benefit is no reliance on 3rd party apache libs and I find them more readable. This can be easily generated using IDE tools. 2. Since you have implemented the equals/hashCode contract, it is necessary to fully test it and ensure that all conditions of equality are met. For this I\u0027d recommend using EqualsTester provided by guava",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_6df20771",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/GetVnfWorkflowRelationRequest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_220dee90",
       "revId": "7aba15604952cd97767144fb871dde88884c805f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_0de9fb7f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/VnfWorkflowRelationRequest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_6213f6b8",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_e2260616",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
         "patchSetId": 2
@@ -64,6 +118,24 @@
       "writtenOn": "2018-11-26T08:03:32Z",
       "side": 1,
       "message": "Please make these constants private. Someone may refer to them by mistake",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_a281de90",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_e2260616",
       "revId": "7aba15604952cd97767144fb871dde88884c805f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_624bf687",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_a220fef7",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_a22f9ea0",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
         "patchSetId": 2
@@ -98,6 +188,24 @@
       "writtenOn": "2018-11-26T09:18:53Z",
       "side": 1,
       "message": "please use full variable names :) There is no benefit in cutting off half of a variable name, it can impede readability:)",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_ad2f8f87",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_a22f9ea0",
       "revId": "7aba15604952cd97767144fb871dde88884c805f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_2d5b9f2f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_6219b687",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_4216f256",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
         "patchSetId": 2
@@ -132,6 +258,24 @@
       "writtenOn": "2018-11-26T09:18:53Z",
       "side": 1,
       "message": "reorder the method declaration. Basically static methods are usually kept at the top. Since these matcher creation methods require an instance move them after the last usage according to there order of reference. Right now I have to read the test and jump up in the source code to check the matcher impl. Reading top down is more preferable :)\n\nAs a rule of thumb put the the more abstract code up front, keep the implementation details in the back ;)",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_6d51a70d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_4216f256",
       "revId": "7aba15604952cd97767144fb871dde88884c805f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_2d72bfad",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_2d24ffad",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_e277e6d2",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
         "patchSetId": 2
@@ -166,6 +328,24 @@
       "writtenOn": "2018-11-26T09:18:53Z",
       "side": 1,
       "message": "this can be inlined and marked as final",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_ed6357db",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-26T13:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_e277e6d2",
       "revId": "7aba15604952cd97767144fb871dde88884c805f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
