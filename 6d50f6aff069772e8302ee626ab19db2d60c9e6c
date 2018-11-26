@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_b344ceb7",
+        "filename": "deliveries/src/main/scripts/localize_system.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2018-11-26T18:26:36Z",
+      "side": 1,
+      "message": "I suggest using a more visible delimiter for sed, e.g. a pound (#).\nAlso, spaces (along with pipes) have their own meaning in bash and might lead to confusion.",
+      "revId": "6d50f6aff069772e8302ee626ab19db2d60c9e6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
