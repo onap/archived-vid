@@ -84,6 +84,91 @@
       "revId": "7aba15604952cd97767144fb871dde88884c805f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_a22f9ea0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T09:18:53Z",
+      "side": 1,
+      "message": "please use full variable names :) There is no benefit in cutting off half of a variable name, it can impede readability:)",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_6219b687",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T09:18:53Z",
+      "side": 1,
+      "message": "Is this check really needed ? Is it possible for there to be a mismatch between class types and would be part of expected behavior? I\u0027d recommend removing this check: ClassCastException is more desirable than a false match result iand t will be consistent with other matchers (where you do not compare the class type)",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_4216f256",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T09:18:53Z",
+      "side": 1,
+      "message": "reorder the method declaration. Basically static methods are usually kept at the top. Since these matcher creation methods require an instance move them after the last usage according to there order of reference. Right now I have to read the test and jump up in the source code to check the matcher impl. Reading top down is more preferable :)\n\nAs a rule of thumb put the the more abstract code up front, keep the implementation details in the back ;)",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_2d24ffad",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T09:18:53Z",
+      "side": 1,
+      "message": "Is this matcher actually needed ?\nOne of the benefits of custom ArgumentMatchers is to compare objects that do not have the equals/hashcode contract implemented or implemented properly. As it turns out you have implemented the equals/hashCode contract(which is always preferable) the argumentmatcher can be removed.\nRemember only to remove eq() matcher in changeManagement_shouldReturnOkResponse_whenServiceReturnsCorrectValue since you can\u0027t mix values with matchers when configuring a mock.",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_e277e6d2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T09:18:53Z",
+      "side": 1,
+      "message": "this can be inlined and marked as final",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
