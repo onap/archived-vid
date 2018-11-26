@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_f39ed653",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/ChangeManagementController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2018-11-26T17:58:46Z",
+      "side": 0,
+      "message": "It is good practice to have the `HttpServletRequest` as a parameter. This lets an aspect to peek into the \"raw\" data, session, and such.\nFor instance, see how `EELFLoggerAdvice` is looking for `instanceof HttpServletRequest`. (Well actually, I see now that `EELFLoggerAdvice` is only checking for the first argument; so maybe need to bring param back, and reorder.)",
+      "range": {
+        "startLine": 72,
+        "startChar": 51,
+        "endLine": 72,
+        "endChar": 77
+      },
+      "revId": "bcb065c0fa3ddcd6e9dae8085aba99139ecf8eae",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
