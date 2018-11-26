@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_421032a8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/ChangeManagementRequest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T08:03:32Z",
+      "side": 1,
+      "message": "1. Suggestion: I\u0027d recommend using Objects.equals and Objects hashCode() for implementing the contract (available since jdk7). The main benefit is no reliance on 3rd party apache libs and I find them more readable. This can be easily generated using IDE tools. 2. Since you have implemented the equals/hashCode contract, it is necessary to fully test it and ensure that all conditions of equality are met. For this I\u0027d recommend using EqualsTester provided by guava",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_220dee90",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/GetVnfWorkflowRelationRequest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T08:03:32Z",
+      "side": 1,
+      "message": "1. Suggestion: I\u0027d recommend using Objects.equals and Objects hashCode() for implementing the contract (available since jdk7). The main benefit is no reliance on 3rd party apache libs and I find them more readable. This can be easily generated using IDE tools. 2. Since you have implemented the equals/hashCode contract, it is necessary to fully test it and ensure that all conditions of equality are met. For this I\u0027d recommend using EqualsTester provided by guava",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_6213f6b8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/VnfWorkflowRelationRequest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T08:03:32Z",
+      "side": 1,
+      "message": "1. Suggestion: I\u0027d recommend using Objects.equals and Objects hashCode() for implementing the contract (available since jdk7). The main benefit is no reliance on 3rd party apache libs and I find them more readable. This can be easily generated using IDE tools.\n2. Since you have implemented the equals/hashCode contract, it is necessary to fully test it and ensure that all conditions of equality are met. For this I\u0027d recommend using EqualsTester provided by guava",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_e2260616",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T08:03:32Z",
+      "side": 1,
+      "message": "Please make these constants private. Someone may refer to them by mistake",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_a220fef7",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-26T08:03:32Z",
+      "side": 1,
+      "message": "what is the point of this logger ? Unit tests won;t run in a production environment. The unit stout for test output is enough :) Please remove it.",
+      "revId": "7aba15604952cd97767144fb871dde88884c805f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
