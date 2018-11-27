@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
+
 
 @Service
 public class ChangeManagementServiceImpl implements ChangeManagementService {
@@ -253,6 +255,10 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
     }
 
     private List<String> intersectWorkflows(List<Set<String>> workflowsList) {
+        if (workflowsList.isEmpty()) {
+            return emptyList();
+        }
+
         Set<String> workflows = workflowsList.get(0);
         for (Set<String> workflow : workflowsList) {
             workflows.retainAll(workflow);

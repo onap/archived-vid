@@ -1,28 +1,61 @@
 package org.onap.vid.controllers;
 
-import java.util.Collection;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.junit.Test;
+import org.mockito.stubbing.Answer;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.GetVnfWorkflowRelationRequest;
 import org.onap.vid.changeManagement.VnfWorkflowRelationRequest;
+import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
+import org.onap.vid.scheduler.RestObject;
+import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.onap.vid.services.ChangeManagementService;
 import org.onap.vid.services.ChangeManagementServiceImpl;
-import org.onap.vid.services.WorkflowService;
 import org.onap.vid.services.WorkflowServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.BadRequestException;
+import java.util.Collection;
+
+import static java.util.Collections.emptyList;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+
 public class ChangeManagementControllerTest {
 
-    private ChangeManagementController createTestSubject() {
-        return new ChangeManagementController(new WorkflowServiceImpl(), new ChangeManagementServiceImpl(null, null, null),
-                null);
+    private ChangeManagementController createTestSubject() throws Exception {
+        final WorkflowServiceImpl workflowService = mock(WorkflowServiceImpl.class);
+        final DataAccessService dataAccessService = mock(DataAccessService.class);
+        final MsoBusinessLogic msoBusinessLogic = mock(MsoBusinessLogic.class);
+        final SchedulerRestInterfaceIfc schedulerRestInterface = mock(SchedulerRestInterfaceIfc.class);
+
+        // These ones will suffice these tests, by mocking a very minimal AAI response:
+        //   - testDeleteSchedule
+        //   - testDeleteWorkflowRelation
+        //   - testGetSchedulerChangeManagements
+        //   - testCreateWorkflowRelation
+        //   - testGetWorkflows
+        doAnswer(pretend200OkWithValidJsonPayload()).when(schedulerRestInterface).Get(any(), any(), any(), any());
+        doAnswer(pretend200OkWithValidJsonPayload()).when(schedulerRestInterface).Delete(any(), any(), any(), any());
+
+        final ChangeManagementService changeManagementService = new ChangeManagementServiceImpl(dataAccessService, msoBusinessLogic, schedulerRestInterface);
+
+        return new ChangeManagementController(workflowService, changeManagementService, new ObjectMapper());
+    }
+
+    private Answer pretend200OkWithValidJsonPayload() {
+        return mockitoInvocation -> {
+            final RestObject<String> restObject = mockitoInvocation.getArgument(3);
+            restObject.setStatusCode(200);
+            restObject.set("[]");
+            return null;
+        };
     }
 
     @Test
@@ -33,12 +66,7 @@ public class ChangeManagementControllerTest {
 
         // default test
         testSubject = createTestSubject();
-        try {
-            result = testSubject.getWorkflow(vnfs);
-        } catch (
-
-        Exception e) {
-        }
+        result = testSubject.getWorkflow(vnfs);
     }
 
     @Test
@@ -47,12 +75,7 @@ public class ChangeManagementControllerTest {
 
         // default test
         testSubject = createTestSubject();
-        try {
-            testSubject.getMSOChangeManagements();
-        } catch (
-
-        Exception e) {
-        }
+        testSubject.getMSOChangeManagements();
     }
 
     @Test
@@ -103,7 +126,7 @@ public class ChangeManagementControllerTest {
     @Test
     public void testGetWorkflows() throws Exception {
         ChangeManagementController testSubject;
-        GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest = null;
+        GetVnfWorkflowRelationRequest getVnfWorkflowRelationRequest = new GetVnfWorkflowRelationRequest(emptyList());
         ResponseEntity result;
 
         // default test
@@ -114,7 +137,7 @@ public class ChangeManagementControllerTest {
     @Test
     public void testCreateWorkflowRelation() throws Exception {
         ChangeManagementController testSubject;
-        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = null;
+        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = new VnfWorkflowRelationRequest(emptyList());
         ResponseEntity result;
 
         // default test
@@ -135,7 +158,7 @@ public class ChangeManagementControllerTest {
     @Test
     public void testDeleteWorkflowRelation() throws Exception {
         ChangeManagementController testSubject;
-        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = null;
+        VnfWorkflowRelationRequest vnfWorkflowRelationRequest = new VnfWorkflowRelationRequest(emptyList());
         ResponseEntity result;
 
         // default test
@@ -146,16 +169,11 @@ public class ChangeManagementControllerTest {
     @Test
     public void testClientDerivedExceptionAsBadRequest() throws Exception {
         ChangeManagementController testSubject;
-        Exception e = null;
+        Exception e = new BadRequestException();
         MsoResponseWrapperInterface result;
 
         // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.clientDerivedExceptionAsBadRequest(e);
-        } catch (
-
-        Exception ex) {
-        }
+        testSubject = createTestSubject();
+        result = testSubject.clientDerivedExceptionAsBadRequest(e);
     }
 }
