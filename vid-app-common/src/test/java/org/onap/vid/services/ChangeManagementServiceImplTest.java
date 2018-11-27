@@ -1,12 +1,12 @@
 package org.onap.vid.services;
 
 import org.mockito.*;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetails;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
-import org.onap.portalsdk.core.service.DataAccessService;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -54,47 +54,47 @@ public class ChangeManagementServiceImplTest {
 
     @Test
     public void  doChangeManagement_requestTypeIsUpdate_MsoUpdateVnfIsCalled() throws Exception {
-        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnf(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnf(Mockito.any(),Mockito.any(),Mockito.any());
         RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.UPDATE);
 
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
-        verify(msoBusinessLogicMock).updateVnf(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        verify(msoBusinessLogicMock).updateVnf(argumentCaptor.capture(),Mockito.any(),Mockito.any());
         assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
     @Test
     public void  doChangeManagement_requestTypeIsReplace_MsoUpdateVnfIsCalled() throws Exception {
-        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).replaceVnf(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).replaceVnf(Mockito.any(),Mockito.any(),Mockito.any());
         RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.REPLACE);
 
 
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
 
-        verify(msoBusinessLogicMock).replaceVnf(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        verify(msoBusinessLogicMock).replaceVnf(argumentCaptor.capture(),Mockito.any(),Mockito.any());
         assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
     @Test
     public void  doChangeManagement_requestTypeIsInPlaceSoftwareUpdate_MsoUpdateVnfIsCalled() throws Exception {
-        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnfSoftware(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnfSoftware(Mockito.any(),Mockito.any(),Mockito.any());
         RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
 
 
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
 
-        verify(msoBusinessLogicMock).updateVnfSoftware(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        verify(msoBusinessLogicMock).updateVnfSoftware(argumentCaptor.capture(),Mockito.any(),Mockito.any());
         assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
     @Test
     public void  doChangeManagement_requestTypeIsConfigUpdate_MsoUpdateVnfIsCalled() throws Exception {
-        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnfConfig(Mockito.any(),Mockito.anyString(),Mockito.anyString());
+        Mockito.doReturn(Mockito.mock(MsoResponseWrapperInterface.class)).when(msoBusinessLogicMock).updateVnfConfig(Mockito.any(),Mockito.any(),Mockito.any());
         RequestDetails requestDetails = callChangeManagement(ChangeManagementRequest.CONFIG_UPDATE);
 
 
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
 
-        verify(msoBusinessLogicMock).updateVnfConfig(argumentCaptor.capture(),Mockito.anyString(),Mockito.anyString());
+        verify(msoBusinessLogicMock).updateVnfConfig(argumentCaptor.capture(),Mockito.any(),Mockito.any());
         assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
     }
 
@@ -106,8 +106,8 @@ public class ChangeManagementServiceImplTest {
         updateRequest.setRequestType(requestType);
         RequestDetails requestDetails = new RequestDetails();
         requestDetails.setVnfInstanceId("vnfFakeId");
-        Mockito.doReturn("fakeId").when(changeManagementServiceSpied).extractServiceInstanceId(Mockito.anyObject(),Mockito.anyString());
-        Mockito.doReturn(requestDetails).when(changeManagementServiceSpied).findRequestByVnfName(Matchers.anyList(),Mockito.anyString());
+        Mockito.doReturn("fakeId").when(changeManagementServiceSpied).extractServiceInstanceId(Mockito.any(),Mockito.any());
+        Mockito.doReturn(requestDetails).when(changeManagementServiceSpied).findRequestByVnfName(Matchers.any(),Mockito.any());
 
         changeManagementServiceSpied.doChangeManagement(updateRequest,"anyVnfName");
 

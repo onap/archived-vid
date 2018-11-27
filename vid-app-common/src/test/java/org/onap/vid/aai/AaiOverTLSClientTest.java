@@ -21,19 +21,22 @@
 package org.onap.vid.aai;
 
 import com.google.common.collect.ImmutableMap;
-import java.util.Collections;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.SubscriberList;
+
+import java.util.Collections;
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AaiOverTLSClientTest {
@@ -57,8 +60,8 @@ public class AaiOverTLSClientTest {
         mockPropertyReader();
 
         aaiRestClient.searchNodeTypeByName("name", ResourceType.GENERIC_VNF);
-        Mockito.verify(syncRestClient).get(Matchers.contains(SEARCH_NODES_QUERY_SEARCH_NODE_TYPE),
-            Matchers.eq(getHeaders()), Matchers.eq(Collections.emptyMap()), Matchers.eq(AaiNodeQueryResponse.class));
+        Mockito.verify(syncRestClient).get(contains(SEARCH_NODES_QUERY_SEARCH_NODE_TYPE),
+            eq(getHeaders()), eq(Collections.emptyMap()), eq(AaiNodeQueryResponse.class));
     }
 
     @Test
@@ -66,8 +69,8 @@ public class AaiOverTLSClientTest {
         mockPropertyReader();
 
         aaiRestClient.getAllSubscribers();
-        Mockito.verify(syncRestClient).get(Matchers.contains(SUBSCRIBERS),
-            Matchers.eq(getHeaders()), Matchers.eq(Collections.emptyMap()), Matchers.eq(SubscriberList.class));
+        Mockito.verify(syncRestClient).get(contains(SUBSCRIBERS),
+            eq(getHeaders()), eq(Collections.emptyMap()), eq(SubscriberList.class));
     }
 
     private void mockPropertyReader() {

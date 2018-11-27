@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 
 
 /**
@@ -71,7 +71,7 @@ public class ClientCredentialsFilterTest {
         FilterChain chain = Mockito.mock(FilterChain.class);
 
 
-        Mockito.when(filter.verifyClientCredentials(any(String.class),any(String.class))).thenReturn(clientVerified);
+        Mockito.when(filter.verifyClientCredentials(any(),any())).thenReturn(clientVerified);
         Mockito.doNothing().when(response).sendError(401);
 
         Mockito.doCallRealMethod().when(filter).doFilter(request,response,chain);

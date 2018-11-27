@@ -22,8 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import static fj.parser.Parser.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
