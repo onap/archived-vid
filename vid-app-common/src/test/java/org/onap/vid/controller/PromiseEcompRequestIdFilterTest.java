@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -130,8 +131,8 @@ public class PromiseEcompRequestIdFilterTest {
     private HttpServletRequest createMockedHttpServletRequest(Map<String, String> requestHeaders) {
         HttpServletRequest servletRequest = Mockito.mock(HttpServletRequest.class);
         requestHeaders.forEach((k, v) -> {
-            Mockito.when(servletRequest.getHeader(argThat(equalToIgnoringCase(k)))).thenReturn(v);
-            Mockito.when(servletRequest.getHeaders(argThat(equalToIgnoringCase(k)))).then(returnEnumerationAnswer(v));
+            Mockito.when(servletRequest.getHeader(argThat(s -> equalsIgnoreCase(s, k)))).thenReturn(v);
+            Mockito.when(servletRequest.getHeaders(argThat(s -> equalsIgnoreCase(s, k)))).then(returnEnumerationAnswer(v));
         });
         Mockito.when(servletRequest.getHeaderNames()).then(returnEnumerationAnswer(requestHeaders.keySet()));
         return servletRequest;

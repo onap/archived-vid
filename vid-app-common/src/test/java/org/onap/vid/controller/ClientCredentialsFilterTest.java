@@ -71,7 +71,7 @@ public class ClientCredentialsFilterTest {
         FilterChain chain = Mockito.mock(FilterChain.class);
 
 
-        Mockito.when(filter.verifyClientCredentials(any(String.class),any(String.class))).thenReturn(clientVerified);
+        Mockito.when(filter.verifyClientCredentials(any(),any())).thenReturn(clientVerified);
         Mockito.doNothing().when(response).sendError(401);
 
         Mockito.doCallRealMethod().when(filter).doFilter(request,response,chain);
