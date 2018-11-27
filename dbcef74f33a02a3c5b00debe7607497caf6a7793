@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_c22f3da0",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-27T07:40:35Z",
+      "side": 1,
+      "message": "agree, all artifacts for testing purposes should be test scoped. Same applies for assertJ above.",
+      "parentUuid": "9adffdf1_93ad0a8b",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_33869e14",
         "filename": "vid-app-common/src/test/java/org/onap/vid/changeManagement/ChangeManagementRequestTest.java",
         "patchSetId": 3
@@ -81,6 +99,24 @@
       "writtenOn": "2018-11-26T17:58:46Z",
       "side": 1,
       "message": "Can be replaced with lambda; e.g.:\n```\n    private ArgumentMatcher\u003cCollection\u003cString\u003e\u003e collectionMatcher(final Collection\u003cString\u003e collection2) {\n        return collection1 -\u003e CollectionUtils.isEqualCollection(collection1, collection2);\n    }\n```\n\nMoreover, as used only once, lambda can be passed as `argThat()`\u0027s argument.",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_450a7722",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2018-11-27T07:40:35Z",
+      "side": 1,
+      "message": "Hi Ittay, passing a lambda would definitely be a better solution, unfortunately we can\u0027t do that with the current version of Mockito. The current version of mockito is quite old: 1.x (and is coupled with hamcrest). In this version ArgumentMatcher is an abstract class. Java8 compatibility has been added since version 2.x where ArgumentMatcher has finally been implemented as a functional interface :)",
+      "parentUuid": "9adffdf1_d320724b",
       "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
