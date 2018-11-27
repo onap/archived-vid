@@ -120,6 +120,24 @@
       "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_053b0fd2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2018-11-27T11:28:55Z",
+      "side": 1,
+      "message": "Fair enough. :)",
+      "parentUuid": "9adffdf1_450a7722",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
