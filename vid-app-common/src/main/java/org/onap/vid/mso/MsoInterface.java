@@ -20,12 +20,14 @@
  */
 package org.onap.vid.mso;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
-import lombok.SneakyThrows;
 import org.onap.vid.aai.util.CustomJacksonJaxBJsonProvider;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.mso.rest.RequestDetails;
+
+import java.io.IOException;
 
 /**
  * Created by pickjonathan on 21/06/2017.
@@ -123,16 +125,22 @@ public interface MsoInterface {
       return new ObjectMapper() {
         CustomJacksonJaxBJsonProvider mapper = new CustomJacksonJaxBJsonProvider();
 
-        @SneakyThrows
         @Override
         public <T> T readValue(String s, Class<T> aClass) {
-          return mapper.getMapper().readValue(s, aClass);
+            try {
+                return mapper.getMapper().readValue(s, aClass);
+            } catch (IOException e) {
+                throw new MsoException(e);
+            }
         }
 
-        @SneakyThrows
         @Override
         public String writeValue(Object o) {
-          return mapper.getMapper().writeValueAsString(o);
+            try {
+                return mapper.getMapper().writeValueAsString(o);
+            } catch (JsonProcessingException e) {
+                throw new MsoException(e);
+            }
         }
       };
     }
