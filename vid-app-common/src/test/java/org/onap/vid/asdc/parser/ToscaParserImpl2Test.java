@@ -15,8 +15,8 @@ import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.local.LocalAsdcClient;
-import org.onap.vid.model.*;
 import org.onap.vid.controllers.ToscaParserMockHelper;
+import org.onap.vid.model.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -194,6 +194,28 @@ public class ToscaParserImpl2Test {
         setPprobeServiceProxy(expectedConfigurations);
 
         JsonAssert.assertJsonEquals(expectedConfigurations, actualConfigurations);
+    }
+
+    @Test
+    public void modelWithAnnotatedInputWithTwoProperties_vfModuleGetsTheInput() throws Exception {
+        final ToscaParserMockHelper mockHelper = new ToscaParserMockHelper("90fe6842-aa76-4b68-8329-5c86ff564407", "empty.json");
+        final ServiceModel serviceModel = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid()));
+
+        assertJsonStringEqualsIgnoreNulls("{ vfModules: { 201712488_adiodvpe10..201712488AdiodVpe1..ADIOD_vRE_BV..module-1: { inputs: { 201712488_adiodvpe10_availability_zone_0: { } } } } }", om.writeValueAsString(serviceModel));
+    }
+
+    @Test
+    public void modelWithNfNamingWithToValues_ecompGeneratedNamingIsExtracted() throws Exception {
+        final ToscaParserMockHelper mockHelper = new ToscaParserMockHelper("90fe6842-aa76-4b68-8329-5c86ff564407", "empty.json");
+        final ServiceModel serviceModel = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid()));
+
+        assertJsonStringEqualsIgnoreNulls("" +
+                "{ vnfs: " +
+                "  { \"201712-488_ADIOD-vPE-1 0\": " +
+                "    { properties: { " +
+                "      ecomp_generated_naming: \"true\", " +
+                "      nf_naming: \"{naming_policy=SDNC_Policy.Config_MS_1806SRIOV_VPE_ADIoDJson, ecomp_generated_naming=true}\" " +
+                "} } } }", om.writeValueAsString(serviceModel));
     }
 
     private void setPprobeServiceProxy(Map<String, PortMirroringConfig> expectedConfigurations){

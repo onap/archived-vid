@@ -1,7 +1,6 @@
 package org.onap.vid.asdc.parser;
 
-import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.model.*;
+import org.apache.commons.lang3.StringUtils;
 import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.sdc.tosca.parser.impl.FilterType;
@@ -11,6 +10,8 @@ import org.onap.sdc.toscaparser.api.Group;
 import org.onap.sdc.toscaparser.api.*;
 import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.sdc.toscaparser.api.parameters.Input;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.model.*;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -417,7 +418,22 @@ public class ToscaParserImpl2 {
     private boolean isInputMatchesToGroup(List<Property> annotationProperties, org.onap.vid.model.Group group){
         for(Property property: annotationProperties){
             if(property.getName().equals(VF_MODULE_LABEL)){
-                return getPropertyValueAsString(property).equals(group.getProperties().getVfModuleLabel());
+                final Object values = property.getValue();
+                final String vfModuleLabel = group.getProperties().getVfModuleLabel();
+                if (values instanceof List) {
+                    if (listContainsAsString((List) values, vfModuleLabel)) return true;
+                } else {
+                    return getPropertyValueAsString(property).equals(vfModuleLabel);
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean listContainsAsString(List list, String value) {
+        for (Object v : list) {
+            if (StringUtils.equals(v.toString(), value)) {
+                return true;
             }
         }
         return false;
@@ -428,7 +444,7 @@ public class ToscaParserImpl2 {
     }
 
     private String removeSquareBrackets(String stringWithSquareBrackets){
-        return stringWithSquareBrackets.substring(1, stringWithSquareBrackets.length()-1);
+        return stringWithSquareBrackets.replaceAll("(^\\[|\\]$)", "");
     }
 
     private GroupProperties extractVfModuleProperties(Group group, ISdcCsarHelper csarHelper){
@@ -507,7 +523,10 @@ public class ToscaParserImpl2 {
         for (Property property : properties) {
             //special handling to necessary sub-property "ecomp_generated_naming"
             if(property.getName().equals("nf_naming")){
-                propertiesMap.put(removeSquareBrackets(((LinkedHashMap)(property.getValue())).keySet().toString()) ,((LinkedHashMap)(property.getValue())).get("ecomp_generated_naming").toString());
+                final Object ecompGeneratedNaming = ((Map) (property.getValue())).get("ecomp_generated_naming");
+                if (ecompGeneratedNaming != null) {
+                    propertiesMap.put("ecomp_generated_naming", ecompGeneratedNaming.toString());
+                }
             }
             propertiesMap.put(property.getName(), property.getValue().toString());
         }

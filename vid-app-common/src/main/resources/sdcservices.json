@@ -71,6 +71,20 @@
       "resources": null
     },
     {
+      "uuid": "90fe6842-aa76-4b68-8329-5c86ff564407",
+      "invariantUUID": "0311f998-9268-4fd6-bbba-afff15087b72",
+      "name": "4-27_vMME_Service",
+      "version": "1.0",
+      "toscaModelURL": "./1712_ADIOD.zip",
+      "category": "Mobility",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "rg276b",
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTED",
+      "artifacts": null,
+      "resources": null
+    },
+    {
       "uuid": "73e1322a-8a9a-49dc-9558-b0c5c5770e4a",
       "invariantUUID": "f430728a-4530-42be-a577-1206b9484cef",
       "name": "4-27_vMME_Service",
