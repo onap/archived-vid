@@ -21,10 +21,8 @@
 
 package org.onap.vid.services;
 
+import com.google.common.collect.ImmutableList;
 import io.joshworks.restclient.http.HttpResponse;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.onap.vid.aai.AaiResponse;
@@ -34,6 +32,8 @@ import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.roles.RoleValidator;
+
+import java.util.List;
 
 public class AaiServiceImplTest {
 
@@ -166,7 +166,7 @@ public class AaiServiceImplTest {
     @Test
     public void testGetVersionByInvariantId() throws Exception {
         AaiServiceImpl testSubject;
-        List<String> modelInvariantId = null;
+        List<String> modelInvariantId = ImmutableList.of("some invariant id");
 
         // default test
         try {
