@@ -1,0 +1,11 @@
+Code-Review+1: Krzysztof Kurczewski <krzysztof.kurczewski@nokia.com>
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Lukasz Muszkieta <lukasz.muszkieta@nokia.com>
+Code-Review+1: Michal Kabaj <michal.kabaj@nokia.com>
+Code-Review+1: Ittay Stern <ittay.stern@att.com>
+Code-Review+2: Ofir Sonsino <ofir.sonsino@intl.att.com>
+Submitted-by: Ofir Sonsino <ofir.sonsino@intl.att.com>
+Submitted-at: Tue, 27 Nov 2018 11:32:22 +0000
+Reviewed-on: https://gerrit.onap.org/r/73066
+Project: vid
+Branch: refs/heads/master
