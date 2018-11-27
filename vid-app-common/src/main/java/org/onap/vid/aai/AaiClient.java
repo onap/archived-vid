@@ -8,16 +8,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.*;
 import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.*;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
-import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.Relationship;
 import org.onap.vid.aai.model.RelationshipData;
 import org.onap.vid.aai.model.RelationshipList;
+import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.VidObjectMapperType;
 import org.onap.vid.exceptions.GenericUncheckedException;
@@ -26,7 +27,6 @@ import org.onap.vid.model.probes.ErrorMetadata;
 import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.utils.Logging;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.web.util.UriUtils;
 
 import javax.inject.Inject;
@@ -37,7 +37,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.UUID;
 
 import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
@@ -297,6 +300,10 @@ public class AaiClient implements AaiClientInterface {
 
     @Override
     public Response getVersionByInvariantId(List<String> modelInvariantId) {
+        if (modelInvariantId.isEmpty()) {
+            throw new GenericUncheckedException("Zero invariant-ids provided to getVersionByInvariantId; request is rejected as this will cause full models listing");
+        }
+
         StringBuilder sb = new StringBuilder();
         for (String id : modelInvariantId){
             sb.append(MODEL_INVARIANT_ID);
