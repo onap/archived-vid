@@ -72,15 +72,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
 @ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})
@@ -114,7 +113,7 @@ public class AaiClientTest {
 
         when(aaiClientMock.getLogicalLink(any(String.class))).thenCallRealMethod();
         aaiClientMock.getLogicalLink(link);
-        Mockito.verify(aaiClientMock).doAaiGet(argThat(equalToIgnoringCase(expectedUrl)), any(Boolean.class));
+        Mockito.verify(aaiClientMock).doAaiGet(argThat(s -> equalsIgnoreCase(s, expectedUrl)), any(Boolean.class));
     }
 
     @DataProvider
@@ -217,7 +216,7 @@ public class AaiClientTest {
     @Test
     public void getTenants_Arguments_Are_Null_Or_Empty() {
 
-        when(aaiClientMock.getTenants(any(String.class), any(String.class))).thenCallRealMethod();
+        when(aaiClientMock.getTenants(any(), any())).thenCallRealMethod();
 
         AaiResponse response = aaiClientMock.getTenants("", "");
 
