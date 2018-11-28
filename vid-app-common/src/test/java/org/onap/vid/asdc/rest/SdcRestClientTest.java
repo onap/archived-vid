@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClient;
@@ -37,9 +37,7 @@ import java.util.UUID;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.matches;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -82,7 +80,7 @@ public class SdcRestClientTest {
     @Test
     public void shouldReturnServiceForGivenUUID() throws AsdcCatalogException {
         String url = String.format(METADATA_URL_REGEX, randomId);
-        when(mockedSyncRestClient.get(matches(url), anyMapOf(String.class, String.class), anyMapOf(String.class, String.class), any())).thenReturn(httpResponse);
+        when(mockedSyncRestClient.get(matches(url), anyMap(), anyMap(), any())).thenReturn(httpResponse);
         when(httpResponse.getBody()).thenReturn(sampleService);
 
         Service service = restClient.getService(randomId);
@@ -94,7 +92,7 @@ public class SdcRestClientTest {
     @Test(expected = AsdcCatalogException.class)
     public void shouldRaiseAsdcExceptionWhenClientFails() throws AsdcCatalogException {
         String url = String.format(METADATA_URL_REGEX, randomId);
-        when(mockedSyncRestClient.get(matches(url), anyMapOf(String.class, String.class), anyMapOf(String.class, String.class), any())).thenThrow(new RuntimeException());
+        when(mockedSyncRestClient.get(matches(url), anyMap(), anyMap(), any())).thenThrow(new RuntimeException());
 
         restClient.getService(randomId);
     }
@@ -119,7 +117,7 @@ public class SdcRestClientTest {
     @Test(expected = AsdcCatalogException.class)
     public void shouldRaiseAsdcExceptionWhenDownloadFails() throws AsdcCatalogException {
         String url = String.format(MODEL_URL_REGEX, randomId);
-        when(mockedSyncRestClient.getStream(matches(url), anyMapOf(String.class, String.class), anyMapOf(String.class, String.class))).thenThrow(new RuntimeException());
+        when(mockedSyncRestClient.getStream(matches(url), anyMap(), anyMap())).thenThrow(new RuntimeException());
 
 
         restClient.getServiceToscaModel(randomId);

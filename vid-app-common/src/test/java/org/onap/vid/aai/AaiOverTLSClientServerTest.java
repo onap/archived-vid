@@ -24,7 +24,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xebialabs.restito.semantics.Action;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
-import java.io.IOException;
 import org.assertj.core.api.Assertions;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.json.simple.parser.JSONParser;
@@ -34,12 +33,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.testUtils.StubServerUtil;
+
+import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AaiOverTLSClientServerTest {

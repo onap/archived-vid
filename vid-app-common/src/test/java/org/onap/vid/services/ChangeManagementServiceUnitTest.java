@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
+import org.onap.portalsdk.core.service.DataAccessService;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.client.SyncRestClient;
@@ -37,8 +39,6 @@ import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.onap.vid.testUtils.RegExMatcher;
-import org.onap.portalsdk.core.service.DataAccessService;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.context.annotation.Bean;
@@ -54,8 +54,8 @@ import java.net.URL;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 
@@ -74,7 +74,7 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
     void testInPlaceSoftwareUpdateRequest() throws Exception {
 
 
-        doReturn(new HttpResponse<>(anyObject(), RequestReferencesContainer.class, anyObject())).when(restClientUnderTest).post(anyString(), anyObject(), anyObject());
+        doReturn(new HttpResponse<>(any(), RequestReferencesContainer.class, any())).when(restClientUnderTest).post(anyString(), any(), any());
 
         URL requestJsonUrl = this.getClass().getResource("/services/change_management_software_update_request.json");
         ChangeManagementRequest changeManagementRequest = objectMapper.readValue(requestJsonUrl, ChangeManagementRequest.class);

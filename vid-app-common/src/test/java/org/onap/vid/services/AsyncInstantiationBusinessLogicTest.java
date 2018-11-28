@@ -1,72 +1,9 @@
 package org.onap.vid.services;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jersey.repackaged.com.google.common.collect.ImmutableList;
-import net.javacrumbs.jsonunit.JsonAssert;
-import org.apache.commons.io.IOUtils;
-import org.hibernate.SessionFactory;
-import org.json.JSONException;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.onap.vid.aai.exceptions.InvalidAAIResponseException;
-import org.onap.vid.aai.model.ResourceType;
-import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.exceptions.MaxRetriesException;
-import org.onap.vid.exceptions.OperationNotAllowedException;
-import org.onap.vid.job.Job;
-import org.onap.vid.job.Job.JobStatus;
-import org.onap.vid.job.JobAdapter;
-import org.onap.vid.job.JobsBrokerService;
-import org.onap.vid.job.impl.JobDaoImpl;
-import org.onap.vid.model.JobAuditStatus;
-import org.onap.vid.model.JobAuditStatus.SourceStatus;
-import org.onap.vid.model.NameCounter;
-import org.onap.vid.model.ServiceInfo;
-import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
-import org.onap.vid.model.serviceInstantiation.Vnf;
-import org.onap.vid.mso.model.ServiceInstantiationRequestDetails;
-import org.onap.vid.mso.rest.AsyncRequestStatus;
-import org.onap.vid.utils.DaoUtils;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.config.DataSourceConfig;
 import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
-import org.onap.vid.mso.MsoOperationalEnvironmentTest;
-import org.onap.vid.services.AsyncInstantiationBaseTest;
-import org.onap.portalsdk.core.domain.FusionObject;
-import org.onap.portalsdk.core.service.DataAccessService;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.testng.Assert;
-import org.testng.annotations.*;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.core.Every.everyItem;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-import static org.onap.vid.job.Job.JobStatus.*;
-import static org.testng.Assert.*;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseTest {

@@ -20,18 +20,6 @@
  */
 package org.onap.vid.services;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import javax.ws.rs.ForbiddenException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.onap.portalsdk.core.service.DataAccessService;
@@ -49,6 +37,16 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+
+import javax.ws.rs.ForbiddenException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CategoryParameterServiceImplTest {
 
@@ -89,7 +87,7 @@ public class CategoryParameterServiceImplTest {
 
         Assert.assertTrue(result.getErrors().isEmpty());;
         verify(dataAccessService, times(1))
-            .saveDomainObject(anyObject(), anyObject());
+            .saveDomainObject(any(), any());
     }
 
     @Test
@@ -162,12 +160,12 @@ public class CategoryParameterServiceImplTest {
         categoryParameter.getOptions().add(categoryParameterOption);
         List<CategoryParameter> aList = createCategoryParametersList(categoryParameter);
 
-        doReturn(aList).when(dataAccessService).getList(anyObject(), anyString(), anyString(), anyObject());
+        doReturn(aList).when(dataAccessService).getList(any(), anyString(), any(), any());
 
         testSubject.deleteCategoryOption(CATEGORY_NAME, categoryParameterOption);
 
         verify(dataAccessService, times(1))
-            .deleteDomainObject(anyObject(), anyObject());
+            .deleteDomainObject(any(), any());
     }
 
     @Test
@@ -178,7 +176,7 @@ public class CategoryParameterServiceImplTest {
         categoryParameter.getOptions().add(categoryParameterOption);
         List<CategoryParameter> aList = createCategoryParametersList(categoryParameter);
 
-        doReturn(aList).when(dataAccessService).getList(anyObject(), anyString(), anyString(), anyObject());
+        doReturn(aList).when(dataAccessService).getList(any(), anyString(), any(), any());
 
         CategoryParametersResponse response = testSubject.getCategoryParameters(Family.PARAMETER_STANDARDIZATION);
 
@@ -186,7 +184,7 @@ public class CategoryParameterServiceImplTest {
         Assert.assertTrue(response.getCategoryParameters().containsKey(CATEGORY_NAME));
 
         verify(dataAccessService, times(1))
-            .getList(anyObject(), anyString(), anyString(), anyObject());
+            .getList(any(), anyString(), any(), any());
     }
 
     @Test
@@ -202,7 +200,7 @@ public class CategoryParameterServiceImplTest {
         AddCategoryOptionResponse result = testSubject.updateCategoryParameterOption(CATEGORY_NAME, optionRepExisting);
 
         verify(dataAccessService, times(1))
-            .saveDomainObject(anyObject(), anyObject());
+            .saveDomainObject(any(), any());
     }
 
     @Test(expectedExceptions = { ForbiddenException.class })

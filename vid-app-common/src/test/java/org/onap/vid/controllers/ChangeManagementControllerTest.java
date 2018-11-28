@@ -1,22 +1,18 @@
 package org.onap.vid.controllers;
 
-import java.util.Collection;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.junit.Test;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.GetVnfWorkflowRelationRequest;
 import org.onap.vid.changeManagement.VnfWorkflowRelationRequest;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
-import org.onap.vid.services.ChangeManagementService;
 import org.onap.vid.services.ChangeManagementServiceImpl;
-import org.onap.vid.services.WorkflowService;
 import org.onap.vid.services.WorkflowServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 
 public class ChangeManagementControllerTest {
 

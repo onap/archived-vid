@@ -21,6 +21,37 @@
 package org.onap.vid.controllers;
 
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import org.apache.log4j.BasicConfigurator;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.asdc.beans.SecureServices;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.asdc.beans.ServiceBuilder;
+import org.onap.vid.model.*;
+import org.onap.vid.model.PombaInstance.PombaRequest;
+import org.onap.vid.model.PombaInstance.ServiceInstance;
+import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.services.AaiService;
+import org.onap.vid.services.PombaService;
+import org.onap.vid.services.VidService;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.IntStream;
+
 import static java.util.stream.Collectors.toMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -33,43 +64,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.IntStream;
-import javax.ws.rs.core.MediaType;
-import org.apache.log4j.BasicConfigurator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.asdc.beans.SecureServices;
-import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.asdc.beans.ServiceBuilder;
-import org.onap.vid.model.CR;
-import org.onap.vid.model.Network;
-import org.onap.vid.model.Node;
-import org.onap.vid.model.PombaInstance.PombaRequest;
-import org.onap.vid.model.PombaInstance.ServiceInstance;
-import org.onap.vid.model.ServiceModel;
-import org.onap.vid.model.ServiceProxy;
-import org.onap.vid.model.VNF;
-import org.onap.vid.model.VfModule;
-import org.onap.vid.model.VolumeGroup;
-import org.onap.vid.roles.RoleProvider;
-import org.onap.vid.services.AaiService;
-import org.onap.vid.services.PombaService;
-import org.onap.vid.services.VidService;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VidControllerTest {

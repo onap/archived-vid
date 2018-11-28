@@ -20,25 +20,8 @@
  */
 package org.onap.vid.mso;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.onap.vid.mso.MsoBusinessLogicImpl.validateEndpointPath;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +38,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.togglz.core.manager.FeatureManager;
+
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.onap.vid.mso.MsoBusinessLogicImpl.validateEndpointPath;
 
 @ContextConfiguration(classes = {SystemProperties.class})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -287,7 +286,7 @@ public class MsoBusinessLogicImplTest {
         return new String(Files.readAllBytes(path));
     }
 
-    private static class MsoRequestWrapperMatcher extends
+    private static class MsoRequestWrapperMatcher implements
         ArgumentMatcher<org.onap.vid.changeManagement.RequestDetailsWrapper> {
 
         private final org.onap.vid.changeManagement.RequestDetailsWrapper expectedRequest;
@@ -297,9 +296,8 @@ public class MsoBusinessLogicImplTest {
         }
 
         @Override
-        public boolean matches(Object argument) {
-            org.onap.vid.changeManagement.RequestDetailsWrapper requestDetailsWrapper = (org.onap.vid.changeManagement.RequestDetailsWrapper) argument;
-            return expectedRequest.requestDetails.equals(requestDetailsWrapper.requestDetails);
+        public boolean matches(org.onap.vid.changeManagement.RequestDetailsWrapper argument) {
+            return expectedRequest.requestDetails.equals(argument.requestDetails);
         }
     }
 }

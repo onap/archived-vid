@@ -23,7 +23,6 @@ package org.onap.vid.services;
 
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
-import java.io.UnsupportedEncodingException;
 import jersey.repackaged.com.google.common.collect.ImmutableList;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
@@ -45,9 +44,10 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.togglz.core.manager.FeatureManager;
 
 import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests {
