@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_e27cc1b7",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-30T08:22:27Z",
+      "side": 1,
+      "message": "Because of the recent changes, I don\u0027t need guava-testlib anymore. Removed.",
+      "parentUuid": "9adffdf1_93ad0a8b",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_33869e14",
         "filename": "vid-app-common/src/test/java/org/onap/vid/changeManagement/ChangeManagementRequestTest.java",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2018-11-26T17:58:46Z",
       "side": 1,
       "message": "What is the rationale of having comparable incoming-request type? How will it come to use?",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_250ac1d2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/changeManagement/ChangeManagementRequestTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-30T08:22:27Z",
+      "side": 1,
+      "message": "I did it just to be able to write junit matchers more easily. But you are right, it is never used in code, so maybe should be done differently. We discussed it in our team, and Michal came up a better idea - compare jsons, not objects. The changes are included in the last patch.",
+      "parentUuid": "9adffdf1_33869e14",
       "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -71,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_c5273563",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/changeManagement/GetVnfWorkflowRelationRequestTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-30T08:22:27Z",
+      "side": 1,
+      "message": "As I removed equals() and hashCode() methods (explained in another comment), this one does not apply anymore.",
+      "parentUuid": "9adffdf1_f3c9f679",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_33453e17",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
         "patchSetId": 3
@@ -82,6 +136,24 @@
       "writtenOn": "2018-11-26T17:58:46Z",
       "side": 1,
       "message": "`/workflow` API result is a list of workflow-names, so it\u0027ll be more understandable with `resultWorkflows \u003d ImmutableList.of(\"workflow1\", \"workflow2\");`",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_025f8542",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-30T08:22:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_33453e17",
       "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -135,6 +207,24 @@
       "side": 1,
       "message": "Fair enough. :)",
       "parentUuid": "9adffdf1_450a7722",
+      "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_85212d4f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controllers/ChangeManagementControllerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-30T08:22:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_d320724b",
       "revId": "dbcef74f33a02a3c5b00debe7607497caf6a7793",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false

@@ -22,6 +22,30 @@
       "revId": "bcb065c0fa3ddcd6e9dae8085aba99139ecf8eae",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_824b7586",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controllers/ChangeManagementController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2018-11-30T08:22:27Z",
+      "side": 0,
+      "message": "Thanks, I had no idea. Done.",
+      "parentUuid": "9adffdf1_f39ed653",
+      "range": {
+        "startLine": 72,
+        "startChar": 51,
+        "endLine": 72,
+        "endChar": 77
+      },
+      "revId": "bcb065c0fa3ddcd6e9dae8085aba99139ecf8eae",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
