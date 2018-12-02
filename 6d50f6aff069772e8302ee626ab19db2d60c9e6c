@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_71688787",
+        "filename": "deliveries/src/main/docker/docker-files/docker-compose.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-12-02T10:00:37Z",
+      "side": 0,
+      "message": "Isn\u0027t it necessary anymore? Is this part of 3.2 version upgrade?",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 53
+      },
+      "revId": "6d50f6aff069772e8302ee626ab19db2d60c9e6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
