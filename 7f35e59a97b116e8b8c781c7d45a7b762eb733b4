@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_1197bbed",
+        "filename": "deliveries/src/main/docker/docker-files/docker-compose.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-12-03T07:19:34Z",
+      "side": 1,
+      "message": "Side note, at first I wanted to change this VOLUME to COPY inside docker. But if I get intention correctly this settings may vary on different environments. I am right?",
+      "range": {
+        "startLine": 25,
+        "startChar": 12,
+        "endLine": 25,
+        "endChar": 67
+      },
+      "revId": "7f35e59a97b116e8b8c781c7d45a7b762eb733b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
