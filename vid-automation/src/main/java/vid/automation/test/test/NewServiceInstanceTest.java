@@ -115,7 +115,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 false, true, true, true,
                 "2017-488_ADIOD-vPE 0",
-                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1", 0, 1,  new ArrayList<>());
+                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1", 0, 1,  ImmutableList.of("Bandwidth", "Bandwidth units"));
 
         String serviceInstanceName = deployServiceInstance(serviceData, false);
         vidBasePage.screenshotDeployDialog(serviceInstanceName);
