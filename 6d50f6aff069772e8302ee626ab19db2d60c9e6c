@@ -22,6 +22,30 @@
       "revId": "6d50f6aff069772e8302ee626ab19db2d60c9e6c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_51e6a3b5",
+        "filename": "deliveries/src/main/docker/docker-files/docker-compose.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-12-03T07:00:40Z",
+      "side": 0,
+      "message": "This is not related to 3.2 version. Actually it could be done earlier. Docker compose by default creates network in which every container can access others by service name:\n\nhttps://docs.docker.com/compose/networking/\n\n`link` in case of compose gives us network-alias which is unnecessary (because I override MYSQL_HOST env). Also `link` option is consider legacy.",
+      "parentUuid": "9adffdf1_71688787",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 53
+      },
+      "revId": "6d50f6aff069772e8302ee626ab19db2d60c9e6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
