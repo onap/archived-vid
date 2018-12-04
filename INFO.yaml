@@ -1,0 +1,58 @@
+---
+project: 'vid'
+project_creation_date: '2017-02-02'
+project_category: ''
+lifecycle_state: 'Incubation'
+project_lead: &onap_vid_ptl
+    name: 'Ofir Sonsino'
+    email: 'os0695@att.com'
+    id: 'os0695'
+    company: 'ATT'
+    timezone: 'Israel/Lod'
+primary_contact: *onap_vid_ptl
+issue_tracking:
+    type: 'jira'
+    url: 'https://jira.onap.org/projects/VID'
+    key: 'VID'
+mailing_list:
+    type: 'groups.io'
+    url: 'lists.onap.org'
+    tag: '<[vid]>'
+realtime_discussion: ''
+meetings:
+    - type: 'zoom'
+        agenda: 'https://wiki.onap.org/display/DW/VID+Weekly+Meeting+Minutes'
+        url: 'https://wiki.onap.org/display/DW/Virtual+Infrastructure+Deployment+Project'
+        server: 'n/a'
+        channel: 'n/a'
+        repeats: 'weekly'
+        time: '13:00 UTC'
+repositories:
+    - 'vid'
+committers:
+    - <<: *onap_vid_ptl
+    - name: 'Amichai Hemli'
+        email: 'ah0398@intl.att.com'
+        company: 'ATT'
+        id: 'ahemli'
+        timezone: 'Asia/Jerusalem'
+    - name: 'Wojciech Sliwka'
+        email: 'wojciech.sliwka@nokia.com'
+        company: 'Nokia'
+        id: 'wsliwka'
+        timezone: 'Europe/Warsaw'
+    - name: 'Ittay Stern'
+        email: 'is9613@att.com'
+        company: 'ATT'
+        id: 'ittays'
+        timezone: 'Asia/Jerusalem'
+tsc:
+    approval: 'https://lists.onap.org/pipermail/onap-tsc'
+    changes:
+        - type: 'Addition'
+            name: 'Wojciech Sliwka'
+            name: 'Ittay Stern'
+            link: 'https://lists.onap.org/g/onap-tsc/message/4257'
+        - type: 'Removal'
+            name: 'Daniel Rose'
+            link: 'https://lists.onap.org/g/onap-tsc/message/4257'
