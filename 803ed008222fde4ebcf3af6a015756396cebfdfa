@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_6ab08943",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 653
+      },
+      "writtenOn": "2018-12-05T08:23:16Z",
+      "side": 1,
+      "message": "Dear Jess, should we set it to [vid]?",
+      "range": {
+        "startLine": 20,
+        "startChar": 12,
+        "endLine": 20,
+        "endChar": 28
+      },
+      "revId": "803ed008222fde4ebcf3af6a015756396cebfdfa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
