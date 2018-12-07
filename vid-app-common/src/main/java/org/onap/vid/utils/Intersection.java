@@ -1,31 +1,48 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.utils;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-/**
- * Created by moriya1 on 10/10/2017.
- */
-public class Intersection<T> {
-    public List<T> intersectMultipileArray(List<List<T>> lists) {
-        if (lists.size() == 1) {
-            return lists.get(0);
-        } else {
-            List<T> intersectResult = intersectTwoArrays(lists.get(0),lists.get(1));
 
-            lists.remove(0);
-            lists.remove(0);
-            lists.add(0,intersectResult);
-            return intersectMultipileArray(lists);
-        }
-
+public class Intersection {
+    private Intersection() {
     }
 
-    public List<T> intersectTwoArrays(List<T> list1, List<T> list2) {
-
-        List<T> intersect = list1.stream()
-                .filter(list2::contains)
-                .collect(Collectors.toList());
-        return intersect;
+    /**
+     * Returns intersection of given lists. Treats those lists as sets, ignores repetitions.
+     */
+    public static <T> List<T> of(Collection<List<T>> lists) {
+        return lists
+                .stream()
+                .map(elements -> (Set<T>) Sets.newHashSet(elements))
+                .reduce(Sets::intersection)
+                .map(set -> (List<T>) Lists.newArrayList(set))
+                .orElse(Collections.emptyList());
     }
 }
