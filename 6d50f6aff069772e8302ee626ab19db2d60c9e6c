@@ -16,6 +16,29 @@
       "revId": "6d50f6aff069772e8302ee626ab19db2d60c9e6c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_035683d2",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4341
+      },
+      "writtenOn": "2018-12-10T04:00:58Z",
+      "side": 1,
+      "message": "please note that v13 is Beijing release, v14 is Casablanca release and v15 is Dublin release.\nYou may want to update this configuration if access to new schema elements is required.",
+      "range": {
+        "startLine": 68,
+        "startChar": 29,
+        "endLine": 68,
+        "endChar": 38
+      },
+      "revId": "6d50f6aff069772e8302ee626ab19db2d60c9e6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
