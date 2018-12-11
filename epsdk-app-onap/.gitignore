@@ -1,0 +1,8 @@
+target/
+overlays/
+logs/
+debug-logs/
+catalina.base_IS_UNDEFINED/
+.settings/
+.classpath
+.project

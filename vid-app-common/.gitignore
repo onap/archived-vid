@@ -1,0 +1,8 @@
+.settings/
+overlays/
+logs/
+debug-logs/
+target/
+.idea/
+.classpath
+.project

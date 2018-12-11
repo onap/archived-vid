@@ -1,3 +1,6 @@
+# Target
+target/
+
 # Logs
 logs
 *.log
