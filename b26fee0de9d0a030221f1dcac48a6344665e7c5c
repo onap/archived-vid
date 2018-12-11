@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_c25dd47a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/utils/Intersection.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-12-11T10:10:13Z",
+      "side": 1,
+      "message": "The old implementation assumes the duplicates, the question is if it is intended or just oversight.",
+      "range": {
+        "startLine": 43,
+        "startChar": 47,
+        "endLine": 43,
+        "endChar": 57
+      },
+      "revId": "b26fee0de9d0a030221f1dcac48a6344665e7c5c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
