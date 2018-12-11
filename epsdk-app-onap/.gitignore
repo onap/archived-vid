@@ -1,0 +1,7 @@
+target/
+overlays/
+logs/
+debug-logs/
+.settings/
+.classpath
+.project
