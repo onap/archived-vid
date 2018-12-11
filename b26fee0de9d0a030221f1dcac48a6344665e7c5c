@@ -22,6 +22,30 @@
       "revId": "b26fee0de9d0a030221f1dcac48a6344665e7c5c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_85403635",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/utils/Intersection.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-12-11T14:45:23Z",
+      "side": 1,
+      "message": "Old implementation was inconsistent. For example [[\"a\"],[\"a\",\"a\"]] would return [\"a\"], but [[\"a\",\"a\"],[\"a\"]] would return [\"a\", \"a\"].",
+      "parentUuid": "9adffdf1_c25dd47a",
+      "range": {
+        "startLine": 43,
+        "startChar": 47,
+        "endLine": 43,
+        "endChar": 57
+      },
+      "revId": "b26fee0de9d0a030221f1dcac48a6344665e7c5c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
