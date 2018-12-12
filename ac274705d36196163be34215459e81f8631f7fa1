@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_0e346391",
+        "filename": "pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2018-12-12T11:33:29Z",
+      "side": 1,
+      "message": "Can please elaborate, in commit message, what kind of issues this change solves.",
+      "revId": "ac274705d36196163be34215459e81f8631f7fa1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
