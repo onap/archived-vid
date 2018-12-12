@@ -235,8 +235,7 @@ public class AaiServiceImpl implements AaiService {
             resultList.add(getServicesByProjectNames(projects, roleValidator));
         }
         if (!resultList.isEmpty()) {
-            Intersection<ServiceInstanceSearchResult> intersection = new Intersection<>();
-            serviceInstancesSearchResults.serviceInstances = intersection.intersectMultipileArray(resultList);
+            serviceInstancesSearchResults.serviceInstances = Intersection.of(resultList);
         }
 
         return new AaiResponse<>(serviceInstancesSearchResults, null, HttpStatus.SC_OK);

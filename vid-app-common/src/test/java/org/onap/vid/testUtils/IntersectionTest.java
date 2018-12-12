@@ -1,101 +1,108 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.testUtils;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.onap.vid.utils.Intersection;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by moriya1 on 10/10/2017.
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.util.Lists.emptyList;
+import static org.assertj.core.util.Lists.list;
+
 public class IntersectionTest {
 
     @Test
-    public void testFourArrays(){
-        List<String> l1 = new ArrayList<String>();
-        l1.add("1");
-        l1.add("2");
-
-        List<String> l2 = new ArrayList<String>();
-        l2.add("2");
-        l2.add("3");
-
-        List<String> l3 = new ArrayList<String>();
-        l3.add("2");
-        l3.add("4");
-
-        List<String> l4 = new ArrayList<String>();
-        l4.add("2");
-        l4.add("5");
-
-        List<List<String>> all = new ArrayList<>();
-        all.add(l1);
-        all.add(l2);
-        all.add(l3);
-        all.add(l4);
-        Intersection<String> m = new Intersection<>();
-        List<String> ans = m.intersectMultipileArray(all);
-        Assert.assertEquals(1,ans.size());
-        Assert.assertEquals(ans.get(0),"2");
+    public void testFourArrays() {
+        // given
+        List<List<String>> input = list(
+                list("1", "2"),
+                list("2", "3"),
+                list("2", "4"),
+                list("2", "5")
+        );
+        // when
+        List<String> output = Intersection.of(input);
+        // then
+        assertThat(output).containsExactlyInAnyOrder("2");
 
     }
 
-
-
     @Test
-    public void testTwoArrays(){
-        List<String> l1 = new ArrayList<String>();
-        l1.add("1");
-        l1.add("2");
-
-        List<String> l2 = new ArrayList<String>();
-        l2.add("2");
-        l2.add("3");
-
-        List<List<String>> all = new ArrayList<>();
-        all.add(l1);
-        all.add(l2);
-        Intersection<String> m = new Intersection<>();
-        List<String> l3 = m.intersectMultipileArray(all);
-        Assert.assertEquals(l3.size(),1);
-        Assert.assertEquals(l3.get(0),"2");
+    public void testTwoArrays() {
+        // given
+        List<List<String>> input = list(
+                list("1", "2"),
+                list("2", "3")
+        );
+        // when
+        List<String> output = Intersection.of(input);
+        // then
+        assertThat(output).containsExactlyInAnyOrder("2");
 
     }
 
 
     @Test
-    public void testNoIntersection(){
-        List<String> l1 = new ArrayList<String>();
-        l1.add("1");
-        l1.add("2");
-
-        List<String> l2 = new ArrayList<String>();
-        l2.add("3");
-        l2.add("4");
-
-        List<List<String>> all = new ArrayList<>();
-        all.add(l1);
-        all.add(l2);
-        Intersection<String> m = new Intersection<>();
-        List<String> l3 = m.intersectMultipileArray(all);
-        Assert.assertEquals(l3.size(),0);
+    public void testNoIntersection() {
+        // given
+        List<List<String>> input = list(
+                list("1", "2"),
+                list("3", "4")
+        );
+        // when
+        List<String> output = Intersection.of(input);
+        // then
+        assertThat(output).isEmpty();
 
     }
 
     @Test
-    public void testOneArrays(){
-        List<String> l1 = new ArrayList<String>();
-        l1.add("1");
-        l1.add("2");
-        List<List<String>> all = new ArrayList<>();
-        all.add(l1);
-        Intersection<String> m = new Intersection<>();
-        List<String> l3 = m.intersectMultipileArray(all);
-        Assert.assertEquals(l3.size(),2);
-        Assert.assertEquals(l3.get(0),"1");
-        Assert.assertEquals(l3.get(1),"2");
+    public void testOneArray() {
+        // given
+        List<List<String>> input = list(list("1", "2"));
+        // when
+        List<String> output = Intersection.of(input);
+        // then
+        assertThat(output).containsExactlyInAnyOrder("1", "2");
+    }
 
+    @Test
+    public void testEmptyInput() {
+        // when
+        List<String> output = Intersection.of(emptyList());
+        // then
+        assertThat(output).isEmpty();
+    }
+
+    @Test
+    public void shouldIgnoreRepetitions() {
+        // when
+        List<String> output = Intersection.of(list(
+                list("1", "1"),
+                list("1", "1")
+        ));
+        // then
+        assertThat(output).containsExactly("1");
     }
 }
