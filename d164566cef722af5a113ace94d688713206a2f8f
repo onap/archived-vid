@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_de5b64f4",
+        "filename": ".gitignore",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-12-14T09:32:22Z",
+      "side": 1,
+      "message": "This could end with `/` in order to highlight that we want ignore whole directory.",
+      "range": {
+        "startLine": 5,
+        "startChar": 1,
+        "endLine": 5,
+        "endChar": 5
+      },
+      "revId": "d164566cef722af5a113ace94d688713206a2f8f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_5e6774b7",
+        "filename": "epsdk-app-onap/.gitignore",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-12-14T09:32:22Z",
+      "side": 1,
+      "message": "Is this needed?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 27
+      },
+      "revId": "d164566cef722af5a113ace94d688713206a2f8f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
