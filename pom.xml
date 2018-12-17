@@ -1,275 +1,249 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.onap.vid</groupId>
-	<artifactId>vid-parent</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>vid</name>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.onap.vid</groupId>
+    <artifactId>vid-parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>vid</name>
 
-	<profiles>
-		<!-- DO NOT CHANGE THE *ORDER* IN WHICH THESE PROFILES ARE DEFINED! -->
+    <profiles>
+        <!-- DO NOT CHANGE THE *ORDER* IN WHICH THESE PROFILES ARE DEFINED! -->
 
-		<profile>
-			<id>onap</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>vid-app-common</module>
-				<module>vid-webpack-master</module>
-				<module>epsdk-app-onap</module>
-				<!--module>vid-automation</module-->
-				<!--module>vid-ext-services-simulator</module-->
-			</modules>
+        <profile>
+            <id>onap</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>vid-app-common</module>
+                <module>vid-webpack-master</module>
+                <module>epsdk-app-onap</module>
+            </modules>
 
-			<repositories>
-				<repository>
-					<id>ecomp-releases</id>
-					<name>VID Release Repository</name>
-					<url>${nexusproxy}/${releaseNexusPath}</url>
-				</repository>
-				<repository>
-					<id>ecomp-snapshots</id>
-					<name>VID Snapshot Repository</name>
-					<url>${nexusproxy}/${snapshotNexusPath}</url>
-				</repository>
-				<repository>
-					<id>ecomp-staging</id>
-					<name>VID Staging Repository</name>
-					<url>${nexusproxy}/${stagingNexusPath}</url>
-				</repository>
-				<repository>
-					<!-- Snapshots repository has ECOMP snapshot artifacts -->
-					<id>oss-snapshots</id>
-					<name>oss Central - Snapshots</name>
-					<url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
-				</repository>
-			</repositories>
+            <repositories>
+                <repository>
+                    <id>ecomp-releases</id>
+                    <name>VID Release Repository</name>
+                    <url>${nexusproxy}/${releaseNexusPath}</url>
+                </repository>
+                <repository>
+                    <id>ecomp-snapshots</id>
+                    <name>VID Snapshot Repository</name>
+                    <url>${nexusproxy}/${snapshotNexusPath}</url>
+                </repository>
+                <repository>
+                    <id>ecomp-staging</id>
+                    <name>VID Staging Repository</name>
+                    <url>${nexusproxy}/${stagingNexusPath}</url>
+                </repository>
+                <repository>
+                    <!-- Snapshots repository has ECOMP snapshot artifacts -->
+                    <id>oss-snapshots</id>
+                    <name>oss Central - Snapshots</name>
+                    <url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
+                </repository>
+            </repositories>
 
-			<distributionManagement>
-				<repository>
-					<id>ecomp-releases</id>
-					<name>VID Release Repository</name>
-					<url>${nexusproxy}/${releaseNexusPath}</url>
-				</repository>
-				<snapshotRepository>
-					<id>ecomp-snapshots</id>
-					<name>VID Snapshot Repository</name>
-					<url>${nexusproxy}/${snapshotNexusPath}</url>
-				</snapshotRepository>
-				<!-- added for javadoc -->
-				<site>
-					<id>ecomp-site</id>
-					<url>dav:${nexusproxy}${sitePath}</url>
-				</site>
-			</distributionManagement>
+            <distributionManagement>
+                <repository>
+                    <id>ecomp-releases</id>
+                    <name>VID Release Repository</name>
+                    <url>${nexusproxy}/${releaseNexusPath}</url>
+                </repository>
+                <snapshotRepository>
+                    <id>ecomp-snapshots</id>
+                    <name>VID Snapshot Repository</name>
+                    <url>${nexusproxy}/${snapshotNexusPath}</url>
+                </snapshotRepository>
+                <!-- added for javadoc -->
+                <site>
+                    <id>ecomp-site</id>
+                    <url>dav:${nexusproxy}${sitePath}</url>
+                </site>
+            </distributionManagement>
 
-		</profile>
+        </profile>
 
-		<profile>
-			<id>docker</id>
-			<modules>
-				<module>vid-app-common</module>
-				<module>vid-webpack-master</module>
-				<module>epsdk-app-onap</module>
-				<module>deliveries</module>
-			</modules>
-		</profile>
-	</profiles>
+        <profile>
+            <id>docker</id>
+            <modules>
+                <module>vid-app-common</module>
+                <module>vid-webpack-master</module>
+                <module>epsdk-app-onap</module>
+                <module>deliveries</module>
+            </modules>
+        </profile>
+    </profiles>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<build.version>4.0.0-SNAPSHOT</build.version>
-		<nexusproxy>https://nexus.onap.org</nexusproxy>
-		<snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
-		<releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
-		<stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
-		<sitePath>/content/sites/site/org/onap/vid/${project.version}</sitePath>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <build.version>4.0.0-SNAPSHOT</build.version>
+        <nexusproxy>https://nexus.onap.org</nexusproxy>
+        <snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
+        <releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
+        <stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
+        <sitePath>/content/sites/site/org/onap/vid/${project.version}</sitePath>
+    </properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<version>1.3.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<nexusUrl>${nexusproxy}</nexusUrl>
-					<stagingProfileId>176c31dfe190a</stagingProfileId>
-					<serverId>ecomp-staging</serverId>
-				</configuration>
-			</plugin>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>1.3.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <nexusUrl>${nexusproxy}</nexusUrl>
+                    <stagingProfileId>176c31dfe190a</stagingProfileId>
+                    <serverId>ecomp-staging</serverId>
+                </configuration>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.6</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.wagon</groupId>
-						<artifactId>wagon-webdav-jackrabbit</artifactId>
-						<version>2.10</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<nexusUrl>${nexusproxy}</nexusUrl>
-					<stagingProfileId>176c31dfe190a</stagingProfileId>
-					<serverId>ecomp-staging</serverId>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.6</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-webdav-jackrabbit</artifactId>
+                        <version>2.10</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8</version>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8</version>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
-				<configuration>
-				    <useSystemClassLoader>false</useSystemClassLoader>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
 
-				<configuration>
-					<debug>true</debug>
-					<compilerArgument>-Xlint</compilerArgument>
-					<verbose>true</verbose>
-					<showDeprecation>true</showDeprecation>
-					<showWarnings>true</showWarnings>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.6</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.wagon</groupId>
-						<artifactId>wagon-webdav-jackrabbit</artifactId>
-						<version>2.10</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.3.0.603</version>
-			</plugin>
-			<plugin>
-				<groupId>com.blackducksoftware.integration</groupId>
-				<artifactId>hub-maven-plugin</artifactId>
-				<version>1.4.0</version>
-				<inherited>false</inherited>
-				<configuration>
-					<hubProjectName>${project.name}</hubProjectName>
-					<outputDirectory>${project.basedir}</outputDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>create-bdio-file</id>
-						<phase>package</phase>
-						<goals>
-							<goal>createHubOutput</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+                <configuration>
+                    <debug>true</debug>
+                    <compilerArgument>-Xlint</compilerArgument>
+                    <verbose>true</verbose>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.3.0.603</version>
+            </plugin>
+            <plugin>
+                <groupId>com.blackducksoftware.integration</groupId>
+                <artifactId>hub-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <hubProjectName>${project.name}</hubProjectName>
+                    <outputDirectory>${project.basedir}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-bdio-file</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>createHubOutput</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
-	<!-- added for javadoc -->
-	<pluginRepositories>
-		<!-- Black Duck plugin dependencies -->
-		<pluginRepository>
-			<id>JCenter</id>
-			<name>JCenter Repository</name>
-			<url>http://jcenter.bintray.com</url>
-		</pluginRepository>
+    <!-- added for javadoc -->
+    <pluginRepositories>
+        <!-- Black Duck plugin dependencies -->
+        <pluginRepository>
+            <id>JCenter</id>
+            <name>JCenter Repository</name>
+            <url>http://jcenter.bintray.com</url>
+        </pluginRepository>
 
-		<pluginRepository>
-			<id>Restlet</id>
-			<name>Restlet Repository</name>
-			<url>http://maven.restlet.com</url>
-		</pluginRepository>
-	</pluginRepositories>
-	<reporting>
-		<plugins>
+        <pluginRepository>
+            <id>Restlet</id>
+            <name>Restlet Repository</name>
+            <url>http://maven.restlet.com</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <configuration>
+                    <failOnError>false</failOnError>
+                    <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+                    <docletArtifact>
+                        <groupId>org.umlgraph</groupId>
+                        <artifactId>umlgraph</artifactId>
+                        <version>5.6</version>
+                    </docletArtifact>
+                    <additionalparam>-views</additionalparam>
+                    <useStandardDocletOptions>true</useStandardDocletOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.4</version>
-				<configuration>
-					<failOnError>false</failOnError>
-					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-					<docletArtifact>
-						<groupId>org.umlgraph</groupId>
-						<artifactId>umlgraph</artifactId>
-						<version>5.6</version>
-					</docletArtifact>
-					<additionalparam>-views</additionalparam>
-					<useStandardDocletOptions>true</useStandardDocletOptions>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<!--Overide versions for latest security fixes-->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>1.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.17</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.3</version>
-		</dependency>
-	</dependencies>
+        <!--Overide versions for latest security fixes-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+    </dependencies>
 </project>
