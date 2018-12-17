@@ -1,0 +1,28 @@
+{
+  "vnfsDetails": [
+    {
+      "UUID": "uuid-1",
+      "invariantUUID": "invariantUUID-1"
+    },
+    {
+      "UUID": "uuid-2",
+      "invariantUUID": "invariantUUID-2"
+    },
+    {
+      "UUID": "uuid-3",
+      "invariantUUID": "invariantUUID-3"
+    },
+    {
+      "UUID": "uuid-4",
+      "invariantUUID": "invariantUUID-4"
+    },
+    {
+      "UUID": "uuid-5",
+      "invariantUUID": "invariantUUID-5"
+    },
+    {
+      "UUID": "uuid-6",
+      "invariantUUID": "invariantUUID-6"
+    }
+  ]
+}
