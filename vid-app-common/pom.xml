@@ -173,6 +173,7 @@
 					<systemPropertyVariables>
 						<container.classpath>classpath:</container.classpath>
 					</systemPropertyVariables>
+					<useSystemClassLoader>false</useSystemClassLoader>
 				</configuration>
 			</plugin>
 
