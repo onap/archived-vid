@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_209e06ba",
+        "filename": "epsdk-app-onap/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-12-20T06:54:46Z",
+      "side": 0,
+      "message": "Why you removed this?",
+      "range": {
+        "startLine": 210,
+        "startChar": 3,
+        "endLine": 213,
+        "endChar": 12
+      },
+      "revId": "935d23208fae31bfb96d9ff7777c816bdaa87989",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
