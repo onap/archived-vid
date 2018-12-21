@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_3db868e4",
+        "filename": "deliveries/src/main/docker/docker-files/conf.d/logback_template.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-12-21T14:27:19Z",
+      "side": 0,
+      "message": "Actual changes: removed debug",
+      "range": {
+        "startLine": 2,
+        "startChar": 49,
+        "endLine": 2,
+        "endChar": 62
+      },
+      "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
