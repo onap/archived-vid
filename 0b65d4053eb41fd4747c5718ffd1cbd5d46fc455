@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_9a1e3aba",
+        "filename": "epsdk-app-onap/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-12-21T09:07:41Z",
+      "side": 0,
+      "message": "This plugin has been removed, because it\u0027s duplicate to one on line 129",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 12
+      },
+      "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_ba1bfec8",
+        "filename": "epsdk-app-onap/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-12-21T09:07:41Z",
+      "side": 0,
+      "message": "Those dependences has been removed because they\u0027re duplications of dependencies on lines 298 and 286",
+      "range": {
+        "startLine": 352,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 15
+      },
+      "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_5a7c52ec",
+        "filename": "pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-12-21T09:07:41Z",
+      "side": 0,
+      "message": "removed commented parts",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 52
+      },
+      "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_7a8116c3",
+        "filename": "pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-12-21T09:07:41Z",
+      "side": 0,
+      "message": "Removed plugin due to duplication on line 99",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 12
+      },
+      "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_1a824ac8",
+        "filename": "pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2018-12-21T09:07:41Z",
+      "side": 0,
+      "message": "Duplication of plugin on line 111",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 12
+      },
+      "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
