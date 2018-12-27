@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="3 seconds" debug="true">
+<configuration scan="true" scanPeriod="3 seconds">
   <!--  specify the component name -->
   <property name="componentName" value="vid"></property>
   
@@ -332,8 +332,15 @@
    <logger name="com.att.eelf.debug" level="debug" additivity="false">
         <appender-ref ref="asyncEELFDebug" />
   </logger>
-  
-    
+
+  <logger name="org.hibernate" level="WARN" additivity="false">
+    <appender-ref ref="asyncEELF"/>
+  </logger>
+
+  <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+    <appender-ref ref="asyncEELFDebug"/>
+  </logger>
+
   <root level="${VID_LOG_LEVEL}">
     <appender-ref ref="asyncEELF" />
   </root>
