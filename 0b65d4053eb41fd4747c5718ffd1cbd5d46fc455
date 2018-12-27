@@ -45,6 +45,30 @@
       "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_130b157e",
+        "filename": "deliveries/src/main/docker/docker-files/conf.d/logback_template.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2018-12-27T09:37:49Z",
+      "side": 0,
+      "message": "No it doesn\u0027t. That line switches off debug of Logback framework, that is logging conf path, active appenders etc.\n\nSee details here: https://logback.qos.ch/manual/configuration.html#dumpingStatusData",
+      "parentUuid": "9adffdf1_934705bc",
+      "range": {
+        "startLine": 2,
+        "startChar": 49,
+        "endLine": 2,
+        "endChar": 62
+      },
+      "revId": "0b65d4053eb41fd4747c5718ffd1cbd5d46fc455",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
