@@ -1,9 +1,12 @@
  package org.onap.vid.model;
 
 
+ import com.fasterxml.jackson.annotation.JsonProperty;
+ import org.hibernate.annotations.DynamicUpdate;
+ import org.hibernate.annotations.SelectBeforeUpdate;
  import org.hibernate.annotations.Type;
- import org.onap.vid.job.Job;
  import org.onap.portalsdk.core.domain.support.DomainVo;
+ import org.onap.vid.job.Job;
 
  import javax.persistence.*;
  import java.io.Serializable;
@@ -12,9 +15,22 @@
  import java.util.Set;
  import java.util.UUID;
 
+/*
+ The following 2 annotations let hibernate to update only fields that actually have been changed.
+ DynamicUpdate tell hibernate to update only dirty fields.
+ SelectBeforeUpdate is needed since during update the entity is detached (get and update are in different sessions)
+*/
+@DynamicUpdate()
+@SelectBeforeUpdate()
 @Entity
 @Table(name = "vid_service_info")
 public class ServiceInfo extends DomainVo {
+
+    public enum ServiceAction {
+        INSTANTIATE,
+        DELETE,
+        UPDATE
+    }
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -23,6 +39,8 @@ public class ServiceInfo extends DomainVo {
     private UUID jobId;
     private UUID templateId;
     private String userId;
+    private UUID msoRequestId;
+    private boolean aLaCarte;
     private Job.JobStatus jobStatus;
     private Date statusModifiedDate;
     private boolean hidden;
@@ -39,19 +57,22 @@ public class ServiceInfo extends DomainVo {
     private String regionName;
     private String serviceType;
     private String subscriberName;
+    private String subscriberId;
     private String serviceInstanceId;
     private String serviceInstanceName;
     private String serviceModelId;
     private String serviceModelName;
     private String serviceModelVersion;
     private Date createdBulkDate;
+    private ServiceAction action;
 
     public ServiceInfo(){
 
     }
 
-    public ServiceInfo(String userId, Job.JobStatus jobStatus, boolean pause, UUID jobId, UUID templateId, String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName, String tenantId, String tenantName, String regionId, String regionName, String serviceType, String subscriberName, String serviceInstanceId, String serviceInstanceName, String serviceModelId, String serviceModelName, String serviceModelVersion, Date createdBulkDate) {
+    public ServiceInfo(String userId, Boolean aLaCarte, Job.JobStatus jobStatus, boolean pause, UUID jobId, UUID templateId, String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName, String tenantId, String tenantName, String regionId, String regionName, String serviceType, String subscriberName, String subscriberId, String serviceInstanceId, String serviceInstanceName, String serviceModelId, String serviceModelName, String serviceModelVersion, Date createdBulkDate, ServiceAction action) {
         this.userId = userId;
+        this.aLaCarte = aLaCarte;
         this.jobStatus = jobStatus;
         this.jobId = jobId;
         this.templateId = templateId;
@@ -67,12 +88,14 @@ public class ServiceInfo extends DomainVo {
         this.regionName = regionName;
         this.serviceType = serviceType;
         this.subscriberName = subscriberName;
+        this.subscriberId = subscriberId;
         this.serviceInstanceId = serviceInstanceId;
         this.serviceInstanceName = serviceInstanceName;
         this.serviceModelId = serviceModelId;
         this.serviceModelName = serviceModelName;
         this.serviceModelVersion = serviceModelVersion;
         this.createdBulkDate = createdBulkDate;
+        this.action = action;
     }
 
     @Column(name = "JOB_ID", columnDefinition = "CHAR(36)")
@@ -90,6 +113,18 @@ public class ServiceInfo extends DomainVo {
     @Column(name="USER_ID")
     public String getUserId() {
         return userId;
+    }
+
+    @Column(name = "MSO_REQUEST_ID", columnDefinition = "CHAR(36)")
+    @Type(type="org.hibernate.type.UUIDCharType")
+    public UUID getMsoRequestId() {
+        return msoRequestId;
+    }
+
+    @Column(name="IS_A_LA_CARTE")
+    @JsonProperty("aLaCarte")
+    public boolean isALaCarte() {
+        return aLaCarte;
     }
 
     @Column(name="JOB_STATUS")
@@ -168,6 +203,11 @@ public class ServiceInfo extends DomainVo {
         return subscriberName;
     }
 
+    @Column(name="SUBSCRIBER_ID")
+    public String getSubscriberId() {
+        return subscriberId;
+    }
+
     @Column(name="SERVICE_INSTANCE_ID")
     public String getServiceInstanceId() {
         return serviceInstanceId;
@@ -202,6 +242,12 @@ public class ServiceInfo extends DomainVo {
     public Date getDeletedAt() {
          return deletedAt;
      }
+
+    @Column(name="ACTION")
+    @Enumerated(EnumType.STRING)
+    public ServiceAction getAction() {
+        return action;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -259,6 +305,14 @@ public class ServiceInfo extends DomainVo {
 
     public void setTemplateId(UUID templateId) {
         this.templateId = templateId;
+    }
+
+    public void setMsoRequestId(UUID requestId) {
+        this.msoRequestId = requestId;
+    }
+
+    public void setALaCarte(boolean aLaCarte) {
+        this.aLaCarte = aLaCarte;
     }
 
     public void setJobStatus(Job.JobStatus jobStatus) {
@@ -321,6 +375,10 @@ public class ServiceInfo extends DomainVo {
         this.subscriberName = subscriberName;
     }
 
+    public void setSubscriberId(String subscriberId) {
+        this.subscriberId = subscriberId;
+    }
+
     public void setServiceInstanceId(String serviceInstanceId) {
         this.serviceInstanceId = serviceInstanceId;
     }
@@ -349,6 +407,7 @@ public class ServiceInfo extends DomainVo {
          this.deletedAt = deletedAt;
      }
 
+    public void setAction(ServiceAction action) { this.action = action; }
 
      @Override
      public boolean equals(Object o) {
@@ -357,10 +416,12 @@ public class ServiceInfo extends DomainVo {
          ServiceInfo that = (ServiceInfo) o;
          return isHidden() == that.isHidden() &&
                  isPause() == that.isPause() &&
+                 isALaCarte() == that.isALaCarte() &&
                  Objects.equals(getDeletedAt(), that.getDeletedAt()) &&
                  Objects.equals(getJobId(), that.getJobId()) &&
                  Objects.equals(getTemplateId(), that.getTemplateId()) &&
                  Objects.equals(getUserId(), that.getUserId()) &&
+                 Objects.equals(getMsoRequestId(), that.getMsoRequestId()) &&
                  getJobStatus() == that.getJobStatus() &&
                  Objects.equals(getStatusModifiedDate(), that.getStatusModifiedDate()) &&
                  Objects.equals(getOwningEntityId(), that.getOwningEntityId()) &&
@@ -374,22 +435,24 @@ public class ServiceInfo extends DomainVo {
                  Objects.equals(getRegionName(), that.getRegionName()) &&
                  Objects.equals(getServiceType(), that.getServiceType()) &&
                  Objects.equals(getSubscriberName(), that.getSubscriberName()) &&
+                 Objects.equals(getSubscriberId(), that.getSubscriberId()) &&
                  Objects.equals(getServiceInstanceId(), that.getServiceInstanceId()) &&
                  Objects.equals(getServiceInstanceName(), that.getServiceInstanceName()) &&
                  Objects.equals(getServiceModelId(), that.getServiceModelId()) &&
                  Objects.equals(getServiceModelName(), that.getServiceModelName()) &&
                  Objects.equals(getServiceModelVersion(), that.getServiceModelVersion()) &&
-                 Objects.equals(getCreatedBulkDate(), that.getCreatedBulkDate());
+                 Objects.equals(getCreatedBulkDate(), that.getCreatedBulkDate()) &&
+                 Objects.equals(getAction(), that.getAction());
      }
 
      @Override
      public int hashCode() {
 
-         return Objects.hash(getJobId(), getTemplateId(), getUserId(), getJobStatus(), getStatusModifiedDate(),
+         return Objects.hash(getJobId(), getTemplateId(), getUserId(), getMsoRequestId(), isALaCarte(), getJobStatus(), getStatusModifiedDate(),
                  isHidden(), isPause(), getDeletedAt(), getOwningEntityId(), getOwningEntityName(), getProject(),
                  getAicZoneId(), getAicZoneName(), getTenantId(), getTenantName(), getRegionId(),
-                 getRegionName(), getServiceType(), getSubscriberName(), getServiceInstanceId(),
+                 getRegionName(), getServiceType(), getSubscriberName(), getSubscriberId(), getServiceInstanceId(),
                  getServiceInstanceName(), getServiceModelId(), getServiceModelName(),
-                 getServiceModelVersion(), getCreatedBulkDate());
+                 getServiceModelVersion(), getCreatedBulkDate(), getAction());
      }
  }

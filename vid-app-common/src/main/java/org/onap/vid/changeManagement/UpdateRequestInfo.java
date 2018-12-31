@@ -1,6 +1,6 @@
 package org.onap.vid.changeManagement;
 
-import org.onap.vid.domain.mso.*;
+import org.onap.vid.mso.model.RequestInfo;
 
 /**
  * Created by Oren on 9/5/17.
@@ -11,7 +11,7 @@ public class UpdateRequestInfo {
     }
 
 
-    public UpdateRequestInfo(org.onap.vid.domain.mso.RequestInfo requestInfo) {
+    public UpdateRequestInfo(RequestInfo requestInfo) {
         this.requestorId = requestInfo.getRequestorId();
         this.suppressRollback = requestInfo.getSuppressRollback();
         this.source = requestInfo.getSource();

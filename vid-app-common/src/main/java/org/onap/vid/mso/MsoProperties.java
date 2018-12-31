@@ -20,11 +20,7 @@
 
 package org.onap.vid.mso;
 
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 /**
  * The Class MsoProperties.
@@ -71,7 +67,7 @@ public class MsoProperties extends SystemProperties {
 	
 	/** The Constant MSO_REST_API_SVC_INSTANCE. */
     public static final String MSO_REST_API_E2E_SVC_INSTANCE = "mso.restapi.svc.e2einstance"; // /e2eServiceInstances/v3
-	
+
 	/** The Constant MSO_REST_API_SVC_INSTANCE. */
 	public static final String MSO_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance"; // /serviceInstances/v2
 
@@ -79,13 +75,13 @@ public class MsoProperties extends SystemProperties {
 	public static final String MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance.deleteAndUnassign";
 
 	/** The Constant MSO_REST_API_VNF_INSTANCE. */
-	public static final String MSO_REST_API_VNF_INSTANCE = "mso.restapi.vnf.instance"; // /serviceInstances/v2/{service_instance_id}/vnfs
+	public static final String MSO_REST_API_VNF_INSTANCE = "mso.restapi.vnf.instance";
 	
 	/** The Constant MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE. */
-	public static final String MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE = "mso.restapi.vnf.changemanagement.instance"; // /serviceInstances/v2/{service_instance_id}/vnfs/{request_type}
+	public static final String MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE = "mso.restapi.vnf.changemanagement.instance";
 	
 	/** The Constant MSO_REST_API_NETWORK_INSTANCE. */
-	public static final String MSO_REST_API_NETWORK_INSTANCE = "mso.restapi.network.instance"; // /serviceInstances/v2/{serviceInstanceId}/networks
+	public static final String MSO_REST_API_NETWORK_INSTANCE = "mso.restapi.network.instance";
 	
 	/** The Constant MSO_REST_API_GET_ORC_REQ. */
 	public static final String MSO_REST_API_GET_ORC_REQ = "mso.restapi.get.orc.req";
@@ -102,11 +98,14 @@ public class MsoProperties extends SystemProperties {
 	public static final String MSO_REST_API_VF_MODULE_SCALE_OUT = "mso.restapi.vf.module.scaleout";
 
 	/** The Constant MSO_REST_API_VOLUME_GROUP_INSTANCE. */
-	public static final String MSO_REST_API_VOLUME_GROUP_INSTANCE = "mso.restapi.volume.group.instance"; //serviceInstances/v2/{serviceInstanceId}/volumeGroups
+	public static final String MSO_REST_API_VOLUME_GROUP_INSTANCE = "mso.restapi.volume.group.instance";
+
+	/** The Constant MSO_REST_API_VOLUME_GROUP_INSTANCE. */
+	public static final String MSO_REST_API_INSTANCE_GROUP = "mso.restapi.instance.group";
 
 	/** The Constant MSO_REST_API_CONFIGURATION_INSTANCE. */
-	public static final String MSO_REST_API_CONFIGURATIONS = "mso.restapi.configurations"; //serviceInstances/v5/{serviceInstanceId}/configurations
-	public static final String MSO_REST_API_CONFIGURATION_INSTANCE = "mso.restapi.configuration.instance"; //serviceInstances/v5/{serviceInstanceId}/configurations/{configurationId}
+	public static final String MSO_REST_API_CONFIGURATIONS = "mso.restapi.configurations";
+	public static final String MSO_REST_API_CONFIGURATION_INSTANCE = "mso.restapi.configuration.instance";
 
 	/** The Constant MSO_REST_API_OPERATIONAL_ENVIRONMENT */
 	public static final String MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE = "mso.restapi.operationalEnvironment.activate";
@@ -118,10 +117,9 @@ public class MsoProperties extends SystemProperties {
 	/** The Constant MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS */
 	public static final String MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS = "mso.restapi.operationalEnvironment.cloudResourcesRequests.status";
 
-	/** The logger. */
-	public EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoProperties.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+	/** The Constant MSO_REST_API_SERVICE_INSTANCE_CREATE */
+	public static final String MSO_REST_API_SERVICE_INSTANCE_CREATE = "mso.restapi.serviceInstanceCreate";
 
+	/** The Constant MSO_REST_API_SERVICE_INSTANCE_ASSIGN */
+	public static final String MSO_REST_API_SERVICE_INSTANCE_ASSIGN = "mso.restapi.serviceInstanceAssign";
 }

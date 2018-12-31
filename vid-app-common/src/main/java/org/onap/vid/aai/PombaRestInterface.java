@@ -42,11 +42,12 @@ public class PombaRestInterface extends AAIRestInterface {
 
     private Client client = null;
 
-    private void initRestClient()
+    @Override
+    protected void initRestClient()
     {
         if (client == null) {
             try {
-                client = httpsAuthClientFactory.getClient(HttpClientMode.UNSECURE);
+                client = httpsAuthClientFactory.getClient(HttpClientMode.WITH_KEYSTORE);
             }
             catch (Exception e) {
                 logger.info(EELFLoggerDelegate.errorLogger, "Exception in REST call to DB in initRestClient" + e.toString());
@@ -78,6 +79,7 @@ public class PombaRestInterface extends AAIRestInterface {
             } else {
                 logger.debug(EELFLoggerDelegate.debugLogger, getInvalidResponseLogMessage(url, methodName, cres));
             }
+            return cres;
         } catch (Exception e) {
             logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
         }

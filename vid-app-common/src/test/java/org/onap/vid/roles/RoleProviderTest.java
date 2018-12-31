@@ -1,9 +1,5 @@
 package org.onap.vid.roles;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 
 
@@ -11,16 +7,6 @@ public class RoleProviderTest {
 
 	private RoleProvider createTestSubject() {
 		return new RoleProvider();
-	}
-
-	
-	@Test
-	public void testExtractRoleFromSession() throws Exception {
-		HttpServletRequest request = null;
-		List<String> result;
-
-		// default test
-		result = RoleProvider.extractRoleFromSession(request);
 	}
 
 	

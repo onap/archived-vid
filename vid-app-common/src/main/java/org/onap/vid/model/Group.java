@@ -1,11 +1,13 @@
 package org.onap.vid.model;
 
 import org.onap.vid.asdc.beans.tosca.Input;
-import org.onap.vid.asdc.parser.ToscaParserImpl2;
+import org.onap.vid.asdc.parser.ToscaParserImpl2.Constants;
 
 import java.util.Map;
 
-public class Group {
+import static org.onap.vid.asdc.parser.ToscaParserImpl2.isModuleTypeIsBaseObjectSafe;
+
+public class Group implements MinimalNode {
 
 
     /** The uuid. */
@@ -182,7 +184,11 @@ public class Group {
 
 
     protected static GroupProperties extractPropertiesForGroup(org.onap.vid.asdc.beans.tosca.Group group){
-        String [] propertyKeys = {ToscaParserImpl2.Constants.MIN_VF_MODULE_INSTANCES, ToscaParserImpl2.Constants.MAX_VF_MODULE_INSTANCES, ToscaParserImpl2.Constants.INITIAL_COUNT};
+        String [] propertyKeys = {
+                Constants.MIN_VF_MODULE_INSTANCES,
+                Constants.MAX_VF_MODULE_INSTANCES,
+                Constants.INITIAL_COUNT,
+        };
         GroupProperties groupProperties = new GroupProperties();
 
         for(String propertyKey : propertyKeys){
@@ -191,18 +197,21 @@ public class Group {
                 setInGroupProperties(groupProperties, propertyKey, (Integer) val);
             }
         }
+
+        groupProperties.setBaseModule(isModuleTypeIsBaseObjectSafe(group.getProperties().get(Constants.VF_MODULE_TYPE)));
+
         return groupProperties;
     }
 
     private static void setInGroupProperties(GroupProperties groupProperties, String propertyKey, Integer propertyValue){
         switch (propertyKey) {
-            case ToscaParserImpl2.Constants.MIN_VF_MODULE_INSTANCES:
+            case Constants.MIN_VF_MODULE_INSTANCES:
                 groupProperties.setMinCountInstances(propertyValue);
                 break;
-            case ToscaParserImpl2.Constants.MAX_VF_MODULE_INSTANCES:
+            case Constants.MAX_VF_MODULE_INSTANCES:
                 groupProperties.setMaxCountInstances(propertyValue);
                 break;
-            case ToscaParserImpl2.Constants.INITIAL_COUNT:
+            case Constants.INITIAL_COUNT:
                 groupProperties.setInitialCount(propertyValue);
                 break;
             default:

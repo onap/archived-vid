@@ -1,17 +1,22 @@
 package org.onap.vid.job.command;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.job.Job;
+import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobCommand;
 import org.onap.vid.job.JobType;
+import org.onap.vid.job.impl.JobSharedData;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -48,19 +53,48 @@ public class JobCommandFactoryTest {
 
     }
 
+    public static class MockedRequest implements JobAdapter.AsyncJobRequest {
+
+        final public int x;
+        final public String y;
+
+        @JsonCreator
+        public MockedRequest(@JsonProperty("x")int x, @JsonProperty("y")String y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof MockedRequest)) return false;
+            MockedRequest that = (MockedRequest) o;
+            return x == that.x &&
+                    Objects.equals(y, that.y);
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(x, y);
+        }
+    }
+
     @Test(dataProvider = "jobTypes")
     public void givenJob_createCommandCallsTheInitAndReturnsTheInstance(JobType jobType) {
 
         final UUID uuid = UUID.randomUUID();
         final Map<String, Object> data = ImmutableMap.of("foo", "bar");
+        final JobSharedData sharedData = new JobSharedData(uuid, "userid", new MockedRequest(1,"a"));
 
         when(job.getType()).thenReturn(jobType);
         when(job.getUuid()).thenReturn(uuid);
         when(job.getData()).thenReturn(data);
+        when(job.getSharedData()).thenReturn(sharedData);
 
         final JobCommand command = jobCommandFactory.toCommand(job);
 
-        verify(mockCommand).init(uuid, data);
+        verify(mockCommand).init(sharedData, data);
 
         assertThat(command, equalTo(mockCommand));
     }

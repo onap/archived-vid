@@ -20,7 +20,7 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/change-management/workflow/*")
 public class ClientCredentialsFilter  extends GenericFilterBean {
 
-    private final static EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(ClientCredentialsFilter.class);
+    private static final EELFLoggerDelegate filterLogger = EELFLoggerDelegate.getLogger(ClientCredentialsFilter.class);
 
 
     @Override
@@ -33,12 +33,12 @@ public class ClientCredentialsFilter  extends GenericFilterBean {
         String actualAuthorization = ((HttpServletRequest)request).getHeader("Authorization");
 
         if (verifyClientCredentials(actualAuthorization, expectedAuthorization)) {
-            LOGGER.warn(EELFLoggerDelegate.debugLogger,"Client credentials authenticated.");
+            filterLogger.warn(EELFLoggerDelegate.debugLogger,"Client credentials authenticated.");
             chain.doFilter(request, response);
             return;
         }
 
-        LOGGER.warn(EELFLoggerDelegate.debugLogger,"Client did not provide the expected credentials.");
+        filterLogger.warn(EELFLoggerDelegate.debugLogger,"Client did not provide the expected credentials.");
         ((HttpServletResponse) response).sendError(401);
     }
 
@@ -46,13 +46,13 @@ public class ClientCredentialsFilter  extends GenericFilterBean {
     {
         if (StringUtils.isEmpty(expectedAuthorization))
         {
-            LOGGER.warn(EELFLoggerDelegate.debugLogger,String.format("Expected Authorization is not configured (key: %s)", SchedulerProperties.SCHEDULER_BASIC_AUTH));
+            filterLogger.warn(EELFLoggerDelegate.debugLogger,String.format("Expected Authorization is not configured (key: %s)", SchedulerProperties.SCHEDULER_BASIC_AUTH));
             return true;
         }
 
         if (StringUtils.isEmpty(actualAuthorization))
         {
-            LOGGER.warn(EELFLoggerDelegate.debugLogger,"Authorization header is missing.");
+            filterLogger.warn(EELFLoggerDelegate.debugLogger,"Authorization header is missing.");
             return false;
         }
 

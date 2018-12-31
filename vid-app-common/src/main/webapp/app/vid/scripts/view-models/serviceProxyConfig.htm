@@ -82,8 +82,8 @@ limitations under the License.
                 </div>
 
                 <div class="wrapper-list collector-{{collectorType}}">
-                    <div class="title-txt ng-hide-keep-block" ng-hide="collectorType==='pnf'"><b>Collector</b> Service Type</div>
-                    <select ng-model="collectorServiceType" ng-hide="collectorType==='pnf'" class="ng-hide-keep-block"
+                    <div class="title-txt ng-hide-keep-block" ng-hide="!shouldLetSelectingCollectorType()"><b>Collector</b> Service Type</div>
+                    <select ng-model="collectorServiceType" ng-hide="!shouldLetSelectingCollectorType()" class="ng-hide-keep-block"
                             ng-change="onCollectorServiceTypeSelected()" name="collectorServiceType" id="collectorServiceType"
                             ng-options="item['service-type'] disable when !(item['is-permitted']) for item in serviceTypes"
                             required data-tests-id="collectorServiceType">

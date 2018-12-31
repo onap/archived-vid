@@ -4,16 +4,11 @@ import com.google.common.collect.ImmutableMap;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
-import org.onap.vid.model.JobBulk;
 import org.onap.vid.model.JobModel;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.BadRequestException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class JobAdapterImpl implements JobAdapter {
@@ -28,44 +23,32 @@ public class JobAdapterImpl implements JobAdapter {
     }
 
     @Override
-    public JobBulk toModelBulk(List<Job> jobList) {
-        return new JobBulk(jobList.stream().map(this::toModel).collect(Collectors.toList()));
-    }
-
-    @Override
-    public Job createJob(JobType jobType, AsyncJobRequest request, UUID templateId, String userId, Integer indexInBulk) {
-        JobDaoImpl job = createJob(jobType, templateId, indexInBulk, ImmutableMap.of(
-                "request", request,
-                "userId", userId));
-        job.setUserId(userId);
-        return job;
-    }
-
-    @Override
-    public List<Job> createBulkOfJobs(Map<String, Object> bulkRequest) {
-        int count;
-        JobType jobType;
-
-        try {
-            count = (Integer) bulkRequest.get("count");
-            jobType = JobType.valueOf((String) bulkRequest.get("type"));
-        } catch (Exception exception) {
-            throw new BadRequestException(exception);
-        }
-        List<Job> jobList = new ArrayList<>(count + 1);
-        UUID templateId = UUID.randomUUID();
-        for (int i = 0; i < count; i++) {
-            jobList.add(createJob(jobType, templateId, i, bulkRequest));
-        }
-        return jobList;
-    }
-
-    private JobDaoImpl createJob(JobType jobType, UUID templateId, Integer indexInBulk, Map<String, Object> data) {
-        JobDaoImpl job = new JobDaoImpl();
-        job.setStatus(Job.JobStatus.PENDING);
-        job.setTypeAndData(jobType, data);
+    public Job createServiceInstantiationJob(JobType jobType, AsyncJobRequest request, UUID templateId, String userId, String optimisticUniqueServiceInstanceName, Integer indexInBulk){
+        JobDaoImpl job = createJob(jobType, Job.JobStatus.PENDING , userId);
+        job.setSharedData(new JobSharedData(job.getUuid(), userId, request));
+        job.setTypeAndData(jobType, ImmutableMap.of(
+                "optimisticUniqueServiceInstanceName", optimisticUniqueServiceInstanceName
+        ));
         job.setTemplateId(templateId);
         job.setIndexInBulk(indexInBulk);
         return job;
     }
+
+    @Override
+    public Job createChildJob(JobType jobType, Job.JobStatus jobStatus, AsyncJobRequest request, JobSharedData parentSharedData, Map<String, Object> jobData) {
+        JobDaoImpl job = createJob(jobType, jobStatus , parentSharedData.getUserId());
+        job.setSharedData(new JobSharedData(job.getUuid(), request, parentSharedData));
+        job.setTypeAndData(jobType, jobData);
+        return job;
+    }
+
+    protected JobDaoImpl createJob(JobType jobType, Job.JobStatus jobStatus, String userId) {
+        JobDaoImpl job = new JobDaoImpl();
+        job.setTypeAndData(jobType, null);
+        job.setStatus(jobStatus);
+        job.setUuid(UUID.randomUUID());
+        job.setUserId(userId);
+        return job;
+    }
+
 }

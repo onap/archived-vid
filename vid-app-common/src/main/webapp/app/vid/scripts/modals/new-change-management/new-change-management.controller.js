@@ -121,13 +121,19 @@
         };
 
         var extractVNFModel = function (csarVNF, sdcService, selectionVNF) {
+            /**
+            @param selectionVNF A vnf *instance* selected in "available VNF" drop-down box
+            @param csarVNF      A VNF *MODEL* that has an invariantUuid same as selectionVNF (might be
+                                a different version; i.e. selectionVNF.modelVersionId <> csarVNF.uuid)
+            @param sdcService   The Service *MODEL* which has the related VNF `csarVNF`.
+             */
             var versionCsarData = {
                 vnfInstanceId: "",
                 vnfName: csarVNF.name,
                 modelInfo: {
                     modelType: "vnf",
                     modelInvariantId: csarVNF.invariantUuid,
-                    modelVersionId: selectionVNF.modelVersionId,
+                    modelVersionId: csarVNF.uuid,
                     modelName: csarVNF.name,
                     modelVersion: csarVNF.version,
                     modelCustomizationName: csarVNF.modelCustomizationName,
@@ -145,12 +151,10 @@
                             instanceId: selectionVNF["service-instance-node"]["0"].properties['service-instance-id'],
                             modelInfo: {
                                 modelType: "service",
-                                modelInvariantId: selectionVNF["service-instance-node"]["0"].properties['model-invariant-id'],
-                                modelVersionId: selectionVNF.modelVersionId,
+                                modelInvariantId: sdcService.invariantUuid,
+                                modelVersionId: sdcService.uuid,
                                 modelName: sdcService.name,
-                                modelVersion: sdcService.version,
-                                modelCustomizationName: selectionVNF["service-instance-node"]["0"].properties['model-customization-name'], //TODO: Missing
-                                modelCustomizationId: selectionVNF["service-instance-node"]["0"].properties['model-customization-id']
+                                modelVersion: sdcService.version
                             }
                         }
                     }
