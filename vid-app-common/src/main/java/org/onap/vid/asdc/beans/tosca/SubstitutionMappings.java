@@ -41,8 +41,8 @@ public class SubstitutionMappings {
 	 * Instantiates a new substitution mappings.
 	 */
 	public SubstitutionMappings() {
-		capabilities = new HashMap<String, Object> ();
-		requirements = new HashMap<String, Object> ();
+		capabilities = new HashMap<> ();
+		requirements = new HashMap<> ();
 	}
 	
 	/**

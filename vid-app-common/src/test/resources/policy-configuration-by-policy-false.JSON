@@ -28,7 +28,8 @@
         "collector_node": "pprobeservice_proxy 5",
         "policy_name": "policy2",
         "equip_vendor": "Cisco",
-        "equip_model": "Nexus 3048-TP"
+        "equip_model": "Nexus 3048-TP",
+        "ecomp_generated_naming": "false"
       },
       "type": "Configuration",
       "modelCustomizationName": "Port Mirroring Configuration By Policy 1",
@@ -54,7 +55,8 @@
         "collector_node": "pprobeservice_proxy 4",
         "policy_name": "policy1",
         "equip_vendor": "Cisco",
-        "equip_model": "Nexus 3048-TP"
+        "equip_model": "Nexus 3048-TP",
+        "ecomp_generated_naming": "false"
       },
       "type": "Configuration",
       "modelCustomizationName": "Port Mirroring Configuration By Policy 0",
@@ -162,5 +164,6 @@
   },
   "vfModules": {},
   "volumeGroups": {},
-  "pnfs": {}
+  "pnfs": {},
+  "vnfGroups": {}
 }

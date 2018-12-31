@@ -20,10 +20,11 @@
 
 package org.onap.vid.asdc.beans.tosca;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.onap.sdc.toscaparser.api.Property;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -36,6 +37,7 @@ public class Input {
 		this.description = input.getDescription();
 		this._default = input.getDefault();
 		this.inputProperties = new InputProperties(properties);
+		this.fromInputName = input.getName();
 	}
 
 	/** The type. */
@@ -51,7 +53,9 @@ public class Input {
 	private Input entry_schema;
 
 	private InputProperties inputProperties;
-	
+
+	private String fromInputName;
+
 	/** The constraints */
 	private List<org.onap.sdc.toscaparser.api.elements.constraints.Constraint> constraints;
 	
@@ -63,12 +67,12 @@ public class Input {
 	private String templateUUID;
 	private String templateInvariantUUID;
 	private String templateCustomizationUUID;
-	
+
 	/**
 	 * Instantiates a new input.
 	 */
 	public Input() {
-		constraints = new ArrayList<org.onap.sdc.toscaparser.api.elements.constraints.Constraint>();
+		constraints = new ArrayList<>();
 	}
 	
 	/**
@@ -158,6 +162,11 @@ public class Input {
 
 	public InputProperties getInputProperties() {
 		return inputProperties;
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public String getFromInputName() {
+		return fromInputName;
 	}
 
 	public void setInputProperties(InputProperties inputProperties) {

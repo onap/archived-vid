@@ -24,10 +24,10 @@ import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.SubscriberList;
@@ -41,11 +41,11 @@ import static org.mockito.ArgumentMatchers.eq;
 @RunWith(MockitoJUnitRunner.class)
 public class AaiOverTLSClientTest {
 
-    private static final String SEARCH_NODES_QUERY_SEARCH_NODE_TYPE = "search/nodes-query?search-node-type=generic-vnf&filter=vnf-name:EQUALS:name";
+    private static final String SEARCH_NODES_QUERY_SEARCH_NODE_TYPE = "nodes/generic-vnfs?vnf-name=name";
     private static final String SUBSCRIBERS = "business/customers?subscriber-type=INFRA&depth=0";
     private AaiOverTLSClient aaiRestClient;
 
-    @Mock
+    @Mock(answer = Answers.RETURNS_MOCKS)
     private SyncRestClient syncRestClient;
     @Mock
     private AaiOverTLSPropertySupplier propertySupplier;
@@ -56,12 +56,12 @@ public class AaiOverTLSClientTest {
     }
 
     @Test
-    public void testSearchNodeTypeByName() {
+    public void testIsNodeTypeExistsByName() {
         mockPropertyReader();
 
-        aaiRestClient.searchNodeTypeByName("name", ResourceType.GENERIC_VNF);
+        aaiRestClient.isNodeTypeExistsByName("name", ResourceType.GENERIC_VNF);
         Mockito.verify(syncRestClient).get(contains(SEARCH_NODES_QUERY_SEARCH_NODE_TYPE),
-            eq(getHeaders()), eq(Collections.emptyMap()), eq(AaiNodeQueryResponse.class));
+            eq(getHeaders()), eq(Collections.emptyMap()));
     }
 
     @Test

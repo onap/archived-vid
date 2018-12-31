@@ -1,7 +1,7 @@
 package org.onap.vid.aai;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceInstance {
@@ -11,16 +11,16 @@ public class ServiceInstance {
 
 	@JsonProperty("service-instance-name")
 	public String serviceInstanceName;
-	
+
 	@JsonProperty("persona-model-id")
 	public String personaModelId;
-	
+
 	@JsonProperty("persona-model-version")
 	public String personaModelVersion;
-	
+
 	@JsonProperty("resource-version")
 	public String resourceVersion;
-	
+
 	@JsonProperty("orchestration-status")
 	public String orchestrationStatus;
 

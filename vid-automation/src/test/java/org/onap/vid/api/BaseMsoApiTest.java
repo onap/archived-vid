@@ -1,6 +1,5 @@
 package org.onap.vid.api;
 
-import com.att.automation.common.report_portal_integration.annotations.Step;
 import com.google.common.collect.ImmutableMap;
 import org.json.JSONException;
 import org.onap.vid.model.mso.MsoResponseWrapper2;
@@ -17,8 +16,8 @@ import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 public class BaseMsoApiTest extends BaseApiTest {
 
@@ -53,7 +52,6 @@ public class BaseMsoApiTest extends BaseApiTest {
         }
     }
 
-    @Step(description = "method: ${method}, uri: ${uri}, body: ${body}")
     protected MsoResponseWrapper2 callMsoForResponseWrapper(HttpMethod method, String uri, String body) {
         MsoResponseWrapper2 responseWrapper;
         switch (method) {

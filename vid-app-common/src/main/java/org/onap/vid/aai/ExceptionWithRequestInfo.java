@@ -42,13 +42,13 @@ public class ExceptionWithRequestInfo extends RuntimeException {
 
     private static String toMessage(HttpMethod httpMethod, String requestedUrl, Throwable cause) {
         if (StringUtils.isEmpty(requestedUrl)) {
-            return cause.toString();
+            return String.valueOf(cause);
         } else {
             return "" +
                     "Exception while handling " +
                     defaultIfNull(httpMethod, "request").toString() +
                     " " + requestedUrl +
-                    ": " + cause.toString();
+                    ": " + (cause == null ? "null" : cause.toString());
         }
     }
 }

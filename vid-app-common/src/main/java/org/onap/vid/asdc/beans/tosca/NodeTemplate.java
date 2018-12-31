@@ -20,8 +20,8 @@
 
 package org.onap.vid.asdc.beans.tosca;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The Class NodeTemplate.
@@ -41,7 +41,7 @@ public class NodeTemplate {
 	private Object requirements;
 	
 	public NodeTemplate () {
-		properties = new HashMap<String,Object>();
+		properties = new HashMap<>();
 	}
 	/**
 	 * Gets the type.

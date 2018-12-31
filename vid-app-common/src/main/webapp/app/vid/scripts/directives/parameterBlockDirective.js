@@ -375,7 +375,8 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
                 }
                 element.replaceWith($compile(element.html(html))(scope));
 
-                element.find("input, select").bind("change", function() {
+                element.find("input, select").unbind("change.namespace1");
+                element.find("input, select").bind("change.namespace1", function() {
                     callback(this, scope);
                 });
             }
@@ -391,7 +392,8 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
                             }
                         }
                     });
-                element.find("input, select").bind("change", function() {
+                element.find("input, select").unbind("change.namespace2");
+                element.find("input, select").bind("change.namespace2", function() {
                     callback(this, scope);
                 });
             }

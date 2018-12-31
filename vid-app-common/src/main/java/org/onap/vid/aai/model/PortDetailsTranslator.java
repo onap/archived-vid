@@ -3,10 +3,7 @@ package org.onap.vid.aai.model;
 
 import com.google.common.collect.ImmutableList;
 import org.onap.vid.aai.AaiResponse;
-import org.onap.vid.properties.Features;
-import org.togglz.core.manager.FeatureManager;
 
-import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +12,7 @@ import java.util.stream.Collectors;
 
 public class PortDetailsTranslator {
 
-    @Inject
-    FeatureManager featureManager;
-
-    public static class PortDetailsOk extends PortDetails {
+    public static class PortDetailsOk implements PortDetails {
 
         private final String interfaceId;
         private final String interfaceName;
@@ -43,16 +37,16 @@ public class PortDetailsTranslator {
         }
     }
 
-    public abstract static class PortDetails {
+    public interface PortDetails {
     }
 
-    public static class PortDetailsError extends PortDetails {
+    public static class PortDetailsError implements PortDetails {
         private final String errorDescription;
         private final String rawAaiResponse;
 
-        public PortDetailsError(String errorDescription, String rawAaiResponse){
-           this.errorDescription = errorDescription;
-           this.rawAaiResponse = rawAaiResponse;
+        public PortDetailsError(String errorDescription, String rawAaiResponse) {
+            this.errorDescription = errorDescription;
+            this.rawAaiResponse = rawAaiResponse;
         }
 
         public String getErrorDescription() {
@@ -64,13 +58,13 @@ public class PortDetailsTranslator {
         }
     }
 
-    public static PortDetails extractPortDetailsFromProperties(Properties properties, String rawPayload){
+    public static PortDetails extractPortDetailsFromProperties(Properties properties, String rawPayload) {
         List<String> errorDescriptions = new LinkedList<>();
         describeIfNullOrEmpty("interface-id", properties.getInterfaceId(), errorDescriptions);
         describeIfNullOrEmpty("interface-name", properties.getInterfaceName(), errorDescriptions);
         describeIfNullOrEmpty("is-port-mirrored", properties.getIsPortMirrored(), errorDescriptions);
 
-        if(errorDescriptions.isEmpty()){
+        if (errorDescriptions.isEmpty()) {
             return new PortDetailsOk(properties.getInterfaceId(), properties.getInterfaceName(), properties.getIsPortMirrored());
         } else {
             return new PortDetailsError(String.join(" ", errorDescriptions), rawPayload);
@@ -90,14 +84,14 @@ public class PortDetailsTranslator {
             final String errorMessage = aaiResponse.getErrorMessage();
             return Optional.of(ImmutableList.of(new PortDetailsError(
                     "Got " + aaiResponse.getHttpCode() + " from aai",
-                    errorMessage != null ? errorMessage.toString() : rawPayload)
+                    errorMessage != null ? errorMessage : rawPayload)
             ));
         } else {
             return Optional.empty();
         }
     }
 
-    public List<PortDetails> extractPortDetailsInternal(AaiGetPortMirroringSourcePorts aaiGetPortsResponse, String rawPayload){
+    public List<PortDetails> extractPortDetailsInternal(CustomQuerySimpleResult aaiGetPortsResponse, String rawPayload) {
         List<SimpleResult> filteredResult = getFilteredPortList(aaiGetPortsResponse.getResults());
 
         return filteredResult.stream()
@@ -107,7 +101,7 @@ public class PortDetailsTranslator {
     }
 
     public List<SimpleResult> getFilteredPortList(List<SimpleResult> results) {
-        String LINTERFACE = "l-interface";
+        final String LINTERFACE = "l-interface";
 
         final Predicate<SimpleResult> ifIsPort = (SimpleResult r) -> LINTERFACE.equals(r.getNodeType());
         Predicate<SimpleResult> ifIsSource = getIsSourcePredicate();
@@ -119,18 +113,12 @@ public class PortDetailsTranslator {
     }
 
     private Predicate<SimpleResult> getIsSourcePredicate() {
-        boolean FLAG_ADVANCED_PORTS_FILTER = featureManager.isActive(Features.FLAG_ADVANCED_PORTS_FILTER);
-
-        if (FLAG_ADVANCED_PORTS_FILTER) {
-            String PORT_LABEL = "org.onap.relationships.inventory.Source";
-            return (SimpleResult r) -> r.getRelatedTo().stream()
-                    .anyMatch(relatedTo -> PORT_LABEL.equalsIgnoreCase(relatedTo.getRelationshipLabel()));
-        } else {
-            return (SimpleResult r) -> true;
-        }
+        final String PORT_LABEL = "org.onap.relationships.inventory.Source";
+        return (SimpleResult r) -> r.getRelatedTo().stream()
+                .anyMatch(relatedTo -> PORT_LABEL.equalsIgnoreCase(relatedTo.getRelationshipLabel()));
     }
 
-    public List<PortDetails> extractPortDetails(AaiResponse<AaiGetPortMirroringSourcePorts> aaiGetPortsResponse, String rawPayload){
+    public List<PortDetails> extractPortDetails(AaiResponse<CustomQuerySimpleResult> aaiGetPortsResponse, String rawPayload) {
         return extractErrorResponseIfHttpError(aaiGetPortsResponse, rawPayload).orElseGet(() -> extractPortDetailsInternal(aaiGetPortsResponse.getT(), rawPayload));
 
     }

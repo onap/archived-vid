@@ -54,7 +54,8 @@
             "minCountInstances": 1,
             "maxCountInstances": 1,
             "initialCount": 1,
-            "vfModuleLabel": "main"
+            "vfModuleLabel": "main",
+            "baseModule" : true
           },
           "inputs": {
             
@@ -118,7 +119,8 @@
         "minCountInstances": 1,
         "maxCountInstances": 1,
         "initialCount": 1,
-        "vfModuleLabel": "main"
+        "vfModuleLabel": "main",
+        "baseModule" : true
       },
       "inputs": {
         
@@ -131,5 +133,6 @@
   },
   "pnfs": {
     
-  }
+  },
+  "vnfGroups": {}
 }

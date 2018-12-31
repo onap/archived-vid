@@ -1,9 +1,9 @@
 package org.onap.vid.aai;
 
-import java.util.Map;
-
 import org.junit.Test;
 import org.onap.vid.aai.model.VnfResult;
+
+import java.util.Map;
 
 public class VnfResultTest {
 
@@ -29,6 +29,5 @@ public class VnfResultTest {
 
 		// default test
 		testSubject = createTestSubject();
-		testSubject.setAdditionalProperty(name, value);
 	}
 }

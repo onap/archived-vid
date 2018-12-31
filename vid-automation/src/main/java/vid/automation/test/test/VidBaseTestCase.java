@@ -1,23 +1,11 @@
 package vid.automation.test.test;
 
-import com.att.automation.common.report_portal_integration.annotations.Step;
-import com.att.automation.common.report_portal_integration.listeners.ReportPortalListener;
-import com.att.automation.common.report_portal_integration.screenshots.WebDriverScreenshotsProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAISearchNodeQueryEmptyResult;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
+import org.onap.simulator.presetGenerator.presets.aai.*;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstancePost;
@@ -34,7 +22,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.*;
@@ -60,7 +47,6 @@ import static org.hamcrest.core.Is.is;
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.fail;
 
-@Listeners(com.att.automation.common.report_portal_integration.listeners.ReportPortalListener.class)
 public class VidBaseTestCase extends SetupCDTest{
 
     protected final UsersService usersService = new UsersService();
@@ -109,7 +95,7 @@ public class VidBaseTestCase extends SetupCDTest{
     @BeforeSuite(alwaysRun = true)
     public void screenShotsForReportPortal(){
         try {
-            ReportPortalListener.setScreenShotsProvider(new WebDriverScreenshotsProvider(getDriver()));
+            //ReportPortalListener.setScreenShotsProvider(new WebDriverScreenshotsProvider(getDriver()));
             System.out.println("Called to ReportPortalListener to set ScreenShotsProvider");
         } catch (Exception e) {
             e.printStackTrace();
@@ -301,7 +287,6 @@ public class VidBaseTestCase extends SetupCDTest{
         Assert.assertTrue(Constants.ViewEdit.VF_MODULE_CREATION_FAILED_MESSAGE, byText);
     }
 
-    @Step("${method}: ${instanceUUID}")
     void goToExistingInstanceById(String instanceUUID) {
         SearchExistingPage searchExistingPage = searchExistingInstanceById(instanceUUID);
         assertViewEditButtonState( Constants.VIEW_EDIT_BUTTON_TEXT, instanceUUID);

@@ -4,13 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobCommand;
 import org.onap.vid.job.NextCommand;
+import org.onap.vid.job.impl.JobSharedData;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,13 +30,13 @@ public class HttpCallCommand implements JobCommand {
 
     @Override
     public NextCommand call() {
-        final Response response = ClientBuilder.newClient().target(url).request().post(Entity.text(uuid.toString()));
+        ClientBuilder.newClient().target(url).request().post(Entity.text(uuid.toString()));
         return new NextCommand(Job.JobStatus.COMPLETED);
     }
 
     @Override
-    public HttpCallCommand init(UUID jobUuid, Map<String, Object> data) {
-        return init((String) data.get("url"), jobUuid);
+    public HttpCallCommand init(JobSharedData sharedData, Map<String, Object> commandData) {
+        return init((String) commandData.get("url"), sharedData.getJobUuid());
     }
 
     private HttpCallCommand init(String url, UUID jobUuid) {

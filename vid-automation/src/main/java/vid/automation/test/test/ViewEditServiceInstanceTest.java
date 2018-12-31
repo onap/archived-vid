@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.apache.logging.log4j.core.util.Assert.isNonEmpty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.AssertJUnit.assertEquals;
 import static vid.automation.test.infra.Features.FLAG_COLLECTION_RESOURCE_SUPPORT;
@@ -359,7 +358,7 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
                 "pending-delete", false);
         for(Map.Entry<String, Boolean> entry: vfModulesStatuses.entrySet()) {
             WebElement vfModule = GeneralUIUtils.getWebElementByClassName("vfModuleTreeNode-" + entry.getKey());
-            Assert.assertEquals(isNonEmpty(vfModule.findElements(By.className("resume"))), entry.getValue());
+            Assert.assertEquals(!vfModule.findElements(By.className("resume")).isEmpty(), entry.getValue());
         }
     }
 
