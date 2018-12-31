@@ -15,9 +15,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.either;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static vid.automation.test.services.SimulatorApi.registerExpectation;
 
 /**

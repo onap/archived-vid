@@ -3,6 +3,8 @@ package org.onap.vid.testUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -10,26 +12,34 @@ import org.mockito.MockSettings;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.beans.Service;
+import org.springframework.mock.env.MockEnvironment;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
 import static fj.parser.Parser.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
  * Created by Oren on 6/7/17.
  */
 public class TestUtils {
+
+    private static final Logger logger = LogManager.getLogger(TestUtils.class);
 
     /**
      * The method compares between two jsons. the function assert that the actual object does not reduce or change the functionallity/parsing of the expected json.
@@ -77,7 +87,7 @@ public class TestUtils {
                 }
             }
             else {
-                Assert.assertEquals(expectedValue, actualValue);
+                Assert.assertEquals("assertion fail for key:"+key, expectedValue, actualValue);
             }
         }
     }
@@ -99,6 +109,7 @@ public class TestUtils {
     public static class JavaxRsClientMocks {
         private final javax.ws.rs.client.Client fakeClient;
         private final javax.ws.rs.client.Invocation.Builder fakeBuilder;
+        private final javax.ws.rs.client.Invocation fakeInvocation;
         private final Response fakeResponse;
 
         public javax.ws.rs.client.Client getFakeClient() {
@@ -118,6 +129,7 @@ public class TestUtils {
 
             fakeClient = mock(javax.ws.rs.client.Client.class, mockSettings);
             fakeBuilder = mock(javax.ws.rs.client.Invocation.Builder.class, mockSettings);
+            fakeInvocation = mock(javax.ws.rs.client.Invocation.class, mockSettings);
             fakeResponse = mock(Response.class, mockSettings);
             final javax.ws.rs.client.WebTarget fakeWebTarget = mock(javax.ws.rs.client.WebTarget.class, mockSettings);
 
@@ -125,16 +137,16 @@ public class TestUtils {
                     fakeClient,
                     fakeWebTarget,
                     fakeBuilder,
+                    fakeInvocation,
                     fakeResponse
             );
-
             Mockito.when(fakeBuilder.get(any(Class.class))).thenReturn(null);
-            Mockito.when(fakeBuilder.get(eq(InputStream.class))).thenReturn(new ByteArrayInputStream(new byte[]{}));
             Mockito.when(fakeBuilder.get(any(GenericType.class))).thenReturn(null);
-
             Mockito.when(fakeResponse.getStatus()).thenReturn(200);
             Mockito.when(fakeResponse.getStatusInfo()).thenReturn(Response.Status.OK);
             Mockito.when(fakeResponse.readEntity(Service.class)).thenReturn(null);
+            Mockito.when(fakeResponse.readEntity(InputStream.class)).thenReturn(new ByteArrayInputStream(new byte[]{}));
+            Mockito.when(fakeResponse.readEntity(String.class)).thenReturn(null);
         }
     }
 
@@ -155,9 +167,41 @@ public class TestUtils {
 
             return availableMocks.stream()
                     .filter(mock -> methodReturnType.isAssignableFrom(mock.getClass()))
-                    //.peek(m -> System.out.println("found a mock: " + m.getClass().getName()))
+                    //.peek(m -> logger.info("found a mock: " + m.getClass().getName()))
                     .findFirst()
                     .orElse(defaultReturn.answer(invocation));
         }
     }
+
+
+    //The method mocks only some methods used in my case
+    //You may add some other when for your test here
+    public static Response mockResponseForJavaxClient(Client javaxClientMock) {
+        Response  mockResponse = mock(Response.class);
+        WebTarget webTarget = mock(WebTarget.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
+        when(javaxClientMock.target(any(URI.class))).thenReturn(webTarget);
+        when(webTarget.path(any())).thenReturn(webTarget);
+        when(webTarget.request(any(MediaType.class))).thenReturn(builder);
+        when(builder.headers(any())).thenReturn(builder);
+        when(builder.header(any(), any())).thenReturn(builder);
+        when(builder.get()).thenReturn(mockResponse);
+        return mockResponse;
+    }
+
+
+    //Please use resetSystemProperties after using this method, so other test won't be affected
+    public static void mockSystemPropertyWithKeyValue(String key, String value) {
+        MockEnvironment mockEnvironment = new MockEnvironment();
+        mockEnvironment.setProperty(key, value);
+
+        SystemProperties systemProperties = new SystemProperties();
+        systemProperties.setEnvironment(mockEnvironment);
+    }
+
+    public static void resetSystemProperties() {
+        SystemProperties systemProperties = new SystemProperties();
+        systemProperties.setEnvironment(null);
+    }
+
 }

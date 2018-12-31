@@ -22,12 +22,14 @@ package org.onap.vid.aai.util;
 
 
 import com.att.eelf.configuration.EELFLogger;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
 import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.Unchecked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
@@ -37,6 +39,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,7 +57,6 @@ public class AAIRestInterface {
 	protected EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AAIRestInterface.class);
 
 	protected final EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("aai");
-
 
 	/** The client. */
 	private Client client = null;
@@ -105,9 +107,9 @@ public class AAIRestInterface {
 		return URLEncoder.encode(nodeKey, "UTF-8").replaceAll("\\+", "%20");
 	}
 
-    private void initRestClient() {
-        initRestClient(false);
-    }
+	protected void initRestClient() {
+		initRestClient(false);
+	}
 
 
 	private void initRestClient(boolean propagateExceptions) {
@@ -160,47 +162,61 @@ public class AAIRestInterface {
 	 * @param xml the xml
 	 * @return the string
 	 */
-	public ResponseWithRequestInfo RestGet(String fromAppId, String transId, String requestUri, boolean xml) {
+	public ResponseWithRequestInfo RestGet(String fromAppId, String transId, URI requestUri, boolean xml) {
 		return RestGet(fromAppId, transId, requestUri, xml, false);
 	}
 
-	public ResponseWithRequestInfo RestGet(String fromAppId, String transId, String requestUri, boolean xml, boolean propagateExceptions) {
-        String methodName = "RestGet";
-		String url = systemPropertyHelper.getFullServicePath(requestUri);
+	public ResponseWithRequestInfo RestGet(String fromAppId, String transId, URI requestUri, boolean xml, boolean propagateExceptions) {
+		return doRest(fromAppId, transId, requestUri, null, HttpMethod.GET, xml, propagateExceptions);
+	}
+
+	public ResponseWithRequestInfo doRest(String fromAppId, String transId, URI requestUri, String payload, HttpMethod method, boolean xml, boolean propagateExceptions) {
+		String url = null;
+		String methodName = "Rest"+method.name();
 		try {
+
+			url = systemPropertyHelper.getFullServicePath(requestUri);
+
 			initRestClient(propagateExceptions);
 
 			logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 			logger.debug(EELFLoggerDelegate.debugLogger, url + " for the get REST API");
 
-			Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
+			Logging.logRequest(outgoingRequestsLogger, method, url, payload);
 
 			final Response response;
-            Invocation.Builder requestBuilder = client.target(url)
-                    .request()
-                    .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-                    .header(TRANSACTION_ID_HEADER, transId)
-                    .header(FROM_APP_ID_HEADER, fromAppId)
-                    .header("Content-Type", MediaType.APPLICATION_JSON)
-                    .header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId());
-            response = systemPropertyHelper.isClientCertEnabled() ?
-                    requestBuilder.get() : authenticateRequest(requestBuilder).get();
-			Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
+			Invocation.Builder requestBuilder = client.target(url)
+					.request()
+					.accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+					.header(TRANSACTION_ID_HEADER, transId)
+					.header(FROM_APP_ID_HEADER, fromAppId)
+					.header("Content-Type", MediaType.APPLICATION_JSON)
+					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId());
 
-			if (response.getStatusInfo().equals(Response.Status.OK)) {
+			requestBuilder = systemPropertyHelper.isClientCertEnabled() ?
+					requestBuilder : authenticateRequest(requestBuilder);
+
+			Invocation restInvocation = StringUtils.isEmpty(payload) ?
+					requestBuilder.build(method.name()) :
+					requestBuilder.build(method.name(), Entity.entity(payload, MediaType.APPLICATION_JSON));
+
+			response = restInvocation.invoke();
+			Logging.logResponse(outgoingRequestsLogger, method, url, response);
+
+			if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
 				logger.debug(EELFLoggerDelegate.debugLogger, methodName + SUCCESSFUL_API_MESSAGE);
 				logger.info(EELFLoggerDelegate.errorLogger, methodName + SUCCESSFUL_API_MESSAGE);
 			} else {
 				logger.debug(EELFLoggerDelegate.debugLogger, getInvalidResponseLogMessage(url, methodName, response));
 			}
-			return new ResponseWithRequestInfo(response, url, HttpMethod.GET);
+			return new ResponseWithRequestInfo(response, url, method);
 		} catch (Exception e) {
 			logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
 			if (propagateExceptions) {
-                throw new ExceptionWithRequestInfo(HttpMethod.GET, defaultIfNull(url, requestUri), e);
-            } else {
-                return new ResponseWithRequestInfo(null, url, HttpMethod.GET);
-            }
+				throw new ExceptionWithRequestInfo(method, defaultIfNull(url, requestUri.toASCIIString()), e);
+			} else {
+				return new ResponseWithRequestInfo(null, url, method);
+			}
 		}
 	}
 
@@ -222,7 +238,7 @@ public class AAIRestInterface {
 		transId += ":" + UUID.randomUUID().toString();
 		logger.debug(methodName + START_STRING);
 		Boolean response = false;
-		String url = systemPropertyHelper.getFullServicePath(path);;
+		String url = systemPropertyHelper.getFullServicePath(path);
 		try {
 
 			initRestClient();
@@ -263,37 +279,11 @@ public class AAIRestInterface {
 	 * @param path the path
 	 * @param payload the payload
 	 * @param xml the xml
+	 * @param propagateExceptions
 	 * @return the string
 	 */
-	public Response RestPut(String fromAppId, String path, String payload, boolean xml) {
-		String methodName = "RestPut";
-		String url=systemPropertyHelper.getFullServicePath(path);
-		String transId = UUID.randomUUID().toString();
-		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
-
-        Response response = null;
-		try {
-			initRestClient();
-			Logging.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, payload);
-			response = authenticateRequest(client.target(url)
-					.request()
-                    .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-					.header(TRANSACTION_ID_HEADER, transId)
-					.header(FROM_APP_ID_HEADER,  fromAppId))
-					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
-					.put(Entity.entity(payload, MediaType.APPLICATION_JSON));
-			Logging.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, response);
-
-			if (response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
-				logger.info(EELFLoggerDelegate.errorLogger, getValidResponseLogMessage(methodName));
-				logger.debug(EELFLoggerDelegate.debugLogger, getValidResponseLogMessage(methodName));
-			} else {
-				logger.debug(EELFLoggerDelegate.debugLogger, getInvalidResponseLogMessage(url, methodName, response));
-			}
-		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
-		}
-		return response;
+	public ResponseWithRequestInfo RestPut(String fromAppId, String path, String payload, boolean xml, boolean propagateExceptions) {
+		return doRest(fromAppId, UUID.randomUUID().toString(), Unchecked.toURI(path), payload, HttpMethod.PUT, xml, propagateExceptions);
 	}
 
 
@@ -313,13 +303,13 @@ public class AAIRestInterface {
 		String transId = UUID.randomUUID().toString();
 		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 
-        Response response = null;
+		Response response = null;
 		try {
 			initRestClient();
 			Logging.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
-			response = authenticateRequest(client.target(systemPropertyHelper.getServiceBasePath(path))
+			response = authenticateRequest(client.target(url)
 					.request()
-                    .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
+					.accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
 					.header(TRANSACTION_ID_HEADER, transId)
 					.header(FROM_APP_ID_HEADER,  fromAppId))
 					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())

@@ -1,9 +1,9 @@
 package org.onap.vid.model;
 
-import java.util.Map;
-
 import org.junit.Test;
-import org.onap.vid.domain.mso.RequestReferences;
+import org.onap.vid.mso.model.RequestReferences;
+
+import java.util.Map;
 
 public class RequestReferencesContainerTest {
 

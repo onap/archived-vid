@@ -130,8 +130,6 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 		var polls = PropertyService.retrieveMsoMaxPolls();
 		PropertyService.setMsoMaxPolls(polls);
 		
-		PropertyService.setServerResponseTimeoutMsec(30000);
-
 		$scope.isSpinnerVisible = true;
 	
 		

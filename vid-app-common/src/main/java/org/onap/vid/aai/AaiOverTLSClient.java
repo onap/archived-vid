@@ -20,25 +20,24 @@
 
 package org.onap.vid.aai;
 
-import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.ACCEPT;
-import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.CONTENT_TYPE;
-import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.FROM_APP_ID_HEADER;
-import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.REQUEST_ID;
-import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.TRANSACTION_ID_HEADER;
-
 import io.joshworks.restclient.http.HttpResponse;
+import io.joshworks.restclient.http.JsonNode;
 import io.vavr.collection.HashMap;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.model.ResourceType;
+import org.onap.vid.aai.util.AAIProperties;
+import org.onap.vid.client.SyncRestClientInterface;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.model.SubscriberList;
+
+import javax.ws.rs.core.MediaType;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.aai.model.AaiNodeQueryResponse;
-import org.onap.vid.aai.model.ResourceType;
-import org.onap.vid.aai.util.AAIProperties;
-import org.onap.vid.client.SyncRestClientInterface;
-import org.onap.vid.model.SubscriberList;
+
+import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.*;
 
 public class AaiOverTLSClient implements AaiOverTLSClientInterface {
 
@@ -64,9 +63,23 @@ public class AaiOverTLSClient implements AaiOverTLSClientInterface {
     }
 
     @Override
-    public HttpResponse<AaiNodeQueryResponse> searchNodeTypeByName(String name, ResourceType type) {
-        String uri = urlBase + String.format(URIS.NODE_TYPE_BY_NAME, type.getAaiFormat(), type.getNameFilter(), name);
-        return syncRestClient.get(uri, getRequestHeaders(), Collections.emptyMap(), AaiNodeQueryResponse.class);
+    public boolean isNodeTypeExistsByName(String name, ResourceType type) {
+
+        if (StringUtils.isEmpty(name)) {
+            throw new GenericUncheckedException("Empty resource-name provided to isNodeTypeExistsByName; request is rejected as this will cause full resources listing");
+        }
+
+        String path = String.format( // e.g. GET /aai/v$/nodes/vf-modules?vf-module-name={vf-module-name}
+                "nodes/%s?%s=%s",
+                type.getAaiFormat(),
+                type.getNameFilter(),
+                name
+        );
+
+        String uri = urlBase + path;
+        final HttpResponse<JsonNode> response = syncRestClient.get(uri, getRequestHeaders(), Collections.emptyMap());
+
+        return response.isSuccessful();
     }
 
     @Override

@@ -20,51 +20,44 @@
 
 package org.onap.vid.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.asdc.beans.tosca.Input;
 import org.onap.vid.asdc.beans.tosca.NodeTemplate;
 
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 /**
  * The Class Node.
  */
-public class Node {
+public class Node implements MinimalNode {
 	/** The Constant LOG. */
 	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(Node.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
 	/** The uuid. */
 	private String uuid;
-	
+
 	/** The invariant uuid. */
 	private String invariantUuid;
-	
+
 	/** The description. */
 	private String description;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The version. */
 	private String version;
-	
+
 	/** The model customization uuid. */
 	private String customizationUuid;
-	
+
 	/** The inputs. */
 	private Map<String, Input> inputs = new HashMap<>();
-	
+
 	/** The get_input or other constructs from node template properties. */
 	private Map<String, CommandProperty> commands;
-	
+
 	/** The get_input or other constructs from node template properties. */
 	private Map<String, String> properties;
 
@@ -74,8 +67,8 @@ public class Node {
 	 * Instantiates a new node.
 	 */
 	public Node() {
-		this.commands = new HashMap<String, CommandProperty>();
-		this.properties = new HashMap<String, String>();
+		this.commands = new HashMap<>();
+		this.properties = new HashMap<>();
 	}
 	
 	/**
@@ -253,7 +246,6 @@ public class Node {
 	/**
 	 * Extract node.
 	 *
-	 * @param modelCustomizationName the model customization name
 	 * @param nodeTemplate the node template
 	 * @return the node
 	 */
@@ -272,14 +264,14 @@ public class Node {
 		try {
 			// nodeTemplate.getProperties() map of String->Object
 			for (Entry<String, Object> entrySet : nodeTemplate.getProperties().entrySet()) {
-				LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " node template property: " + entrySet.getKey());
+				LOG.debug(EELFLoggerDelegate.debugLogger, methodName + " node template property: " + entrySet.getKey());
 				if ( entrySet.getValue() != null ) {
 					readStringAndCommandsProperties(entrySet);
 				}
 			}
 		}
 		catch ( Exception e ) {
-			LOG.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + methodName + " Unable to parse node properties: e=" + 
+			LOG.error(EELFLoggerDelegate.errorLogger, methodName + " Unable to parse node properties: e=" +
 					e.toString());
 		}
 	}
@@ -287,7 +279,7 @@ public class Node {
 	private void readStringAndCommandsProperties(Entry<String, Object> entrySet) {
 		String key = entrySet.getKey();
 		String methodName = "readStringAndCommandsProperties";
-		LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + "  property: " +
+		LOG.debug(EELFLoggerDelegate.debugLogger, methodName + "  property: " +
 				key + "=" + entrySet.getValue());
 		Class<?> c = entrySet.getValue().getClass();
 		if ( c.getName().equalsIgnoreCase(String.class.getName())) {

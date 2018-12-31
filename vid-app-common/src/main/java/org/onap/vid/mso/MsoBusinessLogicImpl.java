@@ -26,24 +26,22 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.onap.vid.changeManagement.ChangeManagementRequest;
-import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.controllers.OperationalEnvironmentController;
-import org.onap.vid.domain.mso.RequestInfo;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
-import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
-import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
-import org.onap.vid.mso.rest.*;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.changeManagement.ChangeManagementRequest;
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.model.RequestReferencesContainer;
+import org.onap.vid.model.SoftDeleteRequest;
+import org.onap.vid.mso.model.*;
+import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
+import org.onap.vid.mso.rest.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.togglz.core.manager.FeatureManager;
 
 import javax.ws.rs.BadRequestException;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -53,7 +51,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.StringUtils.upperCase;
 import static org.onap.vid.changeManagement.ChangeManagementRequest.MsoChangeManagementRequest;
-import static org.onap.vid.controllers.MsoController.*;
+import static org.onap.vid.controller.MsoController.*;
 import static org.onap.vid.mso.MsoProperties.*;
 import static org.onap.vid.properties.Features.FLAG_UNASSIGN_SERVICE;
 import static org.onap.vid.utils.Logging.debugRequestDetails;
@@ -68,16 +66,14 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             .map(requestType -> requestType.toString().toUpperCase())
             .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     private static final String RESOURCE_TYPE = "resourceType";
-    /**
-     * The Constant dateFormat.
-     */
-    private static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
     private static final Pattern SOFTWARE_VERSION_PATTERN = Pattern.compile("^[A-Za-z0-9.\\-]+$");
     private static final Pattern NUMBER_PATTERN = Pattern.compile("^[0-9]+$");
     private static final String ACTIVATE = "/activate";
     private static final String DEACTIVATE = "/deactivate";
     private static final String ENABLE_PORT = "/enablePort";
     private static final String DISABLE_PORT = "/disablePort";
+    private static final String ACTIVATE_FABRIC_CONFIGURATION = "/activateFabricConfiguration";
+    private static final String DEACTIVATE_AND_CLOUD_DELETE = "/deactivateAndCloudDelete";
     private static final String RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT = "operationalEnvironment";
     private static final String SOURCE_OPERATIONAL_ENVIRONMENT = "VID";
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -130,8 +126,8 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
 
-        String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        return msoClientInterface.createVnf(requestDetails, vnf_endpoint);
+        String vnfEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        return msoClientInterface.createVnf(requestDetails, vnfEndpoint);
     }
 
     @Override
@@ -150,10 +146,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
 
-        String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        vnf_endpoint = vnf_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        String vnfEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        vnfEndpoint = vnfEndpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
 
-        return msoClientInterface.createVolumeGroupInstance(requestDetails, vnf_endpoint);
+        return msoClientInterface.createVolumeGroupInstance(requestDetails, vnfEndpoint);
     }
 
     @Override
@@ -232,10 +228,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("deleteVnf");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
-        String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        vnf_endpoint = vnf_endpoint + '/' + vnfInstanceId;
+        String vnfEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        vnfEndpoint = vnfEndpoint + '/' + vnfInstanceId;
 
-        return msoClientInterface.deleteVnf(requestDetails, vnf_endpoint);
+        return msoClientInterface.deleteVnf(requestDetails, vnfEndpoint);
     }
 
     @Override
@@ -255,8 +251,8 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
         String svc_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        String vnf_endpoint = svc_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-        String delete_volume_group_endpoint = vnf_endpoint + "/" + volumeGroupId;
+        String vnfEndpoint = svc_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        String delete_volume_group_endpoint = vnfEndpoint + "/" + volumeGroupId;
 
         return msoClientInterface.deleteVolumeGroupInstance(requestDetails, delete_volume_group_endpoint);
     }
@@ -341,7 +337,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         RestObject<String> restObjStr = new RestObject<>();
         String str = new String();
         restObjStr.set(str);
-        MsoResponseWrapper msoResponseWrapper = msoClientInterface.getOrchestrationRequestsForDashboard(str, "", orchestrationReqPath, restObjStr);
+        MsoResponseWrapper msoResponseWrapper = msoClientInterface.getOrchestrationRequest(str, "", orchestrationReqPath, restObjStr, true);
         return deserializeOrchestrationRequestsJson(msoResponseWrapper.getEntity());
     }
 
@@ -447,9 +443,9 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         String endpoint;
         endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
-        String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        vnf_endpoint = vnf_endpoint + '/' + vnfInstanceId;
-        return msoClientInterface.updateVnf(requestDetails, vnf_endpoint);
+        String vnfEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        vnfEndpoint = vnfEndpoint + '/' + vnfInstanceId;
+        return msoClientInterface.updateVnf(requestDetails, vnfEndpoint);
     }
 
     @Override
@@ -457,10 +453,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("replaceVnf");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE);
-        String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        vnf_endpoint = vnf_endpoint.replace(VNF_INSTANCE_ID, vnfInstanceId);
-        vnf_endpoint = vnf_endpoint.replace(REQUEST_TYPE, MsoChangeManagementRequest.REPLACE);
-        return msoClientInterface.replaceVnf(requestDetails, vnf_endpoint);
+        String vnfEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        vnfEndpoint = vnfEndpoint.replace(VNF_INSTANCE_ID, vnfInstanceId);
+        vnfEndpoint = vnfEndpoint.replace(REQUEST_TYPE, MsoChangeManagementRequest.REPLACE);
+        return msoClientInterface.replaceVnf(requestDetails, vnfEndpoint);
     }
 
     public RequestDetailsWrapper generateInPlaceMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails) {
@@ -486,27 +482,82 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
     @Override
+    public String getActivateFabricConfigurationPath(String serviceInstanceId) {
+        String path = validateEndpointPath(MsoProperties.MSO_REST_API_SERVICE_INSTANCE_CREATE);
+        path += "/" + serviceInstanceId + ACTIVATE_FABRIC_CONFIGURATION;
+
+        return path;
+    }
+
+    @Override
+    public String getDeactivateAndCloudDeletePath(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId) {
+        String path = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
+        path = path.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        path = path.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        path += "/" + vfModuleInstanceId + DEACTIVATE_AND_CLOUD_DELETE;
+
+        return path;
+    }
+
+    @Override
+    public RequestDetails buildRequestDetailsForSoftDelete(SoftDeleteRequest softDeleteRequest) {
+        RequestDetails requestDetails = new RequestDetails();
+        RequestInfo requestInfo = new RequestInfo();
+        requestInfo.setSource("VID");
+        requestInfo.setRequestorId(softDeleteRequest.getUserId());
+        requestDetails.setRequestInfo(requestInfo);
+
+        CloudConfiguration cloudConfiguration = new CloudConfiguration();
+        cloudConfiguration.setTenantId(softDeleteRequest.getTenantId());
+        cloudConfiguration.setLcpCloudRegionId(softDeleteRequest.getLcpCloudRegionId());
+        requestDetails.setCloudConfiguration(cloudConfiguration);
+
+        ModelInfo modelInfo = new ModelInfo();
+        modelInfo.setModelType("vfModule");
+        requestDetails.setModelInfo(modelInfo);
+
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setTestApi("GR_API");
+        requestDetails.setRequestParameters(requestParameters);
+
+        return requestDetails;
+    }
+
+    @Override
+    public MsoResponseWrapper2 deactivateAndCloudDelete(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId, RequestDetails requestDetails) {
+        String path = getDeactivateAndCloudDeletePath(serviceInstanceId, vnfInstanceId, vfModuleInstanceId);
+        return new MsoResponseWrapper2<>(msoClientInterface.post(path, new RequestDetailsWrapper<>(requestDetails), RequestReferencesContainer.class));
+    }
+
+    @Override
+    public MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails) {
+        String path = getActivateFabricConfigurationPath(serviceInstanceId);
+        return new MsoResponseWrapper2<>(msoClientInterface.post(path, new RequestDetailsWrapper<>(requestDetails), RequestReferencesContainer.class));
+    }
+
+
+    @Override
     public MsoResponseWrapperInterface updateVnfSoftware(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
         logInvocationInDebug("updateVnfSoftware");
-        String vnf_endpoint = getChangeManagementEndpoint(serviceInstanceId, vnfInstanceId, MsoChangeManagementRequest.SOFTWARE_UPDATE); //workflow name in mso is different than workflow name in vid UI
+        String vnfEndpoint = getChangeManagementEndpoint(serviceInstanceId, vnfInstanceId, MsoChangeManagementRequest.SOFTWARE_UPDATE); //workflow name in mso is different than workflow name in vid UI
         RequestDetailsWrapper finalRequestDetails = generateInPlaceMsoRequest(requestDetails);
-        return msoClientInterface.changeManagementUpdate(finalRequestDetails, vnf_endpoint);
+        return msoClientInterface.changeManagementUpdate(finalRequestDetails, vnfEndpoint);
     }
 
     @Override
     public MsoResponseWrapperInterface updateVnfConfig(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
         logInvocationInDebug("updateVnfConfig");
         RequestDetailsWrapper finalRequestDetails = generateConfigMsoRequest(requestDetails);
-        String vnf_endpoint = getChangeManagementEndpoint(serviceInstanceId, vnfInstanceId, MsoChangeManagementRequest.CONFIG_UPDATE);
-        return msoClientInterface.changeManagementUpdate(finalRequestDetails, vnf_endpoint);
+        String vnfEndpoint = getChangeManagementEndpoint(serviceInstanceId, vnfInstanceId, MsoChangeManagementRequest.CONFIG_UPDATE);
+        return msoClientInterface.changeManagementUpdate(finalRequestDetails, vnfEndpoint);
     }
 
     private String getChangeManagementEndpoint(String serviceInstanceId, String vnfInstanceId, String vnfRequestType) {
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_CHANGE_MANAGEMENT_INSTANCE);
-        String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        vnf_endpoint = vnf_endpoint.replace(VNF_INSTANCE_ID, vnfInstanceId);
-        vnf_endpoint = vnf_endpoint.replace(REQUEST_TYPE, vnfRequestType);
-        return vnf_endpoint;
+        String vnfEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        vnfEndpoint = vnfEndpoint.replace(VNF_INSTANCE_ID, vnfInstanceId);
+        vnfEndpoint = vnfEndpoint.replace(REQUEST_TYPE, vnfRequestType);
+        return vnfEndpoint;
     }
 
     private Map getChangeManagementPayload(RequestDetails requestDetails, String message) {
@@ -598,8 +649,8 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             return MsoUtil.wrapResponse(restObjStr);
 
         } catch (Exception e) {
-            logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            logger.error(EELFLoggerDelegate.errorLogger, methodName + e.toString());
+            logger.debug(EELFLoggerDelegate.debugLogger, methodName + e.toString());
             throw e;
         }
     }
@@ -632,13 +683,13 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         requestInfo.setRequestorId(details.getUserId());
         requestDetails.setRequestInfo(requestInfo);
 
-        org.onap.vid.domain.mso.RelatedInstance relatedInstance = new org.onap.vid.domain.mso.RelatedInstance();
+        RelatedInstance relatedInstance = new RelatedInstance();
         relatedInstance.setAdditionalProperty(RESOURCE_TYPE, RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT);
         relatedInstance.setInstanceId(details.getRelatedInstanceId());
         relatedInstance.setInstanceName(details.getRelatedInstanceName());
         requestDetails.setAdditionalProperty("relatedInstanceList", Collections.singletonList(ImmutableMap.of("relatedInstance", relatedInstance)));
 
-        org.onap.vid.domain.mso.RequestParameters requestParameters = new org.onap.vid.domain.mso.RequestParameters();
+        RequestParameters requestParameters = new RequestParameters();
         requestParameters.setUserParams(null);
         requestParameters.setAdditionalProperty("operationalEnvironmentType", "VNF");
         requestParameters.setAdditionalProperty("workloadContext", details.getWorkloadContext());
@@ -669,7 +720,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         requestInfo.setRequestorId(details.getUserId());
         requestDetails.setRequestInfo(requestInfo);
 
-        org.onap.vid.domain.mso.RequestParameters requestParameters = new org.onap.vid.domain.mso.RequestParameters();
+        RequestParameters requestParameters = new RequestParameters();
         requestParameters.setUserParams(null);
         requestParameters.setAdditionalProperty("operationalEnvironmentType", "VNF");
         requestDetails.setRequestParameters(requestParameters);
@@ -760,12 +811,12 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
     private void logInvocationInDebug(String methodName) {
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + "  start");
+        logger.debug(EELFLoggerDelegate.debugLogger, methodName + "  start");
     }
 
     private void logException(String methodName, Exception e) {
-        logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+        logger.error(EELFLoggerDelegate.errorLogger, methodName + e.toString());
+        logger.debug(EELFLoggerDelegate.debugLogger, methodName + e.toString());
     }
 
     enum RequestType {
@@ -781,6 +832,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         SCALE_OUT("scaleOut"),
         UNKNOWN("unknown"),
         NOT_PROVIDED("not provided");
+        private final String value;
         private static final Map<String, RequestType> CONSTANTS = new HashMap<>();
 
         static {
@@ -788,8 +840,6 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
                 CONSTANTS.put(c.value, c);
             }
         }
-
-        private final String value;
 
         RequestType(String value) {
             this.value = value;

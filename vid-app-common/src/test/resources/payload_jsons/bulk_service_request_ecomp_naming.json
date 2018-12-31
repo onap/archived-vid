@@ -48,6 +48,7 @@
 							},
 							"cloudConfiguration": {
 								"lcpCloudRegionId": "mdt1",
+								"cloudOwner": "att-aic",
 								"tenantId": "88a6ca3ee0394ade9403f075db23167e"
 							},
 							"platform": {
@@ -57,9 +58,14 @@
 								"lineOfBusinessName": "lineOfBusinessName"
 							},
 							"productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-							"instanceParams": [],
+							"instanceParams": [{
+                              "vmx_int_net_len": "24",
+                              "availability_zone_0": "mtpocdv-kvm-az01",
+                              "vre_a_volume_size_0": "100"
+							}],
 							"vfModules": [{
                               "modelInfo": {
+                                "modelCustomizationName" : "201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0",
                                 "modelType": "vfModule",
                                 "modelName": "201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0",
                                 "modelVersionId": "4c75f813-fa91-45a4-89d0-790ff5f1ae79",
@@ -71,6 +77,7 @@
                             },
                               {
                                 "modelInfo": {
+                                  "modelCustomizationName" : "201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1",
                                   "modelType": "vfModule",
                                   "modelName": "201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1",
                                   "modelVersionId": "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",

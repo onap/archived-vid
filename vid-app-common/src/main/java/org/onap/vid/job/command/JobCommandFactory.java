@@ -34,7 +34,7 @@ public class JobCommandFactory {
     public JobCommand toCommand(Job job) {
 
         final JobCommand command = jobFactory.apply(job.getType().getCommandClass());
-        command.init(job.getUuid(), job.getData());
+        command.init(job.getSharedData(), job.getData());
 
         return command;
     }

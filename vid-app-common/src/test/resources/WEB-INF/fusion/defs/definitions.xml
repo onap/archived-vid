@@ -2,11 +2,6 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
-
-<!-- This tiles definitions file is fusion/defs/definitions.xml. It maps 
-	tokens used by SDK-core controllers to JSP file paths. To minimize upgrade 
-	effort, this file should not be changed by on-boarding applications. -->
-
 <tiles-definitions>
 
 	<definition name="ebz_template" template="/WEB-INF/fusion/jsp/ebz_template.jsp">
@@ -93,11 +88,6 @@
 			value="/WEB-INF/fusion/jsp/collaborateList.jsp"></put-attribute>
 	</definition>
 
-	<!-- <definition extends="ebz_template" name="notebook">
-		<put-attribute name="body"
-			value="/WEB-INF/fusion/jsp/notebook.jsp"></put-attribute>
-	</definition> -->
-	
 	<definition name="notebook"
 		template="app/fusion/notebook-integration/scripts/view-models/notebook.htm" />
 		
@@ -138,18 +128,9 @@
 		</definition> -->
 	<definition name="collaboration"
 		template="/WEB-INF/fusion/jsp/webrtc/collaboration.jsp" />
-	<definition name="user_profile_list"
-		template="/app/fusion/scripts/DS2-view-models/ds2-profile/profile.html" />
-	<definition name="admin"
-		template="/app/fusion/scripts/DS2-view-models/ds2-admin/admin.html" />
-	<definition name="workflows"
-		template="/app/fusion/scripts/view-models/workflows/workflow-landing.html" />
-	<definition name="report_dashboard"
-		template="/app/fusion/scripts/view-models/reportdashboard-page/src/report-dashboard.html" />
-	<definition name="samplePage"
-		template="/app/fusion/scripts/DS2-view-models/ds2-samplePages/samplePage.html" />
-	<definition name="ds2_sample" template="/app/fusionapp/scripts/DS2-view-models/sampleDS2.html" /> 
-
+    <definition name="user_profile_list" template="/app/fusion/scripts/view-models/admin-page/profile.html"/>
+    <definition name="admin" template="/app/fusion/scripts/DS2-view-models/ds2-admin/admin.html" />
+    <definition name="workflows" template="/app/fusion/scripts/view-models/workflows/workflow-landing.html"/>
 
 	<definition extends="ebz_template" name="report_wizard">
 		<put-attribute name="body"

@@ -1,17 +1,9 @@
 package org.onap.vid.utils;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.junit.Test;
-import org.springframework.http.HttpMethod;
-
 import com.att.eelf.configuration.EELFLogger;
+import org.junit.Test;
 
 public class LoggingTest {
-
-    private Logging createTestSubject() {
-        return new Logging();
-    }
 
     @Test
     public void testGetMethodName() throws Exception {

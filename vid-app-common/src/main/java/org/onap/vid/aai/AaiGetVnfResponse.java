@@ -1,8 +1,7 @@
 package org.onap.vid.aai;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import com.google.common.base.MoreObjects;
-import org.codehaus.jackson.annotate.*;
 import org.onap.vid.aai.model.VnfResult;
 
 import java.util.HashMap;

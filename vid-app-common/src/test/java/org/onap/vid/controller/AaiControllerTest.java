@@ -7,9 +7,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.AaiResponseTranslator;
-import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
-import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
-import org.onap.vid.controllers.AaiController;
 import org.onap.vid.services.AaiService;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -18,7 +15,6 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-
 
 public class AaiControllerTest {
 
@@ -36,9 +32,9 @@ public class AaiControllerTest {
     @Test
     public void getPortMirroringConfigData_givenThreeIds_ReturnsThreeResults() {
 
-        final PortMirroringConfigDataOk toBeReturnedForA = new PortMirroringConfigDataOk("foobar");
-        final PortMirroringConfigDataError toBeReturnedForB = new PortMirroringConfigDataError("foo", "{ baz: qux }");
-        final PortMirroringConfigDataOk toBeReturnedForC = new PortMirroringConfigDataOk("corge");
+        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForA = new AaiResponseTranslator.PortMirroringConfigDataOk("foobar");
+        final AaiResponseTranslator.PortMirroringConfigDataError toBeReturnedForB = new AaiResponseTranslator.PortMirroringConfigDataError("foo", "{ baz: qux }");
+        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForC = new AaiResponseTranslator.PortMirroringConfigDataOk("corge");
 
         Mockito
                 .doReturn(toBeReturnedForA)

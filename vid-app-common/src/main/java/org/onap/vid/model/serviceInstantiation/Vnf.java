@@ -22,99 +22,64 @@ package org.onap.vid.model.serviceInstantiation;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang3.StringUtils;
-import org.onap.vid.domain.mso.ModelInfo;
+import org.onap.vid.job.JobAdapter;
+import org.onap.vid.mso.model.ModelInfo;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The Class VNF.
  */
-public class Vnf  {
-	private final ModelInfo modelInfo;
+public class Vnf extends BaseResource implements JobAdapter.AsyncJobRequest {
 
 	private final String productFamilyId;
 
-	private final String instanceName;
-
 	private final String platformName;
 
-	private final String lcpCloudRegionId;
-
-	private final String tenantId;
-
-	private final Boolean isUserProvidedNaming;
-
-	private final List<Map<String, String>> instanceParams;
-
 	private final String lineOfBusiness;
-
 
 	private final Map<String, Map<String, VfModule>> vfModules;
 
 	public Vnf(@JsonProperty("modelInfo") ModelInfo modelInfo,
-			   @JsonProperty("productFamilyId") String productFamilyId,
-			   @JsonProperty("instanceName") String instanceName,
-			   @JsonProperty("isUserProvidedNaming") Boolean isUserProvidedNaming,
-			   @JsonProperty("platformName") String platformName,
-			   @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
-			   @JsonProperty("tenantId") String tenantId,
-			   @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
-			   @JsonProperty("lineOfBusinessName") String lineOfBusiness,
-			   @JsonProperty("vfModules") Map<String, Map<String, VfModule>> vfModules) {
-		this.modelInfo = modelInfo;
-		this.modelInfo.setModelType("vnf");
-		this.productFamilyId = productFamilyId;
-		this.instanceName = instanceName;
-		this.isUserProvidedNaming = isUserProvidedNaming;
-		this.platformName = platformName;
-		this.lcpCloudRegionId = lcpCloudRegionId;
-		this.tenantId = tenantId;
-		this.instanceParams = instanceParams;
-		this.vfModules = vfModules;
-		this.lineOfBusiness = lineOfBusiness;
-	}
+               @JsonProperty("productFamilyId") String productFamilyId,
+               @JsonProperty("instanceName") String instanceName,
+			   @JsonProperty("action") String action,
+               @JsonProperty("platformName") String platformName,
+               @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
+               @JsonProperty("legacyRegion") String legacyRegion,
+               @JsonProperty("tenantId") String tenantId,
+               @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
+               @JsonProperty("lineOfBusinessName") String lineOfBusiness,
+               @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+			   @JsonProperty("instanceId") String instanceId,
+               @JsonProperty("vfModules") Map<String, Map<String, VfModule>> vfModules) {
 
-	public ModelInfo getModelInfo() {
-		return modelInfo;
+		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId);
+		this.productFamilyId = productFamilyId;
+		this.platformName = platformName;
+		this.lineOfBusiness = lineOfBusiness;
+		this.vfModules = vfModules;
 	}
 
 	public String getProductFamilyId() {
 		return productFamilyId;
 	}
 
-	public String getInstanceName() {
-		return instanceName;
-	}
-
-	@JsonProperty("isUserProvidedNaming")
-	public Boolean isUserProvidedNaming() {
-		return isUserProvidedNaming;
-	}
-
 	public String getPlatformName() {
 		return platformName;
 	}
 
-	public String getLcpCloudRegionId() {
-		return lcpCloudRegionId;
-	}
-
-	public String getTenantId() {
-		return tenantId;
-	}
-
-	public List<Map<String, String>> getInstanceParams() {
-		return instanceParams == null ? Collections.emptyList() : instanceParams;
+	public String getLineOfBusiness() {
+		return lineOfBusiness;
 	}
 
 	public  Map<String, Map<String, VfModule>> getVfModules() {
 		return vfModules;
 	}
 
-	public String getLineOfBusiness() {
-		return lineOfBusiness;
+	@Override
+	protected String getModelType() {
+		return "vnf";
 	}
 }

@@ -24,16 +24,18 @@ public class FeaturesTogglingConfiguration {
     public FeatureManager featureManager(ServletContext servletContext, Environment environment) {
         final String defaultFilename = "features.properties";
 
-        String filename = environment.getProperty("featureFlags.filename");
+        String filename = environment.getProperty("features.set.filename");
 
         if (StringUtils.isBlank(filename)) {
             filename = defaultFilename;
         }
 
+        filename = StringUtils.trimToNull(filename);
+
         return new FeatureManagerBuilder()
                 .featureEnum(Features.class)
                 .stateRepository(new FileBasedStateRepository(
-                        new File(servletContext.getRealPath("/WEB-INF/conf/" + filename))
+                        new File(filename.startsWith("/")? filename : servletContext.getRealPath("/WEB-INF/conf/" + filename))
                 ))
                 .build();
     }
