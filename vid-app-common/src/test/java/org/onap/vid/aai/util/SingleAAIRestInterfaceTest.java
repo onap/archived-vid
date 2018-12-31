@@ -27,6 +27,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.utils.Unchecked;
 import org.testng.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -111,7 +112,7 @@ public class SingleAAIRestInterfaceTest {
         // when
         when(builder.put(Mockito.any(Entity.class))).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(OK);
-        Response finalResponse = testSubject.RestPut("", PATH, payload, false);
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
 
         // then
         verify(builder).put(entity);
@@ -127,7 +128,7 @@ public class SingleAAIRestInterfaceTest {
 
         // when
         when(builder.put(Mockito.any(Entity.class))).thenThrow(new RuntimeException());
-        Response finalResponse = testSubject.RestPut("", PATH, payload, false);
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
 
         // then
         verify(builder).put(entity);
@@ -145,7 +146,7 @@ public class SingleAAIRestInterfaceTest {
         when(builder.put(Mockito.any(Entity.class))).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
         when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
-        Response finalResponse = testSubject.RestPut("", PATH, payload, false);
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
 
         // then
         verify(builder).put(entity);
@@ -261,7 +262,7 @@ public class SingleAAIRestInterfaceTest {
         // when
         when(builder.get()).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(OK);
-        Response finalResponse = testSubject.RestGet("", "", PATH, false).getResponse();
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
 
         // then
         Assert.assertEquals(response, finalResponse);
@@ -276,7 +277,7 @@ public class SingleAAIRestInterfaceTest {
         when(builder.get()).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
         when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
-        Response finalResponse = testSubject.RestGet("", "", PATH, false).getResponse();
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
 
         // then
         Assert.assertEquals(response, finalResponse);
@@ -289,7 +290,7 @@ public class SingleAAIRestInterfaceTest {
 
         // when
         when(builder.get()).thenThrow(new RuntimeException());
-        Response finalResponse = testSubject.RestGet("", "", PATH, false).getResponse();
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
 
         // then
         Assert.assertEquals(finalResponse, null);

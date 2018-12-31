@@ -1,8 +1,6 @@
 package org.onap.vid.aai.model;
 
 import com.fasterxml.jackson.annotation.*;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.onap.vid.RelatedTo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +16,8 @@ import java.util.Map;
         "related-to"
 })
 public class VnfResult {
-
     @JsonProperty("id")
     public String id;
-    @com.fasterxml.jackson.annotation.JsonProperty("node-type")
     @JsonProperty("node-type")
     public String nodeType;
     @JsonProperty("url")
@@ -29,10 +25,34 @@ public class VnfResult {
     @JsonProperty("properties")
     public ServiceProperties properties;
     @JsonProperty("related-to")
-    @com.fasterxml.jackson.annotation.JsonProperty("related-to")
     public List<RelatedTo> relatedTo = null;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    @JsonProperty("id")
+    public void setJsonId(String id) {
+        this.id = id;
+    }
+
+    @JsonProperty("node-type")
+    public void setJsonNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+    @JsonProperty("url")
+    public void setJsonUrl(String url) {
+        this.url = url;
+    }
+
+    @JsonProperty("properties")
+    public void setJsonProperties(ServiceProperties properties) {
+        this.properties = properties;
+    }
+
+    @JsonProperty("related-to")
+    public void setJsonRelatedTo(List<RelatedTo> relatedTo) {
+        this.relatedTo = relatedTo;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
@@ -40,7 +60,7 @@ public class VnfResult {
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setJsonAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 }

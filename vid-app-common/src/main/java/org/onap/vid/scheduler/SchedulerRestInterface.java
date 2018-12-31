@@ -4,12 +4,16 @@ import com.att.eelf.configuration.EELFLogger;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.joshworks.restclient.http.HttpResponse;
+import org.apache.http.HttpException;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -24,8 +28,9 @@ import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 @Service
 public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
 
-    final private static EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("scheduler");
+    private static final  EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("scheduler");
     private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SchedulerRestInterface.class);
+    private static final String SUCCESSFUL_API_MESSAGE=" REST api GET was successful!";
     private SyncRestClientInterface syncRestClient;
     private Function<String, String> propertyGetter;
     private Map<String, String> commonHeaders;
@@ -50,30 +55,43 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
         logger.info("\t<== Client Initialized \n");
     }
 
-    public <T> void Get(T t, String sourceId, String path, org.onap.vid.scheduler.RestObject<T> restObject) {
-        initRestClient();
-        String methodName = "Get";
-        String url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
-        Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
-        Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
-                .putAll(commonHeaders)
-                .put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId()).build();
-        final HttpResponse<T> response = ((HttpResponse<T>) syncRestClient.get(url, requestHeaders,
-                Collections.emptyMap(), t.getClass()));
-        Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
-        int status = response.getStatus();
-        restObject.setStatusCode(status);
+    public <T> RestObjectWithRequestInfo<T> Get(T t, String path, RestObject<T> restObject) {
 
-        if (status == 200) {
-            t = response.getBody();
-            restObject.set(t);
+        String url = null;
+        String rawData = null;
+        Integer status = null;
 
-        } else {
-            throw new GenericUncheckedException(String.format("%s with status=%d, url=%s", methodName, status, url));
+        try {
+            String methodName = "Get";
+            url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
+            initRestClient();
+            Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
+            Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
+                    .putAll(commonHeaders)
+                    .put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
+                    .build();
+            final HttpResponse<T> response = ((HttpResponse<T>) syncRestClient.get(url, requestHeaders,
+                    Collections.emptyMap(), t.getClass()));
+            Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
+            status = response.getStatus();
+            restObject.setStatusCode(status);
+
+            if (status == 200) {
+                t = response.getBody();
+                restObject.set(t);
+                logger.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + SUCCESSFUL_API_MESSAGE);
+                logger.info(EELFLoggerDelegate.errorLogger, "<== " + methodName + SUCCESSFUL_API_MESSAGE);
+            } else {
+                throw new GenericUncheckedException(new HttpException(String.format("%s with status=%d, url=%s", methodName, status, url)));
+            }
+            return new RestObjectWithRequestInfo<>(HttpMethod.GET, url, restObject, status, rawData);
+        }
+        catch (RuntimeException e) {
+            throw new ExceptionWithRequestInfo(HttpMethod.GET, url, rawData, status, e);
         }
     }
 
-    public <T> void Delete(T t, String sourceID, String path, org.onap.vid.scheduler.RestObject<T> restObject) {
+    public <T> void Delete(T t, String sourceID, String path, RestObject<T> restObject) {
         initRestClient();
         String url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
         Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);

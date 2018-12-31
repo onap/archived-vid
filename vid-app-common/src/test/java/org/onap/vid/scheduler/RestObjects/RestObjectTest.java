@@ -1,6 +1,7 @@
 package org.onap.vid.scheduler.RestObjects;
 
 import org.junit.Test;
+import org.onap.vid.mso.RestObject;
 
 
 public class RestObjectTest {

@@ -68,7 +68,8 @@
                 <td style="width:30%">
                     <div class="fn-ebz-container">
                         <select style="width: 250px;" ng-model="selectedserviceinstancetype"
-                                ng-options="stype.sinstance as stype.sinstance for stype in serviceInstanceses">
+                                ng-options="stype.sinstance as stype.sinstance for stype in serviceInstanceses"
+                                data-tests-id="selectedServiceInstanceType">
                             <option value="">Select a Service Instance</option>
                         </select>
                     </div>

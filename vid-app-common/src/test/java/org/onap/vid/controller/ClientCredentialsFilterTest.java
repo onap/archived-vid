@@ -19,7 +19,6 @@ import static org.mockito.ArgumentMatchers.any;
 /**
  * Created by amichai on 16/05/2018.
  */
-@Test
 public class ClientCredentialsFilterTest {
 
     @DataProvider

@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite verbose="1" name="VID BE Unit Tests" annotations="JDK">
+
+    <test name="VID BE Unit Tests">
+        <packages>
+            <package name="org.onap.vid.*"/>
+            <package name="org.opencomp.vid.*"/>
+        </packages>
+    </test>
+</suite>

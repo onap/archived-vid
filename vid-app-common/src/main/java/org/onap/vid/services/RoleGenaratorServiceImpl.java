@@ -73,8 +73,9 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
     }
 
     private String addAvailableRolesCombination(Boolean firstRun, SubscriberList subscribers) {
-        String query, availableRoles="";
-        HashMap<String,String> servicesNames = new HashMap<String,String>();
+        String query;
+        String availableRoles="";
+        HashMap<String,String> servicesNames = new HashMap<>();
         for (Subscriber subscriber: subscribers.customer) {
             AaiResponse<Services> subscriberResponse = client.getSubscriberData(subscriber.globalCustomerId);
             for(ServiceSubscription service: subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
@@ -146,13 +147,12 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
     }
 
     private String insertAvailableRolesToFnRole(){
-        String query="INSERT INTO fn_role (ROLE_NAME, ACTIVE_YN, PRIORITY)\r\n" +
+         return "INSERT INTO fn_role (ROLE_NAME, ACTIVE_YN, PRIORITY)\r\n" +
                 "SELECT RNAME, 'Y', 5\r\n" +
                 "FROM available_roles\r\n" +
                 "WHERE NOT EXISTS (SELECT ROLE_NAME\r\n" +
                 "FROM fn_role \r\n" +
                 "where RNAME = ROLE_NAME);\r\n";
-        return query;
     }
 
 

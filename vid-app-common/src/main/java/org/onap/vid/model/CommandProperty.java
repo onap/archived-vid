@@ -20,8 +20,6 @@
 
 package org.onap.vid.model;
 
-import java.util.Map;
-
 /**
  * The Class Command Property.
  */
@@ -87,7 +85,6 @@ public class CommandProperty {
 	}
 	
 	public String toString () {
-		String result = "displayName=" + displayName + " command=" + command + " inputName" + inputName;
-		return result;
+		return "displayName=" + displayName + " command=" + command + " inputName" + inputName;
 	}
 }

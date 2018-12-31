@@ -134,7 +134,7 @@ public class AaiOverTLSClientServerTest {
 
     @Test
     public void shouldGetSubscribers() throws ParseException, JsonProcessingException {
-        ObjectMapper objectMapper = getCodehausObjectMapper();
+        ObjectMapper objectMapper = getFasterXmlObjectMapper();
         AaiOverTLSClient aaiOverTLSClient = new AaiOverTLSClient(new SyncRestClient(objectMapper),  propertySupplier, serverUtil.constructTargetUrl("http", ""));
 
         serverUtil.prepareGetCall("/business/customers", new JSONParser().parse(subscribersResponsePayload), Action.status(HttpStatus.OK_200));
@@ -144,31 +144,6 @@ public class AaiOverTLSClientServerTest {
         SubscriberList subscriberList = allSubscribers.getBody();
         Assertions.assertThat(subscriberList.customer.size()).isEqualTo(4);
         Assertions.assertThat(allSubscribers.getStatus()).isEqualTo(200);
-    }
-
-    private ObjectMapper getCodehausObjectMapper() {
-        return new ObjectMapper() {
-
-            org.codehaus.jackson.map.ObjectMapper om = new org.codehaus.jackson.map.ObjectMapper();
-
-            @Override
-            public <T> T readValue(String s, Class<T> aClass) {
-                try {
-                    return om.readValue(s, aClass);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            @Override
-            public String writeValue(Object o) {
-                try {
-                    return om.writeValueAsString(o);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
     }
 
     private ObjectMapper getFasterXmlObjectMapper() {

@@ -259,8 +259,8 @@ public class MsoBusinessLogicImplTest {
 
         MsoResponseWrapper msoResponseWrapperMock = mock(MsoResponseWrapper.class);
         given(msoInterface
-            .getOrchestrationRequestsForDashboard(any(String.class), any(String.class), any(String.class),
-                any(RestObject.class)))
+            .getOrchestrationRequest(any(String.class), any(String.class), any(String.class),
+                any(RestObject.class), anyBoolean()))
             .willReturn(msoResponseWrapperMock);
         given(msoResponseWrapperMock.getEntity())
             .willReturn(vnfModelTypeOrchestrationRequests, scaleOutActionOrchestrationRequests);
@@ -276,7 +276,7 @@ public class MsoBusinessLogicImplTest {
                 .map(el -> el.getRequestType().toUpperCase())
                 .collect(Collectors.toList()));
         assertThat(filteredOrchestrationReqs)
-            .extracting(org.onap.vid.domain.mso.Request::getRequestScope)
+            .extracting(Request::getRequestScope)
             .containsOnly("vnf", "vfModule");
     }
 

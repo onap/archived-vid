@@ -1,40 +1,31 @@
 package org.onap.vid.aai.model;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceRelationships {
 	
-	@JsonProperty("service-instance-id")
 	public String serviceInstanceId;
 
-	@JsonProperty("service-instance-name")
 	public String serviceInstanceName;
 
-	@JsonProperty("service-type")
 	public String serviceType;
 
-	@JsonProperty("service-role")
 	public String serviceRole;
 
-	@JsonProperty("environment-context")
 	public String environmentContext;
 
-	@JsonProperty("workload-context")
 	public String workloadContext;
 
-	@JsonProperty("model-invariant-id")
 	public String modelInvariantId;
-	
-	@JsonProperty("model-version-id")
+
 	public String modelVersionId;
 
-	@JsonProperty("resource-version")
 	public String resourceVersion;
-	
-	@JsonProperty("orchestration-status")
+
 	public String orchestrationStatus;
 
-	@JsonProperty("relationship-list")
 	public RelationshipList relationshipList;
 
 
@@ -42,7 +33,8 @@ public class ServiceRelationships {
 		return serviceInstanceId;
 	}
 
-	public void setServiceInstanceId(String serviceInstanceId) {
+	@JsonProperty("service-instance-id")
+	public void setJsonServiceInstanceId(String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
 	}
 
@@ -50,7 +42,8 @@ public class ServiceRelationships {
 		return serviceInstanceName;
 	}
 
-	public void setServiceInstanceName(String serviceInstanceName) {
+	@JsonProperty("service-instance-name")
+	public void setJsonServiceInstanceName(String serviceInstanceName) {
 		this.serviceInstanceName = serviceInstanceName;
 	}
 
@@ -58,7 +51,44 @@ public class ServiceRelationships {
 		return modelInvariantId;
 	}
 
-	public void setModelInvariantId(String modelInvariantId) {
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	@JsonProperty("service-type")
+	public void setJsonServiceType(String serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public String getServiceRole() {
+		return serviceRole;
+	}
+
+	@JsonProperty("service-role")
+	public void setJsonServiceRole(String serviceRole) {
+		this.serviceRole = serviceRole;
+	}
+
+	public String getEnvironmentContext() {
+		return environmentContext;
+	}
+
+	@JsonProperty("environment-context")
+	public void setJsonEnvironmentContext(String environmentContext) {
+		this.environmentContext = environmentContext;
+	}
+
+	public String getWorkloadContext() {
+		return workloadContext;
+	}
+
+	@JsonProperty("workload-context")
+	public void setJsonWorkloadContext(String workloadContext) {
+		this.workloadContext = workloadContext;
+	}
+
+	@JsonProperty("model-invariant-id")
+	public void setJsonModelInvariantId(String modelInvariantId) {
 		this.modelInvariantId = modelInvariantId;
 	}
 
@@ -66,7 +96,8 @@ public class ServiceRelationships {
 		return modelVersionId;
 	}
 
-	public void setModelVersionId(String modelVersionId) {
+	@JsonProperty("model-version-id")
+	public void setJsonModelVersionId(String modelVersionId) {
 		this.modelVersionId = modelVersionId;
 	}
 
@@ -74,7 +105,8 @@ public class ServiceRelationships {
 		return resourceVersion;
 	}
 
-	public void setResourceVersion(String resourceVersion) {
+	@JsonProperty("resource-version")
+	public void setJsonResourceVersion(String resourceVersion) {
 		this.resourceVersion = resourceVersion;
 	}
 
@@ -82,7 +114,8 @@ public class ServiceRelationships {
 		return orchestrationStatus;
 	}
 
-	public void setOrchestrationStatus(String orchestrationStatus) {
+	@JsonProperty("orchestration-status")
+	public void setJsonOrchestrationStatus(String orchestrationStatus) {
 		this.orchestrationStatus = orchestrationStatus;
 	}
 
@@ -90,7 +123,8 @@ public class ServiceRelationships {
 		return relationshipList;
 	}
 
-	public void setRelationshipList(RelationshipList relationshipList) {
+	@JsonProperty("relationship-list")
+	public void setJsonRelationshipList(RelationshipList relationshipList) {
 		this.relationshipList = relationshipList;
 	}
 

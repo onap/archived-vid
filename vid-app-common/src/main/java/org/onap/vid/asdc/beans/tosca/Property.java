@@ -43,7 +43,7 @@ public class Property {
 	/**
 	 * Instantiates a new property.
 	 */
-	Property() {}
+	private Property() {}
 	
 	/**
 	 * Gets the type.

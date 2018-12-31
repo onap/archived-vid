@@ -1,0 +1,17 @@
+{
+  "getTenants" : {
+    "isActive": true,
+    "expireAfterWriteHours": 24,
+    "refreshAfterWriteSeconds": 300
+  },
+  "getServiceModelsByDistributionStatus" : {
+    "isActive": true,
+    "expireAfterWriteHours": 24,
+    "refreshAfterWriteSeconds": 300
+  },
+  "getAllSubscribers" : {
+    "isActive": true,
+    "expireAfterWriteHours": 24,
+    "refreshAfterWriteSeconds": 300
+  }
+}

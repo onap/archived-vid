@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.mso.RestObject;
 import org.onap.vid.testUtils.StubServerUtil;
 import org.testng.annotations.AfterMethod;
 
@@ -82,7 +83,7 @@ public class SchedulerRestInterfaceTest {
         RestObject<String> sampleRestObj = new RestObject<>();
         serverUtil.prepareGetCall("/test", RESPONSE_CONTENT, Action.ok());
 
-        schedulerInterface.Get("", SAMPLE_SOURCE_ID, "", sampleRestObj);
+        schedulerInterface.Get("", "", sampleRestObj);
 
         assertResponseHasExpectedBodyAndStatus(sampleRestObj, RESPONSE_CONTENT, 200);
     }
@@ -94,7 +95,7 @@ public class SchedulerRestInterfaceTest {
 
         serverUtil.prepareGetCall("/test", ERROR_RESPONSE, Action.status(HttpStatus.INTERNAL_SERVER_ERROR_500));
 
-        schedulerInterface.Get("", SAMPLE_SOURCE_ID, "", sampleRestObj);
+        schedulerInterface.Get("", "", sampleRestObj);
     }
 
     @Test
@@ -125,7 +126,6 @@ public class SchedulerRestInterfaceTest {
 
         assertThat(sampleRestObj.getStatusCode()).isEqualTo(expectedStatusCode);
         assertThat(parsedResult).isInstanceOf(String.class).isEqualTo(expectedResponse);
-        assertThat(sampleRestObj.getUUID()).isNull();
 
     }
 

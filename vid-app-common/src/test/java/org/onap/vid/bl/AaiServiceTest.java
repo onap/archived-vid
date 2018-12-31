@@ -20,11 +20,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AaiServiceTest {
 
@@ -44,7 +44,7 @@ public class AaiServiceTest {
     @Test
     public void testGetSpecificPnf(){
         Pnf pnf = new Pnf();
-        pnf.setPnfId("11111");
+        pnf.setJsonPnfId("11111");
         AaiResponse<Pnf> aaiResponse = new AaiResponse<>(pnf, "aaaa", 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getSpecificPnf(Mockito.anyString());
         AaiResponse<Pnf> specificPnf = aaiService.getSpecificPnf("1345667");
@@ -85,39 +85,39 @@ public class AaiServiceTest {
 
     private ServiceRelationships createServiceRelationships() {
         ServiceRelationships serviceRelationships = new ServiceRelationships();
-        serviceRelationships.setServiceInstanceName("test service");
+        serviceRelationships.setJsonServiceInstanceName("test service");
 
         RelationshipData logicalLinksRelationshipData = new RelationshipData();
-        logicalLinksRelationshipData.setRelationshipKey("logical-link.link-name");
-        logicalLinksRelationshipData.setRelationshipValue("SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961");
+        logicalLinksRelationshipData.setJsonRelationshipKey("logical-link.link-name");
+        logicalLinksRelationshipData.setJsonRelationshipValue("SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961");
 
         Relationship logicalLinksRelationship = new Relationship();
-        logicalLinksRelationship.setRelatedTo("logical-link");
-        logicalLinksRelationship.setRelationDataList(Arrays.asList(logicalLinksRelationshipData));
+        logicalLinksRelationship.setJsonRelatedTo("logical-link");
+        logicalLinksRelationship.setJsonRelationDataList(Arrays.asList(logicalLinksRelationshipData));
 
         RelationshipList logicalLinksRelationshipsList = new RelationshipList();
         logicalLinksRelationshipsList.setRelationship(Arrays.asList(logicalLinksRelationship));
 
-        serviceRelationships.setRelationshipList(logicalLinksRelationshipsList);
+        serviceRelationships.setJsonRelationshipList(logicalLinksRelationshipsList);
         return serviceRelationships;
     }
 
     private LogicalLinkResponse createLogicalLinkResponse() {
         LogicalLinkResponse logicalLinkResponse = new LogicalLinkResponse();
-        logicalLinkResponse.setLinkName("SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961");
+        logicalLinkResponse.setJsonLinkName("SANITY6758cce9:LAG1992|SANITY6785cce9:LAG1961");
 
         RelationshipData lagInterfaceRelationshipData = new RelationshipData();
-        lagInterfaceRelationshipData.setRelationshipKey("pnf.pnf-name");
-        lagInterfaceRelationshipData.setRelationshipValue("SANITY6785cce9");
+        lagInterfaceRelationshipData.setJsonRelationshipKey("pnf.pnf-name");
+        lagInterfaceRelationshipData.setJsonRelationshipValue("SANITY6785cce9");
 
         Relationship lagInterfaceRelationship = new Relationship();
-        lagInterfaceRelationship.setRelatedTo("lag-interface");
-        lagInterfaceRelationship.setRelationDataList(Arrays.asList(lagInterfaceRelationshipData));
+        lagInterfaceRelationship.setJsonRelatedTo("lag-interface");
+        lagInterfaceRelationship.setJsonRelationDataList(Arrays.asList(lagInterfaceRelationshipData));
 
         RelationshipList lagInterfaceRelationshipsList = new RelationshipList();
         lagInterfaceRelationshipsList.setRelationship(Arrays.asList(lagInterfaceRelationship));
 
-        logicalLinkResponse.setRelationshipList(lagInterfaceRelationshipsList);
+        logicalLinkResponse.setJsonRelationshipList(lagInterfaceRelationshipsList);
 
         return logicalLinkResponse;
     }

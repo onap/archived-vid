@@ -1,0 +1,119 @@
+{
+  "results": [
+    {
+      "id": "363687968",
+      "node-type": "generic-vnf",
+      "url": "/aai/v14/network/generic-vnfs/generic-vnf/4ac51f60-ae58-49c0-a308-f0c2dd0261cf",
+      "properties": {
+        "vnf-id": "4ac51f60-ae58-49c0-a308-f0c2dd0261cf",
+        "vnf-name": "zmtn23bmogx05_oam_01_rk",
+        "vnf-type": "vMOG_SVC_UPDATED_FLAV_OAM/vMOG_VSP_UPDATED_FLAV 0",
+        "service-id": "db171b8f-115c-4992-a2e3-ee04cae357e0",
+        "prov-status": "NVTPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1522780608709",
+        "model-invariant-id": "5108d7e4-f32a-44cd-8835-433a70915b8c",
+        "model-version-id": "bae37933-b694-4b4e-a734-db63416f9cfe",
+        "model-customization-id": "732305c6-d36a-47ee-a701-6f28f87b90cd",
+        "nf-type": "POLICY",
+        "nf-function": "Mobility Orchestration Gateway (MOG)",
+        "nf-role": "vMOG",
+        "nf-naming-code": ""
+      },
+      "related-to": [
+        {
+          "id": "193753168",
+          "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+          "node-type": "service-instance",
+          "url": "/aai/v14/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vMOG/service-instances/service-instance/7f10ffe2-548f-4168-8722-b782d05675b7"
+        }
+      ]
+    },
+    {
+      "id": "264798392",
+      "node-type": "vserver",
+      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a/vservers/vserver/088c2bf0-80e2-4bdf-93ae-b2469fbeba84",
+      "properties": {
+        "vserver-id": "088c2bf0-80e2-4bdf-93ae-b2469fbeba84",
+        "vserver-name": "zrdm3mogx01oam001",
+        "vserver-name2": "zrdm3mogx01oam001",
+        "vserver-selflink": "https://compute-aic.mtn23b.cci.att.com:8774/v2/3e9a20a3e89e45f884e09df0cc2d2d2a/servers/088c2bf0-80e2-4bdf-93ae-b2469fbeba84",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1522719699848"
+      },
+      "related-to": [
+        {
+          "id": "211808464",
+          "relationship-label": "tosca.relationships.AttachesTo",
+          "node-type": "volume",
+          "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a/vservers/vserver/088c2bf0-80e2-4bdf-93ae-b2469fbeba84/volumes/volume/28e1246e-2aeb-4a59-bb51-f20fb8e93c42"
+        }
+      ]
+    },
+    {
+      "id": "67158224",
+      "node-type": "pserver",
+      "url": "/aai/v14/cloud-infrastructure/pservers/pserver/mtn23br21c009.mtn23b.cci.att.com",
+      "properties": {
+        "hostname": "mtn23br21c009.mtn23b.cci.att.com",
+        "pserver-id": "auto-generated-skeleton",
+        "in-maint": false,
+        "resource-version": "1538596103767"
+      },
+      "related-to": [
+        {
+          "id": "743800864",
+          "relationship-label": "org.onap.relationships.inventory.LocatedIn",
+          "node-type": "complex",
+          "url": "/aai/v14/cloud-infrastructure/complexes/complex/MDTWNJ21"
+        }
+      ]
+    },
+    {
+      "id": "8757432",
+      "node-type": "tenant",
+      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a",
+      "properties": {
+        "tenant-id": "3e9a20a3e89e45f884e09df0cc2d2d2a",
+        "tenant-name": "APPC-24595-T-IST-02C",
+        "resource-version": "1539855222745"
+      },
+      "related-to": [
+        {
+          "id": "760360992",
+          "relationship-label": "org.onap.relationships.inventory.Uses",
+          "node-type": "l3-network",
+          "url": "/aai/v14/network/l3-networks/l3-network/1fea0624-dac2-4997-904d-34ca1bc12fa9"
+        }
+      ]
+    },
+    {
+      "id": "302227536",
+      "node-type": "cloud-region",
+      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b",
+      "properties": {
+        "cloud-owner": "att-aic",
+        "cloud-region-id": "mtn23b",
+        "cloud-type": "openstack",
+        "owner-defined-type": "lcp",
+        "cloud-region-version": "3.0",
+        "identity-url": "https://identity-aic.mtn23b.cci.att.com:5000/v2.0",
+        "cloud-zone": "z1",
+        "complex-name": "c1",
+        "sriov-automation": "false",
+        "resource-version": "1539855222969"
+      },
+      "related-to": [
+        {
+          "id": "2744328",
+          "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+          "node-type": "tenant",
+          "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/5452d6bd0cb34e99a3553d349456c642"
+        }
+      ]
+    }
+  ]
+}

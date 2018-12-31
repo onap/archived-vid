@@ -20,10 +20,11 @@
 
 package org.onap.vid.asdc.beans.tosca;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.onap.sdc.toscaparser.api.Property;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -36,6 +37,7 @@ public class Input {
 		this.description = input.getDescription();
 		this._default = input.getDefault();
 		this.inputProperties = new InputProperties(properties);
+		this.fromInputName = input.getName();
 	}
 
 	/** The type. */
@@ -51,24 +53,20 @@ public class Input {
 	private Input entry_schema;
 
 	private InputProperties inputProperties;
-	
+
+	private String fromInputName;
+
 	/** The constraints */
 	private List<org.onap.sdc.toscaparser.api.elements.constraints.Constraint> constraints;
 	
 	/** The required field. If not set, the default is true */
 	private boolean required = true;
 	
-	/** Details the inputs template */
-	private String templateName;
-	private String templateUUID;
-	private String templateInvariantUUID;
-	private String templateCustomizationUUID;
-	
 	/**
 	 * Instantiates a new input.
 	 */
 	public Input() {
-		constraints = new ArrayList<org.onap.sdc.toscaparser.api.elements.constraints.Constraint>();
+		constraints = new ArrayList<>();
 	}
 	
 	/**
@@ -160,6 +158,11 @@ public class Input {
 		return inputProperties;
 	}
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public String getFromInputName() {
+		return fromInputName;
+	}
+
 	public void setInputProperties(InputProperties inputProperties) {
 		this.inputProperties = inputProperties;
 	}
@@ -187,36 +190,4 @@ public class Input {
 	public String toString() {
 		return "type=" + type + ",description=" + description + ",default=" + _default;
 	}
-
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
-    }
-
-    public String getTemplateUUID() {
-        return templateUUID;
-    }
-
-    public void setTemplateUUID(String templateUUID) {
-        this.templateUUID = templateUUID;
-    }
-
-    public String getTemplateInvariantUUID() {
-        return templateInvariantUUID;
-    }
-
-    public void setTemplateInvariantUUID(String templateInvariantUUID) {
-        this.templateInvariantUUID = templateInvariantUUID;
-    }
-
-    public String getTemplateCustomizationUUID() {
-        return templateCustomizationUUID;
-    }
-
-    public void setTemplateCustomizationUUID(String templateCustomizationUUID) {
-        this.templateCustomizationUUID = templateCustomizationUUID;
-    }
 }

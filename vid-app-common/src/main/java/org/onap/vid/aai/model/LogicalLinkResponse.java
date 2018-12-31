@@ -1,32 +1,27 @@
 package org.onap.vid.aai.model;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LogicalLinkResponse {
 
-    @JsonProperty("link-name")
     public String linkName;
 
-    @JsonProperty("in-maint")
     public Boolean inMaint;
 
-    @JsonProperty("link-type")
     public String linkType;
 
-    @JsonProperty("resource-version")
     public String resourceVersion;
 
-    @JsonProperty("purpose")
     public String purpose;
 
-    @JsonProperty("relationship-list")
     public RelationshipList relationshipList;
 
     public String getLinkName() {
         return linkName;
     }
 
-    public void setLinkName(String linkName) {
+    @JsonProperty("link-name")
+    public void setJsonLinkName(String linkName) {
         this.linkName = linkName;
     }
 
@@ -34,7 +29,8 @@ public class LogicalLinkResponse {
         return inMaint;
     }
 
-    public void setInMaint(Boolean inMaint) {
+    @JsonProperty("in-maint")
+    public void setJsonInMaint(Boolean inMaint) {
         this.inMaint = inMaint;
     }
 
@@ -42,7 +38,8 @@ public class LogicalLinkResponse {
         return linkType;
     }
 
-    public void setLinkType(String linkType) {
+    @JsonProperty("link-type")
+    public void setJsonLinkType(String linkType) {
         this.linkType = linkType;
     }
 
@@ -50,7 +47,8 @@ public class LogicalLinkResponse {
         return resourceVersion;
     }
 
-    public void setResourceVersion(String resourceVersion) {
+    @JsonProperty("resource-version")
+    public void setJsonResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
 
@@ -58,7 +56,8 @@ public class LogicalLinkResponse {
         return purpose;
     }
 
-    public void setPurpose(String purpose) {
+    @JsonProperty("purpose")
+    public void setJsonPurpose(String purpose) {
         this.purpose = purpose;
     }
 
@@ -66,7 +65,8 @@ public class LogicalLinkResponse {
         return relationshipList;
     }
 
-    public void setRelationshipList(RelationshipList relationshipList) {
+    @JsonProperty("relationship-list")
+    public void setJsonRelationshipList(RelationshipList relationshipList) {
         this.relationshipList = relationshipList;
     }
 }

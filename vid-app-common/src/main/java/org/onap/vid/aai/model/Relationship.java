@@ -1,7 +1,8 @@
 package org.onap.vid.aai.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 
@@ -9,19 +10,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Relationship {
 
-	@JsonProperty("related-to")
 	public String relatedTo;
 	
-	@JsonProperty("related-link")
 	public String relatedLink;
 
-	@JsonProperty("relationship-label")
 	public String relationshipLabel;
 	
-	@JsonProperty("relationship-data")
 	public List<RelationshipData> relationshipData;
 	
-	@JsonProperty("related-to-property")
 	public List<RelatedToProperty> relatedToProperty;
 
 	
@@ -29,7 +25,8 @@ public class Relationship {
 		return relatedTo;
 	}
 
-	public void setRelatedTo(String relatedTo) {
+    @JsonProperty("related-to")
+	public void setJsonRelatedTo(String relatedTo) {
 		this.relatedTo = relatedTo;
 	}
 
@@ -37,7 +34,8 @@ public class Relationship {
 		return relatedLink;
 	}
 
-	public void setRelatedLink(String relatedLink) {
+    @JsonProperty("related-link")
+	public void setJsonRelatedLink(String relatedLink) {
 		this.relatedLink = relatedLink;
 	}
 
@@ -45,7 +43,8 @@ public class Relationship {
 		return relationshipData;
 	}
 
-	public void setRelationDataList(List<RelationshipData> relationDataList) {
+    @JsonProperty("relationship-data")
+	public void setJsonRelationDataList(List<RelationshipData> relationDataList) {
 		this.relationshipData = relationDataList;
 	}
 
@@ -53,7 +52,8 @@ public class Relationship {
 		return relatedToProperty;
 	}
 
-	public void setRelatedToPropertyList(List<RelatedToProperty> relatedToPropertyList) {
+    @JsonProperty("related-to-property")
+	public void setJsonRelatedToPropertyList(List<RelatedToProperty> relatedToPropertyList) {
 		this.relatedToProperty = relatedToPropertyList;
 	}
 
@@ -61,7 +61,8 @@ public class Relationship {
 		return relationshipLabel;
 	}
 
-	public void setRelationshipLabel(String relationshipLabel) {
+    @JsonProperty("relationship-label")
+	public void setJsonRelationshipLabel(String relationshipLabel) {
 		this.relationshipLabel = relationshipLabel;
 	}
 }
