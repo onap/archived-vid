@@ -80,9 +80,9 @@
 					<td width='33%' valign='middle'>
 						Jump to page:
 		          		<input class="fn-ebz-text" type="text" ng-model="currentPage" size="5" style="width: 47px;">
-		    			Results per page: <span style="cursor: pointer" ng-click="viewPerPage = 10" ng-style="viewPerPage === 10 && {'textDecoration':'underline','text-color':'black'}">10</span> 
-	    				| <span style="cursor: pointer" ng-click="viewPerPage = 25" ng-style="viewPerPage === 25 && {'textDecoration':'underline','text-color':'black'}">25</span> 
-	    				| <span style="cursor: pointer" ng-click="viewPerPage = 50" ng-style="viewPerPage === 50 && {'textDecoration':'underline','text-color':'black'}">50</span> 
+		    			Results per page: <span style="cursor: pointer" data-tests-id="view-per-page-10" ng-click="viewPerPage = 10" ng-style="viewPerPage === 10 && {'textDecoration':'underline','text-color':'black'}">10</span>
+	    				| <span style="cursor: pointer" data-tests-id="view-per-page-25" ng-click="viewPerPage = 25" ng-style="viewPerPage === 25 && {'textDecoration':'underline','text-color':'black'}">25</span>
+	    				| <span style="cursor: pointer" data-tests-id="view-per-page-50" ng-click="viewPerPage = 50" ng-style="viewPerPage === 50 && {'textDecoration':'underline','text-color':'black'}">50</span>
 	    			</td>
 	    			<td width='34%' align='right' valign='middle'>
 	    			 	<span style="cursor: pointer" ng-if="currentPage<totalPage"><button att-button size="small" ng-click="nextPage();">next page &gt;</button></span>

@@ -1,31 +1,26 @@
 package org.onap.vid.aai.model;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class LogicalLinkResponse {
 
-    @JsonProperty("link-name")
     public String linkName;
 
-    @JsonProperty("in-maint")
     public Boolean inMaint;
 
-    @JsonProperty("link-type")
     public String linkType;
 
-    @JsonProperty("resource-version")
     public String resourceVersion;
 
-    @JsonProperty("purpose")
     public String purpose;
 
-    @JsonProperty("relationship-list")
     public RelationshipList relationshipList;
 
     public String getLinkName() {
         return linkName;
     }
 
+    @JsonAlias("link-name")
     public void setLinkName(String linkName) {
         this.linkName = linkName;
     }
@@ -34,6 +29,7 @@ public class LogicalLinkResponse {
         return inMaint;
     }
 
+    @JsonAlias("in-maint")
     public void setInMaint(Boolean inMaint) {
         this.inMaint = inMaint;
     }
@@ -42,6 +38,7 @@ public class LogicalLinkResponse {
         return linkType;
     }
 
+    @JsonAlias("link-type")
     public void setLinkType(String linkType) {
         this.linkType = linkType;
     }
@@ -50,6 +47,7 @@ public class LogicalLinkResponse {
         return resourceVersion;
     }
 
+    @JsonAlias("resource-version")
     public void setResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
@@ -58,6 +56,7 @@ public class LogicalLinkResponse {
         return purpose;
     }
 
+    @JsonAlias("purpose")
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
@@ -66,6 +65,7 @@ public class LogicalLinkResponse {
         return relationshipList;
     }
 
+    @JsonAlias("relationship-list")
     public void setRelationshipList(RelationshipList relationshipList) {
         this.relationshipList = relationshipList;
     }

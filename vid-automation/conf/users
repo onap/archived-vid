@@ -13,9 +13,9 @@
             "userId": "1",
             "password": "1"
           },
-          "roles": ["USP VOICE___VIRTUAL USP", "MSO_1610_ST___MSO-dev-service-type", "MSO_1610_ST___VIRTUAL USP"],
+          "roles": ["USP VOICE___VIRTUAL USP", "USP VOICE___HOSTED COMMUNICATIONS", "MSO_1610_ST___HOSTED COMMUNICATIONS", "MSO_1610_ST___MSO-dev-service-type", "MSO_1610_ST___VIRTUAL USP"],
           "subscriberNames": ["USP VOICE", "MSO_1610_ST"],
-          "serviceTypes": ["VIRTUAL USP", "MSO-dev-service-type"],
+          "serviceTypes": ["VIRTUAL USP", "HOSTED COMMUNICATIONS", "MSO-dev-service-type"],
           "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
         },
         "mobilityMobility": {

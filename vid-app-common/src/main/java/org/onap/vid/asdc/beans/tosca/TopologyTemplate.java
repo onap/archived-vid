@@ -45,9 +45,9 @@ public class TopologyTemplate {
 	 */
 	public TopologyTemplate() {
 		substitution_mappings = new SubstitutionMappings();
-		inputs = new HashMap<String, Input> ();
-		node_templates = new HashMap<String, NodeTemplate> ();
-		groups = new HashMap<String, Group> ();
+		inputs = new HashMap<> ();
+		node_templates = new HashMap<> ();
+		groups = new HashMap<> ();
 	}
 	
 	/**

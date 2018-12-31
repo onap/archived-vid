@@ -1,7 +1,7 @@
 package org.onap.vid.aai.model.AaiGetServicesRequestModel;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Oren on 7/17/17.

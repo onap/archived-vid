@@ -1,7 +1,6 @@
 package org.onap.vid.changeManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.MoreObjects;
 
 public class VnfDetails {
 

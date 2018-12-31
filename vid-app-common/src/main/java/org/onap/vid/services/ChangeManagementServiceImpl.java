@@ -1,20 +1,23 @@
 package org.onap.vid.services;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.NonUniqueObjectException;
 import org.json.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.*;
+import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.exceptions.NotFoundException;
 import org.onap.vid.model.VNFDao;
 import org.onap.vid.model.VidWorkflow;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
+import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.scheduler.SchedulerProperties;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
@@ -34,26 +37,27 @@ import java.util.stream.Collectors;
 @Service
 public class ChangeManagementServiceImpl implements ChangeManagementService {
 
-    private final static String PRIMARY_KEY = "payload";
-    private final static Set<String> REQUIRED_KEYS = new HashSet<>(Arrays.asList("request-parameters", "configuration-parameters"));
+    private static final String PRIMARY_KEY = "payload";
+    private static final Set<String> REQUIRED_KEYS = new HashSet<>(Arrays.asList("request-parameters", "configuration-parameters"));
     private final DataAccessService dataAccessService;
     private EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ChangeManagementServiceImpl.class);
     private MsoBusinessLogic msoBusinessLogic;
     private final SchedulerRestInterfaceIfc restClient;
+    private final CloudOwnerService cloudOwnerService;
 
     @Autowired
     private CsvService csvService;
 
     @Autowired
-    public ChangeManagementServiceImpl(DataAccessService dataAccessService, MsoBusinessLogic msoBusinessLogic, SchedulerRestInterfaceIfc schedulerRestInterface) {
+    public ChangeManagementServiceImpl(DataAccessService dataAccessService, MsoBusinessLogic msoBusinessLogic, SchedulerRestInterfaceIfc schedulerRestInterface, CloudOwnerService cloudOwnerService) {
         this.dataAccessService = dataAccessService;
         this.msoBusinessLogic = msoBusinessLogic;
         this.restClient = schedulerRestInterface;
+        this.cloudOwnerService = cloudOwnerService;
     }
 
     @Override
     public Collection<Request> getMSOChangeManagements() {
-        Collection<Request> result = null;
             return msoBusinessLogic.getOrchestrationRequestsForDashboard();
     }
 
@@ -86,14 +90,17 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
             try {
                 switch (requestType.toLowerCase()) {
                     case ChangeManagementRequest.UPDATE: {
+                        cloudOwnerService.enrichRequestWithCloudOwner(currentRequestDetails);
                         msoResponseWrapperObject = msoBusinessLogic.updateVnf(currentRequestDetails, serviceInstanceId, vnfInstanceId);
                         break;
                     }
                     case ChangeManagementRequest.REPLACE: {
+                        cloudOwnerService.enrichRequestWithCloudOwner(currentRequestDetails);
                         msoResponseWrapperObject = msoBusinessLogic.replaceVnf(currentRequestDetails, serviceInstanceId, vnfInstanceId);
                         break;
                     }
                     case ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE: {
+                        cloudOwnerService.enrichRequestWithCloudOwner(currentRequestDetails);
                         msoResponseWrapperObject = msoBusinessLogic.updateVnfSoftware(currentRequestDetails, serviceInstanceId, vnfInstanceId);
                         break;
                     }
@@ -105,10 +112,10 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
                         msoResponseWrapperObject = msoBusinessLogic.scaleOutVfModuleInstance(currentRequestDetails, serviceInstanceId, vnfInstanceId);
                         break;
                     }
-					default:
-                        logger.error("Failure during doChangeManagement with request " + request.toString());
+                    default:
+                        throw new GenericUncheckedException("Failure during doChangeManagement with request " + request.toString());
                 }
-                response = new ResponseEntity<String>(msoResponseWrapperObject.getResponse(), HttpStatus.OK);
+                response = new ResponseEntity<>(msoResponseWrapperObject.getResponse(), HttpStatus.OK);
                 return response;
             } catch (Exception e) {
                 logger.error("Failure during doChangeManagement with request " + request.toString(), e);
@@ -141,32 +148,26 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
     }
 
     @Override
-    public JSONArray getSchedulerChangeManagements() {
-        JSONArray result = null;
-        try {
-            String path = SystemProperties.getProperty(SchedulerProperties.SCHEDULER_GET_SCHEDULES);
-            org.onap.vid.scheduler.RestObject<String> restObject = new org.onap.vid.scheduler.RestObject<>();
+    public RestObjectWithRequestInfo<ArrayNode> getSchedulerChangeManagementsWithRequestInfo() {
+        String path = SystemProperties.getProperty(SchedulerProperties.SCHEDULER_GET_SCHEDULES);
+        RestObject<ArrayNode> restObject = new RestObject<>();
+        ArrayNode jsonArray = new ArrayNode(new JsonNodeFactory(true));
+        restObject.set(jsonArray);
+        return restClient.Get(jsonArray, path, restObject);
+    }
 
-            String str = new String();
-            restObject.set(str);
-            restClient.Get(str, "", path, restObject);
-            String restCallResult = restObject.get();
-            JSONParser parser = new JSONParser();
-            Object parserResult = parser.parse(restCallResult);
-            result = (JSONArray) parserResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
+    @Override
+    public ArrayNode getSchedulerChangeManagements() {
+        RestObjectWithRequestInfo<ArrayNode> responseWithRequestInfo = getSchedulerChangeManagementsWithRequestInfo();
+        return responseWithRequestInfo.getRestObject().get();
     }
 
     @Override
     public Pair<String, Integer> deleteSchedule(String scheduleId) {
         try {
             String path = String.format(SystemProperties.getProperty(SchedulerProperties.SCHEDULER_DELETE_SCHEDULE), scheduleId);
-            org.onap.vid.scheduler.RestObject<String> restObject = new org.onap.vid.scheduler.RestObject<>();
-            String str = new String();
+            RestObject<String> restObject = new RestObject<>();
+            String str = "";
             restObject.set(str);
             restClient.Delete(str, "", path, restObject);
             String restCallResult = restObject.get();
@@ -187,11 +188,11 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
                 continue;
             }
             @SuppressWarnings("unchecked") List<VNFDao> vnfList = dataAccessService.getList(VNFDao.class, getVnfQueryString(workflowsDetail.getVnfDetails().getUUID(), workflowsDetail.getVnfDetails().getInvariantUUID()), null, null);
-            if (vnfList.size() == 0) {
+            if (vnfList.isEmpty()) {
                 vnfList.add(saveNewVnf(workflowsDetail));
             }
             @SuppressWarnings("unchecked") List<VidWorkflow> workflowList = dataAccessService.getList(VidWorkflow.class, String.format(" where wokflowName = '%s'", workflowsDetail.getWorkflowName()), null, null);
-            if (workflowList.size() == 0) {
+            if (workflowList.isEmpty()) {
                 vnfWorkflowRelationResponse.getErrors().add("Not Found instance of workflow " + workflowsDetail.getWorkflowName() + " for vnf with UUID " + workflowsDetail.getVnfDetails().getUUID() + " and with invariantUUID " + workflowsDetail.getVnfDetails().getInvariantUUID());
                 continue;
             }

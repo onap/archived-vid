@@ -11,8 +11,8 @@ import vid.automation.test.services.SimulatorApi;
 
 import java.io.IOException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 public class SampleApiTest extends BaseApiTest {
 

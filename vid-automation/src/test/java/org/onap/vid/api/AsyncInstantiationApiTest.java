@@ -13,11 +13,7 @@ import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAISearchNodeQueryEmptyResult;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAssignServiceInstanceGen2WithNames;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNames;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGetErrorResponse;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2ErrorResponse;
+import org.onap.simulator.presetGenerator.presets.mso.*;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
 import org.onap.vid.model.mso.MsoResponseWrapper2;
@@ -25,7 +21,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -35,8 +30,8 @@ import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Wait;
 import vid.automation.test.model.JobStatus;
 import vid.automation.test.services.SimulatorApi;
-import java.util.*;
 
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -400,7 +395,7 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         List<String> jobIds = createBulkOfInstances(presets, isPause, bulkSize, names);
         Assert.assertEquals(jobIds.size(),bulkSize);
         for(String jobId: jobIds) {
-            ServiceInfo expectedServiceInfo = new ServiceInfo("ab2222", JobStatus.IN_PROGRESS, isPause, "someID",
+            ServiceInfo expectedServiceInfo = new ServiceInfo("vid1", JobStatus.IN_PROGRESS, isPause, "someID",
                     "someName", "myProject", "NFT1", "NFTJSSSS-NFT1", "greatTenant", "greatTenant", "mtn3", null,
                     "mySubType", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", null, names.get(Keys.SERVICE_NAME),
                     "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb", "AIM_TRANSPORT_00004", "1.0", jobId, null);

@@ -22,6 +22,7 @@
 package org.onap.vid.services;
 
 import io.joshworks.restclient.http.HttpResponse;
+import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.SubscriberFilteredResults;
@@ -32,6 +33,7 @@ import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.model.SubscriberList;
+import org.onap.vid.model.aaiTree.RelatedVnf;
 import org.onap.vid.roles.RoleValidator;
 
 import javax.ws.rs.core.Response;
@@ -64,7 +66,7 @@ public interface AaiService {
 
     AaiResponse getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId);
 
-    Response getVNFData(String globalSubscriberId, String serviceType);
+    AaiResponse<AaiGetVnfResponse> getVNFData(String globalSubscriberId, String serviceType);
 
     AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType, RoleValidator roleValidator);
 
@@ -87,4 +89,10 @@ public interface AaiService {
     List<PortDetailsTranslator.PortDetails> getPortMirroringSourcePorts(String configurationId);
 
     AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId);
+
+    String getAAIServiceTree(String globalCustomerId, String serviceType, String serviceInstanceId);
+
+    GetTenantsResponse getHomingDataByVfModule(String vnfInstanceId, String vfModuleId);
+
+    List<RelatedVnf> searchGroupMembers(String globalCustomerId, String serviceType, String invariantId, String groupType, String groupRole);
 }

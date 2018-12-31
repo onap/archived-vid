@@ -1,7 +1,7 @@
 package org.onap.vid.services;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
@@ -13,7 +13,6 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@Test
 public class AaiResponseTranslatorTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();

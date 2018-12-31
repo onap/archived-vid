@@ -45,7 +45,7 @@ public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBas
                 "      \"productFamilyId\": \"myProductFamilyId\"," +
                 "      \"source\": \"VID\"," +
                 "      \"suppressRollback\": false," +
-                "      \"requestorId\": \"ab2222\"" +
+                "      \"requestorId\": \"vid1\"" +
                 "    }," +
                 "    \"requestParameters\": {" +
                 "      \"subscriptionServiceType\": \"mySubType\"," +

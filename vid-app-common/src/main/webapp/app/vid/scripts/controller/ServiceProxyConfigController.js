@@ -25,8 +25,14 @@
 
 "use strict";
 
-appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD", "PARAMETER", "DataService", "CreationService", "$scope", "$window", "$location", "AaiService", "$uibModal", "UtilityService", "$timeout",
-    function (COMPONENT, $log, FIELD, PARAMETER, DataService, CreationService, $scope, $window, $location, AaiService, $uibModal, UtilityService, $timeout) {
+appDS2.controller(
+    "ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD", "PARAMETER", "DataService",
+    "CreationService", "$scope", "$window", "$location", "AaiService", "$uibModal", "UtilityService", "$timeout",
+    "featureFlags",
+    function (COMPONENT, $log, FIELD, PARAMETER, DataService,
+              CreationService, $scope, $window, $location, AaiService, $uibModal, UtilityService, $timeout,
+              featureFlags
+    ) {
 
         $scope.selectedMetadata = {};
 
@@ -159,7 +165,7 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                         backdrop: true,
                         resolve: {
                             msoType: function () {
-                                return COMPONENT.MSO_CREATE_REQ;
+                                return COMPONENT.MSO_CREATE_CONFIGURATION_REQ;
                             },
                             requestParams: function () {
                                 return requestParams;
@@ -252,6 +258,10 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
             loadCollectorProxies();
         };
 
+        $scope.shouldLetSelectingCollectorType = function() {
+            return $scope.collectorType === 'vnf' || featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY);
+        };
+
         function clearSourceProxySelection() {
             $scope.sourceInstance = undefined;
         }
@@ -274,9 +284,8 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
 
         function loadProxyInstances(service, serviceType, serviceProxy) {
             $scope[service.instanceListScopePropertyName] = null;
-            // $scope.collectorType = $scope.configurationByPolicy ? 'pnf' : 'vnf';
             var configNodeTemplateFields = DataService.getPortMirroningConfigFields();
-            if (service.name == "collectorInstanceName" && $scope.configurationByPolicy) {
+            if (service.name === 'collectorInstanceName' && $scope.configurationByPolicy) {
                 var configurationModel = DataService.getModelInfo(COMPONENT.VNF);
                 AaiService.getPnfInstancesList(
                     DataService.getGlobalCustomerId(),
@@ -294,7 +303,7 @@ appDS2.controller("ServiceProxyConfigController", ["COMPONENT", "$log", "FIELD",
                     })
                     .catch(function (error) {
                         $scope[service.noResults] = true;
-                        $log.error("No pnf instance found for " + service.name, error);
+                        $log.error('No pnf instance found for ' + service.name, error);
                     });
             } else {
                 AaiService.getVnfInstancesList(

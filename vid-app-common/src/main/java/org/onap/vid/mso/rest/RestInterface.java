@@ -1,8 +1,8 @@
 package org.onap.vid.mso.rest;
 
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.mso.RestObject;
-
-import javax.ws.rs.core.MultivaluedHashMap;
+import org.onap.vid.mso.RestObjectWithRequestInfo;
 
 /**
  * Created by pickjonathan on 26/06/2017.
@@ -10,21 +10,16 @@ import javax.ws.rs.core.MultivaluedHashMap;
 public interface RestInterface {
 
     /**
-     * Inits the rest client.
-     */
-    MultivaluedHashMap<String, Object> initMsoClient();
-
-    /**
      * Gets the.
      *
      * @param <T> the generic type
      * @param t the t
-     * @param sourceId the source id
      * @param path the path
      * @param restObject the rest object
+     * @param warpException
      * @throws Exception the exception
      */
-    <T> void Get (T t, String sourceId, String path, RestObject<T> restObject );
+    <T> RestObjectWithRequestInfo<T> Get(T t, String path, RestObject<T> restObject, boolean warpException);
 
     /**
      * Delete.
@@ -32,25 +27,22 @@ public interface RestInterface {
      * @param <T> the generic type
      * @param t the t
      * @param r the r
-     * @param sourceID the source ID
      * @param path the path
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Delete(T t, Object r, String sourceID, String path, RestObject<T> restObject);
+    <T> void Delete(T t, Object r, String path, RestObject<T> restObject);
 
     /**
      * Post.
      *
-     * @param <T> the generic type
      * @param t the t
      * @param r the r
-     * @param sourceID the source ID
      * @param path the path
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Post(T t, Object r, String sourceID, String path, RestObject<T> restObject);
+    void Post(String t, Object r, String path, RestObject<String> restObject);
 
     /**
      * Put.
@@ -58,11 +50,12 @@ public interface RestInterface {
      * @param <T> the generic type
      * @param t the t
      * @param r the r
-     * @param sourceID the source ID
      * @param path the path
      * @param restObject the rest object
      * @throws Exception the exception
      */
-    <T> void Put(T t, org.onap.vid.changeManagement.RequestDetailsWrapper r, String sourceID, String path, RestObject<T> restObject);
+    <T> void Put(T t, RequestDetailsWrapper r, String path, RestObject<T> restObject);
+
+    <T> RestObject<T> GetForObject(String path, Class<T> clazz);
 
 }

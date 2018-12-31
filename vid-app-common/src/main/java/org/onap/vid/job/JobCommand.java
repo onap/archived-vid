@@ -1,7 +1,8 @@
 package org.onap.vid.job;
 
+import org.onap.vid.job.impl.JobSharedData;
+
 import java.util.Map;
-import java.util.UUID;
 
 
 /**
@@ -13,11 +14,11 @@ public interface JobCommand {
 
     /**
      * Initialize the command state
-     * @param jobUuid Parent job's uuid
-     * @param data An input to be set into the command. Each implementation may expect different keys in the map.
+     * @param sharedData shared data cross all job commands
+     * @param commandData An input to be set into the command. Each implementation may expect different keys in the map.
      * @return Returns itself
      */
-    default JobCommand init(UUID jobUuid, Map<String, Object> data) {
+    default JobCommand init(JobSharedData sharedData, Map<String, Object> commandData) {
         return this;
     }
 

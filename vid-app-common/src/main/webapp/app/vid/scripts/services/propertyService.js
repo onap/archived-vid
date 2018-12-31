@@ -29,7 +29,6 @@ var PropertyService = function($location, $http, VIDCONFIGURATION ) {
     var DEFAULT_MSO_MAX_POLLING_INTERVAL_MSEC = 60000;
     var DEFAULT_MSO_MAX_POLLS = 10;
     var DEFAULT_MSO_BASE_URL = "/" + BASE_PATH + "/mso";
-    var DEFAULT_SERVER_RESPONSE_TIMEOUT_MSEC = 60000;
     var MSO_POLLING_INTERVAL_MSECS = "mso_polling_interval_msecs";
     var MSO_MAX_POLLS = "mso_max_polls";
 
@@ -40,7 +39,6 @@ var PropertyService = function($location, $http, VIDCONFIGURATION ) {
     _this.msoMaxPollingIntervalMsec = DEFAULT_MSO_MAX_POLLING_INTERVAL_MSEC;
     _this.msoMaxPolls = DEFAULT_MSO_MAX_POLLS;
     _this.msoBaseUrl = DEFAULT_MSO_BASE_URL;
-    _this.serverResponseTimeoutMsec = DEFAULT_SERVER_RESPONSE_TIMEOUT_MSEC;
 
     return {
 	
@@ -78,12 +76,9 @@ var PropertyService = function($location, $http, VIDCONFIGURATION ) {
 	    _this.msoBaseUrl = msoBaseUrl;
 	},
 	getServerResponseTimeoutMsec : function() {
-	    return _this.serverResponseTimeoutMsec;
-	},
-	setServerResponseTimeoutMsec : function(serverResponseTimeoutMsec) {
-	    _this.serverResponseTimeoutMsec = serverResponseTimeoutMsec;
+	    return VIDCONFIGURATION.SERVER_RESPONSE_TIMEOUT_MSECS;
 	}
     };
-}
+};
 
 appDS2.factory("PropertyService", PropertyService);
