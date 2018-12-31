@@ -27,7 +27,7 @@
 
     appDS2.requires.push('ui.tree');
 
-    appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService, AaiService, PnfService, CrService, AsdcService, $q, featureFlags, _, CreationService, $window) {
+    appDS2.controller("InstantiationController", function ($scope, $route, $location, $timeout, $uibModal, COMPONENT, VIDCONFIGURATION, FIELD, DataService, PropertyService, UtilityService, VnfService, $http, vidService, AaiService, PnfService, CrService, AsdcService, $q, featureFlags, _, CreationService, $window, DeleteResumeService) {
         $scope.popup = new Object();
         $scope.defaultBaseUrl = "";
         $scope.responseTimeoutMsec = 60000;
@@ -53,27 +53,8 @@
             // takes a default value, retrieves the prop value from the file system and sets it
             var polls = PropertyService.retrieveMsoMaxPolls();
             PropertyService.setMsoMaxPolls(polls);
+        };
 
-            PropertyService.setServerResponseTimeoutMsec(30000);
-
-            /*
-             * Common parameters that shows an example of how the view edit screen
-             * is expected to pass some common service instance values to the
-             * popups.
-             */
-
-//            DataService.setSubscriberName("Mobility");
-//            DataService.setGlobalCustomerId("CUSTID12345")
-//            DataService.setServiceType("Mobility Type 1");
-//            DataService.setServiceInstanceName("Example Service Instance Name");
-//            DataService.setServiceName("Mobility Service 1");
-//            DataService.setServiceInstanceId("mmsc-test-service-instance");
-//            DataService.setServiceUuid("XXXX-YYYY-ZZZZ");
-//            DataService.setUserServiceInstanceName("USER_SERVICE_INSTANCE_NAME");
-
-        }
-
-        //PropertyService.setMsoBaseUrl("testmso");
 
         $scope.convertModel = function (asdcModel) {
             if (!asdcModel) return undefined;
@@ -305,20 +286,86 @@
             DataService.setServiceUuid($scope.service.model.service.uuid);
         }
 
-        $scope.deleteVfModule = function (serviceObject, vfModule, vnf) {
+        var modalInstance;
 
-            console.log("Removing VF-Module " + vfModule.name);
+        var openMsoModal = function (msoType, requestParams, callbackFunction, configuration) {
+             modalInstance = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/mso-commit/mso-commit.html',
+                controller: "msoCommitModalController",
+                backdrop: false,
+                resolve: {
+                    msoType: function () {
+                        return msoType;
+                    },
+                    requestParams: function () {
+                        requestParams.callbackFunction = callbackFunction;
+                        return requestParams;
+                    },
+                    configuration: function () {
+                        return configuration;
+                    }
+                }
+            });
+        };
+
+        var openVfModuleWithHomingDataModal = function(action, vfModule)  {
+            modalInstance = $uibModal.open({
+                controller: 'vfModuleActionModalController',
+                templateUrl: 'app/vid/scripts/modals/vf-module-homing-data-action/vf-module-homing-data-action.html',
+                backdrop: false,
+                resolve: {
+                    action: function () {
+                        return action;
+                    },
+                    vfModule: function() {
+                        return vfModule;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (data) {
+                if (data.msoType && data.requestParams) {
+                    openMsoModal(data.msoType, data.requestParams, deleteOrResumeCallback, null);
+                }
+            });
+        };
+
+        function getLcpCloudRegionTenantList() {
+            AaiService.getLcpCloudRegionTenantList(DataService
+                .getGlobalCustomerId(), DataService.getServiceType(), function(
+                response) {
+                $scope.lcpAndTenant = response;
+                $scope.isFeatureFlagCloudOwner = featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST);
+                $scope.lcpRegionList = _.uniqBy(response, 'cloudRegionId');
+            });
+        }
+
+        $scope.deleteVfModule = function (serviceObject, vfModule, vnf) {
+            $scope.isSoftDeleteEnabled = true;
 
             populate_popup_vfModule(serviceObject, vfModule, vnf);
 
-            $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
-                componentId: COMPONENT.VF_MODULE,
-                callbackFunction: deleteOrResumeCallback,
-                dialogMethod: COMPONENT.DELETE
-            });
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE))  {
 
-            return;
-
+                if (DataService.getLoggedInUserId())  {
+                    openVfModuleWithHomingDataModal(COMPONENT.DELETE, vfModule);
+                }
+                else {
+                    AaiService.getLoggedInUserID(function (response) {
+                        var userID = response.data;
+                        DataService.setLoggedInUserId(userID);
+                        openVfModuleWithHomingDataModal(COMPONENT.DELETE, vfModule);
+                    });
+                }
+            }
+            else {
+                $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
+                    componentId: COMPONENT.VF_MODULE,
+                    callbackFunction: deleteOrResumeCallback,
+                    dialogMethod: COMPONENT.DELETE
+                });
+            }
+            console.log("Removing VF-Module", vfModule);
         };
 
         function setCurrentServiceModelInfoFromScope() {
@@ -1175,11 +1222,27 @@
             setCurrentVNFModelInfo(vnfModel);
             DataService.setVfModuleInstanceName(vfModule.object[FIELD.ID.VF_MODULE_NAME]);
             setCurrentServiceModelInfoFromScope();
-            $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
-                componentId: COMPONENT.VF_MODULE,
-                callbackFunction: deleteOrResumeCallback,
-                dialogMethod: COMPONENT.RESUME
-            });
+
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE))  {
+
+                if (DataService.getLoggedInUserId())  {
+                    openVfModuleWithHomingDataModal(COMPONENT.RESUME, vfModule);
+                }
+                else {
+                    AaiService.getLoggedInUserID(function (response) {
+                        var userID = response.data;
+                        DataService.setLoggedInUserId(userID);
+                        openVfModuleWithHomingDataModal(COMPONENT.RESUME, vfModule);
+                    });
+                }
+            }
+            else {
+                $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
+                    componentId: COMPONENT.VF_MODULE,
+                    callbackFunction: deleteOrResumeCallback,
+                    dialogMethod: COMPONENT.RESUME
+                });
+            }
         };
 
         $scope.deleteConfiguration = function (serviceObject, configuration) {

@@ -33,7 +33,13 @@ public class VnfDetailsWithWorkflows extends VnfDetails {
         this.workflows = workflows;
     }
 
-    public boolean equals(VnfDetailsWithWorkflows vnfDetailsWithWorkflows){
-        return this.workflows.equals(vnfDetailsWithWorkflows.getWorkflows());
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

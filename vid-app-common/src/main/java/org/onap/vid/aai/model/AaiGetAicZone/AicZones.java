@@ -1,8 +1,8 @@
 package org.onap.vid.aai.model.AaiGetAicZone;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import java.util.List;
 
 public class AicZones {
 	@JsonProperty("zone")

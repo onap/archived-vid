@@ -1,0 +1,56 @@
+{
+  "requestDetails": {
+    "modelInfo": {
+      "modelType": "volumeGroup",
+      "modelCustomizationName" : "201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1",
+      "modelInvariantId": "ff5256d2-5a33-55df-13ab-12abad84e7ff",
+      "modelVersionId": "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
+      "modelCustomizationId": "72d9d1cd-f46d-447a-abdb-451d6fb05fa8",
+      "modelName": "201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1",
+      "modelVersion": "1"
+    },
+    "cloudConfiguration": {
+      "lcpCloudRegionId": "mdt1",
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e",
+      "cloudOwner" : "att-aic"
+    },
+    "requestInfo": {
+      "instanceName": "myVgName",
+      "source": "VID",
+      "requestorId": "az2016",
+      "suppressRollback": true
+    },
+    "relatedInstanceList": [
+      {
+        "relatedInstance": {
+          "instanceId": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+          "modelInfo": {
+            "modelType": "service",
+            "modelInvariantId": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+            "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe",
+            "modelName": "sriov",
+            "modelVersion": "1.0"
+          }
+        }
+      },
+      {
+        "relatedInstance": {
+          "instanceId": "vnfInstanceId",
+          "modelInfo": {
+            "modelType": "vnf",
+            "modelInvariantId": "11111111-f63c-463e-ba94-286933b895f9",
+            "modelVersionId": "7f40c192-f63c-463e-ba94-286933b895f8",
+            "modelName": "2016-73_MOW-AVPN-vPE-BV-L",
+            "modelVersion": "10.0",
+            "modelCustomizationName": "2016-73_MOW-AVPN-vPE-BV-L 0",
+            "modelCustomizationId": "ab153b6e-c364-44c0-bef6-1f2982117f04"
+          }
+        }
+      }
+    ],
+    "requestParameters" : {
+      "userParams" : [ ],
+      "usePreload" : true
+    }
+  }
+}

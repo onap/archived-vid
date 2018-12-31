@@ -16,6 +16,7 @@ import org.yaml.snakeyaml.error.YAMLException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -92,7 +93,7 @@ public class ToscaParserImpl implements ToscaParser {
 		final ToscaModel asdcServiceToscaModel = toscaCsar.getParent();
 		serviceModel.setService(ServiceModel.extractService(asdcServiceToscaModel, service));
 
-
+		serviceModel.setFabricConfigurations(Collections.emptyMap());
 
 		populateVnfsAndNetwork(methodName, isNewFlow, vnfs, networks, asdcServiceToscaModel, serviceModel);
 
@@ -180,8 +181,6 @@ public class ToscaParserImpl implements ToscaParser {
 	}
 
 	private ServiceModel getCustomizedServices(ToscaModel asdcServiceToscaModel, ServiceModel serviceModel) {
-		String methodName = "asdcServiceToscaModel";
-
 		// asdcServiceToscaModel should have vf modules and vol groups populated
 		// at this point but
 		// they are not associated with the VNFs

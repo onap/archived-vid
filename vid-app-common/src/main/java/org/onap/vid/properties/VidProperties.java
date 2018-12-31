@@ -20,13 +20,10 @@
 
 package org.onap.vid.properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.model.ModelConstants;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 /**
  * The Class VidProperties.
  */
@@ -37,6 +34,7 @@ public class VidProperties extends SystemProperties {
 	public static final String MSO_DEFAULT_TEST_API="mso.defaultTestAPI";
 	public static final String MSO_MAX_OPENED_INSTANTIATION_REQUESTS="mso.maxOpenedInstantiationRequests";
 	public static final String MSO_ASYNC_POLLING_INTERVAL_SECONDS="mso.asyncPollingIntervalSeconds";
+	public static final String PROBE_SDC_MODEL_UUID="probe.sdc.model.uuid";
 
 	/** The Constant VID_TRUSTSTORE_FILENAME. */
 	public static final String VID_TRUSTSTORE_FILENAME = "vid.truststore.filename";
@@ -49,9 +47,9 @@ public class VidProperties extends SystemProperties {
 	
 	/** The Constant LOG. */
 	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(VidProperties.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+
+    public static final String VID_JOB_MAX_HOURS_IN_PROGRESS = "vid.asyncJob.maxHoursInProgress";
+
 	/**
 	 * Gets the asdc model namespace prefix property
 	 * 
@@ -67,7 +65,7 @@ public class VidProperties extends SystemProperties {
 		    }
 	    }
 	    catch ( Exception e ) {
-	    	LOG.error (EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + methodName + "unable to find the value, using the default "
+	    	LOG.error (EELFLoggerDelegate.errorLogger, methodName + "unable to find the value, using the default "
 	    			+ ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE);
 	    	asdcModelNamespace = ModelConstants.DEFAULT_ASDC_MODEL_NAMESPACE;
 	    }
@@ -88,10 +86,28 @@ public class VidProperties extends SystemProperties {
 		    }
 	    }
 	    catch ( Exception e ) {
-	    	LOG.error (EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + methodName + "unable to find the value, using the default "
+	    	LOG.error (EELFLoggerDelegate.errorLogger, methodName + "unable to find the value, using the default "
 	    			+ defaultValue);
 	    	propValue = defaultValue;
 	    }
 	    return (propValue);
 	}
+
+	public static long getLongProperty(String key) {
+		return getLongProperty(key, 0);
+	}
+
+	public static long getLongProperty(String key, long defaultValue) {
+	    if (!containsProperty(key)) {
+            LOG.debug(EELFLoggerDelegate.debugLogger, "No such property: {}. {} value is used", key, defaultValue);
+            return defaultValue;
+        }
+        String configValue = getProperty(key);
+        if (StringUtils.isNumeric(configValue)) {
+            return Long.parseLong(configValue);
+        } else {
+            LOG.debug(EELFLoggerDelegate.debugLogger, "{} property value is not valid: {}. {} value is used", key, configValue, defaultValue);
+            return defaultValue;
+        }
+    }
 }

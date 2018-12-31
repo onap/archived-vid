@@ -1,17 +1,6 @@
 package org.onap.vid.model;
 
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 public class ServiceProxy extends Node {
-
-    /** The Constant LOG. */
-    private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(ServiceProxy.class);
-
-    /** The Constant dateFormat. */
-    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
     private String sourceModelUuid;
 

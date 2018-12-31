@@ -27,6 +27,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.utils.Unchecked;
+import org.springframework.http.HttpMethod;
 import org.testng.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,10 +40,14 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
 import static javax.ws.rs.core.Response.Status.*;
+import static junit.framework.TestCase.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,6 +62,8 @@ public class SingleAAIRestInterfaceTest {
     private WebTarget webTarget;
     @Mock
     private Invocation.Builder builder;
+    @Mock
+    private Invocation invocation;
     @Mock
     private ServletRequestHelper servletRequestHelper;
     @Mock
@@ -76,6 +85,9 @@ public class SingleAAIRestInterfaceTest {
         when(webTarget.request()).thenReturn(builder);
         when(builder.accept(Mockito.anyString())).thenReturn(builder);
         when(builder.header(Mockito.anyString(), Mockito.anyString())).thenReturn(builder);
+        when(builder.build(Mockito.anyString())).thenReturn(invocation);
+        when(builder.build(Mockito.anyString(), any(Entity.class))).thenReturn(invocation);
+        when(invocation.invoke()).thenReturn(response);
         when(servletRequestHelper.extractOrGenerateRequestId()).thenReturn(UUID.randomUUID().toString());
     }
 
@@ -109,16 +121,15 @@ public class SingleAAIRestInterfaceTest {
         Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
 
         // when
-        when(builder.put(Mockito.any(Entity.class))).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(OK);
-        Response finalResponse = testSubject.RestPut("", PATH, payload, false);
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
 
         // then
-        verify(builder).put(entity);
+        verify(builder).build(HttpMethod.PUT.name(), entity);
         Assert.assertEquals(response, finalResponse);
     }
 
-    @Test
+    @Test(expected = GenericUncheckedException.class)
     public void testFailedRestJsonPut() throws Exception {
         // given
         String methodName = "RestPut";
@@ -126,12 +137,11 @@ public class SingleAAIRestInterfaceTest {
         Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
 
         // when
-        when(builder.put(Mockito.any(Entity.class))).thenThrow(new RuntimeException());
-        Response finalResponse = testSubject.RestPut("", PATH, payload, false);
+        when(builder.build(eq(HttpMethod.PUT.name()), any(Entity.class))).thenThrow(new GenericUncheckedException("msg"));
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
 
         // then
-        verify(builder).put(entity);
-        Assert.assertEquals(finalResponse, null);
+        fail("expected unreachable: exception to be thrown");
     }
 
     @Test
@@ -142,13 +152,12 @@ public class SingleAAIRestInterfaceTest {
         Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
 
         // when
-        when(builder.put(Mockito.any(Entity.class))).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
         when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
-        Response finalResponse = testSubject.RestPut("", PATH, payload, false);
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
 
         // then
-        verify(builder).put(entity);
+        verify(builder).build(HttpMethod.PUT.name(), entity);
         Assert.assertEquals(response, finalResponse);
     }
 
@@ -259,9 +268,8 @@ public class SingleAAIRestInterfaceTest {
         String methodName = "RestGet";
 
         // when
-        when(builder.get()).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(OK);
-        Response finalResponse = testSubject.RestGet("", "", PATH, false).getResponse();
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
 
         // then
         Assert.assertEquals(response, finalResponse);
@@ -273,10 +281,9 @@ public class SingleAAIRestInterfaceTest {
         String methodName = "RestGet";
 
         // when
-        when(builder.get()).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
         when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
-        Response finalResponse = testSubject.RestGet("", "", PATH, false).getResponse();
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
 
         // then
         Assert.assertEquals(response, finalResponse);
@@ -289,7 +296,7 @@ public class SingleAAIRestInterfaceTest {
 
         // when
         when(builder.get()).thenThrow(new RuntimeException());
-        Response finalResponse = testSubject.RestGet("", "", PATH, false).getResponse();
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
 
         // then
         Assert.assertEquals(finalResponse, null);
@@ -302,6 +309,7 @@ public class SingleAAIRestInterfaceTest {
         when(systemPropertyHelper.getAAIVIDUsername()).thenReturn(Optional.of("user"));
         when(systemPropertyHelper.getEncodedCredentials()).thenReturn("someCredentials");
         when(systemPropertyHelper.getFullServicePath(Mockito.anyString())).thenReturn("http://localhost/path");
+        when(systemPropertyHelper.getFullServicePath(Mockito.any(URI.class))).thenReturn("http://localhost/path");
         when(systemPropertyHelper.getServiceBasePath(Mockito.anyString())).thenReturn("http://localhost/path");
     }
 

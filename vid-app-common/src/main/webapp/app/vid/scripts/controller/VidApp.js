@@ -73,7 +73,7 @@
 		  controller: 'ServiceProxyConfigController',
 		  templateUrl: 'app/vid/scripts/view-models/serviceProxyConfig.htm'
 	    })
-	  .when('/servicePlanning', {
+	  .when('/servicePlanning/:mode?', {
 		  controller: 'iframeController',
 		  templateUrl: 'app/vid/scripts/view-models/iframe.htm'
 	  })

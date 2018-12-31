@@ -20,6 +20,7 @@
 
 package org.onap.vid.mso;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -111,8 +112,7 @@ public class MsoResponseWrapper implements MsoResponseWrapperInterface {
      *
      * @return the response
      */
-    @org.codehaus.jackson.annotate.JsonIgnore
-    @com.fasterxml.jackson.annotation.JsonIgnore
+    @JsonIgnore
     public String getResponse () {
     	
     	StringBuilder b = new StringBuilder ("{ \"status\": ");

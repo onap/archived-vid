@@ -1,13 +1,10 @@
 package org.onap.vid.changeManagement;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({
     "requestDetails",
@@ -17,17 +14,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class ChangeManagementRequest {
 
 	public static class MsoChangeManagementRequest {
-		public final static String SOFTWARE_UPDATE = "inPlaceSoftwareUpdate";
+		public static final String SOFTWARE_UPDATE = "inPlaceSoftwareUpdate";
 		public static final String REPLACE = "replace";
-		public final static String CONFIG_UPDATE = "applyUpdatedConfig";
+		public static final String CONFIG_UPDATE = "applyUpdatedConfig";
 
 	}
 
-	public final static String VNF_IN_PLACE_SOFTWARE_UPDATE = "vnf in place software update";
+	public static final String VNF_IN_PLACE_SOFTWARE_UPDATE = "vnf in place software update";
 	public static final String UPDATE = "update";
 	public static final String REPLACE = "replace";
-	public final static String CONFIG_UPDATE = "vnf config update";
-	public final static String SCALE_OUT = "vnf scale out";
+	public static final String CONFIG_UPDATE = "vnf config update";
+	public static final String SCALE_OUT = "vnf scale out";
 
 	@JsonProperty("requestDetails")
     private List<RequestDetails> requestDetails;
@@ -36,7 +33,7 @@ public class ChangeManagementRequest {
     private String requestType;
 
 	@JsonIgnore
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	private Map<String, Object> additionalProperties = new HashMap<>();
     
 	@JsonProperty("requestDetails")
 	public List<RequestDetails> getRequestDetails() {

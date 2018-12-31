@@ -270,15 +270,15 @@ var DataService = function($log, DataService) {
 			}
 			return _this.aLaCarte;
 		},
-		setShouldExcludeMacroFromAsyncInstatiationFlow: function (val) {
-			_this.shouldExcludeMacroFromAsyncInstatiationFlow = val;
+        setShouldIncludeInAsyncInstantiationFlow: function (val) {
+            _this.shouldIncludeInAsyncInstantiationFlow = val;
         },
-        getShouldExcludeMacroFromAsyncInstatiationFlow: function(){
-            if (_this.shouldExcludeMacroFromAsyncInstatiationFlow === undefined) {
+        getShouldIncludeInAsyncInstantiationFlow: function(){
+            if (_this.shouldIncludeInAsyncInstantiationFlow === undefined) {
                 return false;
             }
-            return _this.shouldExcludeMacroFromAsyncInstatiationFlow;
-		},
+            return _this.shouldIncludeInAsyncInstantiationFlow;
+        },
 		setMacro : function(aval) {
 			_this.macro = aval;
 		},

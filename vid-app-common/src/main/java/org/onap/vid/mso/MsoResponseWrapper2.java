@@ -20,6 +20,7 @@
  */
 package org.onap.vid.mso;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,7 +39,7 @@ The serialized "entity" field may be either String or nested object.
  */
 public class MsoResponseWrapper2<T> implements MsoResponseWrapperInterface {
 
-    final static ObjectMapper objectMapper = new ObjectMapper();
+    static final ObjectMapper objectMapper = new ObjectMapper();
 
 	private final int status;
 	private final T entity;
@@ -69,8 +70,7 @@ public class MsoResponseWrapper2<T> implements MsoResponseWrapperInterface {
 	}
 
     @Override
-    @org.codehaus.jackson.annotate.JsonIgnore
-    @com.fasterxml.jackson.annotation.JsonIgnore
+    @JsonIgnore
     public String getResponse() {
         try {
             return objectMapper.writeValueAsString(this);

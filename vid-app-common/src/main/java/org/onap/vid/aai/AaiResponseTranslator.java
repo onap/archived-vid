@@ -1,7 +1,7 @@
 package org.onap.vid.aai;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonNode;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class AaiResponseTranslator {
 
         for (JsonNode resultNode : results) {
             final JsonNode nodeType = resultNode.path("node-type");
-            if (nodeType.isTextual() && "cloud-region".equals(nodeType.getTextValue())) {
+            if (nodeType.isTextual() && "cloud-region".equals(nodeType.textValue())) {
                 return getPortMirroringConfigData(payload, resultNode);
             }
         }

@@ -29,8 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.ServletContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 /**
  *  General HTTP client.
@@ -44,9 +42,6 @@ public class HttpBasicClient{
 	
 	/** The logger. */
 	EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(HttpBasicClient.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 	
 	/**
 	 * Obtain a basic HTTP client .

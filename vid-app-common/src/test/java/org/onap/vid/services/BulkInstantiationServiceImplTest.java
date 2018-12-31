@@ -19,17 +19,6 @@
  */
 package org.onap.vid.services;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import javax.ws.rs.NotFoundException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.onap.vid.job.Job;
@@ -42,6 +31,14 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+
+import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BulkInstantiationServiceImplTest {
 
@@ -63,23 +60,6 @@ public class BulkInstantiationServiceImplTest {
   public void resetMocks() {
     reset(jobsBrokerService);
     reset(jobAdapter);
-  }
-
-  @Test
-  public void saveBulkTest() {
-    UUID uuid = UUID.randomUUID();
-    Map<String, Object> bulkRequest = new HashMap<>();
-    List<Job> jobList = new ArrayList<>();
-    jobList.add(createJob(uuid));
-    when(jobAdapter.createBulkOfJobs(bulkRequest)).thenReturn(jobList);
-
-    JobBulk jobBulk = createJobBulk(jobList);
-    when(jobAdapter.toModelBulk(jobList)).thenReturn(jobBulk);
-
-    JobBulk result = testSubject.saveBulk(bulkRequest);
-
-    Assert.assertEquals(result.getJobs().size(), jobList.size());
-    Assert.assertEquals(result.getJobs().get(0).getUuid(), uuid);
   }
 
   @Test

@@ -20,40 +20,92 @@
 
 package org.onap.vid.mso.rest;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.onap.vid.mso.model.ModelInfo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * modelInfo and optional instanceId and instanceName for a model related to the modelInfo being operated on.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
     "instanceName",
     "instanceId",
     "modelInfo"
 })
-public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
+public class RelatedInstance {
 
+    /**
+     * optional name for the instance Id of the related model
+     *
+     */
+    @JsonProperty("instanceName")
+    private String instanceName;
+
+    /**
+     * instance Id for the related model
+     *
+     */
+    @JsonProperty("instanceId")
+    private String instanceId;
 
     /** The model info. */
     @JsonProperty("modelInfo")
-    private org.onap.vid.domain.mso.ModelInfo modelInfo;
+    private ModelInfo modelInfo;
     
     /** The additional properties. */
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    /**
+     * optional name for the instance Id of the related model
+     *
+     * @return
+     *     The instanceName
+     */
+    @JsonProperty("instanceName")
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    /**
+     * optional name for the instance Id of the related model
+     *
+     * @param instanceName
+     *     The instanceName
+     */
+    @JsonProperty("instanceName")
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
+    }
+
+    /**
+     * instance Id for the related model
+     *
+     * @return
+     *     The instanceId
+     */
+    @JsonProperty("instanceId")
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    /**
+     * instance Id for the related model
+     *
+     * @param instanceId
+     *     The instanceId
+     */
+    @JsonProperty("instanceId")
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
 
     /**
      * (Required).
@@ -61,7 +113,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
      * @return     The modelInfo
      */
     @JsonProperty("modelInfo")
-    public org.onap.vid.domain.mso.ModelInfo getModelInfo() {
+    public ModelInfo getModelInfo() {
         return modelInfo;
     }
 
@@ -71,7 +123,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
      * @param modelInfo     The modelInfo
      */
     @JsonProperty("modelInfo")
-    public void setModelInfo(org.onap.vid.domain.mso.ModelInfo modelInfo) {
+    public void setModelInfo(ModelInfo modelInfo) {
         this.modelInfo = modelInfo;
     }
 
@@ -115,7 +167,7 @@ public class RelatedInstance extends org.onap.vid.domain.mso.RelatedInstance{
         if (other == this) {
             return true;
         }
-        if ((other instanceof RelatedInstance) == false) {
+        if (!(other instanceof RelatedInstance)) {
             return false;
         }
         RelatedInstance rhs = ((RelatedInstance) other);

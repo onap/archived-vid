@@ -9,13 +9,22 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class Streams {
+
+    private Streams() {
+        // hide the implicit public constructor
+    }
+
     public static <R> Predicate<R> not(Predicate<R> predicate) {
         return predicate.negate();
     }
 
     public static <T> Stream<T> fromIterator(final Iterator<T> iterator) {
         Iterable<T> iterable = () -> iterator;
-        return StreamSupport.<T>stream(iterable.spliterator(), false);
+        return StreamSupport.stream(iterable.spliterator(), false);
+    }
+
+    public static <T> Stream<T> fromIterable(final Iterable<T> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false);
     }
 
 

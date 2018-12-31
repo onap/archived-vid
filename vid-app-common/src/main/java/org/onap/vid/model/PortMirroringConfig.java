@@ -1,21 +1,11 @@
 package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.sdc.toscaparser.api.RequirementAssignments;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PortMirroringConfig extends Node {
-
-    /** The Constant LOG. */
-    private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(PortMirroringConfig.class);
-
-    /** The Constant dateFormat. */
-    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
     /** The model customization name. */
     private String modelCustomizationName;

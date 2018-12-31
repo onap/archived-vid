@@ -80,6 +80,30 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
 
     };
 
+    var buildPayloadForActivateFabricConfiguration = function (model, userId) {
+        var requestDetails = {
+            "modelInfo": {
+                "modelType": "service",
+                "modelInvariantId": model.service.invariantUuid,
+                "modelVersionId": model.service.uuid,
+                "modelName": model.service.name,
+                "modelVersion": model.service.version
+            },
+            "requestInfo": {
+                "source": "VID",
+                "requestorId": userId
+            },
+            "requestParameters": {
+                "aLaCarte": false
+            }
+        };
+
+        $log.debug("Service Activate Fabric Configuration payload", requestDetails);
+
+        return requestDetails;
+
+    };
+
     var activateInstance = function(requestParams) {
         var requestDetails = buildPayloadForServiceActivateDeactivate(requestParams.model, requestParams.userId);
 
@@ -94,12 +118,10 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             requestDetails);
     };
 
-    var sendPostRequest = function(url, requestDetails) {
+    var sendPostRequestWithBody = function(url, requestBody) {
         var deferred = $q.defer();
         if (url) {
-            $http.post(url, {
-                requestDetails: requestDetails
-            }, {
+            $http.post(url, requestBody, {
                 timeout: PropertyService.getServerResponseTimeoutMsec()
             }).success(function (response) {
                 deferred.resolve({data: response});
@@ -111,9 +133,16 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
         return deferred.promise;
     };
 
+    var sendPostRequest = function(url, requestDetails) {
+        return sendPostRequestWithBody(url, {requestDetails: requestDetails});
+    };
+
     return {
         createInstance : requestInstanceUpdate,
         deleteInstance : requestInstanceUpdate,
+        createAndDeleteInstance: function(requestParams)  {
+            return sendPostRequest("mso/" + requestParams.url, requestParams.requestDetails);
+        },
         getOrchestrationRequest : function(requestId, successCallbackFunction) {
             $log.debug("MsoService:getOrchestrationRequest: requestId: "
                 + requestId);
@@ -312,7 +341,6 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                         "modelCustomizationName": requestParams.configurationModelInfo.modelCustomizationName
                     },
                     "cloudConfiguration": {
-                        // "tenantId": ????
                         "lcpCloudRegionId": requestParams.portMirroringConfigFields.lcpRegion.value
                     },
                     "requestInfo": {

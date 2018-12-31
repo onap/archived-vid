@@ -28,12 +28,14 @@ import static org.onap.vid.utils.Streams.not;
 
 public class Logging {
 
-    Logging() {
+    private Logging() {
     }
 
     public static final String HTTP_REQUESTS_OUTGOING = "http.requests.outgoing.";
 
     public static final String REQUEST_ID_HEADER_KEY = SystemProperties.ECOMP_REQUEST_ID;
+    public static final String ONAP_REQUEST_ID_HEADER_KEY = "X-ONAP-RequestID";
+
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 

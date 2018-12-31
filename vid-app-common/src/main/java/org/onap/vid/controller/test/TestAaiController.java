@@ -20,7 +20,7 @@
 
 package org.onap.vid.controller.test;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.vid.model.ExceptionResponse;
 import org.springframework.web.bind.annotation.*;

@@ -225,8 +225,9 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     $scope.createType = "a la carte";
                     var broadcastType = "createComponent";
 
+                    DataService.setShouldIncludeInAsyncInstantiationFlow(AsdcService.shouldTakeTheAsyncInstantiationFlow(serviceModel));
+
                     if (AsdcService.isMacro(serviceModel)) {
-                        DataService.setShouldExcludeMacroFromAsyncInstatiationFlow(AsdcService.shouldExcludeMacroFromAsyncInstatiationFlow(serviceModel));
                         DataService.setALaCarte(false);
                         $scope.createType = "Macro";
                         var convertedAsdcModel = UtilityService.convertModel(serviceModel);
@@ -250,7 +251,6 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                             "serviceRole": serviceModel.service.serviceRole
                         });
                     }
-                    ;
 
                     $scope.$broadcast(broadcastType, {
                         componentId: COMPONENT.SERVICE,
@@ -445,9 +445,6 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             var polls = PropertyService.retrieveMsoMaxPolls();
             PropertyService.setMsoMaxPolls(polls);
 
-            //PropertyService.setMsoBaseUrl("testmso");
-            PropertyService.setServerResponseTimeoutMsec();
-
             /*
              * Common parameters that would typically be set when the page is
              * displayed for a specific service instance id.
@@ -521,6 +518,8 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             return deferred.promise;
         }
 
+        var serviceNetworkVlans = [];
+        var vnfNetworksAndVlans = [];
 
         $scope.getComponentList = function (event, request) {
 
@@ -542,6 +541,9 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
             //$scope.getAsdcModel($location.search().modelUuid);
 
+            //make sure view/edit don't open new deploy service popup
+            DataService.setShouldIncludeInAsyncInstantiationFlow(false);
+
             return getModelVersionIdForServiceInstance({
                 globalCustomerId: $location.search().subscriberId,
                 serviceInstanceId: $location.search().serviceInstanceId,
@@ -550,10 +552,16 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 .then(resolveModelDataIfMissing)
                 .then($scope.prepareScopeWithModel)
                 .then(function () {
-
+                    return AaiService.getVlansByNetworksMapping($scope.globalCustomerId, $scope.serviceType, $scope.serviceInstanceId, $scope.service.model.service.uuid);
+                })
+                .then(function (vlanByNetwork) {
+                    serviceNetworkVlans = vlanByNetwork.serviceNetworks ? vlanByNetwork.serviceNetworks : [];
+                    vnfNetworksAndVlans =  vlanByNetwork.vnfNetworks ? vlanByNetwork.vnfNetworks : [];
+                    $log.debug('vlanByNetwork', vlanByNetwork);
                     $scope.namedQueryId = VIDCONFIGURATION.COMPONENT_LIST_NAMED_QUERY_ID;
                     $scope.status = FIELD.STATUS.FETCHING_SERVICE_INST_DATA + $scope.serviceInstanceId;
 
+                    $scope.hasFabricConfigurations = !UtilityService.isObjectEmpty($scope.service.model.fabricConfigurations);
                     return AaiService.runNamedQuery($scope.namedQueryId, $scope.globalCustomerId, $scope.serviceType, $scope.serviceInstanceId,
                         function (response) { //success
                             $scope.handleInitialResponseInventoryItems(response);
@@ -567,13 +575,13 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                             $scope.errorMsg = FIELD.ERROR.FETCHING_SERVICE_INSTANCE_DATA + response.status;
                             $scope.errorDetails = response.data;
                         }
-                    )
-                })
+                    );
+                });
         };
 
         $scope.handleServerError = function (response, status) {
             alert(response.statusText);
-        }
+        };
 
         function handleGetRelatedInstanceGroupsResponseForVnf(response, genericVnf) {
             _.forEach(response.data, function (instanceGroup) {
@@ -582,7 +590,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     type: instanceGroup.type
                 };
                 genericVnf.instanceGroups.push(newInstanceGroup);
-            })
+            });
         }
 
 
@@ -618,13 +626,25 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
 
             function navigateToViewEditPage() {
-                window.location.href =
-                    COMPONENT.INSTANTIATE_ROOT_PATH + disData.globalCustomerId +
+                window.location.href = AsdcService.shouldTakeTheDrawingBoardViewEdit(vidService.getModel()) ?
+                    drawingBoardViewEditUrl() : oldViewEditUrl();
+            }
+
+            function oldViewEditUrl() {
+                return COMPONENT.INSTANTIATE_ROOT_PATH + disData.globalCustomerId +
                     COMPONENT.SUBSCRIBERNAME_SUB_PATH + disData.subscriberName +
                     COMPONENT.SERVICETYPE_SUB_PATH + disData.serviceType +
                     COMPONENT.SERVICEINSTANCEID_SUB_PATH + disData.serviceInstanceId +
                     COMPONENT.MODELVERSIONID_SUB_PATH + disData.aaiModelVersionId +
                     COMPONENT.IS_PERMITTED_SUB_PATH + disData.isPermitted;
+            }
+
+            function drawingBoardViewEditUrl() {
+                return 'serviceModels.htm#/servicePlanning/EDIT?' +
+                'serviceModelId=' +     disData.aaiModelVersionId +
+                '&subscriberId=' +      disData.globalCustomerId  +
+                '&serviceType=' +       disData.serviceType      +
+                '&serviceInstanceId=' + disData.serviceInstanceId;
             }
         };
 
@@ -751,6 +771,16 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             return false;
         };
 
+        $scope.isActivateFabricConfiguration = function () {
+
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS) && $scope.hasFabricConfigurations) {
+                if ($scope.serviceOrchestrationStatus) {
+                    return $scope.serviceOrchestrationStatus.toLowerCase() === 'assigned';
+                }
+            }
+            return false;
+        };
+
         $scope.isResumeShown = function (status) {
             var vfModuleStatus = status.toLowerCase();
             var serviceStatus = $scope.serviceOrchestrationStatus && $scope.serviceOrchestrationStatus.toLowerCase();
@@ -768,12 +798,16 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.counter = 100;
 
             $scope.subscriberName = "";
+
+            $scope.allConfigurationsAssigned = true;
             // just look up the subscriber name in A&AI here...
             AaiService.getSubscriberName($scope.globalCustomerId, function (response) {
                 $scope.subscriberName = response.subscriberName;
                 DataService.setSubscriberName($scope.subscriberName);
                 $scope.serviceOrchestrationStatus = returnMatchingServiceSubscription(response.serviceSubscriptions[FIELD.ID.SERVICE_SUBSCRIPTION], $scope.serviceInstanceId);
-
+                if ($scope.serviceOrchestrationStatus.toLowerCase() !== FIELD.STATUS.ASSIGNED.toLowerCase()) {
+                    $scope.allConfigurationsAssigned = false;
+                }
                 angular.forEach($scope.inventoryResponseItemList, function (inventoryResponseItem, key) {
 
                     $scope.inventoryResponseItem = inventoryResponseItem;
@@ -820,7 +854,8 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                     "nodeStatus": l3NetworkObject[FIELD.ID.ORCHESTRATION_STATUS],
                                     "object": l3NetworkObject,
                                     "nodes": [],
-                                    "subnets": []
+                                    "subnets": [],
+                                    "vlans": []
                                 };
                                 if (subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
                                     //console.log ("subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS]=");
@@ -842,6 +877,12 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                         }
                                     });
                                 }
+
+                                
+                                var networkObj = _.find(serviceNetworkVlans, { 'networkId': l3Network.nodeId});
+                                if (networkObj !== undefined && networkObj.vlans !== undefined) {
+                                    l3Network["vlans"] = networkObj.vlans;
+                                }
                                 $scope.service.instance[FIELD.ID.NETWORKS].push(l3Network);
                             }
 
@@ -860,14 +901,15 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                     "vfModules": [],
                                     "volumeGroups": [],
                                     "instanceGroups": [],
-                                    "availableVolumeGroups": []
+                                    "availableVolumeGroups": [],
+                                    "networks": []
                                 };
-                                if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_VLAN_TAGGING_VIEW_EDIT)) {
 
-                                    //TODO should be changed after integration
-                                    genericVnf["instanceGroups"] = [{"name":"a2"}];
-
+                                var vnfNetworkObj = _.find(vnfNetworksAndVlans, { 'vnfId': genericVnf.nodeId});
+                                if (vnfNetworkObj !== undefined && vnfNetworkObj.networks !== undefined) {
+                                    genericVnf["networks"] = vnfNetworkObj.networks;
                                 }
+
                                 $scope.service.instance[FIELD.ID.VNFS].push(genericVnf);
                                 getRelatedInstanceGroupsByVnfId(genericVnf);
 
@@ -977,18 +1019,25 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                     "ports": [],
                                     "configData" : null
                                 };
+                                if( !$scope.hasFabricConfigurations ) {
                                 portMirroringConfigurationIds.push(configObject[FIELD.ID.CONFIGURATION_ID]);
-
+                                    $scope.service.instance[FIELD.ID.CONFIGURATIONS].push(config);
                                 $scope.allowConfigurationActions = [FIELD.STATUS.AAI_ACTIVE, FIELD.STATUS.AAI_INACTIVE, FIELD.STATUS.AAI_CREATED].indexOf(config.nodeStatus) != -1;
-
-                                $scope.service.instance[FIELD.ID.CONFIGURATIONS].push(config);
+                                } else {
+                                   if (config.nodeStatus.toLowerCase() !== FIELD.STATUS.ASSIGNED.toLowerCase()) {
+                                       $scope.allConfigurationsAssigned = false;
+                                       if ($scope.isActivateFabricConfiguration()) {
+                                            $scope.errorMsg = "Activate fabric configuration button is not available as some of the configuration objects are not in Assigned status. Check MSO logs for the reasons for this abnormal case.";
+                                       }
+                                   }
+                               }
                             }
 
                         });
 
                         AaiService.getPortMirroringData(portMirroringConfigurationIds).then(function(result){
                            angular.forEach($scope.service.instance[FIELD.ID.CONFIGURATIONS], function(config){
-                                config['configData'] = result.data[config['nodeId']]
+                                config['configData'] = result.data[config['nodeId']];
 
                                if (config.configData && config.configData.errorDescription) {
                                    $scope.errorMsg = ($scope.errorMsg ? $scope.errorMsg + "\n" : "") +
@@ -1019,11 +1068,15 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     }
                 });
 
+                var aaiNetworkIds = _.map(serviceNetworkVlans, 'networkId');
+                var serviceInstanceNetworkIds = _.map($scope.service.instance[FIELD.ID.NETWORKS], 'nodeId');
+                var isContains = aaiNetworkIds.every(function(val) { return serviceInstanceNetworkIds.indexOf(val) >= 0; });
+                if (aaiNetworkIds.length && !isContains)  {
+                    $log.error("vlansByNetworks contain network that not found in service instance", aaiNetworkIds, serviceInstanceNetworkIds);
+                }
+
             });
-
-
-
-        }
+        };
 
 
 
@@ -1195,12 +1248,37 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             }
         };
 
+
+        var activateFabricConfigurationInstance = function (msoType) {
+            var requestParams = {
+                model: $scope.service.model,
+                service: $scope.service,
+                serviceInstanceId: $scope.serviceInstanceId
+            };
+
+            if (DataService.getLoggedInUserId()) {
+                requestParams.userId = DataService.getLoggedInUserId();
+                openMsoModal(COMPONENT.MSO_ACTIVATE_FABRIC_CONFIGURATION_REQ, requestParams);
+            } else {
+                AaiService.getLoggedInUserID(function (response) {
+                    var userID = response.data;
+                    DataService.setLoggedInUserId(userID);
+                    requestParams.userId = userID;
+                    openMsoModal(COMPONENT.MSO_ACTIVATE_FABRIC_CONFIGURATION_REQ, requestParams);
+                });
+            }
+        };
+
         $scope.showAssignmentsSDNC = function () {
 
             if ($scope.service && $scope.service.instance) {
                 return VIDCONFIGURATION.SDNC_SHOW_ASSIGNMENTS_URL.replace("<SERVICE_INSTANCE_ID>" , $scope.service.instance.id);
             }
             return null;
+        };
+
+        $scope.activateFabricConfigurationMSO = function () {
+            activateFabricConfigurationInstance(COMPONENT.MSO_ACTIVATE_FABRIC_CONFIGURATION_REQ);
         };
 
         $scope.activateMSOInstance = function () {
