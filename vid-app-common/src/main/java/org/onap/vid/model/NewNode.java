@@ -1,22 +1,12 @@
 package org.onap.vid.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import org.onap.vid.asdc.beans.tosca.Input;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.asdc.beans.tosca.Input;
-
 
 public class NewNode {
-	
-	/** The Constant LOG. */
-	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(Node.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-
 	/** The uuid. */
 	private String uuid;
 	
@@ -47,8 +37,8 @@ public class NewNode {
 	 * Instantiates a new node.
 	 */
 	public NewNode() {
-		this.commands = new HashMap<String, CommandProperty>();
-		this.properties = new HashMap<String, String>();
+		this.commands = new HashMap<>();
+		this.properties = new HashMap<>();
 	}
 	
 	/**

@@ -22,7 +22,6 @@ package org.onap.vid.aai;
 
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.aai.model.AaiNodeQueryResponse;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.model.SubscriberList;
 
@@ -44,7 +43,7 @@ public interface AaiOverTLSClientInterface {
 
     void setUseClientCert(boolean useClientCert);
 
-    HttpResponse<AaiNodeQueryResponse> searchNodeTypeByName(String name, ResourceType type);
+    boolean isNodeTypeExistsByName(String name, ResourceType type);
 
     HttpResponse<SubscriberList> getAllSubscribers();
 

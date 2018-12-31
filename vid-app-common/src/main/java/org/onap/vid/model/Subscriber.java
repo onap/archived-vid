@@ -1,7 +1,7 @@
 package org.onap.vid.model;
 
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Oren on 7/4/17.

@@ -1,11 +1,8 @@
 package org.onap.vid.aai;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.onap.vid.aai.model.Relationship;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.onap.vid.aai.model.RelationshipList;
-
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OperationalEnvironment {
@@ -33,75 +30,75 @@ public class OperationalEnvironment {
         this.relationshipList = relationshipList;
     }
 
-    @JsonProperty("operational-environment-id")
     public String getOperationalEnvironmentId() {
         return operationalEnvironmentId;
     }
 
-    public void setOperationalEnvironmentId(String operationalEnvironmentId) {
+    @JsonProperty("operational-environment-id")
+    public void setJsonOperationalEnvironmentId(String operationalEnvironmentId) {
         this.operationalEnvironmentId = operationalEnvironmentId;
     }
 
-    @JsonProperty("operational-environment-name")
     public String getOperationalEnvironmentName() {
         return operationalEnvironmentName;
     }
 
-    public void setOperationalEnvironmentName(String operationalEnvironmentName) {
+    @JsonProperty("operational-environment-name")
+    public void setJsonOperationalEnvironmentName(String operationalEnvironmentName) {
         this.operationalEnvironmentName = operationalEnvironmentName;
     }
 
-    @JsonProperty("operational-environment-type")
     public String getOperationalEnvironmentType() {
         return operationalEnvironmentType;
     }
 
-    public void setOperationalEnvironmentType(String operationalEnvironmentType) {
+    @JsonProperty("operational-environment-type")
+    public void setJsonOperationalEnvironmentType(String operationalEnvironmentType) {
         this.operationalEnvironmentType = operationalEnvironmentType;
     }
 
-    @JsonProperty("operational-environment-status")
     public String getOperationalEnvironmentStatus() {
         return operationalEnvironmentStatus;
     }
 
-    public void setOperationalEnvironmentStatus(String operationalEnvironmentStatus) {
+    @JsonProperty("operational-environment-status")
+    public void setJsonOperationalEnvironmentStatus(String operationalEnvironmentStatus) {
         this.operationalEnvironmentStatus = operationalEnvironmentStatus;
     }
 
-    @JsonProperty("tenant-context")
     public String getTenantContext() {
         return tenantContext;
     }
 
-    public void setTenantContext(String tenantContext) {
+    @JsonProperty("tenant-context")
+    public void setJsonTenantContext(String tenantContext) {
         this.tenantContext = tenantContext;
     }
 
-    @JsonProperty("workload-context")
     public String getWorkloadContext() {
         return workloadContext;
     }
 
-    public void setWorkloadContext(String workloadContext) {
+    @JsonProperty("workload-context")
+    public void setJsonWorkloadContext(String workloadContext) {
         this.workloadContext = workloadContext;
     }
 
-    @JsonProperty("resource-version")
     public String getResourceVersion() {
         return resourceVersion;
     }
 
-    public void setResourceVersion(String resourceVersion) {
+    @JsonProperty("resource-version")
+    public void setJsonResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
 
-    @JsonProperty("relationship-list")
     public RelationshipList getRelationshipList() {
         return relationshipList;
     }
 
-    public void setRelationshipList(RelationshipList relationshipList) {
+    @JsonProperty("relationship-list")
+    public void setJsonRelationshipList(RelationshipList relationshipList) {
         this.relationshipList = relationshipList;
     }
 }

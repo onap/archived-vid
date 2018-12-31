@@ -122,7 +122,8 @@
         "nf_role": "vPE",
         "vmxvre_volume_id_0": "f4eacb79-f687-4e9d-b760-21847c8bb15a",
         "vmxvpfe_sriov42_0_port_unknownunicastallow": "true",
-        "vmxvpfe_flavor_name": "ns.c20r16d25.v5"
+        "vmxvpfe_flavor_name": "ns.c20r16d25.v5",
+        "ecomp_generated_naming": "true"
       },
       "type": "VF",
       "modelCustomizationName": "2017-488_ADIOD-vPE 0",
@@ -139,10 +140,12 @@
             "minCountInstances": 0,
             "maxCountInstances": null,
             "initialCount": 0,
-            "vfModuleLabel": "ADIOD_vRE_BV"
+            "vfModuleLabel": "ADIOD_vRE_BV",
+            "baseModule" : false
           },
           "inputs": {
-            "2017488_adiodvpe0_bandwidth_units": {
+            "bandwidth_units": {
+              "fromInputName": "2017488_adiodvpe0_bandwidth_units",
               "type": "string",
               "description": "Units of bandwidth",
               "entry_schema": null,
@@ -155,7 +158,8 @@
               "required": true,
               "default": "Gbps"
             },
-            "2017488_adiodvpe0_bandwidth": {
+            "bandwidth": {
+              "fromInputName": "2017488_adiodvpe0_bandwidth",
               "type": "string",
               "description": "Requested VPE bandwidth",
               "entry_schema": null,
@@ -168,7 +172,8 @@
               "required": true,
               "default": "10"
             },
-            "2017488_adiodvpe0_vnf_instance_name": {
+            "vnf_instance_name": {
+              "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
               "type": "string",
               "description": "The hostname assigned to the vpe.",
               "entry_schema": null,
@@ -181,7 +186,8 @@
               "required": true,
               "default": "mtnj309me6"
             },
-            "2017488_adiodvpe0_vnf_config_template_version": {
+            "vnf_config_template_version": {
+              "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
               "type": "string",
               "description": "VPE Software Version",
               "entry_schema": null,
@@ -194,7 +200,8 @@
               "required": true,
               "default": "17.2"
             },
-            "2017488_adiodvpe0_AIC_CLLI": {
+            "AIC_CLLI": {
+              "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
               "type": "string",
               "description": "AIC Site CLLI",
               "entry_schema": null,
@@ -222,7 +229,8 @@
             "minCountInstances": 1,
             "maxCountInstances": 1,
             "initialCount": 1,
-            "vfModuleLabel": "ADIOD_base_vPE_BV"
+            "vfModuleLabel": "ADIOD_base_vPE_BV",
+            "baseModule" : true
           },
           "inputs": {
             
@@ -241,10 +249,12 @@
             "minCountInstances": 0,
             "maxCountInstances": null,
             "initialCount": 0,
-            "vfModuleLabel": "ADIOD_vPFE_BV"
+            "vfModuleLabel": "ADIOD_vPFE_BV",
+            "baseModule" : false
           },
           "inputs": {
-            "2017488_adiodvpe0_availability_zone_0": {
+            "availability_zone_0": {
+              "fromInputName": "2017488_adiodvpe0_availability_zone_0",
               "type": "string",
               "description": "The Availability Zone to launch the instance.",
               "entry_schema": null,
@@ -277,7 +287,8 @@
             "vfModuleLabel": "ADIOD_vRE_BV"
           },
           "inputs": {
-            "2017488_adiodvpe0_bandwidth_units": {
+            "bandwidth_units": {
+              "fromInputName": "2017488_adiodvpe0_bandwidth_units",
               "type": "string",
               "description": "Units of bandwidth",
               "entry_schema": null,
@@ -290,7 +301,8 @@
               "required": true,
               "default": "Gbps"
             },
-            "2017488_adiodvpe0_bandwidth": {
+            "bandwidth": {
+              "fromInputName": "2017488_adiodvpe0_bandwidth",
               "type": "string",
               "description": "Requested VPE bandwidth",
               "entry_schema": null,
@@ -303,7 +315,8 @@
               "required": true,
               "default": "10"
             },
-            "2017488_adiodvpe0_vnf_instance_name": {
+            "vnf_instance_name": {
+              "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
               "type": "string",
               "description": "The hostname assigned to the vpe.",
               "entry_schema": null,
@@ -316,7 +329,8 @@
               "required": true,
               "default": "mtnj309me6"
             },
-            "2017488_adiodvpe0_vnf_config_template_version": {
+            "vnf_config_template_version": {
+              "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
               "type": "string",
               "description": "VPE Software Version",
               "entry_schema": null,
@@ -329,7 +343,8 @@
               "required": true,
               "default": "17.2"
             },
-            "2017488_adiodvpe0_AIC_CLLI": {
+            "AIC_CLLI": {
+              "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
               "type": "string",
               "description": "AIC Site CLLI",
               "entry_schema": null,
@@ -359,7 +374,8 @@
             "vfModuleLabel": "ADIOD_vPFE_BV"
           },
           "inputs": {
-            "2017488_adiodvpe0_availability_zone_0": {
+            "availability_zone_0": {
+              "fromInputName": "2017488_adiodvpe0_availability_zone_0",
               "type": "string",
               "description": "The Availability Zone to launch the instance.",
               "entry_schema": null,
@@ -402,10 +418,12 @@
         "minCountInstances": 0,
         "maxCountInstances": null,
         "initialCount": 0,
-        "vfModuleLabel": "ADIOD_vRE_BV"
+        "vfModuleLabel": "ADIOD_vRE_BV",
+        "baseModule" : false
       },
       "inputs": {
-        "2017488_adiodvpe0_bandwidth_units": {
+        "bandwidth_units": {
+          "fromInputName": "2017488_adiodvpe0_bandwidth_units",
           "type": "string",
           "description": "Units of bandwidth",
           "entry_schema": null,
@@ -418,7 +436,8 @@
           "required": true,
           "default": "Gbps"
         },
-        "2017488_adiodvpe0_bandwidth": {
+        "bandwidth": {
+          "fromInputName": "2017488_adiodvpe0_bandwidth",
           "type": "string",
           "description": "Requested VPE bandwidth",
           "entry_schema": null,
@@ -431,7 +450,8 @@
           "required": true,
           "default": "10"
         },
-        "2017488_adiodvpe0_vnf_instance_name": {
+        "vnf_instance_name": {
+          "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
           "type": "string",
           "description": "The hostname assigned to the vpe.",
           "entry_schema": null,
@@ -444,7 +464,8 @@
           "required": true,
           "default": "mtnj309me6"
         },
-        "2017488_adiodvpe0_vnf_config_template_version": {
+        "vnf_config_template_version": {
+          "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
           "type": "string",
           "description": "VPE Software Version",
           "entry_schema": null,
@@ -457,7 +478,8 @@
           "required": true,
           "default": "17.2"
         },
-        "2017488_adiodvpe0_AIC_CLLI": {
+        "AIC_CLLI": {
+          "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
           "type": "string",
           "description": "AIC Site CLLI",
           "entry_schema": null,
@@ -485,7 +507,8 @@
         "minCountInstances": 1,
         "maxCountInstances": 1,
         "initialCount": 1,
-        "vfModuleLabel": "ADIOD_base_vPE_BV"
+        "vfModuleLabel": "ADIOD_base_vPE_BV",
+        "baseModule" : true
       },
       "inputs": {
         
@@ -504,10 +527,12 @@
         "minCountInstances": 0,
         "maxCountInstances": null,
         "initialCount": 0,
-        "vfModuleLabel": "ADIOD_vPFE_BV"
+        "vfModuleLabel": "ADIOD_vPFE_BV",
+        "baseModule" : false
       },
       "inputs": {
-        "2017488_adiodvpe0_availability_zone_0": {
+        "availability_zone_0": {
+          "fromInputName": "2017488_adiodvpe0_availability_zone_0",
           "type": "string",
           "description": "The Availability Zone to launch the instance.",
           "entry_schema": null,
@@ -537,10 +562,12 @@
         "minCountInstances": 0,
         "maxCountInstances": null,
         "initialCount": 0,
-        "vfModuleLabel": "ADIOD_vRE_BV"
+        "vfModuleLabel": "ADIOD_vRE_BV",
+        "baseModule" : false
       },
       "inputs": {
-        "2017488_adiodvpe0_bandwidth_units": {
+        "bandwidth_units": {
+          "fromInputName": "2017488_adiodvpe0_bandwidth_units",
           "type": "string",
           "description": "Units of bandwidth",
           "entry_schema": null,
@@ -553,7 +580,8 @@
           "required": true,
           "default": "Gbps"
         },
-        "2017488_adiodvpe0_bandwidth": {
+        "bandwidth": {
+          "fromInputName": "2017488_adiodvpe0_bandwidth",
           "type": "string",
           "description": "Requested VPE bandwidth",
           "entry_schema": null,
@@ -566,7 +594,8 @@
           "required": true,
           "default": "10"
         },
-        "2017488_adiodvpe0_vnf_instance_name": {
+        "vnf_instance_name": {
+          "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
           "type": "string",
           "description": "The hostname assigned to the vpe.",
           "entry_schema": null,
@@ -579,7 +608,8 @@
           "required": true,
           "default": "mtnj309me6"
         },
-        "2017488_adiodvpe0_vnf_config_template_version": {
+        "vnf_config_template_version": {
+          "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
           "type": "string",
           "description": "VPE Software Version",
           "entry_schema": null,
@@ -592,7 +622,8 @@
           "required": true,
           "default": "17.2"
         },
-        "2017488_adiodvpe0_AIC_CLLI": {
+        "AIC_CLLI": {
+          "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
           "type": "string",
           "description": "AIC Site CLLI",
           "entry_schema": null,
@@ -619,10 +650,12 @@
         "minCountInstances": 0,
         "maxCountInstances": null,
         "initialCount": 0,
-        "vfModuleLabel": "ADIOD_vPFE_BV"
+        "vfModuleLabel": "ADIOD_vPFE_BV",
+        "baseModule" : false
       },
       "inputs": {
-        "2017488_adiodvpe0_availability_zone_0": {
+        "availability_zone_0": {
+          "fromInputName": "2017488_adiodvpe0_availability_zone_0",
           "type": "string",
           "description": "The Availability Zone to launch the instance.",
           "entry_schema": null,
@@ -640,5 +673,6 @@
   },
   "pnfs": {
     
-  }
+  },
+  "vnfGroups": {}
 }

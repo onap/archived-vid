@@ -1,12 +1,6 @@
 package org.onap.vid.aai.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.onap.vid.RelatedTo;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,19 +17,39 @@ import java.util.Map;
 })
 public class PnfResult {
 
-    @JsonProperty("id")
     public String id;
-    @JsonProperty("node-type")
     public String nodeType;
-    @JsonProperty("url")
     public String url;
-    @JsonProperty("properties")
     public PnfProperties properties;
-    @JsonProperty("related-to")
     public List<RelatedTo> relatedTo;
 
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    @JsonProperty("id")
+    public void setJsonId(String id) {
+        this.id = id;
+    }
+
+    @JsonProperty("node-type")
+    public void setJsonNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+    @JsonProperty("url")
+    public void setJsonUrl(String url) {
+        this.url = url;
+    }
+
+    @JsonProperty("properties")
+    public void setJsonProperties(PnfProperties properties) {
+        this.properties = properties;
+    }
+
+    @JsonProperty("related-to")
+    public void setJsonRelatedTo(List<RelatedTo> relatedTo) {
+        this.relatedTo = relatedTo;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

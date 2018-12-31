@@ -3,9 +3,8 @@ package org.onap.vid.aai;
 
 import org.springframework.http.HttpMethod;
 
-import java.io.Serializable;
 
-public class AaiResponseWithRequestInfo<T> implements Serializable {
+public class AaiResponseWithRequestInfo<T> {
     private AaiResponse<T> aaiResponse;
     private String requestedUrl;
     private String rawData;

@@ -1,0 +1,13 @@
+{
+  "a" : {
+    "isActive": true,
+    "expireAfterWriteHours": 6,
+    "refreshAfterWriteSeconds": 9
+  },
+  "b" : {
+
+  },
+  "d" : {
+    "isActive": false
+  }
+}

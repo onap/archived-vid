@@ -1,0 +1,62 @@
+.modal-dialog * {
+    font-family: OpenSans-Regular, sans-serif;
+}
+.modal-dialog {
+    width: 540px;
+}
+.modal-body {
+    width: 95%;
+    margin: auto;
+}
+.modal-body label:after{
+    color: red;
+    content: "*";
+    padding-left: 5px;
+}
+.modal-dialog .modal-x {
+    float: right;
+    margin-top: 10px;
+    height: 15px;
+    cursor:pointer;
+}
+.modal-body .user-explanation span {
+    line-height: 25px;
+}
+.modal-body .user-explanation h4{
+    line-height: 30px;
+}
+.region-section .field{
+    margin-top: 15px;
+    display: flex;
+}
+.region-section .field label{
+    width: 30%;
+    line-height: 35px;
+}
+.region-section .field select{
+    height: auto;
+}
+.region-section span{
+    margin-top: 20px;
+}
+.spinner{
+   display: none;
+}
+.region-section.is-loading .spinner{
+    display: block;
+    margin: 20px;
+    text-align: center;
+}
+.region-section.is-loading .region-user-selection{
+    display: none;
+}
+.modal-footer button{
+    width: 110px;
+}
+.modal-footer .cancel-btn{
+    margin-right: 15px;
+    margin-left: 15px;
+}
+.modal-footer .soft-delete-btn {
+    margin-right: 15px;
+}

@@ -23,8 +23,10 @@ package org.onap.vid.aai.util;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.utils.Unchecked;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -72,6 +74,15 @@ public class SystemPropertyHelper {
 
     public String getFullServicePath(String path) {
         return getAAIServerUrl().orElse("") + path;
+    }
+
+    public String getFullServicePath(URI requestUri) {
+        // resolve() will merge two paths, handling the restiveness:
+        // Especially if requestUri starts with a '/' -- result will be
+        // AAI_SERVER_URL host, post, etc., and the path will be just
+        // requestUri.
+        return Unchecked.toURI(getAAIServerUrl().orElse(""))
+                .resolve(requestUri).toASCIIString();
     }
 
     public String getServiceBasePath(String path) {
