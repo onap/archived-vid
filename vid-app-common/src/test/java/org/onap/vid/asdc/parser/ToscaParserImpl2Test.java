@@ -4,45 +4,63 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.onap.sdc.toscaparser.api.Group;
 import org.onap.sdc.toscaparser.api.NodeTemplate;
+import org.onap.sdc.toscaparser.api.Property;
+import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.local.LocalAsdcClient;
-import org.onap.vid.controllers.ToscaParserMockHelper;
+import org.onap.vid.controller.ToscaParserMockHelper;
 import org.onap.vid.model.*;
+import org.onap.vid.properties.Features;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.ECOMP_GENERATED_NAMING_PROPERTY;
 import static org.onap.vid.testUtils.TestUtils.assertJsonStringEqualsIgnoreNulls;
 
-@Test
 public class ToscaParserImpl2Test {
 
     private final String myUUID = "myUUID";
-    private static final Logger log = Logger.getLogger(ToscaParserImpl2Test.class);
+    private static final Logger log = LogManager.getLogger(ToscaParserImpl2Test.class);
 
-    private ToscaParserImpl2 toscaParserImpl2 = new ToscaParserImpl2();
+    @InjectMocks
+    private ToscaParserImpl2 toscaParserImpl2;
 
     private AsdcClient asdcClient;
     private ObjectMapper om = new ObjectMapper();
+
+    @Mock
+    private VidNotionsBuilder vidNotionsBuilder;
 
     @BeforeClass
     void init() throws IOException {
@@ -56,60 +74,56 @@ public class ToscaParserImpl2Test {
 
     }
 
-    //@Test
-    public void assertEqualsBetweenServices() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-            Service expectedService = mockHelper.getNewServiceModel().getService();
-            Service actualService = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getService();
-            assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedService), om.writeValueAsString(actualService));
-        }
+    @BeforeMethod
+    public void initMocks() {
+        MockitoAnnotations.initMocks(this);
     }
 
-    //@Test
-    public void assertEqualBetweenObjects() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-            final Path csarPath = getCsarPath(mockHelper.getUuid());
-            System.out.println("Comparing for csar " + csarPath);
-            ServiceModel actualServiceModel = toscaParserImpl2.makeServiceModel(csarPath, getServiceByUuid(mockHelper.getUuid()));
-            assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(mockHelper.getNewServiceModel()), om.writeValueAsString(actualServiceModel));
-        }
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenServices(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
+        Service expectedService = mockHelper.getNewServiceModel().getService();
+        Service actualService = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getService();
+        assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedService), om.writeValueAsString(actualService));
     }
 
-    //@Test
-    public void assertEqualsBetweenNetworkNodes() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-            Map<String, Network> expectedNetworksMap = mockHelper.getNewServiceModel().getNetworks();
-            Map<String, Network> actualNetworksMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getNetworks();
-            for (Map.Entry<String, Network> entry : expectedNetworksMap.entrySet()) {
-                Network expectedNetwork = entry.getValue();
-                Network actualNetwork = actualNetworksMap.get(entry.getKey());
-                Assert.assertEquals(expectedNetwork.getModelCustomizationName(), actualNetwork.getModelCustomizationName());
-                verifyBaseNodeProperties(expectedNetwork, actualNetwork);
-                compareProperties(expectedNetwork.getProperties(), actualNetwork.getProperties());
-            }
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualBetweenObjects(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
+        final Path csarPath = getCsarPath(mockHelper.getUuid());
+        log.info("Comparing for csar " + csarPath);
+        ServiceModel actualServiceModel = toscaParserImpl2.makeServiceModel(csarPath, getServiceByUuid(mockHelper.getUuid()));
+        assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(mockHelper.getNewServiceModel()), om.writeValueAsString(actualServiceModel));
+    }
+
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenNetworkNodes(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
+        Map<String, Network> expectedNetworksMap = mockHelper.getNewServiceModel().getNetworks();
+        Map<String, Network> actualNetworksMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getNetworks();
+        for (Map.Entry<String, Network> entry : expectedNetworksMap.entrySet()) {
+            Network expectedNetwork = entry.getValue();
+            Network actualNetwork = actualNetworksMap.get(entry.getKey());
+            Assert.assertEquals(expectedNetwork.getModelCustomizationName(), actualNetwork.getModelCustomizationName());
+            verifyBaseNodeMetadata(expectedNetwork, actualNetwork);
+            compareProperties(expectedNetwork.getProperties(), actualNetwork.getProperties());
         }
     }
 
     //Because we are not supporting the old flow, the JSON are different by definition.
-    //@Test
-    public void assertEqualsBetweenVnfsOfTosca() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
-            Map<String, VNF> expectedVnfsMap = mockHelper.getNewServiceModel().getVnfs();
-            Map<String, VNF> actualVnfsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVnfs();
-            for (Map.Entry<String, VNF> entry : expectedVnfsMap.entrySet()) {
-                VNF expectedVnf = entry.getValue();
-                VNF actualVnf = actualVnfsMap.get(entry.getKey());
-                verifyBaseNodeProperties(expectedVnf, actualVnf);
-                Assert.assertEquals(expectedVnf.getModelCustomizationName(), actualVnf.getModelCustomizationName());
-                compareProperties(expectedVnf.getProperties(), actualVnf.getProperties());
-                assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedVnf), om.writeValueAsString(actualVnf));
-            }
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenVnfsOfTosca(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
+        Map<String, VNF> expectedVnfsMap = mockHelper.getNewServiceModel().getVnfs();
+        Map<String, VNF> actualVnfsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVnfs();
+        for (Map.Entry<String, VNF> entry : expectedVnfsMap.entrySet()) {
+            VNF expectedVnf = entry.getValue();
+            VNF actualVnf = actualVnfsMap.get(entry.getKey());
+            verifyBaseNodeMetadata(expectedVnf, actualVnf);
+            Assert.assertEquals(expectedVnf.getModelCustomizationName(), actualVnf.getModelCustomizationName());
+            compareProperties(expectedVnf.getProperties(), actualVnf.getProperties());
+            assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedVnf), om.writeValueAsString(actualVnf));
         }
     }
 
-    //@Test
-    public void assertEqualsBetweenCollectionResourcesOfTosca() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenCollectionResourcesOfTosca(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, CR> expectedVnfsMap = mockHelper.getNewServiceModel().getCollectionResource();
             Map<String, CR> actualCRsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getCollectionResource();
             if(!actualCRsMap.isEmpty()) {
@@ -122,11 +136,20 @@ public class ToscaParserImpl2Test {
                     assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedCR), om.writeValueAsString(actualCR));
                 }
             }
-        }
     }
 
+//    @Test
+//    public void verifyFabricConfiguration() throws Exception {
+//        ToscaParserMockHelper toscaParserMockHelper = Arrays.stream(getExpectedServiceModel()).filter(x -> x.getUuid().equals(Constants.fabricConfigurationUuid)).findFirst().get();
+//        ServiceModel actualServiceModel = toscaParserImpl2.makeServiceModel(getCsarPath(Constants.fabricConfigurationUuid), getServiceByUuid(Constants.fabricConfigurationUuid));
+//        final Map<String, Node> fabricConfigurations = actualServiceModel.getFabricConfigurations();
+//        String fabricConfigName = "Fabric Configuration 0";
+//        Map<String, Node> expectedFC = toscaParserMockHelper.getNewServiceModel().getFabricConfigurations();
+//        verifyBaseNodeMetadata(expectedFC.get(fabricConfigName), fabricConfigurations.get(fabricConfigName));
+//    }
+
     private void verifyCollectionResource(CR expectedCR, CR actualCR) {
-        verifyBaseNodeProperties(expectedCR, actualCR);
+        verifyBaseNodeMetadata(expectedCR, actualCR);
         Assert.assertEquals(expectedCR.getCategory(), actualCR.getCategory());
         Assert.assertEquals(expectedCR.getSubcategory(), actualCR.getSubcategory());
         Assert.assertEquals(expectedCR.getResourceVendor(), actualCR.getResourceVendor());
@@ -155,39 +178,30 @@ public class ToscaParserImpl2Test {
     }
 
 
-    //@Test
-    public void assertEqualsBetweenVolumeGroups() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenVolumeGroups(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, VolumeGroup> actualVolumeGroups = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVolumeGroups();
             Map<String, VolumeGroup> expectedVolumeGroups = mockHelper.getNewServiceModel().getVolumeGroups();
             assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedVolumeGroups), om.writeValueAsString(actualVolumeGroups));
-        }
     }
 
-    //@Test
-    public void assertEqualsBetweenVfModules() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenVfModules(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, VfModule> actualVfModules = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVfModules();
             Map<String, VfModule> expectedVfModules = mockHelper.getNewServiceModel().getVfModules();
             assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedVfModules), om.writeValueAsString(actualVfModules));
-        }
     }
 
-    //@Test
-    public void assertEqualsBetweenPolicyConfigurationNodes() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenPolicyConfigurationNodes(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, PortMirroringConfig> actualConfigurations = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getConfigurations();
             Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getNewServiceModel().getConfigurations();
             JsonAssert.assertJsonEquals(actualConfigurations, expectedConfigurations);
-        }
     }
-    //@Test
+
+    @Test
     public void assertEqualsBetweenPolicyConfigurationByPolicyFalse() throws Exception {
         ToscaParserMockHelper mockHelper = new ToscaParserMockHelper(Constants.configurationByPolicyFalseUuid, Constants.configurationByPolicyFalseFilePath);
-        InputStream jsonFile = this.getClass().getClassLoader().getResourceAsStream(mockHelper.getFilePath());
-        String expectedJsonAsString = IOUtils.toString(jsonFile, StandardCharsets.UTF_8.name());
-        NewServiceModel newServiceModel1 = om.readValue(expectedJsonAsString, NewServiceModel.class);
-        mockHelper.setNewServiceModel(newServiceModel1);
         Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getNewServiceModel().getConfigurations();
         Map<String, PortMirroringConfig> actualConfigurations = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getConfigurations();
 
@@ -197,11 +211,26 @@ public class ToscaParserImpl2Test {
     }
 
     @Test
+    public void once5GInNewInstantiationFlagIsActive_vidNotionsIsAppended() throws Exception {
+        FeatureManager featureManager = mock(FeatureManager.class);
+        when(featureManager.isActive(Features.FLAG_5G_IN_NEW_INSTANTIATION_UI)).thenReturn(true);
+
+        ToscaParserImpl2 toscaParserImpl2_local = new ToscaParserImpl2(new VidNotionsBuilder(featureManager));
+
+        final ToscaParserMockHelper mockHelper = new ToscaParserMockHelper(Constants.vlUuid, Constants.vlFilePath);
+        final ServiceModel serviceModel = toscaParserImpl2_local.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid()));
+
+        assertThat(serviceModel.getService().getVidNotions().getInstantiationUI(), is(VidNotions.InstantiationUI.LEGACY));
+        assertThat(serviceModel.getService().getVidNotions().getModelCategory(), is(VidNotions.ModelCategory.OTHER));
+        assertJsonStringEqualsIgnoreNulls("{ service: { vidNotions: { instantiationUI: \"legacy\", modelCategory: \"other\" } } }", om.writeValueAsString(serviceModel));
+    }
+
+    @Test
     public void modelWithAnnotatedInputWithTwoProperties_vfModuleGetsTheInput() throws Exception {
         final ToscaParserMockHelper mockHelper = new ToscaParserMockHelper("90fe6842-aa76-4b68-8329-5c86ff564407", "empty.json");
         final ServiceModel serviceModel = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid()));
 
-        assertJsonStringEqualsIgnoreNulls("{ vfModules: { 201712488_adiodvpe10..201712488AdiodVpe1..ADIOD_vRE_BV..module-1: { inputs: { 201712488_adiodvpe10_availability_zone_0: { } } } } }", om.writeValueAsString(serviceModel));
+        assertJsonStringEqualsIgnoreNulls("{ vfModules: { 201712488_adiodvpe10..201712488AdiodVpe1..ADIOD_vRE_BV..module-1: { inputs: { availability_zone_0: { } } } } }", om.writeValueAsString(serviceModel));
     }
 
     @Test
@@ -226,16 +255,21 @@ public class ToscaParserImpl2Test {
         pmconfig.setCollectorNodes(new ArrayList<>(Arrays.asList("pprobeservice_proxy 4")));
 
     }
-    //@Test
-    public void assertEqualsBetweenServiceProxyNodes() throws Exception {
-        for (ToscaParserMockHelper mockHelper : getExpectedServiceModel()) {
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenServiceProxyNodes(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, ServiceProxy> actualServiceProxies = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getServiceProxies();
             Map<String, ServiceProxy> expectedServiceProxies = mockHelper.getNewServiceModel().getServiceProxies();
             JsonAssert.assertJsonEquals(actualServiceProxies, expectedServiceProxies);
-        }
     }
 
-    private void verifyBaseNodeProperties(Node expectedNode, Node actualNode) {
+    @Test(dataProvider = "expectedServiceModel")
+    public void assertEqualsBetweenVnfGroups(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
+        Map<String, ResourceGroup> actualVnfGroups = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVnfGroups();
+        Map<String, ResourceGroup> expectedVnfGroups = mockHelper.getNewServiceModel().getVnfGroups();
+        JsonAssert.assertJsonEquals(actualVnfGroups, expectedVnfGroups);
+    }
+
+    private void verifyBaseNodeMetadata(Node expectedNode, Node actualNode) {
         Assert.assertEquals(expectedNode.getName(), actualNode.getName());
         Assert.assertEquals(expectedNode.getCustomizationUuid(), actualNode.getCustomizationUuid());
         Assert.assertEquals(expectedNode.getDescription(), actualNode.getDescription());
@@ -245,13 +279,15 @@ public class ToscaParserImpl2Test {
     }
 
     private void compareProperties(Map<String, String> expectedProperties, Map<String, String> actualProperties) {
-        for (Map.Entry<String, String> property : expectedProperties.entrySet()) {
-            String expectedValue = property.getValue();
-            String key = property.getKey();
-            String actualValue = actualProperties.get(key);
-            Assert.assertEquals(expectedValue, actualValue);
-        }
+        JsonAssert.assertJsonEquals(expectedProperties, actualProperties);
     }
+
+    @DataProvider
+    public Object[][] expectedServiceModel() throws IOException {
+        return Stream.of(getExpectedServiceModel())
+                        .map(l -> ImmutableList.of(l.getUuid(), l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
+    }
+
 
     private ToscaParserMockHelper[] getExpectedServiceModel() throws IOException {
         ToscaParserMockHelper[] mockHelpers = {
@@ -260,15 +296,12 @@ public class ToscaParserImpl2Test {
                 new ToscaParserMockHelper(Constants.crUuid, Constants.crFilePath),
                 new ToscaParserMockHelper(Constants.vfWithAnnotationUuid, Constants.vfWithAnnotationFilePath),
                 new ToscaParserMockHelper(Constants.vfWithVfcGroup, Constants.vfWithVfcGroupFilePath),
-                new ToscaParserMockHelper(Constants.configurationUuid, Constants.configurationFilePath)
+                new ToscaParserMockHelper(Constants.configurationUuid, Constants.configurationFilePath),
+//                new ToscaParserMockHelper(Constants.fabricConfigurationUuid, Constants.fabricConfigurationFilePath),
+//                new ToscaParserMockHelper(Constants.vlanTaggingUuid, Constants.vlanTaggingFilePath),
+//                new ToscaParserMockHelper(Constants.vnfGroupingUuid, Constants.vnfGroupingFilePath)
         };
-        for (ToscaParserMockHelper mockHelper : mockHelpers) {
-            InputStream jsonFile = this.getClass().getClassLoader().getResourceAsStream(mockHelper.getFilePath());
-            System.out.println(jsonFile);
-            String expectedJsonAsString = IOUtils.toString(jsonFile, StandardCharsets.UTF_8.name());
-            NewServiceModel newServiceModel1 = om.readValue(expectedJsonAsString, NewServiceModel.class);
-            mockHelper.setNewServiceModel(newServiceModel1);
-        }
+
         return mockHelpers;
     }
 
@@ -284,11 +317,11 @@ public class ToscaParserImpl2Test {
     public class Constants {
         public static final String configurationUuid = "ee6d61be-4841-4f98-8f23-5de9da846ca7";
         public static final String configurationFilePath = "policy-configuration-csar.JSON";
-        static final String vfUuid = "48a52540-8772-4368-9cdb-1f124ea5c931";
+        static final String vfUuid = "48a52540-8772-4368-9cdb-1f124ea5c931";    //service-vf-csar.zip
         static final String vfWithAnnotationUuid = "f4d84bb4-a416-4b4e-997e-0059973630b9";
         static final String vlUuid = "cb49608f-5a24-4789-b0f7-2595473cb997";
         static final String crUuid = "76f27dfe-33e5-472f-8e0b-acf524adc4f0";
-        static final String vfWithVfcGroup = "6bce7302-70bd-4057-b48e-8d5b99e686ca";
+        static final String vfWithVfcGroup = "6bce7302-70bd-4057-b48e-8d5b99e686ca"; //service-VdbeSrv-csar.zip
         //        public static final String PNFUuid = "68101369-6f08-4e99-9a28-fa6327d344f3";
         static final String vfFilePath = "vf-csar.JSON";
         static final String vlFilePath = "vl-csar.JSON";
@@ -297,7 +330,12 @@ public class ToscaParserImpl2Test {
         static final String vfWithVfcGroupFilePath = "vf-with-vfcInstanceGroups.json";
         public static final String configurationByPolicyFalseUuid = "ee6d61be-4841-4f98-8f23-5de9da845544";
         public static final String configurationByPolicyFalseFilePath = "policy-configuration-by-policy-false.JSON";
-
+        //public static final String fabricConfigurationUuid = "12344bb4-a416-4b4e-997e-0059973630b9";
+        //public static final String fabricConfigurationFilePath = "fabric-configuration.json";
+        //public static final String vlanTaggingUuid = "1837481c-fa7d-4362-8ce1-d05fafc87bd1";
+        //public static final String vlanTaggingFilePath = "vlan-tagging.json";
+        //public static final String vnfGroupingUuid = "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc";
+        //public static final String vnfGroupingFilePath = "vnf-grouping-csar.json";
 
     }
 
@@ -305,7 +343,7 @@ public class ToscaParserImpl2Test {
 
     @Test
     public void testGetNFModuleFromVf() {
-        ISdcCsarHelper csarHelper = getMockedSdcCsarHelper();
+        ISdcCsarHelper csarHelper = getMockedSdcCsarHelper(myUUID);
 
         Map<String, VfModule> vfModulesFromVF = toscaParserImpl2.getVfModulesFromVF(csarHelper, myUUID);
 
@@ -318,7 +356,7 @@ public class ToscaParserImpl2Test {
 
     @Test
     public void testGetVolumeGroupsFromVF() {
-        ISdcCsarHelper csarHelper = getMockedSdcCsarHelper();
+        ISdcCsarHelper csarHelper = getMockedSdcCsarHelper(myUUID);
 
         Map<String, VolumeGroup> volumeGroupsFromVF = toscaParserImpl2.getVolumeGroupsFromVF(csarHelper, myUUID);
 
@@ -328,11 +366,66 @@ public class ToscaParserImpl2Test {
         ));
     }
 
-    private ISdcCsarHelper getMockedSdcCsarHelper() {
+//    @DataProvider
+//    public Object[][] expectedPoliciesTargets() {
+//        return new Object[][] {
+//                {Constants.vnfGroupingUuid, newArrayList("groupingservicefortest..ResourceInstanceGroup..0", "groupingservicefortest..ResourceInstanceGroup..1")},
+//                {Constants.vfUuid, newArrayList()},
+//                {Constants.vlanTaggingUuid, newArrayList()}
+//        };
+//    }
+//
+//    @Test(dataProvider = "expectedPoliciesTargets")
+//    public void testExtractNamingPoliciesTargets(String uuid, ArrayList<String> expectedTargets) throws AsdcCatalogException, SdcToscaParserException {
+//        ISdcCsarHelper sdcCsarHelper = toscaParserImpl2.getSdcCsarHelper(getCsarPath(uuid));
+//        List<String> policiesTargets = toscaParserImpl2.extractNamingPoliciesTargets(sdcCsarHelper);
+//
+//        assertEquals(expectedTargets, policiesTargets);
+//    }
+
+    @DataProvider
+    public Object[][] expectedEcompGeneratedNaming() {
+        return new Object[][] {
+                {"nf_naming property false", "nf_naming", "false", "false"},
+                {"nf_naming property true", "nf_naming", "true", "true"},
+                {"nf_naming property doesn't exist", "nf_naming", null, "false"},
+                {"exVL_naming property false", "exVL_naming", "false", "false"},
+                {"exVL_naming property true", "exVL_naming", "true", "true"},
+                {"exVL_naming property doesn't exist", "exVL_naming", null, "false"},
+        };
+    }
+
+    @Test(dataProvider = "expectedEcompGeneratedNaming")
+    public void testEcompGeneratedNamingForNode(String description, String parentProperty, String ecompNamingProperty, String expectedResult) {
+        Property property = mock(Property.class);
+        when(property.getName()).thenReturn("any_key");
+        when(property.getValue()).thenReturn("any_value");
+        ArrayList<Property> properties = newArrayList(property);
+
+        if (ecompNamingProperty != null) {
+            Property nfNamingProperty = mock(Property.class);
+            when(nfNamingProperty.getName()).thenReturn(parentProperty);
+            when(nfNamingProperty.getValue()).thenReturn(ImmutableMap.of(ECOMP_GENERATED_NAMING_PROPERTY, ecompNamingProperty));
+            properties.add(nfNamingProperty);
+        }
+
+        NodeTemplate node = mock(NodeTemplate.class);
+        when(node.getName()).thenReturn("node_name");
+        when(node.getPropertiesObjects()).thenReturn(properties);
+
+        String result = ToscaNamingPolicy.getEcompNamingValueForNode(node, parentProperty);
+        assertEquals(expectedResult, result);
+    }
+
+    public static ISdcCsarHelper getMockedSdcCsarHelper(String myUUID) {
         ISdcCsarHelper csarHelper = mock(ISdcCsarHelper.class);
 
         Group withVol = createMinimalGroup("withVol", true);
         Group withoutVol = createMinimalGroup("withoutVol", false);
+
+        when(csarHelper.getServiceMetadata()).thenReturn(new Metadata(ImmutableMap.of(
+                "instantiationType", "A-La-Carte"
+        )));
 
         when(csarHelper.getVfModulesByVf(myUUID))
                 .thenReturn(ImmutableList.of(withVol, withoutVol));
@@ -379,7 +472,7 @@ public class ToscaParserImpl2Test {
 
         try {
             log.info(String.format("Built a group: %s",
-                    (new com.fasterxml.jackson.databind.ObjectMapper())
+                    (new ObjectMapper())
                             .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                             .writeValueAsString(group)
             ));

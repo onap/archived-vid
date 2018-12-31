@@ -20,14 +20,14 @@
 
 package org.onap.vid.asdc.beans.tosca;
 
+import org.onap.vid.asdc.AsdcCatalogException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.onap.vid.asdc.AsdcCatalogException;
 
 /**
  * The Class ToscaMeta.
@@ -45,7 +45,7 @@ public class ToscaMeta {
 	 * @throws AsdcCatalogException the asdc catalog exception
 	 */
 	private ToscaMeta(Builder builder) throws IOException, AsdcCatalogException {
-		metadata = new HashMap<String, String> ();
+		metadata = new HashMap<> ();
 		
 		read(builder.inputStream);
 	}
@@ -113,10 +113,7 @@ public class ToscaMeta {
 					metadata.put(entry[0], entry[1].substring(1));
 				}
 			}
-		} catch (IOException e) {
-			metadata.clear();
-			throw e;
-		} catch (AsdcCatalogException e) {
+		} catch (IOException | AsdcCatalogException e) {
 			metadata.clear();
 			throw e;
 		}

@@ -25,20 +25,19 @@ public class DataSourceConfig {
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        //I used this class org.openecomp.portalsdk.core.conf.HibernateConfiguration to learn how to config the session factory
+        //I used this class org.onap.portalsdk.core.conf.HibernateConfiguration to learn how to config the session factory
         // and use the following url for actual h2 properties
         //https://github.com/levi-putna/Hibernate-H2-Example/blob/master/hibernate-h2-example/src/hibernate.cfg.xml
         Properties properties = getH2Properties();
 
-        properties.put("hibernate.default_schema", "PUBLIC");
         properties.put("connection.pool_size", 10);
         properties.put("cache.provider_class", "org.hibernate.cache.internal.NoCacheProvider");
         properties.put("hibernate.show_sql", false);
         properties.put("hbm2ddl.auto", "create");
         properties.put("hibernate.hbm2ddl.auto", "create");
 
-        sessionFactory.setHibernateProperties(properties);
         sessionFactory.setPackagesToScan("org.onap");
+        sessionFactory.setHibernateProperties(properties);
         return sessionFactory;
     }
 
@@ -55,6 +54,7 @@ public class DataSourceConfig {
     public Properties getH2Properties() {
         Properties properties = new Properties();
         properties.put("dialect", "org.hibernate.dialect.H2Dialect");
+        properties.put("hibernate.default_schema", "PUBLIC");
         return properties;
     }
 
@@ -64,6 +64,7 @@ public class DataSourceConfig {
         properties.put("connection.url", "jdbc:sqlite:memory:myDb");
         properties.put("connection.username", "sa");
         properties.put("connection.password", "sa");
+        properties.put("hibernate.default_schema", "PUBLIC");
         properties.put("dialect", "com.enigmabridge.hibernate.dialect.SQLiteDialect");
         return properties;
     }

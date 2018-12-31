@@ -5,7 +5,7 @@
                 {
                     "vnfc":[
                         {
-                            "ipaddress-v4-oam-vip":"135.21.166.39",
+                            "ipaddress-v4-oam-vip":"10.2.3.4",
                             "vnfc-name":"ibcx0001vm001dbg001",
                             "vnfc-function-code":"dbg",
                             "vnfc-type":"DBE-VM #1",

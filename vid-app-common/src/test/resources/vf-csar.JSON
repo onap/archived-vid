@@ -100,7 +100,8 @@
         "itc_name_0": "get_input:greatdefect0_itc_name_0",
         "itm_flavor_name": "nv.c2r4d50",
         "itm_image_name": "NIMBUS_IXLA-ITM_8.20.EA_KVM.qcow2",
-        "vf_module_id": "get_input:greatdefect0_vf_module_id"
+        "vf_module_id": "get_input:greatdefect0_vf_module_id",
+        "ecomp_generated_naming": "false"
       },
       "type": "VF",
       "modelCustomizationName": "greatdefect 0",
@@ -117,7 +118,8 @@
             "minCountInstances": 0,
             "maxCountInstances": null,
             "initialCount": 0,
-            "vfModuleLabel": null
+            "vfModuleLabel": null,
+            "baseModule" : false
           },
           "inputs": {
 
@@ -136,7 +138,8 @@
             "minCountInstances": 1,
             "maxCountInstances": 1,
             "initialCount": 1,
-            "vfModuleLabel": null
+            "vfModuleLabel": null,
+            "baseModule" : true
           },
           "inputs": {
 
@@ -174,5 +177,6 @@
   },
   "pnfs": {
 
-  }
+  },
+  "vnfGroups": {}
 }

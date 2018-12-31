@@ -20,6 +20,7 @@
  */
 package org.onap.vid.mso.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.server.StubServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.AfterClass;
@@ -28,8 +29,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.client.SyncRestClient;
-import org.onap.vid.controllers.MsoController;
-import org.onap.vid.mso.MsoInterface;
+import org.onap.vid.controller.MsoController;
+import org.onap.vid.controller.WebConfig;
 import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
@@ -44,8 +45,8 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.UUID;
 
-import static org.onap.vid.controllers.MsoController.SVC_INSTANCE_ID;
-import static org.onap.vid.controllers.MsoController.VNF_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
 
 @ContextConfiguration(classes = {SystemProperties.class})
 public class MsoRestClientNewTest {
@@ -304,7 +305,7 @@ public class MsoRestClientNewTest {
         // default test
         try {
             testSubject = createTestSubject();
-            result = testSubject.getOrchestrationRequestsForDashboard(t, sourceId, endpoint, restObject);
+            result = testSubject.getOrchestrationRequest(t, sourceId, endpoint, restObject, true);
         } catch (Exception e) {
         }
     }
@@ -466,7 +467,8 @@ public class MsoRestClientNewTest {
     }
 
     private MsoRestClientNew msoRestClient() {
-        return new MsoRestClientNew(new SyncRestClient(MsoInterface.objectMapper()), baseUrl());
+        final WebConfig webConfig = new WebConfig();
+        return new MsoRestClientNew(new SyncRestClient(webConfig.unirestFasterxmlObjectMapper(new ObjectMapper())), baseUrl());
     }
 
     private MsoRestClientNew createTestSubject() {

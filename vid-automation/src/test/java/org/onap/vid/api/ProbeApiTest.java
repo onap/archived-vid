@@ -2,6 +2,7 @@ package org.onap.vid.api;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
@@ -93,10 +94,10 @@ public class ProbeApiTest extends BaseApiTest {
         ExternalComponentStatus aaiGetAllSubscribersStatus = aaiGetAllSubscribersResult.get();
         Assert.assertEquals(aaiGetAllSubscribersStatus.isAvailable(),expectedStatus.isAvailable());
 
-        Assert.assertThat(requestMetadataReflected(aaiGetAllSubscribersStatus.getMetadata()),is(requestMetadataReflected(expectedStatus.getMetadata())));
-        Assert.assertThat(aaiGetAllSubscribersStatus.getMetadata().getUrl(), both(endsWith(expectedStatus.getMetadata().getUrl())).and(startsWith("http")));
+        MatcherAssert.assertThat(requestMetadataReflected(aaiGetAllSubscribersStatus.getMetadata()),is(requestMetadataReflected(expectedStatus.getMetadata())));
+        MatcherAssert.assertThat(aaiGetAllSubscribersStatus.getMetadata().getUrl(), both(endsWith(expectedStatus.getMetadata().getUrl())).and(startsWith("http")));
 
-        Assert.assertThat(aaiGetAllSubscribersStatus.getMetadata().getDescription(),
+        MatcherAssert.assertThat(aaiGetAllSubscribersStatus.getMetadata().getDescription(),
                 anyOf(equalTo(expectedStatus.getMetadata().getDescription()), startsWith(expectedStatus.getMetadata().getDescription())));
     }
 

@@ -43,7 +43,7 @@ public class ToscaCsar {
 		private final ToscaModel parent;
 		
 		/** The children. */
-		private Collection<ToscaModel> children = new LinkedList<ToscaModel> ();
+		private Collection<ToscaModel> children = new LinkedList<> ();
 		
 		/**
 		 * Instantiates a new builder.

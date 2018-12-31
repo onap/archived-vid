@@ -21,11 +21,20 @@
 
 package org.onap.vid.aai.util;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.aai.exceptions.HttpClientBuilderException;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.togglz.core.manager.FeatureManager;
 
 import javax.net.ssl.SSLContext;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpsAuthClientTest {
@@ -38,47 +47,43 @@ public class HttpsAuthClientTest {
 
     public static final String CERT_FILE_PATH = "any_path";
 
-    /*
-    TO BE IMPLEMENTED
-    
     private HttpsAuthClient createTestSubject() {
-        return new HttpsAuthClient(systemPropertyHelper, sslContextProvider);
+        return new HttpsAuthClient(CERT_FILE_PATH, systemPropertyHelper, sslContextProvider, mock(FeatureManager.class));
     }
 
     @Before
     public void setUp() throws Exception {
         when(systemPropertyHelper.getAAITruststoreFilename()).thenReturn(Optional.of("filename"));
-        when(systemPropertyHelper.getEncodedTruststorePassword()).thenReturn("password");
+        when(systemPropertyHelper.getDecryptedKeystorePassword()).thenReturn("password");
+        when(systemPropertyHelper.getDecryptedTruststorePassword()).thenReturn("password");
     }
 
     @Test(expected = HttpClientBuilderException.class)
-    public void testHttpClientBuilderExceptionOnGetClient() throws HttpClientBuilderException {
+    public void testHttpClientBuilderExceptionOnGetClient() throws Exception {
         //when
-        when(systemPropertyHelper.getAAIUseClientCert()).thenReturn(Optional.of("true"));
-        when(sslContextProvider.getSslContext(anyString(), anyString())).thenThrow(new HttpClientBuilderException());
-        createTestSubject().getClient("nonExistingFile");
+        when(systemPropertyHelper.isClientCertEnabled()).thenReturn(true);
+        when(sslContextProvider.getSslContext(anyString(), anyString(), any())).thenThrow(new HttpClientBuilderException(new GenericUncheckedException("msg")));
+        createTestSubject().getClient(HttpClientMode.WITH_KEYSTORE);
     }
 
     @Test
     public void testGetSecuredClient() throws Exception {
         // when
-        when(systemPropertyHelper.getAAIUseClientCert()).thenReturn(Optional.of("true"));
-        when(sslContextProvider.getSslContext(anyString(), anyString())).thenReturn(sslContext);
-        createTestSubject().getClient(CERT_FILE_PATH);
+        when(systemPropertyHelper.isClientCertEnabled()).thenReturn(true);
+        when(sslContextProvider.getSslContext(anyString(), anyString(), any())).thenReturn(sslContext);
+        createTestSubject().getClient(HttpClientMode.WITH_KEYSTORE);
 
         //then
-        verify(sslContextProvider).getSslContext(anyString(), anyString());
+        verify(sslContextProvider).getSslContext(anyString(), anyString(), any());
     }
 
     @Test
     public void testGetUnsecuredClient() throws Exception {
         // when
-        when(systemPropertyHelper.getAAIUseClientCert()).thenReturn(Optional.of("false"));
-        when(sslContextProvider.getSslContext(anyString(), anyString())).thenReturn(sslContext);
-        createTestSubject().getClient(CERT_FILE_PATH);
+        when(systemPropertyHelper.isClientCertEnabled()).thenReturn(false);
+        createTestSubject().getClient(HttpClientMode.WITH_KEYSTORE);
 
         //then
-        verify(sslContextProvider, never()).getSslContext(anyString(), anyString());
+        verify(sslContextProvider, never()).getSslContext(anyString(), anyString(), any());
     }
-    */
 }

@@ -1,8 +1,8 @@
 package org.onap.vid.utils;
 
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import org.codehaus.jackson.JsonLocation;
-import org.codehaus.jackson.JsonParseException;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -47,15 +47,15 @@ public class LoggingUtilsTest {
                 " expected a valid value (number, String, array, object, 'true', 'false' or 'null')",
                 new JsonLocation("<html>i'm an error</html>", 25, 1, 1)));
         String codehausParseDescription = "" +
-                "org.codehaus.jackson.JsonParseException: Unexpected character ('<' (code 60)):" +
+                "com.fasterxml.jackson.core.JsonParseException: Unexpected character ('<' (code 60)):" +
                 " expected a valid value (number, String, array, object, 'true', 'false' or 'null')\n" +
-                " at [Source: <html>i'm an error</html>; line: 1, column: 1]";
+                " at [Source: (String)\"<html>i'm an error</html>\"; line: 1, column: 1]";
 
         RuntimeException fasterxmlMappingException = new RuntimeException(new JsonMappingException("Can not deserialize instance of java.lang.String out of START_ARRAY token",
                 new com.fasterxml.jackson.core.JsonLocation("{ example json }", 15, 1, 20)));
         String fasterxmlMappingDescription = "" +
                 "com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.lang.String out of START_ARRAY token\n" +
-                " at [Source: { example json }; line: 1, column: 20]";
+                " at [Source: (String)\"{ example json }\"; line: 1, column: 20]";
 
         return new Object[][]{
                 {"javax.net.ssl.SSLHandshakeException: java.security.cert.CertificateException: No X509TrustManager implementation available",

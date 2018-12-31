@@ -2,15 +2,15 @@ package org.onap.vid.job.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.service.DataAccessService;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.exceptions.OperationNotAllowedException;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.DaoUtils;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.service.DataAccessService;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,8 @@ import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.onap.vid.job.Job.JobStatus.CREATING;
 
 @Service
 public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
@@ -56,7 +58,6 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
     @Override
     public UUID add(Job job) {
         final JobDaoImpl jobDao = castToJobDaoImpl(job);
-        jobDao.setUuid(UUID.randomUUID());
         dataAccessService.saveDomainObject(jobDao, DaoUtils.getPropsMap());
         return job.getUuid();
     }
@@ -102,23 +103,30 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
         return Timestamp.valueOf(LocalDateTime.now().minusSeconds(pollingIntervalSeconds));
     }
 
+    private String selectQueryByJobStatus(Job.JobStatus topic){
+
+        String intervalCondition = (topic==CREATING) ? "" : (" and MODIFIED_DATE <= '" + nowMinusInterval()+"'");
+        return "" +
+                "select * from VID_JOB" +
+                " where" +
+                // select only non-deleted in-progress jobs
+                "    JOB_STATUS = '" + topic + "'" +
+                "    and TAKEN_BY is null" +
+                "    and DELETED_AT is null" +
+                // give some breath, don't select jos that were recently reached
+                 intervalCondition +
+                // take the oldest handled one
+                " order by MODIFIED_DATE ASC" +
+                // select only one result
+                " limit 1";
+    }
+
     private String sqlQueryForTopic(Job.JobStatus topic) {
         switch (topic) {
             case IN_PROGRESS:
-                return "" +
-                        "select * from VID_JOB" +
-                        " where" +
-                        // select only non-deleted in-progress jobs
-                        "    JOB_STATUS = 'IN_PROGRESS'" +
-                        "    and TAKEN_BY is null" +
-                        "    and DELETED_AT is null" +
-                        // give some breath, don't select jos that were recently reached
-                        "    and MODIFIED_DATE <= '" + nowMinusInterval() +
-                        // take the oldest handled one
-                        "' order by MODIFIED_DATE ASC" +
-                        // select only one result
-                        " limit 1";
-
+            case RESOURCE_IN_PROGRESS:
+            case CREATING:
+                return selectQueryByJobStatus(topic);
             case PENDING:
                 return "" +
                         // select only pending jobs
@@ -137,9 +145,10 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
                         // don't take jobs from templates that already in-progress/failed
                         "and TEMPLATE_Id not in \n" +
                         "(select TEMPLATE_Id from vid_job where" +
+                        "   TEMPLATE_Id IS NOT NULL and("+
                         "   (JOB_STATUS='FAILED' and DELETED_AT is null)" + // failed but not deleted
                         "   or JOB_STATUS='IN_PROGRESS'" +
-                        "   or TAKEN_BY IS NOT NULL)" + " \n " +
+                        "   or TAKEN_BY IS NOT NULL))" + " \n " +
                         // prefer older jobs, but the earlier in each bulk
                         "order by has_any_in_progress_job, CREATED_DATE, INDEX_IN_BULK " +
                         // select only one result
@@ -232,5 +241,33 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
 
             throw new OperationNotAllowedException("Service deletion failed");
         }
+    }
+
+    @Override
+    public boolean mute(UUID jobId) {
+        if (jobId == null) {
+            return false;
+        }
+
+        final String prefix = "DUMP";
+        int updatedEntities;
+
+        // Changing the topic (i.e. `job.status`) makes the job non-fetchable.
+        String hqlUpdate = "" +
+                "update JobDaoImpl job set" +
+                "   job.status = concat('" + prefix + "_', job.status)," +
+                //  empty `takenBy`, because some logics treat taken as in-progress
+                "   takenBy = null" +
+                " where " +
+                "   job.id = :id" +
+                //  if prefix already on the topic -- no need to do it twice.
+                "   and job.status NOT LIKE '" + prefix + "\\_%'";
+
+        updatedEntities = DaoUtils.tryWithSessionAndTransaction(sessionFactory, session ->
+                session.createQuery(hqlUpdate)
+                        .setText("id", jobId.toString())
+                        .executeUpdate());
+
+        return updatedEntities != 0;
     }
 }

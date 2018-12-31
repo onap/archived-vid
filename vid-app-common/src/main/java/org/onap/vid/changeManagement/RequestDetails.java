@@ -57,4 +57,9 @@ public class RequestDetails extends org.onap.vid.mso.rest.RequestDetails{
 	public boolean equals(Object other) {
 		return super.equals(other);
 	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 }

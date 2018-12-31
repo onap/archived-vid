@@ -50,4 +50,5 @@ public interface AsdcClient {
 	 * @throws AsdcCatalogException the asdc catalog exception
 	 */
 	Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException;
+
 }

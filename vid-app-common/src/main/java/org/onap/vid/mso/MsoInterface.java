@@ -20,14 +20,9 @@
  */
 package org.onap.vid.mso;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.joshworks.restclient.http.HttpResponse;
-import io.joshworks.restclient.http.mapper.ObjectMapper;
-import org.onap.vid.aai.util.CustomJacksonJaxBJsonProvider;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.mso.rest.RequestDetails;
-
-import java.io.IOException;
 
 /**
  * Created by pickjonathan on 21/06/2017.
@@ -43,7 +38,7 @@ public interface MsoInterface {
      * @throws Exception
      */
     MsoResponseWrapper createSvcInstance(RequestDetails requestDetails, String endpoint);
-    
+
     //For VoLTE E2E services
     MsoResponseWrapper createE2eSvcInstance(Object requestDetails, String endpoint);
     MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String endpoint);
@@ -90,19 +85,19 @@ public interface MsoInterface {
 
     MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper getOrchestrationRequest(String endpoint);
+    MsoResponseWrapper getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject, boolean warpException);
 
-    MsoResponseWrapper getOrchestrationRequestsForDashboard(String t , String sourceId , String endpoint , RestObject restObject);
+    MsoResponseWrapper getOrchestrationRequest(String endpoint);
 
     MsoResponseWrapper getManualTasksByRequestId(String t , String sourceId , String endpoint , RestObject restObject);
 
     MsoResponseWrapper completeManualTask(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject restObject);
 
-	MsoResponseWrapper updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnf_endpoint);
+	MsoResponseWrapper updateVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnfEndpoint);
 
-	MsoResponseWrapper replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnf_endpoint);
+	MsoResponseWrapper replaceVnf(org.onap.vid.changeManagement.RequestDetails requestDetails, String vnfEndpoint);
 
-    MsoResponseWrapper deleteConfiguration(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String pmc_endpoint);
+    MsoResponseWrapper deleteConfiguration(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String pmcEndpoint);
 
     MsoResponseWrapper setConfigurationActiveStatus(RequestDetails requestDetails, String endpoint);
 
@@ -120,29 +115,5 @@ public interface MsoInterface {
 
     <T> HttpResponse<T> post(String path, RequestDetailsWrapper<?> requestDetailsWrapper,
       Class<T> responseClass);
-
-    static ObjectMapper objectMapper() {
-      return new ObjectMapper() {
-        CustomJacksonJaxBJsonProvider mapper = new CustomJacksonJaxBJsonProvider();
-
-        @Override
-        public <T> T readValue(String s, Class<T> aClass) {
-            try {
-                return mapper.getMapper().readValue(s, aClass);
-            } catch (IOException e) {
-                throw new MsoException(e);
-            }
-        }
-
-        @Override
-        public String writeValue(Object o) {
-            try {
-                return mapper.getMapper().writeValueAsString(o);
-            } catch (JsonProcessingException e) {
-                throw new MsoException(e);
-            }
-        }
-      };
-    }
 }
 

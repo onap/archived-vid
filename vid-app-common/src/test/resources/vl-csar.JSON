@@ -66,8 +66,10 @@
             },
             "properties": {
                 "network_role": "get_input:extvl0_network_role",
-                "exVL_naming": "{naming_policy=get_input:extvl0_exVL_naming_naming_policy}",
-                "network_scope": "get_input:extvl0_network_scope"
+                "exVL_naming": "{naming_policy=get_input:extvl0_exVL_naming_naming_policy, ecomp_generated_naming=true}",
+                "network_scope": "get_input:extvl0_network_scope",
+                "ecomp_generated_naming": "true",
+                "network_technology": "Standard-SR-IOV"
             },
             "type": "VL",
             "modelCustomizationName": "ExtVL 0"
@@ -90,5 +92,6 @@
     },
     "pnfs": {
 
-    }
+    },
+    "vnfGroups": {}
 }

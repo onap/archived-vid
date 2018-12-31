@@ -273,7 +273,8 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         AAI_CREATED: "Created",
         AAI_DELETE: "Deleted",
         AAI_ENABLED: "Enabled",
-        AAI_DISABLED: "Disabled"
+        AAI_DISABLED: "Disabled",
+        ASSIGNED: "Assigned"
     };
 
     var STYLE = {
@@ -510,6 +511,6 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         PROMPT: PROMPT,
         STATUS: STATUS,
         STYLE: STYLE,
-        ERROR: ERROR,
+        ERROR: ERROR
     }
 }]);

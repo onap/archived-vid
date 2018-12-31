@@ -48,8 +48,8 @@ public class JettyObfuscationConversionCommandLineUtil {
 				System.out.println(encoded);
 			} else if (cmd.hasOption("d")) {
 				toProcess = cmd.getOptionValue("d");
-				String decoded_str = Password.deobfuscate(toProcess);
-				System.out.println(decoded_str);
+				String decodedStr = Password.deobfuscate(toProcess);
+				System.out.println(decodedStr);
 			} else {
 				usage();
 			}

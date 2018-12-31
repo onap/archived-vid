@@ -36,7 +36,8 @@
       "properties": {
         "MSO_Example..NetworkCollection..0_network_collection_function": "fffff",
         "MSO_Example..NetworkCollection..0_network_collection_description": "ddd",
-        "MSO_Example..Fixed..0_quantity": "89"
+        "MSO_Example..Fixed..0_quantity": "89",
+        "ecomp_generated_naming": "false"
       },
       "type": "CR",
       "category": "Network L2-3",
@@ -73,5 +74,6 @@
   },
   "pnfs": {
 
-  }
+  },
+  "vnfGroups": {}
 }

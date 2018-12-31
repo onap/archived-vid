@@ -19,17 +19,27 @@
  */
 package org.onap.vid.services;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.util.UUID;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.onap.vid.model.JobAuditStatus;
+import org.onap.vid.mso.rest.AsyncRequestStatusList;
+import org.onap.vid.testUtils.TestUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class AuditServiceImplTest {
   @Mock
@@ -60,4 +70,20 @@ public class AuditServiceImplTest {
             Mockito.anyString(),
             Mockito.anyString());
   }
+
+  @Test
+  public void testConvertMsoResponseStatusToJobAuditStatus_missingDateFromMso_shouldNoError() throws IOException {
+    final AsyncRequestStatusList asyncRequestStatusList = TestUtils.readJsonResourceFileAsObject("/orchestrationRequestsByServiceInstanceId.json", AsyncRequestStatusList.class);
+
+    AuditServiceImpl auditService = new AuditServiceImpl(null, null);
+
+    final List<JobAuditStatus> jobAuditStatuses = auditService.convertMsoResponseStatusToJobAuditStatus(asyncRequestStatusList.getRequestList(), "foo");
+
+    final List<Date> dates = jobAuditStatuses.stream().map(JobAuditStatus::getCreatedDate).collect(toList());
+    final List<String> statuses = jobAuditStatuses.stream().map(JobAuditStatus::getJobStatus).collect(toList());
+
+    assertThat(dates, containsInAnyOrder(notNullValue(), notNullValue(), nullValue()));
+    assertThat(statuses, containsInAnyOrder("COMPLETE", "COMPLETE", "IN_PROGRESS"));
+  }
+
 }

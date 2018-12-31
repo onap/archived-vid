@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -47,12 +47,13 @@ public class JobWorkerTest {
             public final String foobar = "aux";
         };
 
-        originalType = JobType.ServiceInstantiation;
-        jobUnderTest = new JobAdapterImpl().createJob(
+        originalType = JobType.MacroServiceInstantiation;
+        jobUnderTest = new JobAdapterImpl().createServiceInstantiationJob(
                 originalType,
                 originalData,
                 UUID.randomUUID(),
                 "my user id",
+                "optimisticUniqueServiceInstanceName",
                 RandomUtils.nextInt()
         );
     }
@@ -62,7 +63,7 @@ public class JobWorkerTest {
 
         assertNextJobAfterExecuteJob(null, new String[]{"status"}, allOf(
                 hasProperty("status", is(Job.JobStatus.STOPPED)),
-                hasProperty("data", hasEntry("request", originalData)),
+                hasProperty("sharedData", hasProperty("request", is(originalData))),
                 hasProperty("type", is(originalType)))
         );
     }

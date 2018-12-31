@@ -165,7 +165,7 @@ public class CsvServiceImpl implements CsvService{
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    private <T, E> T putJson(T json, String key, E values) throws IllegalAccessException, InstantiationException {
+    private <T, E> T putJson(T json, String key, E values) {
         if (json instanceof JSONArray){
             JSONArray currentJson= ((JSONArray)json);
             if (values == null) //array of strings (for last item)
@@ -176,11 +176,8 @@ public class CsvServiceImpl implements CsvService{
                 if (keyExistsOrFirstElement(currentJson, key)) {
                     currentJson.put(new JSONObject().put(key, values));
                 } else {
-                    JSONObject lastItem = lastItemInArray(currentJson);
-                    if(lastItem != null){
-                        lastItem.put(key, values);
-                    }
-
+                JSONObject lastItem = lastItemInArray(currentJson);
+                    lastItem.put(key, values);
                 }
             }
         }
