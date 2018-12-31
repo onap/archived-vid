@@ -1,13 +1,11 @@
 package org.onap.vid.job.impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.onap.vid.job.Job;
-import org.onap.vid.job.JobCommand;
-import org.onap.vid.job.JobsBrokerService;
-import org.onap.vid.job.NextCommand;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.job.*;
 import org.onap.vid.job.command.JobCommandFactory;
 import org.onap.vid.properties.Features;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.quartz.JobExecutionContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
@@ -52,6 +50,8 @@ public class JobWorker extends QuartzJobBean {
             return jobsBrokerService.pull(topic, UUID.randomUUID().toString());
         } catch (Exception e) {
             LOGGER.error(EELFLoggerDelegate.errorLogger, "failed to pull job from queue, breaking: {}", e, e);
+            tryMutingJobFromException(e);
+
             return Optional.empty();
         }
     }
@@ -72,9 +72,7 @@ public class JobWorker extends QuartzJobBean {
 
         NextCommand nextCommand = executeCommandAndGetNext(job);
 
-        Job nextJob = setNextCommandInJob(nextCommand, job);
-
-        return nextJob;
+        return setNextCommandInJob(nextCommand, job);
     }
 
     private NextCommand executeCommandAndGetNext(Job job) {
@@ -83,7 +81,7 @@ public class JobWorker extends QuartzJobBean {
             final JobCommand jobCommand = jobCommandFactory.toCommand(job);
             nextCommand = jobCommand.call();
         } catch (Exception e) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "error while executing job from queue: {}", e, e);
+            LOGGER.error("error while executing job from queue: {}", e);
             nextCommand = new NextCommand(FAILED);
         }
 
@@ -114,6 +112,25 @@ public class JobWorker extends QuartzJobBean {
         return featureManager.isActive(Features.FLAG_ASYNC_INSTANTIATION);
     }
 
+    private void tryMutingJobFromException(Exception e) {
+        // If there's JobException in the stack, read job uuid from
+        // the exception, and mute it in DB.
+        final int indexOfJobException =
+                ExceptionUtils.indexOfThrowable(e, JobException.class);
+
+        if (indexOfJobException >= 0) {
+            try {
+                final JobException jobException = (JobException) ExceptionUtils.getThrowableList(e).get(indexOfJobException);
+                LOGGER.info(EELFLoggerDelegate.debugLogger, "muting job: {} ({})", jobException.getJobUuid(), jobException.toString());
+                final boolean success = jobsBrokerService.mute(jobException.getJobUuid());
+                if (!success) {
+                    LOGGER.error(EELFLoggerDelegate.errorLogger, "failed to mute job {}", jobException.getJobUuid());
+                }
+            } catch (Exception e1) {
+                LOGGER.error(EELFLoggerDelegate.errorLogger, "failed to mute job: {}", e1, e1);
+            }
+        }
+    }
 
     //used by quartz to inject JobsBrokerService into the job
     //see JobSchedulerInitializer

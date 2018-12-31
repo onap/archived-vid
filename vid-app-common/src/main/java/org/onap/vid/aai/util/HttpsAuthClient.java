@@ -22,11 +22,16 @@
 package org.onap.vid.aai.util;
 
 
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.exceptions.HttpClientBuilderException;
+import org.onap.vid.properties.Features;
+import org.togglz.core.manager.FeatureManager;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -47,16 +52,19 @@ public class HttpsAuthClient {
     private final SystemPropertyHelper systemPropertyHelper;
     private final SSLContextProvider sslContextProvider;
 
-    public HttpsAuthClient(String certFilePath, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider) {
+    public HttpsAuthClient(String certFilePath, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider, FeatureManager featureManager) {
         this.certFilePath = certFilePath;
         this.systemPropertyHelper = systemPropertyHelper;
         this.sslContextProvider = sslContextProvider;
+        this.featureManager = featureManager;
     }
 
     private final String certFilePath;
 
+    FeatureManager featureManager;
+
     /** The logger. */
-    static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(HttpsAuthClient.class);
+    static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(org.onap.vid.aai.util.HttpsAuthClient.class);
 
 
     /**
@@ -70,7 +78,7 @@ public class HttpsAuthClient {
         try {
             setSystemProperties();
 
-            ignoreHostname();
+            optionallyVerifyHostname();
 
             return systemPropertyHelper.isClientCertEnabled() ?
                     getTrustedClient(config, getKeystorePath(), systemPropertyHelper.getDecryptedKeystorePassword(), mode)
@@ -83,8 +91,8 @@ public class HttpsAuthClient {
 
     }
 
-    private void ignoreHostname() {
-        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+    private void optionallyVerifyHostname() {
+        HttpsURLConnection.setDefaultHostnameVerifier(getHostnameVerifier());
     }
 
     private Client getUntrustedClient(ClientConfig config) {
@@ -94,10 +102,18 @@ public class HttpsAuthClient {
     private Client getTrustedClient(ClientConfig config, String keystorePath, String keystorePassword, HttpClientMode httpClientMode) throws HttpClientBuilderException {
         return ClientBuilder.newBuilder()
                 .sslContext(sslContextProvider.getSslContext(keystorePath, keystorePassword, httpClientMode))
-                .hostnameVerifier((s, sslSession) -> true)
+                .hostnameVerifier(getHostnameVerifier())
                 .withConfig(config)
                 .build()
                 .register(CustomJacksonJaxBJsonProvider.class);
+    }
+
+    protected HostnameVerifier getHostnameVerifier() {
+        if(featureManager.isActive(Features.FLAG_EXP_USE_DEFAULT_HOST_NAME_VERIFIER)){
+            return new DefaultHostnameVerifier();
+        }
+
+        return new NoopHostnameVerifier();
     }
 
     private String getKeystorePath() {

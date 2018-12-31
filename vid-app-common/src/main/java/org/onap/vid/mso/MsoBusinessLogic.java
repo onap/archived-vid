@@ -1,7 +1,8 @@
 package org.onap.vid.mso;
 
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.controllers.OperationalEnvironmentController;
+import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
@@ -17,9 +18,9 @@ public interface MsoBusinessLogic {
     MsoResponseWrapper createSvcInstance(RequestDetails msoRequest);
 
     MsoResponseWrapper createE2eSvcInstance(Object msoRequest);
-    
+
     MsoResponseWrapper deleteE2eSvcInstance(Object requestDetails, String serviceInstanceId);
-    
+
     MsoResponseWrapper createVnf(RequestDetails requestDetails, String serviceInstanceId);
 
     MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String serviceInstanceId);
@@ -102,4 +103,15 @@ public interface MsoBusinessLogic {
     RequestDetailsWrapper generateInPlaceMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails);
 
     RequestDetailsWrapper generateConfigMsoRequest(org.onap.vid.changeManagement.RequestDetails requestDetails);
+
+    String getActivateFabricConfigurationPath(String serviceInstanceId);
+
+    String getDeactivateAndCloudDeletePath(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId);
+
+    RequestDetails buildRequestDetailsForSoftDelete(SoftDeleteRequest softDeleteRequest);
+
+    MsoResponseWrapper2 deactivateAndCloudDelete(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId, RequestDetails requestDetails);
+
+    MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails);
+
 }

@@ -17,7 +17,7 @@ public class CR extends Node{
 
     private String customizationUUID;
 
-    private Map<String, NetworkCollection> networksCollection = new HashMap<String, NetworkCollection>();
+    private Map<String, NetworkCollection> networksCollection = new HashMap<>();
 
 
 

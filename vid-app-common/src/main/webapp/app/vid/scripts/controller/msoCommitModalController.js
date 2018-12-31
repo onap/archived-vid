@@ -155,7 +155,7 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
         switch(msoType) {
             case COMPONENT.MSO_DELETE_CONFIGURATION_REQ :
                 return MsoService.deleteConfiguration(requestParams, configuration);
-            case COMPONENT.MSO_CREATE_REQ:
+            case COMPONENT.MSO_CREATE_CONFIGURATION_REQ:
                 return MsoService.createConfigurationInstance(requestParams);
             case  COMPONENT.MSO_CHANGE_CONFIG_STATUS_REQ:
                 return MsoService.toggleConfigurationStatus(requestParams, configuration);
@@ -169,6 +169,13 @@ var msoCommitModalController = function(COMPONENT, FIELD, $scope, $http, $timeou
                 return MsoService.activateInstance(requestParams);
             case COMPONENT.MSO_DEACTIVATE_SERVICE_REQ:
                 return MsoService.deactivateInstance(requestParams);
+            case COMPONENT.MSO_ACTIVATE_FABRIC_CONFIGURATION_REQ:
+                return MsoService.activateFabricConfiguration(requestParams);
+            case COMPONENT.MSO_DEACTIVATE_AND_CLOUD_DELETE:
+                return MsoService.deactivateAndCloudDelete(requestParams);
+            case COMPONENT.MSO_CREATE_REQ:
+            case COMPONENT.MSO_DELETE_REQ:
+                return MsoService.createAndDeleteInstance(requestParams);
         }
     };
 

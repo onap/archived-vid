@@ -1,0 +1,78 @@
+<link rel="stylesheet" type="text/css" href="app/vid/styles/buttons.css"/>
+<link rel="stylesheet" type="text/css" href="app/vid/styles/modals.css"/>
+<link rel="stylesheet" type="text/css" href="app/vid/styles/networkNode.css"/>
+    <link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/vf-module-homing-data-action/vf-module-homing-data-action.css"/>
+
+<div class="modal-header">
+    <span class="title" data-tests-id="modalTitle">{{action}} VF-Module</span>
+    <span class="top-btn sprite modal-x" data-ng-click="cancel()"></span>
+</div>
+
+<form name="regionSectionForm" class="region-section" novalidate data-ng-class="{'is-loading': !lcpAndTenant && !isHomingData}">
+    <div class="modal-body" id="modal-body">
+        <div class="user-explanation">
+            <span data-ng-if="isSoftDeleteEnabled">
+                <h4>Please select from the following options for {{vfModuleName}}:</h4>
+                <b>Delete</b>: Permanently delete the VF-Module and its assignments.<br>
+                <b>Soft-Delete</b>: Delete the VF-Module from the cloud but retain all its assignments.
+                This will allow you to rebuild the same VF-module later on by clicking the Resume button.
+            </span>
+            <span data-ng-if="!isSoftDeleteEnabled && !isResumeEnabled">
+                Are you sure you want to permanently delete this VF-Module ({{vfModuleName}})?
+            </span>
+            <span data-ng-if="isResumeEnabled && isHomingData">
+                 Are you sure you would like to resume instantiation of ({{vfModuleName}})?
+            </span>
+        </div>
+
+        <div class="spinner">
+            <img src="app/vid/images/spinner.gif">
+        </div>
+
+        <div class="region-user-selection"  data-ng-if="!isHomingData">
+            <span data-ng-if="!isResumeEnabled">Please provide the following information as entered on instantiation:</span>
+            <span data-ng-if="isResumeEnabled">Instantiation of the VF module ({{vfModuleName}}) with the same information provided requires the following homing information: </span>
+            <div class="lcp-region field">
+                <label>LCP Region</label>
+                <select name="lcp-region" required class="form-item wide"
+                        data-tests-id="lcpRegion" data-ng-model="regionSelection.lcpRegion"
+                        data-ng-change="regionSelection.tenant = null; regionSelection.legacyRegion = null;">
+                    <option class="lcp-region-placeholder" value="" selected>Select LCP Region</option>
+                    <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionId}}"
+                            data-ng-if="option.isPermitted && !isFeatureFlagCloudOwner">{{option.cloudRegionId}}
+                    </option>
+
+                    <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionId}}"
+                            data-ng-if="option.isPermitted && isFeatureFlagCloudOwner">
+                        {{option.cloudRegionId}} ({{option.cloudOwner.trim().toUpperCase().replace("ATT-", "")}})
+                    </option>
+                </select>
+            </div>
+
+            <div class="legacy-region field" data-ng-if="(megaRegion).indexOf(regionSelection.lcpRegion) > -1">
+                <label>Legacy Region</label>
+                <input type="text" data-tests-id="lcpRegionText" required data-ng-model="regionSelection.legacyRegion"
+                       placeholder="Enter legacy region">
+            </div>
+
+            <div class="tenant field">
+                <label>Tenant</label>
+                <select name="tenant" required class="form-item wide"
+                        data-tests-id="tenant" data-ng-model="regionSelection.tenant">
+                    <option class="tenant-placeholder" value="" selected>Select Tenant Name</option>
+                    <option ng-repeat="option in lcpAndTenant" class="tenantOption" value="{{option.tenantId}}"
+                            data-ng-if="option.isPermitted && option.cloudRegionId === regionSelection.lcpRegion">{{option.tenantName}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="soft-delete-btn blue" data-ng-if="isSoftDeleteEnabled" data-tests-id="softDeleteButton"
+                data-ng-click="softDelete()" ng-disabled="regionSectionForm.$invalid">Soft Delete</button>
+        <button class="delete-resume-btn blue" data-tests-id="confirmResumeDeleteButton" data-ng-click="deleteOrResume()"
+                ng-disabled="regionSectionForm.$invalid">{{action}}</button>
+        <button class="cancel-btn white" data-tests-id="cancel" data-ng-click="cancel()">Cancel</button>
+    </div>
+</form>

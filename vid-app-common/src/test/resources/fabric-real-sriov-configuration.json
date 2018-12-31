@@ -1,0 +1,51 @@
+{
+  "service": {
+    "uuid": "253f1467-fe68-4e80-ba71-308000caec31",
+    "invariantUuid": "c15fe228-7d40-4f99-afa7-10abeedf9aac",
+    "name": "SRIOV-SERVICE",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L1-3",
+    "serviceType": "ST",
+    "serviceRole": "SR",
+    "description": "SRIOV-SERVICE",
+    "serviceEcompNaming": "true",
+    "instantiationType": "Macro",
+    "inputs": {
+
+    }
+  },
+  "vnfs": {
+
+  },
+  "networks": {
+
+  },
+  "collectionResource": {},
+  "configurations": {
+
+  },
+  "fabricConfigurations": {
+    "Fabric Configuration 0": {
+      "invariantUuid" : "2ccb488d-a119-4909-8ca5-5ecefe0ec299",
+      "uuid": "c496746f-054e-4234-88b9-aca4ebb7cbd2",
+      "customizationUuid": "9426b949-dc13-4dfe-baa0-931f42dc0e71",
+      "version": "2.0",
+      "name": "Fabric Configuration",
+      "description": "A fabric Configuration object",
+      "type": "Configuration"
+    }
+  },
+  "serviceProxies": {
+
+  },
+  "vfModules": {
+
+  },
+  "volumeGroups": {
+
+  },
+  "pnfs": {
+
+  }
+}

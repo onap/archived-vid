@@ -64,14 +64,12 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
     		var polls = PropertyService.retrieveMsoMaxPolls();
     		PropertyService.setMsoMaxPolls(polls);
     		
-    		PropertyService.setServerResponseTimeoutMsec(30000);
-
-			// These two properties only added for testing	
+    		// These two properties only added for testing
 			properties.msoDefaultBaseUrl = $scope.baseUrl;
 			properties.responseTimeoutMsec = $scope.responseTimeoutMsec;
 
 			UtilityService.setProperties(properties);
-		}
+		};
 		
 		$scope.autoGetSubs = function() {
 			/*

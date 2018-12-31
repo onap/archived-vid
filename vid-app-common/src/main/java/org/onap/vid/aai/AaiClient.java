@@ -1,25 +1,25 @@
 package org.onap.vid.aai;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.aai.exceptions.InvalidAAIResponseException;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.*;
 import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.*;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
-import org.onap.vid.aai.model.Relationship;
-import org.onap.vid.aai.model.RelationshipData;
-import org.onap.vid.aai.model.RelationshipList;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.CacheProvider;
 import org.onap.vid.aai.util.VidObjectMapperType;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.SubscriberList;
@@ -27,6 +27,8 @@ import org.onap.vid.model.probes.ErrorMetadata;
 import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.Unchecked;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriUtils;
 
 import javax.inject.Inject;
@@ -34,15 +36,16 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 /**
@@ -52,13 +55,13 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 public class AaiClient implements AaiClientInterface {
 
 
-    public static final String QUERY_FORMAT_RESOURCE = "query?format=resource";
-    public static final String SERVICE_SUBSCRIPTIONS_PATH = "/service-subscriptions/service-subscription/";
-    public static final String MODEL_INVARIANT_ID = "&model-invariant-id=";
-    public static final String QUERY_FORMAT_SIMPLE = "query?format=simple";
-    public static final String BUSINESS_CUSTOMER = "/business/customers/customer/";
-    public static final String SERVICE_INSTANCE = "/service-instances/service-instance/";
-    public static final String BUSINESS_CUSTOMERS_CUSTOMER = "business/customers/customer/";
+    private static final String QUERY_FORMAT_RESOURCE = "query?format=resource";
+    private static final String SERVICE_SUBSCRIPTIONS_PATH = "/service-subscriptions/service-subscription/";
+    private static final String MODEL_INVARIANT_ID = "&model-invariant-id=";
+    private static final String QUERY_FORMAT_SIMPLE = "query?format=simple";
+    private static final String BUSINESS_CUSTOMER = "/business/customers/customer/";
+    private static final String SERVICE_INSTANCE = "/service-instances/service-instance/";
+    private static final String BUSINESS_CUSTOMERS_CUSTOMER = "business/customers/customer/";
 
     protected String fromAppId = "VidAaiController";
 
@@ -66,22 +69,22 @@ public class AaiClient implements AaiClientInterface {
 
     private final AAIRestInterface restController;
 
+    private final CacheProvider cacheProvider;
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
     /**
      * The logger
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AaiClient.class);
 
-    /**
-     * The Constant dateFormat.
-     */
-    static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-
-    static final String GET_SERVICE_MODELS_RESPONSE_BODY = "{\"start\" : \"service-design-and-creation/models/\", \"query\" : \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}";
+    private static final String GET_SERVICE_MODELS_RESPONSE_BODY = "{\"start\" : \"service-design-and-creation/models/\", \"query\" : \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}";
 
     @Inject
-    public AaiClient(AAIRestInterface restController, PortDetailsTranslator portDetailsTranslator) {
+    public AaiClient(AAIRestInterface restController, PortDetailsTranslator portDetailsTranslator, CacheProvider cacheProvider) {
         this.restController = restController;
         this.portDetailsTranslator = portDetailsTranslator;
+        this.cacheProvider = cacheProvider;
     }
 
 
@@ -107,8 +110,14 @@ public class AaiClient implements AaiClientInterface {
 
     @Override
     public AaiResponse getServiceModelsByDistributionStatus() {
-        Response resp = doAaiPut(QUERY_FORMAT_RESOURCE, GET_SERVICE_MODELS_RESPONSE_BODY, false);
-        return processAaiResponse(resp, GetServiceModelsByDistributionStatusResponse.class, null);
+        return getFromCache("getServiceModelsByDistributionStatus", this::getServiceModelsByDistributionStatusNonCached,
+                true, "Failed to get service models by distribution status");
+    }
+
+    private AaiResponse getServiceModelsByDistributionStatusNonCached(boolean propagateExceptions) {
+        GetServiceModelsByDistributionStatusResponse response = typedAaiRest(QUERY_FORMAT_RESOURCE, GetServiceModelsByDistributionStatusResponse.class,
+                GET_SERVICE_MODELS_RESPONSE_BODY, HttpMethod.PUT, propagateExceptions);
+        return new AaiResponse(response, "", HttpStatus.SC_OK);
     }
 
     @Override
@@ -121,14 +130,14 @@ public class AaiClient implements AaiClientInterface {
     @Override
     public AaiResponse getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction) {
         Response resp = doAaiPut(QUERY_FORMAT_RESOURCE,
-                "{\"start\": [\"cloud-infrastructure/cloud-regions/cloud-region/" + cloudOwner + "/" + cloudRegionId + "\"]," +
-                        "\"query\": \"query/instance-group-byCloudRegion?type=L3-NETWORK&role=SUB-INTERFACE&function=" + networkFunction + "\"}\n", false);
+                "{\"start\": [\"cloud-infrastructure/cloud-regions/cloud-region/" + encodePathSegment(cloudOwner) + "/" + encodePathSegment(cloudRegionId) + "\"]," +
+                        "\"query\": \"query/instance-groups-byCloudRegion?type=L3-NETWORK&role=SUB-INTERFACE&function=" + encodePathSegment(networkFunction) + "\"}\n", false);
         return processAaiResponse(resp, AaiGetInstanceGroupsByCloudRegion.class, null, VidObjectMapperType.FASTERXML);
     }
 
     private AaiResponse getNetworkCollectionDetailsResponse(AaiResponse<AaiGetNetworkCollectionDetailsHelper> aaiResponse){
         if(aaiResponse.getHttpCode() == 200) {
-            com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+            ObjectMapper om = objectMapper;
             AaiGetNetworkCollectionDetails aaiGetNetworkCollectionDetails = new AaiGetNetworkCollectionDetails();
             try {
                 for (int i = 0; i < aaiResponse.getT().getResults().size(); i++) {
@@ -145,7 +154,8 @@ public class AaiClient implements AaiClientInterface {
                 return new AaiResponse(aaiGetNetworkCollectionDetails, null, HttpStatus.SC_OK);
             }
             catch (com.fasterxml.jackson.databind.JsonMappingException e) {
-                return new AaiResponse(e.getCause(), "AAI response parsing Error" , aaiResponse.getHttpCode());
+                logger.error(EELFLoggerDelegate.errorLogger, "AAI response parsing Error",  e);
+                return new AaiResponse(e.getCause(), "AAI response parsing Error" , HttpStatus.SC_INTERNAL_SERVER_ERROR);
             }
             catch (Exception e) {
                 return new AaiResponse(e.getCause(), "Got " + aaiResponse.getHttpCode() + " from a&ai" , aaiResponse.getHttpCode());
@@ -183,7 +193,7 @@ public class AaiClient implements AaiClientInterface {
         Response resp = doAaiPut(QUERY_FORMAT_SIMPLE, payload, false);
         resp.bufferEntity(); // avoid later "Entity input stream has already been closed" problems
         String rawPayload = resp.readEntity(String.class);
-        AaiResponse<AaiGetPortMirroringSourcePorts> aaiResponse = processAaiResponse(resp, AaiGetPortMirroringSourcePorts.class, rawPayload);
+        AaiResponse<CustomQuerySimpleResult> aaiResponse = processAaiResponse(resp, CustomQuerySimpleResult.class, rawPayload);
         return portDetailsTranslator.extractPortDetails(aaiResponse, rawPayload);
     }
 
@@ -202,21 +212,80 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public AaiResponse<AaiNodeQueryResponse> searchNodeTypeByName(String name, ResourceType type) {
-        String path = String.format(
-                "search/nodes-query?search-node-type=%s&filter=%s:EQUALS:%s",
+    public boolean isNodeTypeExistsByName(String name, ResourceType type) {
+        if (StringUtils.isEmpty(name)) {
+            throw new GenericUncheckedException("Empty resource-name provided to searchNodeTypeByName; request is rejected as this will cause full resources listing");
+        }
+
+        URI path = Unchecked.toURI(String.format( // e.g. GET /aai/v$/nodes/vf-modules?vf-module-name={vf-module-name}
+                "nodes/%s?%s=%s",
                 type.getAaiFormat(),
                 type.getNameFilter(),
-                name
-        );
-        return typedAaiGet(path, AaiNodeQueryResponse.class);
+                encodePathSegment(name)
+        ));
+        final ResponseWithRequestInfo responseWithRequestInfo = restController.RestGet(fromAppId, UUID.randomUUID().toString(), path, false, true);
+
+        return isResourceExistByStatusCode(responseWithRequestInfo);
     }
 
-    private <T> AaiResponse<T> typedAaiGet(String path, Class<T> clz) {
-        Response resp = doAaiGet(path , false);
-        return processAaiResponse(resp, clz, null, VidObjectMapperType.FASTERXML);
+    public Map<String, Properties> getCloudRegionAndTenantByVnfId(String vnfId) {
+        String start = "/network/generic-vnfs/generic-vnf/" + vnfId;
+        String query = "/query/cloud-region-fromVnf";
+
+        String payload = "{\"start\":[\"" + start + "\"],\"query\":\"" + query + "\"}";
+        CustomQuerySimpleResult result = typedAaiRest(QUERY_FORMAT_SIMPLE, CustomQuerySimpleResult.class, payload, HttpMethod.PUT, false);
+
+        return result.getResults().stream()
+                .filter(res -> StringUtils.equals(res.getNodeType(), "tenant") ||
+                        StringUtils.equals(res.getNodeType(), "cloud-region"))
+                .collect(toMap(SimpleResult::getNodeType, SimpleResult::getProperties));
     }
 
+    private boolean isResourceExistByStatusCode(ResponseWithRequestInfo responseWithRequestInfo) {
+        // 200 - is found
+        // 404 - resource not found
+        Response.Status statusInfo = responseWithRequestInfo.getResponse().getStatusInfo().toEnum();
+        switch (statusInfo) {
+            case OK:
+                return true;
+            case NOT_FOUND:
+                return false;
+            default:
+                throw new GenericUncheckedException("Unexpected response-code (only OK and NOT_FOUND are expected): " +
+                        responseWithRequestInfo.getResponse().getStatusInfo());
+        }
+    }
+
+    @Override
+    public <T> T typedAaiGet(URI uri, Class<T> clz) {
+        return typedAaiRest(uri, clz, null, HttpMethod.GET, false);
+    }
+
+    public <T> T typedAaiRest(String path, Class<T> clz, String payload, HttpMethod method, boolean propagateExceptions) {
+        return typedAaiRest(Unchecked.toURI(path), clz, payload, method, propagateExceptions);
+    }
+
+
+    public <T> T typedAaiRest(URI path, Class<T> clz, String payload, HttpMethod method, boolean propagateExceptions) {
+        ResponseWithRequestInfo responseWithRequestInfo;
+        try {
+            responseWithRequestInfo = restController.doRest(fromAppId, UUID.randomUUID().toString(), path, payload, method, false, propagateExceptions);
+        } catch (Exception e) {
+            responseWithRequestInfo = handleExceptionFromRestCall(propagateExceptions, "doAai"+method.name(), e);
+        }
+
+        final AaiResponseWithRequestInfo<T> aaiResponse = processAaiResponse(responseWithRequestInfo, clz, VidObjectMapperType.FASTERXML, true);
+
+        if (aaiResponse.getAaiResponse().getHttpCode() > 399 || aaiResponse.getAaiResponse().getT() == null) {
+            throw new ExceptionWithRequestInfo(aaiResponse.getHttpMethod(),
+                    aaiResponse.getRequestedUrl(),
+                    aaiResponse.getRawData(),
+                    responseWithRequestInfo.getResponse().getStatus(),
+                    new InvalidAAIResponseException(aaiResponse.getAaiResponse()));
+        }
+
+        return aaiResponse.getAaiResponse().getT();
+    }
 
 
     private String getUrlFromLIst(String url, String paramKey, List<String> params){
@@ -229,8 +298,8 @@ public class AaiClient implements AaiClientInterface {
                 encodedParam= URLEncoder.encode(param, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 String methodName = "getUrlFromList";
-                logger.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+                logger.error(EELFLoggerDelegate.errorLogger, methodName + e.toString());
+                logger.debug(EELFLoggerDelegate.debugLogger, methodName + e.toString());
             }
             url = url.concat(encodedParam);
             if(i != params.size()){
@@ -241,9 +310,34 @@ public class AaiClient implements AaiClientInterface {
     }
 
 
+
     @Override
     public AaiResponse<SubscriberList> getAllSubscribers() {
-        return getAllSubscribers(false).getAaiResponse();
+        return getFromCache("getAllSubscribers", this::getAllSubscribersNonCached, true, "Failed to get all subscribers");
+    }
+
+    private <K> AaiResponse getFromCache(String cacheName, Function<K, AaiResponse> function, K argument, String errorMessage) {
+        try {
+            return cacheProvider
+                    .aaiClientCacheFor(cacheName, function)
+                    .get(argument);
+        } catch (ExceptionWithRequestInfo exception) {
+            logger.error(errorMessage, exception);
+            return new AaiResponse(null, exception.getRawData(), exception.getHttpCode());
+        }
+        catch (Exception exception) {
+            logger.error(errorMessage, exception);
+            return new AaiResponse(null, exception.getMessage(), HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private AaiResponse<SubscriberList> getAllSubscribersNonCached(boolean propagateExceptions) {
+        AaiResponse<SubscriberList> aaiResponse = getAllSubscribers(propagateExceptions).getAaiResponse();
+        if (propagateExceptions && (aaiResponse.getT() == null || aaiResponse.getT().customer == null || aaiResponse.getT().customer.isEmpty())) {
+            throw new GenericUncheckedException("Failed to get Subscribers data. The data is null or empty.");
+        } else {
+            return aaiResponse;
+        }
     }
 
     AaiResponseWithRequestInfo<SubscriberList> getAllSubscribers(boolean propagateExceptions){
@@ -262,33 +356,12 @@ public class AaiClient implements AaiClientInterface {
         return processAaiResponse(resp, AicZones.class, null);
     }
 
-
     @Override
-    public AaiResponse<String> getAicZoneForPnf(String globalCustomerId , String serviceType , String serviceId) {
-        String aicZonePath = BUSINESS_CUSTOMERS_CUSTOMER + globalCustomerId + SERVICE_SUBSCRIPTIONS_PATH + serviceType + SERVICE_INSTANCE + serviceId;
-        Response resp = doAaiGet(aicZonePath , false);
-        AaiResponse<ServiceRelationships> aaiResponse = processAaiResponse(resp , ServiceRelationships.class , null);
-        ServiceRelationships serviceRelationships = aaiResponse.getT();
-        RelationshipList relationshipList = serviceRelationships.getRelationshipList();
-        Relationship relationship = relationshipList.getRelationship().get(0);
-        RelationshipData relationshipData=  relationship.getRelationDataList().get(0);
-        String aicZone = relationshipData.getRelationshipValue();
-        return new AaiResponse(aicZone , null ,HttpStatus.SC_OK);
-    }
-
-
-    @Override
-    public AaiResponse getVNFData() {
-        String payload = "{\"start\": [\"/business/customers/customer/e433710f-9217-458d-a79d-1c7aff376d89/service-subscriptions/service-subscription/VIRTUAL%20USP/service-instances/service-instance/3f93c7cb-2fd0-4557-9514-e189b7b04f9d\"],	\"query\": \"query/vnf-topology-fromServiceInstance\"}";
-        Response resp = doAaiPut(QUERY_FORMAT_SIMPLE, payload, false);
-        return processAaiResponse(resp, AaiGetVnfResponse.class, null);
-    }
-
-    @Override
-    public Response getVNFData(String globalSubscriberId, String serviceType) {
+    public AaiResponse getVNFData(String globalSubscriberId, String serviceType) {
         String payload = "{\"start\": [\"business/customers/customer/" + globalSubscriberId + SERVICE_SUBSCRIPTIONS_PATH + encodePathSegment(serviceType) +"/service-instances\"]," +
                 "\"query\": \"query/vnf-topology-fromServiceInstance\"}";
-        return doAaiPut(QUERY_FORMAT_SIMPLE, payload, false);
+        Response resp = doAaiPut(QUERY_FORMAT_SIMPLE, payload, false);
+        return processAaiResponse(resp, AaiGetVnfResponse.class, null);
     }
 
     @Override
@@ -343,22 +416,17 @@ public class AaiClient implements AaiClientInterface {
 
     @Override
     public AaiResponse getTenants(String globalCustomerId, String serviceType) {
-        AaiResponse aaiResponse;
-
         if ((globalCustomerId == null || globalCustomerId.isEmpty()) || ((serviceType == null) || (serviceType.isEmpty())) ){
-            aaiResponse = new AaiResponse<>(null, "{\"statusText\":\" Failed to retrieve LCP Region & Tenants from A&AI, Subscriber ID or Service Type is missing.\"}", HttpStatus.SC_INTERNAL_SERVER_ERROR);
-            return  aaiResponse;
+            return buildAaiResponseForGetTenantsFailure(" Failed to retrieve LCP Region & Tenants from A&AI, Subscriber ID or Service Type is missing.");
         }
-
-        String url = BUSINESS_CUSTOMERS_CUSTOMER + globalCustomerId + SERVICE_SUBSCRIPTIONS_PATH + serviceType;
-
-        Response resp = doAaiGet(url, false);
-        String responseAsString = parseForTenantsByServiceSubscription(resp.readEntity(String.class));
-        if (responseAsString.equals("")){
-            return new AaiResponse<>(null, String.format("{\"statusText\":\" A&AI has no LCP Region & Tenants associated to subscriber '%s' and service type '%s'\"}", globalCustomerId, serviceType), HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        try {
+            return cacheProvider
+                    .aaiClientCacheFor("getTenants", this::getTenantsByKey)
+                    .get(CacheProvider.compileKey(globalCustomerId, serviceType));
         }
-        else {
-            return processAaiResponse(resp, GetTenantsResponse[].class, responseAsString);
+        catch (ParsingGetTenantsResponseFailure exception) {
+            logger.error("Failed to get tenants ", exception);
+            return buildAaiResponseForGetTenantsFailure(exception.getMessage());
         }
     }
 
@@ -389,13 +457,17 @@ public class AaiClient implements AaiClientInterface {
     }
 
     private <T> AaiResponseWithRequestInfo<T> processAaiResponse(ResponseWithRequestInfo responseWithRequestInfo, Class<? extends T> classType, boolean propagateExceptions) {
+        return processAaiResponse(responseWithRequestInfo, classType, VidObjectMapperType.CODEHAUS, propagateExceptions);
+    }
+
+    private <T> AaiResponseWithRequestInfo<T> processAaiResponse(ResponseWithRequestInfo responseWithRequestInfo, Class<? extends T> classType, VidObjectMapperType omType, boolean propagateExceptions) {
         String responseBody = null;
         Integer responseHttpCode = null;
         try {
             Response response = responseWithRequestInfo.getResponse();
             responseHttpCode = (response != null) ? response.getStatus() : null;
             responseBody = (response != null) ? response.readEntity(String.class) : null;
-            AaiResponse<T> processedAaiResponse = processAaiResponse(response, classType, responseBody, VidObjectMapperType.CODEHAUS, propagateExceptions);
+            AaiResponse<T> processedAaiResponse = processAaiResponse(response, classType, responseBody, omType, propagateExceptions);
             return new AaiResponseWithRequestInfo<>(responseWithRequestInfo.getRequestHttpMethod(), responseWithRequestInfo.getRequestUrl(), processedAaiResponse,
                     responseBody);
         } catch (Exception e) {
@@ -408,17 +480,17 @@ public class AaiClient implements AaiClientInterface {
         return processAaiResponse(resp, classType, responseBody, VidObjectMapperType.CODEHAUS);
     }
 
-    private AaiResponse processAaiResponse(Response resp, Class classType, String responseBody, VidObjectMapperType omType) {
+    private <T> AaiResponse<T> processAaiResponse(Response resp, Class<? extends T> classType, String responseBody, VidObjectMapperType omType) {
         return processAaiResponse(resp, classType, responseBody, omType, false);
     }
 
-    private AaiResponse processAaiResponse(Response resp, Class classType, String responseBody, VidObjectMapperType omType, boolean propagateExceptions) {
-        AaiResponse subscriberDataResponse;
+    private  <T> AaiResponse<T> processAaiResponse(Response resp, Class<? extends T> classType, String responseBody, VidObjectMapperType omType, boolean propagateExceptions) {
+        AaiResponse<T> subscriberDataResponse;
         if (resp == null) {
             subscriberDataResponse = new AaiResponse<>(null, null, HttpStatus.SC_INTERNAL_SERVER_ERROR);
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "Invalid response from AAI");
+            logger.debug(EELFLoggerDelegate.debugLogger, "Invalid response from AAI");
         } else {
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "getSubscribers() resp=" + resp.getStatusInfo().toString());
+            logger.debug(EELFLoggerDelegate.debugLogger, "getSubscribers() resp=" + resp.getStatusInfo().toString());
             if (resp.getStatus() != HttpStatus.SC_OK) {
                 subscriberDataResponse = processFailureResponse(resp,responseBody);
             } else {
@@ -429,7 +501,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     private AaiResponse processFailureResponse(Response resp, String responseBody) {
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "Invalid response from AAI");
+        logger.debug(EELFLoggerDelegate.debugLogger, "Invalid response from AAI");
         String rawData;
         if (responseBody != null) {
             rawData = responseBody;
@@ -439,8 +511,8 @@ public class AaiClient implements AaiClientInterface {
         return new AaiResponse<>(null, rawData, resp.getStatus());
     }
 
-    private AaiResponse processOkResponse(Response resp, Class classType, String responseBody, VidObjectMapperType omType, boolean propagateExceptions) {
-        AaiResponse subscriberDataResponse;
+    private <T> AaiResponse<T> processOkResponse(Response resp, Class<? extends T> classType, String responseBody, VidObjectMapperType omType, boolean propagateExceptions) {
+        AaiResponse<T> subscriberDataResponse;
         String finalResponse = null;
         try {
             if (responseBody != null) {
@@ -465,50 +537,59 @@ public class AaiClient implements AaiClientInterface {
         return subscriberDataResponse;
     }
 
-    private AaiResponse parseFasterXmlObject(Class classType, String finalResponse) throws IOException {
-        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+    private <T> AaiResponse<T> parseFasterXmlObject(Class<? extends T> classType, String finalResponse) throws IOException {
         return new AaiResponse<>((objectMapper.readValue(finalResponse, classType)), null, HttpStatus.SC_OK);
     }
 
-    private AaiResponse parseCodeHausObject(Class classType, String finalResponse) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    private <T> AaiResponse<T> parseCodeHausObject(Class<? extends T> classType, String finalResponse) throws IOException {
         return new AaiResponse<>((objectMapper.readValue(finalResponse, classType)), null, HttpStatus.SC_OK);
     }
 
+    @Override
     public Response doAaiGet(String uri, boolean xml) {
         return doAaiGet(uri, xml, false).getResponse();
     }
 
 
     public ResponseWithRequestInfo doAaiGet(String uri, boolean xml, boolean propagateExceptions) {
+        return doAaiGet(Unchecked.toURI(uri), xml, propagateExceptions);
+    }
+
+    public ResponseWithRequestInfo doAaiGet(URI uri, boolean xml, boolean propagateExceptions) {
         String methodName = "doAaiGet";
-        String transId = UUID.randomUUID().toString();
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        logger.debug(EELFLoggerDelegate.debugLogger, methodName + " start");
 
         ResponseWithRequestInfo resp;
         try {
-            resp = restController.RestGet(fromAppId, transId, uri, xml, propagateExceptions);
+            resp = restController.RestGet(fromAppId, UUID.randomUUID().toString(), uri, xml, propagateExceptions);
 
         } catch (Exception e) {
-            if (propagateExceptions) {
-                throw (e instanceof RuntimeException) ? (RuntimeException)e : new GenericUncheckedException(e);
-            } else {
-                final Exception actual =
-                        e instanceof ExceptionWithRequestInfo ? (Exception) e.getCause() : e;
-
-                final String message =
-                        actual instanceof WebApplicationException ? ((WebApplicationException) actual).getResponse().readEntity(String.class) : e.toString();
-
-                //ToDo: change parameter of requestUrl to real url from RestGet function
-                resp = new ResponseWithRequestInfo(null, null, org.springframework.http.HttpMethod.GET);
-                logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + message);
-                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + message);
-            }
+            resp = handleExceptionFromRestCall(propagateExceptions, methodName, e);
         }
         return resp;
     }
 
-    private String parseForTenantsByServiceSubscription(String resp) {
+    @NotNull
+    protected ResponseWithRequestInfo handleExceptionFromRestCall(boolean propagateExceptions, String methodName, Exception e) {
+        ResponseWithRequestInfo resp;
+        if (propagateExceptions) {
+            throw (e instanceof RuntimeException) ? (RuntimeException)e : new GenericUncheckedException(e);
+        } else {
+            final Exception actual =
+                    e instanceof ExceptionWithRequestInfo ? (Exception) e.getCause() : e;
+
+            final String message =
+                    actual instanceof WebApplicationException ? ((WebApplicationException) actual).getResponse().readEntity(String.class) : e.toString();
+
+            //ToDo: change parameter of requestUrl to real url from doRest function
+            resp = new ResponseWithRequestInfo(null, null, org.springframework.http.HttpMethod.GET);
+            logger.info(EELFLoggerDelegate.errorLogger, methodName + message);
+            logger.debug(EELFLoggerDelegate.debugLogger, methodName + message);
+        }
+        return resp;
+    }
+
+    private String parseForTenantsByServiceSubscription(String relatedToKey, String resp) {
         String tenantList = "";
 
         try {
@@ -516,7 +597,7 @@ public class AaiClient implements AaiClientInterface {
 
             JSONObject jsonObject = (JSONObject) jsonParser.parse(resp);
 
-            return parseServiceSubscriptionObjectForTenants(jsonObject);
+            return parseServiceSubscriptionObjectForTenants(relatedToKey, jsonObject);
         } catch (Exception ex) {
             logger.debug(EELFLoggerDelegate.debugLogger, "parseForTenantsByServiceSubscription error while parsing tenants by service subscription", ex);
         }
@@ -524,24 +605,26 @@ public class AaiClient implements AaiClientInterface {
     }
 
     protected Response doAaiPut(String uri, String payload, boolean xml) {
-        String methodName = "doAaiPut";
-        String transId = UUID.randomUUID().toString();
-        logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + methodName + " start");
+        return doAaiPut(uri, payload, xml, false).getResponse();
+    }
 
-        Response resp = null;
+    protected ResponseWithRequestInfo doAaiPut(String uri, String payload, boolean xml, boolean propagateExceptions) {
+        String methodName = "doAaiPut";
+        logger.debug(EELFLoggerDelegate.debugLogger, methodName + " start");
+
+        ResponseWithRequestInfo resp;
         try {
 
-            resp = restController.RestPut(fromAppId, uri, payload, xml);
+            resp = restController.RestPut(fromAppId, uri, payload, xml, propagateExceptions);
 
         } catch (Exception e) {
-            logger.info(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + "." + methodName + e.toString());
+            resp = handleExceptionFromRestCall(propagateExceptions, methodName, e);
         }
         return resp;
     }
 
 
-    private String parseServiceSubscriptionObjectForTenants(JSONObject jsonObject) {
+    private String parseServiceSubscriptionObjectForTenants(String relatedToKey, JSONObject jsonObject) {
         JSONArray tenantArray = new JSONArray();
         boolean bconvert = false;
         try {
@@ -550,7 +633,7 @@ public class AaiClient implements AaiClientInterface {
                 JSONArray rShipArray = (JSONArray) relationShipListsObj.get("relationship");
                 for (Object innerObj : defaultIfNull(rShipArray, emptyList())) {
                     if (innerObj != null) {
-                        bconvert = parseTenant(tenantArray, bconvert, (JSONObject) innerObj);
+                        bconvert = parseTenant(relatedToKey, tenantArray, bconvert, (JSONObject) innerObj);
                     }
                 }
             }
@@ -565,9 +648,9 @@ public class AaiClient implements AaiClientInterface {
 
     }
 
-    private static boolean parseTenant(JSONArray tenantArray, boolean bconvert, JSONObject inner1Obj) {
+    private static boolean parseTenant(String relatedToKey, JSONArray tenantArray, boolean bconvert, JSONObject inner1Obj) {
         String relatedTo = checkForNull((String) inner1Obj.get("related-to"));
-        if (relatedTo.equalsIgnoreCase("tenant")) {
+        if (relatedTo.equalsIgnoreCase(relatedToKey)) {
             JSONObject tenantNewObj = new JSONObject();
 
             String relatedLink = checkForNull((String) inner1Obj.get("related-link"));
@@ -609,9 +692,7 @@ public class AaiClient implements AaiClientInterface {
             tenantNewObj.put("cloudOwner", rShipVal);
         } else if (rShipKey.equalsIgnoreCase("cloud-region.cloud-region-id")) {
             tenantNewObj.put("cloudRegionID", rShipVal);
-        }
-
-        if (rShipKey.equalsIgnoreCase("tenant.tenant-id")) {
+        } else if (rShipKey.equalsIgnoreCase("tenant.tenant-id")) {
             tenantNewObj.put("tenantID", rShipVal);
         }
     }
@@ -639,7 +720,7 @@ public class AaiClient implements AaiClientInterface {
                     responseWithRequestInfo.getHttpMethod(),
                     (aaiResponse != null) ? aaiResponse.getHttpCode() : 0,
                     responseWithRequestInfo.getRequestedUrl(),
-                    StringUtils.substring(responseWithRequestInfo.getRawData(), 0, 500),
+                    responseWithRequestInfo.getRawData(),
                     isAvailable ? "OK" : "No subscriber received",
                     duration
             );
@@ -648,16 +729,104 @@ public class AaiClient implements AaiClientInterface {
         } catch (ExceptionWithRequestInfo e) {
             long duration = System.currentTimeMillis() - startTime;
             return new ExternalComponentStatus(ExternalComponentStatus.Component.AAI, false,
-                    new HttpRequestMetadata(
-                            e.getHttpMethod(),
-                            defaultIfNull(e.getHttpCode(), 0),
-                            e.getRequestedUrl(),
-                            e.getRawData(),
-                            Logging.exceptionToDescription(e.getCause()), duration));
+                    new HttpRequestMetadata(e, duration));
         } catch (Exception e) {
             long duration = System.currentTimeMillis() - startTime;
             return new ExternalComponentStatus(ExternalComponentStatus.Component.AAI, false,
                     new ErrorMetadata(Logging.exceptionToDescription(e), duration));
+        }
+    }
+
+    @Override
+    public String getCloudOwnerByCloudRegionId(String cloudRegionId) {
+        return cacheProvider
+                .aaiClientCacheFor("getCloudOwnerByCloudRegionId", this::getCloudOwnerByCloudRegionIdNonCached)
+                .get(cloudRegionId);
+    }
+
+
+    @Override
+    public GetTenantsResponse getHomingDataByVfModule(String vnfInstanceId, String vfModuleId) {
+
+        if (StringUtils.isEmpty(vnfInstanceId)||StringUtils.isEmpty(vfModuleId)){
+            throw new GenericUncheckedException("Failed to retrieve homing data associated to vfModule from A&AI, VNF InstanceId or VF Module Id is missing.");
+        }
+        Response resp = doAaiGet("network/generic-vnfs/generic-vnf/" + vnfInstanceId +"/vf-modules/vf-module/"+ vfModuleId, false);
+        String responseAsString = parseForTenantsByServiceSubscription("vserver",resp.readEntity(String.class));
+        if (responseAsString.equals("")){
+            throw new GenericUncheckedException( String.format("A&AI has no homing data associated to vfModule '%s' of vnf '%s'", vfModuleId, vnfInstanceId));
+        }
+        else {
+            AaiResponse aaiResponse = processAaiResponse(resp, GetTenantsResponse[].class, responseAsString);
+            return ((GetTenantsResponse[])aaiResponse.getT())[0];
+        }
+    }
+
+    @Override
+    public void resetCache(String cacheName) {
+        cacheProvider.resetCache(cacheName);
+    }
+
+    String getCloudOwnerByCloudRegionIdNonCached(String cloudRegionId) {
+        String uri = "cloud-infrastructure/cloud-regions?cloud-region-id=" + encodePathSegment(cloudRegionId);
+
+        final CloudRegion.Collection cloudRegionCollection =
+                typedAaiGet(Unchecked.toURI(uri), CloudRegion.Collection.class);
+
+        return cloudRegionCollection
+                .getCloudRegions().stream()
+                .map(CloudRegion::getCloudOwner)
+                // from here we assure that the cloud owner is given, and not null
+                // and non-empty, and that if more than one cloud-owner is given -
+                // it is only a single value.
+                // exception is thrown if none or more than a single values are
+                // given.
+                .filter(StringUtils::isNotEmpty)
+                .distinct()
+                .reduce((a, b) -> {
+                    // will be invoked only if distinct() leaves more than a single element
+                    throw new GenericUncheckedException("Conflicting cloud-owner found for " + cloudRegionId + ": '" + a + "' / '" + b + "'");
+                })
+                .orElseThrow(() -> new GenericUncheckedException("No cloud-owner found for " + cloudRegionId));
+    }
+
+    private AaiResponse getTenantsByKey(String key) {
+        String[] args = CacheProvider.decompileKey(key);
+        String globalCustomerId = safeGetFromArray(args, 0);
+        String serviceType = safeGetFromArray(args, 1);
+        return getTenantsNonCached(globalCustomerId, serviceType);
+    }
+
+    AaiResponse getTenantsNonCached(String globalCustomerId, String serviceType) {
+        String url = BUSINESS_CUSTOMERS_CUSTOMER + globalCustomerId + SERVICE_SUBSCRIPTIONS_PATH + serviceType;
+
+        Response resp = doAaiGet(url, false);
+        String responseAsString = parseForTenantsByServiceSubscription("tenant",resp.readEntity(String.class));
+        if (StringUtils.isEmpty(responseAsString)){
+           throw new ParsingGetTenantsResponseFailure(String.format("A&AI has no LCP Region & Tenants associated to subscriber '%s' and service type '%s'", globalCustomerId, serviceType));
+        }
+        else {
+            return processAaiResponse(resp, GetTenantsResponse[].class, responseAsString);
+        }
+    }
+
+    public static class ParsingGetTenantsResponseFailure extends GenericUncheckedException {
+
+        public ParsingGetTenantsResponseFailure(String message) {
+            super(message);
+        }
+    }
+
+    @NotNull
+    private AaiResponse<String> buildAaiResponseForGetTenantsFailure(String errorText) {
+        return new AaiResponse<>(null, String.format("{\"statusText\":\"%s\"}", errorText), HttpStatus.SC_INTERNAL_SERVER_ERROR);
+    }
+
+    private static String safeGetFromArray(String[] array, int i) {
+        if (i < 0 || i >= array.length) {
+            return null;
+        } else {
+            return array[i];
         }
     }
 }

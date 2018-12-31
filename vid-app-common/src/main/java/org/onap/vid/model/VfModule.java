@@ -20,12 +20,8 @@
 
 package org.onap.vid.model;
 
-import org.onap.vid.asdc.beans.tosca.Group;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.onap.vid.asdc.beans.tosca.Group;
 
 /**
  * The Class VfModule.
@@ -34,9 +30,7 @@ public class VfModule extends org.onap.vid.model.Group {
 
 	/** The Constant LOG. */
 	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(VfModule.class);
-	
-	/** The Constant dateFormat. */
-	static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+
 	public static final String VOLUME_GROUP = "volume_group";
 
 	/** The volume group allowed. */
@@ -88,7 +82,7 @@ public class VfModule extends org.onap.vid.model.Group {
 				if (group.getProperties().get(VOLUME_GROUP) != null) {
 				
 					Class<?> c = group.getProperties().get(VOLUME_GROUP).getClass();
-					LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " class name=" +
+					LOG.debug(EELFLoggerDelegate.debugLogger, methodName + " class name=" +
 							c.getName());
 					
 					if ( c.getName().equalsIgnoreCase(Boolean.class.getName()) ) {
@@ -101,7 +95,7 @@ public class VfModule extends org.onap.vid.model.Group {
 			}
 		}
 		catch ( Exception e ) {
-			LOG.error(EELFLoggerDelegate.errorLogger, dateFormat.format(new Date()) + methodName + " Unable to parse VF Module from group: e=" + 
+			LOG.error(EELFLoggerDelegate.errorLogger, methodName + " Unable to parse VF Module from group: e=" +
 					e.toString());
 		}
 			return vfModule;

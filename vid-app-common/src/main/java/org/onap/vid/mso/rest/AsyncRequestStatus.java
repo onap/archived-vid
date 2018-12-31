@@ -23,7 +23,6 @@ package org.onap.vid.mso.rest;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.onap.vid.domain.mso.RequestStatus;
 
 /**
  * Represent response for: GET orchestrationRequests
@@ -53,16 +52,29 @@ public class AsyncRequestStatus  {
         }
 
         public String requestId;
+        public String requestScope;
 
         /**
          * The instance ids.
          */
         public InstanceReferences instanceReferences;
 
+
+        /**
+         * The request details.
+         */
+        public RequestDetails requestDetails;
+
         /**
          * The request status.
          */
         public RequestStatus requestStatus;
+
+        /**
+         * The time of start.
+         */
+        public String startTime;
+
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -70,6 +82,19 @@ public class AsyncRequestStatus  {
 
         public String serviceInstanceId;
     }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RequestDetails {
+
+        public RequestInfo requestInfo;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RequestInfo {
+
+        public String instanceName;
+    }
+
 
 
 }

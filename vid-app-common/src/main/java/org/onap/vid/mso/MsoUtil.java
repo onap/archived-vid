@@ -3,14 +3,13 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
- * Modifications Copyright (C) 2018 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,9 +27,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.glassfish.jersey.client.ClientResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import static org.onap.vid.utils.Logging.getMethodName;
 
 /**
@@ -40,10 +36,7 @@ public class MsoUtil {
 	
 	/** The logger. */
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoUtil.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-	
+
 	/**
 	 * Wrap response.
 	 *
@@ -67,12 +60,13 @@ public class MsoUtil {
 	 * @return the mso response wrapper
 	 */
 	public static MsoResponseWrapper wrapResponse (ClientResponse cres) {	
-		String resp_str = "";
+		String respStr = "";
+		int statuscode = 0;
 		if ( cres != null ) {
-			resp_str = cres.readEntity(String.class);
+			respStr = cres.readEntity(String.class);
+			statuscode = cres.getStatus();
 		}
-		int statuscode = cres.getStatus();
-		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp_str, statuscode );
+		MsoResponseWrapper w = MsoUtil.wrapResponse ( respStr, statuscode );
 		return (w);
 	}
 	
@@ -83,16 +77,16 @@ public class MsoUtil {
 	 * @return the mso response wrapper
 	 */
 	public static MsoResponseWrapper wrapResponse (RestObject<String> rs) {
-		String resp_str = null;
+		String respStr = null;
 		int status = 0;
 		if ( rs != null ) {
-			resp_str = rs.get() != null ? rs.get() : rs.getRaw();
+			respStr = rs.get() != null ? rs.get() : rs.getRaw();
 			status = rs.getStatusCode();
 		}
-		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp_str, status );
+		MsoResponseWrapper w = MsoUtil.wrapResponse ( respStr, status );
 		return (w);
-	}
-
+	}	
+	
 	public static <T> MsoResponseWrapper wrapResponse (HttpResponse<T> rs) {
 		MsoResponseWrapper w = new MsoResponseWrapper();
 		w.setStatus (rs.getStatus());
@@ -111,19 +105,17 @@ public class MsoUtil {
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	public static <T> String convertPojoToString ( T t ) {
-		
-		String methodName = "convertPojoToString";
 		ObjectMapper mapper = new ObjectMapper();
-		String r_json_str = "";
+		String rJsonStr = "";
 	    if ( t != null ) {
 		    try {
-		    	r_json_str = mapper.writeValueAsString(t);
+		    	rJsonStr = mapper.writeValueAsString(t);
 		    }
 		    catch ( com.fasterxml.jackson.core.JsonProcessingException j ) {
 		    	logger.debug(EELFLoggerDelegate.debugLogger,getMethodName() + " Unable to parse object of type " + t.getClass().getName() + " as json", j);
 		    }
 	    }
-	    return (r_json_str);
+	    return (rJsonStr);
 	}
 	
 	/**

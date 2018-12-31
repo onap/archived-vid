@@ -20,20 +20,15 @@
 
 package org.onap.vid.mso.rest;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.onap.vid.domain.mso.CloudConfiguration;
-import org.onap.vid.domain.mso.ModelInfo;
-import org.onap.vid.domain.mso.RequestInfo;
-import org.onap.vid.domain.mso.RequestParameters;
-import org.onap.vid.domain.mso.SubscriberInfo;
+import org.onap.vid.exceptions.NotFoundException;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.RequestInfo;
+import org.onap.vid.mso.model.RequestParameters;
 
 import java.util.HashMap;
 import java.util.List;
@@ -86,7 +81,7 @@ public class RequestDetails{
 
     /** The additional properties. */
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * Gets the cloud configuration.
@@ -269,4 +264,26 @@ public class RequestDetails{
     public void setRequestParameters(RequestParameters requestParameters) {
         this.requestParameters = requestParameters;
     }
+
+    public <T> T extractValueByPathUsingAdditionalProperties (List<String> keys, Class<T> clazz) {
+        Object result = getAdditionalProperties();
+        for (String key : keys) {
+            if (result instanceof Map) {
+                result = ((Map) result).get(key);
+            }
+
+            else {
+                throw new NotFoundException("failed to find key: "+key+" in path: "+String.join("\\", keys));
+            }
+        }
+        if (clazz.isInstance(result)) {
+            return clazz.cast(result);
+        }
+
+        throw new NotFoundException(
+                String.format("failed to extract value from path:%s because %s is not of type %s",
+                String.join("\\", keys), String.valueOf(result) , clazz));
+    }
+
+
 }

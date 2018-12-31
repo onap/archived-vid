@@ -1,8 +1,9 @@
 package org.onap.vid.services;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.tuple.Pair;
-import org.json.simple.JSONArray;
 import org.onap.vid.changeManagement.*;
+import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.mso.rest.Request;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,8 @@ import java.util.List;
 public interface ChangeManagementService {
     Collection<Request> getMSOChangeManagements();
 	ResponseEntity<String> doChangeManagement(ChangeManagementRequest request, String vnfName);
-    JSONArray getSchedulerChangeManagements();
+    ArrayNode getSchedulerChangeManagements();
+    RestObjectWithRequestInfo<ArrayNode> getSchedulerChangeManagementsWithRequestInfo();
 
     /**
      * Deleting a scheduled flow.

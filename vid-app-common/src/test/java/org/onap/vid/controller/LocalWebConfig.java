@@ -29,6 +29,7 @@ import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.util.*;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
+import org.onap.vid.asdc.parser.VidNotionsBuilder;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.VidService;
@@ -81,9 +82,14 @@ public class LocalWebConfig {
     }
 
     @Bean
-    public HttpsAuthClient httpsAuthClientFactory(ServletContext servletContext, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider) {
+    public HttpsAuthClient httpsAuthClientFactory(ServletContext servletContext, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider, FeatureManager featureManager) {
         final String certFilePath = new File(servletContext.getRealPath("/WEB-INF/cert/")).getAbsolutePath();
-        return new HttpsAuthClient(certFilePath, systemPropertyHelper, sslContextProvider);
+        return new HttpsAuthClient(certFilePath, systemPropertyHelper, sslContextProvider, featureManager);
+    }
+
+    @Bean
+    public CacheProvider cacheProvider() {
+        return new NonCachingCacheProvider();
     }
 
     @Bean(name = "aaiRestInterface")
@@ -92,13 +98,18 @@ public class LocalWebConfig {
     }
 
     @Bean
-    public AaiClientInterface getAaiClientInterface(@Qualifier("aaiRestInterface")AAIRestInterface aaiRestInterface, PortDetailsTranslator portDetailsTranslator) {
-        return new AaiClient(aaiRestInterface, portDetailsTranslator);
+    public AaiClientInterface getAaiClientInterface(@Qualifier("aaiRestInterface") AAIRestInterface aaiRestInterface, PortDetailsTranslator portDetailsTranslator, CacheProvider cacheProvider) {
+        return new AaiClient(aaiRestInterface, portDetailsTranslator, cacheProvider);
     }
 
     @Bean
-    public ToscaParserImpl2 getToscaParser() {
-        return new ToscaParserImpl2();
+    public VidNotionsBuilder vidNotionsBuilder(FeatureManager featureManager) {
+        return new VidNotionsBuilder(featureManager);
+    }
+
+    @Bean
+    public ToscaParserImpl2 getToscaParser(VidNotionsBuilder vidNotionsBuilder) {
+        return new ToscaParserImpl2(vidNotionsBuilder);
     }
 
     @Bean
