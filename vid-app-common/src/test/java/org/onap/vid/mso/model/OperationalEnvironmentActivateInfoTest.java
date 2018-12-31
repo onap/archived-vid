@@ -1,9 +1,9 @@
 package org.onap.vid.mso.model;
 
 import org.junit.Test;
-import org.onap.vid.controllers.OperationalEnvironmentController;
-import org.onap.vid.controllers.OperationalEnvironmentController.OperationalEnvironmentActivateBody;
-import org.onap.vid.controllers.OperationalEnvironmentController.OperationalEnvironmentManifest;
+import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.controller.OperationalEnvironmentController.OperationalEnvironmentActivateBody;
+import org.onap.vid.controller.OperationalEnvironmentController.OperationalEnvironmentManifest;
 
 public class OperationalEnvironmentActivateInfoTest {
 

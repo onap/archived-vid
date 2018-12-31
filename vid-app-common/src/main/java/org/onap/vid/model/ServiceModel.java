@@ -21,14 +21,11 @@
 package org.onap.vid.model;
 
 import org.apache.commons.collections.MapUtils;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.asdc.beans.tosca.Group;
 import org.onap.vid.asdc.beans.tosca.ToscaModel;
 import org.onap.vid.properties.VidProperties;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,9 +37,7 @@ public class ServiceModel {
 
 	/** The Constant LOG. */
 	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(ServiceModel.class);
-	
-	/** The Constant dateFormat. */
-	static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+
 	/** The service. */
 	private Service service;
 	
@@ -54,9 +49,11 @@ public class ServiceModel {
 
 	private Map<String, CR> collectionResource;
 
-
 	/** Port Mirroring Configuration node templates */
 	private Map<String, PortMirroringConfig> configurations;
+
+	/** Fabric Configuration node templates */
+	private Map<String, Node> fabricConfigurations;
 
 	/** Service Proxy Nodes */
 	private Map<String, ServiceProxy> serviceProxies;
@@ -74,6 +71,10 @@ public class ServiceModel {
 
 	/** The pnfs. */
 	private Map<String, Node> pnfs;
+
+	/** Resource groups of VF (VNF) type. */
+	private Map<String, ResourceGroup> vnfGroups;
+	
 	/**
 	 * Instantiates a new service model.
 	 */
@@ -133,6 +134,10 @@ public class ServiceModel {
 	 */
 	public Map<String, ServiceProxy> getServiceProxies() {
 		return serviceProxies;
+	}
+
+	public Map<String, ResourceGroup> getVnfGroups() {
+		return vnfGroups;
 	}
 
 	/**
@@ -221,12 +226,24 @@ public class ServiceModel {
 	 */
 	public void setPnfs(Map<String,Node> pnfs) {this.pnfs = pnfs;}
 
+	public void setVnfGroups(Map<String, ResourceGroup> vnfGroups) {
+		this.vnfGroups = vnfGroups;
+	}
+
 	public Map<String, CR> getCollectionResource() {
 		return collectionResource;
 	}
 
 	public void setCollectionResource(Map<String, CR> collectionResource) {
 		this.collectionResource = collectionResource;
+	}
+
+	public Map<String, Node> getFabricConfigurations() {
+		return fabricConfigurations;
+	}
+
+	public void setFabricConfigurations(Map<String, Node> fabricConfigurations) {
+		this.fabricConfigurations = fabricConfigurations;
 	}
 
 	/**
@@ -288,7 +305,7 @@ public class ServiceModel {
 	 */
 	public void associateGroups() {
 		String methodName = "associateGroups()";
-        LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + " start");
+        LOG.debug(EELFLoggerDelegate.debugLogger, methodName + " start");
 		// go through the vnfs, get the vnf normalized name and look for a vf module with a customization name that starts
 		// with vnf + ".."
 		String vnfCustomizationName = null;
@@ -300,7 +317,7 @@ public class ServiceModel {
 				vnfCustomizationName = vnfComponent.getValue().getModelCustomizationName();
 				normalizedVnfCustomizationName = VNF.normalizeName(vnfCustomizationName);
 
-				LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + 
+				LOG.debug(EELFLoggerDelegate.debugLogger, methodName +
 						" VNF customizationName=" + vnfCustomizationName + "normalized customization name=" + normalizedVnfCustomizationName);
 				
 				// now check to see if there is a vf module with customization name that starts with normalizedVnfCustomizationName
@@ -309,7 +326,7 @@ public class ServiceModel {
 					for (Entry<String, VfModule> vfModuleComponent : getVfModules().entrySet()) {
 						vfModuleCustomizationName = vfModuleComponent.getValue().getModelCustomizationName();
 						
-						LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName + 
+						LOG.debug(EELFLoggerDelegate.debugLogger, methodName +
 								" VF Module customizationName=" + vfModuleCustomizationName );
 						if ( vfModuleCustomizationName.startsWith(normalizedVnfCustomizationName + ".." )) {
 							handleCustomizationName(methodName, vnfCustomizationName, vfModuleCustomizationName, vnfComponent, vfModuleComponent);
@@ -328,7 +345,7 @@ public class ServiceModel {
 		tmpVnf = vnfComponent.getValue();
 		(tmpVnf.getVfModules()).put(vfModuleComponent.getKey(), vfModuleComponent.getValue());
 
-		LOG.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + methodName +
+		LOG.debug(EELFLoggerDelegate.debugLogger, methodName +
                 " Associated VF Module customizationName=" + vfModuleComponent.getKey() + " with VNF customization name=" + vnfCustomizationName);
 
 		// now find if this vf module has volume groups, if so, find the volume group with the same customization name and put it under the VNF

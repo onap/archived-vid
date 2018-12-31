@@ -34,7 +34,7 @@
 			<label>Status:</label><span class="status">{{status}}</span>
 		</div>
 
-        <div ng-if="errorMsg != null" style="white-space: pre-line"><font color='red'>{{errorMsg}}
+        <div class="error-msg" ng-if="errorMsg != null" style="white-space: pre-line"><font color='red'>{{errorMsg}}
             <pre>{{errorDetails | json}}</pre>
         </font></div>
 
@@ -181,12 +181,17 @@
                                style="margin-right: 8px;">
                                 Deactivate
                             </a>
-                            <a data-tests-id="activateButton" ng-disabled="!isActivateDeactivateEnabled('activate')"
+                            <a ng-if="!isActivateFabricConfiguration()" data-tests-id="activateButton" ng-disabled="!isActivateDeactivateEnabled('activate')"
                                class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="activateMSOInstance()"
                                style="margin-right: 8px;">
                                 Activate
                             </a>
-                            <a data-tests-id="showAssignmentsButton" ng-disabled="!isShowAssignmentsEnabled()"
+                            <a ng-if="isActivateFabricConfiguration()" data-tests-id="activateFabricConfigurationButton" ng-disabled="!allConfigurationsAssigned"
+                               class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="activateFabricConfigurationMSO()"
+                               style="margin-right: 8px;">
+                                Activate Fabric Configuration
+                            </a>
+                            <a data-tests-id="showAssignmentsButton" ng-if="isShowAssignmentsEnabled()"
                                class="pull-right btn btn-primary btn-xs" data-nodrag style="margin-right: 8px;"
                                target="_blank" ng-href="{{showAssignmentsSDNC()}}">
                                 Show Assignments
@@ -377,6 +382,25 @@
                                         </div>
                                     </li>
                                 </ol>
+
+                                <ol ui-tree-nodes="" ng-model="vnf.networks"
+                                    ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="network in vnf.networks" ui-tree-node>
+                                        <div ui-tree-handle class="tree-node tree-node-content">
+                                            NETWORK: {{network.name}} | TYPE: {{network.nodeType}} | ORCH
+                                            STATUS: {{network.nodeStatus}}
+                                        </div>
+                                        <ol ui-tree-nodes="" ng-model="network.vlans" ng-class="{hidden: collapsed}">
+                                            <li ng-repeat="vlan in network.vlans" ui-tree-node>
+                                                <div ui-tree-handle class="tree-node tree-node-content"
+                                                     ng-class="'vlansTreeNode'">
+                                                    VLAN: {{vlan.vlanIdInner}} | TYPE: VLAN
+                                                </div>
+
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
                             </li>
                         </ol>
 
@@ -400,6 +424,16 @@
                                         <span class="glyphicon glyphicon-info-sign network-info"></span>
                                     </a>
                                 </div>
+
+                                <ol ui-tree-nodes="" ng-model="network.vlans" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="vlan in network.vlans" ui-tree-node>
+                                        <div ui-tree-handle class="tree-node tree-node-content"
+                                             ng-class="'vlansTreeNode'">
+                                            VLAN: {{vlan.vlanIdInner}} | TYPE: VLAN
+                                        </div>
+
+                                    </li>
+                                </ol>
                             </li>
                         </ol>
 

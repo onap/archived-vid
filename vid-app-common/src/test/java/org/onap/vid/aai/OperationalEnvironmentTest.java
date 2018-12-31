@@ -2,8 +2,6 @@ package org.onap.vid.aai;
 
 import org.junit.Test;
 import org.onap.vid.aai.model.RelationshipList;
-import java.util.*;
-import org.junit.Assert;
 
 public class OperationalEnvironmentTest {
 
@@ -28,7 +26,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setOperationalEnvironmentId(operationalEnvironmentId);
+        testSubject.setJsonOperationalEnvironmentId(operationalEnvironmentId);
     }
 
     @Test
@@ -48,7 +46,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setOperationalEnvironmentName(operationalEnvironmentName);
+        testSubject.setJsonOperationalEnvironmentName(operationalEnvironmentName);
     }
 
     @Test
@@ -68,7 +66,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setOperationalEnvironmentType(operationalEnvironmentType);
+        testSubject.setJsonOperationalEnvironmentType(operationalEnvironmentType);
     }
 
     @Test
@@ -88,7 +86,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setOperationalEnvironmentStatus(operationalEnvironmentStatus);
+        testSubject.setJsonOperationalEnvironmentStatus(operationalEnvironmentStatus);
     }
 
     @Test
@@ -108,7 +106,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setTenantContext(tenantContext);
+        testSubject.setJsonTenantContext(tenantContext);
     }
 
     @Test
@@ -128,7 +126,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setWorkloadContext(workloadContext);
+        testSubject.setJsonWorkloadContext(workloadContext);
     }
 
     @Test
@@ -148,7 +146,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setResourceVersion(resourceVersion);
+        testSubject.setJsonResourceVersion(resourceVersion);
     }
 
     @Test
@@ -168,7 +166,7 @@ public class OperationalEnvironmentTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setRelationshipList(relationshipList);
+        testSubject.setJsonRelationshipList(relationshipList);
     }
 
     @Test

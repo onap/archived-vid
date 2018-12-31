@@ -1,16 +1,14 @@
 package org.onap.vid.model.serviceInstantiation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.onap.vid.domain.mso.ModelInfo;
 import org.onap.vid.job.JobAdapter;
+import org.onap.vid.mso.model.ModelInfo;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ServiceInstantiation implements JobAdapter.AsyncJobRequest {
-
-    private final ModelInfo modelInfo;
+public class ServiceInstantiation extends BaseResource implements JobAdapter.AsyncJobRequest {
 
     private final String owningEntityId;
 
@@ -24,15 +22,7 @@ public class ServiceInstantiation implements JobAdapter.AsyncJobRequest {
 
     private final String productFamilyId;
 
-    private final String instanceName;
-
-    private final Boolean isUserProvidedNaming;
-
     private final String subscriptionServiceType;
-
-    private final String lcpCloudRegionId;
-
-    private final String tenantId;
 
     private final String tenantName;
 
@@ -42,13 +32,17 @@ public class ServiceInstantiation implements JobAdapter.AsyncJobRequest {
 
     private final Map<String, Vnf> vnfs;
 
-    private final List<Map<String,String>> instanceParams;
+    private final Map<String, Network> networks;
+
+    private final Map<String, InstanceGroup> vnfGroups;
 
     private final boolean isPause;
 
     private final int bulkSize;
 
-    private final boolean rollbackOnFailure;
+    private final String testApi;
+
+    private final boolean isALaCarte;
 
     public ServiceInstantiation(@JsonProperty("modelInfo") ModelInfo modelInfo,
                                 @JsonProperty("owningEntityId") String owningEntityId,
@@ -58,45 +52,43 @@ public class ServiceInstantiation implements JobAdapter.AsyncJobRequest {
                                 @JsonProperty("subscriberName") String subscriberName,
                                 @JsonProperty("productFamilyId") String productFamilyId,
                                 @JsonProperty("instanceName") String instanceName,
-                                @JsonProperty("isUserProvidedNaming") Boolean isUserProvidedNaming,
                                 @JsonProperty("subscriptionServiceType") String subscriptionServiceType,
                                 @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
+                                @JsonProperty("legacyRegion") String legacyRegion,
                                 @JsonProperty("tenantId") String tenantId,
                                 @JsonProperty("tenantName") String tenantName,
                                 @JsonProperty("aicZoneId") String aicZoneId,
                                 @JsonProperty("aicZoneName") String aicZoneName,
                                 @JsonProperty("vnfs") Map<String, Vnf> vnfs,
+                                @JsonProperty("networks") Map<String, Network> networks,
+                                @JsonProperty("vnfGroups") Map<String, InstanceGroup> vnfGroups,
                                 @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
                                 @JsonProperty("pause") boolean isPause,
                                 @JsonProperty("bulkSize") int bulkSize,
-                                @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure
+                                @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+                                @JsonProperty("isALaCarte") boolean isALaCarte,
+                                @JsonProperty("testApi") String testApi,
+                                @JsonProperty("instanceId") String instanceId,
+                                @JsonProperty("action") String action
                                ) {
-
-        this.modelInfo = modelInfo;
-        this.modelInfo.setModelType("service");
+        super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId);
         this.owningEntityId = owningEntityId;
         this.owningEntityName = owningEntityName;
         this.projectName = projectName;
         this.globalSubscriberId = globalSubscriberId;
         this.subscriberName = subscriberName;
         this.productFamilyId = productFamilyId;
-        this.instanceName = instanceName;
-        this.isUserProvidedNaming = isUserProvidedNaming;
         this.subscriptionServiceType = subscriptionServiceType;
-        this.lcpCloudRegionId = lcpCloudRegionId;
-        this.tenantId = tenantId;
         this.tenantName = tenantName;
         this.aicZoneId = aicZoneId;
         this.aicZoneName = aicZoneName;
         this.vnfs = vnfs;
-        this.instanceParams = instanceParams;
+        this.networks = networks;
+        this.vnfGroups = vnfGroups;
         this.isPause = isPause;
         this.bulkSize = bulkSize;
-        this.rollbackOnFailure = rollbackOnFailure;
-    }
-
-    public ModelInfo getModelInfo() {
-        return modelInfo;
+        this.isALaCarte = isALaCarte;
+        this.testApi = isALaCarte ? testApi : null;
     }
 
     public String getOwningEntityId() {
@@ -123,23 +115,8 @@ public class ServiceInstantiation implements JobAdapter.AsyncJobRequest {
         return productFamilyId;
     }
 
-    public String getInstanceName() {
-        return instanceName;
-    }
-
-    @JsonProperty("isUserProvidedNaming")
-    public Boolean isUserProvidedNaming() { return isUserProvidedNaming; }
-
     public String getSubscriptionServiceType() {
         return subscriptionServiceType;
-    }
-
-    public String getLcpCloudRegionId() {
-        return lcpCloudRegionId;
-    }
-
-    public String getTenantId() {
-        return tenantId;
     }
 
     public String getTenantName() {
@@ -155,11 +132,15 @@ public class ServiceInstantiation implements JobAdapter.AsyncJobRequest {
     }
 
     public Map<String, Vnf> getVnfs() {
-        return vnfs;
+        return vnfs == null ? Collections.emptyMap() : vnfs;
     }
 
-    public List<Map<String, String>> getInstanceParams() {
-        return instanceParams == null ? Collections.emptyList() : instanceParams;
+    public Map<String, Network> getNetworks() {
+        return networks == null ? Collections.emptyMap() : networks;
+    }
+
+    public Map<String, InstanceGroup> getVnfGroups() {
+        return vnfGroups == null ? Collections.emptyMap() : vnfGroups;
     }
 
     public boolean isPause() {
@@ -168,7 +149,18 @@ public class ServiceInstantiation implements JobAdapter.AsyncJobRequest {
 
     public int getBulkSize() { return bulkSize; }
 
-    public boolean isRollbackOnFailure() {
-        return rollbackOnFailure;
+    @Override
+    protected String getModelType() {
+        return "service";
     }
+
+    @JsonProperty("isALaCarte")
+    public boolean isALaCarte() {
+        return isALaCarte;
+    }
+
+    public String getTestApi() {
+        return this.testApi;
+    }
+
 }

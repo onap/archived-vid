@@ -1,5 +1,6 @@
 package org.onap.vid.mso;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public interface MsoResponseWrapperInterface {
@@ -9,7 +10,6 @@ public interface MsoResponseWrapperInterface {
     @JsonProperty("status")
     int getStatus();
 
-    @org.codehaus.jackson.annotate.JsonIgnore
-    @com.fasterxml.jackson.annotation.JsonIgnore
+    @JsonIgnore
     String getResponse();
 }

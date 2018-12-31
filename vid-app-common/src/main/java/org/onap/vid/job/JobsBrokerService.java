@@ -18,4 +18,6 @@ public interface JobsBrokerService {
 
     void delete(UUID jobId);
 
+    boolean mute(UUID jobId);
+
 }

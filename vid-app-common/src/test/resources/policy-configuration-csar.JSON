@@ -28,7 +28,8 @@
         "collector_node": "pprobeservice_proxy 5",
         "policy_name": "policy2",
         "equip_vendor": "Cisco",
-        "equip_model": "Nexus 3048-TP"
+        "equip_model": "Nexus 3048-TP",
+        "ecomp_generated_naming": "false"
       },
       "type": "Configuration",
       "modelCustomizationName": "Port Mirroring Configuration By Policy 1",
@@ -55,7 +56,8 @@
         "collector_node": "pprobeservice_proxy 4",
         "policy_name": "policy1",
         "equip_vendor": "Cisco",
-        "equip_model": "Nexus 3048-TP"
+        "equip_model": "Nexus 3048-TP",
+        "ecomp_generated_naming": "false"
       },
       "type": "Configuration",
       "modelCustomizationName": "Port Mirroring Configuration By Policy 0",
@@ -80,7 +82,9 @@
       "customizationUuid": "d7cfe338-eeda-4217-ba13-f24b0811fb17",
       "inputs": {},
       "commands": {},
-      "properties": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
       "type": "Service Proxy",
       "sourceModelUuid": "c3e6c9bd-b24d-458e-aa99-e0cadf70c5e5",
       "sourceModelInvariant": "dd8a805d-3946-4f11-9831-e26cd6aec9a3",
@@ -95,7 +99,9 @@
       "customizationUuid": "7a69f133-564c-4eb6-b93e-0a8281967efb",
       "inputs": {},
       "commands": {},
-      "properties": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
       "type": "Service Proxy",
       "sourceModelUuid": "c3e6c9bd-b24d-458e-aa99-e0cadf70c5e5",
       "sourceModelInvariant": "dd8a805d-3946-4f11-9831-e26cd6aec9a3",
@@ -110,7 +116,9 @@
       "customizationUuid": "9d81c21f-e29c-44f6-b5f6-caa974ee078a",
       "inputs": {},
       "commands": {},
-      "properties": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
       "type": "Service Proxy",
       "sourceModelUuid": "2a2ea15f-07c6-4b89-bfca-e8aba39a34d6",
       "sourceModelInvariant": "a7eac2b3-8444-40ee-92e3-b3359b32445c",
@@ -125,7 +133,9 @@
       "customizationUuid": "271efa3b-276e-4536-976a-cc9c9c014f1e",
       "inputs": {},
       "commands": {},
-      "properties": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
       "type": "Service Proxy",
       "sourceModelUuid": "8a84e59b-45fe-4851-8ff1-34225a0b32c3",
       "sourceModelInvariant": "83b458fd-5dd3-419b-a9e3-7335814a0911",
@@ -140,7 +150,9 @@
       "customizationUuid": "d64623ae-5935-4afd-803e-c86e94d8e740",
       "inputs": {},
       "commands": {},
-      "properties": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
       "type": "Service Proxy",
       "sourceModelUuid": "8a84e59b-45fe-4851-8ff1-34225a0b32c3",
       "sourceModelInvariant": "83b458fd-5dd3-419b-a9e3-7335814a0911",
@@ -155,7 +167,9 @@
       "customizationUuid": "060be63d-5f9c-4fd0-8ef7-830d5e8eca17",
       "inputs": {},
       "commands": {},
-      "properties": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
       "type": "Service Proxy",
       "sourceModelUuid": "2a2ea15f-07c6-4b89-bfca-e8aba39a34d6",
       "sourceModelInvariant": "a7eac2b3-8444-40ee-92e3-b3359b32445c",
@@ -164,5 +178,6 @@
   },
   "vfModules": {},
   "volumeGroups": {},
-  "pnfs": {}
+  "pnfs": {},
+  "vnfGroups": {}
 }

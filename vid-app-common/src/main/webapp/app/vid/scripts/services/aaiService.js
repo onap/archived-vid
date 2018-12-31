@@ -76,8 +76,8 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 }];
             }
             return {displayData: displayData};
-        })
-    }
+        });
+    };
 
     function getJoinedQueryString(queries) {
         return queries.filter(function (val) {return val;}).join("&");
@@ -347,27 +347,16 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             });
         },
 
-        getPortMirroringData : function (ids) {
+        getPortMirroringData: function (ids) {
             var defer = $q.defer();
-            if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_REGION_ID_FROM_REMOTE)){
-                var url = COMPONENT.AAI_GET_PORT_MIRRORING_CONFIGS_DATA +'?configurationIds=' +  ids.join(',');
-                $http.get(url).then(function(res){
-                    defer.resolve(res);
-                }).catch(function(err) {
-                    $log.error(err);
-                    defer.resolve({});
-                });
-            }else {
-                var staticConfigurationData = {};
-                angular.forEach(ids, function(id) {
-                    staticConfigurationData[id] = {
-                        "cloudRegionId": "mdt1"
-                    }
-                });
-                defer.resolve({
-                    "data": staticConfigurationData
-                });
-            }
+
+            var url = COMPONENT.AAI_GET_PORT_MIRRORING_CONFIGS_DATA + '?configurationIds=' + ids.join(',');
+            $http.get(url).then(function (res) {
+                defer.resolve(res);
+            }).catch(function (err) {
+                $log.error(err);
+                defer.resolve({});
+            });
 
             return defer.promise;
 
@@ -382,6 +371,29 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 $log.error(err);
                 defer.resolve({});
             });
+            return defer.promise;
+        },
+
+        getVlansByNetworksMapping : function (globalCustomerId, serviceType, serviceInstanceId, sdcModelUuid) {
+            var defer = $q.defer();
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS)) {
+                var url = COMPONENT.AAI_GET_PROVIDER_NETWORKS_ASSOCIATIONS + '?'
+                    + 'globalCustomerId=' + globalCustomerId
+                    + '&serviceType=' + serviceType
+                    + '&serviceInstanceId=' + serviceInstanceId
+                    + '&sdcModelUuid=' + sdcModelUuid
+                ;
+
+                $http.get(url).then(function(res){
+                    defer.resolve(res.data);
+                }).catch(function(err) {
+                    $log.error(err);
+                    defer.resolve({});
+                });
+
+            } else {
+                defer.resolve({});
+            }
             return defer.promise;
         },
 
@@ -434,8 +446,8 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
 
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
                     lcpCloudRegionTenants.push({
-                        "cloudOwner": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_OWNER],
                         "cloudRegionId": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID],
+                        "cloudOwner": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_OWNER],
                         "tenantName": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_NAME],
                         "tenantId": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_ID],
                         "isPermitted": aaiLcpCloudRegionTenants[i][COMPONENT.IS_PERMITTED]});
@@ -741,8 +753,25 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                         "headers: " + header +
                         "config: " + config);
                 });
+        },
+
+        getHomingData: function(vnfInstanceId, vfModuleId)  {
+            var url = COMPONENT.AAI_GET_HOMING_DATA.replace('@vnfInstanceId', vnfInstanceId)
+                .replace('@vfModuleId', vfModuleId);
+
+            var deferred = $q.defer();
+
+            $http.get(url)
+                .success(function (response) {
+                    deferred.resolve({data: response});
+                }).error(function (data, status, headers, config) {
+                deferred.reject({message: data, status: status});
+            });
+
+            return deferred.promise;
+
         }
-    }
+    };
 };
 
 appDS2.factory("AaiService", ["$http", "$log", "PropertyService",

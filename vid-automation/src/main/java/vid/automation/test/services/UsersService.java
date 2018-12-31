@@ -1,6 +1,5 @@
 package vid.automation.test.services;
 
-import com.att.automation.common.report_portal_integration.annotations.Step;
 import com.google.common.primitives.Ints;
 import org.apache.commons.lang3.StringUtils;
 import vid.automation.test.model.User;
@@ -38,7 +37,6 @@ public class UsersService {
         return usersObject.users;
     }
 
-    @Step("${method} with id: ${userId}")
     public User getUser(String userId) {
         User res = users.get(userId);
         System.out.println("getUser userId='" + userId + "' returned: " + res);

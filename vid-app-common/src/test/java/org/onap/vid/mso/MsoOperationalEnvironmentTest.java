@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.controllers.OperationalEnvironmentController;
-import org.onap.vid.controllers.OperationalEnvironmentController.OperationalEnvironmentManifest;
-import org.onap.vid.mso.MsoBusinessLogic;
-import org.onap.vid.mso.MsoBusinessLogicImpl;
+import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.controller.OperationalEnvironmentController.OperationalEnvironmentManifest;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Test
 public class MsoOperationalEnvironmentTest {
 
     private MsoBusinessLogic msoBusinessLogic = new MsoBusinessLogicImpl(null,null);
+    private static final Logger logger = LogManager.getLogger(MsoOperationalEnvironmentTest.class);
 
     @Test(dataProvider = "getOperationalEnvironmentActivationPermutations")
     public void testJsonResultOfOperationalEnvironmentActivationRequestDetails(HashMap<String, String> permutation) throws IOException {
@@ -170,8 +170,8 @@ public class MsoOperationalEnvironmentTest {
         try {
             JSONAssert.assertEquals("built mso request is not ok", expected, requestDetailsAsString, JSONCompareMode.STRICT);
         } catch (AssertionError | Exception e) {
-            System.out.println("requestDetailsAsString: \n" + requestDetailsAsString);
-            System.out.println("expected: \n" + expected);
+            logger.info("requestDetailsAsString: \n" + requestDetailsAsString);
+            logger.info("expected: \n" + expected);
             throw e;
         }
     }
