@@ -1,9 +1,8 @@
 package org.onap.vid.aai.model;
 
 
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,30 +12,27 @@ import java.util.Map;
  */
 public class AaiRelationResponse {
 
-    @JsonProperty("resource-version")
     private String resourceVersion;
-    @JsonProperty("relationship-list")
     private RelationshipList relationshipList;
+
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
 
-    @JsonProperty("resource-version")
     public String getResourceVersion() {
         return resourceVersion;
     }
 
-    @JsonProperty("resource-version")
+    @JsonAlias("resource-version")
     public void setResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
 
-    @JsonProperty("relationship-list")
     public RelationshipList getRelationshipList() {
         return relationshipList;
     }
 
-    @JsonProperty("relationship-list")
+    @JsonAlias("relationship-list")
     public void setRelationshipList(RelationshipList relationshipList) {
         this.relationshipList = relationshipList;
     }

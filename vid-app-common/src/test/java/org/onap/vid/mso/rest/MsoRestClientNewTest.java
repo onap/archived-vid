@@ -28,12 +28,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.client.SyncRestClient;
-import org.onap.vid.controllers.MsoController;
-import org.onap.vid.mso.MsoInterface;
-import org.onap.vid.mso.MsoProperties;
-import org.onap.vid.mso.MsoResponseWrapper;
-import org.onap.vid.mso.MsoResponseWrapperInterface;
-import org.onap.vid.mso.RestObject;
+import org.onap.vid.controller.MsoController;
+import org.onap.vid.mso.*;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.io.IOException;
@@ -44,8 +40,8 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.UUID;
 
-import static org.onap.vid.controllers.MsoController.SVC_INSTANCE_ID;
-import static org.onap.vid.controllers.MsoController.VNF_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
 
 @ContextConfiguration(classes = {SystemProperties.class})
 public class MsoRestClientNewTest {
@@ -304,7 +300,7 @@ public class MsoRestClientNewTest {
         // default test
         try {
             testSubject = createTestSubject();
-            result = testSubject.getOrchestrationRequestsForDashboard(t, sourceId, endpoint, restObject);
+            result = testSubject.getOrchestrationRequest(t, sourceId, endpoint, restObject, true);
         } catch (Exception e) {
         }
     }

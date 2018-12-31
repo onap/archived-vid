@@ -25,8 +25,8 @@ appDS2
 	.constant("COMPONENT", (function() {
     return {
     A_LA_CARTE : "a la carte",
+    CLOUD_REGION_ID : "cloudRegionID",
 	CLOUD_OWNER : "cloudOwner",
-	CLOUD_REGION_ID : "cloudRegionID",
     COMPONENT_STATUS : "ComponentStatus",
     CREATE_COMPONENT : "createComponent",
 	IFRAME_DIALOG : "iframeDialog",
@@ -47,6 +47,7 @@ appDS2
 	MODEL_VERSION_1 : "1",
 	MSO_CREATE_REQ : "createInstance",
 	MSO_DELETE_REQ : "deleteInstance",
+    MSO_CREATE_CONFIGURATION_REQ : 'createConfiguration',
 	MSO_DELETE_CONFIGURATION_REQ : 'deleteConfiguration',
 	MSO_CHANGE_CONFIG_STATUS_REQ: "changeConfigurationStatus",
 	MSO_CHANGE_PORT_STATUS_REQ: "changePortStatus",
@@ -55,6 +56,8 @@ appDS2
 	MSO_ACTIVATE_ENVIRONMENT: "activateEnvironmentInstance",
 	MSO_ACTIVATE_SERVICE_REQ: "activateServiceInstance",
 	MSO_DEACTIVATE_SERVICE_REQ: "deactivateServiceInstance",
+    MSO_ACTIVATE_FABRIC_CONFIGURATION_REQ: "activateFabricConfigurationInstance",
+    MSO_DEACTIVATE_AND_CLOUD_DELETE: "deactivateAndCloudDelete",
     NAME : "name",
 	NETWORK : "network",
 	CONFIGURATION : "configuration",
@@ -126,8 +129,8 @@ appDS2
     AAI_GET_VERSION_BY_INVARIANT_ID:"aai_get_version_by_invariant_id/",
     AAI_GET_PORT_MIRRORING_CONFIGS_DATA : "aai_getPortMirroringConfigsData",
     AAI_GET_PORT_MIRRORING_SOURCE_PORTS : "aai_getPortMirroringSourcePorts",
+    AAI_GET_PROVIDER_NETWORKS_ASSOCIATIONS : "aai/standardQuery/vlansByNetworks",
     SEARCH_SERVICE_INSTANCES:"search_service_instances",
-    AAI_GET_VNF_DATA_PATH: "aai_get_vnf_data/",
     AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE: "get_vnf_data_by_globalid_and_service_type/",
     AAI_GET_SERVICES_BY_OWNING_ENTITY_ID: 'aai_get_services_by_owning_entity_id',
     AAI_SUB_VIEWEDIT_PATH : "aai_sub_viewedit",
@@ -138,6 +141,7 @@ appDS2
 	AAI_GET_PNF_INSTANCES_LIST: "aai_get_pnf_instances",
 	AAI_GET_BY_URI: "aai_get_by_uri/",
 	AAI_GET_CONFIGURATION: "aai_get_configuration/",
+	AAI_GET_HOMING_DATA: "aai_get_homing_by_vfmodule/@vnfInstanceId/@vfModuleId",
     AAI_GET_TEST_ENVIRONMENTS: "get_operational_environments?operationalEnvironmentType=",
     GET_CATEGORY_PARAMETERS : "category_parameter",
 	PARAMETER_STANDARDIZATION_FAMILY: "PARAMETER_STANDARDIZATION",
@@ -146,7 +150,6 @@ appDS2
 	CREATE_INSTANCE_PATH : "/models/services/createInstance", AAI_GET_PNF_BY_NAME : "aai_get_pnfs/pnf/",
 	//1710 scheduler contants
 	POST_CREATE_NEW_VNF_CHANGE:"post_create_new_vnf_change",
-	GET_POLICY:"get_policy",
 	WORKFLOW: "workflow",
 	GET_TIME_SLOTS:"get_time_slots",
 	SUBMIT_VNF_CHANGE_TIMESLOTS:"submit_vnf_change_timeslots",
@@ -166,6 +169,8 @@ appDS2
 	MSO_DELETE_SVC_INSTANCE_PATH : "mso_delete_svc_instance/",
     MSO_ACTIVATE_INSTANCE: "mso/mso_activate_service_instance/@serviceInstanceId",
     MSO_DEACTIVATE_INSTANCE: "mso/mso_deactivate_service_instance/@serviceInstanceId",
+    MSO_ACTIVATE_FABRIC_CONFIGURATION_INSTANCE: "mso/mso_activate_fabric_configuration/@serviceInstanceId",
+	MSO_DEACTIVATE_AND_CLOUD_DELETE_INSTANCE: "mso/mso_vfmodule_soft_delete/@serviceInstanceId/@vnfInstanceId/@vfModuleInstanceId",
     MSO_CREATE_REALATIONSHIP : "mso_add_relationship",
 	MSO_REMOVE_RELATIONSHIP: "mso_remove_relationship",
 	SELECTED_SERVICE_SUB_PATH : "#/instances/subdetails?",
@@ -236,14 +241,18 @@ appDS2
 
 	FEATURE_FLAGS:{
     	FLAG_ASYNC_INSTANTIATION : "FLAG_ASYNC_INSTANTIATION",
-		FLAG_VLAN_TAGGING_VIEW_EDIT: "FLAG_VLAN_TAGGING_VIEW_EDIT",
 		FLAG_NETWORK_TO_ASYNC_INSTANTIATION : "FLAG_NETWORK_TO_ASYNC_INSTANTIATION",
-        FLAG_REGION_ID_FROM_REMOTE : "FLAG_REGION_ID_FROM_REMOTE",
         FLAG_ADD_MSO_TESTAPI_FIELD : "FLAG_ADD_MSO_TESTAPI_FIELD",
         FLAG_COLLECTION_RESOURCE_SUPPORT : "FLAG_COLLECTION_RESOURCE_SUPPORT",
         FLAG_SHOW_ASSIGNMENTS: "FLAG_SHOW_ASSIGNMENTS",
         FLAG_SHOW_VERIFY_SERVICE: "FLAG_SHOW_VERIFY_SERVICE",
-        FLAG_PNP_INSTANTIATION: "FLAG_PNP_INSTANTIATION"
+        FLAG_PNP_INSTANTIATION: "FLAG_PNP_INSTANTIATION",
+        FLAG_DUPLICATE_VNF : "FLAG_DUPLICATE_VNF",
+        FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS: "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS",
+        FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS: "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS",
+        FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST: "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST",
+        FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY: "FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY",
+        FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE: "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE"
     }
 
     };

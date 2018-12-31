@@ -22,6 +22,7 @@ package org.onap.vid.mso;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +42,6 @@ import org.togglz.core.manager.FeatureManager;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -206,7 +206,7 @@ public class MsoBusinessLogicImplTest {
         String vnfEndpoint = String.format(endpointTemplate, serviceInstanceId, vnfInstanceId);
         org.onap.vid.changeManagement.RequestDetails requestDetails = readRequest(
             "scaleOutVfModulePayload.json");
-        org.onap.vid.changeManagement.RequestDetailsWrapper expectedRequest = readExpectedRequest(
+        org.onap.vid.changeManagement.RequestDetailsWrapper<org.onap.vid.changeManagement.RequestDetails> expectedRequest = readExpectedRequest(
             "scaleOutVfModulePayloadToMso.json");
         MsoResponseWrapper expectedMsoResponseWrapper = createOkResponse();
         given(
@@ -229,7 +229,7 @@ public class MsoBusinessLogicImplTest {
         return objectMapper.readValue(url, org.onap.vid.changeManagement.RequestDetails.class);
     }
 
-    private org.onap.vid.changeManagement.RequestDetailsWrapper readExpectedRequest(String requestJsonFilename)
+    private org.onap.vid.changeManagement.RequestDetailsWrapper<org.onap.vid.changeManagement.RequestDetails> readExpectedRequest(String requestJsonFilename)
         throws IOException {
         Path path = Paths.get("payload_jsons", requestJsonFilename);
         URL url = this.getClass().getClassLoader().getResource(path.toString());
@@ -252,15 +252,15 @@ public class MsoBusinessLogicImplTest {
     }
 
     @Test
-    public void shouldFilterOutOrchestrationRequestsNotAllowedInDashboard() throws IOException {
+    public void shouldFilterOutOrchestrationRequestsNotAllowedInDashboard() throws Exception {
         //given
         String vnfModelTypeOrchestrationRequests = getFileContentAsString("mso_model_info_sample_response.json");
         String scaleOutActionOrchestrationRequests = getFileContentAsString("mso_action_scaleout_sample_response.json");
 
         MsoResponseWrapper msoResponseWrapperMock = mock(MsoResponseWrapper.class);
         given(msoInterface
-            .getOrchestrationRequestsForDashboard(any(String.class), any(String.class), any(String.class),
-                any(RestObject.class)))
+            .getOrchestrationRequest(any(String.class), any(String.class), any(String.class),
+                any(RestObject.class), anyBoolean()))
             .willReturn(msoResponseWrapperMock);
         given(msoResponseWrapperMock.getEntity())
             .willReturn(vnfModelTypeOrchestrationRequests, scaleOutActionOrchestrationRequests);
@@ -276,14 +276,14 @@ public class MsoBusinessLogicImplTest {
                 .map(el -> el.getRequestType().toUpperCase())
                 .collect(Collectors.toList()));
         assertThat(filteredOrchestrationReqs)
-            .extracting(org.onap.vid.domain.mso.Request::getRequestScope)
+            .extracting(Request::getRequestScope)
             .containsOnly("vnf", "vfModule");
     }
 
-    private String getFileContentAsString(String resourceName) throws IOException {
-        URL url = this.getClass().getClassLoader().getResource(".");
-        Path path = Paths.get(url.getPath(), "payload_jsons", resourceName);
-        return new String(Files.readAllBytes(path));
+    private String getFileContentAsString(String resourceName) throws Exception {
+        Path path = Paths.get("payload_jsons", resourceName);
+        URL url = this.getClass().getClassLoader().getResource(path.toString());
+        return IOUtils.toString(url.toURI(), "UTF-8");
     }
 
     private static class MsoRequestWrapperMatcher implements

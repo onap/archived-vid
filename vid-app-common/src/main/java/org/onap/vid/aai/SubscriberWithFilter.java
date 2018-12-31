@@ -1,6 +1,6 @@
 package org.onap.vid.aai;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.onap.vid.model.Subscriber;
 
 /**

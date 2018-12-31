@@ -1,0 +1,222 @@
+{
+  "service": {
+    "uuid": "1837481c-fa7d-4362-8ce1-d05fafc87bd1",
+    "invariantUuid": "93518289-3049-450f-a22d-86108c250265",
+    "name": "jenny vTSBC vlan SVC",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L1-3",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "",
+    "description": "vlan tagging service for vTSBC",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {}
+  },
+  "vnfs": {
+    "jenny vTSBC vlan VNF 0": {
+      "uuid": "28178f85-5cb1-4b2f-9424-987c2c113c75",
+      "invariantUuid": "cd560968-2ae7-4f49-8c4b-bb4ac1a4ca11",
+      "description": "vTSBC VNF used for vlan tagging and avpn bonding ",
+      "name": "jenny vTSBC vlan VNF",
+      "version": "3.0",
+      "customizationUuid": "171ab56f-6b53-45a0-a294-3cd326a04a66",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "nf_naming_code": "tsbc",
+        "nf_function": "ACCESS-IP-FLEX-SBC",
+        "untrusted_avpn_vfc_instance_group_function": "SSCMSC VNFC Instance Group",
+        "rtp_msc_a_subint_untrusted_mis_port_0_net_ids": "[81]",
+        "availability_zone_max_count": "1",
+        "ssc_a_subint_untrusted_mis_port_0_net_ids": "[81]",
+        "ecomp_generated_naming": "true",
+        "nf_type": "SESSION-BORDER-CONTROLLER",
+        "perimeta_ssh_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXvSadEWp+nsz3gEAAAAAAAAAAbggQ3t06mqFIauHfUYMiKZ3EUX3jDFf/uGQoNsIZU6SNE/gl3tY4fFvO8Yzj8OY/vstHHvEadbY5aXNE6kd39ik20uRNbeZLT+pRllBwVKBSVnFqG3kBDvNWmBIenlPZzu3Ay0LYT/aDq6fZaz8Mqy8hzhpAAAAAAAAAAEmS/ESYY4UMs/aF2fVGmCLqudSjLpSsyD8lXag2dmeiT7cTdwRkgtDNTULXCPVucolVZwZF9BxXPNK++B+fL/ZY4MrXHXgZYGEElrMCFYkQFb3jQv3XQtxZ6gVByrzgGc9eiU7tkCgY2cVfb22iIs9n Generated-by-Nova",
+        "rtp_msc_b_subint_untrusted_mis_port_0_subintcount": "1.0",
+        "untrusted_avpn_network_collection_function": "vTSBC Customer Landing Network Collection",
+        "rtp_msc_b_subint_untrusted_mis_port_0_net_ids": "[81]",
+        "rtp_msc_a_subint_untrusted_mis_port_0_subintcount": "1.0",
+        "nf_role": "vACC-SBC",
+        "ssc_a_subint_untrusted_mis_port_0_subintcount": "1.0",
+        "ssc_b_subint_untrusted_mis_port_0_subintcount": "1.0",
+        "ssc_b_subint_untrusted_mis_port_0_net_ids": "[81]"
+      },
+      "type": "VF",
+      "modelCustomizationName": "jenny vTSBC vlan VNF 0",
+      "vfModules": {
+        "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..module_2_perimeta_rtp_msc..module-1": {
+          "uuid": "79eaa54c-c712-40a6-89b9-03d336291905",
+          "invariantUuid": "eff0e0fd-67c5-4891-9382-d6959d761442",
+          "customizationUuid": "505c463c-b4a1-4f4a-9ea8-b50fd521db7e",
+          "description": null,
+          "name": "JennyVtsbcVlanVnf..module_2_perimeta_rtp_msc..module-1",
+          "version": "1",
+          "modelCustomizationName": "JennyVtsbcVlanVnf..module_2_perimeta_rtp_msc..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "module_2_perimeta_rtp_msc",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..module_1_perimeta_ssc_b..module-2": {
+          "uuid": "c14e5ad9-a838-4a82-8549-a1d38df20199",
+          "invariantUuid": "1c0e7c32-897c-454a-bb5d-42cc5e8f135c",
+          "customizationUuid": "25375811-6009-4f9e-b6fb-319eee74ddf1",
+          "description": null,
+          "name": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_b..module-2",
+          "version": "1",
+          "modelCustomizationName": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_b..module-2",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "module_1_perimeta_ssc_b",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..module_1_perimeta_ssc_a..module-3": {
+          "uuid": "81a6b0f9-e874-4a30-bd53-ced6745e5ca8",
+          "invariantUuid": "5a7f8d9c-e102-4556-9484-3a5be8020977",
+          "customizationUuid": "cf95f2d2-58db-4d56-b81e-08e7eadff525",
+          "description": null,
+          "name": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_a..module-3",
+          "version": "1",
+          "modelCustomizationName": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_a..module-3",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "module_1_perimeta_ssc_a",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..base_perimeta_deployment_create..module-0": {
+          "uuid": "24308202-1465-4bd8-99bd-e33895cbf18f",
+          "invariantUuid": "a141bf13-d817-4258-98d6-9f9d51fbe1c6",
+          "customizationUuid": "296f6b82-7a04-4faa-9835-e00088162533",
+          "description": null,
+          "name": "JennyVtsbcVlanVnf..base_perimeta_deployment_create..module-0",
+          "version": "1",
+          "modelCustomizationName": "JennyVtsbcVlanVnf..base_perimeta_deployment_create..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_perimeta_deployment_create",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        }
+      },
+      "volumeGroups": {},
+      "vfcInstanceGroups": {
+        "untrusted_avpn_group": {
+          "uuid": "1f45d67c-92af-45aa-b497-287e727177fb",
+          "invariantUuid": "e74d44d7-5bbe-4680-aa7f-ea9ace7ea79e",
+          "name": "untrusted_avpn_group",
+          "version": "1",
+          "vfcInstanceGroupProperties": {
+            "vfcParentPortRole": "unused",
+            "networkCollectionFunction": "vTSBC Customer Landing Network Collection",
+            "vfcInstanceGroupFunction": "SSCMSC VNFC Instance Group",
+            "subinterfaceRole": "untrusted_avpn"
+          }
+        }
+      }
+    }
+  },
+  "networks": {},
+  "collectionResource": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..module_2_perimeta_rtp_msc..module-1": {
+      "uuid": "79eaa54c-c712-40a6-89b9-03d336291905",
+      "invariantUuid": "eff0e0fd-67c5-4891-9382-d6959d761442",
+      "customizationUuid": "505c463c-b4a1-4f4a-9ea8-b50fd521db7e",
+      "description": null,
+      "name": "JennyVtsbcVlanVnf..module_2_perimeta_rtp_msc..module-1",
+      "version": "1",
+      "modelCustomizationName": "JennyVtsbcVlanVnf..module_2_perimeta_rtp_msc..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "module_2_perimeta_rtp_msc",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..module_1_perimeta_ssc_a..module-3": {
+      "uuid": "81a6b0f9-e874-4a30-bd53-ced6745e5ca8",
+      "invariantUuid": "5a7f8d9c-e102-4556-9484-3a5be8020977",
+      "customizationUuid": "cf95f2d2-58db-4d56-b81e-08e7eadff525",
+      "description": null,
+      "name": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_a..module-3",
+      "version": "1",
+      "modelCustomizationName": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_a..module-3",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "module_1_perimeta_ssc_a",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..base_perimeta_deployment_create..module-0": {
+      "uuid": "24308202-1465-4bd8-99bd-e33895cbf18f",
+      "invariantUuid": "a141bf13-d817-4258-98d6-9f9d51fbe1c6",
+      "customizationUuid": "296f6b82-7a04-4faa-9835-e00088162533",
+      "description": null,
+      "name": "JennyVtsbcVlanVnf..base_perimeta_deployment_create..module-0",
+      "version": "1",
+      "modelCustomizationName": "JennyVtsbcVlanVnf..base_perimeta_deployment_create..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_perimeta_deployment_create",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "jennyvtsbcvlanvnf0..JennyVtsbcVlanVnf..module_1_perimeta_ssc_b..module-2": {
+      "uuid": "c14e5ad9-a838-4a82-8549-a1d38df20199",
+      "invariantUuid": "1c0e7c32-897c-454a-bb5d-42cc5e8f135c",
+      "customizationUuid": "25375811-6009-4f9e-b6fb-319eee74ddf1",
+      "description": null,
+      "name": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_b..module-2",
+      "version": "1",
+      "modelCustomizationName": "JennyVtsbcVlanVnf..module_1_perimeta_ssc_b..module-2",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "module_1_perimeta_ssc_b",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    }
+  },
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {}
+}

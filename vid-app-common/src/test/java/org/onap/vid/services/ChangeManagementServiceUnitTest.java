@@ -29,8 +29,8 @@ import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.client.SyncRestClient;
-import org.onap.vid.controllers.MsoConfig;
-import org.onap.vid.controllers.WebConfig;
+import org.onap.vid.controller.MsoConfig;
+import org.onap.vid.controller.WebConfig;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoInterface;
@@ -116,15 +116,14 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
     @Configuration
     public static class TestMsoConfig extends MsoConfig {
 
-        @Override
         public MsoRestClientNew getMsoClient() {
             MsoRestClientNew spyClient = spy(new MsoRestClientNew(new SyncRestClient(), ""));
             return spyClient;
         }
 
         @Bean
-        public ChangeManagementService getChangeManagementService(DataAccessService dataAccessService, MsoBusinessLogic msoInterface, SchedulerRestInterfaceIfc schedulerRestInterface) {
-            return new ChangeManagementServiceImpl(dataAccessService, msoInterface, schedulerRestInterface);
+        public ChangeManagementService getChangeManagementService(DataAccessService dataAccessService, MsoBusinessLogic msoInterface, SchedulerRestInterfaceIfc schedulerRestInterface, CloudOwnerService cloudOwnerService) {
+            return new ChangeManagementServiceImpl(dataAccessService, msoInterface, schedulerRestInterface, cloudOwnerService);
         }
     }
 }

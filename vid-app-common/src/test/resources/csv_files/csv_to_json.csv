@@ -4,7 +4,7 @@ payload,request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm001dbg001
 payload,request-parameters,[vm],[vnfc],vnfc-function-code,dbg
 payload,request-parameters,[vm],[vnfc],vnfc-type,DBE-VM #1
 payload,request-parameters,[vm],[vnfc],group-notation,ibcx0001vm001dbg001pair
-payload,request-parameters,[vm],[vnfc],ipaddress-v4-oam-vip,135.21.166.39
+payload,request-parameters,[vm],[vnfc],ipaddress-v4-oam-vip,10.2.3.4
 payload,request-parameters,[vm],,vm-name,ibcx0001vm002
 payload,request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm002dbg001
 payload,request-parameters,[vm],[vnfc],vnfc-function-code,dbg

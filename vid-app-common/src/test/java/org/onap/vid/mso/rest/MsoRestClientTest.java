@@ -23,21 +23,19 @@ package org.onap.vid.mso.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RequestDetails;
 import org.onap.vid.client.SyncRestClient;
-import org.onap.vid.domain.mso.CloudConfiguration;
-import org.onap.vid.domain.mso.ModelInfo;
-import org.onap.vid.domain.mso.RequestInfo;
-import org.onap.vid.domain.mso.RequestParameters;
+import org.onap.vid.controller.LocalWebConfig;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
-import org.onap.vid.mso.rest.MsoRestClientNew;
-import org.onap.vid.controllers.LocalWebConfig;
-import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.RequestInfo;
+import org.onap.vid.mso.model.RequestParameters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.Test;
-import org.togglz.core.manager.FeatureManager;
 
 
 @ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})

@@ -2,12 +2,7 @@ package org.onap.vid.mso.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.onap.vid.domain.mso.CloudConfiguration;
-import org.onap.vid.domain.mso.ModelInfo;
-import org.onap.vid.domain.mso.SubscriberInfo;
-import org.onap.vid.model.serviceInstantiation.VfModule;
+import org.onap.vid.mso.rest.SubscriberInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -62,7 +57,7 @@ public class ServiceInstantiationRequestDetails {
     public static class RequestInfo {
 
         @JsonInclude(NON_NULL) public final String instanceName;
-        public final String productFamilyId;
+        @JsonInclude(NON_NULL) public final String productFamilyId;
         public final String source;
         public final boolean suppressRollback;
         public final String requestorId;
@@ -86,33 +81,68 @@ public class ServiceInstantiationRequestDetails {
     }
 
     public static class RequestParameters {
-
+        @JsonInclude(NON_NULL) public final String testApi;
         public final String subscriptionServiceType;
         public final boolean aLaCarte;
-        public final List<ServiceInstantiationService> userParams;
+        public final List<? extends UserParamTypes> userParams;
 
-        public RequestParameters(String subscriptionServiceType, boolean aLaCarte, List<ServiceInstantiationService> userParams) {
+        public RequestParameters(String subscriptionServiceType, boolean aLaCarte, List<? extends UserParamTypes> userParams) {
+            this(subscriptionServiceType, aLaCarte, userParams, null);
+        }
+
+        public RequestParameters(String subscriptionServiceType, boolean aLaCarte, List<? extends UserParamTypes> userParams, String testApi) {
             this.subscriptionServiceType = subscriptionServiceType;
             this.aLaCarte = aLaCarte;
             this.userParams = userParams;
+            this.testApi = testApi;
         }
     }
 
-    @JsonTypeName("service")
-    @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
-    public static class ServiceInstantiationService{
-        public ModelInfo modelInfo = new ModelInfo();
-        @JsonInclude(NON_NULL) public String instanceName;
-        public List<Map<String,String>> instanceParams;
-        public ServiceInstantiationVnfList resources;
+    public static class UserParamNameAndValue implements UserParamTypes {
+        private final String name;
+        private final String value;
 
-        public ServiceInstantiationService (ModelInfo modelInfo, String instanceName, List<Map<String,String>> instanceParams, ServiceInstantiationVnfList vnfs){
-            this.modelInfo.setModelType(modelInfo.getModelType());
-            this.modelInfo.setModelName(modelInfo.getModelName());
-            this.modelInfo.setModelVersionId(modelInfo.getModelVersionId());
-            this.instanceName = instanceName;
-            this.instanceParams = instanceParams;
-            this.resources = vnfs;
+        public UserParamNameAndValue(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    public static class ServiceInstantiationService implements UserParamTypes {
+        private final ServiceInstantiationServiceInner serviceInstantiationServiceInner;
+
+        public ServiceInstantiationService(ModelInfo modelInfo, String instanceName, List<Map<String, String>> instanceParams, ServiceInstantiationVnfList vnfs) {
+            serviceInstantiationServiceInner = new ServiceInstantiationServiceInner(modelInfo, instanceName, instanceParams, vnfs);
+        }
+
+        @JsonProperty("service")
+        public ServiceInstantiationServiceInner getServiceInstantiationServiceInner() {
+            return serviceInstantiationServiceInner;
+        }
+
+        private static class ServiceInstantiationServiceInner implements UserParamTypes {
+            public ModelInfo modelInfo = new ModelInfo();
+            @JsonInclude(NON_NULL)
+            public String instanceName;
+            public List<Map<String, String>> instanceParams;
+            public ServiceInstantiationVnfList resources;
+
+            public ServiceInstantiationServiceInner(ModelInfo modelInfo, String instanceName, List<Map<String, String>> instanceParams, ServiceInstantiationVnfList vnfs) {
+                this.modelInfo.setModelType(modelInfo.getModelType());
+                this.modelInfo.setModelName(modelInfo.getModelName());
+                this.modelInfo.setModelVersionId(modelInfo.getModelVersionId());
+                this.instanceName = instanceName;
+                this.instanceParams = instanceParams;
+                this.resources = vnfs;
+            }
         }
     }
 
@@ -131,10 +161,10 @@ public class ServiceInstantiationRequestDetails {
         public final LineOfBusiness lineOfBusiness;
         public final String productFamilyId;
         public final List<Map<String, String>>  instanceParams;
-        @JsonInclude(NON_EMPTY) public final List<VfModule> vfModules;
+        @JsonInclude(NON_EMPTY) public final List<VfModuleMacro> vfModules;
         @JsonInclude(NON_NULL) public final String instanceName;
 
-        public ServiceInstantiationVnf(ModelInfo modelInfo, CloudConfiguration cloudConfiguration, String platform, String lineOfBusiness, String productFamilyId, List<Map<String, String>>  instanceParams, List<VfModule> vfModules, String instanceName) {
+        public ServiceInstantiationVnf(ModelInfo modelInfo, CloudConfiguration cloudConfiguration, String platform, String lineOfBusiness, String productFamilyId, List<Map<String, String>>  instanceParams, List<VfModuleMacro> vfModules, String instanceName) {
             this.modelInfo = modelInfo;
             this.cloudConfiguration = cloudConfiguration;
             this.platform = new Platform(platform);

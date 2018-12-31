@@ -1,31 +1,22 @@
 package org.onap.vid.asdc.local;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.asdc.beans.tosca.ToscaCsar;
-import org.onap.vid.asdc.beans.tosca.ToscaMeta;
-import org.onap.vid.asdc.beans.tosca.ToscaModel;
 import org.onap.vid.exceptions.GenericUncheckedException;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Map;
 import java.util.UUID;
-import java.util.zip.ZipFile;
 
 /**
  * The Class LocalAsdcClient.
@@ -117,7 +108,7 @@ public class LocalAsdcClient implements AsdcClient {
     /* (non-Javadoc)
      * @see org.onap.vid.asdc.AsdcClient#getServiceToscaModel(java.util.UUID)
      */
-    public Path getServiceToscaModel(UUID serviceUuid) throws AsdcCatalogException {
+    public Path getServiceToscaModel(UUID serviceUuid) {
 
         String toscaModelURL = null;
 
@@ -142,49 +133,6 @@ public class LocalAsdcClient implements AsdcClient {
             return Paths.get(URLDecoder.decode(file.getPath(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new GenericUncheckedException(e);
-        }
-    }
-
-    /**
-     * Gets the tosca model.
-     *
-     * @param csarInputStream the csar input stream
-     * @return the tosca model
-     * @throws AsdcCatalogException the asdc catalog exception
-     */
-    private ToscaCsar getToscaModel(InputStream csarInputStream) throws AsdcCatalogException {
-        final Path csarFile;
-
-        try {
-            csarFile = Files.createTempFile("csar", ".zip");
-            Files.copy(csarInputStream, csarFile, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new AsdcCatalogException("Caught IOException while creating CSAR", e);
-        }
-
-        try (final ZipFile csar = new ZipFile(csarFile.toFile())) {
-
-            final InputStream toscaMetaStream = csar.getInputStream(csar.getEntry("TOSCA-Metadata/TOSCA.meta"));
-            final ToscaMeta toscaMeta = new ToscaMeta.Builder(toscaMetaStream).build();
-            final String entryDefinitions = toscaMeta.get("Entry-Definitions");
-            final InputStream toscaParentEntryYamlStream = csar.getInputStream(csar.getEntry(entryDefinitions));
-
-            final Yaml yaml = new Yaml();
-            final ToscaModel parentModel = yaml.loadAs(toscaParentEntryYamlStream, ToscaModel.class);
-
-            final ToscaCsar.Builder csarBuilder = new ToscaCsar.Builder(parentModel);
-
-            for (Map<String, Map<String, String>> imports : parentModel.getImports()) {
-                for (Map.Entry<String, Map<String, String>> entry : imports.entrySet()) {
-                    final InputStream toscaChildEntryYamlStream = csar.getInputStream(csar.getEntry("Definitions/" + entry.getValue().get("file")));
-                    final ToscaModel childModel = yaml.loadAs(toscaChildEntryYamlStream, ToscaModel.class);
-                    csarBuilder.addVnf(childModel);
-                }
-            }
-
-            return csarBuilder.build();
-        } catch (IOException e) {
-            throw new AsdcCatalogException("Caught IOException while processing CSAR", e);
         }
     }
 

@@ -1,7 +1,7 @@
 package org.onap.vid.aai.model;
 
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
@@ -10,17 +10,15 @@ import java.util.List;
  */
 public class OwningEntityResponse {
 
-    @JsonProperty("owning-entity")
     private List<OwningEntity> owningEntity;
 
 
-    @JsonProperty("owning-entity")
     public List<OwningEntity> getOwningEntity() {
         return owningEntity;
     }
 
     @JsonProperty("owning-entity")
-    public void setOwningEntity(List<OwningEntity> owningEntity) {
+    public void setJsonOwningEntity(List<OwningEntity> owningEntity) {
         this.owningEntity = owningEntity;
     }
 

@@ -1,0 +1,11 @@
+{
+  "request": {
+    "requestId": "d8bbd676-4067-431f-9a5d-9843f5c199cf",
+    "requestStatus": {
+      "requestState": "COMPLETE",
+      "statusMessage": "Vnf has been created successfully.",
+      "percentProgress": 100,
+      "finishTime": "Mon, 11 Jun 2018 12:38:56 GMT"
+    }
+  }
+}

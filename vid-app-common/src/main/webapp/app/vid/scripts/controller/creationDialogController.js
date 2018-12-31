@@ -31,7 +31,7 @@ var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $h
     var componentId = undefined;
 
     $scope.shouldShowOldPopup = function () {
-        return DataService.getALaCarte() || DataService.getShouldExcludeMacroFromAsyncInstatiationFlow()
+        return !DataService.getShouldIncludeInAsyncInstantiationFlow();
     };
 
     function receiveMessage(event) {

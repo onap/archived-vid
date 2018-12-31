@@ -25,9 +25,6 @@ import com.google.common.base.MoreObjects;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static org.onap.vid.utils.Logging.getMethodCallerName;
 
@@ -38,9 +35,7 @@ import static org.onap.vid.utils.Logging.getMethodCallerName;
  */
 public class RestObject<T> {
 
-    final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-
-    final static ObjectMapper objectMapper = new ObjectMapper();
+    static final ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
 	 * Generic version of the RestObject class.
@@ -58,6 +53,12 @@ public class RestObject<T> {
     public RestObject() {
     }
 
+    public void copyFrom(RestObject<T> src) {
+        set(src.get());
+        setRaw(src.getRaw());
+        setStatusCode(src.getStatusCode());
+    }
+
     public RestObject(Response cres, Class<?> tClass, EELFLoggerDelegate logger) {
 
         String rawEntity = null;
@@ -70,10 +71,10 @@ public class RestObject<T> {
         catch ( Exception e ) {
             try {
                 this.setRaw(rawEntity);
-                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " Error reading response entity as " + tClass + ": , e="
+                logger.debug(EELFLoggerDelegate.debugLogger, "<== " + getMethodCallerName() + " Error reading response entity as " + tClass + ": , e="
                         + e.getMessage() + ", Entity=" + rawEntity);
             } catch (Exception e2) {
-                logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== " + getMethodCallerName() + " No response entity, this is probably ok, e="
+                logger.debug(EELFLoggerDelegate.debugLogger, "<== " + getMethodCallerName() + " No response entity, this is probably ok, e="
                         + e.getMessage());
             }
         }

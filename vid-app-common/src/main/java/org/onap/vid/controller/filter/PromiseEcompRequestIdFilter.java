@@ -3,7 +3,6 @@ package org.onap.vid.controller.filter;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -24,8 +23,7 @@ import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
 @WebFilter(urlPatterns = "/*")
 public class PromiseEcompRequestIdFilter extends GenericFilterBean {
 
-    private final static EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(PromiseEcompRequestIdFilter.class);
-    private final static String REQUEST_ID_RESPONSE_HEADER = ECOMP_REQUEST_ID + "-echo";
+    private static final String REQUEST_ID_RESPONSE_HEADER = ECOMP_REQUEST_ID + "-echo";
 
 
     @Override
@@ -48,11 +46,17 @@ public class PromiseEcompRequestIdFilter extends GenericFilterBean {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         final String originalRequestId = httpRequest.getHeader(ECOMP_REQUEST_ID);
 
-        if (StringUtils.isEmpty(originalRequestId)) {
+        if (StringUtils.isEmpty(originalRequestId) || !verifyAndValidateUuid(originalRequestId)) {
             request = new PromiseEcompRequestIdRequestWrapper(httpRequest);
         }
 
         return request;
+    }
+
+    public static boolean verifyAndValidateUuid(String value)
+    {
+        String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+        return value.matches(uuidRegex);
     }
 
     private static class PromiseEcompRequestIdRequestWrapper extends HttpServletRequestWrapper {
@@ -81,10 +85,15 @@ public class PromiseEcompRequestIdFilter extends GenericFilterBean {
 
         @Override
         public Enumeration<String> getHeaderNames() {
+
+            if (null == super.getHeader(ECOMP_REQUEST_ID)) {
             return Collections.enumeration(ImmutableList.<String>builder()
                     .add(ECOMP_REQUEST_ID)
                     .addAll(Collections.list(super.getHeaderNames()))
                     .build());
+        }
+
+            return super.getHeaderNames();
         }
 
         private boolean isRequestIdHeaderName(String name) {

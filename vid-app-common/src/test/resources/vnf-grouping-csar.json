@@ -1,0 +1,145 @@
+{
+  "service": {
+    "uuid": "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
+    "invariantUuid": "7ee41ce4-4827-44b0-a48e-2707a59905d2",
+    "name": "Grouping Service for Test",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L4+",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "GROUPING",
+    "description": "xxx",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {
+    }
+  },
+  "vnfs": {
+  },
+  "networks": {
+  },
+  "collectionResource": {
+  },
+  "configurations": {
+  },
+  "fabricConfigurations": {
+  },
+  "serviceProxies": {
+    "vdbe_svc_vprs_proxy 0": {
+      "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
+      "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
+      "description": "A Proxy for Service vDBE_Svc_vPRS",
+      "name": "vDBE_Svc_vPRS Service Proxy",
+      "version": "1.0",
+      "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
+      "inputs": {
+      },
+      "commands": {
+      },
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
+      "type": "Service Proxy",
+      "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
+      "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
+      "sourceModelName": "vDBE_Svc_vPRS"
+    },
+    "tsbc0001vm001_svc_proxy 0": {
+      "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
+      "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
+      "description": "A Proxy for Service tsbc0001vm001_Svc",
+      "name": "tsbc0001vm001_Svc Service Proxy",
+      "version": "1.0",
+      "customizationUuid": "3d814462-30fb-4c62-b997-9aa360d27ead",
+      "inputs": {
+      },
+      "commands": {
+      },
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
+      "type": "Service Proxy",
+      "sourceModelUuid": "28aeb8f6-5620-4148-8bfb-a5fb406f0309",
+      "sourceModelInvariant": "c989ab9a-33c7-46ec-b521-1b2daef5f047",
+      "sourceModelName": "tsbc0001vm001_Svc"
+    }
+  },
+  "vfModules": {
+  },
+  "volumeGroups": {
+  },
+  "pnfs": {
+  },
+  "vnfGroups": {
+    "groupingservicefortest..ResourceInstanceGroup..0": {
+      "type": "VnfGroup",
+      "invariantUuid": "4bb2e27e-ddab-4790-9c6d-1f731bc14a45",
+      "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48",
+      "version": "1",
+      "name": "groupingservicefortest..ResourceInstanceGroup..0",
+      "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..0",
+      "properties": {
+        "contained_resource_type": "VF",
+        "role": "SERVICE-ACCESS",
+        "function": "DATA",
+        "description": "DDD0",
+        "type": "LOAD-GROUP",
+        "ecomp_generated_naming": "true"
+      },
+      "members": {
+        "vdbe_svc_vprs_proxy 0": {
+          "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
+          "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
+          "description": "A Proxy for Service vDBE_Svc_vPRS",
+          "name": "vDBE_Svc_vPRS Service Proxy",
+          "version": "1.0",
+          "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
+          "inputs": {},
+          "commands": {},
+          "properties": {
+            "ecomp_generated_naming": "false"
+          },
+          "type": "Service Proxy",
+          "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
+          "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
+          "sourceModelName": "vDBE_Svc_vPRS"
+        }
+      }
+    },
+    "groupingservicefortest..ResourceInstanceGroup..1": {
+      "type": "VnfGroup",
+      "invariantUuid": "a704112d-dbc6-4e56-8d4e-aec57e95ef9a",
+      "uuid": "c2b300e6-45de-4e5e-abda-3032bee2de56",
+      "version": "1",
+      "name": "groupingservicefortest..ResourceInstanceGroup..1",
+      "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..1",
+      "properties": {
+        "contained_resource_type": "VF",
+        "role": "SERVICE-ACCESS",
+        "function": "SIGNALING",
+        "description": "DDD1",
+        "type": "LOAD-GROUP",
+        "ecomp_generated_naming": "true"
+      },
+      "members": {
+        "tsbc0001vm001_svc_proxy 0": {
+          "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
+          "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
+          "description": "A Proxy for Service tsbc0001vm001_Svc",
+          "name": "tsbc0001vm001_Svc Service Proxy",
+          "version": "1.0",
+          "customizationUuid": "3d814462-30fb-4c62-b997-9aa360d27ead",
+          "inputs": {},
+          "commands": {},
+          "properties": {
+            "ecomp_generated_naming": "false"
+          },
+          "type": "Service Proxy",
+          "sourceModelUuid": "28aeb8f6-5620-4148-8bfb-a5fb406f0309",
+          "sourceModelInvariant": "c989ab9a-33c7-46ec-b521-1b2daef5f047",
+          "sourceModelName": "tsbc0001vm001_Svc"
+        }
+      }
+    }
+  }
+}
