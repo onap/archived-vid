@@ -1,0 +1,68 @@
+{
+  "request": {
+    "requestId": "d8bbd676-4067-431f-9a5d-9843f5c199cf",
+    "startTime": "Mon, 11 Jun 2018 12:38:50 GMT",
+    "requestScope": "vnf",
+    "requestType": "createInstance",
+    "requestDetails": {
+      "modelInfo": {
+        "modelCustomizationName": "2016-233_XSP_bfsa_nin2 0",
+        "modelInvariantId": "74dc0354-a178-43ee-91f2-ec1f288cd50d",
+        "modelType": "vnf",
+        "modelName": "2016-233_XSP_bfsa_nin2",
+        "modelVersion": "1.0",
+        "modelCustomizationUuid": "fc1add68-90c4-4ed1-ac92-b8df3087fb01",
+        "modelVersionId": "327138f7-0608-4774-bb2c-959332a18399",
+        "modelCustomizationId": "fc1add68-90c4-4ed1-ac92-b8df3087fb01",
+        "modelUuid": "327138f7-0608-4774-bb2c-959332a18399",
+        "modelInvariantUuid": "74dc0354-a178-43ee-91f2-ec1f288cd50d",
+        "modelInstanceName": "2016-233_XSP_bfsa_nin2 0"
+      },
+      "requestInfo": {
+        "productFamilyId": "vHNPaas",
+        "source": "VID",
+        "instanceName": "VNF_TestaLaCarte",
+        "suppressRollback": false,
+        "requestorId": "lz230u"
+      },
+      "relatedInstanceList": [{
+        "relatedInstance": {
+          "instanceId": "dc7f4414-97ab-4055-8267-9f2dfb10f0a8",
+          "modelInfo": {
+            "modelInvariantId": "11256e47-66c8-4749-a30c-15fdcd1cc014",
+            "modelType": "service",
+            "modelName": "Dror_service1806_a_la_carte_NW",
+            "modelVersion": "1.0",
+            "modelVersionId": "88ad0fe5-56d5-4435-aaee-da5c707878df",
+            "modelUuid": "88ad0fe5-56d5-4435-aaee-da5c707878df",
+            "modelInvariantUuid": "11256e47-66c8-4749-a30c-15fdcd1cc014"
+          }
+        }
+      }
+      ],
+      "cloudConfiguration": {
+        "tenantId": "19dfa99ba1cc4948bb868eba9e0de7ab",
+        "cloudOwner": "att-aic",
+        "lcpCloudRegionId": "test1"
+      },
+      "requestParameters": {
+        "testApi": "VNF_API"
+      },
+      "platform": {
+        "platformName": "RADIO-WIRELESSENGINEERING"
+      }
+    },
+    "instanceReferences": {
+      "serviceInstanceId": "dc7f4414-97ab-4055-8267-9f2dfb10f0a8",
+      "vnfInstanceId": "cfeabd66-f9ac-4204-9732-157b091fe4f8",
+      "vnfInstanceName": "VNF_TestaLaCarte",
+      "requestorId": "lz230u"
+    },
+    "requestStatus": {
+      "requestState": "COMPLETE",
+      "statusMessage": "Vnf has been created successfully.",
+      "percentProgress": 100,
+      "finishTime": "Mon, 11 Jun 2018 12:38:56 GMT"
+    }
+  }
+}

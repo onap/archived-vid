@@ -20,6 +20,7 @@
 
 package org.onap.vid.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.onap.vid.asdc.beans.tosca.Input;
 
 import java.util.Map;
@@ -65,7 +66,9 @@ public class Service {
 
 	/** The inputs. */
 	private Map<String, Input> inputs;
-	
+
+	private VidNotions vidNotions;
+
 	/**
 	 * Gets the uuid.
 	 *
@@ -264,5 +267,14 @@ public class Service {
 
 	public void setServiceRole(String serviceRole) {
 		this.serviceRole = serviceRole;
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public VidNotions getVidNotions() {
+		return vidNotions;
+	}
+
+	public void setVidNotions(VidNotions vidNotions) {
+		this.vidNotions = vidNotions;
 	}
 }

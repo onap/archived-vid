@@ -3,19 +3,31 @@ package org.onap.vid.job.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.hibernate.annotations.Type;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.job.Job;
+import org.onap.vid.job.JobException;
 import org.onap.vid.job.JobType;
 import org.onap.vid.model.VidBaseEntity;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
+/*
+ The following 2 annotations let hibernate to update only fields that actually have been changed.
+ DynamicUpdate tell hibernate to update only dirty fields.
+ SelectBeforeUpdate is needed since during update the entity is detached (get and update are in different sessions)
+*/
+@DynamicUpdate()
+@SelectBeforeUpdate()
 @Entity
 @Table(name = "vid_job")
 public class JobDaoImpl extends VidBaseEntity implements Job {
@@ -23,7 +35,7 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
     private static ObjectMapper objectMapper = new ObjectMapper();
     private Job.JobStatus status;
     private JobType type;
-    private Map<JobType, Map<String, Object>> data = new TreeMap<>();
+    private JobData data = new JobData();
     private UUID templateId;
     private UUID uuid;
     private String takenBy;
@@ -83,16 +95,25 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
 
     public void setDataRaw(String data) {
         try {
-            this.data = objectMapper.readValue(data, new TypeReference<Map<JobType, Map<String, Object>>>() {
-            });
+            this.data = objectMapper.readValue(data, JobData.class);
         } catch (IOException e) {
-            throw new GenericUncheckedException(e);
+            throw new JobException("Error parsing job's data", uuid, e);
         }
     }
 
     @Transient
     public Map<String, Object> getData() {
-        return data.get(getType());
+        return data.getCommandData().get(getType());
+    }
+
+    public void setSharedData(JobSharedData sharedData) {
+        this.data.setSharedData(sharedData);
+    }
+
+    @Override
+    @Transient
+    public JobSharedData getSharedData() {
+        return this.data.getSharedData();
     }
 
     @Override
@@ -100,7 +121,7 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
         // *add* the data to map,
         // then change state to given type
         this.type = jobType;
-        this.data.put(jobType, data);
+        this.data.getCommandData().put(jobType, data);
     }
 
     @Column(name = "TAKEN_BY")
@@ -123,6 +144,7 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
         this.templateId = templateId;
     }
 
+    @Override
     @Column(name="INDEX_IN_BULK")
     public Integer getIndexInBulk() {
         return indexInBulk;

@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.web.support.UserUtils;
-import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
 import org.onap.vid.model.ModelConstants;
 import org.onap.vid.model.Subscriber;
@@ -37,6 +36,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 /**
  * Created by Oren on 7/1/17.
@@ -46,24 +47,11 @@ import java.util.*;
 public class RoleProvider {
 
     private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(RoleProvider.class);
-    final String readPermissionString = "read";
-    SubscriberList subscribers;
-    ObjectMapper om = new ObjectMapper();
+    static final String READ_PERMISSION_STRING = "read";
+    private final ObjectMapper om = new ObjectMapper();
+
     @Autowired
     private AaiService aaiService;
-
-    public static List<String> extractRoleFromSession(HttpServletRequest request) {
-
-        return new ArrayList<String>();
-
-    }
-
-    public void init() {
-        LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method started");
-        HttpResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
-        subscribers = subscribersResponse.getBody();
-        LOG.debug(EELFLoggerDelegate.debugLogger, "Role provider => init method finished");
-    }
 
     public List<Role> getUserRoles(HttpServletRequest request) {
         String logPrefix = "Role Provider (" + UserUtils.getUserId(request) + ") ==>";
@@ -71,21 +59,20 @@ public class RoleProvider {
         LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Entering to get user role for user " + UserUtils.getUserId(request));
 
         List<Role> roleList = new ArrayList<>();
-
         Map roles = UserUtils.getRoles(request);
         for (Object role : roles.keySet()) {
             org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);
 
             LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Role " + sdkRol.getName() + " is being proccessed");
             try {
-                if (sdkRol.getName().contains(readPermissionString)) {
-                    LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + " Role " + sdkRol.getName() + " contain " + readPermissionString);
+                if (sdkRol.getName().contains(READ_PERMISSION_STRING)) {
+                    LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + " Role " + sdkRol.getName() + " contain " + READ_PERMISSION_STRING);
 
                     continue;
                 }
                 String[] roleParts = splitRole((sdkRol.getName()), logPrefix);
                 roleList.add(createRoleFromStringArr(roleParts, logPrefix));
-                String msg = String.format(logPrefix + " User %s got permissions %s", UserUtils.getUserId(request), Arrays.toString(roleParts));
+                String msg = String.format("%s User %s got permissions %s", logPrefix, UserUtils.getUserId(request), Arrays.toString(roleParts));
                 LOG.debug(EELFLoggerDelegate.debugLogger, msg);
             } catch (Exception e) {
                 LOG.error(logPrefix + " Failed to parse permission");
@@ -102,29 +89,30 @@ public class RoleProvider {
     }
 
     public boolean userPermissionIsReadOnly(List<Role> roles) {
-
-        return (!(roles.size() > 0));
+        return roles.isEmpty();
     }
 
     public boolean userPermissionIsReadLogs(List<Role> roles){
         for(Role role: roles){
-            if(role.getServiceType().equals("LOGS")){
-                if(role.getTenant().equals("PERMITTED")){
-                    return true;
-                }
+            if ( role.getServiceType().equals("LOGS") && role.getTenant().equals("PERMITTED") ) {
+                return true;
             }
         }
         return false;
     }
 
-    private String replaceSubscriberNameToGlobalCustomerID(String subscriberName, String logPrefix) throws JsonProcessingException {
-        if (subscribers == null) {
-            LOG.debug(EELFLoggerDelegate.debugLogger, "replaceSubscriberNameToGlobalCustomerID calling init method");
-            init();
-        }
-        LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "subscribers list size is  " + subscribers.customer.size() + " with the values " + om.writeValueAsString(subscribers.customer));
-        LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "subscribers list size is  " + subscribers.customer.size() + " with the values " + om.writeValueAsString(subscribers.customer));
+    private String replaceSubscriberNameToGlobalCustomerID(String subscriberName, String logPrefix) {
+        // SubscriberList should be cached by cacheProvider so by calling getFullSubscriberList() method we just gat it from cache
+        HttpResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
+        SubscriberList subscribers = subscribersResponse.getBody();
 
+        try {
+            LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "subscribers list size is  " + subscribers.customer.size() + " with the values " + om.writeValueAsString(subscribers.customer));
+        } catch (JsonProcessingException e) {
+            // log subscriberNames without object mapper
+            LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "subscribers list size is  " + subscribers.customer.size()
+                    + " with the values " + subscribers.customer.stream().map(subscriber -> subscriber.subscriberName).collect(Collectors.joining(",")));
+        }
 
         Optional<Subscriber> s = subscribers.customer.stream().filter(x -> x.subscriberName.equals(subscriberName)).findFirst();
         //Fixing bug of logging "optional get" before isPresent
@@ -133,7 +121,7 @@ public class RoleProvider {
         return replacement;
     }
 
-    public Role createRoleFromStringArr(String[] roleParts, String rolePrefix) throws JsonProcessingException, RoleParsingException {
+    public Role createRoleFromStringArr(String[] roleParts, String rolePrefix) throws RoleParsingException {
         String globalCustomerID = replaceSubscriberNameToGlobalCustomerID(roleParts[0], rolePrefix);
         try {
             if (roleParts.length > 2) {
@@ -153,5 +141,8 @@ public class RoleProvider {
 
     }
 
+    public RoleValidator getUserRolesValidator(HttpServletRequest request) {
+        return new RoleValidator(getUserRoles(request));
+    }
 }
 

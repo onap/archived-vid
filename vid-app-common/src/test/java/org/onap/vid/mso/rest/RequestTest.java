@@ -1,8 +1,6 @@
 package org.onap.vid.mso.rest;
 
 import org.junit.Test;
-import org.onap.vid.domain.mso.InstanceIds;
-import org.onap.vid.domain.mso.RequestStatus;
 
 public class RequestTest {
 

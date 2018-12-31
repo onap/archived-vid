@@ -1,10 +1,12 @@
 package org.onap.vid.mso.rest;
 
+import org.junit.Test;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.RequestInfo;
+
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Test;
-import org.onap.vid.domain.mso.*;
 
 
 public class RequestDetailsTest {

@@ -1,12 +1,6 @@
 package org.onap.vid.aai.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,20 +17,15 @@ import java.util.Map;
 })
 public class PnfProperties {
 
-    @JsonProperty("pnf-name")
     public String pnfName;
-    @JsonProperty("equip-type")
     public String equipType;
-    @JsonProperty("equip-vendor")
     public String equipVendor;
-    @JsonProperty("equip-model")
     public String equipModel;
-    @JsonProperty("in-maint")
     public Boolean inMaint;
-    @JsonProperty("resource-version")
     public String resourceVersion;
+
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
@@ -46,6 +35,36 @@ public class PnfProperties {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    @JsonProperty("pnf-name")
+    public void setJsonPnfName(String pnfName) {
+        this.pnfName = pnfName;
+    }
+
+    @JsonProperty("equip-type")
+    public void setJsonEquipType(String equipType) {
+        this.equipType = equipType;
+    }
+
+    @JsonProperty("equip-vendor")
+    public void setJsonEquipVendor(String equipVendor) {
+        this.equipVendor = equipVendor;
+    }
+
+    @JsonProperty("equip-model")
+    public void setJsonEquipModel(String equipModel) {
+        this.equipModel = equipModel;
+    }
+
+    @JsonProperty("in-maint")
+    public void setJsonInMaint(Boolean inMaint) {
+        this.inMaint = inMaint;
+    }
+
+    @JsonProperty("resource-version")
+    public void setJsonResourceVersion(String resourceVersion) {
+        this.resourceVersion = resourceVersion;
     }
 
 }

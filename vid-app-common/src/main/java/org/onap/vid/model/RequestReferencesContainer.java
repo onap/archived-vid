@@ -2,7 +2,7 @@ package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.*;
 import com.google.common.base.MoreObjects;
-import org.onap.vid.domain.mso.RequestReferences;
+import org.onap.vid.mso.model.RequestReferences;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ public class RequestReferencesContainer {
     private final RequestReferences requestReferences;
 
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

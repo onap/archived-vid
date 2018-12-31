@@ -1,7 +1,7 @@
 package org.onap.vid.aai.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
@@ -11,15 +11,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelVers {
 
-    @JsonProperty("model-ver")
     private List<ModelVer> modelVer;
 
-    @JsonProperty("model-ver")
     public List<ModelVer> getModelVer() {
         return modelVer;
     }
 
-    @JsonProperty("model-ver")
+    @JsonAlias("model-ver")
     public void setModelVer(List<ModelVer> modelVer) {
         this.modelVer = modelVer;
     }

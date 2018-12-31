@@ -15,7 +15,6 @@ import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
-@Test
 public class ChangeManagementServiceImplTest {
 
     @Mock
@@ -27,6 +26,9 @@ public class ChangeManagementServiceImplTest {
     @Mock
     SchedulerRestInterfaceIfc schedulerRestInterface;
 
+    @Mock
+    CloudOwnerService cloudOwnerService;
+
     @BeforeMethod
     public void initMocks(){
         MockitoAnnotations.initMocks(this);
@@ -34,14 +36,14 @@ public class ChangeManagementServiceImplTest {
 
     @Test
     public void doChangeManagement_requestIsNull_returnsNull() throws Exception {
-        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface);
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService);
         ResponseEntity<String> result = changeManagementService.doChangeManagement(null,"anyString");
         assertNull(result);
     }
 
     @Test
     public void doChangeManagement_currentRequestDetailsIsNull_returnsNull() throws Exception {
-        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface);
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService);
 
         ChangeManagementServiceImpl changeManagementServiceSpied = Mockito.spy(changeManagementService);
         Mockito.doReturn(null).when(changeManagementServiceSpied).findRequestByVnfName(Matchers.anyList(),Mockito.anyString());
@@ -59,7 +61,7 @@ public class ChangeManagementServiceImplTest {
 
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
         verify(msoBusinessLogicMock).updateVnf(argumentCaptor.capture(),Mockito.any(),Mockito.any());
-        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(), requestDetails.getVnfInstanceId());
     }
 
     @Test
@@ -71,7 +73,7 @@ public class ChangeManagementServiceImplTest {
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
 
         verify(msoBusinessLogicMock).replaceVnf(argumentCaptor.capture(),Mockito.any(),Mockito.any());
-        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(), requestDetails.getVnfInstanceId());
     }
 
     @Test
@@ -83,7 +85,7 @@ public class ChangeManagementServiceImplTest {
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
 
         verify(msoBusinessLogicMock).updateVnfSoftware(argumentCaptor.capture(),Mockito.any(),Mockito.any());
-        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(), requestDetails.getVnfInstanceId());
     }
 
     @Test
@@ -95,11 +97,11 @@ public class ChangeManagementServiceImplTest {
         ArgumentCaptor<RequestDetails> argumentCaptor = ArgumentCaptor.forClass(RequestDetails.class);
 
         verify(msoBusinessLogicMock).updateVnfConfig(argumentCaptor.capture(),Mockito.any(),Mockito.any());
-        assertEquals(argumentCaptor.getValue().getVnfInstanceId(),requestDetails.getVnfInstanceId());
+        assertEquals(argumentCaptor.getValue().getVnfInstanceId(), requestDetails.getVnfInstanceId());
     }
 
     private RequestDetails callChangeManagement(String requestType) throws Exception {
-        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface);
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService);
         ChangeManagementServiceImpl changeManagementServiceSpied = Mockito.spy(changeManagementService);
         ChangeManagementRequest updateRequest = new ChangeManagementRequest();
 
@@ -109,7 +111,7 @@ public class ChangeManagementServiceImplTest {
         Mockito.doReturn("fakeId").when(changeManagementServiceSpied).extractServiceInstanceId(Mockito.any(),Mockito.any());
         Mockito.doReturn(requestDetails).when(changeManagementServiceSpied).findRequestByVnfName(Matchers.any(),Mockito.any());
 
-        changeManagementServiceSpied.doChangeManagement(updateRequest,"anyVnfName");
+        changeManagementServiceSpied.doChangeManagement(updateRequest, "anyVnfName");
 
         return requestDetails;
     }

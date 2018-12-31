@@ -2,9 +2,10 @@ package org.onap.vid.aai.model.AaiGetNetworkCollectionDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.onap.vid.aai.model.interfaces.AaiModelWithRelationships;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Network {
+public class Network implements AaiModelWithRelationships {
     @JsonProperty("network-id")
     private String networkId;
     @JsonProperty("network-name")
@@ -19,6 +20,8 @@ public class Network {
     private Boolean isBoundToVpn;
     @JsonProperty("resource-version")
     private String resourceVersion;
+    @JsonProperty("orchestration-status")
+    private String orchestrationStatus;
     @JsonProperty("is-provider-network")
     private Boolean isProviderNetwork;
     @JsonProperty("is-shared-network")
@@ -99,6 +102,16 @@ public class Network {
         this.resourceVersion = resourceVersion;
     }
 
+    @JsonProperty("orchestration-status")
+    public String getOrchestrationStatus() {
+        return orchestrationStatus;
+    }
+
+    @JsonProperty("orchestration-status")
+    public void setOrchestrationStatus(String orchestrationStatus) {
+        this.orchestrationStatus = orchestrationStatus;
+    }
+
     @JsonProperty("is-provider-network")
     public Boolean getIsProviderNetwork() {
         return isProviderNetwork;
@@ -129,6 +142,7 @@ public class Network {
         this.isExternalNetwork = isExternalNetwork;
     }
 
+    @Override
     @JsonProperty("relationship-list")
     public RelationshipList getRelationshipList() {
         return relationshipList;

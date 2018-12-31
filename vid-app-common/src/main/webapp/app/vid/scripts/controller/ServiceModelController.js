@@ -121,9 +121,6 @@
     		
     		var polls = PropertyService.retrieveMsoMaxPolls();
     		PropertyService.setMsoMaxPolls(polls);
-    		
-    		//PropertyService.setMsoBaseUrl("testmso");
-    		PropertyService.setServerResponseTimeoutMsec(30000);
         };
 		
 		$scope.prevPage = function() {
@@ -186,14 +183,17 @@
 						"description": serviceModel.service.description,
 						"category":serviceModel.service.category
 					});
-					DataService.setALaCarte (true);
+
+                    var shouldTakeTheAsyncInstantiationFlow = AsdcService.shouldTakeTheAsyncInstantiationFlow(serviceModel);
+                    DataService.setShouldIncludeInAsyncInstantiationFlow(shouldTakeTheAsyncInstantiationFlow);
+
+                    DataService.setALaCarte (true);
           DataService.setPnf(!angular.equals(serviceModel.pnfs, {}));
 					$scope.createType = COMPONENT.A_LA_CARTE;
 					var broadcastType = COMPONENT.CREATE_COMPONENT;
                     if (AsdcService.isMacro(serviceModel) || DataService.getE2EService()) {
                         DataService.setALaCarte(false);
-                        if(AsdcService.shouldExcludeMacroFromAsyncInstatiationFlow(serviceModel)){
-                        	DataService.setShouldExcludeMacroFromAsyncInstatiationFlow(true);
+                        if(!shouldTakeTheAsyncInstantiationFlow){
                             $scope.createType = COMPONENT.MACRO;
                             var convertedAsdcModel = UtilityService.convertModel(serviceModel);
 
@@ -210,7 +210,6 @@
                                 "serviceRole": serviceModel.service.serviceRole,
                                 "displayInputs": convertedAsdcModel.completeDisplayInputs
                             });
-
                         }
                     }
 

@@ -37,12 +37,8 @@
  */
 package org.onap.portalapp.conf;
 
-import org.onap.vid.controllers.ChangeManagementController;
-import org.onap.vid.controllers.MaintenanceController;
-import org.onap.vid.controllers.RoleGeneratorController;
 import org.onap.portalsdk.core.conf.AppInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+
 import java.util.TimeZone;
 
 public class ExternalAppInitializer extends AppInitializer {

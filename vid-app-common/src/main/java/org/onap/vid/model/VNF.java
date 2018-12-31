@@ -20,42 +20,27 @@
 
 package org.onap.vid.model;
 
-import java.util.Map;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
 import org.onap.vid.asdc.beans.tosca.NodeTemplate;
-import org.onap.vid.controllers.VidController;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.asdc.beans.tosca.Group;
-import org.onap.vid.asdc.beans.tosca.Input;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * The Class VNF.
  */
 public class VNF extends Node {
-	
-	/** The Constant LOG. */
-	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(VNF.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-
 	/** The pattern used to normalize VNF names */
-	final static Pattern COMPONENT_INSTANCE_NAME_DELIMETER_PATTERN = Pattern.compile("[\\.\\-]+");
+	static final Pattern COMPONENT_INSTANCE_NAME_DELIMETER_PATTERN = Pattern.compile("[\\.\\-]+");
 	
 	/** The model customization name. */
 	private String modelCustomizationName;
 	
 	/** The vf modules. */
-	private Map<String, VfModule> vfModules = new HashMap<String, VfModule>();
+	private Map<String, VfModule> vfModules = new HashMap<>();
 	
 	/** The volume groups. */
-	private Map<String, VolumeGroup> volumeGroups = new HashMap<String, VolumeGroup>();
+	private Map<String, VolumeGroup> volumeGroups = new HashMap<>();
 
 	private Map<String, VfcInstanceGroup> vfcInstanceGroups = new HashMap<>();
 
@@ -160,7 +145,7 @@ public class VNF extends Node {
 		catch (Exception ex ) {
 			return (normalizedName);
 		}
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		if ( splitArr != null ) {
 			for (String splitElement : splitArr) {
 				sb.append(splitElement);
