@@ -1,50 +1,44 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.mso;
 
-import org.glassfish.jersey.client.ClientResponse;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MsoUtilTest {
 
-	private MsoUtil createTestSubject() {
-		return new MsoUtil();
-	}
-
-	@Test
-	public void testWrapResponse() throws Exception {
-		String body = "";
-		int statusCode = 0;
-		MsoResponseWrapper result;
-
-		// default test
-		result = MsoUtil.wrapResponse(body, statusCode);
-	}
-
-
-	@Test
-	public void testWrapResponse_2() throws Exception {
-		RestObject<String> rs = null;
-		MsoResponseWrapper result;
-
-		// test 1
-		result = MsoUtil.wrapResponse(rs);
-		Assert.assertNotNull(result);
-	}
-
-	@Test
-	public void testConvertPojoToString() throws Exception {
-		String result;
-
-		// test 1
-		result = MsoUtil.convertPojoToString(null);
-		Assert.assertEquals("", result);
-	}
-
-	@Test
-	public void testMain() throws Exception {
-		String[] args = new String[] { "" };
-
-		// default test
-		MsoUtil.main(args);
-	}
+    @Test
+    public void shouldWrapRestObject() {
+        // given
+        int statusCode = 200;
+        String entity = "entity";
+        RestObject<String> restObject = new RestObject<>();
+        restObject.set(entity);
+        restObject.setStatusCode(statusCode);
+        // when
+        MsoResponseWrapper result = MsoUtil.wrapResponse(restObject);
+        // then
+        assertThat(result.getEntity()).isEqualTo(entity);
+        assertThat(result.getStatus()).isEqualTo(statusCode);
+    }
 }

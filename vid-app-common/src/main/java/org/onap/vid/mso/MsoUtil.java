@@ -21,118 +21,34 @@
 
 package org.onap.vid.mso;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
-import org.apache.commons.lang3.ObjectUtils;
-import org.glassfish.jersey.client.ClientResponse;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Objects;
 
-import static org.onap.vid.utils.Logging.getMethodName;
-
-/**
- * The Class MsoUtil.
- */
 public class MsoUtil {
-	
-	/** The logger. */
-	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoUtil.class);
-	
-	/** The Constant dateFormat. */
-	final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
-	
-	/**
-	 * Wrap response.
-	 *
-	 * @param body the body
-	 * @param statusCode the status code
-	 * @return the mso response wrapper
-	 */
-	public static MsoResponseWrapper wrapResponse ( String body, int statusCode ) {
-		
-		MsoResponseWrapper w = new MsoResponseWrapper();
-		w.setStatus (statusCode);
-		w.setEntity(body);
-		
-		return w;
-	}
 
-	/**
-	 * Wrap response.
-	 *
-	 * @param cres the cres
-	 * @return the mso response wrapper
-	 */
-	public static MsoResponseWrapper wrapResponse (ClientResponse cres) {	
-		String resp_str = "";
-		if ( cres != null ) {
-			resp_str = cres.readEntity(String.class);
-		}
-		int statuscode = cres.getStatus();
-		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp_str, statuscode );
-		return (w);
-	}
-	
-	/**
-	 * Wrap response.
-	 *
-	 * @param rs the rs
-	 * @return the mso response wrapper
-	 */
-	public static MsoResponseWrapper wrapResponse (RestObject<String> rs) {
-		String resp_str = null;
-		int status = 0;
-		if ( rs != null ) {
-			resp_str = rs.get() != null ? rs.get() : rs.getRaw();
-			status = rs.getStatusCode();
-		}
-		MsoResponseWrapper w = MsoUtil.wrapResponse ( resp_str, status );
-		return (w);
-	}
+    private MsoUtil() {
+    }
 
-	public static <T> MsoResponseWrapper wrapResponse (HttpResponse<T> rs) {
-		MsoResponseWrapper w = new MsoResponseWrapper();
-		w.setStatus (rs.getStatus());
-		if(rs.getRawBody() != null) {
-			w.setEntity(ObjectUtils.toString(rs.getBody()));
-		}
-		return w;
-	}
+    private static MsoResponseWrapper wrapResponse(String body, int statusCode) {
+        MsoResponseWrapper wrapper = new MsoResponseWrapper();
+        wrapper.setStatus(statusCode);
+        wrapper.setEntity(body);
+        return wrapper;
+    }
 
-	/**
-	 * Convert pojo to string.
-	 *
-	 * @param <T> the generic type
-	 * @param t the t
-	 * @return the string
-	 * @throws JsonProcessingException the json processing exception
-	 */
-	public static <T> String convertPojoToString ( T t ) {
-		
-		String methodName = "convertPojoToString";
-		ObjectMapper mapper = new ObjectMapper();
-		String r_json_str = "";
-	    if ( t != null ) {
-		    try {
-		    	r_json_str = mapper.writeValueAsString(t);
-		    }
-		    catch ( com.fasterxml.jackson.core.JsonProcessingException j ) {
-		    	logger.debug(EELFLoggerDelegate.debugLogger,getMethodName() + " Unable to parse object of type " + t.getClass().getName() + " as json", j);
-		    }
-	    }
-	    return (r_json_str);
-	}
-	
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+    public static MsoResponseWrapper wrapResponse(RestObject<String> restObject) {
+        String response = restObject.get() != null ? restObject.get() : restObject.getRaw();
+        int status = restObject.getStatusCode();
+        return MsoUtil.wrapResponse(response, status);
+    }
 
-	}
+    public static <T> MsoResponseWrapper wrapResponse(HttpResponse<T> httpResponse) {
+        MsoResponseWrapper msoResponseWrapper = new MsoResponseWrapper();
+        msoResponseWrapper.setStatus(httpResponse.getStatus());
+        if (httpResponse.getRawBody() != null) {
+            msoResponseWrapper.setEntity(Objects.toString(httpResponse.getBody()));
+        }
+        return msoResponseWrapper;
+    }
 }
