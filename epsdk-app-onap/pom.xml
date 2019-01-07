@@ -22,8 +22,6 @@
         <hibernate.version>4.3.11.Final</hibernate.version>
         <!-- Skip assembling the zip; assemble via mvn -Dskipassembly=false .. -->
         <skipassembly>true</skipassembly>
-        <!-- Tests usually require some setup that maven cannot do, so skip. -->
-        <skiptests>false</skiptests>
         <nexusproxy>https://nexus.onap.org</nexusproxy>
         <snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
         <releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
@@ -131,7 +129,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-                    <skipTests>${skiptests}</skipTests>
                     <includes>
                         <include>**/Test*.java</include>
                         <include>**/*Test.java</include>
