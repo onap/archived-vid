@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_0afaef74",
+        "filename": "pom.xml",
+        "patchSetId": 10
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-07T11:24:41Z",
+      "side": 1,
+      "message": "Change tabs to spaces",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 52
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_8a2d7f00",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-07T11:24:41Z",
+      "side": 1,
+      "message": "Don\u0027t use wildcard imports",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_6a385b3d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/CacheProviderWithLoadingCacheTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-07T11:24:41Z",
+      "side": 1,
+      "message": "Test should be deterministic. Never use randomness in tests.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_eaec4bbd",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/AaiControllerTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-07T11:24:41Z",
+      "side": 1,
+      "message": "Tests in this class doesn\u0027t test anything. They just artificially increase code coverage.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_2af7b38c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/JobsBrokerServiceTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-07T11:24:41Z",
+      "side": 1,
+      "message": "Use @Ignore instead of commenting @Test. Also what\u0027s the reason for having tests that were always ignored?\n\nSame for other test classes.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 11
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
