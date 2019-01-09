@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_73628f3f",
+        "filename": "pom.xml",
+        "patchSetId": 10
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-09T17:05:24Z",
+      "side": 1,
+      "message": "Will do. Thanks.",
+      "parentUuid": "9adffdf1_0afaef74",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 52
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_8a2d7f00",
         "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
         "patchSetId": 10
@@ -36,6 +60,30 @@
       "writtenOn": "2019-01-07T11:24:41Z",
       "side": 1,
       "message": "Don\u0027t use wildcard imports",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f3551f50",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-09T17:05:24Z",
+      "side": 1,
+      "message": "Is it a consistent rule?\nI understand the reasoning, but it\u0027s not uncommon to use this asterix shortcut.",
+      "parentUuid": "9adffdf1_8a2d7f00",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_33cf272b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/CacheProviderWithLoadingCacheTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-09T17:05:24Z",
+      "side": 1,
+      "message": "The test is checking collisions in cached results.\nTest is much clearer when saying \"rand\" rater than using \"foo\" \"bar\" or any other scheme.\nSee, for instance, the test `requestingCacheSameNameTwiceOutOfSeveral_ReturnsFirstCacheInstance`, and tell what you think.",
+      "parentUuid": "9adffdf1_6a385b3d",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_eaec4bbd",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/AaiControllerTest.java",
         "patchSetId": 10
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_33e647b1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/AaiControllerTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-09T17:05:24Z",
+      "side": 1,
+      "message": "I totally agree. These are not alone and we\u0027ll need to remove them.\nNote that although the lines below are marked as new, they are actually old.",
+      "parentUuid": "9adffdf1_eaec4bbd",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_2af7b38c",
         "filename": "vid-app-common/src/test/java/org/onap/vid/services/JobsBrokerServiceTest.java",
         "patchSetId": 10
@@ -105,6 +201,30 @@
       "writtenOn": "2019-01-07T11:24:41Z",
       "side": 1,
       "message": "Use @Ignore instead of commenting @Test. Also what\u0027s the reason for having tests that were always ignored?\n\nSame for other test classes.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 11
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_7397efec",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/JobsBrokerServiceTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-09T17:05:24Z",
+      "side": 1,
+      "message": "There are Spring injection issues while running these tests.\nI would like to postpone solving it, while keeping the visibility of the tests existence.\n\nSaying that, will change to disabled.",
+      "parentUuid": "9adffdf1_2af7b38c",
       "range": {
         "startLine": 210,
         "startChar": 0,
