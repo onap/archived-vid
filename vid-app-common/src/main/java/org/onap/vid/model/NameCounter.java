@@ -18,7 +18,7 @@ public class NameCounter {
 
     public NameCounter(String name) {
         this.name = name;
-        this.counter = 1;
+        this.counter = 0;
     }
 
     @Id

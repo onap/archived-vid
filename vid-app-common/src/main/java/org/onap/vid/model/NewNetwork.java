@@ -20,8 +20,6 @@
 
 package org.onap.vid.model;
 
-import org.onap.vid.asdc.beans.tosca.NodeTemplate;
-
 /**
  * The Class Network.
  */

@@ -37,11 +37,6 @@
  */
 package org.onap.portalapp.conf;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.onap.portalapp.login.LoginStrategyImpl;
 import org.onap.portalapp.scheduler.RegistryAdapter;
 import org.onap.portalsdk.core.auth.LoginStrategy;
@@ -54,13 +49,11 @@ import org.onap.portalsdk.core.util.CacheManager;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -70,10 +63,10 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ONAP Portal SDK sample application. Extends core AppConfig class to
@@ -86,6 +79,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 @Profile("src")
 @EnableAsync
 @EnableScheduling
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 public class ExternalAppConfig extends AppConfig implements Configurable {
 
 	private RegistryAdapter schedulerRegistryAdapter;
@@ -177,18 +171,12 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 * populates it with triggers.
 	 * 
 	 * @return New instance of {@link SchedulerFactoryBean}
-	 * @throws Exception
 	 */
-	@Bean // ANNOTATION COMMENTED OUT
-	// APPLICATIONS REQUIRING QUARTZ SHOULD RESTORE ANNOTATION
-	@DependsOn("dataSourceInitializer")
-	public SchedulerFactoryBean schedulerFactoryBean() throws Exception {
-		SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
-		scheduler.setTriggers(schedulerRegistryAdapter.getTriggers());
-		scheduler.setConfigLocation(appApplicationContext.getResource("WEB-INF/conf/quartz.properties"));
-		scheduler.setDataSource(dataSource());
-	    scheduler.setJobFactory(new SpringBeanJobFactory());
-		return scheduler;
+	@Bean
+	public SchedulerFactoryBean schedulerFactoryBean() {
+		SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
+		schedulerFactory.setJobFactory(new SpringBeanJobFactory());
+		return schedulerFactory;
 	}
 
 	

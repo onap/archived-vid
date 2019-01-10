@@ -2,10 +2,8 @@ package org.onap.vid.controller;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.controllers.MsoConfig;
-import org.onap.vid.controllers.MsoController;
-import org.onap.vid.domain.mso.RequestInfo;
 import org.onap.vid.factories.MsoRequestFactory;
+import org.onap.vid.mso.model.RequestInfo;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.Task;
@@ -15,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.Assert;
-import org.testng.Assert.*;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -32,7 +29,7 @@ public class MsoControllerTest extends AbstractTestNGSpringContextTests {
     public void testInstanceCreationNew() throws Exception {
 
         RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
-        MsoController msoController = new MsoController(null);
+        MsoController msoController = new MsoController(null, null);
         //TODO: make ths test to really test something
         //ResponseEntity<String> responseEntityNew = msoController.createSvcInstanceNew(null, requestDetails);
         ResponseEntity<String> responseEntity = msoController.createSvcInstance(null, requestDetails);
@@ -44,7 +41,7 @@ public class MsoControllerTest extends AbstractTestNGSpringContextTests {
     public void testInstanceCreationLocalWithRest() throws Exception {
 
         RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
-        MsoController msoController = new MsoController(null);
+        MsoController msoController = new MsoController(null, null);
         ResponseEntity<String> responseEntityNew = msoController.createSvcInstance(null, requestDetails);
         //TODO: make ths test to really test something
 //        ResponseEntity<String> responseEntityRest = msoController.createSvcInstanceNewRest(null, requestDetails);
@@ -57,7 +54,7 @@ public class MsoControllerTest extends AbstractTestNGSpringContextTests {
     public void testInstanceCreation() throws Exception {
 
         RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
-        MsoController msoController = new MsoController(null);
+        MsoController msoController = new MsoController(null, null);
         ResponseEntity<String> responseEntity = msoController.createSvcInstance(null, requestDetails);
 
 
@@ -72,7 +69,7 @@ public class MsoControllerTest extends AbstractTestNGSpringContextTests {
 
     @Test(enabled = false)
     public void testGetOrchestrationRequestsForDashboard() throws Exception {
-        MsoController msoController = new MsoController(null);
+        MsoController msoController = new MsoController(null, null);
         List<Request> orchestrationRequestsForDashboard = msoController.getOrchestrationRequestsForDashboard();
 
         Assert.assertEquals(orchestrationRequestsForDashboard.size(), 2);
@@ -80,7 +77,7 @@ public class MsoControllerTest extends AbstractTestNGSpringContextTests {
 
     @Test(enabled = false)
     public void testGetManualTasksByRequestId() throws Exception {
-        MsoController msoController = new MsoController(null);
+        MsoController msoController = new MsoController(null, null);
         List<Task> orchestrationRequestsForDashboard = msoController.getManualTasksByRequestId("za1234d1-5a33-55df-13ab-12abad84e335");
 
         Assert. assertEquals(orchestrationRequestsForDashboard.get(0).getTaskId(), "daf4dd84-b77a-42da-a051-3239b7a9392c");
@@ -94,7 +91,7 @@ public class MsoControllerTest extends AbstractTestNGSpringContextTests {
         requestInfo.setSource("VID");
         RequestDetails requestDetails = new RequestDetails();
         requestDetails.setRequestInfo(requestInfo);
-        MsoController msoController = new MsoController(null);
+        MsoController msoController = new MsoController(null, null);
         ResponseEntity<String> responseEntity = msoController.manualTaskComplete("daf4dd84-b77a-42da-a051-3239b7a9392c", requestDetails);
         String assertString = "{ \\\"status\\\": 200, \\\"entity\\\": {\\n\" +\n" +
                 "                \"  \\\"taskRequestReference\\\": {\\n\" +\n" +

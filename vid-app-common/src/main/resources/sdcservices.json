@@ -181,6 +181,48 @@
       "distributionStatus": "DISTRIBUTED",
       "artifacts": null,
       "resources": null
+    },
+    {
+      "uuid": "12344bb4-a416-4b4e-997e-0059973630b9",
+      "invariantUUID": "598e3f9e-3244-4d8f-a8e0-0e5d7a29eda9",
+      "name": "Fabric Configuration",
+      "version": "1.0",
+      "toscaModelURL": "./service-fabric-configuration.zip",
+      "category": "Mobility",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "rg276b",
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTED",
+      "artifacts": null,
+      "resources": null
+    },
+    {
+      "uuid": "1837481c-fa7d-4362-8ce1-d05fafc87bd1",
+      "invariantUUID": "93518289-3049-450f-a22d-86108c250265",
+      "name": "jenny vTSBC vlan SVC",
+      "version": "1.0",
+      "toscaModelURL": "./service-JennyVtsbcVlanSvc-csar.zip",
+      "category": "Network L1-3",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "rg276b",
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTED",
+      "artifacts": null,
+      "resources": null
+    },
+    {
+      "uuid": "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
+      "invariantUUID": "7ee41ce4-4827-44b0-a48e-2707a59905d2",
+      "name": "Grouping Service for Test",
+      "version": "1.0",
+      "toscaModelURL": "./service-vnf-grouping-csar.zip",
+      "category": "Network L4+",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "rg276b",
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTED",
+      "artifacts": null,
+      "resources": null
     }
   ]
 }

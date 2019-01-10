@@ -17,13 +17,10 @@ public class InputProperties {
         for(Property property: properties) {
             if (property.getName().equals("source_type")) {
                 this.sourceType = (String)property.getValue();
-                continue;
             } else if (property.getName().equals("param_name")) {
                 this.paramName = (String)property.getValue();
-                continue;
             } else if (property.getName().equals("vf_module_label")) {
                 this.vfModuleLabel = getPropertyValueAsString(property);
-                continue;
             }
         }
     }

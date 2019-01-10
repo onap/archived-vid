@@ -1,7 +1,8 @@
 package org.onap.vid.aai.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 
@@ -9,19 +10,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Relationship {
 
-	@JsonProperty("related-to")
 	public String relatedTo;
 	
-	@JsonProperty("related-link")
 	public String relatedLink;
 
-	@JsonProperty("relationship-label")
 	public String relationshipLabel;
 	
-	@JsonProperty("relationship-data")
 	public List<RelationshipData> relationshipData;
 	
-	@JsonProperty("related-to-property")
 	public List<RelatedToProperty> relatedToProperty;
 
 	
@@ -29,6 +25,7 @@ public class Relationship {
 		return relatedTo;
 	}
 
+    @JsonAlias("related-to")
 	public void setRelatedTo(String relatedTo) {
 		this.relatedTo = relatedTo;
 	}
@@ -37,6 +34,7 @@ public class Relationship {
 		return relatedLink;
 	}
 
+    @JsonAlias("related-link")
 	public void setRelatedLink(String relatedLink) {
 		this.relatedLink = relatedLink;
 	}
@@ -45,6 +43,7 @@ public class Relationship {
 		return relationshipData;
 	}
 
+    @JsonAlias("relationship-data")
 	public void setRelationDataList(List<RelationshipData> relationDataList) {
 		this.relationshipData = relationDataList;
 	}
@@ -53,6 +52,7 @@ public class Relationship {
 		return relatedToProperty;
 	}
 
+    @JsonAlias("related-to-property")
 	public void setRelatedToPropertyList(List<RelatedToProperty> relatedToPropertyList) {
 		this.relatedToProperty = relatedToPropertyList;
 	}
@@ -61,6 +61,7 @@ public class Relationship {
 		return relationshipLabel;
 	}
 
+    @JsonAlias("relationship-label")
 	public void setRelationshipLabel(String relationshipLabel) {
 		this.relationshipLabel = relationshipLabel;
 	}

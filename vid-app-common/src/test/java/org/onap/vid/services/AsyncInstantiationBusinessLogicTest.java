@@ -1,29 +1,96 @@
 package org.onap.vid.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import net.javacrumbs.jsonunit.JsonAssert;
+import org.apache.commons.io.IOUtils;
+import org.hibernate.SessionFactory;
+import org.json.JSONException;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
+import org.onap.portalsdk.core.domain.FusionObject;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.model.ResourceType;
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.config.DataSourceConfig;
 import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.exceptions.MaxRetriesException;
+import org.onap.vid.exceptions.OperationNotAllowedException;
+import org.onap.vid.job.Job;
+import org.onap.vid.job.Job.JobStatus;
+import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
+import org.onap.vid.job.JobsBrokerService;
+import org.onap.vid.job.impl.JobDaoImpl;
+import org.onap.vid.job.impl.JobSharedData;
+import org.onap.vid.model.Action;
+import org.onap.vid.model.JobAuditStatus;
+import org.onap.vid.model.JobAuditStatus.SourceStatus;
+import org.onap.vid.model.NameCounter;
+import org.onap.vid.model.ServiceInfo;
+import org.onap.vid.model.serviceInstantiation.*;
+import org.onap.vid.mso.MsoOperationalEnvironmentTest;
+import org.onap.vid.mso.model.*;
+import org.onap.vid.mso.rest.AsyncRequestStatus;
+import org.onap.vid.properties.Features;
+import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.DaoUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.testng.Assert;
+import org.testng.annotations.*;
+
+import javax.inject.Inject;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static com.google.common.collect.Maps.newHashMap;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.Every.everyItem;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.onap.vid.job.Job.JobStatus.*;
+import static org.testng.Assert.*;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseTest {
-/*
-TO BE FIXED
+
     @Inject
     private DataAccessService dataAccessService;
 
     @Mock
-    private JobAdapter jobAdapter;
+    private JobAdapter jobAdapterMock;
 
     @Mock
-    private JobsBrokerService jobsBrokerService;
-
+    private JobsBrokerService jobsBrokerServiceMock;
 
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    private AsyncInstantiationBusinessLogic asyncInstantiationBL;
+    private AsyncInstantiationBusinessLogicImpl asyncInstantiationBL;
 
     private int serviceCount = 0;
 
@@ -36,13 +103,27 @@ TO BE FIXED
     @BeforeClass
     void initServicesInfoService() {
         MockitoAnnotations.initMocks(this);
-        asyncInstantiationBL = new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapter, jobsBrokerService, sessionFactory, aaiClient);
+        asyncInstantiationBL = new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapterMock, jobsBrokerServiceMock, sessionFactory, aaiClient, featureManager, cloudOwnerService);
         createInstanceParamsMaps();
     }
 
     @BeforeMethod
     void defineMocks() {
+        Mockito.reset(aaiClient);
+        Mockito.reset(jobAdapterMock);
+        Mockito.reset(jobsBrokerServiceMock);
         mockAaiClientAnyNameFree();
+        enableAddCloudOwnerOnMsoRequest();
+    }
+
+    private void enableAddCloudOwnerOnMsoRequest() {
+        enableAddCloudOwnerOnMsoRequest(true);
+    }
+
+    private void enableAddCloudOwnerOnMsoRequest(boolean isActive) {
+        // always turn on the feature flag
+        when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(isActive);
+        when(aaiClient.getCloudOwnerByCloudRegionId(anyString())).thenReturn("att-aic");
     }
 
     @BeforeMethod
@@ -187,7 +268,7 @@ TO BE FIXED
         dataAccessService.saveDomainObject(jobDao, getPropsMap());
     }
 
-    @Test
+    @Test(enabled = false)
     public void testServiceInfoAreOrderedAsExpected() {
         int userId = 2222;
         createNewTestServicesInfo(String.valueOf(userId));
@@ -196,7 +277,7 @@ TO BE FIXED
         assertThat("Services aren't ordered as expected", serviceInfoListResult, equalTo(expectedOrderServiceInfo));
     }
 
-    @Test
+    @Test(enabled = false)
     public void testServiceInfoAreFilteredAsExpected() {
         int userId = 2222;
         createNewTestServicesInfoForFilter(String.valueOf(userId));
@@ -212,29 +293,32 @@ TO BE FIXED
         assertThat("Services aren't ordered filtered as expected", serviceInfoFilteredByUser, equalTo(expectedFilterByUser));
     }
 
-    @Test(dataProvider = "pauseAndInstanceParams", enabled = false) //Test is irrelevant with unique names feature
-    public void createServiceInstantiationMsoRequest(Boolean isPause, HashMap<String, String> vfModuleInstanceParamsMap, List vnfInstanceParams) throws Exception {
-        ServiceInstantiation serviceInstantiationPayload = generateMockServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true));
-        final URL resource = this.getClass().getResource("/payload_jsons/bulk_service_request.json");
-            RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                    asyncInstantiationBL.generateServiceInstantiationRequest(null, serviceInstantiationPayload, "az2016");
-            String expected = IOUtils.toString(resource, "UTF-8");
-            MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @Test(dataProvider = "pauseAndInstanceParams")
-    public void createServiceInstantiationMsoRequestUniqueName(Boolean isPause, HashMap<String, String> vfModuleInstanceParamsMap, List vnfInstanceParams) throws Exception {
-        Mockito.reset(aaiClient);
-        mockAaiClientAnyNameFree();
-        ServiceInstantiation serviceInstantiationPayload = generateMockServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true));
+    @Test(enabled = false, dataProvider = "pauseAndInstanceParams")
+    public void createMacroServiceInstantiationMsoRequestUniqueName(Boolean isPause, HashMap<String, String> vfModuleInstanceParamsMap, List vnfInstanceParams) throws Exception {
+        defineMocks();
+        ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true), 2, true, PROJECT_NAME, false);
         final URL resource = this.getClass().getResource("/payload_jsons/bulk_service_request_unique_names.json");
-        List<UUID> uuids = new ArrayList<>();
+        when(jobAdapterMock.createServiceInstantiationJob(any(), any(), any(), any(), anyString(), any())).thenAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return new MockedJob((String)args[4]);
+        });
+
+        when(jobsBrokerServiceMock.add(any(MockedJob.class))).thenAnswer((Answer<UUID>) invocation -> {
+            Object[] args = invocation.getArguments();
+            MockedJob job = (MockedJob) args[0];
+            MockedJob.putJob(job.uuid, job);
+            return job.getUuid();
+        });
+
+        when(featureManager.isActive(Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF)).thenReturn(true);
+
+        List<UUID> uuids = asyncInstantiationBL.pushBulkJob(serviceInstantiationPayload, "az2016");
         for (int i = 0; i < 2; i++) {
-            UUID currentUuid = createJobAndServiceInfo();
-            uuids.add(currentUuid);
+            UUID currentUuid = uuids.get(i);
             RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                    asyncInstantiationBL.generateServiceInstantiationRequest(currentUuid, serviceInstantiationPayload, "az2016");
-            String unique =  String.format("00%s", i + 1);
+                    asyncInstantiationBL.generateMacroServiceInstantiationRequest(currentUuid, serviceInstantiationPayload,
+                            MockedJob.getJob(currentUuid).getOptimisticUniqueServiceInstanceName(), "az2016");
+            String unique =  i==0 ? "" : String.format("_00%s", i);
             String expected = IOUtils.toString(resource, "UTF-8")
                     .replace("{SERVICE_UNIQENESS}", unique)
                     .replace("{VNF_UNIQENESS}", unique)
@@ -243,17 +327,17 @@ TO BE FIXED
                     .replace("{VG_UNIQUENESS}", unique);
             MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
             Optional<ServiceInfo> optionalServiceInfo = getJobById(currentUuid);
-            assertThat(optionalServiceInfo.get().getServiceInstanceName(), equalTo("vPE_Service_" + unique));
-            verifySearchNodeTypeByName(unique, "vPE_Service_", ResourceType.SERVICE_INSTANCE);
-            verifySearchNodeTypeByName(unique, "vmxnjr001_", ResourceType.GENERIC_VNF);
-            verifySearchNodeTypeByName(unique, "vmxnjr001_AVPN_base_vPE_BV_base_", ResourceType.VF_MODULE);
-            verifySearchNodeTypeByName(unique, "vmxnjr001_AVPN_base_vRE_BV_expansion_", ResourceType.VF_MODULE);
-            verifySearchNodeTypeByName(unique, "myVgName_", ResourceType.VOLUME_GROUP);
+            assertThat(optionalServiceInfo.get().getServiceInstanceName(), equalTo("vPE_Service" + unique));
+            verifySearchNodeTypeByName(unique, "vPE_Service", ResourceType.SERVICE_INSTANCE);
+            verifySearchNodeTypeByName(unique, VNF_NAME, ResourceType.GENERIC_VNF);
+            verifySearchNodeTypeByName(unique, "vmxnjr001_AVPN_base_vPE_BV_base", ResourceType.VF_MODULE);
+            verifySearchNodeTypeByName(unique, "vmxnjr001_AVPN_base_vRE_BV_expansion", ResourceType.VF_MODULE);
+            verifySearchNodeTypeByName(unique, "myVgName", ResourceType.VOLUME_GROUP);
         }
     }
 
     protected void verifySearchNodeTypeByName(String unique, String resourceName, ResourceType serviceInstance) {
-        verify(aaiClient, times(1)).searchNodeTypeByName(resourceName + unique, serviceInstance);
+        verify(aaiClient, times(1)).isNodeTypeExistsByName(resourceName + unique, serviceInstance);
     }
 
     private HashMap<String, Object> getPropsMap() {
@@ -262,40 +346,37 @@ TO BE FIXED
         return props;
     }
 
-    @Test(enabled = false) //probably not needed with name uniqueness feature
-    public void pushBulkJob_bulkWithSize3_instancesNamesAreExactlyAsExpected() {
-        int bulkSize = 3;
 
-        final ServiceInstantiation request = generateMockServiceInstantiationPayload(
-                false,
-                createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
-                bulkSize, true,PROJECT_NAME, true
-        );
-
-        // in "createJob()" we will probe the service, with the generated names
-        final Job job = mock(Job.class);
-        when(job.getStatus()).thenReturn(PENDING);
-        when(jobAdapter.createJob(any(), any(), any(), any(), any())).thenReturn(job);
-
-
-        final List<UUID> uuids = asyncInstantiationBL.pushBulkJob(request, "myUserId");
-
-
-        ArgumentCaptor<ServiceInstantiation> serviceInstantiationCaptor = new ArgumentCaptor<ServiceInstantiation>();
-        verify(jobAdapter, times(bulkSize)).createJob(any(), serviceInstantiationCaptor.capture(), any(), any(), any());
-
-        assertThat(serviceInstantiationCaptor.getAllValues().stream().map(v -> v.getInstanceName()).collect(Collectors.toList()),
-                containsInAnyOrder("vPE_Service_001", "vPE_Service_002", "vPE_Service_003"));
-
-        assertThat(uuids, hasSize(bulkSize));
+    @DataProvider
+    public static Object[][] dataProviderForInstanceNames() {
+        return new Object[][]{
+                {true, ImmutableList.of("vPE_Service", "vPE_Service_001", "vPE_Service_002")},
+                {false, ImmutableList.of("", "", "")},
+        };
     }
 
-    @Test
-    public void generateMockServiceInstantiationPayload_serializeBackAndForth_sourceShouldBeTheSame() throws IOException {
-        ServiceInstantiation serviceInstantiationPayload = generateMockServiceInstantiationPayload(
+    @Test(enabled = false, dataProvider="dataProviderForInstanceNames")
+    public void pushBulkJob_bulkWithSize3_instancesNamesAreExactlyAsExpected(boolean isUserProvidedNaming, List<String> expectedNames) {
+        int bulkSize = 3;
+
+        final ServiceInstantiation request = generateMockMacroServiceInstantiationPayload(
                 false,
-                createVnfList(instanceParamsMapWithoutParams, ImmutableList.of(vnfInstanceParamsMapWithParamsToRemove, vnfInstanceParamsMapWithParamsToRemove), true),
-                2, false,PROJECT_NAME, false);
+                createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
+                bulkSize, isUserProvidedNaming, PROJECT_NAME, true
+        );
+
+        // in "createServiceInstantiationJob()" we will probe the service, with the generated names
+        configureMockitoWithMockedJob();
+
+
+        asyncInstantiationBL.pushBulkJob(request, "myUserId");
+
+        List<ServiceInfo> serviceInfoList = dataAccessService.getList(ServiceInfo.class, getPropsMap());
+        assertEquals(serviceInfoList.stream().map(ServiceInfo::getServiceInstanceName).collect(Collectors.toList()), expectedNames);
+    }
+
+    @Test(enabled = false, dataProvider = "aLaCarteAndMacroPayload")
+    public void generateMockServiceInstantiationPayload_serializeBackAndForth_sourceShouldBeTheSame(ServiceInstantiation serviceInstantiationPayload) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         final String asString = mapper.writeValueAsString(serviceInstantiationPayload);
 
@@ -303,6 +384,20 @@ TO BE FIXED
         final String asString2 = mapper.writeValueAsString(asObject);
 
         JsonAssert.assertJsonEquals(asString, asString2);
+    }
+
+    @DataProvider
+    public Object[][] aLaCarteAndMacroPayload() {
+        ServiceInstantiation macroPayload = generateMockMacroServiceInstantiationPayload(
+                false,
+                createVnfList(instanceParamsMapWithoutParams, ImmutableList.of(vnfInstanceParamsMapWithParamsToRemove, vnfInstanceParamsMapWithParamsToRemove), true),
+                2, false,PROJECT_NAME, false);
+        ServiceInstantiation aLaCartePayload = generateALaCarteServiceInstantiationPayload();
+
+        return new Object[][]{
+                {macroPayload},
+                {aLaCartePayload}
+        };
     }
 
     public static class ServiceInfoComparator implements Comparator<ServiceInfo> {
@@ -356,13 +451,13 @@ TO BE FIXED
         };
     }
 
-    private ServiceInstantiation generateMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs) {
-        return generateMockServiceInstantiationPayload(isPause, vnfs, 1, true, PROJECT_NAME, false);
+    private ServiceInstantiation generateMacroMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs) {
+        return generateMockMacroServiceInstantiationPayload(isPause, vnfs, 1, true, PROJECT_NAME, false);
     }
 
-    @Test
+    @Test(enabled = false)
     public void testUpdateServiceInfo_WithExistingServiceInfo_ServiceInfoIsUpdated() {
-        UUID uuid = createJobAndServiceInfo();
+        UUID uuid = createFakedJobAndServiceInfo();
         final String STEPH_CURRY = "Steph Curry";
         asyncInstantiationBL.updateServiceInfo(uuid, x -> {
             x.setServiceInstanceName(STEPH_CURRY);
@@ -378,7 +473,7 @@ TO BE FIXED
         return serviceInfoList.stream().filter(x -> jobId.equals(x.getJobId())).findFirst();
     }
 
-    private UUID createJobAndServiceInfo() {
+    private UUID createFakedJobAndServiceInfo() {
         UUID uuid = UUID.randomUUID();
         addNewJob(uuid);
         ServiceInfo serviceInfo = new ServiceInfo();
@@ -389,14 +484,14 @@ TO BE FIXED
         return uuid;
     }
 
-    @Test(expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
+    @Test(enabled = false, expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
     public void testUpdateServiceInfo_WithNonExisting_ThrowException() {
         asyncInstantiationBL.updateServiceInfo(UUID.randomUUID(), x -> x.setServiceInstanceName("not matter"));
     }
 
-    @Test(expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
+    @Test(enabled = false, expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
     public void testUpdateServiceInfo_WithDoubleServiceWithSameJobUuid_ThrowException() {
-        UUID uuid = createJobAndServiceInfo();
+        UUID uuid = createFakedJobAndServiceInfo();
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setJobId(uuid);
         dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
@@ -404,36 +499,45 @@ TO BE FIXED
     }
 
 
+    @DataProvider
+    public static Object[][] isPauseAndPropertyDataProvider() {
+        return new Object[][]{
+                {true, "mso.restapi.serviceInstanceAssign"},
+                {false, "mso.restapi.serviceInstanceCreate"},
+        };
+    }
 
-    @Test
-    public void testRequestPath_WithPauseFlagTrue_RequestPathIsAsExpected() {
-        ServiceInstantiation serviceInstantiationPauseFlagTrue = generateMockServiceInstantiationPayload(true, createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true));
+
+    @Test(enabled = false, dataProvider = "isPauseAndPropertyDataProvider")
+    public void testServiceInstantiationPath_RequestPathIsAsExpected(boolean isPause, String expectedProperty) {
+        ServiceInstantiation serviceInstantiationPauseFlagTrue = generateMacroMockServiceInstantiationPayload(isPause, createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true));
         String path = asyncInstantiationBL.getServiceInstantiationPath(serviceInstantiationPauseFlagTrue);
-        Assert.assertEquals(path, SystemProperties.getProperty("mso.restapi.serviceInstanceAssign"));
+        Assert.assertEquals(path, SystemProperties.getProperty(expectedProperty));
     }
 
-    @Test
-    public void testRequestPath_WithPauseFlagFalse_RequestPathIsAsExpected() {
-        ServiceInstantiation serviceInstantiationPauseFlagFalse = generateMockServiceInstantiationPayload(false, createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true));
-        String path = asyncInstantiationBL.getServiceInstantiationPath(serviceInstantiationPauseFlagFalse);
-        Assert.assertEquals(path, SystemProperties.getProperty("mso.restapi.serviceInstanceCreate"));
+    @Test(enabled = false)
+    public void testCreateVnfEndpoint_useProvidedInstanceId() {
+        String path = asyncInstantiationBL.getVnfInstantiationPath("myGreatId");
+        assertThat(path, equalTo("/serviceInstances/v7/myGreatId/vnfs"));
     }
 
-    @Test
+    @Test(enabled = false)
     public void createServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected() throws IOException {
-        createServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(true);
+        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(true);
     }
 
-    @Test
+    @Test(enabled = false)
     public void createServiceInfo_WithUserProvidedNamingFalseAndNoVfmodules_ServiceInfoIsAsExpected() throws IOException {
-        createServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(false);
+        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(false);
     }
 
-    private void createServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(boolean withVfmodules) throws IOException {
-        ServiceInstantiation serviceInstantiationPayload = generateMockServiceInstantiationPayload(true,
+    private void createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(boolean withVfmodules) throws IOException {
+        when(featureManager.isActive(Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF)).thenReturn(true);
+
+        ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
                 createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
                 1,
-                false,PROJECT_NAME, true);
+                false, PROJECT_NAME, true);
         URL resource;
         if (withVfmodules) {
             resource = this.getClass().getResource("/payload_jsons/bulk_service_request_ecomp_naming.json");
@@ -444,27 +548,183 @@ TO BE FIXED
         }
 
         RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                asyncInstantiationBL.generateServiceInstantiationRequest(null, serviceInstantiationPayload, "az2016");
+                asyncInstantiationBL.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
 
         String expected = IOUtils.toString(resource, "UTF-8");
         MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
     }
 
-    @Test
+    @Test(enabled = false)
+    public void createALaCarteService_WithUserProvidedNamingFalse_RequestDetailsIsAsExpected() throws IOException {
+        ServiceInstantiation serviceInstantiationPayload = generateMockALaCarteServiceInstantiationPayload(false,
+                newHashMap(),
+                newHashMap(),
+                newHashMap(),
+                1,
+                false, PROJECT_NAME, true, null);
+
+        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
+                asyncInstantiationBL.generateALaCarteServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
+
+        URL resource = this.getClass().getResource("/payload_jsons/bulk_alacarte_service_request_naming_false.json");
+        String expected = IOUtils.toString(resource, "UTF-8");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @Test(enabled = false)
+    public void generateALaCarteServiceInstantiationRequest_withVnfList_HappyFllow() throws IOException {
+        ServiceInstantiation serviceInstantiationPayload = generateALaCarteWithVnfsServiceInstantiationPayload();
+        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
+                asyncInstantiationBL.generateALaCarteServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
+
+        String serviceExpected = IOUtils.toString(this.getClass().getResource("/payload_jsons/bulk_alacarte_service_request.json"), "UTF-8");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(serviceExpected, result);
+    }
+
+    @Test(enabled = false, dataProvider = "createVnfParameters")
+    public void createVnfRequestDetails_detailsAreAsExpected(boolean isFlagAddCloudOwnerActive, boolean isUserProvidedNaming, String file) throws IOException {
+
+        final List<Vnf> vnfList = new ArrayList<>(createVnfList(new HashMap<>(), null, isUserProvidedNaming, true).values());
+        ModelInfo siModelInfo = createServiceModelInfo();
+        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
+
+        //we validate that the asyncInstantiationBL call to getUniqueName by simulate that aai retrun that original
+        //vnf name is used, and only next picked name is free.
+        Mockito.reset(aaiClient);
+        mockAaiClientAaiStatusOK();
+        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME), eq(ResourceType.GENERIC_VNF))).thenReturn(true);
+        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME+"_001"), eq(ResourceType.GENERIC_VNF))).thenReturn(false);
+        enableAddCloudOwnerOnMsoRequest(isFlagAddCloudOwnerActive);
+
+        String expected = IOUtils.toString(this.getClass().getResource(file), "UTF-8");
+        final RequestDetailsWrapper<VnfInstantiationRequestDetails> result = asyncInstantiationBL.generateVnfInstantiationRequest(vnfList.get(0), siModelInfo, serviceInstanceId, "pa0916");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @DataProvider
+    public static Object[][] createVnfParameters() {
+        return new Object[][]{
+                {true, true, "/payload_jsons/bulk_vnf_request.json"},
+                {false, true, "/payload_jsons/bulk_vnf_request_without_cloud_owner.json"},
+                {true, false, "/payload_jsons/bulk_vnf_request_without_instance_name.json"},
+        };
+    }
+
+    @DataProvider
+    public static Object[][] vfModuleRequestDetails(Method test) {
+        return new Object[][]{
+                {"cc3514e3-5a33-55df-13ab-12abad84e7cc", true, "/payload_jsons/vfmodule_instantiation_request.json"},
+                {null, true, "/payload_jsons/vfmodule_instantiation_request_without_volume_group.json"},
+                {null, false, "/payload_jsons/vfmodule_instantiation_request_without_instance_name.json"}
+        };
+    }
+
+    @Test(enabled = false, dataProvider = "vfModuleRequestDetails")
+    public void createVfModuleRequestDetails_detailsAreAsExpected(String volumeGroupInstanceId, boolean isUserProvidedNaming, String fileName) throws IOException {
+
+        ModelInfo siModelInfo = createServiceModelInfo();
+        ModelInfo vnfModelInfo = createVnfModelInfo(true);
+        List<Map<String, String>> instanceParams = ImmutableList.of(ImmutableMap.of("vmx_int_net_len", "24",
+                "vre_a_volume_size_0" , "120"));
+        Map<String, String> supplementaryParams = ImmutableMap.of("vre_a_volume_size_0" , "100",
+                "availability_zone_0" , "mtpocdv-kvm-az01");
+        VfModule vfModule = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
+                "72d9d1cd-f46d-447a-abdb-451d6fb05fa8", instanceParams, supplementaryParams,
+                (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion": null), "myVgName", true);
+
+        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
+        String vnfInstanceId = "bb3514e3-5a33-55df-13ab-12abad84e7bb";
+
+        Mockito.reset(aaiClient);
+        mockAaiClientAaiStatusOK();
+        enableAddCloudOwnerOnMsoRequest();
+        when(aaiClient.isNodeTypeExistsByName(eq("vmxnjr001_AVPN_base_vRE_BV_expansion"), eq(ResourceType.VF_MODULE))).thenReturn(false);
+
+        String expected = IOUtils.toString(this.getClass().getResource(fileName), "UTF-8");
+        final RequestDetailsWrapper<VfModuleInstantiationRequestDetails> result = asyncInstantiationBL.generateVfModuleInstantiationRequest(
+                vfModule, siModelInfo, serviceInstanceId,
+                vnfModelInfo, vnfInstanceId, volumeGroupInstanceId, "pa0916");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @DataProvider
+    public static Object[][] expectedAggregatedParams() {
+        return new Object[][]{
+                {ImmutableMap.of("a", "b", "c", "d"), ImmutableMap.of("e", "f", "g", "h"), ImmutableList.of(ImmutableMap.of("c", "d", "a", "b", "e", "f", "g", "h"))},
+                {ImmutableMap.of("a", "b", "c", "g"), ImmutableMap.of("c", "d", "e", "f"), ImmutableList.of(ImmutableMap.of("a", "b", "c", "d", "e", "f"))},
+                {ImmutableMap.of(), ImmutableMap.of("c", "d", "e", "f"), ImmutableList.of(ImmutableMap.of("c", "d", "e", "f"))},
+                {ImmutableMap.of("a", "b", "c", "g"), ImmutableMap.of(), ImmutableList.of(ImmutableMap.of("a", "b", "c", "g"))},
+                {ImmutableMap.of(), ImmutableMap.of(), ImmutableList.of()},
+                {null, ImmutableMap.of(), ImmutableList.of()},
+                {ImmutableMap.of(), null, ImmutableList.of()},
+        };
+    }
+
+    @Test(enabled = false, dataProvider = "expectedAggregatedParams")
+    public void testAggregateInstanceParamsAndSuppFile(Map<String, String> instanceParams, Map<String, String> suppParams, List<VfModuleInstantiationRequestDetails.UserParamMap<String, String>> expected) {
+        List<VfModuleInstantiationRequestDetails.UserParamMap<String, String>> aggParams = ((AsyncInstantiationBusinessLogicImpl)asyncInstantiationBL).aggregateAllInstanceParams(instanceParams, suppParams);
+        assertThat("Aggregated params are not as expected", aggParams, equalTo(expected));
+    }
+
+    @DataProvider
+    public static Object[][] expectedNetworkRequestDetailsParameters() {
+        return new Object[][]{
+            {true, "/payload_jsons/network_instantiation_request.json"},
+            {false, "/payload_jsons/network_instantiation_request_without_instance_name.json"}
+        };
+    }
+
+    @Test(enabled = false, dataProvider = "expectedNetworkRequestDetailsParameters")
+    public void createNetworkRequestDetails_detailsAreAsExpected(boolean isUserProvidedNaming, String filePath) throws IOException {
+
+        final List<Network> networksList = new ArrayList<>(createNetworkList(null, isUserProvidedNaming, true).values());
+        ModelInfo siModelInfo = createServiceModelInfo();
+        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
+
+        Mockito.reset(aaiClient);
+        mockAaiClientAaiStatusOK();
+        enableAddCloudOwnerOnMsoRequest();
+        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME), eq(ResourceType.L3_NETWORK))).thenReturn(true);
+        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME+"_001"), eq(ResourceType.L3_NETWORK))).thenReturn(false);
+
+        String expected = IOUtils.toString(this.getClass().getResource(filePath), "UTF-8");
+        final RequestDetailsWrapper<NetworkInstantiationRequestDetails> result = asyncInstantiationBL.generateNetworkInstantiationRequest(networksList.get(0), siModelInfo, serviceInstanceId, "pa0916");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @Test(enabled = false)
+    public void createInstanceGroupRequestDetails_detailsAreAsExpected() throws IOException {
+
+        final InstanceGroup instanceGroup = createInstanceGroup(true, Action.Create);
+        ModelInfo siModelInfo = createServiceModelInfo();
+        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
+
+        Mockito.reset(aaiClient);
+        mockAaiClientAaiStatusOK();
+        enableAddCloudOwnerOnMsoRequest();
+        when(aaiClient.isNodeTypeExistsByName(eq(VNF_GROUP_NAME), eq(ResourceType.INSTANCE_GROUP))).thenReturn(true);
+        when(aaiClient.isNodeTypeExistsByName(eq(VNF_GROUP_NAME+"_001"), eq(ResourceType.INSTANCE_GROUP))).thenReturn(false);
+
+        String expected = IOUtils.toString(this.getClass().getResource("/payload_jsons/instance_group_instantiation_request.json"), "UTF-8");
+        final RequestDetailsWrapper<InstanceGroupInstantiationRequestDetails> result = asyncInstantiationBL.generateInstanceGroupInstantiationRequest(instanceGroup, siModelInfo, serviceInstanceId, "az2018");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @Test(enabled = false)
     public void checkIfNullProjectNameSentToMso(){
-        ServiceInstantiation serviceInstantiationPayload = generateMockServiceInstantiationPayload(true,
+        ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
                 createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
                 1,
                 false,null,false);
         RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                asyncInstantiationBL.generateServiceInstantiationRequest(null, serviceInstantiationPayload, "az2016");
+                asyncInstantiationBL.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
         JsonNode jsonNode = new ObjectMapper().valueToTree(result.requestDetails);
         Assert.assertTrue(jsonNode.get("project").isNull());
-        serviceInstantiationPayload = generateMockServiceInstantiationPayload(true,
+        serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
                 createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
                 1,
                 false,"not null",false);
-        result = asyncInstantiationBL.generateServiceInstantiationRequest(null, serviceInstantiationPayload, "az2016");
+        result = asyncInstantiationBL.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
         jsonNode = new ObjectMapper().valueToTree(result.requestDetails);
         Assert.assertTrue(jsonNode.get("project").get("projectName").asText().equalsIgnoreCase("not null"));
 
@@ -472,19 +732,40 @@ TO BE FIXED
 
     }
 
-    @Test
-    public void pushBulkJob_verifyCreatedDateBehavior_createdDateIsTheSameForAllServicesInSameBulk() {
+    @Test(enabled = false)
+    public void pushBulkJob_macroServiceverifyCreatedDateBehavior_createdDateIsTheSameForAllServicesInSameBulk() {
         LocalDateTime startTestDate = LocalDateTime.now().withNano(0);
-        final ServiceInstantiation request = generateMockServiceInstantiationPayload(
+        final ServiceInstantiation request = generateMockMacroServiceInstantiationPayload(
                 false,
                 createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
                 100, true,PROJECT_NAME, true
         );
 
-        // in "createJob()" we will probe the service, with the generated names
-        final Job job = mock(Job.class);
-        when(job.getStatus()).thenReturn(PENDING);
-        when(jobAdapter.createJob(any(), any(), any(), any(), any())).thenReturn(job);
+        pushJobAndAssertDates(startTestDate, request);
+    }
+
+    @Test(enabled = false)
+    public void whenCreateServiceInfo_thenModelId_isModelVersionId() {
+        ServiceInfo serviceInfo = asyncInstantiationBL.createServiceInfo("userID",
+                generateALaCarteWithVnfsServiceInstantiationPayload(),
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                new Date(),
+                "myName", ServiceInfo.ServiceAction.INSTANTIATE);
+        assertEquals(SERVICE_MODEL_VERSION_ID, serviceInfo.getServiceModelId());
+
+    }
+
+    @Test(enabled = false)
+    public void pushBulkJob_aLaCarteServiceverifyCreatedDateBehavior_createdDateIsTheSameForAllServicesInSameBulk() {
+        LocalDateTime startTestDate = LocalDateTime.now().withNano(0);
+        final ServiceInstantiation request = generateALaCarteServiceInstantiationPayload();
+        pushJobAndAssertDates(startTestDate, request);
+    }
+
+    protected void pushJobAndAssertDates(LocalDateTime startTestDate, ServiceInstantiation request) {
+        // in "createServiceInstantiationJob()" we will probe the service, with the generated names
+        configureMockitoWithMockedJob();
 
         asyncInstantiationBL.pushBulkJob(request, "myUserId");
         List<ServiceInfo> serviceInfoList = dataAccessService.getList(ServiceInfo.class, getPropsMap());
@@ -500,6 +781,13 @@ TO BE FIXED
         LocalDateTime creationDate = fromDate(creationDates.get(0));
         assertFalse(creationDate.isBefore(startTestDate));
         assertFalse(creationDate.isAfter(endTestDate));
+    }
+
+    protected void configureMockitoWithMockedJob() {
+        Mockito.reset(jobAdapterMock);
+        final Job job = mock(Job.class);
+        when(job.getStatus()).thenReturn(PENDING);
+        when(jobAdapterMock.createServiceInstantiationJob(any(), any(), any(), any(), any(), any())).thenReturn(job);
     }
 
     @DataProvider
@@ -519,8 +807,8 @@ TO BE FIXED
         };
     }
 
-    @Test(dataProvider = "msoToJobStatusDataProvider")
-    void whenGetStatusFromMso_calcRightJobStatus(String msoStatus, Job.JobStatus expectedJobStatus) {
+    @Test(enabled = false, dataProvider = "msoToJobStatusDataProvider")
+    public void whenGetStatusFromMso_calcRightJobStatus(String msoStatus, Job.JobStatus expectedJobStatus) {
         AsyncRequestStatus asyncRequestStatus = asyncRequestStatusResponse(msoStatus);
         assertThat(asyncInstantiationBL.calcStatus(asyncRequestStatus), equalTo(expectedJobStatus));
     }
@@ -564,7 +852,7 @@ TO BE FIXED
     }
 
 
-    @Test(dataProvider = "auditStatuses")
+    @Test(enabled = false, dataProvider = "auditStatuses")
     public void givenSomeAuditStatuses_getStatusesOfSpecificSourceAndJobId_getSortedResultsMatchingToParameters(SourceStatus expectedSource, String [] expectedSortedStatuses){
         UUID jobUuid = UUID.randomUUID();
         List<JobAuditStatus> auditStatusList = com.google.common.collect.ImmutableList.of(
@@ -582,7 +870,7 @@ TO BE FIXED
 
 
 
-    @Test
+    @Test(enabled = false)
     public void addSomeVidStatuses_getThem_verifyGetInsertedWithoutDuplicates(){
         ImmutableList<JobStatus> statusesToBeInserted = ImmutableList.of(PENDING, IN_PROGRESS, IN_PROGRESS, COMPLETED);
         UUID jobUuid = UUID.randomUUID();
@@ -627,7 +915,7 @@ TO BE FIXED
         };
     }
 
-    @Test(dataProvider = "msoAuditStatuses")
+    @Test(enabled = false, dataProvider = "msoAuditStatuses")
     public void addSomeMsoStatuses_getThem_verifyGetInsertedWithoutDuplicates(UUID jobUuid, ImmutableList<JobAuditStatus> msoStatuses, ImmutableList<String> expectedStatuses, String assertionReason) {
         msoStatuses.forEach(status -> {
             asyncInstantiationBL.auditMsoStatus(status.getJobId(), status.getJobStatus(), status.getRequestId() != null ? status.getRequestId().toString() : null, status.getAdditionalInfo());
@@ -636,7 +924,7 @@ TO BE FIXED
         assertThat( assertionReason, statusesFromDB, is(expectedStatuses));
     }
 
-    @Test
+    @Test(enabled = false)
     public void addSameStatusOfVidAndMso_verifyThatBothWereAdded(){
         UUID jobUuid = UUID.randomUUID();
         JobStatus sameStatus = IN_PROGRESS;
@@ -650,45 +938,35 @@ TO BE FIXED
         assertThat(list,everyItem(hasProperty("jobStatus", is(sameStatus.toString()))));
     }
 
-    @Test
-    public void verifyAsyncRequestStatus_canBeReadFromSample() throws IOException {
-        String body = "{" +
-                "  \"request\": {" +
-                "    \"requestId\": \"c0011670-0e1a-4b74-945d-8bf5aede1d9c\"," +
-                "    \"startTime\": \"Mon, 11 Dec 2017 07:27:49 GMT\"," +
-                "    \"requestScope\": \"service\"," +
-                "    \"requestType\": \"createInstance\"," +
-                "    \"instanceReferences\": {" +
-                "      \"serviceInstanceId\": \"f8791436-8d55-4fde-b4d5-72dd2cf13cfb\"," +
-                "      \"serviceInstanceName\": \"asdfasdf234234asdf\"," +
-                "      \"requestorId\": \"il883e\"" +
-                "    }," +
-                "    \"requestStatus\": {" +
-                "      \"requestState\": \"COMPLETE\"," +
-                "      \"statusMessage\": \"Service Instance was created successfully.\"," +
-                "      \"percentProgress\": 100," +
-                "      \"finishTime\": \"Mon, 11 Dec 2017 07:27:53 GMT\"" +
-                "    }" +
-                "  }" +
-                "}";
-        ObjectMapper objectMapper = new ObjectMapper();
-        AsyncRequestStatus asyncRequestStatus = objectMapper.readValue(body, AsyncRequestStatus.class);
-        assertThat(asyncRequestStatus.request.requestStatus.getRequestState(), equalTo("COMPLETE"));
-
+    @DataProvider
+    public static Object[][] msoRequestStatusFiles(Method test) {
+        return new Object[][]{
+                {"/responses/mso/orchestrationRequestsServiceInstance.json"},
+                {"/responses/mso/orchestrationRequestsVnf.json"},
+                {"/responses/mso/orchestrationRequestsMockedMinimalResponse.json"}
+        };
     }
 
-    @Test
+    @Test(enabled = false, dataProvider="msoRequestStatusFiles")
+    public void verifyAsyncRequestStatus_canBeReadFromSample(String msoResponseFile) throws IOException {
+        AsyncRequestStatus asyncRequestStatus = TestUtils.readJsonResourceFileAsObject(
+                msoResponseFile,
+                AsyncRequestStatus.class);
+        assertThat(asyncRequestStatus.request.requestStatus.getRequestState(), equalTo("COMPLETE"));
+    }
+
+    @Test(enabled = false)
     public void deleteJobInfo_pending_deleted() {
-        doNothing().when(jobsBrokerService).delete(any());
+        doNothing().when(jobsBrokerServiceMock).delete(any());
         UUID uuid = createServicesInfoWithDefaultValues(PENDING);
         asyncInstantiationBL.deleteJob(uuid);
         assertNotNull(asyncInstantiationBL.getServiceInfoByJobId(uuid).getDeletedAt(), "service info wasn't deleted");
     }
 
-    @Test(expectedExceptions = IllegalStateException.class, expectedExceptionsMessageRegExp = DELETE_SERVICE_INFO_STATUS_EXCEPTION_MESSAGE)
+    @Test(enabled = false, expectedExceptions = IllegalStateException.class, expectedExceptionsMessageRegExp = DELETE_SERVICE_INFO_STATUS_EXCEPTION_MESSAGE)
     public void deleteJobInfo_notAllowdStatus_shouldSendError() {
         UUID uuid = createServicesInfoWithDefaultValues(COMPLETED);
-        doThrow(new IllegalStateException(DELETE_SERVICE_INFO_STATUS_EXCEPTION_MESSAGE)).when(jobsBrokerService).delete(any());
+        doThrow(new IllegalStateException(DELETE_SERVICE_INFO_STATUS_EXCEPTION_MESSAGE)).when(jobsBrokerServiceMock).delete(any());
         try {
             asyncInstantiationBL.deleteJob(uuid);
         } catch (Exception e) {
@@ -704,7 +982,7 @@ TO BE FIXED
                 .map(v -> new Object[]{v}).collect(Collectors.toList()).toArray(new Object[][]{});
     }
 
-    @Test(dataProvider = "jobStatusesFinal")
+    @Test(enabled = false, dataProvider = "jobStatusesFinal")
     public void whenHideService_theServiceNotReturnedInServiceList(JobStatus jobStatus) {
         UUID uuidToHide = createServicesInfoWithDefaultValues(jobStatus);
         UUID uuidToShown = createServicesInfoWithDefaultValues(jobStatus);
@@ -729,7 +1007,7 @@ TO BE FIXED
                 .map(v -> new Object[]{v}).collect(Collectors.toList()).toArray(new Object[][]{});
     }
 
-    @Test(  dataProvider = "jobStatusesNotFinal",
+    @Test(enabled = false, dataProvider = "jobStatusesNotFinal",
             expectedExceptions = OperationNotAllowedException.class,
             expectedExceptionsMessageRegExp = "jobId.*Service status does not allow hide service, status = .*")
     public void hideServiceInfo_notAllowedStatus_shouldSendError(JobStatus jobStatus) {
@@ -742,14 +1020,14 @@ TO BE FIXED
         }
     }
 
-    @Test
+    @Test(enabled = false)
     public void whenUseGetCounterInMultiThreads_EachThreadGetDifferentCounter() throws InterruptedException {
         int SIZE = 200;
         ExecutorService executor = Executors.newFixedThreadPool(SIZE);
-        List<Callable<Integer>> tasks = IntStream.rangeClosed(1, SIZE)
+        List<Callable<Integer>> tasks = IntStream.rangeClosed(0, SIZE)
                 .mapToObj(x-> ((Callable<Integer>)() -> asyncInstantiationBL.getCounterForName("a")))
                 .collect(Collectors.toList());
-        Set<Integer> expectedResults = IntStream.rangeClosed(1, SIZE).boxed().collect(Collectors.toSet());
+        Set<Integer> expectedResults = IntStream.rangeClosed(0, SIZE).boxed().collect(Collectors.toSet());
         executor.invokeAll(tasks)
                 .forEach(future -> {
                     try {
@@ -763,23 +1041,23 @@ TO BE FIXED
         assertThat(expectedResults.size(), is(0));
     }
 
-    @Test
+    @Test(enabled = false)
     public void whenUseGetCounterForSameName_numbersReturnedByOrder() {
 
         String name = UUID.randomUUID().toString();
         int SIZE=10;
-        for (int i=1; i<=SIZE; i++) {
+        for (int i=0; i<SIZE; i++) {
             assertThat(asyncInstantiationBL.getCounterForName(name), is(i));
         }
     }
 
-    @Test
+    @Test(enabled = false)
     public void whenNamedInUsedInAai_getNextNumber() {
         String name = someCommonStepsAndGetName();
         ResourceType type = ResourceType.GENERIC_VNF;
-        when(aaiClient.searchNodeTypeByName(name+"_001", type)).thenReturn(aaiNodeQueryResponseNameUsed(type));
-        when(aaiClient.searchNodeTypeByName(name+"_002", type)).thenReturn(aaiNodeQueryResponseNameFree());
-        assertThat(asyncInstantiationBL.getUniqueName(name, type), equalTo(name+"_002"));
+        when(aaiClient.isNodeTypeExistsByName(name, type)).thenReturn(true);
+        when(aaiClient.isNodeTypeExistsByName(name+"_001", type)).thenReturn(false);
+        assertThat(asyncInstantiationBL.getUniqueName(name, type), equalTo(name+"_001"));
     }
 
     private String someCommonStepsAndGetName() {
@@ -788,32 +1066,335 @@ TO BE FIXED
     }
 
     private void mockAaiClientAaiStatusOK() {
-        when(aaiClient.searchNodeTypeByName(eq(AsyncInstantiationBusinessLogicImpl.NAME_FOR_CHECK_AAI_STATUS), any())).thenReturn(aaiNodeQueryResponseNameFree());
+        when(aaiClient.isNodeTypeExistsByName(eq(AsyncInstantiationBusinessLogicImpl.NAME_FOR_CHECK_AAI_STATUS), any())).thenReturn(false);
     }
 
-    @Test(expectedExceptions=InvalidAAIResponseException.class)
+    @Test(enabled = false, expectedExceptions=ExceptionWithRequestInfo.class)
     public void whenAaiBadResponseCode_throwInvalidAAIResponseException() {
         String name = someCommonStepsAndGetName();
         ResourceType type = ResourceType.SERVICE_INSTANCE;
-        when(aaiClient.searchNodeTypeByName(name+"_001", type)).thenReturn(aaiNodeQueryBadResponse());
+        when(aaiClient.isNodeTypeExistsByName(name, type)).thenThrow(aaiNodeQueryBadResponseException());
         asyncInstantiationBL.getUniqueName(name, type);
     }
 
-    @Test(expectedExceptions=MaxRetriesException.class)
+    @Test(enabled = false, expectedExceptions=MaxRetriesException.class)
     public void whenAaiAlwaysReturnNameUsed_throwInvalidAAIResponseException() {
         String name = someCommonStepsAndGetName();
         ResourceType type = ResourceType.VF_MODULE;
-        when(aaiClient.searchNodeTypeByName(any(), eq(type))).thenReturn(aaiNodeQueryResponseNameUsed(type));
+        when(aaiClient.isNodeTypeExistsByName(any(), eq(type))).thenReturn(true);
         asyncInstantiationBL.setMaxRetriesGettingFreeNameFromAai(10);
         asyncInstantiationBL.getUniqueName(name, type);
     }
 
-    @Test
+    @Test(enabled = false)
     public void testFormattingOfNameAndCounter() {
         AsyncInstantiationBusinessLogicImpl bl = (AsyncInstantiationBusinessLogicImpl) asyncInstantiationBL;
+        assertThat(bl.formatNameAndCounter("x", 0), equalTo("x"));
         assertThat(bl.formatNameAndCounter("x", 3), equalTo("x_003"));
         assertThat(bl.formatNameAndCounter("x", 99), equalTo("x_099"));
         assertThat(bl.formatNameAndCounter("x", 100), equalTo("x_100"));
         assertThat(bl.formatNameAndCounter("x", 1234), equalTo("x_1234"));
-    }*/
+    }
+
+    @Test(enabled = false)
+    public void pushBulkJob_verifyAlacarteFlow_useALaCartServiceInstantiationJobType(){
+        final ServiceInstantiation request = generateALaCarteServiceInstantiationPayload();
+
+        // in "createServiceInstantiationJob()" we will probe the service, with the generated names
+        configureMockitoWithMockedJob();
+
+        ArgumentCaptor<JobType> argumentCaptor = ArgumentCaptor.forClass(JobType.class);
+        asyncInstantiationBL.pushBulkJob(request, "myUserId");
+        verify(jobAdapterMock).createServiceInstantiationJob(argumentCaptor.capture(),any(),any(),anyString(), anyString(), anyInt());
+        assertTrue(argumentCaptor.getValue().equals(JobType.ALaCarteServiceInstantiation));
+    }
+
+    @Test(enabled = false)
+    public void pushBulkJob_verifyMacroFlow_useMacroServiceInstantiationJobType(){
+        final ServiceInstantiation request = generateMacroMockServiceInstantiationPayload(false, Collections.emptyMap());
+
+        // in "createServiceInstantiationJob()" we will probe the service, with the generated names
+        configureMockitoWithMockedJob();
+
+        ArgumentCaptor<JobType> argumentCaptor = ArgumentCaptor.forClass(JobType.class);
+        asyncInstantiationBL.pushBulkJob(request, "myUserId");
+        verify(jobAdapterMock).createServiceInstantiationJob(argumentCaptor.capture(),any(),any(),anyString(), anyString(), anyInt());
+        assertTrue(argumentCaptor.getValue().equals(JobType.MacroServiceInstantiation));
+    }
+
+    @Test(enabled = false)
+    public void generateALaCarteServiceInstantiationRequest_verifyRequestIsAsExpected() throws IOException {
+        ServiceInstantiation serviceInstantiationPayload = generateALaCarteServiceInstantiationPayload();
+        final URL resource = this.getClass().getResource("/payload_jsons/bulk_alacarte_service_request.json");
+        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
+                asyncInstantiationBL.generateALaCarteServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
+        String expected = IOUtils.toString(resource, "UTF-8");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @Test(enabled = false)
+    public void generateALaCarteServiceDeletionRequest_verifyRequestIsAsExpected() throws IOException {
+        final URL resource = this.getClass().getResource("/payload_jsons/bulk_alacarte_service_deletion_request.json");
+        String expected = IOUtils.toString(resource, "UTF-8");
+
+        ServiceInstantiation serviceDeletionPayload = generateALaCarteServiceDeletionPayload();
+        RequestDetailsWrapper<ServiceDeletionRequestDetails> result =
+                asyncInstantiationBL.generateALaCarteServiceDeletionRequest(null, serviceDeletionPayload, "az2016");
+
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @Test(enabled = false)
+    public void getALaCarteServiceDeletionPath_verifyPathIsAsExpected() throws IOException {
+
+        String expected = "/serviceInstantiation/v7/serviceInstances/f36f5734-e9df-4fbf-9f35-61be13f028a1";
+
+        String result = asyncInstantiationBL.getServiceDeletionPath("f36f5734-e9df-4fbf-9f35-61be13f028a1");
+
+        assertThat(expected,equalTo(result));
+    }
+
+    @Test(enabled = false)
+    public void getInstanceGroupsDeletionPath_verifyPathIsAsExpected()  {
+
+        assertEquals(asyncInstantiationBL.getInstanceGroupDeletePath("9aada4af-0f9b-424f-ae21-e693bd3e005b"),
+                "/serviceInstantiation/v7/instanceGroups/9aada4af-0f9b-424f-ae21-e693bd3e005b");
+    }
+
+    @DataProvider
+    public static Object[][] testBuildVnfInstanceParamsDataProvider(Method test) {
+        return new Object[][]{
+                {
+                    Collections.EMPTY_LIST,
+                    ImmutableList.of(
+                        ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
+                        ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2"))
+                    ),
+                    true,
+                    ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2","k3","v3"))
+                },
+                {
+                        ImmutableList.of(ImmutableMap.of("j1", "w1", "k1","v1", "vnf_name","w2", "vf_module_name","w3")), //vnf_name, vf_module_name are excluded
+                        ImmutableList.of(
+                                ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
+                                ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2")),
+                                ImmutableList.of(Collections.EMPTY_MAP),
+                                Collections.singletonList(null)
+                        ),
+                        true,
+                        ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2","k3","v3","j1", "w1"))
+                },
+                {
+                        Collections.EMPTY_LIST,
+                        Arrays.asList(null, null),
+                        true,
+                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
+                },
+                {
+                        ImmutableList.of(Collections.EMPTY_MAP),
+                        ImmutableList.of(
+                                ImmutableList.of(Collections.EMPTY_MAP),
+                                ImmutableList.of(Collections.EMPTY_MAP)
+                        ),
+                        true,
+                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
+                },
+                {
+                        Collections.EMPTY_LIST,
+                        ImmutableList.of(
+                                ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
+                                ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2"))
+                        ),
+                        false,
+                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
+                },
+                {
+                        ImmutableList.of(ImmutableMap.of("j1", "w1", "k1","v1", "vnf_name","w2", "vf_module_name","w3")),
+                        ImmutableList.of(
+                                ImmutableList.of(Collections.EMPTY_MAP)
+                        ),
+                        false,
+                        ImmutableList.of(ImmutableMap.of("j1", "w1", "k1","v1"))
+                },
+                {
+                        ImmutableList.of(ImmutableMap.of("vnf_name","w2", "vf_module_name", "w3", "j2", "w2", "j4","w4")),
+                        ImmutableList.of(
+                                ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
+                                ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2"))
+                        ),
+                        false,
+                        ImmutableList.of(ImmutableMap.of("j2", "w2", "j4","w4"))
+                },
+
+        };
+    }
+
+    @Test(enabled = false, dataProvider="testBuildVnfInstanceParamsDataProvider")
+    public void testBuildVnfInstanceParams(List<Map<String, String>> currentVnfInstanceParams,
+                                           List<List<Map<String, String>>> vfModulesInstanceParams,
+                                           boolean isFeatureActive,
+                                           List<Map<String,String>> expectedResult){
+        when(featureManager.isActive(Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF)).thenReturn(isFeatureActive);
+        List<VfModuleMacro> vfModules =
+                vfModulesInstanceParams.stream().map(params-> new VfModuleMacro(new ModelInfo(), null, null, params)).collect(Collectors.toList());
+        List<Map<String,String>> actual = asyncInstantiationBL.buildVnfInstanceParams(currentVnfInstanceParams, vfModules);
+        assertThat(actual, equalTo(expectedResult));
+
+    }
+
+    @Test(enabled = false)
+    public void whenLcpRegionNotEmpty_thenCloudRegionIdOfResourceIsLegacy() {
+        String legacyCloudRegion = "legacyCloudRegion";
+        Vnf vnf = new Vnf(new ModelInfo(), null, null, Action.Create.name(), null, "anyCloudRegion", legacyCloudRegion, null, null, null, false, null, null);
+        assertThat(vnf.getLcpCloudRegionId(), equalTo(legacyCloudRegion));
+
+
+    }
+
+    @Test(enabled = false)
+    public void whenLcpRegionNotEmpty_thenCloudRegionIdOfServiceIsLegacy() {
+        String legacyCloudRegion = "legacyCloudRegion";
+        ServiceInstantiation service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
+                null, null, "anyCloudRegion", legacyCloudRegion, null, null, null, null, null, null, null, null,
+                false, 1,false, false, null, null, Action.Create.name());
+        assertThat(service.getLcpCloudRegionId(), equalTo(legacyCloudRegion));
+    }
+
+    @Test(enabled = false)
+    public void createVolumeGroup_verifyResultAsExpected() throws IOException {
+        final URL resource = this.getClass().getResource("/payload_jsons/volumegroup_instantiation_request.json");
+        VfModule vfModule = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1",
+                "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
+                "72d9d1cd-f46d-447a-abdb-451d6fb05fa8",
+                Collections.emptyList(),
+                Collections.emptyMap(),
+                "vmxnjr001_AVPN_base_vRE_BV_expansion",
+                "myVgName",
+                true);
+        vfModule.getModelInfo().setModelInvariantId("ff5256d2-5a33-55df-13ab-12abad84e7ff");
+        vfModule.getModelInfo().setModelVersion("1");
+        ModelInfo vnfModelInfo = createVnfModelInfo(true);
+        RequestDetailsWrapper<VolumeGroupRequestDetails> result =
+                asyncInstantiationBL.generateVolumeGroupInstantiationRequest(vfModule,
+                        createServiceModelInfo(),
+                       "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+                        vnfModelInfo,
+                        "vnfInstanceId",
+                        "az2016");
+        String expected = IOUtils.toString(resource, "UTF-8");
+        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    }
+
+    @Test(enabled = false)
+    public void getJobTypeByRequest_verifyResultAsExpected(){
+        ServiceInstantiation service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null,
+                false, 1,false, false, null, null, Action.Create.name());
+        JobType jobType = asyncInstantiationBL.getJobType(service) ;
+        assertThat(jobType, equalTo(JobType.MacroServiceInstantiation));
+        service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null,
+                false, 1,false, true, null, null, Action.Create.name());
+        jobType = asyncInstantiationBL.getJobType(service);
+        assertThat(jobType, equalTo(JobType.ALaCarteServiceInstantiation));
+        service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null,
+                false, 1,false, true, null, null, Action.Delete.name());
+        jobType = asyncInstantiationBL.getJobType(service);
+        assertThat(jobType, equalTo(JobType.ALaCarteService));
+    }
+
+    protected ServiceInstantiation generateALaCarteServiceInstantiationPayload() {
+        return generateMockALaCarteServiceInstantiationPayload(false, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API");
+    }
+
+    private ServiceInstantiation generateALaCarteServiceDeletionPayload() {
+        return generateMockALaCarteServiceDeletionPayload(false, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
+    }
+
+    static class MockedJob implements Job {
+
+        private static Map<UUID, MockedJob> uuidToJob = new HashMap<>();
+
+        public static void putJob(UUID uuid, MockedJob job) {
+            uuidToJob.put(uuid, job);
+        }
+
+        public static MockedJob getJob(UUID uuid) {
+            return uuidToJob.get(uuid);
+        }
+
+
+        private String optimisticUniqueServiceInstanceName;
+
+        public MockedJob(String optimisticUniqueServiceInstanceName) {
+            this.optimisticUniqueServiceInstanceName = optimisticUniqueServiceInstanceName;
+        }
+
+        private UUID uuid = UUID.randomUUID();
+
+        @Override
+        public UUID getUuid() {
+            return uuid;
+        }
+
+        @Override
+        public void setUuid(UUID uuid) {
+            this.uuid = uuid;
+        }
+
+        @Override
+        public JobStatus getStatus() {
+            return JobStatus.PENDING;
+        }
+
+        @Override
+        public void setStatus(JobStatus status) {
+
+        }
+
+        @Override
+        public Map<String, Object> getData() {
+            return null;
+        }
+
+        @Override
+        public JobSharedData getSharedData() {
+            return new JobSharedData(uuid, "", null);
+        }
+
+        @Override
+        public void setTypeAndData(JobType jobType, Map<String, Object> commandData) {
+
+        }
+
+        @Override
+        public UUID getTemplateId() {
+            return null;
+        }
+
+        @Override
+        public void setTemplateId(UUID templateId) {
+
+        }
+
+        @Override
+        public Integer getIndexInBulk() {
+            return null;
+        }
+
+        @Override
+        public void setIndexInBulk(Integer indexInBulk) {
+
+        }
+
+        @Override
+        public JobType getType() {
+            return null;
+        }
+
+        public String getOptimisticUniqueServiceInstanceName() {
+            return optimisticUniqueServiceInstanceName;
+        }
+    }
 }

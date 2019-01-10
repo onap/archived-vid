@@ -1,9 +1,9 @@
 package org.onap.vid.mso.rest;
 
-import java.util.Map;
-
 import org.junit.Test;
-import org.onap.vid.domain.mso.ModelInfo;
+import org.onap.vid.mso.model.ModelInfo;
+
+import java.util.Map;
 
 
 public class RelatedInstanceTest {

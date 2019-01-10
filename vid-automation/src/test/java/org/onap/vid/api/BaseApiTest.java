@@ -1,11 +1,10 @@
 package org.onap.vid.api;
 
-import com.att.automation.common.report_portal_integration.listeners.ReportPortalListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.primitives.Ints;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.glassfish.jersey.client.ClientProperties;
@@ -19,7 +18,6 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import vid.automation.test.infra.FeaturesTogglingConfiguration;
 import vid.automation.test.services.UsersService;
 import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
@@ -44,7 +42,6 @@ import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 
-@Listeners(ReportPortalListener.class)
 public class BaseApiTest {
     protected static final Logger LOGGER = LogManager.getLogger(BaseApiTest.class);
 
@@ -100,7 +97,7 @@ public class BaseApiTest {
         static String password = "euser";
 
         static final int userId = 2222;
-        static final String loginId = "ab2222";
+        static final String loginId = "vid1";
         static final int roleId = 2222221;
         static final int logRoleId = 2222222;
     }

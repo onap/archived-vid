@@ -1,6 +1,7 @@
 package org.onap.vid.scheduler;
 
 import org.junit.Test;
+import org.onap.vid.mso.RestObject;
 
 public class RestObjectTest {
 
@@ -46,23 +47,4 @@ public class RestObjectTest {
         result = testSubject.getStatusCode();
     }
 
-    @Test
-    public void testSetUUID() throws Exception {
-        RestObject testSubject;
-        String uuid = "";
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setUUID(uuid);
-    }
-
-    @Test
-    public void testGetUUID() throws Exception {
-        RestObject testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getUUID();
-    }
 }

@@ -52,9 +52,7 @@ public class VidServiceImpl implements VidService {
      * The Constant LOG.
      */
     private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(VidServiceImpl.class);
-    /**
-     * The Constant dateFormat.
-     */
+
     protected final AsdcClient asdcClient;
     private final FeatureManager featureManager;
 
@@ -126,7 +124,7 @@ public class VidServiceImpl implements VidService {
             final Service asdcServiceMetadata = asdcClient.getService(UUID.fromString(uuid));
             return getServiceModel(uuid, serviceCsar, tosca, asdcServiceMetadata);
         } catch (Exception e) {
-            LOG.error("Failed to download and proccess service from SDC", e);
+            LOG.error("Failed to download and process service from SDC", e);
         }
         return serviceModel;
     }

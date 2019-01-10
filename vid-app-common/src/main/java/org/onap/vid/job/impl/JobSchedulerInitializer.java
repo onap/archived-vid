@@ -1,12 +1,12 @@
 package org.onap.vid.job.impl;
 
 import com.google.common.collect.ImmutableMap;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.JobCommandFactory;
 import org.onap.vid.properties.Features;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -46,7 +46,9 @@ public class JobSchedulerInitializer {
             return;
         }
         scheduleJobWorker(Job.JobStatus.PENDING, 1);
+        scheduleJobWorker(Job.JobStatus.CREATING, 1);
         scheduleJobWorker(Job.JobStatus.IN_PROGRESS, 1);
+        scheduleJobWorker(Job.JobStatus.RESOURCE_IN_PROGRESS, 1);
     }
 
     private void scheduleJobWorker(Job.JobStatus topic, int intervalInSeconds) {
