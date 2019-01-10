@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_2d2a6390",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-10T11:25:17Z",
+      "side": 1,
+      "message": "Thanks for the ONAP resource. I had no clue. :)\nI\u0027m happy for the discussion in SO. I\u0027m almost convinced.\n\nAnyhow, I\u0027ve installed the style-guide and this will improve my next fixes.",
+      "parentUuid": "9adffdf1_a99088ed",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_6a385b3d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/CacheProviderWithLoadingCacheTest.java",
         "patchSetId": 10
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "I see no advantage in using random names over static ones here. There are however some disadvantages - for example when test (randomly) fails we have no idea why, and we have no way to reproduce it without having those random values. Also when random test fails it encourages developer to just the test again instead of fixing it.\n\nSome of tests here actually can randomly fail - for example in test cacheProvider_sameProviderSupportDifferentKV if two randomly generated names are the same then test fails. Using static names could easly avoid such situation.",
       "parentUuid": "9adffdf1_33cf272b",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "43056f4d77b5bbff1744b9458469b015f1685902",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_ad15f349",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/CacheProviderWithLoadingCacheTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-10T11:25:17Z",
+      "side": 1,
+      "message": "Got your point. Thanks for elaborating.",
+      "parentUuid": "9adffdf1_891fc46b",
       "range": {
         "startLine": 46,
         "startChar": 0,
