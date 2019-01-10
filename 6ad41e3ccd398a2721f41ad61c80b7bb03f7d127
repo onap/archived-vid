@@ -22,6 +22,30 @@
       "revId": "6ad41e3ccd398a2721f41ad61c80b7bb03f7d127",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_0d567f2a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AuditServiceImplTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-10T11:25:17Z",
+      "side": 1,
+      "message": "I can\u0027t suggest a reason why, as the format is not environment dependant, but rather defined by org.onap.vid.model.JobAuditStatus#defaultFormat: \"E, dd MMM yyyy HH:mm:ss z\" which match the given date.",
+      "parentUuid": "9adffdf1_29fc9871",
+      "range": {
+        "startLine": 75,
+        "startChar": 13,
+        "endLine": 75,
+        "endChar": 14
+      },
+      "revId": "6ad41e3ccd398a2721f41ad61c80b7bb03f7d127",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
