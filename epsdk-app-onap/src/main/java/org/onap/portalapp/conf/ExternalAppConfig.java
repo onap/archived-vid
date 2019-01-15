@@ -173,6 +173,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 * @return New instance of {@link SchedulerFactoryBean}
 	 */
 	@Bean
+	@DependsOn("dataSourceInitializer")
 	public SchedulerFactoryBean schedulerFactoryBean() {
 		SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
 		schedulerFactory.setJobFactory(new SpringBeanJobFactory());
