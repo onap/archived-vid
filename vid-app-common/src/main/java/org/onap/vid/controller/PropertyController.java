@@ -4,6 +4,8 @@
  * ================================================================================
  * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
+ * Modifications Copyright 2019 Nokia
+ * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,12 +24,10 @@ package org.onap.vid.controller;
 
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.category.CategoryParametersResponse;
 import org.onap.vid.model.CategoryParameter.Family;
 import org.onap.vid.services.CategoryParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,20 +35,24 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.onap.vid.utils.Logging.getMethodName;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * The Class PropertyController.
  */
 @RestController
 public class PropertyController extends RestrictedBaseController{
-	
 
-	/** The logger. */
 	private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(PropertyController.class);
+	private CategoryParameterService categoryParameterService;
+	private SystemPropertiesService systemPropertiesService;
 
 	@Autowired
-	protected CategoryParameterService categoryParameterService;
-
+	public PropertyController(CategoryParameterService service, SystemPropertiesService systemPropertiesWrapper) {
+		categoryParameterService = service;
+		systemPropertiesService = systemPropertiesWrapper;
+	}
 	
 	/**
 	 * Welcome.
@@ -59,7 +63,7 @@ public class PropertyController extends RestrictedBaseController{
 	@RequestMapping(value = {"/propertyhome" }, method = RequestMethod.GET)
 	public ModelAndView welcome(HttpServletRequest request) {
 		LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== PropertyController welcome start");
-		return new ModelAndView(getViewName());		
+		return new ModelAndView(getViewName());
 	}
 	
 	/**
@@ -74,32 +78,23 @@ public class PropertyController extends RestrictedBaseController{
 	@RequestMapping(value = "/get_property/{name}/{defaultvalue}", method = RequestMethod.GET)
 	public ResponseEntity<String> getProperty (@PathVariable("name") String name, @PathVariable("defaultvalue") String defaultvalue,
 			HttpServletRequest request) {
-		
+
 		String methodName = "getProperty";	
-		ResponseEntity<String> resp = null;
-		String pvalue = null;
 		LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + " start");
-		
 		try {
-			// convert "_" to "." in the property name
-			if (name == null || name.length() == 0 ) {
-				return ( new ResponseEntity<String> (defaultvalue, HttpStatus.OK));
-			}
-			// convert "_" to "." in the property name
 			String propertyName = name.replace('_', '.');
-			pvalue = SystemProperties.getProperty(propertyName);
+			String pvalue = systemPropertiesService.getProperty(propertyName);
 			if ( ( pvalue == null ) || ( pvalue.length() == 0 ) ) {
 				pvalue = defaultvalue;
 			}
-			resp = new ResponseEntity<>(pvalue, HttpStatus.OK);
+			LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + " returning " + pvalue);
+			return ResponseEntity.status(OK).body(pvalue);
 		}
 		catch (Exception e) {
 			LOGGER.info(EELFLoggerDelegate.errorLogger,  "<== " + "." + methodName + e.toString());
 			LOGGER.debug(EELFLoggerDelegate.debugLogger,  "<== " + "." + methodName + e.toString());
-			throw e;
+			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("Internal error occurred: " + e.getMessage());
 		}
-		LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + " returning " + pvalue);
-  		return ( resp );
 	}
 
 	/**
@@ -114,11 +109,11 @@ public class PropertyController extends RestrictedBaseController{
 		try {
 			CategoryParametersResponse response = categoryParameterService.getCategoryParameters(familyName);
 			LOGGER.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), response);
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return ResponseEntity.status(OK).body(response);
 		}
-		catch (Exception exception) {
-			LOGGER.error("failed to retrieve category parameter list from DB.", exception);
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		catch (Exception e) {
+			LOGGER.error("failed to retrieve category parameter list from DB.", e);
+			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("Internal error occurred: " + e.getMessage());
 		}
 	}
 
