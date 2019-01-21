@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +51,7 @@
 			$scope.status = FIELD.STATUS.FETCHING_SERVICE_CATALOG_ASDC;
 
 			$http.get(pathQuery)
-			.then(function successCallback(response) {
+			.then(function (response) {
 				$scope.services = [];
 				if (response.data && angular.isArray(response.data.services)) {
 					wholeData = response.data.services;
@@ -82,7 +83,7 @@
 					$scope.isSpinnerVisible = false;
 				}
 				$scope.deployButtonType = response.data.readOnly ? 'disabled' : 'primary';
-			}, function errorCallback(response) {
+			}, function (response) {
 				console.log("Error: " + response);
 			});
 		};
@@ -145,7 +146,7 @@
 			console.log("Instantiating SDC service " + service.uuid);
 
 			$http.get(COMPONENT.SERVICES_PATH + service.uuid)
-				.then(function successCallback(getServiceResponse) {
+				.then(function (getServiceResponse) {
 
 					var serviceModel = getServiceResponse.data;
 
@@ -239,7 +240,7 @@
 					    	}
 					    }
 					});
-				}, function errorCallback(response) {
+				}, function (response) {
 					console.log("Error: " + response);
 				});
 		};
