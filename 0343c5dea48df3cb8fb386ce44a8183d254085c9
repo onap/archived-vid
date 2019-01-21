@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_d1a1dc94",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-21T06:26:33Z",
+      "side": 1,
+      "message": "After your refactor this name became misleading. This is no longer MsoUtil, it just wrapper factory.\n\nAlso you could investigate:\n* if we can stick to single \"Response\" class?\n* if we need that wrapping-wrappers thing after all?",
+      "range": {
+        "startLine": 30,
+        "startChar": 12,
+        "endLine": 30,
+        "endChar": 19
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f198a06b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-21T06:26:33Z",
+      "side": 1,
+      "message": "Why we just don\u0027t provide ctors for that? Did JSON-parsing engine forces us to use setters?",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 32
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_b1a698ac",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-21T06:26:33Z",
+      "side": 1,
+      "message": "Stick to one method of creation, either static method delegation like in previous method or direct ctor usage.",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 73
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_31baa8c1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-21T06:26:33Z",
+      "side": 1,
+      "message": "Avoid magic annotations dependent on IDE",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 12
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_91a7d4a6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-21T06:26:33Z",
+      "side": 1,
+      "message": "I would say this construction alone deserve (need?) a separate test. Is this really simplest way to mock response and body?",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 11
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
