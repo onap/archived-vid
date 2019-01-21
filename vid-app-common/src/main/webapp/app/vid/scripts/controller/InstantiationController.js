@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1368,11 +1369,11 @@ Private metthods
         function _setPnf(data) { // data is the $scope.service.instance object
             return PnfService.getPnfs(data)
                 .then(
-                    function success(response) {
+                    function (response) {
                         return response.data;
                         // * can add here changes on the data that are needed to the view ( filter, ect..)
                     },
-                    function error(error) {
+                    function (error) {
                         console.error(error);
                     }
                 );
@@ -1382,11 +1383,11 @@ Private metthods
         function _setCr(data) { // data is the $scope.service.instance object
             return CrService.getCr(data)
                 .then(
-                    function success(response) {
+                    function (response) {
                         return response.data.results;
                         // * can add here changes on the data that are needed to the view ( filter, ect..)
                     },
-                    function error(error) {
+                    function (error) {
                         console.error(error);
                     }
                 );

@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -197,7 +198,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             console.log("Instantiating ASDC service " + service.uuid);
 
             $http.get('rest/models/services/' + service.uuid)
-                .then(function successCallback(getServiceResponse) {
+                .then(function (getServiceResponse) {
                     getServiceResponse.data['service'].serviceTypeName = $scope.serviceTypeName;
                     getServiceResponse.data['service'].createSubscriberName = $scope.createSubscriberName;
                     var serviceModel = getServiceResponse.data;
@@ -278,7 +279,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                         }
                     });
 
-                }, function errorCallback(response) {
+                }, function (response) {
                     $log.error("Error: ", response);
                 });
         };
@@ -661,7 +662,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             return $http({
                 method: 'GET',
                 url: pathQuery
-            }).then(function successCallback(response) {
+            }).then(function (response) {
                 if (response.headers()['content-type'].includes('json')) {
                     vidService.setModel(response.data);
                     console.log("aaiSubscriber getAsdcModel DONE!!!!");
@@ -696,10 +697,10 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
         $scope.getTenants = function (globalCustomerId) {
             $http.get(FIELD.ID.AAI_GET_TENTANTS + globalCustomerId)
-                .then(function successCallback(response) {
+                .then(function (response) {
                     return response.data;
                     //$location.path("/instantiate");
-                }, function errorCallback(response) {
+                }, function (response) {
                     //TODO
                 });
         }
