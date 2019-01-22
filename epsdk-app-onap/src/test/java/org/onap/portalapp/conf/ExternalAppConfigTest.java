@@ -72,7 +72,6 @@ public class ExternalAppConfigTest {
 
         // default test
         testSubject = createTestSubject();
-        testSubject.setSchedulerRegistryAdapter(schedulerRegistryAdapter);
     }
 
     @Test

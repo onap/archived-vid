@@ -38,42 +38,21 @@
 package org.onap.portalapp.conf;
 
 import org.onap.portalsdk.core.conf.AppInitializer;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 
 import java.util.TimeZone;
 
 public class ExternalAppInitializer extends AppInitializer {
 
-	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return super.getRootConfigClasses();
-	}
+	private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(ExternalAppInitializer.class);
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		Class<?> appConfigClass = ExternalAppConfig.class;
 		// Show something on stdout to indicate the app is starting.
-		System.out.println("ExternalAppInitializer: servlet configuration class is " + appConfigClass.getName());
+		LOG.info("ExternalAppInitializer: servlet configuration class is " + appConfigClass.getName());
 		return new Class[] { appConfigClass };
 	}
-
-	/*
-	 * URL request will direct to the Spring dispatcher for processing
-	 */
-	@Override
-	protected String[] getServletMappings() {
-		return super.getServletMappings();
-	}
-
-//	@Override
-//	public void onStartup(ServletContext servletContext) throws ServletException {
-//		super.onStartup(servletContext);
-//		setDefaultTimeZoneToUTC();
-//		servletContext.addFilter("requestFromLocalhost", LocalhostFilter.class)
-//				.addMappingForUrlPatterns(null, false,
-//						String.format("/%s/%s/*", ChangeManagementController.CHANGE_MANAGEMENT, ChangeManagementController.VNF_WORKFLOW_RELATION),
-//						String.format("/%s/*", RoleGeneratorController.GENERATE_ROLE_SCRIPT),
-//						String.format("/%s/*", MaintenanceController.MAINTENANCE));
-//	}
 
 	//set time zone to UTC so Dates would be written to DB in UTC timezone
 	private void setDefaultTimeZoneToUTC() {

@@ -89,13 +89,13 @@ public class SecurityXssFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		if (request.getMethod().equalsIgnoreCase("POST") || request.getMethod().equalsIgnoreCase("PUT")) {
+		if ("POST".equalsIgnoreCase(request.getMethod())|| "PUT".equalsIgnoreCase(request.getMethod())) {
 
 			HttpServletRequest requestToCache = new ContentCachingRequestWrapper(request);
 			HttpServletResponse responseToCache = new ContentCachingResponseWrapper(response);
 			filterChain.doFilter(requestToCache, responseToCache);
 			String requestData = getRequestData(requestToCache);
-			String responseData = getResponseData(responseToCache);
+			getResponseData(responseToCache);
 			if (StringUtils.isNotBlank(requestData) && validator.denyXSS(requestData)) {
 				throw new SecurityException(BAD_REQUEST);
 			}
