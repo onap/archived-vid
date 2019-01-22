@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_80f0dfc9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-22T06:14:45Z",
+      "side": 1,
+      "message": "I agree with unified solution, but...\n\nWhile introducing another class for such stupid thing seems bad it has some pros:\n\n\n1) meaningful class and method names\n\nCompare both ways:\n\n properties.getProperty(\"foo\")\n\n propertyGetter.apply(\"foo\")\n\n\nPersonally I found first one more appealing.\n\n\n2) we can extend wrapper with method like:\n\n properties.getOrDefault(\"foo\", \"kuku shmuku\")\n\n\nRight now both PropertyController and SchedulerRestInterface (one can expect more to come) reinventing this \"orDefault\" construction.",
+      "parentUuid": "9adffdf1_8061bfd4",
+      "range": {
+        "startLine": 52,
+        "startChar": 61,
+        "endLine": 52,
+        "endChar": 84
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_60a29bfe",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
         "patchSetId": 2
