@@ -36,6 +36,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -53,13 +54,27 @@ public class RoleProvider {
     @Autowired
     private AaiService aaiService;
 
-    public List<Role> getUserRoles(HttpServletRequest request) {
-        String logPrefix = "Role Provider (" + UserUtils.getUserId(request) + ") ==>";
+    private Function<HttpServletRequest, Integer> getUserIdFunction;
+    private Function<HttpServletRequest, Map> getRolesFunction;
 
-        LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Entering to get user role for user " + UserUtils.getUserId(request));
+    public RoleProvider() {
+        getUserIdFunction = UserUtils::getUserId;
+        getRolesFunction = UserUtils::getRoles;
+    }
+
+    RoleProvider(Function<HttpServletRequest, Integer> getUserIdFunction, Function<HttpServletRequest, Map> getRolesFunction) {
+        this.getRolesFunction = getRolesFunction;
+        this.getUserIdFunction = getUserIdFunction;
+    }
+
+    public List<Role> getUserRoles(HttpServletRequest request) {
+        int userId= getUserIdFunction.apply(request);
+        String logPrefix = "Role Provider (" + userId + ") ==>";
+
+        LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "Entering to get user role for user " + userId);
 
         List<Role> roleList = new ArrayList<>();
-        Map roles = UserUtils.getRoles(request);
+        Map roles = getRolesFunction.apply(request);
         for (Object role : roles.keySet()) {
             org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);
 
@@ -72,7 +87,7 @@ public class RoleProvider {
                 }
                 String[] roleParts = splitRole((sdkRol.getName()), logPrefix);
                 roleList.add(createRoleFromStringArr(roleParts, logPrefix));
-                String msg = String.format("%s User %s got permissions %s", logPrefix, UserUtils.getUserId(request), Arrays.toString(roleParts));
+                String msg = String.format("%s User %s got permissions %s", logPrefix, userId, Arrays.toString(roleParts));
                 LOG.debug(EELFLoggerDelegate.debugLogger, msg);
             } catch (Exception e) {
                 LOG.error(logPrefix + " Failed to parse permission");

@@ -18,8 +18,8 @@ public class RoleValidator {
     }
 
     public boolean isSubscriberPermitted(String subscriberName) {
-        if(this.disableRoles) return true;
-        
+        if (this.disableRoles) return true;
+
         for (Role role : userRoles) {
             if (role.getSubscribeName().equals(subscriberName))
                 return true;
@@ -28,8 +28,8 @@ public class RoleValidator {
     }
 
     public boolean isServicePermitted(String subscriberName, String serviceType) {
-        if(this.disableRoles) return true;
-        
+        if (this.disableRoles) return true;
+
         for (Role role : userRoles) {
             if (role.getSubscribeName().equals(subscriberName) && role.getServiceType().equals(serviceType))
                 return true;
@@ -38,8 +38,8 @@ public class RoleValidator {
     }
 
     public boolean isMsoRequestValid(RequestDetails mso_request) {
-        if(this.disableRoles) return true;
-        
+        if (this.disableRoles) return true;
+
         try {
             String globalSubscriberIdRequested = (String) ((Map) ((Map) mso_request.getAdditionalProperties().get("requestDetails")).get("subscriberInfo")).get("globalSubscriberId");
             String serviceType = (String) ((Map) ((Map) mso_request.getAdditionalProperties().get("requestDetails")).get("requestParameters")).get("subscriptionServiceType");
@@ -48,12 +48,11 @@ public class RoleValidator {
             //Until we'll get the exact information regarding the tenants and the global customer id, we'll return true on unknown requests to mso
             return true;
         }
-//        return false;
     }
 
     public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName) {
-        if(this.disableRoles) return true;
-        
+        if (this.disableRoles) return true;
+
         for (Role role : userRoles) {
             if (role.getSubscribeName().equals(globalCustomerId)
                     && role.getServiceType().equals(serviceType)
@@ -62,5 +61,9 @@ public class RoleValidator {
             }
         }
         return false;
+    }
+
+    void enableRoles() {
+        this.disableRoles = false;
     }
 }
