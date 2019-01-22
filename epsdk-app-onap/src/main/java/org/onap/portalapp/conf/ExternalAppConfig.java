@@ -82,8 +82,7 @@ import java.util.List;
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 public class ExternalAppConfig extends AppConfig implements Configurable {
 
-	private RegistryAdapter schedulerRegistryAdapter;
-    /** The Constant LOG. */
+	/** The Constant LOG. */
     private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(ExternalAppConfig.class);
  
     /** The vid schema script. */
@@ -103,30 +102,12 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	}
 
 	/**
-	 * @see org.onap.portalsdk.core.conf.AppConfig#viewResolver()
-	 */
-	@Override
-	public ViewResolver viewResolver() {
-		return super.viewResolver();
-	}
-
-	/**
-	 * @see org.onap.portalsdk.core.conf.AppConfig#addResourceHandlers(ResourceHandlerRegistry)
-	 * 
-	 * @param registry
-	 */
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		super.addResourceHandlers(registry);
-	}
-
-	/**
 	 * @see org.onap.portalsdk.core.conf.AppConfig#dataAccessService()
 	 */
 	@Override
 	public DataAccessService dataAccessService() {
 		// Echo the JDBC URL to assist developers when starting the app.
-		System.out.println("ExternalAppConfig: " + SystemProperties.DB_CONNECTIONURL + " is "
+		LOG.info("ExternalAppConfig: " + SystemProperties.DB_CONNECTIONURL + " is "
 				+ SystemProperties.getProperty(SystemProperties.DB_CONNECTIONURL));
 		return super.dataAccessService();
 	}
@@ -212,15 +193,6 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
         return populator;
     }
 	
-
-	/*@Bean
-	public SpringLiquibase liquibaseBean(DataSource dataSource) {
-		SpringLiquibase springLiquibase = new SpringLiquibase();
-		springLiquibase.setDataSource(dataSource);
-		springLiquibase.setChangeLog("classpath:db-master-changelog.xml");
-		return springLiquibase;
-	}*/
-	
 	/**
 	 * Sets the scheduler registry adapter.
 	 * 
@@ -228,7 +200,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 */
 	@Autowired
 	public void setSchedulerRegistryAdapter(final RegistryAdapter schedulerRegistryAdapter) {
-		this.schedulerRegistryAdapter = schedulerRegistryAdapter;
+		RegistryAdapter schedulerRegistryAdapter1 = schedulerRegistryAdapter;
 	}
 
 	@Bean
