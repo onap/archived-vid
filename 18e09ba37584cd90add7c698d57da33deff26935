@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_b616894a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/RoleGeneratorController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:31:26Z",
+      "side": 1,
+      "message": "I\u0027d move constants to the top of the class.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 75
+      },
+      "revId": "18e09ba37584cd90add7c698d57da33deff26935",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_362a997f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/RoleGeneratorControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:31:26Z",
+      "side": 1,
+      "message": "This constant can be named PATH or something similar. FIRST_RUN doesn\u0027t tell much.",
+      "range": {
+        "startLine": 44,
+        "startChar": 32,
+        "endLine": 44,
+        "endChar": 41
+      },
+      "revId": "18e09ba37584cd90add7c698d57da33deff26935",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
