@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "9adffdf1_b644494a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:43:40Z",
+      "side": 1,
+      "message": "Remove unnecessary java docs.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 3
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f6565105",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:43:40Z",
+      "side": 1,
+      "message": "Change tabs to spaces.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 1
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_8061bfd4",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
@@ -49,6 +95,75 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_763341f6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:43:40Z",
+      "side": 1,
+      "message": "Avoid concatenating strings in logs.",
+      "range": {
+        "startLine": 90,
+        "startChar": 3,
+        "endLine": 90,
+        "endChar": 94
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_764a6156",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/SystemPropertiesService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:43:40Z",
+      "side": 1,
+      "message": "Add copyright",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 32
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_3678598f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:43:40Z",
+      "side": 1,
+      "message": "Change tabs to spaces.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_60a29bfe",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
         "patchSetId": 2
@@ -83,6 +198,30 @@
       "writtenOn": "2019-01-21T14:10:29Z",
       "side": 1,
       "message": "extract repeating Strings into consts",
+      "range": {
+        "startLine": 95,
+        "startChar": 19,
+        "endLine": 95,
+        "endChar": 44
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_965ca51a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T09:43:40Z",
+      "side": 1,
+      "message": "I think this is fine. Message must be the same in context of one test, I don\u0027t see the reason to extract it to constant.",
+      "parentUuid": "9adffdf1_00a5cf02",
       "range": {
         "startLine": 95,
         "startChar": 19,
