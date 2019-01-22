@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_99dff6d5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T17:06:01Z",
+      "side": 1,
+      "message": "Agree. After removing unused methods that\u0027s more like a MsoResponseWrapperFactory. But actually that wrapper is just data class with response, not really a wrapper.\n\nThat investigation should be another task. Here I mostly wanted to get rid of random main method.",
+      "parentUuid": "9adffdf1_d1a1dc94",
+      "range": {
+        "startLine": 30,
+        "startChar": 12,
+        "endLine": 30,
+        "endChar": 19
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_f198a06b",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2019-01-21T06:26:33Z",
       "side": 1,
       "message": "Why we just don\u0027t provide ctors for that? Did JSON-parsing engine forces us to use setters?",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 32
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f9d082ca",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T17:06:01Z",
+      "side": 1,
+      "message": "Agree, this should be done with constructor. I hope that JSON parser can use constructor with parameters, I\u0027ll investigate that.",
+      "parentUuid": "9adffdf1_f198a06b",
       "range": {
         "startLine": 35,
         "startChar": 8,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_b9de7adb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T17:06:01Z",
+      "side": 1,
+      "message": "What do you mean by that? In previous method I just use other method from this class. Why is that a problem?",
+      "parentUuid": "9adffdf1_b1a698ac",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 73
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_31baa8c1",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
         "patchSetId": 2
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_39f28a70",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T17:06:01Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "9adffdf1_31baa8c1",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 12
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_91a7d4a6",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
         "patchSetId": 2
@@ -105,6 +201,30 @@
       "writtenOn": "2019-01-21T06:26:33Z",
       "side": 1,
       "message": "I would say this construction alone deserve (need?) a separate test. Is this really simplest way to mock response and body?",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 11
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_59ce6e2f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 2795
+      },
+      "writtenOn": "2019-01-22T17:06:01Z",
+      "side": 1,
+      "message": "I don\u0027t see a reason to mock data classes. Mocks helps replace buissness code, there is no such code in data class. I agree that constructing this object is quite complicated, but it\u0027s the problem with used library - joshwork Restclient.\n\nAnd no, tests don\u0027t need separate tests - they are tested by code.",
+      "parentUuid": "9adffdf1_91a7d4a6",
       "range": {
         "startLine": 78,
         "startChar": 8,
