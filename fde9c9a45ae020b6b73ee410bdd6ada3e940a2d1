@@ -189,6 +189,23 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_8ff008ca",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/SystemPropertiesService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2019-01-23T07:13:36Z",
+      "side": 1,
+      "message": "Consider changing some things:\n- Rename the class to just SystemPropertiesWrapper. Having the \"wrapper\" suffix is a way to expose why the wrapping is being done (to solve static)\n- since the systemproperites are from portal, maybe this class should be placed in the module that has the explicit dependency ? Consider that this is spring dependent so do not introduce any unwanted dependencies because of the move.",
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_3678598f",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
         "patchSetId": 2
