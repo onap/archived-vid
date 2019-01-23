@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_eff754d1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-23T07:21:51Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "9adffdf1_99dff6d5",
+      "range": {
+        "startLine": 30,
+        "startChar": 12,
+        "endLine": 30,
+        "endChar": 19
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_f198a06b",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
         "patchSetId": 2
@@ -143,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_4f30e09e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-23T07:21:51Z",
+      "side": 1,
+      "message": "I meant it will be more consistent to use only \"new\" or only \"static constructor\" instead of mixed approach. But of course this is little bit nitpicking. Feel free to ignore this one.",
+      "parentUuid": "9adffdf1_b9de7adb",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 73
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_31baa8c1",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
         "patchSetId": 2
@@ -225,6 +273,30 @@
       "side": 1,
       "message": "I don\u0027t see a reason to mock data classes. Mocks helps replace buissness code, there is no such code in data class. I agree that constructing this object is quite complicated, but it\u0027s the problem with used library - joshwork Restclient.\n\nAnd no, tests don\u0027t need separate tests - they are tested by code.",
       "parentUuid": "9adffdf1_91a7d4a6",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 11
+      },
+      "revId": "0343c5dea48df3cb8fb386ce44a8183d254085c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_0f265868",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-01-23T07:21:51Z",
+      "side": 1,
+      "message": "Again, what you want is to return object with two setters fixed on specific values. Nothing more.\n\nI just don\u0027t get the reason why you resist mocking class instead of this overly complex helper method with name collisions, nulls etc.",
+      "parentUuid": "9adffdf1_59ce6e2f",
       "range": {
         "startLine": 78,
         "startChar": 8,
