@@ -119,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_6fda844d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2019-01-23T07:08:25Z",
+      "side": 1,
+      "message": "Out of the two existing \"solutions\" of how the properties should be injected as a dependency, having a wrapper class for the static method is a more cleaner solution- the intent is implied in a simple and readable way.  You know what the PropertyController\u0027s rules for construction are just by looking at the constructor. Having a generic Function as provider is misleading - the variable name is the only way to know what the parameter represents - why? In a strongly typed language this should not be the case - thankfully we have the power of types and it should be used :)\nAn improvement would have been to at least introduce a custom, well-named functionalinterface for the system properties instead of relying on the jdk built-in ones. \n\nI understand the need for unification - it is a good idea, but not that simple :)\nThere are two possible unifications that could be made:\n- unifying the approach of properties injection (what we are discussing here) - In the end I would not limit how this is done in particular classes (for the moment at least).\n- unifying how the System properties (or any other properties for that matter) are actually accessed and provided. Since the SystemProperties is an external dependency it should be designed as an adapter - with an interface and factory for construction. This is something that I think should be the point of focus in the long run as it would in way enforce a single usage approach by the clients.",
+      "parentUuid": "9adffdf1_8061bfd4",
+      "range": {
+        "startLine": 52,
+        "startChar": 61,
+        "endLine": 52,
+        "endChar": 84
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_763341f6",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
