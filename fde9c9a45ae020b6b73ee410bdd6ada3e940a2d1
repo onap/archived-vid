@@ -95,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_af14ece8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-01-23T06:54:37Z",
+      "side": 1,
+      "message": "Let\u0027s Joanna decide, but still I prefer other approach (in fact I have similar problem in https://gerrit.onap.org/r/#/c/76128/ )",
+      "parentUuid": "9adffdf1_80f0dfc9",
+      "range": {
+        "startLine": 52,
+        "startChar": 61,
+        "endLine": 52,
+        "endChar": 84
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_763341f6",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
