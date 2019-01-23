@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_2fb9dc78",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-01-23T11:14:47Z",
+      "side": 1,
+      "message": "I created https://jira.onap.org/browse/VID-404 . Feel free to modify description etc. This PR is also mentioned there. I came into conclusion that unification is not in scope of current task, but i\u0027d definitely like to have it so that\u0027s why new ticket",
+      "parentUuid": "9adffdf1_6fda844d",
+      "range": {
+        "startLine": 52,
+        "startChar": 61,
+        "endLine": 52,
+        "endChar": 84
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_763341f6",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
