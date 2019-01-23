@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_4f2f80f7",
+        "filename": "epsdk-app-onap/src/main/java/org/onap/portalapp/conf/ExternalAppConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-01-23T09:26:18Z",
+      "side": 1,
+      "message": "after your changes this method does nothing",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 2
+      },
+      "revId": "f13a8b68718eeef7e193db0ff54b8ccf5813ad28",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
