@@ -22,6 +22,29 @@
       "revId": "f13a8b68718eeef7e193db0ff54b8ccf5813ad28",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_c9ea8b73",
+        "filename": "epsdk-app-onap/src/main/java/org/onap/portalapp/conf/ExternalAppInitializer.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-01-24T06:31:14Z",
+      "side": 1,
+      "message": "remove this comment - it doesn\u0027t bring any additional value here",
+      "range": {
+        "startLine": 47,
+        "startChar": 1,
+        "endLine": 47,
+        "endChar": 25
+      },
+      "revId": "f13a8b68718eeef7e193db0ff54b8ccf5813ad28",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
