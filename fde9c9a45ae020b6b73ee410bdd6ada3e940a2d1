@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_56895d73",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_b644494a",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 3
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_f6565105",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_f67bb178",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_f6565105",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 1
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_0a83a6cc",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
@@ -59,6 +107,24 @@
       "writtenOn": "2019-01-23T15:36:40Z",
       "side": 1,
       "message": "Both members may be `final`.",
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_1dbd2902",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_0a83a6cc",
       "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -184,6 +250,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_bddf3d39",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "So if I understand correctly, I can leave the current solution for now?",
+      "parentUuid": "9adffdf1_2fb9dc78",
+      "range": {
+        "startLine": 52,
+        "startChar": 61,
+        "endLine": 52,
+        "endChar": 84
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_6a8032c0",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
@@ -195,6 +285,30 @@
       "writtenOn": "2019-01-23T15:36:40Z",
       "side": 1,
       "message": "Can be replaced with Apache\u0027s StringUtils `pvalue \u003d defaultIfEmpty(pvalue, defaultValue)` or even inline defaultIfEmpty into .body() below.",
+      "range": {
+        "startLine": 87,
+        "startChar": 3,
+        "endLine": 87,
+        "endChar": 56
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_3d4fcd35",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done. I didn\u0027t inline because pvalue is used also in a log message. I also moved it to SystemPropertiesWrapper as Krzysztof suggested.",
+      "parentUuid": "9adffdf1_6a8032c0",
       "range": {
         "startLine": 87,
         "startChar": 3,
@@ -230,6 +344,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_5d4e513c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_763341f6",
+      "range": {
+        "startLine": 90,
+        "startChar": 3,
+        "endLine": 90,
+        "endChar": 94
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_764a6156",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/SystemPropertiesService.java",
         "patchSetId": 2
@@ -241,6 +379,30 @@
       "writtenOn": "2019-01-22T09:43:40Z",
       "side": 1,
       "message": "Add copyright",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 32
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_5dead1db",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/SystemPropertiesService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_764a6156",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -270,6 +432,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_9d98396b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/SystemPropertiesService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done.\nI tried to move it to epsdk-app-onap/src/main/java/org/onap/portalapp/conf but it would cause circular dependency problem between modules epsdk-app-onap and vid-app-common. I moved it to vid-app-common/src/main/java/org/onap/vid/utils then.",
+      "parentUuid": "9adffdf1_8ff008ca",
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_3678598f",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
         "patchSetId": 2
@@ -293,6 +473,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_3deb4ddd",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_3678598f",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_60a29bfe",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
         "patchSetId": 2
@@ -304,6 +508,54 @@
       "writtenOn": "2019-01-21T14:10:29Z",
       "side": 1,
       "message": "I\u0027d remove \u0027getProperty\u0027 prefix",
+      "range": {
+        "startLine": 82,
+        "startChar": 13,
+        "endLine": 82,
+        "endChar": 66
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_5da651af",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_60a29bfe",
+      "range": {
+        "startLine": 82,
+        "startChar": 13,
+        "endLine": 82,
+        "endChar": 66
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_bd9bbd64",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_60a29bfe",
       "range": {
         "startLine": 82,
         "startChar": 13,
@@ -363,6 +615,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_7d3d552a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "I extracted the common part of the message for errors in every method and made the specific exception message unique for every test. Does it satisfy both of you?",
+      "parentUuid": "9adffdf1_965ca51a",
+      "range": {
+        "startLine": 95,
+        "startChar": 19,
+        "endLine": 95,
+        "endChar": 44
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_c3059146",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
         "patchSetId": 2
@@ -374,6 +650,24 @@
       "writtenOn": "2019-01-22T06:19:16Z",
       "side": 1,
       "message": "Test method name is incomplete, missing \"should\" and \"when\" clauses :)",
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_639ce50f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/PropertyControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2019-01-25T11:29:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_c3059146",
       "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
