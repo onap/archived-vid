@@ -274,6 +274,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_bdd3bdd3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-01-25T11:34:06Z",
+      "side": 1,
+      "message": "yes, correct",
+      "parentUuid": "9adffdf1_bddf3d39",
+      "range": {
+        "startLine": 52,
+        "startChar": 61,
+        "endLine": 52,
+        "endChar": 84
+      },
+      "revId": "fde9c9a45ae020b6b73ee410bdd6ada3e940a2d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_6a8032c0",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/PropertyController.java",
         "patchSetId": 2
