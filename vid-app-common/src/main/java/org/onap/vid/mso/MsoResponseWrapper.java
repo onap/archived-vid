@@ -48,8 +48,12 @@ public class MsoResponseWrapper implements MsoResponseWrapperInterface {
         setStatus(response.getStatus());
     }
 
+	public MsoResponseWrapper(int status, String entity) {
+		this.status = status;
+		this.entity = entity;
+	}
 
-    /** The status. */
+	/** The status. */
 	@JsonProperty("status")
 	private int status;
 	
