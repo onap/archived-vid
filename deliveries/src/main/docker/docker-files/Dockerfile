@@ -1,8 +1,7 @@
-FROM tomcat:8.0-jre8
+FROM tomcat:8.0-jre8-alpine
 
 # add vim and uncomment alias to speedup troubleshooting purpose
-RUN apt-get update && apt-get install -y \
-	openjdk-8-jdk vim net-tools
+RUN apk update && apk add openjdk8 vim net-tools
 
 COPY conf.d/ /etc/onap/vid/conf.d/
 
