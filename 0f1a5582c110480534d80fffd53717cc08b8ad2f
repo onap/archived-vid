@@ -234,6 +234,30 @@
       "revId": "0f1a5582c110480534d80fffd53717cc08b8ad2f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_66c2a154",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-01-28T09:42:56Z",
+      "side": 1,
+      "message": "roleValidatior is cleared; requestDtails still seems shared.",
+      "parentUuid": "9adffdf1_c61fcd59",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 22
+      },
+      "revId": "0f1a5582c110480534d80fffd53717cc08b8ad2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
