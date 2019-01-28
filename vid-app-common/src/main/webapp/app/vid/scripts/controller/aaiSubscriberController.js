@@ -1583,7 +1583,10 @@ appDS2.controller('TreeCtrl', ['$scope', function ($scope) {
         $scope.$broadcast(FIELD.ID.ANGULAR_UI_TREE_EXPANDALL);
     };
 
-
+    // NEED TO BE REMOVED - it is just to show how js unit works for controllers
+    $scope.sum = function(a, b) {
+        return a + b;
+    };
 }]);
 
 
