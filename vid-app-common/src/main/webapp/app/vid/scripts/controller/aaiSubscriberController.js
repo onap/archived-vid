@@ -1583,7 +1583,6 @@ appDS2.controller('TreeCtrl', ['$scope', function ($scope) {
         $scope.$broadcast(FIELD.ID.ANGULAR_UI_TREE_EXPANDALL);
     };
 
-
 }]);
 
 

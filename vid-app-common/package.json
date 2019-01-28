@@ -1,0 +1,29 @@
+{
+  "name": "vid-app-common",
+  "version": "4.0.0-SNAPSHOT",
+  "dependencies": {
+    "angular-bootstrap-multiselect": "^1.1.11",
+    "angular-feature-flags": "1.6.1",
+    "angular-moment": "^1.3.0",
+    "components-bootstrap": "3.3.7",
+    "glyphicons-only-bootstrap": "^1.0.1",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "ng-file-upload": "^12.2.13"
+  },
+  "scripts": {
+    "prebuild": "npm install",
+    "build": "gulp"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.19",
+    "gulp": "3.9.1",
+    "gulp-inject": "^5.0.2",
+    "gulp-jest": "^4.0.2",
+    "gulp-run-sequence": "^0.3.2",
+    "gulp-uglify": "^3.0.1",
+    "jest": "^24.0.0",
+    "jest-mock": "^24.0.0",
+    "stream-series": "^0.1.1"
+  }
+}
