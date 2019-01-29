@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Ittay Stern <ittay.stern@att.com>
+Code-Review+1: Krzysztof Kurczewski <krzysztof.kurczewski@nokia.com>
+Code-Review+2: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Submitted-by: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Submitted-at: Tue, 29 Jan 2019 12:34:07 +0000
+Reviewed-on: https://gerrit.onap.org/r/76362
+Project: vid
+Branch: refs/heads/master
