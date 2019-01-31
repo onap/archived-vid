@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_8d11d95e",
+        "filename": "vid-app-common/gulpfile.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2019-01-31T12:33:52Z",
+      "side": 1,
+      "message": "Unify \u0027 and \" in strings. See also other files, e.g. \ntest-config.js",
+      "revId": "26c75ee9c38d0cbf943a380f53050e8daa4fc3df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_48b2ff4c",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3843
+      },
+      "writtenOn": "2019-01-31T12:33:52Z",
+      "side": 1,
+      "message": "Optional: maybe extract version to POM variable.",
+      "revId": "26c75ee9c38d0cbf943a380f53050e8daa4fc3df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
