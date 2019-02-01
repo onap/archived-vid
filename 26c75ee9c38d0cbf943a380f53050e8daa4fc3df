@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a7eba58f_cc57e123",
+        "filename": "vid-app-common/gulpfile.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-01T10:05:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_8d11d95e",
+      "revId": "26c75ee9c38d0cbf943a380f53050e8daa4fc3df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_48b2ff4c",
         "filename": "vid-app-common/pom.xml",
         "patchSetId": 5
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e3882cf5_0368d524",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-01T10:05:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_48b2ff4c",
+      "revId": "26c75ee9c38d0cbf943a380f53050e8daa4fc3df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_28b8db0f",
         "filename": "vid-app-common/pom.xml",
         "patchSetId": 5
@@ -47,6 +83,30 @@
       "writtenOn": "2019-01-31T12:43:49Z",
       "side": 1,
       "message": "Can we use node 10.15.1, which is the latest LTS?",
+      "range": {
+        "startLine": 172,
+        "startChar": 41,
+        "endLine": 172,
+        "endChar": 47
+      },
+      "revId": "26c75ee9c38d0cbf943a380f53050e8daa4fc3df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c97b7a94_8f676f34",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-01T10:05:17Z",
+      "side": 1,
+      "message": "mavens eirslett plugin requires node in version 6.x. Checked with newer version but unfortunately it doesnt work.",
+      "parentUuid": "9adffdf1_28b8db0f",
       "range": {
         "startLine": 172,
         "startChar": 41,
