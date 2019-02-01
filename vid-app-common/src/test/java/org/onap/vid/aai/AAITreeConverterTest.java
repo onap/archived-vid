@@ -18,7 +18,6 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.vid.aai;
 
 import com.google.common.collect.ImmutableList;
