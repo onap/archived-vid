@@ -21,13 +21,13 @@
 
 package org.onap.vid.aai.util;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+
 import org.onap.vid.aai.exceptions.HttpClientBuilderException;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
 
 import javax.net.ssl.SSLContext;
@@ -35,8 +35,8 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MockitoJUnitRunner.class)
 public class HttpsAuthClientTest {
     @Mock
     private SystemPropertyHelper systemPropertyHelper;
@@ -51,14 +51,15 @@ public class HttpsAuthClientTest {
         return new HttpsAuthClient(CERT_FILE_PATH, systemPropertyHelper, sslContextProvider, mock(FeatureManager.class));
     }
 
-    @Before
+    @BeforeMethod
     public void setUp() throws Exception {
+        initMocks(this);
         when(systemPropertyHelper.getAAITruststoreFilename()).thenReturn(Optional.of("filename"));
         when(systemPropertyHelper.getDecryptedKeystorePassword()).thenReturn("password");
         when(systemPropertyHelper.getDecryptedTruststorePassword()).thenReturn("password");
     }
 
-    @Test(expected = HttpClientBuilderException.class)
+    @Test(expectedExceptions = {HttpClientBuilderException.class})
     public void testHttpClientBuilderExceptionOnGetClient() throws Exception {
         //when
         when(systemPropertyHelper.isClientCertEnabled()).thenReturn(true);
