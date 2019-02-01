@@ -71,7 +71,7 @@ public class AuditServiceImplTest {
             Mockito.anyString());
   }
 
-  @Test
+  @Test(enabled = false)
   public void testConvertMsoResponseStatusToJobAuditStatus_missingDateFromMso_shouldNoError() throws IOException {
     final AsyncRequestStatusList asyncRequestStatusList = TestUtils.readJsonResourceFileAsObject("/orchestrationRequestsByServiceInstanceId.json", AsyncRequestStatusList.class);
 
