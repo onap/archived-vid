@@ -1,4 +1,4 @@
-package org.onap.vid.services;
+package org.onap.vid.aai;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

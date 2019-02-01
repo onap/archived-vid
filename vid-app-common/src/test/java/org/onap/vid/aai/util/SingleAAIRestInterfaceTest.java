@@ -20,18 +20,18 @@
 
 package org.onap.vid.aai.util;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpMethod;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.client.Client;
@@ -51,8 +51,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class SingleAAIRestInterfaceTest {
 
     private static final String PATH = "path";
@@ -78,8 +79,9 @@ public class SingleAAIRestInterfaceTest {
 
     private AAIRestInterface testSubject;
 
-    @Before
+    @BeforeMethod
     public void setUp() throws Exception {
+        initMocks(this);
         mockSystemProperties();
         testSubject = createTestSubject();
         when(client.target(HTTP_LOCALHOST+PATH)).thenReturn(webTarget);
@@ -130,7 +132,7 @@ public class SingleAAIRestInterfaceTest {
         Assert.assertEquals(response, finalResponse);
     }
 
-    @Test(expected = ExceptionWithRequestInfo.class)
+    @Test(expectedExceptions = {ExceptionWithRequestInfo.class})
     public void testFailedRestJsonPut() {
         // given
         String methodName = "RestPut";

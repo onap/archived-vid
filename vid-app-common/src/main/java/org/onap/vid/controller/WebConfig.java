@@ -151,8 +151,8 @@ public class WebConfig {
     }
 
     @Bean
-    public PombaClientInterface getVerifyServiceInstanceClientInterface() {
-        return new PombaClientImpl();
+    public PombaClientInterface getVerifyServiceInstanceClientInterface(PombaRestInterface pombaRestInterface) {
+        return new PombaClientImpl(pombaRestInterface);
     }
 
     @Bean
