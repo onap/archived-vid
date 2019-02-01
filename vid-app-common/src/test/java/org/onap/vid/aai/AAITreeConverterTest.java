@@ -1,11 +1,15 @@
-package org.opencomp.vid.services;
+package org.onap.vid.aai;
 
 import com.google.common.collect.ImmutableList;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.model.Action;
-import org.onap.vid.model.aaiTree.*;
+import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.Network;
+import org.onap.vid.model.aaiTree.ServiceInstance;
+import org.onap.vid.model.aaiTree.VfModule;
+import org.onap.vid.model.aaiTree.Vnf;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -13,7 +17,11 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.A_LA_CARTE;
 
 public class AAITreeConverterTest {
@@ -31,7 +39,7 @@ public class AAITreeConverterTest {
 
         AAITreeNode aaiTree = generateAaiTreeToConvert(0, 0);
 
-        ServiceInstance result = aaiTreeConverter.convertTreeToUIModel(aaiTree, "global-customer-id", "service-type", A_LA_CARTE);
+        org.onap.vid.model.aaiTree.ServiceInstance result = aaiTreeConverter.convertTreeToUIModel(aaiTree, "global-customer-id", "service-type", A_LA_CARTE);
 
         assertService(result, 0, 0, true);
     }
@@ -41,7 +49,7 @@ public class AAITreeConverterTest {
 
         AAITreeNode aaiTree = generateAaiTreeToConvert(2, 2);
 
-        ServiceInstance serviceInstance = aaiTreeConverter.convertTreeToUIModel(aaiTree, "global-customer-id", "service-type", null);
+        org.onap.vid.model.aaiTree.ServiceInstance serviceInstance = aaiTreeConverter.convertTreeToUIModel(aaiTree, "global-customer-id", "service-type", null);
 
         assertService(serviceInstance, 2, 2, false);
 
