@@ -3,13 +3,14 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,14 +19,18 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.opencomp.vid.services;
+package org.onap.vid.aai;
 
 import com.google.common.collect.ImmutableList;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.model.Action;
-import org.onap.vid.model.aaiTree.*;
+import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.Network;
+import org.onap.vid.model.aaiTree.ServiceInstance;
+import org.onap.vid.model.aaiTree.VfModule;
+import org.onap.vid.model.aaiTree.Vnf;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -33,7 +38,11 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.A_LA_CARTE;
 
 public class AAITreeConverterTest {

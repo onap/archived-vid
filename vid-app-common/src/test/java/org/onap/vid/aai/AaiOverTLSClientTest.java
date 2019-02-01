@@ -21,24 +21,23 @@
 package org.onap.vid.aai;
 
 import com.google.common.collect.ImmutableMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.SubscriberList;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AaiOverTLSClientTest {
 
     private static final String SEARCH_NODES_QUERY_SEARCH_NODE_TYPE = "nodes/generic-vnfs?vnf-name=name";
@@ -50,8 +49,9 @@ public class AaiOverTLSClientTest {
     @Mock
     private AaiOverTLSPropertySupplier propertySupplier;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
+        initMocks(this);
         aaiRestClient = new AaiOverTLSClient(syncRestClient,  propertySupplier);
     }
 
