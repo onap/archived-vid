@@ -5,19 +5,21 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.model.PombaInstance.PombaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletContext;
 
+@Component
 public class PombaClientImpl implements PombaClientInterface {
 
     protected String fromAppId = "VidAaiController";
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AaiClient.class);
 
-    @Autowired
-    ServletContext servletContext;
+    private PombaRestInterface pombaRestInterface;
 
     @Autowired
-    PombaRestInterface pombaRestInterface;
+    public PombaClientImpl(PombaRestInterface pombaRestInterface) {
+        this.pombaRestInterface = pombaRestInterface;
+    }
 
 
     @Override

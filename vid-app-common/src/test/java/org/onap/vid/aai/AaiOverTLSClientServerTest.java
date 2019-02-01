@@ -28,20 +28,20 @@ import org.assertj.core.api.Assertions;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.testUtils.StubServerUtil;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.mockito.MockitoAnnotations.initMocks;
+
 public class AaiOverTLSClientServerTest {
 
     @Mock
@@ -98,6 +98,11 @@ public class AaiOverTLSClientServerTest {
     @AfterClass
     public static void tearDown(){
         serverUtil.stopServer();
+    }
+
+    @BeforeMethod
+    public void setUp(){
+        initMocks(this);
     }
 
     @Test
