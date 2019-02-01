@@ -35,7 +35,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("operational-environment-id")
-    public void setJsonOperationalEnvironmentId(String operationalEnvironmentId) {
+    public void setOperationalEnvironmentId(String operationalEnvironmentId) {
         this.operationalEnvironmentId = operationalEnvironmentId;
     }
 
@@ -44,7 +44,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("operational-environment-name")
-    public void setJsonOperationalEnvironmentName(String operationalEnvironmentName) {
+    public void setOperationalEnvironmentName(String operationalEnvironmentName) {
         this.operationalEnvironmentName = operationalEnvironmentName;
     }
 
@@ -53,7 +53,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("operational-environment-type")
-    public void setJsonOperationalEnvironmentType(String operationalEnvironmentType) {
+    public void setOperationalEnvironmentType(String operationalEnvironmentType) {
         this.operationalEnvironmentType = operationalEnvironmentType;
     }
 
@@ -62,7 +62,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("operational-environment-status")
-    public void setJsonOperationalEnvironmentStatus(String operationalEnvironmentStatus) {
+    public void setOperationalEnvironmentStatus(String operationalEnvironmentStatus) {
         this.operationalEnvironmentStatus = operationalEnvironmentStatus;
     }
 
@@ -71,7 +71,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("tenant-context")
-    public void setJsonTenantContext(String tenantContext) {
+    public void setTenantContext(String tenantContext) {
         this.tenantContext = tenantContext;
     }
 
@@ -80,7 +80,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("workload-context")
-    public void setJsonWorkloadContext(String workloadContext) {
+    public void setWorkloadContext(String workloadContext) {
         this.workloadContext = workloadContext;
     }
 
@@ -89,7 +89,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("resource-version")
-    public void setJsonResourceVersion(String resourceVersion) {
+    public void setResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
 
@@ -98,7 +98,7 @@ public class OperationalEnvironment {
     }
 
     @JsonProperty("relationship-list")
-    public void setJsonRelationshipList(RelationshipList relationshipList) {
+    public void setRelationshipList(RelationshipList relationshipList) {
         this.relationshipList = relationshipList;
     }
 }
