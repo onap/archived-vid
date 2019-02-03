@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a8f07e33_ebd34836",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/OperationalEnvironment.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-03T10:00:48Z",
+      "side": 1,
+      "message": "This object is expected to be deserialized as hyphen-separated-words, and serialize as camelCaseWords.\nOther words -- AAI provides VID with `workflow-context`, and `new-test-environment.controller.js` expects `workflowContext`.\nThe `Json` word is a workaround for that, as it separates the getter from the getter.\nAnother solution that helps with `hasValidGettersAndSetters()` test is using `@JsonAlias` instead of `@JsonProperty` on the setter.\n\nBTW, I think that maybe this doble-face of the object serialization/deserialization can be unit-tested as well.",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a7985c4b_77f2bcc4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/OperationalEnvironmentTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-03T10:00:48Z",
+      "side": 1,
+      "message": "What about the other fields?",
+      "range": {
+        "startLine": 43,
+        "startChar": 19,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e6195796_1f7b8ec0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/ServicePropertiesTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-03T10:00:48Z",
+      "side": 1,
+      "message": "I think this checks the setter, instead of a deserialization flow. I expect `OBJECT_MAPPER.readValue` be used in this test as well.",
+      "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "822de295_d5bce8ad",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/VnfResultTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-03T10:00:48Z",
+      "side": 1,
+      "message": "What\u0027s the source of these samples?",
+      "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
