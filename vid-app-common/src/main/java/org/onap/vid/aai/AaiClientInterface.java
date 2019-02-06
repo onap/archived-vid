@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
-import org.onap.vid.aai.model.CustomQuerySimpleResult;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.ResourceType;

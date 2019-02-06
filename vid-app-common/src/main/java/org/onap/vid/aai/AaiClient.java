@@ -677,7 +677,7 @@ public class AaiClient implements AaiClientInterface {
 
         String propKey = checkForNull((String) innerObj.get("property-key"));
         String propVal = checkForNull((String) innerObj.get("property-value"));
-        if (propKey.equalsIgnoreCase("tenant.tenant-name")) {
+        if ("tenant.tenant-name".equalsIgnoreCase(propKey)) {
             tenantNewObj.put("tenantName", propVal);
         }
     }
@@ -688,11 +688,11 @@ public class AaiClient implements AaiClientInterface {
 
         String rShipKey = checkForNull((String) inner2Obj.get("relationship-key"));
         String rShipVal = checkForNull((String) inner2Obj.get("relationship-value"));
-        if (rShipKey.equalsIgnoreCase("cloud-region.cloud-owner")) {
+        if ("cloud-region.cloud-owner".equalsIgnoreCase(rShipKey)) {
             tenantNewObj.put("cloudOwner", rShipVal);
-        } else if (rShipKey.equalsIgnoreCase("cloud-region.cloud-region-id")) {
+        } else if ("cloud-region.cloud-region-id".equalsIgnoreCase(rShipKey)) {
             tenantNewObj.put("cloudRegionID", rShipVal);
-        } else if (rShipKey.equalsIgnoreCase("tenant.tenant-id")) {
+        } else if ("tenant.tenant-id".equalsIgnoreCase(rShipKey)) {
             tenantNewObj.put("tenantID", rShipVal);
         }
     }
@@ -753,7 +753,7 @@ public class AaiClient implements AaiClientInterface {
         }
         Response resp = doAaiGet("network/generic-vnfs/generic-vnf/" + vnfInstanceId +"/vf-modules/vf-module/"+ vfModuleId, false);
         String responseAsString = parseForTenantsByServiceSubscription("vserver",resp.readEntity(String.class));
-        if (responseAsString.equals("")){
+        if ("".equals(responseAsString)){
             throw new GenericUncheckedException( String.format("A&AI has no homing data associated to vfModule '%s' of vnf '%s'", vfModuleId, vnfInstanceId));
         }
         else {
