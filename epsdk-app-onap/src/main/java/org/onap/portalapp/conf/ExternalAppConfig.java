@@ -38,7 +38,6 @@
 package org.onap.portalapp.conf;
 
 import org.onap.portalapp.login.LoginStrategyImpl;
-import org.onap.portalapp.scheduler.RegistryAdapter;
 import org.onap.portalsdk.core.auth.LoginStrategy;
 import org.onap.portalsdk.core.conf.AppConfig;
 import org.onap.portalsdk.core.conf.Configurable;
@@ -47,7 +46,6 @@ import org.onap.portalsdk.core.objectcache.AbstractCacheManager;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.CacheManager;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.core.io.Resource;
@@ -59,10 +57,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
