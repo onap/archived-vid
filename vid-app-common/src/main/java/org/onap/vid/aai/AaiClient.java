@@ -20,8 +20,26 @@
 
 package org.onap.vid.aai;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
@@ -32,12 +50,28 @@ import org.json.simple.parser.JSONParser;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.exceptions.InvalidAAIResponseException;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
-import org.onap.vid.aai.model.*;
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.*;
+import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetNetworkCollectionDetails;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetNetworkCollectionDetailsHelper;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetRelatedInstanceGroupsByVnfId;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.CloudRegion;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.InstanceGroup;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Network;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
+import org.onap.vid.aai.model.AaiGetPnfResponse;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.CustomQuerySimpleResult;
+import org.onap.vid.aai.model.GetServiceModelsByDistributionStatusResponse;
+import org.onap.vid.aai.model.LogicalLinkResponse;
+import org.onap.vid.aai.model.OwningEntityResponse;
+import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.model.ProjectResponse;
+import org.onap.vid.aai.model.Properties;
+import org.onap.vid.aai.model.ResourceType;
+import org.onap.vid.aai.model.ServiceRelationships;
+import org.onap.vid.aai.model.SimpleResult;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.CacheProvider;
 import org.onap.vid.aai.util.VidObjectMapperType;
@@ -50,23 +84,6 @@ import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriUtils;
-
-import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Function;
-
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 /**
 
@@ -233,7 +250,7 @@ public class AaiClient implements AaiClientInterface {
 
     @Override
     public boolean isNodeTypeExistsByName(String name, ResourceType type) {
-        if (StringUtils.isEmpty(name)) {
+        if (isEmpty(name)) {
             throw new GenericUncheckedException("Empty resource-name provided to searchNodeTypeByName; request is rejected as this will cause full resources listing");
         }
 
@@ -697,7 +714,7 @@ public class AaiClient implements AaiClientInterface {
 
         String propKey = checkForNull((String) innerObj.get("property-key"));
         String propVal = checkForNull((String) innerObj.get("property-value"));
-        if (propKey.equalsIgnoreCase("tenant.tenant-name")) {
+        if (equalsIgnoreCase(propKey, "tenant.tenant-name")) {
             tenantNewObj.put("tenantName", propVal);
         }
     }
@@ -708,11 +725,11 @@ public class AaiClient implements AaiClientInterface {
 
         String rShipKey = checkForNull((String) inner2Obj.get("relationship-key"));
         String rShipVal = checkForNull((String) inner2Obj.get("relationship-value"));
-        if (rShipKey.equalsIgnoreCase("cloud-region.cloud-owner")) {
+        if (equalsIgnoreCase(rShipKey, "cloud-region.cloud-owner")) {
             tenantNewObj.put("cloudOwner", rShipVal);
-        } else if (rShipKey.equalsIgnoreCase("cloud-region.cloud-region-id")) {
+        } else if (equalsIgnoreCase(rShipKey, "cloud-region.cloud-region-id")) {
             tenantNewObj.put("cloudRegionID", rShipVal);
-        } else if (rShipKey.equalsIgnoreCase("tenant.tenant-id")) {
+        } else if (equalsIgnoreCase(rShipKey, "tenant.tenant-id")) {
             tenantNewObj.put("tenantID", rShipVal);
         }
     }
@@ -768,12 +785,12 @@ public class AaiClient implements AaiClientInterface {
     @Override
     public GetTenantsResponse getHomingDataByVfModule(String vnfInstanceId, String vfModuleId) {
 
-        if (StringUtils.isEmpty(vnfInstanceId)||StringUtils.isEmpty(vfModuleId)){
+        if (isEmpty(vnfInstanceId)|| isEmpty(vfModuleId)){
             throw new GenericUncheckedException("Failed to retrieve homing data associated to vfModule from A&AI, VNF InstanceId or VF Module Id is missing.");
         }
         Response resp = doAaiGet("network/generic-vnfs/generic-vnf/" + vnfInstanceId +"/vf-modules/vf-module/"+ vfModuleId, false);
         String responseAsString = parseForTenantsByServiceSubscription("vserver",resp.readEntity(String.class));
-        if (responseAsString.equals("")){
+        if (isEmpty(responseAsString)){
             throw new GenericUncheckedException( String.format("A&AI has no homing data associated to vfModule '%s' of vnf '%s'", vfModuleId, vnfInstanceId));
         }
         else {
@@ -822,7 +839,7 @@ public class AaiClient implements AaiClientInterface {
 
         Response resp = doAaiGet(url, false);
         String responseAsString = parseForTenantsByServiceSubscription("tenant",resp.readEntity(String.class));
-        if (StringUtils.isEmpty(responseAsString)){
+        if (isEmpty(responseAsString)){
            throw new ParsingGetTenantsResponseFailure(String.format("A&AI has no LCP Region & Tenants associated to subscriber '%s' and service type '%s'", globalCustomerId, serviceType));
         }
         else {

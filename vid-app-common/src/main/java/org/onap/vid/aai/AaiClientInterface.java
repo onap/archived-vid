@@ -21,20 +21,18 @@
 package org.onap.vid.aai;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.core.Response;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
-import org.onap.vid.aai.model.CustomQuerySimpleResult;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.model.probes.ExternalComponentStatus;
-
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Oren on 7/4/17.
