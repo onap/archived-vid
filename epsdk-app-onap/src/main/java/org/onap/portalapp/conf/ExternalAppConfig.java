@@ -37,8 +37,10 @@
  */
 package org.onap.portalapp.conf;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.sql.DataSource;
 import org.onap.portalapp.login.LoginStrategyImpl;
-import org.onap.portalapp.scheduler.RegistryAdapter;
 import org.onap.portalsdk.core.auth.LoginStrategy;
 import org.onap.portalsdk.core.conf.AppConfig;
 import org.onap.portalsdk.core.conf.Configurable;
@@ -47,9 +49,15 @@ import org.onap.portalsdk.core.objectcache.AbstractCacheManager;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.CacheManager;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
@@ -59,14 +67,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ONAP Portal SDK sample application. Extends core AppConfig class to
@@ -84,7 +86,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 
 	/** The Constant LOG. */
     private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(ExternalAppConfig.class);
- 
+
     /** The vid schema script. */
     @Value("classpath:vid-schema.sql")
     private Resource vidSchemaScript;
@@ -92,7 +94,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
     /** The vid data script. */
     @Value("classpath:vid-data.sql")
     private Resource vidDataScript;
-    
+
     /**
      * The Class InnerConfiguration.
      */
@@ -115,7 +117,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	/**
 	 * Creates a new list with a single entry that is the external app
 	 * definitions.xml path.
-	 * 
+	 *
 	 * @return List of String, size 1
 	 */
 	@Override
@@ -139,7 +141,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 
 	/**
 	 * Creates and returns a new instance of a {@link CacheManager} class.
-	 * 
+	 *
 	 * @return New instance of {@link CacheManager}
 	 */
 	@Bean
@@ -150,7 +152,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	/**
 	 * Creates and returns a new instance of a {@link SchedulerFactoryBean} and
 	 * populates it with triggers.
-	 * 
+	 *
 	 * @return New instance of {@link SchedulerFactoryBean}
 	 */
 	@Bean
@@ -161,7 +163,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 		return schedulerFactory;
 	}
 
-	
+
 	/**
      * Data source initializer.
      *
@@ -170,15 +172,15 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
      */
     @Bean
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
-        
+
         LOG.info("Initializing VID data source");
-        
+
         final DataSourceInitializer initializer = new DataSourceInitializer();
         initializer.setDataSource(dataSource);
         initializer.setDatabasePopulator(databasePopulator());
         return initializer;
     }
-    
+
     /**
      * Database populator.
      *
@@ -186,7 +188,7 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
      */
     public DatabasePopulator databasePopulator() {
         LOG.info("Populating VID data source");
-        
+
         final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScript(vidSchemaScript);
         populator.addScript(vidDataScript);
