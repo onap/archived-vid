@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "61029ef0_f38a3101",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-07T16:26:17Z",
+      "side": 1,
+      "message": "Flipping the strings equality impacts the code readability.\nI suggest using `StringUtils.isNotEmpty` and `StringUtils.equalsIgnoreCase`, and keep the variable before the expected literal. (Both from org.apache.commons.lang3)",
+      "revId": "e01705d5a6d1b9005a165456ffa6e52cd6e48a39",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd87ab67_e5643020",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/PombaClientInterface.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-07T16:26:17Z",
+      "side": 1,
+      "message": "Can you please elaborate on how this change improves the code?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 20
+      },
+      "revId": "e01705d5a6d1b9005a165456ffa6e52cd6e48a39",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
