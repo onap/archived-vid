@@ -28,8 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 
 @JsonPropertyOrder({
-	    "status",
-	    "entity"
+    "status",
+    "entity"
 })
 
 /*
@@ -41,8 +41,8 @@ public class MsoResponseWrapper2<T> implements MsoResponseWrapperInterface {
 
     static final ObjectMapper objectMapper = new ObjectMapper();
 
-	private final int status;
-	private final T entity;
+    private final int status;
+    private T entity;
     private final String raw;
 
     public MsoResponseWrapper2(RestObject<T> msoResponse) {
@@ -51,23 +51,23 @@ public class MsoResponseWrapper2<T> implements MsoResponseWrapperInterface {
         this.raw = msoResponse.getRaw();
     }
 
-  public MsoResponseWrapper2(HttpResponse<T> msoResponse) {
-    this.status = msoResponse.getStatus();
-    this.entity = msoResponse.getBody();
-    this.raw = msoResponse.getBody().toString();
-  }
+    public MsoResponseWrapper2(HttpResponse<T> msoResponse) {
+        this.status = msoResponse.getStatus();
+        this.entity = msoResponse.getBody();
+        this.raw = msoResponse.getBody().toString();
+    }
 
     public MsoResponseWrapper2(
-            @JsonProperty(value = "status", required = true) int status,
-            @JsonProperty(value = "entity", required = true) T entity) {
+        @JsonProperty(value = "status", required = true) int status,
+        @JsonProperty(value = "entity", required = true) T entity) {
         this.status = status;
         this.entity = entity;
         this.raw = null;
     }
 
     public int getStatus() {
-		return status;
-	}
+        return status;
+    }
 
     @Override
     @JsonIgnore
@@ -80,8 +80,8 @@ public class MsoResponseWrapper2<T> implements MsoResponseWrapperInterface {
     }
 
     @JsonProperty
-	public Object getEntity() {
-		return entity != null ? entity : raw;
-	}
+    public Object getEntity() {
+        return entity != null ? entity : raw;
+    }
 
 }
