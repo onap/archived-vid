@@ -619,7 +619,18 @@
         vm.loadWorkFlows = function () {
             changeManagementService.getWorkflows(vm.changeManagement.vnfNames)
                 .then(function(response) {
-                    vm.workflows = response.data.workflows;
+                    vm.workflows = response.data.workflows || [];
+                    vm.loadSOWorkFlows();
+                })
+                .catch(function(error) {
+                    $log.error(error);
+                });
+        };
+
+        vm.loadSOWorkFlows = function () {
+          changeManagementService.getSOWorkflows().then(function(response) {
+                    let workflows = response.data;
+                    vm.workflows = vm.workflows.concat(workflows.map(item => item.name));
                 })
                 .catch(function(error) {
                     $log.error(error);
