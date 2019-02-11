@@ -617,13 +617,32 @@
         };
 
         vm.loadWorkFlows = function () {
-            changeManagementService.getWorkflows(vm.changeManagement.vnfNames)
-                .then(function(response) {
-                    vm.workflows = response.data.workflows;
-                })
-                .catch(function(error) {
-                    $log.error(error);
-                });
+          // Should be corrected when VID-397 will be closed. At the moment there is a need
+          // to merge local and remote workflows not to broke current functionality.
+            return vm.loadLocalWorkFlows()
+            .then(vm.loadRemoteWorkFlows)
+            .then(function () {
+                vm.workflows = vm.localWorkflows.concat(vm.remoteWorkflows.map(item => item.name));
+            });
+        };
+
+        vm.loadLocalWorkFlows = function () {
+          return changeManagementService.getWorkflows(vm.changeManagement.vnfNames)
+          .then(function (response) {
+            vm.localWorkflows = response.data.workflows || [];
+          }).catch(function (error) {
+            $log.error(error);
+          });
+        };
+
+        vm.loadRemoteWorkFlows = function () {
+          let vnfNames = vm.changeManagement.vnfNames.map(vnfName => vnfName.name);
+          return changeManagementService.getSOWorkflows(vnfNames)
+          .then(function (response) {
+            vm.remoteWorkflows = response.data || [];
+          }).catch(function (error) {
+            $log.error(error);
+          });
         };
 
         //Must be $scope because we bind to the onchange of the html (cannot attached to vm variable).

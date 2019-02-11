@@ -116,6 +116,7 @@ appDS2
 	CHANGE_MANAGEMENT_OPERATION_NO_SCHEDULER: "change-management/workflow/@vnfName",
 	GET_WORKFLOW: "change-management/get_vnf_workflow_relation",
 	GET_MSO_WORKFLOWS: "change-management/mso",
+	GET_SO_WORKFLOWS: "workflows-management/workflows",
 	GET_SCHEDULER_CHANGE_MANAGEMENTS: "change-management/scheduler",
 	CANCEL_SCHEDULE_REQUEST: "change-management/scheduler/schedules",
 	ASSIGN : "?r=",

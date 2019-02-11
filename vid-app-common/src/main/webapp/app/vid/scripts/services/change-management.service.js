@@ -21,6 +21,15 @@
                 });
         };
 
+        this.getSOWorkflows = function (vnfNames) {
+            return $http.get(COMPONENT.GET_SO_WORKFLOWS, {params: {vnfName: vnfNames}})
+            .success(function (response) {
+                return {data: response};
+            }).catch(function () {
+                return {data: []};
+            });
+        };
+
         this.getMSOChangeManagements = function() {
             var deferred = $q.defer();
 
