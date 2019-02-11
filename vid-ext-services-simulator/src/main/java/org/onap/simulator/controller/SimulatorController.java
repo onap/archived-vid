@@ -6,8 +6,6 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
-import static org.mockserver.model.HttpRequest.request;
-import static org.mockserver.model.HttpResponse.response;
 
 import org.mockserver.model.JsonBody;
 import org.onap.simulator.errorHandling.VidSimulatorException;
@@ -35,8 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.stream.Collectors;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
@@ -53,7 +49,6 @@ public class SimulatorController {
     private Integer mockServerPort;
     private Boolean enablePresetRegistration;
     private volatile boolean isInitialized = false;
-
 
     Logger logger = LoggerFactory.getLogger(SimulatorController.class);
 
@@ -180,7 +175,6 @@ public class SimulatorController {
             register(expectationModel);
         }
     }
-
 
     @RequestMapping(value = {"/**"})
     public String redirectToMockServer(HttpServletRequest request, HttpServletResponse response) {
