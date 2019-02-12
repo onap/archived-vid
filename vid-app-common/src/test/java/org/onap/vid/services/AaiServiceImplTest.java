@@ -21,353 +21,168 @@
 
 package org.onap.vid.services;
 
-import com.google.common.collect.ImmutableList;
-import io.joshworks.restclient.http.HttpResponse;
-import org.junit.Assert;
-import org.junit.Test;
-import org.onap.vid.aai.AaiResponse;
-import org.onap.vid.aai.SubscriberFilteredResults;
-import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
-import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
-import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
-import org.onap.vid.model.SubscriberList;
-import org.onap.vid.roles.RoleValidator;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import javax.ws.rs.core.Response;
+import org.junit.Test;
+import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiGetVnfResponse;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
+import org.onap.vid.aai.AaiResponse;
+import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.VnfResult;
+import org.onap.vid.roles.RoleValidator;
 
 public class AaiServiceImplTest {
 
-    private AaiServiceImpl createTestSubject() {
-        return new AaiServiceImpl();
+    private AaiClientInterface aaiClient = mock(AaiClientInterface.class);
+    private AaiOverTLSClientInterface aaiSslClient = mock(AaiOverTLSClientInterface.class);
+    private AaiResponseTranslator aaiResponseTranslator = mock(AaiResponseTranslator.class);
+    private AAITreeNodeBuilder aaiTreeNode = mock(AAITreeNodeBuilder.class);
+    private AAIServiceTree aaiServiceTree = mock(AAIServiceTree.class);
+
+    private AaiServiceImpl aaiService = new AaiServiceImpl(
+        aaiClient, aaiSslClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree
+    );
+
+    @Test
+    public void getPNFData_should_delegate_call_to_aai_client() {
+        // given
+        String globalCustomerId = "global_customer";
+        String serviceType = "service_type";
+        String modelVersionId = "model_version";
+        String modelInvariantId = "model_invariant_id";
+        String cloudRegion = "cloud_region";
+        String equipVendor = "equip_vendor";
+        String equipModel = "equip_model";
+
+        AaiResponse response = mock(AaiResponse.class);
+        when(aaiClient.getPNFData(
+            globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel
+        )).thenReturn(response);
+
+        // when
+        AaiResponse actual = aaiService.getPNFData(
+            globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel
+        );
+
+        // then
+        assertThat(response).isEqualTo(actual);
     }
 
     @Test
-    public void testGetFullSubscriberList() throws Exception {
-        AaiServiceImpl testSubject;
-        RoleValidator roleValidator = null;
-        SubscriberFilteredResults result;
+    @SuppressWarnings("unchecked")
+    public void getSpecificPnf_should_delegate_call_to_aai_client() {
+        // given
+        String pnfId = "some_pnf_id";
 
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getFullSubscriberList(roleValidator);
-        } catch (
+        AaiResponse response = mock(AaiResponse.class);
+        when(aaiClient.getSpecificPnf(pnfId)).thenReturn(response);
 
-        Exception e) {
-        }
+        // when
+        AaiResponse actual = aaiService.getSpecificPnf(pnfId);
+
+        // then
+        assertThat(response).isEqualTo(actual);
     }
 
     @Test
-    public void testGetOperationalEnvironments() throws Exception {
-        AaiServiceImpl testSubject;
-        String operationalEnvironmentType = "";
-        String operationalEnvironmentStatus = "";
-        AaiResponse<OperationalEnvironmentList> result;
+    public void getVersionByInvariantId_should_delegate_call_to_aai_client() {
+        // given
+        List<String> modelInvariantId = new ArrayList<>();
 
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus);
-        } catch (
+        Response response = mock(Response.class);
+        when(aaiClient.getVersionByInvariantId(modelInvariantId)).thenReturn(response);
 
-        Exception e) {
-        }
+        // when
+        Response actual = aaiService.getVersionByInvariantId(modelInvariantId);
+
+        // then
+        assertThat(response).isEqualTo(actual);
     }
 
     @Test
-    public void testGetFullSubscriberList_1() throws Exception {
-        AaiServiceImpl testSubject;
-        HttpResponse<SubscriberList> result;
+    @SuppressWarnings("unchecked")
+    public void getTenants_should_return_tenants_and_change_permitted_flag_if_permitted_by_role_validator() {
+        // given
+        String globalCustomerId = "global_customer";
+        String serviceType = "service_type";
 
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getFullSubscriberList();
-        } catch (
+        GetTenantsResponse permittedTenant = new GetTenantsResponse(
+            "cloud_region", "cloud_owner", "permitted_tenant", "tenant_id", false
+        );
+        GetTenantsResponse unpermittedTenant = new GetTenantsResponse(
+            "cloud_region", "cloud_owner", "unpermitted_tenant", "tenant_id", false
+        );
 
-        Exception e) {
-        }
+        AaiResponse<GetTenantsResponse[]> response = mock(AaiResponse.class);
+        when(response.getT()).thenReturn(new GetTenantsResponse[]{ permittedTenant, unpermittedTenant });
+        when(aaiClient.getTenants(globalCustomerId, serviceType)).thenReturn(response);
+
+        RoleValidator roleValidator = mock(RoleValidator.class);
+        when(roleValidator.isTenantPermitted(globalCustomerId, serviceType, "permitted_tenant")).thenReturn(true);
+        when(roleValidator.isTenantPermitted(globalCustomerId, serviceType, "unpermitted_tenant")).thenReturn(false);
+
+        // when
+        AaiResponse actual = aaiService.getTenants(globalCustomerId, serviceType, roleValidator);
+
+        // then
+        assertThat(response).isEqualTo(actual);
+        assertThat(permittedTenant.isPermitted).isTrue();
+        assertThat(unpermittedTenant.isPermitted).isFalse();
     }
 
     @Test
-    public void testGetSubscriberData() throws Exception {
-        AaiServiceImpl testSubject;
-        String subscriberId = "";
-        RoleValidator roleValidator = null;
-        AaiResponse result;
+    public void getVNFData_with_service_instance_id_should_delegate_call_to_aai_client() {
+        // given
+        String globalSubscriber = "global_subscriber";
+        String serviceType = "service_type";
+        String serviceInstanceId = "service_instance";
 
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getSubscriberData(subscriberId, roleValidator);
-        } catch (
+        AaiResponse response = mock(AaiResponse.class);
+        when(aaiClient.getVNFData(globalSubscriber, serviceType, serviceInstanceId)).thenReturn(response);
 
-        Exception e) {
-        }
+        // when
+        AaiResponse actual = aaiService.getVNFData(globalSubscriber, serviceType, serviceInstanceId);
+
+        // then
+        assertThat(response).isEqualTo(actual);
     }
 
     @Test
-    public void testGetServiceInstanceSearchResults() throws Exception {
-        AaiServiceImpl testSubject;
-        String subscriberId = "";
-        String instanceIdentifier = "";
-        RoleValidator roleValidator = null;
-        List<String> owningEntities = null;
-        List<String> projects = null;
-        AaiResponse result;
+    @SuppressWarnings("unchecked")
+    public void getVNFData_should_delegate_call_to_aai_client_and_filter_vnfs() {
+        // given
+        String globalSubscriber = "global_subscriber";
+        String serviceType = "service_type";
 
-        // test 1
-        testSubject = createTestSubject();
-        subscriberId = null;
-        instanceIdentifier = null;
-        result = testSubject.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator,
-                owningEntities, projects);
-        Assert.assertNotEquals(null, result);
+        VnfResult genericVnf = new VnfResult();
+        genericVnf.nodeType = "generic-vnf";
 
-        /*/ test 2
-        testSubject = createTestSubject();
-        subscriberId = "";
-        instanceIdentifier = null;
-        result = testSubject.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator,
-                owningEntities, projects);
-        Assert.assertNotEquals(null, result);
+        VnfResult serviceInstance = new VnfResult();
+        serviceInstance.nodeType = "service-instance";
 
-        // test 3
-        testSubject = createTestSubject();
-        instanceIdentifier = null;
-        subscriberId = null;
-        result = testSubject.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator,
-                owningEntities, projects);
-        Assert.assertEquals(null, result);
+        VnfResult someVnf = new VnfResult();
+        someVnf.nodeType = "some-vnf";
 
-        // test 4
-        testSubject = createTestSubject();
-        instanceIdentifier = "";
-        subscriberId = null;
-        result = testSubject.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator,
-                owningEntities, projects);
-        Assert.assertEquals(null, result);
+        AaiResponse<AaiGetVnfResponse> response = mock(AaiResponse.class);
+        AaiGetVnfResponse vnfs = new AaiGetVnfResponse();
+        vnfs.results = Arrays.asList(genericVnf, serviceInstance, someVnf);
+        when(response.getT()).thenReturn(vnfs);
 
-        // test 5
-        testSubject = createTestSubject();
-        owningEntities = null;
-        result = testSubject.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator,
-                owningEntities, projects);
-        Assert.assertEquals(null, result);
+        when(aaiClient.getVNFData(globalSubscriber, serviceType)).thenReturn(response);
 
-        // test 6
-        testSubject = createTestSubject();
-        projects = null;
-        result = testSubject.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator,
-                owningEntities, projects);
-        Assert.assertEquals(null, result);*/
-    }
+        // when
+        AaiResponse actual = aaiService.getVNFData(globalSubscriber, serviceType);
 
-    @Test
-    public void testGetVersionByInvariantId() throws Exception {
-        AaiServiceImpl testSubject;
-        List<String> modelInvariantId = ImmutableList.of("some invariant id");
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            testSubject.getVersionByInvariantId(modelInvariantId);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetSpecificPnf() throws Exception {
-        AaiServiceImpl testSubject;
-        String pnfId = "";
-        AaiResponse<Pnf> result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getSpecificPnf(pnfId);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetPNFData() throws Exception {
-        AaiServiceImpl testSubject;
-        String globalCustomerId = "";
-        String serviceType = "";
-        String modelVersionId = "";
-        String modelInvariantId = "";
-        String cloudRegion = "";
-        String equipVendor = "";
-        String equipModel = "";
-        AaiResponse result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId,
-                    cloudRegion, equipVendor, equipModel);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetServices() throws Exception {
-        AaiServiceImpl testSubject;
-        RoleValidator roleValidator = null;
-        AaiResponse result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getServices(roleValidator);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetTenants() throws Exception {
-        AaiServiceImpl testSubject;
-        String globalCustomerId = "";
-        String serviceType = "";
-        RoleValidator roleValidator = null;
-        AaiResponse<GetTenantsResponse[]> result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getTenants(globalCustomerId, serviceType, roleValidator);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetVNFData() throws Exception {
-        AaiServiceImpl testSubject;
-        String globalSubscriberId = "";
-        String serviceType = "";
-        String serviceInstanceId = "";
-        AaiResponse result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getVNFData(globalSubscriberId, serviceType, serviceInstanceId);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetVNFData_1() throws Exception {
-        AaiServiceImpl testSubject;
-        String globalSubscriberId = "";
-        String serviceType = "";
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            testSubject.getVNFData(globalSubscriberId, serviceType);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetAaiZones() throws Exception {
-        AaiServiceImpl testSubject;
-        AaiResponse result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getAaiZones();
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetAicZoneForPnf() throws Exception {
-        AaiServiceImpl testSubject;
-        String globalCustomerId = "";
-        String serviceType = "";
-        String serviceId = "";
-        AaiResponse result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getAicZoneForPnf(globalCustomerId, serviceType, serviceId);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetNodeTemplateInstances() throws Exception {
-        AaiServiceImpl testSubject;
-        String globalCustomerId = "";
-        String serviceType = "";
-        String modelVersionId = "";
-        String modelInvariantId = "";
-        String cloudRegion = "";
-        AaiResponse result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId,
-                    modelInvariantId, cloudRegion);
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetServicesByDistributionStatus() throws Exception {
-        AaiServiceImpl testSubject;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            testSubject.getServicesByDistributionStatus();
-        } catch (
-
-        Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetServiceInstanceAssociatedPnfs() throws Exception {
-        AaiServiceImpl testSubject;
-        String globalCustomerId = "";
-        String serviceType = "";
-        String serviceInstanceId = "";
-        List<String> result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getServiceInstanceAssociatedPnfs(globalCustomerId, serviceType, serviceInstanceId);
-        } catch (
-
-        Exception e) {
-        }
+        // then
+        assertThat(response).isEqualTo(actual);
+        assertThat(response.getT().results).containsOnly(genericVnf, serviceInstance);
     }
 }

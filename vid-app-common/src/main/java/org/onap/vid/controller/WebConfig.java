@@ -70,8 +70,9 @@ public class WebConfig {
     }
 
     @Bean
-    public AaiService getAaiService() {
-        return new AaiServiceImpl();
+    public AaiService getAaiService(AaiClientInterface aaiClient, AaiOverTLSClientInterface aaiOverTLSClient,
+        AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree) {
+        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree);
     }
 
     @Bean
