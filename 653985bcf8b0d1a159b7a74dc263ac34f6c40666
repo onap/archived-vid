@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbd86b3e_3efb48e6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WorkflowsController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-12T12:34:24Z",
+      "side": 1,
+      "message": "class and methods don\u0027t need to be public",
+      "revId": "653985bcf8b0d1a159b7a74dc263ac34f6c40666",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "161c5704_08b006b0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/ExtWorkflowServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-12T12:34:24Z",
+      "side": 1,
+      "message": "remove asterisk",
+      "revId": "653985bcf8b0d1a159b7a74dc263ac34f6c40666",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
