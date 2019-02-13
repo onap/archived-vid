@@ -24,6 +24,7 @@ export module Constants {
 
     public static GET_WORKFLOW = 'change-management/get_vnf_workflow_relation';
     public static GET_MSO_WORKFLOWS = 'change-management/mso';
+    public static GET_SO_WORKFLOWS = 'workflows-management/workflows?vnfName=@vnfName';
     public static GET_SCHEDULER_CHANGE_MANAGEMENTS = 'change-management/scheduler';
     public static CANCEL_SCHEDULE_REQUEST = 'change-management/scheduler/schedules';
     public static ASSIGN = '?r=';

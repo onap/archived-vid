@@ -1,0 +1,20 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/so/workflow-parameters/1"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "parameterDefinitions": [
+        {
+          "id": 1,
+          "name": "[FIRST]parameter 1",
+          "required": true,
+          "type": "STRING",
+          "pattern": "[0-9]*"
+        }
+      ]
+    }
+  }
+}
