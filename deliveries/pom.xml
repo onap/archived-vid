@@ -18,6 +18,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <docker.push.registry>${docker_registry}</docker.push.registry>
         <docker.verbose>true</docker.verbose>
+        <docker.tag>${project.version}-${maven.build.timestamp}</docker.tag>
+        <docker.latest.tag>${project.version}-latest</docker.latest.tag>
+
+        <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
     </properties>
 
     <profiles>
@@ -62,6 +66,8 @@
                                 <tags>
                                     <tag>4.0-STAGING-latest</tag>
                                     <tag>latest</tag>
+                                    <tag>${docker.tag}</tag>
+                                    <tag>${docker.latest.tag}</tag>
                                 </tags>
 
                             </build>
