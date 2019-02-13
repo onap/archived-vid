@@ -1,0 +1,18 @@
+{
+  "serviceInstanceList": [
+    {
+      "serviceInstanceId": "serviceInstanceId1",
+      "modelVersionId": "modelVersion1",
+      "modelInvariantId": "modelInvariantId1",
+      "customerId": "customerId1",
+      "serviceType": "serviceType1"
+    },
+    {
+      "serviceInstanceId": "serviceInstanceId2",
+      "modelVersionId": "modelVersion2",
+      "modelInvariantId": "modelInvariantId2",
+      "customerId": "customerId2",
+      "serviceType": "serviceType2"
+    }
+  ]
+}

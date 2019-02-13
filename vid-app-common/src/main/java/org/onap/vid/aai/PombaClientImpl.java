@@ -1,12 +1,12 @@
+
 package org.onap.vid.aai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.model.PombaInstance.PombaRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.servlet.ServletContext;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.model.PombaInstance.PombaRequest;
+import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class PombaClientImpl implements PombaClientInterface {
 
@@ -19,13 +19,14 @@ public class PombaClientImpl implements PombaClientInterface {
     @Autowired
     PombaRestInterface pombaRestInterface;
 
+    @Autowired
+    SystemPropertiesWrapper systemPropertiesWrapper;
 
     @Override
     public void verify(PombaRequest request) {
         String methodName = "doAaiPost";
         logger.debug(EELFLoggerDelegate.debugLogger, methodName + " start");
-        String uri = SystemProperties.getProperty("pomba.server.url");
-
+        String uri = systemPropertiesWrapper.getProperty("pomba.server.url");
 
         try {
             pombaRestInterface.RestPost(fromAppId, uri, new ObjectMapper().writeValueAsString(request));
