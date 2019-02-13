@@ -18,6 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <epsdk.version>2.4.0</epsdk.version>
+        <jackson.version>2.9.7</jackson.version>
         <springframework.version>4.2.9.RELEASE</springframework.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
         <!-- Skip assembling the zip; assemble via mvn -Dskipassembly=false .. -->
@@ -205,9 +206,9 @@
                 </dependencies>
             </plugin>
             <plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.3.0.603</version>
+              <groupId>org.sonarsource.scanner.maven</groupId>
+              <artifactId>sonar-maven-plugin</artifactId>
+              <version>3.3.0.603</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -265,24 +266,12 @@
             <artifactId>epsdk-app-common</artifactId>
             <version>${epsdk.version}</version>
             <type>jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.onap.vid</groupId>
             <artifactId>vid-app-common</artifactId>
             <version>${project.version}</version>
             <type>war</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.onap.vid</groupId>
@@ -296,22 +285,12 @@
             <groupId>org.onap.portal.sdk</groupId>
             <artifactId>epsdk-core</artifactId>
             <version>${epsdk.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.onap.portal.sdk</groupId>
             <artifactId>epsdk-analytics</artifactId>
             <version>${epsdk.version}</version>
             <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>com.lowagie</groupId>
                     <artifactId>itext</artifactId>
@@ -322,12 +301,6 @@
             <groupId>org.onap.portal.sdk</groupId>
             <artifactId>epsdk-workflow</artifactId>
             <version>${epsdk.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.att.eelf</groupId>
@@ -338,23 +311,34 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.6.3</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.8.6</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.6.7.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!-- jackson-dataformat-* are to override elasticsearch-2.2.0 deps hell -->
+        <!-- (elasticsearch is an epsdk-app-common-2.4.0 dep) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-smile</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-cbor</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.mchange</groupId>
