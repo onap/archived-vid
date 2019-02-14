@@ -145,6 +145,24 @@
     },
     {
       "key": {
+        "uuid": "c000a054_1e460d64",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T15:13:50Z",
+      "side": 1,
+      "message": "This comment should be updated, as I think the main point is we can use either Local or SO, not both.",
+      "parentUuid": "94ff2204_9d5d3e2d",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ffc6bc92_198e9bb6",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 3
