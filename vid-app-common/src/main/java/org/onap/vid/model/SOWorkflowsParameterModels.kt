@@ -1,18 +1,5 @@
 package org.onap.vid.model
 
-data class SOWorkflow constructor(val id: Long, val name: String) {
-    fun clone(): SOWorkflow {
-        return copy()
-    }
-}
-
-data class SOWorkflows @JvmOverloads constructor(var workflows: List<SOWorkflow>? = emptyList()) {
-    fun clone(): SOWorkflows {
-        return copy(workflows?.toMutableList())
-    }
-}
-
-
 enum class SOWorkflowType(var type: String? = "STRING") {
     STRING("STRING")
 }

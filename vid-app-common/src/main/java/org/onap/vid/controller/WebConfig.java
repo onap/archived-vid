@@ -22,6 +22,7 @@
 package org.onap.vid.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
 import org.onap.vid.aai.*;
 import org.onap.vid.aai.model.PortDetailsTranslator;
@@ -55,7 +56,7 @@ public class WebConfig {
      */
     @Bean
     public com.fasterxml.jackson.databind.ObjectMapper getObjectMapper() {
-        return new com.fasterxml.jackson.databind.ObjectMapper();
+        return new com.fasterxml.jackson.databind.ObjectMapper().registerModule(new KotlinModule());
     }
 
 
