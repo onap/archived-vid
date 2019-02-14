@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b29eb62_b9f4f70c",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/constants/componentConstants.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "Suggesting tabs to spaces",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 1
+      },
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "94ff2204_9d5d3e2d",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "I think this method can be renamed to localLocalWorkflows or such.\nThen vm.loadWorkFlows will call both, like:\n\n```\nvm.workflows\u003d vm.localLocalWorkflows().then(...{;\n  remoteWorkflows \u003d vm.loadSOWorkFlows().then(...{\n    return concat(...);\n  });\n})\n```",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ffc6bc92_198e9bb6",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "Even in our imaginary world, `loadSOWorkFlows` should get `vm.changeManagement.vnfNames` as param. :-)",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7d5897b4_14ed830a",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "Invoking this method several times will make vm.workflows larger and larger as a side effect. This is also leads to make the concatenation outside.",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "267f7a0d_141cad39",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/services/change-management.service.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "It\u0027s better to have `deferred.resolve({data: response})`, so getSOWorkflows will return a \"promise\", and caller will use `.then()`.",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28ee0c0f_0482a193",
+        "filename": "vid-ext-services-simulator/src/main/resources/simulator.properties",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "can you please explain why?",
+      "range": {
+        "startLine": 5,
+        "startChar": 28,
+        "endLine": 5,
+        "endChar": 33
+      },
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be7626d7_0a54699d",
+        "filename": "vid-ext-services-simulator/src/main/resources/simulator.properties",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "This affects the simulator time to be ready.\nFalse is a better default. Presets can be loaded explicitly while test.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 39
+      },
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b3e333fc_2caae06e",
+        "filename": "vid-webpack-master/src/app/shared/utils/constants.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T12:46:00Z",
+      "side": 1,
+      "message": "I think the \u0027management\u0027 is not needed here.\nAlso, maybe should \"workflows\" simply be under \"change-management/workflows?...\"?",
+      "range": {
+        "startLine": 27,
+        "startChar": 48,
+        "endLine": 27,
+        "endChar": 58
+      },
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
