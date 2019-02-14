@@ -2,6 +2,109 @@
   "comments": [
     {
       "key": {
+        "uuid": "43cab77e_bae5f476",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/MsoConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T15:10:06Z",
+      "side": 1,
+      "message": "For unirestObjectMapper to handle Kotlin, I think we can set this in WebConfig (adding the `registerModule(new KotlinModule()`):\n\n```\nimport com.fasterxml.jackson.module.kotlin.KotlinModule;\n\n\n    @Bean\n    public com.fasterxml.jackson.databind.ObjectMapper getObjectMapper() {\n        return new com.fasterxml.jackson.databind.ObjectMapper().registerModule(new KotlinModule());\n    }\n\n```",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f161091c_f347fc2b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WorkflowsController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T15:10:06Z",
+      "side": 1,
+      "message": "Just reasserting the comment, that path can be also \"change-management\". I find it confusing to have these both:\n- /change-management/workflow\n- /workflows-management/workflows\n\nActually, and I\u0027m repeating another idea here -- maybe change-management/workflow should be the only endpoint, that returns either \"local\", \"external\" workflows -- depends on feature-flag.\n\n(Obviously, this suggestion contradicts the current approach, of making the switch on the FE.)",
+      "range": {
+        "startLine": 16,
+        "startChar": 48,
+        "endLine": 16,
+        "endChar": 68
+      },
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ebf06cb5_34def32c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T15:10:06Z",
+      "side": 1,
+      "message": "Maybe default can be `emptyList()`, then we can avoid the nullability.",
+      "range": {
+        "startLine": 9,
+        "startChar": 84,
+        "endLine": 9,
+        "endChar": 88
+      },
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3279acaf_850076e4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T15:10:06Z",
+      "side": 1,
+      "message": "`copy()` is shallow by default.\nCan be smth like `copy(workflows?.copy())`",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a333ac03_817ee62f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/ExtWorkflowsServiceImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T15:10:06Z",
+      "side": 1,
+      "message": "I think ExtWorkflowsServiceImpl can implement WorkflowService, so this may be switched between. If agreed, ExtWorkflowsService should be merged into WorkflowService.\n\nWhat do you think?",
+      "range": {
+        "startLine": 12,
+        "startChar": 48,
+        "endLine": 12,
+        "endChar": 67
+      },
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0b29eb62_b9f4f70c",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/constants/componentConstants.js",
         "patchSetId": 3
@@ -70,6 +173,29 @@
       "writtenOn": "2019-02-14T12:46:00Z",
       "side": 1,
       "message": "Invoking this method several times will make vm.workflows larger and larger as a side effect. This is also leads to make the concatenation outside.",
+      "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3855c8da_ecdffded",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.test.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-14T15:10:06Z",
+      "side": 1,
+      "message": "How does \"wont stop UI to render\" is verified?",
+      "range": {
+        "startLine": 80,
+        "startChar": 35,
+        "endLine": 80,
+        "endChar": 57
+      },
       "revId": "f6173e27aa0e28868fde3db86ef1d249822519f4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
