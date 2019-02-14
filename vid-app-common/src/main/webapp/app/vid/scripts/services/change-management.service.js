@@ -30,6 +30,13 @@
             });
         };
 
+        this.getSOWorkflowParameter = function (workflowID){
+          return $http.get(COMPONENT.GET_SO_WORKFLOW_PARAMETER.replace('@workflowID', workflowID))
+          .success(function (response) {
+            return {data: response.parameterDefinitions}
+          });
+        };
+
         this.getMSOChangeManagements = function() {
             var deferred = $q.defer();
 

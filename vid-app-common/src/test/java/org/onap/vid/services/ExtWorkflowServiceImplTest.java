@@ -1,15 +1,19 @@
 package org.onap.vid.services;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+
 
 import io.joshworks.restclient.http.HttpResponse;
 import java.util.Collections;
 import java.util.List;
+
+import org.assertj.core.api.Assertions;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.model.SOWorkflow;
+import org.onap.vid.model.SOWorkflowParameterDefinition;
+import org.onap.vid.model.SOWorkflowParameterDefinitions;
+import org.onap.vid.model.SOWorkflowType;
 import org.onap.vid.model.SOWorkflows;
 import org.onap.vid.mso.MsoResponseWrapper2;
 import org.onap.vid.mso.rest.MockedWorkflowsRestClient;
@@ -17,12 +21,18 @@ import org.onap.vid.services.ExtWorkflowsServiceImpl.BadResponseFromMso;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+
+
 public class ExtWorkflowServiceImplTest {
 
     @Mock
     private MockedWorkflowsRestClient client;
     @Mock
     private HttpResponse<SOWorkflows> response;
+
+    @Mock
+    private HttpResponse<SOWorkflowParameterDefinitions> parameterDefinitionsHttpResponse;
+
 
     @BeforeMethod
     public void init(){
@@ -41,7 +51,7 @@ public class ExtWorkflowServiceImplTest {
         List<SOWorkflow> workflows = extWorkflowsService.getWorkflows("test");
         // then
         Mockito.verify(client).getWorkflows("test");
-        assertThat(workflows.get(0).getName(), is("xyz"));
+        Assertions.assertThat(workflows.get(0).getName()).isEqualTo("xyz");
     }
 
     @Test(expectedExceptions = BadResponseFromMso.class)
@@ -56,5 +66,18 @@ public class ExtWorkflowServiceImplTest {
         extWorkflowsService.getWorkflows("test");
         // then throw exception
     }
+    @Test
+    public void shouldReturnWorkflowParametersOnValidResponse() {
+        SOWorkflowParameterDefinitions parameters = new SOWorkflowParameterDefinitions(Collections.singletonList(new SOWorkflowParameterDefinition(1L, "sample", "[0-9]", SOWorkflowType.STRING, true)));
+        ExtWorkflowsService extWorkflowsService = new ExtWorkflowsServiceImpl(client);
+        Mockito.when(parameterDefinitionsHttpResponse.getStatus()).thenReturn(200);
+        Mockito.when(parameterDefinitionsHttpResponse.getBody()).thenReturn(parameters);
+        MsoResponseWrapper2<SOWorkflowParameterDefinitions> msoResponseWrapper = new MsoResponseWrapper2<>(parameterDefinitionsHttpResponse);
+        Mockito.when(client.getWorkflowParameterDefinitions(1L)).thenReturn(msoResponseWrapper);
 
+
+        SOWorkflowParameterDefinitions workflowParameterDefinitions = extWorkflowsService.getWorkflowParameterDefinitions(1L);
+
+        Assertions.assertThat(workflowParameterDefinitions).isEqualTo(parameters);
+    }
 }

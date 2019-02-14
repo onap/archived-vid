@@ -86,7 +86,10 @@
                 <label class="control-label">New software version</label>
                 <input class="form-control" ng-model="vm.changeManagement.newSoftwareVersion" name="newSoftwareVersion" type="text" id="new-software-version" pattern="{{vm.softwareVersionRegex}}" required>
             </div>
-
+        </div>
+        <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow)">
+          <label for="so-workflow-parameter-{{item.id}}" class="control-label">{{item.name}}</label>
+          <input class="form-control" ng-model="item.value" type="text" id="so-workflow-parameter-{{item.id}}" pattern="{{item.pattern}}" ng-required="{{item.required}}">
         </div>
     </div>
 
