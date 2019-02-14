@@ -43,6 +43,7 @@
 
         var init = function () {
             vm.changeManagement = {};
+            vm.changeManagement.workflowParameters = new Map();
 
             loadServicesCatalog();
             fetchAttUid().then(registerVNFNamesWatcher);
@@ -619,11 +620,13 @@
         vm.loadWorkFlows = function () {
           // Should be corrected when VID-397 will be closed. At the moment there is a need
           // to merge local and remote workflows not to broke current functionality.
-            return vm.loadLocalWorkFlows()
-            .then(vm.loadRemoteWorkFlows)
-            .then(function () {
-                vm.workflows = vm.localWorkflows.concat(vm.remoteWorkflows.map(item => item.name));
-            });
+          return vm.loadLocalWorkFlows()
+          .then(vm.loadRemoteWorkFlows)
+          .then(function () {
+            vm.workflows = vm.localWorkflows.concat(vm.remoteWorkflows.map(item => item.name));
+          }).then(function () {
+            vm.loadRemoteWorkFlowsParameters();
+          });
         };
 
         vm.loadLocalWorkFlows = function () {
@@ -643,6 +646,30 @@
           }).catch(function (error) {
             $log.error(error);
           });
+        };
+
+        vm.loadRemoteWorkFlowsParameters = function () {
+          vm.remoteWorkflowsParameters = new Map();
+          vm.remoteWorkflows.forEach(function(workflow) {
+            vm.loadRemoteWorkFlowParameters(workflow);
+          });
+        };
+
+        vm.loadRemoteWorkFlowParameters = function (workflow) {
+          changeManagementService.getSOWorkflowParameter(workflow.id)
+          .then(function (response) {
+            vm.remoteWorkflowsParameters.set(workflow.name, response.data.parameterDefinitions);
+          })
+          .catch(function (error) {
+            $log.error(error);
+          });
+        };
+
+        vm.getRemoteWorkFlowParameters = function (workflow) {
+          if (workflow && vm.remoteWorkflowsParameters.has(workflow)) {
+            return vm.remoteWorkflowsParameters.get(workflow)
+          }
+          return [];
         };
 
         //Must be $scope because we bind to the onchange of the html (cannot attached to vm variable).
@@ -669,11 +696,11 @@
 
         vm.isConfigUpdate = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfConfigUpdate;
-        }
+        };
 
         vm.isScaleOut = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfScaleOut;
-        }
+        };
 
         vm.shouldShowVnfInPlaceFields = function () {
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfInPlace;
