@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f3716741_a1e76fdf",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/features.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-17T14:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18a9beff_aa196d0e",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 39
+      },
+      "revId": "3fe7027af3f76ac906ac3a1c67c2981db930fa77",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05c7e513_0ad73c1a",
         "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/features.properties",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "3769ea3c_3f8ff5b6",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/features.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-17T14:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05c7e513_0ad73c1a",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "3fe7027af3f76ac906ac3a1c67c2981db930fa77",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e1539083_e2db22a0",
         "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/features.properties",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2019-02-17T14:04:27Z",
       "side": 1,
       "message": "part of modern ui",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "3fe7027af3f76ac906ac3a1c67c2981db930fa77",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ace3bb6b_29e10b12",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/features.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-17T14:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1539083_e2db22a0",
       "range": {
         "startLine": 29,
         "startChar": 0,
