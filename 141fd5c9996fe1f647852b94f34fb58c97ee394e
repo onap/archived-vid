@@ -22,6 +22,29 @@
       "revId": "141fd5c9996fe1f647852b94f34fb58c97ee394e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72a90c95_5bb5d4da",
+        "filename": "vid-webpack-master/src/app/shared/utils/constants.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-18T12:45:48Z",
+      "side": 1,
+      "message": "I think this file can be ignored, and therefore this line to be removed.\nEither way, it\u0027s now not in sync with `componentConstants.js`\u0027s:\n\n```\n    GET_SO_WORKFLOWS: \"workflows-management/workflows\",\n```",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 87
+      },
+      "revId": "141fd5c9996fe1f647852b94f34fb58c97ee394e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
