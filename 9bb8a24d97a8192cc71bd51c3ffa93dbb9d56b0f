@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "841d1e2a_f1e91a72",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T07:17:14Z",
+      "side": 1,
+      "message": "I\u0027d prefer to have different naming here:\n- skip method name\n- camelCase instead of snake case\n- don\u0027t expose method implementation \nso here maybe something like that \"shouldRetrieveAndFilterVNFsBySubscriberAndServiceType\" ?",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 77
+      },
+      "revId": "9bb8a24d97a8192cc71bd51c3ffa93dbb9d56b0f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
