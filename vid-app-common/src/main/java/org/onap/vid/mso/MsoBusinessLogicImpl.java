@@ -94,7 +94,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         this.featureManager = featureManager;
     }
 
-    public static String validateEndpointPath(String endpointEnvVariable) {
+    public static String    validateEndpointPath(String endpointEnvVariable) {
         String endpoint = SystemProperties.getProperty(endpointEnvVariable);
         if (endpoint == null || endpoint.isEmpty()) {
             throw new GenericUncheckedException(endpointEnvVariable + " env variable is not defined");
@@ -323,6 +323,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             dashboardOrchestrationReqs.addAll(scaleoutRequests);
         } catch (Exception e) {
             logException(methodName, e);
+            throw e;
         }
         return dashboardOrchestrationReqs;
     }
@@ -379,7 +380,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         }
     }
 
-    private List<Task> deserializeManualTasksJson(String manualTasksJson) {
+        private List<Task> deserializeManualTasksJson(String manualTasksJson) {
         logInvocationInDebug("deserializeManualTasksJson");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -404,9 +405,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String str = new String();
             restObjStr.set(str);
 
-            msoClientInterface.completeManualTask(requestDetails, str, "", path, restObjStr);
-
-            return MsoUtil.wrapResponse(restObjStr);
+            return msoClientInterface.completeManualTask(requestDetails, str, "", path, restObjStr);
 
         } catch (Exception e) {
             logException(methodName, e);
@@ -702,6 +701,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         return requestDetailsWrapper;
     }
+    //4.22
 
     @Override
     public String getOperationalEnvironmentActivationPath(OperationalEnvironmentActivateInfo details) {
