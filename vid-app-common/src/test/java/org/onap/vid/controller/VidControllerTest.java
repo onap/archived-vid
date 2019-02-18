@@ -151,8 +151,7 @@ public class VidControllerTest {
 
     @Test
     public void verifyServiceInstance_shouldReturnOk() throws Exception {
-        PombaRequest pombaRequest = new PombaRequest();
-        pombaRequest.serviceInstanceList = ImmutableList.of(new ServiceInstance());
+        PombaRequest pombaRequest = new PombaRequest(ImmutableList.of(new ServiceInstance()));
 
         mockMvc.perform(post(REST_MODELS_SERVICES_VERIFY_SERVICE)
             .contentType(MediaType.APPLICATION_JSON)
