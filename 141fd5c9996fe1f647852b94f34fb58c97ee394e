@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c18533c3_f44c04d2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/ExtWorkflowServiceImplTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T12:31:44Z",
+      "side": 1,
+      "message": "remove asterisk",
+      "range": {
+        "startLine": 3,
+        "startChar": 39,
+        "endLine": 3,
+        "endChar": 42
+      },
+      "revId": "141fd5c9996fe1f647852b94f34fb58c97ee394e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
