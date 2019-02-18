@@ -20,79 +20,75 @@
 
 package org.onap.vid.mso;
 
-import org.junit.Test;
+import org.hamcrest.MatcherAssert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestObjectTest {
 
-    private RestObject createTestSubject() {
-        return new RestObject();
+    private RestObject restObject;
+
+    @BeforeSuite
+    private void setUp() {
+        restObject = new RestObject();
     }
 
     @Test
-    public void testSet() throws Exception {
-        RestObject testSubject;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.set(null);
+    public void shouldHaveValidGettersAndSetters(){
+        MatcherAssert.assertThat(RestObject.class, hasValidGettersAndSettersExcluding("t"));
     }
 
     @Test
-    public void testGet() throws Exception {
-        RestObject testSubject;
+    public void shouldHaveValidGetterAndSetterForBody() {
+        //  given
+        String testString = "set/get_testString";
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.get();
+        //  when
+        restObject.set(testString);
+
+        //  then
+        assertThat(testString).isSameAs(restObject.get());
     }
 
     @Test
-    public void testSetStatusCode() throws Exception {
-        RestObject testSubject;
-        int v = 0;
+    public void shouldProperlyCopyRestObject() {
+        //  given
+        MsoResponseWrapper testResponseWraper = new MsoResponseWrapper();
+        String rawTestString = "rawTestString";
+        int statusCode = 404;
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setStatusCode(v);
+        RestObject restObjectToCopyFrom = new RestObject<>();
+        restObjectToCopyFrom.set(testResponseWraper);
+        restObjectToCopyFrom.setRaw(rawTestString);
+        restObjectToCopyFrom.setStatusCode(statusCode);
+
+        //  when
+        restObject.copyFrom(restObjectToCopyFrom);
+
+        //  then
+        assertThat(restObject).isEqualToComparingFieldByField(restObjectToCopyFrom);
     }
 
     @Test
-    public void testGetStatusCode() throws Exception {
-        RestObject testSubject;
-        int result;
+    public void shouldProperlyConvertRestObjectToString() {
+        //  given
+        String testString = "testString";
+        String rawTestString = "rawTestString";
+        int statusCode = 202;
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getStatusCode();
-    }
+        restObject.set(testString);
+        restObject.setRaw(rawTestString);
+        restObject.setStatusCode(statusCode);
 
-    @Test
-    public void testGetRaw() throws Exception {
-        RestObject testSubject;
-        String result;
+        String properString = "RestObject{t=testString, rawT=rawTestString, statusCode=202}";
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getRaw();
-    }
+        //  when
+        String toStringResponse = restObject.toString();
 
-    @Test
-    public void testSetRaw() throws Exception {
-        RestObject testSubject;
-        String rawT = "";
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setRaw(rawT);
-    }
-
-    @Test
-    public void testToString() throws Exception {
-        RestObject testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.toString();
+        //  then
+        assertThat(toStringResponse).isEqualTo(properString);
     }
 }

@@ -22,12 +22,11 @@
 package org.onap.vid.mso;
 
 import io.joshworks.restclient.http.HttpResponse;
-import io.joshworks.restclient.http.mapper.ObjectMapper;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpVersion.HTTP_1_1;

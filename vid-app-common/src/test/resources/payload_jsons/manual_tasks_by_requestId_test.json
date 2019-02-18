@@ -1,0 +1,29 @@
+{
+  "taskList":[{
+      "taskId":"123123abc",
+      "type":"testTask",
+      "nfRole":"testTask",
+      "subscriptionServiceType":"testTask",
+      "originalRequestId":"testTask",
+      "originalRequestorId":"testTask",
+      "errorSource":"testTask",
+      "errorCode":"testTask",
+      "errorMessage":"testTask",
+      "buildingBlockName":"testTask",
+      "buildingBlockStep":"testTask",
+      "validResponses":null
+    },{
+      "taskId":"321321abc",
+      "type":"testTask",
+      "nfRole":"testTask",
+      "subscriptionServiceType":"testTask",
+      "originalRequestId":"testTask",
+      "originalRequestorId":"testTask",
+      "errorSource":"testTask",
+      "errorCode":"testTask",
+      "errorMessage":"testTask",
+      "buildingBlockName":"testTask",
+      "buildingBlockStep":"testTask",
+      "validResponses":null
+  }]
+}
