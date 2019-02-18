@@ -1,0 +1,23 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/so/workflows"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "workflows":
+        [{
+          "id": 1,
+          "name": "workflow 1"
+        },{
+          "id": 2,
+          "name": "workflow 2"
+        },{
+          "id": 3,
+          "name": "workflow 3"
+        }
+      ]
+    }
+  }
+}
