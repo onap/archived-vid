@@ -63,22 +63,28 @@ public class AaiServiceImpl implements AaiService {
     private static final String CLOUD_REGION_NODE_TYPE = "cloud-region";
     private int indexOfSubscriberName = 6;
 
-    @Autowired
     private AaiClientInterface aaiClient;
-
-    @Autowired
     private AaiOverTLSClientInterface aaiOverTLSClient;
-
-    @Autowired
     private AaiResponseTranslator aaiResponseTranslator;
-
-    @Autowired
     private AAITreeNodeBuilder aaiTreeNode;
-
-    @Autowired
     private AAIServiceTree aaiServiceTree;
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
+
+    @Autowired
+    public AaiServiceImpl(
+        AaiClientInterface aaiClient,
+        AaiOverTLSClientInterface aaiOverTLSClient,
+        AaiResponseTranslator aaiResponseTranslator,
+        AAITreeNodeBuilder aaiTreeNode,
+        AAIServiceTree aaiServiceTree)
+    {
+        this.aaiClient = aaiClient;
+        this.aaiOverTLSClient = aaiOverTLSClient;
+        this.aaiResponseTranslator = aaiResponseTranslator;
+        this.aaiTreeNode = aaiTreeNode;
+        this.aaiServiceTree = aaiServiceTree;
+    }
 
     private List<Service> convertModelToService(Model model) {
         List<Service> services = new ArrayList<>();
@@ -332,13 +338,11 @@ public class AaiServiceImpl implements AaiService {
         AaiResponse<GetTenantsResponse[]> aaiGetTenantsResponse = aaiClient.getTenants(globalCustomerId, serviceType);
         GetTenantsResponse[] tenants = aaiGetTenantsResponse.getT();
         if (tenants != null) {
-            for (int i = 0; i < tenants.length; i++) {
-                tenants[i].isPermitted = roleValidator.isTenantPermitted(globalCustomerId, serviceType, tenants[i].tenantName);
+            for (GetTenantsResponse tenant : tenants) {
+                tenant.isPermitted = roleValidator.isTenantPermitted(globalCustomerId, serviceType, tenant.tenantName);
             }
         }
         return aaiGetTenantsResponse;
-
-
     }
 
     @Override

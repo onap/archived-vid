@@ -24,12 +24,15 @@ package org.onap.vid.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.util.*;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.parser.VidNotionsBuilder;
+import org.onap.vid.services.AAIServiceTree;
+import org.onap.vid.services.AAITreeNodeBuilder;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.VidService;
@@ -62,8 +65,9 @@ public class LocalWebConfig {
     }
 
     @Bean
-    public AaiService getAaiService() {
-        return new AaiServiceImpl();
+    public AaiService getAaiService(AaiClientInterface aaiClient, AaiOverTLSClientInterface aaiOverTLSClient,
+        AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree) {
+        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree);
     }
 
     @Bean
