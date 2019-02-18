@@ -1,0 +1,56 @@
+{
+  "service": {
+    "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450",
+    "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+    "name": "action-data",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "",
+    "serviceEcompNaming": "false",
+    "instantiationType": "A-La-Carte",
+    "inputs": {
+      "2017488_adiodvpe0_ASN": {
+        "type": "string",
+        "description": "AV/PE",
+        "entry_schema": null,
+        "inputProperties": null,
+        "constraints": [],
+        "required": true,
+        "default": "AV_vPE"
+      }
+    }
+  },
+  "vnfs": {},
+  "networks": {
+    "ExtVL 0": {
+      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
+      "invariantUuid": "379f816b-a7aa-422f-be30-17114ff50b7c",
+      "description": "ECOMP generic virtual link (network) base type for all other service-level and global networks",
+      "name": "ExtVL",
+      "version": "37.0",
+      "customizationUuid": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "min_instances": 1,
+        "max_instances": 10,
+        "network_assignments": "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
+        "exVL_naming": "{ecomp_generated_naming=true}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
+      },
+      "type": "VL",
+      "modelCustomizationName": "ExtVL 0"
+    }
+  },
+  "collectionResource": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {}
+}

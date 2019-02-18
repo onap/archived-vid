@@ -9,59 +9,75 @@ describe('Service Info Service', () => {
   let service: ServiceInfoService;
   let httpMock: HttpTestingController;
 
-  beforeEach(() => {
+  beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [ServiceInfoService]
     });
+    await TestBed.compileComponents();
+
 
     injector = getTestBed();
     service = injector.get(ServiceInfoService);
     httpMock = injector.get(HttpTestingController);
-  });
 
-  describe('#getServicesJobInfo', () => {
-    it('should return an Observable<ServiceInfoModel[]>', () => {
-      const dummyServiceInfo: ServiceInfoModel[] = generateServiceInfoData();
+  })().then(done).catch(done.fail));
 
-      service.getServicesJobInfo(true).subscribe((serviceInfo:Array<ServiceInfoModel>) => {
-        expect(serviceInfo).toEqual(dummyServiceInfo);
-      });
-    });
+  describe('#getMacroJobAuditStatus', ()=> {
+    test('should return Observable<Object[]>', ()=>{
+      let job: ServiceInfoModel = new ServiceInfoModel();
+      job.jobId = '111';
 
+      service.getJobAuditStatus(job).subscribe();
+      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '?source=VID');
+      const req2 = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '?source=MSO');
 
-  });
-
-  describe('#deleteJob', () =>{
-    it('delete job', () => {
-      const jobId : string = "1111";
-
-      service.deleteJob(jobId).subscribe();
-
-      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + '/job/' + jobId);
-      expect(req.request.method).toEqual('DELETE');
-
+      expect(req.request.method).toBe('GET');
+      expect(req2.request.method).toBe('GET');
     });
   });
 
-  describe('#hideJob', () =>{
-    it('when call hide job, there is http POST with right url', () => {
-      const jobId : string = "3";
+  describe('#getALaCarteJobAuditStatus Without params', ()=> {
+    test('should return Observable<Object[]>', ()=>{
+      let job: ServiceInfoModel = new ServiceInfoModel();
+      job.aLaCarte = true;
+      job.jobId = '111';
 
-      service.hideJob(jobId).subscribe();
+      service.getJobAuditStatus(job).subscribe();
+      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '?source=VID');
+      const req2 = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '/mso');
 
-      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + '/hide/' + jobId);
-      expect(req.request.method).toEqual('POST');
+      expect(req.request.method).toEqual('GET');
+      expect(req2.request.method).toEqual('GET');
     });
   });
 
-  describe('#getJobAuditStatus', ()=> {
-    it('should return Observable<Object[]>', ()=>{
-      const jobId : string = '111';
+  describe('#getALaCarteJobAuditStatus With ServiceInstanceId', ()=> {
+    test('should return Observable<Object[]>', ()=>{
+      let job: ServiceInfoModel = new ServiceInfoModel();
+      job.aLaCarte = true;
+      job.jobId = '111';
+      job.serviceInstanceId = '222';
 
-      service.getJobAuditStatus(jobId).subscribe();
-      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + jobId + '?source=VID');
-      const req2 = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + jobId + '?source=MSO');
+      service.getJobAuditStatus(job).subscribe();
+      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '?source=VID');
+      const req2 = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '/mso?serviceInstanceId=' + job.serviceInstanceId);
+
+      expect(req.request.method).toEqual('GET');
+      expect(req2.request.method).toEqual('GET');
+    });
+  });
+
+  describe('#getALaCarteJobAuditStatus With RequestId', ()=> {
+    test('should return Observable<Object[]>', ()=>{
+      let job: ServiceInfoModel = new ServiceInfoModel();
+      job.aLaCarte = true;
+      job.jobId = '111';
+      job.requestId = '333';
+
+      service.getJobAuditStatus(job).subscribe();
+      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '?source=VID');
+      const req2 = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH + Constants.Path.SERVICES_JOB_AUDIT_PATH + '/' + job.jobId + '/mso?requestId=' + job.requestId);
 
       expect(req.request.method).toEqual('GET');
       expect(req2.request.method).toEqual('GET');
@@ -73,6 +89,7 @@ describe('Service Info Service', () => {
       [{
         "created": 1519956533000,
         "modified": 1521727738000,
+        "action": "INSTANTIATE",
         "createdId": null,
         "modifiedId": null,
         "rowNum": null,
@@ -105,6 +122,7 @@ describe('Service Info Service', () => {
       {
         "created": 1519956533000,
         "modified": 1521727738000,
+        "action": "INSTANTIATE",
         "createdId": null,
         "modifiedId": null,
         "rowNum": null,
@@ -137,6 +155,7 @@ describe('Service Info Service', () => {
       {
         "created": 1519956533000,
         "modified": 1521727738000,
+        "action": "INSTANTIATE",
         "createdId": null,
         "modifiedId": null,
         "rowNum": null,
@@ -169,6 +188,7 @@ describe('Service Info Service', () => {
       {
         "created": 1519956533000,
         "modified": 1521727738000,
+        "action": "INSTANTIATE",
         "createdId": null,
         "modifiedId": null,
         "rowNum": null,
@@ -201,6 +221,7 @@ describe('Service Info Service', () => {
       {
         "created": 1519956533000,
         "modified": 1521727738000,
+        "action": "INSTANTIATE",
         "createdId": null,
         "modifiedId": null,
         "rowNum": null,

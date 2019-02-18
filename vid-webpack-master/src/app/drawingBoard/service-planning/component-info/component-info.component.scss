@@ -1,0 +1,40 @@
+.component-info-wrapper {
+
+  &:first-child {
+    border-bottom: 1px solid #D2D2D2;
+  }
+  .component-info-section {
+    margin: 15px 25px 0 25px;
+
+    .title {
+      font-family: OpenSans-SemiBold;
+      font-size: 14px;
+      color: #191919;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+  }
+
+}
+
+:host ::ng-deep .componentInfoItem {
+  border-top: 1px solid #D2D2D2;
+  padding-top: 10px;
+  margin-bottom: 10px;
+
+  label {
+    font-family: OpenSans-Regular;
+    font-size: 12px;
+    color: #5A5A5A;
+    text-transform: capitalize;
+  }
+
+  .model-item-value {
+    font-family:  OpenSans-SemiBold;
+    font-size: 14px;
+    color: #191919;
+    line-height: 16px;
+  }
+}
+
+

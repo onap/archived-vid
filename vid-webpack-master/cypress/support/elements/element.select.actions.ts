@@ -1,6 +1,7 @@
 declare namespace Cypress {
   interface Chainable {
     selectDropdownOptionByText : typeof selectDropdownOptionByText;
+    checkIsOptionSelected : typeof checkIsOptionSelected;
   }
 }
 
@@ -12,5 +13,14 @@ function selectDropdownOptionByText(selectId : string, optionText : string) : vo
     .select(optionText);
 }
 
+/************************************************
+ check if  option is selected
+ ************************************************/
+function checkIsOptionSelected(selectId : string, optionText : string) : void {
+  cy.getElementByDataTestsId(selectId)
+    .should('have.value', optionText)
+}
+
 Cypress.Commands.add('selectDropdownOptionByText', selectDropdownOptionByText);
+Cypress.Commands.add('checkIsOptionSelected', checkIsOptionSelected);
 

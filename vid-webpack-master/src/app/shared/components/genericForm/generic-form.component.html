@@ -1,0 +1,29 @@
+<div id="form-details"  *ngIf="formControls != null && dynamicFormGroup != null">
+  <form [formGroup]="dynamicFormGroup">
+    <div *ngFor="let formControl of formControls" class="form-conrtols">
+      <div [ngSwitch]="formControl.type">
+        <form-control-input  *ngSwitchCase="'INPUT'"   [data]="formControl" [form]="dynamicFormGroup"></form-control-input>
+        <checkbox-form-control *ngSwitchCase="'CHECKBOX'"  [data]="formControl" [form]="dynamicFormGroup" ></checkbox-form-control>
+        <dropdown-form-control *ngSwitchCase="'DROPDOWN'" [data]="formControl" [form]="dynamicFormGroup" ></dropdown-form-control>
+        <file-form-control *ngSwitchCase="'FILE'" [data]="formControl" [form]="dynamicFormGroup"></file-form-control>
+      </div>
+      <div  *ngIf="dynamicFormGroup != null && formControl != null && dynamicFormGroup.controls[formControl.controlName]?.errors">
+        <div *ngFor="let validatorModel of formControl?.validations">
+          <form-control-error *ngIf="validatorModel?.validatorName != 'required' && dynamicFormGroup.controls[formControl?.controlName]?.errors[validatorModel?.validatorName]" [message]="validatorModel?.errorMsg"></form-control-error>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let dynamicInputs of dynamicInputs" class="form-conrtols">
+      <div [ngSwitch]="dynamicInputs.type">
+        <form-control-input  *ngSwitchCase="'INPUT'"   [data]="dynamicInputs" [form]="dynamicFormGroup.controls['instanceParams']"></form-control-input>
+        <checkbox-form-control *ngSwitchCase="'CHECKBOX'"  [data]="dynamicInputs" [form]="dynamicFormGroup.controls['instanceParams']" ></checkbox-form-control>
+        <dropdown-form-control *ngSwitchCase="'DROPDOWN'" [data]="dynamicInputs" [form]="dynamicFormGroup.controls['instanceParams']" ></dropdown-form-control>
+      </div>
+      <div  *ngIf="dynamicFormGroup?.controls['instanceParams'] != null && dynamicInputs != null && dynamicFormGroup.controls['instanceParams'].controls[dynamicInputs.controlName]?.errors">
+        <div *ngFor="let validatorModel of dynamicInputs?.validations">
+          <form-control-error *ngIf="validatorModel?.validatorName != 'required' && dynamicFormGroup.controls['instanceParams'].controls[dynamicInputs?.controlName]?.errors[validatorModel?.validatorName]" [message]="validatorModel?.errorMsg"></form-control-error>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

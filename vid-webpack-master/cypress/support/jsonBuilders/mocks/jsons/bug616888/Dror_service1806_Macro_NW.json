@@ -1,0 +1,143 @@
+{
+  "service": {
+    "uuid": "bd8ffd14-da36-4f62-813c-6716ba9f4354",
+    "invariantUuid": "b1f489c0-2aa0-47e1-ba6c-98658d6945bf",
+    "name": "Dror_service1806_Macro_NW",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": "cc",
+    "serviceRole": "ccc",
+    "description": "test",
+    "serviceEcompNaming": "true",
+    "instantiationType": "Macro",
+    "inputs": {}
+  },
+  "vnfs": {
+    "2016-233_XSP_bfsa_nin2 0": {
+      "uuid": "327138f7-0608-4774-bb2c-959332a18399",
+      "invariantUuid": "74dc0354-a178-43ee-91f2-ec1f288cd50d",
+      "description": "VSP for XSP after network recreated",
+      "name": "2016-233_XSP_bfsa_nin2",
+      "version": "1.0",
+      "customizationUuid": "643b38b5-b75b-4506-8be5-55595ca2cbef",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "xsa_PF_DMZ_security_group": "default",
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "availability_zone_max_count": "1",
+        "xsa_IF_DMZ_security_group": "default",
+        "xsa_image_name": "E-IPFR_XSP_R21.qcow2",
+        "ecomp_generated_naming": "true",
+        "vnf_name": "bfsa0007v",
+        "xsa_cinder_volume_size_0": "300",
+        "xsa_flavor_name": "nd.c4r8d0",
+        "xsa_cinder_volume_size_1": "300",
+        "xsa_NSDNet_net_security_group": "default"
+      },
+      "type": "VF",
+      "modelCustomizationName": "2016-233_XSP_bfsa_nin2 0",
+      "vfModules": {
+        "2016233_xsp_bfsa_nin20..2016233XspBfsaNin2..base_bwks_xspa..module-0": {
+          "uuid": "52d5a1a1-ada5-49b6-864c-8405af43b6b4",
+          "invariantUuid": "dfb65a6b-d5ba-4142-bbee-b83eda3902d6",
+          "customizationUuid": "d9d146cc-48c1-43fb-a6ef-927c75eaa4ab",
+          "description": null,
+          "name": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+          "version": "1",
+          "modelCustomizationName": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_bwks_xspa"
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        }
+      },
+      "volumeGroups": {
+        "2016233_xsp_bfsa_nin20..2016233XspBfsaNin2..base_bwks_xspa..module-0": {
+          "uuid": "52d5a1a1-ada5-49b6-864c-8405af43b6b4",
+          "invariantUuid": "dfb65a6b-d5ba-4142-bbee-b83eda3902d6",
+          "customizationUuid": "d9d146cc-48c1-43fb-a6ef-927c75eaa4ab",
+          "description": null,
+          "name": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+          "version": "1",
+          "modelCustomizationName": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_bwks_xspa"
+          },
+          "inputs": {}
+        }
+      },
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {
+    "ExtVL 0": {
+      "uuid": "40083c20-b1ab-449a-8f6d-f75406c497ac",
+      "invariantUuid": "379f816b-a7aa-422f-be30-17114ff50b7c",
+      "description": "ECOMP generic virtual link (network) base type for all other service-level and global networks",
+      "name": "ExtVL",
+      "version": "40.0",
+      "customizationUuid": "14ef5a8f-55db-411b-a64c-40c200073f1f",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "network_assignments": "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
+        "exVL_naming": "{ecomp_generated_naming=true}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
+      },
+      "type": "VL",
+      "modelCustomizationName": "ExtVL 0"
+    }
+  },
+  "collectionResource": {},
+  "configurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "2016233_xsp_bfsa_nin20..2016233XspBfsaNin2..base_bwks_xspa..module-0": {
+      "uuid": "52d5a1a1-ada5-49b6-864c-8405af43b6b4",
+      "invariantUuid": "dfb65a6b-d5ba-4142-bbee-b83eda3902d6",
+      "customizationUuid": "d9d146cc-48c1-43fb-a6ef-927c75eaa4ab",
+      "description": null,
+      "name": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+      "version": "1",
+      "modelCustomizationName": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_bwks_xspa"
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    }
+  },
+  "volumeGroups": {
+    "2016233_xsp_bfsa_nin20..2016233XspBfsaNin2..base_bwks_xspa..module-0": {
+      "uuid": "52d5a1a1-ada5-49b6-864c-8405af43b6b4",
+      "invariantUuid": "dfb65a6b-d5ba-4142-bbee-b83eda3902d6",
+      "customizationUuid": "d9d146cc-48c1-43fb-a6ef-927c75eaa4ab",
+      "description": null,
+      "name": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+      "version": "1",
+      "modelCustomizationName": "2016233XspBfsaNin2..base_bwks_xspa..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_bwks_xspa"
+      },
+      "inputs": {}
+    }
+  },
+  "pnfs": {}
+}

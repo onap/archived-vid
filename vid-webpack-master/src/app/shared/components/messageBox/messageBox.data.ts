@@ -1,13 +1,14 @@
-import { Subject } from 'rxjs/Subject';
+import { SdcUiCommon} from "onap-ui-angular";
+import {IModalButtonComponent} from "onap-ui-angular/dist/modals/models/modal-config";
 
 export class  MessageBoxData {
   title?: string;
   message?: string;
-  size : ModalSize;
-  type: ModalType;
-  buttons: Array<IModalButtonComponent>;
+  size : SdcUiCommon.ModalSize;
+  type: SdcUiCommon.ModalType;
+  buttons: IModalButtonComponent[];
 
-  constructor(title: string, message: string, type: ModalType, size : ModalSize, buttons: Array<IModalButtonComponent>) {
+  constructor(title: string, message: string, type: SdcUiCommon.ModalType, size : SdcUiCommon.ModalSize, buttons: IModalButtonComponent[]) {
     this.title = title;
     this.message = message;
     this.size = size;
@@ -15,37 +16,3 @@ export class  MessageBoxData {
     this.buttons = buttons;
   }
 }
-
-export interface IModalConfig {
-  size?: string;
-  title?: string;
-  message?: string;
-  buttons?: Array<IModalButtonComponent>;
-  type?: string;
-}
-export interface IButtonComponent {
-  text: string;
-  disabled?: boolean;
-  type?: string;
-  size?: string;
-}
-export interface IModalButtonComponent extends IButtonComponent {
-  callback?: Function;
-  closeModal?: boolean;
-}
-export  enum ModalType {
-  alert = "alert",
-  error = "error",
-  standard = "info",
-  custom = "custom",
-}
-export enum ModalSize {
-  xlarge = "xl",
-  large = "l",
-  medium = "md",
-  small = "sm",
-  xsmall = "xsm",
-}
-
-
-

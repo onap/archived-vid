@@ -1,0 +1,20 @@
+<div *ngIf="componentInfoModel">
+  <div class="component-info-wrapper"  [attr.data-tests-id]="'component-info-wrapper'">
+    <div class="component-info-section" [attr.data-tests-id]="'component-info-section'">
+      <div class="title" [attr.data-tests-id]="'component-info-section-title'">{{componentInfoModel?.title}} INFO</div>
+      <div class="component-info-list"  [attr.data-tests-id]="'component-info-section-list'">
+        <model-information [modelInformationItems]="componentInfoModel?.modelInfoItems" [itemClass]="'componentInfoItem'"></model-information>
+      </div>
+    </div>
+  </div>
+  <!-- commented out till we will have a data to show in additional info
+  <div class="component-info-wrapper" [attr.data-tests-id]="'additional-info-wrapper'">-->
+    <!--<div class="component-info-section" [attr.data-tests-id]="'additional-info-section'">-->
+      <!--<div class="title" [attr.data-tests-id]="'additional-info-section-title'">ADDITIONAL INFO</div>-->
+      <!--<div class="component-info-list" [attr.data-tests-id]="'additional-info-section-title'">-->
+        <!--<model-information [modelInformationItems]="componentInfoModel.additionalInfoItems" [itemClass]="'componentInfoItem'"></model-information>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>
+  -->
+</div>

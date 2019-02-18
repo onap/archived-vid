@@ -1,0 +1,11 @@
+<div class="details-item">
+  <input type="checkbox"
+         id="{{data?.dataTestId}}"
+         [attr.data-tests-id]="data?.dataTestId"
+         [checked]="data?.value"
+         name="{{data?.controlName}}"
+         [formControl]="form?.controls[data?.controlName]"
+         data-toggle="toggle">
+  <label class="checkbox-label"
+         for="{{data?.dataTestId}}">{{data?.displayName}}</label>
+</div>

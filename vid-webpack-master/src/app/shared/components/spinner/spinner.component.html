@@ -1,2 +1,6 @@
-<div *ngIf="show"
-     class="spinner"></div>
+<sdc-loader name= "global"
+            #globalLoader
+            [global] = "global"
+            [size]="size"
+            [(active)] = "show"></sdc-loader>
+

@@ -1,0 +1,176 @@
+.drawing-board-header {
+  height: 60px;
+  font-family: OpenSans-Regular;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  box-shadow: 2px 2px 6px #D2D2D2;
+  color: #191919;
+  z-index: 1;
+  position: relative;
+    [class^="icon-"] {
+      height: 60px;
+      width: 60px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #5A5A5A;
+      cursor: pointer;
+      &:before {
+        font-size: 18px;
+        width: 100%;
+      }
+      &:hover:before {
+        color: #009FDB;
+      }
+    }
+  .left-header {
+      display: flex;
+      align-items: center;
+      .icon-back {
+        justify-content: center;
+        border-right: 1px solid #EAEAEA;
+      }
+      .vid-logo-small{
+        background: url('../../../../assets/img/vid-logo.jpg') no-repeat;
+        width: 60px;
+        height: 60px;
+      }
+      .status{
+        background: url('../../../../assets/img/indesign.svg') no-repeat  center;
+        width: 24px;
+        height: 24px;
+        margin-left: 20px;
+      }
+      .header-col {
+        border-right: 1px solid #d2d2d2;
+        padding-right: 15px;
+        margin-left: 15px;
+        span{
+          display: block;
+        }
+        &:after{
+          content: "";
+          background: #D2D2D2;
+          height: 35px;
+          width: 1px;
+        }
+      }
+      .service-instance-label {
+        font-family: OpenSans-Semibold;
+        font-size: 13px;
+        color: #5A5A5A;
+      }
+      .quantity-instance-label {
+        font-family: OpenSans-Regular;
+        font-size: 13px;
+        color: #5A5A5A;
+      }
+
+      .labelPosition {
+        margin-top: 4px;
+        margin-bottom: 6px;
+        font-size: 12px;
+      }
+      .service-instance-name {
+        font-family: OpenSans-Semibold;
+        color: #191919;
+        background-color: white;
+        font-size: 14px;
+        &.deleted{
+          text-decoration: line-through;
+        }
+      }
+      .orch-status-value {
+        font-family: OpenSans-Regular;
+        font-size: 14px;
+        color: #191919;
+      }
+      .scale-value {
+        font-family: OpenSans-Regular;
+        font-size: 14px;
+        color: #191919;
+      }
+      .status {
+        font-family: OpenSans-Semibold;
+        line-height: 14px;
+        font-size: 14px;
+        text-align: center;
+        width: 30px;
+        margin-left: 13px;
+        margin-right: 3px;
+      }
+
+      .purple {
+        color: #9063CD;
+      }
+
+      .middleDetails {
+        border-right: 1px solid #EAEAEA;
+        margin-left: 0;
+        height: 45px;
+      }
+    }
+    .right-header {
+      display: flex;
+      align-items: center;
+      .quantity-container {
+        .quantity-label {
+          padding-left: 10px;
+          font-family: OpenSans-Semibold;
+          font-size: 12px;
+        }
+        .quantity {
+          padding: 5px 10px 5px 0;
+          font-family: OpenSans-Semibold;
+          font-size: 18px;
+        }
+      }
+      .scale-container {
+        .scale-label {
+          padding-left: 10px;
+          font-family: OpenSans-Semibold;
+          font-size: 12px;
+        }
+        .scale {
+          padding: 5px 10px 5px 0;
+          font-family: OpenSans-Semibold;
+          font-size: 18px;
+        }
+      }
+      [class^="icon-"] {
+        border-left: 1px solid #EAEAEA;
+      }
+      .menu-container {
+        height: 100%;
+        display: flex;
+        background: none;
+        border: none;
+        padding: 0;
+        outline: none;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        cursor: pointer;
+      }
+      .icon-browse:before {
+        content: '\e924';
+        display: inline-block;
+        font-size: 24px;
+      }
+      .deploy-btn {
+        color: #FFFFFF ;
+        background: #009fdb;
+        width: 128px;
+        height: 100%;
+        border: none;
+        &[disabled] {
+          cursor: not-allowed;
+          opacity: .65;
+          color: #99d6ec;
+        }
+      }
+    }
+  }
+
+

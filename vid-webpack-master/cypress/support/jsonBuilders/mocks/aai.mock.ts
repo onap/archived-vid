@@ -3,6 +3,8 @@ declare namespace Cypress {
     initAAIMock: typeof initAAIMock;
     initAlaCarteService : typeof initAlaCarteService;
     initZones : typeof initZones;
+    initTenants : typeof initTenants;
+    initSearchVNFMemebers : typeof  initSearchVNFMemebers;
   }
 }
 
@@ -13,6 +15,18 @@ function initGetSubscribers(response? : JSON) : void {
         method: 'GET',
         status : 200,
         url : Cypress.config('baseUrl') + "/aai_get_subscribers**",
+        response : response ? response : res
+      }).as('initGetSubscribers')
+  });
+}
+
+function initAaiGetFullSubscribers(response? : JSON) : void {
+  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/subscribers.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        status : 200,
+        url : Cypress.config('baseUrl') + "/aai_get_full_subscribers**",
         response : response ? response : res
       }).as('initGetSubscribers')
   });
@@ -42,6 +56,22 @@ function initAlaCarteService(response? : JSON) : void {
   });
 }
 
+
+
+
+
+function initTenants(response? : JSON) : void {
+  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/tenants.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        status: 200,
+        url: Cypress.config('baseUrl') + "/aai_get_tenants/**",
+        response: response ? response : res
+      }).as('initTenants')
+  });
+}
+
 function initAAIServices(response? : JSON) : void {
   cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiServices.json').then((res) => {
     cy.server()
@@ -66,15 +96,34 @@ function initZones(response? : JSON) : void {
   });
 }
 
+//Mock of vnf's that members for VNF Group
+function initSearchVNFMemebers(response? : JSON) : void {
+  cy.readFile('../vid-automation/src/test/resources/VnfGroup/searchMembersResponse.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        status : 200,
+        url : Cypress.config('baseUrl') + "/aai_search_group_members/**",
+        response : response ? response : res
+      }).as(('searchVNFMembers'));
+  });
+}
+
+
 
 function initAAIMock(): void {
+  initAaiGetFullSubscribers();
   initGetSubscribers();
   initAAIServices();
+  initTenants();
 }
 
 
 Cypress.Commands.add('initAAIMock', initAAIMock);
 Cypress.Commands.add('initAlaCarteService', initAlaCarteService);
 Cypress.Commands.add('initZones', initZones);
+Cypress.Commands.add('initTenants', initTenants);
+Cypress.Commands.add('initAaiGetFullSubscribers', initAaiGetFullSubscribers);
+Cypress.Commands.add('initSearchVNFMemebers', initSearchVNFMemebers);
 
 

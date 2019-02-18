@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
-import * as _ from 'lodash';
+import {ModelInformationService} from "./model-information.service";
+
 
 @Component({
   selector: 'model-information',
@@ -8,17 +9,21 @@ import * as _ from 'lodash';
 })
 
 export class ModelInformationComponent {
-  private _modelInformationItems: Array<ModelInformationItem>;
 
+  constructor(private _modelInformationService : ModelInformationService){}
 
-  get modelInformationItems(): Array<ModelInformationItem> {
+  private _modelInformationItems: ModelInformationItem[];
+
+  @Input() itemClass: string = 'item'; //default class for item is "item"
+
+  get modelInformationItems(): ModelInformationItem[] {
     return this._modelInformationItems;
   }
 
   @Input()
-  set modelInformationItems(_modelInformationItems: Array<ModelInformationItem>) {
+  set modelInformationItems(_modelInformationItems: ModelInformationItem[]) {
     if (_modelInformationItems) {
-      this._modelInformationItems = _modelInformationItems.filter(x => x.mandatory || (!_.isEmpty(x.values) && !_.isEmpty(x.values[0])));
+      this._modelInformationItems = this._modelInformationService.filterModelItems(_modelInformationItems);
     }
   }
 }
@@ -27,16 +32,20 @@ export class ModelInformationComponent {
 export class ModelInformationItem {
   label: string;
   testsId: string;
-  values: Array<string>;
+  values: string[];
   toolTipText: string;
   mandatory: boolean;
 
-  constructor(label: string, testsId: string, values: Array<any>, toolTipText: string = "", mandatory: boolean = false,nested:boolean=false) {
+  constructor(label: string, testsId: string, values: any[], toolTipText: string = "", mandatory: boolean = false) {
     this.label = label;
     this.testsId = testsId;
     this.values = values;
     this.toolTipText = toolTipText;
     this.mandatory = mandatory;
+  }
+
+  static createInstance(label: string, value: any):ModelInformationItem {
+    return new ModelInformationItem(label, label, [value]);
   }
 
 }

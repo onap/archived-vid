@@ -2,10 +2,12 @@ export class LcpRegion {
   id: string;
   name: string;
   isPermitted: boolean;
+  cloudOwner: string;
 
-  constructor(serviceJson){
-    this.id = serviceJson["cloudRegionID"];
-    this.name = serviceJson["cloudRegionID"];
-    this.isPermitted = serviceJson["is-permitted"];
+  constructor(id: string, name: string, isPermitted: boolean, cloudOwner: string) {
+    this.id = id;
+    this.name = name;
+    this.isPermitted = isPermitted;
+    this.cloudOwner = cloudOwner;
   }
 }

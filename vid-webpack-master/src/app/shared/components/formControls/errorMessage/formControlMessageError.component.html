@@ -1,0 +1,5 @@
+<div  *ngIf="form != null && formControl != null && form.controls[formControl.controlName]?.errors">
+  <div *ngFor="let validatorModel of formControl?.validations">
+    <form-control-error *ngIf="form.controls[formControl?.controlName]?.errors[validatorModel?.validatorName]" [message]="validatorModel?.errorMsg"></form-control-error>
+  </div>
+</div>

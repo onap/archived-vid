@@ -1,0 +1,5 @@
+<div class="status-properties" *ngFor="let prop of properties">
+  <span class="status-property-name" [ngClass]="{'mark': prop.key=='In-maintenance'}">{{ prop.key }}</span>
+  <span class="status-property-value" [attr.data-tests-id]="'status-property-'+prop?.testId" >{{ prop.value }}</span>
+  <span class="separator">|</span>
+</div>

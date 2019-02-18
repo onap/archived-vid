@@ -1,0 +1,51 @@
+{
+  "service": {
+    "uuid": "10004bb4-a416-4b4e-997e-0059973630b9",
+    "invariantUuid": "10003f9e-3244-4d8f-a8e0-0e5d7a29eda9",
+    "name": "ADIOD vMX vPE_BV Service 488",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L1-3",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+    "serviceEcompNaming": "true",
+    "instantiationType": "ClientConfig",
+    "inputs": {
+
+    }
+  },
+  "vnfs": {
+
+  },
+  "networks": {
+
+  },
+  "collectionResource": {},
+  "configurations": {
+
+  },
+  "fabricConfigurations": {
+    "Fabric Configuration 0": {
+      "invariantUuid" : "1608eef4-de53-4334-a8d2-ba79cab4bddd",
+      "uuid": "88379cfd-fa0f-4946-8958-acc32640ceee",
+      "customizationUuid": "1e7f6512-c1cf-4b96-b5f5-b22a212ddad0",
+      "version": "3.0",
+      "name": "Fabric Configuration Object",
+      "description": "Fabric Configuration Object",
+      "type": "Configuration"
+    }
+  },
+  "serviceProxies": {
+
+  },
+  "vfModules": {
+
+  },
+  "volumeGroups": {
+
+  },
+  "pnfs": {
+
+  }
+}

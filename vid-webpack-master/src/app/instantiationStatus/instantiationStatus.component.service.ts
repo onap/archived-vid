@@ -1,23 +1,38 @@
 import {Injectable} from '@angular/core';
 import {ServiceInfoModel, ServiceInfoUiModel} from '../shared/server/serviceInfo/serviceInfo.model';
-import {isNullOrUndefined} from "util";
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/observable/of';
-
+import * as _ from 'lodash';
+import {Observable} from 'rxjs/Observable';
+import {NgRedux} from "@angular-redux/store";
+import {AppState} from "../shared/store/reducers";
+import {AaiService} from "../shared/services/aaiService/aai.service";
+import {ServiceModel} from "../shared/models/serviceModel";
+import {FeatureFlagsService, Features} from "../shared/services/featureFlag/feature-flags.service";
+import {DrawingBoardModes} from "../drawingBoard/service-planning/drawing-board.modes";
+import {updateDrawingBoardStatus} from "../shared/storeUtil/utils/global/global.actions";
+import {Router, UrlTree} from "@angular/router";
+import {of} from "rxjs";
+import {MsoService} from "../shared/services/msoService/mso.service";
 export let PENDING : string = "pending";
-export let INPROGRESS : string = "inprogress";
+export let INPROGRESS : string = "in_progress";
 export let PAUSE : string = "pause";
-export let X_O : string = "X_o";
-export let SUCCESS_CIRCLE : string = "success+Circle";
-export let STOPED : string = "stoped";
+export let X_O : string = "x-circle-o";
+export let SUCCESS_CIRCLE : string = "success-circle-o";
+export let STOPED : string = "stop";
+export let COMPLETED_WITH_ERRORS : string = "success_with_warning";
 
 
 @Injectable()
 export class InstantiationStatusComponentService {
-  generateServiceInfoDataMapping(arr: Array<ServiceInfoModel>) : { [serviceInstanceId: string]: Array<ServiceInfoModel>}{
-    let serviceInfoData: { [serviceInstanceId: string]: Array<ServiceInfoModel>; } = {};
+  constructor( private _aaiService: AaiService,
+               private _msoService: MsoService,
+               private _router : Router,
+               private _store: NgRedux<AppState>) {
+  }
+
+  generateServiceInfoDataMapping(arr: ServiceInfoModel[]) : { [serviceInstanceId: string]: ServiceInfoModel[]}{
+    let serviceInfoData: { [serviceInstanceId: string]: ServiceInfoModel[]; } = {};
     for(let item of arr){
-      if(isNullOrUndefined(serviceInfoData[item.templateId])){
+      if(_.isNil(serviceInfoData[item.templateId])){
         serviceInfoData[item.templateId] = [item];
       }else {
         serviceInfoData[item.templateId].push(item);
@@ -26,7 +41,7 @@ export class InstantiationStatusComponentService {
     return serviceInfoData;
   }
 
-  convertObjectToArray(arr: Array<ServiceInfoModel>) : Observable<Array<ServiceInfoUiModel>>{
+  convertObjectToArray(arr: ServiceInfoModel[]) : Observable<ServiceInfoUiModel[]>{
     const obj = this.generateServiceInfoDataMapping(arr);
     let index:number = 0;
     let result = [];
@@ -40,24 +55,107 @@ export class InstantiationStatusComponentService {
     }
 
     console.log(result);
-    return Observable.of(result);
+    return of(result);
+  }
+
+  isDrawingBoardViewEdit(serviceModel: ServiceModel): boolean {
+    if (!_.isNil(serviceModel.vidNotions) && !_.isNil(serviceModel.vidNotions.viewEditUI)
+      && serviceModel.vidNotions.viewEditUI !== 'legacy'){
+      return true;
+    }
+    return false;
+  }
+
+  open(item: ServiceInfoModel): void {
+    if (FeatureFlagsService.getFlagState(Features.FLAG_1902_VNF_GROUPING, this._store)) {
+      this._aaiService.getServiceModelById(item['serviceModelId']).subscribe((result)=>{
+        const serviceModel =  new ServiceModel(result);
+
+        if (this.isDrawingBoardViewEdit(serviceModel)) {
+          this.navigateToNewViewEdit(item, DrawingBoardModes.EDIT);
+          return;
+        }
+
+        this.navigateToNewViewOnlyOrOldEditView(item);
+
+      });
+    }
+
+    /*this else is here only to save time in case we don't need to retrieve service model
+    it can be removed once it service model is always needed, and it doesn't save time*/
+    else {
+      this.navigateToNewViewOnlyOrOldEditView(item);
+    }
+  }
+
+  navigateToNewViewOnlyOrOldEditView(item: ServiceInfoModel) {
+    if (FeatureFlagsService.getFlagState(Features.FLAG_1902_NEW_VIEW_EDIT, this._store)) {
+      this.navigateToNewViewEdit(item, DrawingBoardModes.VIEW);
+    }
+    else {
+      this.navigateToOldViewEdit(item);
+    }
+  }
+
+  navigateToOldViewEdit(item: ServiceInfoModel) {
+    let query =
+      `subscriberId=${item.subscriberId}&` +
+      `subscriberName=${item.subscriberName}&` +
+      `serviceType=${item.serviceType}&` +
+      `serviceInstanceId=${item.serviceInstanceId}`;
+
+    this._store.dispatch(updateDrawingBoardStatus(DrawingBoardModes.OLD_VIEW_EDIT));
+    window.parent.location.assign('../../serviceModels.htm#/instantiate?' + query);
+  }
+
+  navigateToNewViewEdit(item: ServiceInfoModel, mode: DrawingBoardModes): void{
+    this._store.dispatch(updateDrawingBoardStatus(mode));
+    const viewEditUrlTree:UrlTree = this.getNewViewEditUrlTree(item, mode);
+    this._router.navigateByUrl(viewEditUrlTree);
+    window.parent.location.assign(this.getViewEditUrl(viewEditUrlTree));
+  }
+
+  getNewViewEditUrlTree(item: ServiceInfoModel, mode: DrawingBoardModes): UrlTree {
+    return this._router.createUrlTree(
+      ['/servicePlanning/' + mode],
+      {
+        queryParams:
+          {
+            serviceModelId: item.serviceModelId,
+            serviceInstanceId: item.serviceInstanceId,
+            serviceType : item.serviceType,
+            subscriberId : item.subscriberId,
+            jobId: item.jobId
+          }
+      });
+  }
+
+  getViewEditUrl(viewEditUrlTree:UrlTree): string {
+    return '../../serviceModels.htm#' + viewEditUrlTree.toString();
+
   }
 
   getStatus(status : string) : ServiceStatus {
     switch(status.toUpperCase()) {
       case  'PENDING' :
-        return new ServiceStatus(PENDING, '#009FDB', 'Pending: The service will automatically be sent for instantiation as soon as possible.');
+        return new ServiceStatus(PENDING, 'primary', 'Pending: The action required will be sent as soon as possible.');
       case  'IN_PROGRESS' :
-        return new ServiceStatus(INPROGRESS, '#009FDB', 'In-progress: the service is in process of instantiation.');
+        return new ServiceStatus(INPROGRESS, 'primary', 'In-progress: the service is in process of the action required.');
       case  'PAUSED' :
-        return new ServiceStatus(PAUSE, '#009FDB', 'Paused: Service has paused and waiting for your action.\n Select actions from the menu to the right.');
+        return new ServiceStatus(PAUSE, 'primary', 'Paused: Service has paused and waiting for your action.\n Select actions from the menu to the right.');
       case  'FAILED' :
-        return new ServiceStatus(X_O, '#D02B2B', 'Failed: Service instantiation has failed, load the service to see the error returned.');
+        return new ServiceStatus(X_O, 'error', 'Failed: All planned actions have failed.');
       case  'COMPLETED' :
-        return new ServiceStatus(SUCCESS_CIRCLE, '#53AD15', 'Completed successfully: Service is successfully instantiated.');
+        return new ServiceStatus(SUCCESS_CIRCLE, 'success', 'Completed successfully: Service is successfully instantiated, updated or deleted.');
       case  'STOPPED' :
-        return new ServiceStatus(STOPED, '#D02B2B', 'Stopped: Due to previous failure, will not be instantiated.');
+        return new ServiceStatus(STOPED, 'error', 'Stopped: Due to previous failure, will not be instantiated.');
+      case  'COMPLETED_WITH_ERRORS' :
+        return new ServiceStatus(COMPLETED_WITH_ERRORS, 'success', 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.');
     }
+  }
+
+  retry(item: ServiceInfoModel): void {
+      this.navigateToNewViewEdit(item, DrawingBoardModes.RETRY_EDIT);
   }
 }
 

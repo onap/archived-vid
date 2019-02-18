@@ -1,0 +1,207 @@
+import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild,} from '@angular/core';
+import {ContextMenuComponent, ContextMenuService} from 'ngx-contextmenu';
+import {Constants} from '../../../shared/utils/constants';
+import {IDType, ITreeNode} from "angular-tree-component/dist/defs/api";
+import {TreeComponent, TreeModel, TreeNode} from "angular-tree-component";
+import {DialogService} from "ng2-bootstrap-modal";
+import {ActivatedRoute} from "@angular/router";
+import {NgRedux} from "@angular-redux/store";
+import {AppState} from "../../../shared/store/reducers";
+import {IframeService} from "../../../shared/utils/iframe.service";
+import {DuplicateService} from '../duplicate/duplicate.service';
+import {DrawingBoardTreeService, TreeNodeContextMenuModel} from "./drawing-board-tree.service";
+import {NetworkPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
+import {VfModulePopuopService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VnfPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
+import {SdcUiServices} from "onap-ui-angular";
+import {HighlightPipe} from "../../../shared/pipes/highlight/highlight-filter.pipe";
+import {VnfGroupPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnfGroup/vnfGroup.popup.service";
+import {ObjectToInstanceTreeService} from "../objectsToTree/objectToInstanceTree/objectToInstanceTree.service";
+import {SharedTreeService} from "../objectsToTree/shared.tree.service";
+import {Subject} from "rxjs/Subject";
+import {changeServiceIsDirty} from "../../../shared/storeUtil/utils/service/service.actions";
+import * as _ from 'lodash';
+import {ErrorMsgService} from "../../../shared/components/error-msg/error-msg.service";
+import {DragAndDropService} from "./dragAndDrop/dragAndDrop.service";
+import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
+import {PopoverPlacement} from "../../../shared/components/popover/popover.component";
+
+@Component({
+  selector: 'drawing-board-tree',
+  templateUrl: './drawing-board-tree.html',
+  styleUrls: ['./drawing-board-tree.scss'],
+  providers: [HighlightPipe]
+})
+
+export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
+  _store: NgRedux<AppState>;
+  duplicateService: DuplicateService;
+  drawingBoardTreeService: DrawingBoardTreeService;
+  errorMsgService: ErrorMsgService;
+  isFilterEnabled: boolean = false;
+  filterValue: string = '';
+  contextMenuOptions: TreeNodeContextMenuModel[];
+  static triggerDeleteActionService: Subject<string> = new Subject<string>();
+  static triggerUndoDeleteActionService: Subject<string> = new Subject<string>();
+  static triggerreCalculateIsDirty: Subject<string> = new Subject<string>();
+  @ViewChild(ContextMenuComponent) public contextMenu: ContextMenuComponent;
+
+  constructor(private _contextMenuService: ContextMenuService,
+              private _iframeService: IframeService,
+              private dialogService: DialogService,
+              private store: NgRedux<AppState>,
+              private route: ActivatedRoute,
+              private _duplicateService: DuplicateService,
+              private modalService: SdcUiServices.ModalService,
+              private _drawingBoardTreeService: DrawingBoardTreeService,
+              private _networkPopupService: NetworkPopupService,
+              private _vfModulePopuopService: VfModulePopuopService,
+              private _vnfPopupService: VnfPopupService,
+              private _vnfGroupPopupService: VnfGroupPopupService,
+              private _errorMsgService: ErrorMsgService,
+              private _highlightPipe: HighlightPipe,
+              private _objectToInstanceTreeService: ObjectToInstanceTreeService,
+              private _sharedTreeService: SharedTreeService,
+              private _dragAndDropService : DragAndDropService) {
+
+    this.errorMsgService = _errorMsgService;
+    this.duplicateService = _duplicateService;
+    this.drawingBoardTreeService = _drawingBoardTreeService;
+    this.contextMenuOptions = _drawingBoardTreeService.generateContextMenuOptions();
+
+    DrawingBoardTreeComponent.triggerDeleteActionService.subscribe((serviceModelId) => {
+      this._sharedTreeService.shouldShowDeleteInstanceWithChildrenModal(this.nodes, serviceModelId, (node, serviceModelId)=>{
+        this.drawingBoardTreeService.deleteActionService(this.nodes, serviceModelId);
+        this.store.dispatch(changeServiceIsDirty(this.nodes, serviceModelId));
+      });
+    });
+
+    DrawingBoardTreeComponent.triggerUndoDeleteActionService.subscribe((serviceModelId) => {
+      this.drawingBoardTreeService.undoDeleteActionService(this.nodes, serviceModelId);
+      this.store.dispatch(changeServiceIsDirty(this.nodes, serviceModelId));
+    });
+
+    DrawingBoardTreeComponent.triggerreCalculateIsDirty.subscribe((serviceModelId) => {
+      this.store.dispatch(changeServiceIsDirty(this.nodes, serviceModelId));
+    });
+
+    this._store = store;
+    this.route
+      .queryParams
+      .subscribe(params => {
+        this.serviceModelId = params['serviceModelId'];
+      });
+  }
+
+  getNodeId(node: ITreeNode): string {
+    return (node.data.parentType !== "" ? (node.data.parentType + "_") : "") + node.data.typeName;
+  }
+
+  updateNodes(updateData: { nodes: any, filterValue: string }): void {
+    this.nodes = updateData.nodes;
+    this.filterValue = updateData.filterValue;
+  }
+
+  @Output()
+  highlightNode: EventEmitter<number> = new EventEmitter<number>();
+
+  @ViewChild('tree') tree: TreeComponent;
+  missingDataTooltip: string = Constants.Error.MISSING_VNF_DETAILS;
+  currentNode: ITreeNode = null;
+  flags: any;
+  nodes = [];
+  serviceModelId: string;
+  options = {
+    allowDrag: this._dragAndDropService.isAllow(),
+    actionMapping: {
+      mouse: {
+        drop: (tree:TreeModel, node:TreeNode, $event:any, {from, to}) => {
+          this._dragAndDropService.drag(this.store, this.serviceModelId, this.nodes, {from, to});
+        }
+      }
+    },
+    nodeHeight: 45,
+    dropSlotHeight: 1
+  };
+  parentElementClassName = 'content';
+
+  ngOnInit(): void {
+    this.store.subscribe(() => {
+      this.updateTree();
+    });
+    this.updateTree()
+  }
+
+  getNodeName(node: ITreeNode, filter: string) {
+      return this._highlightPipe.transform(node.data.name, filter ? filter : '');
+  }
+
+  updateTree() {
+    const serviceInstance = this.store.getState().service.serviceInstance[this.serviceModelId];
+    this.nodes = this._objectToInstanceTreeService.convertServiceInstanceToTreeData(serviceInstance, this.store.getState().service.serviceHierarchy[this.serviceModelId]);
+    console.log('right nodes', this.nodes);
+
+  }
+
+
+  ngAfterViewInit(): void {
+    this.tree.treeModel.expandAll();
+  }
+
+  public onContextMenu($event: MouseEvent, node: ITreeNode): void {
+    this.flags = this.store.getState().global.flags;
+
+    this.currentNode = node;
+    node.focus();
+    node.setActiveAndVisible(false);
+    this.selectNode(node);
+    setTimeout(() => {
+      this._contextMenuService.show.next({
+        contextMenu: this.contextMenu,
+        event: <any>$event,
+        item: node,
+      });
+      $event.preventDefault();
+      $event.stopPropagation();
+    }, 250);
+
+  }
+
+
+  executeMenuAction(methodName: string): void {
+    if (!_.isNil(this.currentNode.data.menuActions) && !_.isNil(this.currentNode.data.menuActions[methodName])) {
+      this.currentNode.data.menuActions[methodName]['method'](this.currentNode, this.serviceModelId);
+      this.store.dispatch(changeServiceIsDirty(this.nodes, this.serviceModelId));
+    }
+  }
+
+  isEnabled(node: ITreeNode, serviceModelId: string, methodName: string): boolean {
+    if (!_.isNil(this.currentNode) && !_.isNil(this.currentNode.data.menuActions) && !_.isNil(this.currentNode.data.menuActions[methodName])) {
+      return this.currentNode.data.menuActions[methodName]['enable'](this.currentNode, this.serviceModelId);
+    }
+    return false;
+  }
+
+  isVisible(node: ITreeNode, methodName: string): boolean {
+    if (!_.isNil(this.currentNode) && !_.isNil(this.currentNode.data.menuActions) && !_.isNil(this.currentNode.data.menuActions[methodName])) {
+      return this.currentNode.data.menuActions[methodName]['visible'](this.currentNode, this.serviceModelId);
+    }
+    return false;
+  }
+
+  public selectNode(node: ITreeNode): void {
+    node.expand();
+    this._sharedTreeService.setSelectedVNF(node);
+    this.highlightNode.emit(node.data.modelUniqueId);
+    if (FeatureFlagsService.getFlagState(Features.FLAG_1906_COMPONENT_INFO, this.store)) {
+      node.data.onSelectedNode(node);
+    }
+  }
+
+  expandParentByNodeId(id: IDType): void {
+    this.tree.treeModel.getNodeById(id).parent.expand();
+  }
+
+}
+
+

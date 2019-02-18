@@ -1,0 +1,258 @@
+{
+  "inventory-response-item": [
+    {
+      "model-name": "Network_repl_vMOG",
+      "service-instance": {
+        "service-instance-id": "9cdd1b2a-43a7-47bc-a88e-759ba2399f0b",
+        "service-instance-name": "Network_repl_vMOG_rk"
+      },
+      "extra-properties": {},
+      "inventory-response-items": {
+        "inventory-response-item": [
+          {
+            "l3-network": {
+              "network-id": "7989a6d2-ba10-4a5d-8f15-4520bc833090",
+              "network-name": "APPC-24595-T-IST-02AShared_cor_direct_net_1",
+              "network-type": "CONTRAIL30_BASIC",
+              "network-role": "repl",
+              "network-technology": "contrail",
+              "neutron-network-id": "66ee6123-1c45-4e71-b6c0-a748ae0fee88",
+              "is-bound-to-vpn": true,
+              "service-id": "db171b8f-115c-4992-a2e3-ee04cae357e0",
+              "network-role-instance": 0,
+              "resource-version": "1516046029762",
+              "orchestration-status": "Created",
+              "heat-stack-id": "APPC-24595-T-IST-02AShared_cor_direct_net_1/e8b256aa-8ce1-4384-9d99-6606eaca9eac",
+              "contrail-network-fqdn": "default-domain:APPC-24595-T-IST-02C:APPC-24595-T-IST-02AShared_cor_direct_net_1",
+              "physical-network-name": "FALSE",
+              "is-provider-network": false,
+              "is-shared-network": true,
+              "is-external-network": true
+            },
+            "extra-properties": {},
+            "inventory-response-items": {
+              "inventory-response-item": [
+                {
+                  "subnet": {
+                    "subnet-id": "d5623e03-3927-40aa-8de4-ef46c35fc01c",
+                    "subnet-name": "S4_rk_cor_direct",
+                    "neutron-subnet-id": "5e34c945-812c-4d3c-b7db-d408526d58b7",
+                    "gateway-address": "10.0.0.10",
+                    "network-start-address": "10.0.0.10",
+                    "cidr-mask": "25",
+                    "ip-version": "4",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029815"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "24921ae7-c739-4ac2-a8fe-32e8ba8a9888",
+                    "subnet-name": "S8_rk_cor_direct",
+                    "neutron-subnet-id": "c183255c-0a35-4420-8dbb-e96b8d989770",
+                    "gateway-address": "2606:ae00:2e10:40::1",
+                    "network-start-address": "2606:ae00:2e10:40::0",
+                    "cidr-mask": "64",
+                    "ip-version": "6",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029791"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "c8e757c5-416d-4fa4-83d1-c099be0e8cdb",
+                    "subnet-name": "S2_rk_cor_direct",
+                    "neutron-subnet-id": "2ad97d5c-df2f-4ea9-8310-ea8911b12422",
+                    "gateway-address": "2606:ae00:2e10::1",
+                    "network-start-address": "2606:ae00:2e10::0",
+                    "cidr-mask": "64",
+                    "ip-version": "6",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029906"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "ff098d42-deb3-432e-a6a8-04b37d4569aa",
+                    "subnet-name": "S7_rk_cor_direct",
+                    "neutron-subnet-id": "91450e6f-2634-4746-88ba-a234312365d1",
+                    "gateway-address": "10.0.0.10",
+                    "network-start-address": "10.0.0.10",
+                    "cidr-mask": "25",
+                    "ip-version": "4",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": true,
+                    "dhcp-start": "10.0.0.10",
+                    "dhcp-end": "10.0.0.10",
+                    "ip-assignment-direction": "true",
+                    "resource-version": "1516046029889"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "3069ca48-c228-485d-bee4-845ab65cd347",
+                    "subnet-name": "S5_rk_cor_direct",
+                    "neutron-subnet-id": "43731fee-e891-4cc8-8476-f995f890f8d0",
+                    "gateway-address": "10.0.0.10",
+                    "network-start-address": "10.0.0.10",
+                    "cidr-mask": "28",
+                    "ip-version": "4",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029774"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "ba4a94e7-14c6-45b1-adc8-ec6c4e6d73eb",
+                    "subnet-name": "S6_rk_cor_direct",
+                    "neutron-subnet-id": "b55ff2b2-1d2f-41af-b872-1bcca2e1061b",
+                    "gateway-address": "10.0.0.10",
+                    "network-start-address": "10.0.0.10",
+                    "cidr-mask": "28",
+                    "ip-version": "4",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029922"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "8ab38c73-de01-483e-a86c-c2e566d4cde1",
+                    "subnet-name": "S3_rk_cor_direct",
+                    "neutron-subnet-id": "9ec533a7-998f-4c99-a70b-d4601d2a377f",
+                    "gateway-address": "10.0.0.10",
+                    "network-start-address": "10.0.0.10",
+                    "cidr-mask": "25",
+                    "ip-version": "4",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029799"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "3659ce61-3c12-4e4c-b453-d97076e74dbb",
+                    "subnet-name": "S12_rk_cor_direct",
+                    "neutron-subnet-id": "1b204870-f5a4-474a-a779-5fc3c0e103db",
+                    "gateway-address": "2606:ae00:2e10:44::1",
+                    "network-start-address": "2606:ae00:2e10:44::0",
+                    "cidr-mask": "64",
+                    "ip-version": "6",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": true,
+                    "dhcp-start": "2606:ae00:2e10:44::3",
+                    "dhcp-end": "2606:ae00:2e10:44::7f",
+                    "ip-assignment-direction": "true",
+                    "resource-version": "1516046029873"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "0275b352-91d3-48ae-b6d4-fdb8fc00aaee",
+                    "subnet-name": "S1_rk_cor_direct",
+                    "neutron-subnet-id": "81d83779-14fb-4c90-8ecc-8bdcb83e3033",
+                    "gateway-address": "10.0.0.10",
+                    "network-start-address": "10.0.0.10",
+                    "cidr-mask": "24",
+                    "ip-version": "4",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": true,
+                    "dhcp-start": "10.0.0.10",
+                    "dhcp-end": "10.0.0.10",
+                    "ip-assignment-direction": "true",
+                    "resource-version": "1516046029856"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "2607039d-eef4-47cd-9403-a8e5dcfeae02",
+                    "subnet-name": "S11_rk_cor_direct",
+                    "neutron-subnet-id": "5d7f2857-1308-4eda-861c-fc86293dfe1f",
+                    "gateway-address": "2606:ae00:2e10:43::1",
+                    "network-start-address": "2606:ae00:2e10:43::0",
+                    "cidr-mask": "64",
+                    "ip-version": "6",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029839"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "18757c6a-015d-403b-990f-4d41511aec4b",
+                    "subnet-name": "S9_rk_cor_direct",
+                    "neutron-subnet-id": "97d83e23-db35-46cf-93f8-8bbb7ff0b279",
+                    "gateway-address": "2606:ae00:2e10:41::1",
+                    "network-start-address": "2606:ae00:2e10:41::0",
+                    "cidr-mask": "64",
+                    "ip-version": "6",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029831"
+                  },
+                  "extra-properties": {}
+                },
+                {
+                  "subnet": {
+                    "subnet-id": "3fc931a8-b3f8-45ce-b75e-0ce6df2bbf7d",
+                    "subnet-name": "S10_rk_cor_direct",
+                    "neutron-subnet-id": "aec8e0eb-eb0f-459b-be1f-2bd6d44d7c6d",
+                    "gateway-address": "2606:ae00:2e10:42::1",
+                    "network-start-address": "2606:ae00:2e10:42::0",
+                    "cidr-mask": "64",
+                    "ip-version": "6",
+                    "orchestration-status": "Created",
+                    "dhcp-enabled": false,
+                    "dhcp-start": "",
+                    "dhcp-end": "",
+                    "ip-assignment-direction": "false",
+                    "resource-version": "1516046029848"
+                  },
+                  "extra-properties": {}
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

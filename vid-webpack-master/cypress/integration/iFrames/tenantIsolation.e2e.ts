@@ -7,6 +7,10 @@ describe('Tenant isolation - Test Environments Page', function () {
       cy.login();
     });
 
+    afterEach(() => {
+      cy.screenshot();
+    });
+
     it(`verifying proper text for the "Tenant Context" label; instead of "Select VSP"`, function () {
       
       cy.visit('/app/vid/scripts/modals/new-test-environment/new-test-environment.html');

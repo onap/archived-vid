@@ -2,7 +2,10 @@
   triggers="mouseenter:mouseleave"
   popover="{{value}}"
   [hidden]="value == null"
-  container="body">
+  container="body"
+  containerClass="{{popoverType}}"
+  placement="{{placement}}"
+  [attr.data-tests-id]="'popover-test-id'">
   <ng-content ></ng-content>
 </div>
 

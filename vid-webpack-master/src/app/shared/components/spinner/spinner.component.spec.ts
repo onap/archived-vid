@@ -1,42 +1,50 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import { SpinnerComponent } from './spinner.component';
+import {SpinnerComponent, SpinnerInfo} from './spinner.component';
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('Spinner component', () => {
   let component: SpinnerComponent;
   let fixture: ComponentFixture<SpinnerComponent>;
 
-  beforeEach(async(() => {
+  beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [],
-      declarations: [SpinnerComponent ]
-    })
-      .compileComponents();
-  }));
+      declarations: [SpinnerComponent],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+    });
+    await TestBed.compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(SpinnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
 
-  it('component should be defined', () => {
+  })().then(done).catch(done.fail));
+
+
+
+  test('component should be defined', () => {
     expect(component).toBeDefined();
   });
 
-
-  it('component constructor should subscribe of showSpinner event with true', ()=> {
-    SpinnerComponent.showSpinner.next(true);
+  test('component constructor should subscribe of showSpinner event with true', ()=> {
+    let spinnerInfo : SpinnerInfo = new SpinnerInfo(true, 'someUrl', 'json');
+    SpinnerComponent.showSpinner.next(spinnerInfo);
     expect(component.show).toBeTruthy();
   });
 
-  it('component constructor should subscribe of showSpinner event with false', ()=> {
-    SpinnerComponent.showSpinner.next(false);
+  test('component constructor should subscribe of showSpinner event with true and then to be false', ()=> {
+    let spinnerInfo : SpinnerInfo = new SpinnerInfo(true, 'someUrl', 'json');
+    SpinnerComponent.showSpinner.next(spinnerInfo);
+    spinnerInfo  = new SpinnerInfo(false, 'someUrl', 'json');
+    SpinnerComponent.showSpinner.next(spinnerInfo);
     expect(component.show).toBeFalsy();
   });
 
-
-
-
+  test('component constructor should subscribe of showSpinner event with false', ()=> {
+    let spinnerInfo : SpinnerInfo = new SpinnerInfo(false, 'someUrl', 'json');
+    SpinnerComponent.showSpinner.next(spinnerInfo);
+    expect(component.show).toBeFalsy();
+  });
 });

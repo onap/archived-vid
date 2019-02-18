@@ -7,6 +7,7 @@ export interface ServiceModelResponseInterface extends NodeModelResponseInterfac
   serviceType: string;
   serviceRole: string;
   serviceEcompNaming: boolean;
+  vidNotions: any;
 }
 
 export class ServiceModel extends NodeModel{
@@ -14,8 +15,9 @@ export class ServiceModel extends NodeModel{
   serviceType: string;
   serviceRole: string;
   servicesQty: number;
-  isUserProvidedNaming: boolean;
+  isEcompGeneratedNaming: boolean;
   isMultiStepDesign: boolean;
+  vidNotions?: any;
 
   constructor(serviceModelJson?: any){
     super(serviceModelJson.service);
@@ -23,13 +25,14 @@ export class ServiceModel extends NodeModel{
       const service: ServiceModelResponseInterface = serviceModelJson.service;
       this.serviceType = service.serviceType;
       this.serviceRole = service.serviceRole;
-      this.isUserProvidedNaming = this.getIsUserProvidedName(service);
+      this.vidNotions= service.vidNotions;
+      this.isEcompGeneratedNaming = this.getServiceEcompNaming(service);
       this.isMultiStepDesign = this.getIsMultiStepDesign(serviceModelJson);
     }
   }
 
-  private getIsUserProvidedName(serviceJson): boolean {
-    return serviceJson.serviceEcompNaming !== undefined && serviceJson.serviceEcompNaming === "false";
+  private getServiceEcompNaming(serviceJson): boolean {
+    return serviceJson.serviceEcompNaming === "true";
   };
 
   private getIsMultiStepDesign(serviceModel): boolean {

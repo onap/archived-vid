@@ -1,0 +1,8 @@
+<div class="search-container">
+  <sdc-filter-bar
+    [placeHolder]="'Search...'"
+    [debounceTime]="250"
+    [testId]="inputTestId"
+    (valueChange)="searchTree($event)">
+  </sdc-filter-bar>
+</div>

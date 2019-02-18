@@ -11,6 +11,7 @@ export class NoContentMessageAndIconComponent {
   constructor() {}
 
   @Input() title: string;
+  @Input() title2?: string;
   @Input() subtitle: string;
   @Input() iconPath: string;
 

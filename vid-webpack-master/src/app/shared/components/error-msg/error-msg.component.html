@@ -1,0 +1,5 @@
+<div [attr.data-tests-id]="'error-msg-wrapper'" class="error-msg-wrapper" *ngIf="errorMsgService?.errorMsgObject">
+  <div class="title" [attr.data-tests-id]="'error-msg-title'">{{errorMsgService?.errorMsgObject?.title}}</div>
+  <div class="sub-title" [attr.data-tests-id]="'error-msg-sub-title'">{{errorMsgService?.errorMsgObject?.subtitle}}</div>
+  <div *ngIf="errorMsgService?.errorMsgObject?.description" class="description" [attr.data-tests-id]="'error-msg-description'">{{errorMsgService?.errorMsgObject?.description}}</div>
+</div>

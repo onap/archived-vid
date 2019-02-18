@@ -1,0 +1,16 @@
+<div>
+  <div class="details-item" *ngIf="data != null && form != null">
+    <label [ngClass]="{'required': data.isRequired()}"
+           for="{{data?.dataTestId}}">{{data?.displayName}}:</label>
+    <angular2-multiselect id="{{data?.dataTestId}}"
+                          [attr.data-tests-id]="data?.dataTestId"
+                          [formControl]="form.controls[data.controlName]"
+                          [(ngModel)]="data.selectedItems"
+                          [data]="data?.options$"
+                          [settings]="data?.settings"
+                          title="{{data.tooltip}}"
+                          [ngClass]="{'error-style' : form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors}">
+    </angular2-multiselect>
+  </div>
+</div>
+

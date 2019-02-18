@@ -1,24 +1,25 @@
 import {createRequest} from './mso.factory';
 
-sessionStorage.setItem("msoRequestParametersTestApiValue","GR_API");
+
 describe('Vlantagging', () => {
-  it('should create a correct request', (done: DoneFn) => {
+  test('should create a correct request', () => {
+    sessionStorage.setItem("msoRequestParametersTestApiValue","GR_API");
     let userInputs_withEcompGeneratedNaming = {
       "productFamily": "e433710f-9217-458d-a79d-1c7aff376d89",
-      "lcpRegion": "AAIAIC25",
+      "lcpRegion": "JANET25",
       "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
       "aicZone": "YYY1",
       "platformName": "plat1",
-      "lineOfBusiness": "ecomp"
+      "lineOfBusiness": "onap"
     };
     let userInputs_withoutEcompGeneratedNaming = {
       "instanceName": "New Name",
       "productFamily": "e433710f-9217-458d-a79d-1c7aff376d89",
-      "lcpRegion": "AAIAIC25",
+      "lcpRegion": "JANET25",
       "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
       "aicZone": "YYY1",
       "platformName": "plat1",
-      "lineOfBusiness": "ecomp"
+      "lineOfBusiness": "onap"
     };
     let service = {
       "service": {
@@ -249,9 +250,9 @@ describe('Vlantagging', () => {
         "requestorId": "az2016",
         "suppressRollback": false
       },
-      "lineOfBusiness": Object({ lineOfBusinessName: "ecomp" }),
+      "lineOfBusiness": Object({ lineOfBusinessName: "onap" }),
       "cloudConfiguration": {
-        "lcpCloudRegionId": "AAIAIC25",
+        "lcpCloudRegionId": "JANET25",
         "tenantId": "092eb9e8e4b7412e8787dd091bc58e86"
       },
       "platform": Object({ platformName: "plat1" }),
@@ -285,11 +286,7 @@ describe('Vlantagging', () => {
           "relatedInstance": {
             "instanceId": "AAI-12002-test3-vm230w",
             "modelInfo": {
-              "modelName": "oam_group",
-              "modelType": "networkCollection",
-              "modelVersion": "1",
-              "modelVersionId": "a0efd5fc-f7be-4502-936a-a6c6392b958f",
-              "modelInvariantId": "9384abf9-1231-4da4-bd8d-89e4d2f8a749"
+              "modelType": "networkInstanceGroup"
             }
           }
         },
@@ -297,11 +294,7 @@ describe('Vlantagging', () => {
           "relatedInstance": {
             "instanceId": "AAI-12002-test3-vm230w",
             "modelInfo": {
-              "modelName": "oam_group",
-              "modelType": "networkCollection",
-              "modelVersion": "1",
-              "modelVersionId": "a0efd5fc-f7be-4502-936a-a6c6392b958f",
-              "modelInvariantId": "9384abf9-1231-4da4-bd8d-89e4d2f8a749"
+              "modelType": "networkInstanceGroup"
             }
           }
         }
@@ -314,6 +307,6 @@ describe('Vlantagging', () => {
     expectedResult["requestInfo"]["instanceName"] = "New Name";
     let actualResult_withoutEcompGeneratedNaming = <any>createRequest("az2016",userInputs_withoutEcompGeneratedNaming, service, serviceInstanceId, networkInstanceGroups,'vDBE 0','1');
     expect(actualResult_withoutEcompGeneratedNaming).toEqual(expectedResult);
-    done();
+    sessionStorage.removeItem("msoRequestParametersTestApiValue");
   });
 });

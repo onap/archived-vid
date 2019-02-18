@@ -1,0 +1,19 @@
+<div>
+  <div>
+    <span style="font-weight: bold;">
+        Please select the number of additional instances you want to add of this node.
+    </span>
+  </div>
+  <div>
+    <span style="font-weight: bold;">
+        Important: VID will duplicate this node including its children.
+    </span>
+  </div>
+
+  <div class="duplicate-number">
+    <select class="quantity-select" [(ngModel)]="duplicateNumber" name="duplicate" [attr.data-tests-id]="'duplicate-amount-vfmodules'" id="duplicate-select" (change)="onDuplicateNumberChange()">
+      <option *ngFor="let item of duplicateOptions" [value]="item">{{item}}</option>
+    </select>
+  </div>
+  <!--TODO max -->
+</div>

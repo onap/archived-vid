@@ -3,6 +3,9 @@ declare namespace Cypress {
     initVidMock: typeof initVidMock;
     preventErrorsOnLoading : typeof preventErrorsOnLoading;
     initCategoryParameter : typeof initCategoryParameter;
+    initAuditInfoMSO: typeof initAuditInfoMSO;
+    initAuditInfoMSOALaCarte: typeof initAuditInfoMSOALaCarte;
+    initAsyncInstantiation : typeof  initAsyncInstantiation;
   }
 }
 
@@ -34,7 +37,7 @@ function initCategoryParameter(response? : JSON) : void {
           status : 200,
           url : Cypress.config('baseUrl') + "/category_parameter**",
           response : response ? response : res
-        });
+        }).as('initCategoryParameters');
     })
 }
 
@@ -77,6 +80,34 @@ function initAuditInfoMSO(response? : JSON, delay?: number, status?: number) : v
   })
 }
 
+function initAuditInfoMSOALaCarte(response? : JSON, delay?: number, status?: number) : void {
+  cy.readFile('../vid-automation/src/test/resources/a-la-carte/auditInfoMSOALaCarte.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        delay : delay ? delay : 0,
+        status : status ? status : 200,
+        url : Cypress.config('baseUrl') + "/asyncInstantiation/auditStatus/**/mso**",
+        response : response ? response : res
+      }).as('initAuditInfoMSOAlaCarte');
+  })
+}
+
+function initAsyncInstantiation(response? : JSON, delay?: number, status?: number) : void {
+  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicAsyncInstantiation.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        delay : delay ? delay : 0,
+        status : status ? status : 200,
+        url : Cypress.config('baseUrl') + "/asyncInstantiation",
+        response : response ? response : res
+      }).as('initAsyncInstantiation');
+  })
+}
+
+
+
 function initVidMock(): void {
   initGetToMenuInfo();
   initCategoryParameter();
@@ -89,3 +120,6 @@ function initVidMock(): void {
 Cypress.Commands.add('initVidMock', initVidMock);
 Cypress.Commands.add('preventErrorsOnLoading', preventErrorsOnLoading);
 Cypress.Commands.add('initCategoryParameter', initCategoryParameter);
+Cypress.Commands.add('initAuditInfoMSO', initAuditInfoMSO);
+Cypress.Commands.add('initAuditInfoMSOALaCarte', initAuditInfoMSOALaCarte);
+Cypress.Commands.add('initAsyncInstantiation', initAsyncInstantiation);

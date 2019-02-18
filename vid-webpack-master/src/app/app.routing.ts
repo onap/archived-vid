@@ -1,40 +1,23 @@
 import {RouterModule, Routes} from '@angular/router';
-
-import {HomeComponent} from './home/home.component';
-import {BrowseSdcComponent} from './browseSdc/browseSdc.component';
-import {ServicePlanningComponent, ServicePlanningEmptyComponent} from './drawingBoard/service-planning/service-planning.component';
-import {VlanTaggingComponent} from './vlanTagging/vlan-tagging.component';
-import {ServicePopupComponent} from './components/service-popup/service-popup.component';
-import { InstantiationStatusComponent } from './instantiationStatus/instantiationStatus.component';
-import {HealthStatusComponent} from "./healthStatus/health-status.component";
-import {FlagsResolve} from "./services/flags.resolve";
-
+import {FlagsResolve} from "./shared/resolvers/flag/flag.resolver";
+import {DrawingBoardRoutes} from "./drawingBoard/drawingBoard.routing";
+import {GenericFormPopupComponent} from "./shared/components/genericFormPopup/generic-form-popup.component";
+import {SupportComponent} from "./support/support.component";
+import {HealthStatusRoutes} from "./healthStatus/health-status.routing";
+import {VlanTaggingRoutes} from "./vlanTagging/vlan-tagging.routing";
+import {InstantiationStatusRoutes} from "./instantiationStatus/InstantiationStatus.routing";
 const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' ,resolve : {
-    flags : FlagsResolve,
-  }},
-  { path: 'browseSdc', component: BrowseSdcComponent, resolve : {
-    flags : FlagsResolve,
-  }},
-  { path: 'servicePlanning', component: ServicePlanningComponent, resolve : {
-    flags : FlagsResolve,
-  }},
-  { path: 'servicePlanningEmpty', component: ServicePlanningEmptyComponent, resolve : {
-    flags : FlagsResolve,
-  }},
-  { path: 'servicePopup', component: ServicePopupComponent, resolve : {
-    flags : FlagsResolve,
-  }},
-  { path :'vlan', component : VlanTaggingComponent, resolve : {
-    flags : FlagsResolve,
-  }},
-  { path: 'instantiationStatus', component: InstantiationStatusComponent, resolve : {
-     flags : FlagsResolve,
-    }},
-  { path: 'healthStatus', component: HealthStatusComponent, resolve : {
-    flags : FlagsResolve,
-  }}
-
+  ...DrawingBoardRoutes,
+  ...HealthStatusRoutes,
+  ...VlanTaggingRoutes,
+  ...InstantiationStatusRoutes,
+  {
+    path: 'servicePopup',
+    component: GenericFormPopupComponent,
+    resolve: {
+      flags: FlagsResolve
+    }
+  },
+  {path: 'support', component: SupportComponent},
 ];
-
 export const routing = RouterModule.forRoot(routes);

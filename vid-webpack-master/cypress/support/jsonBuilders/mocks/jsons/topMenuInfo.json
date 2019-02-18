@@ -1,8 +1,8 @@
 {
-  "contactUsLink": "https://wiki.web.att.com/display/EcompPortal/ECOMP+Portal+Home",
+  "contactUsLink": "https://www.openecomp.org/EcompPortal/ECOMP+Portal+Home",
   "firstName": "uspVoiceVirtualUsp",
-  "portalUrl": "https://www.e-access.att.com/ecomp_portal_dev_n1/ecompui/process_csp",
-  "getAccessUrl": "https://www.e-access.att.com/ecomp_portal_dev_n1/ecompui/get_access",
+  "portalUrl": "http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/process_csp",
+  "getAccessUrl": "http://portal.api.simpledemo.onap.org:8989/ONAPPORTAL/get_access",
   "userName": "uspVoiceVirtualUsp null",
   "userid": "uspVoiceVirtualUsp"
 }

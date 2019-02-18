@@ -1,0 +1,22 @@
+.error-msg-wrapper{
+  display: block;
+  border-top: 6px solid #CF2A2A;
+  border-bottom: 1px solid #D2D2D2;
+  padding: 20px 45px;
+  font-family: OpenSans-Regular;
+  font-size: 14px;
+  .title{
+    color: #CF2A2A;
+    margin-bottom: 10px;
+    font-family: OpenSans-SemiBold;
+    font-size: 16px;
+  }
+  .sub-title{
+    color: #CF2A2A;
+    margin-bottom: 5px;
+  }
+  .description{
+    color: #191919;
+  }
+}
+

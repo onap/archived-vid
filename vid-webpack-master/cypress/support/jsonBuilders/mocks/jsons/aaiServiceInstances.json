@@ -7,8 +7,18 @@
       "isPermitted": true,
       "serviceInstanceId": "3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
       "serviceInstanceName": "vid-test-444",
-      "serviceType": "VIRTUAL USP",
-      "subscriberName": "USP VOICE"
+      "serviceType": "TYLER SILVIA",
+      "subscriberName": "SILVIA ROBBINS"
+    },
+    {
+      "aaiModelInvariantId": "12343f9e-3244-4d8f-a8e0-0e5d7a29eda9",
+      "aaiModelVersionId": "12344bb4-a416-4b4e-997e-0059973630b9",
+      "globalCustomerId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "isPermitted": true,
+      "serviceInstanceId": "c187e9fe-40c3-4862-b73e-84ff056205f61234",
+      "serviceInstanceName": "test_fabric_config",
+      "serviceType": "TYLER SILVIA",
+      "subscriberName": "SILVIA ROBBINS"
     }
   ]
 }

@@ -1,18 +1,17 @@
-import {VNFModel} from "./vnfModel";
-import {VnfInstance} from "./vnfInstance";
 import {VfModuleTreeNode} from "./vfModuleTreeNode";
+import {NetworkTreeNode} from "./networkTreeNode";
+import {Level1Model} from "./nodeModel";
+import {VnfInstance} from "./vnfInstance";
+import {ServiceNodeTypes} from "./ServiceNodeTypes";
 
-export class VnfTreeNode {
-  modelId: string;
-  name: string;
-  modelName: string;
-  type: string;
+export class VnfTreeNode extends NetworkTreeNode{
+
   children: VfModuleTreeNode[];
+  vnfStoreKey : string;
 
-  constructor(instance: VnfInstance, vnfModel: VNFModel){
-    this.name = instance.instanceName || vnfModel['properties'].ecomp_generated_naming == 'false' ? vnfModel.modelCustomizationName : '<Automatically Assigned>';
-    this.modelId = vnfModel.uuid;
-    this.modelName = vnfModel.modelCustomizationName;
-    this.type = vnfModel.type;
+  constructor(instance: VnfInstance, vnfModel: Level1Model, vnfStoreKey : string){
+    super(<any>instance, vnfModel, vnfStoreKey);
+    this.type = ServiceNodeTypes.VF;
+    this.vnfStoreKey = vnfStoreKey;
   }
 }

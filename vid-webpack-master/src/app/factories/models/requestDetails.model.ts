@@ -14,6 +14,7 @@ export class ModelInfo {
   modelVersion: string;
   modelCustomizationId: string;
   modelCustomizationName: string;
+  customizationUuid: string;
 }
 
 export class RequestParameters {
@@ -109,7 +110,7 @@ export class RootObject {
 //             “relatedInstance”: {
 //                “instanceId”: “{instanceGroupId}”,
 //                “modelInfo”: {
-//                   “modelType”: “networkCollection”,
+//                   “modelType”: “networkInstanceGroup”,
 //                   “modelInvariantId”: “9ea660dc-155f-44d3-b45c-cc7648b4f31c”,
 //                   “modelVersionId”: “bb07aad1-ce2d-40c1-85cb-5392f76bb1ef”,
 //                   “modelName”: “{network collection model name}”,

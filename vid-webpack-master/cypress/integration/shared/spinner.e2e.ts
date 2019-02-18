@@ -17,20 +17,28 @@ describe('Spinner', function () {
       })
     });
 
+    afterEach(() => {
+      cy.screenshot();
+    });
+
     it('spinner should display after api call', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json').then((res) => {
+      const timeBomb:Date = new Date(2018,6,10,0,0,0); //month 6 is July
+      if (new Date(Date.now()) > timeBomb) {
 
-        jsonBuilderInstantiationBuilder.basicJson(res,
-          Cypress.config('baseUrl') + "/asyncInstantiation**",
-          200,
-          2000,
-          "error 500 asyncInstantiation");
-        cy.openIframe('app/ui/#/instantiationStatus');
+        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json').then((res) => {
 
-        cy.get('.spinner')
-          .and('be.visible');
+          jsonBuilderInstantiationBuilder.basicJson(res,
+            Cypress.config('baseUrl') + "/asyncInstantiation**",
+            200,
+            4000,
+            "error 500 asyncInstantiation");
+          cy.openIframe('app/ui/#/instantiationStatus');
 
-      });
+          cy.get('.sdc-loader')
+            .and('be.visible');
+
+        });
+      }
     });
   });
 });

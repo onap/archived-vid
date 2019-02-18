@@ -1,0 +1,25 @@
+{
+  "service": {
+    "uuid": "09c476c7-91ae-44b8-a731-04d8d8fa3695",
+    "invariantUuid": "11819cb5-0ad7-4c6d-9205-2ac30d09bdc6",
+    "name": "Mobility Networking Svc Mode",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": null,
+    "serviceRole": null,
+    "description": "single generic service model with mobility VLs in it to create any mobility network",
+    "serviceEcompNaming": "false",
+    "instantiationType": null,
+    "inputs": {}
+  },
+  "vnfs": {},
+  "networks": {},
+  "collectionResource": null,
+  "configurations": null,
+  "fabricConfigurations": {},
+  "serviceProxies": null,
+  "vfModules": null,
+  "volumeGroups": null,
+  "pnfs": null
+}
