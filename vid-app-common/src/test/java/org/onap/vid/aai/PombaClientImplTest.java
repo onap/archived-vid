@@ -2,9 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
- * ================================================================================
- * Modifications Copyright 2019 Nokia
+ * Copyright (C) 2019 Nokia
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,19 +72,18 @@ public class PombaClientImplTest {
         ServiceInstance serviceInstance2 = createServiceInstance("serviceType2", "serviceInstanceId2", "customerId2",
             "modelVersion2", "modelInvariantId2");
 
-        PombaRequest pombaRequest = new PombaRequest();
-        pombaRequest.serviceInstanceList = Lists.newArrayList(serviceInstance1, serviceInstance2);
+        PombaRequest pombaRequest = new PombaRequest(Lists.newArrayList(serviceInstance1, serviceInstance2));
         return pombaRequest;
     }
 
     private ServiceInstance createServiceInstance(String serviceType, String serviceInstanceId, String customerId,
         String modelVersionId, String modelInvariantId) {
-        ServiceInstance serviceInstance = new ServiceInstance();
-        serviceInstance.serviceType = serviceType;
-        serviceInstance.serviceInstanceId = serviceInstanceId;
-        serviceInstance.customerId = customerId;
-        serviceInstance.modelInvariantId = modelInvariantId;
-        serviceInstance.modelVersionId = modelVersionId;
+        ServiceInstance serviceInstance = new ServiceInstance(
+            serviceInstanceId,
+            modelVersionId,
+            modelInvariantId,
+            customerId,
+            serviceType);
         return serviceInstance;
     }
 
