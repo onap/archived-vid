@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd5c51ad_e6ae7df9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a0515b3e_7f2b096f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7fef5732_0fb55921",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoResponseWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "PROPER_RESPONSE, change also other",
+      "range": {
+        "startLine": 16,
+        "startChar": 32,
+        "endLine": 16,
+        "endChar": 46
+      },
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15e2ca09_ad0e99eb",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoResponseWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "could be replaced by\n```\n    @Test\n    public void shouldHaveValidGettersAndSetters(){\n        assertThat(MsoResponseWrapper.class, hasValidGettersAndSettersExcluding(\"response\"));\n    }\n```",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f8bbb852_6282cf8d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoResponseWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "construct what?",
+      "range": {
+        "startLine": 47,
+        "startChar": 16,
+        "endLine": 47,
+        "endChar": 53
+      },
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "472a44e0_e0685d45",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoResponseWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "extract to const and use in other tests",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6997aea4_f33dd2b1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestObjectTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 27,
+        "startChar": 46,
+        "endLine": 27,
+        "endChar": 50
+      },
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0651b812_b147b040",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestObjectTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-18T10:32:24Z",
+      "side": 1,
+      "message": "\"shouldHaveValidGetterAndSetterForRawString\"",
+      "range": {
+        "startLine": 43,
+        "startChar": 16,
+        "endLine": 43,
+        "endChar": 82
+      },
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
