@@ -45,6 +45,30 @@
       "revId": "141fd5c9996fe1f647852b94f34fb58c97ee394e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a99aae36_a3c44c43",
+        "filename": "vid-webpack-master/src/app/shared/utils/constants.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-18T12:54:25Z",
+      "side": 1,
+      "message": "Right. I think I did it before. Removed",
+      "parentUuid": "72a90c95_5bb5d4da",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 87
+      },
+      "revId": "141fd5c9996fe1f647852b94f34fb58c97ee394e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
