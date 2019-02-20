@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7260967_9ad1a3e8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WorkflowParameterController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-20T10:20:44Z",
+      "side": 1,
+      "message": "Might be collocated with WorkflowsController?",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 33
+      },
+      "revId": "d2d6374f54f1ee38794c20be214dec9ae0131b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a9ebf164_6ce624ea",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflowsParameterModels.kt",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-20T10:20:44Z",
+      "side": 1,
+      "message": "Might be collocated with SOWorkflows?",
+      "revId": "d2d6374f54f1ee38794c20be214dec9ae0131b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e1e9d11e_99f58640",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/ExtWorkflowsServiceImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-20T10:20:44Z",
+      "side": 1,
+      "message": "Surprisingly, `getEntity` might return a String, so casting shoule be more careful.",
+      "range": {
+        "startLine": 33,
+        "startChar": 48,
+        "endLine": 33,
+        "endChar": 69
+      },
+      "revId": "d2d6374f54f1ee38794c20be214dec9ae0131b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
