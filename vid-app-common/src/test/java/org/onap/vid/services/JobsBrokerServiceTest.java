@@ -210,7 +210,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         ((JobsBrokerServiceInDatabaseImpl) broker).deleteAll();
     }
 
-    @Test(enabled = false)
+    @Test
     public void givenSingleJob_getIt_verifySameJob() {
         final Job originalJob = waitForFutureJob(newJobAsync(broker));
 
@@ -218,7 +218,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         assertThat(JOBS_SHOULD_MATCH, retrievedJob, is(originalJob));
     }
 
-    @Test(enabled = false)
+    @Test
     public void givenManyJobs_getJobsAndPushThemBack_alwaysSeeAllOfThemWithPeek() throws InterruptedException {
         final List<Job> originalJobs = putALotOfJobs(broker);
 
@@ -236,12 +236,12 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         assertThat(JOBS_PEEKED_SHOULD_MATCH, broker.peek(), containsInAnyOrder(originalJobs.toArray()));
     }
 
-    @Test(enabled = false)
+    @Test
     public void givenManyJobs_getThemAll_verifySameJobs() {
         putAndGetALotOfJobs(broker);
     }
 
-    @Test(enabled = false)
+    @Test
     public void givenManyJobs_getThemAllThenPushBackandGet_verifySameJobs() {
         final List<Job> retrievedJobs1 = putAndGetALotOfJobs(broker);
 
@@ -503,7 +503,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         JobDaoImpl toJob();
     }
 
-    @Test(enabled = false, dataProvider = "jobs")
+    @Test(dataProvider = "jobs")
     public void givenSomeJobs_pullNextJob_returnNextOrNothingAsExpected(List<Jobber> jobbers, int msoLimit, int expectedIndexSelected, Job.JobStatus topic, String assertionReason) {
         JobsBrokerServiceInDatabaseImpl broker = new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, msoLimit, 20);
         final List<JobDaoImpl> jobs = jobbers.stream().map(Jobber::toJob).collect(toList());
@@ -528,12 +528,12 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
                 .map(v -> new Object[]{v}).collect(toList()).toArray(new Object[][]{});
     }
 
-    @Test(enabled = false, dataProvider = "topics", expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = "Unsupported topic.*")
+    @Test(dataProvider = "topics", expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = "Unsupported topic.*")
     public void pullUnexpectedTopic_exceptionIsThrown(Job.JobStatus topic) {
         broker.pull(topic, UUID.randomUUID().toString());
     }
 
-    @Test(enabled = false, expectedExceptions = NoJobException.class)
+    @Test(expectedExceptions = NoJobException.class)
     public void givenNonPendingJobs_getJobAsPendingTopic_verifyNothingRetrieved() {
         Stream.of(Job.JobStatus.values())
                 .filter(not(s -> s.equals(PENDING)))
@@ -545,26 +545,26 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         waitForFutureOptionalJob(pullJobAsync(broker));
     }
 
-    @Test(enabled = false)
+    @Test
     public void givenPendingAndNonPendingJobs_getJobAsPendingTopic_verifyAJobRetrieved() {
         newJobAsync(broker); // this negated the expected result of the call below
         givenNonPendingJobs_getJobAsPendingTopic_verifyNothingRetrieved();
     }
 
-    @Test(enabled = false, expectedExceptions = NoJobException.class)
+    @Test(expectedExceptions = NoJobException.class)
     public void givenManyJobs_pullThemAllAndAskOneMore_verifyFinallyNothingRetrieved() {
         putAndGetALotOfJobs(broker);
         waitForFutureOptionalJob(pullJobAsync(broker));
     }
 
-    @Test(enabled = false, expectedExceptions = NoJobException.class)
+    @Test(expectedExceptions = NoJobException.class)
     public void givenNoJob_requestJob_verifyNothingRetrieved() throws InterruptedException, ExecutionException, TimeoutException {
         final Future<Optional<Job>> futureOptionalJob = pullJobAsync(broker);
         assertThat("job should not be waiting yet", futureOptionalJob.get(FEW, MILLISECONDS).isPresent(), is(false));
         waitForFutureOptionalJob(futureOptionalJob);
     }
 
-    @Test(enabled = false, expectedExceptions = IllegalStateException.class)
+    @Test(expectedExceptions = IllegalStateException.class)
     public void givenSinglePulledJob_pushBackDifferentJob_verifyPushingRejected() {
         waitForFutureJob(newJobAsync(broker));
         waitForFutureJob(newJobAsync(broker));
@@ -576,7 +576,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         broker.pushBack(myJob); //Should fail
     }
 
-    @Test(enabled = false)
+    @Test
     public void givenSingleJob_pushBackModifiedJob_verifyPulledIsVeryVeryTheSame() {
         final ImmutableMap<String, Object> randomDataForMostRecentJobType =
                 ImmutableMap.of("42", 42, "complex", ImmutableList.of("a", "b", "c"));
@@ -603,7 +603,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
                 .toString();
     }
 
-    @Test(enabled = false, expectedExceptions = IllegalStateException.class)
+    @Test(expectedExceptions = IllegalStateException.class)
     public void givenSingleJob_pushBackTwice_verifyPushingRejected() {
         waitForFutureJob(newJobAsync(broker));
         final Job job = waitForFutureOptionalJob(pullJobAsync(broker));
@@ -612,7 +612,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         broker.pushBack(job); //Should fail
     }
 
-    @Test(enabled = false)
+    @Test
     public void addJob_PeekItById_verifySameJobWasPeeked() {
         String userId = UUID.randomUUID().toString();
         Job myJob = createMockJob(userId);
@@ -623,7 +623,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
                 peekedJob.getSharedData().getUserId());
     }
 
-    @Test(enabled = false, dataProvider = "jobStatusesForSuccessDelete", expectedExceptions = NoJobException.class)
+    @Test(dataProvider = "jobStatusesForSuccessDelete", expectedExceptions = NoJobException.class)
        public void givenOneJob_deleteIt_canPeekOnItButCantPull(Job.JobStatus status) {
         final Job job = waitForFutureJob(newJobAsync(broker, status));
         broker.delete(job.getUuid());
@@ -639,7 +639,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         };
     }
 
-    @Test(enabled = false, 
+    @Test(
             dataProvider = "jobStatusesForFailedDelete",
             expectedExceptions = OperationNotAllowedException.class,
             expectedExceptionsMessageRegExp=DELETE_SERVICE_INFO_STATUS_EXCEPTION_MESSAGE
@@ -666,7 +666,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         };
     }
 
-    @Test(enabled = false, expectedExceptions = OperationNotAllowedException.class, expectedExceptionsMessageRegExp = DELETE_SERVICE_NOT_EXIST_EXCEPTION_MESSAGE)
+    @Test(expectedExceptions = OperationNotAllowedException.class, expectedExceptionsMessageRegExp = DELETE_SERVICE_NOT_EXIST_EXCEPTION_MESSAGE)
     public void deleteJob_notExist_exceptionIsThrown() {
         waitForFutureJob(newJobAsync(broker, createMockJob("some user id", PENDING)));
         broker.delete(new UUID(111, 111));
