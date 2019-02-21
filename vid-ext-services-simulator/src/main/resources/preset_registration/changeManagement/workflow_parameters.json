@@ -1,0 +1,41 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/so/workflow-parameters"
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "parameterDefinitions": [
+        {
+          "id": 1,
+          "name": "general param 1",
+          "required": true,
+          "type": "STRING",
+          "pattern": "[0-9]*"
+        },
+        {
+          "id": 2,
+          "name": "general param 2",
+          "required": false,
+          "type": "STRING",
+          "pattern": "[-+]?[0-9]*\\.?[0-9]*"
+        },
+        {
+          "id": 3,
+          "name": "general param 3",
+          "required": true,
+          "type": "STRING",
+          "pattern": "[a-zA-Z0-9]{7}"
+        },
+        {
+          "id": 4,
+          "name": "general param 4",
+          "required": true,
+          "type": "STRING",
+          "pattern": "[0-9]{3}"
+        }
+      ]
+    }
+  }
+}

@@ -2,6 +2,7 @@ package org.onap.vid.services;
 
 import java.util.List;
 import org.onap.vid.model.SOWorkflow;
+import org.onap.vid.model.SOWorkflowParameterDefinitions;
 import org.onap.vid.model.SOWorkflows;
 import org.onap.vid.mso.MsoResponseWrapper2;
 import org.onap.vid.mso.rest.MockedWorkflowsRestClient;
@@ -21,10 +22,15 @@ public class ExtWorkflowsServiceImpl implements ExtWorkflowsService {
     @Override
     public List<SOWorkflow> getWorkflows(String vnfName) {
         MsoResponseWrapper2<SOWorkflows> msoResponse = mockedWorkflowsRestClient.getWorkflows(vnfName);
-        if (msoResponse.getStatus() >= 400 || msoResponse.getEntity() == null) {
-            throw new BadResponseFromMso(msoResponse);
-        }
+        validateSOResponse(msoResponse, SOWorkflows.class);
         return convertMsoResponseToWorkflowList(msoResponse);
+    }
+
+    @Override
+    public SOWorkflowParameterDefinitions getWorkflowParameterDefinitions(Long workflowId) {
+        MsoResponseWrapper2<SOWorkflowParameterDefinitions> msoResponse = mockedWorkflowsRestClient.getWorkflowParameterDefinitions(workflowId);
+        validateSOResponse(msoResponse, SOWorkflowParameterDefinitions.class);
+        return (SOWorkflowParameterDefinitions) msoResponse.getEntity();
     }
 
     private List<SOWorkflow> convertMsoResponseToWorkflowList(MsoResponseWrapper2<SOWorkflows> msoResponse) {
@@ -32,14 +38,20 @@ public class ExtWorkflowsServiceImpl implements ExtWorkflowsService {
         return soWorkflows.getWorkflows();
     }
 
-    public static class BadResponseFromMso extends RuntimeException {
-        private final MsoResponseWrapper2<SOWorkflows> msoResponse;
+    private void validateSOResponse(MsoResponseWrapper2 response, Class<?> expectedResponseClass){
+        if (response.getStatus() >= 400 || !expectedResponseClass.isInstance(response.getEntity())) {
+            throw new BadResponseFromMso(response);
+        }
+    }
 
-        public BadResponseFromMso(MsoResponseWrapper2<SOWorkflows> msoResponse) {
+    public static class BadResponseFromMso extends RuntimeException {
+        private final MsoResponseWrapper2<?> msoResponse;
+
+        BadResponseFromMso(MsoResponseWrapper2<?> msoResponse) {
             this.msoResponse = msoResponse;
         }
 
-        public MsoResponseWrapper2<SOWorkflows> getMsoResponse() {
+        public MsoResponseWrapper2<?> getMsoResponse() {
             return msoResponse;
         }
     }
