@@ -1,21 +1,25 @@
 package org.onap.vid.config;
 
 
+import java.util.Properties;
+import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.service.DataAccessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
-import java.util.Properties;
-
+/*
+this class enable using in-memory DB in Unit test.
+*/
 @Configuration
 @EnableTransactionManagement
 public class DataSourceConfig {
@@ -36,8 +40,15 @@ public class DataSourceConfig {
         properties.put("hbm2ddl.auto", "create");
         properties.put("hibernate.hbm2ddl.auto", "create");
 
-        sessionFactory.setPackagesToScan("org.onap");
+        Resource[] mappingLocations = {
+                new ClassPathResource("WEB-INF/fusion/orm/Fusion.hbm.xml"),
+                new ClassPathResource("WEB-INF/fusion/orm/Workflow.hbm.xml"),
+                new ClassPathResource("WEB-INF/fusion/orm/RNoteBookIntegration.hbm.xml")
+        };
+
         sessionFactory.setHibernateProperties(properties);
+        sessionFactory.setPackagesToScan("org.onap");
+        sessionFactory.setMappingLocations(mappingLocations);
         return sessionFactory;
     }
 
