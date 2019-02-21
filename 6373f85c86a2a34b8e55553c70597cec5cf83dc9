@@ -19,6 +19,91 @@
     },
     {
       "key": {
+        "uuid": "0ef3159f_c18ee284",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "i dont see any suite here. Beforeclass should be enought",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5265e4ca_61d3bd16",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "i suggest to use given-when-then marks or not to use them at all",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "819d86a4_cd99824e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "try not to use single-letter variables",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "acb9ce37_b61c329c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "camel-snake hybrid case?",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1edb751e_82819443",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "inline",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a0515b3e_7f2b096f",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
         "patchSetId": 1
@@ -30,6 +115,108 @@
       "writtenOn": "2019-02-18T10:32:24Z",
       "side": 1,
       "message": "remove",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f8791787_038a2ef4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "inline",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "abd24122_4d470b2f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "try not to use single-letter variables",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e168011d_93083ecd",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "declaration and initialization should be in one line",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "50db208a_e4d59516",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "import RequestDetailsWrapper",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "22e2e702_35b71ded",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "println???",
+      "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6da3d55e_ff8c6fd5",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-21T09:06:31Z",
+      "side": 1,
+      "message": "import RequestDetails",
       "revId": "6373f85c86a2a34b8e55553c70597cec5cf83dc9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
