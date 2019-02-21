@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7e36450d_1715a144",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WorkflowParameterController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-21T14:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7260967_9ad1a3e8",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 33
+      },
+      "revId": "d2d6374f54f1ee38794c20be214dec9ae0131b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a9ebf164_6ce624ea",
         "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflowsParameterModels.kt",
         "patchSetId": 5
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "9a412d4e_c3c583a3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflowsParameterModels.kt",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-21T14:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9ebf164_6ce624ea",
+      "revId": "d2d6374f54f1ee38794c20be214dec9ae0131b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e1e9d11e_99f58640",
         "filename": "vid-app-common/src/main/java/org/onap/vid/services/ExtWorkflowsServiceImpl.java",
         "patchSetId": 5
@@ -53,6 +95,30 @@
       "writtenOn": "2019-02-20T10:20:44Z",
       "side": 1,
       "message": "Surprisingly, `getEntity` might return a String, so casting shoule be more careful.",
+      "range": {
+        "startLine": 33,
+        "startChar": 48,
+        "endLine": 33,
+        "endChar": 69
+      },
+      "revId": "d2d6374f54f1ee38794c20be214dec9ae0131b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7972cdbd_ffa7e5f9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/ExtWorkflowsServiceImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-02-21T14:52:36Z",
+      "side": 1,
+      "message": "added check to validateSOResponse which will prevents from classCastException",
+      "parentUuid": "e1e9d11e_99f58640",
       "range": {
         "startLine": 33,
         "startChar": 48,
