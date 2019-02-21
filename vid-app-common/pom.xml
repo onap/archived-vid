@@ -488,10 +488,11 @@
             <artifactId>jackson-module-kotlin</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <!-- c3p0 is to override epsdk-app-common's c3p0 0.9.5.2 vulnerability -->
         <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
-            <version>0.9.5.2</version>
+            <version>0.9.5.3</version>
         </dependency>
         <dependency>
             <groupId>io.searchbox</groupId>
