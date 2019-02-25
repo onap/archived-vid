@@ -30,12 +30,11 @@
         <sitePath>/content/sites/site/org/onap/vid/${project.version}</sitePath>
 
         <!-- SONAR -->
-        <sonar.language>java</sonar.language>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
+        <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
         <sonar.projectVersion>${project.version}</sonar.projectVersion>
-        <!-- ignore all .js files on sonar report -->
-        <sonar.exclusions>**/*.js</sonar.exclusions>
+        <!-- ignore all .js files on sonar coverage report -->
+        <sonar.coverage.exclusions>**/*.js</sonar.coverage.exclusions>
     </properties>
 
     <repositories>
@@ -210,12 +209,12 @@
             <plugin>
               <groupId>org.sonarsource.scanner.maven</groupId>
               <artifactId>sonar-maven-plugin</artifactId>
-              <version>3.3.0.603</version>
+              <version>3.6.0.1398</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.9</version>
+                <version>0.8.3</version>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
