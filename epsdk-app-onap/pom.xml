@@ -34,6 +34,8 @@
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.projectVersion>${project.version}</sonar.projectVersion>
+        <!-- ignore all .js files on sonar report -->
+        <sonar.exclusions>**/*.js</sonar.exclusions>
     </properties>
 
     <repositories>
