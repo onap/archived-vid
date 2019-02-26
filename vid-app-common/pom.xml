@@ -24,6 +24,7 @@
         <jackson.version>2.9.7</jackson.version>
         <jersey.version>2.27</jersey.version>
         <surefire.version>2.22.1</surefire.version>
+        <sonar.coverage.exclusions>**/webapp/**/*,**/*.js</sonar.coverage.exclusions>
 
         <!-- Skip assembling the zip by default -->
         <skipassembly>true</skipassembly>

@@ -34,7 +34,7 @@
         <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
         <sonar.projectVersion>${project.version}</sonar.projectVersion>
         <!-- ignore all .js files on sonar coverage report -->
-        <sonar.coverage.exclusions>**/*.js</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/webapp/**/*,**/*.js</sonar.coverage.exclusions>
     </properties>
 
     <repositories>
