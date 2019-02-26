@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d00f1de9_f050436e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "Small formatting issue: redundant spaces",
+      "range": {
+        "startLine": 97,
+        "startChar": 25,
+        "endLine": 97,
+        "endChar": 28
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "058a4ce3_71c06ecb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "This change is changing the behaviour upon errors; is it intentional?",
+      "range": {
+        "startLine": 326,
+        "startChar": 12,
+        "endLine": 326,
+        "endChar": 20
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e2601622_d565246e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "Small formatting issue: redundant spaces",
+      "range": {
+        "startLine": 383,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 8
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0cf162cf_58e1ec8b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "Nice catch!",
+      "range": {
+        "startLine": 408,
+        "startChar": 19,
+        "endLine": 408,
+        "endChar": 56
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fe56f7ab_d33ea6e3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "If removed the SpringJUnit4ClassRunner, I think can also remove the ContextConfiguration",
+      "range": {
+        "startLine": 84,
+        "startChar": 1,
+        "endLine": 84,
+        "endChar": 21
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "436802af_38520523",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoResponseWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "I suggest separating the `static`s from other imports.",
+      "range": {
+        "startLine": 8,
+        "startChar": 45,
+        "endLine": 8,
+        "endChar": 54
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b3c357a6_43aba5d4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestObjectTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "I think BeforeMethod will be more appropriate, as same instance is now leaking between the tests.",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c24acdc2_a6565206",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestObjectTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "RestObject is generic, so maybe we can also check set() and get() for `new RestObject\u003cArrayNode\u003e()`, for example.",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 18
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "31b2dc89_18685d6c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestObjectTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-26T15:05:35Z",
+      "side": 1,
+      "message": "The \"actual\" should come here, and the expectation in the `isSameAs` param.",
+      "range": {
+        "startLine": 33,
+        "startChar": 19,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
