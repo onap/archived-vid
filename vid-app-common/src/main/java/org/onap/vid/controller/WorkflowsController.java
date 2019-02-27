@@ -22,9 +22,11 @@ package org.onap.vid.controller;
 
 import java.util.List;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
+import org.onap.vid.model.LocalWorkflowParameterDefinitions;
 import org.onap.vid.model.SOWorkflow;
 import org.onap.vid.model.SOWorkflowParameterDefinitions;
 import org.onap.vid.services.ExtWorkflowsService;
+import org.onap.vid.services.IntWorkflowsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +40,12 @@ public class WorkflowsController extends RestrictedBaseController {
     static final String WORKFLOWS_MANAGEMENT = "workflows-management";
 
     private ExtWorkflowsService extWorkflowsService;
+    private IntWorkflowsService intWorkflowsService;
 
     @Autowired
-    public WorkflowsController(ExtWorkflowsService extWorkflowsService) {
+    public WorkflowsController(ExtWorkflowsService extWorkflowsService, IntWorkflowsService intWorkflowsService) {
         this.extWorkflowsService = extWorkflowsService;
+        this.intWorkflowsService = intWorkflowsService;
     }
 
     @RequestMapping(value = "workflows", method = RequestMethod.GET)
@@ -49,9 +53,14 @@ public class WorkflowsController extends RestrictedBaseController {
         return extWorkflowsService.getWorkflows(vnfName);
     }
 
-    @RequestMapping(value = "workflow-parameters/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "remote-workflow-parameters/{id}", method = RequestMethod.GET)
     SOWorkflowParameterDefinitions getParameters(@PathVariable Long id) {
         return extWorkflowsService.getWorkflowParameterDefinitions(id);
+    }
+
+    @RequestMapping(value = "local-workflow-parameters/{name}", method = RequestMethod.GET)
+    LocalWorkflowParameterDefinitions getParameters(@PathVariable String name) {
+        return intWorkflowsService.getWorkflowParameterDefinitions(name);
     }
 
 }
