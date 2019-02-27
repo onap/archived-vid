@@ -30,12 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExtWorkflowsServiceImpl implements ExtWorkflowsService {
+public class ExternalWorkflowsServiceImpl implements ExternalWorkflowsService {
 
     private MockedWorkflowsRestClient mockedWorkflowsRestClient;
 
     @Autowired
-    public ExtWorkflowsServiceImpl(MockedWorkflowsRestClient mockedWorkflowsRestClient) {
+    public ExternalWorkflowsServiceImpl(MockedWorkflowsRestClient mockedWorkflowsRestClient) {
         this.mockedWorkflowsRestClient = mockedWorkflowsRestClient;
     }
 
