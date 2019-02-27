@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "e0fb48d2_2208e848",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2019-02-27T15:31:28Z",
+      "side": 1,
+      "message": "other methods which have catch block within this file have throw/rethrow error, except this one, so I decided to add it also here",
+      "parentUuid": "058a4ce3_71c06ecb",
+      "range": {
+        "startLine": 326,
+        "startChar": 12,
+        "endLine": 326,
+        "endChar": 20
+      },
+      "revId": "5d1e45dc756f9f4259c4991a17c00dc2133a8ea8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e2601622_d565246e",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
         "patchSetId": 2
