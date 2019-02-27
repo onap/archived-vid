@@ -28,8 +28,6 @@
 
         var vm = this;
         vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
-        vm.configUpdatePatternError = "Invalid file type. Please select a file with a CSV extension.";
-        vm.configUpdateContentError = "Invalid file structure.";
 
         vm.wizardStep = 1;
         vm.nextStep = function(){
@@ -202,7 +200,7 @@
                 }]
             })
                 .then(function (configUpdateResponse) {
-                    vm.changeManagement.configUpdateFile = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
+                    vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
                     defer.resolve(true);
                 })
                 .catch(function (error) {
@@ -218,7 +216,6 @@
 			var result = {};
 			result.requestType = changeManagement.workflow;
 			var workflowType = changeManagement.workflow;
-			var configurationParameters = changeManagement.configurationParameters;
 			result.requestDetails = [];
 			_.forEach(changeManagement.vnfNames, function (vnf) {
 
@@ -246,50 +243,49 @@
 						}
 					}else if(workflowType=="VNF In Place Software Update"){
 						var payloadObj = {
-							'existing_software_version':changeManagement.existingSoftwareVersion,
-							'new_software_version':changeManagement.newSoftwareVersion,
-							'operations_timeout':changeManagement.operationTimeout
+							'existing_software_version':vm.getInternalWorkFlowParameter(workflowType, 'STRING', 'Existing software version').value,
+							'new_software_version':vm.getInternalWorkFlowParameter(workflowType, 'STRING', 'New software version').value,
+							'operations_timeout':vm.getInternalWorkFlowParameter(workflowType, 'STRING', 'Operations timeout').value
 						};
 						requestParametersData = {
                             payload: JSON.stringify(payloadObj)
 						}
 					}else if(workflowType=="VNF Config Update"){
 						requestParametersData = {
-							payload: changeManagement.configUpdateFile
+							payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
 						}
-                    }else if(workflowType=="VNF Scale Out"){
-                        if(!moduleToScale) return null;
+					}else if(workflowType=="VNF Scale Out"){
+					  if(!moduleToScale) return null;
 
-                        if(moduleToScale.userParams) {
-                            requestParametersData = {
-                                userParams: moduleToScale.userParams
-                                //,usePreload: true
-                            }
-                        }else{
-                            requestParametersData = {
-                                userParams: []
-                                //,usePreload: false
-                            }
-                        }
-                    }
+					  if(moduleToScale.userParams) {
+					    requestParametersData = {
+					      userParams: moduleToScale.userParams
+                //,usePreload: true
+					    }
+					  }else{
+					    requestParametersData = {
+					      userParams: []
+                //,usePreload: false
+					    }
+					  }
+					}
 					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: workflowType '+ workflowType);
 					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: requestParametersData '+ requestParametersData);
 
 				}else if(workflowType=="VNF In Place Software Update"){
 					var payloadObj = {
-						'existing_software_version':changeManagement.existingSoftwareVersion,
-						'new_software_version':changeManagement.newSoftwareVersion,
-						'operations_timeout':changeManagement.operationTimeout
+						'existing_software_version':vm.getInternalWorkFlowParameter(workflowType, 'STRING', 'Existing software version').value,
+						'new_software_version':vm.getInternalWorkFlowParameter(workflowType, 'STRING', 'New software version').value,
+						'operations_timeout':vm.getInternalWorkFlowParameter(workflowType, 'STRING', 'Operations timeout').value
 					};
 					requestParametersData = {
 						payload: JSON.stringify(payloadObj)
 					}
 				}else if(workflowType=="VNF Config Update"){
 					requestParametersData = {
-						payload: changeManagement.configUpdateFile
+						payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
 					}
 				}
-
 
 				var data;
 				if(workflowType=="VNF Scale Out") {
@@ -309,7 +305,7 @@
                         requestInfo: requestInfoData,
                         relatedInstanceList: [],
                         requestParameters:requestParametersData,
-                        configurationParameters: JSON.parse(configurationParameters)
+                        configurationParameters: JSON.parse(vm.getInternalWorkFlowParameter("VNF Scale Out", "STRING", "Configuration Parameters").value)
                     };
                     requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
                 }else{
@@ -641,6 +637,7 @@
           // Should be corrected when VID-397 will be closed. At the moment there is a need
           // to merge local and remote workflows not to broke current functionality.
           return vm.loadLocalWorkFlows()
+          .then(vm.loadLocalWorkFlowsParameters)
           .then(vm.loadRemoteWorkFlows)
           .then(function () {
             vm.workflows = vm.localWorkflows.concat(vm.remoteWorkflows.map(item => item.name));
@@ -668,6 +665,28 @@
           });
         };
 
+        vm.loadLocalWorkFlowsParameters = function () {
+          vm.localWorkflowsParameters = new Map();
+          vm.localWorkflows.forEach(function(workflow) {
+            vm.loadLocalWorkFlowParameters(workflow);
+          });
+        };
+
+        vm.loadLocalWorkFlowParameters = function (workflow) {
+          changeManagementService.getLocalWorkflowParameter(workflow)
+          .then(function (response) {
+            let fileParameters = response.data.parameterDefinitions.filter(item => item.type === 'FILE');
+            let textParameters = response.data.parameterDefinitions.filter(item => item.type === 'STRING');
+            let parameters = new Map();
+            parameters.set('FILE', fileParameters);
+            parameters.set('STRING', textParameters);
+            vm.localWorkflowsParameters.set(workflow, parameters);
+          })
+          .catch(function (error) {
+            $log.error(error);
+          });
+        };
+
         vm.loadRemoteWorkFlowsParameters = function () {
           vm.remoteWorkflowsParameters = new Map();
           vm.remoteWorkflows.forEach(function(workflow) {
@@ -690,6 +709,19 @@
             return vm.remoteWorkflowsParameters.get(workflow)
           }
           return [];
+        };
+
+        vm.getInternalWorkFlowParameters = function (workflow, type) {
+          if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).has(type)) {
+            return vm.localWorkflowsParameters.get(workflow).get(type)
+          }
+          return [];
+        };
+
+        vm.getInternalWorkFlowParameter = function (workflow, type, parameterName) {
+          if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).has(type)) {
+            return vm.localWorkflowsParameters.get(workflow).get(type).filter(parameter => parameter.name === parameterName)[0]
+          }
         };
 
         //Must be $scope because we bind to the onchange of the html (cannot attached to vm variable).
