@@ -80,11 +80,13 @@ describe('Testing workFlows from SO', () => {
   test('Verify load workflows will call load from SO and join workflow lists', () => {
     // given
     let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data": {}});
     let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 1"}, {"id": "2", "name": "workflow 2"}]});
     let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": []}});
 
     $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
     $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
     $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
     $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
     // when
@@ -98,6 +100,7 @@ describe('Testing workFlows from SO', () => {
   test('Verify load workflows will call load workflows parameters from SO', () => {
     // given
     let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data": {}});
     let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 0"}]});
     let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": [
           {"id": 1, "name": "parameter 1", "required": true, "type": "STRING", "pattern": "[0-9]*"},
@@ -106,6 +109,7 @@ describe('Testing workFlows from SO', () => {
 
     $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
     $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
     $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
     $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
     // when
