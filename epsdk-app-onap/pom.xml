@@ -13,6 +13,13 @@
     <name>ECOMP SDK Webapp for OpenSource</name>
     <description>ECOMP SDK Web Application for public release</description>
 
+    <parent>
+        <groupId>org.onap.oparent</groupId>
+        <artifactId>oparent</artifactId>
+        <version>1.2.2</version>
+        <relativePath/>
+    </parent>
+
     <properties>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
