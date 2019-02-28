@@ -454,6 +454,30 @@
     },
     {
       "key": {
+        "uuid": "abdacca6_2854fe8e",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T11:01:26Z",
+      "side": 1,
+      "message": "its correct and should be plural - this is the name returned by the mocked and real service (when will be ready)",
+      "parentUuid": "b48cf750_9a8b0eb3",
+      "range": {
+        "startLine": 279,
+        "startChar": 90,
+        "endLine": 279,
+        "endChar": 100
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba693387_2a2ac605",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 1
@@ -465,6 +489,30 @@
       "writtenOn": "2019-02-28T09:04:18Z",
       "side": 1,
       "message": "missing the default `return []`",
+      "range": {
+        "startLine": 724,
+        "startChar": 10,
+        "endLine": 724,
+        "endChar": 11
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "35e85144_92bbdd07",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T11:01:26Z",
+      "side": 1,
+      "message": "default is undefined object (btw whole this conditional statement is only to secure from calling this method from different than current scope and in actual implementation cannot happen)",
+      "parentUuid": "ba693387_2a2ac605",
       "range": {
         "startLine": 724,
         "startChar": 10,
