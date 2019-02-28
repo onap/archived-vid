@@ -180,6 +180,24 @@
     },
     {
       "key": {
+        "uuid": "d61a6172_03c9393c",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T09:47:13Z",
+      "side": 1,
+      "message": "The purpose of this commit was to remove hardcodes from html file. It will be much harder to make js part more generic as it has a lot of unique logic dependent from the type of workflow and we still need to think how to bite it. This is just a first step to make it cleaner.",
+      "parentUuid": "5b426b23_a4b70188",
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f5fbdca6_a3c318a1",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 1
