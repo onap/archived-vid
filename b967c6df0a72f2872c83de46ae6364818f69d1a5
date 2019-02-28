@@ -307,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "90cf53ab_c254cdc6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/IntWorkflowsServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T10:47:47Z",
+      "side": 1,
+      "message": "just to be sure its immutable (springs @service creates singleton bean as default)",
+      "parentUuid": "00c97b7d_486542ba",
+      "range": {
+        "startLine": 30,
+        "startChar": 58,
+        "endLine": 30,
+        "endChar": 66
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5b426b23_a4b70188",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 1
