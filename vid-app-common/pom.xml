@@ -337,6 +337,75 @@
                     </includeOnlyProperties>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <!--
+                Replace phase "none" with "process-sources" to enable.
+                Set organizationName as desired.
+                Then run `mvn license:check-file-header`, or even `mvn
+                license:update-file-header`.
+                -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.17</version>
+
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <!-- replace phase "none" with "process-sources" to enable -->
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <canUpdateCopyright>false</canUpdateCopyright>
+                    <canUpdateDescription>false</canUpdateDescription>
+                    <licenseName>apache_v2</licenseName>
+                    <processStartTag>============LICENSE_START=======================================================</processStartTag>
+                    <processEndTag>============LICENSE_END=========================================================</processEndTag>
+                    <sectionDelimiter>================================================================================</sectionDelimiter>
+                    <projectName>VID</projectName>
+                    <inceptionYear>2017</inceptionYear>
+                    <organizationName>AT&amp;T Intellectual Property. All rights reserved.</organizationName>
+                    <canUpdateLicense>true</canUpdateLicense>
+                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+                    <emptyLineAfterHeader>true</emptyLineAfterHeader>
+                    <verbose>false</verbose>
+
+                    <includes>
+                        <include>**/*.java</include>
+                        <include>**/*.kt</include>
+                        <include>**/*.jsp</include>
+                        <include>**/*.xml</include>
+                        <include>**/*.js</include>
+                        <include>**/*.ts</include>
+                        <include>**/*.html</include>
+                        <include>**/*.css</include>
+                        <include>**/*.sql</include>
+                    </includes>
+
+                    <extraExtensions>
+                        <sql>mysql</sql>
+                    </extraExtensions>
+
+                    <roots>
+                        <root>src/main</root>
+                        <root>src/test</root>
+                    </roots>
+
+                    <excludes>
+                        <exclude>**/app/vid/external/**/*</exclude>
+                        <exclude>**/main/webapp/WEB-INF/**/*</exclude>
+                        <exclude>**/test/resources/WEB-INF/**/*</exclude>
+                        <exclude>**/app/vid/scripts/angular-ui-tree.js</exclude>
+                    </excludes>
+
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
