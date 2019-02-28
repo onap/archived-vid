@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dbf2b672_3bab8eaf",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T10:27:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72f097ac_3e357599",
+      "range": {
+        "startLine": 5,
+        "startChar": 29,
+        "endLine": 5,
+        "endChar": 37
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "067108ce_a459d9f2",
         "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
         "patchSetId": 1
