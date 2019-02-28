@@ -198,6 +198,24 @@
     },
     {
       "key": {
+        "uuid": "ae57d111_d0fbf5a3",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:53:13Z",
+      "side": 1,
+      "message": "Great, then. Thanks!",
+      "parentUuid": "d61a6172_03c9393c",
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f5fbdca6_a3c318a1",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 1
