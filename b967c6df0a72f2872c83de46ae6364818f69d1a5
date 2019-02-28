@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "693f6522_fd4e7325",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T10:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "067108ce_a459d9f2",
+      "range": {
+        "startLine": 69,
+        "startChar": 12,
+        "endLine": 69,
+        "endChar": 24
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "256f19b7_9d0ae123",
         "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
         "patchSetId": 1
@@ -71,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "eb5c6781_4dce0db1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T10:26:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "256f19b7_9d0ae123",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 24
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a928ced2_3eea9c73",
         "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
         "patchSetId": 1
@@ -82,6 +130,30 @@
       "writtenOn": "2019-02-28T09:04:18Z",
       "side": 1,
       "message": "What is this field for?",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 18
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6306d932_214589c8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T10:26:46Z",
+      "side": 1,
+      "message": "its a filter for file-choose-dialog (e.g. \u0027.csv\u0027 means that You can choose only csv files). I will rename it.",
+      "parentUuid": "a928ced2_3eea9c73",
       "range": {
         "startLine": 71,
         "startChar": 12,
