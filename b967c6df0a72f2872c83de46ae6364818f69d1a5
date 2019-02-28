@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "72f097ac_3e357599",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "you can change the entitlement to Nokia :)",
+      "range": {
+        "startLine": 5,
+        "startChar": 29,
+        "endLine": 5,
+        "endChar": 37
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "067108ce_a459d9f2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "I think name should be more understandable. e.g. textOnPatternError",
+      "range": {
+        "startLine": 69,
+        "startChar": 12,
+        "endLine": 69,
+        "endChar": 24
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "256f19b7_9d0ae123",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "I think name should be more understandable. e.g. textOnContentError",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 24
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a928ced2_3eea9c73",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "What is this field for?",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 18
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "639871c3_50b5a317",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/IntWorkflowsService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "I understand the `int` stands for Internal.\nCan you consider extending the word?\n\nAnd is \"internal\" is understandable? Maybe \"local\" as in rest of code?",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 29,
+        "endChar": 20
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4fff8cd8_37d3ff30",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/IntWorkflowsServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "I\u0027d expect the hardcoded list be defined here, not in IntWorkflowsService interface.",
+      "range": {
+        "startLine": 30,
+        "startChar": 15,
+        "endLine": 30,
+        "endChar": 40
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "00c97b7d_486542ba",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/IntWorkflowsServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "Why should clone?",
+      "range": {
+        "startLine": 30,
+        "startChar": 58,
+        "endLine": 30,
+        "endChar": 66
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b426b23_a4b70188",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "I don\u0027t think I understand the change this file.\nHow current code will evolve to be dynamic? Shouldn\u0027t the expected list of fields (and target names) come from backend? I mean, if code already \"knows\" it\u0027s target field, type and name -- what _is_ extracted here?",
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f5fbdca6_a3c318a1",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "Indentation fix needed",
+      "range": {
+        "startLine": 277,
+        "startChar": 4,
+        "endLine": 277,
+        "endChar": 11
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b48cf750_9a8b0eb3",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "Operation or operations? (singular or plural)",
+      "range": {
+        "startLine": 279,
+        "startChar": 90,
+        "endLine": 279,
+        "endChar": 100
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba693387_2a2ac605",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-02-28T09:04:18Z",
+      "side": 1,
+      "message": "missing the default `return []`",
+      "range": {
+        "startLine": 724,
+        "startChar": 10,
+        "endLine": 724,
+        "endChar": 11
+      },
+      "revId": "b967c6df0a72f2872c83de46ae6364818f69d1a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
