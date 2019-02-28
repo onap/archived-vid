@@ -22,6 +22,30 @@
       "revId": "b1cee4719db5398cab502b285206afe8f3393d75",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "166aa575_1c35bb72",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/LocalWorkflowsServiceImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-02-28T14:37:18Z",
+      "side": 1,
+      "message": "ok, removed",
+      "parentUuid": "3c1a4d30_080b4b2a",
+      "range": {
+        "startLine": 55,
+        "startChar": 58,
+        "endLine": 55,
+        "endChar": 66
+      },
+      "revId": "b1cee4719db5398cab502b285206afe8f3393d75",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
