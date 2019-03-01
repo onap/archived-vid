@@ -55,13 +55,11 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.init();
             $scope.fetchSubs(FIELD.PROMPT.FETCHING_SUBS);
             $scope.fetchServices();
-
         };
 
         $scope.cancelCreateSI = function () {
 
             window.location.href = COMPONENT.WELCOME_PATH;
-
         };
 
         $scope.getServiceTypes = function (globalCustomerId) {
