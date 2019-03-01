@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7685f578_9b02c678",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/aaiSubscriberController.test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-03-01T14:31:05Z",
+      "side": 1,
+      "message": "ty po ;)",
+      "revId": "1c9425487028979fb5f37ac3691c0d52ecebff28",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "03dac42d_98ad3afe",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/aaiSubscriberController.test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-03-01T14:31:05Z",
+      "side": 1,
+      "message": "already done in line 104",
+      "revId": "1c9425487028979fb5f37ac3691c0d52ecebff28",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
