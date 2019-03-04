@@ -20,185 +20,131 @@
 
 package org.onap.vid.mso.rest;
 
-import org.junit.Test;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.onap.vid.exceptions.NotFoundException;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.ModelInfo;
-import org.onap.vid.mso.model.RequestInfo;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class RequestDetailsTest {
 
-	private RequestDetails createTestSubject() {
-		return new RequestDetails();
+	private RequestDetails requestDetails;
+
+	private String propertyName = "testProperty";
+	private String additionalProperty = "testAdditionalProperty";
+
+	@BeforeMethod
+	public void setUp() {
+		requestDetails = new RequestDetails();
 	}
 
-	
 	@Test
-	public void testGetCloudConfiguration() throws Exception {
-		RequestDetails testSubject;
-		CloudConfiguration result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getCloudConfiguration();
+	public void shouldHaveProperSettersAndGetters() {
+		assertThat(RequestDetails.class, hasValidGettersAndSettersExcluding("additionalProperties"));
 	}
 
-	
 	@Test
-	public void testSetCloudConfiguration() throws Exception {
-		RequestDetails testSubject;
-		CloudConfiguration cloudConfiguration = null;
+	public void shouldHaveProperGetterAndSetterForAdditionalProperties() {
+		//	when
+		requestDetails.setAdditionalProperty(propertyName,additionalProperty);
 
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setCloudConfiguration(cloudConfiguration);
+		//	then
+		AssertionsForClassTypes.assertThat( requestDetails.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
 	}
 
-	
 	@Test
-	public void testGetModelInfo() throws Exception {
-		RequestDetails testSubject;
-		ModelInfo result;
+	public void shouldProperlyConvertRelatedInstanceObjectToString() {
+		//	given
+		requestDetails.setAdditionalProperty(propertyName,additionalProperty);
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getModelInfo();
+		//	when
+		String response = requestDetails.toString();
+
+		//	then
+		AssertionsForClassTypes.assertThat(response).contains(
+						"additionalProperties={"+propertyName+"="+additionalProperty+"}]"
+		);
 	}
 
-	
 	@Test
-	public void testSetModelInfo() throws Exception {
-		RequestDetails testSubject;
-		ModelInfo modelInfo = null;
+	public void shouldProperlyCheckIfObjectsAreEqual() {
+		//	given
+		RequestDetails sameRequestDetails = new RequestDetails();
+		RequestDetails differentRequestDetails = new RequestDetails();
 
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setModelInfo(modelInfo);
+		ModelInfo modelInfo = new ModelInfo();
+		modelInfo.setModelType("testModel");
+
+		CloudConfiguration cloudConfiguration = new CloudConfiguration();
+		cloudConfiguration.setTenantId("testTenantId");
+
+		requestDetails.setModelInfo(modelInfo);
+		requestDetails.setCloudConfiguration(cloudConfiguration);
+
+		sameRequestDetails.setModelInfo(modelInfo);
+		sameRequestDetails.setCloudConfiguration(cloudConfiguration);
+
+		//	when
+		boolean sameResponse = requestDetails.equals(requestDetails);
+		boolean equalResponse = requestDetails.equals(sameRequestDetails);
+		boolean differentResponse = requestDetails.equals(differentRequestDetails);
+		boolean differentClassResponse = requestDetails.equals("RelatedInstance");
+
+		//	then
+		assertThat(sameResponse).isEqualTo(true);
+		assertThat(equalResponse).isEqualTo(true);
+
+		assertThat(differentResponse).isEqualTo(false);
+		assertThat(differentClassResponse).isEqualTo(false);
 	}
 
-	
 	@Test
-	public void testGetRelatedInstanceList() throws Exception {
-		RequestDetails testSubject;
-		List<RelatedInstanceWrapper> result;
+	public void shouldProperlyExtractValueByPathUsingAdditionalProperties(){
+		//	given
+		List<String> keys = new ArrayList<>();
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getRelatedInstanceList();
+		requestDetails.setAdditionalProperty(propertyName,additionalProperty);
+		keys.add(propertyName);
+
+		//	when
+		String response = requestDetails.extractValueByPathUsingAdditionalProperties(keys,String.class);
+
+		//	then
+		assertThat(response).contains(additionalProperty);
+		assertThat(response).doesNotContain("notExistingProperty");
 	}
 
-	
-	@Test
-	public void testSetRelatedInstanceList() throws Exception {
-		RequestDetails testSubject;
-		List<RelatedInstanceWrapper> relatedInstanceList = null;
+	@Test(expectedExceptions = NotFoundException.class )
+	public void shouldThrowExceptionWhenExtractValueByPathUsingAdditionalPropertiesIsCalledWithWrongKey(){
+		//	given
+		List<String> keys = new ArrayList<>();
 
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setRelatedInstanceList(relatedInstanceList);
+		requestDetails.setAdditionalProperty(propertyName,additionalProperty);
+		keys.add("notExistingKey");
+
+		//	when
+		requestDetails.extractValueByPathUsingAdditionalProperties(keys,String.class);
 	}
 
-	
-	@Test
-	public void testGetRequestInfo() throws Exception {
-		RequestDetails testSubject;
-		RequestInfo result;
+	@Test(expectedExceptions = NotFoundException.class )
+	public void shouldThrowExceptionWhenExtractValueByPathUsingAdditionalPropertiesIsCalledWithWrongClass(){
+		//	given
+		List<String> keys = new ArrayList<>();
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getRequestInfo();
-	}
+		requestDetails.setAdditionalProperty(propertyName,additionalProperty);
+		keys.add(propertyName);
 
-	
-	@Test
-	public void testSetRequestInfo() throws Exception {
-		RequestDetails testSubject;
-		RequestInfo requestInfo = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setRequestInfo(requestInfo);
-	}
-
-	
-	@Test
-	public void testGetSubscriberInfo() throws Exception {
-		RequestDetails testSubject;
-		SubscriberInfo result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getSubscriberInfo();
-	}
-
-	
-	@Test
-	public void testSetSubscriberInfo() throws Exception {
-		RequestDetails testSubject;
-		SubscriberInfo subscriberInfo = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setSubscriberInfo(subscriberInfo);
-	}
-
-	
-	@Test
-	public void testToString() throws Exception {
-		RequestDetails testSubject;
-		String result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.toString();
-	}
-
-	
-	@Test
-	public void testGetAdditionalProperties() throws Exception {
-		RequestDetails testSubject;
-		Map<String, Object> result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getAdditionalProperties();
-	}
-
-	
-	@Test
-	public void testSetAdditionalProperty() throws Exception {
-		RequestDetails testSubject;
-		String name = "";
-		Object value = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setAdditionalProperty(name, value);
-	}
-
-	
-	@Test
-	public void testHashCode() throws Exception {
-		RequestDetails testSubject;
-		int result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.hashCode();
-	}
-
-	
-	@Test
-	public void testEquals() throws Exception {
-		RequestDetails testSubject;
-		Object other = null;
-		boolean result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.equals(other);
+		//	when
+		requestDetails.extractValueByPathUsingAdditionalProperties(keys,Integer.class);
 	}
 }

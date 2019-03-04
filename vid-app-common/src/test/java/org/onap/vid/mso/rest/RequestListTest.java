@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,86 +20,81 @@
 
 package org.onap.vid.mso.rest;
 
-import java.util.List;
-import java.util.Map;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-import org.junit.Test;
+import java.util.LinkedList;
+import java.util.List;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RequestListTest {
 
-    private RequestList createTestSubject() {
-        return new RequestList();
+    private RequestList requestList;
+
+    private String propertyName = "testProperty";
+    private String additionalProperty = "testAdditionalProperty";
+
+    @BeforeMethod
+    public void setUp() {
+        requestList = new RequestList();
     }
 
     @Test
-    public void testGetRequestList() throws Exception {
-        RequestList testSubject;
-        List<RequestWrapper> result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getRequestList();
+    public void shouldHaveProperSettersAndGetters() {
+        assertThat(RequestList.class, hasValidGettersAndSettersExcluding("additionalProperties"));
     }
 
     @Test
-    public void testSetRequestList() throws Exception {
-        RequestList testSubject;
-        List<RequestWrapper> l = null;
+    public void shouldHaveProperGetterAndSetterForAdditionalProperties() {
+        //	when
+        requestList.setAdditionalProperty(propertyName,additionalProperty);
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setRequestList(l);
+        //	then
+        AssertionsForClassTypes.assertThat( requestList.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
     }
 
     @Test
-    public void testToString() throws Exception {
-        RequestList testSubject;
-        String result;
+    public void shouldProperlyCheckIfObjectsAreEqual() {
+        //	given
+        RequestList sameRequestList = new RequestList();
+        RequestList differentRequestList= new RequestList();
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.toString();
+        List<RequestWrapper> testList = new LinkedList<>();
+        testList.add(new RequestWrapper());
+
+        requestList.setRequestList(testList);
+        sameRequestList.setRequestList(testList);
+
+        //	when
+        boolean sameResponse = requestList.equals(requestList);
+        boolean equalResponse = requestList.equals(sameRequestList);
+        boolean differentResponse = requestList.equals(differentRequestList);
+        boolean differentClassResponse = requestList.equals("RequestList");
+
+        //	then
+        assertThat(sameResponse).isEqualTo(true);
+        assertThat(equalResponse).isEqualTo(true);
+
+        assertThat(differentResponse).isEqualTo(false);
+        assertThat(differentClassResponse).isEqualTo(false);
     }
 
     @Test
-    public void testGetAdditionalProperties() throws Exception {
-        RequestList testSubject;
-        Map<String, Object> result;
+    public void shouldProperlyConvertRelatedInstanceObjectToString() {
+        //	given
+        requestList.setAdditionalProperty(propertyName,additionalProperty);
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getAdditionalProperties();
-    }
+        //	when
+        String response = requestList.toString();
 
-    @Test
-    public void testSetAdditionalProperty() throws Exception {
-        RequestList testSubject;
-        String name = "";
-        Object value = null;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setAdditionalProperty(name, value);
-    }
-
-    @Test
-    public void testHashCode() throws Exception {
-        RequestList testSubject;
-        int result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.hashCode();
-    }
-
-    @Test
-    public void testEquals() throws Exception {
-        RequestList testSubject;
-        Object other = null;
-        boolean result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.equals(other);
+        //	then
+        System.out.println(response);
+        AssertionsForClassTypes.assertThat(response).contains(
+                        "additionalProperties={"+propertyName+"="+additionalProperty+"}]"
+        );
     }
 }

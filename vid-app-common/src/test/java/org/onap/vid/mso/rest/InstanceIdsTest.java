@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 
 package org.onap.vid.mso.rest;
 
-
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -28,73 +27,72 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetter
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class RequestTest {
+public class InstanceIdsTest {
 
-
-    private Request request;
+    private InstanceIds instanceIds;
 
     private String propertyName = "testProperty";
     private String additionalProperty = "testAdditionalProperty";
+    private String networkInstanceId = "testNetworkId";
+    private String serviceInstanceId = "testServiceId";
 
     @BeforeMethod
     public void setUp() {
-        request = new Request();
+        instanceIds = new InstanceIds();
     }
 
     @Test
     public void shouldHaveProperSettersAndGetters() {
-        assertThat(Request.class, hasValidGettersAndSettersExcluding("additionalProperties"));
+        assertThat(InstanceIds.class, hasValidGettersAndSettersExcluding("additionalProperties"));
     }
 
     @Test
     public void shouldHaveProperGetterAndSetterForAdditionalProperties() {
         //	when
-        request.setAdditionalProperty(propertyName,additionalProperty);
+        instanceIds.setAdditionalProperty(propertyName,additionalProperty);
 
         //	then
-        assertThat( request.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
+        assertThat( instanceIds.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
     }
 
     @Test
     public void shouldProperlyConvertRelatedInstanceObjectToString() {
         //	given
-        request.setFinishTime("100");
-        request.setRequestId("testRequest");
-        request.setAdditionalProperty(propertyName,additionalProperty);
+        instanceIds.setNetworkInstanceId(networkInstanceId);
+        instanceIds.setServiceInstanceId(serviceInstanceId);
+        instanceIds.setAdditionalProperty(propertyName,additionalProperty);
 
         //	when
-        String response = request.toString();
+        String response = instanceIds.toString();
 
         //	then
         assertThat(response).contains(
-                "[instanceIds=<null>," +
-                        "requestDetails=<null>," +
-                        "requestStatus=<null>," +
-                        "finishTime="+100+"," +
-                        "requestId=testRequest," +
-                        "requestScope=<null>," +
-                        "requestType=<null>," +
-                        "startTime=<null>," +
-                        "additionalProperties={"+propertyName+"="+additionalProperty+"}]"
+                "[networkInstanceId="+networkInstanceId +
+                        ",serviceInstanceId="+serviceInstanceId +
+                        ",vfModuleInstanceId=<null>," +
+                        "vnfInstanceId=<null>" +
+                        ",volumeGroupInstanceId=<null>" +
+                        ",additionalProperties={"+propertyName+"="+additionalProperty+"}]"
         );
     }
 
     @Test
     public void shouldProperlyCheckIfObjectsAreEqual() {
         //	given
-        Request sameRequest = new Request();
-        Request differentRequest = new Request();
+        InstanceIds sameInstanceIds = new InstanceIds();
+        InstanceIds differentInstanceIds = new InstanceIds();
 
-        request.setFinishTime("100");
-        sameRequest.setFinishTime("100");
-        request.setRequestId("testRequest");
-        sameRequest.setRequestId("testRequest");
+        instanceIds.setNetworkInstanceId(networkInstanceId);
+        sameInstanceIds.setNetworkInstanceId(networkInstanceId);
+
+        instanceIds.setServiceInstanceId(serviceInstanceId);
+        sameInstanceIds.setServiceInstanceId(serviceInstanceId);
 
         //	when
-        boolean sameResponse = request.equals(request);
-        boolean equalResponse = request.equals(sameRequest);
-        boolean differentResponse = request.equals(differentRequest);
-        boolean differentClassResponse = request.equals("RelatedInstance");
+        boolean sameResponse = instanceIds.equals(instanceIds);
+        boolean equalResponse = instanceIds.equals(sameInstanceIds);
+        boolean differentResponse = instanceIds.equals(differentInstanceIds);
+        boolean differentClassResponse = instanceIds.equals("RelatedInstance");
 
         //	then
         assertThat(sameResponse).isEqualTo(true);

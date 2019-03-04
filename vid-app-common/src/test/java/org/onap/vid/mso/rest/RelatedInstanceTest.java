@@ -3,13 +3,14 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,94 +21,86 @@
 
 package org.onap.vid.mso.rest;
 
-import org.junit.Test;
-import org.onap.vid.mso.model.ModelInfo;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-import java.util.Map;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class RelatedInstanceTest {
 
-	private RelatedInstance createTestSubject() {
-		return new RelatedInstance();
+	private RelatedInstance relatedInstance = new RelatedInstance();
+
+	private String instanceId = "testInstanceId";
+	private String InstanceName = "testInstance";
+	private String propertyName = "testProperty";
+	private String additionalProperty = "testAdditionalProperty";
+
+	@BeforeMethod
+	public void setUp() {
+		relatedInstance = new RelatedInstance();
 	}
 
-	
 	@Test
-	public void testGetModelInfo() throws Exception {
-		RelatedInstance testSubject;
-		ModelInfo result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getModelInfo();
+	public void shouldHaveProperGettersAndSetters() {
+		assertThat(RelatedInstance.class, hasValidGettersAndSettersExcluding("additionalProperties"));
 	}
 
-	
 	@Test
-	public void testSetModelInfo() throws Exception {
-		RelatedInstance testSubject;
-		ModelInfo modelInfo = null;
+	public void shouldHaveProperGetterAndSetterForAdditionalProperties() {
+		//	when
+		relatedInstance.setAdditionalProperty(propertyName,additionalProperty);
 
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setModelInfo(modelInfo);
+		//	then
+		assertThat( relatedInstance.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
 	}
 
-	
 	@Test
-	public void testToString() throws Exception {
-		RelatedInstance testSubject;
-		String result;
+	public void shouldProperlyConvertRelatedInstanceObjectToString() {
+		//	given
+		relatedInstance.setInstanceId(instanceId);
+		relatedInstance.setInstanceName(InstanceName);
+		relatedInstance.setAdditionalProperty(propertyName,additionalProperty);
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.toString();
+		//	when
+		String response = relatedInstance.toString();
+
+		//	then
+		assertThat(response).contains(
+						"instanceName="+InstanceName+"," +
+						"instanceId="+instanceId+"," +
+						"modelInfo=<null>," +
+						"additionalProperties={"+propertyName+"="+additionalProperty+"}]"
+		);
 	}
 
-	
 	@Test
-	public void testGetAdditionalProperties() throws Exception {
-		RelatedInstance testSubject;
-		Map<String, Object> result;
+	public void shouldProperlyCheckIfObjectsAreEqual() {
+		//	given
+		RelatedInstance sameRelatedInstance = new RelatedInstance();
+		RelatedInstance differentRelatedInstance = new RelatedInstance();
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getAdditionalProperties();
+		relatedInstance.setInstanceId(instanceId);
+		relatedInstance.setInstanceName(InstanceName);
+
+		sameRelatedInstance.setInstanceId(instanceId);
+		sameRelatedInstance.setInstanceName(InstanceName);
+
+		//	when
+		boolean sameResponse = relatedInstance.equals(relatedInstance);
+		boolean equalResponse = relatedInstance.equals(sameRelatedInstance);
+		boolean differentResponse = relatedInstance.equals(differentRelatedInstance);
+		boolean differentClassResponse = relatedInstance.equals("RelatedInstance");
+
+		//	then
+		assertThat(sameResponse).isEqualTo(true);
+		assertThat(equalResponse).isEqualTo(true);
+
+		assertThat(differentResponse).isEqualTo(false);
+		assertThat(differentClassResponse).isEqualTo(false);
 	}
 
-	
-	@Test
-	public void testSetAdditionalProperty() throws Exception {
-		RelatedInstance testSubject;
-		String name = "";
-		Object value = null;
 
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setAdditionalProperty(name, value);
-	}
-
-	
-	@Test
-	public void testHashCode() throws Exception {
-		RelatedInstance testSubject;
-		int result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.hashCode();
-	}
-
-	
-	@Test
-	public void testEquals() throws Exception {
-		RelatedInstance testSubject;
-		Object other = null;
-		boolean result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.equals(other);
-	}
 }
