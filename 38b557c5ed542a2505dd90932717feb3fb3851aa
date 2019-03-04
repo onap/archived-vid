@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "1550a1c4_d5fe92be",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/OperationalEnvironment.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-04T13:11:27Z",
+      "side": 1,
+      "message": "And I will. I\u0027m working on this PR when I have free time, recently that didn\u0027t occur very often.\nI already reverted those changes, but I didn\u0027t have time to push them",
+      "parentUuid": "2e90a6b3_f8f92d8c",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a7985c4b_77f2bcc4",
         "filename": "vid-app-common/src/test/java/org/onap/vid/aai/OperationalEnvironmentTest.java",
         "patchSetId": 1
