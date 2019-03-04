@@ -20,41 +20,31 @@
 
 package org.onap.vid.mso.model;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class OperationalEnvironmentDeactivateInfoTest {
 
-    private OperationalEnvironmentDeactivateInfo createTestSubject() {
-        return new OperationalEnvironmentDeactivateInfo("", "");
-    }
-
     @Test
-    public void testGetUserId() throws Exception {
-        OperationalEnvironmentDeactivateInfo testSubject;
-        String result;
+    public void shouldProperlyCreateOperationalEnvironmentActivateInfoWithParameters() {
+        //  given
+        String userId = "testUserId";
+        String operationalEnvironmentId = "testOperationalEnvironmentId";
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getUserId();
-    }
 
-    @Test
-    public void testGetOperationalEnvironmentId() throws Exception {
-        OperationalEnvironmentDeactivateInfo testSubject;
-        String result;
+        //  when
+        OperationalEnvironmentDeactivateInfo operationalEnvironmentDeactivateInfo =
+                new OperationalEnvironmentDeactivateInfo(userId, operationalEnvironmentId);
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getOperationalEnvironmentId();
-    }
 
-    @Test
-    public void testToString() throws Exception {
-        OperationalEnvironmentDeactivateInfo testSubject;
-        String result;
+        //  then
+        assertThat(operationalEnvironmentDeactivateInfo.getUserId()).isEqualTo(userId);
+        assertThat(operationalEnvironmentDeactivateInfo.getOperationalEnvironmentId()).isEqualTo(operationalEnvironmentId);
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.toString();
+        assertThat(operationalEnvironmentDeactivateInfo.toString()).isEqualToIgnoringWhitespace(
+                "OperationalEnvironmentDeactivateInfo{operationalEnvironmentId="+operationalEnvironmentId+"," +
+                        " userId="+userId+"}"
+        );
+
     }
 }
