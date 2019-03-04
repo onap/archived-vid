@@ -28,7 +28,6 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.mockito.Mock;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.changeManagement.RelatedInstanceList;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.LocalWebConfig;
@@ -37,10 +36,6 @@ import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
-import org.onap.vid.mso.model.CloudConfiguration;
-import org.onap.vid.mso.model.ModelInfo;
-import org.onap.vid.mso.model.RequestInfo;
-import org.onap.vid.mso.model.RequestParameters;
 import org.onap.vid.mso.model.RequestReferences;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -48,9 +43,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static org.mockito.ArgumentMatchers.any;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -82,7 +74,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCreateServiceInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -112,7 +104,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCreateE2eSvcInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -130,7 +122,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCreateVnf() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -148,7 +140,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCreateNwInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -166,7 +158,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCreateVolumeGroupInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -184,7 +176,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCreateVfModuleInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -202,7 +194,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyScaleOutVFModuleInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         RequestDetailsWrapper<RequestDetails> wrappedRequestDetails = new RequestDetailsWrapper<>(requestDetails);
         String endpoint = "testEndpoint";
@@ -221,7 +213,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCreateConfigurationInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         org.onap.vid.mso.rest.RequestDetailsWrapper wrappedRequestDetails = new  org.onap.vid.mso.rest.RequestDetailsWrapper(requestDetails);
         String endpoint = "testEndpoint";
@@ -240,7 +232,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyDeleteE2eSvcInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         org.onap.vid.mso.rest.RequestDetailsWrapper wrappedRequestDetails = new  org.onap.vid.mso.rest.RequestDetailsWrapper(requestDetails);
         String endpoint = "testEndpoint";
@@ -259,7 +251,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyDeleteSvcInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -277,7 +269,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyUnassignSvcInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -295,7 +287,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyDeleteVnf() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -313,7 +305,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyDeleteVfModule() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -331,7 +323,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyDeleteVolumeGroupInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -349,7 +341,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyDeleteNwInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -445,7 +437,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyCompleteManualTask() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
         RestObject restObject = generateMockMsoRestObject();
 
         String endpoint = "testEndpoint";
@@ -473,7 +465,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyReplaceVnf() {
         //  given
-        org.onap.vid.changeManagement.RequestDetails requestDetails = generateChangeManagementMockMsoRequest();
+        org.onap.vid.changeManagement.RequestDetails requestDetails = MsoRestClientTestUtil.generateChangeManagementMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -491,7 +483,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyReplaceVnfWithStatus202() {
         //  given
-        org.onap.vid.changeManagement.RequestDetails requestDetails = generateChangeManagementMockMsoRequest();
+        org.onap.vid.changeManagement.RequestDetails requestDetails = MsoRestClientTestUtil.generateChangeManagementMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = createOkResponse();
@@ -509,7 +501,7 @@ public class MsoRestClientTest {
     @Test( expectedExceptions = MsoTestException.class)
     public void shouldThrowExceptionWhenReplaceVnfGetsWrongParameters() {
         //  given
-        org.onap.vid.changeManagement.RequestDetails requestDetails = generateChangeManagementMockMsoRequest();
+        org.onap.vid.changeManagement.RequestDetails requestDetails = MsoRestClientTestUtil.generateChangeManagementMockMsoRequest();
 
         when( client.post( eq(baseUrl), anyMap(), any(RequestDetailsWrapper.class), eq(String.class) )  ).thenThrow(new MsoTestException("test-post-exception"));
 
@@ -520,7 +512,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyDeleteConfiguration() {
         //  given
-        org.onap.vid.changeManagement.RequestDetails requestDetails = generateChangeManagementMockMsoRequest();
+        org.onap.vid.changeManagement.RequestDetails requestDetails = MsoRestClientTestUtil.generateChangeManagementMockMsoRequest();
         org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper = new org.onap.vid.mso.rest.RequestDetailsWrapper(requestDetails);
 
         String endpoint = "testEndpoint";
@@ -548,7 +540,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlySetConfigurationActiveStatus() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -576,7 +568,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlySetPortOnConfigurationStatus() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -605,7 +597,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyChangeManagementUpdate() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
         RequestDetailsWrapper<RequestDetails> requestDetailsWrapper = new RequestDetailsWrapper<>(requestDetails);
 
         String endpoint = "testEndpoint";
@@ -627,7 +619,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyUpdateVnfAndUpdateInstance() {
         //  given
-        org.onap.vid.changeManagement.RequestDetails requestDetails = generateChangeManagementMockMsoRequest();
+        org.onap.vid.changeManagement.RequestDetails requestDetails = MsoRestClientTestUtil.generateChangeManagementMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -646,7 +638,7 @@ public class MsoRestClientTest {
     @Test( expectedExceptions = MsoTestException.class )
     public void shouldThrowExceptionWhenUpdateVnfAndUpdateInstanceGetsWrongParameter() {
         //  given
-        org.onap.vid.changeManagement.RequestDetails requestDetails = generateChangeManagementMockMsoRequest();
+        org.onap.vid.changeManagement.RequestDetails requestDetails = MsoRestClientTestUtil.generateChangeManagementMockMsoRequest();
         String endpoint = "";
 
         when(client.put(eq(baseUrl), anyMap(), any(RequestDetailsWrapper.class), eq(String.class))).thenThrow(new MsoTestException("test-post-exception"));
@@ -660,7 +652,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlySetServiceInstanceStatus() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
         RestObject<String> restObject = generateMockMsoRestObject();
 
         String endpoint = "testEndpoint";
@@ -686,7 +678,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyRemoveRelationshipFromServiceInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -715,7 +707,7 @@ public class MsoRestClientTest {
     @Test
     public void shouldProperlyAddRelationshipToServiceInstance() {
         //  given
-        RequestDetails requestDetails = generateMockMsoRequest();
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
 
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
@@ -760,7 +752,7 @@ public class MsoRestClientTest {
     public void shouldProperlyPerformPostRequest() {
         //  given
 
-        RequestDetailsWrapper<RequestDetails> requestDetailsWrapper = new RequestDetailsWrapper<>(generateMockMsoRequest());
+        RequestDetailsWrapper<RequestDetails> requestDetailsWrapper = new RequestDetailsWrapper<>(MsoRestClientTestUtil.generateMockMsoRequest());
 
         String endpoint = "testEndpoint";
         HttpResponse<String> expectedResponse = HttpResponse.fallback("testOkResponse");
@@ -787,77 +779,6 @@ public class MsoRestClientTest {
         org.apache.http.HttpResponse responseBase = new BasicHttpResponse(statusline);
 
         return new HttpResponse<>(responseBase ,String.class, new JsonMapper());
-    }
-
-    private RequestDetails generateMockMsoRequest() {
-        RequestDetails requestDetails = new RequestDetails();
-
-        CloudConfiguration cloudConfiguration = new CloudConfiguration();
-        cloudConfiguration.setTenantId("tenant-id");
-        cloudConfiguration.setLcpCloudRegionId("lcp-region");
-        requestDetails.setCloudConfiguration(cloudConfiguration);
-
-        ModelInfo modelInfo = new ModelInfo();
-        modelInfo.setModelInvariantId("model-invarient-id");
-        modelInfo.setModelCustomizationName("modelCustomizationName");
-        modelInfo.setModelType("test-model-type");
-        requestDetails.setModelInfo(modelInfo);
-
-        RequestInfo requestInfo = new RequestInfo();
-        requestInfo.setRequestorId("ok883e");
-        requestInfo.setSource("VID");
-        requestDetails.setRequestInfo(requestInfo);
-        RequestParameters requestParameters = new RequestParameters();
-
-        requestParameters.setSubscriptionServiceType("subscriber-service-type");
-        requestParameters.setAdditionalProperty("a", 1);
-        requestParameters.setAdditionalProperty("b", 2);
-        requestParameters.setAdditionalProperty("c", 3);
-        requestParameters.setAdditionalProperty("d", 4);
-        String payload = "{\"existing_software_version\": \"3.1\",\"new_software_version\": \"3.2\", \"operations_timeout\": \"3600\"}";
-        requestParameters.setAdditionalProperty("payload", payload);
-
-        requestDetails.setRequestParameters(requestParameters);
-        return requestDetails;
-    }
-
-    private org.onap.vid.changeManagement.RequestDetails generateChangeManagementMockMsoRequest() {
-        List<RelatedInstanceList> relatedInstances = new LinkedList<>();
-        relatedInstances.add(new RelatedInstanceList());
-
-        org.onap.vid.changeManagement.RequestDetails requestDetails = new org.onap.vid.changeManagement.RequestDetails();
-
-        requestDetails.setVnfName("test-vnf-name");
-        requestDetails.setVnfInstanceId("test-vnf-instance_id");
-        requestDetails.setRelatedInstList(relatedInstances);
-
-        CloudConfiguration cloudConfiguration = new CloudConfiguration();
-        cloudConfiguration.setTenantId("tenant-id");
-        cloudConfiguration.setLcpCloudRegionId("lcp-region");
-        requestDetails.setCloudConfiguration(cloudConfiguration);
-
-        ModelInfo modelInfo = new ModelInfo();
-        modelInfo.setModelInvariantId("model-invarient-id");
-        modelInfo.setModelCustomizationName("modelCustomizationName");
-        modelInfo.setModelType("test-model-type");
-        requestDetails.setModelInfo(modelInfo);
-
-        RequestInfo requestInfo = new RequestInfo();
-        requestInfo.setRequestorId("ok883e");
-        requestInfo.setSource("VID");
-        requestDetails.setRequestInfo(requestInfo);
-
-        RequestParameters requestParameters = new RequestParameters();
-        requestParameters.setSubscriptionServiceType("subscriber-service-type");
-        requestParameters.setAdditionalProperty("a", 1);
-        requestParameters.setAdditionalProperty("b", 2);
-        requestParameters.setAdditionalProperty("c", 3);
-        requestParameters.setAdditionalProperty("d", 4);
-        String payload = "{\"existing_software_version\": \"3.1\",\"new_software_version\": \"3.2\", \"operations_timeout\": \"3600\"}";
-        requestParameters.setAdditionalProperty("payload", payload);
-
-        requestDetails.setRequestParameters(requestParameters);
-        return requestDetails;
     }
 
     private RestObject<String> generateMockMsoRestObject() {

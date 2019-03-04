@@ -36,6 +36,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.semantics.Action;
 import com.xebialabs.restito.server.StubServer;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.ws.rs.core.HttpHeaders;
@@ -46,8 +48,13 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.changeManagement.RelatedInstanceList;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.mso.MsoResponseWrapper;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.RequestInfo;
+import org.onap.vid.mso.model.RequestParameters;
 
 class MsoRestClientTestUtil implements AutoCloseable {
   private final StubServer server;
@@ -121,6 +128,74 @@ class MsoRestClientTestUtil implements AutoCloseable {
 
     Assert.assertEquals(expectedStatus.getStatusCode(), response.getStatus());
     verifyServer(server, endpoint, Method.GET);
+  }
+
+  static org.onap.vid.changeManagement.RequestDetails generateMockMsoRequest() {
+    org.onap.vid.changeManagement.RequestDetails requestDetails = new org.onap.vid.changeManagement.RequestDetails();
+    requestDetails.setVnfInstanceId("vnf-instance-id");
+    requestDetails.setVnfName("vnf-name");
+    CloudConfiguration cloudConfiguration = new CloudConfiguration();
+    cloudConfiguration.setTenantId("tenant-id");
+    cloudConfiguration.setLcpCloudRegionId("lcp-region");
+    requestDetails.setCloudConfiguration(cloudConfiguration);
+    ModelInfo modelInfo = new ModelInfo();
+    modelInfo.setModelInvariantId("model-invarient-id");
+    modelInfo.setModelCustomizationName("modelCustomizationName");
+    requestDetails.setModelInfo(modelInfo);
+    RequestInfo requestInfo = new RequestInfo();
+    requestInfo.setRequestorId("ok883e");
+    requestInfo.setSource("VID");
+    requestDetails.setRequestInfo(requestInfo);
+    RequestParameters requestParameters = new RequestParameters();
+    requestParameters.setSubscriptionServiceType("subscriber-service-type");
+    requestParameters.setAdditionalProperty("a", 1);
+    requestParameters.setAdditionalProperty("b", 2);
+    requestParameters.setAdditionalProperty("c", 3);
+    requestParameters.setAdditionalProperty("d", 4);
+    String payload = "{\"existing_software_version\": \"3.1\",\"new_software_version\": \"3.2\", \"operations_timeout\": \"3600\"}";
+    requestParameters.setAdditionalProperty("payload", payload);
+
+    requestDetails.setRequestParameters(requestParameters);
+    return requestDetails;
+  }
+
+  static org.onap.vid.changeManagement.RequestDetails generateChangeManagementMockMsoRequest() {
+    List<RelatedInstanceList> relatedInstances = new LinkedList<>();
+    relatedInstances.add(new RelatedInstanceList());
+
+    org.onap.vid.changeManagement.RequestDetails requestDetails = new org.onap.vid.changeManagement.RequestDetails();
+
+    requestDetails.setVnfName("test-vnf-name");
+    requestDetails.setVnfInstanceId("test-vnf-instance_id");
+    requestDetails.setRelatedInstList(relatedInstances);
+
+    CloudConfiguration cloudConfiguration = new CloudConfiguration();
+    cloudConfiguration.setTenantId("tenant-id");
+    cloudConfiguration.setLcpCloudRegionId("lcp-region");
+    requestDetails.setCloudConfiguration(cloudConfiguration);
+
+    ModelInfo modelInfo = new ModelInfo();
+    modelInfo.setModelInvariantId("model-invarient-id");
+    modelInfo.setModelCustomizationName("modelCustomizationName");
+    modelInfo.setModelType("test-model-type");
+    requestDetails.setModelInfo(modelInfo);
+
+    RequestInfo requestInfo = new RequestInfo();
+    requestInfo.setRequestorId("ok883e");
+    requestInfo.setSource("VID");
+    requestDetails.setRequestInfo(requestInfo);
+
+    RequestParameters requestParameters = new RequestParameters();
+    requestParameters.setSubscriptionServiceType("subscriber-service-type");
+    requestParameters.setAdditionalProperty("a", 1);
+    requestParameters.setAdditionalProperty("b", 2);
+    requestParameters.setAdditionalProperty("c", 3);
+    requestParameters.setAdditionalProperty("d", 4);
+    String payload = "{\"existing_software_version\": \"3.1\",\"new_software_version\": \"3.2\", \"operations_timeout\": \"3600\"}";
+    requestParameters.setAdditionalProperty("payload", payload);
+
+    requestDetails.setRequestParameters(requestParameters);
+    return requestDetails;
   }
 
   private void verifyServer(StubServer server, String endpoint, Method httpMethod) {
