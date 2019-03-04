@@ -26,6 +26,7 @@ import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.client.SyncRestClient;
@@ -115,11 +116,6 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
 
     @Configuration
     public static class TestMsoConfig extends MsoConfig {
-
-        public MsoRestClientNew getMsoClient() {
-            MsoRestClientNew spyClient = spy(new MsoRestClientNew(new SyncRestClient(), ""));
-            return spyClient;
-        }
 
         @Bean
         public ChangeManagementService getChangeManagementService(DataAccessService dataAccessService, MsoBusinessLogic msoInterface, SchedulerRestInterfaceIfc schedulerRestInterface, CloudOwnerService cloudOwnerService) {

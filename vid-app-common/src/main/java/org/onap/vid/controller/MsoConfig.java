@@ -23,6 +23,7 @@ package org.onap.vid.controller;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.factories.MsoRequestFactory;
 import org.onap.vid.mso.MsoBusinessLogic;
@@ -47,10 +48,10 @@ public class MsoConfig {
     }
 
     @Bean
-    public MsoRestClientNew msoClient(ObjectMapper unirestObjectMapper){
+    public MsoRestClientNew msoClient(ObjectMapper unirestObjectMapper, HttpsAuthClient httpsAuthClient){
         // Satisfy both interfaces -- MsoInterface and RestMsoImplementation
         return new MsoRestClientNew(new SyncRestClient(unirestObjectMapper), SystemProperties.getProperty(
-            MsoProperties.MSO_SERVER_URL));
+            MsoProperties.MSO_SERVER_URL),httpsAuthClient);
     }
 
     @Bean
