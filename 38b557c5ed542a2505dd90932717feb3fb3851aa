@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2e90a6b3_f8f92d8c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/OperationalEnvironment.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-04T12:59:38Z",
+      "side": 1,
+      "message": "\u003e This object is expected to be deserialized as hyphen-separated-words,\n \u003e and serialize as camelCaseWords.\n \u003e Other words -- AAI provides VID with `workflow-context`, and\n \u003e `new-test-environment.controller.js` expects `workflowContext`.\n \u003e The `Json` word is a workaround for that, as it separates the\n \u003e getter from the getter.\n \u003e Another solution that helps with `hasValidGettersAndSetters()` test\n \u003e is using `@JsonAlias` instead of `@JsonProperty` on the setter.\n \u003e \n \u003e BTW, I think that maybe this double-face of the object\n \u003e serialization/deserialization can be unit-tested as well.\n\nWe still should take this comment into account.",
+      "parentUuid": "a8f07e33_ebd34836",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a7985c4b_77f2bcc4",
         "filename": "vid-app-common/src/test/java/org/onap/vid/aai/OperationalEnvironmentTest.java",
         "patchSetId": 1
