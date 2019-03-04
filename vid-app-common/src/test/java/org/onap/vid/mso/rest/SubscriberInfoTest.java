@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,68 +20,62 @@
 
 package org.onap.vid.mso.rest;
 
-
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsExcluding;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class RequestTest {
+public class SubscriberInfoTest {
 
-
-    private Request request;
+    private SubscriberInfo SubscriberInfo;
 
     private String propertyName = "testProperty";
     private String additionalProperty = "testAdditionalProperty";
 
     @BeforeMethod
     public void setUp() {
-        request = new Request();
+        SubscriberInfo = new SubscriberInfo();
     }
 
     @Test
     public void shouldHaveProperSettersAndGetters() {
-        assertThat(Request.class, hasValidGettersAndSettersExcluding("additionalProperties"));
+        assertThat(SubscriberInfo.class, hasValidGettersAndSettersExcluding("additionalProperties"));
     }
 
     @Test
     public void shouldHaveProperGetterAndSetterForAdditionalProperties() {
         //	when
-        request.setAdditionalProperty(propertyName,additionalProperty);
+        SubscriberInfo.setAdditionalProperty(propertyName,additionalProperty);
 
         //	then
-        assertThat( request.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
+        AssertionsForClassTypes.assertThat( SubscriberInfo.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
+    }
+
+    @Test
+    public void shouldProperlyCheckIfObjectsAreEqual() {
+        assertThat(SubscriberInfo.class, hasValidBeanEqualsExcluding("additionalProperties"));
     }
 
     @Test
     public void shouldProperlyConvertRelatedInstanceObjectToString() {
         //	given
-        request.setFinishTime("100");
-        request.setRequestId("testRequest");
-        request.setAdditionalProperty(propertyName,additionalProperty);
+        SubscriberInfo.setAdditionalProperty(propertyName,additionalProperty);
+        SubscriberInfo.setGlobalSubscriberId("testSubscriberId");
+        SubscriberInfo.setSubscriberName("testSubscriberName");
 
         //	when
-        String response = request.toString();
+        String response = SubscriberInfo.toString();
 
         //	then
-        assertThat(response).contains(
-                "[instanceIds=<null>," +
-                        "requestDetails=<null>," +
-                        "requestStatus=<null>," +
-                        "finishTime="+100+"," +
-                        "requestId=testRequest," +
-                        "requestScope=<null>," +
-                        "requestType=<null>," +
-                        "startTime=<null>," +
+        System.out.println(response);
+        AssertionsForClassTypes.assertThat(response).contains(
+                "globalSubscriberId=testSubscriberId," +
+                        "subscriberCommonSiteId=<null>," +
+                        "subscriberName=testSubscriberName," +
                         "additionalProperties={"+propertyName+"="+additionalProperty+"}]"
         );
-    }
-
-    @Test
-    public void shouldProperlyCheckIfObjectsAreEqual() {
-        assertThat(Request.class, hasValidBeanEqualsExcluding("additionalProperties"));
     }
 }

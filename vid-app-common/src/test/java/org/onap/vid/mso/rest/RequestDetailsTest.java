@@ -20,185 +20,114 @@
 
 package org.onap.vid.mso.rest;
 
-import org.junit.Test;
-import org.onap.vid.mso.model.CloudConfiguration;
-import org.onap.vid.mso.model.ModelInfo;
-import org.onap.vid.mso.model.RequestInfo;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.onap.vid.exceptions.NotFoundException;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsExcluding;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.AssertJUnit.assertEquals;
 
 
 public class RequestDetailsTest {
 
-	private RequestDetails createTestSubject() {
-		return new RequestDetails();
+	private RequestDetails requestDetails;
+
+	private String propertyName = "testProperty";
+	private String additionalProperty = "testAdditionalProperty";
+
+	private static final ImmutableList<String> LCP_CLOUD_REGION_ID_PATH =
+			ImmutableList.of("requestDetails", "cloudConfiguration", "lcpCloudRegionId");
+
+
+	@BeforeMethod
+	public void setUp() {
+		requestDetails = new RequestDetails();
 	}
 
-	
 	@Test
-	public void testGetCloudConfiguration() throws Exception {
-		RequestDetails testSubject;
-		CloudConfiguration result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getCloudConfiguration();
+	public void shouldHaveProperSettersAndGetters() {
+		assertThat(RequestDetails.class, hasValidGettersAndSettersExcluding("additionalProperties"));
 	}
 
-	
 	@Test
-	public void testSetCloudConfiguration() throws Exception {
-		RequestDetails testSubject;
-		CloudConfiguration cloudConfiguration = null;
+	public void shouldHaveProperGetterAndSetterForAdditionalProperties() {
+		//	when
+		requestDetails.setAdditionalProperty(propertyName,additionalProperty);
 
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setCloudConfiguration(cloudConfiguration);
+		//	then
+		AssertionsForClassTypes.assertThat( requestDetails.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
 	}
 
-	
 	@Test
-	public void testGetModelInfo() throws Exception {
-		RequestDetails testSubject;
-		ModelInfo result;
+	public void shouldProperlyConvertRelatedInstanceObjectToString() {
+		//	given
+		requestDetails.setAdditionalProperty(propertyName,additionalProperty);
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getModelInfo();
+		//	when
+		String response = requestDetails.toString();
+
+		//	then
+		AssertionsForClassTypes.assertThat(response).contains(
+						"additionalProperties={"+propertyName+"="+additionalProperty+"}]"
+		);
 	}
 
-	
 	@Test
-	public void testSetModelInfo() throws Exception {
-		RequestDetails testSubject;
-		ModelInfo modelInfo = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setModelInfo(modelInfo);
+	public void shouldProperlyCheckIfObjectsAreEqual() {
+		assertThat(RequestDetails.class, hasValidBeanEqualsExcluding("additionalProperties"));
 	}
 
-	
-	@Test
-	public void testGetRelatedInstanceList() throws Exception {
-		RequestDetails testSubject;
-		List<RelatedInstanceWrapper> result;
+	@DataProvider
+	public static Object[][] extractValueByPathDataProvider() {
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getRelatedInstanceList();
+		RequestDetails requestDetails1 = new RequestDetails();
+		Map cloudConfiguration = ImmutableMap.of("lcpCloudRegionId", "lcp1");
+		requestDetails1.setAdditionalProperty("requestDetails",
+				ImmutableMap.of("cloudConfiguration", cloudConfiguration));
+
+
+		return new Object[][] {
+				{ requestDetails1, LCP_CLOUD_REGION_ID_PATH, String.class, "lcp1" },
+				{ requestDetails1, ImmutableList.of("requestDetails", "cloudConfiguration"), Map.class, cloudConfiguration },
+
+		};
 	}
 
-	
-	@Test
-	public void testSetRelatedInstanceList() throws Exception {
-		RequestDetails testSubject;
-		List<RelatedInstanceWrapper> relatedInstanceList = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setRelatedInstanceList(relatedInstanceList);
+	@Test(dataProvider = "extractValueByPathDataProvider")
+	public void testExtractValueByPath(RequestDetails requestDetails, List<String> keys, Class clz, Object expectedValue) {
+		assertEquals(expectedValue, requestDetails.extractValueByPathUsingAdditionalProperties(keys, clz));
 	}
 
-	
-	@Test
-	public void testGetRequestInfo() throws Exception {
-		RequestDetails testSubject;
-		RequestInfo result;
+	@DataProvider
+	public static Object[][] extractValueByPathDataProviderThrowException() {
+		RequestDetails requestDetails1 = new RequestDetails();
+		requestDetails1.setAdditionalProperty("requestDetails",
+				ImmutableMap.of("cloudConfiguration", "notMap"));
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getRequestInfo();
+		RequestDetails requestDetails2 = new RequestDetails();
+		requestDetails2.setAdditionalProperty("requestDetails",
+				ImmutableMap.of("cloudConfiguration", Collections.EMPTY_MAP));
+
+		return new Object[][] {
+				{ new RequestDetails(), LCP_CLOUD_REGION_ID_PATH, String.class},
+				{ requestDetails1, LCP_CLOUD_REGION_ID_PATH, String.class},
+				{ requestDetails1, ImmutableList.of("requestDetails", "abc"), String.class},
+				{ requestDetails2, LCP_CLOUD_REGION_ID_PATH, String.class},
+		};
 	}
 
-	
-	@Test
-	public void testSetRequestInfo() throws Exception {
-		RequestDetails testSubject;
-		RequestInfo requestInfo = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setRequestInfo(requestInfo);
-	}
-
-	
-	@Test
-	public void testGetSubscriberInfo() throws Exception {
-		RequestDetails testSubject;
-		SubscriberInfo result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getSubscriberInfo();
-	}
-
-	
-	@Test
-	public void testSetSubscriberInfo() throws Exception {
-		RequestDetails testSubject;
-		SubscriberInfo subscriberInfo = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setSubscriberInfo(subscriberInfo);
-	}
-
-	
-	@Test
-	public void testToString() throws Exception {
-		RequestDetails testSubject;
-		String result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.toString();
-	}
-
-	
-	@Test
-	public void testGetAdditionalProperties() throws Exception {
-		RequestDetails testSubject;
-		Map<String, Object> result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getAdditionalProperties();
-	}
-
-	
-	@Test
-	public void testSetAdditionalProperty() throws Exception {
-		RequestDetails testSubject;
-		String name = "";
-		Object value = null;
-
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setAdditionalProperty(name, value);
-	}
-
-	
-	@Test
-	public void testHashCode() throws Exception {
-		RequestDetails testSubject;
-		int result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.hashCode();
-	}
-
-	
-	@Test
-	public void testEquals() throws Exception {
-		RequestDetails testSubject;
-		Object other = null;
-		boolean result;
-
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.equals(other);
+	@Test(dataProvider = "extractValueByPathDataProviderThrowException", expectedExceptions = NotFoundException.class)
+	public void testExtractValueByPathThrowException(RequestDetails requestDetails, List<String> keys, Class clz) {
+		requestDetails.extractValueByPathUsingAdditionalProperties(keys, clz);
 	}
 }
