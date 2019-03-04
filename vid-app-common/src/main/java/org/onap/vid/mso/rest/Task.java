@@ -133,7 +133,4 @@ public class Task {
     public void setValidResponses(List<String> validResponses) {
         this.validResponses = validResponses;
     }
-
-
-
 }
