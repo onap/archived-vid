@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,102 +20,87 @@
 
 package org.onap.vid.mso.rest;
 
-import org.junit.Test;
+
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RequestTest {
 
-    private Request createTestSubject() {
-        return new Request();
+
+    private Request request;
+
+    private String propertyName = "testProperty";
+    private String additionalProperty = "testAdditionalProperty";
+
+    @BeforeMethod
+    public void setUp() {
+        request = new Request();
     }
 
     @Test
-    public void testGetInstanceIds() throws Exception {
-        Request testSubject;
-        InstanceIds result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getInstanceIds();
+    public void shouldHaveProperSettersAndGetters() {
+        assertThat(Request.class, hasValidGettersAndSettersExcluding("additionalProperties"));
     }
 
     @Test
-    public void testSetInstanceIds() throws Exception {
-        Request testSubject;
-        InstanceIds instanceIds = null;
+    public void shouldHaveProperGetterAndSetterForAdditionalProperties() {
+        //	when
+        request.setAdditionalProperty(propertyName,additionalProperty);
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setInstanceIds(instanceIds);
+        //	then
+        assertThat( request.getAdditionalProperties().get(propertyName) ).isEqualTo(additionalProperty);
     }
 
     @Test
-    public void testGetRequestDetails() throws Exception {
-        Request testSubject;
-        RequestDetails result;
+    public void shouldProperlyConvertRelatedInstanceObjectToString() {
+        //	given
+        request.setFinishTime("100");
+        request.setRequestId("testRequest");
+        request.setAdditionalProperty(propertyName,additionalProperty);
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getRequestDetails();
+        //	when
+        String response = request.toString();
+
+        //	then
+        assertThat(response).contains(
+                "[instanceIds=<null>," +
+                        "requestDetails=<null>," +
+                        "requestStatus=<null>," +
+                        "finishTime="+100+"," +
+                        "requestId=testRequest," +
+                        "requestScope=<null>," +
+                        "requestType=<null>," +
+                        "startTime=<null>," +
+                        "additionalProperties={"+propertyName+"="+additionalProperty+"}]"
+        );
     }
 
     @Test
-    public void testSetRequestDetails() throws Exception {
-        Request testSubject;
-        RequestDetails requestDetails = null;
+    public void shouldProperlyCheckIfObjectsAreEqual() {
+        //	given
+        Request sameRequest = new Request();
+        Request differentRequest = new Request();
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setRequestDetails(requestDetails);
-    }
+        request.setFinishTime("100");
+        sameRequest.setFinishTime("100");
+        request.setRequestId("testRequest");
+        sameRequest.setRequestId("testRequest");
 
-    @Test
-    public void testGetRequestStatus() throws Exception {
-        Request testSubject;
-        RequestStatus result;
+        //	when
+        boolean sameResponse = request.equals(request);
+        boolean equalResponse = request.equals(sameRequest);
+        boolean differentResponse = request.equals(differentRequest);
+        boolean differentClassResponse = request.equals("RelatedInstance");
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getRequestStatus();
-    }
+        //	then
+        assertThat(sameResponse).isEqualTo(true);
+        assertThat(equalResponse).isEqualTo(true);
 
-    @Test
-    public void testSetRequestStatus() throws Exception {
-        Request testSubject;
-        RequestStatus requestStatus = null;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setRequestStatus(requestStatus);
-    }
-
-    @Test
-    public void testToString() throws Exception {
-        Request testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.toString();
-    }
-
-    @Test
-    public void testEquals() throws Exception {
-        Request testSubject;
-        Object other = null;
-        boolean result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.equals(other);
-    }
-
-    @Test
-    public void testHashCode() throws Exception {
-        Request testSubject;
-        int result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.hashCode();
+        assertThat(differentResponse).isEqualTo(false);
+        assertThat(differentClassResponse).isEqualTo(false);
     }
 }
