@@ -25,12 +25,12 @@ import org.mockito.Mock;
 
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import javax.ws.rs.core.Response;
 
@@ -46,7 +46,7 @@ public class MsoResponseWrapperTest {
 
     private MsoResponseWrapper responseWrapper;
 
-    @BeforeSuite
+    @BeforeClass
     public void setUp() {
         initMocks(this);
     }
@@ -57,43 +57,56 @@ public class MsoResponseWrapperTest {
     }
 
     @Test
-    public void shouldProperlyConstructResponseWrapperWithParameters(){
+    public void shouldProperlyConstructMsoResponseWrapperWithParameters(){
+        //  when
         responseWrapper = new MsoResponseWrapper(1,"testEntity");
 
+        //  then
         assertThat(responseWrapper.getStatus()).isEqualTo(1);
         assertThat(responseWrapper.getEntity()).isEqualTo("testEntity");
     }
 
     @Test
-    public void shouldProperlyConstructResponseWrapperFromResponse(){
+    public void shouldProperlyConstructMsoResponseWrapperFromResponse(){
+        //  given
         when(response.getStatus()).thenReturn(1);
         when(response.readEntity(String.class)).thenReturn("testEntity");
 
+        //  when
         responseWrapper = new MsoResponseWrapper(response);
 
+        //  then
         assertThat(responseWrapper.getStatus()).isEqualTo(1);
         assertThat(responseWrapper.getEntity()).isEqualTo("testEntity");
     }
 
     @Test
     public void shouldProperlyGetResponseWithEmptyEntity(){
+        //  given
         responseWrapper = new MsoResponseWrapper();
+
+        //  when
         responseWrapper.setStatus(1);
 
+        //  then
         assertThat(responseWrapper.getResponse()).isEqualToIgnoringWhitespace(PROPER_RESPONSE_WITH_NO_ENTITY);
     }
 
     @Test
     public void shouldProperlyGetResponse(){
+        //  when
         responseWrapper = new MsoResponseWrapper(1,"testEntity");
 
+        //  then
         assertThat(responseWrapper.getResponse()).isEqualToIgnoringWhitespace(PROPER_RESPONSE);
     }
 
     @Test
     public void shouldProperlyConvertToString(){
+        //  when
         responseWrapper = new MsoResponseWrapper(1,"testEntity");
 
+        //  then
         assertThat(responseWrapper.toString()).endsWith(PROPER_TO_STRING);
     }
 
