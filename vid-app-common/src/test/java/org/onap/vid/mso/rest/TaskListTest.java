@@ -20,33 +20,15 @@
 
 package org.onap.vid.mso.rest;
 
-import java.util.List;
+import org.testng.annotations.Test;
 
-import org.junit.Test;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TaskListTest {
 
-    private TaskList createTestSubject() {
-        return new TaskList();
-    }
-
     @Test
-    public void testGetTaskList() throws Exception {
-        TaskList testSubject;
-        List<Task> result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getTaskList();
-    }
-
-    @Test
-    public void testSetTaskList() throws Exception {
-        TaskList testSubject;
-        List<Task> taskList = null;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setTaskList(taskList);
+    public void shouldHaveProperSettersAndGetters() {
+        assertThat(TaskList.class, hasValidGettersAndSetters());
     }
 }

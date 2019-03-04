@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,21 @@ package org.onap.vid.mso.rest;
 
 import org.testng.annotations.Test;
 
-import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class RequestWrapperTest {
+public class RequestDetailsWrapperTest {
+
+    private RequestDetailsWrapper requestDetailsWrapper;
 
     @Test
-    public void shouldHaveProperSettersAndGetters() {
-        assertThat(RequestWrapper.class, hasValidGettersAndSetters());
+    public void shouldHaveProperConstructorAndGet(){
+        //  given
+        RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
+
+        //  when
+        requestDetailsWrapper = new RequestDetailsWrapper(requestDetails);
+
+        //  then
+        assertThat(requestDetailsWrapper.getRequestDetails()).isEqualToComparingFieldByField(requestDetails);
     }
 }
