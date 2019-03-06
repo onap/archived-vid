@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c87148f6_273d8c26",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/model/OperationalEnvironmentActivateInfoTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-06T16:23:33Z",
+      "side": 1,
+      "message": "I\u0027m thinking: why can\u0027t OperationalEnvironmentActivateBody be instantiated without mock? Wouldn\u0027t it be simpler for the test, and also simpler to spot if OperationalEnvironmentActivateBody will change?",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 47
+      },
+      "revId": "65bff5731d5a35629825ccc565862ec1d847847f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
