@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "50b1228d_20713830",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoResponseWrapper2Test.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-06T12:15:21Z",
+      "side": 1,
+      "message": "mocks could be private",
+      "revId": "cd9e7e1f4c218e904711b8e7e08e3c644c664866",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
