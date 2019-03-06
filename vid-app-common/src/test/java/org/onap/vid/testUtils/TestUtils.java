@@ -20,9 +20,32 @@
 
 package org.onap.vid.testUtils;
 
+import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.RETURNS_DEFAULTS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
+import static org.testng.Assert.fail;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import java.beans.PropertyDescriptor;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -32,27 +55,10 @@ import org.mockito.MockSettings;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.onap.portalsdk.core.domain.support.DomainVo;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.beans.Service;
 import org.springframework.mock.env.MockEnvironment;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.net.URI;
-import java.util.Iterator;
-import java.util.List;
-
-import static fj.parser.Parser.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
 
 /**
  * Created by Oren on 6/7/17.
@@ -123,6 +129,12 @@ public class TestUtils {
         return objectMapper.readValue(
                 TestUtils.class.getResource(pathInResource),
                 valueType);
+    }
+
+    public static String[] allPropertiesOf(Class<DomainVo> aClass) {
+        return Arrays.stream(getPropertyDescriptors(aClass))
+            .map(PropertyDescriptor::getDisplayName)
+            .toArray(String[]::new);
     }
 
 

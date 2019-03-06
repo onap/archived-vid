@@ -20,186 +20,64 @@
 
 package org.onap.vid.model;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsExcluding;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCodeExcluding;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.onap.vid.testUtils.TestUtils.allPropertiesOf;
 
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
+import org.onap.portalsdk.core.domain.support.DomainVo;
 
 public class CategoryParameterTest {
 
-    private CategoryParameter createTestSubject() {
-        return new CategoryParameter();
+
+    final private String[] excludedProperties = allPropertiesOf(DomainVo.class);
+
+    private ImmutableSet<CategoryParameterOption> optionsWithRefTo(CategoryParameter categoryParameter) {
+        return ImmutableSet.of(
+            new CategoryParameterOption("appId1", "name1", categoryParameter),
+            new CategoryParameterOption("appId2", "name2", categoryParameter)
+        );
     }
 
     @Test
-    public void testGetFamily() throws Exception {
-        CategoryParameter testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getFamily();
+    public void shouldHaveValidGettersAndSetters() {
+        assertThat(CategoryParameter.class, hasValidGettersAndSettersExcluding("options"));
     }
 
     @Test
-    public void testSetFamily() throws Exception {
-        CategoryParameter testSubject;
-        String family = "";
+    public void testSetAndGetOptions() {
+        CategoryParameter testSubject = new CategoryParameter();
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setFamily(family);
-    }
+        Set<CategoryParameterOption> options = optionsWithRefTo(testSubject);
 
-    @Test
-    public void testGetId() throws Exception {
-        CategoryParameter testSubject;
-        Long result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getId();
-    }
-
-    @Test
-    public void testGetCreated() throws Exception {
-        CategoryParameter testSubject;
-        Date result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getCreated();
-    }
-
-    @Test
-    public void testGetModified() throws Exception {
-        CategoryParameter testSubject;
-        Date result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getModified();
-    }
-
-    @Test
-    public void testGetCreatedId() throws Exception {
-        CategoryParameter testSubject;
-        Long result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getCreatedId();
-    }
-
-    @Test
-    public void testGetModifiedId() throws Exception {
-        CategoryParameter testSubject;
-        Long result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getModifiedId();
-    }
-
-    @Test
-    public void testGetName() throws Exception {
-        CategoryParameter testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getName();
-    }
-
-    @Test
-    public void testSetName() throws Exception {
-        CategoryParameter testSubject;
-        String name = "";
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setName(name);
-    }
-
-    @Test
-    public void testGetAuditUserId() throws Exception {
-        CategoryParameter testSubject;
-        Serializable result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getAuditUserId();
-    }
-
-    @Test
-    public void testGetRowNum() throws Exception {
-        CategoryParameter testSubject;
-        Long result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getRowNum();
-    }
-
-    @Test
-    public void testGetAuditTrail() throws Exception {
-        CategoryParameter testSubject;
-        Set result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getAuditTrail();
-    }
-
-    @Test
-    public void testGetOptions() throws Exception {
-        CategoryParameter testSubject;
-        Set<CategoryParameterOption> result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getOptions();
-    }
-
-    @Test
-    public void testSetOptions() throws Exception {
-        CategoryParameter testSubject;
-        Set<CategoryParameterOption> options = null;
-
-        // default test
-        testSubject = createTestSubject();
         testSubject.setOptions(options);
+        assertThat(testSubject.getOptions(), containsInAnyOrder(optionsWithRefTo(testSubject).toArray()));
     }
 
     @Test
-    public void testAddOption() throws Exception {
-        CategoryParameter testSubject;
-        CategoryParameterOption option = null;
-        boolean result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.addOption(option);
+    public void shouldHaveValidBeanHashCodeWithCycleReference() {
+        assertThat(CategoryParameter.class,
+            hasValidBeanHashCodeExcluding(ArrayUtils.addAll(new String[]{"options"}, excludedProperties)));
     }
 
     @Test
-    public void testIsIdSupported() throws Exception {
-        CategoryParameter testSubject;
-        boolean result;
+    public void hashCodeShouldNotExplodeWhenCycleReference() {
+        CategoryParameter testSubject = new CategoryParameter();
+        Set<CategoryParameterOption> options = optionsWithRefTo(testSubject);
+        testSubject.setOptions(options);
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.isIdSupported();
+        testSubject.hashCode(); // don't stackOverflow
     }
 
     @Test
-    public void testSetIdSupported() throws Exception {
-        CategoryParameter testSubject;
-        boolean idSupported = false;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.setIdSupported(idSupported);
+    public void shouldHaveValidBeanEquals() {
+        assertThat(CategoryParameter.class, hasValidBeanEqualsExcluding(excludedProperties));
     }
+
 }
