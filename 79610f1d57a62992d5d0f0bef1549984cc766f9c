@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aa949c5_0a18cfe3",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/aaiSubscriberController.test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-07T06:59:01Z",
+      "side": 1,
+      "message": "into :)",
+      "range": {
+        "startLine": 99,
+        "startChar": 44,
+        "endLine": 99,
+        "endChar": 51
+      },
+      "revId": "79610f1d57a62992d5d0f0bef1549984cc766f9c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
