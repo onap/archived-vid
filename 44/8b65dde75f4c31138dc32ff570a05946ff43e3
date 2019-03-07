@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Ittay Stern <ittay.stern@att.com>
+Code-Review+1: Piotr Darosz <piotr.darosz@nokia.com>
+Submitted-by: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Submitted-at: Thu, 07 Mar 2019 06:43:02 +0000
+Reviewed-on: https://gerrit.onap.org/r/79632
+Project: vid
+Branch: refs/heads/master
