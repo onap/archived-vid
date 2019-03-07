@@ -20,12 +20,19 @@
 
 package org.onap.vid.model;
 
-import org.onap.portalsdk.core.domain.support.DomainVo;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import org.onap.portalsdk.core.domain.support.DomainVo;
 
 @Entity
 @Table(name = "vid_category_parameter_option")
@@ -124,22 +131,37 @@ public class CategoryParameterOption extends DomainVo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         CategoryParameterOption that = (CategoryParameterOption) o;
 
-        if (getAppId() != null ? !getAppId().equals(that.getAppId()) : that.getAppId() != null) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        return getCategoryParameter() != null ? getCategoryParameter().equals(that.getCategoryParameter()) : that.getCategoryParameter() == null;
+        if (getAppId() != null ? !getAppId().equals(that.getAppId()) : that.getAppId() != null) {
+            return false;
+        }
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) {
+            return false;
+        }
+        return getCategoryParameter() != null ? getCategoryParameter().equals(that.getCategoryParameter())
+            : that.getCategoryParameter() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getAppId() != null ? getAppId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getCategoryParameter() != null ? getCategoryParameter().hashCode() : 0);
+        result = 31 * result + hashCodeOfParentCategoryParameter();
         return result;
+    }
+
+    private int hashCodeOfParentCategoryParameter() {
+        // Don't use getCategoryParameter's hashCode, as it might loop back to self's hasCode
+        return (getCategoryParameter() == null || getCategoryParameter().getId() == null)
+                ? 0 : getCategoryParameter().getId().hashCode();
     }
 
     @Override
