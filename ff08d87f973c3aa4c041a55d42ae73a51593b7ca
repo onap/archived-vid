@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff91c633_47029822",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-08T12:45:44Z",
+      "side": 1,
+      "message": "you should not replace this. Maybe just add Modification info.",
+      "revId": "ff08d87f973c3aa4c041a55d42ae73a51593b7ca",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2757a471_c2364a86",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/LocalWorkflowsServiceImpl.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-08T12:45:44Z",
+      "side": 1,
+      "message": "this should be const.",
+      "revId": "ff08d87f973c3aa4c041a55d42ae73a51593b7ca",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
