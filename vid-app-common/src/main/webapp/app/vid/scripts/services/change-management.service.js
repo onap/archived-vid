@@ -36,7 +36,7 @@
             .success(function (response) {
                 return {data: response};
             })
-                .catch(function (err) {
+                .catch(function () {
                     return {data: []};
                 });
         };
@@ -56,6 +56,13 @@
             return {data: response.parameterDefinitions}
           });
         };
+
+      this.getLocalWorkflowParameter = function (workflowName){
+        return $http.get(COMPONENT.GET_LOCAL_WORKFLOW_PARAMETER.replace('@workflowName', encodeURIComponent(workflowName)))
+        .success(function (response) {
+          return {data: response.parameterDefinitions}
+        });
+      };
 
         this.getMSOChangeManagements = function() {
             var deferred = $q.defer();

@@ -116,7 +116,8 @@ appDS2
     CHANGE_MANAGEMENT_OPERATION_NO_SCHEDULER: "change-management/workflow/@vnfName",
     GET_WORKFLOW: "change-management/get_vnf_workflow_relation",
     GET_SO_WORKFLOWS: "workflows-management/workflows",
-    GET_SO_WORKFLOW_PARAMETER: "workflows-management/workflow-parameters/@workflowID",
+    GET_SO_WORKFLOW_PARAMETER: "workflows-management/remote-workflow-parameters/@workflowID",
+    GET_LOCAL_WORKFLOW_PARAMETER: "workflows-management/local-workflow-parameters/@workflowName",
     GET_MSO_WORKFLOWS: "change-management/mso",
     GET_SCHEDULER_CHANGE_MANAGEMENTS: "change-management/scheduler",
     CANCEL_SCHEDULE_REQUEST: "change-management/scheduler/schedules",
@@ -256,7 +257,8 @@ appDS2
       FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS: "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS",
       FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST: "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST",
       FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY: "FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY",
-      FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE: "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE"
+      FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE: "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE",
+      FLAG_HANDLE_SO_WORKFLOWS: "FLAG_HANDLE_SO_WORKFLOWS"
     }
 
   };

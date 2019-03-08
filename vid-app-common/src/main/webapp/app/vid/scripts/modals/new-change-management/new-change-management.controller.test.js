@@ -25,6 +25,8 @@ describe('Testing workFlows from SO', () => {
   let $notNeeded;
   let $controller;
   let $changeManagementService;
+  let $featureFlags;
+
   beforeEach(
       angular.mock.module('app')
   );
@@ -38,6 +40,10 @@ describe('Testing workFlows from SO', () => {
     // mock q
     $q = jestMock.fn();
     $defer = jestMock.fn();
+    $flags = jestMock.fn();
+    $flags.FEATURE_FLAGS = {FLAG_HANDLE_SO_WORKFLOWS: ''};
+    $featureFlags = jestMock.fn();
+    $featureFlags.isOn = jestMock.fn(() => true);
     $q.defer = jestMock.fn(() => $defer);
     $defer.promise = Promise.resolve({});
     // mock AaiService
@@ -53,10 +59,10 @@ describe('Testing workFlows from SO', () => {
       Upload: $notNeeded,
       $log: $notNeeded,
       _: $notNeeded,
-      COMPONENT: $notNeeded,
+      COMPONENT: $flags,
       VIDCONFIGURATION: $notNeeded,
       DataService: $notNeeded,
-      featureFlags: $notNeeded,
+      featureFlags: $featureFlags,
       $scope: $notNeeded,
     });
   }));
@@ -80,11 +86,13 @@ describe('Testing workFlows from SO', () => {
   test('Verify load workflows will call load from SO and join workflow lists', () => {
     // given
     let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data": {}});
     let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 1"}, {"id": "2", "name": "workflow 2"}]});
     let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": []}});
 
     $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
     $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
     $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
     $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
     // when
@@ -98,6 +106,7 @@ describe('Testing workFlows from SO', () => {
   test('Verify load workflows will call load workflows parameters from SO', () => {
     // given
     let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data": {}});
     let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 0"}]});
     let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": [
           {"id": 1, "name": "parameter 1", "required": true, "type": "STRING", "pattern": "[0-9]*"},
@@ -106,6 +115,7 @@ describe('Testing workFlows from SO', () => {
 
     $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
     $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
     $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
     $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
     // when
@@ -115,6 +125,80 @@ describe('Testing workFlows from SO', () => {
         [{"id": 1, "name": "parameter 1", "pattern": "[0-9]*", "required": true, "type": "STRING"},
          {"id": 2, "name": "parameter 2", "pattern": ".*", "required": true, "type": "STRING"},
          {"id": 3, "name": "parameter 3", "pattern": "[0-9]*", "required": false, "type": "STRING"}]]]));
+    });
+  });
+
+  test('Verify load workflows wont load workflows parameters from SO if feature flag is disabled', () => {
+    // given
+    $featureFlags.isOn = jestMock.fn(() => false);
+    let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data": {}});
+    let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 0"}]});
+    let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": [
+          {"id": 1, "name": "parameter 1", "required": true, "type": "STRING", "pattern": "[0-9]*"},
+          {"id": 2, "name": "parameter 2", "required": true, "type": "STRING", "pattern": ".*"},
+          {"id": 3, "name": "parameter 3", "required": false, "type": "STRING", "pattern": "[0-9]*"}]}});
+
+    $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
+    $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
+    $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
+    $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
+    // when
+    return $controller.loadWorkFlows()
+    .then(() => {
+      expect($controller.workflows).toEqual(["workflow 0"]);
+      expect($controller.remoteWorkflowsParameters).toEqual(undefined);
+    });
+  });
+
+  test('Verify load workflows will call load workflows parameters from local service', () => {
+    // given
+    let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["VNF Scale Out"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data":{
+        "parameterDefinitions": [
+          {
+            "id": 1,
+            "name": "Configuration Parameters",
+            "required": true,
+            "type": "STRING",
+            "pattern": ".*",
+            "msgOnPatternError": null,
+            "msgOnContentError": null,
+            "acceptableFileType": null
+          }
+        ],
+      }});
+    let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{}]});
+    let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{}});
+
+    $controller.changeManagement.vnfNames = [{name: 'test1'}];
+    $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
+    $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
+    $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
+    // when
+
+    let result = new Map();
+    const scaleOutResult = new Map();
+    scaleOutResult.set("FILE", []);
+    scaleOutResult.set("STRING", [
+      {
+        "acceptableFileType": null,
+        "id": 1,
+        "msgOnContentError": null,
+        "msgOnPatternError": null,
+        "name": "Configuration Parameters",
+        "pattern": ".*",
+        "required": true,
+        "type": "STRING",
+      }
+    ]);
+    result.set("VNF Scale Out", scaleOutResult);
+
+    return $controller.loadWorkFlows()
+    .then(() => {
+      expect($controller.localWorkflowsParameters).toEqual(result);
     });
   });
 
@@ -132,5 +216,113 @@ describe('Testing workFlows from SO', () => {
       expect($controller.workflows).toEqual(['workflow 0']);
     });
   });
-});
 
+  test('Verify get internal workflow parameters should return an empty list if not such workflow exist', () => {
+  // given
+    let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["VNF Scale Out"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data":{
+        "parameterDefinitions": [
+          {
+            "id": 1,
+            "name": "Configuration Parameters",
+            "required": true,
+            "type": "STRING",
+            "pattern": ".*",
+            "msgOnPatternError": null,
+            "msgOnContentError": null,
+            "acceptableFileType": null
+          }
+        ],
+      }});
+    let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{}]});
+    let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{}});
+
+    $controller.changeManagement.vnfNames = [{name: 'test1'}];
+    $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
+    $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
+    $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
+    // when
+    return $controller.loadWorkFlows()
+    .then(() => {
+      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("NON-EXISTENT WF", "STRING");
+      expect(internalWorkFlowParameters).toEqual([]);
+    });
+  });
+
+  test('Verify get internal workflow parameters should return an empty list if not such type exist', () => {
+    // given
+    let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["VNF Scale Out"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data":{
+        "parameterDefinitions": [
+          {
+            "id": 1,
+            "name": "Configuration Parameters",
+            "required": true,
+            "type": "STRING",
+            "pattern": ".*",
+            "msgOnPatternError": null,
+            "msgOnContentError": null,
+            "acceptableFileType": null
+          }
+        ],
+      }});
+    let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{}]});
+    let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{}});
+
+    $controller.changeManagement.vnfNames = [{name: 'test1'}];
+    $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
+    $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
+    $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
+    // when
+    return $controller.loadWorkFlows()
+    .then(() => {
+      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("VNF Scale Out", "FILE");
+      expect(internalWorkFlowParameters).toEqual([]);
+    });
+  });
+
+  test('Verify get internal workflow parameters should return a list if such workflow and type exist', () => {
+    // given
+    let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["VNF Scale Out"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data":{
+        "parameterDefinitions": [
+          {
+            "id": 1,
+            "name": "Configuration Parameters",
+            "required": true,
+            "type": "STRING",
+            "pattern": ".*",
+            "msgOnPatternError": null,
+            "msgOnContentError": null,
+            "acceptableFileType": null
+          }
+        ],
+      }});
+    let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{}]});
+    let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{}});
+    $controller.changeManagement.vnfNames = [{name: 'test1'}];
+    $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
+    $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
+    $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
+
+    let result = [{
+        "acceptableFileType": null,
+        "id": 1,
+        "msgOnContentError": null,
+        "msgOnPatternError": null,
+        "name": "Configuration Parameters",
+        "pattern": ".*",
+        "required": true,
+        "type": "STRING",
+        }];
+    // when
+    return $controller.loadWorkFlows()
+    .then(() => {
+      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("VNF Scale Out", "STRING");
+      expect(internalWorkFlowParameters).toEqual(result);
+    });
+  });
+});
