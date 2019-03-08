@@ -22,6 +22,40 @@
       "revId": "65bff5731d5a35629825ccc565862ec1d847847f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "76283725_e65f6617",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/model/OperationalEnvironmentDeactivateInfoTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-08T12:50:02Z",
+      "side": 1,
+      "message": "I think it should \"deactiveInfo\"",
+      "revId": "65bff5731d5a35629825ccc565862ec1d847847f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bd2d447e_e3a27019",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/model/OperationalEnvironmentDeactivateInfoTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-08T12:50:02Z",
+      "side": 1,
+      "message": "what is the point of testing toString?",
+      "revId": "65bff5731d5a35629825ccc565862ec1d847847f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
