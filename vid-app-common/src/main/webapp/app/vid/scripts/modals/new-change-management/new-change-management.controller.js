@@ -634,16 +634,20 @@
         };
 
         vm.loadWorkFlows = function () {
-          // Should be corrected when VID-397 will be closed. At the moment there is a need
-          // to merge local and remote workflows not to broke current functionality.
-          return vm.loadLocalWorkFlows()
-          .then(vm.loadLocalWorkFlowsParameters)
-          .then(vm.loadRemoteWorkFlows)
-          .then(function () {
-            vm.workflows = vm.localWorkflows.concat(vm.remoteWorkflows.map(item => item.name));
-          }).then(function () {
-            vm.loadRemoteWorkFlowsParameters();
-          });
+          if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_HANDLE_SO_WORKFLOWS)) {
+            return vm.loadRemoteWorkFlows()
+            .then(function () {
+              vm.workflows = vm.remoteWorkflows.map(item => item.name);
+            }).then(function () {
+              vm.loadRemoteWorkFlowsParameters();
+            });
+          }else{
+            return vm.loadLocalWorkFlows()
+            .then(vm.loadLocalWorkFlowsParameters)
+            .then(function () {
+              vm.workflows = vm.localWorkflows;
+            })
+          }
         };
 
         vm.loadLocalWorkFlows = function () {

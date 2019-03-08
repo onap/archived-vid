@@ -45,7 +45,8 @@
             return $http.get(COMPONENT.GET_SO_WORKFLOWS, {params: {vnfName: vnfNames}})
             .success(function (response) {
                 return {data: response};
-            }).catch(function () {
+            }).catch(function (ex) {
+                console.error("Problem when getting workflows from SO API occurred.", ex.stack);
                 return {data: []};
             });
         };
