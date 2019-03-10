@@ -56,6 +56,24 @@
       "revId": "65bff5731d5a35629825ccc565862ec1d847847f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59adaa18_2d4fb706",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/model/OperationalEnvironmentDeactivateInfoTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-10T08:49:53Z",
+      "side": 1,
+      "message": "Why not? If it\u0027s part of our code, it can be verified to be consistent.",
+      "parentUuid": "bd2d447e_e3a27019",
+      "revId": "65bff5731d5a35629825ccc565862ec1d847847f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
