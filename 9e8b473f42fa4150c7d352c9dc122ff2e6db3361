@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65a41f94_422e3c2e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/InstanceIdsTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:29:47Z",
+      "side": 1,
+      "message": "add license header",
+      "revId": "9e8b473f42fa4150c7d352c9dc122ff2e6db3361",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "118eb32a_03dcf13a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/RelatedInstanceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:29:47Z",
+      "side": 1,
+      "message": "add note about nokia",
+      "range": {
+        "startLine": 6,
+        "startChar": 3,
+        "endLine": 6,
+        "endChar": 83
+      },
+      "revId": "9e8b473f42fa4150c7d352c9dc122ff2e6db3361",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff1cf300_33467278",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/RequestDetailsWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:29:47Z",
+      "side": 1,
+      "message": "add license header",
+      "revId": "9e8b473f42fa4150c7d352c9dc122ff2e6db3361",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ce81e2aa_4d662b3e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/RequestDetailsWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:29:47Z",
+      "side": 1,
+      "message": "use default assertThat, check org.assertj.core.api.Assertions",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 62
+      },
+      "revId": "9e8b473f42fa4150c7d352c9dc122ff2e6db3361",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8b3c3ff_56609cc2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/RequestDetailsWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:29:47Z",
+      "side": 1,
+      "message": "should be private",
+      "range": {
+        "startLine": 13,
+        "startChar": 4,
+        "endLine": 13,
+        "endChar": 48
+      },
+      "revId": "9e8b473f42fa4150c7d352c9dc122ff2e6db3361",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
