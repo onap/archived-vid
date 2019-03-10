@@ -21,8 +21,45 @@
 package org.onap.vid.services;
 
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED;
+import static org.onap.vid.job.Job.JobStatus.CREATING;
+import static org.onap.vid.job.Job.JobStatus.FAILED;
+import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.PAUSE;
+import static org.onap.vid.job.Job.JobStatus.PENDING;
+import static org.onap.vid.job.Job.JobStatus.RESOURCE_IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.STOPPED;
+import static org.onap.vid.utils.Streams.not;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -53,27 +90,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import javax.inject.Inject;
-import java.lang.reflect.Method;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.onap.vid.job.Job.JobStatus.*;
-import static org.onap.vid.utils.Streams.not;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.AssertJUnit.assertEquals;
-
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, JobAdapterConfig.class})
 public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
 
@@ -85,7 +101,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
 
     private final Set<Long> threadsIds = new ConcurrentSkipListSet<>();
 
-    private final long FEW = 500;
+    private final long FEW = 1000;
 
     private final String JOBS_SHOULD_MATCH = "the jobs that added and those that pulled must be the same";
     private final String JOBS_PEEKED_SHOULD_MATCH = "the jobs that added and those that peeked must be the same";
