@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "456e8189_4f05ac3b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "2019 Nokia",
+      "range": {
+        "startLine": 5,
+        "startChar": 17,
+        "endLine": 5,
+        "endChar": 33
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "95b5c5c3_0f693799",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "make mocks private",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 38
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e4e9d762_767fa6f3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "there should be const inside spring.http package which you could use here",
+      "range": {
+        "startLine": 100,
+        "startChar": 29,
+        "endLine": 100,
+        "endChar": 32
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "56225bda_ce4d9cd8",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "extract to consts (for example SAMPLE_PATH,SAMPLE_RAW_DATA) and use in other tests",
+      "range": {
+        "startLine": 115,
+        "startChar": 8,
+        "endLine": 116,
+        "endChar": 28
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e227bb8a_8e605871",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "replace int value for http status with it\u0027s name  (for example this method could be named shouldProperlyGetRestObjectWhenStatusIsCreated/ shouldProperlyGetRestObjectForObjectWithRequestInfoAndStatusCreated)",
+      "range": {
+        "startLine": 140,
+        "startChar": 70,
+        "endLine": 140,
+        "endChar": 77
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "16f368c5_704c0c95",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "is there any difference in logic in case of deletion which needs separate test?",
+      "range": {
+        "startLine": 214,
+        "startChar": 29,
+        "endLine": 214,
+        "endChar": 32
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aac55aee_10ec1b2b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "Typo-\u003e Create",
+      "range": {
+        "startLine": 329,
+        "startChar": 40,
+        "endLine": 329,
+        "endChar": 45
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bed6eafe_f78460f3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "without abbreviation looks better - shouldProperlyCreateServiceInstance",
+      "range": {
+        "startLine": 83,
+        "startChar": 16,
+        "endLine": 83,
+        "endChar": 47
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fc1cf586_d98e058a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:23:54Z",
+      "side": 1,
+      "message": "shouldProperlyPerformGetRequest - what do you think?",
+      "range": {
+        "startLine": 745,
+        "startChar": 16,
+        "endLine": 745,
+        "endChar": 46
+      },
+      "revId": "b78b647c94200e93d6ae0349d0bf47924315c9d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
