@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3188bff6_e3ed79f1",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/aaiSubscriberController.test.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:33:24Z",
+      "side": 1,
+      "message": "remove if not needed",
+      "range": {
+        "startLine": 194,
+        "startChar": 4,
+        "endLine": 213,
+        "endChar": 9
+      },
+      "revId": "80e1771ae21233020618343dd796a2c7a3f0772d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ff0c505_9b675333",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/aaiSubscriberController.test.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:33:24Z",
+      "side": 1,
+      "message": "not needed?",
+      "range": {
+        "startLine": 498,
+        "startChar": 0,
+        "endLine": 500,
+        "endChar": 65
+      },
+      "revId": "80e1771ae21233020618343dd796a2c7a3f0772d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
