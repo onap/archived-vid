@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2bc1d525_339aab37",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/SOWorkflows.kt",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-10T08:51:54Z",
+      "side": 1,
+      "message": "The at\u0026t attribution was wrong.",
+      "parentUuid": "ff91c633_47029822",
+      "revId": "ff08d87f973c3aa4c041a55d42ae73a51593b7ca",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2757a471_c2364a86",
         "filename": "vid-app-common/src/main/java/org/onap/vid/services/LocalWorkflowsServiceImpl.java",
         "patchSetId": 10
