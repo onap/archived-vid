@@ -1,0 +1,38 @@
+[
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/12344bb4-a416-4b4e-997e-0059973630b9/toscaModel"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "file": "service-fabric-configuration.zip"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/sdc/v1/catalog/services/12344bb4-a416-4b4e-997e-0059973630b9/metadata"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "responseHeaders": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "uuid": "12344bb4-a416-4b4e-997e-0059973630b9",
+        "invariantUUID": "12343f9e-3244-4d8f-a8e0-0e5d7a29eda9",
+        "name": "PASQUALE vMX vPE_BV Service 488",
+        "version": "1.0",
+        "toscaModelURL": "./service-fabric-configuration.zip",
+        "category": "Emanuel",
+        "lifecycleState": "CERTIFIED",
+        "lastUpdaterUserId": "rg276b",
+        "lastUpdaterFullName": null,
+        "distributionStatus": "DISTRIBUTED",
+        "artifacts": null,
+        "resources": null
+      }
+    }
+  }
+]

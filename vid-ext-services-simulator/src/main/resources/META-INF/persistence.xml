@@ -1,0 +1,23 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="vid" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <!-- Hibernate properties -->
+            <property name="hibernate.default_schema" value="vid_portal" />
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect" />
+            <property name="hibernate.hbm2ddl.auto" value="validate" />
+            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value="euser"/>
+            <property name="hibernate.connection.password" value="euser"/>
+            <property name="hibernate.connection.url" value="jdbc:mariadb://localhost:3306/vid_portal"/>
+            <property name="hibernate.id.new_generator_mappings" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>

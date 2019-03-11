@@ -5,6 +5,9 @@
   },
   "simulatorResponse": {
     "responseCode": 200,
+    "responseHeaders": {
+      "Content-Type": "application/json"
+    },
     "body": [
       {
         "vnfName": "ctsf0002v",
@@ -52,7 +55,7 @@
         "schedulesId": 0
       },
       {
-        "vnfName": "ZRDM1MMSC0450d9",
+        "vnfName": "Zolson1MMSC0450d9",
         "vnfId": "",
         "status": "Pending Approval",
         "startTime": "2017-10-06T17:12:39Z",
@@ -68,7 +71,7 @@
           "optimizerAttemptsToSchedule": 0,
           "optimizerReturnDateTime": "2017-10-06T17:11:47Z",
           "optimizerTransactionId": "83aec7bf-602f-49eb-9788-bbc33ac550d9",
-          "schedule": "[{\"groupId\":\"\",\"startTime\":\"2017-10-06 17:12:39\",\"finishTime\":\"2017-10-06 17:14:29\",\"latestInstanceStartTime\":\"2017-10-06 17:12:39\",\"node\":[\"ZRDM1MMSC0450d9\"]}]",
+          "schedule": "[{\"groupId\":\"\",\"startTime\":\"2017-10-06 17:12:39\",\"finishTime\":\"2017-10-06 17:14:29\",\"latestInstanceStartTime\":\"2017-10-06 17:12:39\",\"node\":[\"Zolson1MMSC0450d9\"]}]",
           "scheduleId": "83aec7bf-602f-49eb-9788-bbc33ac550d9",
           "scheduleName": "83aec7bf-602f-49eb-9788-bbc33ac550d9",
           "status": "Pending Approval",
@@ -256,7 +259,7 @@
         "schedulesId": 0
       },
       {
-        "vnfName": "ZRDM1MMSC04482c",
+        "vnfName": "Zolson1MMSC04482c",
         "status": "Deleted",
         "groupId": "",
         "policyId": "SNIRO.Config_MS_Demo_TimeLimitAndVerticalTopology_zone",

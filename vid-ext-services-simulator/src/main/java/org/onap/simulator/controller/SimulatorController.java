@@ -1,13 +1,48 @@
 package org.onap.simulator.controller;
 
+import static org.mockserver.integration.ClientAndServer.startClientAndServer;
+import static org.mockserver.matchers.Times.exactly;
+import static org.mockserver.model.JsonBody.json;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.mockserver.integration.ClientAndServer;
+import org.mockserver.matchers.MatchType;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
-
 import org.mockserver.model.JsonBody;
+import org.onap.simulator.db.entities.Function;
+import org.onap.simulator.db.entities.User;
 import org.onap.simulator.errorHandling.VidSimulatorException;
 import org.onap.simulator.model.SimulatorRequestResponseExpectation;
 import org.slf4j.Logger;
@@ -17,26 +52,22 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.View;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.mockserver.integration.ClientAndServer.startClientAndServer;
-import static org.mockserver.matchers.Times.exactly;
 
 @RestController
 @Component
@@ -48,9 +79,14 @@ public class SimulatorController {
     private String mockServerHost;
     private Integer mockServerPort;
     private Boolean enablePresetRegistration;
+    private Boolean enableJPA;
     private volatile boolean isInitialized = false;
 
-    Logger logger = LoggerFactory.getLogger(SimulatorController.class);
+    private EntityManager entityManager;
+    private EntityManagerFactory entityManagerFactory;
+
+
+    private static final Logger logger = LoggerFactory.getLogger(SimulatorController.class);
 
     @PostConstruct
     public void init(){
@@ -58,15 +94,31 @@ public class SimulatorController {
         setProperties();
         mockServer = startClientAndServer(mockServerPort);
         presetRegister();
+        try {
+            initJPA();
+        } catch (RuntimeException e) {
+            isInitialized = false;
+            logger.error("Error during the JPA initialization:", e);
+            return;
+        }
         isInitialized = true;
         logger.info("VID Simulator started successfully");
+    }
+
+    private void initJPA() {
+        if (enableJPA) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("vid");
+            entityManager = entityManagerFactory.createEntityManager();
+        }
     }
 
     @PreDestroy
     public void tearDown(){
         logger.info("Stopping VID Simulator....");
+        entityManager.close();
+        entityManagerFactory.close();
         isInitialized = false;
-        mockServer.stop();
+        mockServer.stop(false);
     }
 
 
@@ -82,9 +134,11 @@ public class SimulatorController {
         try {
             File presetDir = resolver.getResource("/preset_registration/").getFile();
             if (presetDir.exists() && presetDir.isDirectory()) {
-                resources = Files.walk(Paths.get(presetDir.getPath()))
-                        .filter(p -> p.toString().endsWith(".json"))
-                        .collect(Collectors.toList());
+                try (Stream<Path> files = Files.walk(Paths.get(presetDir.getPath()))) {
+                    resources = files
+                            .filter(p -> p.toString().endsWith(".json"))
+                            .collect(Collectors.toList());
+                }
             } else {
                 logger.error("preset_registration directory is not exists");
             }
@@ -95,8 +149,8 @@ public class SimulatorController {
         logger.info("Starting preset registrations, number of requests: {}", resources.size());
         for (Path resource: resources){
             String content;
-            try {
-                content = new Scanner(resource).useDelimiter("\\Z").next();
+            try (Scanner scanner = new Scanner(resource).useDelimiter("\\Z")){
+                content = scanner.next();
             } catch (IOException e){
                 logger.error("Error reading preset registration file {}, skipping to next one. Error: ", resource.getFileName(), e);
                 continue;
@@ -126,6 +180,7 @@ public class SimulatorController {
         mockServerHost = (String)props.get("simulator.mockserver.host");
         mockServerPort = Integer.parseInt((String)props.get("simulator.mockserver.port"));
         enablePresetRegistration = Boolean.parseBoolean((String)props.get("simulator.enablePresetRegistration"));
+        enableJPA = Boolean.parseBoolean((String)props.get("simulator.enableCentralizedRoleAccess"));
     }
 
     @RequestMapping(value = {"/registerToVidSimulator"}, method = RequestMethod.POST)
@@ -144,13 +199,10 @@ public class SimulatorController {
         return isInitialized ? new ResponseEntity<>("",HttpStatus.OK) : new ResponseEntity<>("",HttpStatus.SERVICE_UNAVAILABLE);
     }
 
-//    @RequestMapping(value = {"/registerToVidSimulator"}, method = RequestMethod.GET)
-//    public ResponseEntity<String> getAllRegisteredRequests() throws JsonProcessingException {
-//        final Expectation[] expectations = mockServer.retrieveExistingExpectations(null);
-//        return new ResponseEntity<>(new ObjectMapper()
-//                .configure(SerializationFeature.INDENT_OUTPUT, true)
-//                .writeValueAsString(expectations), HttpStatus.OK);
-//    }
+    @RequestMapping(value = {"/retrieveRecordedRequests"}, method = RequestMethod.GET)
+    public List<HttpRequest> retrieveRecordedRequests() {
+        return Arrays.asList(mockServer.retrieveRecordedRequests(null));
+    }
 
     @RequestMapping(value = {"/registerToVidSimulator"}, method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
@@ -176,10 +228,47 @@ public class SimulatorController {
         }
     }
 
-    @RequestMapping(value = {"/**"})
-    public String redirectToMockServer(HttpServletRequest request, HttpServletResponse response) {
-        //Currently, the easiest logic is redirecting
+    //*******portal role access simulator (added by ag137v)
 
+    @RequestMapping(value = {"/ONAPPORTAL/auxapi//v3/user/*"}, method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseEntity auxapiGetUser(HttpServletRequest request) {
+        if (!enableJPA) {
+            return new ResponseEntity<>("Centralized Role Access is disabled", HttpStatus.SERVICE_UNAVAILABLE);
+        }
+        entityManager.clear();
+        String reqUri = request.getRequestURI();
+        String userName = reqUri.substring(reqUri.lastIndexOf('/') + 1);
+        TypedQuery<User> userQuery = entityManager.createQuery("select u from fn_user u where u.loginId = :userName", User.class);
+        userQuery.setParameter("userName", userName);
+        User user = userQuery.getSingleResult();
+
+        Gson g = new Gson();
+        String jsonString = g.toJson(user);
+
+        return new ResponseEntity<>(jsonString, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = {"/ONAPPORTAL/auxapi//v3/functions"}, method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseEntity auxapiGetFunctions(HttpServletRequest request) {
+        if (!enableJPA) {
+            return new ResponseEntity<>("Centralized Role Access is disabled", HttpStatus.SERVICE_UNAVAILABLE);
+        }
+        TypedQuery<Function> userQuery = entityManager.createQuery("select f from fn_function f", Function.class);
+        List<Function> functions = userQuery.getResultList();
+        Gson g = new Gson();
+        String jsonString = g.toJson(functions);
+
+        return new ResponseEntity<>(jsonString, HttpStatus.OK);
+
+    }
+    //*******portal role access simulator end
+
+
+    @RequestMapping(value = {"/**"})
+    public ResponseEntity redirectToMockServer(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //This is needed to allow POST redirect - see http://www.baeldung.com/spring-redirect-and-forward
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
 
@@ -196,21 +285,15 @@ public class SimulatorController {
         }*/
 
         StringBuilder sb = new StringBuilder();
-        sb.append(mockServerProtocol+"://"+mockServerHost+":"+mockServerPort+"/"+restOfTheUrl);
+        sb.append(mockServerProtocol).append("://").append(mockServerHost).append(":").append(mockServerPort).append(restOfTheUrl);
         String queryString = request.getQueryString();
         if (queryString != null){
             sb.append("?").append(queryString);
         }
         String redirectUrl = sb.toString();
         logger.info("Redirecting the request to : {}", redirectUrl);
-        return ("redirect:"+redirectUrl);
 
-        //This was a try to setup a proxy instead of redirect
-        //Abandoned this direction when trying to return the original HTTP error code which was registered to mock server,  instead of wrapped up HTTP 500.
-
-       /* String restOfTheUrl = "/"+(String) request.getAttribute(
-                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        URI uri = null;
+        URI uri;
         try {
             uri = new URI("http", null, "localhost", 1080, restOfTheUrl, request.getQueryString(), null);
         } catch (URISyntaxException e) {
@@ -225,11 +308,24 @@ public class SimulatorController {
             String headerToSet = headerNames.nextElement();
             headers.set(headerToSet, request.getHeader(headerToSet));
         }
+        HttpEntity<String> proxyRequest;
+        if ("POST".equalsIgnoreCase(request.getMethod()))
+        {
+            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            proxyRequest = new HttpEntity<>(body, headers);
+        } else {
+            proxyRequest = new HttpEntity<>(headers);
+        }
 
-        ResponseEntity<String> responseEntity =
-                restTemplate.exchange(uri, HttpMethod.resolve(request.getMethod()), new HttpEntity<String>(body, headers), String.class);
-        
-        return responseEntity;*/
+        ResponseEntity<String> responseEntity;
+        try {
+            responseEntity =
+                    restTemplate.exchange(uri, HttpMethod.resolve(request.getMethod()), proxyRequest, String.class);
+        } catch (HttpClientErrorException exception) {
+            responseEntity = new ResponseEntity<>(exception.getResponseBodyAsString(), exception.getStatusCode());
+        }
+
+        return responseEntity;
     }
 
     private void register(SimulatorRequestResponseExpectation expectationModel) throws VidSimulatorException{
@@ -239,6 +335,12 @@ public class SimulatorController {
         if (id != null) {
             request.withHeader("x-simulator-id", id);
         }
+
+        if (expectationModel.getSimulatorRequest().getHeaders()!=null) {
+            expectationModel.getSimulatorRequest().getHeaders().forEach(
+                    request::withHeader);
+        }
+
         String method = expectationModel.getSimulatorRequest().getMethod();
         if (method != null) {
             request.withMethod(method);
@@ -249,16 +351,18 @@ public class SimulatorController {
         }
         String body = expectationModel.getSimulatorRequest().getBody();
         if (body != null) {
-            request.withBody(new JsonBody(body));
+            if (expectationModel.getSimulatorRequest().getStrict()) {
+                request.withBody(json(body, MatchType.STRICT));
+            } else {
+                request.withBody(new JsonBody(body));
+            }
         }
 
         //Queryparams
         final Map<String, List<String>> queryParams = expectationModel.getSimulatorRequest().getQueryParams();
         if (queryParams != null){
             String[] arr = new String[0];
-            queryParams.entrySet().stream().forEach(x -> {
-                request.withQueryStringParameter(x.getKey(), x.getValue().toArray(arr));
-            });
+            queryParams.forEach((key, value) -> request.withQueryStringParameter(key, value.toArray(arr)));
         }
 
         //Setting response according to what is passed
@@ -300,14 +404,13 @@ public class SimulatorController {
 
     private byte[] loadFileString(String filePath) {
         byte[] bytes = null;
+        File file = null;
         try {
-            File file = new ClassPathResource("download_files/" + filePath).getFile();
-            bytes = new byte[(int)file.length()];
-            DataInputStream dataInputStream = null;
-
-            dataInputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file.getPath())));
-            dataInputStream.readFully(bytes);
-            dataInputStream.close();
+            file = new ClassPathResource("download_files/" + filePath).getFile();
+            try(DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file.getPath())))) {
+                bytes = new byte[(int)file.length()];
+                dataInputStream.readFully(bytes);
+            }
         } catch (FileNotFoundException e) {
             logger.error("File not found for file:" + filePath);
             e.printStackTrace();
