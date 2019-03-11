@@ -241,7 +241,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         FETCHING_SUBS: " Fetching subscriber list from A&AI",
         REFRESH_SUB_LIST: "Refreshing subscriber list from A&AI...",
         VAR_DESCRIPTION_A: "This variable is 'a'",
-        VAR_DESCRIPTION_B: "This variable is 'b'",
+        VAR_DESCRIPTION_B: "This variable is 'b'"
 
     };
 
@@ -294,7 +294,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         MSO_CTRL_BTN: "div[ng-controller=msoCommitController] button",
         PRIMARY: "primary",
         PROGRESS_BAR_INFO: "progress-bar progress-bar-info",
-        PROGRESS_BAR_SUCCESS: "progress-bar progress-bar-success",
+        PROGRESS_BAR_SUCCESS: "progress-bar progress-bar-success"
     }
 
     var ERROR = {
@@ -320,7 +320,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         SERVICE_INST_DNE: "That service instance does not exist.  Please try again.",
         SYSTEM_FAILURE: "System failure",
         INVALID_DATA_FORMAT: 'Invalid data format.Please check your file content whether it is not in json or not.',
-        MISSING_FILE: 'Please Select JSON File.',
+        MISSING_FILE: 'Please Select JSON File.'
 
     }
 

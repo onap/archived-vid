@@ -196,8 +196,9 @@ public class CsvServiceImpl implements CsvService{
                 if (keyExistsOrFirstElement(currentJson, key)) {
                     currentJson.put(new JSONObject().put(key, values));
                 } else {
-                JSONObject lastItem = lastItemInArray(currentJson);
-                    lastItem.put(key, values);
+                    JSONObject lastItem = lastItemInArray(currentJson);
+                    if(null != lastItem)
+                        lastItem.put(key, values);
                 }
             }
         }

@@ -755,7 +755,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                         "modelVersionId": $scope.service.model.service.uuid,
                         "modelInvariantId": $scope.service.model.service.invariantUuid,
                         "customerId": $scope.globalCustomerId,
-                        "serviceType": $scope.service.instance.serviceType,
+                        "serviceType": $scope.service.instance.serviceType
                     }
                 ]
             };
