@@ -27,6 +27,7 @@ public class Constants {
     public static final String DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE = "Dropdown permitted options are not according to user permissions.";
     public static final String CONFIRM_BUTTON_TESTS_ID = "confirmButton";
     public static final String CONFIRM_RESUME_DELETE_TESTS_ID = "confirmResumeDeleteButton";
+    public static final String SOFT_DELETE_TESTS_ID = "softDeleteButton";
     public static final String CLOSE_BUTTON_TEXT = "Close";
     public static final String CANCEL_BUTTON_TEST_ID = "cancelButton";
     public static final String COMMIT_CLOSE_BUTTON_ID = "msoCommitDialogCloseButton";
@@ -59,8 +60,10 @@ public class Constants {
     public static final String DELETE_CONFIGURATION_BUTTON = "deleteConfigurationButton";
     public static final String ACTIVATE_DEACTIVATE_BUTTON = "activateDeactivateButton";
     public static final String ENABLE_DISABLE_BUTTON = "enableDisableButton";
+    public static final String SUBSCRIBER_SELECT_ID= "subscriber-name-select";
 
     public static final String PNF_SERVICE_TYPE = "pnf";
+    public static final String GR_API = "GR_API";
 
     public class bugFixes{
         public static final String HEADER_CONTAINER = "headerContainer";
@@ -96,11 +99,11 @@ public class Constants {
         public static final String newModalWorkFlowInputId = "workflow";
         public static final String newModalConfigUpdateInputId = "config-update-input";
         public static final String newModalTargetVersionInputsClass = "vnf-versions-select-as-text";
-        public static final String newModalSubscriberText = "FIREWALL/MISC";
-        public static final String newModalServiceTypeText = "vFlowLogic";
+        public static final String newModalSubscriberText = "CRAIG/ROBERTS";
+        public static final String newModalServiceTypeText = "vRichardson";
         public static final String newModalVnfTypeText = "vMobileDNS";
         public static final String newModalSourceVersionText = "1.0";
-        public static final String newModalVnfNameText = "zrdm3amdns02test2";
+        public static final String newModalVnfNameText = "zolson3amdns02test2";
         public static final String newModalWorkflowText = "VNF Config Update";
 
 
@@ -168,11 +171,11 @@ public class Constants {
         public static final String AVAILABLE_MODELS_TREE = "available-models-tree";
         public static final String DRAWING_BOARD_TREE = "drawing-board-tree";
         public static final String NODE_PREFIX = "node-";
-        public static final String SEARCH_LEFT_TREE = "search-left-tree";
+        public static final String SEARCH_LEFT_TREE = "search-left-tree-input";
         public static final String ADD_BUTTON = "-add-btn";
         public static final String CONTEXT_MENU_BUTTON = "-menu-btn";
         public static final String ALERT_ICON = "-alert-icon";
-        public static final String CONTEXT_MENU_ITEM = "context-menu-item";
+        public static final String CONTEXT_MENU_EDIT = "context-menu-edit";
         public static final String TOGGLE_CHILDREN = "toggle-children";
         public static final String TREE_NODE_LEAF = "tree-node-leaf";
         public static final String HIGHLIGHTED_COLOR = "rgb(0, 159, 219)";
@@ -182,6 +185,8 @@ public class Constants {
         public static final String CONTEXT_MENU_HEADER_DELETE_ITEM = "context-menu-header-delete-item";
         public static final String SERVICE_QUANTITY = "servicesQuantity";
         public static final String BACK_BUTTON = "backBtn";
+        public static final String STOP_INSTANTIATION_BUTTON = "button-stop-instantiation";
+        public static final String CANCEL_BUTTON = "button-cancel";
         public static final String DEPLOY_BUTTON = "deployBtn";
         public static final String DEFAULT_SERVICE_NAME = "<Automatically Assigned>";
         public static final String SERVICE_NAME = "serviceName";
@@ -190,16 +195,20 @@ public class Constants {
         public static final String SERVICE_INSTANCE_TEST_ID = "serviceInstance";
         public static final String QUANTITY_LABEL_TEST_ID = "quantityLabel";
         public static final String QUANTITY_LABEL_VALUE = "Scale Times:";
+        public static final String CONTEXT_MENU_SHOW_AUDIT = "context-menu-showAuditInfo";
 
 
 
     }
 
     public class InstantiationStatus {
+        public static final String CONTEXT_MENU_REMOVE = "context-menu-remove";
         public static final String CONTEXT_MENU_DELETE = "context-menu-delete";
         public static final String CONTEXT_MENU_HIDE = "context-menu-hide";
         public static final String CONTEXT_MENU_HEADER_OPEN_ITEM = "context-menu-open";
+        public static final String CONTEXT_MENU_RETRY = "context-menu-retry";
         public static final String CONTEXT_MENU_HEADER_AUDIT_INFO_ITEM = "context-menu-audit-info";
+        public static final String CONTEXT_MENU_DUPLICATE = "context-menu-duplicate";
         public static final String TD_JOB_STATUS_ICON = "jobStatusIcon";
     }
 
@@ -270,7 +279,7 @@ public class Constants {
         public static final String CREATE_SERVICE_INSTANCE = "Create Service Instance";
         public static final String AIC_OPTION_CLASS = "aicZoneOption";
         public static class NewServicePopup {
-            public static final String SET_BUTTON = "service-form-set";
+            public static final String SET_BUTTON = "form-set";
             public static final String CANCEL_BUTTON = "cancelButton";
             public static final String INSTANCE_NAME = "instanceName";
             public static final String SERVICE_UUID = "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd";
@@ -287,7 +296,7 @@ public class Constants {
             }};
         }
 
-        public static final String CREATE_SERVICE_INSTANCE_MACRO_MODAL = "create a new service instance";
+        public static final String CREATE_SERVICE_INSTANCE_MACRO_MODAL = "Set a new service instance";
 
 
     }
@@ -366,6 +375,7 @@ public class Constants {
         public static final String DELETE_VF_MODULE_BUTTON_TEST_ID = "deleteVFModuleButton-";
         public static final String DELETE_VNF_VOLUME_GROUP_BUTTON_TEST_ID = "deleteVNFVolumeGroupButton";
         public static final String ACTIVATE_BUTTON_TEST_ID = "activateButton";
+        public static final String ACTIVATE_FABRIC_CONFIGURATION_BUTTON_TEST_ID = "activateFabricConfigurationButton";
         public static final String SHOW_ASSIGNMENTS_BUTTON_TEST_ID = "showAssignmentsButton";
         public static final String OPTION_IN_DROPDOWN_NOT_EXISTS = "the option %s in dropdown %s not exists";
         public static final String DISSOCIATE_BTN_CLASS = "dissociate-pnf";
@@ -445,6 +455,7 @@ public class Constants {
         public static final String INFO_TEST_ID_PREFIX = "info-test-data-id-";
         public static final String SERVIICE_NAME_KEY = "ServiceName";
         public static final String ROLLBACK_ON_FAILURE_ID = "rollbackOnFailure";
+        public static final String ROLLBACK_ON_FAILURE_TEST_ID = "rollback";
         public static final String SUBSCRIBER_NAME_KEY = "SubscriberName";
         public static final String SERVICE_INSTANCE_NAME = "ServiceInstanceName";
         public static final String MODEL_NAME = "ModelName";
@@ -491,10 +502,10 @@ public class Constants {
 
     public class Users {
         public static final String READONLY = "readonly";
-        public static final String USP_VOICE_VIRTUAL_USP = "uspVoiceVirtualUsp";
-        public static final String MOBILITY_MOBILITY = "mobilityMobility";
-        public static final String FIREWALL_MISC_AIM_TRANSPORT = "FIREWALL_AIM_Trans";
-        public static final String MOBILITY_VMMSC = "mobilityVMMSC";
+        public static final String SILVIA_ROBBINS_TYLER_SILVIA = "uspVoiceVirtualUsp";
+        public static final String EMANUEL_EMANUEL = "emanuelEmanuel";
+        public static final String CRAIG_ROBERTS_AIM_TRANSPORT = "FIREWALL_AIM_Trans";
+        public static final String EMANUEL_vWINIFRED = "emanuelvWINIFRED";
         public static final String SUPRE_USER = "su";
     }
 
@@ -502,18 +513,17 @@ public class Constants {
 
         //separated simulated json files according to pages
         public class SearchForServiceInstance {
-            public static final String GET_FULL_SUBSCRIBERS = "search_for_service_instance/aai_get_full_subscribers.json";
             public static final String GET_SERVICES = "search_for_service_instance/aai_get_services.json";
             public static final String FILTER_SERVICE_INSTANCE_BY_ID = "search_for_service_instance/aai_filter_service_instance_by_id.json";
             public static final String FILTER_CR_SERVICE_INSTANCE_BY_ID = "search_for_service_instance/aai_filter_cr_service_instance_by_id.json";
             public static final String FILTER_SERVICE_INSTANCE_BY_ID_2 = "search_for_service_instance/aai_filter_service_instance_by_id_2.json";
             public static final String FILTER_SERVICE_INSTANCE_BY_ID_PM = "search_for_service_instance/aai_filter_service_instance_by_id_test_sssdad.json";
             public static final String FILTER_SERVICE_INSTANCE_BY_ID_NO_MODEL_VER_ID = "search_for_service_instance/aai_filter_service_instance_by_id_test_without_model_ver_id.json";
-            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE = "search_for_service_instance/aai_get_subscribers_for_customer_USP-VOICE.json";
-            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE_CR = "search_for_service_instance/aai_get_subscribers_for_customer_USP-VOICE_cr.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS = "search_for_service_instance/aai_get_subscribers_for_customer_SILVIA-ROBBINS.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS_CR = "search_for_service_instance/aai_get_subscribers_for_customer_SILVIA-ROBBINS_cr.json";
             public static final String GET_MSO_INSTANCE_ORCH_STATUS_REQ = "search_for_service_instance/mso_instance_orch_status_req.json";
-            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_Mobility = "search_for_service_instance/aai_get_subscribers_for_customer_Mobility.json";
-            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_FIREWALL_MISC = "search_for_service_instance/aai_get_subscribers_for_customer_FIREWALL-MISC.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_Emanuel = "search_for_service_instance/aai_get_subscribers_for_customer_Emanuel.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS = "search_for_service_instance/aai_get_subscribers_for_customer_CRAIG-ROBERTS.json";
             public static final String NAMED_QUERY_VIEW_EDIT = "search_for_service_instance/aai_named_query_for_view_edit.json";
             public static final String NAMED_QUERY_CR_VIEW_EDIT = "search_for_service_instance/aai_named_query_for_cr_view_edit.json";
             public static final String NAMED_QUERY_VIEW_EDIT_2 = "search_for_service_instance/aai_named_query_for_view_edit_2.json";
@@ -525,7 +535,7 @@ public class Constants {
 
         public class AddSubinterface {
             public static final String FILTER_VFC_IG_SERVICE_INSTANCE_BY_ID = "add_subinterface/aai_filter_vfc_ig_service_instance_by_id.json";
-            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE_VFC_IG = "add_subinterface/aai_get_subscribers_for_customer_USP-VOICE_vfc_ig.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS_VFC_IG = "add_subinterface/aai_get_subscribers_for_customer_SILVIA-ROBBINS_vfc_ig.json";
             public static final String GET_MSO_VFC_IG_INSTANCE_ORCH_STATUS_REQ = "add_subinterface/mso_vfc_ig_instance_orch_status_req.json";
             public static final String NAMED_QUERY_VFC_IG_VIEW_EDIT = "add_subinterface/aai_named_query_for_vfc_ig_view_edit.json";
             public static final String GET_SDC_CATALOG_SERVICE_VID_TEST_444 = "add_subinterface/get_sdc_catalog_services_vid-test-333.json";
@@ -555,16 +565,6 @@ public class Constants {
             public static final String GET_PNF_INSTANCES = "create_configuration/aai_get_pnf_instances_by_region.json";
             public static final String GET_MODEL_BY_ONE_INVARIANT_ID = "create_configuration/aai_get_model_by_one_invariant_id.json";
             public static final String GET_MODEL_BY_2_INVARIANT_IDS = "create_configuration/aai_get_model_by_2_invariant_ids.json";
-            public static final String MSO_CREATE_CONFIGURATION = "create_configuration/mso_create_configuration_pProbe.json";
-            public static final String MSO_CREATE_CONFIGURATION_ORCH_REQ = "create_configuration/mso_create_configuration_orch_req.json";
-            public static final String MSO_CREATE_CONFIGURATION_ERROR = "create_configuration/mso_create_configuration_pProbe_error.json";
-            public static final String MSO_UNASSIGN_ACTIVE_SERVICE = "mso_unassign_service.json";
-            public static final String MSO_DELETE_CONFIGURATION = "create_configuration/mso_delete_configuration.json";
-            public static final String MSO_ACTIVATE_CONFIGURATION = "create_configuration/mso_activate_configuration.json";
-            public static final String MSO_ENABLE_DISABLE_PORT = "create_configuration/mso_enable_disable_port.json";
-
-
-            public static final String MSO_DEACTIVATE_CONFIGURATION = "create_configuration/mso_activate_configuration.json";
         }
 
         public class addNetwork{
@@ -574,17 +574,14 @@ public class Constants {
             public static final String AAI_NAMED_QUERY_FOR_VIEW_EDIT ="add_network/aai_named_query_for_view_edit_test_network-vl.json";
             public static final String AAI_GET_TENANTS = "add_network/aai_get_tenants.json";
             public static final String MSO_ADD_NETWORK_ERROR = "add_network/mso_add_network_error.json";
-            public static final String MSO_ADD_NETWORK = "add_network/mso_add_network.json";
-            public static final String MSO_ADD_NETWORK_ORCH_REQ = "add_network/mso_add_network_orch_req.json";
         }
 
         public class CreateNewServiceInstance {
-            public static final String GET_FULL_SUBSCRIBES = "create_new_instance/aai_get_full_subscribers.json";
             public static final String GET_SERVICES = "create_new_instance/aai_get_services.json";
-            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_MSO_1610_ST = "create_new_instance/aai_get_subscribers_for_customer_MSO_1610_ST.json";
-            public static final String GET_MODELS_BY_SERVICE_TYPE_MSO_1610_ST = "create_new_instance/aai_get_models_by_service_type_MSO_1610_ST.json";
-            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE = "create_new_instance/aai_get_subscribers_for_customer_USP_VOICE.json";
-            public static final String GET_MODELS_BY_SERVICE_TYPE_USP_VOICE= "create_new_instance/aai_get_models_by_service_type_USP_VOICE.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_CAR_2020_ER = "create_new_instance/aai_get_subscribers_for_customer_CAR_2020_ER.json";
+            public static final String GET_MODELS_BY_SERVICE_TYPE_CAR_2020_ER = "create_new_instance/aai_get_models_by_service_type_CAR_2020_ER.json";
+            public static final String GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS = "create_new_instance/aai_get_subscribers_for_customer_SILVIA_ROBBINS.json";
+            public static final String GET_MODELS_BY_SERVICE_TYPE_SILVIA_ROBBINS= "create_new_instance/aai_get_models_by_service_type_SILVIA_ROBBINS.json";
 
             public class deploy {
                 public static final String SDC_GET_CATALOG = "create_new_instance/deploy/get_sdc_catalog_services_1707vidnf.json";

@@ -1,6 +1,6 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-public class PresetMSODeleteNetwork extends PresetMSOBaseDelete {
+public class PresetMSODeleteNetwork extends PresetMSOBaseDeleteWithCloudConfiguration {
     private final String serviceInstanceId;
     private final String networkInstanceId;
     public static final String DEFAULT_SERVICE_INSTANCE_ID = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
@@ -11,13 +11,13 @@ public class PresetMSODeleteNetwork extends PresetMSOBaseDelete {
     }
 
     public PresetMSODeleteNetwork(String requestId, String serviceInstanceId, String networkInstanceId) {
-        super(requestId);
+        super(requestId, "network");
         this.serviceInstanceId = serviceInstanceId != null ? serviceInstanceId : DEFAULT_SERVICE_INSTANCE_ID;
         this.networkInstanceId = networkInstanceId != null ? networkInstanceId : DEFAULT_NETWORK_INSTANCE_ID;
     }
 
     @Override
     public String getReqPath() {
-        return getRootPath() + serviceInstanceId + "/networks/" + networkInstanceId;
+        return "/mso/serviceInstantiation/v./serviceInstances/" + serviceInstanceId + "/networks/" + networkInstanceId;
     }
 }

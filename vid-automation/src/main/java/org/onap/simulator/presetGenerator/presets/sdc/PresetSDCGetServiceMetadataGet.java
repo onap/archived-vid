@@ -1,11 +1,13 @@
 package org.onap.simulator.presetGenerator.presets.sdc;
 
 import org.springframework.http.HttpMethod;
+import vid.automation.test.infra.ModelInfo;
 
-/**
- * Created by itzikliderman on 21/12/2017.
- */
 public class PresetSDCGetServiceMetadataGet extends SdcPresetWithModelVersionId {
+
+    public PresetSDCGetServiceMetadataGet(ModelInfo modelInfo) {
+        this(modelInfo.modelVersionId, modelInfo.modelInvariantId, modelInfo.zipFileName);
+    }
 
     public PresetSDCGetServiceMetadataGet(String modelVersionId, String modelInvariantId, String zipFileName) {
         super(modelVersionId);
@@ -25,7 +27,7 @@ public class PresetSDCGetServiceMetadataGet extends SdcPresetWithModelVersionId 
                 "        \"name\": \"action-data\"," +
                 "        \"version\": \"1.0\"," +
                 "        \"toscaModelURL\": \"./"+zipFileName+"\"," +
-                "        \"category\": \"Mobility\"," +
+                "        \"category\": \"Emanuel\"," +
                 "        \"lifecycleState\": \"CERTIFIED\"," +
                 "        \"lastUpdaterUserId\": \"rg276b\"," +
                 "        \"lastUpdaterFullName\": null," +

@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -59,6 +60,7 @@ public class HealthStatusTest extends VidBaseTestCase {
 
     private void refreshStatus() {
         vidBasePage.navigateTo("app/ui/#/healthStatus");
+        GeneralUIUtils.ultimateWait();
         Click.byClass("icon-refresh");
 
     }

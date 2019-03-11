@@ -30,7 +30,7 @@ public class PresetMSODeleteInstanceOrchestrationRequestGet extends BaseMSOPrese
     }
 
     public String getReqPath() {
-        return getRootPath() + "/orchestrationRequests/v5/" + requestId;
+        return getRootPath() + "/orchestrationRequests/v./" + requestId;
     }
 
     @Override

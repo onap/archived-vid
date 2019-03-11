@@ -3,6 +3,8 @@ package org.onap.simulator.presetGenerator.presets.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 public class Subscriber {
 
     @JsonProperty("global-customer-id")
@@ -16,4 +18,7 @@ public class Subscriber {
 
     @JsonProperty("resource-version")
     public String resourceVersion;
+
+    @JsonProperty("relationship-list")
+    public Map relationshipList;
 }

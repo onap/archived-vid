@@ -1,22 +1,16 @@
 package org.onap.vid.model.mso;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import java.util.List;
 
 
 public class Relationship {
 	
-	@JsonProperty("related-to")
 	public String relatedTo;
 	
-	@JsonProperty("related-link")
 	public String relatedLink;
 	
-	@JsonProperty("relationship-data")
 	public List<RelationshipData> relationshipData;
 	
-	@JsonProperty("related-to-property")
 	public List<RelatedToProperty> relatedToProperty;
 
 	

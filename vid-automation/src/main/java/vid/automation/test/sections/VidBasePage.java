@@ -1,17 +1,10 @@
 package vid.automation.test.sections;
 
-import com.aventstack.extentreports.Status;
-import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.execute.setup.ExtentTestActions;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
 
+import com.aventstack.extentreports.Status;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,10 +13,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
-
-import static org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
+import org.junit.Assert;
+import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 
 public class VidBasePage {
+
 
     public VidBasePage setInstanceName(String name) {
         setInputText(Constants.INSTANCE_NAME_SELECT_TESTS_ID, name);
@@ -97,6 +104,7 @@ public class VidBasePage {
 
     public VidBasePage clickDeployServiceButtonByServiceUUID(String serviceUUID) {
         Input.replaceText(serviceUUID, Constants.BROWSE_SEARCH);
+        GeneralUIUtils.ultimateWait();
         String elementTestId = Constants.DEPLOY_BUTTON_TESTS_ID_PREFIX + serviceUUID;
         GeneralUIUtils.clickOnElementByTestId(elementTestId, 30);
         GeneralUIUtils.ultimateWait();
@@ -158,6 +166,11 @@ public class VidBasePage {
         return this;
     }
 
+    public VidBasePage clickButtonByTestId(String testId) {
+        GeneralUIUtils.clickOnElementByTestId(testId);
+        return this;
+    }
+
     public VidBasePage clickCommitCloseButton() {
         GeneralUIUtils.clickOnElementByTestId(Constants.COMMIT_CLOSE_BUTTON_ID, 30);
         return this;
@@ -174,11 +187,13 @@ public class VidBasePage {
 
 
     public VidBasePage selectLcpRegion(String lcpRegion) {
+        GeneralUIUtils.ultimateWait();
         SelectOption.byValue(lcpRegion, Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID);
         return this;
     }
 
     public VidBasePage selectTenant(String tenant) {
+        GeneralUIUtils.ultimateWait();
         SelectOption.byValue(tenant, Constants.ViewEdit.TENANT_SELECT_TESTS_ID);
         return this;
     }
@@ -263,12 +278,12 @@ public class VidBasePage {
        Assert.assertEquals(expectedText, alertText);
        Click.acceptAlert();
     }
-    public void goToIframe() {
+    public static void goToIframe() {
         final long start = System.currentTimeMillis();
         goOutFromIframe();
         GeneralUIUtils.ultimateWait();
         System.out.println("ultimateWait waited " + (System.currentTimeMillis() - start));
-        final WebDriver iframeReady = new WebDriverWait(getDriver(), 10).until(
+        final WebDriver iframeReady = new WebDriverWait(getDriver(), 20).until(
                 ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.tagName("iframe"))
         );
         Assert.assertNotNull("failed going into iframe", iframeReady);
@@ -278,12 +293,41 @@ public class VidBasePage {
         System.out.println("ultimateWait waited " + (System.currentTimeMillis() - start2));
     }
 
-    public void goOutFromIframe(){
+    public static void goOutFromIframe(){
         getDriver().switchTo().defaultContent();
     }
 
 
+    public void verifyOpenOldViewEdit(String serviceInstanceName, String serviceInstanceId, boolean openShouldBeEnabled, boolean checkPortMirroring, boolean checkAddVnf) {
+        InstantiationStatusPage.checkMenuItem(serviceInstanceName, Constants.InstantiationStatus.CONTEXT_MENU_HEADER_OPEN_ITEM, openShouldBeEnabled, contextMenuOpen -> {
+            Click.byTestId(contextMenuOpen);
+            VidBasePage.goOutFromIframe();
+            GeneralUIUtils.ultimateWait();
 
+            Wait.byText("View/Edit Service Instance");
+            if (serviceInstanceId != null) {
+                Wait.byText(serviceInstanceId);
+            }
+            Wait.byText(serviceInstanceName);
+
+            if (checkPortMirroring) {
+                Wait.byText("Add node instance");
+                Wait.byText("i'm a port");
+            }
+
+            if (checkAddVnf) {
+                // Validate bug fix - we open old popup in view/edit
+                Click.byTestId("addVNFButton");
+                Click.byTestId("addVNFOption-2017-488_PASQUALE-vPE 0");
+                assertThat(Get.byTestId("create-modal-title").getText(), containsString("a la carte"));
+                Click.byTestId("cancelButton");
+                //end of bug fix validation
+            }
+
+            screenshotDeployDialog("view-edit-" + serviceInstanceName);
+            SideMenu.navigateToMacroInstantiationStatus();
+        });
+    }
 
 
     public static WebDriverWait waitUntilDriverIsReady(int time) {

@@ -1,15 +1,20 @@
 package org.onap.vid.api;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import org.apache.commons.text.StringEscapeUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfiguration;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfigurationErrorResponse;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndCloudDelete;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndCloudDeleteErrorResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
 
@@ -18,11 +23,15 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
     public static final String MSO_DEACTIVATE_SERVICE_INSTANCE = "mso/mso_deactivate_service_instance/f36f5734-e9df-4fbf-9f35-61be13f028a1";
     public static final String MSO_DELETE_SERVICE_INSTANCE = "mso/mso_delete_svc_instance/f36f5734-e9df-4fbf-9f35-61be13f028a1?serviceStatus=active";
     public static final String MSO_UNASSIGN_SERVICE_INSTANCE = "mso/mso_delete_svc_instance/f36f5734-e9df-4fbf-9f35-61be13f028a1?serviceStatus=created";
+    public static final String MSO_ACTIVATE_FABRIC_CONFIGURATION = "mso/mso_activate_fabric_configuration/f36f5734-e9df-4fbf-9f35-61be13f028a1";
+    public static final String MSO_DEACTIVATE_AND_CLOUD_DELETE = "mso/mso_vfmodule_soft_delete/f36f5734-e9df-4fbf-9f35-61be13f028a1/vnfId/vfModuleId";
 
     //Request Details
     private static final String ACTIVATE_SERVICE_REQUEST_DETAILS = "registration_to_simulator/body_jsons/mso_request_activate_service_instance.json";
     private static final String DEACTIVATE_SERVICE_REQUEST_DETAILS = "registration_to_simulator/body_jsons/mso_request_deactivate_service_instance.json";
     private static final String DELETE_AND_UNASSIGN_SERVICE_REQUEST_DETAILS = "registration_to_simulator/body_jsons/mso_request_delete_or_unassign_service_instance.json";
+    private static final String ACTIVATE_FABRIC_CONFIGURATION_REQUEST_DETAILS = "registration_to_simulator/body_jsons/mso_request_activate_fabric_configuration.json";
+    private static final String DEACTIVATE_AND_CLOUD_DELETE_DATA = "registration_to_simulator/body_jsons/mso_request_deactivate_and_cloud_delete.json";
 
     //Jsons
     private static final String ACTIVATE_OK_JSON = "activate_service_instance.json";
@@ -35,7 +44,8 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
 
     //Expected Responses
     private static final String EXPECTED_SUCCESS_MSO_RESPONSE = "{\"requestReferences\": {\"instanceId\": \"f36f5734-e9df-4fbf-9f35-61be13f028a1\", \"requestId\": \"b6dc9806-b094-42f7-9386-a48de8218ce8\"}}";
-    private static final String EXPECTED_ERROR_MSO_RESPONSE = "{\"error\":\"222\",\"message\":\"error message\"}";
+    private static final String EXPECTED_ERROR_MSO_RESPONSE = "{\"message\":\"error message\",\"error\":\"222\"}";
+
 
     @Test
     public void testActivateServiceInstanceSucceed() throws Exception {
@@ -117,5 +127,38 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
                 ImmutableMap.of("500", Integer.toString(errorCode),"\"ERROR_PAYLOAD\"", StringEscapeUtils.escapeJson(EXPECTED_ERROR_MSO_RESPONSE)),
                 buildUri(MSO_DEACTIVATE_SERVICE_INSTANCE), requestBody, errorCode, EXPECTED_ERROR_MSO_RESPONSE, HttpMethod.POST);
 
+    }
+
+    @Test
+    public void testActivateFabricConfigurationSucceed() throws Exception {
+        String requestBody = TestUtils.convertRequest(objectMapper, ACTIVATE_FABRIC_CONFIGURATION_REQUEST_DETAILS);
+        callMsoWithFineRequest(new PresetMSOActivateFabricConfiguration("f36f5734-e9df-4fbf-9f35-61be13f028a1", "b6dc9806-b094-42f7-9386-a48de8218ce8"), buildUri(MSO_ACTIVATE_FABRIC_CONFIGURATION), requestBody,
+                HttpStatus.ACCEPTED.value(), EXPECTED_SUCCESS_MSO_RESPONSE, HttpMethod.POST);
+    }
+
+    @Test(dataProvider = "errorCodes")
+    public void testActivateFabricConfigurationFailed(int errorCode) throws IOException, URISyntaxException {
+        String requestBody = TestUtils.convertRequest(objectMapper, ACTIVATE_FABRIC_CONFIGURATION_REQUEST_DETAILS);
+        callMsoWithSimulatedErrorResponse(new PresetMSOActivateFabricConfigurationErrorResponse("f36f5734-e9df-4fbf-9f35-61be13f028a1", errorCode),
+                buildUri(MSO_ACTIVATE_FABRIC_CONFIGURATION), requestBody, errorCode, EXPECTED_ERROR_MSO_RESPONSE, HttpMethod.POST);
+    }
+
+    @Test
+    public void testDeactivateAndCloudDeleteSucceed() throws Exception {
+        String requestBody = TestUtils.convertRequest(objectMapper, DEACTIVATE_AND_CLOUD_DELETE_DATA);
+        callMsoWithFineRequest(ImmutableList.of(
+                    new PresetMSODeactivateAndCloudDelete("f36f5734-e9df-4fbf-9f35-61be13f028a1", "vnfId", "vfModuleId", "b6dc9806-b094-42f7-9386-a48de8218ce8", "irma-aic"),
+                    PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC),
+                buildUri(MSO_DEACTIVATE_AND_CLOUD_DELETE), requestBody,
+                HttpStatus.ACCEPTED.value(), EXPECTED_SUCCESS_MSO_RESPONSE, HttpMethod.POST);
+    }
+
+    @Test(dataProvider = "errorCodes")
+    public void testDeactivateAndCloudDeleteFailed(int errorCode) throws IOException, URISyntaxException {
+        String requestBody = TestUtils.convertRequest(objectMapper, DEACTIVATE_AND_CLOUD_DELETE_DATA);
+        callMsoWithSimulatedErrorResponse(ImmutableList.of(
+                    new PresetMSODeactivateAndCloudDeleteErrorResponse("f36f5734-e9df-4fbf-9f35-61be13f028a1", "vnfId", "vfModuleId", errorCode, "irma-aic"),
+                    PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC),
+                buildUri(MSO_DEACTIVATE_AND_CLOUD_DELETE), requestBody, errorCode, EXPECTED_ERROR_MSO_RESPONSE, HttpMethod.POST);
     }
 }

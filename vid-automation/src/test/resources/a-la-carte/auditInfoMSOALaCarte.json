@@ -1,0 +1,18 @@
+[
+  {
+    "instanceName": "instance name 1",
+    "instanceType" : "service",
+    "jobStatus": "COMPLETE",
+    "requestId": "405652f4-ceb3-4a75-9474-8aea71480a77",
+    "additionalInfo": "Service Instance was created successfully.",
+    "final": "false"
+  },
+  {
+    "instanceName": "instance name 2",
+    "instanceType" : "service",
+    "jobStatus": "COMPLETE",
+    "requestId": "688d40cd-6bfd-4a4b-95f4-5e4ffa6d6fc5",
+    "additionalInfo": "Vnf has been created successfully.",
+    "final": "false"
+  }
+]

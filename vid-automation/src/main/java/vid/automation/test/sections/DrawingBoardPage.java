@@ -1,7 +1,8 @@
 package vid.automation.test.sections;
 
 import com.google.common.collect.ImmutableList;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import com.google.common.collect.Sets;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -12,9 +13,9 @@ import vid.automation.test.infra.Click;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.Wait;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -189,7 +190,7 @@ public class DrawingBoardPage extends VidBasePage {
 
     public void checkContextMenu(String node){
         String contextMenuButton = Constants.DrawingBoard.NODE_PREFIX + node + Constants.DrawingBoard.CONTEXT_MENU_BUTTON;
-        final String contextMenu = Constants.DrawingBoard.CONTEXT_MENU_ITEM;
+        final String contextMenu = Constants.DrawingBoard.CONTEXT_MENU_EDIT;
 
         checkThatPseudoElementNotExist(contextMenuButton);
         checkThatContextMenuNotExist(contextMenu);
@@ -254,4 +255,33 @@ public class DrawingBoardPage extends VidBasePage {
         Assert.assertEquals(Get.byTestId(SERVICE_QUANTITY).getText(), (String.valueOf(expectedQuantity)));
     }
 
+    public static class  ServiceStatusChecker implements Predicate<Boolean> {
+        private String actualInstanceName;
+        private Set<String> expectedStatuses;
+        private Set<String> columnClassesSet;
+
+        public ServiceStatusChecker(String actualInstanceName, Set<String> expectedStatuses) {
+            this.actualInstanceName = actualInstanceName;
+            this.expectedStatuses = expectedStatuses;
+        }
+
+        @Override
+        public boolean test(Boolean noMeaning) {
+            InstantiationStatusPage.clickRefreshButton();
+            final WebElement row = InstantiationStatusPage.getInstantiationStatusRow(actualInstanceName);
+            if (row == null) {
+                System.err.println("**********************" + actualInstanceName + "************************************************");
+                columnClassesSet = Collections.singleton(actualInstanceName + " NOT FOUND");
+                return false; // treat missing row as if test condition not fulfilled
+            } else {
+                columnClassesSet = new HashSet<>(Arrays.asList(
+                        row.findElements(By.xpath(".//*[@id='" + "jobStatus" + "']")).get(0).getAttribute("class").split(" ")));
+                return !(Sets.intersection(expectedStatuses, columnClassesSet).isEmpty());
+            }
+        }
+
+        public Set<String> getColumnClassesSet() {
+            return columnClassesSet;
+        }
+    }
 }

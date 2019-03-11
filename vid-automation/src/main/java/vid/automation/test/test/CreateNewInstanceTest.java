@@ -1,6 +1,8 @@
 package vid.automation.test.test;
 
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import java.io.IOException;
+import java.util.List;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -15,11 +17,6 @@ import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class CreateNewInstanceTest extends CreateInstanceDialogBaseTest {
     private ServicesService servicesService = new ServicesService();
@@ -37,22 +34,22 @@ public class CreateNewInstanceTest extends CreateInstanceDialogBaseTest {
         }
 
         SimulatorApi.clearAll();
-        BulkRegistration.createNewServiceInstance("USP VOICE");
+        BulkRegistration.createNewServiceInstance("SILVIA ROBBINS");
 
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
 
         SideMenu.navigateToCreateNewServicePage();
 
         CreateNewInstancePage createNewInstancePage = new CreateNewInstancePage();
 
-        String subscriberName = "USP VOICE";
+        String subscriberName = "SILVIA ROBBINS";
         assertDropdownPermittedItemsByLabel(user.subscriberNames, Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
         createNewInstancePage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
         createNewInstancePage.clickSubmitButton();
         assertSuccessfulSelection(Constants.CreateNewInstance.SELECTED_SUBSCRIBER_NAME_TEST_ID,  subscriberName);
 
-        String serviceType = "VIRTUAL USP";
+        String serviceType = "TYLER SILVIA";
         assertDropdownPermittedItemsByName(user.serviceTypes, Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS);
         createNewInstancePage.selectServiceTypeByName(serviceType);
         createNewInstancePage.clickSubmitButton();
@@ -68,7 +65,7 @@ public class CreateNewInstanceTest extends CreateInstanceDialogBaseTest {
         validateServiceCreationDialog(service, subscriberName, serviceType);
 
         createNewInstancePage.setInstanceName(instanceName);
-        SelectOption.byTestIdAndVisibleText("MetroPacketCore", Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
+        SelectOption.byTestIdAndVisibleText("WayneHolland", Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
         SelectOption.byTestIdAndVisibleText("x1", Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
         createNewInstancePage.selectSuppressRollback("false");
         createNewInstancePage.clickConfirmButton();
@@ -79,20 +76,20 @@ public class CreateNewInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
-    public void testSearchServicesWithSubscriberMSO_1610_ST() throws Exception {
+    public void testSearchServicesWithSubscriberCAR_2020_ER() throws Exception {
         SimulatorApi.clearAll();
-        BulkRegistration.createNewServiceInstance("MSO_1610_ST");
+        BulkRegistration.createNewServiceInstance("CAR_2020_ER");
 
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
 
         SideMenu.navigateToCreateNewServicePage();
 
         CreateNewInstancePage createNewInstancePage = new CreateNewInstancePage();
 
-        String subscriberName = "MSO_1610_ST";
+        String subscriberName = "CAR_2020_ER";
         assertDropdownPermittedItemsByLabel(user.subscriberNames, Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
-        createNewInstancePage.selectSubscriberById("MSO_1610_ST");
+        createNewInstancePage.selectSubscriberById("CAR_2020_ER");
         createNewInstancePage.clickSubmitButton();
         assertSuccessfulSelection(Constants.CreateNewInstance.SELECTED_SUBSCRIBER_NAME_TEST_ID,  subscriberName);
 

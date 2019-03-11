@@ -19,10 +19,10 @@
             "model-ver":[
               {
                 "model-version-id":"76e908e0-5201-44d2-a3e2-9e6128d05820",
-                "model-name":"mdns_2017_1011",
+                "model-name":"CHARLOTTE_2017_1011",
                 "model-version":"1.0",
                 "distribution-status": "DISTRIBUTION_COMPLETE_ERROR",
-                "model-description":"mdns_2017_1011",
+                "model-description":"CHARLOTTE_2017_1011",
                 "resource-version":"1507747452925",
                 "model-elements":{
                   "model-element":[
@@ -87,9 +87,9 @@
               },
               {
                 "model-version-id":"90caad85-5d5c-4caf-9ddd-c05f6e088ba2",
-                "model-name":"mdns_2017_1011",
+                "model-name":"CHARLOTTE_2017_1011",
                 "model-version":"3.0",
-                "model-description":"mdns_2017_1011",
+                "model-description":"CHARLOTTE_2017_1011",
                 "resource-version":"1507920105086",
                 "model-elements":{
                   "model-element":[
@@ -176,9 +176,9 @@
               },
               {
                 "model-version-id":"afacccf6-397d-45d6-b5ae-94c39734b168",
-                "model-name":"mdns_2017_1011",
+                "model-name":"CHARLOTTE_2017_1011",
                 "model-version":"4.0",
-                "model-description":"mdns_2017_1011",
+                "model-description":"CHARLOTTE_2017_1011",
                 "resource-version":"1509315798030",
                 "model-elements":{
                   "model-element":[
@@ -265,9 +265,9 @@
               },
               {
                 "model-version-id":"b217c612-7fcf-484c-861b-df0a5c4b5bcb",
-                "model-name":"mdns_2017_1011",
+                "model-name":"CHARLOTTE_2017_1011",
                 "model-version":"2.0",
-                "model-description":"mdns_2017_1011",
+                "model-description":"CHARLOTTE_2017_1011",
                 "resource-version":"1507830869475",
                 "model-elements":{
                   "model-element":[
@@ -341,9 +341,9 @@
             "model-ver": [
               {
                 "model-version-id": "0903e1c0-8e03-4936-b5c2-260653b96413",
-                "model-name": "mdns_2017_1011",
+                "model-name": "CHARLOTTE_2017_1011",
                 "model-version": "1.0",
-                "model-description": "mdns_2017_1011",
+                "model-description": "CHARLOTTE_2017_1011",
                 "distribution-status": "DISTRIBUTION_COMPLETE_ERROR",
                 "resource-version": "1507747452925",
                 "model-elements": {

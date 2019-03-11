@@ -1,7 +1,7 @@
 package org.onap.vid.model.probe;
 
 public class ExternalComponentStatus {
-    public enum Component {AAI, MSO, SCHEDULER}
+    public enum Component {AAI, MSO, SDC, SCHEDULER}
     private Component component;
     private boolean available;
     private HttpRequestMetadata metadata;

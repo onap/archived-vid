@@ -1,12 +1,10 @@
 package vid.automation.test.services;
 
-import com.google.common.primitives.Ints;
-import org.apache.commons.lang3.StringUtils;
-import vid.automation.test.model.User;
-import vid.automation.test.model.UsersObject;
-import vid.automation.test.utils.DB_CONFIG;
-import vid.automation.test.utils.ReadFile;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 
+import com.google.common.primitives.Ints;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,10 +13,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-
-import static org.hamcrest.CoreMatchers.everyItem;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
+import org.apache.commons.lang3.StringUtils;
+import vid.automation.test.model.User;
+import vid.automation.test.model.UsersObject;
+import vid.automation.test.utils.DB_CONFIG;
+import vid.automation.test.utils.ReadFile;
 
 /**
  * Created by itzikliderman on 08/09/2017.
@@ -53,7 +52,7 @@ public class UsersService {
         /*
         Creates a user in the DB, were:
          -  Login user name is a deterministic number, hashed from the userId string, with 3 trailing zeroes,
-            and two leading letters from the userId itself; e.g. "mo26063000" for mobility.
+            and two leading letters from the userId itself; e.g. "mo26063000" for emanuel.
          -  Login user name == user password
          -  'user.credentials.userId' and 'user.credentials.password' input fields are overridden with the generated values.
          -  Roles are "read" (roleId==16) and all other roles in object (like subscriberName___serviceType___tenant).
@@ -77,7 +76,7 @@ public class UsersService {
             user.credentials.password = getLoginId(userId);
 
             stmt.addBatch("INSERT INTO `fn_user` (`USER_ID`, `ORG_USER_ID`, `FIRST_NAME`, `LOGIN_ID`, `LOGIN_PWD`) " +
-                    "VALUES (" + userNumber + ", '" + userId + "', '" + userId + "', '" + user.credentials.userId + "', '" + user.credentials.password + "')");
+                    "VALUES (" + userNumber + ", '" + user.credentials.userId + "', '" + userId + "', '" + user.credentials.userId + "', '" + user.credentials.password + "')");
 
             List<String> roles = user.roles != null ? user.roles : new LinkedList<>();
             roles.add("Standard User");

@@ -1,0 +1,58 @@
+{
+  "serviceNetworks": [
+  ],
+  "vnfNetworks": [
+    {
+      "vnfId": "c015cc0f-0f37-4488-aabf-53795fd93cd3",
+      "networks": [
+        {
+          "networkId": "36517f3d-2bc2-48f5-aaf8-418520c54330",
+          "name": "AAAAABBBBCCCC",
+          "nodeType": "Provider Network",
+          "nodeStatus": "Assigned",
+          "vlans": [
+            {
+              "vlanIdOuter": "34123"
+            },
+            {
+              "vlanIdOuter": "65540"
+            }
+          ]
+        },
+        {
+          "networkId": "12347f3d-2bc2-48f5-aaf8-418520c54330",
+          "name": "DDDEEEE",
+          "nodeType": "Provider Network",
+          "nodeStatus": "Created",
+          "vlans": [
+            {
+              "vlanIdOuter": "12345"
+            },
+            {
+              "vlanIdOuter": "67890"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "vnfId": "c55da606-cf38-42c7-bc3c-be8e23b19299",
+      "networks": [
+        {
+          "networkId": "12aa7f3d-2bc2-48f5-aaf8-418520c54330",
+          "name": "XXXYYYZZZ",
+          "nodeType": "Network",
+          "nodeStatus": "Created",
+          "vlans": [
+            {
+              "vlanIdOuter": "417695"
+            },
+            {
+              "vlanIdOuter": "783243"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

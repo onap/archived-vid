@@ -1,18 +1,15 @@
 package vid.automation.test.sections;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
-import vid.automation.test.infra.Wait;
-import org.hamcrest.core.Is;
 
 import static org.hamcrest.core.Is.is;
-
-import java.util.List;
 
 /**
  * Created by itzikliderman on 13/06/2017.
@@ -70,8 +67,12 @@ public class ViewEditPage extends VidBasePage {
         return this;
     }
 
-    public ViewEditPage selectLCPRegion(String lcpRegion){
-        SelectOption.byValue(lcpRegion, Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID);
+    public ViewEditPage selectLcpRegion(String lcpRegion, String cloudOwner){
+        selectLcpRegion(lcpRegion);
+        if (Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST.isActive()) {
+            String selectedOption = SelectOption.getSelectedOption(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID);
+            Assert.assertEquals(lcpRegion + " (" + cloudOwner.toUpperCase() + ")", selectedOption);
+        }
         return this;
     }
 
@@ -91,6 +92,10 @@ public class ViewEditPage extends VidBasePage {
         return this;
     }
 
+    public VidBasePage clickActivateFabricConfigurationButton() {
+        GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.ACTIVATE_FABRIC_CONFIGURATION_BUTTON_TEST_ID, 60);
+        return this;
+    }
     public VidBasePage clickInfoButton() {
         GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.INFOSERVICEBUTTON, 30);
         return this;

@@ -3,35 +3,27 @@ package org.onap.vid.api;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import org.onap.vid.model.mso.ChangeManagementRequest;
-import org.onap.vid.model.mso.ChangeManagementRequestDetails;
-import org.onap.vid.model.mso.CloudConfiguration;
-import org.onap.vid.model.mso.MsoExceptionResponse;
-import org.onap.vid.model.mso.MsoResponseWrapper2;
-import org.onap.vid.model.mso.RelatedInstance;
-import org.onap.vid.model.mso.RelatedInstanceList;
-import org.onap.vid.model.mso.RequestInfo;
-import org.onap.vid.model.mso.RequestParameters;
-import org.onap.vid.model.workflow.GetVnfWorkflowRelationRequest;
-import org.onap.vid.model.workflow.GetWorkflowsResponse;
-import org.onap.vid.model.workflow.VnfDetails;
-import org.onap.vid.model.workflow.VnfDetailsWithWorkflows;
-import org.onap.vid.model.workflow.VnfWorkflowRelationAllResponse;
-import org.onap.vid.model.workflow.VnfWorkflowRelationRequest;
-import org.onap.vid.model.workflow.VnfWorkflowRelationResponse;
-import org.onap.vid.model.workflow.WorkflowsDetail;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoChangeManagementBase;
+import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfInPlaceSoftwareUpdate;
+import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfReplace;
+import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfUpdate;
+import org.onap.simulator.presetGenerator.presets.aaf.*;
 import org.onap.vid.model.mso.*;
 import org.onap.vid.model.workflow.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StopWatch;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
+import vid.automation.test.utils.ReadFile;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -51,6 +43,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.onap.vid.api.TestUtils.getNestedPropertyInMap;
+import static org.testng.AssertJUnit.assertEquals;
 
 
 //This is integration test that require running tomcat
@@ -139,6 +132,30 @@ public class ChangeManagementApiTest extends BaseApiTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] credentialsFilterTestData(Method test) {
+        return new Object[][]{
+                {AAFGetBasicAuthPreset.VALID_AUTH_VALUE, 200},
+//                {null, 401}, // No auth header   TODO: Uncomment when the bug in epsdk will be fixed. Currently If there is no auth header then no credentials validation.
+                {"xyz", 401}, //undecodable value
+                {"YUBiLmM6ZGVm", 401} //decodable value but not that expected by cadi filter (simulator)
+
+        };
+    }
+
+    @BeforeClass
+    public static void commonSimulatorRegistration() {
+        SimulatorApi.registerExpectationFromPreset(
+                PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
+                RegistrationStrategy.CLEAR_THEN_SET);
+        SimulatorApi.registerExpectationFromPreset(
+                new AAFGetUrlServicePreset(),
+                RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(
+                new AAFGetBasicAuthPreset(),
+                RegistrationStrategy.APPEND);
+    }
+
 //  IN_PLACE_SOFTWARE_UPDATE
     @Test
     public void testInPlaceSoftwareUpdateHappyPath() throws IOException {
@@ -199,6 +216,12 @@ public class ChangeManagementApiTest extends BaseApiTest {
                             "mso_in_place_software_update_ok.json",
                             ImmutableMap.of("SERVICE_INSTANCE_ID", vnfIds.serviceInstanceId, "VNF_INSTANCE_ID", vnfIds.vnfInstanceId),
                             RegistrationStrategy.APPEND);
+                    SimulatorApi.registerExpectationFromPreset(
+                            new AAFGetUrlServicePreset(),
+                            RegistrationStrategy.APPEND);
+                    SimulatorApi.registerExpectationFromPreset(
+                            new AAFGetBasicAuthPreset(),
+                            RegistrationStrategy.APPEND);
                     return null;
                 }))
                 .collect(Collectors.toList());
@@ -216,9 +239,8 @@ public class ChangeManagementApiTest extends BaseApiTest {
 
         stopWatch.start("init requests");
         List<ChangeManagementRequest> requestsList = vnfList.stream().map(vnfIds -> this.createChangeManagementRequest(vnfIds, ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE)).collect(Collectors.toList());
-        WebTarget webTarget = client.target(uri).
-                path(CHANGE_MANAGEMENT+WORKFLOW).resolveTemplate("vnfname","VidVnf");
-        List<Callable<Response>> callables = requestsList.stream().map(request->((Callable<Response>) () -> webTarget.request(MediaType.APPLICATION_JSON_TYPE).header("Authorization", "Basic 123==").post(Entity.json(request)))).collect(Collectors.toList());
+        WebTarget webTarget = buildWebTarget("VidVnf");
+        List<Callable<Response>> callables = requestsList.stream().map(request->((Callable<Response>) () -> webTarget.request(MediaType.APPLICATION_JSON_TYPE).header("Authorization", "Basic " + AAFGetBasicAuthPreset.VALID_AUTH_VALUE).post(Entity.json(request)))).collect(Collectors.toList());
         stopWatch.stop();
 
         stopWatch.start("invoke calling to vid");
@@ -286,16 +308,54 @@ public class ChangeManagementApiTest extends BaseApiTest {
         testChangeManagementGoodPayload(payload, "mso_config_update_ok.json", ChangeManagementRequest.CONFIG_UPDATE);
     }
 
-    @Test
-    public void testClientCredentialsFilter_expect401()
+    @Test(dataProvider = "credentialsFilterTestData")
+    public void testCadiCredentialsFilter(String authValue, int expectedStatusCode)
     {
         VnfIds vnfIds = new VnfIds();
         ChangeManagementRequest changeManagementRequest = createBasicChangeManagementRequest(vnfIds);
         changeManagementRequest.setRequestType(ChangeManagementRequest.REPLACE);
-        WebTarget webTarget = client.target(uri).
-                path(CHANGE_MANAGEMENT + WORKFLOW).resolveTemplate("vnfname", vnfIds.vnfName);
+        WebTarget webTarget = buildWebTarget(vnfIds.vnfName);
         Entity entity = Entity.json(changeManagementRequest);
-        Assert.assertEquals(401,  webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(entity).getStatus());
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        if (authValue != null) {
+            invocationBuilder.header("Authorization", "Basic " + authValue);
+        }
+        Response response = invocationBuilder.post(entity);
+        String body = response.readEntity(String.class);
+        Assert.assertEquals(response.getStatus(), expectedStatusCode, "Full response: " + body);
+    }
+
+    @DataProvider
+    public static Object[][] requestFromSchedulerDataProvider(Method test) {
+        return new Object[][]{
+                {
+                    "e9181708-f105-4dfd-9a36-0e089faa72ba",
+                    new PresetMsoVnfReplace("254583ad-b38c-498b-bdbd-b8de5e07541b", "e9181708-f105-4dfd-9a36-0e089faa72ba"),
+                    "changeManagement/vnfReplaceRequest.json"
+                },
+                {
+                    "c929b7ec-cc9d-11e8-a8d5-f2801f1b9fd1",
+                    new PresetMsoVnfUpdate("d0c59d4a-cc9d-11e8-a8d5-f2801f1b9fd1","c929b7ec-cc9d-11e8-a8d5-f2801f1b9fd1"),
+                    "changeManagement/vnfUpdateRequest.json"
+                },
+                {
+                    "e5403738-da34-4090-8864-ba9cf1bcdd88",
+                    new PresetMsoVnfInPlaceSoftwareUpdate("12709275-787c-4be7-8c9c-fce64ab7ca8c","e5403738-da34-4090-8864-ba9cf1bcdd88"),
+                    "changeManagement/vnfInPlaceSoftwareUpdate.json"
+                }
+        };
+    }
+
+    @Test(dataProvider = "requestFromSchedulerDataProvider")
+    public void whenGetFromSchedulerRequest_sendAsExpectedToMso(String vnfInstanceId, PresetMsoChangeManagementBase preset, String requestPath) {
+        SimulatorApi.registerExpectationFromPreset(
+                preset,
+                RegistrationStrategy.APPEND);
+        String schedulerRequest = ReadFile.loadResourceAsString(requestPath);
+        Response response = callChangeManagement("VidVnf", Entity.json(schedulerRequest));
+        MsoResponseWrapper2 body = response.readEntity(MsoResponseWrapper2.class);
+        assertEquals(202, body.getStatus());
+        assertEquals(vnfInstanceId, getNestedPropertyInMap(body.getEntity(), "requestReferences/instanceId"));
     }
 
 
@@ -308,7 +368,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
     private void assertForHappyPath(VnfIds vnfIds, MsoResponseWrapper2 body, String requestType) {
         Assert.assertEquals(body.getStatus(), 202, requestType + " failed with wrong http status");
         Assert.assertEquals(
-                TestUtils.getNestedPropertyInMap(body.getEntity(), "requestReferences/instanceId"),
+                getNestedPropertyInMap(body.getEntity(), "requestReferences/instanceId"),
                 vnfIds.serviceInstanceId,
                 String.format("Failed to find instanceId: %s in " + requestType + " response.  Actual body:%s",
                         vnfIds.serviceInstanceId, body.getEntity()));
@@ -317,18 +377,25 @@ public class ChangeManagementApiTest extends BaseApiTest {
     private <T> T callChangeManagementUpdate(VnfIds vnfIds, String expectationPath, Class<T> responseClass, String requestType) {
         SimulatorApi.registerExpectation(
                 expectationPath,
-                ImmutableMap.of("SERVICE_INSTANCE_ID", vnfIds.serviceInstanceId, "VNF_INSTANCE_ID", vnfIds.vnfInstanceId), RegistrationStrategy.CLEAR_THEN_SET);
+                ImmutableMap.of("SERVICE_INSTANCE_ID", vnfIds.serviceInstanceId, "VNF_INSTANCE_ID", vnfIds.vnfInstanceId), RegistrationStrategy.APPEND);
         ChangeManagementRequest changeManagementRequest = createChangeManagementRequest(vnfIds, requestType);
         Response response =  callChangeManagementUpdate(vnfIds, changeManagementRequest);
         return response.readEntity(responseClass);
     }
 
     private Response callChangeManagementUpdate(VnfIds vnfIds, ChangeManagementRequest changeManagementRequest) {
-        WebTarget webTarget = client.target(uri).
-                path(CHANGE_MANAGEMENT + WORKFLOW).resolveTemplate("vnfname", vnfIds.vnfName);
         Entity entity = Entity.json(changeManagementRequest);
-        Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).header("Authorization", "Basic 123==").post(entity);
-        return response;
+        return callChangeManagement(vnfIds.vnfName, entity);
+    }
+
+    private Response callChangeManagement(String vnfName, Entity entity) {
+        WebTarget webTarget = buildWebTarget(vnfName);
+        return webTarget.request(MediaType.APPLICATION_JSON_TYPE).header("Authorization", "Basic " + AAFGetBasicAuthPreset.VALID_AUTH_VALUE).post(entity);
+    }
+
+    private WebTarget buildWebTarget(String vnfName) {
+        return client.target(uri).
+                path(CHANGE_MANAGEMENT + WORKFLOW).resolveTemplate("vnfname", vnfName);
     }
 
     private void testChangeManagement409Error(String expectationPath, String requestType) throws IOException {
@@ -336,13 +403,13 @@ public class ChangeManagementApiTest extends BaseApiTest {
         MsoResponseWrapper2 body = callChangeManagementUpdate(vnfIds, expectationPath, MsoResponseWrapper2.class, requestType);
         Assert.assertEquals(body.getStatus(), 409, requestType + " failed with wrong http status");
         Assert.assertEquals(
-                TestUtils.getNestedPropertyInMap(body.getEntity(), "serviceException/messageId"),
+                getNestedPropertyInMap(body.getEntity(), "serviceException/messageId"),
                 "SVC2000",
                 String.format("Failed to find messageId: %s in " + requestType + " response.  Actual body:%s",
                         "SVC2000", body.getEntity()));
 
 
-        assertThat(TestUtils.getNestedPropertyInMap(body.getEntity(), "serviceException/text"), containsString(vnfIds.vnfInstanceId));
+        assertThat(getNestedPropertyInMap(body.getEntity(), "serviceException/text"), containsString(vnfIds.vnfInstanceId));
     }
 
     private void testChangeManagement404Error(String expectationPath, String requestType) throws IOException {
@@ -398,7 +465,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
         VnfIds vnfIds = new VnfIds();
         SimulatorApi.registerExpectation(
                 expectationFileName,
-                ImmutableMap.of("SERVICE_INSTANCE_ID", vnfIds.serviceInstanceId, "VNF_INSTANCE_ID", vnfIds.vnfInstanceId), RegistrationStrategy.CLEAR_THEN_SET);
+                ImmutableMap.of("SERVICE_INSTANCE_ID", vnfIds.serviceInstanceId, "VNF_INSTANCE_ID", vnfIds.vnfInstanceId), RegistrationStrategy.APPEND);
         ChangeManagementRequest changeManagementRequest = createChangeManagementRequest(vnfIds, requestType);
         changeManagementRequest.getRequestDetails().get(0).getRequestParameters().getAdditionalProperties().put("payload",payload);
         Response response = callChangeManagementUpdate(vnfIds, changeManagementRequest);

@@ -1,7 +1,7 @@
 package vid.automation.test.sections;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.SelectOption;
@@ -24,6 +24,11 @@ public class ServiceProxyPage extends VidBasePage {
         GeneralUIUtils.ultimateWait();
         return this;
     }
+    public void assertCollectorServiceType(String collectorServiceType) {
+        String displayedCollectorServiceType = SelectOption.getSelectedOption("collectorServiceType");
+        Assert.assertEquals("The displayed collector service type is incorrect", collectorServiceType, displayedCollectorServiceType);
+    }
+
     public ServiceProxyPage chooseCollector(String collector){
         GeneralUIUtils.ultimateWait();
         SelectOption.byTestIdAndVisibleText(collector, Constants.ConfigurationCreation.COLLECTOR_DROPDOWN_TEST_ID);

@@ -1,6 +1,6 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-public class PresetMSODeleteVnf extends PresetMSOBaseDelete {
+public class PresetMSODeleteVnf extends PresetMSOBaseDeleteWithCloudConfiguration {
     private final String serviceInstanceId;
     private final String vnfInstanceId;
     public static final String DEFAULT_SERVICE_INSTANCE_ID = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
@@ -11,7 +11,7 @@ public class PresetMSODeleteVnf extends PresetMSOBaseDelete {
     }
 
     public PresetMSODeleteVnf(String requestId, String serviceInstanceId, String vnfInstanceId) {
-        super(requestId);
+        super(requestId, "vnf");
         this.serviceInstanceId = serviceInstanceId != null ? serviceInstanceId : DEFAULT_SERVICE_INSTANCE_ID;
         this.vnfInstanceId = vnfInstanceId != null ? vnfInstanceId : DEFAULT_VNF_INSTANCE_ID;
     }
