@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b437258c_5ff91cd3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/OperationalEnvironmentTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2019-03-11T08:24:38Z",
+      "side": 1,
+      "message": "add note about nokia\n\"Modifications Copyright (C) 2019 Nokia. All rights reserved.\"",
+      "range": {
+        "startLine": 5,
+        "startChar": 1,
+        "endLine": 5,
+        "endChar": 77
+      },
+      "revId": "5dcd57f887d8dc61de6000db94b0c3c222a44db3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
