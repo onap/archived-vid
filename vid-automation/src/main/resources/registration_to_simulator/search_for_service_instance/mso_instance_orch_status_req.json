@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/mso/orchestrationRequests/v5",
+    "path": "/mso/orchestrationRequests/v.",
     "queryParams": {
       "filter": "serviceInstanceId:EQUALS:<SERVICE_INSTANCE_ID>"
     }

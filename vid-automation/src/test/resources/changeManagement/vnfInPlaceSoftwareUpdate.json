@@ -1,0 +1,26 @@
+{
+  "requestDetails": [{
+
+    "vnfName": "VidVnf",
+    "vnfInstanceId": "e5403738-da34-4090-8864-ba9cf1bcdd88",
+
+    "cloudConfiguration": {
+      "lcpCloudRegionId": "mdt1",
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e"
+    },
+    "requestInfo": {
+      "source": "VID",
+      "requestorId": "az2016"
+    },
+    "requestParameters": {
+      "payload": "{\"existing_software_version\": \"3.1\", \"new_software_version\": \"3.2\", \"operations_timeout\": \"3600\"}"
+    },
+
+    "relatedInstanceList": [{
+      "relatedInstance": {
+        "instanceId": "12709275-787c-4be7-8c9c-fce64ab7ca8c"
+      }
+    }]
+  }],
+  "requestType" : "vnf in place software update"
+}

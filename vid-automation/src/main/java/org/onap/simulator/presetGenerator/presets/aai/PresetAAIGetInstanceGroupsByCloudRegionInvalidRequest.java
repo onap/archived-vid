@@ -44,7 +44,7 @@ public class PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest extends BaseA
     public Object getRequestBody() {
         return ImmutableMap.of(
                 "start", ImmutableList.of("cloud-infrastructure/cloud-regions/cloud-region/" + getCloudOwner() + "/" + getCloudRegionId()),
-                "query", "query/instance-group-byCloudRegion?type=" + type + "&role=" + role + "&function=" + getNetworkFunction()
+                "query", "query/instance-groups-byCloudRegion?type=" + type + "&role=" + role + "&function=" + getNetworkFunction()
         );
     }
 
@@ -62,124 +62,124 @@ public class PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest extends BaseA
 
     @Override
     public Object getResponseBody() {
-        return "{\n" +
-                "    \"results\": [\n" +
-                "        {\n" +
-                "            \"instance-group\": {\n" +
-                "                \"instance-group-role\": \"JZmha7QSS4tJ\",\n" +
-                "               \"some-filed\": \"some-data\",\n" + //extra field
-                "                \"model-invariant-id\": \"model-id3\",\n" +
-                "                \"model-version-id\": \"a0efd5fc-f7be-4502-936a-a6c6392b958f\",\n" +
-                "                \"id\": \"AAI-12002-test3-vm230w\",\n" +
-                "                \"description\": \"a9DEa0kpY\",\n" +
-                "                \"instance-group-type\": \"type\",\n" +
-                "                \"resource-version\": \"1520888659539\",\n" +
-                "                \"instance-group-name\": \"wKmBXiO1xm8bK\",\n" +
-                "                \"instance-group-function\": \"testfunction2\",\n" +
-                "                \"relationship-list\": {\n" +
-                "                    \"relationship\": [\n" +
-                "                        {\n" +
-                "                            \"related-to\": \"cloud-region\",\n" +
-                "                            \"some-filed\": \"some-data\",\n" + //extra field
-                "                            \"relationship-label\": \"org.onap.relationships.inventory.Uses\",\n" +
-                "                            \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\n" +
-                "                            \"relationship-data\": [\n" +
-                "                                {\n" +
-                "                                    \"relationship-key\": \"cloud-region.cloud-owner\",\n" +
-                "                                    \"relationship-value\": \"AAI-12002-vm230w\"\n" +
-                "                                },\n" +
-                "                                {\n" +
-                "                                    \"relationship-key\": \"cloud-region.cloud-region-id\",\n" +
-                "                                    \"relationship-value\": \"AAI-region-vm230w\"\n" +
-                "                                }\n" +
-                "                            ],\n" +
-                "                            \"related-to-property\": [\n" +
-                "                                {\n" +
-                "                                    \"property-key\": \"cloud-region.owner-defined-type\"\n" +
-                "                                }\n" +
-                "                            ]\n" +
-                "                        }\n" +
-                "                    ]\n" +
-                "                }\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"instance-group\": {\n" +
-                "                \"instance-group-role\": \"JZmha7QSS4tJ\",\n" +
-                "                \"model-invariant-id\": \"model-id1\",\n" +
-                "                \"model-version-id\": \"a0efd5fc-f7be-4502-936a-a6c6392b958f\",\n" +
-                "                \"id\": \"AAI-12002-test1-vm230w\",\n" +
-                "                \"description\": \"a9DEa0kpY\",\n" +
-                "                \"instance-group-type\": \"type\",\n" +
-                "                \"resource-version\": \"1520886467989\",\n" +
-                "                \"instance-group-name\": \"wKmBXiO1xm8bK\",\n" +
-                "                \"instance-group-function\": \"testfunction2\",\n" +
-                "                \"relationship-list\": {\n" +
-                "                    \"relationship\": [\n" +
-                "                        {\n" +
-                "                            \"related-to\": \"cloud-region\",\n" +
-                "                            \"relationship-label\": \"org.onap.relationships.inventory.Uses\",\n" +
-                "                            \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\n" +
-                "                            \"relationship-data\": [\n" +
-                "                                {\n" +
-                "                                    \"relationship-key\": \"cloud-region.cloud-owner\",\n" +
-                "                                    \"some-filed\": \"some-data\",\n" + //extra field
-                "                                    \"relationship-value\": \"AAI-12002-vm230w\"\n" +
-                "                                },\n" +
-                "                                {\n" +
-                "                                    \"relationship-key\": \"cloud-region.cloud-region-id\",\n" +
-                "                                    \"relationship-value\": \"AAI-region-vm230w\"\n" +
-                "                                }\n" +
-                "                            ],\n" +
-                "                            \"related-to-property\": [\n" +
-                "                                {\n" +
-                "                                    \"property-key\": \"cloud-region.owner-defined-type\"\n" +
-                "                                }\n" +
-                "                            ]\n" +
-                "                        }\n" +
-                "                    ]\n" +
-                "                }\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"instance-group\": {\n" +
-                "                \"instance-group-role\": \"JZmha7QSS4tJ\",\n" +
-                "                \"model-invariant-id\": \"model-id2\",\n" +
-                "                \"model-version-id\": \"version2\",\n" +
-                "                \"id\": \"AAI-12002-test2-vm230w\",\n" +
-                "                \"description\": \"a9DEa0kpY\",\n" +
-                "                \"instance-group-type\": \"type\",\n" +
-                "                \"resource-version\": \"1520888629970\",\n" +
-                "                \"instance-group-name\": \"wKmBXiO1xm8bK\",\n" +
-                "                \"instance-group-function\": \"testfunction2\",\n" +
-                "                \"relationship-list\": {\n" +
-                "                    \"relationship\": [\n" +
-                "                        {\n" +
-                "                            \"related-to\": \"cloud-region\",\n" +
-                "                            \"relationship-label\": \"org.onap.relationships.inventory.Uses\",\n" +
-                "                            \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\n" +
-                "                            \"relationship-data\": [\n" +
-                "                                {\n" +
-                "                                    \"relationship-key\": \"cloud-region.cloud-owner\",\n" +
-                "                                    \"relationship-value\": \"AAI-12002-vm230w\"\n" +
-                "                                },\n" +
-                "                                {\n" +
-                "                                    \"relationship-key\": \"cloud-region.cloud-region-id\",\n" +
-                "                                    \"relationship-value\": \"AAI-region-vm230w\"\n" +
-                "                                }\n" +
-                "                            ],\n" +
-                "                            \"related-to-property\": [\n" +
-                "                                {\n" +
-                "                                    \"property-key\": \"cloud-region.owner-defined-type\"\n" +
-                "                                }\n" +
-                "                            ]\n" +
-                "                        }\n" +
-                "                    ]\n" +
-                "                }\n" +
-                "            }\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}\n";
+        return "{" +
+                "    \"results\": [" +
+                "        {" +
+                "            \"instance-group\": {" +
+                "                \"instance-group-role\": \"JZmha7QSS4tJ\"," +
+                "               \"some-filed\": \"some-data\"," + //extra field
+                "                \"model-invariant-id\": \"model-id3\"," +
+                "                \"model-version-id\": \"a0efd5fc-f7be-4502-936a-a6c6392b958f\"," +
+                "                \"id\": \"AAI-12002-test3-vm230w\"," +
+                "                \"description\": \"a9DEa0kpY\"," +
+                "                \"instance-group-type\": \"type\"," +
+                "                \"resource-version\": \"1520888659539\"," +
+                "                \"instance-group-name\": \"wKmBXiO1xm8bK\"," +
+                "                \"instance-group-function\": \"testfunction2\"," +
+                "                \"relationship-list\": {" +
+                "                    \"relationship\": [" +
+                "                        {" +
+                "                            \"related-to\": \"cloud-region\"," +
+                "                            \"some-filed\": \"some-data\"," + //extra field
+                "                            \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
+                "                            \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\"," +
+                "                            \"relationship-data\": [" +
+                "                                {" +
+                "                                    \"relationship-key\": \"cloud-region.cloud-owner\"," +
+                "                                    \"relationship-value\": \"AAI-12002-vm230w\"" +
+                "                                }," +
+                "                                {" +
+                "                                    \"relationship-key\": \"cloud-region.cloud-region-id\"," +
+                "                                    \"relationship-value\": \"AAI-region-vm230w\"" +
+                "                                }" +
+                "                            ]," +
+                "                            \"related-to-property\": [" +
+                "                                {" +
+                "                                    \"property-key\": \"cloud-region.owner-defined-type\"" +
+                "                                }" +
+                "                            ]" +
+                "                        }" +
+                "                    ]" +
+                "                }" +
+                "            }" +
+                "        }," +
+                "        {" +
+                "            \"instance-group\": {" +
+                "                \"instance-group-role\": \"JZmha7QSS4tJ\"," +
+                "                \"model-invariant-id\": \"model-id1\"," +
+                "                \"model-version-id\": \"a0efd5fc-f7be-4502-936a-a6c6392b958f\"," +
+                "                \"id\": \"AAI-12002-test1-vm230w\"," +
+                "                \"description\": \"a9DEa0kpY\"," +
+                "                \"instance-group-type\": \"type\"," +
+                "                \"resource-version\": \"1520886467989\"," +
+                "                \"instance-group-name\": \"wKmBXiO1xm8bK\"," +
+                "                \"instance-group-function\": \"testfunction2\"," +
+                "                \"relationship-list\": {" +
+                "                    \"relationship\": [" +
+                "                        {" +
+                "                            \"related-to\": \"cloud-region\"," +
+                "                            \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
+                "                            \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\"," +
+                "                            \"relationship-data\": [" +
+                "                                {" +
+                "                                    \"relationship-key\": \"cloud-region.cloud-owner\"," +
+                "                                    \"some-filed\": \"some-data\"," + //extra field
+                "                                    \"relationship-value\": \"AAI-12002-vm230w\"" +
+                "                                }," +
+                "                                {" +
+                "                                    \"relationship-key\": \"cloud-region.cloud-region-id\"," +
+                "                                    \"relationship-value\": \"AAI-region-vm230w\"" +
+                "                                }" +
+                "                            ]," +
+                "                            \"related-to-property\": [" +
+                "                                {" +
+                "                                    \"property-key\": \"cloud-region.owner-defined-type\"" +
+                "                                }" +
+                "                            ]" +
+                "                        }" +
+                "                    ]" +
+                "                }" +
+                "            }" +
+                "        }," +
+                "        {" +
+                "            \"instance-group\": {" +
+                "                \"instance-group-role\": \"JZmha7QSS4tJ\"," +
+                "                \"model-invariant-id\": \"model-id2\"," +
+                "                \"model-version-id\": \"version2\"," +
+                "                \"id\": \"AAI-12002-test2-vm230w\"," +
+                "                \"description\": \"a9DEa0kpY\"," +
+                "                \"instance-group-type\": \"type\"," +
+                "                \"resource-version\": \"1520888629970\"," +
+                "                \"instance-group-name\": \"wKmBXiO1xm8bK\"," +
+                "                \"instance-group-function\": \"testfunction2\"," +
+                "                \"relationship-list\": {" +
+                "                    \"relationship\": [" +
+                "                        {" +
+                "                            \"related-to\": \"cloud-region\"," +
+                "                            \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
+                "                            \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\"," +
+                "                            \"relationship-data\": [" +
+                "                                {" +
+                "                                    \"relationship-key\": \"cloud-region.cloud-owner\"," +
+                "                                    \"relationship-value\": \"AAI-12002-vm230w\"" +
+                "                                }," +
+                "                                {" +
+                "                                    \"relationship-key\": \"cloud-region.cloud-region-id\"," +
+                "                                    \"relationship-value\": \"AAI-region-vm230w\"" +
+                "                                }" +
+                "                            ]," +
+                "                            \"related-to-property\": [" +
+                "                                {" +
+                "                                    \"property-key\": \"cloud-region.owner-defined-type\"" +
+                "                                }" +
+                "                            ]" +
+                "                        }" +
+                "                    ]" +
+                "                }" +
+                "            }" +
+                "        }" +
+                "    ]" +
+                "}";
     }
 
 }

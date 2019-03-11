@@ -1,12 +1,11 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetPortMirroringSourcePorts extends BaseAAIPreset {
     public PresetAAIGetPortMirroringSourcePorts(String configurationId, String interfaceId, String interfaceName, boolean isPortMirrored) {
@@ -64,10 +63,10 @@ public class PresetAAIGetPortMirroringSourcePorts extends BaseAAIPreset {
                 "        {\n" +
                 "            \"id\": \"4876980240\",\n" +
                 "            \"node-type\": \"l-interface\",\n" +
-                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\",\n" +
+                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zolson5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\",\n" +
                 "            \"properties\": {\n" +
                 "                \"interface-name\": " + doubleQuoteIfNotNull(getInterfaceName()) + ",\n" +
-                "                \"selflink\": \"https://network-aic.rdm5b.cci.att.com:9696/v2.0/ports/6de7bf87-6faa-4984-9492-18d1188b3d4a\",\n" +
+                "                \"selflink\": \"https://netw.onap.org:9696/v2.0/ports/6de7bf87-6faa-4984-9492-18d1188b3d4a\",\n" +
                 "                \"interface-id\": " + doubleQuoteIfNotNull(getInterfaceId()) + ",\n" +
                 "                \"macaddr\": \"02:6d:e7:bf:87:6f\",\n" +
                 "                \"network-name\": \"APP-C-24595-D-T001-vprobe_int_pktmirror_net_1\",\n" +
@@ -81,7 +80,7 @@ public class PresetAAIGetPortMirroringSourcePorts extends BaseAAIPreset {
                 "                    \"id\": \"4999893128\",\n" +
                 "                    \"relationship-label\": \"org.onap.relationships.inventory.BelongsTo\",\n" +
                 "                    \"node-type\": \"l3-interface-ipv4-address-list\",\n" +
-                "                    \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib/l3-interface-ipv4-address-list/107.244.46.254\"\n" +
+                "                    \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zolson5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib/l3-interface-ipv4-address-list/107.244.46.254\"\n" +
                 "                },\n" +
                 "                {\n" +
                 "                    \"id\": \"6150074384\",\n" +
@@ -111,7 +110,7 @@ public class PresetAAIGetPortMirroringSourcePorts extends BaseAAIPreset {
                 "                    \"id\": \"5491453960\",\n" +
                 "                    \"relationship-label\": \"tosca.relationships.network.BindsTo\",\n" +
                 "                    \"node-type\": \"vserver\",\n" +
-                "                    \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a\"\n" +
+                "                    \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a\"\n" +
                 "                }\n" +
                 "            ]\n" +
                 "        }\n" +

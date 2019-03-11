@@ -44,7 +44,7 @@ public class PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing extends Base
     public Object getRequestBody() {
         return ImmutableMap.of(
                 "start", ImmutableList.of("cloud-infrastructure/cloud-regions/cloud-region/" + getCloudOwner() + "/" + getCloudRegionId()),
-                "query", "query/instance-group-byCloudRegion?type=" + type + "&role=" + role + "&function=" + getNetworkFunction()
+                "query", "query/instance-groups-byCloudRegion?type=" + type + "&role=" + role + "&function=" + getNetworkFunction()
         );
     }
 

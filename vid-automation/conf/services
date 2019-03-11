@@ -6,7 +6,7 @@
     "invariantUuid": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
     "name": "1707vidnf",
     "version": "9.0",
-    "category": "Mobility",
+    "category": "Emanuel",
     "description": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code.",
     "serviceRole" : "pnf"
   },
@@ -37,7 +37,7 @@
     "name": "action-data",
     "version": "1.0",
     "category": "Network L1-3",
-    "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+    "description": "PASQUALE vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
     "serviceRole": "Testing"
   },
   "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd": {
@@ -47,7 +47,7 @@
       "name": "action-data",
       "version": "1.0",
       "category": "Network L1-3",
-      "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+      "description": "PASQUALE vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
       "serviceRole": "Testing"
     }}
 }

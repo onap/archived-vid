@@ -1,0 +1,62 @@
+{
+  "modelInfo": {
+    "modelInvariantId": "0367689e-d41e-483f-b200-eab17e4a7f8d",
+    "modelVersionId": "e3c34d88-a216-4f1d-a782-9af9f9588705",
+    "modelName": "gayawabawe",
+    "modelType": "service",
+    "modelVersion": "5.1"
+  },
+  "owningEntityId": "038d99af-0427-42c2-9d15-971b99b9b489",
+  "owningEntityName": "Lucine Sarika",
+  "projectName": "zasaki",
+  "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "subscriberName": "SILVIA ROBBINS",
+  "productFamilyId": "ddf9cc0f-6331-4d35-bed0-a37f2d5e9cb3",
+  "instanceName": "SERVICE_NAME",
+  "subscriptionServiceType": "TYLER SILVIA",
+  "lcpCloudRegionId": "a93f8383-707e-43fa-8191-a6e69a1aab17",
+  "tenantId": "c85f0e80-0636-44a4-8cb2-4ec00d056e79",
+  "tenantName": "Hedvika Wendelin",
+  "aicZoneId": "de738e5f-3704-4a14-b98f-3bf86ac0c0a0",
+  "aicZoneName": "voloyakane-senamo",
+  "vnfs": {
+    "vSAMP12 1": {
+      "modelInfo": {
+        "modelCustomizationName": "vSAMP12 1",
+        "modelCustomizationId": "a7f1d08e-b02d-11e6-80f5-76304dec7eb7",
+        "modelInvariantId": "ff5256d1-5a33-55df-13ab-12abad84e7ff",
+        "modelVersionId": "fe042c22-ba82-43c6-b2f6-8f1fc4164091",
+        "modelName": "vSAMP12",
+        "modelType": "vnf",
+        "modelVersion": "1.0"
+      },
+      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "instanceName": "SERVICE_NAME_vnf",
+      "action": "Create",
+      "platformName": "vnf_platformName",
+      "lcpCloudRegionId": "mdt1",
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e",
+      "instanceParams": [],
+      "rollbackOnFailure": false,
+      "instanceId": null,
+      "vfModules": {},
+      "trackById": "TRACK_BY_ID",
+      "isFailed": true,
+      "statusMessage":"Vnf failed.",
+      "lineOfBusiness": "vnf_lineOfBusinessName"
+    }
+  },
+  "networks": {},
+  "vnfGroups": {},
+  "instanceParams": [],
+  "pause": false,
+  "bulkSize": 1,
+  "rollbackOnFailure": false,
+  "isALaCarte": true,
+  "testApi": "VNF_API",
+  "instanceId": "INSTANCE_ID",
+  "action": "None",
+  "trackById": "TRACK_BY_ID",
+  "isFailed": false,
+  "statusMessage": null
+}

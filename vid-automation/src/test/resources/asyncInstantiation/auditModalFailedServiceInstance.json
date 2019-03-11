@@ -1,0 +1,12 @@
+{
+  "id":null,
+  "jobId":null,
+  "instanceName":"1INSTANCE_NAME",
+  "instanceType":null,
+  "jobStatus":"FAILED",
+  "source":null,
+  "requestId":"e5f93320-cce6-424d-adc6-259a4ee8b342",
+  "additionalInfo":"The service instantiation is failed. Please check vconfiiiiiiiguratttttion again.",
+  "final":false,
+  "createdDate":1549198388000
+}

@@ -2,8 +2,9 @@ package vid.automation.test.test;
 
 import org.junit.Assert;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -18,6 +19,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationTest;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 /**
@@ -64,11 +66,8 @@ public class ReadOnlyTest extends VidBaseTestCase {
 
     @Test
     public void testBrowsASDCReadOnly() {
-        String zipFileName = "serviceCreationTest.zip";
-        String modelVersionId = "aa2f8e9c-9e47-4b15-a95c-4a9385599abc";
-        String modelInvariantId = "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba";
-
-        registerExpectationForLegacyServiceDeployment(modelVersionId, modelInvariantId, zipFileName, null);
+        resetGetServicesCache();
+        registerExpectationForLegacyServiceDeployment(aLaCarteServiceCreationTest, null);
 
         SideMenu.navigateToBrowseASDCPage();
         Assert.assertTrue(isDeployBtnDisabled());
@@ -91,8 +90,7 @@ public class ReadOnlyTest extends VidBaseTestCase {
 
     @Test
     private void testCreateNewInstanceReadOnly() {
-        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
-        "search_for_service_instance/aai_get_full_subscribers.json");
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(),SimulatorApi.RegistrationStrategy.APPEND);
         SideMenu.navigateToCreateNewServicePage();
         assertDropdownPermittedItemsByValue(new ArrayList<String>(), Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
     }

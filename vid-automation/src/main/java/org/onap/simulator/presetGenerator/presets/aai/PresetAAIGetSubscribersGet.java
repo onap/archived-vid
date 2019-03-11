@@ -3,14 +3,13 @@ package org.onap.simulator.presetGenerator.presets.aai;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.onap.simulator.presetGenerator.presets.model.Subscriber;
-import org.springframework.http.HttpMethod;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.onap.simulator.presetGenerator.presets.model.Subscriber;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetSubscribersGet extends BaseAAIPreset {
 
@@ -29,26 +28,26 @@ public class PresetAAIGetSubscribersGet extends BaseAAIPreset {
         String subscribersString = "" +
                 "[ " +
                 "        { " +
-                "          \"global-customer-id\":\"MSO_1610_ST\", " +
-                "          \"subscriber-name\":\"MSO_1610_ST\", " +
+                "          \"global-customer-id\":\"CAR_2020_ER\", " +
+                "          \"subscriber-name\":\"CAR_2020_ER\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1494001902987\" " +
                 "        }, " +
                 "        { " +
                 "          \"global-customer-id\":\"21014aa2-526b-11e6-beb8-9e71128cae77\", " +
-                "          \"subscriber-name\":\"PACKET CORE\", " +
+                "          \"subscriber-name\":\"JULIO ERICKSON\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1494001776295\" " +
                 "        }, " +
                 "        { " +
                 "          \"global-customer-id\":\"DHV1707-TestSubscriber-2\", " +
-                "          \"subscriber-name\":\"ICORE CORE\", " +
+                "          \"subscriber-name\":\"DALE BRIDGES\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1498751754450\" " +
                 "        }, " +
                 "        { " +
                 "          \"global-customer-id\":\"DHV1707-TestSubscriber-1\", " +
-                "          \"subscriber-name\":\"PACKET1 CORE\", " +
+                "          \"subscriber-name\":\"LLOYD BRIDGES\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1498595633607\" " +
                 "        }, " +
@@ -65,59 +64,90 @@ public class PresetAAIGetSubscribersGet extends BaseAAIPreset {
                 "          \"resource-version\":\"1494001970225\" " +
                 "        }, " +
                 "        { " +
-                "          \"global-customer-id\":\"DHV1802-TestSub-PWT-102\", " +
-                "          \"subscriber-name\":\"DHV1802-TestSub-PWT-102\", " +
+                "          \"global-customer-id\":\"ERICA5779-TestSub-PWT-102\", " +
+                "          \"subscriber-name\":\"ERICA5779-TestSub-PWT-102\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1508852495058\" " +
                 "        }, " +
                 "        { " +
-                "          \"global-customer-id\":\"DHV1802-TestSub-PWT-101\", " +
-                "          \"subscriber-name\":\"DHV1802-TestSub-PWT-101\", " +
+                "          \"global-customer-id\":\"ERICA5779-TestSub-PWT-101\", " +
+                "          \"subscriber-name\":\"ERICA5779-TestSub-PWT-101\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1508179953733\" " +
                 "        }, " +
                 "        { " +
                 "          \"global-customer-id\":\"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb\", " +
-                "          \"subscriber-name\":\"Mobility\", " +
+                "          \"subscriber-name\":\"Emanuel\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1494001894192\" " +
                 "        }, " +
                 "        { " +
-                "          \"global-customer-id\":\"DHV1802-Subscriber-4\", " +
-                "          \"subscriber-name\":\"DHV1802-Subscriber-5\", " +
+                "          \"global-customer-id\":\"ERICA5779-Subscriber-4\", " +
+                "          \"subscriber-name\":\"ERICA5779-Subscriber-5\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1509134064531\" " +
                 "        }, " +
                 "        { " +
-                "          \"global-customer-id\":\"DHV1802-TestSub-PWT-103\", " +
-                "          \"subscriber-name\":\"DHV1802-TestSub-PWT-103\", " +
+                "          \"global-customer-id\":\"ERICA5779-TestSub-PWT-103\", " +
+                "          \"subscriber-name\":\"ERICA5779-TestSub-PWT-103\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1509045503736\" " +
                 "        }, " +
                 "        { " +
-                "          \"global-customer-id\":\"DHV1802-Subscriber-2\", " +
-                "          \"subscriber-name\":\"DHV1802-Subscriber-2\", " +
+                "          \"global-customer-id\":\"ERICA5779-Subscriber-2\", " +
+                "          \"subscriber-name\":\"ERICA5779-Subscriber-2\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1509122065439\" " +
                 "        }, " +
                 "        { " +
                 "          \"global-customer-id\":\"e433710f-9217-458d-a79d-1c7aff376d89\", " +
-                "          \"subscriber-name\":\"USP VOICE\", " +
+                "          \"subscriber-name\":\"SILVIA ROBBINS\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1494001938080\" " +
                 "        }, " +
                 "        { " +
-                "          \"global-customer-id\":\"DHV1802-Subscriber-3\", " +
-                "          \"subscriber-name\":\"DHV1802-Subscriber-3\", " +
+                "          \"global-customer-id\":\"ERICA5779-Subscriber-3\", " +
+                "          \"subscriber-name\":\"ERICA5779-Subscriber-3\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1509122759407\" " +
                 "        }, " +
                 "        { " +
                 "          \"global-customer-id\":\"31739f3e-526b-11e6-beb8-9e71128cae77\", " +
-                "          \"subscriber-name\":\"FIREWALL/MISC\", " +
+                "          \"subscriber-name\":\"CRAIG/ROBERTS\", " +
                 "          \"subscriber-type\":\"INFRA\", " +
                 "          \"resource-version\":\"1494001772223\" " +
-                "        } " +
+                "        }, " +
+                "        { " +
+                "          \"global-customer-id\":\"global-customer-id\", " +
+                "          \"subscriber-name\":\"global-customer-id\", " +
+                "          \"subscriber-type\":\"INFRA\", " +
+                "          \"resource-version\":\"1494001772226\", " +
+                "          \"relationship-list\":{ " +
+                "               \"relationship\":[ " +
+                "                   { " +
+                "                       \"related-to\":\"vpn-binding\", " +
+                "                       \"relationship-label\":\"org.onap.relationships.inventory.Uses\", " +
+                "                       \"related-link\":\"/aai/v14/network/vpn-bindings/vpn-binding/3e7834fb-a8e0-4243-a837-5352ccab4602\", " +
+                "                       \"relationship-data\":[ " +
+                "                           { " +
+                "                               \"relationship-key\":\"vpn-binding.vpn-id\", " +
+                "                               \"relationship-value\":\"3e7834fb-a8e0-4243-a837-5352ccab4602\" " +
+                "                           } " +
+                "                       ], " +
+                "                       \"related-to-property\":[ " +
+                "                           { " +
+                "                               \"property-key\":\"vpn-binding.vpn-name\", " +
+                "                               \"property-value\":\"LPPVPN\" " +
+                "                           }, " +
+                "                           { " +
+                "                               \"property-key\":\"vpn-binding.vpn-type\", " +
+                "                               \"property-value\":\"CUSTOMER\" " +
+                "                           } " +
+                "                       ] " +
+                "                   } " +
+                "               ] " +
+                "           } " +
+                "        }" +
                 "      ] ";
         try {
             this.subscriberList = objectMapper.readValue(subscribersString, typeRef);

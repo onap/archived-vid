@@ -6,7 +6,7 @@
     },
     "simulatorResponse": {
       "responseCode": 200,
-      "file": "service-VdbeSrv-csar.zip"
+      "file": "service-vDOROTHEASrv-csar.zip"
     }
   },
   {
@@ -24,8 +24,8 @@
         "invariantUUID": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
         "name": "Demo Service",
         "version": "1.0",
-        "toscaModelURL": "./service-VdbeSrv-csar.zip",
-        "category": "VIRTUAL USP",
+        "toscaModelURL": "./service-vDOROTHEASrv-csar.zip",
+        "category": "TYLER SILVIA",
         "lifecycleState": "CERTIFIED",
         "lastUpdaterUserId": "rg276b",
         "lastUpdaterFullName": null,

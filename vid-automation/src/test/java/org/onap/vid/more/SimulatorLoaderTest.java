@@ -1,13 +1,7 @@
 package org.onap.vid.more;
 
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIBadBodyForGetServicesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPNFByRegionErrorPut;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAISearchNodeQueryEmptyResult;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
+import org.onap.simulator.presetGenerator.presets.aai.*;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetUserGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetActivateServiceInstancePost;
@@ -34,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.assertEquals;
+import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationTest;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 
@@ -43,8 +38,9 @@ public class SimulatorLoaderTest extends BaseApiTest {
     protected Invocation.Builder createSimulatorRequestBuilder(BasePreset preset) {
         WebTarget webTarget = client.target(SimulatorApi.getSimulationUri() + preset.getReqPath());
         webTarget = addQueryParamsToWebTarget(preset, webTarget);
-        return webTarget.request()
+        Invocation.Builder builder = webTarget.request()
                 .accept("application/json");
+        return addHeadersToBuilder(preset, builder);
     }
 
     private WebTarget addQueryParamsToWebTarget(BasePreset preset, WebTarget webTarget) {
@@ -56,11 +52,16 @@ public class SimulatorLoaderTest extends BaseApiTest {
         return webTarget;
     }
 
+    private Invocation.Builder addHeadersToBuilder(BasePreset preset, Invocation.Builder builder) {
+        preset.getRequestHeaders().forEach((key,value)->builder.header(key,value));
+        return builder;
+    }
+
     @DataProvider
     public static Object[][] presetClassesWithPutPost(Method test) {
         return new Object[][]{
                 {new PresetAAIGetPNFByRegionErrorPut()},
-                {new PresetAAIServiceDesignAndCreationPut("a","b")},
+                {new PresetAAIServiceDesignAndCreationPut()},
                 {new PresetDeactivateServiceInstancePost()},
                 {new PresetActivateServiceInstancePost()},
                 {new PresetMSOCreateServiceInstancePost()}
@@ -87,11 +88,10 @@ public class SimulatorLoaderTest extends BaseApiTest {
                     {new PresetGetSessionSlotCheckIntervalGet()},
                     {new PresetGetUserGet()},
                     {new PresetAAIGetServicesGet()},
-                    {new PresetSDCGetServiceMetadataGet("a" , "b", "serviceCreationTest.zip")},
-                    {new PresetSDCGetServiceToscaModelGet( "a", "serviceCreationTest.zip")},
+                    {new PresetSDCGetServiceMetadataGet(aLaCarteServiceCreationTest)},
+                    {new PresetSDCGetServiceToscaModelGet( aLaCarteServiceCreationTest)},
                     {new PresetMSOOrchestrationRequestGet()},
                     {new PresetAAIGetNetworkZones()},
-                    {new PresetAAISearchNodeQueryEmptyResult()},
                     {new PresetAAIBadBodyForGetServicesGet("not a json")},
                 };
     }

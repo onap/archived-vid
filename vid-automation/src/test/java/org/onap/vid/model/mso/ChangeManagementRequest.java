@@ -14,9 +14,9 @@ import java.util.Map;
 public class ChangeManagementRequest {
 
 	public static class MsoChangeManagementRequest {
-		public final static String SOFTWARE_UPDATE = "inPlaceSoftwareUpdate";
+		public static final String SOFTWARE_UPDATE = "inPlaceSoftwareUpdate";
 		public static final String REPLACE = "replace";
-		public final static String CONFIG_UPDATE = "applyUpdatedConfig";
+		public static final String CONFIG_UPDATE = "applyUpdatedConfig";
 
 	}
 

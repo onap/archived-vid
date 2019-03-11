@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v12/network/logical-links/logical-link/tesai371ve2:ae10|tesaaisdgraclz1a1:po100"
+    "path": "/aai/v14/network/logical-links/logical-link/tesai371ve2:ae10|tesaaisdgraclz1a1:po100"
   } ,
   "simulatorResponse": {
     "responseCode": 200,

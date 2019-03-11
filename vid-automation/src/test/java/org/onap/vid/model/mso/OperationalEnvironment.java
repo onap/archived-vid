@@ -1,7 +1,6 @@
 package org.onap.vid.model.mso;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OperationalEnvironment {
@@ -29,7 +28,6 @@ public class OperationalEnvironment {
         this.relationshipList = relationshipList;
     }
 
-    @JsonProperty("operational-environment-id")
     public String getOperationalEnvironmentId() {
         return operationalEnvironmentId;
     }
@@ -38,7 +36,6 @@ public class OperationalEnvironment {
         this.operationalEnvironmentId = operationalEnvironmentId;
     }
 
-    @JsonProperty("operational-environment-name")
     public String getOperationalEnvironmentName() {
         return operationalEnvironmentName;
     }
@@ -47,7 +44,6 @@ public class OperationalEnvironment {
         this.operationalEnvironmentName = operationalEnvironmentName;
     }
 
-    @JsonProperty("operational-environment-type")
     public String getOperationalEnvironmentType() {
         return operationalEnvironmentType;
     }
@@ -56,7 +52,6 @@ public class OperationalEnvironment {
         this.operationalEnvironmentType = operationalEnvironmentType;
     }
 
-    @JsonProperty("operational-environment-status")
     public String getOperationalEnvironmentStatus() {
         return operationalEnvironmentStatus;
     }
@@ -65,7 +60,6 @@ public class OperationalEnvironment {
         this.operationalEnvironmentStatus = operationalEnvironmentStatus;
     }
 
-    @JsonProperty("tenant-context")
     public String getTenantContext() {
         return tenantContext;
     }
@@ -74,7 +68,6 @@ public class OperationalEnvironment {
         this.tenantContext = tenantContext;
     }
 
-    @JsonProperty("workload-context")
     public String getWorkloadContext() {
         return workloadContext;
     }
@@ -83,7 +76,6 @@ public class OperationalEnvironment {
         this.workloadContext = workloadContext;
     }
 
-    @JsonProperty("resource-version")
     public String getResourceVersion() {
         return resourceVersion;
     }
@@ -92,7 +84,6 @@ public class OperationalEnvironment {
         this.resourceVersion = resourceVersion;
     }
 
-    @JsonProperty("relationship-list")
     public RelationshipList getRelationshipList() {
         return relationshipList;
     }

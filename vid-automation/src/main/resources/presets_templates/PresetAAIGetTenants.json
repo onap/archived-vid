@@ -1,19 +1,19 @@
 {
-  "service-type": "VIRTUAL USP",
+  "service-type": "TYLER SILVIA",
   "resource-version": "1494001841964",
   "relationship-list": {
     "relationship": [
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/AAIAIC25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/JANET25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "AAIAIC25"
+            "relationship-value": "JANET25"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -29,15 +29,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/bae71557c5bb4d5aac6743a4e5f1d054",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/bae71557c5bb4d5aac6743a4e5f1d054",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -47,21 +47,21 @@
         "related-to-property": [
           {
             "property-key": "tenant.tenant-name",
-            "property-value": "AIN Web Tool-15-D-testgamma"
+            "property-value": "AIN Web Tool-15-D-testalexandria"
           }
         ]
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/229bcdc6eaeb4ca59d55221141d01f8e",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/229bcdc6eaeb4ca59d55221141d01f8e",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -77,15 +77,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/1178612d2b394be4834ad77f567c0af2",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/1178612d2b394be4834ad77f567c0af2",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -101,15 +101,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/19c5ade915eb461e8af52fb2fd8cd1f2",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/19c5ade915eb461e8af52fb2fd8cd1f2",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -125,15 +125,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/de007636e25249238447264a988a927b",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/de007636e25249238447264a988a927b",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -149,15 +149,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/62f29b3613634ca6a3065cbe0e020c44",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/62f29b3613634ca6a3065cbe0e020c44",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -173,15 +173,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/649289e30d3244e0b48098114d63c2aa",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/649289e30d3244e0b48098114d63c2aa",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -197,15 +197,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/3f21eeea6c2c486bba31dab816c05a32",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/3f21eeea6c2c486bba31dab816c05a32",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -221,15 +221,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/f60ce21d3ee6427586cff0d22b03b773",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/f60ce21d3ee6427586cff0d22b03b773",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -245,15 +245,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/8774659e425f479895ae091bb5d46560",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/8774659e425f479895ae091bb5d46560",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -269,15 +269,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/624eb554b0d147c19ff8885341760481",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/624eb554b0d147c19ff8885341760481",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -293,15 +293,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/214f55f5fc414c678059c383b03e4962",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/214f55f5fc414c678059c383b03e4962",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -317,15 +317,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/c90666c291664841bb98e4d981ff1db5",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/c90666c291664841bb98e4d981ff1db5",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -341,15 +341,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/ce5b6bc5c7b348e1bf4b91ac9a174278",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/ce5b6bc5c7b348e1bf4b91ac9a174278",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -365,15 +365,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/b386b768a3f24c8e953abbe0b3488c02",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/b386b768a3f24c8e953abbe0b3488c02",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -389,15 +389,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/dc6c4dbfd225474e9deaadd34968646c",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/dc6c4dbfd225474e9deaadd34968646c",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -413,15 +413,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/02cb5030e9914aa4be120bd9ed1e19eb",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/02cb5030e9914aa4be120bd9ed1e19eb",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -437,15 +437,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/f2f3830e4c984d45bcd00e1a04158a79",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/f2f3830e4c984d45bcd00e1a04158a79",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -461,15 +461,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/05b91bd5137f4929878edd965755c06d",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/05b91bd5137f4929878edd965755c06d",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -485,15 +485,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/7002fbe8482d4a989ddf445b1ce336e0",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/7002fbe8482d4a989ddf445b1ce336e0",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -509,15 +509,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/4008522be43741dcb1f5422022a2aa0b",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/4008522be43741dcb1f5422022a2aa0b",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -533,15 +533,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/f44e2e96a1b6476abfda2fa407b00169",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/f44e2e96a1b6476abfda2fa407b00169",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -557,15 +557,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/b69a52bec8a84669a37a1e8b72708be7",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/b69a52bec8a84669a37a1e8b72708be7",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -581,15 +581,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/fac7d9fd56154caeb9332202dcf2969f",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/fac7d9fd56154caeb9332202dcf2969f",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -605,15 +605,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/2d34d8396e194eb49969fd61ffbff961",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/2d34d8396e194eb49969fd61ffbff961",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -629,15 +629,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/cb42a77ff45b48a8b8deb83bb64acc74",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/cb42a77ff45b48a8b8deb83bb64acc74",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -653,15 +653,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/fa45ca53c80b492fa8be5477cd84fc2b",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/fa45ca53c80b492fa8be5477cd84fc2b",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -677,15 +677,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/4914ab0ab3a743e58f0eefdacc1dde77",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/4914ab0ab3a743e58f0eefdacc1dde77",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -701,15 +701,15 @@
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/d0a3e3f2964542259d155a81c41aadc3",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/d0a3e3f2964542259d155a81c41aadc3",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",
@@ -719,21 +719,21 @@
         "related-to-property": [
           {
             "property-key": "tenant.tenant-name",
-            "property-value": "test-mtn6-09"
+            "property-value": "test-hvf6-09"
           }
         ]
       },
       {
         "related-to": "tenant",
-        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/cbb99fe4ada84631b7baf046b6fd2044",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/cbb99fe4ada84631b7baf046b6fd2044",
         "relationship-data": [
           {
             "relationship-key": "cloud-region.cloud-owner",
-            "relationship-value": "att-aic"
+            "relationship-value": "irma-aic"
           },
           {
             "relationship-key": "cloud-region.cloud-region-id",
-            "relationship-value": "mtn6"
+            "relationship-value": "hvf6"
           },
           {
             "relationship-key": "tenant.tenant-id",

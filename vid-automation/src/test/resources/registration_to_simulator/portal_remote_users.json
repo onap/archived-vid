@@ -1,0 +1,18 @@
+{
+  "simulatorRequest": {
+    "method" : "GET",
+    "path" : "/ecompportal_att/auxapi//v3/user/1"
+  } ,
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "firstName": "1",
+      "lastName": "1",
+      "orgId": 1,
+      "loginId": "1",
+      "loginPwd": "1",
+      "active": true,
+      "internal": true
+    }
+  }
+}

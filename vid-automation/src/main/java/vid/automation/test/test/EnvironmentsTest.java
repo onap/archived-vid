@@ -2,7 +2,7 @@ package vid.automation.test.test;
 
 import com.google.common.collect.ImmutableMap;
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.BeforeClass;
@@ -385,11 +385,12 @@ public class EnvironmentsTest extends VidBaseTestCase {
         assertTrue("Failed to find Activate button for test env with id: "+envId, activationButton.isDisplayed());
         activationButton.click();
         updateEnvManifestFile(inputFileName);
-        WebElement manifestFileName = Get.byId("manifestFileName");
-        assertEquals("Manifest file name is wrong in test environment activation modal", inputFileName, manifestFileName.getText());
+        assertTrue("Manifest file name is wrong in test environment activation modal",
+                Wait.waitByIdAndText("manifestFileName", inputFileName, 10));
     }
 
     private void updateEnvManifestFile(String inputFileName) {
+        GeneralUIUtils.ultimateWait();
         Input.file("applicationEnvironment/"+inputFileName, "testEnvManifestFileInput");
         GeneralUIUtils.ultimateWait();
     }

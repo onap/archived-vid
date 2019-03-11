@@ -2,12 +2,11 @@ package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetNetworkCollectionDetails extends BaseAAIPreset {
 
@@ -219,10 +218,11 @@ public class PresetAAIGetNetworkCollectionDetails extends BaseAAIPreset {
                 "        \"network-id\": \"l3network-id-rs804s\",\n" +
                 "        \"network-name\": \"oam-net\",\n" +
                 "        \"network-type\": \"Tenant_Layer_3\",\n" +
-                "        \"network-role\": \"HngwProtectedOam.OAM\",\n" +
+                "        \"network-role\": \"RosemaProtectedOam.OAM\",\n" +
                 "        \"network-technology\": \"Contrail\",\n" +
                 "        \"is-bound-to-vpn\": false,\n" +
                 "        \"resource-version\": \"1521662814627\",\n" +
+                "        \"orchestration-status\": \"Created\",\n" +
                 "        \"is-provider-network\": false,\n" +
                 "        \"is-shared-network\": false,\n" +
                 "        \"is-external-network\": false,\n" +
@@ -258,10 +258,11 @@ public class PresetAAIGetNetworkCollectionDetails extends BaseAAIPreset {
                 "        \"network-id\": \"l3network-id-3-rs804s\",\n" +
                 "        \"network-name\": \"oam-net\",\n" +
                 "        \"network-type\": \"Tenant_Layer_3\",\n" +
-                "        \"network-role\": \"HngwProtectedOam.OAM\",\n" +
+                "        \"network-role\": \"RosemaProtectedOam.OAM\",\n" +
                 "        \"network-technology\": \"Contrail\",\n" +
                 "        \"is-bound-to-vpn\": false,\n" +
                 "        \"resource-version\": \"1521662816043\",\n" +
+                "        \"orchestration-status\": \"Created\",\n" +
                 "        \"is-provider-network\": false,\n" +
                 "        \"is-shared-network\": false,\n" +
                 "        \"is-external-network\": false,\n" +
@@ -297,10 +298,11 @@ public class PresetAAIGetNetworkCollectionDetails extends BaseAAIPreset {
                 "        \"network-id\": \"l3network-id-2-rs804s\",\n" +
                 "        \"network-name\": \"oam-net\",\n" +
                 "        \"network-type\": \"Tenant_Layer_3\",\n" +
-                "        \"network-role\": \"HngwProtectedOam.OAM\",\n" +
+                "        \"network-role\": \"RosemaProtectedOam.OAM\",\n" +
                 "        \"network-technology\": \"Contrail\",\n" +
                 "        \"is-bound-to-vpn\": false,\n" +
                 "        \"resource-version\": \"1521662815304\",\n" +
+                "        \"orchestration-status\": \"Created\",\n" +
                 "        \"is-provider-network\": false,\n" +
                 "        \"is-shared-network\": false,\n" +
                 "        \"is-external-network\": false,\n" +

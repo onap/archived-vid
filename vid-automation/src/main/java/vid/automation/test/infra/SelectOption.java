@@ -1,11 +1,14 @@
 package vid.automation.test.infra;
 
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.ObjectUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import vid.automation.test.Constants;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by itzikliderman on 18/07/2017.
@@ -54,6 +57,13 @@ public class SelectOption {
         Click.byClass(Constants.MULTI_SELECT_UNSELECTED_CLASS);
         Click.byClass(Constants.MULTI_SELECT_UNSELECTED_CLASS);
 
+    }
+
+    public static void waitForOptionInSelect(String option, String selectTestId) {
+        Wait.waitFor(foo ->
+                        ObjectUtils.defaultIfNull(SelectOption.getList(selectTestId), ImmutableList.<WebElement>of())
+                                .stream().map(o -> o.getText()).filter(o -> option.equals(o)).findAny().isPresent(),
+                "", 10, 200, TimeUnit.MILLISECONDS);
     }
 
     public static void selectOptionsFromMultiselectById(String multiSelectId, List<String> options) {

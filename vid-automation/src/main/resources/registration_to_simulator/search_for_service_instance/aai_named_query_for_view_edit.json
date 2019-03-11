@@ -13,7 +13,7 @@
               "service-instance-id":"3f93c7cb-2fd0-4557-9514-e189b7b04f9d"
             },
             "service-subscription":{
-              "service-type":"VIRTUAL USP"
+              "service-type":"TYLER SILVIA"
             }
           }
         ]
@@ -41,11 +41,11 @@
           "inventory-response-items":{
             "inventory-response-item":[
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"c015cc0f-0f37-4488-aabf-53795fd93cd3",
                   "vnf-name":"fsd",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
                   "service-id":"36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
@@ -118,7 +118,7 @@
                       "vf-module":{
                         "vf-module-id":"a231a99c-7e75-4d6d-a0fb-5c7d26f30f77",
                         "vf-module-name":"my_vfModule",
-                        "orchestration-status":"pending-delete",
+                        "orchestration-status":"<VF_MODULE_ORCH_STATUS>",
                         "is-base-vf-module":false,
                         "resource-version":"1505044772033",
                         "model-invariant-id":"eb5a1e09-7f46-4f1c-ab7a-b017bad95261",
@@ -134,11 +134,11 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"0846287b-65bf-45a6-88f6-6a1af4149fac",
                   "vnf-name":"kjkjk",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
                   "service-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
@@ -207,12 +207,12 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"9908b762-136f-4b1f-8eb4-ef670ef58bb4",
                   "vnf-name":"uiui",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
-                  "service-id":"vHNGWaas",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
+                  "service-id":"vRosemarie",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
                   "in-maint":false,
@@ -231,11 +231,11 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"543931f5-e50e-45a2-a69f-ab727e4c7f2f",
                   "vnf-name":"sdfsdfdsf",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
                   "service-id":"LRSI-OSPF",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
@@ -255,12 +255,12 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"25e84884-22d5-44c9-8212-cb459f63e0ba",
                   "vnf-name":"sdada",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
-                  "service-id":"VIPRaaS",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
+                  "service-id":"vMuriel",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
                   "in-maint":false,
@@ -279,11 +279,11 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"013fb0ba-977b-496c-9faa-7f8e5f083eec",
                   "vnf-name":"gvb",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
                   "service-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
@@ -303,11 +303,11 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"06914296-cb46-4b62-9453-329a706a6cbb",
                   "vnf-name":"lkllll",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
                   "service-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
@@ -327,11 +327,11 @@
                 }
               },
               {
-                "model-name":"VID-PCRF-05-15-17",
+                "model-name":"VID-RODERICK-05-15-17",
                 "generic-vnf":{
                   "vnf-id":"c55da606-cf38-42c7-bc3c-be8e23b19299",
                   "vnf-name":"ss",
-                  "vnf-type":"1707vidnf/VID-PCRF-05-15-17 0",
+                  "vnf-type":"1707vidnf/VID-RODERICK-05-15-17 0",
                   "service-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
                   "prov-status":"PREPROV",
                   "orchestration-status":"Created",
@@ -378,14 +378,14 @@
                         "subnet-id": "1254dd9b-e689-4075-a089-f0deeb23c00c",
                         "subnet-name": "APP-C-DND_vEPDG-FN_hsl_fn_net_1_subnet_1",
                         "neutron-subnet-id": "7b5ea34d-fb95-4278-a148-4f6677ebe866",
-                        "gateway-address": "107.243.49.1",
-                        "network-start-address": "107.243.49.0",
+                        "gateway-address": "10.0.0.10",
+                        "network-start-address": "10.0.0.10",
                         "cidr-mask": "26",
                         "ip-version": "4",
                         "orchestration-status": "Created",
                         "dhcp-enabled": true,
-                        "dhcp-start": "107.243.49.3",
-                        "dhcp-end": "107.243.49.62",
+                        "dhcp-start": "10.0.0.10",
+                        "dhcp-end": "10.0.0.10",
                         "ip-assignment-direction": "false",
                         "resource-version": "1511279493791"
                       },

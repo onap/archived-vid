@@ -1,13 +1,12 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetModelsByProject extends BaseAAIPreset {
     private String projectName;
@@ -49,7 +48,7 @@ public class PresetAAIGetModelsByProject extends BaseAAIPreset {
                 "          {" +
                 "            \"related-to\": \"service-instance\"," +
                 "            \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
-                "            \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Mobility/service-instances/service-instance/3f826016-3ac9-4928-9561-beee75fd91d5\"," +
+                "            \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Emanuel/service-instances/service-instance/3f826016-3ac9-4928-9561-beee75fd91d5\"," +
                 "            \"relationship-data\": [" +
                 "              {" +
                 "                \"relationship-key\": \"customer.global-customer-id\"," +
@@ -57,7 +56,7 @@ public class PresetAAIGetModelsByProject extends BaseAAIPreset {
                 "              }," +
                 "              {" +
                 "                \"relationship-key\": \"service-subscription.service-type\"," +
-                "                \"relationship-value\": \"Mobility\"" +
+                "                \"relationship-value\": \"Emanuel\"" +
                 "              }," +
                 "              {" +
                 "                \"relationship-key\": \"service-instance.service-instance-id\"," +
@@ -124,7 +123,7 @@ public class PresetAAIGetModelsByProject extends BaseAAIPreset {
                 "          {" +
                 "            \"related-to\": \"service-instance\"," +
                 "            \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
-                "            \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Mobility/service-instances/service-instance/ff2d9326-1ef5-4760-aba0-0eaf372ae675\"," +
+                "            \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Emanuel/service-instances/service-instance/ff2d9326-1ef5-4760-aba0-0eaf372ae675\"," +
                 "            \"relationship-data\": [" +
                 "              {" +
                 "                \"relationship-key\": \"customer.global-customer-id\"," +
@@ -132,7 +131,7 @@ public class PresetAAIGetModelsByProject extends BaseAAIPreset {
                 "              }," +
                 "              {" +
                 "                \"relationship-key\": \"service-subscription.service-type\"," +
-                "                \"relationship-value\": \"Mobility\"" +
+                "                \"relationship-value\": \"Emanuel\"" +
                 "              }," +
                 "              {" +
                 "                \"relationship-key\": \"service-instance.service-instance-id\"," +

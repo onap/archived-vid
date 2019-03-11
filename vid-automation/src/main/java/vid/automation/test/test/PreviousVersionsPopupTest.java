@@ -3,25 +3,26 @@ package vid.automation.test.test;
 import com.google.common.collect.ImmutableList;
 import org.junit.Assert;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetMultipleVersion;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetOneVersion;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.*;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstancePost;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Get;
 import vid.automation.test.sections.BrowseASDCPage;
 import vid.automation.test.sections.CreateNewInstancePage;
 import vid.automation.test.sections.PreviousVersionDialog;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.SimulatorApi;
+
+import static vid.automation.test.infra.ModelInfo.ModelInfoWithMultipleVersions.modelInfoWithMultipleVersions;
+import static vid.automation.test.infra.ModelInfo.serviceWithOneVersion;
 
 public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
 
@@ -30,11 +31,11 @@ public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
     private String versionNumber1 = "1.0";
     private String versionNumber2 = "2.0";
     private String versionNumber3 = "3.0";
-    private String modelVersionId1 = "aeababbc-010b-4a60-8df7-e64c07389466";
-    private String modelVersionId2 = "aa2f8e9c-9e47-4b15-a95c-4a9385599abc";
-    private String modelVersionId3 = "d849c57d-b6fe-4843-8349-4ab8bbb08d71";
-    private static final String modelInvariantId = "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba";
-    private static final String serviceName = "action-data";
+    private String modelVersionId1 = modelInfoWithMultipleVersions.modelVersionId1;
+    private String modelVersionId2 = modelInfoWithMultipleVersions.modelVersionId2;
+    private String modelVersionId3 = modelInfoWithMultipleVersions.modelVersionId3;
+    private static final String modelInvariantId = modelInfoWithMultipleVersions.modelInvariantId;
+    private static final String serviceName = modelInfoWithMultipleVersions.modelName;
     private String createModalTitleTestId = "create-modal-title";
 
 
@@ -58,8 +59,7 @@ public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
     @Test
     private void browseSDC_afterCancelOnPopup_browseSDCpageExists(){
         prepareSimulatorWithThreeVersionsBeforeBrowseASDCService();
-        SideMenu.navigateToBrowseASDCPage();
-        browseASDCPage.clickPreviousVersionButton();
+        navigateToBrowseAsdcAndClickPreviousButton();
         browseASDCPage.clickCancelButton();// to change
         newVersionDialog.assertVersionRow(modelInvariantId,modelVersionId3,versionNumber3,"Browse_SDC_Service_Models-uuid-");
     }
@@ -67,14 +67,13 @@ public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
     private void browseSDC_previousVersionButton_notExists(){
         prepareSimulatorWithOneVersionBeforeBrowseASDCService();
         SideMenu.navigateToBrowseASDCPage();
-        browseASDCPage.assertPreviousVersionButtonNotExists(modelInvariantId);
+        browseASDCPage.assertPreviousVersionButtonNotExists(serviceWithOneVersion.modelInvariantId);
     }
 
     @Test
     private void openPreviousVersionPopup_newestVersionButton_notExists(){
         prepareSimulatorWithThreeVersionsBeforeBrowseASDCService();
-        SideMenu.navigateToBrowseASDCPage();
-        browseASDCPage.clickPreviousVersionButton();
+        navigateToBrowseAsdcAndClickPreviousButton();
         newVersionDialog.assertHighestVersionNotExists(modelVersionId3);
         newVersionDialog.clickCancelButton();
     }
@@ -84,14 +83,20 @@ public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
         prepareSimulatorWithThreeVersionsBeforeBrowseASDCService();
         CreateNewInstancePage newInstance= new CreateNewInstancePage();
         newVersionDialog = new PreviousVersionDialog();
-        SideMenu.navigateToBrowseASDCPage();
-        browseASDCPage.clickPreviousVersionButton();
+        navigateToBrowseAsdcAndClickPreviousButton();
         newVersionDialog.clickDeployServiceButtonByServiceUUID(modelVersionId2);
         assertNewInstanceFormOpened(createModalTitleTestId,expectedPopupIsALaCarteName);
         newInstance.clickCancelButtonByTestID();
         GeneralUIUtils.ultimateWait();
         newVersionDialog.clickCancelButton();
 
+    }
+
+    private void navigateToBrowseAsdcAndClickPreviousButton() {
+        SideMenu.navigateToBrowseASDCPage();
+        Click.byTestId("view-per-page-50");
+        GeneralUIUtils.ultimateWait();
+        Get.byTestId("PreviousVersion-"+modelInvariantId).findElement(By.tagName("button")).click();
     }
 
     private void assertNewInstanceFormOpened(String createModalTitleTestId,String expectedInstanceFormName) {
@@ -106,11 +111,12 @@ public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
         ImmutableList<BasePreset> presets = ImmutableList.of(
                 new PresetGetSessionSlotCheckIntervalGet(),
                 new PresetAAIGetSubscribersGet(),
-                new PresetAAIGetMultipleVersion(modelVersionId1,modelVersionId2,modelVersionId3, modelInvariantId),
+                new PresetAAIServiceDesignAndCreationPut(),
                 new PresetAAIGetServicesGet(),
                 new PresetSDCGetServiceMetadataGet(modelVersionId2, modelInvariantId, zipFileName),
                 new PresetSDCGetServiceToscaModelGet(modelVersionId2, zipFileName),
                 new PresetAAIGetSubDetailsGet(null),
+                new PresetAAIGetSubDetailsWithoutInstancesGet(null),
                 new PresetAAIGetNetworkZones(),
                 new PresetMSOCreateServiceInstancePost(),
                 new PresetMSOOrchestrationRequestGet());
@@ -122,7 +128,7 @@ public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
         ImmutableList<BasePreset> presets = ImmutableList.of(
                 new PresetGetSessionSlotCheckIntervalGet(),
                 new PresetAAIGetSubscribersGet(),
-                new PresetAAIGetOneVersion(modelVersionId1, modelInvariantId),
+                new PresetAAIServiceDesignAndCreationPut(),
                 new PresetAAIGetServicesGet());
 
         SimulatorApi.registerExpectationFromPresets(presets, SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);

@@ -1,12 +1,16 @@
 package vid.automation.test.sections;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.UnhandledAlertException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import vid.automation.test.Constants;
 
 public class SideMenu {
+    static final Logger logger = LoggerFactory.getLogger(SideMenu.class);
+
     public static void navigateToBrowseASDCPage() {
         navigateToPage(Constants.SideMenu.BROWSE_ASDC_SERVICE_MODELS);
     }
@@ -24,7 +28,7 @@ public class SideMenu {
     }
 
     public static void navigateToMacroInstantiationStatus() {
-        navigateToPage("Macro Instantiation Status");
+        navigateToPage("Instantiation Status");
         new VidBasePage().goToIframe();
     }
 
@@ -47,6 +51,7 @@ public class SideMenu {
             }
         });
         GeneralUIUtils.ultimateWait();
+        logger.info("navigated to {}", PageName);
     }
 
     public static void navigateToWelcomePage() {

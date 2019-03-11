@@ -29,18 +29,18 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "          \"resource-version\":\"1494001980153\"" +
             "        }," +
             "        {" +
-            "          \"service-id\":\"vRRaaS\"," +
-            "          \"service-description\":\"vRRaaS\"," +
+            "          \"service-id\":\"vTerrance\"," +
+            "          \"service-description\":\"vTerrance\"," +
             "          \"resource-version\":\"1484865266\"" +
             "        }," +
             "        {" +
             "          \"service-id\":\"323d69d9-2efe-4r45-ay0a-89ea7ard4e6f\"," +
-            "          \"service-description\":\"vSCP\"," +
+            "          \"service-description\":\"vEsmeralda\"," +
             "          \"resource-version\":\"1494001903012\"" +
             "        }," +
             "        {" +
             "          \"service-id\":\"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb\"," +
-            "          \"service-description\":\"Mobility\"," +
+            "          \"service-description\":\"Emanuel\"," +
             "          \"resource-version\":\"1503954056794\"" +
             "        }," +
             "        {" +
@@ -59,18 +59,18 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "          \"resource-version\":\"1494001863930\"" +
             "        }," +
             "        {" +
-            "          \"service-id\":\"vHNGWaas\"," +
+            "          \"service-id\":\"vRosemarie\"," +
             "          \"service-description\":\"HNGATEWAY\"," +
             "          \"resource-version\":\"1501192849249\"" +
             "        }," +
             "        {" +
             "          \"service-id\":\"vHNPaas\"," +
-            "          \"service-description\":\"HNPORTAL\"," +
+            "          \"service-description\":\"WILKINS\"," +
             "          \"resource-version\":\"1501192982895\"" +
             "        }," +
             "        {" +
             "          \"service-id\":\"e433710f-9217-458d-a79d-1c7aff376d89\"," +
-            "          \"service-description\":\"VIRTUAL USP\"," +
+            "          \"service-description\":\"TYLER SILVIA\"," +
             "          \"resource-version\":\"1494001802638\"" +
             "        }," +
             "        {" +
@@ -79,8 +79,8 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "          \"resource-version\":\"1492533254036\"" +
             "        }," +
             "        {" +
-            "          \"service-id\":\"VIPRaaS\"," +
-            "          \"service-description\":\"vIPRaaS\"," +
+            "          \"service-id\":\"vMuriel\"," +
+            "          \"service-description\":\"vMuriel\"," +
             "          \"resource-version\":\"1490910058887\"" +
             "        }," +
             "        {" +
@@ -99,8 +99,8 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "          \"resource-version\":\"1506361785997\"" +
             "        }," +
             "        {" +
-            "          \"service-id\":\"vVIGaaS\"," +
-            "          \"service-description\":\"vVIGaaS\"," +
+            "          \"service-id\":\"vSalvatore\"," +
+            "          \"service-description\":\"vSalvatore\"," +
             "          \"resource-version\":\"1494001900545\"" +
             "        }," +
             "        {" +
@@ -109,8 +109,8 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "          \"resource-version\":\"1494001941772\"" +
             "        }," +
             "        {" +
-            "          \"service-id\":\"vPEaaS\"," +
-            "          \"service-description\":\"vPEaaS\"," +
+            "          \"service-id\":\"vHubbard\"," +
+            "          \"service-description\":\"vHubbard\"," +
             "          \"resource-version\":\"1494001988229\"" +
             "        }," +
             "        {" +

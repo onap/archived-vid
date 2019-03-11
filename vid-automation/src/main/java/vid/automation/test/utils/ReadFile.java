@@ -3,7 +3,7 @@ package vid.automation.test.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.openecomp.sdc.ci.tests.utilities.FileHandling;
+import org.onap.sdc.ci.tests.utilities.FileHandling;
 import vid.automation.test.infra.Input;
 
 import java.io.IOException;

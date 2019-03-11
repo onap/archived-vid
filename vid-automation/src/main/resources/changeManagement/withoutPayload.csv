@@ -2,7 +2,7 @@
 request-parameters,[vm],[vnfc],vnfc-function-code,dbg
 request-parameters,[vm],[vnfc],vnfc-type,DBE-VM #1
 request-parameters,[vm],[vnfc],group-notation,ibcx0001vm001dbg001pair
-request-parameters,[vm],[vnfc],ipaddress-v4-oam-vip,135.21.166.39
+request-parameters,[vm],[vnfc],ipaddress-v4-oam-vip,10.2.3.4
 request-parameters,[vm],,vm-name,ibcx0001vm002
 request-parameters,[vm],[vnfc],vnfc-name,ibcx0001vm002dbg001
 request-parameters,[vm],[vnfc],vnfc-function-code,dbg

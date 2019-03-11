@@ -1,21 +1,22 @@
 package vid.automation.test.test;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Wait;
 import vid.automation.test.sections.CreateConfigurationPage;
 import vid.automation.test.sections.ServiceProxyPage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
 
@@ -27,29 +28,30 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     private String policyConfigurationModelName_0 = "Port Mirroring Configuration 0";
     private String policyConfigurationModelName_1 = "Port Mirroring Configuration By Policy 1";
     private String pnfInstanceName = "AS-pnf2-10219--as988q";
-    private String vnfServiceType = "VIRTUAL USP";
-    private String vnfInstanceName = "zmtn6aepdg01";
+    private String pnfServiceType = "DARREN MCGEE";
+    private String vnfServiceType = "TYLER SILVIA";
+    private String defaultCollectorServiceType = "TYLER SILVIA";
+    private String vnfInstanceName = "zhvf6aepdg01";
     private String active = "Active";
-    private String desiredCloudRegionId;
+    private String desiredCloudRegionId = "mdt1";
 
 
-    public CreatePortMirroringConfigurationTest() throws Exception {}
+    private boolean featureFlagLetsSelectingCollector() {
+        return Features.FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY.isActive();
+    }
 
-
-    @BeforeMethod
-    public void setupDesiredCloudRegionId() {
-        desiredCloudRegionId = Features.FLAG_REGION_ID_FROM_REMOTE.isActive() ? "someCloudRegionIdFromAai" : "mdt1";
+    private String expectedPnfCollectorServiceType() {
+        return (featureFlagLetsSelectingCollector() ? pnfServiceType : defaultCollectorServiceType).replace(" ", "%20");
     }
 
     @Test
     public void testCreatePolicyConfiguration() {
         SimulatorApi.clearAll();
-        BulkRegistration.searchExistingServiceInstancePortMirroring("Active", desiredCloudRegionId);
-        BulkRegistration.searchExistingServiceInstance();
+        BulkRegistration.searchExistingServiceInstancePortMirroring("Active", "mdt1");
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.createPolicyConfiguration(true, desiredCloudRegionId);
+        BulkRegistration.createPolicyConfiguration(true, expectedPnfCollectorServiceType());
 
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        navigateToViewEditPageOf_test_sssdad();
         selectConfigurationNode(policyConfigurationModelName_1, getConfigurationExpectedMetadata());
         fillAllFormFields();
         createConfigurationPage.clickNextButton();
@@ -60,7 +62,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         createConfigurationPage.clickNextButton();
 
         //assert service proxy models (circles) names
-        serviceProxyPage.assertSourceModelName("vmmeService2 Service Proxy");
+        serviceProxyPage.assertSourceModelName("vflorenceService2 Service Proxy");
         serviceProxyPage.assertCollectorModelName("pProbeService Service Proxy");
 
         //assert service proxy models metadata
@@ -68,6 +70,10 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         assertMetadataModal(Constants.ConfigurationCreation.COLLECTOR_INFO_BUTTON_TEST_ID, getCollectorServiceProxyExpectedMetadata());
 
         //select source & collector
+        if (featureFlagLetsSelectingCollector()) {
+            serviceProxyPage.assertCollectorServiceType(defaultCollectorServiceType);
+            serviceProxyPage.chooseCollectorServiceType(pnfServiceType);
+        }
         serviceProxyPage.chooseCollector(pnfInstanceName);
         serviceProxyPage.assertSelectedInstanceIcon(Constants.ConfigurationCreation.COLLECTOR_INSTANCE_SELECTED_ICON_TEST_ID);
 
@@ -91,10 +97,9 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     public void testDeletePolicyConfiguration() {
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstancePortMirroring("Created", desiredCloudRegionId);
-        BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.deletePolicyConfiguration(true, desiredCloudRegionId);
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        BulkRegistration.deletePolicyConfiguration(true);
+        navigateToViewEditPageOf_test_sssdad();
         serviceProxyPage.clickDeleteConfigurationButton();
         serviceProxyPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
     }
@@ -103,10 +108,9 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     public void testConfigurationCreatedPortEnabled(){
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstancePortMirroring("Created", desiredCloudRegionId);
-        BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.activateDeactivateConfiguration("deactivate","deactivate", desiredCloudRegionId);
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        BulkRegistration.activateDeactivateConfiguration("deactivate");
+        navigateToViewEditPageOf_test_sssdad();
         WebElement isPortEnableButtonExists = Get.byTestId("enableDisableButton");
         Assert.assertNull(isPortEnableButtonExists);
     }
@@ -114,8 +118,8 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     @Test
     public void testDisablePort() {
         enableDisablePortPresets(active, true);
-        BulkRegistration.enableDisablePort("disablePort", desiredCloudRegionId);
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        BulkRegistration.enableDisablePort("disablePort");
+        navigateToViewEditPageOf_test_sssdad();
         serviceProxyPage.clickEnableDisableButton();
         serviceProxyPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
     }
@@ -123,8 +127,8 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     @Test
     public void testEnablePort() {
         enableDisablePortPresets(active, false);
-        BulkRegistration.enableDisablePort("enablePort", desiredCloudRegionId);
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        BulkRegistration.enableDisablePort("enablePort");
+        navigateToViewEditPageOf_test_sssdad();
         serviceProxyPage.clickEnableDisableButton();
         serviceProxyPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
     }
@@ -135,7 +139,6 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     private void enableDisablePortPresets(String orchStatus, boolean isMirrored){
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstancePortMirroring(orchStatus, isMirrored, desiredCloudRegionId);
-        BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
     }
 
@@ -145,10 +148,9 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     public void testActivateConfigurationTest(){
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstancePortMirroring("Created", desiredCloudRegionId);
-        BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.activateDeactivateConfiguration("activate","activate", desiredCloudRegionId);
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        BulkRegistration.activateDeactivateConfiguration("activate");
+        navigateToViewEditPageOf_test_sssdad();
         serviceProxyPage.assertDeleteConfigurationButtonExists(true);
         serviceProxyPage.clickActivateDeactivateButton();
         serviceProxyPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
@@ -159,10 +161,9 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     public void testDeleteConfigurationTest(){
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstancePortMirroring("Created", desiredCloudRegionId);
-        BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.deleteConfiguration(desiredCloudRegionId);
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        BulkRegistration.deleteConfiguration();
+        navigateToViewEditPageOf_test_sssdad();
         serviceProxyPage.clickDeleteConfigurationButton();
         serviceProxyPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
     }
@@ -172,10 +173,9 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     public void testDeactivateConfigurationTest(){
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstancePortMirroring("Active", desiredCloudRegionId);
-        BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.activateDeactivateConfiguration("deactivate","deactivate", desiredCloudRegionId);
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        BulkRegistration.activateDeactivateConfiguration("deactivate");
+        navigateToViewEditPageOf_test_sssdad();
         serviceProxyPage.assertDeleteConfigurationButtonExists(false);
         serviceProxyPage.clickActivateDeactivateButton();
         serviceProxyPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
@@ -186,19 +186,18 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     @Test
     public void testCreatePortMirroringConfiguration() {
         SimulatorApi.clearAll();
-//        BulkRegistration.searchExistingServiceInstancePortMirroring();
         BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.createPolicyConfiguration(true, desiredCloudRegionId);
+        BulkRegistration.createPolicyConfiguration(true, expectedPnfCollectorServiceType());
         BulkRegistration.createConfiguration("model-version-id=7482279e-5901-492f-a963-6331aa6b995e&model-invariant-id=f2ae9911-95c4-40d0-8908-0175c206ab2d");
 
-        goToExistingInstanceById(serviceInstanceId_vidTest444);//test_sssdad
+        navigateToViewEditPageOfuspVoiceVidTest444("240376de-870e-48df-915a-31f140eedd2c");
         selectConfigurationNode(policyConfigurationModelName_0, ImmutableMap.<String, String>builder()
                 .put(Constants.ServiceModelInfo.SERVIICE_NAME_KEY, "Demo Service 1")
                 .put(Constants.ServiceModelInfo.MODEL_NAME, "Port Mirroring Configuration")
                 .put(Constants.ServiceModelInfo.SERVICE_INSTANCE_NAME, "vid-test-444")
                 .put(Constants.ServiceModelInfo.MODEL_INVARIANT_UUID, "5dd839fa-5e09-47d4-aa5c-5ba62161b569")
-                .put(Constants.ServiceModelInfo.SUBSCRIBER_NAME_KEY, "USP VOICE")
+                .put(Constants.ServiceModelInfo.SUBSCRIBER_NAME_KEY, "SILVIA ROBBINS")
                 .put(Constants.ServiceModelInfo.MODEL_VERSION, "1.0")
                 .put(Constants.ServiceModelInfo.MODEL_UUID, "9d6b09b1-7527-49b1-b6cf-398cb67c5523")
                 .put(Constants.ServiceModelInfo.MODEL_CUSTOMIZATION_UUID, "3db39baa-35bc-4b97-b199-44e758823502")
@@ -224,7 +223,6 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
                 .put(Constants.ServiceProxyModelInfo.MODEL_TYPE, "Service Proxy")
                 .put(Constants.ServiceProxyModelInfo.MODEL_INVARIANT_UUID, "0aaefad3-9409-4ab1-be00-a1571e8a0545")
                 .put(Constants.ServiceProxyModelInfo.MODEL_UUID, "8685fd6a-c0b1-40f7-be94-ab232e4424c1")
-//                .put(Constants.ServiceProxyModelInfo.MODEL_CUSTOMIZATION_UUID, "2ac4bd62-dee8-452f-b799-b9c925ee1b9f")
                 .put(Constants.ServiceProxyModelInfo.SOURCE_MODEL_UUID, "7482279e-5901-492f-a963-6331aa6b995e")
                 .put(Constants.ServiceProxyModelInfo.SOURCE_MODEL_INVARIANT, "f2ae9911-95c4-40d0-8908-0175c206ab2d")
                 .put(Constants.ServiceProxyModelInfo.SOURCE_MODEL_NAME, "Service 1")
@@ -233,6 +231,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         assertMetadataModal(Constants.ConfigurationCreation.COLLECTOR_INFO_BUTTON_TEST_ID, expectedMetadata);
 
         //select source & collector
+        serviceProxyPage.assertCollectorServiceType(defaultCollectorServiceType);
         serviceProxyPage.chooseCollectorServiceType(vnfServiceType);
         serviceProxyPage.chooseCollector(vnfInstanceName);
         serviceProxyPage.assertSelectedInstanceIcon(Constants.ConfigurationCreation.COLLECTOR_INSTANCE_SELECTED_ICON_TEST_ID);
@@ -242,14 +241,6 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         serviceProxyPage.assertSelectedInstanceIcon(Constants.ConfigurationCreation.SOURCE_INSTANCE_SELECTED_ICON_TEST_ID);
 
         serviceProxyPage.assertButtonState(Constants.ConfigurationCreation.CREATE_BUTTON_TEST_ID,true);
-//        serviceProxyPage.clickCreateButton();
-//        serviceProxyPage.assertButtonState(Constants.ConfigurationCreation.CREATE_BUTTON_TEST_ID,false);
-//        serviceProxyPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
-//        serviceProxyPage.clickCloseButton();
-
-        //assert redirect back to view/edit
-//        GeneralUIUtils.ultimateWait();
-//        Assert.assertTrue(Exists.byTestId(Constants.ViewEdit.ADD_VNF_BUTTON_TEST_ID));
     }
 
     @Test
@@ -258,13 +249,19 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstancePortMirroring("Active", desiredCloudRegionId);
         BulkRegistration.getNetworkNodeFormData();
-        BulkRegistration.createPolicyConfiguration(false, desiredCloudRegionId);
+        BulkRegistration.createPolicyConfiguration(false, expectedPnfCollectorServiceType());
 
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        navigateToViewEditPageOf_test_sssdad();
         selectConfigurationNode(policyConfigurationModelName_1, getConfigurationExpectedMetadata());
         fillAllFormFields();
         createConfigurationPage.clickNextButton();
-      //select source & collector
+        serviceProxyPage.assertButtonState(Constants.ConfigurationCreation.CREATE_BUTTON_TEST_ID,false);
+
+        //select source & collector
+        if (featureFlagLetsSelectingCollector()) {
+            serviceProxyPage.assertCollectorServiceType(defaultCollectorServiceType);
+            serviceProxyPage.chooseCollectorServiceType(pnfServiceType);
+        }
         serviceProxyPage.chooseCollector(pnfInstanceName);
         serviceProxyPage.chooseSourceServiceType(vnfServiceType);
         serviceProxyPage.chooseSource(vnfInstanceName);
@@ -273,6 +270,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         serviceProxyPage.clickCloseButton();
         serviceProxyPage.assertButtonState(Constants.ConfigurationCreation.CREATE_BUTTON_TEST_ID,true);
     }
+
     @Test
     public void testRainyNoResultsInDropdowns(){
         SimulatorApi.clearAll();
@@ -280,7 +278,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         BulkRegistration.getNetworkNodeFormData();
        //not register createPolicyConfiguration for no results in DDLs
 
-        goToExistingInstanceById(serviceInstanceId);//test_sssdad
+        navigateToViewEditPageOf_test_sssdad();
         selectConfigurationNode(policyConfigurationModelName_1, getConfigurationExpectedMetadata());
         fillAllFormFields();
         createConfigurationPage.clickNextButton();
@@ -313,7 +311,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         createConfigurationPage.assertButtonState(Constants.ConfigurationCreation.TENANT_DROPDOWN_TEST_ID,false);
         //WebElement tenantDDL= Get.byTestId(Constants.ConfigurationCreation.TENANT_DROPDOWN_TEST_ID);
 
-        createConfigurationPage.chooseRegion("AAIAIC25");
+        createConfigurationPage.chooseRegion("JANET25");
         GeneralUIUtils.ultimateWait();
        // Wait.waitByTestId(Constants.ConfigurationCreation.TENANT_DROPDOWN_TEST_ID, 30);
         createConfigurationPage.chooseTenant("USP-SIP-IC-24335-T-01");
@@ -321,7 +319,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     }
     private void assertFormFields() {
         Assert.assertEquals("dummy_instance",createConfigurationPage.getInstanceName());
-        Assert.assertEquals("AAIAIC25", createConfigurationPage.getRegion());
+        Assert.assertEquals("JANET25", createConfigurationPage.getRegion());
         Assert.assertEquals("USP-SIP-IC-24335-T-01",createConfigurationPage.getTenant());
 
         createConfigurationPage.assertButtonState(Constants.ConfigurationCreation.NEXT_BUTTON_TEST_ID,true);
@@ -334,7 +332,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
                 put(Constants.ServiceModelInfo.MODEL_NAME, "Port Mirroring Configuration By Policy");
                 put(Constants.ServiceModelInfo.SERVICE_INSTANCE_NAME, "test_sssdad");
                 put(Constants.ServiceModelInfo.MODEL_INVARIANT_UUID, "c30a024e-a6c6-4670-b73c-3df64eb57ff6");
-                put(Constants.ServiceModelInfo.SUBSCRIBER_NAME_KEY, "USP VOICE");
+                put(Constants.ServiceModelInfo.SUBSCRIBER_NAME_KEY, "SILVIA ROBBINS");
                 put(Constants.ServiceModelInfo.MODEL_VERSION, "1.0");
                 put(Constants.ServiceModelInfo.MODEL_UUID, "f58d039d-4cfc-40ec-bd75-1f05f0458a6c");
                 put(Constants.ServiceModelInfo.MODEL_CUSTOMIZATION_UUID, "4b7ebace-bad6-4526-9be6-bf248e20fc5f");
@@ -346,16 +344,16 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     private Map<String, String> getSourceServiceProxyExpectedMetadata() {
         return new HashMap<String, String>(){
             {
-                put(Constants.ServiceProxyModelInfo.MODEL_NAME, "vmmeService2 Service Proxy");
+                put(Constants.ServiceProxyModelInfo.MODEL_NAME, "vflorenceService2 Service Proxy");
                 put(Constants.ServiceProxyModelInfo.MODEL_VERSION, "1.0");
-                put(Constants.ServiceProxyModelInfo.MODEL_DESCRIPTION, "A Proxy for Service vmmeService2");
+                put(Constants.ServiceProxyModelInfo.MODEL_DESCRIPTION, "A Proxy for Service vflorenceService2");
                 put(Constants.ServiceProxyModelInfo.MODEL_TYPE, "Service Proxy");
                 put(Constants.ServiceProxyModelInfo.MODEL_INVARIANT_UUID, "2933b574-d28d-45ea-bf22-4df2907e4a10");
                 put(Constants.ServiceProxyModelInfo.MODEL_UUID, "a32fee17-5b59-4c34-ba6f-6dd2f1c61fee");
                 put(Constants.ServiceProxyModelInfo.MODEL_CUSTOMIZATION_UUID, "060be63d-5f9c-4fd0-8ef7-830d5e8eca17");
                 put(Constants.ServiceProxyModelInfo.SOURCE_MODEL_UUID, "2a2ea15f-07c6-4b89-bfca-e8aba39a34d6");
                 put(Constants.ServiceProxyModelInfo.SOURCE_MODEL_INVARIANT, "a7eac2b3-8444-40ee-92e3-b3359b32445c");
-                put(Constants.ServiceProxyModelInfo.SOURCE_MODEL_NAME, "vmmeService2");
+                put(Constants.ServiceProxyModelInfo.SOURCE_MODEL_NAME, "vflorenceService2");
             }
         };
     }

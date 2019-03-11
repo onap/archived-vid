@@ -1,6 +1,6 @@
 package vid.automation.test.sections;
 
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
 
