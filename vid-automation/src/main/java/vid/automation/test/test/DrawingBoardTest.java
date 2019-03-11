@@ -1,40 +1,51 @@
 package vid.automation.test.test;
 
 
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import static org.testng.AssertJUnit.assertFalse;
+import static vid.automation.test.Constants.DrawingBoard.AVAILABLE_MODELS_TREE;
+import static vid.automation.test.Constants.DrawingBoard.BACK_BUTTON;
+import static vid.automation.test.Constants.DrawingBoard.CONTEXT_MENU_BUTTON_HEADER;
+import static vid.automation.test.Constants.DrawingBoard.CONTEXT_MENU_HEADER_EDIT_ITEM;
+import static vid.automation.test.Constants.DrawingBoard.DEFAULT_SERVICE_NAME;
+import static vid.automation.test.Constants.DrawingBoard.DRAWING_BOARD_TREE;
+import static vid.automation.test.Constants.DrawingBoard.SEARCH_LEFT_TREE;
+import static vid.automation.test.Constants.DrawingBoard.SERVICE_QUANTITY;
+import static vid.automation.test.infra.Features.FLAG_ASYNC_INSTANTIATION;
+import static vid.automation.test.infra.ModelInfo.macroDrawingBoardComplexService;
+import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails;
+
+import com.google.common.collect.ImmutableList;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 import vid.automation.test.model.User;
 import vid.automation.test.sections.BrowseASDCPage;
 import vid.automation.test.sections.DrawingBoardPage;
 import vid.automation.test.sections.VidBasePage;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.endsWith;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.AssertJUnit.assertEquals;
-import static vid.automation.test.Constants.DrawingBoard.*;
-import static vid.automation.test.infra.Features.FLAG_ASYNC_INSTANTIATION;
-
 @FeatureTogglingTest(FLAG_ASYNC_INSTANTIATION)
 public class DrawingBoardTest extends VidBaseTestCase {
 
     private DrawingBoardPage drawingBoardPage = new DrawingBoardPage();
-    private String loadedServiceModelId = "";
-    private final String defaultServiceModelForMostTests = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
-
+    private String loadedServiceModelId = macroDrawingBoardComplexService.modelVersionId;
 
     @Override
     protected UserCredentials getUserCredentials() {
-        String userName = Constants.Users.USP_VOICE_VIRTUAL_USP;
+        String userName = Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA;
         User user = usersService.getUser(userName);
         return new UserCredentials(user.credentials.userId, user.credentials.password, userName, "", "");
     }
@@ -44,7 +55,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
 
     @AfterClass
     private void goOutFromIframe() {
-        new VidBasePage().goOutFromIframe();
+        VidBasePage.goOutFromIframe();
     }
 
 
@@ -53,21 +64,22 @@ public class DrawingBoardTest extends VidBaseTestCase {
         final String currentUrl = getDriver().getCurrentUrl();
         System.out.println("currentUrl in @BeforeMethod setNewServiceToDefault: " + currentUrl);
 
-        if (currentUrl.endsWith("/servicePlanning?serviceModelId=" + defaultServiceModelForMostTests)) {
+        if (currentUrl.endsWith("/servicePlanning?serviceModelId=" + macroDrawingBoardComplexService.modelVersionId)) {
             getDriver().navigate().refresh();
         } else {
-            setNewService("service-Complexservice-csar.zip", defaultServiceModelForMostTests, null);
+            setNewService(macroDrawingBoardComplexService, null);
         }
         GeneralUIUtils.ultimateWait();
         drawingBoardPage.goToIframe();
     }
 
-    private void setNewService(String zipFileName, String serviceModelId, String instanceName) {
+    private void setNewService(ModelInfo modelInfo, String instanceName) {
         goOutFromIframe();
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
 
-        loadedServiceModelId = serviceModelId;
-        loadServicePopup(zipFileName, serviceModelId);
+        prepareServicePreset(modelInfo.zipFileName, modelInfo.modelVersionId);
+
+        loadServicePopup(modelInfo.modelVersionId);
 
         if (instanceName != null) {
             Input.text(instanceName,Constants.BrowseASDC.NewServicePopup.INSTANCE_NAME);
@@ -76,37 +88,50 @@ public class DrawingBoardTest extends VidBaseTestCase {
         Wait.waitByClassAndText("subscriber","",3);
         GeneralUIUtils.ultimateWait();
         VidBasePage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
+
+        GeneralUIUtils.ultimateWait();
         GeneralUIUtils.ultimateWait();
         browseASDCPage.selectProductFamily("e433710f-9217-458d-a79d-1c7aff376d89");
-        String serviceType = "VIRTUAL USP";
-        Wait.waitByClassAndText(Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS, serviceType, 30);
+        GeneralUIUtils.ultimateWait();
+        String serviceType = "TYLER SILVIA";
+//        Wait.waitByClassAndText(Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS, serviceType, 30);
         browseASDCPage.selectServiceTypeByName(serviceType);
         GeneralUIUtils.ultimateWait();
         GeneralUIUtils.ultimateWait();
-        browseASDCPage.selectLcpRegion("mtn6");
+        browseASDCPage.selectLcpRegion("hvf6");
         browseASDCPage.selectTenant("3f21eeea6c2c486bba31dab816c05a32");
-        Click.onFirstSelectOptionById(Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
+        Click.onFirstSelectOptionByTestId(Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID);
 
         browseASDCPage.selectAicZone("NFT1");
-        Click.onFirstSelectOptionById(Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
+        Click.onFirstSelectOptionByTestId(Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
 
         // select mandatory field
-        Click.onFirstSelectOptionById(Constants.ServiceModelInfo.ROLLBACK_ON_FAILURE_ID);
+        Click.onFirstSelectOptionByTestId(Constants.ServiceModelInfo.ROLLBACK_ON_FAILURE_TEST_ID);
 
-        Click.byTestId("service-form-set");
-        browseASDCPage.goOutFromIframe();
+        Click.byTestId("form-set");
+        VidBasePage.goOutFromIframe();
     }
 
-    static final String leftTreeNodeName = "VF_vMee 0";
+    private void prepareServicePreset(String zipFileName, String serviceModelId) {
+        String modelInvariantId = "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0";
+        String subscriberId = "e433710f-9217-458d-a79d-1c7aff376d89";
+        registerExpectationForServiceDeployment(
+                ImmutableList.of(
+                        new ModelInfo(serviceModelId, modelInvariantId, zipFileName)
+                ),
+                subscriberId, new PresetMSOCreateServiceInstanceGen2());
+    }
+
+    static final String leftTreeNodeName = "VF_vGeraldine 0";
     static final String leftTreeNodeNameWithoutChildren = "Port Mirroring Configuration By Policy 0";
-    static final String[] leftTreeNodeChildren = {"vf_vmee0..VfVmee..vmme_vlc..module-1", "vf_vmee0..VfVmee..vmme_gpb..module-2", "vf_vmee0..VfVmee..base_vmme..module-0"};
-    static final String[] leftTreeInitialElements = new String[]{"V", "VF_vMee 0", "C","Port Mirroring Configuration By Policy 0","N", "ExtVL 0"};
+    static final String[] leftTreeNodeChildren = {"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1", "vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2", "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0"};
+    static final String[] leftTreeInitialElements = new String[]{"VNF", "VF_vGeraldine 0", "1", "C","Port Mirroring Configuration By Policy 0"};
 
-    static final String rightTreeNodeName = "d6557200-ecf2-4641-8094-5393ae3aae60-VF_vMee 0";
+    static final String rightTreeNodeName = "d6557200-ecf2-4641-8094-5393ae3aae60-VF_vGeraldine 0";
     static final String rightTreeNodeNameWithoutChildren = "ddc3f20c-08b5-40fd-af72-c6d14636b986-ExtVL 0";
-    static final String[] rightTreeNodeChildren = {"522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vmee0..VfVmee..vmme_vlc..module-1", "41708296-e443-4c71-953f-d9a010f059e1-vf_vmee0..VfVmee..vmme_gpb..module-2", "a27f5cfc-7f12-4f99-af08-0af9c3885c87-vf_vmee0..VfVmee..base_vmme..module-0"};
+    static final String[] rightTreeNodeChildren = {"522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1", "41708296-e443-4c71-953f-d9a010f059e1-vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2", "a27f5cfc-7f12-4f99-af08-0af9c3885c87-vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0"};
 
-    private static final String EMPTY_BOARD_TITLE = "Please add objects (VNFs, network, modules etc.) from the left tree to design the service instance";
+    private static final String EMPTY_BOARD_TITLE = "Please add objects (VNF a-la-carteVNFs, network, modules etc.) from the left tree to design the service instance";
     private static final String EMPTY_BOARD_SUBTITLE = "Once done, click Deploy to start instantiation";
 
 
@@ -127,7 +152,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
     private void expandCollapseLeftTreeByClickOnRow() {
         Wait.byText(leftTreeNodeName);
         drawingBoardPage.expandTreeByClickingNode(leftTreeNodeName, leftTreeNodeChildren);
-        //should checking with Golan if click also collapse
+        //should chec   king with Golan if click also collapse
         //drawingBoardPage.collapseTreeByClickingNode(leftTreeNodeName, leftTreeNodeChildren)));
         drawingBoardPage.verifyNonCollapsableTreeByClickingNode(leftTreeNodeName, leftTreeNodeChildren);
     }
@@ -176,17 +201,6 @@ public class DrawingBoardTest extends VidBaseTestCase {
     @Test(groups = { "underDevelopment" })
     private void checkLeafNodeRightTreeHasNoExpander() {
         drawingBoardPage.checkLeafNodeHasNoExpander(rightTreeNodeNameWithoutChildren);
-    }
-
-    @Test
-    public void testEmptyDrawingBoard() {
-        assertNotNull(Get.byClassAndText("text-title", EMPTY_BOARD_TITLE));
-        assertNotNull(Get.byClassAndText("text-subtitle", EMPTY_BOARD_SUBTITLE));
-        WebElement icon = Get.byTestId("no-content-icon");
-        assertEquals("img", icon.getTagName());
-        assertThat(icon.getAttribute("src"), endsWith("UPLOAD.svg"));
-        assertThat(icon.getAttribute("class"), containsString("no-content-icon"));
-        assertThat(icon.getAttribute("class"), containsString("upload-icon-service-planing"));
     }
 
     @Test(groups = { "underDevelopment" })
@@ -259,12 +273,12 @@ public class DrawingBoardTest extends VidBaseTestCase {
     */
     @Test
     private void insertTestInSerachBox_verifyMatchesMarkedAndVisible() {
-        Wait.byText("vf_vmee0..VfVmee..vmme_vlc..module-1");
+        Wait.byText("vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1");
         drawingBoardPage.checkSearch();
 
-        final String searchTerm = "Vmee..vmme";
+        final String searchTerm = "Vgeraldine..vflorence";
         GeneralUIUtils.setWebElementByTestId(SEARCH_LEFT_TREE, searchTerm);
-        drawingBoardPage.checkNodesVisibleAndMatchIsHighlighted(searchTerm,"vf_vmee0..VfVmee..vmme_vlc..module-1", "vf_vmee0..VfVmee..vmme_gpb..module-2");
+        drawingBoardPage.checkNodesVisibleAndMatchIsHighlighted(searchTerm,"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1", "vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2");
     }
 
     /*
@@ -308,7 +322,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
 
     private void setAndAssertServiceWithName(String instanceName){
         goOutFromIframe();
-        setNewService("csar-noDynamicFields-ecompNamingFalse-fullModelDetails-1a80c596.zip", "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd", instanceName);
+        setNewService(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, instanceName);
         GeneralUIUtils.ultimateWait();
         drawingBoardPage.goToIframe();
         drawingBoardPage.checkServiceInstanceName(instanceName);
@@ -324,7 +338,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
         final int updatedQuantity = 10;
         Click.byTestId(CONTEXT_MENU_BUTTON_HEADER);
         Click.byTestId(CONTEXT_MENU_HEADER_EDIT_ITEM);
-        Assert.assertTrue(Exists.byId("service-popup"), "context menu should not appear");
+        Assert.assertTrue(Exists.byId("instance-popup"), "context menu should not appear");
         SelectOption.byIdAndVisibleText("quantity-select", String.valueOf(updatedQuantity));
         Input.replaceText(updatedInstanceName,Constants.BrowseASDC.NewServicePopup.INSTANCE_NAME );
         Click.byTestId(Constants.BrowseASDC.NewServicePopup.SET_BUTTON);
@@ -342,7 +356,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
         String initialQuantity = Get.byTestId(SERVICE_QUANTITY).getText();
         Click.byTestId(CONTEXT_MENU_BUTTON_HEADER);
         Click.byTestId(CONTEXT_MENU_HEADER_EDIT_ITEM);
-        Assert.assertTrue(Exists.byId("service-popup"), "context menu should not appear");
+        Assert.assertTrue(Exists.byId("instance-popup"), "context menu should not appear");
         SelectOption.byIdAndVisibleText("quantity-select", String.valueOf(updatedQuantity));
         Input.replaceText(updatedInstanceName,Constants.BrowseASDC.NewServicePopup.INSTANCE_NAME );
         Click.byTestId(Constants.BrowseASDC.NewServicePopup.CANCEL_BUTTON);
@@ -356,10 +370,10 @@ public class DrawingBoardTest extends VidBaseTestCase {
     private void checkHeader_verifyElementsExist(){
         drawingBoardPage.checkExistsAndEnabled(BACK_BUTTON);
         drawingBoardPage.checkServiceInstanceName(DEFAULT_SERVICE_NAME);
-        drawingBoardPage.checkServiceStatus();
         drawingBoardPage.checkQuantityNumberIsCorrect(1);
         drawingBoardPage.checkExistsAndEnabled(CONTEXT_MENU_BUTTON_HEADER);
-        //drawingBoardPage.checkDeployButtonDisabled();
+        assertFalse(Get.byTestId("orchStatusLabel").isDisplayed());
+        assertFalse(Get.byTestId("orchStatusValue").isDisplayed());
     }
 
     private void assertResultsInBrowseAsdcPage(){
@@ -372,7 +386,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
     private void BackButtonWithCancel_verifyStayInTheSamePage(){
         String currentUrl = getCurrentUrl();
         Click.byTestId(BACK_BUTTON);
-        Click.byText(Constants.Modals.CANCEL);
+        Click.byTestId(Constants.DrawingBoard.CANCEL_BUTTON);
         String newUrl = getCurrentUrl();
         org.testng.Assert.assertEquals(currentUrl, newUrl);
     }
@@ -385,22 +399,9 @@ public class DrawingBoardTest extends VidBaseTestCase {
     @Test
     private void BackButton_verifyReturnToSearchResults(){
         Click.byTestId(BACK_BUTTON);
-        Click.byText(Constants.Modals.STOP_INSTANTIATION);
+        Click.byTestId(Constants.DrawingBoard.STOP_INSTANTIATION_BUTTON);
         assertResultsInBrowseAsdcPage();
     }
-
-    @Test
-    private void deleteButon_verifyReturnToSearchResults() {
-        Click.byTestId(CONTEXT_MENU_BUTTON_HEADER);
-        Click.byTestId(CONTEXT_MENU_HEADER_DELETE_ITEM);
-        Click.byText(Constants.Modals.STOP_INSTANTIATION);
-        assertResultsInBrowseAsdcPage();
-    }
-
-
-
-
-
 
 }
 

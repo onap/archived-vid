@@ -721,8 +721,8 @@ public class PresetAAIGetNetworkZones extends BaseAAIPreset {
                 "          \"zone-name\": \"QWERTYUI-NUM1\"" +
                 "        }," +
                 "        {" +
-                "          \"zone-id\": \"MTN32\"," +
-                "          \"zone-name\": \"MDTWNJ21-MTN32\"" +
+                "          \"zone-id\": \"hvf32\"," +
+                "          \"zone-name\": \"MDTWNJ21-hvf32\"" +
                 "        }," +
                 "        {" +
                 "          \"zone-id\": \"RTZ4\"," +
@@ -773,8 +773,8 @@ public class PresetAAIGetNetworkZones extends BaseAAIPreset {
                 "          \"zone-name\": \"ATLSECIA-ABC12\"" +
                 "        }," +
                 "        {" +
-                "          \"zone-id\": \"MTN20\"," +
-                "          \"zone-name\": \"MDTWNJ21-MTN20\"" +
+                "          \"zone-id\": \"hvf20\"," +
+                "          \"zone-name\": \"MDTWNJ21-hvf20\"" +
                 "        }," +
                 "        {" +
                 "          \"zone-id\": \"ABC15\"," +

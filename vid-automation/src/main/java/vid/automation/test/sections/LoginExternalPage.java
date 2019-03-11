@@ -1,7 +1,7 @@
 package vid.automation.test.sections;
 
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import static org.junit.Assert.*;

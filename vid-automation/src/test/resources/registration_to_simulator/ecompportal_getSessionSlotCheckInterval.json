@@ -2,7 +2,7 @@
   {
     "simulatorRequest": {
       "method": "GET",
-      "path": "/ecompportal_att/auxapi//getSessionSlotCheckInterval"
+      "path": "/ecompportal_att/auxapi//v3/getSessionSlotCheckInterval"
     },
     "simulatorResponse": {
       "responseCode": 200,
@@ -13,6 +13,26 @@
     "simulatorRequest": {
       "method": "POST",
       "path": "/ecompportal_att/auxapi//extendSessionTimeOuts"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": "300000"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/ecompportal_att/auxapi/v3/getSessionSlotCheckInterval"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": "300000"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "POST",
+      "path": "/ecompportal_att/auxapi/extendSessionTimeOuts"
     },
     "simulatorResponse": {
       "responseCode": 200,

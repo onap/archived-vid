@@ -1,7 +1,7 @@
 package vid.automation.test.infra;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import vid.automation.test.Constants;
@@ -56,6 +56,10 @@ public class Wait {
 
     public static boolean waitByTestId(String dataTestId,  int timeoutInSeconds) {
         return waitFor((x->Get.byTestId(dataTestId)!=null),null, timeoutInSeconds, 1);
+    }
+
+    public static boolean waitByIdAndText(String id,  String text, int timeoutInSeconds) {
+        return waitFor((x->Get.byId(id).getText().equals(text)),null, timeoutInSeconds, 1);
     }
 
     public static void angularHttpRequestsLoaded() {

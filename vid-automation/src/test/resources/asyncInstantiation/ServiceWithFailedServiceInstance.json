@@ -1,0 +1,67 @@
+{
+  "action": "Create",
+  "aicZoneId": "de738e5f-3704-4a14-b98f-3bf86ac0c0a0",
+  "aicZoneName": "voloyakane-senamo",
+  "bulkSize": 1,
+  "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "instanceId": null,
+  "instanceName": "INSTANCE_NAME",
+  "instanceParams": [
+  ],
+  "isALaCarte": true,
+  "isFailed": true,
+  "lcpCloudRegionId": "a93f8383-707e-43fa-8191-a6e69a1aab17",
+  "modelInfo": {
+    "modelInvariantId": "0367689e-d41e-483f-b200-eab17e4a7f8d",
+    "modelName": "gayawabawe",
+    "modelType": "service",
+    "modelVersion": "5.1",
+    "modelVersionId": "e3c34d88-a216-4f1d-a782-9af9f9588705"
+  },
+  "networks": {
+  },
+  "owningEntityId": "038d99af-0427-42c2-9d15-971b99b9b489",
+  "owningEntityName": "Lucine Sarika",
+  "pause": false,
+  "productFamilyId": "ddf9cc0f-6331-4d35-bed0-a37f2d5e9cb3",
+  "projectName": "zasaki",
+  "rollbackOnFailure": false,
+  "statusMessage": "The service instantiation is failed.",
+  "subscriberName": "SILVIA ROBBINS",
+  "subscriptionServiceType": "TYLER SILVIA",
+  "tenantId": "c85f0e80-0636-44a4-8cb2-4ec00d056e79",
+  "tenantName": "Hedvika Wendelin",
+  "testApi": "VNF_API",
+  "trackById": "TRACK_BY_ID",
+  "vnfGroups": {
+  },
+  "vnfs": {
+    "vSAMP12 1": {
+      "action": "Create",
+      "instanceId": null,
+      "instanceName": "VNF_NAME",
+      "instanceParams": [
+      ],
+      "isFailed": false,
+      "lcpCloudRegionId": "mdt1",
+      "lineOfBusiness": "vnf_lineOfBusinessName",
+      "modelInfo": {
+        "modelCustomizationId": "a7f1d08e-b02d-11e6-80f5-76304dec7eb7",
+        "modelCustomizationName": "vSAMP12 1",
+        "modelInvariantId": "ff5256d1-5a33-55df-13ab-12abad84e7ff",
+        "modelName": "vSAMP12",
+        "modelType": "vnf",
+        "modelVersion": "1.0",
+        "modelVersionId": "fe042c22-ba82-43c6-b2f6-8f1fc4164091"
+      },
+      "platformName": "vnf_platformName",
+      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "rollbackOnFailure": false,
+      "statusMessage": null,
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e",
+      "trackById": "TRACK_BY_ID",
+      "vfModules": {
+      }
+    }
+  }
+}

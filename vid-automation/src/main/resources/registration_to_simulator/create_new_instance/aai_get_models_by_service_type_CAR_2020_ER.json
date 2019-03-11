@@ -1,0 +1,2460 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/aai/search/named-query",
+    "body": {
+      "instance-filters": {
+        "instance-filter": [
+          {
+            "customer": {
+              "global-customer-id": "CAR_2020_ER"
+            },
+            "service-subscription": {
+              "service-type": "MSO-dev-service-type"
+            }
+          }
+        ]
+      },
+      "query-parameters": {
+        "named-query": {
+          "named-query-uuid": "6e806bc2-8f9b-4534-bb68-be91267ff6c8"
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inventory-response-item": [
+        {
+          "service-subscription": {
+            "service-type": "MSO-dev-service-type",
+            "resource-version": "1494001884455"
+          },
+          "extra-properties": {},
+          "inventory-response-items": {
+            "inventory-response-item": [
+              {
+                "service-instance": {
+                  "service-instance-id": "c4e40635-759f-4e3c-a739-2533473eb599",
+                  "service-instance-name": "mz1936_SERVICE78",
+                  "model-invariant-id": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+                  "resource-version": "1494001997249"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "a620a5c5-191b-453a-a956-75b08d2e26bc",
+                  "service-instance-name": "mz1936_SERVICE77",
+                  "model-invariant-id": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+                  "resource-version": "1494002003533"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "b0fddaaa-e9a8-41eb-848c-4204c97529e3",
+                  "service-instance-name": "MSO_ST_12_2_2",
+                  "model-invariant-id": "713297fe-84e4-11e6-ae22-56b6b6499611",
+                  "resource-version": "1494002000838"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "8abbdf22-9ffa-4871-98a9-3cfbb36eefc1",
+                  "service-instance-name": "mz1936_SERVICE79",
+                  "model-invariant-id": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+                  "resource-version": "1494002000841"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "acd0bfc5-8de4-404a-b5a0-25b224ccda78",
+                  "service-instance-name": "service_test_SS01",
+                  "model-invariant-id": "8b4b5a61-a9ba-4e93-a62d-f185fc3087f1",
+                  "resource-version": "1494001816781"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "a03a82ac-b3df-49e7-9c81-fd6ef55ba84b",
+                  "service-instance-name": "SVC_SS_Test001",
+                  "model-invariant-id": "8b4b5a61-a9ba-4e93-a62d-f185fc3087f1",
+                  "resource-version": "1494001771583"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "28ac6277-faf5-4673-91e3-3c53fab10b7a",
+                  "service-instance-name": "IST+test+ldf",
+                  "model-invariant-id": "7e8df3f0-adbb-48e0-8491-5126dbc7e989",
+                  "resource-version": "1494001920873"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "53ad9753-6170-4236-ac7e-8815707c872e",
+                  "service-instance-name": "larry+CORNELIUS+test+1011",
+                  "model-invariant-id": "8a699e6f-35e6-475a-8e13-7983aa39b6ea",
+                  "resource-version": "1494001920923"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "b10bf94d-a667-4016-b6b3-c6fbf4013a60",
+                  "service-instance-name": "MSO_ST_12_2_5_3",
+                  "model-invariant-id": "713297fe-84e4-11e6-ae22-56b6b6499611",
+                  "resource-version": "1494002011859"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "9fcb7233-25f5-4ff2-8db3-4627dc84771f",
+                  "service-instance-name": "VID+instance+demo",
+                  "model-invariant-id": "5ab25684-8164-49b2-9b5b-a8c3ac386597",
+                  "resource-version": "1494001859427"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "a4bbe019-3592-4d46-b7a2-368a99ae5667",
+                  "service-instance-name": "svc_test_002",
+                  "model-invariant-id": "b08fe7cd-cee2-40b4-a22b-aa2bfe91e21c",
+                  "resource-version": "1494001796817"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "99999999999999994",
+                  "service-instance-name": "RaaSIName-4",
+                  "model-invariant-id": "fe3514e3-5a33-55df-13ab-12abad84e7ff",
+                  "resource-version": "1494001954447"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "459ecc8a-d75a-41e9-ab29-7c21d5dcd368",
+                  "service-instance-name": "SI_Jw2",
+                  "model-invariant-id": "b08fe7cd-cee2-40b4-a22b-aa2bfe91e21c",
+                  "resource-version": "1494001817414"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "b6c17f81-8abd-4c35-8074-c37c5a869195",
+                  "service-instance-name": "TestToDelete-10",
+                  "model-invariant-id": "6d3297fe-84e4-11e6-ae22-56b6b6499611",
+                  "resource-version": "1494001838858"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "99999999999999992",
+                  "service-instance-name": "RaaSIName-3",
+                  "model-invariant-id": "fe3514e3-5a33-55df-13ab-12abad84e7ff",
+                  "resource-version": "1494002003548"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "be824c3e-e915-4cf3-8f33-41f4344bdcfa",
+                  "service-instance-name": "VivISTmns1012",
+                  "model-invariant-id": "06b6206b-7a42-4a37-8ddc-bc6fe4464735",
+                  "resource-version": "1494001959455"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "fbd67eec-526d-4306-9ab9-8350265578b9",
+                  "service-instance-name": "Viv+demo+test+2",
+                  "model-invariant-id": "8b4b5a61-a9ba-4e93-a62d-f185fc3087f1",
+                  "resource-version": "1494001922217"
+                },
+                "extra-properties": {}
+              },
+              {
+                "service-instance": {
+                  "service-instance-id": "23427b7f-f9a4-439f-9992-fbbd1c4adcee",
+                  "service-instance-name": "A%20-%20D_Test3",
+                  "model-invariant-id": "713297fe-84e4-11e6-ae22-56b6b6499611",
+                  "resource-version": "1494001797865"
+                },
+                "extra-properties": {}
+              },
+              {
+                "model-name": "vidmacrofalsenaming",
+                "service-instance": {
+                  "service-instance-id": "35fcb108-21bf-4a96-9644-d38d22491c1e",
+                  "service-instance-name": "macro_2",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+                  "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e",
+                  "resource-version": "1510158949346",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "4d71990b-d8ad-4510-ac61-496288d9078e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "d27e42cf-087e-4d31-88ac-6c4b7585f800"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "3.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "7e0d64f5-dc67-48a3-bedf-f1dab87f011e",
+                  "service-instance-name": "sanity003",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1510564924456",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "aad8ed06-f432-4334-8f76-aaf2e8b1135e",
+                  "service-instance-name": "PM1234",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510577187877",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Mvm2017-417041917_IST_Service",
+                "service-instance": {
+                  "service-instance-id": "56d43b2a-2d55-412c-80e2-b496c0268151",
+                  "service-instance-name": "MVM_instance",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "4cc34fbb-e99f-49d1-854a-f6474670b373",
+                  "model-version-id": "10e0fe81-172a-4f15-acb0-68fd28120771",
+                  "resource-version": "1510832704173",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Mvm2017-417041917_IST_Service - E2E Service creating in IST to check -Updating Service with latest vf"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "10e0fe81-172a-4f15-acb0-68fd28120771"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Mvm2017-417041917_IST_Service"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "4cc34fbb-e99f-49d1-854a-f6474670b373"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "08085da8-0836-48fd-b0b7-f25f0191720d",
+                  "service-instance-name": "oiuytre",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510836497023",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Ver1with_inputs_Ver2without_inputs",
+                "service-instance": {
+                  "service-instance-id": "ebf3ef3f-63ac-4652-95ca-9358b4b65f2a",
+                  "service-instance-name": "noinputs",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "821b337c-d1d6-41b8-91f2-62acbeea74e0",
+                  "model-version-id": "efcbf4dc-4a83-4c86-987e-4e35a25dd890",
+                  "resource-version": "1511176867478",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Ver1with_inputs_Ver2without_inputs"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "efcbf4dc-4a83-4c86-987e-4e35a25dd890"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Ver1with_inputs_Ver2without_inputs"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "821b337c-d1d6-41b8-91f2-62acbeea74e0"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "5.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "21227284-b6d1-4cf4-ba04-6a7e70725cf3",
+                  "service-instance-name": "tghjrthr",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1511179806111",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Using VID for VoIP Network Instantiations Shani",
+                "service-instance": {
+                  "service-instance-id": "8b0e0064-c2ec-40cb-a1e7-32708d29cf9f",
+                  "service-instance-name": "oe_step4",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "5b9c0f33-eec1-484a-bf77-736a6644d7a8",
+                  "model-version-id": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6",
+                  "resource-version": "1511185002297",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Using VID for VoIP Network Instantiations Shani"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Using VID for VoIP Network Instantiations Shani"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "5b9c0f33-eec1-484a-bf77-736a6644d7a8"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "InfraMSO_vSAMP10a_Service",
+                "service-instance": {
+                  "service-instance-id": "99e3a5fa-d8ed-4b0d-b2ac-c6b3aa519d3d",
+                  "service-instance-name": "MSO-ST-SI-1712-vSamp10a-PCM-126-01",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "653030db-85e2-4bd1-8c61-3764ebf5860a",
+                  "model-version-id": "17844177-36b9-4da2-ac43-64fb612c7b8e",
+                  "resource-version": "1512577438341",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "InfraMSO_vSAMP10a_Service"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "17844177-36b9-4da2-ac43-64fb612c7b8e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "InfraMSO_vSAMP10a_Service"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "653030db-85e2-4bd1-8c61-3764ebf5860a"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "4.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "a86149da-05ca-424b-8477-3464ba1b660b",
+                  "service-instance-name": "defghghj_cdg",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510568355774",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "102cc0d3-e21e-4671-9078-c80ec17c6632",
+                  "service-instance-name": "vidnf1707",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1510573503448",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Service_with_network_with_subnet_info",
+                "service-instance": {
+                  "service-instance-id": "37511a1d-182d-4b67-9b59-a07a4cde980e",
+                  "service-instance-name": "subnet_service",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "b72eb6fe-070b-484b-836a-4c4fdf016817",
+                  "model-version-id": "7d27189c-9d96-45de-92f6-8fafd543d9eb",
+                  "resource-version": "1511165928126",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Service_with_network_with_subnet_info"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "7d27189c-9d96-45de-92f6-8fafd543d9eb"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Service_with_network_with_subnet_info"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "b72eb6fe-070b-484b-836a-4c4fdf016817"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "44719876-3083-44ae-9c9f-330158fc2a03",
+                  "service-instance-name": "kjhgdfssd",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1511434850122",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "vidmacrofalsenaming",
+                "service-instance": {
+                  "service-instance-id": "5a987291-57de-4f5a-8f13-bf0b83924ab5",
+                  "service-instance-name": "macro_instance_sanity06",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+                  "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e",
+                  "resource-version": "1511435849163",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "4d71990b-d8ad-4510-ac61-496288d9078e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "d27e42cf-087e-4d31-88ac-6c4b7585f800"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "3.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "6c0f1667-2dab-4b88-9cd3-2e9462c0f278",
+                  "service-instance-name": "fgjhg.fgh",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1509633002414",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "d47bfc99-c021-498e-87c8-7273ee160172",
+                  "service-instance-name": "sanity03",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1510047060871",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "vidmacrofalsenaming",
+                "service-instance": {
+                  "service-instance-id": "e99c03c3-5748-4c24-a770-176c6b226223",
+                  "service-instance-name": "ghjhjhgjkh",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+                  "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e",
+                  "resource-version": "1511881237177",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "4d71990b-d8ad-4510-ac61-496288d9078e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "d27e42cf-087e-4d31-88ac-6c4b7585f800"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "3.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "078cc9a4-34df-4508-a872-5771c197e898",
+                  "service-instance-name": "pm_service",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510157749550",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "09df2bc4-2a94-48e6-885a-b1465ac96974",
+                  "service-instance-name": "service_instance_ss_22",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1510158367169",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Service With VF Shani",
+                "service-instance": {
+                  "service-instance-id": "5370c6cd-8037-4dce-a13c-fa34483f5cb9",
+                  "service-instance-name": "nbnvnvmn",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "f07db45c-949c-4698-94c3-5a328a0d4d4f",
+                  "model-version-id": "8c4093ce-404f-416a-a91c-4c146b5945db",
+                  "resource-version": "1510264975222",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Service With VF Shani"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "8c4093ce-404f-416a-a91c-4c146b5945db"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Service With VF Shani"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "f07db45c-949c-4698-94c3-5a328a0d4d4f"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "4f6f291d-90ca-41dd-9dbb-ec3c62d47c77",
+                  "service-instance-name": "xcvbnmfghj",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510836914620",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Vgeraldine_Mor_Service",
+                "service-instance": {
+                  "service-instance-id": "60e8b42f-6f30-436b-9158-1022d69b98de",
+                  "service-instance-name": "vgeraldineeee",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d5937aa1-37fb-4ed0-8c30-5144b89a64ae",
+                  "model-version-id": "06ac9663-54cf-4c77-b926-6e8757cf6380",
+                  "resource-version": "1510848255404",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Vgeraldine_Mor_Service"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "06ac9663-54cf-4c77-b926-6e8757cf6380"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Vgeraldine_Mor_Service"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "d5937aa1-37fb-4ed0-8c30-5144b89a64ae"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "d273900d-a452-4330-99cd-d0aeb4826629",
+                  "service-instance-name": "reg2",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "5229f73d-49d5-4cff-a61c-a37b8e3b529e",
+                  "resource-version": "1511158435811",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "5229f73d-49d5-4cff-a61c-a37b8e3b529e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "11.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Ver1with_inputs_Ver2without_inputs",
+                "service-instance": {
+                  "service-instance-id": "3da86740-528d-4409-9d0c-f5c4a13f2158",
+                  "service-instance-name": "fghfghgf",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "821b337c-d1d6-41b8-91f2-62acbeea74e0",
+                  "model-version-id": "93a77919-7e3e-477b-97b4-f756cc85a281",
+                  "resource-version": "1511175822262",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Ver1with_inputs_Ver2without_inputs"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "93a77919-7e3e-477b-97b4-f756cc85a281"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Ver1with_inputs_Ver2without_inputs"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "821b337c-d1d6-41b8-91f2-62acbeea74e0"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "4.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Lital_Port_Mirroring_SVC",
+                "service-instance": {
+                  "service-instance-id": "9e794181-1d8d-4478-811e-22bcb2954250",
+                  "service-instance-name": "Instance371386",
+                  "service-type": "PORT-MIRROR",
+                  "service-role": "VPROBE",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "96c66f9a-5171-4234-a9f6-40a9b51cf2f9",
+                  "model-version-id": "455c6848-c910-45f9-a402-8283cdb119e1",
+                  "resource-version": "1512673992546",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/9e794181-1d8d-4478-811e-22bcb2954250/service-data/service-topology/",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Lital_Port_Mirroring_SVC"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "455c6848-c910-45f9-a402-8283cdb119e1"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Lital_Port_Mirroring_SVC"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "96c66f9a-5171-4234-a9f6-40a9b51cf2f9"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "SDC_ServiceModel_Portal03",
+                "service-instance": {
+                  "service-instance-id": "cf6a5227-0e7b-44d4-b079-c259aaf34960",
+                  "service-instance-name": "NewInstance_123",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "0f0b5c20-d9e0-4904-8303-2a44df1a673f",
+                  "model-version-id": "ab9ecd71-83e6-4225-8b3c-e3fd2bff54e0",
+                  "resource-version": "1512508318711",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "SDC_ServiceModel_Portal03"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ab9ecd71-83e6-4225-8b3c-e3fd2bff54e0"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "SDC_ServiceModel_Portal03"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "0f0b5c20-d9e0-4904-8303-2a44df1a673f"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "a6f4113f-86ea-4218-a0dc-bd2ce304be61",
+                  "service-instance-name": "dfgdfgdgd",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1512377557678",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "029a23a2-2d4b-4bcb-b912-c6faf680db1d",
+                  "service-instance-name": "shani000002",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "5229f73d-49d5-4cff-a61c-a37b8e3b529e",
+                  "resource-version": "1511434238472",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "5229f73d-49d5-4cff-a61c-a37b8e3b529e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "11.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "c15fe241-c00a-4826-8fed-5014299df488",
+                  "service-instance-name": "sdf",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1509021900268",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "06-15-VID-Issue-SERVICE",
+                "service-instance": {
+                  "service-instance-id": "43300442-d455-42b9-87cd-15cbc05d98d5",
+                  "service-instance-name": "InstanceName_-.",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "Production",
+                  "model-invariant-id": "2fa617d0-50b3-4d74-861d-4b39301acd2c",
+                  "model-version-id": "ae5d24f4-f602-46d0-9a62-ed3f28928b50",
+                  "resource-version": "1511779626467",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "06-15-VID-Issue-SERVICE"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ae5d24f4-f602-46d0-9a62-ed3f28928b50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "06-15-VID-Issue-SERVICE"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "2fa617d0-50b3-4d74-861d-4b39301acd2c"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "8690c96e-23b2-4323-87e7-26c25f7804e9",
+                  "service-instance-name": "gkkk",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1511761450698",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "a29bf3be-816e-4128-bc83-fa8a6d347118",
+                  "service-instance-name": "deployPM",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1511883371551",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "vidmacrofalsenaming",
+                "service-instance": {
+                  "service-instance-id": "fdf95043-bf0d-435d-b222-b04d54f909cd",
+                  "service-instance-name": "kjhkjhkjhk",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+                  "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e",
+                  "resource-version": "1511788905599",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "4d71990b-d8ad-4510-ac61-496288d9078e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "d27e42cf-087e-4d31-88ac-6c4b7585f800"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "3.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "6bb59496-8745-4b7c-9bb0-f2add303cd7b",
+                  "service-instance-name": "yujutyutyuty",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "5229f73d-49d5-4cff-a61c-a37b8e3b529e",
+                  "resource-version": "1512302067216",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "5229f73d-49d5-4cff-a61c-a37b8e3b529e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "11.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "PASQUALE adhoc SRIOV Provider Network",
+                "service-instance": {
+                  "service-instance-id": "d1676469-b555-417c-8655-5ce9cdb2e54c",
+                  "service-instance-name": "dsfgdfgdfg",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "37df8e9b-3a8f-4070-8e86-dfb11161e7aa",
+                  "model-version-id": "585a5172-0124-4bc9-b76e-c358093fb522",
+                  "resource-version": "1512316855016",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "PID 291364a adhoc testing"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "585a5172-0124-4bc9-b76e-c358093fb522"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "PASQUALE adhoc SRIOV Provider Network"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "37df8e9b-3a8f-4070-8e86-dfb11161e7aa"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Service For Macro Installation",
+                "service-instance": {
+                  "service-instance-id": "9c16c382-8001-4dc9-8fa9-e8ac345df8cd",
+                  "service-instance-name": "yutyutyut0",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d7b48529-6ae2-49f0-8633-b29e7cd4d4ce",
+                  "model-version-id": "b9436fbb-dc96-4163-90b8-846c6518a05a",
+                  "resource-version": "1512381957060",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Service For Macro Installation"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "b9436fbb-dc96-4163-90b8-846c6518a05a"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Service For Macro Installation"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "d7b48529-6ae2-49f0-8633-b29e7cd4d4ce"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "ServiceForPortMirroringTest",
+                "service-instance": {
+                  "service-instance-id": "a0d58fd3-0bcd-468b-83ee-8945223e2728",
+                  "service-instance-name": "RG_10-25_PortMirror",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "47222909-317e-41e5-a44b-6a4d5e4afd6c",
+                  "model-version-id": "fd1b87b2-898f-41ad-93ac-c6e8e200280d",
+                  "resource-version": "1508951185010",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "ServiceForPortMirroringTest"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "fd1b87b2-898f-41ad-93ac-c6e8e200280d"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "ServiceForPortMirroringTest"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "47222909-317e-41e5-a44b-6a4d5e4afd6c"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "3.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "b814d896-c630-4e87-8a8c-9c466d46420e",
+                  "service-instance-name": "pmm",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1509548195386",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "ServiceContainerMor",
+                "service-instance": {
+                  "service-instance-id": "bf8856d0-1257-47da-9db8-c5cc619a5b4f",
+                  "service-instance-name": "NewPM_1030",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "a1ac367e-3f20-43cb-801e-5cb381aef876",
+                  "model-version-id": "d799809d-0bb4-4c2d-9dbc-d4ba0db06e0f",
+                  "resource-version": "1509390159180",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "ServiceContainerMor"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "d799809d-0bb4-4c2d-9dbc-d4ba0db06e0f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "ServiceContainerMor"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "a1ac367e-3f20-43cb-801e-5cb381aef876"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "7.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "d830c755-16e5-47e3-9053-35da8b83f630",
+                  "service-instance-name": "ghjhg_h",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1509633743082",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "CHARLOTTE_2017_1011_IST_Service",
+                "service-instance": {
+                  "service-instance-id": "f378264e-bb84-4444-b406-d9153b3bcaaa",
+                  "service-instance-name": "NewTest_1106",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "c54c1178-ab4b-498c-aea0-52cc2043d44f",
+                  "model-version-id": "6fcbe458-fe21-4c68-b131-3fe7ec26e17a",
+                  "resource-version": "1510003414035",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "CHARLOTTE_2017_1011_IST_Service -Creating Service for PID 298109a"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "6fcbe458-fe21-4c68-b131-3fe7ec26e17a"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "CHARLOTTE_2017_1011_IST_Service"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "c54c1178-ab4b-498c-aea0-52cc2043d44f"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "65c4c22d-0b37-4ed3-b6d3-902d1c0d8834",
+                  "service-instance-name": "fghghgfh_cfg",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510568658568",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "76a9d5b5-733c-453f-bc30-ec8e26fe7bbf",
+                  "service-instance-name": "jkjkjkl9887",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510576422163",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "fc782096-7232-4099-ad5a-044b9ffaa3d7",
+                  "service-instance-name": "Shani_Regression_5",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "418f32e5-484a-4073-8fa9-fab7d497459f",
+                  "resource-version": "1510819081691",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "418f32e5-484a-4073-8fa9-fab7d497459f"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "9.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "1707vidnf",
+                "service-instance": {
+                  "service-instance-id": "bd58287e-186a-4490-9776-11c25f5a96aa",
+                  "service-instance-name": "TwoSanity2",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "null",
+                  "workload-context": "null",
+                  "model-invariant-id": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
+                  "model-version-id": "5229f73d-49d5-4cff-a61c-a37b8e3b529e",
+                  "resource-version": "1511094049552",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "1707 Models that contain: nf_type,nf_role,nf_function,nf_code."
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "5229f73d-49d5-4cff-a61c-a37b8e3b529e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "1707vidnf"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "709d1be4-9a3f-4a29-8c4d-a20465e808a3"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "11.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "6699ae39-2df6-4ade-8f51-dcfa3f77336c",
+                  "service-instance-name": "sdfh7iu6ytr",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1511102636703",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "vidmacrofalsenaming",
+                "service-instance": {
+                  "service-instance-id": "1b4f600c-3bd6-4e9a-8f22-7fe950937c59",
+                  "service-instance-name": "dfgghdf",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
+                  "model-version-id": "4d71990b-d8ad-4510-ac61-496288d9078e",
+                  "resource-version": "1510662887894",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "4d71990b-d8ad-4510-ac61-496288d9078e"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "vidmacrofalsenaming"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "d27e42cf-087e-4d31-88ac-6c4b7585f800"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "3.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "shani_PM_Test",
+                "service-instance": {
+                  "service-instance-id": "55e20cb6-75ea-4df7-a56c-bbeef278c5b9",
+                  "service-instance-name": "sddddsa",
+                  "service-type": "service_type_shani",
+                  "service-role": "service_role_shani",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "340f3957-ff0a-4503-866d-a34fd1b97450",
+                  "model-version-id": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50",
+                  "resource-version": "1510733725706",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "shani_PM_Test description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "ee2d8783-8495-4fb1-9553-6cdbd2dd3a50"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "shani_PM_Test"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "340f3957-ff0a-4503-866d-a34fd1b97450"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "2.0"
+                    }
+                  ]
+                }
+              },
+              {
+                "model-name": "Service_VProbe_FE",
+                "service-instance": {
+                  "service-instance-id": "05b4960c-b138-47f0-90d5-d7d543fcd6d9",
+                  "service-instance-name": "instance_of_vprobe",
+                  "service-type": "",
+                  "service-role": "",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "711b3105-5efb-4a16-9a76-bf252d068c6f",
+                  "model-version-id": "e492158d-cc1b-4e08-8800-38112a9658d2",
+                  "resource-version": "1511265743057",
+                  "orchestration-status": "Active"
+                },
+                "extra-properties": {
+                  "extra-property": [
+                    {
+                      "property-name": "model-ver.model-description",
+                      "property-value": "Service_VProbe_FE"
+                    },
+                    {
+                      "property-name": "model-ver.model-version-id",
+                      "property-value": "e492158d-cc1b-4e08-8800-38112a9658d2"
+                    },
+                    {
+                      "property-name": "model-ver.model-name",
+                      "property-value": "Service_VProbe_FE"
+                    },
+                    {
+                      "property-name": "model.model-type",
+                      "property-value": "service"
+                    },
+                    {
+                      "property-name": "model.model-invariant-id",
+                      "property-value": "711b3105-5efb-4a16-9a76-bf252d068c6f"
+                    },
+                    {
+                      "property-name": "model.model-description"
+                    },
+                    {
+                      "property-name": "model-ver.model-version",
+                      "property-value": "1.0"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

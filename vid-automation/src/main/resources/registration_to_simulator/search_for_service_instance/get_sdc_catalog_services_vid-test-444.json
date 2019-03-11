@@ -25,7 +25,7 @@
         "name": "Demo Service",
         "version": "1.0",
         "toscaModelURL": "./vid-test-444-demo-csar.zip",
-        "category": "Mobility",
+        "category": "Emanuel",
         "lifecycleState": "CERTIFIED",
         "lastUpdaterUserId": "rg276b",
         "lastUpdaterFullName": null,

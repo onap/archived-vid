@@ -1,24 +1,16 @@
 package vid.automation.test.test;
 
-import com.google.common.collect.ImmutableMap;
-import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
-import org.junit.Before;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
-import vid.automation.test.model.User;
-import vid.automation.test.sections.VidBasePage;
-import vid.automation.test.sections.ViewEditPage;
-import vid.automation.test.services.BulkRegistration;
-import vid.automation.test.services.SimulatorApi;
+import static org.apache.logging.log4j.core.util.Assert.isNonEmpty;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.infra.Features.FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE;
+import static vid.automation.test.infra.Features.FLAG_COLLECTION_RESOURCE_SUPPORT;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
+import com.google.common.collect.ImmutableMap;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -27,11 +19,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.testng.AssertJUnit.assertEquals;
-import static vid.automation.test.infra.Features.FLAG_COLLECTION_RESOURCE_SUPPORT;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
+import org.junit.Before;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Wait;
+import vid.automation.test.model.User;
+import vid.automation.test.sections.VidBasePage;
+import vid.automation.test.sections.ViewEditPage;
+import vid.automation.test.services.BulkRegistration;
+import vid.automation.test.services.SimulatorApi;
 
 public class ViewEditServiceInstanceTest extends VidBaseTestCase {
 
@@ -39,16 +48,18 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
     VidBasePage vidBasePage =new VidBasePage();
     private String serviceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
     private String crServiceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7testCR";
+    private String serviceFabricInstanceId = "c187e9fe-40c3-4862-b73e-84ff056205f61234";
     private  String serviceInstanceId2 ="c187e9fe-40c3-4862-b73e-84ff056205f6";
     private final String DEACTIVATE_ACTION = "deactivate";
     private final String ACTIVATE_ACTION = "activate";
     private List<String> pnfs = Arrays.asList("SANITY6785cce9", "tesai371ve2");
     private final String serviceInstanceIdeWithoutModelVerId ="9caf5581-40ab-47be-b1f1-909a87724add";
-    private final String crNetworkText ="NETWORK INSTANCE GROUP: l3network-id-rs804s | ROLE: HngwProtectedOam.OAM | TYPE: Tenant_Layer_3 | # OF NETWORKS: 3";
+    private final String crNetworkText ="NETWORK INSTANCE GROUP: l3network-id-rs804s | ROLE: RosemaProtectedOam.OAM | TYPE: Tenant_Layer_3 | # OF NETWORKS: 3";
     private final String crCollectionText ="COLLECTION: collection-name | TYPE: L3-NETWORK";
     private final String crInfoText = "\"requestState\": \"COMPLETE\"";
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-    static final String LCP_REGION = "mtn6";
+    static final String LCP_REGION = "hvf6";
+    static final String CLOUD_OWNER = "AIC";
     static final String TENANT = "bae71557c5bb4d5aac6743a4e5f1d054";
 
 
@@ -80,13 +91,16 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         webElement.click();
         viewEditPage.clickDeleteButton();
     }
-
     private void deleteInstance(String deleteButtonId, String successMessage) {
+        deleteInstance(deleteButtonId, successMessage, Constants.CONFIRM_RESUME_DELETE_TESTS_ID);
+    }
+
+    private void deleteInstance(String deleteButtonId, String successMessage, String confirmButtonId) {
         navigateToViewEditPageOfuspVoiceVidTest444("7a6ee536-f052-46fa-aa7e-2fca9d674c44");
         Click.byTestId(deleteButtonId);
-        viewEditPage.selectLCPRegion(LCP_REGION);
+        viewEditPage.selectLcpRegion(LCP_REGION, CLOUD_OWNER);
         viewEditPage.selectTenant(TENANT);
-        vidBasePage.clickConfirmButtonInResumeDelete();
+        vidBasePage.clickButtonByTestId(confirmButtonId);
         viewEditPage.assertMsoRequestModal(successMessage);
         viewEditPage.clickCommitCloseButton();
         GeneralUIUtils.ultimateWait();
@@ -104,6 +118,28 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         SimulatorApi.clearAll();
         BulkRegistration.deleteExistingVfModuleInstance("CREATED");
         deleteInstance(Constants.ViewEdit.DELETE_VF_MODULE_BUTTON_TEST_ID + "aa", Constants.ViewEdit.VF_MODULE_DELETED_SUCCESSFULLY_TEXT);
+    }
+
+    @FeatureTogglingTest(value = FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE)
+    @Test
+    public void softDeleteAndResumeVfModuleInstance_deleteDialogAppears_msoResponseIsOk() {
+        SimulatorApi.clearAll();
+        String vfModuleName = "my_vfModule";
+        BulkRegistration.deleteExistingVfModuleInstance("ACTIVE");
+        deleteInstance(Constants.ViewEdit.DELETE_VF_MODULE_BUTTON_TEST_ID + vfModuleName, Constants.ViewEdit.VF_MODULE_DELETED_SUCCESSFULLY_TEXT, Constants.SOFT_DELETE_TESTS_ID);
+        BulkRegistration.resumeWithHomingDataVfModule("ACTIVE", "Assigned", vfModuleName);
+        navigateToViewEditPageOfuspVoiceVidTest444("7a6ee536-f052-46fa-aa7e-2fca9d674c44");
+        viewEditPage.clickResumeButton(vfModuleName);
+        assertThat("Select lcp region shouldn't be display when homing data is presented",
+                GeneralUIUtils.getDriver().findElements(Get.getXpathForDataTestId(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID)),
+                is(empty()));
+        assertThat("Select tenant shouldn't be display when homing data is presented",
+                GeneralUIUtils.getDriver().findElements(Get.getXpathForDataTestId(Constants.ViewEdit.TENANT_SELECT_TESTS_ID)),
+                is(empty()));
+        viewEditPage.clickConfirmButtonInResumeDelete();
+        assertSuccessfulVFModuleCreation();
+        viewEditPage.clickCommitCloseButton();
+        GeneralUIUtils.ultimateWait();
     }
 
     @Test
@@ -147,12 +183,30 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         viewEditPage.clickCloseButton();
     }
 
+    @Test
+    public void testActivateServiceInstanceWithFabric() {
+        String orchStatus = "assiGNed";
+        SimulatorApi.clearAll();
+        BulkRegistration.searchExistingServiceInstanceWithFabric(orchStatus);
+        goToExistingInstanceById(serviceFabricInstanceId);
+        viewEditPage.assertButtonState(Constants.ViewEdit.DEACTIVATE_BUTTON_TEST_ID,false);
+        boolean flagIsActive = Features.FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS.isActive();
+        if(flagIsActive) {
+            viewEditPage.assertButtonState(Constants.ViewEdit.ACTIVATE_FABRIC_CONFIGURATION_BUTTON_TEST_ID, true);
+            viewEditPage.clickActivateFabricConfigurationButton();
+            viewEditPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
+            viewEditPage.clickCloseButton();
+        }
+    }
+
     private void assertAndCheckShowAssignmentsSdncUrl(String orchStatus, String serviceInstanceId) {
         boolean buttonIsEnable = Features.FLAG_SHOW_ASSIGNMENTS.isActive() && orchStatus.equals("assiGNed");
-        viewEditPage.assertButtonState(Constants.ViewEdit.SHOW_ASSIGNMENTS_BUTTON_TEST_ID, buttonIsEnable);
+        boolean isNotDisplay = GeneralUIUtils.getDriver().findElements(Get.getXpathForDataTestId(Constants.ViewEdit.SHOW_ASSIGNMENTS_BUTTON_TEST_ID)).isEmpty();
+        Assert.assertNotEquals(isNotDisplay, buttonIsEnable);
+
         if (buttonIsEnable)  {
             WebElement webElement = Get.byTestId(Constants.ViewEdit.SHOW_ASSIGNMENTS_BUTTON_TEST_ID);
-            String expectedUrl = "https://mtanjv9sdma51.aic.cip.att.com:8448/configAdapter/index#/resource_manager/"+serviceInstanceId;
+            String expectedUrl = "https://mtan.onap.org:8448/configAdapter/index#/resource_manager/"+serviceInstanceId;
             MatcherAssert.assertThat("Show assignments SDNC url is wrong",
                     webElement.getAttribute("href"), equalTo(expectedUrl));
         }
@@ -358,13 +412,13 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
                 "pending-delete", false);
         for(Map.Entry<String, Boolean> entry: vfModulesStatuses.entrySet()) {
             WebElement vfModule = GeneralUIUtils.getWebElementByClassName("vfModuleTreeNode-" + entry.getKey());
-            Assert.assertEquals(!vfModule.findElements(By.className("resume")).isEmpty(), entry.getValue());
+            Assert.assertEquals(isNonEmpty(vfModule.findElements(By.className("resume"))), entry.getValue());
         }
     }
 
     @Before
     public void before() throws Exception {
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
     }
 

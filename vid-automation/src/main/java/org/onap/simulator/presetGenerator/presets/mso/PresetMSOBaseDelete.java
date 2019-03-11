@@ -4,20 +4,25 @@ import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.springframework.http.HttpMethod;
 
 public abstract class PresetMSOBaseDelete extends BaseMSOPreset {
-    private final String requestId;
-    public static final String DEFAULT_REQUEST_ID = "c0011670-0e1a-4b74-945d-8bf5aede1d9c";
+    protected final String requestId;
+    protected final String instanceId;
 
-    public PresetMSOBaseDelete() {
-        this(null );
-    }
+    public static final String DEFAULT_REQUEST_ID = "c0011670-0e1a-4b74-945d-8bf5aede1d9c";
 
     public PresetMSOBaseDelete(String requestId) {
         this.requestId = requestId != null ? requestId : DEFAULT_REQUEST_ID;
+        this.instanceId = DEFAULT_INSTANCE_ID;
     }
+
+    public PresetMSOBaseDelete(String requestId, String instanceId) {
+        this.requestId = requestId;
+        this.instanceId = instanceId;
+    }
+
 
     @Override
     protected String getRootPath() {
-        return super.getRootPath() + "/serviceInstances/v./";
+        return super.getRootPath() + "/serviceInstantiation/v./serviceInstances/";
     }
 
     @Override
@@ -32,6 +37,6 @@ public abstract class PresetMSOBaseDelete extends BaseMSOPreset {
 
     @Override
     public Object getResponseBody() {
-        return "{\"requestReferences\":{\"instanceId\":\"f8791436-8d55-4fde-b4d5-72dd2cf13cfb\",\"requestId\":\"" + requestId + "\"}}";
+        return "{\"requestReferences\":{\"instanceId\":\""+instanceId+"\",\"requestId\":\"" + requestId + "\"}}";
     }
 }

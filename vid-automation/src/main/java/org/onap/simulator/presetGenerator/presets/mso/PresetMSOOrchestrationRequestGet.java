@@ -1,21 +1,35 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.springframework.http.HttpMethod;
+
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Created by itzikliderman on 13/12/2017.
  */
 public class PresetMSOOrchestrationRequestGet extends BaseMSOPreset {
+    private static final Logger logger = LogManager.getLogger(PresetMSOOrchestrationRequestGet.class);
 
-    private final String DEFAULT_REQUEST_ID = "c0011670-0e1a-4b74-945d-8bf5aede1d9c";
+    public static final String COMPLETE = "COMPLETE";
+    public static final String DEFAULT_REQUEST_ID = "c0011670-0e1a-4b74-945d-8bf5aede1d9c";
+    public static final String DEFAULT_SERVICE_INSTANCE_ID = BaseMSOPreset.DEFAULT_INSTANCE_ID;
+
     private final String requestId;
     private String statusMessage;
-    String requestState;
+    private String requestState;
+    private int startedHoursAgo = 1;
+
 
     public PresetMSOOrchestrationRequestGet() {
-        requestState = "COMPLETE";
+        requestState = COMPLETE;
         this.requestId = DEFAULT_REQUEST_ID;
     }
 
@@ -35,25 +49,38 @@ public class PresetMSOOrchestrationRequestGet extends BaseMSOPreset {
         this.statusMessage = statusMessage;
     }
 
+    public PresetMSOOrchestrationRequestGet(String requestState, String overrideRequestId, String statusMessage, int startedHoursAgo) {
+        this.requestState = requestState;
+        this.requestId = overrideRequestId;
+        this.statusMessage = statusMessage;
+        this.startedHoursAgo = startedHoursAgo;
+    }
+
+    public PresetMSOOrchestrationRequestGet(String requestState, int startedHoursAgo) {
+        this.requestState = requestState;
+        this.requestId = DEFAULT_REQUEST_ID;
+        this.startedHoursAgo = startedHoursAgo;
+    }
+
     @Override
     public HttpMethod getReqMethod() {
         return HttpMethod.GET;
     }
 
     public String getReqPath() {
-        return getRootPath() + "/orchestrationRequests/v5/" + requestId;
+        return getRootPath() + "/orchestrationRequests/v./" + requestId;
     }
 
     @Override
     public Object getResponseBody() {
-        return "{" +
+         String body = "{" +
                 "  \"request\": {" +
                 "    \"requestId\": \"" + requestId + "\"," +
-                "    \"startTime\": \"Mon, 11 Dec 2017 07:27:49 GMT\"," +
+                "    \"startTime\": \"" + getTimeHoursAgo(startedHoursAgo) + "\"," +
                 "    \"requestScope\": \"service\"," +
                 "    \"requestType\": \"createInstance\"," +
                 "    \"instanceReferences\": {" +
-                "      \"serviceInstanceId\": \"f8791436-8d55-4fde-b4d5-72dd2cf13cfb\"," +
+                "      \"serviceInstanceId\": \"" + DEFAULT_SERVICE_INSTANCE_ID + "\"," +
                 "      \"serviceInstanceName\": \"asdfasdf234234asdf\"," +
                 "      \"requestorId\": \"il883e\"" +
                 "    }," +
@@ -61,17 +88,30 @@ public class PresetMSOOrchestrationRequestGet extends BaseMSOPreset {
                 "      \"requestState\": \"" + requestState + "\"," +
                 "      \"statusMessage\": \"" + getStatusMessage() + "\"," +
                 "      \"percentProgress\": 100," +
-                "      \"finishTime\": \"Mon, 11 Dec 2017 07:27:53 GMT\"" +
+                "      \"timestamp\": \"" + getTimeNow() + "\"" +
                 "    }" +
                 "  }" +
                 "}";
+        logger.info(body);
+        return body;
     }
 
     private String getStatusMessage() {
-        if (!StringUtils.isEmpty(statusMessage))
-            return statusMessage;
-        return "COMPLETE".equals(requestState) ?
-                "Service Instance was created successfully." :
-                ("Service Instance was " + requestState.toLowerCase() + " successfully.");
+        return StringUtils.defaultIfEmpty(statusMessage,
+                "COMPLETE".equals(requestState) ?
+                        "Service Instance was created successfully." :
+                        ("Service Instance was " + requestState.toLowerCase() + " successfully."));
+    }
+
+    private String getTimeNow() {
+        return getTimeHoursAgo(0);
+    }
+
+    private String getTimeHoursAgo(int delta) {
+        Instant instant = Instant.now();
+        Instant instantMinus = instant.minus(delta, ChronoUnit.HOURS);
+        ZonedDateTime dateDayAgo = ZonedDateTime.ofInstant(instantMinus, ZoneOffset.UTC);
+        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        return formatter.format(dateDayAgo);
     }
 }

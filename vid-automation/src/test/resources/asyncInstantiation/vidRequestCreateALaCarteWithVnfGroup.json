@@ -1,0 +1,44 @@
+{
+  "modelInfo": {
+    "modelInvariantId": "0367689e-d41e-483f-b200-eab17e4a7f8d",
+    "modelVersionId": "e3c34d88-a216-4f1d-a782-9af9f9588705",
+    "modelName": "gayawabawe",
+    "modelVersion": "5.1"
+  },
+  "vnfGroups":
+    {
+      "MSOTEST103a":{
+        "modelInfo": {
+          "modelType": "instanceGroup",
+          "modelInvariantId": "ff5256d1-5a33-55df-13ab-12abad84e7ff",
+          "modelVersionId": "fe042c22-ba82-43c6-b2f6-8f1fc4164091",
+          "modelName": "vSAMP12",
+          "modelVersion": "1.0",
+          "modelCustomizationName": "vSAMP12 1",
+          "modelCustomizationId": "a7f1d08e-b02d-11e6-80f5-76304dec7eb7"
+        },
+        "instanceName": "VNF_GROUP_NAME",
+        "isUserProvidedNaming": true,
+        "rollbackOnFailure": false
+      }
+    },
+  "owningEntityId" : "038d99af-0427-42c2-9d15-971b99b9b489",
+  "owningEntityName": "Lucine Sarika",
+  "projectName" : "zasaki",
+  "globalSubscriberId":  "e433710f-9217-458d-a79d-1c7aff376d89",
+  "subscriberName":  "SILVIA ROBBINS",
+  "productFamilyId" : "ddf9cc0f-6331-4d35-bed0-a37f2d5e9cb3",
+  "instanceName" : "SERVICE_NAME",
+  "isUserProvidedNaming":"true",
+  "subscriptionServiceType" : "TYLER SILVIA",
+  "aicZoneId" : "de738e5f-3704-4a14-b98f-3bf86ac0c0a0",
+  "aicZoneName" : "voloyakane-senamo",
+  "lcpCloudRegionId" : "a93f8383-707e-43fa-8191-a6e69a1aab17",
+  "lcpCloudRegionName" : "Cyrus Graciano",
+  "tenantId" : "c85f0e80-0636-44a4-8cb2-4ec00d056e79",
+  "tenantName" : "Hedvika Wendelin",
+  "bulkSize": "1",
+  "testApi": "VNF_API",
+  "isALaCarte": true
+}
+

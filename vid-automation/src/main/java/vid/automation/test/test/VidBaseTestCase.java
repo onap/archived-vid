@@ -3,22 +3,35 @@ package vid.automation.test.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
+import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 import org.junit.Assert;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.*;
-import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
+import org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstancePost;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
-import org.openecomp.sdc.ci.tests.execute.setup.SetupCDTest;
-import org.openecomp.sdc.ci.tests.utilities.FileHandling;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.execute.setup.SetupCDTest;
+import org.onap.sdc.ci.tests.utilities.FileHandling;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.client.RestTemplate;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -31,26 +44,71 @@ import vid.automation.test.sections.*;
 import vid.automation.test.services.CategoryParamsService;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.UsersService;
+import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
 import vid.automation.test.utils.DB_CONFIG;
 import vid.automation.test.utils.TestConfigurationHelper;
+import vid.automation.test.utils.TestHelper;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.*;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.fail;
+import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
+import static vid.automation.test.utils.TestHelper.GET_TENANTS;
 
 public class VidBaseTestCase extends SetupCDTest{
 
     protected final UsersService usersService = new UsersService();
     protected final CategoryParamsService categoryParamsService = new CategoryParamsService();
+    protected final RestTemplate restTemplate = new RestTemplate();
+    protected final URI uri;
+    protected final URI envUrI;
+
+    public VidBaseTestCase() {
+        try {
+            this.envUrI = new URI(System.getProperty("ENV_URL"));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        this.uri = new JerseyUriBuilder().host(envUrI.getHost()).port(envUrI.getPort()).scheme("http").path("vid").build();
+    }
+
+    public void login() {
+        UserCredentials userCredentials = getUserCredentials();
+        final List<ClientHttpRequestInterceptor> interceptors = singletonList(new CookieAndJsonHttpHeadersInterceptor(uri, userCredentials));
+        restTemplate.setInterceptors(interceptors);
+    }
+
+    public void invalidateSdcModelsCache() {
+        if (Features.FLAG_SERVICE_MODEL_CACHE.isActive()) {
+            restTemplate.postForObject(uri + "/rest/models/reset", "", Object.class);
+        }
+    }
+
+    protected void resetGetServicesCache() {
+        login();
+        TestHelper.resetAaiCache(GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS, restTemplate, uri);
+    }
+
+    protected void resetGetTenantsCache() {
+        login();
+        TestHelper.resetAaiCache(GET_TENANTS, restTemplate, uri);
+    }
 
     @Override
     protected UserCredentials getUserCredentials() {
@@ -71,7 +129,7 @@ public class VidBaseTestCase extends SetupCDTest{
     }
 
     @Override
-    protected org.openecomp.sdc.ci.tests.datatypes.Configuration getEnvConfiguration() {
+    protected org.onap.sdc.ci.tests.datatypes.Configuration getEnvConfiguration() {
 
         return TestConfigurationHelper.getEnvConfiguration();
     }
@@ -102,63 +160,86 @@ public class VidBaseTestCase extends SetupCDTest{
         }
     }
 
+    @BeforeSuite(alwaysRun = true)
+    public void setSmallDefaultTimeout() throws Exception {
+        getDriver().manage().timeouts().implicitlyWait(250, TimeUnit.MILLISECONDS);
+    }
+
     @Override
     protected void loginToLocalSimulator(UserCredentials userCredentials) {
         LoginExternalPage.performLoginExternal(userCredentials);
     }
 
-    static public class ModelInfo {
-        public final String modelVersionId;
-        public final String modelInvariantId;
-        public final String zipFileName;
-
-        public ModelInfo(String modelVersionId, String modelInvariantId, String zipFileName) {
-            this.modelVersionId = modelVersionId;
-            this.modelInvariantId = modelInvariantId;
-            this.zipFileName = zipFileName;
-        }
+    protected String getReduxState() {
+        final JavascriptExecutor javascriptExecutor = (JavascriptExecutor) GeneralUIUtils.getDriver();
+        String reduxState = (String)javascriptExecutor.executeScript("return window.sessionStorage.getItem('reduxState');");
+        System.out.println(reduxState);
+        return reduxState;
     }
 
-    protected void registerExpectationForLegacyServiceDeployment(String modelVersionId, String modelInvariantId, String zipFileName, String subscriberId) {
-        registerExpectationForServiceDeployment(ServiceDeployment.LEGACY, ImmutableList.of(new ModelInfo(modelVersionId,modelInvariantId,zipFileName)), subscriberId);
+    protected void setReduxState(String state) {
+        final JavascriptExecutor javascriptExecutor = (JavascriptExecutor) GeneralUIUtils.getDriver();
+        String script = String.format("window.sessionStorage.setItem('reduxState', '%s');", state);
+        System.out.println("executing script:");
+        System.out.println(script);
+        javascriptExecutor.executeScript(script);
     }
 
-    private enum ServiceDeployment {ASYNC, LEGACY}
-
-    protected void registerExpectationForServiceDeployment(ServiceDeployment serviceDeploymentOnMsoExpectations, List<ModelInfo> modelInfoList, String subscriberId) {
+    protected void registerExpectationForLegacyServiceDeployment(ModelInfo modelInfo, String subscriberId) {
         List<BasePreset> presets = new ArrayList<>(Arrays.asList(
-                new PresetGetSessionSlotCheckIntervalGet(),
-                new PresetAAIGetSubscribersGet(),
-                new PresetAAIGetServicesGet(),
-                new PresetAAIGetSubDetailsGet(subscriberId),
-                new PresetAAIPostNamedQueryForViewEdit("f8791436-8d55-4fde-b4d5-72dd2cf13cfb"),
-                new PresetAAICloudRegionAndSourceFromConfigurationPut("9533-config-LB1113", "myRandomCloudRegionId"),
-                new PresetAAIGetPortMirroringSourcePorts("9533-config-LB1113", "myRandomInterfaceId", "i'm a port", true),
-                new PresetAAIGetNetworkZones(),
-                new PresetAAIGetTenants(),
-                new PresetAAIServiceDesignAndCreationPut(modelInfoList.stream().map(
-                        x-> new PresetAAIServiceDesignAndCreationPut.ServiceModelIdentifiers(x.modelVersionId, x.modelInvariantId))
-                        .collect(Collectors.toList()))
-                ));
+                new PresetAAIPostNamedQueryForViewEdit(BaseMSOPreset.DEFAULT_INSTANCE_ID, true, false),
+                new PresetAAIGetPortMirroringSourcePorts("9533-config-LB1113", "myRandomInterfaceId", "i'm a port", true)
+        ));
+
+        presets.add(new PresetMSOCreateServiceInstancePost());
+        presets.add(new PresetMSOOrchestrationRequestGet());
+
+        presets.addAll(getPresetForServiceBrowseAndDesign(ImmutableList.of(modelInfo), subscriberId));
+
+        SimulatorApi.registerExpectationFromPresets(presets, SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
+    }
+
+    protected void registerExpectationForServiceDeployment(List<ModelInfo> modelInfoList, String subscriberId, PresetMSOCreateServiceInstanceGen2 createServiceInstancePreset) {
+        List<BasePreset> presets = new ArrayList<>(Arrays.asList(
+                new PresetAAIPostNamedQueryForViewEdit(BaseMSOPreset.DEFAULT_INSTANCE_ID, true, false),
+                new PresetAAIGetPortMirroringSourcePorts("9533-config-LB1113", "myRandomInterfaceId", "i'm a port", true)
+        ));
+
+        if (createServiceInstancePreset != null) {
+            presets.add(createServiceInstancePreset);
+        }
+        presets.add(new PresetMSOOrchestrationRequestGet("IN_PROGRESS"));
+
+        presets.addAll(getPresetForServiceBrowseAndDesign(modelInfoList, subscriberId));
+
+        SimulatorApi.registerExpectationFromPresets(presets, SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
+    }
+
+    protected void registerExpectationForServiceBrowseAndDesign(List<ModelInfo> modelInfoList, String subscriberId) {
+        SimulatorApi.registerExpectationFromPresets(getPresetForServiceBrowseAndDesign(modelInfoList, subscriberId), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
+    }
+
+    protected List<BasePreset> getPresetForServiceBrowseAndDesign(List<ModelInfo> modelInfoList, String subscriberId) {
+
+        List<BasePreset> presets = new ArrayList<>(Arrays.asList(
+                    new PresetAAIGetSubDetailsGet(subscriberId),
+                    new PresetAAIGetSubDetailsWithoutInstancesGet(subscriberId),
+                    new PresetAAIGetSubscribersGet(),
+                    new PresetAAIGetServicesGet(),
+                    new PresetAAICloudRegionAndSourceFromConfigurationPut("9533-config-LB1113", "myRandomCloudRegionId"),
+                    new PresetAAIGetNetworkZones(),
+                    new PresetAAIGetTenants(),
+                    new PresetAAIServiceDesignAndCreationPut()
+                    ));
+
+        presets.addAll(EcompPortalPresetsUtils.getEcompPortalPresets());
 
         modelInfoList.forEach(modelInfo -> {
             presets.add(new PresetSDCGetServiceMetadataGet(modelInfo.modelVersionId, modelInfo.modelInvariantId, modelInfo.zipFileName));
             presets.add(new PresetSDCGetServiceToscaModelGet(modelInfo.modelVersionId, modelInfo.zipFileName));
         });
 
-        switch (serviceDeploymentOnMsoExpectations) {
-            case ASYNC:
-                presets.add(new PresetAAISearchNodeQueryEmptyResult());
-                presets.add(new PresetMSOCreateServiceInstanceGen2());
-                presets.add(new PresetMSOOrchestrationRequestGet("IN_PROGRESS"));
-                break;
-            case LEGACY:
-                presets.add(new PresetMSOCreateServiceInstancePost());
-                presets.add(new PresetMSOOrchestrationRequestGet());
-                break;
-        }
-
-        SimulatorApi.registerExpectationFromPresets(presets, SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
+        return presets;
     }
 
     protected void relogin(Credentials credentials) throws Exception {
@@ -200,13 +281,19 @@ public class VidBaseTestCase extends SetupCDTest{
         GeneralUIUtils.ultimateWait();
         List<WebElement> optionsList =
                 GeneralUIUtils.getWebElementsListBy(By.className(dropdownOptionsClassName), 30);
-        for (WebElement option :
-                optionsList) {
-            String optionValue = option.getAttribute(attribute);
-            if ((option.isEnabled() && !permittedItems.contains(optionValue)) ||
-                    !option.isEnabled() && permittedItems.contains(optionValue)) {
-                fail(Constants.DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE);
-            }
+
+        final Map<Boolean, Set<String>> optionsMap = optionsList.stream()
+                .collect(groupingBy(WebElement::isEnabled, mapping(option -> option.getAttribute(attribute), toSet())));
+
+        assertGroupedPermissionsAreCorrect(permittedItems, optionsMap);
+    }
+
+    private void assertGroupedPermissionsAreCorrect(ArrayList<String> permittedItems, Map<Boolean, Set<String>> optionsMap) {
+        if (permittedItems.isEmpty()) {
+            assertThat(Constants.DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE, optionsMap.getOrDefault(Boolean.TRUE, emptySet()), is(empty()));
+        }else {
+            assertThat(Constants.DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE, optionsMap.getOrDefault(Boolean.TRUE, emptySet()), containsInAnyOrder(permittedItems.toArray()));
+            assertThat(Constants.DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE, optionsMap.getOrDefault(Boolean.FALSE, emptySet()), not(contains(permittedItems.toArray())));
         }
     }
 
@@ -216,7 +303,7 @@ public class VidBaseTestCase extends SetupCDTest{
                 GeneralUIUtils.getWebElementsListBy(By.className(dropdownOptionsClassName), 30);
         for (WebElement option :
                 optionsList) {
-            String optionValue = option.getAttribute("value");
+            //String optionValue = option.getAttribute("value");
             if (!option.isEnabled()) {
                 fail(Constants.DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE);
             }
@@ -227,14 +314,11 @@ public class VidBaseTestCase extends SetupCDTest{
         GeneralUIUtils.ultimateWait();
         List<WebElement> optionsList =
                 GeneralUIUtils.getWebElementsListBy(By.className(dropdownOptionsClassName), 30);
-        for (WebElement option :
-                optionsList) {
-            String optionText = option.getText();
-            if ((option.isEnabled() && !permittedItems.contains(optionText)) ||
-                    !option.isEnabled() && permittedItems.contains(optionText)) {
-                fail(Constants.DROPDOWN_PERMITTED_ASSERT_FAIL_MESSAGE);
-            }
-        }
+
+        final Map<Boolean, Set<String>> optionsMap = optionsList.stream()
+                .collect(groupingBy(WebElement::isEnabled, mapping(WebElement::getText, toSet())));
+
+        assertGroupedPermissionsAreCorrect(permittedItems, optionsMap);
     }
 
     protected void assertViewEditButtonState(String expectedButtonText, String UUID) {
@@ -244,14 +328,14 @@ public class VidBaseTestCase extends SetupCDTest{
     }
 
 
-    protected void addNetwork(Map<String, String> metadata,String instanceName, String name, String lcpRegion, String productFamily,String platform, String lineOfBusiness, String tenant, String suppressRollback,
+    protected void addNetwork(Map<String, String> metadata,String instanceName, String name, String lcpRegion, String cloudOwner, String productFamily,String platform, String lineOfBusiness, String tenant, String suppressRollback,
                                String legacyRegion, ArrayList<String> permittedTenants) {
         ViewEditPage viewEditPage = new ViewEditPage();
 
         viewEditPage.selectNetworkToAdd(name);
         assertModelInfo(metadata, false);
         viewEditPage.setInstanceName(instanceName);
-        viewEditPage.selectLCPRegion(lcpRegion);
+        viewEditPage.selectLcpRegion(lcpRegion, cloudOwner);
         viewEditPage.selectProductFamily(productFamily);
         viewEditPage.selectLineOfBusiness(lineOfBusiness);
         assertDropdownPermittedItemsByValue(permittedTenants, Constants.ViewEdit.TENANT_OPTION_CLASS);
@@ -313,10 +397,10 @@ public class VidBaseTestCase extends SetupCDTest{
         searchExistingPage.clickEditViewByInstanceId(instanceUUID);
     }
 
-    void resumeVFModule(String vfModuleName, String lcpRegion, String tenant, String legacyRegion, ArrayList<String> permittedTenants){
+    void resumeVFModule(String vfModuleName, String lcpRegion, String cloudOwner, String tenant, String legacyRegion, ArrayList<String> permittedTenants){
         ViewEditPage viewEditPage = new ViewEditPage();
         viewEditPage.clickResumeButton(vfModuleName);
-        viewEditPage.selectLCPRegion(lcpRegion);
+        viewEditPage.selectLcpRegion(lcpRegion, cloudOwner);
         assertDropdownPermittedItemsByValue(permittedTenants, Constants.ViewEdit.TENANT_OPTION_CLASS);
         viewEditPage.selectTenant(tenant);
         viewEditPage.setLegacyRegion(legacyRegion);
@@ -384,7 +468,7 @@ public class VidBaseTestCase extends SetupCDTest{
         }
     }
 
-    protected <T> void setNewInstance_leftPane_assertModelDataCorrect(Map<String, String> modelKeyToDataTestsIdMap, String prefix, T model) {
+    protected <T> void assertModelDataCorrect(Map<String, String> modelKeyToDataTestsIdMap, String prefix, T model) {
         modelKeyToDataTestsIdMap.forEach((fieldName, dataTestsId) -> {
             WebElement webElement = Get.byTestId(prefix + dataTestsId);
             assertEquals(webElement.getText(), getServiceFieldByName(fieldName, model));
@@ -410,7 +494,7 @@ public class VidBaseTestCase extends SetupCDTest{
     private void assertMetadataItem(String keyTestId, String value, boolean withPrefix) {
         String elementTestId = (withPrefix ? Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX:"") + keyTestId;
         String infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertThat(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE, elementTestId),  infoItemText, is(value));
+        assertThat(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE, elementTestId),  infoItemText, is(value));
     }
 
     public DeployMacroDialogBase getMacroDialog(){
@@ -423,16 +507,12 @@ public class VidBaseTestCase extends SetupCDTest{
             return  new DeployMacroDialogOld();
     }
 
-    protected void loadServicePopup(String zipFileName, String modelVersionId ) {
-        String modelInvariantId = "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0";
-        String subscriberId = "e433710f-9217-458d-a79d-1c7aff376d89";
-        registerExpectationForServiceDeployment(
-                ServiceDeployment.ASYNC,
-                ImmutableList.of(
-                    new ModelInfo(modelVersionId, modelInvariantId, zipFileName),
-                    new ModelInfo("f4d84bb4-a416-4b4e-997e-0059973630b9", "598e3f9e-3244-4d8f-a8e0-0e5d7a29eda9", "service-AdiodVmxVpeBvService488-csar-annotations.zip")
-                ),
-                subscriberId);
+    protected void loadServicePopup(ModelInfo modelInfo) {
+        loadServicePopup(modelInfo.modelVersionId);
+    }
+
+
+    protected void loadServicePopup(String modelVersionId) {
         SideMenu.navigateToBrowseASDCPage();
         GeneralUIUtils.ultimateWait();
         loadServicePopupOnBrowseASDCPage(modelVersionId);
@@ -440,7 +520,7 @@ public class VidBaseTestCase extends SetupCDTest{
 
     protected void loadServicePopupOnBrowseASDCPage(String modelVersionId ) {
         DeployMacroDialog deployMacroDialog = new DeployMacroDialog();
-        deployMacroDialog.goOutFromIframe();
+        VidBasePage.goOutFromIframe();
         deployMacroDialog.clickDeployServiceButtonByServiceUUID(modelVersionId);
         deployMacroDialog.goToIframe();
         GeneralUIUtils.ultimateWait();
@@ -462,6 +542,10 @@ public class VidBaseTestCase extends SetupCDTest{
         WebElement webElement = Get.byId(id);
         assert webElement != null;
         org.testng.Assert.assertFalse(webElement.isEnabled(), "field should be disabled if the field it depends on was not selected yet.");
+    }
+
+    public boolean isElementByIdRequired(String id)  {
+        return Get.byId(id).getAttribute("class").contains("required");
     }
 
     protected int getUserIdNumberFromDB(User user) {
@@ -495,15 +579,38 @@ public class VidBaseTestCase extends SetupCDTest{
     }
 
     protected void navigateToViewEditPageOfuspVoiceVidTest444(String aaiModelVersionId) {
+        navigateToViewEditPage("3f93c7cb-2fd0-4557-9514-e189b7b04f9d", aaiModelVersionId);
+    }
+
+    protected void navigateToViewEditPageOf_test_sssdad() {
+        navigateToViewEditPage("c187e9fe-40c3-4862-b73e-84ff056205f6", "ee6d61be-4841-4f98-8f23-5de9da846ca7");
+    }
+
+    protected void navigateToViewEditPage(final String serviceInstanceId, String aaiModelVersionId) {
         VidBasePage vidBasePage = new VidBasePage();
         SideMenu.navigateToWelcomePage();
         vidBasePage.navigateTo("serviceModels.htm#/instantiate?" +
                 "subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&" +
                 "subscriberName=USP%20VOICE&" +
                 "serviceType=VIRTUAL%20USP&" +
-                "serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&" +
+                "serviceInstanceId=" + serviceInstanceId + "&" +
                 "aaiModelVersionId=" + aaiModelVersionId + "&" +
                 "isPermitted=true");
         GeneralUIUtils.ultimateWait();
+    }
+
+
+    public void hoverAndClickMenuByName(String nodeName, String nodeToEdit, String contextMenuItem ) {
+        String buttonOfEdit = Constants.DrawingBoard.NODE_PREFIX + nodeToEdit + Constants.DrawingBoard.CONTEXT_MENU_BUTTON;
+
+        WebElement rightTreeNode = getTreeNodeByName(nodeName);
+        WebElement menuButton = Get.byXpath(rightTreeNode, ".//span[@data-tests-id='" + buttonOfEdit + "']");
+
+        GeneralUIUtils.clickElementUsingActions(menuButton);
+        Click.byTestId(contextMenuItem);
+    }
+
+    private WebElement getTreeNodeByName(String nodeName) {
+        return Get.byXpath("//tree-node-content[.//*[contains(text(), '" + nodeName + "')]]");
     }
 }

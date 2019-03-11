@@ -2,12 +2,11 @@ package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetNetworkCollectionDetailsRequiredMissing extends BaseAAIPreset {
 
@@ -218,7 +217,7 @@ public class PresetAAIGetNetworkCollectionDetailsRequiredMissing extends BaseAAI
                 "        \"network-id\": \"l3network-id-rs804s\",\n" +
                 "        \"network-name\": \"oam-net\",\n" +
                 "        \"network-type\": \"Tenant_Layer_3\",\n" +
-                "        \"network-role\": \"HngwProtectedOam.OAM\",\n" +
+                "        \"network-role\": \"RosemaProtectedOam.OAM\",\n" +
                 "        \"network-technology\": \"Contrail\",\n" +
                 "        \"is-bound-to-vpn\": false,\n" +
                 "        \"resource-version\": \"1521662814627\",\n" +
@@ -257,7 +256,7 @@ public class PresetAAIGetNetworkCollectionDetailsRequiredMissing extends BaseAAI
                 "        \"network-id\": \"l3network-id-3-rs804s\",\n" +
                 "        \"network-name\": \"oam-net\",\n" +
                 "        \"network-type\": \"Tenant_Layer_3\",\n" +
-                "        \"network-role\": \"HngwProtectedOam.OAM\",\n" +
+                "        \"network-role\": \"RosemaProtectedOam.OAM\",\n" +
                 "        \"network-technology\": \"Contrail\",\n" +
                 "        \"is-bound-to-vpn\": false,\n" +
                 "        \"resource-version\": \"1521662816043\",\n" +
@@ -296,7 +295,7 @@ public class PresetAAIGetNetworkCollectionDetailsRequiredMissing extends BaseAAI
                 "        \"network-id\": \"l3network-id-2-rs804s\",\n" +
                 "        \"network-name\": \"oam-net\",\n" +
                 "        \"network-type\": \"Tenant_Layer_3\",\n" +
-                "        \"network-role\": \"HngwProtectedOam.OAM\",\n" +
+                "        \"network-role\": \"RosemaProtectedOam.OAM\",\n" +
                 "        \"network-technology\": \"Contrail\",\n" +
                 "        \"is-bound-to-vpn\": false,\n" +
                 "        \"resource-version\": \"1521662815304\",\n" +

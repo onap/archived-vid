@@ -1,7 +1,7 @@
 package vid.automation.test.test;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
 
-    private ViewEditPage viewEditPage= new ViewEditPage();
+    protected ViewEditPage viewEditPage= new ViewEditPage();
 
     void assertServiceMetadata(String expectedMetadata, String actualMetadata) {
         WebElement serviceNameElem = GeneralUIUtils.getWebElementByTestID(actualMetadata);
@@ -67,18 +67,11 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
         assertServiceMetadata(expectedServiceInstance.modelCustomizationUuid, Constants.CreateNewInstance.MODEL_CUSTOMIZATION_UUID);
     }
 
-    private String fillDetailsInDialogWithGeneratedName(String name, String lcpRegion, String tenant, String suppressRollback,
-                                                        String legacyRegion, ArrayList<String> permittedTenants)
-    {
-        String generatedInstanceName = viewEditPage.generateInstanceName(name);
-        return fillDetailsInDialog(generatedInstanceName, lcpRegion, tenant, suppressRollback, legacyRegion, permittedTenants);
-    }
-
-    private String fillDetailsInDialog(String name, String lcpRegion, String tenant, String suppressRollback,
+    private String fillDetailsInDialog(String name, String lcpRegion, String cloudOwner, String tenant, String suppressRollback,
                       String legacyRegion, ArrayList<String> permittedTenants)
     {
         viewEditPage.setInstanceName(name);
-        viewEditPage.selectLCPRegion(lcpRegion);
+        viewEditPage.selectLcpRegion(lcpRegion, cloudOwner);
         assertDropdownPermittedItemsByValue(permittedTenants, Constants.ViewEdit.TENANT_OPTION_CLASS);
         viewEditPage.selectTenant(tenant);
         viewEditPage.selectSuppressRollback(suppressRollback);
@@ -87,13 +80,13 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
     }
 
 
-    protected String addVFModule(String name, String lcpRegion, String tenant, String suppressRollback,
+    protected String addVFModule(String modelName, String instanceName, String lcpRegion, String cloudOwner, String tenant, String suppressRollback,
                                  String legacyRegion, ArrayList<String> permittedTenants,ServiceModel expectedServiceInstance) {
-        viewEditPage.selectVfModuleToAdd(name);
+        viewEditPage.selectVfModuleToAdd(modelName);
         if(expectedServiceInstance != null) {
             validateNodeTemplateCreationDialog(expectedServiceInstance);
         }
-        String instanceName = fillDetailsInDialogWithGeneratedName(Constants.INSTANCE_NAME_SELECT_TESTS_ID, lcpRegion, tenant, suppressRollback, legacyRegion, permittedTenants);
+        fillDetailsInDialog(instanceName, lcpRegion, cloudOwner, tenant, suppressRollback, legacyRegion, permittedTenants);
         viewEditPage.clickConfirmButton();
         assertSuccessfulVFModuleCreation();
         viewEditPage.clickCloseButton();
@@ -101,28 +94,28 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
         return instanceName;
     }
 
-    protected void addVolumeGroup (String name, String lcpRegion, String tenant, String suppressRollback,
+    protected void addVolumeGroup (String modelName, String instanceName, String lcpRegion, String cloudOwner, String tenant, String suppressRollback,
                                   String legacyRegion, ArrayList<String> permittedTenants, ServiceModel expectedServiceInstance) {
-        viewEditPage.selectVolumeGroupToAdd(name);
+        viewEditPage.selectVolumeGroupToAdd(modelName);
         if(expectedServiceInstance != null) {
             validateNodeTemplateCreationDialog(expectedServiceInstance);
         }
-        fillDetailsInDialogWithGeneratedName(Constants.ViewEdit.VOLUME_GROUP_INSTANCE_NAME_PREFIX, lcpRegion, tenant, suppressRollback, legacyRegion, permittedTenants);
+        fillDetailsInDialog(instanceName, lcpRegion, cloudOwner, tenant, suppressRollback, legacyRegion, permittedTenants);
         viewEditPage.clickConfirmButton();
         assertSuccessfulVolumeGroupCreation();
         viewEditPage.clickCloseButton();
         GeneralUIUtils.ultimateWait();
     }
 
-    protected void addVNF(String name, String lcpRegion, String tenant, String suppressRollback,
+    protected void addVNF(String name, String lcpRegion, String cloudOwner, String tenant, String suppressRollback,
                           String legacyRegion, String productFamily, String platform, ArrayList<String> permittedTenants, List<String> lobs, ServiceModel serviceModel, String instanceName) {
-        openAndFillVnfPopup(name, lcpRegion, tenant, suppressRollback, legacyRegion, productFamily, platform,permittedTenants, lobs, serviceModel, instanceName);
+        openAndFillVnfPopup(name, lcpRegion, cloudOwner, tenant, suppressRollback, legacyRegion, productFamily, platform,permittedTenants, lobs, serviceModel, instanceName);
         viewEditPage.clickConfirmButton();
         successConfirmVnfAndClosePopup();
 
     }
 
-    protected void openAndFillVnfPopup(String name, String lcpRegion, String tenant, String suppressRollback,
+    protected void openAndFillVnfPopup(String name, String lcpRegion, String cloudOwner, String tenant, String suppressRollback,
                                        String legacyRegion, String productFamily, String platform, ArrayList<String> permittedTenants, List<String> lobs, ServiceModel serviceModel, String instanceName) {
         viewEditPage.selectNodeInstanceToAdd(name);
         GeneralUIUtils.ultimateWait();
@@ -139,7 +132,7 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
         if(lobs != null) {
             SelectOption.selectOptionsFromMultiselectById(Constants.OwningEntity.LOB_SELECT_TEST_ID, lobs);
         }
-        fillDetailsInDialog(instanceName, lcpRegion, tenant, suppressRollback, legacyRegion, permittedTenants);
+        fillDetailsInDialog(instanceName, lcpRegion, cloudOwner, tenant, suppressRollback, legacyRegion, permittedTenants);
     }
 
     protected void successConfirmVnfAndClosePopup() {

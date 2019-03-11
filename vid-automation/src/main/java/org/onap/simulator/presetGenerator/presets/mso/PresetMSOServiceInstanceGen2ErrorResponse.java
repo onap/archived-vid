@@ -1,6 +1,6 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-public class PresetMSOServiceInstanceGen2ErrorResponse extends PresetMSOBaseCreateServiceInstancePost {
+public class PresetMSOServiceInstanceGen2ErrorResponse extends PresetMSOBaseCreateInstancePost {
 
     private final int responseCode;
 
@@ -15,7 +15,7 @@ public class PresetMSOServiceInstanceGen2ErrorResponse extends PresetMSOBaseCrea
 
     @Override
     public String getReqPath() {
-        return  getRootPath() + "/serviceInstantiation/v7/serviceInstances/assign";
+        return  getRootPath() + "/serviceInstantiation/v./serviceInstances/assign";
     }
 
     @Override

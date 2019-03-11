@@ -6,15 +6,20 @@ import org.springframework.http.HttpMethod;
 public class PresetAAIPostNamedQueryForViewEdit extends BaseAAIPreset {
 
     private final String serviceInstanceId;
-    private final boolean hasConfigurationInstance;
+    private final boolean hasProxyConfigurationInstance;
+    private final boolean hasFabricConfigurationInstance;
+    private String serviceInstanceName;
+    public static final String DEFAULT_SERVICE_INSTANCE_NAME = "test_sssdad";
 
-    public PresetAAIPostNamedQueryForViewEdit(String serviceInstanceId) {
-        this(serviceInstanceId, true);
+    public PresetAAIPostNamedQueryForViewEdit(String serviceInstanceId, boolean hasProxyConfigurationInstance, boolean hasFabricConfigurationInstance) {
+        this(serviceInstanceId, DEFAULT_SERVICE_INSTANCE_NAME, hasProxyConfigurationInstance, hasFabricConfigurationInstance);
     }
 
-    public PresetAAIPostNamedQueryForViewEdit(String serviceInstanceId, boolean hasConfigurationInstance) {
+    public PresetAAIPostNamedQueryForViewEdit(String serviceInstanceId, String serviceInstanceName, boolean hasProxyConfigurationInstance, boolean hasFabricConfigurationInstance) {
         this.serviceInstanceId = serviceInstanceId;
-        this.hasConfigurationInstance = hasConfigurationInstance;
+        this.serviceInstanceName = serviceInstanceName;
+        this.hasProxyConfigurationInstance = hasProxyConfigurationInstance;
+        this.hasFabricConfigurationInstance = hasFabricConfigurationInstance;
     }
 
     // inspired by
@@ -44,7 +49,7 @@ public class PresetAAIPostNamedQueryForViewEdit extends BaseAAIPreset {
                 "          \"service-instance-id\": \"" + serviceInstanceId + "\"" +
                 "        }," +
                 "        \"service-subscription\": {" +
-                "          \"service-type\": \"VIRTUAL USP\"" +
+                "          \"service-type\": \"TYLER SILVIA\"" +
                 "        }" +
                 "      }" +
                 "    ]" +
@@ -65,10 +70,10 @@ public class PresetAAIPostNamedQueryForViewEdit extends BaseAAIPreset {
                 "   \"model-name\": \"0eOHz2Yh8WJcBYzKy079\"," +
                 "   \"service-instance\": {" +
                 "    \"service-instance-id\": \"" + serviceInstanceId + "\"," +
-                "    \"service-instance-name\": \"test_sssdad\"" +
+                "    \"service-instance-name\": \"" + serviceInstanceName + "\"" +
                 "   }," +
                 "   \"extra-properties\": {}";
-        if(hasConfigurationInstance) {
+        if(hasProxyConfigurationInstance) {
             response += "," +
                     "   \"inventory-response-items\": {" +
                     "    \"inventory-response-item\": [{" +
@@ -85,6 +90,29 @@ public class PresetAAIPostNamedQueryForViewEdit extends BaseAAIPreset {
                     "       \"operational-status\": \"\"," +
                     "       \"configuration-selflink\": \"\"," +
                     "       \"model-customization-id\": \"08a181aa-72eb-435f-9593-e88a3ad0a86b\"," +
+                    "       \"resource-version\": \"1504038855716\"" +
+                    "      }," +
+                    "      \"extra-properties\": {}" +
+                    "     }" +
+                    "    ]" +
+                    "   }";
+        }
+        else if(hasFabricConfigurationInstance) {
+            response += "," +
+                    "   \"inventory-response-items\": {" +
+                    "    \"inventory-response-item\": [{" +
+                    "      \"model-name\": \"Fabric-Configuration-Instance\"," +
+                    "      \"configuration\": {" +
+                    "       \"configuration-id\": \"1234-fabric-config-LB1113\"," +
+                    "       \"configuration-name\": \"dummy_instance\"," +
+                    "       \"configuration-type\": \"fabric-configuration-type-1234\"," +
+                    "       \"configuration-sub-type\": \"fabric-configuration-sub-type-1234\"," +
+                    "       \"model-invariant-id\": \"model-invariant-id-1234\"," +
+                    "       \"model-version-id\": \"model-version-id-1234\"," +
+                    "       \"orchestration-status\": \"Assigned\"," +
+                    "       \"operational-status\": \"\"," +
+                    "       \"configuration-selflink\": \"\"," +
+                    "       \"model-customization-id\": \"model-customization-id-1234\"," +
                     "       \"resource-version\": \"1504038855716\"" +
                     "      }," +
                     "      \"extra-properties\": {}" +

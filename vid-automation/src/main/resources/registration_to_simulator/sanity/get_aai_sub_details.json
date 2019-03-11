@@ -1,4 +1,5 @@
-{
+[
+  {
   "simulatorRequest": {
     "method": "GET",
     "path": "/aai/v../business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
@@ -10,13 +11,13 @@
     "responseCode": 200,
     "body": {
       "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-      "subscriber-name":"Mobility",
+      "subscriber-name":"Emanuel",
       "subscriber-type":"INFRA",
       "resource-version":"1494001894192",
       "service-subscriptions":{
         "service-subscription":[
           {
-            "service-type":"vMMSC",
+            "service-type":"vWINIFRED",
             "resource-version":"1503958037264",
             "service-instances":{
               "service-instance":[
@@ -54,8 +55,8 @@
                 },
                 {
                   "service-instance-id":"ec884145-dbe8-4228-8165-f0c4d7123f8b",
-                  "service-instance-name":"abc_mdns_2017_1011_IST_Service_CSI",
-                  "service-type":"Mobility",
+                  "service-instance-name":"abc_CHARLOTTE_2017_1011_IST_Service_CSI",
+                  "service-type":"Emanuel",
                   "service-role":"",
                   "model-invariant-id":"c54c1178-ab4b-498c-aea0-52cc2043d44f",
                   "model-version-id":"a1531622-4e08-43fa-9ffd-222090cab7d2",
@@ -64,7 +65,7 @@
                 },
                 {
                   "service-instance-id":"69f1abac-b1ac-45c4-b954-ff934fc35257",
-                  "service-instance-name":"Mobility_VSP_Service_nb5443",
+                  "service-instance-name":"Emanuel_VSP_Service_nb5443",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"f60ed211-2780-40ea-9d05-94c214e0be5c",
@@ -74,7 +75,7 @@
                 },
                 {
                   "service-instance-id":"5161b8d5-659a-42b2-9faa-d000bdba6473",
-                  "service-instance-name":"ServicevMMSCPID298109_ap947r_092217_03",
+                  "service-instance-name":"ServicevWINIFREDPID298109_ap947r_092217_03",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -84,7 +85,7 @@
                 },
                 {
                   "service-instance-id":"46c729a2-0003-4c6f-8deb-ccd7cb203681",
-                  "service-instance-name":"vMMSC_MobReg__Svc_SB_0905_01",
+                  "service-instance-name":"vWINIFRED_MobReg__Svc_SB_0905_01",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -105,7 +106,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"vMMSC_MobReg__Vnf_SB_0905_01"
+                            "property-value":"vWINIFRED_MobReg__Vnf_SB_0905_01"
                           }
                         ]
                       }
@@ -202,7 +203,7 @@
                 },
                 {
                   "service-instance-id":"4abb3bd4-75bf-488b-9185-dd6bfe493be9",
-                  "service-instance-name":"RG_9-26_vmmsc",
+                  "service-instance-name":"RG_9-26_vWINIFRED",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"null",
@@ -225,7 +226,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"RG_9-26_vmmsctest"
+                            "property-value":"RG_9-26_vWINIFREDtest"
                           }
                         ]
                       }
@@ -234,7 +235,7 @@
                 },
                 {
                   "service-instance-id":"2f4b57f9-c3bb-4734-b790-ceb57b02186a",
-                  "service-instance-name":"PREIST_MDNS_mmscInstance",
+                  "service-instance-name":"PREIST_CHARLOTTE_mmscInstance",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"General_Revenue-Bearing",
@@ -257,7 +258,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"PREIST_MDNS_VNFmmsc"
+                            "property-value":"PREIST_CHARLOTTE_VNFmmsc"
                           }
                         ]
                       }
@@ -354,7 +355,7 @@
                 },
                 {
                   "service-instance-id":"8473f088-30a0-453d-88fc-b29bda544d6e",
-                  "service-instance-name":"Service_mdns_mobility_nb54433",
+                  "service-instance-name":"Service_CHARLOTTE_emanuel_nb54433",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"b399ddef-4d8c-48c4-88c5-d4cb0f8b4678",
@@ -375,7 +376,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"Service_mdns_mobility_nb54433_ds0928_vnf"
+                            "property-value":"Service_CHARLOTTE_emanuel_nb54433_ds0928_vnf"
                           }
                         ]
                       }
@@ -384,7 +385,7 @@
                 },
                 {
                   "service-instance-id":"035933b7-849c-4a83-a11c-73016fdf557a",
-                  "service-instance-name":"Service_vMMSC_MobilityREG_sg_0911",
+                  "service-instance-name":"Service_vWINIFRED_EmanuelREG_sg_0911",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -426,7 +427,7 @@
                 },
                 {
                   "service-instance-id":"884233b8-771a-421a-a542-406bda5af2c3",
-                  "service-instance-name":"Service_vMMSC_MobilityREG_sg_0913",
+                  "service-instance-name":"Service_vWINIFRED_EmanuelREG_sg_0913",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -447,7 +448,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"Service_vMMSC_MobilityREG_sg_0913_Vnf"
+                            "property-value":"Service_vWINIFRED_EmanuelREG_sg_0913_Vnf"
                           }
                         ]
                       }
@@ -568,7 +569,7 @@
                 },
                 {
                   "service-instance-id":"01170b44-d74f-409f-bb84-dee5c6d9ccb8",
-                  "service-instance-name":"Mobility_VSP_Service_nb",
+                  "service-instance-name":"Emanuel_VSP_Service_nb",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"f60ed211-2780-40ea-9d05-94c214e0be5c",
@@ -578,7 +579,7 @@
                 },
                 {
                   "service-instance-id":"2f9db809-58f6-4bf2-8759-8e304831bbb9",
-                  "service-instance-name":"ServicevMMSCPID298109_ap947r_0926167_02",
+                  "service-instance-name":"ServicevWINIFREDPID298109_ap947r_0926167_02",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"null",
@@ -736,7 +737,7 @@
                 },
                 {
                   "service-instance-id":"ed5d1968-b896-4bd0-b978-4e29485b9086",
-                  "service-instance-name":"Service_mdns_mobility_kk364s_927_1515",
+                  "service-instance-name":"Service_CHARLOTTE_emanuel_kk364s_927_1515",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"null",
@@ -759,7 +760,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"CreateVNF_Service_mdns_mobility_kk364s_927_1515"
+                            "property-value":"CreateVNF_Service_CHARLOTTE_emanuel_kk364s_927_1515"
                           }
                         ]
                       }
@@ -768,7 +769,7 @@
                 },
                 {
                   "service-instance-id":"4f590065-d9ea-457b-bec6-3cdd95c993ab",
-                  "service-instance-name":"RG_9-25_vMMSCVid",
+                  "service-instance-name":"RG_9-25_vWINIFREDVid",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"null",
@@ -838,7 +839,7 @@
                 },
                 {
                   "service-instance-id":"f6763efd-774f-469d-a90e-b736765144cd",
-                  "service-instance-name":"Service_vMMSC_MobilityREG_sb_0912",
+                  "service-instance-name":"Service_vWINIFRED_EmanuelREG_sb_0912",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -859,7 +860,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"Service_vMMSC_MobilityREG_sb_0912_Vnf"
+                            "property-value":"Service_vWINIFRED_EmanuelREG_sb_0912_Vnf"
                           }
                         ]
                       }
@@ -868,7 +869,7 @@
                 },
                 {
                   "service-instance-id":"3280694a-7fb1-4450-bee4-ad84abbd9971",
-                  "service-instance-name":"vMMSC_MobReg__Svc_DS_0830_01",
+                  "service-instance-name":"vWINIFRED_MobReg__Svc_DS_0830_01",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -922,7 +923,7 @@
                 },
                 {
                   "service-instance-id":"2e1b88c0-cc5f-42ea-9a17-c21981107573",
-                  "service-instance-name":"vMMSC_MobReg__Svc_DS_0901_01",
+                  "service-instance-name":"vWINIFRED_MobReg__Svc_DS_0901_01",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -932,7 +933,7 @@
                 },
                 {
                   "service-instance-id":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                  "service-instance-name":"vMMSC_MobReg__Svc_DS_0901_02",
+                  "service-instance-name":"vWINIFRED_MobReg__Svc_DS_0901_02",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
@@ -953,7 +954,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"vMMSC_MobReg__Vnf_DS_0901_02"
+                            "property-value":"vWINIFRED_MobReg__Vnf_DS_0901_02"
                           }
                         ]
                       }
@@ -962,7 +963,7 @@
                 },
                 {
                   "service-instance-id":"7377c571-be4c-445f-bf85-5e7c60d5b1c6",
-                  "service-instance-name":"Service_mdns_01",
+                  "service-instance-name":"Service_CHARLOTTE_01",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"Critical_Non-Revenue",
@@ -1107,7 +1108,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"ServicevMMSCVNF"
+                            "property-value":"ServicevWINIFREDVNF"
                           }
                         ]
                       }
@@ -1146,15 +1147,15 @@
               "relationship":[
                 {
                   "related-to":"tenant",
-                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/c2609b7252b6484d89432611cfb2491b",
+                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/c2609b7252b6484d89432611cfb2491b",
                   "relationship-data":[
                     {
                       "relationship-key":"cloud-region.cloud-owner",
-                      "relationship-value":"att-aic"
+                      "relationship-value":"irma-aic"
                     },
                     {
                       "relationship-key":"cloud-region.cloud-region-id",
-                      "relationship-value":"mtn6"
+                      "relationship-value":"hvf6"
                     },
                     {
                       "relationship-key":"tenant.tenant-id",
@@ -1170,15 +1171,15 @@
                 },
                 {
                   "related-to":"tenant",
-                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/579d80c0cf754d1e9f1ddc2cdc1701e3",
+                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/579d80c0cf754d1e9f1ddc2cdc1701e3",
                   "relationship-data":[
                     {
                       "relationship-key":"cloud-region.cloud-owner",
-                      "relationship-value":"att-aic"
+                      "relationship-value":"irma-aic"
                     },
                     {
                       "relationship-key":"cloud-region.cloud-region-id",
-                      "relationship-value":"mtn6"
+                      "relationship-value":"hvf6"
                     },
                     {
                       "relationship-key":"tenant.tenant-id",
@@ -1194,15 +1195,15 @@
                 },
                 {
                   "related-to":"tenant",
-                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/2cd3ca9abd25492eb0c6a44bc95fe714",
+                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/2cd3ca9abd25492eb0c6a44bc95fe714",
                   "relationship-data":[
                     {
                       "relationship-key":"cloud-region.cloud-owner",
-                      "relationship-value":"att-aic"
+                      "relationship-value":"irma-aic"
                     },
                     {
                       "relationship-key":"cloud-region.cloud-region-id",
-                      "relationship-value":"mtn6"
+                      "relationship-value":"hvf6"
                     },
                     {
                       "relationship-key":"tenant.tenant-id",
@@ -1247,11 +1248,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -1315,11 +1316,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -1438,15 +1439,15 @@
               "relationship":[
                 {
                   "related-to":"tenant",
-                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/c2609b7252b6484d89432611cfb2491b",
+                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/c2609b7252b6484d89432611cfb2491b",
                   "relationship-data":[
                     {
                       "relationship-key":"cloud-region.cloud-owner",
-                      "relationship-value":"att-aic"
+                      "relationship-value":"irma-aic"
                     },
                     {
                       "relationship-key":"cloud-region.cloud-region-id",
-                      "relationship-value":"mtn6"
+                      "relationship-value":"hvf6"
                     },
                     {
                       "relationship-key":"tenant.tenant-id",
@@ -1462,15 +1463,15 @@
                 },
                 {
                   "related-to":"tenant",
-                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/579d80c0cf754d1e9f1ddc2cdc1701e3",
+                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/579d80c0cf754d1e9f1ddc2cdc1701e3",
                   "relationship-data":[
                     {
                       "relationship-key":"cloud-region.cloud-owner",
-                      "relationship-value":"att-aic"
+                      "relationship-value":"irma-aic"
                     },
                     {
                       "relationship-key":"cloud-region.cloud-region-id",
-                      "relationship-value":"mtn6"
+                      "relationship-value":"hvf6"
                     },
                     {
                       "relationship-key":"tenant.tenant-id",
@@ -1486,15 +1487,15 @@
                 },
                 {
                   "related-to":"tenant",
-                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/tenants/tenant/2cd3ca9abd25492eb0c6a44bc95fe714",
+                  "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/2cd3ca9abd25492eb0c6a44bc95fe714",
                   "relationship-data":[
                     {
                       "relationship-key":"cloud-region.cloud-owner",
-                      "relationship-value":"att-aic"
+                      "relationship-value":"irma-aic"
                     },
                     {
                       "relationship-key":"cloud-region.cloud-region-id",
-                      "relationship-value":"mtn6"
+                      "relationship-value":"hvf6"
                     },
                     {
                       "relationship-key":"tenant.tenant-id",
@@ -1562,7 +1563,7 @@
                 },
                 {
                   "service-instance-id":"9f44e57f-243d-4e53-8ef8-5892c12f7ac2",
-                  "service-instance-name":"Mobility_VSP_Service_01_PB",
+                  "service-instance-name":"Emanuel_VSP_Service_01_PB",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"f60ed211-2780-40ea-9d05-94c214e0be5c",
@@ -1582,7 +1583,7 @@
             }
           },
           {
-            "service-type":"Mobility",
+            "service-type":"Emanuel",
             "resource-version":"1494001853297",
             "service-instances":{
               "service-instance":[
@@ -1740,7 +1741,7 @@
                 },
                 {
                   "service-instance-id":"4064aa68-f4db-4135-a78b-b79809416f80",
-                  "service-instance-name":"vDBE_1208_oam_bb389n",
+                  "service-instance-name":"vDOROTHEA_1208_oam_bb389n",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"General_Revenue-Bearing",
@@ -1844,7 +1845,7 @@
                 },
                 {
                   "service-instance-id":"3e18ba93-f47d-41c9-9d4e-bd43b507c4d6",
-                  "service-instance-name":"HNPortal_OAM_svc_lll_010917",
+                  "service-instance-name":"WILKINS_OAM_svc_lll_010917",
                   "model-invariant-id":"24c750cd-a827-4289-9714-b6d214f1bc6b",
                   "resource-version":"1494001876432"
                 },
@@ -1891,7 +1892,7 @@
                 },
                 {
                   "service-instance-id":"a42eeb3b-ae92-44aa-9da7-2293c1dfa259",
-                  "service-instance-name":"MobilityServer_294356_rs768f",
+                  "service-instance-name":"EmanuelServer_294356_rs768f",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"General_Revenue-Bearing",
@@ -1904,11 +1905,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -1924,7 +1925,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"rs768f_MobilityServer_294356_vnf"
+                            "property-value":"rs768f_EmanuelServer_294356_vnf"
                           }
                         ]
                       },
@@ -1956,11 +1957,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -2052,7 +2053,7 @@
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"DFW"
+                            "relationship-value":"WATKINS"
                           }
                         ]
                       },
@@ -2182,7 +2183,7 @@
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"DFW"
+                            "relationship-value":"WATKINS"
                           }
                         ]
                       },
@@ -2243,7 +2244,7 @@
                 },
                 {
                   "service-instance-id":"898cd344-8ec9-4e91-8e01-adc6a09b1822",
-                  "service-instance-name":"Mobility_Server_294356",
+                  "service-instance-name":"Emanuel_Server_294356",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"General_Revenue-Bearing",
@@ -2256,11 +2257,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -2276,7 +2277,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"zmtn6mobserver01"
+                            "property-value":"zhvf6mobserver01"
                           }
                         ]
                       },
@@ -2406,11 +2407,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -2426,7 +2427,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"zmtn6amdns04_PB"
+                            "property-value":"zhvf6amdns04_PB"
                           }
                         ]
                       },
@@ -2484,7 +2485,7 @@
                 },
                 {
                   "service-instance-id":"58f993c0-c7b9-45fe-ae7a-2ad9a2341870",
-                  "service-instance-name":"Mobility_VSP_Service_PB_02",
+                  "service-instance-name":"Emanuel_VSP_Service_PB_02",
                   "service-type":"",
                   "service-role":"",
                   "model-invariant-id":"f60ed211-2780-40ea-9d05-94c214e0be5c",
@@ -2505,7 +2506,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"Mobility_VSP_Service_PB_02_VF"
+                            "property-value":"Emanuel_VSP_Service_PB_02_VF"
                           }
                         ]
                       }
@@ -2720,7 +2721,7 @@
                 },
                 {
                   "service-instance-id":"5c766780-2e7b-47e6-b8a3-4bec3b1b0e71",
-                  "service-instance-name":"Service_Test_PCRF_Test1707_02",
+                  "service-instance-name":"Service_Test_RODERICK_Test1707_02",
                   "resource-version":"1494002006171",
                   "relationship-list":{
                     "relationship":[
@@ -2816,11 +2817,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -2900,7 +2901,7 @@
                 },
                 {
                   "service-instance-id":"f7d5b93c-483c-4564-a524-1a1bbf5fdc0a",
-                  "service-instance-name":"mdns_mobility_01",
+                  "service-instance-name":"CHARLOTTE_emanuel_01",
                   "service-type":"",
                   "service-role":"",
                   "environment-context":"Critical_Non-Revenue",
@@ -2923,7 +2924,7 @@
                         "related-to-property":[
                           {
                             "property-key":"generic-vnf.vnf-name",
-                            "property-value":"zmtn6amdns02"
+                            "property-value":"zhvf6amdns02"
                           }
                         ]
                       }
@@ -2945,11 +2946,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -3021,11 +3022,11 @@
                     "relationship":[
                       {
                         "related-to":"project",
-                        "related-link":"/aai/v11/business/projects/project/Nimbus",
+                        "related-link":"/aai/v11/business/projects/project/Kennedy",
                         "relationship-data":[
                           {
                             "relationship-key":"project.project-name",
-                            "relationship-value":"Nimbus"
+                            "relationship-value":"Kennedy"
                           }
                         ]
                       },
@@ -3065,7 +3066,7 @@
                 },
                 {
                   "service-instance-id":"716df72e-d61e-45a4-8e50-8ea58d8ad2ac",
-                  "service-instance-name":"lll_hngw_oam_net_020217",
+                  "service-instance-name":"lll_Rosema_oam_net_020217",
                   "model-invariant-id":"cc1db61e-1d9f-4b64-91ec-6844d922c584",
                   "model-version-id":"374a0a81-cb42-4ed5-a5fb-5a0bec102f82",
                   "resource-version":"1494001815150"
@@ -3115,4 +3116,195 @@
       }
     }
   }
-}
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
+      "path": "/aai/v../business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "queryParams" :  {
+        "depth": [ "1" ]
+      }
+    } ,
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": {
+        "global-customer-id":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "subscriber-name":"Emanuel",
+        "subscriber-type":"INFRA",
+        "resource-version":"1494001894192",
+        "service-subscriptions":{
+          "service-subscription":[
+            {
+              "service-type":"vWINIFRED",
+              "resource-version":"1503958037264",
+              "relationship-list":{
+                "relationship":[
+                  {
+                    "related-to":"tenant",
+                    "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/c2609b7252b6484d89432611cfb2491b",
+                    "relationship-data":[
+                      {
+                        "relationship-key":"cloud-region.cloud-owner",
+                        "relationship-value":"irma-aic"
+                      },
+                      {
+                        "relationship-key":"cloud-region.cloud-region-id",
+                        "relationship-value":"hvf6"
+                      },
+                      {
+                        "relationship-key":"tenant.tenant-id",
+                        "relationship-value":"c2609b7252b6484d89432611cfb2491b"
+                      }
+                    ],
+                    "related-to-property":[
+                      {
+                        "property-key":"tenant.tenant-name",
+                        "property-value":"ECOM_Tenant_DND"
+                      }
+                    ]
+                  },
+                  {
+                    "related-to":"tenant",
+                    "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/579d80c0cf754d1e9f1ddc2cdc1701e3",
+                    "relationship-data":[
+                      {
+                        "relationship-key":"cloud-region.cloud-owner",
+                        "relationship-value":"irma-aic"
+                      },
+                      {
+                        "relationship-key":"cloud-region.cloud-region-id",
+                        "relationship-value":"hvf6"
+                      },
+                      {
+                        "relationship-key":"tenant.tenant-id",
+                        "relationship-value":"579d80c0cf754d1e9f1ddc2cdc1701e3"
+                      }
+                    ],
+                    "related-to-property":[
+                      {
+                        "property-key":"tenant.tenant-name",
+                        "property-value":"ECOM_FirstNet1_DND"
+                      }
+                    ]
+                  },
+                  {
+                    "related-to":"tenant",
+                    "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/2cd3ca9abd25492eb0c6a44bc95fe714",
+                    "relationship-data":[
+                      {
+                        "relationship-key":"cloud-region.cloud-owner",
+                        "relationship-value":"irma-aic"
+                      },
+                      {
+                        "relationship-key":"cloud-region.cloud-region-id",
+                        "relationship-value":"hvf6"
+                      },
+                      {
+                        "relationship-key":"tenant.tenant-id",
+                        "relationship-value":"2cd3ca9abd25492eb0c6a44bc95fe714"
+                      }
+                    ],
+                    "related-to-property":[
+                      {
+                        "property-key":"tenant.tenant-name",
+                        "property-value":"ECOM_FirstNet2_DND"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "service-type":"vMNS",
+              "resource-version":"1507044344705",
+              "relationship-list":{
+                "relationship":[
+                  {
+                    "related-to":"tenant",
+                    "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/c2609b7252b6484d89432611cfb2491b",
+                    "relationship-data":[
+                      {
+                        "relationship-key":"cloud-region.cloud-owner",
+                        "relationship-value":"irma-aic"
+                      },
+                      {
+                        "relationship-key":"cloud-region.cloud-region-id",
+                        "relationship-value":"hvf6"
+                      },
+                      {
+                        "relationship-key":"tenant.tenant-id",
+                        "relationship-value":"c2609b7252b6484d89432611cfb2491b"
+                      }
+                    ],
+                    "related-to-property":[
+                      {
+                        "property-key":"tenant.tenant-name",
+                        "property-value":"ECOM_Tenant_DND"
+                      }
+                    ]
+                  },
+                  {
+                    "related-to":"tenant",
+                    "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/579d80c0cf754d1e9f1ddc2cdc1701e3",
+                    "relationship-data":[
+                      {
+                        "relationship-key":"cloud-region.cloud-owner",
+                        "relationship-value":"irma-aic"
+                      },
+                      {
+                        "relationship-key":"cloud-region.cloud-region-id",
+                        "relationship-value":"hvf6"
+                      },
+                      {
+                        "relationship-key":"tenant.tenant-id",
+                        "relationship-value":"579d80c0cf754d1e9f1ddc2cdc1701e3"
+                      }
+                    ],
+                    "related-to-property":[
+                      {
+                        "property-key":"tenant.tenant-name",
+                        "property-value":"ECOM_FirstNet1_DND"
+                      }
+                    ]
+                  },
+                  {
+                    "related-to":"tenant",
+                    "related-link":"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/2cd3ca9abd25492eb0c6a44bc95fe714",
+                    "relationship-data":[
+                      {
+                        "relationship-key":"cloud-region.cloud-owner",
+                        "relationship-value":"irma-aic"
+                      },
+                      {
+                        "relationship-key":"cloud-region.cloud-region-id",
+                        "relationship-value":"hvf6"
+                      },
+                      {
+                        "relationship-key":"tenant.tenant-id",
+                        "relationship-value":"2cd3ca9abd25492eb0c6a44bc95fe714"
+                      }
+                    ],
+                    "related-to-property":[
+                      {
+                        "property-key":"tenant.tenant-name",
+                        "property-value":"ECOM_FirstNet2_DND"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "service-type":"vVoiceMail",
+              "resource-version":"1494001916536"
+            },
+            {
+              "service-type":"Emanuel",
+              "resource-version":"1494001853297"
+            }
+          ]
+        }
+      }
+    }
+  }
+]

@@ -1,27 +1,22 @@
 package org.onap.vid.api;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import net.bytebuddy.utility.RandomString;
 import net.javacrumbs.jsonunit.JsonAssert;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Description;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAISearchNodeQueryEmptyResult;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.mso.*;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
-import org.onap.vid.model.mso.MsoResponseWrapper2;
-import org.springframework.core.ParameterizedTypeReference;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpServerErrorException;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -32,76 +27,33 @@ import vid.automation.test.model.JobStatus;
 import vid.automation.test.services.SimulatorApi;
 
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 import static java.util.stream.Collectors.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
+import static vid.automation.test.infra.Features.FLAG_1906_INSTANTIATION_API_USER_VALIDATION;
+import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
 
 @FeatureTogglingTest({Features.FLAG_ASYNC_JOBS, Features.FLAG_ASYNC_INSTANTIATION})
-public class AsyncInstantiationApiTest extends BaseMsoApiTest {
+public class AsyncInstantiationApiTest extends AsyncInstantiationBase {
+    private static final Logger logger = LogManager.getLogger(AsyncInstantiationApiTest.class);
 
-    private static final String CREATE_BULK_OF_MACRO_REQUEST = "asyncInstantiation/vidRequestCreateBulkOfMacro.json";
+    private static final String MSO_BASE_ERROR =
+            "Received error from SDN-C: java.lang.IllegalArgumentException: All keys must be specified for class org."+
+            "opendaylight.yang.gen.v1.org.onap.sdnc.northbound.generic.resource.rev170824.vf.module.assignments.vf."+
+            "module.assignments.vms.VmKey. Missing key is getVmType. Supplied key is VmKey [].";
+    private static final String MSO_ERROR = MSO_BASE_ERROR + StringUtils.repeat(" and a lot of sentences for long message", 60);
 
-    @DataProvider
-    public static Object[][] trueAndFalse() {
-            return new Object[][]{{TRUE},{FALSE}};
-    }
+    private static final String INSTANCE_GROUP_ID_LABEL = "instanceGroupId";
 
-    private String getCreateBulkUri() {
-        return uri.toASCIIString() + "/asyncInstantiation/bulk";
-    }
-
-    private String getHideServiceUri(String jobId) {
-        return uri.toASCIIString() + "/asyncInstantiation/hide/"+jobId;
-    }
-
-    private String getServiceInfoUrl() {
-        return uri.toASCIIString() + "/asyncInstantiation";
-    }
-
-    private String getJobAuditUrl() {
-        return uri.toASCIIString() + "/asyncInstantiation/auditStatus/{JOB_ID}?source={SOURCE}";
-    }
-
-    private String getDeleteServiceUrl(String uuid) {
-        return uri.toASCIIString() + "/asyncInstantiation/job/" + uuid;
-    }
-
-    public static class JobIdAndStatusMatcher extends BaseMatcher<ServiceInfo> {
-        private String expectedJobId;
-
-        public JobIdAndStatusMatcher(String expectedJobId) {
-            this.expectedJobId = expectedJobId;
-        }
-
-        @Override
-        public boolean matches(Object item) {
-            if (!(item instanceof ServiceInfo)) {
-                return false;
-            }
-            ServiceInfo serviceInfo = (ServiceInfo) item;
-            return expectedJobId.equals(serviceInfo.jobId);
-        }
-
-        @Override
-        public void describeTo(Description description) {
-            description.appendText("failed to find job with uuid ")
-                    .appendValue(expectedJobId);
-        }
-    }
-
-
+    private static final String INSTANCE_GROUP_LABEL = "instanceGroup";
 
     @Test
     public void createBulkOfCreateInstances(){
@@ -110,40 +62,6 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         ImmutableList<BasePreset> presets = addPresetsForCreateBulkOfCreateInstances(bulkSize, names);
         createBulkOfInstancesAndAssert(presets, false, bulkSize, JobStatus.COMPLETED, names);
     }
-
-    private Map<Keys,String> generateNames() {
-        return Stream.of(Keys.values()).collect(
-                Collectors.toMap(x->x, x -> UUID.randomUUID().toString().replace("-","")));
-    }
-
-    private ImmutableList<BasePreset> addPresetsForCreateBulkOfCreateInstances(int bulkSize, Map<Keys, String> names){
-        ImmutableList<BasePreset> msoBulkPresets = IntStream.rangeClosed(1,bulkSize).
-                mapToObj(i-> new PresetMSOCreateServiceInstanceGen2WithNames(names, i))
-                .collect(ImmutableList.toImmutableList());
-        ImmutableList<BasePreset> presets = new ImmutableList.Builder<BasePreset>()
-                .add(new PresetGetSessionSlotCheckIntervalGet())
-                .add(new PresetAAIGetSubscribersGet())
-                .add(new PresetAAISearchNodeQueryEmptyResult())
-                .addAll(msoBulkPresets)
-                .add(new PresetMSOOrchestrationRequestGet())
-                .build();
-        return presets;
-
-    }
-
-    private ResponseEntity<List<JobAuditStatus>> auditStatusCall(String url) {
-        return restTemplate.exchange(
-                url,
-                org.springframework.http.HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<JobAuditStatus>>() {});
-    }
-
-    @DataProvider
-    public static Object[][] auditSources() {
-        return new Object[][]{{JobAuditStatus.SourceStatus.VID},{JobAuditStatus.SourceStatus.MSO}};
-    }
-
 
     @Test(dataProvider = "auditSources")
    public void getAuditStatus_nonExistingJobId_returnsEmptyList(JobAuditStatus.SourceStatus source){
@@ -170,13 +88,8 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         for(String jobId: jobIds) {
             List<JobAuditStatus> actualVidAudits = getAuditStatuses(jobId, JobAuditStatus.SourceStatus.VID.name());
             List<JobAuditStatus> expectedVidAudits = Stream.of(JobStatus.PENDING, JobStatus.IN_PROGRESS, JobStatus.COMPLETED)
-                    .map(status->new JobAuditStatus(UUID.fromString(jobId),
-                            status.name(),
-                            JobAuditStatus.SourceStatus.VID,
-                            null,
-                            null,
-                            status.equals(JobStatus.COMPLETED))).collect(toList());
-            assertThat(actualVidAudits, is(expectedVidAudits));
+                    .map(status-> vidAuditStatus(jobId, status.name(), status.equals(JobStatus.COMPLETED))).collect(toList());
+            assertThat(actualVidAudits, hasItemsFromCollection(expectedVidAudits));
 
             List<JobAuditStatus> actualMsoAudits = getAuditStatuses(jobId, JobAuditStatus.SourceStatus.MSO.name());
             List<JobAuditStatus> expectedMsoAudits = Stream.of("REQUESTED", "COMPLETE")
@@ -190,29 +103,6 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         }
     }
 
-    protected List<String> createBulkAndWaitForBeCompleted(int bulkSize){
-        Map<Keys, String> names = generateNames();
-        ImmutableList<BasePreset> presets = addPresetsForCreateBulkOfCreateInstances(bulkSize, names);
-        final List<String> jobIds = createBulkOfInstances(presets, false, bulkSize, names);
-        Assert.assertEquals(jobIds.size(),bulkSize);
-
-        assertTrue(String.format("Not all services with ids: %s are in state completed after 30 sec",
-                jobIds.stream().collect(joining(","))),
-
-                Wait.waitFor(y-> serviceListCall().getBody().stream()
-                        .filter(si -> jobIds.contains(si.jobId))
-                        .filter(si -> si.jobStatus==JobStatus.COMPLETED)
-                        .count() == bulkSize,
-                null, 30, 1 ));
-        return jobIds;
-    }
-
-    private List<JobAuditStatus> getAuditStatuses(String jobUUID, String source){
-        String url = getJobAuditUrl().replace("{JOB_ID}",jobUUID).replace("{SOURCE}", source);
-        ResponseEntity<List<JobAuditStatus>> statusesResponse = auditStatusCall(url);
-        assertThat(statusesResponse.getStatusCode(), CoreMatchers.equalTo(HttpStatus.OK));
-        return statusesResponse.getBody();
-    }
 
     @Test(expectedExceptions = HttpClientErrorException.class)
     public void addBulkAndDeleteInProgress_deletionIsRejected(){
@@ -245,52 +135,6 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         assertThat("deleted job shall not be present in StatusInfo response", statusesNow, is(statusesBefore));
     }
 
-    private Map<String, JobStatus> addBulkAllPendingButOneInProgress(){
-        return addBulkAllPendingButOneInProgress(3);
-    }
-    
-    private Map<String, JobStatus> addBulkAllPendingButOneInProgress(int bulkSize){
-        Map<Keys, String> names = generateNames();
-        ImmutableList<BasePreset> msoBulkPresets = IntStream.rangeClosed(1,bulkSize)
-                .mapToObj(i-> new PresetMSOCreateServiceInstanceGen2WithNames(names, i))
-                .collect(ImmutableList.toImmutableList());
-        ImmutableList<BasePreset> presets = new ImmutableList.Builder<BasePreset>()
-                .add(new PresetGetSessionSlotCheckIntervalGet())
-                .add(new PresetAAISearchNodeQueryEmptyResult())
-                .add(new PresetAAIGetSubscribersGet())
-                .addAll(msoBulkPresets)
-                .add(new PresetMSOOrchestrationRequestGet("IN_PROGRESS"))
-                .build();
-        final List<String> jobIds = createBulkOfInstances(presets, false, bulkSize, names);
-
-        // wait for single IN_PROGRESS, so statuses will stop from changing
-        Wait.waitFor(foo -> serviceListCall().getBody().stream()
-                        .filter(si -> jobIds.contains(si.jobId))
-                        .anyMatch(si -> si.jobStatus.equals(JobStatus.IN_PROGRESS)),
-                null, 20, 1);
-
-        final Map<String, JobStatus> statusMapBefore = serviceListCall().getBody().stream()
-                .filter(si -> jobIds.contains(si.jobId))
-                .collect(toMap(si -> si.jobId, si -> si.jobStatus));
-
-        assertThat(jobIds, hasSize(bulkSize));
-
-
-        return statusMapBefore;
-    }
-
-    private String deleteOneJobHavingTheStatus(Map<String, JobStatus> jobIdToStatus, JobStatus jobStatus) {
-        final String jobToDelete = jobIdToStatus.entrySet().stream()
-                .filter(entry -> entry.getValue().equals(jobStatus))
-                .map(Map.Entry::getKey)
-                .findFirst().orElseThrow(() -> new AssertionError("no job in " + jobStatus + " state: " + jobIdToStatus));
-
-
-        restTemplate.delete(getDeleteServiceUrl(jobToDelete));
-
-        return jobToDelete;
-    }
-
     @Test(invocationCount = 3)
     public void createBulkOfCreateInstancesWithSinglePreset_firstOneInProgressOtherArePending(){
         final int bulkSize = 3;
@@ -306,7 +150,6 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         // PENDING:      The other two jobs - named with _002 and _003 - are the still pending
         assertThat(jobIds, hasSize(bulkSize));
         assertThat(statuses.get(JobStatus.IN_PROGRESS), hasSize(1));
-        assertThat(statuses.get(JobStatus.IN_PROGRESS), everyItem(hasProperty("serviceInstanceName", endsWith("_001"))));
 
         assertThat(statuses.get(JobStatus.PENDING), hasSize(bulkSize - 1));
     }
@@ -320,18 +163,16 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         //if there is a preset for create,  service shall failed during in_progress (upon get status)
         //it there is no preset for create, service shall failed during pending (upon create request)
         List<BasePreset> msoBulkPresets = isPresetForCreate ?
-                IntStream.rangeClosed(1,bulkSize)
-                        .mapToObj(i-> new PresetMSOCreateServiceInstanceGen2WithNames(names, i))
-                        .collect(ImmutableList.toImmutableList()) :
+                generateMsoCreateBulkPresets(bulkSize, names) :
                 new LinkedList<>();
         ImmutableList<BasePreset> presets = new ImmutableList.Builder<BasePreset>()
                 .add(new PresetGetSessionSlotCheckIntervalGet())
                 .add(new PresetAAIGetSubscribersGet())
-                .add(new PresetAAISearchNodeQueryEmptyResult())
+                .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN3_TO_ATT_SABABA)
                 .addAll(msoBulkPresets)
                 .add(new PresetMSOOrchestrationRequestGet("FAILED"))
                 .build();
-        List<String> jobIds = createBulkOfInstances(presets, false, bulkSize, names);
+        List<String> jobIds = createBulkOfMacroInstances(presets, false, bulkSize, names);
         Assert.assertEquals(jobIds.size(),bulkSize);
         boolean result = Wait.waitFor(x->{
                 List<ServiceInfo> serviceInfoList = serviceListCall().getBody();
@@ -346,13 +187,13 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
     public void createBulkOfAssignInstances(){
         Map<Keys, String> names = generateNames();
         final int bulkSize = 2;
-        ImmutableList<BasePreset> msoBulkPresets = IntStream.rangeClosed(1,bulkSize)
+        ImmutableList<BasePreset> msoBulkPresets = IntStream.rangeClosed(0, bulkSize-1)
                 .mapToObj(i-> new PresetMSOAssignServiceInstanceGen2WithNames(names, i))
                 .collect(ImmutableList.toImmutableList());
         ImmutableList<BasePreset> presets = new ImmutableList.Builder<BasePreset>()
                 .add(new PresetGetSessionSlotCheckIntervalGet())
                 .add(new PresetAAIGetSubscribersGet())
-                .add(new PresetAAISearchNodeQueryEmptyResult())
+                .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN3_TO_ATT_SABABA)
                 .addAll(msoBulkPresets)
                 .add(new PresetMSOOrchestrationRequestGet())
                 .build();
@@ -364,17 +205,34 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         ImmutableList<BasePreset> presets = ImmutableList.of(
                 new PresetGetSessionSlotCheckIntervalGet(),
                 new PresetAAIGetSubscribersGet(),
-                new PresetAAISearchNodeQueryEmptyResult(),
                 new PresetMSOServiceInstanceGen2ErrorResponse(406));
 
         List<String> jobIds = createBulkOfInstancesAndAssert(presets, true,1, JobStatus.FAILED, generateNames());
         String jobId  = jobIds.get(0);
         List<JobAuditStatus> actualMsoAudits = getAuditStatuses(jobId, JobAuditStatus.SourceStatus.MSO.name());
-        JobAuditStatus expectedMsoAudit = new JobAuditStatus(UUID.fromString(jobId),"FAILED",JobAuditStatus.SourceStatus.MSO,
+        JobAuditStatus expectedMsoAudit = new JobAuditStatus(UUID.fromString(jobId), "FAILED", JobAuditStatus.SourceStatus.MSO,
                         null,
                         "Http Code:406, \"messageId\":\"SVC0002\",\"text\":\"JSON Object Mapping Request\"" ,
                         false);
         assertThat(actualMsoAudits.get(0), is(expectedMsoAudit));
+    }
+
+    @Test
+    public void whenGetLongErrorMessageFromMso_ThenAuditFirst2000Chars() {
+        Map<Keys, String> names = generateNames();
+        ImmutableList<BasePreset> presets = ImmutableList.of(
+                new PresetGetSessionSlotCheckIntervalGet(),
+                new PresetAAIGetSubscribersGet(),
+                new PresetMSOCreateServiceInstanceGen2WithNames(names, 0),
+                new PresetMSOOrchestrationRequestGet("FAILED", PresetMSOOrchestrationRequestGet.DEFAULT_REQUEST_ID, MSO_ERROR));
+
+        List<String> jobIds = createBulkOfInstancesAndAssert(presets, false, 1, JobStatus.FAILED, names);
+        String jobId  = jobIds.get(0);
+        List<JobAuditStatus> actualMsoAudits = getAuditStatuses(jobId, JobAuditStatus.SourceStatus.MSO.name());
+        Optional<JobAuditStatus> jobAuditStatus = actualMsoAudits.stream().filter(x -> x.getJobStatus().equals("FAILED")).findFirst();
+        assertTrue(jobAuditStatus.isPresent());
+        assertThat(jobAuditStatus.get().getAdditionalInfo(), startsWith(MSO_BASE_ERROR));
+        assertThat(jobAuditStatus.get().getAdditionalInfo().length(), is(2000));
     }
 
     @Test
@@ -386,116 +244,14 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
         assertThat(serviceInfoList, not(hasItem(services.get(0))));
     }
 
-    private MsoResponseWrapper2 hideService(String jobId) {
-        MsoResponseWrapper2 responseWrapper2 = callMsoForResponseWrapper(org.springframework.http.HttpMethod.POST, getHideServiceUri(jobId), "");
-        return responseWrapper2;
-    }
-
-    private List<String> createBulkOfInstancesAndAssert(ImmutableList<BasePreset> presets, boolean isPause, int bulkSize, JobStatus finalState, Map<Keys, String> names){
-        List<String> jobIds = createBulkOfInstances(presets, isPause, bulkSize, names);
-        Assert.assertEquals(jobIds.size(),bulkSize);
-        for(String jobId: jobIds) {
-            ServiceInfo expectedServiceInfo = new ServiceInfo("vid1", JobStatus.IN_PROGRESS, isPause, "someID",
-                    "someName", "myProject", "NFT1", "NFTJSSSS-NFT1", "greatTenant", "greatTenant", "mtn3", null,
-                    "mySubType", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", null, names.get(Keys.SERVICE_NAME),
-                    "300adb1e-9b0c-4d52-bfb5-fa5393c4eabb", "AIM_TRANSPORT_00004", "1.0", jobId, null);
-            JobInfoChecker jobInfoChecker = new JobInfoChecker(
-                    restTemplate, ImmutableSet.of(JobStatus.PENDING, JobStatus.IN_PROGRESS, finalState), jobId, expectedServiceInfo);
-            boolean result = jobInfoChecker.test(null);
-            assertTrue("service info of jobId: " + jobId + " was in status: " + jobInfoChecker.lastStatus, result);
-
-            jobInfoChecker.setExpectedJobStatus(ImmutableSet.of(finalState));
-            if (ImmutableList.of(JobStatus.COMPLETED, JobStatus.PAUSE).contains(finalState)) {
-                expectedServiceInfo.serviceInstanceId = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
-            }
-            result = Wait.waitFor(jobInfoChecker, null, 20, 1);
-            assertTrue("service info of jobId: " + jobId + " was in status: " + jobInfoChecker.lastStatus, result);
-        }
-
-        return jobIds;
-    }
-
-    private List<String> createBulkOfInstances(ImmutableList<BasePreset> presets, boolean isPause, int bulkSize, Map<Keys, String> names){
-
-        SimulatorApi.registerExpectationFromPresets(presets, SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
-
-        String requestBody = TestUtils.convertRequest(objectMapper, CREATE_BULK_OF_MACRO_REQUEST);
-        requestBody = requestBody.replace("\"IS_PAUSE_VALUE\"", String.valueOf(isPause)).replace("\"BULK_SIZE\"", String.valueOf(bulkSize));
-        for (Map.Entry<Keys, String> e : names.entrySet()) {
-            requestBody = requestBody.replace(e.getKey().name(), e.getValue());
-        }
-        MsoResponseWrapper2 responseWrapper2 = callMsoForResponseWrapper(org.springframework.http.HttpMethod.POST, getCreateBulkUri(), requestBody);
-        assertNotNull(responseWrapper2);
-        return (List<String>)responseWrapper2.getEntity();
-    }
-
-    public class JobInfoChecker<Integer> implements Predicate<Integer> {
-
-        private final RestTemplate restTemplate;
-        private Set<JobStatus> expectedJobStatus;
-        private ServiceInfo expectedServiceInfo;
-        private final String jobId;
-        private JobStatus lastStatus;
-
-        public JobInfoChecker(RestTemplate restTemplate, Set<JobStatus> expectedJobStatus, String jobId, ServiceInfo expectedServiceInfo) {
-            this.restTemplate = restTemplate;
-            this.expectedJobStatus = expectedJobStatus;
-            this.jobId = jobId;
-            this.expectedServiceInfo = expectedServiceInfo;
-        }
-
-        public void setExpectedJobStatus(Set<JobStatus> expectedJobStatus) {
-            this.expectedJobStatus = expectedJobStatus;
-        }
-
-        @Override
-        public boolean test(Integer integer) {
-            ResponseEntity<List<ServiceInfo>> serviceListResponse = serviceListCall();
-            assertThat(serviceListResponse.getStatusCode(), CoreMatchers.equalTo(HttpStatus.OK));
-            assertThat(serviceListResponse.getBody(), hasItem(new JobIdAndStatusMatcher(jobId)));
-            ServiceInfo serviceInfoFromDB = serviceListResponse.getBody().stream()
-                    .filter(serviceInfo -> serviceInfo.jobId.equals(jobId))
-                    .findFirst().orElse(null);
-            Assert.assertNotNull(serviceInfoFromDB);
-            Assert.assertEquals(serviceInfoDataReflected(serviceInfoFromDB), serviceInfoDataReflected(expectedServiceInfo));
-            assertTrue("actual service instance doesn't contain template service name:" + expectedServiceInfo.serviceInstanceName,
-                    serviceInfoFromDB.serviceInstanceName.contains(expectedServiceInfo.serviceInstanceName));
-            if (serviceInfoFromDB.jobStatus==JobStatus.IN_PROGRESS || serviceInfoFromDB.jobStatus==JobStatus.COMPLETED) {
-                assertTrue("actual service instance doesn't contain template service name and trailing numbers:" + expectedServiceInfo.serviceInstanceName,
-                        serviceInfoFromDB.serviceInstanceName.contains(expectedServiceInfo.serviceInstanceName+"_00"));
-            }
-
-            if (expectedServiceInfo.serviceInstanceId != null) {
-                assertThat(serviceInfoFromDB.serviceInstanceId, is(expectedServiceInfo.serviceInstanceId));
-            }
-            lastStatus = serviceInfoFromDB.jobStatus;
-            return expectedJobStatus.contains(serviceInfoFromDB.jobStatus);
-        }
-    }
-
-    private ResponseEntity<List<ServiceInfo>> serviceListCall() {
-        return restTemplate.exchange(
-                getServiceInfoUrl(),
-                org.springframework.http.HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<ServiceInfo>>() {});
-    }
-
-    //serialize fields except of fields we cannot know ahead of time
-    private static String serviceInfoDataReflected(ServiceInfo service1) {
-        return new ReflectionToStringBuilder(service1, ToStringStyle.SHORT_PREFIX_STYLE)
-                .setExcludeFieldNames("jobStatus", "templateId", "statusModifiedDate", "createdBulkDate", "serviceInstanceId", "serviceInstanceName")
-                .toString();
-    }
-
     @Test
     public void errorResponseInGetStatusFromMso_getAuditStatusFromMso_errorMsgExistInAdditionalInfo(){
         Map<Keys, String> names = generateNames();
         ImmutableList<BasePreset> presets = new ImmutableList.Builder<BasePreset>()
                 .add(new PresetGetSessionSlotCheckIntervalGet())
                 .add(new PresetAAIGetSubscribersGet())
-                .add(new PresetAAISearchNodeQueryEmptyResult())
-                .add(new PresetMSOAssignServiceInstanceGen2WithNames(names, 1))
+                .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN3_TO_ATT_SABABA)
+                .add(new PresetMSOAssignServiceInstanceGen2WithNames(names, 0))
                 .add(new PresetMSOOrchestrationRequestGetErrorResponse(406))
                 .build();
 
@@ -513,6 +269,99 @@ public class AsyncInstantiationApiTest extends BaseMsoApiTest {
                         status.equals("FAILED") ? "Http Code:406, \"messageId\":\"SVC0002\",\"text\":\"JSON Object Mapping Request\"" : null,
                         false)).collect(toList());
         assertThat(actualMsoAudits, is(expectedMsoAudits));
+
+    }
+
+    @Test
+    public void inProgressJobMoreThan24HoursIsFailedInVidAudit(){
+        addBulkPendingWithCustomList(Collections.singletonList(new PresetMSOOrchestrationRequestGet("IN_PROGRESS",24)));
+
+        AtomicReference<ServiceInfo> inProgressJob = new AtomicReference<>();
+        boolean isJobFound = Wait.waitFor(x->{
+            List<ServiceInfo> serviceInfoList = serviceListCall().getBody();
+            inProgressJob.set(serviceInfoList.stream().
+                    filter(serviceInfo -> serviceInfo.serviceInstanceId.equals(PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID) && serviceInfo.jobStatus.equals(JobStatus.FAILED))
+                    .findFirst()
+                    .orElse(null));
+            return inProgressJob.get() != null;
+        }, null, 15, 1);
+
+        org.junit.Assert.assertTrue("Job with DEFAULT_SERVICE_INSTANCE_ID and status FAILED should present", isJobFound);
+
+        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList(JobStatus.PENDING.name(), JobStatus.IN_PROGRESS.name(),JobStatus.FAILED.name()), JobAuditStatus.SourceStatus.VID);
+        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList("REQUESTED", "IN_PROGRESS"), JobAuditStatus.SourceStatus.MSO);
+    }
+
+    @Test
+    public void inProgressJobLessThan24HoursIsStillInProgressInVidAudit(){
+        addBulkPendingWithCustomList(Collections.singletonList(new PresetMSOOrchestrationRequestGet("IN_PROGRESS",23)));
+
+        AtomicReference<ServiceInfo> inProgressJob = new AtomicReference<>();
+        boolean isJobFound = Wait.waitFor(x->{
+            List<ServiceInfo> serviceInfoList = serviceListCall().getBody();
+            inProgressJob.set(serviceInfoList.stream().filter(serviceInfo -> serviceInfo.serviceInstanceId.equals(PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID))
+                    .findFirst()
+                    .orElse(null));
+            return inProgressJob.get() != null;
+        }, null, 15, 1);
+
+        org.junit.Assert.assertTrue("Job with DEFAULT_SERVICE_INSTANCE_ID should present", isJobFound);
+        org.junit.Assert.assertEquals("Tested job status is not as expected", JobStatus.IN_PROGRESS, inProgressJob.get().getJobStatus());
+
+        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList(JobStatus.PENDING.name(), JobStatus.IN_PROGRESS.name()), JobAuditStatus.SourceStatus.VID);
+        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList("REQUESTED", "IN_PROGRESS"), JobAuditStatus.SourceStatus.MSO);
+    }
+
+    @Test
+    public void verifyAuditStatusOfInstanceGroupId(){
+        SimulatorApi.registerExpectationFromPreset(new PresetMSOOrchestrationRequestsManyInstanceStatusesGet(INSTANCE_GROUP_ID_LABEL, INSTANCE_GROUP_LABEL), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
+        final List<JobAuditStatus> expectedAuditStatusList = getAuditStatusesForInstance("VNFGROUP", "df305d54-75b4-431b-adb2-eb6b9e5460df");
+        verifyInstanceAuditStatuses(Arrays.asList(
+                new JobAuditStatus("groupTestName", "IN_PROGRESS", UUID.fromString("28502bd2-3aff-4a03-9f2b-5a0d1cb1ca24") , INSTANCE_GROUP_LABEL+" instance creation", null, INSTANCE_GROUP_LABEL),
+                new JobAuditStatus("groupTestName", "COMPLETE",UUID.fromString("28502bd2-3aff-4a03-9f2b-5a0d1cb1ca24") , INSTANCE_GROUP_LABEL+" instance creation", null, INSTANCE_GROUP_LABEL),
+                new JobAuditStatus("groupTestName", "IN_PROGRESS", UUID.fromString("f711f0ff-24b6-4d7f-9314-4b4eae15f48c") , INSTANCE_GROUP_LABEL+" instance deletion", null, INSTANCE_GROUP_LABEL),
+                new JobAuditStatus("groupTestName", "COMPLETE",UUID.fromString("f711f0ff-24b6-4d7f-9314-4b4eae15f48c")  , INSTANCE_GROUP_LABEL+" instance deletion", null, INSTANCE_GROUP_LABEL)),
+                expectedAuditStatusList);
+    }
+
+    @Test(expectedExceptions = HttpClientErrorException.class)
+    public void verifyAuditStatusOfInstanceGroupId_notExistingVidType(){
+        try {
+            getAuditStatusesForInstance("KUKU", "df305d54-75b4-431b-adb2-eb6b9e5460df");
+        } catch (HttpClientErrorException e){ //to verify the properiatary statusCode field
+            assertThat("Code is not as expected", HttpStatus.BAD_REQUEST.equals(e.getStatusCode()));
+            throw e;
+        }
+    }
+
+    @Test(expectedExceptions = HttpServerErrorException.class)
+    public void verifyAuditStatusOfInstanceGroupId_notExistingMsoInstanceId(){
+        try {
+            getAuditStatusesForInstance("VNFGROUP", "df305d54-75b4-431b-adb2-eb6b9e5460aa");
+        } catch (HttpServerErrorException e){ //to verify the properiatary statusCode field
+            assertThat("Code is not as expected", HttpStatus.INTERNAL_SERVER_ERROR.equals(e.getStatusCode()));
+            throw e;
+        }
+    }
+
+    @DataProvider
+    public static Object[][] macroAndALaCarteBulk(){
+        return new Object[][]{{CREATE_BULK_OF_MACRO_REQUEST}, {CREATE_BULK_OF_ALACARTE_REQUEST_WITH_VNF}};
+    }
+
+    @Test(dataProvider = "macroAndALaCarteBulk", expectedExceptions = HttpClientErrorException.class)
+    @FeatureTogglingTest(FLAG_1906_INSTANTIATION_API_USER_VALIDATION)
+    public void verifyCreateBulkOfInstancesUserPermissionValidation(String requestDetailsFileName) {
+        login(new UserCredentials("mo57174000", "mo57174000", null, null, null));
+        try {
+            createBulkOfInstances(false, 1, Collections.EMPTY_MAP, requestDetailsFileName);
+        } catch (HttpClientErrorException e){
+            assertEquals("Code is not as expected", HttpStatus.FORBIDDEN.value(), e.getStatusCode().value());
+            throw e;
+        }
+        finally {
+            login();
+        }
 
     }
 

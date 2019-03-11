@@ -1,6 +1,6 @@
 package vid.automation.test.sections;
 
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
 
@@ -13,7 +13,7 @@ public class DeployMacroDialog extends DeployMacroDialogBase {
     public void assertTitle(){
 
         WebElement modalTitle = GeneralUIUtils.getWebElementByTestID(Constants.CREATE_MODAL_TITLE_ID, 30);
-        assertThat(modalTitle.getText().toLowerCase(), containsString(dialogTitle));
+        assertThat(modalTitle.getText(), containsString(dialogTitle));
     }
     @Override
     public void closeDialog(){

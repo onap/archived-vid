@@ -1,17 +1,15 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateServiceInstancePost{
-
-    public PresetMSOCreateServiceInstanceGen2() {
-    }
-
-    public PresetMSOCreateServiceInstanceGen2(String requestId) {
-        super(requestId);
-    }
+public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateInstancePost {
 
     @Override
     public String getReqPath() {
-        return getRootPath() + "/serviceInstantiation/v7/serviceInstances";
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances";
+    }
+
+    @Override
+    public boolean isStrictMatch() {
+        return true;
     }
 
     @Override
@@ -44,7 +42,7 @@ public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateServi
                 "      \"requestorId\": \"us16807000\" " +
                 "    }, " +
                 "    \"requestParameters\": { " +
-                "      \"subscriptionServiceType\": \"VIRTUAL USP\", " +
+                "      \"subscriptionServiceType\": \"TYLER SILVIA\", " +
                 "      \"aLaCarte\": false, " +
                 "      \"userParams\": [{ " +
                 "          \"service\": { " +
@@ -58,16 +56,17 @@ public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateServi
                 "            \"resources\": { " +
                 "              \"vnfs\": [{ " +
                 "                  \"modelInfo\": { " +
-                "                    \"modelCustomizationName\": \"2017-488_ADIOD-vPE 0\", " +
+                "                    \"modelCustomizationName\": \"2017-488_PASQUALE-vPE 0\", " +
                 "                    \"modelCustomizationId\": \"1da7b585-5e61-4993-b95e-8e6606c81e45\", " +
                 "                    \"modelInvariantId\": \"72e465fe-71b1-4e7b-b5ed-9496118ff7a8\", " +
                 "                    \"modelVersionId\": \"69e09f68-8b63-4cc9-b9ff-860960b5db09\", " +
-                "                    \"modelName\": \"2017-488_ADIOD-vPE\", " +
+                "                    \"modelName\": \"2017-488_PASQUALE-vPE\", " +
                 "                    \"modelType\": \"vnf\", " +
                 "                    \"modelVersion\": \"5.0\" " +
                 "                  }, " +
                 "                  \"cloudConfiguration\": { " +
-                "                    \"lcpCloudRegionId\": \"mtn6\", " +
+                "                    \"lcpCloudRegionId\": \"hvf6\", " +
+                                     addCloudOwnerIfNeeded() +
                 "                    \"tenantId\": \"bae71557c5bb4d5aac6743a4e5f1d054\" " +
                 "                  }, " +
                 "                  \"platform\": { " +
@@ -78,19 +77,20 @@ public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateServi
                 "                  }, " +
                 "                  \"productFamilyId\": \"e433710f-9217-458d-a79d-1c7aff376d89\", " +
                 "                  \"instanceParams\": [], " +
-                "                  \"vfModules\": [{ " +
+                "                  \"vfModules\": [" +
+                "                    { " +
                 "                      \"modelInfo\": { " +
                 "                        \"modelInvariantId\": \"7253ff5c-97f0-4b8b-937c-77aeb4d79aa1\", " +
                 "                        \"modelVersionId\": \"25284168-24bb-4698-8cb4-3f509146eca5\", " +
-                "                        \"modelName\": \"2017488AdiodVpe..ADIOD_vRE_BV..module-1\", " +
+                "                        \"modelName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelType\": \"vfModule\", " +
                 "                        \"modelVersion\": \"6\" " +
                 "                      }, " +
-//                "                      \"instanceName\": \"VFinstancename_00" + suffix + "\", " +
+//                                       \"instanceName\": \"VFinstancename_00" + suffix + "\", " +
                 "                      \"instanceParams\": [] " +
-                "                    } " +
+                "                    }" +
                 "                  ] " +
-//                "                  \"instanceName\": \"2017488_ADIODvPEVNFinstancename_00" + suffix + "\" " +
+//                "                  \"instanceName\": \"2017488_PASQUALEvPEVNFinstancename_00" + suffix + "\" " +
                 "                } " +
                 "              ] " +
                 "            } " +

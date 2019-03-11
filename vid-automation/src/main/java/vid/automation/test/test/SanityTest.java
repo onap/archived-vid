@@ -1,8 +1,10 @@
 package vid.automation.test.test;
 
+import java.io.IOException;
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,12 +16,10 @@ import vid.automation.test.sections.SearchExistingPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.SimulatorApi;
 
-import java.io.IOException;
-
 public class SanityTest extends VidBaseTestCase {
 
-    static final String SUBSCRIBER = "Mobility";
-    static final String SERVICE_NAME = "abc_mdns_2017_1011_IST_Service_CSI";
+    static final String SUBSCRIBER = "Emanuel";
+    static final String SERVICE_NAME = "abc_CHARLOTTE_2017_1011_IST_Service_CSI";
     static final String SERVICE_ID = "ec884145-dbe8-4228-8165-f0c4d7123f8b";
 
     public SanityTest() throws IOException {
@@ -29,19 +29,19 @@ public class SanityTest extends VidBaseTestCase {
     @BeforeClass
     protected void registerToSimulator() {
         SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET,
-                "sanity/get_aai_get_subscribers.json"
-                , "sanity/aai_get_services.json"
+                  "sanity/aai_get_services.json"
                 , "sanity/get_aai_sub_details.json"
                 , "sanity/get_aai_search_named_query.json"
                 , "sanity/get_aai_search_instance_by_id.json"
                 , "sanity/get_sdc_catalog_services_a1531622.json"
                 , "sanity/get_aai_search_instance_by_name.json"
         );
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     @Override
     protected UserCredentials getUserCredentials() {
-        String userName = Constants.Users.MOBILITY_VMMSC;
+        String userName = Constants.Users.EMANUEL_vWINIFRED;
         User user = usersService.getUser(userName);
         return new UserCredentials(user.credentials.userId, user.credentials.password, userName, "", "");
     }
@@ -90,13 +90,7 @@ public class SanityTest extends VidBaseTestCase {
     }
 
     private String confirmFilterById() {
-        WebElement filter = GeneralUIUtils.getWebElementByTestID(Constants.FILTER_SUBSCRIBER_DETAILS_ID, 30);
-        filter.sendKeys(SERVICE_ID);
-
-        WebElement firstElement = GeneralUIUtils.getWebElementByTestID(Constants.INSTANCE_ID_FOR_NAME_TEST_ID_PREFIX + SERVICE_NAME, 30);
-        String filteredId = firstElement.getText();
-        Assert.assertTrue(filteredId.equals(SERVICE_ID));
-        return filteredId;
+        return confirmFilterById(SERVICE_NAME, SERVICE_ID);
     }
 
     private void confirmResultBySubscriber() {

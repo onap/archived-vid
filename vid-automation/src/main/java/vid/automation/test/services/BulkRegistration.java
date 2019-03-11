@@ -1,14 +1,28 @@
 package vid.automation.test.services;
 
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
+import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIFilterServiceInstanceById;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetHomingForVfModule;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByOwningEntity;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByProject;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleInstancePost;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfiguration;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModule;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndCloudDelete;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteInstanceOrchestrationRequestGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteNetwork;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteService;
@@ -16,11 +30,13 @@ import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVfModule;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVnf;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVolumeGroup;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSOActOnConfiguration;
+import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSOCreateConfiguration;
+import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSODeleteConfiguration;
+import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMsoEnableDisablePort;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import vid.automation.test.Constants;
-
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 public class BulkRegistration {
 
@@ -28,21 +44,43 @@ public class BulkRegistration {
         searchExistingServiceInstance("Active");
     }
 
-    public static void searchExistingServiceInstance(String orchStatus) {
+    public static void searchExistingServiceInstance(String orchStatus)  {
+        searchExistingServiceInstance(orchStatus, "pending-delete");
+    }
+
+    public static void searchExistingServiceInstance(String orchStatus, String vfModuleOrchStatus) {
         genericSearchExistingServiceInstance();
         SimulatorApi.registerExpectation(
                 new String [] {
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE,
+                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS,
                         Constants.RegisterToSimulator.SearchForServiceInstance.FILTER_SERVICE_INSTANCE_BY_ID,
                         Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT,
                         Constants.RegisterToSimulator.SearchForServiceInstance.GET_SDC_CATALOG_SERVICE_VID_TEST_444,
                         Constants.RegisterToSimulator.CreateNewServiceInstance.deploy.GET_AIC_ZONES
-                }, ImmutableMap.<String, Object>of("<ORCH_STATUS>", orchStatus), SimulatorApi.RegistrationStrategy.APPEND);
+                }, ImmutableMap.<String, Object>of("<ORCH_STATUS>", orchStatus, "<VF_MODULE_ORCH_STATUS>", vfModuleOrchStatus), SimulatorApi.RegistrationStrategy.APPEND);
+    }
+
+    public static void searchExistingServiceInstanceWithFabric(String orchStatus) {
+        genericSearchExistingServiceInstance();
+        SimulatorApi.registerExpectationFromPresets(
+                ImmutableList.of(
+                        new PresetAAIFilterServiceInstanceById("e433710f-9217-458d-a79d-1c7aff376d89",
+                                 "TYLER SILVIA",
+                                "c187e9fe-40c3-4862-b73e-84ff056205f61234"),
+                        new PresetAAIGetSubDetailsGet("e433710f-9217-458d-a79d-1c7aff376d89", orchStatus),
+                        new PresetAAIGetSubDetailsWithoutInstancesGet("e433710f-9217-458d-a79d-1c7aff376d89", true),
+                        new PresetAAIPostNamedQueryForViewEdit("c187e9fe-40c3-4862-b73e-84ff056205f61234", false, true),
+                        new PresetSDCGetServiceMetadataGet(serviceFabricSriovService),
+                        new PresetSDCGetServiceToscaModelGet(serviceFabricSriovService),
+                        new PresetAAIGetNetworkZones(),
+                        new PresetMSOActivateFabricConfiguration("c187e9fe-40c3-4862-b73e-84ff056205f61234"),
+                        new PresetMSOOrchestrationRequestGet("COMPLETE", "318cc766-b673-4a50-b9c5-471f68914584", "Success")),
+                SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     public static void searchExistingServiceInstanceByOEAndProject(){
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
-                new PresetAAIGetModelsByOwningEntity("Wireline"),
+                new PresetAAIGetModelsByOwningEntity("Melissa"),
                 new PresetAAIGetModelsByProject("x1"),
                 new PresetAAIGetModelsByProject("yyy1")
                 ), APPEND);
@@ -52,7 +90,7 @@ public class BulkRegistration {
         genericSearchExistingServiceInstance();
         SimulatorApi.registerExpectation(
                 new String [] {
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE_CR,
+                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS_CR,
                         Constants.RegisterToSimulator.SearchForServiceInstance.FILTER_CR_SERVICE_INSTANCE_BY_ID,
                         Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_CR_VIEW_EDIT,
                         Constants.RegisterToSimulator.SearchForServiceInstance.GET_SDC_CATALOG_SERVICE_VID_TEST_CR,
@@ -65,7 +103,7 @@ public class BulkRegistration {
         genericSearchExistingServiceInstance();
         SimulatorApi.registerExpectation(
                 new String [] {
-                        Constants.RegisterToSimulator.AddSubinterface.GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE_VFC_IG,
+                        Constants.RegisterToSimulator.AddSubinterface.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS_VFC_IG,
                         Constants.RegisterToSimulator.AddSubinterface.FILTER_VFC_IG_SERVICE_INSTANCE_BY_ID,
                         Constants.RegisterToSimulator.AddSubinterface.NAMED_QUERY_VFC_IG_VIEW_EDIT,
                         Constants.RegisterToSimulator.AddSubinterface.GET_SDC_CATALOG_SERVICE_VID_TEST_444,
@@ -77,17 +115,16 @@ public class BulkRegistration {
         SimulatorApi.registerExpectation(
                 new String [] {
                         Constants.RegisterToSimulator.genericRequest.ECOMP_PORTAL_GET_SESSION_SLOT_CHECK_INTERVAL,
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_FULL_SUBSCRIBERS,
                         Constants.RegisterToSimulator.SearchForServiceInstance.GET_SERVICES
-
                 }, ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(),SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     public static void searchExistingServiceInstance2(String orchStatus) {
         genericSearchExistingServiceInstance();
         SimulatorApi.registerExpectation(
                 new String [] {
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_FIREWALL_MISC,
+                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS,
                         Constants.RegisterToSimulator.SearchForServiceInstance.FILTER_SERVICE_INSTANCE_BY_ID_2,
                         Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT_2
                 }, ImmutableMap.<String, Object>of("<ORCH_STATUS>", orchStatus), SimulatorApi.RegistrationStrategy.APPEND);
@@ -105,9 +142,10 @@ public class BulkRegistration {
 
         SimulatorApi.registerExpectationFromPreset(new PresetAAICloudRegionAndSourceFromConfigurationPut(configurationId, desiredCloudRegionId), APPEND);
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetPortMirroringSourcePorts(configurationId, portInterfaceId, "i'm a port", isMirrored), APPEND);
+        SimulatorApi.registerExpectationFromPreset(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC, APPEND);
         SimulatorApi.registerExpectation(
                 new String [] {
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE,
+                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS,
                         Constants.RegisterToSimulator.SearchForServiceInstance.FILTER_SERVICE_INSTANCE_BY_ID_PM,
                         Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT_PM,
                         Constants.RegisterToSimulator.SearchForServiceInstance.GET_SDC_CATALOG_SERVICE_PM,
@@ -170,33 +208,24 @@ public class BulkRegistration {
     }
 
 
-    public static void activateDeactivateConfiguration(String orchStatus, String action, String desiredCloudRegionId) {
-        SimulatorApi.registerExpectation(
-                new String [] {
-                        Constants.RegisterToSimulator.createConfiguration.MSO_ACTIVATE_CONFIGURATION,
-                }, ImmutableMap.<String, Object>of("<ACTION>",action,"mdt1", desiredCloudRegionId), SimulatorApi.RegistrationStrategy.APPEND);
+    public static void activateDeactivateConfiguration(String action) {
+        appendWithGetStatus(new PresetMSOActOnConfiguration(action), PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC);
     }
 
-    public static void deleteConfiguration(String desiredCloudRegionId) {
-        SimulatorApi.registerExpectation(
-                new String [] {
-                        Constants.RegisterToSimulator.createConfiguration.MSO_DELETE_CONFIGURATION,
-                        Constants.RegisterToSimulator.createConfiguration.MSO_CREATE_CONFIGURATION_ORCH_REQ
-                }, ImmutableMap.of("mdt1", desiredCloudRegionId), SimulatorApi.RegistrationStrategy.APPEND);
+    public static void deleteConfiguration() {
+        appendWithGetStatus(new PresetMSODeleteConfiguration(), PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC);
     }
 
-    public static void enableDisablePort(String action, String desiredCloudRegionId){
-        SimulatorApi.registerExpectation(
-                new String [] {
-                        Constants.RegisterToSimulator.createConfiguration.MSO_ACTIVATE_CONFIGURATION,
-                        Constants.RegisterToSimulator.createConfiguration.MSO_ENABLE_DISABLE_PORT,
-                }, ImmutableMap.<String, Object>of("<ACTION>", action,"mdt1", desiredCloudRegionId), SimulatorApi.RegistrationStrategy.APPEND);
+    public static void enableDisablePort(String action){
+        appendWithGetStatus(new PresetMsoEnableDisablePort(
+                "c187e9fe-40c3-4862-b73e-84ff056205f6",
+                "9533-config-LB1113", action), PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC);
     }
 
     public static void addNetwork() {
         SimulatorApi.registerExpectation(
                 new String [] {
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_Mobility,
+                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_Emanuel,
                         Constants.RegisterToSimulator.addNetwork.AAI_GET_TENANTS,
                         Constants.RegisterToSimulator.addNetwork.AAI_NAMED_QUERY_FOR_VIEW_EDIT,
                         Constants.RegisterToSimulator.addNetwork.FILTER_SERVICE_INSTANCE_BY_ID,
@@ -205,13 +234,7 @@ public class BulkRegistration {
 
                 }, ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
     }
-    public static void msoAddNetwork(String instanceName){
-        SimulatorApi.registerExpectation(
-                new String [] {
-                    Constants.RegisterToSimulator.addNetwork.MSO_ADD_NETWORK_ORCH_REQ,
-                    Constants.RegisterToSimulator.addNetwork.MSO_ADD_NETWORK
-                }, ImmutableMap.<String, Object>of("<SERVICE_INSTANCE_NAME>",instanceName), SimulatorApi.RegistrationStrategy.APPEND);
-    }
+
     public static void msoAddNetworkError(String instanceName){
         SimulatorApi.registerExpectation(
                 new String [] {
@@ -227,13 +250,15 @@ public class BulkRegistration {
     }
 
 
-    public static void createPolicyConfiguration(boolean isSuccessFlow, String desiredCloudRegionId) {
+    public static void createPolicyConfiguration(boolean isSuccessFlow, String serviceType) {
         createConfiguration();
-        SimulatorApi.registerExpectation(
-                new String []{
-                        Constants.RegisterToSimulator.createConfiguration.GET_PNF_INSTANCES,
-                        Constants.RegisterToSimulator.createConfiguration.GET_MODEL_BY_ONE_INVARIANT_ID
-                } , ImmutableMap.<String, Object>of("mdt1", desiredCloudRegionId), SimulatorApi.RegistrationStrategy.APPEND);
+
+        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
+                Constants.RegisterToSimulator.createConfiguration.GET_MODEL_BY_ONE_INVARIANT_ID);
+
+        SimulatorApi.registerExpectation(Constants.RegisterToSimulator.createConfiguration.GET_PNF_INSTANCES,
+                ImmutableMap.of("<SERVICE-TYPE>", serviceType), SimulatorApi.RegistrationStrategy.APPEND);
+
         if (isSuccessFlow) {
             msoCreatePProbeConfiguration();
         } else {
@@ -241,38 +266,33 @@ public class BulkRegistration {
         }
     }
 
-    public static void deletePolicyConfiguration(boolean isSuccessFlow, String desiredCloudRegionId) {
+    public static void deletePolicyConfiguration(boolean isSuccessFlow) {
         createConfiguration();
-        SimulatorApi.registerExpectation(
-                new String []{
-                        Constants.RegisterToSimulator.createConfiguration.GET_PNF_INSTANCES,
-                        Constants.RegisterToSimulator.createConfiguration.GET_MODEL_BY_ONE_INVARIANT_ID,
-                        Constants.RegisterToSimulator.createConfiguration.MSO_DELETE_CONFIGURATION,
-
-                } , ImmutableMap.<String, Object>of("mdt1", desiredCloudRegionId), SimulatorApi.RegistrationStrategy.APPEND);
-        if (isSuccessFlow) {
-            msoCreatePProbeConfiguration();
-        } else {
-            msoCreatePProbeConfigurationError();
-        }
+        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
+                Constants.RegisterToSimulator.createConfiguration.GET_MODEL_BY_ONE_INVARIANT_ID);
+        appendWithGetStatus(new PresetMSODeleteConfiguration(), PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC);
     }
 
 
 
 
     private static void msoCreatePProbeConfiguration() {
-        SimulatorApi.registerExpectation(
-                new String []{
-                        Constants.RegisterToSimulator.createConfiguration.MSO_CREATE_CONFIGURATION,
-                        Constants.RegisterToSimulator.createConfiguration.MSO_CREATE_CONFIGURATION_ORCH_REQ
-                } , ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
+        appendWithGetStatus(new PresetMSOCreateConfiguration("c187e9fe-40c3-4862-b73e-84ff056205f6"), PresetAAIGetCloudOwnersByCloudRegionId.PRESET_AAIAIC25_TO_ATT_AIC);
+    }
+
+    private static void appendWithGetStatus(PresetMSOBaseCreateInstancePost createInstancePreset, PresetAAIGetCloudOwnersByCloudRegionId cloudOwnerPreset) {
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                createInstancePreset,
+                cloudOwnerPreset,
+                new PresetMSOOrchestrationRequestGet(PresetMSOOrchestrationRequestGet.COMPLETE, createInstancePreset.getRequestId(), "Success")),
+                SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     private static void msoCreatePProbeConfigurationError() {
-        SimulatorApi.registerExpectation(
-                new String []{
-                        Constants.RegisterToSimulator.createConfiguration.MSO_CREATE_CONFIGURATION_ERROR
-                } , ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                new PresetMSOCreateConfiguration("c187e9fe-40c3-4862-b73e-84ff056205f6", 500, null),
+                PresetAAIGetCloudOwnersByCloudRegionId.PRESET_AAIAIC25_TO_ATT_AIC),
+                SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     public static void createConfiguration() {
@@ -295,31 +315,28 @@ public class BulkRegistration {
     }
 
     public static void createNewServiceInstance(String subscriber) {
-        SimulatorApi.registerExpectation(
-                new String []{
-                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_FULL_SUBSCRIBES,
-                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_SERVICES
-                } , ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(),SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectation(Constants.RegisterToSimulator.CreateNewServiceInstance.GET_SERVICES, SimulatorApi.RegistrationStrategy.APPEND);
 
         switch (subscriber) {
-            case "USP VOICE": createNewServiceInstanceUspVoice(); break;
-            case "MSO_1610_ST": createNewServiceInstanceMso1610ST(); break;
+            case "SILVIA ROBBINS": createNewServiceInstanceUspVoice(); break;
+            case "CAR_2020_ER": createNewServiceInstanceMso1610ST(); break;
         }
     }
 
     private static void createNewServiceInstanceMso1610ST() {
         SimulatorApi.registerExpectation(
                 new String []{
-                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_MSO_1610_ST,
-                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_MODELS_BY_SERVICE_TYPE_MSO_1610_ST
+                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_CAR_2020_ER,
+                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_MODELS_BY_SERVICE_TYPE_CAR_2020_ER
                 } , ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     private static void createNewServiceInstanceUspVoice() {
         SimulatorApi.registerExpectation(
                 new String []{
-                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE,
-                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_MODELS_BY_SERVICE_TYPE_USP_VOICE
+                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS,
+                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_MODELS_BY_SERVICE_TYPE_SILVIA_ROBBINS
                 } , ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
     }
 
@@ -336,26 +353,34 @@ public class BulkRegistration {
     public static void searchExistingServiceInstanceWithoutModelVerId() {
         SimulatorApi.registerExpectation(
                 new String []{
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_FIREWALL_MISC,
+                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS,
                         Constants.RegisterToSimulator.SearchForServiceInstance.FILTER_SERVICE_INSTANCE_BY_ID_NO_MODEL_VER_ID,
                        // Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT_NO_MODEL_VER_ID
                 } ,  ImmutableMap.<String, Object>of(), SimulatorApi.RegistrationStrategy.APPEND);
     }
 
-    public static void deleteExistingInstance(String orchStatus, String type) {
+    public static void deleteExistingInstance(String orchStatus, String type)  {
+        deleteExistingInstance(orchStatus, type, "pending-delete");
+    }
+
+    public static void deleteExistingInstance(String orchStatus, String type, String vfModuleOrchStatus) {
         genericSearchExistingServiceInstance();
         SimulatorApi.registerExpectation(
                 new String [] {
-                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_USP_VOICE,
+                        Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS,
                         Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT,
                         Constants.RegisterToSimulator.CreateNewServiceInstance.deploy.GET_AIC_ZONES
-                }, ImmutableMap.<String, Object>of("<ORCH_STATUS>", orchStatus), SimulatorApi.RegistrationStrategy.APPEND);
+                }, ImmutableMap.<String, Object>of("<ORCH_STATUS>", orchStatus, "<VF_MODULE_ORCH_STATUS>", vfModuleOrchStatus), SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.registerExpectationFromPresets(
                 ImmutableList.of(
                         new PresetAAIGetTenants(),
                         new PresetMSODeleteInstanceOrchestrationRequestGet(type),
                         new PresetSDCGetServiceMetadataGet("7a6ee536-f052-46fa-aa7e-2fca9d674c44", "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0", "service-Complexservice-aLaCarte-csar.zip"),
-                        new PresetSDCGetServiceToscaModelGet("7a6ee536-f052-46fa-aa7e-2fca9d674c44", "service-Complexservice-aLaCarte-csar.zip")),
+                        new PresetSDCGetServiceToscaModelGet("7a6ee536-f052-46fa-aa7e-2fca9d674c44", "service-Complexservice-aLaCarte-csar.zip"),
+                        new PresetMSODeactivateAndCloudDelete("3f93c7cb-2fd0-4557-9514-e189b7b04f9d", "c015cc0f-0f37-4488-aabf-53795fd93cd3",
+                                "a231a99c-7e75-4d6d-a0fb-5c7d26f30f77", "c0011670-0e1a-4b74-945d-8bf5aede1d9c", "irma-aic"),
+                        PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC
+                ),
                 SimulatorApi.RegistrationStrategy.APPEND);
     }
 
@@ -383,7 +408,23 @@ public class BulkRegistration {
         deleteExistingInstance(orchStatus, "Service");
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
                 new PresetMSODeleteService(),
-                new PresetAAIPostNamedQueryForViewEdit("3f93c7cb-2fd0-4557-9514-e189b7b04f9d", false)), SimulatorApi.RegistrationStrategy.APPEND);
+                new PresetAAIPostNamedQueryForViewEdit("3f93c7cb-2fd0-4557-9514-e189b7b04f9d", false, false)), SimulatorApi.RegistrationStrategy.APPEND);
+    }
+
+    public static void resumeWithHomingDataVfModule(String serviceOrchStatus, String vfModuleOrchStatus, String vfModuleName)  {
+        SimulatorApi.registerExpectation(Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT,
+                ImmutableMap.<String, Object>of("<ORCH_STATUS>", serviceOrchStatus, "<VF_MODULE_ORCH_STATUS>", vfModuleOrchStatus),
+                SimulatorApi.RegistrationStrategy.APPEND);
+
+        SimulatorApi.registerExpectationFromPresets(
+                ImmutableList.of (
+                        PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
+                        new PresetAAIGetHomingForVfModule("c015cc0f-0f37-4488-aabf-53795fd93cd3", "a231a99c-7e75-4d6d-a0fb-5c7d26f30f77", "092eb9e8e4b7412e8787dd091bc58e86", "mdt1"),
+                        new PresetMSOCreateVfModule("3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
+                                "c015cc0f-0f37-4488-aabf-53795fd93cd3", ATT_NC, vfModuleName,
+                                "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0", "ComplexService"),
+                        new PresetMSOOrchestrationRequestGet("COMPLETE","c0011670-0e1a-4b74-945d-8bf5aede1d9c",Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT)),
+                SimulatorApi.RegistrationStrategy.APPEND);
     }
 
     public static void resumeVfModule(String serviceInstanceId, String vnfInstanceId ){
@@ -391,7 +432,8 @@ public class BulkRegistration {
         SimulatorApi.registerExpectationFromPresets(
                 ImmutableList.of (
                         new PresetAAIGetTenants(),
-                        new PresetMSOCreateVfModuleInstancePost(serviceInstanceId,vnfInstanceId),
+                        PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
+                        new PresetMSOCreateVfModule(serviceInstanceId,vnfInstanceId, ATT_NC),
                         new PresetMSOOrchestrationRequestGet("COMPLETE","c0011670-0e1a-4b74-945d-8bf5aede1d9c",Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT)),
                 SimulatorApi.RegistrationStrategy.APPEND);
 

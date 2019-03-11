@@ -1,0 +1,31 @@
+{
+  "serviceNetworks": [
+    {
+      "networkId": "7989a6d2-ba10-4a5d-8f15-4520bc833090",
+      "name": "DDDEEEFFF",
+      "nodeType": "Provider Network",
+      "nodeStatus": "Failed",
+      "vlans": [
+        {
+          "vlanIdOuter": "34612"
+        },
+        {
+          "vlanIdOuter": "8568012"
+        }
+      ]
+    },
+    {
+      "networkId": "e8e2332e-1f84-4237-bc97-3b5b842f52e4",
+      "name": "GGGHHHIII",
+      "nodeType": "Network",
+      "nodeStatus": "Assigned",
+      "vlans": [
+        {
+          "vlanIdOuter": "4"
+        }
+      ]
+    }
+  ],
+  "vnfNetworks": [
+  ]
+}

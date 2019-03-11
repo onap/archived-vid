@@ -1,7 +1,7 @@
 package vid.automation.test.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.openecomp.sdc.ci.tests.utilities.FileHandling;
+import org.onap.sdc.ci.tests.utilities.FileHandling;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.ServiceModel;
 import vid.automation.test.model.ServiceModelsList;

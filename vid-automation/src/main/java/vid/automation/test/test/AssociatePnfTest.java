@@ -1,12 +1,14 @@
 package vid.automation.test.test;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Wait;
 import vid.automation.test.sections.PnfSearchAssociationPage;
+import vid.automation.test.sections.SideMenu;
 import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
@@ -20,6 +22,11 @@ public class AssociatePnfTest extends VidBaseTestCase {
     private String serviceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
     private String pnfInstanceName = "MX_960-F722";
     private String pnfModelName = "pnf 0";
+
+    @BeforeMethod
+    public void navigateToWelcomePage() {
+        SideMenu.navigateToWelcomePage();
+    }
 
     @Test
     public void testAssociatePnf() throws Exception {
@@ -132,7 +139,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         //ubscriber NameModel Invariant UUID
         elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.SUBSCRIBER_NAME_KEY;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
-        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"USP VOICE");
+        Assert.assertEquals(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE,elementTestId),infoItemText,"SILVIA ROBBINS");
         //Model Version
         elementTestId = Constants.ServiceModelInfo.INFO_TEST_ID_PREFIX + Constants.ServiceModelInfo.MODEL_VERSION;
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
