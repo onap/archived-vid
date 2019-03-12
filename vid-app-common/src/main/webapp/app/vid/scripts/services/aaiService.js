@@ -770,6 +770,12 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
 
             return deferred.promise;
 
+        },
+
+        removeCloudOwnerFromCloudRegion: function(cloudOwner) {
+            // Handle the case where cloud owner is formatted
+            // like "{cloud-owner}-{cloud-region}"
+            return cloudOwner.trim().replace(/^[^-]*-/, '');
         }
     };
 };

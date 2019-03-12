@@ -64,7 +64,7 @@
 
                     <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionId}}"
                             data-ng-if="option.isPermitted && isFeatureFlagCloudOwner">
-                        {{option.cloudRegionId}} ({{option.cloudOwner.trim().toUpperCase().replace("ATT-", "")}})
+                        {{option.cloudRegionId}} ({{removeCloudOwnerFromCloudRegion(option.cloudOwner).toUpperCase()}})
                     </option>
                 </select>
             </div>

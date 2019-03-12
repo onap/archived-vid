@@ -424,7 +424,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 				}
 
                 var optionName = featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST) && cloudRegionTenantList[i].cloudOwner ?
-                    cloudRegionTenantList[i].cloudRegionId + " (" + cloudRegionTenantList[i].cloudOwner.trim().toLowerCase().replace(/^att-/, "").toUpperCase() + ")" :
+                    cloudRegionTenantList[i].cloudRegionId + " (" + AaiService.removeCloudOwnerFromCloudRegion(cloudRegionTenantList[i].cloudOwner).toUpperCase() + ")" :
                     cloudRegionTenantList[i].cloudRegionId;
 
 				parameter.optionList.push({

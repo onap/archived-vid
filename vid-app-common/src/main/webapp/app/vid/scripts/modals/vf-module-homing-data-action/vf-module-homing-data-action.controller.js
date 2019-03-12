@@ -127,6 +127,10 @@ var vfModuleActionModalController = function(COMPONENT, $scope, $uibModal, Creat
         $uibModalInstance.close({requestParams : requestParams, msoType: COMPONENT.MSO_DEACTIVATE_AND_CLOUD_DELETE});
     };
 
+    $scope.removeCloudOwnerFromCloudRegion = function(cloudOwner) {
+        return AaiService.removeCloudOwnerFromCloudRegion(cloudOwner)
+    };
+
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
     };
