@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0852d37b_f78899d7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/CsvServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-12T05:48:23Z",
+      "side": 1,
+      "message": "It\u0027s a Sonar false positive. LastItem is always not null, because keyExistsOrFirstElement already checks it.\nAnyhow, it\u0027s fair change; please change formatting to have brackets, and explanation about the unlikeliness of the `else` clause.",
+      "range": {
+        "startLine": 200,
+        "startChar": 23,
+        "endLine": 200,
+        "endChar": 39
+      },
+      "revId": "3fd2b09f923deecff82de4458fadf5f1df323832",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
