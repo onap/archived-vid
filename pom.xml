@@ -7,6 +7,13 @@
     <packaging>pom</packaging>
     <name>vid</name>
 
+    <parent>
+        <groupId>org.onap.oparent</groupId>
+        <artifactId>oparent</artifactId>
+        <version>1.2.3</version>
+        <relativePath/>
+    </parent>
+
     <profiles>
         <!-- DO NOT CHANGE THE *ORDER* IN WHICH THESE PROFILES ARE DEFINED! -->
 
@@ -222,13 +229,7 @@
         <!--Overide versions for latest security fixes-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
@@ -243,7 +244,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.3</version>
+            <version>4.5.7</version>
         </dependency>
     </dependencies>
 </project>

@@ -13,12 +13,19 @@
     <name>ECOMP SDK Webapp for OpenSource</name>
     <description>ECOMP SDK Web Application for public release</description>
 
+    <parent>
+        <groupId>org.onap.oparent</groupId>
+        <artifactId>oparent</artifactId>
+        <version>1.2.3</version>
+        <relativePath/>
+    </parent>
+
     <properties>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <epsdk.version>2.4.0</epsdk.version>
-        <jackson.version>2.9.7</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <springframework.version>4.2.9.RELEASE</springframework.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
         <!-- Skip assembling the zip; assemble via mvn -Dskipassembly=false .. -->

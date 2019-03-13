@@ -14,6 +14,13 @@
     <name>VID Common</name>
     <description>VID Common code for opensource version</description>
 
+    <parent>
+        <groupId>org.onap.oparent</groupId>
+        <artifactId>oparent</artifactId>
+        <version>1.2.3</version>
+        <relativePath/>
+    </parent>
+
     <properties>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,7 +28,7 @@
         <epsdk.version>2.4.0</epsdk.version>
         <springframework.version>4.2.9.RELEASE</springframework.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
-        <jackson.version>2.9.7</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <jersey.version>2.27</jersey.version>
         <surefire.version>2.22.1</surefire.version>
         <sonar.coverage.exclusions>**/webapp/**/*,**/*.js</sonar.coverage.exclusions>
@@ -448,7 +455,6 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -458,7 +464,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.3.6</version>
+            <version>4.5.7</version>
         </dependency>
         <dependency>
             <groupId>com.xebialabs.restito</groupId>
@@ -522,13 +528,7 @@
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
         </dependency>
 
         <dependency>
@@ -682,7 +682,6 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -799,7 +798,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>23.0</version>
         </dependency>
     </dependencies>
 </project>
