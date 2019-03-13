@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "da25b685_4ea955da",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/InstanceIdsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2019-03-13T09:36:26Z",
+      "side": 1,
+      "message": "I could not find EqualsTester(), so I will use hasValidBeanEquals here and in all tests with similar equal method.",
+      "parentUuid": "a5f157f7_b45a7b90",
+      "range": {
+        "startLine": 80,
+        "startChar": 16,
+        "endLine": 80,
+        "endChar": 52
+      },
+      "revId": "ce3845b036a20e3e799e47d821086a61cfe27288",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1e9775b5_fa2c9c76",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/RequestDetailsTest.java",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2019-03-12T11:45:54Z",
       "side": 1,
       "message": "This method is extensively tested in org.onap.vid.mso.RequestDetailsTest",
+      "range": {
+        "startLine": 120,
+        "startChar": 35,
+        "endLine": 120,
+        "endChar": 78
+      },
+      "revId": "ce3845b036a20e3e799e47d821086a61cfe27288",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b25c30d8_58a91f8a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/RequestDetailsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2019-03-13T09:36:26Z",
+      "side": 1,
+      "message": "I did not notice org.onap.vid.mso.RequestDetailsTest, because class RequestDetails is located in org.onap.vid.mso.rest package. Now I replaced methods that was testing extractValueByPathUsingAdditionalProperties in this file, with methods from org.onap.vid.mso.RequestDetailsTest and I deleted file RequestDetailsTest from org.onap.vid.mso",
+      "parentUuid": "1e9775b5_fa2c9c76",
       "range": {
         "startLine": 120,
         "startChar": 35,
