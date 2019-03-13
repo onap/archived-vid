@@ -19,6 +19,7 @@
  */
 package org.onap.vid.aai;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -58,6 +59,20 @@ public class PombaClientImplTest {
 
         //Then
         then(pombaRestInterface).should().RestPost("VidAaiController", expectedUrl, expectedPayload);
+    }
+
+    @Test
+    public void should_handleException_withoutRethrowing() throws IOException {
+        //Given
+        String expectedUrl = "http://localhost/dummyUrl";
+        String expectedPayload = readExpectedPombaJsonRequest();
+        given(systemPropertiesWrapper.getProperty("pomba.server.url")).willReturn(expectedUrl);
+        given(pombaRestInterface.RestPost("VidAaiController", expectedUrl, expectedPayload))
+            .willThrow(new NullPointerException());
+        PombaRequest pombaRequest = createPombaRequest();
+
+        //When //Then
+        assertThatCode(() -> pombaClient.verify(pombaRequest)).doesNotThrowAnyException();
     }
 
     private String readExpectedPombaJsonRequest() throws IOException {
