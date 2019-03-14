@@ -26,6 +26,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.client.SyncRestClient;
@@ -61,7 +62,8 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
 
-    public MsoRestClientNew(SyncRestClient client, String baseUrl) {
+    public MsoRestClientNew(SyncRestClient client, String baseUrl, HttpsAuthClient authClient) {
+        super(authClient);
         this.client = client;
         this.baseUrl = baseUrl;
         this.commonHeaders = initCommonHeaders();

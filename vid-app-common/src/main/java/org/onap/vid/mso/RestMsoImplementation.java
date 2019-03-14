@@ -51,7 +51,7 @@ import static org.onap.vid.utils.Logging.*;
 /**
  * Created by pickjonathan on 26/06/2017.
  */
-public abstract class RestMsoImplementation implements RestInterface {
+public class RestMsoImplementation implements RestInterface {
 
     /**
      * The logger.
@@ -62,7 +62,7 @@ public abstract class RestMsoImplementation implements RestInterface {
     /** The client. */
     private Client client = null;
 
-    @Autowired
+
     protected HttpsAuthClient httpsAuthClient;
 
     private static final String START_LOG = " start";
@@ -78,6 +78,11 @@ public abstract class RestMsoImplementation implements RestInterface {
     /**
      * Instantiates a new mso rest interface.
      */
+
+    @Autowired
+    protected RestMsoImplementation(HttpsAuthClient httpsAuthClient){
+        this.httpsAuthClient=httpsAuthClient;
+    }
 
     @SuppressWarnings("Duplicates")
     protected MultivaluedHashMap<String, Object> initMsoClient()
@@ -139,7 +144,7 @@ public abstract class RestMsoImplementation implements RestInterface {
 
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
             Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
-            final Response cres = client.target(url)
+                final Response cres = client.target(url)
                     .request()
                     .accept(APPLICATION_JSON)
                     .headers(commonHeaders)
@@ -219,7 +224,8 @@ public abstract class RestMsoImplementation implements RestInterface {
                     .accept(APPLICATION_JSON)
                     .headers(commonHeaders)
                     //.entity(r)
-                    .build("DELETE", Entity.entity(r, MediaType.APPLICATION_JSON)).invoke();
+                    .build("DELETE", Entity.entity(r, MediaType.APPLICATION_JSON))
+                    .invoke();
             Logging.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
             int status = cres.getStatus();
             restObject.setStatusCode (status);
@@ -245,6 +251,7 @@ public abstract class RestMsoImplementation implements RestInterface {
             catch ( Exception e ) {
                 logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + NO_RESPONSE_ENTITY_LOG
                         + e.getMessage());
+                throw e;
             }
 
         }
@@ -252,7 +259,6 @@ public abstract class RestMsoImplementation implements RestInterface {
         {
             logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + WITH_URL_LOG +url+ EXCEPTION_LOG + e.toString());
             throw e;
-
         }
     }
 
@@ -349,7 +355,6 @@ public abstract class RestMsoImplementation implements RestInterface {
         restObject.setStatusCode (status);
 
         return restObject;
-
     }
 
     @Override
@@ -383,6 +388,7 @@ public abstract class RestMsoImplementation implements RestInterface {
             catch ( Exception e ) {
                 logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + NO_RESPONSE_ENTITY_LOG
                         + e.getMessage());
+                throw e;
             }
 
             int status = cres.getStatus();

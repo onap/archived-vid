@@ -468,10 +468,10 @@ public class MsoRestClientNewTest {
 
     private MsoRestClientNew msoRestClient() {
         final WebConfig webConfig = new WebConfig();
-        return new MsoRestClientNew(new SyncRestClient(webConfig.unirestFasterxmlObjectMapper(new ObjectMapper())), baseUrl());
+        return new MsoRestClientNew(new SyncRestClient(webConfig.unirestFasterxmlObjectMapper(new ObjectMapper())), baseUrl(),null);
     }
 
     private MsoRestClientNew createTestSubject() {
-        return new MsoRestClientNew(null, "");
+        return new MsoRestClientNew(null, "",null);
     }
 }
