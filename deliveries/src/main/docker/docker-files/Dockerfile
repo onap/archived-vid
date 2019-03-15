@@ -26,7 +26,7 @@ ENV CACHE_DIRECTORY="$ROOT_DIR/cache"
 # Keystore variables
 ENV VID_KEYSTORE_FILENAME="${ROOT_DIR}/etc/org.onap.vid.jks" \
   VID_TRUSTSTORE_FILENAME="${ROOT_DIR}/etc/org.onap.vid.trust.jks" \
-  VID_KEYSTORE_PASSWORD="ry1RLC(?M6?2fQ]1a2)2y{P:" \
+  VID_KEYSTORE_PASSWORD="ry1RLC\(\?M6\?2fQ\]1a2\)2y\{P:" \
   VID_TRUSTSTORE_PASSWORD="OBF:1dx01j0e1hs01t981mis1dws156s1ojc1qjc1zsx1pw31qob1qr71pyj1zst1qhy1ojq156i1dua1mm21tb61hvi1j0g1du2" \
   VID_TOMCAT_PATH="/usr/local/tomcat/conf/"
 
