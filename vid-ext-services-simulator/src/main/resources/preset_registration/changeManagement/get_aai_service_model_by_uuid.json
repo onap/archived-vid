@@ -1,0 +1,444 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v13/service-design-and-creation/models",
+    "queryParams": {
+      "depth": [
+        "2"
+      ],
+      "model-invariant-id": [
+        "88a71d72-ec80-4357-808e-f288823cb353"
+      ]
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "model": [
+        {
+          "model-invariant-id": "88a71d72-ec80-4357-808e-f288823cb353",
+          "model-type": "resource",
+          "resource-version": "1549550682576",
+          "model-vers": {
+            "model-ver": [
+              {
+                "model-version-id": "d2dcf256-2687-4631-9e36-1b7fc352b7bf",
+                "model-name": "HealthVF",
+                "model-version": "1.0",
+                "model-description": "HealthVSP",
+                "resource-version": "1549550682585",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "ad8c74b6-d2ff-48a7-8fcb-4cf653efc1f9",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1549550682592",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "relationship-label": "org.onap.relationships.inventory.IsA",
+                            "related-link": "/aai/v13/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/4b5158b9-a0d5-4aeb-90a8-474bc2ccd8af/model-vers/model-ver/ba463093-6f2c-4d22-aa8d-fb4615660db2/model-elements/model-element/57d23b71-d5a0-484d-ac7c-1b94e9a1563e/model-elements/model-element/5d290a6a-3b35-46bb-a2d7-1b9c9f520c39",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "4b5158b9-a0d5-4aeb-90a8-474bc2ccd8af"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "ba463093-6f2c-4d22-aa8d-fb4615660db2"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "57d23b71-d5a0-484d-ac7c-1b94e9a1563e"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "5d290a6a-3b35-46bb-a2d7-1b9c9f520c39"
+                        }
+                      ]
+                    },
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/edf8ce92-74f9-4fd3-aed0-dfd84bbdd829/model-vers/model-ver/7ca382fd-fc64-4753-b8d2-3433caf15bd4/model-elements/model-element/1738a5ec-37e8-4117-90b2-0b3a4fe261e8/model-elements/model-element/ebc54444-d460-423d-bbc2-3217e3afb3d2",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "edf8ce92-74f9-4fd3-aed0-dfd84bbdd829"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "7ca382fd-fc64-4753-b8d2-3433caf15bd4"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "1738a5ec-37e8-4117-90b2-0b3a4fe261e8"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "ebc54444-d460-423d-bbc2-3217e3afb3d2"
+                        }
+                      ]
+                    },
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/edf8ce92-74f9-4fd3-aed0-dfd84bbdd829/model-vers/model-ver/1aed6315-f8b8-4f10-9ec2-8d063524ceb2/model-elements/model-element/d57a4995-11f4-48d9-bf69-2084dc810354/model-elements/model-element/3c5a6ea6-6ef4-4fad-bd92-9d2d39f7921a",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "edf8ce92-74f9-4fd3-aed0-dfd84bbdd829"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "1aed6315-f8b8-4f10-9ec2-8d063524ceb2"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "d57a4995-11f4-48d9-bf69-2084dc810354"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "3c5a6ea6-6ef4-4fad-bd92-9d2d39f7921a"
+                        }
+                      ]
+                    },
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/edf8ce92-74f9-4fd3-aed0-dfd84bbdd829/model-vers/model-ver/560f3a96-f123-4dbd-bca7-2a1d2b678a3e/model-elements/model-element/a1cd530e-8149-4494-b80b-8812aafbda3a/model-elements/model-element/42a8a363-1a5f-41be-a881-ac50bef85a4b",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "edf8ce92-74f9-4fd3-aed0-dfd84bbdd829"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "560f3a96-f123-4dbd-bca7-2a1d2b678a3e"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "a1cd530e-8149-4494-b80b-8812aafbda3a"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "42a8a363-1a5f-41be-a881-ac50bef85a4b"
+                        }
+                      ]
+                    },
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/60272f6f-142f-47b8-b778-007b9b7e2d86/model-vers/model-ver/5a914290-8564-4243-901f-909040a03905/model-elements/model-element/ee7f8a55-1877-4a14-a622-3ed0ed074fc7/model-elements/model-element/39df7d61-0066-4832-971c-84a8640ad50e",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "60272f6f-142f-47b8-b778-007b9b7e2d86"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "5a914290-8564-4243-901f-909040a03905"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "ee7f8a55-1877-4a14-a622-3ed0ed074fc7"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "39df7d61-0066-4832-971c-84a8640ad50e"
+                        }
+                      ]
+                    },
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/33ebe1a9-1df3-4c35-b8a0-cd0504159511/model-vers/model-ver/0d3f00e4-a6bb-4a32-8cb7-c46424a84a7a/model-elements/model-element/5682f9d9-46f1-4b1e-9659-27ebb26b5380/model-elements/model-element/c40b2adc-6f6e-4ae2-9ba9-36eb108f7418",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "33ebe1a9-1df3-4c35-b8a0-cd0504159511"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "0d3f00e4-a6bb-4a32-8cb7-c46424a84a7a"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "5682f9d9-46f1-4b1e-9659-27ebb26b5380"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "c40b2adc-6f6e-4ae2-9ba9-36eb108f7418"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "model-version-id": "5fe9d1a7-132b-44f1-84a5-ff2427d8fdd7",
+                "model-name": "HealthVF",
+                "model-version": "4.0",
+                "model-description": "HealthVSP",
+                "resource-version": "1551439362402",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "0c64cb00-9d81-4f2f-baeb-24da8e59c213",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1551439362419",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "relationship-label": "org.onap.relationships.inventory.IsA",
+                            "related-link": "/aai/v13/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/33ebe1a9-1df3-4c35-b8a0-cd0504159511/model-vers/model-ver/79b6b598-fb6b-4a60-8b69-b0abc1ad8fb4/model-elements/model-element/ac5da372-9654-4822-8477-44886d3647c8/model-elements/model-element/5ae2b302-0415-491c-95c1-5a6e88d420c1",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "33ebe1a9-1df3-4c35-b8a0-cd0504159511"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "79b6b598-fb6b-4a60-8b69-b0abc1ad8fb4"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "ac5da372-9654-4822-8477-44886d3647c8"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "5ae2b302-0415-491c-95c1-5a6e88d420c1"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "model-version-id": "17a302a0-afe9-4c64-b76d-9f74c1b93cb4",
+                "model-name": "HealthVF",
+                "model-version": "2.0",
+                "model-description": "HealthVSP",
+                "resource-version": "1550759891744",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "f7ef90c1-1b77-46df-be6d-96dd1223d79c",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1550759891755",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "relationship-label": "org.onap.relationships.inventory.IsA",
+                            "related-link": "/aai/v13/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/edf8ce92-74f9-4fd3-aed0-dfd84bbdd829/model-vers/model-ver/50ad0540-a170-407f-8d57-0cfb3504a452/model-elements/model-element/a181497a-51ff-4c77-84ef-6bc10129e689/model-elements/model-element/2acd37c7-1d40-4b5f-8808-1061f81607aa",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "edf8ce92-74f9-4fd3-aed0-dfd84bbdd829"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "50ad0540-a170-407f-8d57-0cfb3504a452"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "a181497a-51ff-4c77-84ef-6bc10129e689"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "2acd37c7-1d40-4b5f-8808-1061f81607aa"
+                        }
+                      ]
+                    },
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/33ebe1a9-1df3-4c35-b8a0-cd0504159511/model-vers/model-ver/41658d87-b37c-4237-9a56-d27d1e430da6/model-elements/model-element/89c46ae9-26e2-4dad-addd-603aef609b16/model-elements/model-element/fdeb2740-1782-47a4-a74b-ebca501ff57b",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "33ebe1a9-1df3-4c35-b8a0-cd0504159511"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "41658d87-b37c-4237-9a56-d27d1e430da6"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "89c46ae9-26e2-4dad-addd-603aef609b16"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "fdeb2740-1782-47a4-a74b-ebca501ff57b"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "model-version-id": "103b4a1b-4a15-4559-a019-1ff132180c7c",
+                "model-name": "HealthVF",
+                "model-version": "3.0",
+                "model-description": "HealthVSP",
+                "resource-version": "1551433181117",
+                "model-elements": {
+                  "model-element": [
+                    {
+                      "model-element-uuid": "b491eaf7-41af-4a42-9b11-b8823ea4addc",
+                      "new-data-del-flag": "T",
+                      "cardinality": "unbounded",
+                      "resource-version": "1551433181126",
+                      "relationship-list": {
+                        "relationship": [
+                          {
+                            "related-to": "model-ver",
+                            "relationship-label": "org.onap.relationships.inventory.IsA",
+                            "related-link": "/aai/v13/service-design-and-creation/models/model/acc6edd8-a8d4-4b93-afaa-0994068be14c/model-vers/model-ver/93a6166f-b3d5-4f06-b4ba-aed48d009ad9",
+                            "relationship-data": [
+                              {
+                                "relationship-key": "model.model-invariant-id",
+                                "relationship-value": "acc6edd8-a8d4-4b93-afaa-0994068be14c"
+                              },
+                              {
+                                "relationship-key": "model-ver.model-version-id",
+                                "relationship-value": "93a6166f-b3d5-4f06-b4ba-aed48d009ad9"
+                              }
+                            ],
+                            "related-to-property": [
+                              {
+                                "property-key": "model-ver.model-name",
+                                "property-value": "generic-vnf"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "relationship-list": {
+                  "relationship": [
+                    {
+                      "related-to": "model-element",
+                      "relationship-label": "org.onap.relationships.inventory.IsA",
+                      "related-link": "/aai/v13/service-design-and-creation/models/model/33ebe1a9-1df3-4c35-b8a0-cd0504159511/model-vers/model-ver/cb8501da-6e03-40e0-900c-ef0df30d1183/model-elements/model-element/fb64065a-30f4-4a89-9084-f335df91a2fd/model-elements/model-element/483d7c17-69eb-4d0d-a9ac-97cc67bc8d2c",
+                      "relationship-data": [
+                        {
+                          "relationship-key": "model.model-invariant-id",
+                          "relationship-value": "33ebe1a9-1df3-4c35-b8a0-cd0504159511"
+                        },
+                        {
+                          "relationship-key": "model-ver.model-version-id",
+                          "relationship-value": "cb8501da-6e03-40e0-900c-ef0df30d1183"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "fb64065a-30f4-4a89-9084-f335df91a2fd"
+                        },
+                        {
+                          "relationship-key": "model-element.model-element-uuid",
+                          "relationship-value": "483d7c17-69eb-4d0d-a9ac-97cc67bc8d2c"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

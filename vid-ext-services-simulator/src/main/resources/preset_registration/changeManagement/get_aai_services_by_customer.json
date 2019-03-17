@@ -1,0 +1,1704 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/aai/v../business/customers/customer/MSO_1610_ST",
+    "queryParams": {
+      "depth": [
+        "2"
+      ]
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "global-customer-id": "MSO_1610_ST",
+      "subscriber-name": "MSO_1610_ST",
+      "subscriber-type": "INFRA",
+      "resource-version": "1549008901724",
+      "service-subscriptions": {
+        "service-subscription": [
+          {
+            "service-type": "gNB",
+            "resource-version": "1549008901954",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "40003c27-2876-4f3a-8a23-ef1ad7ef665a",
+                  "service-instance-name": "AwServicePreload3",
+                  "service-type": "vAwServiceType",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "33ebe1a9-1df3-4c35-b8a0-cd0504159511",
+                  "model-version-id": "41658d87-b37c-4237-9a56-d27d1e430da6",
+                  "resource-version": "1550761112266",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/AwTestProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "AwTestProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/7d6d6809-56e9-42c2-9379-a768381bc812",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "7d6d6809-56e9-42c2-9379-a768381bc812"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "AwServicePreloadVF3"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/74af7120-c5da-4933-9b73-32b4dbb6da4b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "74af7120-c5da-4933-9b73-32b4dbb6da4b"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "relationship-label": "org.onap.relationships.inventory.Uses",
+                  "related-link": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "CloudOwner"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "RegionOne"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "982c540f6e69488eb6be5664255e00c0"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "onap-wro"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "vAW",
+            "resource-version": "1550656318332",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "2bb44abf-6b71-4d5d-8a9c-772b219fe039",
+                  "service-instance-name": "AwConfigDeploymentTaskService",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "4b5158b9-a0d5-4aeb-90a8-474bc2ccd8af",
+                  "model-version-id": "ba463093-6f2c-4d22-aa8d-fb4615660db2",
+                  "resource-version": "1550656452530",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/2bb44abf-6b71-4d5d-8a9c-772b219fe039/service-data/service-topology/",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/AwTestProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "AwTestProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/74af7120-c5da-4933-9b73-32b4dbb6da4b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "74af7120-c5da-4933-9b73-32b4dbb6da4b"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "relationship-label": "org.onap.relationships.inventory.Uses",
+                  "related-link": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "CloudOwner"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "RegionOne"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "982c540f6e69488eb6be5664255e00c0"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "onap-wro"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "vFWCL",
+            "resource-version": "1549008901762",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "66d4b4d8-5326-431f-b63d-2848fbebdb77",
+                  "service-instance-name": "InstanceSuperX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "01360572-5cdc-42ea-b5eb-35a1b8d02b53",
+                  "model-version-id": "e45706fd-9f88-41ae-b184-8c750ef6d28c",
+                  "resource-version": "1551263458716",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "2053e791-1a5f-437a-8ebf-f13526228b25",
+                  "service-instance-name": "GammaXX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "0d616857-4ae1-47d7-9790-50fd8c8b4dd4",
+                  "resource-version": "1551359872080",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/dddd5fce-fcb1-4d8f-8d15-33f27b0b7bd7",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "dddd5fce-fcb1-4d8f-8d15-33f27b0b7bd7"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "GammaXX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "78446bde-cb1e-4965-88f5-0b62241d0d4a",
+                  "service-instance-name": "UltraXXX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "5af89b42-8203-497a-8cdf-5d887f064a13",
+                  "resource-version": "1551355788473",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/b2d36789-54e3-45c1-a01d-39eb3c1e7469",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "b2d36789-54e3-45c1-a01d-39eb3c1e7469"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "UltraXXX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "c7e33026-92e2-41de-a01a-c6b5086e2fea",
+                  "service-instance-name": "GammaX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "59030c82-1bbb-47be-847f-b127134cca5b",
+                  "resource-version": "1551359346061",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/ef2c09fc-6855-4446-bd52-c17bc1dddffc",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "ef2c09fc-6855-4446-bd52-c17bc1dddffc"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "GammaX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "b972e316-0139-4fc1-bb22-7fad6ac91170",
+                  "service-instance-name": "LambdaX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "c05e4287-a660-4fc6-ba58-9790c5cb1df6",
+                  "resource-version": "1551412768718",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/54635311-28dc-4816-b29e-55907ddbdc32",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "54635311-28dc-4816-b29e-55907ddbdc32"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "LambdaX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "b6ae5fce-4e74-4855-b2ec-995a2c4898e4",
+                  "service-instance-name": "RzX1",
+                  "service-type": "vAwServiceType",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "33ebe1a9-1df3-4c35-b8a0-cd0504159511",
+                  "model-version-id": "79b6b598-fb6b-4a60-8b69-b0abc1ad8fb4",
+                  "resource-version": "1551439642938",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/bb58e281-e453-4b7d-ab94-ee83e4b8d89b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "bb58e281-e453-4b7d-ab94-ee83e4b8d89b"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "RzX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "c5977395-2dc5-4718-8fbd-02988658655d",
+                  "service-instance-name": "UltaX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "113c0113-c4ff-4eb8-a900-b238c44e4da3",
+                  "resource-version": "1551350918972",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/238a03d2-bb8f-4242-b2c6-2e05e37762de",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "238a03d2-bb8f-4242-b2c6-2e05e37762de"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "UltaX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "d1323c94-1d47-46e1-9a39-aed73b1ae797",
+                  "service-instance-name": "OmegaX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "c05e4287-a660-4fc6-ba58-9790c5cb1df6",
+                  "resource-version": "1551357063093",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/bcb1c00b-fdce-43e2-907d-68d001ccdbc9",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "bcb1c00b-fdce-43e2-907d-68d001ccdbc9"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "OmegaX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "3127f651-cd9c-4bba-8d5b-dd0dd90f6f67",
+                  "service-instance-name": "RsX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "0d616857-4ae1-47d7-9790-50fd8c8b4dd4",
+                  "resource-version": "1551435097988",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/081fa083-7171-4302-a91a-f0bc156f18a5",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "081fa083-7171-4302-a91a-f0bc156f18a5"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "RsX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "05fb11fb-58bf-4317-be2c-19b327b206c4",
+                  "service-instance-name": "ThetaX1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "8e64e32f-b578-4c28-9228-4cb0314e65ff",
+                  "model-version-id": "0d616857-4ae1-47d7-9790-50fd8c8b4dd4",
+                  "resource-version": "1551410963562",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/346bd93c-3ee7-4554-b6bb-0cb3265c5c98",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "346bd93c-3ee7-4554-b6bb-0cb3265c5c98"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "ThetaX2"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "relationship-label": "org.onap.relationships.inventory.Uses",
+                  "related-link": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "CloudOwner"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "RegionOne"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "982c540f6e69488eb6be5664255e00c0"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "onap-wro"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "vLB",
+            "resource-version": "1549008901850",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "57dba41e-0b00-48ad-9cb9-f0d813be5142",
+                  "service-instance-name": "ws-service-test",
+                  "service-type": "vAwServiceType",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "33ebe1a9-1df3-4c35-b8a0-cd0504159511",
+                  "model-version-id": "cb8501da-6e03-40e0-900c-ef0df30d1183",
+                  "resource-version": "1551433413398",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/57dba41e-0b00-48ad-9cb9-f0d813be5142/service-data/service-topology/",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/d823b98b-8800-4a7c-a755-f0dd5933e479",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "d823b98b-8800-4a7c-a755-f0dd5933e479"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "ws-vnf"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "12965035-a690-400c-bf18-211a5b4710c8",
+                  "service-instance-name": "ws-service-02",
+                  "service-type": "vAwServiceType",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "33ebe1a9-1df3-4c35-b8a0-cd0504159511",
+                  "model-version-id": "cb8501da-6e03-40e0-900c-ef0df30d1183",
+                  "resource-version": "1551434658559",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/12965035-a690-400c-bf18-211a5b4710c8/service-data/service-topology/",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/a9c90905-99f2-45d5-8389-a2e0f6997c25",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "a9c90905-99f2-45d5-8389-a2e0f6997c25"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "vnf-ws"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "relationship-label": "org.onap.relationships.inventory.Uses",
+                  "related-link": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "CloudOwner"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "RegionOne"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "982c540f6e69488eb6be5664255e00c0"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "onap-wro"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "vIMS",
+            "resource-version": "1549008901917",
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "relationship-label": "org.onap.relationships.inventory.Uses",
+                  "related-link": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "CloudOwner"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "RegionOne"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "982c540f6e69488eb6be5664255e00c0"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "onap-wro"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "vCPE",
+            "resource-version": "1549008901883",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "79d18ba2-8f03-4cf2-af76-4c73840a6402",
+                  "service-instance-name": "fiszu_instance",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "2078688d-b4b9-4d6d-9934-88c00b6931e0",
+                  "model-version-id": "961246c5-1215-419f-b082-bf0545cff0ad",
+                  "resource-version": "1550664096824",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/0835de3b-f102-4025-8e55-803248a6fc7e",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "0835de3b-f102-4025-8e55-803248a6fc7e"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "fiszu_instance"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "ef7fe6f2-c50d-4fc8-921b-b923051c3290",
+                  "service-instance-name": "FoooooServuce",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "635c62f2-4114-45d2-a2ba-ffe66e03b919",
+                  "model-version-id": "aee7d126-3368-4cbb-a26f-f7826da3a86a",
+                  "resource-version": "1552308272142",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/MyProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "MyProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/74af7120-c5da-4933-9b73-32b4dbb6da4b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "74af7120-c5da-4933-9b73-32b4dbb6da4b"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "13402a26-7789-4b3e-8512-26080b800065",
+                  "service-instance-name": "OrangeTraining_Service",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "fcf2b4d4-1df0-4152-b4f2-222894cb4bfb",
+                  "model-version-id": "a401f426-c53d-495f-b689-1420834daa85",
+                  "resource-version": "1551094264385",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/ab79b7a7-4aea-4bf2-91bc-4ab34b7c4b87",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "ab79b7a7-4aea-4bf2-91bc-4ab34b7c4b87"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "OrangeTraining_Instance"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "9fbb8f32-981e-41e2-af64-f2890cf3841e",
+                  "service-instance-name": "ATeamExerciseService_1",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "2c5058f5-0671-4579-946a-fa56d7ca76e7",
+                  "model-version-id": "4e797c39-b2c9-4478-98e5-2ad0e1c2dcf4",
+                  "resource-version": "1550832045645",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/9fbb8f32-981e-41e2-af64-f2890cf3841e/service-data/service-topology/",
+                  "orchestration-status": "PendingDelete",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "fc4e9461-6857-44ef-be99-2658317c0307",
+                  "service-instance-name": "fiszu_instance",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "2078688d-b4b9-4d6d-9934-88c00b6931e0",
+                  "model-version-id": "961246c5-1215-419f-b082-bf0545cff0ad",
+                  "resource-version": "1550663905589",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "relationship-label": "org.onap.relationships.inventory.Uses",
+                  "related-link": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "CloudOwner"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "RegionOne"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "982c540f6e69488eb6be5664255e00c0"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "onap-wro"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "service-type": "vFW",
+            "resource-version": "1549008901990",
+            "service-instances": {
+              "service-instance": [
+                {
+                  "service-instance-id": "6b58fa8c-b4de-44c0-9cd3-7179fe29ef24",
+                  "service-instance-name": "HealthServiceInstance",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "4b5158b9-a0d5-4aeb-90a8-474bc2ccd8af",
+                  "model-version-id": "ba463093-6f2c-4d22-aa8d-fb4615660db2",
+                  "resource-version": "1549550849623",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/9e0c41e0-b70e-423c-8fa5-852b65425bfc",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "9e0c41e0-b70e-423c-8fa5-852b65425bfc"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "HealthVFInstance"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "979bd39c-8e32-4853-864f-bc23929a4e5a",
+                  "service-instance-name": "PnfServiceInstance",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "635c62f2-4114-45d2-a2ba-ffe66e03b919",
+                  "model-version-id": "aee7d126-3368-4cbb-a26f-f7826da3a86a",
+                  "resource-version": "1552306213181",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "9884cb60-2f60-4871-99ed-2bda5bf5dbf7",
+                  "service-instance-name": "ServiceWithProfile",
+                  "service-type": "vAwServiceType",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "33ebe1a9-1df3-4c35-b8a0-cd0504159511",
+                  "model-version-id": "41658d87-b37c-4237-9a56-d27d1e430da6",
+                  "resource-version": "1550762728011",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/AwTestProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "AwTestProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/21aae73d-07f4-49d7-988d-491d8c3d4ca8",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "21aae73d-07f4-49d7-988d-491d8c3d4ca8"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "ServiceWithProfileVF"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/74af7120-c5da-4933-9b73-32b4dbb6da4b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "74af7120-c5da-4933-9b73-32b4dbb6da4b"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "4dc525ef-1b25-4638-82ea-bd0365a30f79",
+                  "service-instance-name": "HealthService-MK",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "4b5158b9-a0d5-4aeb-90a8-474bc2ccd8af",
+                  "model-version-id": "ba463093-6f2c-4d22-aa8d-fb4615660db2",
+                  "resource-version": "1549970781936",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "1dcc271e-7f43-4be2-bedd-0f1763339c6f",
+                  "service-instance-name": "AwPayloadHealthService",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "4b5158b9-a0d5-4aeb-90a8-474bc2ccd8af",
+                  "model-version-id": "ba463093-6f2c-4d22-aa8d-fb4615660db2",
+                  "resource-version": "1550829632075",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/7ff7787c-22c5-43bd-84e8-9c9c32261db0",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "7ff7787c-22c5-43bd-84e8-9c9c32261db0"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "AwPayloadHealthVF"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "c9d94a57-151b-4ae3-ba23-1165c20b98fe",
+                  "service-instance-name": "ServiceWithProfileInstance",
+                  "service-type": "vAwServiceType",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "33ebe1a9-1df3-4c35-b8a0-cd0504159511",
+                  "model-version-id": "41658d87-b37c-4237-9a56-d27d1e430da6",
+                  "resource-version": "1550762903795",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/MyProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "MyProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/34b5083c-9809-4b04-a912-173644985d12",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "34b5083c-9809-4b04-a912-173644985d12"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "ServiceWithProfileInstanceVF"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/74af7120-c5da-4933-9b73-32b4dbb6da4b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "74af7120-c5da-4933-9b73-32b4dbb6da4b"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "8adc95d2-01ed-4fee-8465-bd6f21b9108e",
+                  "service-instance-name": "OtherPnfServiceInstance",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "635c62f2-4114-45d2-a2ba-ffe66e03b919",
+                  "model-version-id": "aee7d126-3368-4cbb-a26f-f7826da3a86a",
+                  "resource-version": "1552306750465",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/AwTestProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "AwTestProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/74af7120-c5da-4933-9b73-32b4dbb6da4b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "74af7120-c5da-4933-9b73-32b4dbb6da4b"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "23368f6d-1f1c-408b-aa3d-8d7beee06d99",
+                  "service-instance-name": "AwServicePreload",
+                  "service-type": "vAwServiceType",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "33ebe1a9-1df3-4c35-b8a0-cd0504159511",
+                  "model-version-id": "41658d87-b37c-4237-9a56-d27d1e430da6",
+                  "resource-version": "1550760082000",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/MyProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "MyProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/4adbe34d-71cc-4a46-a65d-9fa5247424e9",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "4adbe34d-71cc-4a46-a65d-9fa5247424e9"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "AwServicePreloadVF"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/ff9c98e3-fdc4-452d-8a6f-deacc899110a",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "ff9c98e3-fdc4-452d-8a6f-deacc899110a"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "3289ab1b-32f0-4e54-a7b8-03d783cabae0",
+                  "service-instance-name": "AwPolicyPayloadService",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "4b5158b9-a0d5-4aeb-90a8-474bc2ccd8af",
+                  "model-version-id": "ba463093-6f2c-4d22-aa8d-fb4615660db2",
+                  "resource-version": "1550830048805",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/MyProject",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "MyProject"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/19b85f1b-c0a5-407a-bd22-47d22b2d04b9",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "19b85f1b-c0a5-407a-bd22-47d22b2d04b9"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "AwPolicyPayloadVF"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/74af7120-c5da-4933-9b73-32b4dbb6da4b",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "74af7120-c5da-4933-9b73-32b4dbb6da4b"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "service-instance-id": "66c20097-1b80-41c1-8312-1c22971f5f03",
+                  "service-instance-name": "Wepro-svc-instance",
+                  "environment-context": "General_Revenue-Bearing",
+                  "workload-context": "Production",
+                  "model-invariant-id": "c71827e7-42fc-46ab-b059-22584c58108b",
+                  "model-version-id": "8efe4a8a-6646-43e2-8807-a376ff22d2e0",
+                  "resource-version": "1549875122908",
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/66c20097-1b80-41c1-8312-1c22971f5f03/service-data/service-topology/",
+                  "orchestration-status": "Active",
+                  "relationship-list": {
+                    "relationship": [
+                      {
+                        "related-to": "project",
+                        "relationship-label": "org.onap.relationships.inventory.Uses",
+                        "related-link": "/aai/v13/business/projects/project/Project-Demonstration",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "project.project-name",
+                            "relationship-value": "Project-Demonstration"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "generic-vnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/generic-vnfs/generic-vnf/7559442a-4dda-4917-95e0-abe75c7bf03a",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "generic-vnf.vnf-id",
+                            "relationship-value": "7559442a-4dda-4917-95e0-abe75c7bf03a"
+                          }
+                        ],
+                        "related-to-property": [
+                          {
+                            "property-key": "generic-vnf.vnf-name",
+                            "property-value": "Wepro-instance-popup"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "pnf",
+                        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+                        "related-link": "/aai/v13/network/pnfs/pnf/NOKABC8",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "pnf.pnf-name",
+                            "relationship-value": "NOKABC8"
+                          }
+                        ]
+                      },
+                      {
+                        "related-to": "owning-entity",
+                        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+                        "related-link": "/aai/v13/business/owning-entities/owning-entity/227139a2-ed5e-4fcf-acfb-fd854db52a29",
+                        "relationship-data": [
+                          {
+                            "relationship-key": "owning-entity.owning-entity-id",
+                            "relationship-value": "227139a2-ed5e-4fcf-acfb-fd854db52a29"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "relationship-list": {
+              "relationship": [
+                {
+                  "related-to": "tenant",
+                  "relationship-label": "org.onap.relationships.inventory.Uses",
+                  "related-link": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0",
+                  "relationship-data": [
+                    {
+                      "relationship-key": "cloud-region.cloud-owner",
+                      "relationship-value": "CloudOwner"
+                    },
+                    {
+                      "relationship-key": "cloud-region.cloud-region-id",
+                      "relationship-value": "RegionOne"
+                    },
+                    {
+                      "relationship-key": "tenant.tenant-id",
+                      "relationship-value": "982c540f6e69488eb6be5664255e00c0"
+                    }
+                  ],
+                  "related-to-property": [
+                    {
+                      "property-key": "tenant.tenant-name",
+                      "property-value": "onap-wro"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+}
