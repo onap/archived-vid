@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3715ca76_ff62cb1d",
+        "filename": "vid-ext-services-simulator/src/main/resources/preset_registration/changeManagement/get_aai_service_model_by_uuid.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-18T06:12:49Z",
+      "side": 1,
+      "message": "can be \"v..\" to keep along versions",
+      "range": {
+        "startLine": 4,
+        "startChar": 18,
+        "endLine": 4,
+        "endChar": 21
+      },
+      "revId": "cb1415b1d5409994d1106d43fa9110444079785f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "163c75e1_a637545c",
+        "filename": "vid-ext-services-simulator/src/main/resources/preset_registration/changeManagement/get_aai_vlb_service_instances.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-18T06:12:49Z",
+      "side": 1,
+      "message": "can be \"v..\" to keep along versions",
+      "range": {
+        "startLine": 4,
+        "startChar": 18,
+        "endLine": 4,
+        "endChar": 21
+      },
+      "revId": "cb1415b1d5409994d1106d43fa9110444079785f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
