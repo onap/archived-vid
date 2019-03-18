@@ -127,6 +127,24 @@
       "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca752b14_987bf97b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/VnfResultTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-18T10:06:55Z",
+      "side": 1,
+      "message": "I created them manually.",
+      "parentUuid": "822de295_d5bce8ad",
+      "revId": "38b557c5ed542a2505dd90932717feb3fb3851aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
