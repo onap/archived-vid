@@ -6,3 +6,7 @@ target/
 .idea/
 .classpath
 .project
+
+# gulp/jest files #
+node_modules/
+coverage/
