@@ -22,6 +22,30 @@
       "revId": "108b7de2b21c99ab02ed551284c6e0b1b342dcb1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "941b1c1f_6f0c4655",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/OperationalEnvironmentTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-18T10:06:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92e30dbb_80739d74",
+      "range": {
+        "startLine": 54,
+        "startChar": 84,
+        "endLine": 54,
+        "endChar": 90
+      },
+      "revId": "108b7de2b21c99ab02ed551284c6e0b1b342dcb1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
