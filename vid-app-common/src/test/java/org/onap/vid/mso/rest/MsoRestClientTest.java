@@ -20,6 +20,13 @@
  */
 package org.onap.vid.mso.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonMapper;
 import org.apache.http.ProtocolVersion;
@@ -41,14 +48,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import static org.mockito.ArgumentMatchers.any;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 
 @ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})
@@ -385,22 +384,6 @@ public class MsoRestClientTest {
 
         //  when
         MsoResponseWrapper response = restClient.getOrchestrationRequest(endpoint);
-
-        //  then
-        assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-    }
-
-    @Test
-    public void shouldProperlyGetManualTasks() {
-        //  given
-        String endpoint = "testEndpoint";
-        HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
-        MsoResponseWrapper expectedResponse = MsoUtil.wrapResponse(httpResponse);
-
-        when( client.get( eq(baseUrl+endpoint),anyMap(),anyMap(),eq(String.class) )  ).thenReturn(httpResponse);
-
-        //  when
-        MsoResponseWrapper response = restClient.getManualTasks(endpoint);
 
         //  then
         assertThat(response).isEqualToComparingFieldByField(expectedResponse);
