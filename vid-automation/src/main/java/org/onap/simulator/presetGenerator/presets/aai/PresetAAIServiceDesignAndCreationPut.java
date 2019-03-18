@@ -4,39 +4,33 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
 import org.springframework.http.HttpMethod;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.test.BrowseASDCTest;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static vid.automation.test.infra.ModelInfo.ModelInfoWithMultipleVersions.modelInfoWithMultipleVersions;
+
 public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
 
     public PresetAAIServiceDesignAndCreationPut(boolean emptyList) {
-        serviceModelIdentifiers = ImmutableList.of();
+        modelInfos = ImmutableList.of();
         this.emptyList = emptyList;
     }
 
-    public PresetAAIServiceDesignAndCreationPut(String modelVersionId, String modelInvariantId) {
-        serviceModelIdentifiers = ImmutableList.of(new ServiceModelIdentifiers(modelVersionId, modelInvariantId));
-    }
 
-    public PresetAAIServiceDesignAndCreationPut(List<ServiceModelIdentifiers> serviceModelIdentifiers) {
-        this.serviceModelIdentifiers = serviceModelIdentifiers;
-    }
-
-    public static class ServiceModelIdentifiers {
-        public final String modelVersionId;
-        public final String modelInvariantId;
-
-        public ServiceModelIdentifiers(String modelVersionId, String modelInvariantId) {
-            this.modelVersionId = modelVersionId;
-            this.modelInvariantId = modelInvariantId;
-        }
-    }
-
-    private List<ServiceModelIdentifiers> serviceModelIdentifiers;
+    private List<ModelInfo> modelInfos;
     boolean emptyList;
+
+
+    //Constructor that use the super set of model infos as response
+    //all test should be migrated to use this constructor
+    public PresetAAIServiceDesignAndCreationPut() {
+        this.modelInfos = ModelInfo.superSetOfModelInfos;
+    }
 
     @Override
     public HttpMethod getReqMethod() {
@@ -62,16 +56,16 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
 
     private String presetModels() {
         return
-                serviceModelIdentifiers.stream().map(identifiers ->
+                modelInfos.stream().map(modelInfo ->
                         "       {" +
                                 "          \"model\": {" +
-                                "            \"model-invariant-id\": \"" + identifiers.modelInvariantId + "\"," +
+                                "            \"model-invariant-id\": \"" + modelInfo.modelInvariantId + "\"," +
                                 "            \"model-type\": \"resource\"," +
                                 "            \"resource-version\": \"1500138206526\"," +
                                 "            \"model-vers\": {" +
                                 "              \"model-ver\": [" +
                                 "                {" +
-                                "                  \"model-version-id\": \"" + identifiers.modelVersionId + "\"," +
+                                "                  \"model-version-id\": \"" + modelInfo.modelVersionId + "\"," +
                                 "                  \"model-name\": \"action-data\"," +
                                 "                  \"model-version\": \"1.0\"," +
                                 "                  \"model-description\": \"lustre settler sideways volcanic eight cellular\"," +
@@ -112,6 +106,89 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
     }
 
 
+    private String serviceWithMultipleVersions() {
+        return
+                "        {" +
+                "          \"model\": {" +
+                "            \"model-invariant-id\": \"" + modelInfoWithMultipleVersions.modelInvariantId + "\"," +
+                "            \"model-type\": \"resource\"," +
+                "            \"resource-version\": \"1500138206526\"," +
+                "            \"model-vers\": {" +
+                "              \"model-ver\": [" +
+                "                {" +
+                "                  \"model-version-id\": \"" + modelInfoWithMultipleVersions.modelVersionId1 + "\"," +
+                "                  \"model-name\": \""+modelInfoWithMultipleVersions.modelName+"\"," +
+                "                  \"model-version\": \"1.0\"," +
+                "                  \"model-description\": \"decontamination arm circus ammonia hump edge\"," +
+                "                  \"resource-version\": \"1500137463984\"" +
+                "                }," +
+                "				{" +
+                "                  \"model-version-id\": \"" + modelInfoWithMultipleVersions.modelVersionId3 + "\"," +
+                "                  \"model-name\": \""+modelInfoWithMultipleVersions.modelName+"\"," +
+                "                  \"model-version\": \"3.0\"," +
+                "                  \"model-description\": \"Non decontamination arm circus ammonia hump edge\"," +
+                "                  \"resource-version\": \"1500137463986\"" +
+                "                }," +
+                "				{" +
+                "                  \"model-version-id\": \"" + modelInfoWithMultipleVersions.modelVersionId2 + "\"," +
+                "                  \"model-name\": \""+modelInfoWithMultipleVersions.modelName+"\"," +
+                "                  \"model-version\": \"2.0\"," +
+                "                  \"model-description\": \"The oldest one\"," +
+                "                  \"resource-version\": \"1500137463980\"" +
+                "                }" +
+                "              ]" +
+                "            }" +
+                "          }" +
+                "        }," ;
+    }
+    
+    public String modelsForBrowseSDCServiceModelListCheckAAIResponse() {
+        return  "   {\"model\":    { " +
+                "     \"model-invariant-id\": \"" + BrowseASDCTest.modelInvariantUUID1 + "\"," +
+                "      \"model-type\": \"service\"," +
+                "      \"resource-version\": \"1515103312329\"," +
+                "      \"model-vers\": {\"model-ver\":       [" +
+                "                  {" +
+                "            \"model-version-id\": \"" + BrowseASDCTest.modelUuid + "\"," +
+                "            \"model-name\": \"CheckAAIResponse_AAAvIRC_mm779p_Service\"," +
+                "            \"model-version\": \"1.0\"," +
+                "            \"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\"," +
+                "            \"model-description\": \"tbd\"," +
+                "            \"resource-version\": \"1516206395612\"" +
+                "         }" +
+                "      ]}" +
+                "   }}," +
+                "   {\"model\":    { " +
+                "      \"model-invariant-id\": \"" + BrowseASDCTest.modelInvariantUUID2 + "\"," +
+                "      \"model-type\": \"service\"," +
+                "      \"resource-version\": \"1515103312329\"," +
+                "      \"model-vers\": {\"model-ver\":       [" +
+                "                  {" +
+                "            \"model-version-id\": \"1dae721c-a1ef-435f-b811-760c23f467bf\"," +
+                "            \"model-name\": \"CheckAAIResponse_BBBvIRC_mm779p_Service\"," +
+                "            \"model-version\": \"3.0\"," +
+                "            \"model-description\": \"tbd\"," +
+                "            \"resource-version\": \"1516025197086\"" +
+                "         }" +
+                "      ]}" +
+                "   }}," +
+                "   {\"model\":    { " +
+                "      \"model-invariant-id\": \"" + BrowseASDCTest.modelInvariantUUID3 + "\"," +
+                "      \"model-type\": \"service\"," +
+                "      \"resource-version\": \"1515103312329\"," +
+                "      \"model-vers\": {\"model-ver\":       [" +
+                "          {" +
+                "            \"model-version-id\": \"29236d45-e790-4c17-a115-1533cc09b7b1\"," +
+                "            \"model-name\": \"CheckAAIResponse_CCCvIRC_mm779p_Service\"," +
+                "            \"model-version\": \"4.0\"," +
+                "            \"distribution-status\": \"DISTRIBUTION_COMPLETE_ERROR\"," +
+                "            \"model-description\": \"tbd\"," +
+                "            \"resource-version\": \"1517319724440\"" +
+                "         }" +
+                "      ]}" +
+                "   }},";
+    }
+    
     @Override
     public Object getResponseBody() {
         if(emptyList) {
@@ -119,6 +196,8 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
         }
         return "{\"results\": [" +
                 presetModels()+
+                serviceWithMultipleVersions() +
+                modelsForBrowseSDCServiceModelListCheckAAIResponse() +
                 "        {" +
                 "          \"model\": {" +
                 "            \"model-invariant-id\": \"00beb8f9-6d39-452f-816d-c709b9cbb87d\"," +

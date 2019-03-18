@@ -1,12 +1,11 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetRelatedInstanceGroupsByVnfId extends BaseAAIPreset {
 
@@ -47,7 +46,7 @@ public class PresetAAIGetRelatedInstanceGroupsByVnfId extends BaseAAIPreset {
     public Object getResponseBody() {
         return "{\n" +
                 "  \"vnf-id\": \"vnf-id-3\",\n" +
-                "  \"vnf-name\": \"zmtn6nf-code-110\",\n" +
+                "  \"vnf-name\": \"zhvf6nf-code-110\",\n" +
                 "  \"vnf-type\": \"vnf-type\",\n" +
                 "  \"prov-status\": \"NVTPROV\",\n" +
                 "  \"operational-status\": \"out-of-service-path\",\n" +
@@ -106,15 +105,15 @@ public class PresetAAIGetRelatedInstanceGroupsByVnfId extends BaseAAIPreset {
                 "      {\n" +
                 "        \"related-to\": \"availability-zone\",\n" +
                 "        \"relationship-label\": \"org.onap.relationships.inventory.Uses\",\n" +
-                "        \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn6/availability-zones/availability-zone/AZ-MN02\",\n" +
+                "        \"related-link\": \"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/availability-zones/availability-zone/AZ-MN02\",\n" +
                 "        \"relationship-data\": [\n" +
                 "          {\n" +
                 "            \"relationship-key\": \"cloud-region.cloud-owner\",\n" +
-                "            \"relationship-value\": \"att-aic\"\n" +
+                "            \"relationship-value\": \"irma-aic\"\n" +
                 "          },\n" +
                 "          {\n" +
                 "            \"relationship-key\": \"cloud-region.cloud-region-id\",\n" +
-                "            \"relationship-value\": \"mtn6\"\n" +
+                "            \"relationship-value\": \"hvf6\"\n" +
                 "          },\n" +
                 "          {\n" +
                 "            \"relationship-key\": \"availability-zone.availability-zone-name\",\n" +

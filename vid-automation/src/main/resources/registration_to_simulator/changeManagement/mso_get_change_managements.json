@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/mso/orchestrationRequests/v5",
+    "path": "/mso/orchestrationRequests/v.",
     "queryParams": {
       "filter": "modelType:EQUALS:vnf"
     }
@@ -12,305 +12,77 @@
       "requestList": [
         {
           "request": {
-            "requestDetails":{
-              "cloudConfiguration":{
-                "lcpCloudRegionId":"mtn6",
-                "tenantId":"ffdf52b5e5104b0e8f329b0b1637ee2e"
+            "requestDetails": {
+              "cloudConfiguration": {
+                "lcpCloudRegionId": "hvf6",
+                "tenantId": "ffdf52b5e5104b0e8f329b0b1637ee2e"
               },
-              "modelInfo":{
-                "modelCustomizationName":"VSP1710PID298109_vMMSC 0",
-                "modelCustomizationId":"24d43fdb-9aa6-4287-a68e-1e702ea89d13",
-                "modelInvariantId":"e7961100-cde6-4b5a-bcda-b8945086950a",
-                "modelVersionId":"959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
-                "modelName":"VSP1710PID298109_vMMSC",
-                "modelType":"vnf",
-                "modelVersion":"1.0"
+              "modelInfo": {
+                "modelCustomizationName": "VSP1710PID298109_vWINIFRED 0",
+                "modelCustomizationId": "24d43fdb-9aa6-4287-a68e-1e702ea89d13",
+                "modelInvariantId": "e7961100-cde6-4b5a-bcda-b8945086950a",
+                "modelVersionId": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
+                "modelName": "VSP1710PID298109_vWINIFRED",
+                "modelType": "vnf",
+                "modelVersion": "1.0"
               },
-              "relatedModelList":[
+              "relatedModelList": [
                 {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
                     }
                   }
                 }
               ],
-              "requestInfo":{
-                "source":"VID",
-                "suppressRollback":false,
-                "requestorId":"ds828e"
+              "requestInfo": {
+                "source": "VID",
+                "suppressRollback": false,
+                "requestorId": "ds828e"
               },
-              "requestParameters":{
-                "userParams":[
+              "requestParameters": {
+                "userParams": [
                 ],
-                "aLaCarte":false,
-                "usePreload":true,
-                "rebuildVolumeGroups":false,
-                "autoBuildVfModules":false,
-                "cascadeDelete":false
+                "aLaCarte": false,
+                "usePreload": true,
+                "rebuildVolumeGroups": false,
+                "autoBuildVfModules": false,
+                "cascadeDelete": false
               },
-              "relatedInstanceList":[
+              "relatedInstanceList": [
                 {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
                     }
                   }
                 }
               ]
             },
-            "requestId":"d352c70d-5ef8-4977-9ea8-4c8cbe860422",
-            "requestScope":"vnf",
-            "requestStatus":{
-              "percentProgress":100.0,
-              "requestState":"Some Unknown Value",
-              "statusMessage":"Update Is In Progress",
-              "finishTime":"Fri, 08 Sep 2017 19:34:33 GMT"
+            "requestId": "d352c70d-5ef8-4977-9ea8-4c8cbe860422",
+            "requestScope": "vnf",
+            "requestStatus": {
+              "percentProgress": 100.0,
+              "requestState": "Some Unknown Value",
+              "statusMessage": "Update Is In Progress",
+              "finishTime": "Fri, 08 Sep 2017 19:34:33 GMT"
             },
-            "requestType":"updateInstance",
-            "startTime":"<IN_PROGRESS_DATE>",
-            "instanceReferences":{
-              "serviceInstanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-              "vnfInstanceId":"7c00cc1e-6425-4fc3-afc3-0289db288d4c",
-              "requestorId":"ds828e"
-            }
-          }
-        },
-        {
-          "request": {
-            "requestDetails":{
-              "cloudConfiguration":{
-                "lcpCloudRegionId":"mtn6",
-                "tenantId":"ffdf52b5e5104b0e8f329b0b1637ee2e"
-              },
-              "modelInfo":{
-                "modelCustomizationName":"VSP1710PID298109_vMMSC 0",
-                "modelCustomizationId":"24d43fdb-9aa6-4287-a68e-1e702ea89d13",
-                "modelInvariantId":"e7961100-cde6-4b5a-bcda-b8945086950a",
-                "modelVersionId":"959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
-                "modelName":"VSP1710PID298109_vMMSC",
-                "modelType":"vnf",
-                "modelVersion":"1.0"
-              },
-              "relatedModelList":[
-                {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
-                    }
-                  }
-                }
-              ],
-              "requestInfo":{
-                "source":"VID",
-                "suppressRollback":false,
-                "requestorId":"ds828e"
-              },
-              "requestParameters":{
-                "userParams":[
-                ],
-                "aLaCarte":false,
-                "usePreload":true,
-                "rebuildVolumeGroups":false,
-                "autoBuildVfModules":false,
-                "cascadeDelete":false
-              },
-              "relatedInstanceList":[
-                {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
-                    }
-                  }
-                }
-              ]
-            },
-            "requestId":"1dc5ff9e-6d5d-4071-9667-cc539b41d8aa",
-            "requestScope":"vnf",
-            "requestStatus":{
-              "percentProgress":100.0,
-              "requestState":"PENDING",
-              "statusMessage":"Pending for A&AI",
-              "finishTime":"Fri, 08 Sep 2017 20:58:38 GMT"
-            },
-            "requestType":"replaceInstance",
-            "startTime":"Fri, 08 Sep 2017 20:58:37 GMT",
-            "instanceReferences":{
-              "serviceInstanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-              "vnfInstanceId":"7c00cc1e-6425-4fc3-afc3-0289db288d4c",
-              "requestorId":"ds828e"
-            }
-          }
-        },
-        {
-          "request": {
-            "requestDetails":{
-              "cloudConfiguration":{
-                "lcpCloudRegionId":"mtn6",
-                "tenantId":"ffdf52b5e5104b0e8f329b0b1637ee2e"
-              },
-              "modelInfo":{
-                "modelCustomizationName":"VSP1710PID298109_vMMSC 0",
-                "modelCustomizationId":"24d43fdb-9aa6-4287-a68e-1e702ea89d13",
-                "modelInvariantId":"e7961100-cde6-4b5a-bcda-b8945086950a",
-                "modelVersionId":"959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
-                "modelName":"VSP1710PID298109_vMMSC",
-                "modelType":"vnf",
-                "modelVersion":"1.0"
-              },
-              "relatedModelList":[
-                {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
-                    }
-                  }
-                }
-              ],
-              "requestInfo":{
-                "source":"VID",
-                "suppressRollback":false,
-                "requestorId":"ds828e"
-              },
-              "requestParameters":{
-                "userParams":[
-                ],
-                "aLaCarte":false,
-                "usePreload":true,
-                "rebuildVolumeGroups":false,
-                "autoBuildVfModules":false,
-                "cascadeDelete":false
-              },
-              "relatedInstanceList":[
-                {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
-                    }
-                  }
-                }
-              ]
-            },
-            "requestId":"7b615765-8216-464f-8ac7-32c103013542",
-            "requestScope":"vnf",
-            "requestStatus":{
-              "percentProgress":100.0,
-              "requestState":"FAILED",
-              "statusMessage":"Catch a Java Lang Exception in DecomposeService",
-              "finishTime":"Mon, 11 Sep 2017 20:14:20 GMT"
-            },
-            "requestType":"updateInstance",
-            "startTime":"Mon, 11 Sep 2017 20:14:20 GMT",
-            "instanceReferences":{
-              "serviceInstanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-              "vnfInstanceId":"7c00cc1e-6425-4fc3-afc3-0289db288d4c",
-              "requestorId":"ds828e"
-            }
-          }
-        },
-        {
-          "request": {
-            "requestDetails":{
-              "cloudConfiguration":{
-                "lcpCloudRegionId":"mtn6",
-                "tenantId":"ffdf52b5e5104b0e8f329b0b1637ee2e"
-              },
-              "modelInfo":{
-                "modelCustomizationName":"VSP1710PID298109_vMMSC 0",
-                "modelCustomizationId":"24d43fdb-9aa6-4287-a68e-1e702ea89d13",
-                "modelInvariantId":"e7961100-cde6-4b5a-bcda-b8945086950a",
-                "modelVersionId":"959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
-                "modelName":"VSP1710PID298109_vMMSC",
-                "modelType":"vnf",
-                "modelVersion":"1.0"
-              },
-              "relatedModelList":[
-                {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
-                    }
-                  }
-                }
-              ],
-              "requestInfo":{
-                "source":"VID",
-                "suppressRollback":false,
-                "requestorId":"ds828e"
-              },
-              "requestParameters":{
-                "userParams":[
-                ],
-                "aLaCarte":false,
-                "usePreload":true,
-                "rebuildVolumeGroups":false,
-                "autoBuildVfModules":false,
-                "cascadeDelete":false
-              },
-              "relatedInstanceList":[
-                {
-                  "relatedInstance":{
-                    "instanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-                    "modelInfo":{
-                      "modelInvariantId":"57e00952-0af7-4f0f-b19a-408a6f73c8df",
-                      "modelType":"service",
-                      "modelName":"ServicevMMSCPID298109",
-                      "modelVersion":"1.0",
-                      "modelVersionId":"fe6985cd-ea33-3346-ac12-ab121484a3fe"
-                    }
-                  }
-                }
-              ]
-            },
-            "requestId":"a5335d4b-adae-4264-a51c-f3712cb4ae77",
-            "requestScope":"vnf",
-            "requestStatus":{
-              "percentProgress":100.0,
-              "requestState":"FAILED",
-              "statusMessage":"Catch a Java Lang Exception in DecomposeService",
-              "finishTime":"Tue, 12 Sep 2017 18:22:29 GMT"
-            },
-            "requestType":"updateInstance",
-            "startTime":"Tue, 12 Sep 2017 18:22:28 GMT",
-            "instanceReferences":{
-              "serviceInstanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
-              "vnfInstanceId":"7c00cc1e-6425-4fc3-afc3-0289db288d4c",
-              "requestorId":"ds828e"
+            "requestType": "updateInstance",
+            "startTime": "<IN_PROGRESS_DATE>",
+            "instanceReferences": {
+              "serviceInstanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+              "vnfInstanceId": "7c00cc1e-6425-4fc3-afc3-0289db288d4c",
+              "requestorId": "ds828e"
             }
           }
         },
@@ -318,15 +90,319 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "mtn6",
+                "lcpCloudRegionId": "hvf6",
                 "tenantId": "ffdf52b5e5104b0e8f329b0b1637ee2e"
               },
               "modelInfo": {
-                "modelCustomizationName": "VSP1710PID298109_vMMSC 0",
+                "modelCustomizationName": "VSP1710PID298109_vWINIFRED 0",
                 "modelCustomizationId": "24d43fdb-9aa6-4287-a68e-1e702ea89d13",
                 "modelInvariantId": "e7961100-cde6-4b5a-bcda-b8945086950a",
                 "modelVersionId": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
-                "modelName": "VSP1710PID298109_vMMSC",
+                "modelName": "VSP1710PID298109_vWINIFRED",
+                "modelType": "vnf",
+                "modelVersion": "1.0"
+              },
+              "relatedModelList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ],
+              "requestInfo": {
+                "source": "VID",
+                "suppressRollback": false,
+                "requestorId": "ds828e"
+              },
+              "requestParameters": {
+                "userParams": [
+                ],
+                "aLaCarte": false,
+                "usePreload": true,
+                "rebuildVolumeGroups": false,
+                "autoBuildVfModules": false,
+                "cascadeDelete": false
+              },
+              "relatedInstanceList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ]
+            },
+            "requestId": "d352c70d-5ef8-4977-9ea8-4c8cbe860422",
+            "requestScope": "vnf",
+            "requestStatus": {
+              "percentProgress": 100.0,
+              "requestState": "UNLOCKED",
+              "statusMessage": "Update Is In Progress",
+              "finishTime": "Fri, 08 Sep 2017 19:34:33 GMT"
+            },
+            "requestType": "updateInstance",
+            "startTime": "<IN_PROGRESS_DATE>",
+            "instanceReferences": {
+              "serviceInstanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+              "vnfInstanceId": "Unlocked instance",
+              "requestorId": "ds828e"
+            }
+          }
+        },
+        {
+          "request": {
+            "requestDetails": {
+              "cloudConfiguration": {
+                "lcpCloudRegionId": "hvf6",
+                "tenantId": "ffdf52b5e5104b0e8f329b0b1637ee2e"
+              },
+              "modelInfo": {
+                "modelCustomizationName": "VSP1710PID298109_vWINIFRED 0",
+                "modelCustomizationId": "24d43fdb-9aa6-4287-a68e-1e702ea89d13",
+                "modelInvariantId": "e7961100-cde6-4b5a-bcda-b8945086950a",
+                "modelVersionId": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
+                "modelName": "VSP1710PID298109_vWINIFRED",
+                "modelType": "vnf",
+                "modelVersion": "1.0"
+              },
+              "relatedModelList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ],
+              "requestInfo": {
+                "source": "VID",
+                "suppressRollback": false,
+                "requestorId": "ds828e"
+              },
+              "requestParameters": {
+                "userParams": [
+                ],
+                "aLaCarte": false,
+                "usePreload": true,
+                "rebuildVolumeGroups": false,
+                "autoBuildVfModules": false,
+                "cascadeDelete": false
+              },
+              "relatedInstanceList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ]
+            },
+            "requestId": "1dc5ff9e-6d5d-4071-9667-cc539b41d8aa",
+            "requestScope": "vnf",
+            "requestStatus": {
+              "percentProgress": 100.0,
+              "requestState": "PENDING",
+              "statusMessage": "Pending for A&AI",
+              "finishTime": "Fri, 08 Sep 2017 20:58:38 GMT"
+            },
+            "requestType": "replaceInstance",
+            "startTime": "Fri, 08 Sep 2017 20:58:37 GMT",
+            "instanceReferences": {
+              "serviceInstanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+              "vnfInstanceId": "7c00cc1e-6425-4fc3-afc3-0289db288d4c",
+              "requestorId": "ds828e"
+            }
+          }
+        },
+        {
+          "request": {
+            "requestDetails": {
+              "cloudConfiguration": {
+                "lcpCloudRegionId": "hvf6",
+                "tenantId": "ffdf52b5e5104b0e8f329b0b1637ee2e"
+              },
+              "modelInfo": {
+                "modelCustomizationName": "VSP1710PID298109_vWINIFRED 0",
+                "modelCustomizationId": "24d43fdb-9aa6-4287-a68e-1e702ea89d13",
+                "modelInvariantId": "e7961100-cde6-4b5a-bcda-b8945086950a",
+                "modelVersionId": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
+                "modelName": "VSP1710PID298109_vWINIFRED",
+                "modelType": "vnf",
+                "modelVersion": "1.0"
+              },
+              "relatedModelList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ],
+              "requestInfo": {
+                "source": "VID",
+                "suppressRollback": false,
+                "requestorId": "ds828e"
+              },
+              "requestParameters": {
+                "userParams": [
+                ],
+                "aLaCarte": false,
+                "usePreload": true,
+                "rebuildVolumeGroups": false,
+                "autoBuildVfModules": false,
+                "cascadeDelete": false
+              },
+              "relatedInstanceList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ]
+            },
+            "requestId": "7b615765-8216-464f-8ac7-32c103013542",
+            "requestScope": "vnf",
+            "requestStatus": {
+              "percentProgress": 100.0,
+              "requestState": "FAILED",
+              "statusMessage": "Catch a Java Lang Exception in DecomposeService",
+              "finishTime": "Mon, 11 Sep 2017 20:14:20 GMT"
+            },
+            "requestType": "updateInstance",
+            "startTime": "Mon, 11 Sep 2017 20:14:20 GMT",
+            "instanceReferences": {
+              "serviceInstanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+              "vnfInstanceId": "7c00cc1e-6425-4fc3-afc3-0289db288d4c",
+              "requestorId": "ds828e"
+            }
+          }
+        },
+        {
+          "request": {
+            "requestDetails": {
+              "cloudConfiguration": {
+                "lcpCloudRegionId": "hvf6",
+                "tenantId": "ffdf52b5e5104b0e8f329b0b1637ee2e"
+              },
+              "modelInfo": {
+                "modelCustomizationName": "VSP1710PID298109_vWINIFRED 0",
+                "modelCustomizationId": "24d43fdb-9aa6-4287-a68e-1e702ea89d13",
+                "modelInvariantId": "e7961100-cde6-4b5a-bcda-b8945086950a",
+                "modelVersionId": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
+                "modelName": "VSP1710PID298109_vWINIFRED",
+                "modelType": "vnf",
+                "modelVersion": "1.0"
+              },
+              "relatedModelList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ],
+              "requestInfo": {
+                "source": "VID",
+                "suppressRollback": false,
+                "requestorId": "ds828e"
+              },
+              "requestParameters": {
+                "userParams": [
+                ],
+                "aLaCarte": false,
+                "usePreload": true,
+                "rebuildVolumeGroups": false,
+                "autoBuildVfModules": false,
+                "cascadeDelete": false
+              },
+              "relatedInstanceList": [
+                {
+                  "relatedInstance": {
+                    "instanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+                    "modelInfo": {
+                      "modelInvariantId": "57e00952-0af7-4f0f-b19a-408a6f73c8df",
+                      "modelType": "service",
+                      "modelName": "ServicevWINIFREDPID298109",
+                      "modelVersion": "1.0",
+                      "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe"
+                    }
+                  }
+                }
+              ]
+            },
+            "requestId": "a5335d4b-adae-4264-a51c-f3712cb4ae77",
+            "requestScope": "vnf",
+            "requestStatus": {
+              "percentProgress": 100.0,
+              "requestState": "FAILED",
+              "statusMessage": "Catch a Java Lang Exception in DecomposeService",
+              "finishTime": "Tue, 12 Sep 2017 18:22:29 GMT"
+            },
+            "requestType": "updateInstance",
+            "startTime": "Tue, 12 Sep 2017 18:22:28 GMT",
+            "instanceReferences": {
+              "serviceInstanceId": "6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+              "vnfInstanceId": "7c00cc1e-6425-4fc3-afc3-0289db288d4c",
+              "requestorId": "ds828e"
+            }
+          }
+        },
+        {
+          "request": {
+            "requestDetails": {
+              "cloudConfiguration": {
+                "lcpCloudRegionId": "hvf6",
+                "tenantId": "ffdf52b5e5104b0e8f329b0b1637ee2e"
+              },
+              "modelInfo": {
+                "modelCustomizationName": "VSP1710PID298109_vWINIFRED 0",
+                "modelCustomizationId": "24d43fdb-9aa6-4287-a68e-1e702ea89d13",
+                "modelInvariantId": "e7961100-cde6-4b5a-bcda-b8945086950a",
+                "modelVersionId": "959a7ba0-89ee-4984-9af6-65d5bdda4b0e",
+                "modelName": "VSP1710PID298109_vWINIFRED",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -337,7 +413,7 @@
                     "modelInfo": {
                       "modelInvariantId": "a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
                       "modelType": "service",
-                      "modelName": "ServicevMMSCPID298109",
+                      "modelName": "ServicevWINIFREDPID298109",
                       "modelVersion": "1.0",
                       "modelVersionId": "57e00952-0af7-4f0f-b19a-408a6f73c8df"
                     }
@@ -365,7 +441,7 @@
                     "modelInfo": {
                       "modelInvariantId": "a8dcd72d-d44d-44f2-aa85-53aa9ca0c657",
                       "modelType": "service",
-                      "modelName": "ServicevMMSCPID298109",
+                      "modelName": "ServicevWINIFREDPID298109",
                       "modelVersion": "1.0",
                       "modelVersionId": "57e00952-0af7-4f0f-b19a-408a6f73c8df"
                     }
@@ -394,7 +470,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -470,7 +546,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -529,7 +605,7 @@
             "requestScope": "vnf",
             "requestStatus": {
               "percentProgress": 100.0,
-              "requestState": "FAILED",
+              "requestState": "UNLOCKED",
               "statusMessage": "Error validating request. No valid catalog entry is specified",
               "finishTime": "Fri, 15 Sep 2017 14:43:22 GMT"
             },
@@ -546,7 +622,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -622,7 +698,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -698,7 +774,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -774,7 +850,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -989,7 +1065,7 @@
                 "modelCustomizationId": "2a4bcb63-e28b-441c-8df5-b817629d8211",
                 "modelInvariantId": "5d86a112-7157-4a1a-85ce-23fb8403e0e3",
                 "modelVersionId": "207152f3-4f60-41e7-b3f7-5a9e3a0b861f",
-                "modelName": "zrdm3amogx01",
+                "modelName": "zolson3amogx01",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -1093,7 +1169,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "relatedModelList": [
@@ -1103,7 +1179,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1122,7 +1198,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1157,7 +1233,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "relatedModelList": [
@@ -1167,7 +1243,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1186,7 +1262,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1221,7 +1297,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "relatedModelList": [
@@ -1231,7 +1307,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1250,7 +1326,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1285,7 +1361,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "2.0"
               },
@@ -1296,7 +1372,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1315,7 +1391,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1351,7 +1427,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "relatedModelList": [
@@ -1361,7 +1437,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1380,7 +1456,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1416,7 +1492,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "relatedModelList": [
@@ -1426,7 +1502,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1445,7 +1521,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "2.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1481,7 +1557,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "3.0"
               },
@@ -1492,7 +1568,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1511,7 +1587,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1547,7 +1623,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "3.0"
               },
@@ -1558,7 +1634,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1577,7 +1653,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1613,7 +1689,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "3.0"
               },
@@ -1624,7 +1700,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1643,7 +1719,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1679,7 +1755,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "3.0"
               },
@@ -1690,7 +1766,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }
@@ -1709,7 +1785,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelType": "service",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelVersion": "4.0",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd"
                     }

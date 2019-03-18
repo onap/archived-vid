@@ -1,7 +1,7 @@
 package vid.automation.test.infra;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,7 +20,7 @@ public class Get {
 
     public static WebElement byTestId(String dataTestId) {
         try {
-            return GeneralUIUtils.getDriver().findElement(By.xpath("//*[@data-tests-id='" + dataTestId + "']"));
+            return GeneralUIUtils.getDriver().findElement(getXpathForDataTestId(dataTestId));
         } catch (Exception var2) {
             return null;
         }
@@ -29,6 +29,14 @@ public class Get {
     public static WebElement byXpath(String xpath) {
         try {
             return GeneralUIUtils.getWebElementBy(By.xpath(xpath));
+        } catch (Exception var2) {
+            return null;
+        }
+    }
+
+    public static WebElement byXpath(WebElement context, String xpath) {
+        try {
+            return context.findElement(By.xpath(xpath));
         } catch (Exception var2) {
             return null;
         }
@@ -152,4 +160,16 @@ public class Get {
 			}
 		};
 	}
+
+    public static List<WebElement> listByTestId(String dataTestId) {
+        try {
+            return GeneralUIUtils.getDriver().findElements(getXpathForDataTestId(dataTestId));
+        } catch (Exception var2) {
+            return null;
+        }
+    }
+
+    public static By getXpathForDataTestId(String dataTestId) {
+        return By.xpath("//*[@data-tests-id='" + dataTestId + "']");
+    }
 }

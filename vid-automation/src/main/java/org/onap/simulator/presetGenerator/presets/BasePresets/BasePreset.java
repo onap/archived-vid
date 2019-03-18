@@ -1,11 +1,10 @@
 package org.onap.simulator.presetGenerator.presets.BasePresets;
 
-import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
-import org.springframework.http.HttpMethod;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
+import org.springframework.http.HttpMethod;
 
 /**
  * Created by itzikliderman on 13/12/2017.
@@ -13,12 +12,13 @@ import java.util.Map;
 public abstract class BasePreset {
 
     public RegistrationRequest generateScenario() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", getContentType());
+        Map<String, String> responseHeaders = new HashMap<>();
+        responseHeaders.put("Content-Type", getContentType());
 
         return new RegistrationRequest(
-                new RegistrationRequest.SimulatorRequest(getReqMethod(), getReqPath(), getQueryParams(), getRequestBody()),
-                new RegistrationRequest.SimulatorResponse(getResponseCode(), headers, getResponseBody(), getFile()));
+                new RegistrationRequest.SimulatorRequest(getReqMethod(), getReqPath(), getQueryParams(), getRequestBody(), isStrictMatch(), getRequestHeaders()),
+                new RegistrationRequest.SimulatorResponse(getResponseCode(), responseHeaders, getResponseBody(), getFile()),
+                new RegistrationRequest.Misc(getNumberOfTimes(), getReplace()));
     }
 
     public Object getResponseBody() { return  null; };
@@ -41,7 +41,19 @@ public abstract class BasePreset {
         return null;
     }
 
+    public boolean isStrictMatch() {
+        return false;
+    }
+
     public Map<String, List> getQueryParams() { return null; }
 
     protected abstract String getRootPath();
+
+    protected Integer getNumberOfTimes() {return null;}
+
+    protected boolean getReplace()  {return true;}
+
+    public Map<String,String> getRequestHeaders() {
+        return new HashMap<>();
+    }
 }

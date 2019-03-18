@@ -1,7 +1,7 @@
 package vid.automation.test.utils;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

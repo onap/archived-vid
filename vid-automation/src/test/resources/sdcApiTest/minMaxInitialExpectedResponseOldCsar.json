@@ -1,0 +1,363 @@
+{
+  "service": {
+    "uuid": "281b5f7d-c7ac-4ea9-92fb-2c1d625ca681",
+    "invariantUuid": "a977af77-db15-4375-a637-e9b994ecd569",
+    "name": "vMME_rVPMS_FE AIC3.0-11.2.1.7_SVC",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": null,
+    "serviceRole": null,
+    "description": "New service for vMME vProbe Front End AIC3.0 VPMS Radcom 11.2.1.7. Front End includes Qrouter, vProbe aff, vLB Agent aff and vLB.",
+    "serviceEcompNaming": "true",
+    "instantiationType": null,
+    "inputs": {}
+  },
+  "vnfs": {
+    "vMMEvProbe_FE_AIC3-11.2.1_VF 1": {
+      "uuid": "245562de-3984-49ef-a708-6c9d7cfcabd1",
+      "invariantUuid": "124216d6-71d0-41c8-ac81-0c5acfee514a",
+      "description": " New service for vMME vProbe Front End AIC3.0 VPMS Radcom 11.2.1.7. Front End includes Qrouter, vProbe aff, vLB Agent aff and vLB. ",
+      "name": "vMMEvProbe_FE_AIC3-11.2.1_VF",
+      "version": "1.0",
+      "customizationUuid": "8293273d-0e76-4661-926f-06a01ad2e683",
+      "inputs": {},
+      "commands": {},
+      "properties": {},
+      "type": null,
+      "modelCustomizationName": "vMMEvProbe_FE_AIC3-11.2.1_VF 1",
+      "vfModules": {
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1": {
+          "uuid": "e67e5b39-1f3b-4692-beec-eda94a0375a5",
+          "invariantUuid": "21c1b57d-a618-4397-a7f4-9c37169ea09b",
+          "customizationUuid": "a7d59494-3710-4b05-b4cd-e45dadbdc7ac",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null,
+          "volumeGroupAllowed": true
+        },
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Base_Module..module-0": {
+          "uuid": "59bb7d14-278f-4ff5-bd5a-1a720c8b0d19",
+          "invariantUuid": "9b5589c2-e4d1-4456-a23b-e0001c349155",
+          "customizationUuid": "b9d6f6e8-e24a-4ad9-b863-1c3f6757bfe7",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Base_Module..module-0",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Base_Module..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": null,
+            "baseModule" : true
+          },
+          "inputs": null,
+          "volumeGroupAllowed": false
+        },
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2": {
+          "uuid": "530e5e9f-2e82-4946-bf59-630f4d7ef4de",
+          "invariantUuid": "d1fb14d9-0fa8-4ead-b5cc-be311c7a95bd",
+          "customizationUuid": "c1f95365-716c-4f6c-9477-a8f760a2edce",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null,
+          "volumeGroupAllowed": true
+        },
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4": {
+          "uuid": "064385f9-795b-4fcb-9e3b-51d7d0ccad80",
+          "invariantUuid": "603e8f71-88ad-4bbf-9992-2e9a72a91e29",
+          "customizationUuid": "3b5efcd3-d14d-4b0e-91cf-937db5aa65b5",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null,
+          "volumeGroupAllowed": true
+        },
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3": {
+          "uuid": "85b712e0-af62-4255-aeb6-ec9ae0f4eb13",
+          "invariantUuid": "cba59330-855a-460b-8856-f6bff0dac6c2",
+          "customizationUuid": "962479d7-b5b7-4129-bf9f-bfe4775e7921",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null,
+          "volumeGroupAllowed": true
+        }
+      },
+      "volumeGroups": {
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1": {
+          "uuid": "e67e5b39-1f3b-4692-beec-eda94a0375a5",
+          "invariantUuid": "21c1b57d-a618-4397-a7f4-9c37169ea09b",
+          "customizationUuid": "a7d59494-3710-4b05-b4cd-e45dadbdc7ac",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null
+        },
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2": {
+          "uuid": "530e5e9f-2e82-4946-bf59-630f4d7ef4de",
+          "invariantUuid": "d1fb14d9-0fa8-4ead-b5cc-be311c7a95bd",
+          "customizationUuid": "c1f95365-716c-4f6c-9477-a8f760a2edce",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null
+        },
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4": {
+          "uuid": "064385f9-795b-4fcb-9e3b-51d7d0ccad80",
+          "invariantUuid": "603e8f71-88ad-4bbf-9992-2e9a72a91e29",
+          "customizationUuid": "3b5efcd3-d14d-4b0e-91cf-937db5aa65b5",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null
+        },
+        "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3": {
+          "uuid": "85b712e0-af62-4255-aeb6-ec9ae0f4eb13",
+          "invariantUuid": "cba59330-855a-460b-8856-f6bff0dac6c2",
+          "customizationUuid": "962479d7-b5b7-4129-bf9f-bfe4775e7921",
+          "description": null,
+          "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+          "version": "1",
+          "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": null,
+            "baseModule" : false
+          },
+          "inputs": null
+        }
+      },
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResource": null,
+  "configurations": null,
+  "fabricConfigurations": {},
+  "serviceProxies": null,
+  "vfModules": {
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1": {
+      "uuid": "e67e5b39-1f3b-4692-beec-eda94a0375a5",
+      "invariantUuid": "21c1b57d-a618-4397-a7f4-9c37169ea09b",
+      "customizationUuid": "a7d59494-3710-4b05-b4cd-e45dadbdc7ac",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null,
+      "volumeGroupAllowed": true
+    },
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Base_Module..module-0": {
+      "uuid": "59bb7d14-278f-4ff5-bd5a-1a720c8b0d19",
+      "invariantUuid": "9b5589c2-e4d1-4456-a23b-e0001c349155",
+      "customizationUuid": "b9d6f6e8-e24a-4ad9-b863-1c3f6757bfe7",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Base_Module..module-0",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Base_Module..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": null,
+        "baseModule" : true
+      },
+      "inputs": null,
+      "volumeGroupAllowed": false
+    },
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2": {
+      "uuid": "530e5e9f-2e82-4946-bf59-630f4d7ef4de",
+      "invariantUuid": "d1fb14d9-0fa8-4ead-b5cc-be311c7a95bd",
+      "customizationUuid": "c1f95365-716c-4f6c-9477-a8f760a2edce",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null,
+      "volumeGroupAllowed": true
+    },
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4": {
+      "uuid": "064385f9-795b-4fcb-9e3b-51d7d0ccad80",
+      "invariantUuid": "603e8f71-88ad-4bbf-9992-2e9a72a91e29",
+      "customizationUuid": "3b5efcd3-d14d-4b0e-91cf-937db5aa65b5",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null,
+      "volumeGroupAllowed": true
+    },
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3": {
+      "uuid": "85b712e0-af62-4255-aeb6-ec9ae0f4eb13",
+      "invariantUuid": "cba59330-855a-460b-8856-f6bff0dac6c2",
+      "customizationUuid": "962479d7-b5b7-4129-bf9f-bfe4775e7921",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null,
+      "volumeGroupAllowed": true
+    }
+  },
+  "volumeGroups": {
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1": {
+      "uuid": "e67e5b39-1f3b-4692-beec-eda94a0375a5",
+      "invariantUuid": "21c1b57d-a618-4397-a7f4-9c37169ea09b",
+      "customizationUuid": "a7d59494-3710-4b05-b4cd-e45dadbdc7ac",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null
+    },
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2": {
+      "uuid": "530e5e9f-2e82-4946-bf59-630f4d7ef4de",
+      "invariantUuid": "d1fb14d9-0fa8-4ead-b5cc-be311c7a95bd",
+      "customizationUuid": "c1f95365-716c-4f6c-9477-a8f760a2edce",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlbagent_aff..module-2",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null
+    },
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4": {
+      "uuid": "064385f9-795b-4fcb-9e3b-51d7d0ccad80",
+      "invariantUuid": "603e8f71-88ad-4bbf-9992-2e9a72a91e29",
+      "customizationUuid": "3b5efcd3-d14d-4b0e-91cf-937db5aa65b5",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_qrouter..module-4",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null
+    },
+    "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3": {
+      "uuid": "85b712e0-af62-4255-aeb6-ec9ae0f4eb13",
+      "invariantUuid": "cba59330-855a-460b-8856-f6bff0dac6c2",
+      "customizationUuid": "962479d7-b5b7-4129-bf9f-bfe4775e7921",
+      "description": null,
+      "name": "VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+      "version": "1",
+      "modelCustomizationName": "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vlb..module-3",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": null,
+        "baseModule" : false
+      },
+      "inputs": null
+    }
+  },
+  "pnfs": null,
+  "vnfGroups": null
+}

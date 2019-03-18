@@ -1,6 +1,13 @@
 package org.onap.vid.api;
 
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy;
+import static vid.automation.test.services.SimulatorApi.registerExpectation;
+
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -8,14 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy;
-import static vid.automation.test.services.SimulatorApi.registerExpectation;
 
 
 public class pProbeAaiApiTest extends BaseApiAaiTest {
@@ -36,7 +35,7 @@ public class pProbeAaiApiTest extends BaseApiAaiTest {
     //URIs
     private static final String GET_SERVICE_INSTANCE_PNFS = "aai_get_service_instance_pnfs/31739f3e-526b-11e6-beb8-9e71128cae77/AIM Transport/f36f5734-e9df-4fbf-9f35-61be13f028a1";
     private static final String GET_SPECIFIC_PNF_URI = "aai_get_pnfs/pnf/DEAAI78";
-    private static final String GET_PNF_BY_REGION = "aai_get_pnf_instances/e433710f-9217-458d-a79d-1c7aff376d89/VIRTUAL USP/8a84e59b-45fe-4851-8ff1-34225a0b32c3/83b458fd-5dd3-419b-a9e3-7335814a0911/AAIAIC25/Cisco/Nexus 3048-TP";
+    private static final String GET_PNF_BY_REGION = "aai_get_pnf_instances/e433710f-9217-458d-a79d-1c7aff376d89/TYLER SILVIA/8a84e59b-45fe-4851-8ff1-34225a0b32c3/83b458fd-5dd3-419b-a9e3-7335814a0911/JANET25/Cisco/Nexus 3048-TP";
 
 
 
@@ -109,7 +108,7 @@ public class pProbeAaiApiTest extends BaseApiAaiTest {
 
     @Test
     public void testGetPnfDataByRegion() throws Exception {
-        String expected = "{\"results\":[{\"id\":\"901128280\",\"url\":\"/aai/v12/network/pnfs/pnf/AS-pnf2-10219--as988q\",\"properties\":{\"pnfName\":\"AS-pnf2-10219--as988q\",\"equipType\":\"Switch\",\"equipVendor\":\"Cisco\",\"equipModel\":\"Nexus3048-TP\",\"inMaint\":false,\"resourceVersion\":\"1508776538192\"},\"nodeType\":\"pnf\",\"relatedTo\":[{\"id\":\"532488360\",\"url\":\"/aai/v12/business/customers/customer/customer-10219-as988q/service-subscriptions/service-subscription/serviceSub2-test-10219-as988q/service-instances/service-instance/serviceIns2-test-10219-as988q\",\"nodeType\":\"service-instance\",\"relationshipLabel\":\"uses\"},{\"id\":\"860164248\",\"url\":\"/aai/v12/cloud-infrastructure/complexes/complex/complex-10219--as988q\",\"nodeType\":\"complex\",\"relationshipLabel\":\"locatedIn\"}]}],\"additionalProperties\":{}}";
+        String expected = "{\"results\":[{\"id\":\"901128280\",\"url\":\"/aai/v12/network/pnfs/pnf/AS-pnf2-10219--as988q\",\"properties\":{\"pnfName\":\"AS-pnf2-10219--as988q\",\"equipType\":\"Switch\",\"equipVendor\":\"Cisco\",\"equipModel\":\"Nexus3048-TP\",\"inMaint\":false,\"resourceVersion\":\"1508776538192\"},\"nodeType\":\"pnf\",\"relatedTo\":[{\"id\":\"532488360\",\"url\":\"/aai/v12/business/customers/customer/customer-10219-as988q/service-subscriptions/service-subscription/serviceSub2-test-10219-as988q/service-instances/service-instance/serviceIns2-test-10219-as988q\",\"node-type\":\"service-instance\",\"relationship-label\":\"uses\"},{\"id\":\"860164248\",\"url\":\"/aai/v12/cloud-infrastructure/complexes/complex/complex-10219--as988q\",\"node-type\":\"complex\",\"relationship-label\":\"locatedIn\"}]}]}";
         callAaiWithSimulatedErrorResponse(GET_PNF_BY_REGION_RESPONSE,
                 ImmutableMap.of(),
                 buildUri(GET_PNF_BY_REGION), "",200,expected, HttpMethod.GET);
@@ -136,7 +135,7 @@ public class pProbeAaiApiTest extends BaseApiAaiTest {
     @Test
     public void testGetPnfDataByRegionNoResults() throws IOException, URISyntaxException {
         final String registratedResult = "{\"results\":[]}";
-        final String expectedResult ="{\"results\":[],\"additionalProperties\":{}}";
+        final String expectedResult ="{\"results\":[]}";
         final int expectedResponseCode = 200;
         callAaiWithSimulatedErrorResponse(GET_PNF_BY_REGION_RESPONSE_EMPTY,
                 ImmutableMap.of("500", Integer.toString(expectedResponseCode),"\"ERROR_PAYLOAD\"", StringEscapeUtils.escapeJson(registratedResult)),

@@ -22,7 +22,7 @@
           "modelCustomizationName": "AIC30_CONTRAIL_BASIC 0"
         },
         "requestParameters": {
-          "testApi": "GR_API",
+          "testApi": "VNF_API",
           "userParams": []
         },
         "cloudConfiguration": {

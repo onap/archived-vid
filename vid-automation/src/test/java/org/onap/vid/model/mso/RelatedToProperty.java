@@ -1,8 +1,6 @@
 package org.onap.vid.model.mso;
 
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 public class RelatedToProperty {
 
 	public String getPropertyKey() {
@@ -25,11 +23,9 @@ public class RelatedToProperty {
 	}
 
 
-	@JsonProperty("property-key")
 	public String propertyKey;
 	
 	
-	@JsonProperty("property-value")
 	public String propertyValue;
 
 }

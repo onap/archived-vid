@@ -1,27 +1,18 @@
 package vid.automation.test.test;
 
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.core.IsNot.not;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
-import org.json.JSONException;
-import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.Select;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.testng.annotations.*;
-import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
-import vid.automation.test.model.User;
-import vid.automation.test.sections.ChangeManagementPage;
-import vid.automation.test.services.SimulatorApi;
-import vid.automation.test.utils.DB_CONFIG;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -30,12 +21,33 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.IsNot.not;
+import org.json.JSONException;
+import org.junit.Assert;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
+import vid.automation.test.model.User;
+import vid.automation.test.sections.ChangeManagementPage;
+import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.utils.DB_CONFIG;
 
 public class ChangeManagementTest extends VidBaseTestCase {
 
@@ -119,16 +131,19 @@ public class ChangeManagementTest extends VidBaseTestCase {
         static final int vnfZrdm3amdns02test2Id = 11822;
         static final int vnfHarrisonKrisId = 12822;
         static String subscriberId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
-        static String serviceType = "vFlowLogic";
+        static String serviceType = "vRichardson";
         static String vnfType = "vMobileDNS";
         static String vnfSourceVersion = "1.0";
-        static String vnfName = "zrdm3amdns02test2";
+        static String vnfName = "zolson3amdns02test2";
         static String vnfTargetVersion = "5.0";
         static String workflowName = "VNF In Place Software Update";
     }
 
     @AfterClass
     protected void dropSpecialVNFs() {
+
+        resetGetServicesCache();
+
         System.out.println("Connecting database...");
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.url, DB_CONFIG.username, DB_CONFIG.password)) {
@@ -154,7 +169,6 @@ public class ChangeManagementTest extends VidBaseTestCase {
         SimulatorApi.clearAll();
         SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
                 "changeManagement/ecompportal_getSessionSlotCheckInterval.json"
-                        , "changeManagement/get_aai_get_subscribers.json"
                         , "changeManagement/get_aai_sub_details.json"
                         , "changeManagement/get_sdc_catalog_services_2f80c596.json"
                         , "changeManagement/get_service-design-and-creation.json"
@@ -163,8 +177,10 @@ public class ChangeManagementTest extends VidBaseTestCase {
                         , "changeManagement/mso_get_manual_task.json"
                         , "changeManagement/mso_post_manual_task.json"
         );
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(),SimulatorApi.RegistrationStrategy.APPEND);
 
         registerDefaultTablesData();
+        resetGetServicesCache();
     }
 
     private void registerDefaultTablesData() {
@@ -217,7 +233,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @Override
     protected UserCredentials getUserCredentials() {
 
-        String userName = Constants.Users.MOBILITY_VMMSC;
+        String userName = Constants.Users.EMANUEL_vWINIFRED;
         User user = usersService.getUser(userName);
         return new UserCredentials(user.credentials.userId, user.credentials.password, userName, "", "");
     }
@@ -520,11 +536,24 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Click.byId(Constants.ChangeManagement.dashboardFinishedTabId);
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.dashboardFinishedTableId));
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.dashboardFinishedTheadId));
+
         Click.byId(Constants.ChangeManagement.dashboardActiveTabId);
     }
 
     @Test
-    public void testMainDashboardTableContent() {
+    public void testFinishedSectionIncludeUnlockedItem() {
+        ChangeManagementPage.openChangeManagementPage();
+        Click.byId(Constants.ChangeManagement.dashboardFinishedTabId);
+        Assert.assertThat(Get.byClassAndText("vnf-name","Unlocked instance"),is(notNullValue()));
+
+    }
+
+
+
+
+
+    @Test
+    public void testMainDashboardTableContent () {
         ChangeManagementPage.openChangeManagementPage();
         GeneralUIUtils.ultimateWait();
         List<WebElement> webElements = Get.multipleElementsByTestId(Constants.ChangeManagement.activeTableRowId);

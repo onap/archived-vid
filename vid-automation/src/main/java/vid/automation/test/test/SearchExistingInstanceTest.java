@@ -1,19 +1,19 @@
 package vid.automation.test.test;
 
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
-import vid.automation.test.infra.Wait;
 import vid.automation.test.model.User;
 import vid.automation.test.sections.SearchExistingPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
-
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 public class SearchExistingInstanceTest extends VidBaseTestCase {
 
@@ -22,25 +22,15 @@ public class SearchExistingInstanceTest extends VidBaseTestCase {
 
     @BeforeClass
     public void registerToSimulatorAndLogin() {
-        SimulatorApi.clearAll();
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
         BulkRegistration.searchExistingServiceInstanceByOEAndProject();
-    }
-
-    @Test(groups = { "shouldBeMigratedToWorkWithSimulator" })
-    private void testSearchExistingInstanceById() throws Exception {
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
-        relogin(user.credentials);
-        SideMenu.navigateToSearchExistingPage();
-        goToExistingInstanceById("3f93c7cb-2fd0-4557-9514-e189b7b04f9d");
-
-        //a flow that updates an existing instance is tested in testCreateNewServiceInstance.
     }
 
     @Test
     private void testSearchExistingInstanceByOwningEntitySingleValue() {
         SearchExistingPage searchExistingPage = new SearchExistingPage();
         SideMenu.navigateToSearchExistingPage();
-        searchExistingPage.searchByOwningEntity("Wireline");
+        searchExistingPage.searchByOwningEntity("Melissa");
         searchExistingPage.clickSubmitButton();
         GeneralUIUtils.ultimateWait();
         assertTrue(searchExistingPage.checkEditOrViewExistsByInstanceId(serviceIdOeWirelineProjectX1));
@@ -49,7 +39,7 @@ public class SearchExistingInstanceTest extends VidBaseTestCase {
 
     @Test(groups = { "shouldBeMigratedToWorkWithSimulator" })
     private void testSearchExistingInstanceByOwningEntityMultiValue() throws Exception {
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
         SearchExistingPage searchExistingPage = new SearchExistingPage();
         SideMenu.navigateToSearchExistingPage();
@@ -78,7 +68,7 @@ public class SearchExistingInstanceTest extends VidBaseTestCase {
         SearchExistingPage searchExistingPage = new SearchExistingPage();
         SideMenu.navigateToSearchExistingPage();
         searchExistingPage.searchByProject("yyy1");
-        searchExistingPage.searchByOwningEntity("Wireline");
+        searchExistingPage.searchByOwningEntity("Melissa");
         searchExistingPage.clickSubmitButton();
         GeneralUIUtils.ultimateWait();
         assertTrue(searchExistingPage.checkEditOrViewExistsByInstanceId(serviceIdOeWirelineProjectYYY1));
@@ -88,7 +78,7 @@ public class SearchExistingInstanceTest extends VidBaseTestCase {
 
     @Test(groups = { "shouldBeMigratedToWorkWithSimulator" })
     private void testSearchExistingInstanceByProjectWithSpecialCharacters() throws Exception {
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
         SearchExistingPage searchExistingPage = new SearchExistingPage();
         SideMenu.navigateToSearchExistingPage();
@@ -103,7 +93,7 @@ public class SearchExistingInstanceTest extends VidBaseTestCase {
 
     @Test(groups = { "shouldBeMigratedToWorkWithSimulator" })
     private void testSearchExistingInstanceByProjectMultiValue() throws Exception {
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
         SearchExistingPage searchExistingPage = new SearchExistingPage();
         SideMenu.navigateToSearchExistingPage();

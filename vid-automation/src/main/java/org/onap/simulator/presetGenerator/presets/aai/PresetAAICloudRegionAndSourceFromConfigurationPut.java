@@ -2,12 +2,11 @@ package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAICloudRegionAndSourceFromConfigurationPut extends BaseAAIPreset {
 
@@ -64,9 +63,9 @@ public class PresetAAICloudRegionAndSourceFromConfigurationPut extends BaseAAIPr
                 "  \"results\": [{" +
                 "      \"id\": \"2979590232\"," +
                 "      \"node-type\": \"cloud-region\"," +
-                "      \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/SDNO-S-BcloudReg-E1802\"," +
+                "      \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/SDNO-S-BcloudReg-E1802\"," +
                 "      \"properties\": {" +
-                "        \"cloud-owner\": \"att-aic\"," +
+                "        \"cloud-owner\": \"irma-aic\"," +
                 "        \"cloud-region-id\": \"" + getCloudRegionId() + "\"," +
                 "        \"sriov-automation\": false," +
                 "        \"resource-version\": \"1513631040564\"" +

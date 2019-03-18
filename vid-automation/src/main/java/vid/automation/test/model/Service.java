@@ -1,5 +1,7 @@
 package vid.automation.test.model;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created by itzikliderman on 19/06/2017.
  */
@@ -32,5 +34,19 @@ public class Service {
         this.category = category;
         this.description = description;
         this.serviceRole = serviceRole;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("type", type)
+                .add("uuid", uuid)
+                .add("invariantUuid", invariantUuid)
+                .add("name", name)
+                .add("version", version)
+                .add("category", category)
+                .add("description", description)
+                .add("serviceRole", serviceRole)
+                .toString();
     }
 }

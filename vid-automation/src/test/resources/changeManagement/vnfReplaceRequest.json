@@ -1,0 +1,40 @@
+{
+  "requestDetails": [{
+
+    "vnfName": "VidVnf",
+    "vnfInstanceId": "e9181708-f105-4dfd-9a36-0e089faa72ba",
+    "modelInfo": {
+      "modelType": "vnf",
+      "modelInvariantId": "ff5256d1-5a33-55df-13ab-12abad84e7ff",
+      "modelVersionId": "254583ad-b38c-498b-bdbd-b8de5e07541b",
+      "modelName": "vSAMP12",
+      "modelVersion": "2.0",
+      "modelCustomizationName": "vSAMP12 1",
+      "modelCustomizationId": "c539433a-84a6-4082-a12e-5c9b00c3b960"
+    },
+    "cloudConfiguration": {
+      "lcpCloudRegionId": "mdt1",
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e"
+    },
+    "requestInfo": {
+      "source": "VID",
+      "requestorId": "az2016"
+    },
+    "relatedInstanceList": [{
+      "relatedInstance": {
+        "instanceId": "254583ad-b38c-498b-bdbd-b8de5e07541b",
+        "modelInfo": {
+          "modelType": "service",
+          "modelInvariantId": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+          "modelVersionId": "9ebb1521-2e74-47a4-aac7-e71a79f73a79",
+          "modelName": "fakeModelName",
+          "modelVersion": "2.0"
+        }
+      }
+    }],
+    "requestParameters": {
+      "rebuildVolumeGroups": false
+    }
+  }],
+  "requestType" : "replace"
+}

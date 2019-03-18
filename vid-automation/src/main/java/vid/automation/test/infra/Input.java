@@ -1,6 +1,6 @@
 package vid.automation.test.infra;
 
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.utils.ReadFile;
 

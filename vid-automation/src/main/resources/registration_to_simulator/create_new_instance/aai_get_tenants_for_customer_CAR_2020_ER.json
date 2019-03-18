@@ -1,0 +1,32 @@
+{
+  "service-type": "TYLER SILVIA",
+  "resource-version": "1494001841964",
+  "relationship-list": {
+    "relationship": [
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/CAR_2020_ER/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e66",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "CAR_2020_ER"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "092eb9e8e4b7412e8787dd091bc58e66"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "MSO_TENANT"
+          }
+        ]
+      }
+    ]
+  }
+}

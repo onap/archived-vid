@@ -1,12 +1,11 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
     String oeName;
@@ -45,11 +44,11 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "              {" +
                 "                \"related-to\": \"service-instance\"," +
                 "                \"relationship-label\": \"org.onap.relationships.inventory.BelongsTo\"," +
-                "                \"related-link\": \"/aai/v12/business/customers/customer/MSO_1610_ST/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/af9d52f9-13b2-4657-a198-463677f82dc0\"," +
+                "                \"related-link\": \"/aai/v12/business/customers/customer/CAR_2020_ER/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/af9d52f9-13b2-4657-a198-463677f82dc0\"," +
                 "                \"relationship-data\": [" +
                 "                  {" +
                 "                    \"relationship-key\": \"customer.global-customer-id\"," +
-                "                    \"relationship-value\": \"MSO_1610_ST\"" +
+                "                    \"relationship-value\": \"CAR_2020_ER\"" +
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-subscription.service-type\"," +
@@ -70,11 +69,11 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "              {" +
                 "                \"related-to\": \"service-instance\"," +
                 "                \"relationship-label\": \"org.onap.relationships.inventory.BelongsTo\"," +
-                "                \"related-link\": \"/aai/v12/business/customers/customer/MSO_1610_ST/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/49769492-5def-4c89-8e73-b236f958fa40\"," +
+                "                \"related-link\": \"/aai/v12/business/customers/customer/CAR_2020_ER/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/49769492-5def-4c89-8e73-b236f958fa40\"," +
                 "                \"relationship-data\": [" +
                 "                  {" +
                 "                    \"relationship-key\": \"customer.global-customer-id\"," +
-                "                    \"relationship-value\": \"MSO_1610_ST\"" +
+                "                    \"relationship-value\": \"CAR_2020_ER\"" +
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-subscription.service-type\"," +
@@ -120,7 +119,7 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "              {" +
                 "                \"related-to\": \"service-instance\"," +
                 "                \"relationship-label\": \"org.onap.relationships.inventory.BelongsTo\"," +
-                "                \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Mobility/service-instances/service-instance/7e4f8130-5dee-47c4-8770-1abc5f5ded83\"," +
+                "                \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Emanuel/service-instances/service-instance/7e4f8130-5dee-47c4-8770-1abc5f5ded83\"," +
                 "                \"relationship-data\": [" +
                 "                  {" +
                 "                    \"relationship-key\": \"customer.global-customer-id\"," +
@@ -128,7 +127,7 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-subscription.service-type\"," +
-                "                    \"relationship-value\": \"Mobility\"" +
+                "                    \"relationship-value\": \"Emanuel\"" +
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-instance.service-instance-id\"," +
@@ -145,7 +144,7 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "              {" +
                 "                \"related-to\": \"service-instance\"," +
                 "                \"relationship-label\": \"org.onap.relationships.inventory.BelongsTo\"," +
-                "                \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Mobility/service-instances/service-instance/d849b312-03f6-4fa3-a923-a469b850ec73\"," +
+                "                \"related-link\": \"/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Emanuel/service-instances/service-instance/d849b312-03f6-4fa3-a923-a469b850ec73\"," +
                 "                \"relationship-data\": [" +
                 "                  {" +
                 "                    \"relationship-key\": \"customer.global-customer-id\"," +
@@ -153,7 +152,7 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-subscription.service-type\"," +
-                "                    \"relationship-value\": \"Mobility\"" +
+                "                    \"relationship-value\": \"Emanuel\"" +
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-instance.service-instance-id\"," +

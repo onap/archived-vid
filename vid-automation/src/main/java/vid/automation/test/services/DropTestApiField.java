@@ -12,21 +12,30 @@ import java.util.function.UnaryOperator;
 public class DropTestApiField {
 
     public static UnaryOperator<String> dropTestApiFieldFromString() {
-        if (Features.FLAG_ADD_MSO_TESTAPI_FIELD.isActive()) {
+        return dropFieldFromString("testApi", Features.FLAG_ADD_MSO_TESTAPI_FIELD,
+                "simulatorRequest", "body", "requestDetails", "requestParameters", "testApi");
+    }
+
+    public static UnaryOperator<String> dropFieldCloudOwnerFromString() {
+        return dropFieldFromString("cloudOwner", Features.FLAG_ADD_MSO_TESTAPI_FIELD,
+                "simulatorRequest", "body", "requestDetails", "cloudConfiguration", "cloudOwner");
+    }
+    private static UnaryOperator<String> dropFieldFromString(String text, Features featureFlag, String basePath, String... nodes){
+        if (featureFlag.isActive()) {
             // do nothing
             return in -> in;
         } else {
             final ObjectMapper objectMapper = new ObjectMapper();
             return in -> {
-                if (!in.contains("testApi")) {
+                if (!in.contains(text)) {
                     // short circuit
                     return in;
                 }
 
                 try {
                     final JsonNode tree = objectMapper.readTree(in);
-                    final JsonNode node = tree.path("simulatorRequest");
-                    if (removePath(node, "body", "requestDetails", "requestParameters", "testApi") != null) {
+                    final JsonNode node = tree.path(basePath);
+                    if (removePath(node, nodes) != null) {
                         // tree modified, write back to string
                         return objectMapper.writeValueAsString(tree);
                     } else {

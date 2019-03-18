@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/mso/orchestrationRequests/v5",
+    "path": "/mso/orchestrationRequests/v.",
     "queryParams": {
       "filter": "modelType:EQUALS:vnf"
     }
@@ -14,7 +14,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -76,7 +76,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -138,7 +138,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -200,7 +200,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -262,7 +262,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -324,7 +324,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -386,7 +386,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -448,7 +448,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -510,7 +510,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -572,7 +572,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -634,7 +634,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -696,7 +696,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -758,7 +758,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -820,7 +820,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -882,7 +882,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -944,7 +944,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1006,7 +1006,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1068,7 +1068,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1130,7 +1130,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1192,7 +1192,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1254,7 +1254,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1316,7 +1316,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1378,7 +1378,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1440,7 +1440,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1502,7 +1502,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1561,7 +1561,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1623,7 +1623,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1685,7 +1685,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1747,7 +1747,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1809,7 +1809,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1871,7 +1871,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1933,7 +1933,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -1995,7 +1995,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2057,7 +2057,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2119,7 +2119,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2181,7 +2181,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2243,7 +2243,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2305,7 +2305,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2367,7 +2367,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2429,7 +2429,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2491,7 +2491,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2504,7 +2504,7 @@
                 "modelVersion": "3.0"
               },
               "requestInfo": {
-                "instanceName": "zrdm3rprb01",
+                "instanceName": "zolson3rprb01",
                 "source": "VID",
                 "suppressRollback": false,
                 "requestorId": "sg871u"
@@ -2546,7 +2546,7 @@
             "instanceReferences": {
               "serviceInstanceId": "8ccda9f2-2a5f-4445-ba64-fc3dad56cdb6",
               "vnfInstanceId": "330813fb-5ab2-4f0c-83d2-4d6dafc2d0f6",
-              "vnfInstanceName": "zrdm3rprb01",
+              "vnfInstanceName": "zolson3rprb01",
               "requestorId": "sg871u"
             }
           }
@@ -2555,7 +2555,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2615,7 +2615,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2677,7 +2677,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2737,7 +2737,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2799,7 +2799,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "460f35aeb53542dc9f77105066483e83"
               },
               "modelInfo": {
@@ -2845,7 +2845,7 @@
             "requestStatus": {
               "percentProgress": 100,
               "requestState": "FAILED",
-              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='org.openecomp.mso.openstack.exceptions.MsoAdapterException: Authentication Failure: tenant=460f35aeb53542dc9f77105066483e83,cloud=RDM5BDCP' rolledBack='true'",
+              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='org.openecomp.mso.openstack.exceptions.MsoAdapterException: Authentication Failure: tenant=460f35aeb53542dc9f77105066483e83,cloud=olson5BDCP' rolledBack='true'",
               "finishTime": "Fri, 06 Oct 2017 13:54:46 GMT"
             },
             "requestType": "replaceInstance",
@@ -2861,7 +2861,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "8830e9086a0f40cc9cf868e792602c4d"
               },
               "modelInfo": {
@@ -2923,15 +2923,15 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "868caab7b590480ba6334c2079f98e5c"
               },
               "modelInfo": {
-                "modelCustomizationName": "mdns_2017_1011 0",
+                "modelCustomizationName": "CHARLOTTE_2017_1011 0",
                 "modelCustomizationId": "75c035b6-5866-41e6-ba59-7bd898626d74",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "950ddbcf-f2d4-41a1-a1fa-6e62a74686f2",
-                "modelName": "mdns_2017_1011",
+                "modelName": "CHARLOTTE_2017_1011",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -2956,7 +2956,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "ee6e6d7f-203c-4abb-b0d2-c807792093e2",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -2985,15 +2985,15 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "868caab7b590480ba6334c2079f98e5c"
               },
               "modelInfo": {
-                "modelCustomizationName": "mdns_2017_1011 0",
+                "modelCustomizationName": "CHARLOTTE_2017_1011 0",
                 "modelCustomizationId": "75c035b6-5866-41e6-ba59-7bd898626d74",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "950ddbcf-f2d4-41a1-a1fa-6e62a74686f2",
-                "modelName": "mdns_2017_1011",
+                "modelName": "CHARLOTTE_2017_1011",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -3018,7 +3018,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "ee6e6d7f-203c-4abb-b0d2-c807792093e2",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -3047,15 +3047,15 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "868caab7b590480ba6334c2079f98e5c"
               },
               "modelInfo": {
-                "modelCustomizationName": "mdns_2017_1011 1",
+                "modelCustomizationName": "CHARLOTTE_2017_1011 1",
                 "modelCustomizationId": "796636ca-e9d5-4591-ae12-d1b038f43e4a",
                 "modelInvariantId": "b217c612-7fcf-484c-861b-df0a5c4b5bcb",
                 "modelVersionId": "50d679c7-8543-4d4f-a304-2ff2826bc98e",
-                "modelName": "mdns_2017_1011",
+                "modelName": "CHARLOTTE_2017_1011",
                 "modelType": "vnf",
                 "modelVersion": "2.0"
               },
@@ -3080,7 +3080,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "7cce8c53-d391-42aa-984d-c6166dee9abe",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "2.0"
                     }
@@ -3109,15 +3109,15 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "868caab7b590480ba6334c2079f98e5c"
               },
               "modelInfo": {
-                "modelCustomizationName": "mdns_2017_1011 1",
+                "modelCustomizationName": "CHARLOTTE_2017_1011 1",
                 "modelCustomizationId": "796636ca-e9d5-4591-ae12-d1b038f43e4a",
                 "modelInvariantId": "b217c612-7fcf-484c-861b-df0a5c4b5bcb",
                 "modelVersionId": "50d679c7-8543-4d4f-a304-2ff2826bc98e",
-                "modelName": "mdns_2017_1011",
+                "modelName": "CHARLOTTE_2017_1011",
                 "modelType": "vnf",
                 "modelVersion": "2.0"
               },
@@ -3142,7 +3142,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "7cce8c53-d391-42aa-984d-c6166dee9abe",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "2.0"
                     }
@@ -3171,15 +3171,15 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "868caab7b590480ba6334c2079f98e5c"
               },
               "modelInfo": {
-                "modelCustomizationName": "mdns_2017_1011 1",
+                "modelCustomizationName": "CHARLOTTE_2017_1011 1",
                 "modelCustomizationId": "365a095f-9eb8-4e1a-b567-c9d718d98ee9",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "90caad85-5d5c-4caf-9ddd-c05f6e088ba2",
-                "modelName": "mdns_2017_1011",
+                "modelName": "CHARLOTTE_2017_1011",
                 "modelType": "vnf",
                 "modelVersion": "3.0"
               },
@@ -3204,7 +3204,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "e1092bfc-c14c-4de3-8ced-2d98c2a24dc3",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "3.0"
                     }
@@ -3233,7 +3233,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "868caab7b590480ba6334c2079f98e5c"
               },
               "modelInfo": {
@@ -3266,7 +3266,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "e1092bfc-c14c-4de3-8ced-2d98c2a24dc3",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "3.0"
                     }
@@ -3295,7 +3295,7 @@
           "request": {
             "requestDetails": {
               "cloudConfiguration": {
-                "lcpCloudRegionId": "rdm5b",
+                "lcpCloudRegionId": "olson5b",
                 "tenantId": "868caab7b590480ba6334c2079f98e5c"
               },
               "modelInfo": {
@@ -3328,7 +3328,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "e1092bfc-c14c-4de3-8ced-2d98c2a24dc3",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "3.0"
                     }
@@ -3364,7 +3364,7 @@
                 "modelCustomizationId": "2a4bcb63-e28b-441c-8df5-b817629d8211",
                 "modelInvariantId": "5d86a112-7157-4a1a-85ce-23fb8403e0e3",
                 "modelVersionId": "207152f3-4f60-41e7-b3f7-5a9e3a0b861f",
-                "modelName": "zrdm3amogx01",
+                "modelName": "zolson3amogx01",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -3659,7 +3659,7 @@
             "requestStatus": {
               "percentProgress": 100,
               "requestState": "FAILED",
-              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='Resource null_base_dns_0 already exists in cloud/tenant rdm5b/868caab7b590480ba6334c2079f98e5c with ID null_base_dns_0/82b8cd27-b05e-4d04-9944-1275d63f5592' rolledBack='true'",
+              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='Resource null_base_dns_0 already exists in cloud/tenant olson5b/868caab7b590480ba6334c2079f98e5c with ID null_base_dns_0/82b8cd27-b05e-4d04-9944-1275d63f5592' rolledBack='true'",
               "finishTime": "Wed, 01 Nov 2017 21:13:47 GMT"
             },
             "requestType": "replaceInstance",
@@ -3887,7 +3887,7 @@
             "requestStatus": {
               "percentProgress": 100,
               "requestState": "FAILED",
-              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='Resource null_base_dns_0 already exists in cloud/tenant rdm5b/868caab7b590480ba6334c2079f98e5c with ID null_base_dns_0/bdca66c9-4c2b-4a42-a402-d6978a34f68d' rolledBack='true'",
+              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='Resource null_base_dns_0 already exists in cloud/tenant olson5b/868caab7b590480ba6334c2079f98e5c with ID null_base_dns_0/bdca66c9-4c2b-4a42-a402-d6978a34f68d' rolledBack='true'",
               "finishTime": "Fri, 03 Nov 2017 18:47:14 GMT"
             },
             "requestType": "replaceInstance",
@@ -3964,7 +3964,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -3979,7 +3979,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "3.0"
                     }
@@ -4014,7 +4014,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4029,7 +4029,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "2.0"
                     }
@@ -4065,7 +4065,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4080,7 +4080,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4115,7 +4115,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4130,7 +4130,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "3.0"
                     }
@@ -4165,7 +4165,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4180,7 +4180,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -4215,7 +4215,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4230,7 +4230,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4265,7 +4265,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4280,7 +4280,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4315,7 +4315,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4330,7 +4330,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4365,7 +4365,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4380,7 +4380,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4415,7 +4415,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4430,7 +4430,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4465,7 +4465,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4480,7 +4480,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4515,7 +4515,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4530,7 +4530,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4565,7 +4565,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4580,7 +4580,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "4.0"
                     }
@@ -4615,7 +4615,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4630,7 +4630,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -4665,7 +4665,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4680,7 +4680,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -4715,7 +4715,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -4731,7 +4731,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -4767,7 +4767,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4782,7 +4782,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "3.0"
                     }
@@ -4817,7 +4817,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4832,7 +4832,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -4867,7 +4867,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -4883,7 +4883,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -4919,7 +4919,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "4.0"
               },
@@ -4935,7 +4935,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "5.0"
                     }
@@ -4971,7 +4971,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf"
               },
               "requestInfo": {
@@ -4986,7 +4986,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "2.0"
                     }
@@ -5021,7 +5021,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "1.0"
               },
@@ -5037,7 +5037,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "1.0"
                     }
@@ -5073,7 +5073,7 @@
                 "modelCustomizationId": "1779a999-ea17-4f31-98e9-75b6fbdd0acb",
                 "modelInvariantId": "93e16072-715a-42ef-9d0a-080052d6b716",
                 "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                "modelName": "mdns_2017_1011_oh22u_20171103",
+                "modelName": "CHARLOTTE_2017_1011_oh22u_20171103",
                 "modelType": "vnf",
                 "modelVersion": "3.0"
               },
@@ -5089,7 +5089,7 @@
                     "modelInfo": {
                       "modelInvariantId": "e58733ef-43cb-4b6b-b641-922078b6c88b",
                       "modelVersionId": "4ec07a2d-6bb5-4373-8ed6-4bc7ac1246fd",
-                      "modelName": "mdns_2017_1011",
+                      "modelName": "CHARLOTTE_2017_1011",
                       "modelType": "service",
                       "modelVersion": "3.0"
                     }
@@ -5384,7 +5384,7 @@
             "requestStatus": {
               "percentProgress": 100,
               "requestState": "FAILED",
-              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='Resource null_base_dns_0 already exists in cloud/tenant rdm5b/868caab7b590480ba6334c2079f98e5c with ID null_base_dns_0/bdca66c9-4c2b-4a42-a402-d6978a34f68d' rolledBack='true'",
+              "statusMessage": "Received vfModuleException from VnfAdapter: category='INTERNAL' message='Resource null_base_dns_0 already exists in cloud/tenant olson5b/868caab7b590480ba6334c2079f98e5c with ID null_base_dns_0/bdca66c9-4c2b-4a42-a402-d6978a34f68d' rolledBack='true'",
               "finishTime": "Wed, 15 Nov 2017 14:41:18 GMT"
             },
             "requestType": "replaceInstance",

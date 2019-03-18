@@ -1,12 +1,33 @@
 package org.onap.vid.api;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofL3Network;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofServiceInstance;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVlanTag;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVnf;
+import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.UUID;
 import net.javacrumbs.jsonunit.JsonAssert;
+import net.javacrumbs.jsonunit.core.Configuration;
+import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.text.StringEscapeUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIBadBodyForGetServicesGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetHomingForVfModule;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegion;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing;
@@ -17,6 +38,9 @@ import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringS
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePortsError;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.model.aai.AaiResponse;
 import org.onap.vid.model.mso.OperationalEnvironmentList;
 import org.onap.vid.more.LoggerFormatTest;
@@ -29,31 +53,23 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
 import vid.automation.test.services.SimulatorApi;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.*;
-import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import vid.automation.test.utils.TestHelper;
 
 public class AaiApiTest extends BaseApiAaiTest {
 
-
+    private static final String AAI_HOMING_DATA_RESPONSE = "viewEdit/aaiHomingDataResponse.json";
     public static final String GET_OPERATIONAL_ENVIRONMENTS_JSON = "get_operational_environments_aai.json";
     public static final String GET_OPERATIONAL_ENVIRONMENTS_JSON_ERROR = "get_operational_environments_aai_error.json";
-    public static final String[] AAI_GET_SERVICES_ERROR_SIMULATOR_RESPONSES = {"getServicesAaiErrorResp.json", "aai_get_full_subscribers.json"};
-    public static final String[] AAI_GET_SERVICES_FINE_SIMULATOR_RESPONSES = {"getServicesAaiFineResp.json", "aai_get_full_subscribers.json"};
-
+    public static final String[] AAI_GET_SERVICES_ERROR_SIMULATOR_RESPONSES = {"getServicesAaiErrorResp.json", "create_new_instance/aai_get_full_subscribers.json"};
+    public static final String[] AAI_GET_SERVICES_FINE_SIMULATOR_RESPONSES = {"getServicesAaiFineResp.json", "create_new_instance/aai_get_full_subscribers.json"};
+    public static final String AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON = "changeManagement/get_vnf_data_by_globalid_and_service_type.json";
     public static final String OPERATIONAL_ENVIRONMENT_TYPE = "VNF";
     public static final String OPERATIONAL_ENVIRONMENT_STATUS = "Activate";
-    public static final String BASE_GET_SERVICES_AAI_REQUEST_BODY = "{\"start\" : \"service-design-and-creation/models\", \"query\" : \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\";}";
     public static final String GET_INSTANCE_GROUPS_BY_CLOUDREGION_EXPECTED_RESPONSE = "{\"results\":[{\"instance-group\":{\"id\":\"AAI-12002-test3-vm230w\",\"description\":\"a9DEa0kpY\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"model-id3\",\"model-version-id\":\"a0efd5fc-f7be-4502-936a-a6c6392b958f\",\"instance-group-type\":\"type\",\"resource-version\":\"1520888659539\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"relatedToPropertyList\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}],\"related-to\":\"cloud-region\",\"related-link\":\"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\"relationship-label\":\"org.onap.relationships.inventory.Uses\",\"relationship-data\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"related-to-property\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}]}]}}},{\"instance-group\":{\"id\":\"AAI-12002-test1-vm230w\",\"description\":\"a9DEa0kpY\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"model-id1\",\"model-version-id\":\"a0efd5fc-f7be-4502-936a-a6c6392b958f\",\"instance-group-type\":\"type\",\"resource-version\":\"1520886467989\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"relatedToPropertyList\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}],\"related-to\":\"cloud-region\",\"related-link\":\"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\"relationship-label\":\"org.onap.relationships.inventory.Uses\",\"relationship-data\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"related-to-property\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}]}]}}},{\"instance-group\":{\"id\":\"AAI-12002-test2-vm230w\",\"description\":\"a9DEa0kpY\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"model-id2\",\"model-version-id\":\"version2\",\"instance-group-type\":\"type\",\"resource-version\":\"1520888629970\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"relatedToPropertyList\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}],\"related-to\":\"cloud-region\",\"related-link\":\"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\"relationship-label\":\"org.onap.relationships.inventory.Uses\",\"relationship-data\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"related-to-property\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}]}]}}}]}\n";
-    public static final String GET_NETWORK_COLLECTION_EXPECTED_RESPONSE = "{\"results\":{\"collection\":{\"collection-id\":\"collection-1-2018-rs804s\",\"model-invariant-id\":\"5761e0a7-defj777\",\"model-version-id\":\"5761e0a7-defj232\",\"collection-name\":\"collection-name\",\"collection-type\":\"L3-NETWORK\",\"collection-role\":\"SUB-INTERFACE\",\"collection-function\":\"collection-function\",\"collection-customization-id\":\"custom-unique-data-id\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"customer.global-customer-id\",\"relationship-value\":\"customer-1-2017-rs804s\"},{\"relationship-key\":\"service-subscription.service-type\",\"relationship-value\":\"service-value7-rs804s\"},{\"relationship-key\":\"service-instance.service-instance-id\",\"relationship-value\":\"2UJZZ01777-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"service-instance.service-instance-name\",\"property-value\":null}],\"related-to\":\"service-instance\",\"related-link\":\"/aai/v13/business/customers/customer/customer-1-2017-rs804s/service-subscriptions/service-subscription/service-value7-rs804s/service-instances/service-instance/2UJZZ01777-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"customer.global-customer-id\",\"relationship-value\":\"customer-1-2017-rs804s\"},{\"relationship-key\":\"service-subscription.service-type\",\"relationship-value\":\"service-value7-rs804s\"},{\"relationship-key\":\"service-instance.service-instance-id\",\"relationship-value\":\"2UJZZ01777-rs804s\"}],\"related-to-property\":[{\"property-key\":\"service-instance.service-instance-name\",\"property-value\":null}]},{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]},\"resource-version\":\"1521662811309\"},\"networks\":[{\"network-id\":\"l3network-id-rs804s\",\"network-name\":\"oam-net\",\"network-type\":\"Tenant_Layer_3\",\"network-role\":\"HngwProtectedOam.OAM\",\"network-technology\":\"Contrail\",\"is-bound-to-vpn\":false,\"resource-version\":\"1521662814627\",\"is-provider-network\":false,\"is-shared-network\":false,\"is-external-network\":false,\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]}},{\"network-id\":\"l3network-id-3-rs804s\",\"network-name\":\"oam-net\",\"network-type\":\"Tenant_Layer_3\",\"network-role\":\"HngwProtectedOam.OAM\",\"network-technology\":\"Contrail\",\"is-bound-to-vpn\":false,\"resource-version\":\"1521662816043\",\"is-provider-network\":false,\"is-shared-network\":false,\"is-external-network\":false,\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]}},{\"network-id\":\"l3network-id-2-rs804s\",\"network-name\":\"oam-net\",\"network-type\":\"Tenant_Layer_3\",\"network-role\":\"HngwProtectedOam.OAM\",\"network-technology\":\"Contrail\",\"is-bound-to-vpn\":false,\"resource-version\":\"1521662815304\",\"is-provider-network\":false,\"is-shared-network\":false,\"is-external-network\":false,\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]}}],\"service-instance\":{\"service-instance-id\":\"2UJZZ01777-rs804s\",\"resource-version\":\"1521662813382\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"relatedToPropertyList\":null,\"related-to\":\"collection\",\"related-link\":\"/aai/v13/network/collections/collection/collection-1-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"related-to-property\":null}]}},\"instance-group\":{\"id\":\"instanceGroup-2018-rs804s\",\"description\":\"zr6h\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"5761e0a7-defj777\",\"model-version-id\":\"5761e0a7-defj22\",\"instance-group-type\":\"7DDjOdNL\",\"resource-version\":\"1521662814023\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}],\"related-to\":\"l3-network\",\"related-link\":\"/aai/v13/network/l3-networks/l3-network/l3network-id-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-rs804s\"}],\"related-to-property\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}]},{\"relationDataList\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"relatedToPropertyList\":null,\"related-to\":\"collection\",\"related-link\":\"/aai/v13/network/collections/collection/collection-1-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"related-to-property\":null},{\"relationDataList\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-3-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}],\"related-to\":\"l3-network\",\"related-link\":\"/aai/v13/network/l3-networks/l3-network/l3network-id-3-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-3-rs804s\"}],\"related-to-property\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}]},{\"relationDataList\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-2-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}],\"related-to\":\"l3-network\",\"related-link\":\"/aai/v13/network/l3-networks/l3-network/l3network-id-2-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-2-rs804s\"}],\"related-to-property\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}]}]}}}}\n";
+    public static final String GET_NETWORK_COLLECTION_EXPECTED_RESPONSE = "{\"results\":{\"collection\":{\"collection-id\":\"collection-1-2018-rs804s\",\"model-invariant-id\":\"5761e0a7-defj777\",\"model-version-id\":\"5761e0a7-defj232\",\"collection-name\":\"collection-name\",\"collection-type\":\"L3-NETWORK\",\"collection-role\":\"SUB-INTERFACE\",\"collection-function\":\"collection-function\",\"collection-customization-id\":\"custom-unique-data-id\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"customer.global-customer-id\",\"relationship-value\":\"customer-1-2017-rs804s\"},{\"relationship-key\":\"service-subscription.service-type\",\"relationship-value\":\"service-value7-rs804s\"},{\"relationship-key\":\"service-instance.service-instance-id\",\"relationship-value\":\"2UJZZ01777-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"service-instance.service-instance-name\",\"property-value\":null}],\"related-to\":\"service-instance\",\"related-link\":\"/aai/v13/business/customers/customer/customer-1-2017-rs804s/service-subscriptions/service-subscription/service-value7-rs804s/service-instances/service-instance/2UJZZ01777-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"customer.global-customer-id\",\"relationship-value\":\"customer-1-2017-rs804s\"},{\"relationship-key\":\"service-subscription.service-type\",\"relationship-value\":\"service-value7-rs804s\"},{\"relationship-key\":\"service-instance.service-instance-id\",\"relationship-value\":\"2UJZZ01777-rs804s\"}],\"related-to-property\":[{\"property-key\":\"service-instance.service-instance-name\",\"property-value\":null}]},{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]},\"resource-version\":\"1521662811309\"},\"networks\":[{\"network-id\":\"l3network-id-rs804s\",\"network-name\":\"oam-net\",\"network-type\":\"Tenant_Layer_3\",\"network-role\":\"RosemaProtectedOam.OAM\",\"network-technology\":\"Contrail\",\"is-bound-to-vpn\":false,\"resource-version\":\"1521662814627\",\"orchestration-status\":\"Created\",\"is-provider-network\":false,\"is-shared-network\":false,\"is-external-network\":false,\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]}},{\"network-id\":\"l3network-id-3-rs804s\",\"network-name\":\"oam-net\",\"network-type\":\"Tenant_Layer_3\",\"network-role\":\"RosemaProtectedOam.OAM\",\"network-technology\":\"Contrail\",\"is-bound-to-vpn\":false,\"resource-version\":\"1521662816043\",\"orchestration-status\":\"Created\",\"is-provider-network\":false,\"is-shared-network\":false,\"is-external-network\":false,\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]}},{\"network-id\":\"l3network-id-2-rs804s\",\"network-name\":\"oam-net\",\"network-type\":\"Tenant_Layer_3\",\"network-role\":\"RosemaProtectedOam.OAM\",\"network-technology\":\"Contrail\",\"is-bound-to-vpn\":false,\"resource-version\":\"1521662815304\",\"orchestration-status\":\"Created\",\"is-provider-network\":false,\"is-shared-network\":false,\"is-external-network\":false,\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}],\"related-to\":\"instance-group\",\"related-link\":\"/aai/v13/network/instance-groups/instance-group/instanceGroup-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"instance-group.id\",\"relationship-value\":\"instanceGroup-2018-rs804s\"}],\"related-to-property\":[{\"property-key\":\"instance-group.description\",\"property-value\":\"zr6h\"},{\"property-key\":\"instance-group.instance-group-name\",\"property-value\":\"wKmBXiO1xm8bK\"}]}]}}],\"service-instance\":{\"service-instance-id\":\"2UJZZ01777-rs804s\",\"resource-version\":\"1521662813382\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"relatedToPropertyList\":null,\"related-to\":\"collection\",\"related-link\":\"/aai/v13/network/collections/collection/collection-1-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"related-to-property\":null}]}},\"instance-group\":{\"id\":\"instanceGroup-2018-rs804s\",\"description\":\"zr6h\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"5761e0a7-defj777\",\"model-version-id\":\"5761e0a7-defj22\",\"instance-group-type\":\"7DDjOdNL\",\"resource-version\":\"1521662814023\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}],\"related-to\":\"l3-network\",\"related-link\":\"/aai/v13/network/l3-networks/l3-network/l3network-id-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-rs804s\"}],\"related-to-property\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}]},{\"relationDataList\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"relatedToPropertyList\":null,\"related-to\":\"collection\",\"related-link\":\"/aai/v13/network/collections/collection/collection-1-2018-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"collection.collection-id\",\"relationship-value\":\"collection-1-2018-rs804s\"}],\"related-to-property\":null},{\"relationDataList\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-3-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}],\"related-to\":\"l3-network\",\"related-link\":\"/aai/v13/network/l3-networks/l3-network/l3network-id-3-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-3-rs804s\"}],\"related-to-property\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}]},{\"relationDataList\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-2-rs804s\"}],\"relatedToPropertyList\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}],\"related-to\":\"l3-network\",\"related-link\":\"/aai/v13/network/l3-networks/l3-network/l3network-id-2-rs804s\",\"relationship-label\":\"org.onap.relationships.inventory.MemberOf\",\"relationship-data\":[{\"relationship-key\":\"l3-network.network-id\",\"relationship-value\":\"l3network-id-2-rs804s\"}],\"related-to-property\":[{\"property-key\":\"l3-network.network-name\",\"property-value\":\"oam-net\"}]}]}}}}\n";
     public static final String GET_AAI_SERVIES_EXPECTED_RESULT = "{\n" +
             "  \"services\": [{\n" +
             "    \"uuid\": \"20c4431c-246d-11e7-93ae-92361f002671\",\n" +
@@ -202,8 +218,6 @@ public class AaiApiTest extends BaseApiAaiTest {
             "  \"readOnly\": false\n" +
             "}";
 
-    static final ObjectMapper om = new ObjectMapper();
-
     private String getGetOperationEnvironmentsUri() {
         return uri.toASCIIString() + "/get_operational_environments";
     }
@@ -262,18 +276,9 @@ public class AaiApiTest extends BaseApiAaiTest {
         assertEquals(1, list.getOperationalEnvironment().get(0).getRelationshipList().getRelationship().size());
     }
 
-
-    @Test
-    public void testVoid(){
-        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET,
-                "add_subinterface/aai_get_tenants.json"
-                , "add_subinterface/aai_get_services.json"
-        );
-    }
-
-
     @Test(dataProvider = "errorCodes")
     public void getServicesWitErrorResponse(int errorCode) throws IOException, URISyntaxException {
+        TestHelper.resetAaiCache(GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS, restTemplate, uri);
         final String expectedResult = "{\"services\":[],\"readOnly\":false}";
 
         callAaiWithSimulatedErrorResponse(AAI_GET_SERVICES_ERROR_SIMULATOR_RESPONSES,
@@ -284,11 +289,25 @@ public class AaiApiTest extends BaseApiAaiTest {
 
     @Test
     public void getServicesFineRequest() throws IOException, URISyntaxException {
-
+        TestHelper.resetAaiCache(GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS, restTemplate, uri);
         callAaiWithSimulatedErrorResponse(AAI_GET_SERVICES_FINE_SIMULATOR_RESPONSES,
                 ImmutableMap.of(),
                 getAaiServicesUri(), "", 200, GET_AAI_SERVIES_EXPECTED_RESULT, HttpMethod.GET);
+    }
 
+    @Test
+    public void whenGetServicesErrorResponse_badResponseIsNotCached() throws IOException, URISyntaxException {
+        TestHelper.resetAaiCache(GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS, restTemplate, uri);
+
+
+        final String expectedErrorResult = "{\"services\":[],\"readOnly\":false}";
+        //call AAI with bad response by clear exceptions from simulator, bad response shall not be cached
+        callAaiWithSimulatedErrorResponse(new String[]{}, ImmutableMap.of(), getAaiServicesUri(), "", 200, expectedErrorResult, HttpMethod.GET);
+
+        //call AAI with fine response
+        callAaiWithSimulatedErrorResponse(AAI_GET_SERVICES_FINE_SIMULATOR_RESPONSES,
+                ImmutableMap.of(),
+                getAaiServicesUri(), "", 200, GET_AAI_SERVIES_EXPECTED_RESULT, HttpMethod.GET);
     }
 
     @DataProvider
@@ -305,7 +324,7 @@ public class AaiApiTest extends BaseApiAaiTest {
         SimulatorApi.registerExpectationFromPresets(getEcompPortalPresets(), APPEND);
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
 
-        restTemplateErrorAgnostic.getForEntity(uri + "/aai_get_services",String.class);
+        restTemplateErrorAgnostic.getForEntity(uri + "/aai_get_services", String.class);
         String logLines = LoggerFormatTest.getLogLines("error", 15, 0, restTemplate, uri);
 
         assertThat("not found in error log", logLines, containsString("Failed to parse aai response"));
@@ -425,12 +444,13 @@ public class AaiApiTest extends BaseApiAaiTest {
 
         assertResponse(GET_NETWORK_COLLECTION_EXPECTED_RESPONSE, response);
     }
+
     @Test
     public void getNetworkCollectionDetailsByServiceInstanceId_given404ErrorAaiResponse_yield200OkWithErrorMsg() {
         SimulatorApi.clearAll();
         try {
             restTemplate.getForObject(uri + "/aai_get_network_collection_details/" + "SOME-RANDOM-UUID", String.class);
-        }catch (HttpClientErrorException e){
+        } catch (HttpClientErrorException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode());
         }
     }
@@ -442,7 +462,7 @@ public class AaiApiTest extends BaseApiAaiTest {
         SimulatorApi.registerExpectationFromPreset(presetAAIGetNetworkCollectionDetails, CLEAR_THEN_SET);
         try {
             restTemplate.getForObject(uri + "/aai_get_network_collection_details/" + "SOME-RANDOM-UUID", String.class);
-        }catch (HttpServerErrorException e){
+        } catch (HttpServerErrorException e) {
             assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, e.getStatusCode());
         }
     }
@@ -450,9 +470,9 @@ public class AaiApiTest extends BaseApiAaiTest {
     @Test
     public void getGetInstanceGroupsByCloudRegion_yieldValidResponse() {
         SimulatorApi.clearAll();
-        final PresetAAIGetInstanceGroupsByCloudRegion presetAAIGetInstanceGroupsByCloudRegion = new PresetAAIGetInstanceGroupsByCloudRegion("CLOUD-OWNER", "CLOUD-REGION-ID", "NETWORK-FUNCTION");
+        final PresetAAIGetInstanceGroupsByCloudRegion presetAAIGetInstanceGroupsByCloudRegion = new PresetAAIGetInstanceGroupsByCloudRegion("CLOUD%20OWNER", "CLOUD-REGION-ID", "NETWORK%20FUNCTION");
         SimulatorApi.registerExpectationFromPreset(presetAAIGetInstanceGroupsByCloudRegion, CLEAR_THEN_SET);
-        final String response = restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD-OWNER" + "/" + "CLOUD-REGION-ID" + "/" +"NETWORK-FUNCTION", String.class);
+        final String response = restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD OWNER" + "/" + "CLOUD-REGION-ID" + "/" + "NETWORK FUNCTION", String.class);
 
         assertResponse(GET_INSTANCE_GROUPS_BY_CLOUDREGION_EXPECTED_RESPONSE, response);
     }
@@ -462,16 +482,17 @@ public class AaiApiTest extends BaseApiAaiTest {
         SimulatorApi.clearAll();
         final PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest presetAAIGetInstanceGroupsByCloudRegion = new PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest("CLOUD-OWNER", "CLOUD-REGION-ID", "NETWORK-FUNCTION");
         SimulatorApi.registerExpectationFromPreset(presetAAIGetInstanceGroupsByCloudRegion, CLEAR_THEN_SET);
-        final String response = restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD-OWNER" + "/" + "CLOUD-REGION-ID" + "/" +"NETWORK-FUNCTION", String.class);
+        final String response = restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD-OWNER" + "/" + "CLOUD-REGION-ID" + "/" + "NETWORK-FUNCTION", String.class);
 
         assertResponse(GET_INSTANCE_GROUPS_BY_CLOUDREGION_EXPECTED_RESPONSE, response);
     }
+
     @Test
     public void getGetInstanceGroupsByCloudRegion_given404ErrorAaiResponse_yield200OkWithErrorMsg() {
         SimulatorApi.clearAll();
         try {
-            restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD-OWNER" + "/" + "CLOUD-REGION-ID" + "/" +"NETWORK-FUNCTION", String.class);
-        }catch (HttpClientErrorException e){
+            restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD-OWNER" + "/" + "CLOUD-REGION-ID" + "/" + "NETWORK-FUNCTION", String.class);
+        } catch (HttpClientErrorException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode());
         }
     }
@@ -482,8 +503,8 @@ public class AaiApiTest extends BaseApiAaiTest {
         final PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing presetAAIGetInstanceGroupsByCloudRegion = new PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing("CLOUD-OWNER", "CLOUD-REGION-ID", "NETWORK-FUNCTION");
         SimulatorApi.registerExpectationFromPreset(presetAAIGetInstanceGroupsByCloudRegion, CLEAR_THEN_SET);
         try {
-            restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD-OWNER" + "/" + "CLOUD-REGION-ID" + "/" +"NETWORK-FUNCTION", String.class);
-        }catch (HttpServerErrorException e){
+            restTemplate.getForObject(uri + "/aai_get_instance_groups_by_cloudregion/" + "CLOUD-OWNER" + "/" + "CLOUD-REGION-ID" + "/" + "NETWORK-FUNCTION", String.class);
+        } catch (HttpServerErrorException e) {
             assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, e.getStatusCode());
         }
     }
@@ -510,9 +531,19 @@ public class AaiApiTest extends BaseApiAaiTest {
         final PresetAAIGetRelatedInstanceGroupsByVnfId getRelatedInstanceGroupsByVnfId = new PresetAAIGetRelatedInstanceGroupsByVnfId(vnfId);
         SimulatorApi.registerExpectationFromPreset(getRelatedInstanceGroupsByVnfId, CLEAR_THEN_SET);
 
-        final String response = restTemplate.getForObject(uri + "/aai_get_instance_groups_by_vnf_instance_id/" + vnfId, String.class);
+        final String response = restTemplate.getForObject(uri + "/aai_get_instance_groups_by_vnf_instance_id/" + vnfId,
+                String.class);
 
         assertResponse("[{\"type\":\"instance-group\",\"name\":\"instance group name\"},{\"type\":\"instance-group\",\"name\":\"instance group name\"}]", response);
+    }
+
+    @Test
+    public void getHomingDataForVfModule(){
+        String vnfId= "0846287b-65bf-45a6-88f6-6a1af4149fac", vfModuleId= "a9b70ac0-5917-4203-a308-0e6920e6d09b";
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetHomingForVfModule(vnfId,vfModuleId), CLEAR_THEN_SET);
+        final String response = restTemplate.getForObject(uri + "/aai_get_homing_by_vfmodule/"+ vnfId +"/"+vfModuleId, String.class);
+        String exectedResponse = TestUtils.convertRequest(objectMapper, AAI_HOMING_DATA_RESPONSE);
+        assertResponse(exectedResponse,response);
     }
 
     @Test
@@ -521,7 +552,7 @@ public class AaiApiTest extends BaseApiAaiTest {
         SimulatorApi.registerExpectationFromPreset(getRelatedInstanceGroupsByVnfId, CLEAR_THEN_SET);
         try {
             restTemplate.getForObject(uri + "/aai_get_instance_groups_by_vnf_instance_id/" + "dcba", String.class);
-        } catch (HttpClientErrorException e){
+        } catch (HttpClientErrorException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode());
         }
 
@@ -547,9 +578,162 @@ public class AaiApiTest extends BaseApiAaiTest {
         assertResponse(expected, response);
     }
 
+    @Test
+    @FeatureTogglingTest(Features.FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS)
+    public void networksToVlans_simpleRequest_responseIsCorrect() {
+        // Prepare randomized values
+        // Some of these random values are persisted to match with the
+        // cypress preset "aaiGetNetworksToVlansByServiceInstance.json".
+        String globalCustomerId = UUID.randomUUID().toString();
+        String sdcModelUuid = "5a3ad576-c01d-4bed-8194-0e72b4a3d020";
+        String serviceType = "vMOG";
+        int vlanIdOuter = 34612;
+        int vlanIdOuter2 = 8568012;
+        int vlanIdOuter3 = 4;
+
+        // build hierarchical presets:
+        //
+        //     service instance
+        //               ║
+        //               ╠═  network 1
+        //               ║      ╠═  vlan 1
+        //               ║      ╚═  vlan 2
+        //               ║
+        //               ╠═  network 2
+        //               ║      ╚═  vlan 3
+        //               ║
+        PresetAAIStandardQueryGet vlanTagPreset1 = ofVlanTag(vlanIdOuter);
+        PresetAAIStandardQueryGet vlanTagPreset2 = ofVlanTag(vlanIdOuter2);
+        PresetAAIStandardQueryGet vlanTagPreset3 = ofVlanTag(vlanIdOuter3);
+
+        PresetAAIStandardQueryGet l3NetworkPreset1 = ofL3Network("7989a6d2-ba10-4a5d-8f15-4520bc833090", "DDDEEEFFF", "Provider Network",
+                ImmutableMultimap.of("vlan-tag", vlanTagPreset1.getReqPath(), "vlan-tag", vlanTagPreset2.getReqPath()), "Failed");
+        PresetAAIStandardQueryGet l3NetworkPreset2 = ofL3Network("e8e2332e-1f84-4237-bc97-3b5b842f52e4","GGGHHHIII", "Network",
+                ImmutableMultimap.of("vlan-tag", vlanTagPreset3.getReqPath()), "Assigned");
+
+        PresetAAIStandardQueryGet serviceInstance = ofServiceInstance("9cdd1b2a-43a7-47bc-a88e-759ba2399f0b",
+                "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "6e59c5de-f052-46fa-aa7e-2fca9d674c44", globalCustomerId, serviceType,
+                ImmutableMultimap.of("l3-network", l3NetworkPreset1.getReqPath(), "l3-network", l3NetworkPreset2.getReqPath()));
+
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                serviceInstance, l3NetworkPreset1, l3NetworkPreset2, vlanTagPreset1, vlanTagPreset2, vlanTagPreset3,
+                new PresetSDCGetServiceMetadataGet(sdcModelUuid, UUID.randomUUID().toString(), "service-vl-with-5g-network-provider-alacarte.zip"),
+                new PresetSDCGetServiceToscaModelGet(sdcModelUuid, "service-vl-with-5g-network-provider-alacarte.zip")
+        ), CLEAR_THEN_SET);
+
+        // THE TEST
+        final String response = restTemplate.getForObject(uri + "/aai/standardQuery/vlansByNetworks"
+                        + "?serviceInstanceId=" + serviceInstance.getInstanceId()
+                        + "&serviceType=" + serviceType
+                        + "&globalCustomerId=" + globalCustomerId
+                        + "&sdcModelUuid=" + sdcModelUuid
+                , String.class);
+
+        assertResponse(JsonAssert.when(Option.IGNORING_ARRAY_ORDER),
+                getResourceAsString("serviceWithNetwork/aaiGetNetworksToVlansByServiceInstance.json"),
+                response);
+    }
+
+    @Test
+    @FeatureTogglingTest(Features.FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS)
+    public void networksWithVlansToVnf_simpleRequest_responseIsCorrect() {
+        // Prepare randomized values
+        // Some of these random values are persisted to match with the
+        // cypress preset "aaiGetNetworksWithVlansToVnfByServiceInstance.json".
+        String globalCustomerId = UUID.randomUUID().toString();
+        String sdcModelUuid = "5a3ad576-c01d-4bed-8194-0e72b4a3d020";
+        String serviceType = "vMOG";
+        int vlanIdOuter = 34123;
+        int vlanIdOuter2 = 65540;
+        int vlanIdOuter3 = 12345;
+        int vlanIdOuter4 = 67890;
+        int vlanIdOuter5 = 417695;
+        int vlanIdOuter6 = 783243;
+
+        // build hierarchical presets:
+        //
+        //     service instance
+        //               ║
+        //               ╠═  vnf 1
+        //               ║    ╚═  network 1
+        //               ║          ╠═  vlan 1
+        //               ║          ╚═  vlan 2
+        //               ║    ╚═  network 2
+        //               ║          ╠═  vlan 3
+        //               ║          ╚═  vlan 4
+        //               ║
+        //               ╠═  vnf 2
+        //               ║    ╚═  network 3
+        //               ║          ╠═  vlan 5
+        //               ║          ╚═  vlan 6
+        //               ║
+        PresetAAIStandardQueryGet vlanTagPreset1 = ofVlanTag(vlanIdOuter);
+        PresetAAIStandardQueryGet vlanTagPreset2 = ofVlanTag(vlanIdOuter2);
+        PresetAAIStandardQueryGet vlanTagPreset3 = ofVlanTag(vlanIdOuter3);
+        PresetAAIStandardQueryGet vlanTagPreset4 = ofVlanTag(vlanIdOuter4);
+        PresetAAIStandardQueryGet vlanTagPreset5 = ofVlanTag(vlanIdOuter5);
+        PresetAAIStandardQueryGet vlanTagPreset6 = ofVlanTag(vlanIdOuter6);
+
+        PresetAAIStandardQueryGet l3NetworkPreset1 = ofL3Network("36517f3d-2bc2-48f5-aaf8-418520c54330","AAAAABBBBCCCC", "Provider Network",
+                ImmutableMultimap.of("vlan-tag", vlanTagPreset1.getReqPath(), "vlan-tag", vlanTagPreset2.getReqPath()), "Assigned");
+
+        PresetAAIStandardQueryGet l3NetworkPreset2 = ofL3Network("12347f3d-2bc2-48f5-aaf8-418520c54330","DDDEEEE", "Provider Network",
+                ImmutableMultimap.of("vlan-tag", vlanTagPreset3.getReqPath(), "vlan-tag", vlanTagPreset4.getReqPath()), "Created");
+
+        PresetAAIStandardQueryGet vnfPreset1 = ofVnf("c015cc0f-0f37-4488-aabf-53795fd93cd3",
+                ImmutableMultimap.of("l3-network", l3NetworkPreset1.getReqPath() , "l3-network", l3NetworkPreset2.getReqPath()));
+
+        PresetAAIStandardQueryGet l3NetworkPreset3 = ofL3Network("12aa7f3d-2bc2-48f5-aaf8-418520c54330","XXXYYYZZZ", "Network",
+                ImmutableMultimap.of("vlan-tag", vlanTagPreset5.getReqPath(), "vlan-tag", vlanTagPreset6.getReqPath()), "Created");
+
+        PresetAAIStandardQueryGet vnfPreset2 = ofVnf("c55da606-cf38-42c7-bc3c-be8e23b19299", ImmutableMultimap.of("l3-network", l3NetworkPreset3.getReqPath()));
+
+        PresetAAIStandardQueryGet serviceInstance = ofServiceInstance("9cdd1b2a-43a7-47bc-a88e-759ba2399f0b",
+                "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "6e59c5de-f052-46fa-aa7e-2fca9d674c44", globalCustomerId, serviceType,
+                ImmutableMultimap.of("generic-vnf", vnfPreset1.getReqPath(), "generic-vnf", vnfPreset2.getReqPath()));
+
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                serviceInstance, vnfPreset1, vnfPreset2, l3NetworkPreset1, l3NetworkPreset2, l3NetworkPreset3, vlanTagPreset1, vlanTagPreset2, vlanTagPreset3, vlanTagPreset4, vlanTagPreset5, vlanTagPreset6,
+                new PresetSDCGetServiceMetadataGet(sdcModelUuid, UUID.randomUUID().toString(), "service-vl-with-5g-network-provider-alacarte.zip"),
+                new PresetSDCGetServiceToscaModelGet(sdcModelUuid, "service-vl-with-5g-network-provider-alacarte.zip")
+        ), CLEAR_THEN_SET);
+
+        // THE TEST
+        final String response = restTemplate.getForObject(uri + "/aai/standardQuery/vlansByNetworks"
+                        + "?serviceInstanceId=" + serviceInstance.getInstanceId()
+                        + "&serviceType=" + serviceType
+                        + "&globalCustomerId=" + globalCustomerId
+                        + "&sdcModelUuid=" + sdcModelUuid
+                , String.class);
+
+        assertResponse(JsonAssert.when(Option.IGNORING_ARRAY_ORDER),
+                getResourceAsString("serviceWithNetwork/aaiGetNetworksWithVlansToVnfByServiceInstance.json"),
+                response);
+    }
+
+    @Test
+    public void getVnfDataByGlobalIdAndServiceType() {
+
+        SimulatorApi.registerExpectation(AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON, APPEND);
+
+        String url = uri + "/get_vnf_data_by_globalid_and_service_type/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/vFlowLogic";
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+//reduced_vnf_data_by_globalid_and_service_type.json
+        assertTrue(false == response.getBody().contains("generic-vfmodule"));
+        assertResponse(JsonAssert.when(Option.IGNORING_ARRAY_ORDER),
+                getResourceAsString("changeManagement/reduced_vnf_data_by_globalid_and_service_type.json"),
+                response.getBody());
+
+    }
+
     private void assertResponse(Object expected, String response) {
+        assertResponse(Configuration.empty(), expected, response);
+    }
+
+    private void assertResponse(Configuration configuration, Object expected, String response) {
         try {
-            JsonAssert.assertJsonEquals(expected, response);
+            JsonAssert.assertJsonEquals(expected, response, configuration);
         } catch (Exception | AssertionError e) {
             System.err.println("response was: " + response);
             throw e;

@@ -1,10 +1,8 @@
 package vid.automation.test.infra;
 
 import org.junit.Assert;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -12,38 +10,40 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
+import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
+
 public class Click {
     public static void byText(String text) {
         WebElement element = GeneralUIUtils.findByText(text);
         Assert.assertTrue(element != null);
 
-        element.click();
+        clickWhenClickable(element);
     }
 
     public static void byId(String id) {
         WebElement element = Get.byId(id);
         Assert.assertTrue(element != null);
 
-        element.click();
+        clickWhenClickable(element);
     }
 
     public static void byTestId(String testId) {
         WebElement element = Get.byTestId(testId);
         Assert.assertTrue(element != null);
-        element.click();
+        clickWhenClickable(element);
     }
 
     public static void byClass(String className) {
         List<WebElement> elements = Get.byClass(className);
         Assert.assertTrue(elements != null && elements.size() > 0);
 
-        elements.get(0).click();
+        clickWhenClickable(elements.get(0));
     }
 
     public static void byXpath(String xpath) {
         WebElement element = Get.byXpath(xpath);
         Assert.assertNotNull(element);
-        element.click();
+        clickWhenClickable(element);
     }
 
 
@@ -73,7 +73,7 @@ public class Click {
 
     public static void byClassAndVisibleText(String className, String text ) {
         WebElement element = Get.byClassAndText(className, text);
-        element.click();
+        clickWhenClickable(element);
     }
 
 
@@ -83,4 +83,11 @@ public class Click {
         Assert.assertTrue(alert != null);
         alert.accept();
     }
+
+    private static void clickWhenClickable(WebElement element) {
+        new WebDriverWait(getDriver(), 1)
+                .until(ExpectedConditions.elementToBeClickable(element))
+                .click();
+    }
+
 }

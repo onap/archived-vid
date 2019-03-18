@@ -1,6 +1,6 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-public class PresetMSODeleteVolumeGroup extends PresetMSOBaseDelete {
+public class PresetMSODeleteVolumeGroup extends PresetMSOBaseDeleteWithCloudConfiguration {
     private final String serviceInstanceId;
     private final String vnfInstanceId;
     private final String volumeGroupInstanceId;
@@ -13,7 +13,7 @@ public class PresetMSODeleteVolumeGroup extends PresetMSOBaseDelete {
     }
 
     public PresetMSODeleteVolumeGroup(String requestId, String serviceInstanceId, String vnfInstanceId, String volumeGroupInstanceId) {
-        super(requestId);
+        super(requestId, "volumeGroup");
         this.serviceInstanceId = serviceInstanceId != null ? serviceInstanceId : DEFAULT_SERVICE_INSTANCE_ID;
         this.vnfInstanceId = vnfInstanceId != null ? vnfInstanceId : DEFAULT_VNF_INSTANCE_ID;
         this.volumeGroupInstanceId = volumeGroupInstanceId != null ? volumeGroupInstanceId : DEFAULT_VG_INSTANCE_ID;
@@ -22,5 +22,11 @@ public class PresetMSODeleteVolumeGroup extends PresetMSOBaseDelete {
     @Override
     public String getReqPath() {
         return getRootPath() + serviceInstanceId + "/vnfs/" + vnfInstanceId + "/volumeGroups/" + volumeGroupInstanceId;
+    }
+
+    //remove this method once VfModule path starts with /serviceInstantiation/v7/
+    @Override
+    protected String getRootPath() {
+        return "/mso/serviceInstances/v7/";
     }
 }

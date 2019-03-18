@@ -1,83 +1,82 @@
 package vid.automation.test.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.ModelInfo.aLaCarteForBrowseSdc;
+import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationTest;
+import static vid.automation.test.infra.ModelInfo.instantiationTypeAlacarte_vidNotionsInstantiationUIByUUID;
+import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
+
 import com.google.common.collect.ImmutableList;
-import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServiceModelList;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.openecomp.sdc.ci.tests.datatypes.UserCredentials;
-import org.openecomp.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.User;
-import vid.automation.test.sections.*;
+import vid.automation.test.sections.BrowseASDCPage;
+import vid.automation.test.sections.DeployMacroDialogBase;
+import vid.automation.test.sections.DeployMacroDialogOld;
+import vid.automation.test.sections.SideMenu;
+import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
-import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
-import static java.util.Collections.singletonList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 
 
 public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
-    private final String invariantUUIDAlacarte = "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba";
-    private final String invariantUUIDMacro = "d27e42cf-087e-4d31-88ac-6c4b7585f800";
+    private final String invariantUUIDAlacarte = aLaCarteForBrowseSdc.modelInvariantId;
+    private final String invariantUUIDMacro = macroForBrowseSdc.modelInvariantId;
     private final String instantiationTypeNameAlacarte = "a la carte";
     private final String instantiationTypeNameMacro = "macro";
     private final String oldMacro = "old macro";
-    private String modelInvariantUUID1 = "aeababbc-010b-4a60-8df7-e64c07389466";
-    private String modelInvariantUUID2 = "aa2f8e9c-9e47-4b15-a95c-4a9385599abc";
-    private String modelInvariantUUID3 = "d849c57d-b6fe-4843-8349-4ab8bbb08d71";
-    private String modelUuid = "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba";
-    protected final RestTemplate restTemplate = new RestTemplate();
+    private final String newAlacarte = "new a la carte";
+    public static final String modelInvariantUUID1 = "aeababbc-010b-4a60-8df7-e64c07389466";
+    public static final String modelInvariantUUID2 = "aa2f8e9c-9e47-4b15-a95c-4a9385599abc";
+    public static final String modelInvariantUUID3 = "d849c57d-b6fe-4843-8349-4ab8bbb08d71";
+    public static final String modelUuid = "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba";
 
     private ServicesService servicesService = new ServicesService();
-    final URI envUrI;
-    protected final URI uri;
 
-    public BrowseASDCTest() throws URISyntaxException {
-        this.envUrI = new URI(System.getProperty("ENV_URL"));
-        this.uri = new JerseyUriBuilder().host(envUrI.getHost()).port(envUrI.getPort()).scheme("http").path("vid").build();
-    }
+    private final Logger logger = LogManager.getLogger(BrowseASDCTest.class);
 
     @BeforeClass
-    public void login() {
-        UserCredentials userCredentials = getUserCredentials();
-        final List<ClientHttpRequestInterceptor> interceptors = singletonList(new CookieAndJsonHttpHeadersInterceptor(uri, userCredentials));
-        restTemplate.setInterceptors(interceptors);
+    public void beforeClass() {
+        resetGetServicesCache();
     }
 
     @BeforeMethod
-    public void invalidateTheCacheSelenium() {
-        if (Features.FLAG_SERVICE_MODEL_CACHE.isActive()) {
-            restTemplate.postForObject(uri + "/rest/models/reset", "", Object.class);
-        }
+    public void resetSdcModelCaches() {
+        invalidateSdcModelsCache();
     }
 
     @Override
     protected UserCredentials getUserCredentials() {
-        User user = usersService.getUser(Constants.Users.MOBILITY_MOBILITY);
-        return new UserCredentials(user.credentials.userId, user.credentials.password, Constants.Users.MOBILITY_MOBILITY, "", "");
+        User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
+        return new UserCredentials(user.credentials.userId, user.credentials.password, Constants.Users.EMANUEL_EMANUEL, "", "");
     }
 
     @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
@@ -87,7 +86,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         SideMenu.navigateToBrowseASDCPage();
         browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
         assertThatServiceCreationDialogIsVisible();
-        validatePNFCreationDialog(service, "Mobility", "pnf");
+        validatePNFCreationDialog(service, "Emanuel", "pnf");
     }
 
     private void validatePNFCreationDialog(Service service, String serviceType, String serviceRole) {
@@ -103,7 +102,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
     private void testPNFMacroInstantation() throws Exception {
-        User user = usersService.getUser(Constants.Users.MOBILITY_MOBILITY);
+        User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
         relogin(user.credentials);
 
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
@@ -115,9 +114,9 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         browseASDCPage.selectProductFamily("ebc3bc3d-62fd-4a3f-a037-f619df4ff034");
         GeneralUIUtils.ultimateWait();
 
-        browseASDCPage.selectServiceTypeByName("Mobility");
+        browseASDCPage.selectServiceTypeByName("Emanuel");
         GeneralUIUtils.ultimateWait();
-        browseASDCPage.selectLcpRegion("mtn16");
+        browseASDCPage.selectLcpRegion("hvf16");
 
         browseASDCPage.selectTenant("a259ae7b7c3f493cb3d91f95a7c18149");
         assertAllIsPermitted(Constants.BrowseASDC.AIC_OPTION_CLASS);
@@ -136,15 +135,6 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         viewEditPage.clickActivateButton();
     }
 
-//    @Test
-//    private void browseServiceModel_deployServiceUnexpectedDeploymentMode_creationPopupIsMacro() throws Exception {
-//        deployServiceAndAssertInstantiationType(
-//                "don't know.zip",
-//                "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba",
-//                "macro"
-//        );
-//    }
-
     @Test
     private void browseServiceModel_deployServiceALaCarteByBackendInput_creationPopupIsALaCarte() throws Exception {
         // model uuid should be of macro
@@ -152,6 +142,15 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
                 "csar15782222_instantiationTypeAlacarte_invariantUUIDMacro.zip",
                 invariantUUIDMacro,
                 instantiationTypeNameAlacarte
+        );
+    }
+
+    @Test
+    @FeatureTogglingTest(FLAG_5G_IN_NEW_INSTANTIATION_UI)
+    private void browseServiceModel_deployServiceALaCarteByBackendInputHintNewUI_creationPopupIsAngular2() throws Exception {
+        deployServiceAndAssertInstantiationType(
+                instantiationTypeAlacarte_vidNotionsInstantiationUIByUUID,
+                newAlacarte
         );
     }
 
@@ -167,7 +166,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     @Test
     private void browseServiceModel_deployServiceMacroByBackendInput_creationPopupIsMacro() throws Exception {
         deployServiceAndAssertInstantiationType(
-                "csar15782222_instantiationTypeMacro_invariantUUIDAlacarte.zip",
+                "csar15782222_instantiationTypeMacro_invariantUUIDAlacarte_withoutNetworks.zip",
                 invariantUUIDAlacarte,
                 instantiationTypeNameMacro
         );
@@ -215,17 +214,20 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
 
     private void deployServiceAndAssertInstantiationType(String modelZipFileName, String modelInvariantId, String expectedInstantiationType) throws Exception {
-        String modelVersionId = "4d71990b-d8ad-4510-ac61-496288d9078e";
+        deployServiceAndAssertInstantiationType(new ModelInfo("4d71990b-d8ad-4510-ac61-496288d9078e", modelInvariantId, modelZipFileName), expectedInstantiationType);
+    }
 
-        registerExpectationForLegacyServiceDeployment(modelVersionId, modelInvariantId, modelZipFileName, null);
-        User user = usersService.getUser(Constants.Users.MOBILITY_MOBILITY);
+    private void deployServiceAndAssertInstantiationType(ModelInfo modelInfo, String expectedInstantiationType) throws Exception {
+
+        registerExpectationForLegacyServiceDeployment(modelInfo, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
+        User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
         relogin(user.credentials);
 
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
         SideMenu.navigateToBrowseASDCPage();
 
         GeneralUIUtils.ultimateWait();
-        browseASDCPage.clickDeployServiceButtonByServiceUUID(modelVersionId);
+        browseASDCPage.clickDeployServiceButtonByServiceUUID(modelInfo.modelVersionId);
         DeployMacroDialogBase macroDialog = null;
         if (expectedInstantiationType.equals(instantiationTypeNameAlacarte)) {
             GeneralUIUtils.ultimateWait();
@@ -239,28 +241,26 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test
     private void testServiceInstantiationAlaCarte() throws Exception {
-        User user = usersService.getUser(Constants.Users.MOBILITY_MOBILITY);
+        User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
         relogin(user.credentials);
 
-        String zipFileName = "serviceCreationTest.zip";
-        String modelVersionId = "aa2f8e9c-9e47-4b15-a95c-4a9385599abc"; //uuid of model. must be same as in serviceCreationTest.zip
-        String modelInvariantId = invariantUUIDAlacarte; //must be same as in serviceCreationTest.zip
-
-        registerExpectationForLegacyServiceDeployment(modelVersionId, modelInvariantId, zipFileName, null);
+        registerExpectationForLegacyServiceDeployment(aLaCarteServiceCreationTest, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
 
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
         SideMenu.navigateToBrowseASDCPage();
 
         Service service = new Service(
                 "pnf",
-                modelVersionId,
-                modelInvariantId,
+                aLaCarteServiceCreationTest.modelVersionId,
+                aLaCarteServiceCreationTest.modelInvariantId,
                 "action-data",
                 "1.0",
                 "Network L1-3",
-                "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+                "PASQUALE vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
                 null);
 
+
+        logger.info("Expected service model properties: "+service.toString());
         browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
         validateServiceCreationDialog(service);
 
@@ -269,7 +269,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertDropdownPermittedItemsByLabel(user.subscriberNames, Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
         browseASDCPage.selectSubscriberById("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
 
-        String serviceType = "Mobility";
+        String serviceType = "Emanuel";
         GeneralUIUtils.findAndWaitByText(serviceType, 30);
 
         assertDropdownPermittedItemsByValue(user.serviceTypes, Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS);
@@ -297,14 +297,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test(dataProvider = "filterTexts")
     public void testFilterOptionsInBrowseSdc(String filterText){
-        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
-                "ecompportal_getSessionSlotCheckInterval.json",
-                "browseASDC/aai_get_services.json",
-                "browseASDC/get_aai_get_subscribers.json",
-                "browseASDC/get_sdc_catalog_services_2f80c596.json",
-                "browseASDC/service_design_and_creation.json");
-        SideMenu.navigateToBrowseASDCPage();
-        BrowseASDCPage browseAsdcPage = new BrowseASDCPage();
+        BrowseASDCPage browseAsdcPage = registerSimulatorAndGoToBrowseSDC();
         GeneralUIUtils.ultimateWait();
         assertThat(browseAsdcPage.countCurrentRowsInTable(),(Matchers.greaterThan(1)));
         browseAsdcPage.fillFilterText(filterText);
@@ -316,16 +309,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test
     private void testCategoryParamsDropdownsExistsInCreationDialog() throws Exception {
-        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
-                "ecompportal_getSessionSlotCheckInterval.json",
-                "browseASDC/aai_get_services.json",
-                "browseASDC/get_aai_get_subscribers.json",
-                "browseASDC/get_sdc_catalog_services_2f80c596.json",
-                "browseASDC/service_design_and_creation.json");
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
-        relogin(user.credentials);
-        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
-        SideMenu.navigateToBrowseASDCPage();
+        BrowseASDCPage browseASDCPage = registerSimulatorAndGoToBrowseSDC();
         Service service = servicesService.getService("2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd");
         browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
         DeployMacroDialogBase deployMacroDialog = getMacroDialog();
@@ -334,9 +318,24 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         deployMacroDialog.clickOwningEntitySelect();
     }
 
+    private BrowseASDCPage registerSimulatorAndGoToBrowseSDC() {
+        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET,
+                "ecompportal_getSessionSlotCheckInterval.json",
+                "browseASDC/aai_get_services.json",
+                "browseASDC/get_sdc_catalog_services_2f80c596.json"
+        );
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                    new PresetAAIGetSubscribersGet(),
+                    new PresetAAIServiceDesignAndCreationPut()
+                ),
+                SimulatorApi.RegistrationStrategy.APPEND);
+        SideMenu.navigateToBrowseASDCPage();
+        return new BrowseASDCPage();
+    }
+
     @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
     private void testOwningEntityRequiredAndProjectOptional() throws Exception {
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
 
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
@@ -352,7 +351,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertDropdownPermittedItemsByLabel(user.subscriberNames, Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
         browseASDCPage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
 
-        String serviceType = "VIRTUAL USP";
+        String serviceType = "TYLER SILVIA";
         GeneralUIUtils.findAndWaitByText(serviceType, 30);
 
         assertDropdownPermittedItemsByValue(user.serviceTypes, Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS);
@@ -371,7 +370,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
     protected void testLineOfBusinessOptionalAndPlatformRequired() throws Exception {
 
-        User user = usersService.getUser(Constants.Users.USP_VOICE_VIRTUAL_USP);
+        User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
 
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
@@ -387,7 +386,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertDropdownPermittedItemsByLabel(user.subscriberNames, Constants.CreateNewInstance.SUBSCRIBER_NAME_OPTION_CLASS);
         browseASDCPage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
 
-        String serviceType = "VIRTUAL USP";
+        String serviceType = "TYLER SILVIA";
         GeneralUIUtils.findAndWaitByText(serviceType, 30);
 
         assertDropdownPermittedItemsByValue(user.serviceTypes, Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS);
@@ -404,10 +403,10 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         //now add the VNF
         ViewEditPage viewEditPage = new ViewEditPage();
 
-        viewEditPage.selectNodeInstanceToAdd("VID-PCRF-05-15-17 0");
+        viewEditPage.selectNodeInstanceToAdd("VID-RODERICK-05-15-17 0");
         viewEditPage.generateAndSetInstanceName(Constants.ViewEdit.VNF_INSTANCE_NAME_PREFIX);
         viewEditPage.selectProductFamily("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
-        viewEditPage.selectLCPRegion("AAIAIC25");
+        viewEditPage.selectLcpRegion("JANET25", "AIC");
         viewEditPage.selectTenant("092eb9e8e4b7412e8787dd091bc58e86");
         viewEditPage.setLegacyRegion("llkjhlkjhlkjh");
 
@@ -427,7 +426,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         ImmutableList<BasePreset> presets = ImmutableList.of(
                 new PresetGetSessionSlotCheckIntervalGet(),
                 new PresetAAIGetSubscribersGet(),
-                new PresetAAIGetServiceModelList(modelUuid, modelInvariantUUID1, modelInvariantUUID2, modelInvariantUUID3),
+                new PresetAAIServiceDesignAndCreationPut(),
                 new PresetAAIGetServicesGet());
 
         SimulatorApi.registerExpectationFromPresets(presets, SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
@@ -437,6 +436,8 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     private void browseSDCServiceModelListCheckAAIResponse(){
         prepareSimulatorWithServiceModelListBeforeBrowseASDCService();
         SideMenu.navigateToBrowseASDCPage();
+        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
+        browseASDCPage.fillFilterText("CheckAAIResponse");
         GeneralUIUtils.ultimateWait();
 
         WebElement sdcTableElement = Get.byId("sdcModelsTable");
@@ -460,9 +461,9 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
         //Check Names
         By name = By.className("name");
-        assertEquals("AAAvIRC_mm779p_Service" , sdcFirstModel.findElement(name).getText());
-        assertEquals("BBBvIRC_mm779p_Service" , sdcSecondModel.findElement(name).getText());
-        assertEquals("CCCvIRC_mm779p_Service" , sdcThirdModel.findElement(name).getText());
+        assertEquals("CheckAAIResponse_AAAvIRC_mm779p_Service" , sdcFirstModel.findElement(name).getText());
+        assertEquals("CheckAAIResponse_BBBvIRC_mm779p_Service" , sdcSecondModel.findElement(name).getText());
+        assertEquals("CheckAAIResponse_CCCvIRC_mm779p_Service" , sdcThirdModel.findElement(name).getText());
 
         //Check distribution Status
         By distributionStatus = By.className("distributionStatus");
@@ -474,8 +475,10 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertEquals("service" , sdcFirstModel.findElement(By.className("category")).getText());
         assertEquals("1.0" , sdcFirstModel.findElement(By.className("version")).getText());
     }
+
     @Test
-    public void browseSdcModel_getEmptyList_noModelsMessageIsShown() throws Exception {
+    public void browseSdcModel_getEmptyList_noModelsMessageIsShown() {
+        resetGetServicesCache();
         SimulatorApi.clearAll();
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
                 new PresetAAIServiceDesignAndCreationPut(true),
@@ -484,5 +487,6 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         GeneralUIUtils.ultimateWait();
         WebElement serviceModelsTbody = Get.byXpath("//table[@data-tests-id='serviceModelsTable']/tbody");
         assertFalse(Exists.tagNameInAnotherElement(serviceModelsTbody, "tr"), "Table should be empty on empty results");
+        resetGetServicesCache();
     }
 }

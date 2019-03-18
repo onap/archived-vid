@@ -1,22 +1,55 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VFM_NAME1;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VFM_NAME2;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VG_NAME;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VNF_NAME;
+
 import java.util.Map;
+import vid.automation.test.infra.Features;
 
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.*;
-
-public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBaseCreateServiceInstancePost{
+public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBaseCreateInstancePost {
 
     public enum Keys {
-        SERVICE_NAME, VNF_NAME, VFM_NAME1, VFM_NAME2, VG_NAME
+        SERVICE_NAME, VNF_NAME, VNF_NAME2, VFM_NAME1, VFM_NAME2, VG_NAME
+        , VNF_GROUP1_ACTION, RELATED_VNF1_ACTION, RELATED_VNF2_ACTION,
     }
 
-    private final Map<Keys, String> names;
+    protected final Map<Keys, String> names;
 
-    private final String suffix;
+    protected final String suffix;
 
     public PresetMSOServiceInstanceGen2WithNames(Map<Keys, String> names, int suffix) {
+        this(names, suffix, PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID);
+    }
+
+    public PresetMSOServiceInstanceGen2WithNames(Map<Keys, String> names, int suffix, String requestId) {
+        super(requestId);
         this.names = names;
-        this.suffix = "_" + String.format("%03d", suffix);
+        this.suffix = formatSuffix(suffix);
+    }
+
+    public PresetMSOServiceInstanceGen2WithNames(Map<Keys, String> names, int suffix, String requestId, String responseInstanceId) {
+        super(requestId, responseInstanceId);
+        this.names = names;
+        this.suffix = formatSuffix(suffix);
+    }
+
+    @Override
+    public boolean isStrictMatch() {
+        return true;
+    }
+
+    protected String getVnfInstanceParams() {
+        if (!Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF.isActive()) {
+            return "";
+        }
+        return " {" +
+                "  \"vmx_int_net_len\": \"24\"," +
+                "  \"vre_a_volume_size_0\": \"100\"," +
+                "  \"availability_zone_0\": \"mtpocdv-kvm-az01\"" +
+                "}";
     }
 
     @Override
@@ -45,7 +78,7 @@ public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBas
                 "      \"productFamilyId\": \"myProductFamilyId\"," +
                 "      \"source\": \"VID\"," +
                 "      \"suppressRollback\": false," +
-                "      \"requestorId\": \"vid1\"" +
+                "      \"requestorId\": \"us16807000\"" +
                 "    }," +
                 "    \"requestParameters\": {" +
                 "      \"subscriptionServiceType\": \"mySubType\"," +
@@ -71,7 +104,8 @@ public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBas
                 "                    \"modelType\": \"vnf\"" +
                 "                  }," +
                 "                  \"cloudConfiguration\": {" +
-                "                    \"lcpCloudRegionId\": \"mtn3\"," +
+                "                    \"lcpCloudRegionId\": \"hvf3\"," +
+                                    addCloudOwnerIfNeeded() +
                 "                    \"tenantId\": \"greatTenant\"" +
                 "                  }," +
                 "                  \"platform\": {" +
@@ -81,7 +115,7 @@ public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBas
                 "                    \"lineOfBusinessName\": \"lineOfBusinessName\"" +
                 "                  }," +
                 "                  \"productFamilyId\": \"myProductFamilyId\"," +
-                "                  \"instanceParams\": []," +
+                "                  \"instanceParams\": ["+getVnfInstanceParams()+"]," +
                 "                  \"vfModules\": [" +
                 "                    {" +
                 "                      \"modelInfo\": {" +

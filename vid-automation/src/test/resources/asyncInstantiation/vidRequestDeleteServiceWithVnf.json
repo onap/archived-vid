@@ -1,0 +1,71 @@
+{
+  "action": "None_Delete",
+  "isDirty": true,
+  "vnfs": {
+    "2017-488_PASQUALE-vPE 0": {
+      "vfModules": {
+      },
+      "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+      "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "lcpCloudRegionId": "JANET25",
+      "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+      "lineOfBusiness": "ONAP",
+      "platformName": "platform",
+      "modelInfo": {
+        "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+        "modelName": "2017-488_PASQUALE-vPE",
+        "modelVersion": "5.0",
+        "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
+        "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
+        "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09"
+      },
+      "orchStatus": "Created",
+      "inMaint": false,
+      "instanceId": "VNF_INSTANCE_ID",
+      "instanceName": "2017488_PASQUALEvPEVNFinstancename",
+      "action": "None_Delete",
+      "legacyRegion": "some legacy region"
+    }
+  },
+  "instanceParams": [],
+  "validationCounter": 0,
+  "existingNames": {
+    "mcankinstancename": ""
+  },
+  "existingVNFCounterMap": {
+    "afacccf6-397d-45d6-b5ae-94c39734b168": 1,
+    "69e09f68-8b63-4cc9-b9ff-860960b5db09": 3,
+    "b3c76f73-eeb5-4fb6-9d31-72a889f1811c": 1
+  },
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": 1,
+  "instanceId": "f8791436-8d55-4fde-b4d5-72dd2cf13cfb",
+  "instanceName": "mCaNkinstancename",
+  "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "subscriptionServiceType": "TYLER SILVIA",
+  "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+  "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "lcpCloudRegionId": "hvf6",
+  "tenantId": "bae71557c5bb4d5aac6743a4e5f1d054",
+  "aicZoneId": "NFT1",
+  "projectName": "WATKINS",
+  "rollbackOnFailure": true,
+  "aicZoneName": "NFTJSSSS-NFT1",
+  "owningEntityName": "WayneHolland",
+  "tenantName": "AIN Web Tool-15-D-testalexandria",
+  "modelInfo": {
+    "modelInvariantId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+    "modelVersionId": "6b528779-44a3-4472-bdff-9cd15ec93450",
+    "modelName": "action-data",
+    "modelVersion": "1.0",
+    "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450"
+  },
+  "isALaCarte": true,
+  "orchStatus": "Active",
+  "modelInavariantId": "6b528779-44a3-4472-bdff-9cd15ec93450",
+  "testApi": "VNF_API"
+}

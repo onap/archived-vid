@@ -22,18 +22,18 @@
       "body": {
         "uuid":"a1531622-4e08-43fa-9ffd-222090cab7d2",
         "invariantUUID":"c54c1178-ab4b-498c-aea0-52cc2043d44f",
-        "name":"mdns_2017_1011_IST_Service",
+        "name":"CHARLOTTE_2017_1011_IST_Service",
         "version":"5.0",
         "toscaModelURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/toscaModel",
-        "category":"Mobility",
+        "category":"Emanuel",
         "lifecycleState":"CERTIFIED",
         "lastUpdaterUserId":"by5924",
         "distributionStatus":"DISTRIBUTED",
         "lastUpdaterFullName":"BAGESHRI YARAMWAR",
         "resources":[
           {
-            "resourceInstanceName":"mdns_2017_1011_IST_Vf 0",
-            "resourceName":"mdns_2017_1011_IST_Vf",
+            "resourceInstanceName":"CHARLOTTE_2017_1011_IST_Vf 0",
+            "resourceName":"CHARLOTTE_2017_1011_IST_Vf",
             "resourceInvariantUUID":"b22715a2-4ec1-4e2f-bf4f-d79fa9519707",
             "resourceVersion":"4.0",
             "resoucreType":"VF",
@@ -42,7 +42,7 @@
               {
                 "artifactName":"dns_nested_01.yaml",
                 "artifactType":"HEAT_NESTED",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/b9ea0a90-9a52-4a19-ae30-d35c8cbd1a73",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/b9ea0a90-9a52-4a19-ae30-d35c8cbd1a73",
                 "artifactDescription":"created from csar",
                 "artifactChecksum":"OTFhODY2YzMxYzg2NzNhMDdlNGU4MGI1MDAxOTk3YjY=",
                 "artifactUUID":"b9ea0a90-9a52-4a19-ae30-d35c8cbd1a73",
@@ -53,7 +53,7 @@
               {
                 "artifactName":"vf-license-model.xml",
                 "artifactType":"VF_LICENSE",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/70fb7b62-53ca-4784-9409-a85d98cdc9ac",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/70fb7b62-53ca-4784-9409-a85d98cdc9ac",
                 "artifactDescription":"VF license file",
                 "artifactChecksum":"N2I4YTBlYWI0MjIyOTgzNzIzYmNiZmQ3NWFhM2ZhN2Q=",
                 "artifactUUID":"70fb7b62-53ca-4784-9409-a85d98cdc9ac",
@@ -62,9 +62,9 @@
                 "artifactGroupType":"DEPLOYMENT"
               },
               {
-                "artifactName":"mdns_2017_1011_ist_vf0_modules.json",
+                "artifactName":"CHARLOTTE_2017_1011_ist_vf0_modules.json",
                 "artifactType":"VF_MODULES_METADATA",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/56912419-5619-4f6f-93f5-d2c0ac56ed53",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/56912419-5619-4f6f-93f5-d2c0ac56ed53",
                 "artifactDescription":"Auto-generated VF Modules information artifact",
                 "artifactChecksum":"ZjI1ODQyZDdkMDFkYTNmODM5ODhkODMzYWFhNDFjMDM=",
                 "artifactUUID":"56912419-5619-4f6f-93f5-d2c0ac56ed53",
@@ -75,7 +75,7 @@
               {
                 "artifactName":"dns_az_01.yaml",
                 "artifactType":"HEAT",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/895b1915-1f2b-467a-8071-2f07d01b2f65",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/895b1915-1f2b-467a-8071-2f07d01b2f65",
                 "artifactDescription":"created from csar",
                 "artifactTimeout":60,
                 "artifactChecksum":"YjRkYTMxNzNhMDJjZTkzOWJlMmFiNzZjNmNmNjEzZGI=",
@@ -87,7 +87,7 @@
               {
                 "artifactName":"base_dns.yaml",
                 "artifactType":"HEAT",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/479299e8-58ad-498b-82e5-a999922d388d",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/479299e8-58ad-498b-82e5-a999922d388d",
                 "artifactDescription":"created from csar",
                 "artifactTimeout":60,
                 "artifactChecksum":"NDU1MGM0YWE3Njc3NzJjYzIzNjY3OWFkNTQ2MDcxMjQ=",
@@ -99,7 +99,7 @@
               {
                 "artifactName":"base_dns.env",
                 "artifactType":"HEAT_ENV",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/6dbd09d7-1e76-4f99-9d6c-d6e9b9edcbf4",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/6dbd09d7-1e76-4f99-9d6c-d6e9b9edcbf4",
                 "artifactDescription":"Auto-generated HEAT Environment deployment artifact",
                 "artifactChecksum":"OGM2MWIzZTA2OTc5YjQwNTM1NGVhODA0YTFkNzM4ZTg=",
                 "artifactUUID":"6dbd09d7-1e76-4f99-9d6c-d6e9b9edcbf4",
@@ -111,7 +111,7 @@
               {
                 "artifactName":"vendor-license-model.xml",
                 "artifactType":"VENDOR_LICENSE",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/0cc7d6bb-6201-4b44-abd2-e53cb6a0964a",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/0cc7d6bb-6201-4b44-abd2-e53cb6a0964a",
                 "artifactDescription":" Vendor license file",
                 "artifactChecksum":"ZWEyMDlkZDBhYWExYTMwNDUzOGRjMWRmMjFmYzYzZGQ=",
                 "artifactUUID":"0cc7d6bb-6201-4b44-abd2-e53cb6a0964a",
@@ -122,7 +122,7 @@
               {
                 "artifactName":"dns_az_01.env",
                 "artifactType":"HEAT_ENV",
-                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/mdns_2017_1011_ist_vf0/artifacts/b6375fa3-fecf-404d-b91c-873f9f4e2042",
+                "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/resourceInstances/CHARLOTTE_2017_1011_ist_vf0/artifacts/b6375fa3-fecf-404d-b91c-873f9f4e2042",
                 "artifactDescription":"Auto-generated HEAT Environment deployment artifact",
                 "artifactChecksum":"NDRjMmU0ZTJlMWYzNTI4YThmZTUzM2UyZGM3OWNhN2M=",
                 "artifactUUID":"b6375fa3-fecf-404d-b91c-873f9f4e2042",
@@ -136,7 +136,7 @@
         ],
         "artifacts":[
           {
-            "artifactName":"AAI-mdns_2017_1011_IST_Service-service-5.0.xml",
+            "artifactName":"AAI-CHARLOTTE_2017_1011_IST_Service-service-5.0.xml",
             "artifactType":"MODEL_INVENTORY_PROFILE",
             "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/artifacts/a166cb16-000b-4dff-b646-0fe014b32cae",
             "artifactDescription":"AAI Service Model",
@@ -169,7 +169,7 @@
             "artifactGroupType":"DEPLOYMENT"
           },
           {
-            "artifactName":"AAI-mdns_2017_1011_IST_Vf-resource-4.0.xml",
+            "artifactName":"AAI-CHARLOTTE_2017_1011_IST_Vf-resource-4.0.xml",
             "artifactType":"MODEL_INVENTORY_PROFILE",
             "artifactURL":"/sdc/v1/catalog/services/a1531622-4e08-43fa-9ffd-222090cab7d2/artifacts/dc9b78c0-b200-4a16-bbe0-76ca19c97680",
             "artifactDescription":"AAI Resource Model",
