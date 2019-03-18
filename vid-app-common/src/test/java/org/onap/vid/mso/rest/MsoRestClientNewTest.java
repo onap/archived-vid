@@ -20,8 +20,18 @@
  */
 package org.onap.vid.mso.rest;
 
+import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.server.StubServer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Properties;
+import java.util.UUID;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -36,17 +46,6 @@ import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.RestObject;
 import org.springframework.test.context.ContextConfiguration;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
-import java.util.UUID;
-
-import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
-import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
 
 @ContextConfiguration(classes = {SystemProperties.class})
 public class MsoRestClientNewTest {
@@ -280,16 +279,39 @@ public class MsoRestClientNewTest {
     }
 
     @Test
-    public void testGetManualTasks() {
+    public void testGetManualTasksByRequestId() {
         String p = props.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQ);
         String path = p + "/" + UUID.randomUUID();
+        String validResponse = "" 
+            + "{ "
+            + "  \"taskList\": [ "
+            + "    { "
+            + "      \"taskId\": \"daf4dd84-b77a-42da-a051-3239b7a9392c\", "
+            + "      \"type\": \"fallout\", "
+            + "      \"nfRole\": \"vEsmeralda\", "
+            + "      \"subscriptionServiceType\": \"Emanuel\", "
+            + "      \"originalRequestId\": \"d352c70d-5ef8-4977-9ea8-4c8cbe860422\", "
+            + "      \"originalRequestorId\": \"ss835w\", "
+            + "      \"errorSource\": \"A&AI\", "
+            + "      \"errorCode\": \"404\", "
+            + "      \"errorMessage\": \"Failed in A&AI 404\", "
+            + "      \"validResponses\": [ "
+            + "        \"rollback\", "
+            + "        \"abort\", "
+            + "        \"skip\", "
+            + "        \"resume\", "
+            + "        \"retry\" "
+            + "      ] "
+            + "    } "
+            + "  ] "
+            + "}";
 
         try(MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
             server,
             path,
             HttpStatus.OK_200,
-            CREATE_INSTANCE_RESPONSE_STR,CREATE_INSTANCE_RESPONSE_STR)) {
-            closure.executeGet(msoRestClient()::getManualTasks);
+            validResponse,validResponse)) {
+            closure.executeGet(endpoint -> msoRestClient().getManualTasksByRequestId(null, null, endpoint, null));
         }
     }
 
@@ -306,23 +328,6 @@ public class MsoRestClientNewTest {
         try {
             testSubject = createTestSubject();
             result = testSubject.getOrchestrationRequest(t, sourceId, endpoint, restObject, true);
-        } catch (Exception e) {
-        }
-    }
-
-    @Test
-    public void testGetManualTasksByRequestId() throws Exception {
-        MsoRestClientNew testSubject;
-        String t = "";
-        String sourceId = "";
-        String endpoint = "";
-        RestObject restObject = null;
-        MsoResponseWrapper result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getManualTasksByRequestId(t, sourceId, endpoint, restObject);
         } catch (Exception e) {
         }
     }
