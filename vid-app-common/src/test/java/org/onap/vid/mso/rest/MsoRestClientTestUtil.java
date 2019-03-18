@@ -31,6 +31,7 @@ import static com.xebialabs.restito.semantics.Condition.method;
 import static com.xebialabs.restito.semantics.Condition.post;
 import static com.xebialabs.restito.semantics.Condition.uri;
 import static com.xebialabs.restito.semantics.Condition.withHeader;
+import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.semantics.Action;
@@ -42,7 +43,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-
 import org.glassfish.grizzly.http.Method;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.json.JSONObject;
@@ -116,6 +116,7 @@ class MsoRestClientTestUtil implements AutoCloseable {
     MsoResponseWrapper response = func.apply(sampleRequestDetails, endpoint);
 
     Assert.assertEquals(expectedStatus.getStatusCode(), response.getStatus());
+    assertJsonEquals(expectedResponseStr, response.getEntity());
     verifyServer(server, endpoint, Method.DELETE);
   }
 
@@ -127,6 +128,7 @@ class MsoRestClientTestUtil implements AutoCloseable {
     MsoResponseWrapper response = func.apply(endpoint);
 
     Assert.assertEquals(expectedStatus.getStatusCode(), response.getStatus());
+    assertJsonEquals(expectedResponseStr, response.getEntity());
     verifyServer(server, endpoint, Method.GET);
   }
 

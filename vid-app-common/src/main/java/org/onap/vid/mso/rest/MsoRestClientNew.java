@@ -22,6 +22,13 @@ package org.onap.vid.mso.rest;
 
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -31,16 +38,14 @@ import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.RequestReferencesContainer;
-import org.onap.vid.mso.*;
+import org.onap.vid.mso.MsoInterface;
+import org.onap.vid.mso.MsoProperties;
+import org.onap.vid.mso.MsoResponseWrapper;
+import org.onap.vid.mso.MsoResponseWrapperInterface;
+import org.onap.vid.mso.MsoUtil;
+import org.onap.vid.mso.RestMsoImplementation;
+import org.onap.vid.mso.RestObject;
 import org.onap.vid.utils.Logging;
-
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -220,13 +225,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         return MsoUtil.wrapResponse(response);
     }
 
-    public MsoResponseWrapper getManualTasks(String endpoint) {
-        String path = baseUrl + endpoint;
-
-        HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
-        return MsoUtil.wrapResponse(response);
-    }
-
+    @Override
     public MsoResponseWrapper getManualTasksByRequestId(String t, String sourceId, String endpoint, RestObject restObject) {
         String methodName = "getManualTasksByRequestId";
         logger.debug(methodName + START);
@@ -234,9 +233,10 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         try {
             String path = baseUrl + endpoint;
 
-            MsoResponseWrapper w =getManualTasks(path);
-            logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w=" + w.getResponse());
+            HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
+            MsoResponseWrapper w = MsoUtil.wrapResponse(response);
 
+            logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w=" + w.getResponse());
             return w;
 
         } catch (Exception e) {
