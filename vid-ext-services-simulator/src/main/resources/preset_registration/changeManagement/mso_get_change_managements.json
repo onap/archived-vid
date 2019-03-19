@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/mso/orchestrationRequests/v5",
+    "path": "/mso/orchestrationRequests/v.",
     "queryParams": {
       "filter": "modelType:EQUALS:vnf"
     }
@@ -1727,25 +1727,6 @@
             },
             "requestType": "updateInstance",
             "startTime": "Tue, 07 Nov 2017 20:21:11 GMT",
-            "instanceReferences": {
-              "serviceInstanceId": "54ba3628-9ee5-4b32-8a2a-3abf001bed4e",
-              "vnfInstanceId": "b8d99523-1e83-4fd1-b42f-849361ef7024",
-              "requestorId": "az2016"
-            }
-          }
-        },
-        {
-          "request": {
-            "requestId": "2d6502bf-c488-4903-817e-2ed2c644dcf4",
-            "requestScope": "vnf",
-            "requestStatus": {
-              "percentProgress": 100.0,
-              "requestState": "COMPLETE",
-              "statusMessage": "Completedd  successfuly",
-              "finishTime": "Thu, 09 Nov 2017 10:58:14 GMT"
-            },
-            "requestType": "updateInstance",
-            "startTime": "Thu, 09 Nov 2017 10:58:14 GMT",
             "instanceReferences": {
               "serviceInstanceId": "54ba3628-9ee5-4b32-8a2a-3abf001bed4e",
               "vnfInstanceId": "b8d99523-1e83-4fd1-b42f-849361ef7024",
