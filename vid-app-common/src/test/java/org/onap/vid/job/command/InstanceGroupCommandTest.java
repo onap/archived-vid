@@ -20,8 +20,14 @@
 
 package org.onap.vid.job.command;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.same;
+import static org.mockito.Mockito.verify;
+
 import com.google.common.collect.ImmutableMap;
-import org.apache.commons.beanutils.BeanUtils;
+import java.util.Optional;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,18 +38,10 @@ import org.onap.vid.model.serviceInstantiation.InstanceGroup;
 import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
+import org.onap.vid.testUtils.TestUtils;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.util.Optional;
-import java.util.Set;
-
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 public class InstanceGroupCommandTest {
 
@@ -73,7 +71,7 @@ public class InstanceGroupCommandTest {
 
     @Test
     public void createMyself_callsMso() {
-        final ModelInfo serviceModelInfo = setRandomStrings(new ModelInfo());
+        final ModelInfo serviceModelInfo = setStrings(new ModelInfo());
         final String serviceInstanceId = "service-instance-id";
         final String userId = "ff3223";
 
@@ -92,14 +90,7 @@ public class InstanceGroupCommandTest {
 
     }
 
-    private ModelInfo setRandomStrings(ModelInfo object) {
-        try {
-            Set<String> fields = BeanUtils.describe(object).keySet();
-            BeanUtils.populate(object,
-                    fields.stream().collect(toMap(identity(), s -> randomAlphanumeric(4))));
-            return object;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    private ModelInfo setStrings(ModelInfo object) {
+        return TestUtils.setStringsInStringProperties(object);
     }
 }

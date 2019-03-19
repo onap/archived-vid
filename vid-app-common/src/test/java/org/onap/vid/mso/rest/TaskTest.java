@@ -20,15 +20,64 @@
 
 package org.onap.vid.mso.rest;
 
-import org.testng.annotations.Test;
-
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import java.io.IOException;
+import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.Test;
+
 public class TaskTest {
+
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final String TASK_JSON = ""
+        + "{ "
+        + "  \"taskId\": \"taskId\", "
+        + "  \"type\": \"type\", "
+        + "  \"nfRole\": \"nfRole\", "
+        + "  \"subscriptionServiceType\": \"subscriptionServiceType\", "
+        + "  \"originalRequestId\": \"originalRequestId\", "
+        + "  \"originalRequestorId\": \"originalRequestorId\", "
+        + "  \"buildingBlockName\": \"buildingBlockName\", "
+        + "  \"buildingBlockStep\": \"buildingBlockStep\", "
+        + "  \"errorSource\": \"errorSource\", "
+        + "  \"errorCode\": \"errorCode\", "
+        + "  \"errorMessage\": \"errorMessage\", "
+        + "  \"validResponses\": [ "
+        + "    \"a\", "
+        + "    \"b\", "
+        + "    \"c\" "
+        + "  ] "
+        + "} ";
+
+    private Task newTaskWithPopulatedFields() {
+        Task task = TestUtils.setStringsInStringProperties(new Task());
+        task.setValidResponses(ImmutableList.of("a", "b", "c"));
+        return task;
+    }
 
     @Test
     public void shouldHaveProperSettersAndGetters() {
         assertThat(Task.class, hasValidGettersAndSetters());
+    }
+
+    @Test
+    public void serializeTask() throws IOException {
+        assertThat(
+            mapper.writeValueAsString(newTaskWithPopulatedFields()),
+            jsonEquals(TASK_JSON)
+        );
+    }
+
+    @Test
+    public void deserializeTask() throws IOException {
+        assertThat(
+            mapper.readValue(TASK_JSON, Task.class),
+            is(newTaskWithPopulatedFields())
+        );
     }
 }

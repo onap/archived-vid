@@ -20,6 +20,9 @@
 
 package org.onap.vid.testUtils;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.RETURNS_DEFAULTS;
@@ -46,6 +49,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -55,7 +59,6 @@ import org.mockito.MockSettings;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.onap.portalsdk.core.domain.support.DomainVo;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.beans.Service;
 import org.springframework.mock.env.MockEnvironment;
@@ -131,10 +134,37 @@ public class TestUtils {
                 valueType);
     }
 
-    public static String[] allPropertiesOf(Class<DomainVo> aClass) {
+    public static String[] allPropertiesOf(Class<?> aClass) {
         return Arrays.stream(getPropertyDescriptors(aClass))
             .map(PropertyDescriptor::getDisplayName)
             .toArray(String[]::new);
+    }
+
+    private static <T> List<String> allStringPropertiesOf(T object) {
+        return Arrays.stream(getPropertyDescriptors(object.getClass()))
+            .filter(descriptor -> descriptor.getPropertyType().isAssignableFrom(String.class))
+            .map(PropertyDescriptor::getDisplayName)
+            .collect(toList());
+    }
+
+    /**
+     * Sets each String property with a value equal to the name of
+     * the property; e.g.: { name: "name", city: "city" }
+     * @param object
+     * @param <T>
+     * @return The modified object
+     */
+    public static <T> T setStringsInStringProperties(T object) {
+        try {
+            final List<String> stringFields = allStringPropertiesOf(object);
+
+            BeanUtils.populate(object, stringFields.stream()
+                .collect(toMap(identity(), identity())));
+
+            return object;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
