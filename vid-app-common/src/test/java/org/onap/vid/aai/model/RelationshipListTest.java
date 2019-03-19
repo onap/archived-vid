@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.aai;
+package org.onap.vid.aai.model;
 
 
 import org.testng.annotations.Test;
@@ -26,9 +26,10 @@ import org.testng.annotations.Test;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class SubscriberWithFilterTest {
+public class RelationshipListTest {
+
     @Test
     public void shouldHaveValidGettersAndSetters() {
-        assertThat(SubscriberWithFilter.class, hasValidGettersAndSetters());
+        assertThat(RelationshipList.class, hasValidGettersAndSetters());
     }
 }
