@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6727593d_3b315b98",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-20T10:03:41Z",
+      "side": 1,
+      "message": "typo -\u003e should",
+      "range": {
+        "startLine": 239,
+        "startChar": 16,
+        "endLine": 239,
+        "endChar": 22
+      },
+      "revId": "08c1b96e41d681003f28746697123c14b879b659",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b8a7fed7_abb1283a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/WorkflowServiceImplTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-20T10:03:41Z",
+      "side": 1,
+      "message": "add modification Nokia",
+      "range": {
+        "startLine": 5,
+        "startChar": 4,
+        "endLine": 5,
+        "endChar": 77
+      },
+      "revId": "08c1b96e41d681003f28746697123c14b879b659",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
