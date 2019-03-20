@@ -8,9 +8,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,23 +23,35 @@ package org.onap.vid.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.ws.rs.core.Response;
+import org.jeasy.random.EasyRandom;
+import org.jeasy.random.EasyRandomParameters;
+import org.jeasy.random.randomizers.misc.BooleanRandomizer;
+import org.jeasy.random.randomizers.text.StringRandomizer;
 import org.junit.Test;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.VnfResult;
 import org.onap.vid.roles.RoleValidator;
 
 public class AaiServiceImplTest {
+
+    private static final long STATIC_SEED = 5336L;
+    private EasyRandomParameters parameters = new EasyRandomParameters()
+        .randomize(String.class, new StringRandomizer(4, 4, STATIC_SEED))
+        .randomize(Boolean.class, new BooleanRandomizer(STATIC_SEED));
+    private EasyRandom modelGenerator = new EasyRandom(parameters);
 
     private AaiClientInterface aaiClient = mock(AaiClientInterface.class);
     private AaiOverTLSClientInterface aaiSslClient = mock(AaiOverTLSClientInterface.class);
@@ -184,5 +196,82 @@ public class AaiServiceImplTest {
         // then
         assertThat(response).isEqualTo(actual);
         assertThat(response.getT().results).containsOnly(genericVnf, serviceInstance);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void getServicesShouldMarkAllServicesAsPermitted() {
+        // given
+        RoleValidator roleValidator = modelGenerator.nextObject(RoleValidator.class);
+
+        GetServicesAAIRespone inputPayload = modelGenerator.nextObject(GetServicesAAIRespone.class);
+        assertThat(inputPayload.service.stream().allMatch(service -> service.isPermitted)).isFalse();
+
+        when(aaiClient.getServices()).thenReturn(new AaiResponse<>(inputPayload, "", 200));
+
+        // when
+        AaiResponse<GetServicesAAIRespone> result = aaiService.getServices(roleValidator);
+        GetServicesAAIRespone outputPayload = result.getT();
+
+        // then
+        assertThat(outputPayload.service.stream().allMatch(service -> service.isPermitted)).isTrue();
+    }
+
+    @Test
+    public void shouldGetNodeTemplateInstances() {
+        // given
+        String globalCustomerId = "gcid";
+        String serviceType = "st";
+        String modelVersionId = "mvid";
+        String modelInvariantId = "miid";
+        String cloudRegion = "cr";
+
+        // when
+        aaiService
+            .getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
+
+        // then
+        verify(aaiClient)
+            .getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
+    }
+
+    @Test
+    public void shoudlGetNetworkCollectionDetails() {
+        // given
+        String serviceInstanceId = "siid";
+
+        // when
+        aaiService.getNetworkCollectionDetails(serviceInstanceId);
+
+        // then
+        verify(aaiClient).getNetworkCollectionDetails(serviceInstanceId);
+    }
+
+    @Test
+    public void shouldGetInstanceGroupsByCloudRegion() {
+        // given
+        String cloudOwner = "co";
+        String cloudRegionId = "crid";
+        String networkFunction = "nf";
+
+        // when
+        aaiService.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
+
+        // then
+        verify(aaiClient).getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
+    }
+
+    @Test
+    public void getAAIServiceTree() {
+        // given
+        String globalCustomerId = "gcid";
+        String serviceType = "st";
+        String serviceInstanceId = "siid";
+
+        // when
+        aaiService.getAAIServiceTree(globalCustomerId, serviceType, serviceInstanceId);
+
+        // then
+        verify(aaiServiceTree).getServiceInstanceTopology(globalCustomerId, serviceType, serviceInstanceId);
     }
 }

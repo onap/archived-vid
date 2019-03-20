@@ -472,6 +472,12 @@
             <version>0.9.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+            <version>4.0.0.RC1</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Helpers -->
         <dependency>

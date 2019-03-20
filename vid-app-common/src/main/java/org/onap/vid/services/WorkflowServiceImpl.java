@@ -20,6 +20,7 @@
 
 package org.onap.vid.services;
 
+import java.util.List;
 import org.onap.vid.model.Workflow;
 import org.springframework.stereotype.Service;
 
@@ -31,29 +32,27 @@ import java.util.stream.Collectors;
 @Service
 public class WorkflowServiceImpl implements WorkflowService {
     //TODO: Add the list of workflows hard coded or from DB.
-    private ArrayList<Workflow> workflows = new ArrayList<>(Arrays.asList(
+    private List<Workflow> workflows = Arrays.asList(
             new Workflow(0, "Upgrade", new ArrayList<>(Arrays.asList("VNF1", "VNF2", "VNF3", "VNF4"))),
             new Workflow(1, "Clean", new ArrayList<>(Arrays.asList("VNF1", "VNF2", "VNF3"))),
             new Workflow(2, "Reinstall", new ArrayList<>(Arrays.asList("VNF1", "VNF2", "VNF4"))),
             new Workflow(3, "Dump", new ArrayList<>(Arrays.asList("VNF1", "VNF3", "VNF4"))),
             new Workflow(4, "Flush", new ArrayList<>(Arrays.asList("VNF2", "VNF3", "VNF4")))
-    ));
+    );
 
     @Override
     public Collection<String> getWorkflowsForVNFs(Collection<String> vnfNames) {
-        Collection<String> result = workflows.stream()
+        return workflows.stream()
                 .filter(workflow -> workflow.getVnfNames().containsAll(vnfNames))
-                .map(workflow -> workflow.getWorkflowName())
+                .map(Workflow::getWorkflowName)
                 .distinct()
                 .collect(Collectors.toList());
-
-        return result;
     }
 
     @Override
     public Collection<String> getAllWorkflows() {
         return workflows.stream()
-                .map(workflow -> workflow.getWorkflowName())
+                .map(Workflow::getWorkflowName)
                 .distinct()
                 .collect(Collectors.toList());
     }
