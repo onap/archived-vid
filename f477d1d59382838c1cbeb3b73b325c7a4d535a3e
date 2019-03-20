@@ -22,6 +22,30 @@
       "revId": "f477d1d59382838c1cbeb3b73b325c7a4d535a3e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "71393ff8_0ca5105e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-03-20T12:02:00Z",
+      "side": 1,
+      "message": "If just fills model with random data, truncated example (assuming toString() method would be implemented) would be:\n\n  RoleValidator{\n    disableRoles\u003dfalse, \n    userRoles\u003d\u003e [\n      Role{ecompRole\u003dREAD, subscribeName\u003d\u0027eoFL\u0027, \n  serviceType\u003d\u0027Hsye\u0027, tenant\u003d\u0027LmDg\u0027}, \n      Role{ecompRole\u003dREAD, \n  subscribeName\u003d\u0027qyJm\u0027, serviceType\u003d\u0027PIWi\u0027, tenant\u003d\u0027DDGj\u0027}, \n      Role{ecompRole\u003dREAD, subscribeName\u003d\u0027HuuV\u0027, \n  serviceType\u003d\u0027wmVP\u0027, tenant\u003d\u0027lJqL\u0027}, \n      Role{ecompRole\u003dREAD, \n  subscribeName\u003d\u0027lfAE\u0027, serviceType\u003d\u0027gAYs\u0027, tenant\u003d\u0027DuiM\u0027}]}\n\nBy default it keeps digging until some primitive field hit (String, int, boolean). \n\nOf course I could apply more fine-grained config but I don\u0027t think it makes difference here.",
+      "parentUuid": "1e5f5764_5797c714",
+      "range": {
+        "startLine": 205,
+        "startChar": 38,
+        "endLine": 205,
+        "endChar": 77
+      },
+      "revId": "f477d1d59382838c1cbeb3b73b325c7a4d535a3e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
