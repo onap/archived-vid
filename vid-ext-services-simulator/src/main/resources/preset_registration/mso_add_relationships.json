@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/serviceInstances/v6/*/addRelationships"
+    "path": "/serviceInstances/v./*/addRelationships"
   } ,
   "simulatorResponse": {
     "responseCode": 200,

@@ -2,7 +2,6 @@ package org.onap.simulator.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +11,9 @@ public class SimulatorRequest {
     private String method;
     private String path;
     private String body;
+    private boolean strict;
+    private Map<String,String> headers;
+
     private Map<String, List<String>> queryParams;
 
     public Map<String, List<String>> getQueryParams() {
@@ -52,6 +54,22 @@ public class SimulatorRequest {
 
     public void setBody(JsonNode body) {
         this.body = body.isTextual() ? body.textValue() : body.toString();
+    }
+
+    public boolean getStrict() {
+        return strict;
+    }
+
+    public void setStrict(boolean strict) {
+        this.strict = strict;
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
     }
 
     @Override

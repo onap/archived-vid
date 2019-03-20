@@ -25,7 +25,7 @@
         "name": "test-pnf",
         "version": "1.0",
         "toscaModelURL": "./csar15782222_instantiationTypeMacroWithPnf.zip",
-        "category": "Mobility",
+        "category": "Emanuel",
         "lifecycleState": "CERTIFIED",
         "lastUpdaterUserId": "rg276b",
         "lastUpdaterFullName": null,

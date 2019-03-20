@@ -1,0 +1,65 @@
+{
+  "simulatorRequest": {
+    "method": "POST",
+    "path": "/aai/search/named-query",
+    "body": {
+      "instance-filters": {
+        "instance-filter": [
+          {
+            "customer": {
+              "global-customer-id": "e433710f-9217-458d-a79d-1c7aff376d891234"
+            },
+            "service-instance": {
+              "service-instance-id": "c187e9fe-40c3-4862-b73e-84ff056205f61234"
+            },
+            "service-subscription": {
+              "service-type": "TYLER SILVIA"
+            }
+          }
+        ]
+      },
+      "query-parameters": {
+        "named-query": {
+          "named-query-uuid": "0367193e-c785-4d5f-9cb8-7bc89dc9ddb7"
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inventory-response-item": [
+        {
+          "model-name": "0eOHz2Yh8WJcBYzKy0791234",
+          "service-instance": {
+            "service-instance-id": "c187e9fe-40c3-4862-b73e-84ff056205f61234",
+            "service-instance-name": "test_fabric_config"
+          },
+          "extra-properties": {},
+          "inventory-response-items": {
+            "inventory-response-item": [
+              {
+                "model-name": "Fabric-Configuration-Instance",
+                "configuration": {
+                  "configuration-id": "1234-fabric-config-LB1113",
+                  "configuration-name": "dummy_instance",
+                  "configuration-type": "fabric-configuration-type-1234",
+                  "configuration-sub-type": "fabric-configuration-sub-type-1234",
+                  "model-invariant-id": "model-invariant-id-1234",
+                  "model-version-id": "model-version-id-1234",
+                  "orchestration-status": "Assigned",
+                  "operational-status": "",
+                  "configuration-selflink": "",
+                  "model-customization-id": "model-customization-id-1234",
+                  "resource-version": "1504038855716"
+                },
+                "extra-properties": {
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

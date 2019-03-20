@@ -22,6 +22,26 @@
   {
     "simulatorRequest": {
       "method": "GET",
+      "path": "/ONAPPORTAL/auxapi/v[0-9]+/getSessionSlotCheckInterval"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": "300000"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "POST",
+      "path": "/ONAPPORTAL/auxapi/extendSessionTimeOuts"
+    },
+    "simulatorResponse": {
+      "responseCode": 200,
+      "body": "300000"
+    }
+  },
+  {
+    "simulatorRequest": {
+      "method": "GET",
       "path": "/ONAPPORTAL/auxapi/context/get_user"
     },
     "simulatorResponse": {
