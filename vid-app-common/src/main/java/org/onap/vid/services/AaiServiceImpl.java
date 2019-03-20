@@ -320,8 +320,6 @@ public class AaiServiceImpl implements AaiService {
         return aaiClient.getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel);
     }
 
-
-
     @Override
     public AaiResponse getServices(RoleValidator roleValidator) {
         AaiResponse<GetServicesAAIRespone> subscriberResponse = aaiClient.getServices();
