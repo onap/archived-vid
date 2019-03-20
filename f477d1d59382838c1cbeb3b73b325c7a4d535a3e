@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e5f5764_5797c714",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-20T11:31:19Z",
+      "side": 1,
+      "message": "What is randomized here? How deep? Are roles randomized, etc.?",
+      "range": {
+        "startLine": 205,
+        "startChar": 38,
+        "endLine": 205,
+        "endChar": 77
+      },
+      "revId": "f477d1d59382838c1cbeb3b73b325c7a4d535a3e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
