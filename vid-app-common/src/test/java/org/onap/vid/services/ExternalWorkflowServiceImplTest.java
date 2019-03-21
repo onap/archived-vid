@@ -61,9 +61,9 @@ public class ExternalWorkflowServiceImplTest {
     @Test
     public void shouldReturnWorkflowsOnValidResponse(){
         // given
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
+        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client,null);
         Mockito.when(response.getStatus()).thenReturn(200);
-        Mockito.when(response.getBody()).thenReturn(new SOWorkflows(Collections.singletonList(new SOWorkflow(1L, "xyz"))));
+        Mockito.when(response.getBody()).thenReturn(new SOWorkflows(Collections.singletonList(new SOWorkflow("1l", "xyz", null, null))));
         MsoResponseWrapper2<SOWorkflows> msoResponseStub = new MsoResponseWrapper2<>(response);
         Mockito.when(client.getWorkflows("test")).thenReturn(msoResponseStub);
         // when
@@ -76,9 +76,9 @@ public class ExternalWorkflowServiceImplTest {
     @Test(expectedExceptions = BadResponseFromMso.class)
     public void shouldThrowBadResponseOnInvalidResponse(){
         // given
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
+        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client,null);
         Mockito.when(response.getStatus()).thenReturn(500);
-        Mockito.when(response.getBody()).thenReturn(new SOWorkflows(Collections.singletonList(new SOWorkflow(1L, "xyz"))));
+        Mockito.when(response.getBody()).thenReturn(new SOWorkflows(Collections.singletonList(new SOWorkflow("1l", "xyz",null,null))));
         MsoResponseWrapper2<SOWorkflows> msoResponseStub = new MsoResponseWrapper2<>(response);
         Mockito.when(client.getWorkflows("test")).thenReturn(msoResponseStub);
         // when
@@ -88,7 +88,7 @@ public class ExternalWorkflowServiceImplTest {
     @Test
     public void shouldReturnWorkflowParametersOnValidResponse() {
         SOWorkflowParameterDefinitions parameters = new SOWorkflowParameterDefinitions(Collections.singletonList(new SOWorkflowParameterDefinition(1L, "sample", "[0-9]", SOWorkflowType.STRING, true)));
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
+        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client,null);
         Mockito.when(parameterDefinitionsHttpResponse.getStatus()).thenReturn(200);
         Mockito.when(parameterDefinitionsHttpResponse.getBody()).thenReturn(parameters);
         MsoResponseWrapper2<SOWorkflowParameterDefinitions> msoResponseWrapper = new MsoResponseWrapper2<>(parameterDefinitionsHttpResponse);
@@ -102,7 +102,7 @@ public class ExternalWorkflowServiceImplTest {
 
     @Test
     public void shouldProperlyHandleEmptyParametersList(){
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
+        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client,null);
         Mockito.when(parameterDefinitionsHttpResponse.getStatus()).thenReturn(200);
         Mockito.when(parameterDefinitionsHttpResponse.getBody()).thenReturn(new SOWorkflowParameterDefinitions(Lists.newArrayList()));
 

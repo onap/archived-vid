@@ -22,6 +22,7 @@ package org.onap.vid.mso;
 
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
@@ -134,4 +135,5 @@ public interface MsoBusinessLogic {
 
     MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails);
 
+    SOWorkflowList getWorkflowListByModelId(String modelVersionId);
 }

@@ -699,13 +699,33 @@
         };
 
         vm.loadRemoteWorkFlowParameters = function (workflow) {
-          changeManagementService.getSOWorkflowParameter(workflow.id)
-          .then(function (response) {
-            vm.remoteWorkflowsParameters.set(workflow.name, response.data.parameterDefinitions);
-          })
-          .catch(function (error) {
-            $log.error(error);
-          });
+            let parameters = [];
+            workflow.workflowInputParameters.forEach(function (param) {
+                    let workflowParams = vm.repackAttributes(param);
+                    if (workflowParams.validation.length > 0) {
+                        let validation = param.validation[0];
+                        if ('maxLength' in validation) {
+                            workflowParams.maxLength = validation.maxLength;
+                        }
+                        if ('allowableChars' in validation) {
+                            workflowParams.pattern = validation.allowableChars;
+                        }
+                    }
+                    parameters.push(workflowParams);
+                }
+            );
+            vm.remoteWorkflowsParameters.set(workflow.name, parameters);
+        };
+
+        vm.repackAttributes = function (workflowParam){
+            return {
+                name: workflowParam.label,
+                required: workflowParam.required,
+                id: workflowParam.soFieldName,
+                soFieldName: workflowParam.soFieldName,
+                maxLength: '500',
+                pattern: '.*'
+            }
         };
 
         vm.getRemoteWorkFlowParameters = function (workflow) {
