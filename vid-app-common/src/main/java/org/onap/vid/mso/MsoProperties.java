@@ -122,4 +122,6 @@ public class MsoProperties extends SystemProperties {
 
 	/** The Constant MSO_REST_API_SERVICE_INSTANCE_ASSIGN */
 	public static final String MSO_REST_API_SERVICE_INSTANCE_ASSIGN = "mso.restapi.serviceInstanceAssign";
+
+	public static final String MSO_REST_API_WORKFLOW_SPECIFICATIONS= "mso.restapi.changeManagement.workflowSpecifications";
 }

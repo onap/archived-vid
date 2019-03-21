@@ -20,6 +20,8 @@
 
 package org.onap.vid.model
 
+import com.google.common.collect.Lists
+
 data class SOWorkflow constructor(
         val id: Long,
         val name: String) {
@@ -79,3 +81,45 @@ data class LocalWorkflowParameterDefinitions constructor(
     }
 }
 
+
+data class ArtifactInfo constructor(
+        val artifactType: String,
+        val artifactUuid: String,
+        val artifactName: String,
+        val artifactVersion: String,
+        val artifactDescription: String? = null,
+        val workflowName: String,
+        val operationName: String? = null,
+        val workflowSource: String,
+        val workflowResourceTarget: String
+)
+
+data class ActivitySequenceItem constructor(
+        val name: String,
+        val description: String
+)
+
+data class WorkflowInputParameter constructor(
+        val label: String,
+        val inputType: String,
+        val required: Boolean,
+        val validation: List<InputParameterValidation>,
+        val soFieldName: String,
+        val soPayloadLocation: String
+
+)
+
+data class InputParameterValidation constructor(
+        val maxLength: String,
+        val allowableChars: String
+)
+
+data class WorkflowSpecification constructor(
+        val artifactInfo: ArtifactInfo,
+        val activitySequence: List<ActivitySequenceItem>? = Lists.newArrayList(),
+        val workflowInputParameters: List<WorkflowInputParameter>
+)
+
+data class SOWorkflowList constructor(
+        val workflowSpecificationList: List<WorkflowSpecification>? = Lists.newArrayList()
+)

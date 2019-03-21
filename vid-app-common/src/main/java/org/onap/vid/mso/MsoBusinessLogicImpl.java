@@ -8,9 +8,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
@@ -33,11 +34,13 @@ import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.controller.OperationalEnvironmentController;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.RequestReferencesContainer;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.mso.model.*;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.onap.vid.mso.rest.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.togglz.core.manager.FeatureManager;
 
 import javax.ws.rs.BadRequestException;
@@ -94,7 +97,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         this.featureManager = featureManager;
     }
 
-    public static String    validateEndpointPath(String endpointEnvVariable) {
+    public static String validateEndpointPath(String endpointEnvVariable) {
         String endpoint = SystemProperties.getProperty(endpointEnvVariable);
         if (endpoint == null || endpoint.isEmpty()) {
             throw new GenericUncheckedException(endpointEnvVariable + " env variable is not defined");
@@ -380,7 +383,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         }
     }
 
-        private List<Task> deserializeManualTasksJson(String manualTasksJson) {
+    private List<Task> deserializeManualTasksJson(String manualTasksJson) {
         logInvocationInDebug("deserializeManualTasksJson");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -532,6 +535,19 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     public MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails) {
         String path = getActivateFabricConfigurationPath(serviceInstanceId);
         return new MsoResponseWrapper2<>(msoClientInterface.post(path, new RequestDetailsWrapper<>(requestDetails), RequestReferencesContainer.class));
+    }
+
+    @Override
+    public SOWorkflowList getWorkflowListByModelId(String modelVersionId) {
+        logInvocationInDebug("getWorkflowListByModelId");
+        String pathTemplate = validateEndpointPath(MSO_REST_API_WORKFLOW_SPECIFICATIONS);
+        String path = pathTemplate.replaceFirst("model_version_id", modelVersionId);
+
+        HttpResponse<SOWorkflowList> workflowListByModelId = msoClientInterface.getWorkflowListByModelId(path);
+        if (HttpStatus.OK.value() != workflowListByModelId.getStatus()) {
+            throw new RuntimeException();
+        }
+        return workflowListByModelId.getBody();
     }
 
 
