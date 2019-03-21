@@ -40,8 +40,8 @@ public class ExternalWorkflowsServiceImpl implements ExternalWorkflowsService {
     }
 
     @Override
-    public List<SOWorkflow> getWorkflows(String vnfName) {
-        MsoResponseWrapper2<SOWorkflows> msoResponse = mockedWorkflowsRestClient.getWorkflows(vnfName);
+    public List<SOWorkflow> getWorkflows(String vnfModelId) {
+        MsoResponseWrapper2<SOWorkflows> msoResponse = mockedWorkflowsRestClient.getWorkflows(vnfModelId);
         validateSOResponse(msoResponse, SOWorkflows.class);
         return convertMsoResponseToWorkflowList(msoResponse);
     }
