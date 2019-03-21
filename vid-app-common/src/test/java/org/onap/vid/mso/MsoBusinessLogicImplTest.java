@@ -28,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.hamcrest.MockitoHamcrest;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
-import org.onap.vid.controller.ControllersUtils;
+import org.onap.vid.model.SOWorkflowList;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -78,6 +78,7 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -101,6 +102,12 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
     @Mock
     private MsoInterface msoInterface;
+
+    @Mock
+    private SOWorkflowList workflowList;
+
+    @Mock
+    private HttpResponse<SOWorkflowList> workflowListResponse;
 
     @Mock
     private RequestDetails msoRequest;
@@ -1355,6 +1362,26 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
         // then
         assertThat(response).isEqualToComparingFieldByField(okResponse);
+    }
+
+
+    @Test
+    public void shouldReturnWorkflowListForGivenModelId() {
+        given(msoInterface.getWorkflowListByModelId(anyString())).willReturn(workflowListResponse);
+        given(workflowListResponse.getBody()).willReturn(workflowList);
+        given(workflowListResponse.getStatus()).willReturn(HttpStatus.ACCEPTED.value());
+
+        SOWorkflowList workflows = msoBusinessLogic.getWorkflowListByModelId("sampleModelId");
+
+        assertThat(workflows).isEqualTo(workflowList);
+    }
+
+    @Test(expectedExceptions = {MsoBusinessLogicImpl.WorkflowListException.class})
+    public void shouldRaiseExceptionWhenRetrievingWorkflowsFailed() {
+        given(msoInterface.getWorkflowListByModelId(anyString())).willReturn(workflowListResponse);
+        given(workflowListResponse.getStatus()).willReturn(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        msoBusinessLogic.getWorkflowListByModelId("sampleModelId");
     }
 
     private WorkflowRequestDetail createWorkflowRequestDetail() {

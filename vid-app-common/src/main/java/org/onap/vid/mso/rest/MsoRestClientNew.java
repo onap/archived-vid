@@ -21,6 +21,7 @@
 package org.onap.vid.mso.rest;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
 import java.text.DateFormat;
@@ -40,6 +41,7 @@ import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.RequestReferencesContainer;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoResponseWrapper;
@@ -472,6 +474,12 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         return client.post(path, commonHeaders, requestDetailsWrapper, responseClass);
     }
 
+
+    public HttpResponse<SOWorkflowList> getWorkflowListByModelId(String endpoint){
+        String path = baseUrl + endpoint;
+
+        return client.get(path, commonHeaders, Maps.newHashMap(), SOWorkflowList.class);
+    }
 
     private MsoResponseWrapper createInstance(Object request, String path) {
         String methodName = "createInstance";

@@ -8,9 +8,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,26 +26,44 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.changeManagement.UIWorkflowsRequest;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
-import org.onap.vid.controller.ControllersUtils;
 import org.onap.vid.controller.OperationalEnvironmentController;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.RequestReferencesContainer;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
-import org.onap.vid.mso.model.*;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
+import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
+import org.onap.vid.mso.model.RequestInfo;
+import org.onap.vid.mso.model.RequestParameters;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
-import org.onap.vid.mso.rest.*;
+import org.onap.vid.mso.rest.RelatedInstance;
+import org.onap.vid.mso.rest.Request;
+import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.mso.rest.RequestList;
+import org.onap.vid.mso.rest.RequestWrapper;
+import org.onap.vid.mso.rest.Task;
+import org.onap.vid.mso.rest.TaskList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.togglz.core.manager.FeatureManager;
 
 import javax.ws.rs.BadRequestException;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,8 +72,16 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.StringUtils.upperCase;
 import static org.onap.vid.changeManagement.ChangeManagementRequest.MsoChangeManagementRequest;
-import static org.onap.vid.controller.MsoController.*;
-import static org.onap.vid.mso.MsoProperties.*;
+import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
+import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
+import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.WORKFLOW_ID;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_DEACTIVATE;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_WORKFLOW_SPECIFICATIONS;
 import static org.onap.vid.properties.Features.FLAG_UNASSIGN_SERVICE;
 import static org.onap.vid.utils.Logging.debugRequestDetails;
 
@@ -97,7 +123,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         this.featureManager = featureManager;
     }
 
-    public static String    validateEndpointPath(String endpointEnvVariable) {
+    public static String validateEndpointPath(String endpointEnvVariable) {
         String endpoint = SystemProperties.getProperty(endpointEnvVariable);
         if (endpoint == null || endpoint.isEmpty()) {
             throw new GenericUncheckedException(endpointEnvVariable + " env variable is not defined");
@@ -404,7 +430,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         }
     }
 
-        private List<Task> deserializeManualTasksJson(String manualTasksJson) {
+    private List<Task> deserializeManualTasksJson(String manualTasksJson) {
         logInvocationInDebug("deserializeManualTasksJson");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -556,6 +582,20 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     public MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails) {
         String path = getActivateFabricConfigurationPath(serviceInstanceId);
         return new MsoResponseWrapper2<>(msoClientInterface.post(path, new RequestDetailsWrapper<>(requestDetails), RequestReferencesContainer.class));
+    }
+
+    @Override
+    public SOWorkflowList getWorkflowListByModelId(String modelVersionId) {
+        logInvocationInDebug("getWorkflowListByModelId");
+        String pathTemplate = validateEndpointPath(MSO_REST_API_WORKFLOW_SPECIFICATIONS);
+        String path = pathTemplate.replaceFirst("<model_version_id>", modelVersionId);
+
+        HttpResponse<SOWorkflowList> workflowListByModelId = msoClientInterface.getWorkflowListByModelId(path);
+        if (!isSuccessful(workflowListByModelId)) {
+            logger.error(EELFLoggerDelegate.errorLogger, workflowListByModelId.getStatusText());
+            throw new WorkflowListException(String.format("Get worklflow list for id: %s failed due to %s", modelVersionId, workflowListByModelId.getStatusText()));
+        }
+        return workflowListByModelId.getBody();
     }
 
 
@@ -840,6 +880,18 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     private void logException(String methodName, Exception e) {
         logger.error(EELFLoggerDelegate.errorLogger, methodName + e.toString());
         logger.debug(EELFLoggerDelegate.debugLogger, methodName + e.toString());
+    }
+
+    private boolean isSuccessful(HttpResponse<SOWorkflowList> workflowListByModelId) {
+        int status = workflowListByModelId.getStatus();
+        return HttpStatus.OK.value() == status || HttpStatus.ACCEPTED.value() == status;
+    }
+
+    class WorkflowListException extends RuntimeException{
+
+        WorkflowListException(String message) {
+            super(message);
+        }
     }
 
     enum RequestType {

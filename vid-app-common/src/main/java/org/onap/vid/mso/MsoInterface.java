@@ -22,6 +22,7 @@ package org.onap.vid.mso;
 
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.mso.rest.RequestDetails;
 
@@ -113,6 +114,8 @@ public interface MsoInterface {
     MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint);
 
     MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath);
+
+    HttpResponse<SOWorkflowList> getWorkflowListByModelId(String endpoint);
 
     MsoResponseWrapper invokeWorkflow(WorkflowRequestDetail requestDetails,String invokeWorkflowsPath,  Map<String, String> extraHeaders);
 
