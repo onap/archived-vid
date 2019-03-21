@@ -62,10 +62,6 @@ public class WorkflowsController extends VidRestrictedBaseController {
         return externalWorkflowsService.getWorkflows(vnfModelId);
     }
 
-    @RequestMapping(value = "remote-workflow-parameters/{id}", method = RequestMethod.GET)
-    SOWorkflowParameterDefinitions getParameters(@PathVariable Long id) {
-        return externalWorkflowsService.getWorkflowParameterDefinitions(id);
-    }
 
     @RequestMapping(value = "local-workflow-parameters/{name}", method = RequestMethod.GET)
     LocalWorkflowParameterDefinitions getParameters(@PathVariable String name) {

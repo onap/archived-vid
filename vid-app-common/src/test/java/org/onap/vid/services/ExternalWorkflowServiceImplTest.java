@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,96 +21,66 @@
 package org.onap.vid.services;
 
 
-
 import com.google.common.collect.Lists;
 import io.joshworks.restclient.http.HttpResponse;
-import java.util.Collections;
-import java.util.List;
-
-import org.assertj.core.api.Assertions;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.onap.vid.model.ArtifactInfo;
 import org.onap.vid.model.SOWorkflow;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SOWorkflowParameterDefinition;
 import org.onap.vid.model.SOWorkflowParameterDefinitions;
 import org.onap.vid.model.SOWorkflowType;
 import org.onap.vid.model.SOWorkflows;
-import org.onap.vid.mso.MsoResponseWrapper2;
-import org.onap.vid.mso.rest.MockedWorkflowsRestClient;
-import org.onap.vid.services.ExternalWorkflowsServiceImpl.BadResponseFromMso;
+import org.onap.vid.model.WorkflowInputParameter;
+import org.onap.vid.model.WorkflowSource;
+import org.onap.vid.model.WorkflowSpecification;
+import org.onap.vid.model.WorkflowSpecificationWrapper;
+import org.onap.vid.mso.MsoBusinessLogic;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 public class ExternalWorkflowServiceImplTest {
 
     @Mock
-    private MockedWorkflowsRestClient client;
-    @Mock
-    private HttpResponse<SOWorkflows> response;
+    private MsoBusinessLogic msoBusinessLogic;
 
-    @Mock
-    private HttpResponse<SOWorkflowParameterDefinitions> parameterDefinitionsHttpResponse;
 
+    private static final UUID SAMPLE_UUID = UUID.randomUUID();
 
     @BeforeMethod
-    public void init(){
+    public void init() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void shouldReturnWorkflowsOnValidResponse(){
+    public void shouldReturnWorkflowsOnValidResponse() {
         // given
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
-        Mockito.when(response.getStatus()).thenReturn(200);
-        Mockito.when(response.getBody()).thenReturn(new SOWorkflows(Collections.singletonList(new SOWorkflow(1L, "xyz"))));
-        MsoResponseWrapper2<SOWorkflows> msoResponseStub = new MsoResponseWrapper2<>(response);
-        Mockito.when(client.getWorkflows("test")).thenReturn(msoResponseStub);
+        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(msoBusinessLogic);
+        WorkflowInputParameter parameter = new WorkflowInputParameter("sampleLabel", "text",
+                true, Collections.EMPTY_LIST, "sampleName", "userParams", "description");
+        SOWorkflowList workflowList = createWorkflowList(parameter);
+        SOWorkflow workflow = new SOWorkflow(SAMPLE_UUID.toString(), "sampleName", WorkflowSource.SDC, Collections.singletonList(parameter));
+        when(msoBusinessLogic.getWorkflowListByModelId("test")).thenReturn(workflowList);
         // when
         List<SOWorkflow> workflows = extWorkflowsService.getWorkflows("test");
         // then
-        Mockito.verify(client).getWorkflows("test");
-        Assertions.assertThat(workflows.get(0).getName()).isEqualTo("xyz");
+        assertThat(workflows).hasSize(1).contains(workflow);
     }
 
-    @Test(expectedExceptions = BadResponseFromMso.class)
-    public void shouldThrowBadResponseOnInvalidResponse(){
-        // given
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
-        Mockito.when(response.getStatus()).thenReturn(500);
-        Mockito.when(response.getBody()).thenReturn(new SOWorkflows(Collections.singletonList(new SOWorkflow(1L, "xyz"))));
-        MsoResponseWrapper2<SOWorkflows> msoResponseStub = new MsoResponseWrapper2<>(response);
-        Mockito.when(client.getWorkflows("test")).thenReturn(msoResponseStub);
-        // when
-        extWorkflowsService.getWorkflows("test");
-        // then throw exception
-    }
-    @Test
-    public void shouldReturnWorkflowParametersOnValidResponse() {
-        SOWorkflowParameterDefinitions parameters = new SOWorkflowParameterDefinitions(Collections.singletonList(new SOWorkflowParameterDefinition(1L, "sample", "[0-9]", SOWorkflowType.STRING, true)));
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
-        Mockito.when(parameterDefinitionsHttpResponse.getStatus()).thenReturn(200);
-        Mockito.when(parameterDefinitionsHttpResponse.getBody()).thenReturn(parameters);
-        MsoResponseWrapper2<SOWorkflowParameterDefinitions> msoResponseWrapper = new MsoResponseWrapper2<>(parameterDefinitionsHttpResponse);
-        Mockito.when(client.getWorkflowParameterDefinitions(1L)).thenReturn(msoResponseWrapper);
-
-
-        SOWorkflowParameterDefinitions workflowParameterDefinitions = extWorkflowsService.getWorkflowParameterDefinitions(1L);
-
-        Assertions.assertThat(workflowParameterDefinitions).isEqualTo(parameters);
+    private SOWorkflowList createWorkflowList(WorkflowInputParameter parameter) {
+        ArtifactInfo artifactInfo = new ArtifactInfo("workflow", SAMPLE_UUID.toString(), "sampleArtifactName",
+                "sampleVersion", "sampleDescription", "sampleName", "sampleOperation", "sdc", "vnf");
+        WorkflowSpecification specification = new WorkflowSpecification(artifactInfo, Collections.EMPTY_LIST, Collections.singletonList(parameter));
+        WorkflowSpecificationWrapper wrapper = new WorkflowSpecificationWrapper(specification);
+        return new SOWorkflowList(Collections.singletonList(wrapper));
     }
 
-    @Test
-    public void shouldProperlyHandleEmptyParametersList(){
-        ExternalWorkflowsService extWorkflowsService = new ExternalWorkflowsServiceImpl(client);
-        Mockito.when(parameterDefinitionsHttpResponse.getStatus()).thenReturn(200);
-        Mockito.when(parameterDefinitionsHttpResponse.getBody()).thenReturn(new SOWorkflowParameterDefinitions(Lists.newArrayList()));
-
-        MsoResponseWrapper2<SOWorkflowParameterDefinitions> msoResponseWrapper = new MsoResponseWrapper2<>(parameterDefinitionsHttpResponse);
-        Mockito.when(client.getWorkflowParameterDefinitions(1L)).thenReturn(msoResponseWrapper);
-
-
-        SOWorkflowParameterDefinitions workflowParameterDefinitions = extWorkflowsService.getWorkflowParameterDefinitions(1L);
-        Assertions.assertThat(workflowParameterDefinitions.getParameterDefinitions()).isEmpty();
-    }
 }
