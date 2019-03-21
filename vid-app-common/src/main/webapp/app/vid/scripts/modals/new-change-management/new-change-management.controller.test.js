@@ -66,7 +66,21 @@ describe('Testing workFlows from SO', () => {
       $scope: $notNeeded,
     });
   }));
-
+workflow.workflowInputParameters = [
+  {
+    label: 'cloud owner',
+    inputType: 'text',
+    required: true,
+    validation: [
+      {
+        maxLength:'7',
+        allowableChars: ".*"
+      }
+    ],
+    soFieldName: 'lcpCloudRegionId',
+    soPayloadLocation:'userParams'
+  }
+];
   test('Verify load workflows from SO will call getSOWorkflow and return only names of workflows', () => {
     // given
     $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];

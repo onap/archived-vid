@@ -390,11 +390,9 @@
             workflowParameters.requestDetails.cloudConfiguration = vm.changeManagement.vnfNames[0].cloudConfiguration;
 
             let parameters = vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow);
-            let i = 1;
             parameters.forEach((parameter)=>{
-                let inputField = document.getElementById('so-workflow-parameter-'+i);
-                i++;
-                workflowParameters.requestDetails.requestParameters.userParams[0][parameter.name]=inputField.value;
+                let inputField = document.getElementById('so-workflow-parameter-'+parameter.soFieldName);
+                workflowParameters.requestDetails.requestParameters.userParams[0][parameter.soFieldName]=inputField.value;
             });
 
             return workflowParameters;
@@ -402,40 +400,60 @@
 
         vm.openModal = function () {
             if(vm.hasScheduler) { //scheduling supported
-				$scope.widgetParameter = ""; // needed by the scheduler?
-
-				// properties needed by the scheduler so it knows whether to show
-				// policy or sniro related features on the scheduler UI or not.
-				vm.changeManagement.policyYN = "Y";
-				vm.changeManagement.sniroYN = "Y";
-
-			            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) {
-			                vm.changeManagement.testApi = DataService.getMsoRequestParametersTestApi();
-			            }
-				var data = {
-					widgetName: 'Portal-Common-Scheduler',
-					widgetData: vm.changeManagement,
-					widgetParameter: $scope.widgetParameter
-				};
-
-				window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
+                vm.scheduleWorkflow();
 			} else {
-				//no scheduling support
-				var dataToSo = extractChangeManagementCallbackDataStr(vm.changeManagement);
-                if(dataToSo) {
-                    var vnfName = vm.changeManagement.vnfNames[0].name;
-                    changeManagementService.postChangeManagementNow(dataToSo, vnfName);
-                }
+                //no scheduling support
+                vm.executeWorkflow();
+            }
+        };
 
+		vm.scheduleWorkflow = function () {
+            $scope.widgetParameter = ""; // needed by the scheduler?
+
+            // properties needed by the scheduler so it knows whether to show
+            // policy or sniro related features on the scheduler UI or not.
+            vm.changeManagement.policyYN = "Y";
+            vm.changeManagement.sniroYN = "Y";
+
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) {
+                vm.changeManagement.testApi = DataService.getMsoRequestParametersTestApi();
+            }
+            var data = {
+                widgetName: 'Portal-Common-Scheduler',
+                widgetData: vm.changeManagement,
+                widgetParameter: $scope.widgetParameter
+            };
+
+            window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
+        };
+
+        vm.executeWorkflow = function () {
+            if (vm.localWorkflows && vm.localWorkflows.length > 0) {
+                vm.triggerLocalWorkflow();
+            } else {
+                vm.triggerRemoteWorkflow();
+            }
+        };
+
+        vm.triggerLocalWorkflow = function () {
+            var dataToSo = extractChangeManagementCallbackDataStr(vm.changeManagement);
+            if (dataToSo) {
+                var vnfName = vm.changeManagement.vnfNames[0].name;
+                changeManagementService.postChangeManagementNow(dataToSo, vnfName);
+            }
+        };
+
+        vm.triggerRemoteWorkflow = function () {
+            let cachedWorkflowDetails = vm.getCachedWorkflowDetails(vm.changeManagement.workflow);
+            if (cachedWorkflowDetails.length > 0) {
                 let workflowParameters = getWorkflowParametersFromForm();
-                if(workflowParameters){
+                if (workflowParameters) {
                     let servieInstanceId = vm.changeManagement.vnfNames[0]['service-instance-node'][0].properties['service-instance-id'];
                     let vnfInstanceId = vm.changeManagement.vnfNames[0].id;
-                    let workflow_UUID = vm.changeManagement.fromVNFVersion;
-
-                    changeManagementService.postWorkflowsParametersNow(servieInstanceId,vnfInstanceId,workflow_UUID,workflowParameters);
+                    let workflow_UUID = cachedWorkflowDetails[0].id;
+                    changeManagementService.postWorkflowsParametersNow(servieInstanceId, vnfInstanceId, workflow_UUID, workflowParameters);
                 }
-			}
+            }
         };
 
         vm.loadSubscribers = function () {
@@ -728,13 +746,37 @@
         };
 
         vm.loadRemoteWorkFlowParameters = function (workflow) {
-          changeManagementService.getSOWorkflowParameter(workflow.id)
-          .then(function (response) {
-            vm.remoteWorkflowsParameters.set(workflow.name, response.data.parameterDefinitions);
-          })
-          .catch(function (error) {
-            $log.error(error);
-          });
+            let parameters = [];
+            workflow.workflowInputParameters
+                .filter( function (param) {
+                    return param.soPayloadLocation === "userParams"
+                })
+                .forEach(function (param) {
+                    let workflowParams = vm.repackAttributes(param);
+                    if (param.validation.length > 0) {
+                        let validation = param.validation[0];
+                        if ('maxLength' in validation) {
+                            workflowParams.maxLength = validation.maxLength;
+                        }
+                        if ('allowableChars' in validation) {
+                            workflowParams.pattern = validation.allowableChars;
+                        }
+                    }
+                    parameters.push(workflowParams);
+                }
+            );
+            vm.remoteWorkflowsParameters.set(workflow.name, parameters);
+        };
+
+        vm.repackAttributes = function (workflowParam){
+            return {
+                name: workflowParam.label,
+                required: workflowParam.required,
+                id: workflowParam.soFieldName,
+                soFieldName: workflowParam.soFieldName,
+                maxLength: '500',
+                pattern: '.*'
+            }
         };
 
         vm.getRemoteWorkFlowParameters = function (workflow) {
@@ -755,6 +797,13 @@
           if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).has(type)) {
             return vm.localWorkflowsParameters.get(workflow).get(type).filter(parameter => parameter.name === parameterName)[0]
           }
+        };
+
+        vm.getCachedWorkflowDetails = function (workflow) {
+            return vm.remoteWorkflows.filter( function (remoteWorkflow) {
+                return remoteWorkflow.name === workflow;
+            });
+
         };
 
         //Must be $scope because we bind to the onchange of the html (cannot attached to vm variable).

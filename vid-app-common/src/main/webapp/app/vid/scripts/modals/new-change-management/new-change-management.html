@@ -97,7 +97,7 @@
 
         <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow)">
           <label for="so-workflow-parameter-{{item.id}}" class="control-label">{{item.name}}</label>
-          <input  ng-model="item.value" type="text" id="so-workflow-parameter-{{item.id}}" pattern="{{item.pattern}}" ng-required="{{item.required}}">
+          <input  ng-model="item.value" type="text" id="so-workflow-parameter-{{item.id}}" pattern="{{item.pattern}}" maxlength="{{item.maxLength}}" ng-required="{{item.required}}" soFieldName="{{item.soFieldName}}">
         </div>
     </div>
 
