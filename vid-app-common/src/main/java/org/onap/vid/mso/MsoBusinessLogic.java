@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright 2019 Nokia
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +24,7 @@ package org.onap.vid.mso;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
@@ -138,4 +140,5 @@ public interface MsoBusinessLogic {
 
     MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails);
 
+    SOWorkflowList getWorkflowListByModelId(String modelVersionId);
 }

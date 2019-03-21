@@ -100,32 +100,59 @@ describe('Testing workFlows from SO', () => {
           }
         ],
       }});
-    let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 1"}, {"id": "2", "name": "workflow 2"}]});
-    let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": []}});
+    let getSOWorkflowsPromiseStub = Promise.resolve({"data":[{
 
-    $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
+        "id": "ab6478e4-ea33-3346-ac12-ab121484a333",
+        "workflowName": "inPlaceSoftwareUpdate",
+        "name": "inPlaceSoftwareUpdate",
+        "source": "sdc",
+        "workflowInputParameters": [
+            {
+                "label": "New Software Version",
+                "inputType": "text",
+                "required": true,
+                "soFieldName": "new_software_version",
+                "soPayloadLocation": "userParams",
+                "validation":[]
+            }
+        ]
+    }]
+    });
+
+    $controller.changeManagement.vnfNames = [{modelVersionId: 'test1', name:'test'}];
     $changeManagementService.getWorkflows = () => getWorkflowsStub;
     $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
     $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
-    $changeManagementService.getSOWorkflowParameter = () =>  getSOWorkflowsParametersPromiseStub;
     // when
     return $controller.loadWorkFlows().then(() => {
-      expect($controller.workflows).toContain('workflow 1');
-      expect($controller.workflows).toContain('workflow 2');
+      expect($controller.workflows).toContain('inPlaceSoftwareUpdate');
+      expect($controller.localWorkflowsParameters).toBeUndefined();
     });
   });
 
-  test('Verify load workflows will call load workflows parameters from SO', () => {
+  test('Verify load workflows will set workflows and parameters', () => {
     // given
     let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}});
     let getLocalWorkflowsParametersStub = Promise.resolve({"data": {}});
-    let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 0"}]});
-    let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": [
-          {"id": 1, "name": "parameter 1", "required": true, "type": "STRING", "pattern": "[0-9]*"},
-          {"id": 2, "name": "parameter 2", "required": true, "type": "STRING", "pattern": ".*"},
-          {"id": 3, "name": "parameter 3", "required": false, "type": "STRING", "pattern": "[0-9]*"}]}});
+    let getSOWorkflowsPromiseStub = Promise.resolve({"data":[{
 
-    $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
+            "id": "ab6478e4-ea33-3346-ac12-ab121484a333",
+            "workflowName": "inPlaceSoftwareUpdate",
+            "name": "inPlaceSoftwareUpdate",
+            "source": "sdc",
+          "workflowInputParameters": [
+            {
+              "label": "New Software Version",
+              "inputType": "text",
+              "required": true,
+              "soFieldName": "new_software_version",
+              "soPayloadLocation": "userParams",
+                "validation":[]
+            }
+          ]
+        }]
+      });
+    $controller.changeManagement.vnfNames = [{modelVersionId: 'test1', name:'test'}];
     $changeManagementService.getWorkflows = () => getWorkflowsStub;
     $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
     $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
@@ -133,10 +160,17 @@ describe('Testing workFlows from SO', () => {
     // when
     return $controller.loadWorkFlows()
     .then(() => {
-      expect($controller.remoteWorkflowsParameters).toEqual(new Map([["workflow 0",
-        [{"id": 1, "name": "parameter 1", "pattern": "[0-9]*", "required": true, "type": "STRING"},
-         {"id": 2, "name": "parameter 2", "pattern": ".*", "required": true, "type": "STRING"},
-         {"id": 3, "name": "parameter 3", "pattern": "[0-9]*", "required": false, "type": "STRING"}]]]));
+      expect($controller.workflows).toEqual(["inPlaceSoftwareUpdate"]);
+      expect($controller.remoteWorkflowsParameters).toEqual(new Map([["inPlaceSoftwareUpdate",
+        [{
+          "name": "New Software Version",
+          "required": true,
+          "id": "new_software_version",
+          "soFieldName": "new_software_version",
+          "maxLength": '500',
+          "pattern": '.*'
+        }]]
+      ]));
     });
   });
 
