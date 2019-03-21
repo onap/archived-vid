@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25e3db36_133ab9e4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/roles/RoleValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-21T08:41:22Z",
+      "side": 1,
+      "message": "Please consider moving this operation into the constructor.",
+      "revId": "fe07324ed3bef3435329fe1e19175ad61facc37b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
