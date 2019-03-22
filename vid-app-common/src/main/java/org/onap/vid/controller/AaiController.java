@@ -41,6 +41,7 @@ import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.services.AaiService;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -96,9 +97,10 @@ public class AaiController extends RestrictedBaseController {
     private AaiService aaiService;
     @Autowired
     private RoleProvider roleProvider;
-
     @Autowired
     private AAIRestInterface aaiRestInterface;
+    @Autowired
+    private SystemPropertiesWrapper systemPropertiesWrapper;
 
     /**
      * Welcome method.
@@ -140,7 +142,7 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = {"/getuserID"}, method = RequestMethod.GET)
     public ResponseEntity<String> getUserID(HttpServletRequest request) {
 
-        String userId = ControllersUtils.extractUserId(request);
+        String userId = new ControllersUtils(systemPropertiesWrapper).extractUserId(request);
 
         return new ResponseEntity<>(userId, HttpStatus.OK);
     }
