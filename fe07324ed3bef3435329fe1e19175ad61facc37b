@@ -16,6 +16,29 @@
       "revId": "fe07324ed3bef3435329fe1e19175ad61facc37b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7bf7e871_9bef2c14",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/roles/RoleValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-24T14:29:17Z",
+      "side": 1,
+      "message": "It would be nice if these space between `if` and braces will be preserved. Thanks!",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "fe07324ed3bef3435329fe1e19175ad61facc37b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
