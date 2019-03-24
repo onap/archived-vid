@@ -43,10 +43,12 @@
         };
 
         function loadAvailableTasks(requestId) {
-            MsoService.getManualTasks(requestId)
+            return MsoService.getManualTasks(requestId)
                 .then(function(response) {
                     vm.task = response.data[0];
                     vm.manualTasks = vm.task && vm.task.validResponses;
+                    vm.description = vm.task && vm.task.description || null;
+                    vm.timeout = vm.task && vm.task.timeout || null;
                 })
                 .catch(function(error) {
                     $log.error(error);
@@ -71,6 +73,10 @@
 
         vm.isTaskAvailable = function(task) {
             return vm.manualTasks.includes(task);
+        };
+
+        vm.__test_only__ = {
+            loadAvailableTasks: loadAvailableTasks,
         };
 
         init();

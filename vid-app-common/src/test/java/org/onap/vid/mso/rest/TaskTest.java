@@ -34,25 +34,36 @@ import org.testng.annotations.Test;
 public class TaskTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private final String TASK_JSON = ""
-        + "{ "
-        + "  \"taskId\": \"taskId\", "
-        + "  \"type\": \"type\", "
-        + "  \"nfRole\": \"nfRole\", "
-        + "  \"subscriptionServiceType\": \"subscriptionServiceType\", "
-        + "  \"originalRequestId\": \"originalRequestId\", "
-        + "  \"originalRequestorId\": \"originalRequestorId\", "
-        + "  \"buildingBlockName\": \"buildingBlockName\", "
-        + "  \"buildingBlockStep\": \"buildingBlockStep\", "
-        + "  \"errorSource\": \"errorSource\", "
-        + "  \"errorCode\": \"errorCode\", "
-        + "  \"errorMessage\": \"errorMessage\", "
-        + "  \"validResponses\": [ "
-        + "    \"a\", "
-        + "    \"b\", "
-        + "    \"c\" "
-        + "  ] "
-        + "} ";
+
+    private String templateTaskJson(String insertion) {
+        return ""
+            + "{ "
+            + "  \"taskId\": \"taskId\", "
+            + "  \"type\": \"type\", "
+            + "  \"nfRole\": \"nfRole\", "
+            + "  \"subscriptionServiceType\": \"subscriptionServiceType\", "
+            + "  \"originalRequestId\": \"originalRequestId\", "
+            + "  \"originalRequestorId\": \"originalRequestorId\", "
+            + "  \"buildingBlockName\": \"buildingBlockName\", "
+            + "  \"buildingBlockStep\": \"buildingBlockStep\", "
+            + "  \"errorSource\": \"errorSource\", "
+            + "  \"errorCode\": \"errorCode\", "
+            + "  \"errorMessage\": \"errorMessage\", "
+            + insertion
+            + "  \"validResponses\": [ "
+            + "    \"a\", "
+            + "    \"b\", "
+            + "    \"c\" "
+            + "  ] "
+            + "} ";
+    }
+
+    private final String TASK_JSON = templateTaskJson(""
+        + "  \"description\": \"description\", "
+        + "  \"timeout\": \"timeout\", "
+    );
+
+    private final String TASK_JSON_WITHOUT_TIMEOUT = templateTaskJson("");
 
     private Task newTaskWithPopulatedFields() {
         Task task = TestUtils.setStringsInStringProperties(new Task());
@@ -78,6 +89,21 @@ public class TaskTest {
         assertThat(
             mapper.readValue(TASK_JSON, Task.class),
             is(newTaskWithPopulatedFields())
+        );
+    }
+
+    @Test
+    public void deserializeTaskWithoutTimeout() throws IOException {
+        /*
+        SO may return no timeout, and therefore no description as well
+         */
+        final Task taskWithoutTimeout = newTaskWithPopulatedFields();
+        taskWithoutTimeout.setDescription(null);
+        taskWithoutTimeout.setTimeout(null);
+
+        assertThat(
+            mapper.readValue(TASK_JSON_WITHOUT_TIMEOUT, Task.class),
+            is(taskWithoutTimeout)
         );
     }
 }

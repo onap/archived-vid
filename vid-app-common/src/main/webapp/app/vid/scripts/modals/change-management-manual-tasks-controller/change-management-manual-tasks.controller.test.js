@@ -32,9 +32,10 @@ describe('changeManagementManualTasksController testing', () => {
     );
 
     beforeEach(inject(function (_$controller_) {
-        $MsoService.getManualTasks = jestMock.fn().mockResolvedValue(
-            {data: [manualTaskResponse]});
         $log.error = jestMock.fn();
+        $uibModalInstance.close = jestMock.fn();
+
+        mockManualTaskResponse(manualTaskResponse);
 
         $controller = _$controller_('changeManagementManualTasksController', {
             "MsoService": $MsoService,
@@ -50,6 +51,12 @@ describe('changeManagementManualTasksController testing', () => {
             },
         });
     }));
+
+    function mockManualTaskResponse(manualTaskResponse) {
+        $MsoService.getManualTasks = jestMock.fn().mockResolvedValue(
+            {data: [manualTaskResponse]}
+        );
+    }
 
     const job = {
         "requestId": "db775fac-d9b5-480e-8b3e-4f0d0ae67890",
@@ -69,14 +76,32 @@ describe('changeManagementManualTasksController testing', () => {
         }
     };
 
-    const manualTaskResponse = {
+    const manualTaskResponseWithoutValidResponses = {
         "taskId": "db775fac-d9b5-480e-8b3e-4f0d0ae67890",
-        "validResponses": ["rollback", "abort", "skip", "resume", "retry"]
     };
+
+    const manualTaskResponse = Object.assign({
+        "validResponses": ["rollback", "abort", "skip", "resume", "retry"],
+    }, manualTaskResponseWithoutValidResponses);
+
+    const manualTaskResponseWithTimeout = Object.assign({
+        description: 'description',
+        timeout: 'timeout',
+    }, manualTaskResponse);
 
     test('should populate vm.manualTasks (while init)', () => {
         expect($controller.manualTasks).toEqual(
             manualTaskResponse.validResponses);
+    });
+
+    test('should undefine vm.manualTasks when ValidResponses not given', () => {
+        // given
+        mockManualTaskResponse(manualTaskResponseWithoutValidResponses);
+        // when
+        return $controller.__test_only__.loadAvailableTasks('anything')
+        .then(() => {
+            expect($controller.manualTasks).toBeUndefined()
+        });
     });
 
     test('should populate vm.MANUAL_TASKS from COMPONENT (while init)', () => {
@@ -86,6 +111,34 @@ describe('changeManagementManualTasksController testing', () => {
 
     test('should populate vm.task (while init)', () => {
         expect($controller.task).toEqual(manualTaskResponse);
+    });
+
+    test('should nullify vm.description (while init)', () => {
+        expect($controller.description).toBeNull();
+    });
+
+    test('should nullify vm.timeout (while init)', () => {
+        expect($controller.timeout).toBeNull();
+    });
+
+    test('should populate vm.description', () => {
+        // given
+        mockManualTaskResponse(manualTaskResponseWithTimeout);
+        // when
+        return $controller.__test_only__.loadAvailableTasks('anything')
+        .then(() => {
+            expect($controller.description).toEqual('description');
+        });
+    });
+
+    test('should populate vm.timeout', () => {
+        // given
+        mockManualTaskResponse(manualTaskResponseWithTimeout);
+        // when
+        return $controller.__test_only__.loadAvailableTasks('anything')
+        .then(() => {
+            expect($controller.timeout).toEqual('timeout');
+        });
     });
 
     test('should find manual task using isTaskAvailable', () => {

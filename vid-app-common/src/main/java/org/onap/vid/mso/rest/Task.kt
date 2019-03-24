@@ -32,12 +32,15 @@ data class Task(
         var errorMessage: String?,
         var buildingBlockName: String?,
         var buildingBlockStep: String?,
+        var description: String?,
+        var timeout: String?,
         var validResponses: List<String>?
 ) {
     // i.e. "default constructor", no params
     constructor() : this(
             null, null, null, null,
             null, null, null, null,
-            null, null, null, null
+            null, null, null,
+            null, null, null
     )
 }
