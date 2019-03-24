@@ -13,9 +13,11 @@ Actions
 - |  **Populate VID Project/Owning entity/Line of Business/Platform drop downs** 
   |  VID administrator has to populate this drop downs with at least one option each. This gets done easily by a POST request. In the following example we add a "Demonstration" option to the Line of Business drop down:
   |
-  |  ``curl -X POST 'http://vid.api.simpledemo.onap.org:8080/vid/maintenance/category_parameter/lineOfBusiness' -H 'Accept-Encoding: gzip, deflate' -H 'Content-Type:application/json' -d '{"options":["Demonstration"]}'``
+  |  ``curl -X POST 'http://vid.api.simpledemo.onap.org:8080/vid/maintenance/category_parameter/lineOfBusiness' -H 'Content-Type:application/json' -d '{"options":["Demonstration"]}'``
   |
   |  (Replace lineOfBusiness with: platform, project, owningEntity - in order to add Demonstration to all other drop downs as well)
+  |
+  |  See :ref:`vid-maintenance-apis`.
 
 - |  **Set change management workflows support for a VNF** 
   |  VID administrator has to set explicity the available workflows by VNF UUID and invariantUUID. This gets done easily by a POST request. In the following example we set both Scale out and In software update support for UUID X-X-X-X and invariantUUID Y-Y-Y-Y:
