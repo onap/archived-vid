@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62291120_a72f2fb0",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-24T14:48:47Z",
+      "side": 1,
+      "message": "This function is tested in app/vid/scripts/modals/new-change-management/new-change-management.controller.test.js (line 70), but test did not fail.",
+      "range": {
+        "startLine": 662,
+        "startChar": 8,
+        "endLine": 662,
+        "endChar": 30
+      },
+      "revId": "55e9181c17748a09f57d0a7823fb5fb10a0bda65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "505d60b1_e0d508a3",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-24T14:48:47Z",
+      "side": 1,
+      "message": "I think `vnfModelIDs` should actually be a single-value, not a list. So maybe can take-first from the resulting array?",
+      "range": {
+        "startLine": 663,
+        "startChar": 48,
+        "endLine": 663,
+        "endChar": 60
+      },
+      "revId": "55e9181c17748a09f57d0a7823fb5fb10a0bda65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
