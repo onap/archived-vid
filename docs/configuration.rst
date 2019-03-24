@@ -75,8 +75,3 @@ vidConfiguration.js file
 
 ``SCHEDULER_MAX_POLLS``
   Max attempts for polling the Scheduler
-  
-``MACRO_SERVICES``
-  |  List of all service model invariant UUIDs that need macro instantiation.
-  |  Example: ["3cf30cbb-5fe7-4fb3-b049-559a4997b221", "b135a703-bab5-4295-a37f-580a4f2d0961"]
-  
