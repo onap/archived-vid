@@ -36,6 +36,8 @@ import org.apache.http.message.BasicStatusLine;
 import org.mockito.Mock;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.changeManagement.RequestParameters;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.LocalWebConfig;
 import org.onap.vid.model.RequestReferencesContainer;
@@ -43,11 +45,24 @@ import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.RequestReferences;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.mockito.ArgumentMatchers.any;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 
 @ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})
@@ -59,6 +74,7 @@ public class MsoRestClientTest {
 
     @Mock
     private SyncRestClient client;
+
 
     private MsoRestClientNew restClient;
 
@@ -747,6 +763,42 @@ public class MsoRestClientTest {
         //  then
         assertThat(expectedResponse).isEqualToComparingFieldByField(response);
     }
+
+    @Test
+    public void shouldProperlyInvokeWorkflows() {
+        //  given
+        String endpoint = "testPath";
+        HttpResponse expectedResponse = createOkResponse();
+
+        WorkflowRequestDetail workflowRequestDetail = new WorkflowRequestDetail();
+        RequestParameters requestParameters = new RequestParameters();
+        HashMap<String,String> paramsMap = new HashMap<>();
+        paramsMap.put("testKey1","testValue1");
+        paramsMap.put("testKey2","testValue2");
+
+        ArrayList<HashMap<String,String>> mapArray= new ArrayList<>();
+        mapArray.add(paramsMap);
+        requestParameters.setUserParameters(mapArray);
+
+        CloudConfiguration cloudConfiguration = new CloudConfiguration();
+        cloudConfiguration.setCloudOwner("testOwne");
+        cloudConfiguration.setTenantId("testId");
+        cloudConfiguration.setLcpCloudRegionId("testLcpCloudId");
+
+        workflowRequestDetail.setRequestParameters(requestParameters);
+        workflowRequestDetail.setCloudConfiguration(cloudConfiguration);
+
+        RequestDetailsWrapper<WorkflowRequestDetail> requestDetailsWrapper = new RequestDetailsWrapper<>(workflowRequestDetail);
+
+        when(client.post(eq(baseUrl + endpoint), anyMap(), refEq(requestDetailsWrapper))).thenReturn(expectedResponse);
+
+        //  when
+        MsoResponseWrapper response = restClient.invokeWorkflow(workflowRequestDetail, endpoint);
+
+        //  then
+        assertThat(response).isEqualToComparingFieldByField(MsoUtil.wrapResponse(expectedResponse));
+    }
+
 
     private class MsoTestException extends RuntimeException{
         MsoTestException(String testException) {

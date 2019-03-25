@@ -142,5 +142,17 @@
                     return {data: []};
                 });
         };
+
+        this.postWorkflowsParametersNow = function (requestData) {
+            var url = "vid/workflows";
+            return $http.post(url, requestData)
+                .success(function (response) {
+                    return {data: response};
+                })
+                .catch(function (err) {
+                    return {data: []};
+                });
+        };
+
     }
 })();

@@ -56,7 +56,7 @@ public class MsoConfig {
 
     @Bean
     public MockedWorkflowsRestClient mockedWorkflowsClient(ObjectMapper unirestObjectMapper){
-        return new MockedWorkflowsRestClient(new SyncRestClient(unirestObjectMapper), "http://vid-simulator:1080/");
+        return new MockedWorkflowsRestClient(new SyncRestClient(unirestObjectMapper), "http://localhost:1080/");
     }
 
     @Bean

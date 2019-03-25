@@ -1,0 +1,28 @@
+{
+  "simulatorRequest": {
+    "method" : "POST",
+    "path" : "/ecomp/mso/infra/invoke/workflows",
+    "body" : {
+      "requestDetails": {
+        "cloudConfiguration": {
+          "lcpCloudRegionId": "RegionOne",
+          "tenantId": "982c540f6e69488eb6be5664255e00c0"
+        },
+        "requestParameters": {
+          "userParams": [
+            {
+              "[SECOND] parameter 2": "022",
+              "[SECOND] parameter 1": "021"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inf": "workflow invoked"
+    }
+  }
+}
