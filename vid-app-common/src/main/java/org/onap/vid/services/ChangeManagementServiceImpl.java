@@ -35,6 +35,7 @@ import org.onap.vid.exceptions.NotFoundException;
 import org.onap.vid.model.VNFDao;
 import org.onap.vid.model.VidWorkflow;
 import org.onap.vid.mso.MsoBusinessLogic;
+import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.RestObjectWithRequestInfo;
@@ -325,6 +326,11 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
         json = json.getJSONObject(PRIMARY_KEY);
         json = new JSONObject().put(PRIMARY_KEY, json.toString());
         return json.toString();
+    }
+
+    @Override
+    public MsoResponseWrapper invokeVnfWorkflow(WorkflowRequestDetail request, UUID serviceInstanceId, UUID vnfInstanceId, UUID workflow_UUID) {
+        return msoBusinessLogic.invokeVnfWorkflow(request, serviceInstanceId, vnfInstanceId, workflow_UUID);
     }
 
     private boolean validateJsonOutput(org.json.JSONObject json) {

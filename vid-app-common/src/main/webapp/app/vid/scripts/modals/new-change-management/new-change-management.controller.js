@@ -380,6 +380,26 @@
 			});
 			return JSON.stringify(result);
 		}
+
+		function getWorkflowParametersFromForm() {
+            let workflowParameters =
+                {requestDetails:{
+                        cloudConfiguration:{},
+                        requestParameters:{userParams:[{}]}
+                    }};
+            workflowParameters.requestDetails.cloudConfiguration = vm.changeManagement.vnfNames[0].cloudConfiguration;
+
+            let parameters = vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow);
+            let i = 1;
+            parameters.forEach((parameter)=>{
+                let inputField = document.getElementById('so-workflow-parameter-'+i);
+                i++;
+                workflowParameters.requestDetails.requestParameters.userParams[0][parameter.name]=inputField.value;
+            });
+
+            return workflowParameters;
+        }
+
         vm.openModal = function () {
             if(vm.hasScheduler) { //scheduling supported
 				$scope.widgetParameter = ""; // needed by the scheduler?
@@ -405,6 +425,15 @@
                 if(dataToSo) {
                     var vnfName = vm.changeManagement.vnfNames[0].name;
                     changeManagementService.postChangeManagementNow(dataToSo, vnfName);
+                }
+
+                let workflowParameters = getWorkflowParametersFromForm();
+                if(workflowParameters){
+                    let servieInstanceId = vm.changeManagement.vnfNames[0]['service-instance-node'][0].properties['service-instance-id'];
+                    let vnfInstanceId = vm.changeManagement.vnfNames[0].id;
+                    let workflow_UUID = vm.changeManagement.fromVNFVersion;
+
+                    changeManagementService.postWorkflowsParametersNow(servieInstanceId,vnfInstanceId,workflow_UUID,workflowParameters);
                 }
 			}
         };

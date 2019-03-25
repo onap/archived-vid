@@ -21,6 +21,7 @@
 package org.onap.vid.mso;
 
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.controller.OperationalEnvironmentController;
 import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
@@ -31,6 +32,7 @@ import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.Task;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MsoBusinessLogic {
 
@@ -50,6 +52,8 @@ public interface MsoBusinessLogic {
     MsoResponseWrapper createVfModuleInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
 
     MsoResponseWrapper scaleOutVfModuleInstance(org.onap.vid.changeManagement.RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId);
+
+    MsoResponseWrapper invokeVnfWorkflow(WorkflowRequestDetail request, UUID serviceInstanceId, UUID vnfInstanceId, UUID workflow_UUID);
 
     MsoResponseWrapper createConfigurationInstance(org.onap.vid.mso.rest.RequestDetailsWrapper requestDetailsWrapper, String serviceInstanceId);
 

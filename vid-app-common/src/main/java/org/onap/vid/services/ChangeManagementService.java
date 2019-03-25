@@ -23,6 +23,7 @@ package org.onap.vid.services;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.tuple.Pair;
 import org.onap.vid.changeManagement.*;
+import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.mso.rest.Request;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public interface ChangeManagementService {
     Collection<Request> getMSOChangeManagements();
@@ -48,5 +50,7 @@ public interface ChangeManagementService {
     VnfWorkflowRelationResponse deleteVnfWorkflowRelation(VnfWorkflowRelationRequest vnfWorkflowRelationRequest);
     VnfWorkflowRelationAllResponse getAllVnfWorkflowRelations();
     String uploadConfigUpdateFile(MultipartFile file);
+
+    MsoResponseWrapper invokeVnfWorkflow(WorkflowRequestDetail request, UUID serviceInstanceId, UUID vnfInstanceId, UUID workflow_UUID);
 
 }
