@@ -74,6 +74,7 @@ public class MsoController extends RestrictedBaseController {
      * The Constant VNF_INSTANCE_ID.
      */
     public static final String VNF_INSTANCE_ID = "<vnf_instance_id>";
+    public static final String WORKFLOW_ID = "<workflow_UUID>";
     public static final String START_LOG = " start";
 
     private final MsoBusinessLogic msoBusinessLogic;

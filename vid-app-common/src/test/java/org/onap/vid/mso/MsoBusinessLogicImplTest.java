@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -60,7 +61,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -1329,6 +1334,45 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         MsoBusinessLogicImpl.RequestType.fromValue(testValue);
     }
 
+    @Test
+    public void shouldProperlyInvokeVnfWorkflowWithValidParameters() {
+        // given
+        MsoResponseWrapper okResponse = createOkResponse();
+        WorkflowRequestDetail request = createWorkflowRequestDetail();
+        UUID serviceInstanceId = new UUID(1,10);
+        UUID vnfInstanceId = new UUID(2,20);
+        UUID workflow_UUID = new UUID(3,30);
+        String path = "/onap/so/infra/instanceManagement/v1/serviceInstances/"+serviceInstanceId+"/vnfs/"+vnfInstanceId+"/workflows/"+workflow_UUID;
+
+        given(msoInterface.invokeWorkflow(request,path)).willReturn(okResponse);
+
+        // when
+        MsoResponseWrapper response = msoBusinessLogic.invokeVnfWorkflow(request, serviceInstanceId, vnfInstanceId, workflow_UUID);
+
+        // then
+        assertThat(response).isEqualToComparingFieldByField(okResponse);
+    }
+
+    private WorkflowRequestDetail createWorkflowRequestDetail() {
+        WorkflowRequestDetail workflowRequestDetail = new WorkflowRequestDetail();
+        org.onap.vid.changeManagement.RequestParameters requestParameters = new org.onap.vid.changeManagement.RequestParameters();
+        HashMap<String,String> paramsMap = new HashMap<>();
+        paramsMap.put("testKey1","testValue1");
+        paramsMap.put("testKey2","testValue2");
+
+        List<Map<String,String>> mapArray= new ArrayList<>();
+        mapArray.add(paramsMap);
+        requestParameters.setUserParams(mapArray);
+
+        CloudConfiguration cloudConfiguration = new CloudConfiguration();
+        cloudConfiguration.setCloudOwner("testOwne");
+        cloudConfiguration.setTenantId("testId");
+        cloudConfiguration.setLcpCloudRegionId("testLcpCloudId");
+
+        workflowRequestDetail.setRequestParameters(requestParameters);
+        workflowRequestDetail.setCloudConfiguration(cloudConfiguration);
+        return workflowRequestDetail;
+    }
 
     private OperationalEnvironmentActivateInfo createTestOperationalEnvironmentActivateInfo() {
         OperationalEnvironmentController.OperationalEnvironmentActivateBody operationalEnvironmentActivateBody = new OperationalEnvironmentController.OperationalEnvironmentActivateBody(

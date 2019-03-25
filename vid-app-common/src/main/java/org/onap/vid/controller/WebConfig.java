@@ -24,6 +24,7 @@ package org.onap.vid.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.*;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.util.*;
@@ -163,7 +164,7 @@ public class WebConfig {
     }
 
     @Bean
-    public AaiOverTLSClientInterface aaiOverTLSClient(ObjectMapper unirestObjectMapper){
+    public AaiOverTLSClientInterface aaiOverTLSClient(ObjectMapper unirestObjectMapper, SystemProperties systemProperties){
         return new AaiOverTLSClient(new SyncRestClient(unirestObjectMapper), new AaiOverTLSPropertySupplier());
     }
 
