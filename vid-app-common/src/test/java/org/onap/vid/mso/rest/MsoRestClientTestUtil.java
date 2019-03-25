@@ -37,8 +37,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.semantics.Action;
 import com.xebialabs.restito.server.StubServer;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.ws.rs.core.HttpHeaders;
@@ -50,6 +53,7 @@ import org.junit.Assert;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RelatedInstanceList;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.ModelInfo;
@@ -198,6 +202,27 @@ class MsoRestClientTestUtil implements AutoCloseable {
 
     requestDetails.setRequestParameters(requestParameters);
     return requestDetails;
+  }
+
+  static WorkflowRequestDetail createWorkflowRequestDetail() {
+    WorkflowRequestDetail workflowRequestDetail = new WorkflowRequestDetail();
+    org.onap.vid.changeManagement.RequestParameters requestParameters = new org.onap.vid.changeManagement.RequestParameters();
+    HashMap<String,String> paramsMap = new HashMap<>();
+    paramsMap.put("testKey1","testValue1");
+    paramsMap.put("testKey2","testValue2");
+
+    List<Map<String,String>> mapArray= new ArrayList<>();
+    mapArray.add(paramsMap);
+    requestParameters.setUserParameters(mapArray);
+
+    CloudConfiguration cloudConfiguration = new CloudConfiguration();
+    cloudConfiguration.setCloudOwner("testOwne");
+    cloudConfiguration.setTenantId("testId");
+    cloudConfiguration.setLcpCloudRegionId("testLcpCloudId");
+
+    workflowRequestDetail.setRequestParameters(requestParameters);
+    workflowRequestDetail.setCloudConfiguration(cloudConfiguration);
+    return workflowRequestDetail;
   }
 
   private void verifyServer(StubServer server, String endpoint, Method httpMethod) {

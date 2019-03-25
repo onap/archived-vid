@@ -33,9 +33,12 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
+import org.jetbrains.annotations.NotNull;
 import org.mockito.Mock;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.changeManagement.RequestParameters;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.LocalWebConfig;
 import org.onap.vid.model.RequestReferencesContainer;
@@ -43,11 +46,19 @@ import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.RequestReferences;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.refEq;
 
 
 @ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})
@@ -59,6 +70,7 @@ public class MsoRestClientTest {
 
     @Mock
     private SyncRestClient client;
+
 
     private MsoRestClientNew restClient;
 
@@ -747,6 +759,26 @@ public class MsoRestClientTest {
         //  then
         assertThat(expectedResponse).isEqualToComparingFieldByField(response);
     }
+
+    @Test
+    public void shouldProperlyInvokeWorkflows() {
+        //  given
+        String endpoint = "testPath";
+        HttpResponse expectedResponse = createOkResponse();
+
+        WorkflowRequestDetail workflowRequestDetail = MsoRestClientTestUtil.createWorkflowRequestDetail();
+
+        RequestDetailsWrapper<WorkflowRequestDetail> requestDetailsWrapper = new RequestDetailsWrapper<>(workflowRequestDetail);
+
+        when(client.post(eq(baseUrl + endpoint), anyMap(), refEq(requestDetailsWrapper))).thenReturn(expectedResponse);
+
+        //  when
+        MsoResponseWrapper response = restClient.invokeWorkflow(workflowRequestDetail, endpoint);
+
+        //  then
+        assertThat(response).isEqualToComparingFieldByField(MsoUtil.wrapResponse(expectedResponse));
+    }
+
 
     private class MsoTestException extends RuntimeException{
         MsoTestException(String testException) {
