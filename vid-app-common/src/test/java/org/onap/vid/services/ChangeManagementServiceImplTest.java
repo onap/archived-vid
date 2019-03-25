@@ -27,6 +27,7 @@ import org.onap.vid.changeManagement.RequestDetails;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,16 +39,19 @@ import static org.testng.Assert.assertNull;
 public class ChangeManagementServiceImplTest {
 
     @Mock
-    DataAccessService dataAccessServiceMock;
+    private DataAccessService dataAccessServiceMock;
 
     @Mock
-    MsoBusinessLogic msoBusinessLogicMock;
+    private MsoBusinessLogic msoBusinessLogicMock;
 
     @Mock
-    SchedulerRestInterfaceIfc schedulerRestInterface;
+    private SchedulerRestInterfaceIfc schedulerRestInterface;
 
     @Mock
-    CloudOwnerService cloudOwnerService;
+    private CloudOwnerService cloudOwnerService;
+
+    @Mock
+    private SystemPropertiesWrapper systemPropertiesWrapper;
 
     @BeforeMethod
     public void initMocks(){
@@ -56,14 +60,14 @@ public class ChangeManagementServiceImplTest {
 
     @Test
     public void doChangeManagement_requestIsNull_returnsNull() throws Exception {
-        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService);
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService, systemPropertiesWrapper);
         ResponseEntity<String> result = changeManagementService.doChangeManagement(null,"anyString");
         assertNull(result);
     }
 
     @Test
     public void doChangeManagement_currentRequestDetailsIsNull_returnsNull() throws Exception {
-        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService);
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService,systemPropertiesWrapper);
 
         ChangeManagementServiceImpl changeManagementServiceSpied = Mockito.spy(changeManagementService);
         Mockito.doReturn(null).when(changeManagementServiceSpied).findRequestByVnfName(Matchers.anyList(),Mockito.anyString());
@@ -121,7 +125,7 @@ public class ChangeManagementServiceImplTest {
     }
 
     private RequestDetails callChangeManagement(String requestType) throws Exception {
-        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService);
+        ChangeManagementServiceImpl changeManagementService = new ChangeManagementServiceImpl(dataAccessServiceMock, msoBusinessLogicMock, schedulerRestInterface, cloudOwnerService,systemPropertiesWrapper);
         ChangeManagementServiceImpl changeManagementServiceSpied = Mockito.spy(changeManagementService);
         ChangeManagementRequest updateRequest = new ChangeManagementRequest();
 

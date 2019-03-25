@@ -30,17 +30,20 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.*;
+import org.onap.vid.controller.ControllersUtils;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.exceptions.NotFoundException;
 import org.onap.vid.model.VNFDao;
 import org.onap.vid.model.VidWorkflow;
 import org.onap.vid.mso.MsoBusinessLogic;
+import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.scheduler.SchedulerProperties;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +51,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BadRequestException;
 import java.io.IOException;
 import java.util.*;
@@ -64,16 +68,18 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
     private MsoBusinessLogic msoBusinessLogic;
     private final SchedulerRestInterfaceIfc restClient;
     private final CloudOwnerService cloudOwnerService;
+    private final SystemPropertiesWrapper systemPropertiesWrapper;
 
     @Autowired
     private CsvService csvService;
 
     @Autowired
-    public ChangeManagementServiceImpl(DataAccessService dataAccessService, MsoBusinessLogic msoBusinessLogic, SchedulerRestInterfaceIfc schedulerRestInterface, CloudOwnerService cloudOwnerService) {
+    public ChangeManagementServiceImpl(DataAccessService dataAccessService, MsoBusinessLogic msoBusinessLogic, SchedulerRestInterfaceIfc schedulerRestInterface, CloudOwnerService cloudOwnerService, SystemPropertiesWrapper systemPropertiesWrapper) {
         this.dataAccessService = dataAccessService;
         this.msoBusinessLogic = msoBusinessLogic;
         this.restClient = schedulerRestInterface;
         this.cloudOwnerService = cloudOwnerService;
+        this.systemPropertiesWrapper = systemPropertiesWrapper;
     }
 
     @Override
@@ -325,6 +331,12 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
         json = json.getJSONObject(PRIMARY_KEY);
         json = new JSONObject().put(PRIMARY_KEY, json.toString());
         return json.toString();
+    }
+
+    @Override
+    public MsoResponseWrapper invokeVnfWorkflow(HttpServletRequest request,WorkflowRequestDetail requestBody, UUID serviceInstanceId, UUID vnfInstanceId, UUID workflow_UUID) {
+        String userId = new ControllersUtils(systemPropertiesWrapper).extractUserId(request);
+        return msoBusinessLogic.invokeVnfWorkflow(requestBody, userId, serviceInstanceId, vnfInstanceId, workflow_UUID);
     }
 
     private boolean validateJsonOutput(org.json.JSONObject json) {

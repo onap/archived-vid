@@ -30,6 +30,9 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.changeManagement.UIWorkflowsRequest;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
+import org.onap.vid.controller.ControllersUtils;
 import org.onap.vid.controller.OperationalEnvironmentController;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.RequestReferencesContainer;
@@ -178,6 +181,27 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         wrapper.requestDetails = requestDetails;
 
         return msoClientInterface.scaleOutVFModuleInstance(wrapper, vf_module_endpoint);
+    }
+
+    @Override
+    public MsoResponseWrapper invokeVnfWorkflow(WorkflowRequestDetail request, String userId, UUID serviceInstanceId, UUID vnfInstanceId, UUID workflow_UUID) {
+        logInvocationInDebug("invokeVnfWorkflow");
+
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_WORKFLOW_INSTANCE);
+
+        String final_endpoint = endpoint
+                .replaceFirst(SVC_INSTANCE_ID, serviceInstanceId.toString())
+                .replaceFirst(WORKFLOW_ID, workflow_UUID.toString())
+                .replaceFirst(VNF_INSTANCE_ID, vnfInstanceId.toString());
+
+        Map<String,String> extraHeaders = new HashMap<>();
+
+        UUID requestId = UUID.randomUUID();
+        extraHeaders.put("X-ONAP-RequestID",requestId.toString());
+        extraHeaders.put("X-ONAP-PartnerName","VID");
+        extraHeaders.put("X-RequestorID",userId);
+
+        return msoClientInterface.invokeWorkflow(request,final_endpoint,extraHeaders);
     }
 
     @Override
