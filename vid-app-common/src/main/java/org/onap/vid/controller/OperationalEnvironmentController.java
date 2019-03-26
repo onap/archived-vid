@@ -37,6 +37,7 @@ import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -60,20 +61,22 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
 
     private final MsoInterface restMso;
     private final MsoBusinessLogic msoBusinessLogic;
+    private final SystemPropertiesWrapper systemPropertiesWrapper;
 
     private static final Pattern RECOVERY_ACTION_MESSAGE_PATTERN = Pattern.compile("from String \"(.*)\": value not");
 
 
     @Autowired
-    public OperationalEnvironmentController(MsoBusinessLogic msoBusinessLogic, MsoInterface msoClientInterface) {
+    public OperationalEnvironmentController(MsoBusinessLogic msoBusinessLogic, MsoInterface msoClientInterface, SystemPropertiesWrapper systemPropertiesWrapper) {
         this.restMso = msoClientInterface;
         this.msoBusinessLogic = msoBusinessLogic;
+        this.systemPropertiesWrapper = systemPropertiesWrapper;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public MsoResponseWrapper2 createOperationalEnvironment(HttpServletRequest request, @RequestBody OperationalEnvironmentCreateBody operationalEnvironment) {
         debugStart(operationalEnvironment);
-        String userId = ControllersUtils.extractUserId(request);
+        String userId = new ControllersUtils(systemPropertiesWrapper).extractUserId(request);
         RequestDetailsWrapper<OperationEnvironmentRequestDetails> requestDetailsWrapper = msoBusinessLogic.convertParametersToRequestDetails(operationalEnvironment, userId);
         String path = msoBusinessLogic.getOperationalEnvironmentCreationPath();
 
@@ -94,7 +97,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
             throw new BadManifestException("Manifest structure is wrong");
         }
 
-        String userId = ControllersUtils.extractUserId(request);
+        String userId = new ControllersUtils(systemPropertiesWrapper).extractUserId(request);
 
         OperationalEnvironmentActivateInfo activateInfo = new OperationalEnvironmentActivateInfo(activateRequest, userId, operationalEnvironmentId);
         debugStart(activateInfo);
@@ -115,7 +118,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
 
         verifyIsNotEmpty(operationalEnvironmentId, "operationalEnvironment");
 
-        String userId = ControllersUtils.extractUserId(request);
+        String userId = new ControllersUtils(systemPropertiesWrapper).extractUserId(request);
 
         OperationalEnvironmentDeactivateInfo deactivateInfo = new OperationalEnvironmentDeactivateInfo(userId, operationalEnvironmentId);
         debugStart(deactivateInfo);

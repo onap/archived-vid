@@ -31,6 +31,7 @@ import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.mso.MsoResponseWrapper2;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,7 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
     public static final String ASYNC_INSTANTIATION = "asyncInstantiation";
 
     protected final AsyncInstantiationBusinessLogic asyncInstantiationBL;
+    private final SystemPropertiesWrapper systemPropertiesWrapper;
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
@@ -55,8 +57,9 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
     protected AuditService auditService;
 
     @Autowired
-    public AsyncInstantiationController(AsyncInstantiationBusinessLogic asyncInstantiationBL) {
+    public AsyncInstantiationController(AsyncInstantiationBusinessLogic asyncInstantiationBL, SystemPropertiesWrapper systemPropertiesWrapper) {
         this.asyncInstantiationBL = asyncInstantiationBL;
+        this.systemPropertiesWrapper = systemPropertiesWrapper;
     }
 
     @ExceptionHandler(OperationNotAllowedException.class)
@@ -84,7 +87,7 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
         catch (Exception e) {
             LOGGER.error(EELFLoggerDelegate.errorLogger, "failed to log incoming ServiceInstantiation request ", e);
         }
-        String userId = ControllersUtils.extractUserId(httpServletRequest);
+        String userId = new ControllersUtils(systemPropertiesWrapper).extractUserId(httpServletRequest);
         List<UUID> uuids =  asyncInstantiationBL.pushBulkJob(request, userId);
 
         return new MsoResponseWrapper2(200, uuids);
