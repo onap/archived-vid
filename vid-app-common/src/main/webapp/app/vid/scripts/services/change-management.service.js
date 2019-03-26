@@ -41,8 +41,8 @@
                 });
         };
 
-        this.getSOWorkflows = function (vnfNames) {
-            return $http.get(COMPONENT.GET_SO_WORKFLOWS, {params: {vnfName: vnfNames}})
+        this.getSOWorkflows = function (vnfIDs) {
+            return $http.get(COMPONENT.GET_SO_WORKFLOWS, {params: {vnfModelId: vnfIDs}})
             .success(function (response) {
                 return {data: response};
             }).catch(function (ex) {

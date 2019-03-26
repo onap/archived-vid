@@ -25,7 +25,7 @@ import org.onap.vid.model.SOWorkflow;
 import org.onap.vid.model.SOWorkflowParameterDefinitions;
 
 public interface ExternalWorkflowsService {
-    List<SOWorkflow> getWorkflows(String vnfName);
+    List<SOWorkflow> getWorkflows(String vnfModelId);
 
     SOWorkflowParameterDefinitions getWorkflowParameterDefinitions(Long workflowId);
 }

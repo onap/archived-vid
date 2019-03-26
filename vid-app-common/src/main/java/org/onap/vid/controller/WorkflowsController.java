@@ -48,8 +48,8 @@ public class WorkflowsController extends VidRestrictedBaseController {
     }
 
     @RequestMapping(value = "workflows", method = RequestMethod.GET)
-    public List<SOWorkflow> getWorkflows(@RequestParam(value = "vnfName") String vnfName){
-        return externalWorkflowsService.getWorkflows(vnfName);
+    public List<SOWorkflow> getWorkflows(@RequestParam(value = "vnfModelId") String vnfModelId){
+        return externalWorkflowsService.getWorkflows(vnfModelId);
     }
 
     @RequestMapping(value = "remote-workflow-parameters/{id}", method = RequestMethod.GET)

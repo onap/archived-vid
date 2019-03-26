@@ -660,8 +660,8 @@
         };
 
         vm.loadRemoteWorkFlows = function () {
-          let vnfNames = vm.changeManagement.vnfNames.map(vnfName => vnfName.name);
-          return changeManagementService.getSOWorkflows(vnfNames)
+          let vnfModelIDs = vm.changeManagement.vnfNames.map(vnfName => vnfName.modelVersionId);
+          return changeManagementService.getSOWorkflows(vnfModelIDs)
           .then(function (response) {
             vm.remoteWorkflows = response.data || [];
           }).catch(function (error) {
