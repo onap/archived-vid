@@ -13,7 +13,7 @@
     <properties>
         <encoding>UTF-8</encoding>
         <epsdk.version>1.3.0</epsdk.version>
-        <springframework.version>4.3.4.RELEASE</springframework.version>
+        <springframework.version>4.3.22.RELEASE</springframework.version>
         <hibernate.version>5.3.4.Final</hibernate.version>
         <!-- Skip assembling the zip by default -->
         <skipassembly>true</skipassembly>
