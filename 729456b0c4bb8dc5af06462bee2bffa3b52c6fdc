@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "605d3061_0d098ab4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/RequestParameters.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "you should use interfaces here instead of specific implementations - use List\u003cMap\u003cString,String\u003e\u003e here",
+      "range": {
+        "startLine": 33,
+        "startChar": 12,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da14cbbd_6f62b930",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/UIWorkflowsRequest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "i think that this is not needed if you have getter/setter",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 35
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15f71e03_9d2dcdbe",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/WorkflowRequestDetail.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "redundant",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 39
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46c183bc_eb5da634",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/WorkflowRequestDetail.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "redundant",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 38
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ebd24b3_f322e1a0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/MsoConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "revert change",
+      "range": {
+        "startLine": 59,
+        "startChar": 94,
+        "endLine": 59,
+        "endChar": 103
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bacff53_16285499",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/VidWorkflowsController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "replace to VIDController ( i don\u0027t remember exact name, but it derives from RestrictedBaseController)",
+      "range": {
+        "startLine": 35,
+        "startChar": 44,
+        "endLine": 35,
+        "endChar": 70
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b55285f1_6a0a7dad",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/VidWorkflowsControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "make all fields private",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 50
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "17629d53_c09a58dd",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/VidWorkflowsControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "extract to create cloudConfiguration()",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 64
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e6ac56d_6ea43205",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/VidWorkflowsControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "extract to createRequestDetails()",
+      "range": {
+        "startLine": 97,
+        "startChar": 8,
+        "endLine": 99,
+        "endChar": 70
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a2907bc_f3143899",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-27T09:36:34Z",
+      "side": 1,
+      "message": "extract part of this preparation code to separate methods",
+      "range": {
+        "startLine": 772,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 72
+      },
+      "revId": "729456b0c4bb8dc5af06462bee2bffa3b52c6fdc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
