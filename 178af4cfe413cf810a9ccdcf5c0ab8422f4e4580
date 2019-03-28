@@ -180,6 +180,30 @@
     },
     {
       "key": {
+        "uuid": "1d03fafb_4e817b4d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2019-03-28T14:59:10Z",
+      "side": 1,
+      "message": "for my if systemProperties is not present here my client is initialize before system properties and it causes errors",
+      "parentUuid": "149f3c67_84643e94",
+      "range": {
+        "startLine": 167,
+        "startChar": 105,
+        "endLine": 167,
+        "endChar": 121
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e782a6ed_8d5e8420",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
         "patchSetId": 4
