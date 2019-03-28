@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4f43907_647e894f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/RequestParameters.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "I suggest using `userParams` as the actual field name. This will also  eliminate the need of @JsonGetter",
+      "range": {
+        "startLine": 33,
+        "startChar": 37,
+        "endLine": 33,
+        "endChar": 51
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "726f61cc_2d9635e2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/VidWorkflowsController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "We already have org.onap.vid.controller.WorkflowsController; shouldn\u0027t it be placed there?",
+      "range": {
+        "startLine": 35,
+        "startChar": 13,
+        "endLine": 35,
+        "endChar": 35
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "33f3bfea_01333f96",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/VidWorkflowsController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "if possible, I suggest defining simpler path; something like:\n/workflows-management/activate?workflowUuid\u003duuid\u0026serviceInstanceId\u003duuid\u0026vnfInstanceId\u003duuid\n\nNote that:\n - /vid/ is already provided by high-level tomcat\n - /workflows-management/ is defined as WorkflowsController\u0027s base mapping\n - /v1/ is not needed, as I see it, as it\u0027s an internal API, and client (i.e. our FE) evolves together with no backward versioning.",
+      "range": {
+        "startLine": 44,
+        "startChar": 5,
+        "endLine": 44,
+        "endChar": 19
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "81f876b7_67baf33b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/VidWorkflowsController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "Consider the type java.util.UUID. It will add format verification.",
+      "range": {
+        "startLine": 46,
+        "startChar": 84,
+        "endLine": 46,
+        "endChar": 90
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ffa8c673_84f3f8ef",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/VidWorkflowsController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "This will be  better configurable; especially the versioning.\nAlso: `/onap/so/infra` is already configured as part of `mso.server.url`.",
+      "range": {
+        "startLine": 47,
+        "startChar": 41,
+        "endLine": 47,
+        "endChar": 62
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e7536d8e_96bc6fe0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/VidWorkflowsController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "It fair implementation.\nVID\u0027s regular flow is calling service-\u003emsoBusiness logic\n\nConsider getting inspiration from org.onap.vid.mso.MsoBusinessLogicImpl#scaleOutVfModuleInstance invoked by org.onap.vid.services.ChangeManagementServiceImpl#doChangeManagement",
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "304f059b_e56d1d24",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "Where the id is needed?",
+      "range": {
+        "startLine": 58,
+        "startChar": 18,
+        "endLine": 58,
+        "endChar": 42
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "149f3c67_84643e94",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "I think it is doing nothing if not used in function.",
+      "range": {
+        "startLine": 167,
+        "startChar": 105,
+        "endLine": 167,
+        "endChar": 121
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e782a6ed_8d5e8420",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-03-28T13:20:22Z",
+      "side": 1,
+      "message": "More headers will be needed, even if not in this commit:\nX-ONAP-PartnerName: VID\nX-RequestorID: userId",
+      "range": {
+        "startLine": 454,
+        "startChar": 60,
+        "endLine": 454,
+        "endChar": 73
+      },
+      "revId": "178af4cfe413cf810a9ccdcf5c0ab8422f4e4580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
