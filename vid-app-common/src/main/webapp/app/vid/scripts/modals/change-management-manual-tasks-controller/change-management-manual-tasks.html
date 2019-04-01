@@ -18,7 +18,12 @@
   ============LICENSE_END=========================================================
   -->
 
-<div class="pull-right">
+<div class="modal-body">
+    <span id="in-progress-modal-description" ng-if="vm.description">{{vm.description}}</span>
+    <span id="in-progress-modal-timeout" ng-if="vm.timeout">({{vm.timeout}})</span>
+</div>
+
+<div class="modal-footer">
     <button ng-repeat="task in vm.manualTasks"
             type="button" id="{{task}}-button" name="{{task}}" class="btn btn-primary"
             ng-show="vm.isTaskAvailable(vm.MANUAL_TASKS[task])"

@@ -17,7 +17,7 @@
             "requestStatus":{
               "percentProgress":100.0,
               "requestState":"IN_PROGRESS",
-              "statusMessage":"Update Is In Progress",
+              "statusMessage":"Scale-Out Is In Progress",
               "finishTime":"Fri, 08 Sep 2017 19:34:33 GMT"
             },
             "requestType":"scaleOut",
