@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f612dbef_807e529c",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-01T13:16:54Z",
+      "side": 1,
+      "message": "Not yet. I\u0027m working on providing this parameter to UI (you can take a look at this draft: https://gerrit.onap.org/r/#/c/82928/ )",
+      "parentUuid": "485d61a6_8032e69e",
+      "range": {
+        "startLine": 434,
+        "startChar": 60,
+        "endLine": 434,
+        "endChar": 74
+      },
+      "revId": "1e37767316f6c97c39bb304d53ba03344d6d640e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "077b8092_a8f43894",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/services/change-management.service.js",
         "patchSetId": 6
