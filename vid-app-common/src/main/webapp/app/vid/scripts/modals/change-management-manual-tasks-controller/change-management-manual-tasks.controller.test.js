@@ -20,6 +20,7 @@
 
 require('./change-management-manual-tasks.controller');
 const jestMock = require('jest-mock');
+const moment = require('moment');
 
 describe('changeManagementManualTasksController testing', () => {
     let $controller;
@@ -41,6 +42,7 @@ describe('changeManagementManualTasksController testing', () => {
             "MsoService": $MsoService,
             "$uibModalInstance": $uibModalInstance,
             "$log": $log,
+            "moment": moment,
             "jobInfo": {
                 requestState: job.requestStatus.requestState,
                 details: job.requestStatus.statusMessage,
@@ -139,6 +141,26 @@ describe('changeManagementManualTasksController testing', () => {
         .then(() => {
             expect($controller.timeout).toEqual('timeout');
         });
+    });
+
+    test('should humanize timeout if proper ISO-8601', () => {
+        $controller.timeout = 'PT3350S';
+        expect($controller.timeoutHumanized()).toEqual('0:55 hours (PT3350S)');
+    });
+
+    test('should humanize timeout if proper ISO-8601', () => {
+        $controller.timeout = 'P3DT1H1M';
+        expect($controller.timeoutHumanized()).toEqual('73:01 hours (P3DT1H1M)');
+    });
+
+    test('should drive-through timeout if not proper ISO-8601', () => {
+        $controller.timeout = '56 minutes';
+        expect($controller.timeoutHumanized()).toEqual('56 minutes');
+    });
+
+    test('should drive-through timeout if undefined', () => {
+        $controller.timeout = undefined;
+        expect($controller.timeoutHumanized()).toEqual(undefined);
     });
 
     test('should find manual task using isTaskAvailable', () => {

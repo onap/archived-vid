@@ -21,7 +21,7 @@
           "errorCode": "404",
           "errorMessage": "Failed in A&AI 404",
           "description": "Manually restart VM id vm8776da8-4c8cbe860422, then verify logs still contain task id daf4dd84-b77a-42da-a051-3239b7a9392c",
-          "timeout": "PT3000S",
+          "timeout": "P3DT1H1M",
           "validResponses": [
             "rollback",
             "abort",

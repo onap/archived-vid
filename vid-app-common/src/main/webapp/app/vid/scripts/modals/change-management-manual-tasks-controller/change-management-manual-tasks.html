@@ -20,7 +20,7 @@
 
 <div class="modal-body">
     <span id="in-progress-modal-description" ng-if="vm.description">{{vm.description}}</span>
-    <span id="in-progress-modal-timeout" ng-if="vm.timeout">({{vm.timeout}})</span>
+  <span id="in-progress-modal-timeout" ng-if="vm.timeout" class="text-danger"><strong>(task will time out in {{vm.timeoutHumanized()}})</strong></span>
 </div>
 
 <div class="modal-footer">
