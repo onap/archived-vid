@@ -21,17 +21,25 @@
 package org.onap.vid.controller;
 
 import java.util.List;
+import java.util.UUID;
+
+import org.onap.vid.changeManagement.UIWorkflowsRequest;
 import org.onap.vid.model.LocalWorkflowParameterDefinitions;
 import org.onap.vid.model.SOWorkflow;
 import org.onap.vid.model.SOWorkflowParameterDefinitions;
+import org.onap.vid.mso.MsoResponseWrapper;
+import org.onap.vid.services.ChangeManagementService;
 import org.onap.vid.services.ExternalWorkflowsService;
 import org.onap.vid.services.LocalWorkflowsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(WorkflowsController.WORKFLOWS_MANAGEMENT)
@@ -40,11 +48,13 @@ public class WorkflowsController extends VidRestrictedBaseController {
 
     private ExternalWorkflowsService externalWorkflowsService;
     private LocalWorkflowsService localWorkflowsService;
+    private ChangeManagementService changeManagementService;
 
     @Autowired
-    public WorkflowsController(ExternalWorkflowsService externalWorkflowsService, LocalWorkflowsService localWorkflowsService) {
+    public WorkflowsController(ExternalWorkflowsService externalWorkflowsService, LocalWorkflowsService localWorkflowsService,ChangeManagementService changeManagementService) {
         this.externalWorkflowsService = externalWorkflowsService;
         this.localWorkflowsService = localWorkflowsService;
+        this.changeManagementService = changeManagementService;
     }
 
     @RequestMapping(value = "workflows", method = RequestMethod.GET)
@@ -60,6 +70,11 @@ public class WorkflowsController extends VidRestrictedBaseController {
     @RequestMapping(value = "local-workflow-parameters/{name}", method = RequestMethod.GET)
     LocalWorkflowParameterDefinitions getParameters(@PathVariable String name) {
         return localWorkflowsService.getWorkflowParameterDefinitions(name);
+    }
+
+    @RequestMapping(value = "{serviceInstanceId}/{vnfInstanceId}/{workflow_UUID}", method = RequestMethod.POST)
+    public MsoResponseWrapper getWorkflowFromUI(HttpServletRequest request, @PathVariable("serviceInstanceId") UUID serviceInstanceId, @PathVariable("vnfInstanceId") UUID vnfInstanceId, @PathVariable("workflow_UUID") UUID workflow_UUID, @RequestBody UIWorkflowsRequest requestBody) {
+        return changeManagementService.invokeVnfWorkflow(request,requestBody.getRequestDetails(), serviceInstanceId, vnfInstanceId, workflow_UUID);
     }
 
 }

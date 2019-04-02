@@ -40,6 +40,7 @@ import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.scheduler.SchedulerRestInterfaceIfc;
 import org.onap.vid.testUtils.RegExMatcher;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.context.annotation.Bean;
@@ -118,8 +119,8 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
     public static class TestMsoConfig extends MsoConfig {
 
         @Bean
-        public ChangeManagementService getChangeManagementService(DataAccessService dataAccessService, MsoBusinessLogic msoInterface, SchedulerRestInterfaceIfc schedulerRestInterface, CloudOwnerService cloudOwnerService) {
-            return new ChangeManagementServiceImpl(dataAccessService, msoInterface, schedulerRestInterface, cloudOwnerService);
+        public ChangeManagementService getChangeManagementService(DataAccessService dataAccessService, MsoBusinessLogic msoInterface, SchedulerRestInterfaceIfc schedulerRestInterface, CloudOwnerService cloudOwnerService, SystemPropertiesWrapper systemPropertiesWrapper) {
+            return new ChangeManagementServiceImpl(dataAccessService, msoInterface, schedulerRestInterface, cloudOwnerService, systemPropertiesWrapper);
         }
     }
 }

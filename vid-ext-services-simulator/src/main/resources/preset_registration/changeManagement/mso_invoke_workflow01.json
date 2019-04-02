@@ -1,0 +1,27 @@
+{
+  "simulatorRequest": {
+    "method" : "POST",
+    "path" : "/onap/so/infra/instanceManagement/v1/serviceInstances/[a-fA-F0-9-]*/vnfs/[a-fA-F0-9-]*/workflows/[a-fA-F0-9-]*",
+    "body" : {
+      "requestDetails": {
+        "cloudConfiguration": {
+          "lcpCloudRegionId": "RegionOne",
+          "tenantId": "982c540f6e69488eb6be5664255e00c0"
+        },
+        "requestParameters": {
+          "userParams": [
+            {
+              "[FIRST]parameter 1": "011"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "inf": "workflow 1 invoked"
+    }
+  }
+}

@@ -22,6 +22,7 @@ package org.onap.vid.mso.rest;
 
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
+import io.joshworks.restclient.http.JsonNode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +37,7 @@ import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoInterface;
@@ -441,6 +443,20 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             logger.debug(EELFLoggerDelegate.debugLogger, "." + methodName + e.toString());
             throw e;
         }
+    }
+
+    @Override
+    public MsoResponseWrapper invokeWorkflow(WorkflowRequestDetail workflowRequestDetail, String invokeWorkflowsPath, Map<String, String> extraHeaders) {
+        String path = baseUrl + invokeWorkflowsPath;
+        Map<String, String> finalHeader = new HashMap<>();
+
+        finalHeader.putAll(commonHeaders);
+        finalHeader.putAll(extraHeaders);
+
+        RequestDetailsWrapper<WorkflowRequestDetail> requestDetailsWrapper = new RequestDetailsWrapper<>(workflowRequestDetail);
+
+        HttpResponse<JsonNode> response = client.post(path, finalHeader, requestDetailsWrapper);
+        return MsoUtil.wrapResponse(response);
     }
 
     @Override

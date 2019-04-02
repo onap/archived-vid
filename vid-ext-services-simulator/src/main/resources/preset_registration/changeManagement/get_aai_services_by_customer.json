@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v../business/customers/customer/MSO_1610_ST",
+    "path": "/aai/v../business/customers/customer/CAR_2020_ER",
     "queryParams": {
       "depth": [
         "2"
@@ -11,8 +11,8 @@
   "simulatorResponse": {
     "responseCode": 200,
     "body": {
-      "global-customer-id": "MSO_1610_ST",
-      "subscriber-name": "MSO_1610_ST",
+      "global-customer-id": "CAR_2020_ER",
+      "subscriber-name": "CAR_2020_ER",
       "subscriber-type": "INFRA",
       "resource-version": "1549008901724",
       "service-subscriptions": {

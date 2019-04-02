@@ -5,7 +5,7 @@
     "queryParams": {
       "format": ["simple"]
     },
-    "body": {"start": ["business/customers/customer/MSO_1610_ST/service-subscriptions/service-subscription/vLB/service-instances"], "query": "query/vnf-topology-fromServiceInstance"}
+    "body": {"start": ["business/customers/customer/CAR_2020_ER/service-subscriptions/service-subscription/vLB/service-instances"], "query": "query/vnf-topology-fromServiceInstance"}
   },
   "simulatorResponse": {
     "responseCode": 200,

@@ -97,6 +97,9 @@ public class MsoProperties extends SystemProperties {
 
 	public static final String MSO_REST_API_VF_MODULE_SCALE_OUT = "mso.restapi.vf.module.scaleout";
 
+	/** The Constant MSO_REST_API_WORKFLOW_INSTANCE. */
+	public static final String MSO_REST_API_WORKFLOW_INSTANCE = "mso.restapi.workflow.invoke";
+
 	/** The Constant MSO_REST_API_VOLUME_GROUP_INSTANCE. */
 	public static final String MSO_REST_API_VOLUME_GROUP_INSTANCE = "mso.restapi.volume.group.instance";
 

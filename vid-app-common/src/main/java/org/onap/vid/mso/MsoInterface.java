@@ -22,7 +22,10 @@ package org.onap.vid.mso;
 
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.mso.rest.RequestDetails;
+
+import java.util.Map;
 
 /**
  * Created by pickjonathan on 21/06/2017.
@@ -110,6 +113,8 @@ public interface MsoInterface {
     MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String endpoint);
 
     MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String addRelationshipsPath);
+
+    MsoResponseWrapper invokeWorkflow(WorkflowRequestDetail requestDetails,String invokeWorkflowsPath,  Map<String, String> extraHeaders);
 
     <T> HttpResponse<T> get(String path, Class<T> responseClass);
 

@@ -142,5 +142,22 @@
                     return {data: []};
                 });
         };
+
+        this.postWorkflowsParametersNow = function (serviceInstanceId,vnfInstanceId,workflow_UUID,requestData) {
+            let baseUrl = "workflows-management/{serviceInstanceId}/{vnfInstanceId}/{workflow_UUID}";
+            let url = baseUrl.
+                replace("{serviceInstanceId}",serviceInstanceId).
+                replace("{vnfInstanceId}",vnfInstanceId).
+                replace("{workflow_UUID}",workflow_UUID);
+
+            return $http.post(url, requestData)
+                .success(function (response) {
+                    return {data: response};
+                })
+                .catch(function (err) {
+                    return {data: []};
+                });
+        };
+
     }
 })();
