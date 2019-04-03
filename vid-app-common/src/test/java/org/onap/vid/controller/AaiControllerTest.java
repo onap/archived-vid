@@ -3,13 +3,14 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,33 +21,41 @@
 
 package org.onap.vid.controller;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.onap.vid.aai.AaiResponseTranslator;
-import org.onap.vid.services.AaiService;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import java.util.Map;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.services.AaiService;
+import org.onap.vid.utils.SystemPropertiesWrapper;
+
+@RunWith(MockitoJUnitRunner.class)
 public class AaiControllerTest {
 
-    @InjectMocks
-    AaiController aaiController = new AaiController();
-
     @Mock
-    AaiService aaiService;
+    private AaiService aaiService;
+    @Mock
+    private AAIRestInterface aaiRestInterface;
+    @Mock
+    private RoleProvider roleProvider;
+    @Mock
+    private SystemPropertiesWrapper systemPropertiesWrapper;
 
-    @BeforeMethod
-    public void initMocks(){
-        MockitoAnnotations.initMocks(this);
+    private AaiController aaiController;
+
+    @Before
+    public void setUp(){
+        aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper);
     }
 
     @Test
@@ -70,7 +79,4 @@ public class AaiControllerTest {
                 "c", toBeReturnedForC
         )));
     }
-
-
-
 }

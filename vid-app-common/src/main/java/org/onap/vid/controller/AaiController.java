@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +25,10 @@ import static org.onap.vid.utils.Logging.getMethodName;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -77,34 +76,25 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class AaiController extends RestrictedBaseController {
 
-    /**
-     * The from app id.
-     */
-    private String fromAppId = "VidAaiController";
-    /**
-     * The logger.
-     */
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiController.class);
-    /**
-     * The model.
-     */
-    private Map<String, Object> model = new HashMap<>();
-    /**
-     * The servlet context.
-     */
-    @Autowired
-    private ServletContext servletContext;
-    /**
-     * aai service
-     */
-    @Autowired
+    private static final String FROM_APP_ID = "VidAaiController";
+
     private AaiService aaiService;
-    @Autowired
-    private RoleProvider roleProvider;
-    @Autowired
     private AAIRestInterface aaiRestInterface;
-    @Autowired
+    private RoleProvider roleProvider;
     private SystemPropertiesWrapper systemPropertiesWrapper;
+
+    @Autowired
+    public AaiController(AaiService aaiService,
+        AAIRestInterface aaiRestInterface,
+        RoleProvider roleProvider,
+        SystemPropertiesWrapper systemPropertiesWrapper) {
+
+        this.aaiService = aaiService;
+        this.aaiRestInterface = aaiRestInterface;
+        this.roleProvider = roleProvider;
+        this.systemPropertiesWrapper = systemPropertiesWrapper;
+    }
 
     /**
      * Welcome method.
@@ -624,7 +614,7 @@ public class AaiController extends RestrictedBaseController {
         try {
 
 
-            resp = aaiRestInterface.RestGet(fromAppId, transId, Unchecked.toURI(uri), xml).getResponse();
+            resp = aaiRestInterface.RestGet(FROM_APP_ID, transId, Unchecked.toURI(uri), xml).getResponse();
 
         } catch (WebApplicationException e) {
             final String message = e.getResponse().readEntity(String.class);
@@ -653,7 +643,7 @@ public class AaiController extends RestrictedBaseController {
         Response resp = null;
         try {
 
-            resp = aaiRestInterface.RestPost(fromAppId, uri, payload, xml);
+            resp = aaiRestInterface.RestPost(FROM_APP_ID, uri, payload, xml);
 
         } catch (Exception e) {
             LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + "." + methodName + e.toString());
