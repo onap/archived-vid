@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 - 2019 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,80 +20,300 @@
 
 package org.onap.vid.aai.util;
 
-import org.junit.Test;
+
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.utils.Unchecked;
+import org.springframework.http.HttpMethod;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
+
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static javax.ws.rs.core.Response.Status.*;
+import static junit.framework.TestCase.assertSame;
+import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 
 public class AAIRestInterfaceTest {
 
-    /*
-    TO BE IMPLEMENTED
-    
+    private static final String PATH = "path";
+    private static final String HTTP_LOCALHOST = "http://localhost/";
+    @Mock
+    private Client client;
+    @Mock
+    private WebTarget webTarget;
+    @Mock
+    private Invocation.Builder builder;
+    @Mock
+    private Invocation invocation;
+    @Mock
+    private ServletRequestHelper servletRequestHelper;
+    @Mock
+    private HttpsAuthClient httpsAuthClient;
+    @Mock
+    private HttpServletRequest httpServletRequest;
+    @Mock
+    private Response response;
+    @Mock
+    private SystemPropertyHelper systemPropertyHelper;
+
+    private AAIRestInterface testSubject;
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+        initMocks(this);
+        mockSystemProperties();
+        testSubject = createTestSubject();
+        when(client.target(HTTP_LOCALHOST+PATH)).thenReturn(webTarget);
+        when(webTarget.request()).thenReturn(builder);
+        when(builder.accept(Mockito.anyString())).thenReturn(builder);
+        when(builder.header(Mockito.anyString(), Mockito.anyString())).thenReturn(builder);
+        when(builder.build(Mockito.anyString())).thenReturn(invocation);
+        when(builder.build(Mockito.anyString(), any(Entity.class))).thenReturn(invocation);
+        when(invocation.invoke()).thenReturn(response);
+        when(servletRequestHelper.extractOrGenerateRequestId()).thenReturn(UUID.randomUUID().toString());
+    }
+
     private AAIRestInterface createTestSubject() {
-        return new AAIRestInterface("");
+        return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper);
     }
 
     @Test
     public void testEncodeURL() throws Exception {
-        AAIRestInterface testSubject;
-        String nodeKey = "";
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.encodeURL(nodeKey);
+        String nodeKey = "some unusual uri";
+        Assert.assertEquals(testSubject.encodeURL(nodeKey), "some%20unusual%20uri");
     }
 
     @Test
-    public void testSetRestSrvrBaseURL() throws Exception {
-        AAIRestInterface testSubject;
-        String baseURL = "";
-
-        // test 1
-        testSubject = createTestSubject();
-        baseURL = null;
-        testSubject.SetRestSrvrBaseURL(baseURL);
-
-        // test 2
-        testSubject = createTestSubject();
-        baseURL = "";
-        testSubject.SetRestSrvrBaseURL(baseURL);
+    public void testSetRestSrvrBaseURLWithNullValue() {
+        testSubject.setRestSrvrBaseURL(null);
     }
 
     @Test
-    public void testGetRestSrvrBaseURL() throws Exception {
-        AAIRestInterface testSubject;
-        String result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getRestSrvrBaseURL();
-    }
-
-
-    @Test
-    public void testRestPut() throws Exception {
-        AAIRestInterface testSubject;
-        String fromAppId = "";
-        String transId = "";
-        String path = "";
-        String payload = "";
-        boolean xml = false;
-
-        // default test
-        testSubject = createTestSubject();
-        testSubject.RestPut(fromAppId, transId, path, payload, xml);
+    public void testSetRestSrvrBaseURL() {
+        String baseUrl = "anything";
+        testSubject.setRestSrvrBaseURL(baseUrl);
+        Assert.assertEquals(testSubject.getRestSrvrBaseURL(), baseUrl);
     }
 
     @Test
-    public void testRestPost() throws Exception {
-        AAIRestInterface testSubject;
-        String fromAppId = "";
-        String transId = "";
-        String path = "";
-        String payload = "";
-        boolean xml = false;
+    public void testRestJsonPutWithResponse200() {
+        // given
+        String methodName = "RestPut";
+        String payload = "{\"id\": 1}";
+        Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
 
-        // default test
-        testSubject = createTestSubject();
-        testSubject.RestPost(fromAppId, transId, path, payload, xml);
-    }*/
+        // when
+        when(response.getStatusInfo()).thenReturn(OK);
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
+
+        // then
+        verify(builder).build(HttpMethod.PUT.name(), entity);
+        Assert.assertEquals(response, finalResponse);
+    }
+
+    @Test(expectedExceptions = {ExceptionWithRequestInfo.class})
+    public void testFailedRestJsonPut() {
+        // given
+        String methodName = "RestPut";
+        String payload = "{\"id\": 1}";
+        Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
+
+        // when
+        when(builder.build(eq(HttpMethod.PUT.name()), any(Entity.class))).thenThrow(new GenericUncheckedException("msg"));
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
+
+        // then
+        fail("expected unreachable: exception to be thrown");
+    }
+
+    @Test
+    public void testRestJsonPutWithResponse400() {
+        // given
+        String methodName = "RestPut";
+        String payload = "{\"id\": 1}";
+        Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
+
+        // when
+        when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
+        when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
+        Response finalResponse = testSubject.RestPut("", PATH, payload, false, true).getResponse();
+
+        // then
+        verify(builder).build(HttpMethod.PUT.name(), entity);
+        Assert.assertEquals(response, finalResponse);
+    }
+
+    @Test
+    public void testRestPostWithResponse200() {
+        // given
+        String methodName = "RestPost";
+        String payload = "{\"id\": 1}";
+        Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
+
+        // when
+        when(builder.post(Mockito.any(Entity.class))).thenReturn(response);
+        when(response.getStatusInfo()).thenReturn(OK);
+        Response finalResponse = testSubject.RestPost("", PATH, payload, false);
+
+        // then
+        verify(builder).post(entity);
+        Assert.assertEquals(response, finalResponse);
+    }
+
+    @Test
+    public void testRestPostWithResponse400() {
+        // given
+        String methodName = "RestPost";
+        String payload = "{\"id\": 1}";
+        Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
+
+        // when
+        when(builder.post(Mockito.any(Entity.class))).thenReturn(response);
+        when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
+        when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
+        Response finalResponse = testSubject.RestPost("", PATH, payload, false);
+
+        // then
+        verify(builder).post(entity);
+        Assert.assertEquals(response, finalResponse);
+    }
+
+    @Test
+    public void testFailedRestPost() {
+        // given
+        String methodName = "RestPost";
+        String payload = "{\"id\": 1}";
+        Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
+
+        // when
+        when(builder.post(Mockito.any(Entity.class))).thenThrow(new RuntimeException());
+        Response finalResponse = testSubject.RestPost("", PATH, payload, false);
+
+        // then
+        verify(builder).post(entity);
+        Assert.assertEquals(finalResponse, null);
+    }
+
+    @Test
+    public void testRestDeleteWithResponse400() {
+        // given
+        String methodName = "Delete";
+
+        // when
+        when(builder.delete()).thenReturn(response);
+        when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
+        String reason = "Any reason";
+        when(response.readEntity(String.class)).thenReturn(reason);
+        when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
+        boolean finalResponse = testSubject.Delete("", "", PATH);
+
+        // then
+        verify(builder).delete();
+        Assert.assertFalse(finalResponse);
+    }
+
+    @Test
+    public void testRestDeleteWithResponse404() {
+        // given
+        String methodName = "Delete";
+
+        // when
+        when(builder.delete()).thenReturn(response);
+        when(response.getStatusInfo()).thenReturn(NOT_FOUND);
+        String reason = "Any reason";
+        when(response.readEntity(String.class)).thenReturn(reason);
+        when(response.getStatus()).thenReturn(NOT_FOUND.getStatusCode());
+        boolean finalResponse = testSubject.Delete("", "", PATH);
+
+        // then
+        verify(builder).delete();
+        Assert.assertFalse(finalResponse);
+    }
+
+    @Test
+    public void testFailedRestDelete() {
+        // given
+        String methodName = "Delete";
+
+        // when
+        when(builder.delete()).thenThrow(new RuntimeException());
+        boolean finalResponse = testSubject.Delete("", "", PATH);
+
+        // then
+        verify(builder).delete();
+        Assert.assertFalse(finalResponse);
+    }
+
+    @Test
+    public void testRestJsonGetWithResponse200() {
+        // given
+        String methodName = "RestGet";
+
+        // when
+        when(response.getStatusInfo()).thenReturn(OK);
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
+
+        // then
+        Assert.assertEquals(response, finalResponse);
+    }
+
+    @Test
+    public void testRestJsonGetWithResponse400() {
+        // given
+        String methodName = "RestGet";
+
+        // when
+        when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
+        when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
+
+        // then
+        Assert.assertEquals(response, finalResponse);
+    }
+
+    @Test
+    public void testFailedRestGet() {
+        // given
+        String methodName = "RestGet";
+
+        // when
+        when(builder.build(HttpMethod.GET.name())).thenThrow(new RuntimeException());
+        Response finalResponse = testSubject.RestGet("", "", Unchecked.toURI(PATH), false).getResponse();
+
+        // then
+        Assert.assertEquals(finalResponse, null);
+    }
+
+    private void mockSystemProperties() throws UnsupportedEncodingException, InvalidPropertyException {
+        when(systemPropertyHelper.getEncodedCredentials()).thenReturn("someCredentials");
+        when(systemPropertyHelper.getFullServicePath(Mockito.anyString())).thenReturn("http://localhost/path");
+        when(systemPropertyHelper.getFullServicePath(Mockito.any(URI.class))).thenReturn("http://localhost/path");
+        when(systemPropertyHelper.getServiceBasePath(Mockito.anyString())).thenReturn("http://localhost/path");
+    }
+
 }

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -82,5 +83,23 @@ public class VnfResult {
     @JsonAnySetter
     public void setJsonAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VnfResult vnfResult = (VnfResult) o;
+        return Objects.equals(id, vnfResult.id) &&
+                Objects.equals(nodeType, vnfResult.nodeType) &&
+                Objects.equals(url, vnfResult.url) &&
+                Objects.equals(properties, vnfResult.properties) &&
+                Objects.equals(relatedTo, vnfResult.relatedTo) &&
+                Objects.equals(additionalProperties, vnfResult.additionalProperties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nodeType, url, properties, relatedTo, additionalProperties);
     }
 }
