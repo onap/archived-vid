@@ -20,7 +20,21 @@
 
 package org.onap.vid.controller;
 
+import static org.onap.vid.utils.Logging.getMethodName;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
@@ -46,24 +60,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static org.onap.vid.utils.Logging.getMethodName;
 
 /**
  * Controller to handle a&ai requests.
@@ -153,7 +157,7 @@ public class AaiController extends RestrictedBaseController {
      */
     @RequestMapping(value = "/aai_get_services", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetServices(HttpServletRequest request) throws IOException {
-        RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
+        RoleValidator roleValidator = RoleValidator.by(roleProvider.getUserRoles(request));
 
         AaiResponse subscriberList = aaiService.getServices(roleValidator);
         return aaiResponseToResponseEntity(subscriberList);
@@ -277,7 +281,7 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> getFullSubscriberList(HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity<String> responseEntity;
-        RoleValidator roleValidator = new RoleValidator(roleProvider.getUserRoles(request));
+        RoleValidator roleValidator = RoleValidator.by(roleProvider.getUserRoles(request));
         SubscriberFilteredResults subscriberList = aaiService.getFullSubscriberList(roleValidator);
         if (subscriberList.getHttpCode() == 200) {
             responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(subscriberList.getSubscriberList()), HttpStatus.OK);
@@ -340,7 +344,7 @@ public class AaiController extends RestrictedBaseController {
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity responseEntity;
         List<Role> roles = roleProvider.getUserRoles(request);
-        RoleValidator roleValidator = new RoleValidator(roles);
+        RoleValidator roleValidator = RoleValidator.by(roles);
         AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator);
         String httpMessage = subscriberData.getT() != null ?
                 objectMapper.writeValueAsString(subscriberData.getT()) :
@@ -369,7 +373,7 @@ public class AaiController extends RestrictedBaseController {
         ResponseEntity responseEntity;
 
         List<Role> roles = roleProvider.getUserRoles(request);
-        RoleValidator roleValidator = new RoleValidator(roles);
+        RoleValidator roleValidator = RoleValidator.by(roles);
 
         AaiResponse<ServiceInstancesSearchResults> searchResult = aaiService.getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator, owningEntities, projects);
 
@@ -531,7 +535,7 @@ public class AaiController extends RestrictedBaseController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Role> roles = roleProvider.getUserRoles(request);
-            RoleValidator roleValidator = new RoleValidator(roles);
+            RoleValidator roleValidator = RoleValidator.by(roles);
             AaiResponse<GetTenantsResponse[]> response = aaiService.getTenants(globalCustomerId, serviceType, roleValidator);
             if (response.getHttpCode() == 200) {
                 responseEntity = new ResponseEntity<String>(objectMapper.writeValueAsString(response.getT()), HttpStatus.OK);
