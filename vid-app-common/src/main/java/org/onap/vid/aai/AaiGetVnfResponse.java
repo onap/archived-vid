@@ -43,9 +43,21 @@ public class AaiGetVnfResponse {
         return this.additionalProperties;
     }
 
+    public List<VnfResult> getResults() {
+        return results;
+    }
+
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    public void setResults(List<VnfResult> results) {
+        this.results = results;
     }
 
     @Override

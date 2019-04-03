@@ -18,14 +18,16 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.aai;
+package org.onap.vid.aai.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.vid.aai.model.VnfResult;
+import org.junit.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -67,7 +69,6 @@ public class VnfResultTest {
             "\"url\": \"sample\"\n" +
             "\t}]\n" +
             "}";
-
 
     @Test
     public void shouldProperlyConvertJsonToVnfResult() throws IOException {
