@@ -20,31 +20,35 @@
 
 package org.onap.vid.bl;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiResponse;
-import org.onap.vid.aai.model.*;
+import org.onap.vid.aai.model.AaiGetPnfResponse;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.LogicalLinkResponse;
+import org.onap.vid.aai.model.Relationship;
+import org.onap.vid.aai.model.RelationshipData;
+import org.onap.vid.aai.model.RelationshipList;
+import org.onap.vid.aai.model.ServiceRelationships;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.services.AaiServiceImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 public class AaiServiceTest {
 
@@ -164,7 +168,7 @@ public class AaiServiceTest {
         AaiResponse<GetTenantsResponse[]> aaiResponse = new AaiResponse<>(getTenantsResponses, null, 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getTenants(serviceGlobalCustomerId, serviceServiceType);
         Role role = new Role(null, userGlobalCustomerId, userServiceType, userTenantName);
-        RoleValidator roleValidator = new RoleValidator(Collections.singletonList(role));
+        RoleValidator roleValidator = RoleValidator.by(Collections.singletonList(role));
         AaiResponse<GetTenantsResponse[]> actualTenants = aaiService.getTenants(serviceGlobalCustomerId, serviceServiceType, roleValidator);
 
         assertThat(actualTenants.getT(), arrayWithSize(1));

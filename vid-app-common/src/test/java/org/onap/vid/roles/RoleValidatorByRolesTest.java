@@ -21,18 +21,17 @@
 package org.onap.vid.roles;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import java.util.Map;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class RoleValidatorTest {
+public class RoleValidatorByRolesTest {
 
     private static final String SAMPLE_SUBSCRIBER = "sampleSubscriber";
     private static final String NOT_MATCHING_SUBSCRIBER = "notMatchingSubscriber";
@@ -47,12 +46,11 @@ public class RoleValidatorTest {
     private Map<String, Object> requestParameters = ImmutableMap.of("subscriptionServiceType", SAMPLE_SERVICE_TYPE);
     private Map<String, Object> requestDetailsProperties = ImmutableMap.of("subscriberInfo", subscriberInfo, "requestParameters", requestParameters);
     private RequestDetails requestDetails;
-    private RoleValidator roleValidator;
+    private RoleValidatorByRoles roleValidator;
 
     @BeforeMethod
     public void setUp() {
-        roleValidator = new RoleValidator(roles);
-        roleValidator.enableRoles();
+        roleValidator = new RoleValidatorByRoles(roles);
         requestDetails = new RequestDetails();
     }
 
