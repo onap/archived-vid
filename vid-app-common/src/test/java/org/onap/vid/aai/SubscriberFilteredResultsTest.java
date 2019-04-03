@@ -20,45 +20,89 @@
 
 package org.onap.vid.aai;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
+import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.roles.EcompRole;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleValidator;
 
+import static org.junit.Assert.assertEquals;
+
 public class SubscriberFilteredResultsTest {
 
-    private SubscriberFilteredResults createTestSubject() {
-        ArrayList<Role> list = new ArrayList<Role>();
-        list.add(new Role(EcompRole.READ, "a", "a", "a"));
-        RoleValidator rl=new RoleValidator(list);
-        SubscriberList sl = new SubscriberList();
-        sl.customer = new ArrayList<org.onap.vid.model.Subscriber>();
-        sl.customer.add(new org.onap.vid.model.Subscriber());
-        return new SubscriberFilteredResults(rl, sl, "OK", 200);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private SubscriberFilteredResults subscriberFilteredResults;
+    private RoleValidator roleValidator;
+    private SubscriberList subscriberList;
+    private SubscriberListWithFilterData subscriberListWithFilterData;
+
+    private static final String SUBSCRIBER_JSON_EXAMPLE = "{\n" +
+            "  \"global-customer-id\": \"id\",\n" +
+            "  \"subscriber-name\": \"name\",\n" +
+            "  \"subscriber-type\": \"type\",\n" +
+            "  \"resource-version\": \"version\"\n" +
+            "}";
+
+    @Before
+    public void setUp() throws IOException {
+        createTestSubject();
     }
 
     @Test
-    public void testGetSubscriberList() throws Exception {
-        SubscriberFilteredResults testSubject;
-        SubscriberListWithFilterData result;
-
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.getSubscriberList();
+    public void testGetSubscriberList(){
+        assertEquals(subscriberFilteredResults.getSubscriberList(), subscriberListWithFilterData);
     }
 
     @Test
     public void testSetSubscriberList() throws Exception {
-        SubscriberFilteredResults testSubject;
-        SubscriberListWithFilterData subscriberList = null;
+        subscriberList.customer = new ArrayList<>();
+        subscriberList.customer.add(new Subscriber());
+        SubscriberListWithFilterData expectedList = createSubscriberList(subscriberList,roleValidator);
+        subscriberFilteredResults.setSubscriberList(expectedList);
 
-        // default test
-        testSubject = createTestSubject();
-        //testSubject.setSubscriberList(subscriberList);
-        testSubject.getSubscriberList();
+        assertEquals(subscriberFilteredResults.getSubscriberList(), expectedList);
+    }
+
+    private void createTestSubject() throws IOException {
+        prepareRoleValidator();
+        prepareSubscriberList();
+        prepareSubscriberListWithFilterData();
+        createSubscriberFilteredResults();
+    }
+
+    private void createSubscriberFilteredResults() {
+        subscriberFilteredResults =
+                new SubscriberFilteredResults(roleValidator, subscriberList, "OK", 200);
+        subscriberFilteredResults.setSubscriberList(subscriberListWithFilterData);
+    }
+
+    private void prepareSubscriberListWithFilterData() {
+        subscriberListWithFilterData = createSubscriberList(subscriberList, roleValidator);
+    }
+
+    private void prepareRoleValidator() {
+        ArrayList<Role> list = new ArrayList<>();
+        list.add(new Role(EcompRole.READ, "a", "a", "a"));
+        roleValidator = new RoleValidator(list);
+    }
+
+    private void prepareSubscriberList() throws IOException {
+        Subscriber sampleSubscriber =
+                OBJECT_MAPPER.readValue(SUBSCRIBER_JSON_EXAMPLE, Subscriber.class);
+        List<Subscriber> expectedListOfSubscribers = Collections.singletonList(sampleSubscriber);
+        subscriberList = new SubscriberList(expectedListOfSubscribers);
+    }
+
+    private SubscriberListWithFilterData createSubscriberList(SubscriberList subscriberList,
+                                                              RoleValidator roleValidator){
+        return new SubscriberListWithFilterData(subscriberList,roleValidator);
     }
 }

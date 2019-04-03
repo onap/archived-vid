@@ -18,12 +18,11 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.aai;
+package org.onap.vid.aai.model;
 
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.vid.aai.model.ServiceProperties;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,9 +81,8 @@ public class ServicePropertiesTest {
     }
 
     @Test
-    public void shouldProperlyAddAdditionalProperty() throws IOException {
+    public void shouldAddAdditionalProperty() throws IOException {
         ServiceProperties serviceProperties = OBJECT_MAPPER.readValue(SERVICE_PROPERTIES_JSON, ServiceProperties.class);
-
 
         serviceProperties.setAdditionalProperty("additional", "property");
 
