@@ -24,6 +24,14 @@ package org.onap.vid.roles;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.aai.exceptions.RoleParsingException;
@@ -33,11 +41,6 @@ import org.onap.vid.model.SubscriberList;
 import org.onap.vid.services.AaiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 /**
@@ -159,7 +162,7 @@ public class RoleProvider {
     }
 
     public RoleValidator getUserRolesValidator(HttpServletRequest request) {
-        return new RoleValidator(getUserRoles(request));
+        return RoleValidator.by(getUserRoles(request));
     }
 }
 

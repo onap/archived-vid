@@ -44,6 +44,7 @@ import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.VnfResult;
 import org.onap.vid.roles.RoleValidator;
+import org.onap.vid.roles.RoleValidatorByRoles;
 
 public class AaiServiceImplTest {
 
@@ -137,7 +138,7 @@ public class AaiServiceImplTest {
         when(response.getT()).thenReturn(new GetTenantsResponse[]{ permittedTenant, unpermittedTenant });
         when(aaiClient.getTenants(globalCustomerId, serviceType)).thenReturn(response);
 
-        RoleValidator roleValidator = mock(RoleValidator.class);
+        RoleValidator roleValidator = mock(RoleValidatorByRoles.class);
         when(roleValidator.isTenantPermitted(globalCustomerId, serviceType, "permitted_tenant")).thenReturn(true);
         when(roleValidator.isTenantPermitted(globalCustomerId, serviceType, "unpermitted_tenant")).thenReturn(false);
 
@@ -202,7 +203,7 @@ public class AaiServiceImplTest {
     @SuppressWarnings("unchecked")
     public void getServicesShouldMarkAllServicesAsPermitted() {
         // given
-        RoleValidator roleValidator = modelGenerator.nextObject(RoleValidator.class);
+        RoleValidator roleValidator = modelGenerator.nextObject(RoleValidatorByRoles.class);
 
         GetServicesAAIRespone inputPayload = modelGenerator.nextObject(GetServicesAAIRespone.class);
         assertThat(inputPayload.service.stream().allMatch(service -> service.isPermitted)).isFalse();

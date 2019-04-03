@@ -3,7 +3,6 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
- * Modifications Copyright (C) 2018 - 2019 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,24 +20,24 @@
 
 package org.onap.vid.roles;
 
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.onap.portalsdk.core.util.SystemProperties;
+import static org.testng.Assert.assertTrue;
 
-public interface RoleValidator {
+import org.testng.annotations.Test;
 
-    static RoleValidator by(List<Role> roles) {
-        boolean disableRoles =
-            StringUtils.equals(SystemProperties.getProperty("role_management_activated"), "false");
+public class AlwaysValidRoleValidatorTest {
 
-        return disableRoles
-            ? new AlwaysValidRoleValidator()
-            : new RoleValidatorByRoles(roles);
+    @Test
+    public void testIsSubscriberPermitted() {
+        assertTrue(new AlwaysValidRoleValidator().isSubscriberPermitted("any"));
     }
 
-    boolean isSubscriberPermitted(String subscriberName);
+    @Test
+    public void testIsServicePermitted() {
+        assertTrue(new AlwaysValidRoleValidator().isServicePermitted("any", "any"));
+    }
 
-    boolean isServicePermitted(String subscriberName, String serviceType);
-
-    boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName);
+    @Test
+    public void testIsTenantPermitted() {
+        assertTrue(new AlwaysValidRoleValidator().isTenantPermitted("any", "any", "any"));
+    }
 }
