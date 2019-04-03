@@ -20,14 +20,6 @@
 
 package org.onap.vid.controller;
 
-import org.jetbrains.annotations.NotNull;
-import org.onap.vid.aai.model.Permissions;
-import org.onap.vid.roles.RoleProvider;
-import org.onap.vid.roles.RoleValidator;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
@@ -36,6 +28,14 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import org.jetbrains.annotations.NotNull;
+import org.onap.vid.aai.model.Permissions;
+import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.roles.RoleValidator;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class ServicePermissionsTest {
 

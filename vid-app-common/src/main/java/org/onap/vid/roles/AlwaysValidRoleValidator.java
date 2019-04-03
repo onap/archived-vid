@@ -3,7 +3,6 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
- * Modifications Copyright (C) 2018 - 2019 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,24 +20,24 @@
 
 package org.onap.vid.roles;
 
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.onap.portalsdk.core.util.SystemProperties;
+public class AlwaysValidRoleValidator implements RoleValidator {
 
-public interface RoleValidator {
-
-    static RoleValidator by(List<Role> roles) {
-        boolean disableRoles =
-            StringUtils.equals(SystemProperties.getProperty("role_management_activated"), "false");
-
-        return disableRoles
-            ? new AlwaysValidRoleValidator()
-            : new RoleValidatorByRoles(roles);
+    AlwaysValidRoleValidator() {
+        // package visibility, only for RoleValidator's factory
     }
 
-    boolean isSubscriberPermitted(String subscriberName);
+    @Override
+    public boolean isSubscriberPermitted(String subscriberName) {
+        return true;
+    }
 
-    boolean isServicePermitted(String subscriberName, String serviceType);
+    @Override
+    public boolean isServicePermitted(String subscriberName, String serviceType) {
+        return true;
+    }
 
-    boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName);
+    @Override
+    public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName) {
+        return true;
+    }
 }
