@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e60d5e5a_7a700060",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiGetVnfResponse.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-03T11:33:32Z",
+      "side": 1,
+      "message": "i don\u0027t think that we should allow user to replace this field",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 5
+      },
+      "revId": "33e9737d7a64dda930325339969cee890edbb9d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f08f478e_90feabf5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/OperationalEnvironment.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-03T11:33:32Z",
+      "side": 1,
+      "message": "revert changes done here and in OperationalEnvironmentTest",
+      "revId": "33e9737d7a64dda930325339969cee890edbb9d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1899d4ac_e79dad98",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/AaiGetVnfResponseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-03T11:33:32Z",
+      "side": 1,
+      "message": "remove \u0027*\u0027",
+      "range": {
+        "startLine": 24,
+        "startChar": 16,
+        "endLine": 24,
+        "endChar": 19
+      },
+      "revId": "33e9737d7a64dda930325339969cee890edbb9d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b46cdbe8_52a0fa74",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/AAIRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-03T11:33:32Z",
+      "side": 1,
+      "message": "and what should happen here?",
+      "range": {
+        "startLine": 111,
+        "startChar": 3,
+        "endLine": 114,
+        "endChar": 5
+      },
+      "revId": "33e9737d7a64dda930325339969cee890edbb9d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7b716705_a48f014c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/AAIRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-03T11:33:32Z",
+      "side": 1,
+      "message": "please follow when/should convention",
+      "range": {
+        "startLine": 124,
+        "startChar": 16,
+        "endLine": 124,
+        "endChar": 46
+      },
+      "revId": "33e9737d7a64dda930325339969cee890edbb9d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7d29d678_6d4f0195",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/util/AAIRestInterfaceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-03T11:33:32Z",
+      "side": 1,
+      "message": "junit will handle case when exception is not raised, so this line should be removed",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 61
+      },
+      "revId": "33e9737d7a64dda930325339969cee890edbb9d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
