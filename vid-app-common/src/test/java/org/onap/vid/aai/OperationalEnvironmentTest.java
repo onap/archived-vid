@@ -23,10 +23,14 @@ package org.onap.vid.aai;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
+import org.onap.vid.aai.model.RelationshipList;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -48,8 +52,29 @@ public class OperationalEnvironmentTest {
             "}";
 
     @Test
+    public void shouldCreateProperOperationalEnvironmentWithConstructor(){
+        RelationshipList relationshipList = new RelationshipList();
+        relationshipList.relationship = new ArrayList<>();
+
+        OperationalEnvironment operationalEnvironment = new OperationalEnvironment("testId",
+                "testEnvName", "testEnvType",
+                "testEnvStatus", "testTenant", "testWorkload",
+                "testResource", relationshipList);
+
+        assertThat(operationalEnvironment.getOperationalEnvironmentId()).isEqualTo("testId");
+        assertThat(operationalEnvironment.getWorkloadContext()).isEqualTo("testWorkload");
+        assertThat(operationalEnvironment.getRelationshipList().getRelationship()).hasSize(0);
+        assertThat(operationalEnvironment.getResourceVersion()).isEqualTo("testResource");
+        assertThat(operationalEnvironment.getTenantContext()).isEqualTo("testTenant");
+        assertThat(operationalEnvironment.getOperationalEnvironmentType()).isEqualTo("testEnvType");
+        assertThat(operationalEnvironment.getOperationalEnvironmentStatus()).isEqualTo("testEnvStatus");
+        assertThat(operationalEnvironment.getOperationalEnvironmentName()).isEqualTo("testEnvName");
+    }
+
+    @Test
     public void shouldProperlyConvertJsonToOperationalEnvironment() throws IOException {
-        OperationalEnvironment operationalEnvironment = OBJECT_MAPPER.readValue(OPERATIONAL_ENVIRONMENT_TEST, OperationalEnvironment.class);
+        OperationalEnvironment operationalEnvironment =
+                OBJECT_MAPPER.readValue(OPERATIONAL_ENVIRONMENT_TEST, OperationalEnvironment.class);
 
         assertThat(operationalEnvironment.getOperationalEnvironmentId()).isEqualTo("environmentId");
         assertThat(operationalEnvironment.getWorkloadContext()).isEqualTo("workloadContext");
@@ -60,4 +85,5 @@ public class OperationalEnvironmentTest {
         assertThat(operationalEnvironment.getOperationalEnvironmentStatus()).isEqualTo("environmentStatus");
         assertThat(operationalEnvironment.getOperationalEnvironmentName()).isEqualTo("environmentName");
     }
+
 }

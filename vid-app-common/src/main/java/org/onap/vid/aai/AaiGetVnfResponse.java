@@ -48,6 +48,14 @@ public class AaiGetVnfResponse {
         this.additionalProperties.put(name, value);
     }
 
+    public List<VnfResult> getResults() {
+        return results;
+    }
+
+    public void setResults(List<VnfResult> results) {
+        this.results = results;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

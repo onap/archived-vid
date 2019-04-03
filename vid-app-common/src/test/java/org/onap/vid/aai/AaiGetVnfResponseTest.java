@@ -20,34 +20,88 @@
 
 package org.onap.vid.aai;
 
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.onap.vid.aai.model.VnfResult;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 
 public class AaiGetVnfResponseTest {
 
-	private AaiGetVnfResponse createTestSubject() {
-		return new AaiGetVnfResponse();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+	private static final String VNF_RESULT =
+			"{\n" +
+					"	\"id\": \"1\",\n" +
+					"   \"nodetype\": \"testNodeType\",\n" +
+					"   \"url\": \"test/url\",\n" +
+					"   \"serviceProperties\": {},\n" +
+					"   \"relatedTo\": []\n" +
+					"}\n";
+
+	private static final String AAI_GET_VNF_RESPONSE_TEST = "{ \n" +
+			"  \"results\": \n" +
+			"  [\n" +
+					VNF_RESULT +
+			"  ]\n" +
+			"}";
+
+
+	private AaiGetVnfResponse aaiGetVnfResponse;
+	private VnfResult expectedVnfResult;
+	private List<VnfResult> expectedList;
+
+	@Before
+	public void setUp() throws IOException {
+		expectedVnfResult = OBJECT_MAPPER.readValue(VNF_RESULT, VnfResult.class);
+		expectedList = Collections.singletonList(expectedVnfResult);
+
 	}
 
 	@Test
-	public void testGetAdditionalProperties() throws Exception {
-		AaiGetVnfResponse testSubject;
-		Map<String, Object> result;
+	public void shouldHaveProperSetters() {
+		aaiGetVnfResponse = new AaiGetVnfResponse();
+		aaiGetVnfResponse.setAdditionalProperty("key","value");
+		aaiGetVnfResponse.setResults(expectedList);
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getAdditionalProperties();
+		assertEquals(aaiGetVnfResponse.getAdditionalProperties().size(), 1);
+		assertTrue(aaiGetVnfResponse.getAdditionalProperties().containsKey("key"));
+		assertTrue(aaiGetVnfResponse.getAdditionalProperties().containsValue("value"));
+		assertEquals(aaiGetVnfResponse.getResults().size(), 1);
+		assertEquals(aaiGetVnfResponse.getResults().get(0), expectedVnfResult);
 	}
 
 	@Test
-	public void testSetAdditionalProperty() throws Exception {
-		AaiGetVnfResponse testSubject;
-		String name = "";
-		Object value = null;
+	public void shouldProperlyConvertJsonToAiiGetVnfResponse() throws IOException {
+		aaiGetVnfResponse = OBJECT_MAPPER.readValue(AAI_GET_VNF_RESPONSE_TEST, AaiGetVnfResponse.class);
+		assertThat(aaiGetVnfResponse.getResults(), is(expectedList));
+	}
 
-		// default test
-		testSubject = createTestSubject();
-		testSubject.setAdditionalProperty(name, value);
+	@Test
+	public void shouldReturnProperToString(){
+		aaiGetVnfResponse = new AaiGetVnfResponse();
+		aaiGetVnfResponse.setAdditionalProperty("testKey","testValue");
+		aaiGetVnfResponse.setResults(expectedList);
+		Map<String,Object> expectedMap = new HashMap<>();
+		expectedMap.put("testKey", "testValue");
+
+		String expectedOutput = "AaiGetVnfResponse{" +
+				"results=" + expectedList +
+				", additionalProperties="+expectedMap+"}";
+
+		assertEquals(aaiGetVnfResponse.toString(), expectedOutput);
+	}
+
+	@Test
+	public void shouldAddAdditionalProperty(){
+		aaiGetVnfResponse = new AaiGetVnfResponse();
+		aaiGetVnfResponse.setAdditionalProperty("key", "value");
+		assertTrue(aaiGetVnfResponse.getAdditionalProperties().containsKey("key"));
 	}
 }
