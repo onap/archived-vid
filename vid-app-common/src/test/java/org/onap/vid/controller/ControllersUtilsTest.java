@@ -21,16 +21,25 @@ package org.onap.vid.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.portalsdk.core.domain.User;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.model.ExceptionResponse;
 import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ControllersUtilsTest {
@@ -109,5 +118,27 @@ public class ControllersUtilsTest {
 
         // THEN
         assertThat(loginId).isEmpty();
+    }
+
+    @Test
+    public void shouldCreateResponseEntity_fromGivenException() {
+        // GIVEN
+        EELFLoggerDelegate eelfLoggerDelegate = mock(EELFLoggerDelegate.class);
+        Response response = mock(Response.class);
+        given(response.getStatus()).willReturn(HttpStatus.OK.value());
+        WebApplicationException webApplicationException = new WebApplicationException("ErrorMessage", response);
+
+        // WHEN
+        ResponseEntity responseEntity = ControllersUtils
+            .handleWebApplicationException(webApplicationException, eelfLoggerDelegate);
+
+        // THEN
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody())
+            .isInstanceOfSatisfying(ExceptionResponse.class,
+                er -> assertThat(er.getMessage()).isEqualTo("ErrorMessage (Request id: null)"));
+        then(eelfLoggerDelegate).should()
+            .error(EELFLoggerDelegate.errorLogger, "{}: {}", "handleWebApplicationException",
+                ExceptionUtils.getMessage(webApplicationException), webApplicationException);
     }
 }
