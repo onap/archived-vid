@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da6380a7_647f161d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-04-05T06:29:41Z",
+      "side": 1,
+      "message": "A RuntimeException thrown from there is not too descriptive. Please consider adding a message to it, like HTTP response code and/or request status.",
+      "revId": "1bfad51d7c437cd5b1fc58632adf7b2cb3a5d20f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1c3afe5f_8925a72f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/ExternalWorkflowsServiceImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-04-05T06:29:41Z",
+      "side": 1,
+      "message": "Line exceeds 120 characters, please break it.",
+      "revId": "1bfad51d7c437cd5b1fc58632adf7b2cb3a5d20f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
