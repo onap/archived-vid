@@ -21,27 +21,41 @@
 
 package org.onap.vid.controller;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.google.common.collect.ImmutableList;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
+import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
+import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
+import org.onap.vid.aai.model.PortDetailsTranslator.PortDetails;
+import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsError;
+import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AaiControllerTest {
 
+    private static final String ID_1 = "id1";
+    private static final String ID_2 = "id2";
     @Mock
     private AaiService aaiService;
     @Mock
@@ -51,32 +65,50 @@ public class AaiControllerTest {
     @Mock
     private SystemPropertiesWrapper systemPropertiesWrapper;
 
+    private MockMvc mockMvc;
     private AaiController aaiController;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper);
+        mockMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
     }
 
     @Test
-    public void getPortMirroringConfigData_givenThreeIds_ReturnsThreeResults() {
+    public void getPortMirroringConfigData_givenIds_shouldReturnConfigDataMappedById() throws Exception {
+        PortMirroringConfigDataOk okConfigData = new PortMirroringConfigDataOk("foo");
+        PortMirroringConfigDataError errorConfigData = new PortMirroringConfigDataError("bar", "{ baz: qux }");
+        Map<String, PortMirroringConfigData> expectedJson = ImmutableMap.of(
+            ID_1, okConfigData,
+            ID_2, errorConfigData);
+        given(aaiService.getPortMirroringConfigData(ID_1)).willReturn(okConfigData);
+        given(aaiService.getPortMirroringConfigData(ID_2)).willReturn(errorConfigData);
 
-        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForA = new AaiResponseTranslator.PortMirroringConfigDataOk("foobar");
-        final AaiResponseTranslator.PortMirroringConfigDataError toBeReturnedForB = new AaiResponseTranslator.PortMirroringConfigDataError("foo", "{ baz: qux }");
-        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForC = new AaiResponseTranslator.PortMirroringConfigDataOk("corge");
+        mockMvc
+            .perform(get("/aai_getPortMirroringConfigsData")
+                .param("configurationIds", ID_1, ID_2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedJson)));
+    }
 
-        Mockito
-                .doReturn(toBeReturnedForA)
-                .doReturn(toBeReturnedForB)
-                .doReturn(toBeReturnedForC)
-                .when(aaiService).getPortMirroringConfigData(Mockito.anyString());
+    @Test
+    public void getPortMirroringSourcePorts_givenIds_shouldReturnPortDetailsMappedById() throws Exception {
+        PortDetailsOk portDetailsOk = new PortDetailsOk("foo", "testInterface", true);
+        PortDetailsError portDetailsError = new PortDetailsError("bar", "{ baz: qux }");
+        Multimap<String, PortDetails> expectedJson = ImmutableMultimap.of(
+            ID_1, portDetailsOk,
+            ID_2, portDetailsError);
+        given(aaiService.getPortMirroringSourcePorts(ID_1)).willReturn(Lists.newArrayList(portDetailsOk));
+        given(aaiService.getPortMirroringSourcePorts(ID_2)).willReturn(Lists.newArrayList(portDetailsError));
 
-        final Map<String, AaiResponseTranslator.PortMirroringConfigData> result = aaiController.getPortMirroringConfigsData(ImmutableList.of("a", "b", "c"));
-
-        assertThat(result, is(ImmutableMap.of(
-                "a", toBeReturnedForA,
-                "b", toBeReturnedForB,
-                "c", toBeReturnedForC
-        )));
+        mockMvc
+            .perform(get("/aai_getPortMirroringSourcePorts")
+                .param("configurationIds", ID_1, ID_2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedJson.asMap())));
     }
 }
