@@ -3,6 +3,8 @@ FROM tomcat:8.0-jre8-alpine
 # add vim and uncomment alias to speedup troubleshooting purpose
 RUN apk update && apk add openjdk8 vim net-tools
 
+RUN adduser --disabled-password onap onap
+RUN mkdir -p /opt/app
 COPY conf.d/ /etc/onap/vid/conf.d/
 
 # MariaDB variables
@@ -90,6 +92,7 @@ ADD maven/config/server.xml ${VID_TOMCAT_PATH}
 ADD maven/scripts/*.sh /tmp/vid/
 ADD maven/artifacts/vid.war /tmp/vid/stage/
 
+RUN chown onap:onap /tmp/vid /usr/local/tomcat /etc/onap/vid /opt/app -R
 RUN chmod +x /tmp/vid/localize.sh
-
+USER onap
 CMD ["/tmp/vid/localize.sh"]
