@@ -133,7 +133,7 @@ public class AAIRestInterface {
 	 *
 	 * @param baseURL the base URL
 	 */
-	public void SetRestSrvrBaseURL(String baseURL)
+	public void setRestSrvrBaseURL(String baseURL)
 	{
 		if (baseURL == null) {
 			logger.info(EELFLoggerDelegate.errorLogger, "REST Server base URL cannot be null.");

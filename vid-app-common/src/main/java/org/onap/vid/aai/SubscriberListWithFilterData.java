@@ -34,7 +34,7 @@ public class SubscriberListWithFilterData {
 
     public SubscriberListWithFilterData(SubscriberList subscriberList, RoleValidator roleValidator){
         List<Subscriber> subscribers = subscriberList != null ? subscriberList.customer : new ArrayList<>();
-        List<SubscriberWithFilter> subscribersWithFilter = new ArrayList<>();
+        customer = new ArrayList<>();
         for (Subscriber subscriber :subscribers){
             SubscriberWithFilter subscriberWithFilter = new SubscriberWithFilter();
             subscriberWithFilter.setIsPermitted(roleValidator.isSubscriberPermitted(subscriber.globalCustomerId));
@@ -42,10 +42,9 @@ public class SubscriberListWithFilterData {
             subscriberWithFilter.resourceVersion = subscriber.resourceVersion;
             subscriberWithFilter.subscriberName = subscriber.subscriberName;
             subscriberWithFilter.globalCustomerId = subscriber.globalCustomerId;
-            subscribersWithFilter.add(subscriberWithFilter);
+            customer.add(subscriberWithFilter);
         }
-        this.customer = subscribersWithFilter;
-     }
+    }
 
     public List<SubscriberWithFilter> customer;
 }

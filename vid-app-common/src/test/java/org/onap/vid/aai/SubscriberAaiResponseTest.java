@@ -20,23 +20,39 @@
 
 package org.onap.vid.aai;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class SubscriberAaiResponseTest {
 
-	private SubscriberAaiResponse createTestSubject() {
-		return new SubscriberAaiResponse(new SubscriberList(), "", 0);
-	}
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-	
+	private static final String SUBSCRIBER_JSON_EXAMPLE = "{\n" +
+			"  \"global-customer-id\": \"id\",\n" +
+			"  \"subscriber-name\": \"name\",\n" +
+			"  \"subscriber-type\": \"type\",\n" +
+			"  \"resource-version\": \"version\"\n" +
+			"}";
+
 	@Test
-	public void testGetSubscriberList() throws Exception {
-		SubscriberAaiResponse testSubject;
-		SubscriberList result;
+	public void shouldGetSubscriberList() throws IOException {
+		Subscriber sampleSubscriber =
+				OBJECT_MAPPER.readValue(SUBSCRIBER_JSON_EXAMPLE, Subscriber.class);
+		List<Subscriber> expectedListOfSubscribers = Arrays.asList(sampleSubscriber);
+		SubscriberList expectedSubscriberList = new SubscriberList(expectedListOfSubscribers);
+		SubscriberAaiResponse subscriberAaiResponse = new SubscriberAaiResponse(expectedSubscriberList, "msg", 200);
 
-		// default test
-		testSubject = createTestSubject();
-		result = testSubject.getSubscriberList();
+		assertEquals(subscriberAaiResponse.getSubscriberList(), expectedSubscriberList);
+		assertEquals(subscriberAaiResponse.getSubscriberList().customer.size(), 1);
+		assertEquals(subscriberAaiResponse.getSubscriberList().customer.get(0), sampleSubscriber);
+
 	}
 }
