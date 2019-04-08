@@ -22,6 +22,30 @@
       "revId": "9f0419325b0923e524278f5ee15b92820ace027a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da0b3709_2a7cdab4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 890,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-08T11:04:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c397c52e_dd1f35a4",
+      "range": {
+        "startLine": 890,
+        "startChar": 10,
+        "endLine": 890,
+        "endChar": 31
+      },
+      "revId": "9f0419325b0923e524278f5ee15b92820ace027a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
