@@ -50,6 +50,7 @@ import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 
 
 /**
@@ -71,8 +72,8 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
 
-    public MsoRestClientNew(SyncRestClient client, String baseUrl, HttpsAuthClient authClient) {
-        super(authClient);
+    public MsoRestClientNew(SyncRestClient client, String baseUrl, HttpsAuthClient authClient, SystemPropertiesWrapper systemPropertiesWrapper) {
+        super(authClient,systemPropertiesWrapper);
         this.client = client;
         this.baseUrl = baseUrl;
         this.commonHeaders = initCommonHeaders();
@@ -525,8 +526,8 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     private Map<String, String> initCommonHeaders() {
-        String username = SystemProperties.getProperty(MsoProperties.MSO_USER_NAME);
-        String password = SystemProperties.getProperty(MsoProperties.MSO_PASSWORD);
+        String username = systemPropertiesWrapper.getProperty(MsoProperties.MSO_USER_NAME);
+        String password = systemPropertiesWrapper.getProperty(MsoProperties.MSO_PASSWORD);
         String decrypted_password = Password.deobfuscate(password);
 
         String authString = username + ":" + decrypted_password;
@@ -538,7 +539,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         map.put(HttpHeaders.AUTHORIZATION,  "Basic " + authStringEnc);
         map.put(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON);
         map.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-        map.put(X_FROM_APP_ID, SystemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME));
+        map.put(X_FROM_APP_ID, systemPropertiesWrapper.getProperty(SystemProperties.APP_DISPLAY_NAME));
         map.put(SystemProperties.ECOMP_REQUEST_ID, Logging.extractOrGenerateRequestId());
         return ImmutableMap.copyOf(map);
     }

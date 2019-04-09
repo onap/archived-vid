@@ -50,6 +50,7 @@ import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.RequestReferences;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
@@ -82,7 +83,7 @@ public class MsoRestClientTest {
     @BeforeClass
     private void setUp(){
         initMocks(this);
-        restClient = new MsoRestClientNew(client,baseUrl,null);
+        restClient = new MsoRestClientNew(client,baseUrl,null,new SystemPropertiesWrapper());
 
     }
 
