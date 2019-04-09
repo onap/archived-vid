@@ -19,7 +19,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
 import static org.springframework.http.HttpStatus.OK;
 

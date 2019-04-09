@@ -42,11 +42,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.togglz.core.manager.FeatureManager;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 
+@EnableSwagger2
 @Configuration
 public class WebConfig {
 
@@ -193,4 +200,12 @@ public class WebConfig {
 
     }
 
+    @Bean
+    public Docket api(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("org.onap.vid.controller.open"))
+                .paths(PathSelectors.any())
+                .build();
+    }
 }

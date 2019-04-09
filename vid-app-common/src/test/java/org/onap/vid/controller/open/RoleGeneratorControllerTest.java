@@ -19,7 +19,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.vid.controller.open.RoleGeneratorController;
 import org.onap.vid.services.RoleGeneratorService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;

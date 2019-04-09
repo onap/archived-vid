@@ -18,11 +18,12 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
 import org.onap.portalsdk.core.controller.UnRestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.controller.HealthStatus;
 import org.onap.vid.dao.FnAppDoaImpl;
 import org.onap.vid.model.GitRepositoryState;
 import org.springframework.beans.factory.annotation.Autowired;

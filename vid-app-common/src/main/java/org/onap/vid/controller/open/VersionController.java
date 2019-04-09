@@ -18,7 +18,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;

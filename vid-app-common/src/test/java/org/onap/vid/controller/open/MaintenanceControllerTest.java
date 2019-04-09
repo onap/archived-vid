@@ -1,4 +1,4 @@
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
 /*-
  * ============LICENSE_START=======================================================
@@ -35,6 +35,7 @@ import org.onap.vid.category.AddCategoryOptionResponse;
 import org.onap.vid.category.AddCategoryOptionsRequest;
 import org.onap.vid.category.CategoryParameterOptionRep;
 import org.onap.vid.category.CategoryParametersResponse;
+import org.onap.vid.controller.open.MaintenanceController;
 import org.onap.vid.model.CategoryParameter;
 import org.onap.vid.model.CategoryParameterOption;
 import org.onap.vid.services.CategoryParameterService;

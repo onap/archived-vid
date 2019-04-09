@@ -1,4 +1,4 @@
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
 /*-
  * ============LICENSE_START=======================================================

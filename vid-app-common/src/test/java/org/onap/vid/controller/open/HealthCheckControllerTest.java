@@ -18,7 +18,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.controller.open.HealthCheckController;
 import org.onap.vid.dao.FnAppDoaImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;

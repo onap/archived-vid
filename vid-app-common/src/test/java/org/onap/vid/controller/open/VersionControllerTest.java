@@ -18,8 +18,9 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.controller;
+package org.onap.vid.controller.open;
 
+import org.onap.vid.controller.open.VersionController;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
