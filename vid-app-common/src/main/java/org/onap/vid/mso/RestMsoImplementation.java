@@ -26,7 +26,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpException;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.util.HttpClientMode;
 import org.onap.vid.aai.util.HttpsAuthClient;
@@ -34,6 +33,7 @@ import org.onap.vid.client.HttpBasicClient;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.mso.rest.RestInterface;
 import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
@@ -64,6 +64,7 @@ public class RestMsoImplementation implements RestInterface {
 
 
     protected HttpsAuthClient httpsAuthClient;
+    protected SystemPropertiesWrapper systemProperties;
 
     private static final String START_LOG = " start";
     private static final String APPLICATION_JSON = "application/json";
@@ -80,8 +81,9 @@ public class RestMsoImplementation implements RestInterface {
      */
 
     @Autowired
-    protected RestMsoImplementation(HttpsAuthClient httpsAuthClient){
+    protected RestMsoImplementation(HttpsAuthClient httpsAuthClient, SystemPropertiesWrapper systemProperties){
         this.httpsAuthClient=httpsAuthClient;
+        this.systemProperties = systemProperties;
     }
 
     @SuppressWarnings("Duplicates")
@@ -89,9 +91,9 @@ public class RestMsoImplementation implements RestInterface {
     {
         final String methodname = "initRestClient()";
 
-        final String username = SystemProperties.getProperty(MsoProperties.MSO_USER_NAME);
-        final String password = SystemProperties.getProperty(MsoProperties.MSO_PASSWORD);
-        final String mso_url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL);
+        final String username = systemProperties.getProperty(MsoProperties.MSO_USER_NAME);
+        final String password = systemProperties.getProperty(MsoProperties.MSO_PASSWORD);
+        final String mso_url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL);
         final String decrypted_password = Password.deobfuscate(password);
 
         String authString = username + ":" + decrypted_password;
@@ -140,7 +142,7 @@ public class RestMsoImplementation implements RestInterface {
 
         try {
             restObject.set(t);
-            url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+            url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
 
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
             Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
@@ -179,7 +181,7 @@ public class RestMsoImplementation implements RestInterface {
         final String methodName = getMethodName();
         logger.debug(EELFLoggerDelegate.debugLogger, "start {}->{}({}, {})", getMethodCallerName(), methodName, path, clazz);
 
-        String url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+        String url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
         logger.debug(EELFLoggerDelegate.debugLogger, "<== " +  methodName + " sending request to url= " + url);
 
         MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
@@ -216,7 +218,7 @@ public class RestMsoImplementation implements RestInterface {
         try {
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
-            url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+            url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
             Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url, r);
             cres = client.target(url)
                     .request()
@@ -281,7 +283,7 @@ public class RestMsoImplementation implements RestInterface {
     public Invocation.Builder prepareClient(String path, String methodName) {
         MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
-        String url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+        String url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
         logger.debug(EELFLoggerDelegate.debugLogger,"<== " +  methodName + " sending request to url= " + url);
         // Change the content length
         return client.target(url)
@@ -307,7 +309,7 @@ public class RestMsoImplementation implements RestInterface {
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
             userId.ifPresent(id->commonHeaders.put("X-RequestorID", Collections.singletonList(id)));
 
-            url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+            url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
             Logging.logRequest(outgoingRequestsLogger, httpMethod, url, payload);
             // Change the content length
             final Invocation.Builder restBuilder = client.target(url)
@@ -369,7 +371,7 @@ public class RestMsoImplementation implements RestInterface {
 
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
-            url = SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
+            url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
             Logging.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, r);
             // Change the content length
             final Response cres = client.target(url)

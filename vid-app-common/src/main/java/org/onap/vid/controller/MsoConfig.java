@@ -33,6 +33,7 @@ import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.services.CloudOwnerService;
 import org.onap.vid.services.CloudOwnerServiceImpl;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.togglz.core.manager.FeatureManager;
@@ -47,10 +48,10 @@ public class MsoConfig {
     }
 
     @Bean
-    public MsoRestClientNew msoClient(ObjectMapper unirestObjectMapper, HttpsAuthClient httpsAuthClient){
+    public MsoRestClientNew msoClient(ObjectMapper unirestObjectMapper, HttpsAuthClient httpsAuthClient, SystemPropertiesWrapper systemPropertiesWrapper){
         // Satisfy both interfaces -- MsoInterface and RestMsoImplementation
         return new MsoRestClientNew(new SyncRestClient(unirestObjectMapper), SystemProperties.getProperty(
-            MsoProperties.MSO_SERVER_URL),httpsAuthClient);
+            MsoProperties.MSO_SERVER_URL),httpsAuthClient, systemPropertiesWrapper);
     }
 
 
