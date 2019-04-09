@@ -20,9 +20,18 @@
 
 package org.onap.vid.model
 
+import com.google.common.collect.Lists
+
+enum class WorkflowSource(val source: String) {
+    SDC("sdc"), NATIVE("native")
+}
+
 data class SOWorkflow constructor(
-        val id: Long,
-        val name: String) {
+        val id: String,
+        val name: String,
+        val source: WorkflowSource,
+        val workflowInputParameters: List<WorkflowInputParameter>
+) {
     fun clone(): SOWorkflow {
         return copy()
     }
@@ -79,3 +88,50 @@ data class LocalWorkflowParameterDefinitions constructor(
     }
 }
 
+
+data class ArtifactInfo constructor(
+        val artifactType: String,
+        val artifactUuid: String,
+        val artifactName: String,
+        val artifactVersion: String,
+        val artifactDescription: String? = null,
+        val workflowName: String,
+        val operationName: String? = null,
+        val workflowSource: String,
+        val workflowResourceTarget: String
+)
+
+data class ActivitySequenceItem constructor(
+        val name: String,
+        val description: String
+)
+
+data class WorkflowInputParameter constructor(
+        val label: String,
+        val inputType: String,
+        val required: Boolean,
+        val validation: List<InputParameterValidation>? = Lists.newArrayList(),
+        val soFieldName: String,
+        val soPayloadLocation: String?,
+        val description: String?
+
+)
+
+data class InputParameterValidation constructor(
+        val maxLength: String?,
+        val allowableChars: String?
+)
+
+data class WorkflowSpecification constructor(
+        val artifactInfo: ArtifactInfo,
+        val activitySequence: List<ActivitySequenceItem>? = Lists.newArrayList(),
+        val workflowInputParameters: List<WorkflowInputParameter>
+)
+
+data class WorkflowSpecificationWrapper constructor(
+        val workflowSpecification: WorkflowSpecification
+)
+
+data class SOWorkflowList constructor(
+        val workflowSpecificationList: List<WorkflowSpecificationWrapper>? = Lists.newArrayList()
+)

@@ -30,7 +30,6 @@ import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.MsoProperties;
-import org.onap.vid.mso.rest.MockedWorkflowsRestClient;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.services.CloudOwnerService;
 import org.onap.vid.services.CloudOwnerServiceImpl;
@@ -54,10 +53,6 @@ public class MsoConfig {
             MsoProperties.MSO_SERVER_URL),httpsAuthClient);
     }
 
-    @Bean
-    public MockedWorkflowsRestClient mockedWorkflowsClient(ObjectMapper unirestObjectMapper){
-        return new MockedWorkflowsRestClient(new SyncRestClient(unirestObjectMapper), "http://vid-simulator:1080/");
-    }
 
     @Bean
     public MsoBusinessLogic getMsoBusinessLogic(MsoInterface msoClient, FeatureManager featureManager){

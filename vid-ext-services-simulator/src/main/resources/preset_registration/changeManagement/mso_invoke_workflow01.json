@@ -11,7 +11,9 @@
         "requestParameters": {
           "userParams": [
             {
-              "[FIRST]parameter 1": "011"
+              "operations_timeout": "a",
+              "existing_software_version": "a",
+              "new_software_version": "a"
             }
           ]
         }
@@ -21,7 +23,9 @@
   "simulatorResponse": {
     "responseCode": 200,
     "body": {
-      "inf": "workflow 1 invoked"
+      "requestId": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+      "instanceId": "078046c2-d624-4480-a11d-b92f1fb40be5",
+      "requestSelfLink": "https://mso-apih-dev1-s1.ecomp.idns.cip.att.com:30251/onap/so/infra/orchestrationRequests/v7/ff3514e3-5a33-55df-13ab-12abad84e7ff"
     }
   }
 }
