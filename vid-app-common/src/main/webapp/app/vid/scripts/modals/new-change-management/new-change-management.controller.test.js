@@ -33,6 +33,7 @@ describe('Testing workFlows from SO', () => {
 
   beforeEach(inject(function (_$controller_) {
     $notNeeded = jestMock.fn();
+
     // mock ChangeManagementService
     $changeManagementService = jestMock.fn();
     $changeManagementService.getAllSDCServices = jestMock.fn(() => Promise.resolve([]));
@@ -92,7 +93,7 @@ describe('Testing workFlows from SO', () => {
             "id": 1,
             "name": "Configuration Parameters",
             "required": true,
-            "type": "STRING",
+            "type": "text",
             "pattern": ".*",
             "msgOnPatternError": null,
             "msgOnContentError": null,
@@ -168,7 +169,8 @@ describe('Testing workFlows from SO', () => {
           "id": "new_software_version",
           "soFieldName": "new_software_version",
           "maxLength": '500',
-          "pattern": '.*'
+          "pattern": '.*',
+          "type": "text"
         }]]
       ]));
     });
@@ -181,9 +183,9 @@ describe('Testing workFlows from SO', () => {
     let getLocalWorkflowsParametersStub = Promise.resolve({"data": {}});
     let getSOWorkflowsPromiseStub = Promise.resolve({"data": [{"id": "1", "name": "workflow 0"}]});
     let getSOWorkflowsParametersPromiseStub = Promise.resolve({"data":{"parameterDefinitions": [
-          {"id": 1, "name": "parameter 1", "required": true, "type": "STRING", "pattern": "[0-9]*"},
-          {"id": 2, "name": "parameter 2", "required": true, "type": "STRING", "pattern": ".*"},
-          {"id": 3, "name": "parameter 3", "required": false, "type": "STRING", "pattern": "[0-9]*"}]}});
+          {"id": 1, "name": "parameter 1", "required": true, "type": "text", "pattern": "[0-9]*"},
+          {"id": 2, "name": "parameter 2", "required": true, "type": "text", "pattern": ".*"},
+          {"id": 3, "name": "parameter 3", "required": false, "type": "text", "pattern": "[0-9]*"}]}});
 
     $controller.changeManagement.vnfNames = [{name: 'test1'}, {name: "test2"}];
     $changeManagementService.getWorkflows = () => getWorkflowsStub;
@@ -208,7 +210,7 @@ describe('Testing workFlows from SO', () => {
             "id": 1,
             "name": "Configuration Parameters",
             "required": true,
-            "type": "STRING",
+            "type": "text",
             "pattern": ".*",
             "msgOnPatternError": null,
             "msgOnContentError": null,
@@ -223,9 +225,7 @@ describe('Testing workFlows from SO', () => {
     // when
 
     let result = new Map();
-    const scaleOutResult = new Map();
-    scaleOutResult.set("FILE", []);
-    scaleOutResult.set("STRING", [
+    const scaleOutResult = [
       {
         "acceptableFileType": null,
         "id": 1,
@@ -234,9 +234,9 @@ describe('Testing workFlows from SO', () => {
         "name": "Configuration Parameters",
         "pattern": ".*",
         "required": true,
-        "type": "STRING",
+        "type": "text",
       }
-    ]);
+    ];
     result.set("VNF Scale Out", scaleOutResult);
 
     return $controller.loadWorkFlows()
@@ -268,7 +268,7 @@ describe('Testing workFlows from SO', () => {
             "id": 1,
             "name": "Configuration Parameters",
             "required": true,
-            "type": "STRING",
+            "type": "text",
             "pattern": ".*",
             "msgOnPatternError": null,
             "msgOnContentError": null,
@@ -283,7 +283,7 @@ describe('Testing workFlows from SO', () => {
     // when
     return $controller.loadWorkFlows()
     .then(() => {
-      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("NON-EXISTENT WF", "STRING");
+      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("NON-EXISTENT WF", "text");
       expect(internalWorkFlowParameters).toEqual([]);
     });
   });
@@ -298,7 +298,7 @@ describe('Testing workFlows from SO', () => {
             "id": 1,
             "name": "Configuration Parameters",
             "required": true,
-            "type": "STRING",
+            "type": "text",
             "pattern": ".*",
             "msgOnPatternError": null,
             "msgOnContentError": null,
@@ -328,7 +328,7 @@ describe('Testing workFlows from SO', () => {
             "id": 1,
             "name": "Configuration Parameters",
             "required": true,
-            "type": "STRING",
+            "type": "text",
             "pattern": ".*",
             "msgOnPatternError": null,
             "msgOnContentError": null,
@@ -348,12 +348,12 @@ describe('Testing workFlows from SO', () => {
         "name": "Configuration Parameters",
         "pattern": ".*",
         "required": true,
-        "type": "STRING",
+        "type": "text",
         }];
     // when
     return $controller.loadWorkFlows()
     .then(() => {
-      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("VNF Scale Out", "STRING");
+      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("VNF Scale Out", "text");
       expect(internalWorkFlowParameters).toEqual(result);
     });
   });
