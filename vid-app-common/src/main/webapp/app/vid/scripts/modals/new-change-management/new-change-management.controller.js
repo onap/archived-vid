@@ -428,10 +428,16 @@
         };
 
         vm.executeWorkflow = function () {
-            if (vm.localWorkflows && vm.localWorkflows.length > 0) {
+            if ( vm.localWorkflows && vm.localWorkflows.length > 0 ) {
                 vm.triggerLocalWorkflow();
             } else {
-                vm.triggerRemoteWorkflow();
+                let source = vm.getRemoteWorkflowSource(vm.changeManagement.workflow);
+                if( source === "NATIVE"){
+                    vm.localWorkflowsParameters = vm.remoteWorkflowsParameters;
+                    vm.triggerLocalWorkflow();
+                }else {
+                    vm.triggerRemoteWorkflow();
+                }
             }
         };
 
@@ -726,12 +732,7 @@
         vm.loadLocalWorkFlowParameters = function (workflow) {
           changeManagementService.getLocalWorkflowParameter(workflow)
           .then(function (response) {
-            let fileParameters = response.data.parameterDefinitions.filter(item => item.type === 'FILE');
-            let textParameters = response.data.parameterDefinitions.filter(item => item.type === 'STRING');
-            let parameters = new Map();
-            parameters.set('FILE', fileParameters);
-            parameters.set('STRING', textParameters);
-            vm.localWorkflowsParameters.set(workflow, parameters);
+              vm.localWorkflowsParameters.set(workflow, response.data.parameterDefinitions);
           })
           .catch(function (error) {
             $log.error(error);
@@ -762,6 +763,11 @@
                             workflowParams.pattern = validation.allowableChars;
                         }
                     }
+                    if(param.inputType === "text"){
+                        workflowParams.type = "STRING"
+                    }else {
+                        workflowParams.type = param.inputType;
+                    }
                     parameters.push(workflowParams);
                 }
             );
@@ -787,16 +793,20 @@
         };
 
         vm.getInternalWorkFlowParameters = function (workflow, type) {
-          if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).has(type)) {
-            return vm.localWorkflowsParameters.get(workflow).get(type)
+            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type) != []) {
+                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type)
           }
           return [];
         };
 
         vm.getInternalWorkFlowParameter = function (workflow, type, parameterName) {
-          if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).has(type)) {
-            return vm.localWorkflowsParameters.get(workflow).get(type).filter(parameter => parameter.name === parameterName)[0]
+            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type) != []) {
+                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type).filter(parameter => parameter.name === parameterName)[0]
           }
+        };
+
+        vm.getRemoteWorkflowSource = (workflow) => {
+            return vm.getCachedWorkflowDetails(workflow)[0].source;
         };
 
         vm.getCachedWorkflowDetails = function (workflow) {

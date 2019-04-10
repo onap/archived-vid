@@ -33,6 +33,7 @@ describe('Testing workFlows from SO', () => {
 
   beforeEach(inject(function (_$controller_) {
     $notNeeded = jestMock.fn();
+
     // mock ChangeManagementService
     $changeManagementService = jestMock.fn();
     $changeManagementService.getAllSDCServices = jestMock.fn(() => Promise.resolve([]));
@@ -168,7 +169,8 @@ describe('Testing workFlows from SO', () => {
           "id": "new_software_version",
           "soFieldName": "new_software_version",
           "maxLength": '500',
-          "pattern": '.*'
+          "pattern": '.*',
+          "type": "STRING"
         }]]
       ]));
     });
@@ -223,9 +225,7 @@ describe('Testing workFlows from SO', () => {
     // when
 
     let result = new Map();
-    const scaleOutResult = new Map();
-    scaleOutResult.set("FILE", []);
-    scaleOutResult.set("STRING", [
+    const scaleOutResult = [
       {
         "acceptableFileType": null,
         "id": 1,
@@ -236,7 +236,7 @@ describe('Testing workFlows from SO', () => {
         "required": true,
         "type": "STRING",
       }
-    ]);
+    ];
     result.set("VNF Scale Out", scaleOutResult);
 
     return $controller.loadWorkFlows()
