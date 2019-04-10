@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ecd0f41e_234ed808",
+        "filename": "vid-app-common/package.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-04-10T07:46:29Z",
+      "side": 1,
+      "message": "Can we please try another round with\n\n```\n  \"jest\": \"24.6.0\",\n  \"jest-mock\": \"24.6.0\",\n```\n\nbut without explicit jest-cli, @jest/test-result, @jest/test-result?",
+      "range": {
+        "startLine": 26,
+        "startChar": 5,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "ece1bc9dd9b58f1402ae93e30aac6aadc9bfc562",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
