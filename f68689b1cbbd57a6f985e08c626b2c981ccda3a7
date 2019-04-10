@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6e800be9_17d4b020",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-10T11:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "942bfd6b_682a55df",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "f68689b1cbbd57a6f985e08c626b2c981ccda3a7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "80d1bf10_c2b73be0",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-04-10T10:08:59Z",
       "side": 1,
       "message": "VID-404 is specific to this commit. :)",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 10,
+        "endChar": 17
+      },
+      "revId": "f68689b1cbbd57a6f985e08c626b2c981ccda3a7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "676691e7_ec1ea31f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-10T11:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80d1bf10_c2b73be0",
       "range": {
         "startLine": 10,
         "startChar": 10,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "daf8babc_476d296c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestMsoImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-10T11:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c22c79a_d487bba7",
+      "range": {
+        "startLine": 68,
+        "startChar": 38,
+        "endLine": 68,
+        "endChar": 61
+      },
+      "revId": "f68689b1cbbd57a6f985e08c626b2c981ccda3a7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea2c0be4_68a2d98d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientTest.java",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2019-04-10T10:08:59Z",
       "side": 1,
       "message": "Define `@Mock SystemPropertiesWrapper systemPropertiesWrapper` field?",
+      "range": {
+        "startLine": 86,
+        "startChar": 62,
+        "endLine": 86,
+        "endChar": 91
+      },
+      "revId": "f68689b1cbbd57a6f985e08c626b2c981ccda3a7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2781338a_e9cc9924",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/MsoRestClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-10T11:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea2c0be4_68a2d98d",
       "range": {
         "startLine": 86,
         "startChar": 62,
