@@ -24,11 +24,11 @@ import io.joshworks.restclient.request.HttpRequest;
 import org.glassfish.jersey.client.JerseyInvocation;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.BeforeClass;
@@ -72,15 +72,19 @@ public class RestMsoImplementationTest  {
     @Mock
     private JerseyInvocation jerseyInvocation;
 
-    @InjectMocks
-    private RestMsoImplementation restMsoImplementation = new RestMsoImplementation(mockHttpsAuthClient);
+    @Mock
+    private SystemPropertiesWrapper systemProperties;
 
-    String path = "/test_path/";
-    String rawData = "test-row-data";
+    @InjectMocks
+    private RestMsoImplementation restMsoImplementation = new RestMsoImplementation(mockHttpsAuthClient, systemProperties);
+
+    private String path = "/test_path/";
+    private String rawData = "test-row-data";
 
     @BeforeClass
     public void setUp(){
         initMocks(this);
+        when(systemProperties.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1ghz1kfx1j1w1m7w1i271e8q1eas1hzj1m4i1iyy1kch1gdz");
     }
 
     @Test
@@ -127,7 +131,8 @@ public class RestMsoImplementationTest  {
         RestObject<HttpRequest> restObject = new RestObject<>();
 
         prepareMocks("",HttpStatus.ACCEPTED.value(),"");
-        when(mockClient.target(SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL))).thenThrow(new MsoTestException("test-target-exception"));
+        when(systemProperties.getProperty(MsoProperties.MSO_SERVER_URL)).thenReturn("SAMPLE_URL");
+        when(mockClient.target("SAMPLE_URL")).thenThrow(new MsoTestException("test-target-exception"));
 
         //  when
         restMsoImplementation.Get(httpRequest, "", restObject,false);

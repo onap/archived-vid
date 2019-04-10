@@ -44,12 +44,14 @@ import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.LocalWebConfig;
 import org.onap.vid.model.RequestReferencesContainer;
+import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.RequestReferences;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
@@ -75,6 +77,8 @@ public class MsoRestClientTest {
     @Mock
     private SyncRestClient client;
 
+    @Mock
+    private SystemPropertiesWrapper systemProperties;
 
     private MsoRestClientNew restClient;
 
@@ -82,8 +86,9 @@ public class MsoRestClientTest {
     @BeforeClass
     private void setUp(){
         initMocks(this);
-        restClient = new MsoRestClientNew(client,baseUrl,null);
-
+        when(systemProperties.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1ghz1kfx1j1w1m7w1i271e8q1eas1hzj1m4i1iyy1kch1gdz");
+        when(systemProperties.getProperty("app_display_name")).thenReturn("vid");
+        restClient = new MsoRestClientNew(client,baseUrl,null,systemProperties);
     }
 
     @Test
