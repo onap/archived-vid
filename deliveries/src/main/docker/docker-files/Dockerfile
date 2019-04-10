@@ -1,4 +1,4 @@
-FROM tomcat:8.0-jre8-alpine
+FROM tomcat:9.0-jre8-alpine
 
 # add vim and uncomment alias to speedup troubleshooting purpose
 RUN apk update && apk add openjdk8 vim net-tools
