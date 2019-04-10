@@ -9,9 +9,11 @@ Version: 3.2.3
 :Release Date: 2019-03-28
 
 **Notes**
+
 It's v3.2.2, but repackaged with a new certificate valid until March 12, 2020.
 
 **Resolved Issues**
+
 VID certificates have been renewed to extend their expiry dates
   - `VID-446 <https://jira.onap.org/browse/VID-446>`_ Fix Certificate Expiry.
 
