@@ -90,7 +90,7 @@
             <label id="errorContentLabel" class="icon-alert error" ng-if="item.value.$error.validateAsyncFn">{{item.msgOnContentError}}</label>
         </div>
 
-        <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'STRING')">
+        <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'text')">
             <label for="internal-workflow-parameter-text-{{item.id}}" class="control-label">{{item.name}}</label>
             <input ng-model="item.value" type="text" id="internal-workflow-parameter-text-{{item.id}}" pattern="{{item.pattern}}" ng-required="{{item.required}}">
         </div>
