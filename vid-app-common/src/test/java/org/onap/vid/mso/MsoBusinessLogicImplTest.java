@@ -1353,7 +1353,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         UUID serviceInstanceId = new UUID(1,10);
         UUID vnfInstanceId = new UUID(2,20);
         UUID workflow_UUID = new UUID(3,30);
-        String path = "/onap/so/infra/instanceManagement/v1/serviceInstances/"+serviceInstanceId+"/vnfs/"+vnfInstanceId+"/workflows/"+workflow_UUID;
+        String path = "/instanceManagement/v1/serviceInstances/"+serviceInstanceId+"/vnfs/"+vnfInstanceId+"/workflows/"+workflow_UUID;
 
         given(msoInterface.invokeWorkflow(eq(request), eq(path), MockitoHamcrest.argThat(allOf(hasEntry("X-RequestorID", "testRequester"),hasEntry("X-ONAP-PartnerName", "VID"))))).willReturn(okResponse);
 
