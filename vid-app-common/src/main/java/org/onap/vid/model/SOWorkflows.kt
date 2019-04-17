@@ -46,12 +46,12 @@ data class SOWorkflows @JvmOverloads constructor(
 
 enum class SOWorkflowType(
         val type: String) {
-    STRING("STRING")
+    text("text")
 }
 
 enum class LocalWorkflowType(
         val type: String) {
-    STRING("STRING"),
+    text("text"),
     FILE("FILE")
 }
 

@@ -33,14 +33,14 @@ public class LocalWorkflowsServiceImpl implements LocalWorkflowsService {
     Map<String, LocalWorkflowParameterDefinitions> WORKFLOWS_WITH_PARAMETERS = ImmutableMap.<String, LocalWorkflowParameterDefinitions>builder()
         .put("VNF Scale Out", new LocalWorkflowParameterDefinitions(
             ImmutableList.of(
-                new LocalWorkflowParameterDefinition(1, "Configuration Parameters", true, LocalWorkflowType.STRING,".*")
+                new LocalWorkflowParameterDefinition(1, "Configuration Parameters", true, LocalWorkflowType.text,".*")
             )
         ))
         .put("VNF In Place Software Update", new LocalWorkflowParameterDefinitions(
             ImmutableList.of(
-                new LocalWorkflowParameterDefinition(2, "Operations timeout",true, LocalWorkflowType.STRING,"[0-9]+"),
-                new LocalWorkflowParameterDefinition(3, "Existing software version", true, LocalWorkflowType.STRING, "[-a-zA-Z0-9.]+"),
-                new LocalWorkflowParameterDefinition(4, "New software version", true, LocalWorkflowType.STRING, "[-a-zA-Z0-9.]+")
+                new LocalWorkflowParameterDefinition(2, "Operations timeout",true, LocalWorkflowType.text,"[0-9]+"),
+                new LocalWorkflowParameterDefinition(3, "Existing software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+"),
+                new LocalWorkflowParameterDefinition(4, "New software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+")
             )
         ))
         .put("VNF Config Update", new LocalWorkflowParameterDefinitions(

@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method" : "POST",
-    "path" : "/onap/so/infra/instanceManagement/v1/serviceInstances/[a-fA-F0-9-]*/vnfs/[a-fA-F0-9-]*/workflows/[a-fA-F0-9-]*",
+    "path" : "/instanceManagement/v1/serviceInstances/[a-fA-F0-9-]*/vnfs/[a-fA-F0-9-]*/workflows/[a-fA-F0-9-]*",
     "body" : {
       "requestDetails": {
         "cloudConfiguration": {
