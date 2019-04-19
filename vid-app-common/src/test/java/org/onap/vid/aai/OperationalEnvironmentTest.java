@@ -56,10 +56,15 @@ public class OperationalEnvironmentTest {
         RelationshipList relationshipList = new RelationshipList();
         relationshipList.relationship = new ArrayList<>();
 
-        OperationalEnvironment operationalEnvironment = new OperationalEnvironment("testId",
-                "testEnvName", "testEnvType",
-                "testEnvStatus", "testTenant", "testWorkload",
-                "testResource", relationshipList);
+        OperationalEnvironment operationalEnvironment =
+                new OperationalEnvironment.OperationalEnvironmentBuilder()
+                        .setOperationalEnvironmentId("testId")
+                        .setOperationalEnvironmentName("testEnvName")
+                        .setOperationalEnvironmentType("testEnvType")
+                        .setOperationalEnvironmentStatus("testEnvStatus")
+                        .setTenantContext("testTenant").setWorkloadContext("testWorkload")
+                        .setResourceVersion("testResource").setRelationshipList(relationshipList)
+                        .createOperationalEnvironment();
 
         assertThat(operationalEnvironment.getOperationalEnvironmentId()).isEqualTo("testId");
         assertThat(operationalEnvironment.getWorkloadContext()).isEqualTo("testWorkload");

@@ -20,9 +20,9 @@
 
 package org.onap.vid.aai;
 
+import org.onap.vid.aai.model.RelationshipList;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.onap.vid.aai.model.RelationshipList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OperationalEnvironment {
@@ -39,15 +39,75 @@ public class OperationalEnvironment {
     public OperationalEnvironment() {
     }
 
-    public OperationalEnvironment(String operationalEnvironmentId, String operationalEnvironmentName, String operationalEnvironmentType, String operationalEnvironmentStatus, String tenantContext, String workloadContext, String resourceVersion, RelationshipList relationshipList) {
-        this.operationalEnvironmentId = operationalEnvironmentId;
-        this.operationalEnvironmentName = operationalEnvironmentName;
-        this.operationalEnvironmentType = operationalEnvironmentType;
-        this.operationalEnvironmentStatus = operationalEnvironmentStatus;
-        this.tenantContext = tenantContext;
-        this.workloadContext = workloadContext;
-        this.resourceVersion = resourceVersion;
-        this.relationshipList = relationshipList;
+    public OperationalEnvironment(OperationalEnvironmentBuilder builder) {
+        this.operationalEnvironmentId = builder.operationalEnvironmentId;
+        this.operationalEnvironmentName = builder.operationalEnvironmentName;
+        this.operationalEnvironmentType = builder.operationalEnvironmentType;
+        this.operationalEnvironmentStatus = builder.operationalEnvironmentStatus;
+        this.tenantContext = builder.tenantContext;
+        this.workloadContext = builder.workloadContext;
+        this.resourceVersion = builder.resourceVersion;
+        this.relationshipList = builder.relationshipList;
+    }
+
+    public static class OperationalEnvironmentBuilder {
+        private String operationalEnvironmentId;
+        private String operationalEnvironmentName;
+        private String operationalEnvironmentType;
+        private String operationalEnvironmentStatus;
+        private String tenantContext;
+        private String workloadContext;
+        private String resourceVersion;
+        private RelationshipList relationshipList;
+
+        public OperationalEnvironmentBuilder setOperationalEnvironmentId(
+                String operationalEnvironmentId) {
+            this.operationalEnvironmentId = operationalEnvironmentId;
+            return this;
+        }
+
+        public OperationalEnvironmentBuilder setOperationalEnvironmentName(
+                String operationalEnvironmentName) {
+            this.operationalEnvironmentName = operationalEnvironmentName;
+            return this;
+        }
+
+        public OperationalEnvironmentBuilder setOperationalEnvironmentType(
+                String operationalEnvironmentType) {
+            this.operationalEnvironmentType = operationalEnvironmentType;
+            return this;
+        }
+
+        public OperationalEnvironmentBuilder setOperationalEnvironmentStatus(
+                String operationalEnvironmentStatus) {
+            this.operationalEnvironmentStatus = operationalEnvironmentStatus;
+            return this;
+        }
+
+        public OperationalEnvironmentBuilder setTenantContext(String tenantContext) {
+            this.tenantContext = tenantContext;
+            return this;
+        }
+
+        public OperationalEnvironmentBuilder setWorkloadContext(String workloadContext) {
+            this.workloadContext = workloadContext;
+            return this;
+        }
+
+        public OperationalEnvironmentBuilder setResourceVersion(String resourceVersion) {
+            this.resourceVersion = resourceVersion;
+            return this;
+        }
+
+        public OperationalEnvironmentBuilder setRelationshipList(
+                RelationshipList relationshipList) {
+            this.relationshipList = relationshipList;
+            return this;
+        }
+
+        public OperationalEnvironment createOperationalEnvironment() {
+            return new OperationalEnvironment(this);
+        }
     }
 
     public String getOperationalEnvironmentId() {
