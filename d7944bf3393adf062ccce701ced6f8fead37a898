@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1178df85_a38f9419",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/LoggerController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-19T10:17:21Z",
+      "side": 1,
+      "message": "Ittay recently upgraded  spring version, so if You want you can also replace this by @GetMapping",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 92
+      },
+      "revId": "d7944bf3393adf062ccce701ced6f8fead37a898",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "33062f55_b121311d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/LoggerControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-19T10:17:21Z",
+      "side": 1,
+      "message": "make all those fields static",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 109
+      },
+      "revId": "d7944bf3393adf062ccce701ced6f8fead37a898",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6fcf8897_8e37c23d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/testResources/emptyLog.log",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-19T10:17:21Z",
+      "side": 1,
+      "message": "I\u0027d prefer to have emptyLog.log and validLog inside src/test/resources",
+      "revId": "d7944bf3393adf062ccce701ced6f8fead37a898",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
