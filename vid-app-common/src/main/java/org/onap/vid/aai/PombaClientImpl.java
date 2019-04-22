@@ -51,8 +51,8 @@ public class PombaClientImpl implements PombaClientInterface {
         try {
             pombaRestInterface.RestPost(fromAppId, uri, new ObjectMapper().writeValueAsString(request));
         } catch (Exception e) {
-            logger.info(EELFLoggerDelegate.errorLogger, methodName + e.toString());
-            logger.debug(EELFLoggerDelegate.debugLogger, methodName + e.toString());
+            logger.info(EELFLoggerDelegate.errorLogger, methodName, e);
+            logger.debug(EELFLoggerDelegate.debugLogger, methodName, e);
         }
     }
 }

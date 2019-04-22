@@ -50,8 +50,8 @@ public class PombaRestInterface extends AAIRestInterface {
                 client = httpsAuthClientFactory.getClient(HttpClientMode.WITH_KEYSTORE);
             }
             catch (Exception e) {
-                logger.info(EELFLoggerDelegate.errorLogger, "Exception in REST call to DB in initRestClient" + e.toString());
-                logger.debug(EELFLoggerDelegate.debugLogger, "Exception in REST call to DB : " + e.toString());
+                logger.info(EELFLoggerDelegate.errorLogger, "Exception in REST call to DB in initRestClient", e);
+                logger.debug(EELFLoggerDelegate.debugLogger, "Exception in REST call to DB : ", e);
             }
         }
     }

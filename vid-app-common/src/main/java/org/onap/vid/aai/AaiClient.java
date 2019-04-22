@@ -195,6 +195,7 @@ public class AaiClient implements AaiClientInterface {
                 return new AaiResponse(e.getCause(), "AAI response parsing Error" , HttpStatus.SC_INTERNAL_SERVER_ERROR);
             }
             catch (Exception e) {
+                logger.error(EELFLoggerDelegate.errorLogger,"Exception in aai response parsing", e);
                 return new AaiResponse(e.getCause(), "Got " + aaiResponse.getHttpCode() + " from a&ai" , aaiResponse.getHttpCode());
             }
         }
@@ -335,8 +336,8 @@ public class AaiClient implements AaiClientInterface {
                 encodedParam= URLEncoder.encode(param, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 String methodName = "getUrlFromList";
-                logger.error(EELFLoggerDelegate.errorLogger, methodName + e.toString());
-                logger.debug(EELFLoggerDelegate.debugLogger, methodName + e.toString());
+                logger.error(EELFLoggerDelegate.errorLogger, methodName, e);
+                logger.debug(EELFLoggerDelegate.debugLogger, methodName, e);
             }
             url = url.concat(encodedParam);
             if(i != params.size()){
