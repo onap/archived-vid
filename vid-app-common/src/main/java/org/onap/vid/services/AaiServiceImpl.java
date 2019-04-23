@@ -96,13 +96,18 @@ public class AaiServiceImpl implements AaiService {
             }
 
             for (ModelVer modelVer: model.getModelVers().getModelVer()) {
-                Service service = new Service(
-                        modelVer.getModelVersionId(),
-                        model.getModelInvariantId(),
-                        category, modelVer.getModelVersion(), modelVer.getModelName(),
-                        modelVer.getDistributionStatus(),
-                        null, null, null, null
-                );
+                Service service = new Service.ServiceBuilder().setUuid(modelVer.getModelVersionId())
+                        .setInvariantUUID(model.getModelInvariantId())
+                        .setCategory(category)
+                        .setVersion(modelVer.getModelVersion())
+                        .setName( modelVer.getModelName())
+                        .setDistributionStatus(modelVer.getDistributionStatus())
+                        .setToscaModelURL(null)
+                        .setLifecycleState(null)
+                        .setArtifacts(null)
+                        .setResources(null).build();
+
+
 
                 services.add(service);
             }

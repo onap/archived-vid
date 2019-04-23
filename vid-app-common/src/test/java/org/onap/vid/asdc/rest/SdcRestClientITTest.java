@@ -20,8 +20,25 @@
 
 package org.onap.vid.asdc.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.xebialabs.restito.semantics.Call;
+import static com.xebialabs.restito.semantics.Action.ok;
+import static com.xebialabs.restito.semantics.Action.stringContent;
+import static org.apache.http.client.config.RequestConfig.custom;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.junit.Assert.assertTrue;
+import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
+import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.UUID;
+import javax.net.ssl.SSLContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -38,27 +55,8 @@ import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.testUtils.StubServerUtil;
-
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
-
-import static com.xebialabs.restito.semantics.Action.ok;
-import static com.xebialabs.restito.semantics.Action.stringContent;
-import static org.apache.http.client.config.RequestConfig.custom;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.matchesPattern;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.junit.Assert.assertTrue;
-import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
-import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.xebialabs.restito.semantics.Call;
 
 
 public class SdcRestClientITTest {
@@ -124,15 +122,23 @@ public class SdcRestClientITTest {
 
         assertTrue(first.isPresent());
 
-        assertThat(first.get().getHeaders().keySet(), hasItems(X_ECOMP_INSTANCE_ID.toLowerCase(), REQUEST_ID_HEADER_KEY.toLowerCase()));
-        assertThat(first.get().getHeaders().get(REQUEST_ID_HEADER_KEY.toLowerCase()).get(0), matchesPattern(UUID_REGEX));
+        assertThat(first.get().getHeaders().keySet(),
+                hasItems(X_ECOMP_INSTANCE_ID.toLowerCase(), REQUEST_ID_HEADER_KEY.toLowerCase()));
+        assertThat(first.get().getHeaders().get(REQUEST_ID_HEADER_KEY.toLowerCase()).get(0),
+                matchesPattern(UUID_REGEX));
     }
 
     private Service getExpectedService(String stringId) {
-        return new Service(stringId, stringId,
-                "sampleCategory", "sampleVersion",
-                "sampleName", "sampleDistStatus",
-                "sampleToscaUrl", Service.LifecycleState.CERTIFIED, Collections.emptyList(), Collections.emptyList());
+        return new Service.ServiceBuilder().setUuid(stringId)
+                .setInvariantUUID(stringId)
+                .setCategory("sampleCategory")
+                .setVersion("sampleVersion")
+                .setName( "sampleName")
+                .setDistributionStatus("sampleDistStatus")
+                .setToscaModelURL("sampleToscaUrl")
+                .setLifecycleState(Service.LifecycleState.CERTIFIED)
+                .setArtifacts(Collections.emptyList())
+                .setResources(Collections.emptyList()).build();
     }
 
 

@@ -22,347 +22,425 @@ package org.onap.vid.asdc.beans;
 
 import java.util.Collection;
 import java.util.UUID;
+
 /**
  * The Class Service.
  */
 public class Service {
 
-	/**
-	 * The Enum DistributionStatus.
-	 */
-	public enum DistributionStatus {
+    /**
+     * The Enum DistributionStatus.
+     */
+    public enum DistributionStatus {
 
-		/** The distribution not approved. */
-		DISTRIBUTION_NOT_APPROVED,
+    /** The distribution not approved. */
+    DISTRIBUTION_NOT_APPROVED,
 
-		/** The distribution approved. */
-		DISTRIBUTION_APPROVED,
+    /** The distribution approved. */
+    DISTRIBUTION_APPROVED,
 
-		/** The distributed. */
-		DISTRIBUTED,
+    /** The distributed. */
+    DISTRIBUTED,
 
-		/** The distribution rejected. */
-		DISTRIBUTION_REJECTED,
+    /** The distribution rejected. */
+    DISTRIBUTION_REJECTED,
 
-		/** The destributed for tenant isolation. */
-		DISTRIBUTION_COMPLETE_OK
-	}
+    /** The destributed for tenant isolation. */
+    DISTRIBUTION_COMPLETE_OK
+    }
 
-	/**
-	 * The Enum LifecycleState.
-	 */
-	public enum LifecycleState {
+    /**
+     * The Enum LifecycleState.
+     */
+    public enum LifecycleState {
 
-		/** The not certified checkout. */
-		NOT_CERTIFIED_CHECKOUT,
+        /** The not certified checkout. */
+        NOT_CERTIFIED_CHECKOUT,
 
-		/** The not certified checkin. */
-		NOT_CERTIFIED_CHECKIN,
+        /** The not certified checkin. */
+        NOT_CERTIFIED_CHECKIN,
 
-		/** The ready for certification. */
-		READY_FOR_CERTIFICATION,
+        /** The ready for certification. */
+        READY_FOR_CERTIFICATION,
 
-		/** The certification in progress. */
-		CERTIFICATION_IN_PROGRESS,
+        /** The certification in progress. */
+        CERTIFICATION_IN_PROGRESS,
 
-		/** The certified. */
-		CERTIFIED
-	}
+        /** The certified. */
+        CERTIFIED
+    }
 
-	/** The uuid. */
-	private String uuid;
+    /** The uuid. */
+    private String uuid;
 
-	/** The invariant UUID. */
-	private String invariantUUID;
+    /** The invariant UUID. */
+    private String invariantUUID;
 
-	/** The name. */
-	private String name;
+    /** The name. */
+    private String name;
 
-	/** The version. */
-	private String version;
+    /** The version. */
+    private String version;
 
-	/** The tosca model URL. */
-	private String toscaModelURL;
+    /** The tosca model URL. */
+    private String toscaModelURL;
 
-	/** The category. */
-	private String category;
+    /** The category. */
+    private String category;
 
-	/** The lifecycle state. */
-	private Service.LifecycleState lifecycleState;
+    /** The lifecycle state. */
+    private Service.LifecycleState lifecycleState;
 
-	/** The last updater user uid. */
-	private String lastUpdaterUserId;
+    /** The last updater user uid. */
+    private String lastUpdaterUserId;
 
-	/** The last updater full name. */
-	private String lastUpdaterFullName;
+    /** The last updater full name. */
+    private String lastUpdaterFullName;
 
-	/** The distribution status. */
-	private String distributionStatus;
+    /** The distribution status. */
+    private String distributionStatus;
 
-	/** The artifacts. */
-	private Collection<Artifact> artifacts;
+    /** The artifacts. */
+    private Collection<Artifact> artifacts;
 
-	/** The resources. */
-	private Collection<SubResource> resources;
+    /** The resources. */
+    private Collection<SubResource> resources;
+    
+    
+    public static class ServiceBuilder {
+       private String uuid;
+       private String invariantUUID;
+       private String name;
+       private String version;
+       private String toscaModelURL;
+       private String category;
+       private Service.LifecycleState lifecycleState;
+       private String distributionStatus;
+       private Collection<Artifact> artifacts;
+       private Collection<SubResource> resources;
 
-	/**
-	 * Gets the uuid.
-	 *
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
+        public ServiceBuilder setUuid(String uuid) {
+            this.uuid = uuid;
+            return this;
+        }
 
-	/**
-	 * Gets the invariant UUID.
-	 *
-	 * @return the invariant UUID
-	 */
-	public String getInvariantUUID() {
-		return invariantUUID;
-	}
+        public ServiceBuilder setInvariantUUID(String invariantUUID) {
+            this.invariantUUID = invariantUUID;
+            return this;
+        }
 
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+        public ServiceBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
 
-	/**
-	 * Gets the version.
-	 *
-	 * @return the version
-	 */
-	public String getVersion() {
-		return version;
-	}
+        public ServiceBuilder setVersion(String version) {
+            this.version = version;
+            return this;
+        }
 
-	/**
-	 * Gets the tosca model URL.
-	 *
-	 * @return the tosca model URL
-	 */
-	public String getToscaModelURL() {
-		return toscaModelURL;
-	}
+        public ServiceBuilder setToscaModelURL(String toscaModelURL) {
+            this.toscaModelURL = toscaModelURL;
+            return this;
+        }
 
-	/**
-	 * Gets the category.
-	 *
-	 * @return the category
-	 */
-	public String getCategory() {
-		return category;
-	}
+        public ServiceBuilder setCategory(String category) {
+            this.category = category;
+            return this;
+        }
 
-	/**
-	 * Gets the lifecycle state.
-	 *
-	 * @return the lifecycle state
-	 */
-	public Service.LifecycleState getLifecycleState() {
-		return lifecycleState;
-	}
+        public ServiceBuilder setLifecycleState(Service.LifecycleState lifecycleState) {
+            this.lifecycleState = lifecycleState;
+            return this;
+        }
 
-	/**
-	 * Gets the last updater user uid.
-	 *
-	 * @return the last updater user uid
-	 */
-	public String getLastUpdaterUserId() {
-		return lastUpdaterUserId;
-	}
+        public ServiceBuilder setDistributionStatus(String distributionStatus) {
+            this.distributionStatus = distributionStatus;
+            return this;
+        }
 
-	/**
-	 * Gets the last updater full name.
-	 *
-	 * @return the last updater full name
-	 */
-	public String getLastUpdaterFullName() {
-		return lastUpdaterFullName;
-	}
+        public ServiceBuilder setArtifacts(Collection<Artifact> artifacts) {
+            this.artifacts = artifacts;
+            return this;
+        }
 
-	/**
-	 * Gets the distribution status.
-	 *
-	 * @return the distribution status
-	 */
-	public String getDistributionStatus() {
-		return distributionStatus;
-	}
+        public ServiceBuilder setResources(Collection<SubResource> resources) {
+            this.resources = resources;
+            return this;
+        }
 
-	/**
-	 * Gets the artifacts.
-	 *
-	 * @return the artifacts
-	 */
-	public Collection<Artifact> getArtifacts() {
-		return artifacts;
-	}
+        public Service build() {
+            return new Service(this);
+        }
+    }
+    
 
-	/**
-	 * Gets the resources.
-	 *
-	 * @return the resources
-	 */
-	public Collection<SubResource> getResources() {
-		return resources;
-	}
+    /**
+     * Gets the uuid.
+     *
+     * @return the uuid
+     */
+    public String getUuid() {
+        return uuid;
+    }
 
-	/**
-	 * Sets the uuid.
-	 *
-	 * @param uuid the new uuid
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    /**
+     * Gets the invariant UUID.
+     *
+     * @return the invariant UUID
+     */
+    public String getInvariantUUID() {
+        return invariantUUID;
+    }
 
-	/**
-	 * Sets the invariant UUID.
-	 *
-	 * @param invariantUUID the new invariant UUID
-	 */
-	public void setInvariantUUID(String invariantUUID) {
-		this.invariantUUID = invariantUUID;
-	}
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * Gets the version.
+     *
+     * @return the version
+     */
+    public String getVersion() {
+        return version;
+    }
 
-	/**
-	 * Sets the version.
-	 *
-	 * @param version the new version
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    /**
+     * Gets the tosca model URL.
+     *
+     * @return the tosca model URL
+     */
+    public String getToscaModelURL() {
+        return toscaModelURL;
+    }
 
-	/**
-	 * Sets the tosca model URL.
-	 *
-	 * @param toscaModelURL the new tosca model URL
-	 */
-	public void setToscaModelURL(String toscaModelURL) {
-		this.toscaModelURL = toscaModelURL;
-	}
+    /**
+     * Gets the category.
+     *
+     * @return the category
+     */
+    public String getCategory() {
+        return category;
+    }
 
-	/**
-	 * Sets the category.
-	 *
-	 * @param category the new category
-	 */
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    /**
+     * Gets the lifecycle state.
+     *
+     * @return the lifecycle state
+     */
+    public Service.LifecycleState getLifecycleState() {
+        return lifecycleState;
+    }
 
-	/**
-	 * Sets the lifecycle state.
-	 *
-	 * @param lifecycleState the new lifecycle state
-	 */
-	public void setLifecycleState(Service.LifecycleState lifecycleState) {
-		this.lifecycleState = lifecycleState;
-	}
+    /**
+     * Gets the last updater user uid.
+     *
+     * @return the last updater user uid
+     */
+    public String getLastUpdaterUserId() {
+        return lastUpdaterUserId;
+    }
 
-	/**
-	 * Sets the last updater user uid.
-	 *
-	 * @param lastUpdaterUserId the new last updater user uid
-	 */
-	public void set(String lastUpdaterUserId) {
-		this.lastUpdaterUserId = lastUpdaterUserId;
-	}
+    /**
+     * Gets the last updater full name.
+     *
+     * @return the last updater full name
+     */
+    public String getLastUpdaterFullName() {
+        return lastUpdaterFullName;
+    }
 
-	/**
-	 * Sets the last updater full name.
-	 *
-	 * @param lastUpdaterFullName the new last updater full name
-	 */
-	public void setLastUpdaterFullName(String lastUpdaterFullName) {
-		this.lastUpdaterFullName = lastUpdaterFullName;
-	}
+    /**
+     * Gets the distribution status.
+     *
+     * @return the distribution status
+     */
+    public String getDistributionStatus() {
+        return distributionStatus;
+    }
 
-	/**
-	 * Sets the distribution status.
-	 *
-	 * @param distributionStatus the new distribution status
-	 */
-	public void setDistributionStatus(String distributionStatus) {
-		this.distributionStatus = distributionStatus;
-	}
+    /**
+     * Gets the artifacts.
+     *
+     * @return the artifacts
+     */
+    public Collection<Artifact> getArtifacts() {
+        return artifacts;
+    }
 
-	/**
-	 * Sets the artifacts.
-	 *
-	 * @param artifacts the new artifacts
-	 */
-	public void setArtifacts(Collection<Artifact> artifacts) {
-		this.artifacts = artifacts;
-	}
+    /**
+     * Gets the resources.
+     *
+     * @return the resources
+     */
+    public Collection<SubResource> getResources() {
+        return resources;
+    }
 
-	/**
-	 * Sets the resources.
-	 *
-	 * @param resources the new resources
-	 */
-	public void setResources(Collection<SubResource> resources) {
-		this.resources = resources;
-	}
+    /**
+     * Sets the uuid.
+     *
+     * @param uuid the new uuid
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return uuid;
-	}
+    /**
+     * Sets the invariant UUID.
+     *
+     * @param invariantUUID the new invariant UUID
+     */
+    public void setInvariantUUID(String invariantUUID) {
+        this.invariantUUID = invariantUUID;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return UUID.fromString(getUuid()).hashCode();
-	}
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object o) {
-		if (o == this) return true;
-		if (!(o instanceof Service)) return false;
+    /**
+     * Sets the version.
+     *
+     * @param version the new version
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-		final Service service = (Service) o;
+    /**
+     * Sets the tosca model URL.
+     *
+     * @param toscaModelURL the new tosca model URL
+     */
+    public void setToscaModelURL(String toscaModelURL) {
+        this.toscaModelURL = toscaModelURL;
+    }
 
-		return (service.getUuid().equals(getUuid()));
-	}
+    /**
+     * Sets the category.
+     *
+     * @param category the new category
+     */
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	public Service(String uuid, String invariantUUID, String category, String version, String name, String distributionStatus, String toscaModelURL, LifecycleState lifecycleState, Collection<Artifact> artifacts, Collection<SubResource> resources) {
-		this.uuid = uuid;
-		this.invariantUUID = invariantUUID;
-		this.name = name;
-		this.version = version;
-		this.toscaModelURL = toscaModelURL;
-		this.category = category;
-		this.lifecycleState = lifecycleState;
-		this.distributionStatus = distributionStatus;
-		this.artifacts = artifacts;
-		this.resources = resources;
-	}
+    /**
+     * Sets the lifecycle state.
+     *
+     * @param lifecycleState the new lifecycle state
+     */
+    public void setLifecycleState(Service.LifecycleState lifecycleState) {
+        this.lifecycleState = lifecycleState;
+    }
 
-	public Service() {
-	}
+    /**
+     * Sets the last updater user uid.
+     *
+     * @param lastUpdaterUserId the new last updater user uid
+     */
+    public void set(String lastUpdaterUserId) {
+        this.lastUpdaterUserId = lastUpdaterUserId;
+    }
+
+    /**
+     * Sets the last updater full name.
+     *
+     * @param lastUpdaterFullName the new last updater full name
+     */
+    public void setLastUpdaterFullName(String lastUpdaterFullName) {
+        this.lastUpdaterFullName = lastUpdaterFullName;
+    }
+
+    /**
+     * Sets the distribution status.
+     *
+     * @param distributionStatus the new distribution status
+     */
+    public void setDistributionStatus(String distributionStatus) {
+        this.distributionStatus = distributionStatus;
+    }
+
+    /**
+     * Sets the artifacts.
+     *
+     * @param artifacts the new artifacts
+     */
+    public void setArtifacts(Collection<Artifact> artifacts) {
+        this.artifacts = artifacts;
+    }
+
+    /**
+     * Sets the resources.
+     *
+     * @param resources the new resources
+     */
+    public void setResources(Collection<SubResource> resources) {
+        this.resources = resources;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return uuid;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return UUID.fromString(getUuid()).hashCode();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Service))
+            return false;
+
+        final Service service = (Service) o;
+
+        return (service.getUuid().equals(getUuid()));
+    }
+
+    public Service() {}
+
+    public Service(ServiceBuilder serviceBuilder) {
+
+        this.uuid = serviceBuilder.uuid;
+        this.invariantUUID = serviceBuilder.invariantUUID;
+        this.name = serviceBuilder.name;
+        this.version = serviceBuilder.version;
+        this.toscaModelURL = serviceBuilder.toscaModelURL;
+        this.category = serviceBuilder.category;
+        this.lifecycleState = serviceBuilder.lifecycleState;
+        this.distributionStatus = serviceBuilder.distributionStatus;
+        this.artifacts = serviceBuilder.artifacts;
+        this.resources = serviceBuilder.resources;
+    }
 }
