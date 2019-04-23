@@ -35,6 +35,7 @@ import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.asdc.beans.ServiceBuilder;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceInstanceSearchResult;
 import org.onap.vid.model.SubscriberList;
@@ -96,13 +97,18 @@ public class AaiServiceImpl implements AaiService {
             }
 
             for (ModelVer modelVer: model.getModelVers().getModelVer()) {
-                Service service = new Service(
-                        modelVer.getModelVersionId(),
-                        model.getModelInvariantId(),
-                        category, modelVer.getModelVersion(), modelVer.getModelName(),
-                        modelVer.getDistributionStatus(),
-                        null, null, null, null
-                );
+                Service service = new ServiceBuilder().setUuid(modelVer.getModelVersionId())
+                        .setInvariantUUID(model.getModelInvariantId())
+                        .setCategory(category)
+                        .setVersion(modelVer.getModelVersion())
+                        .setName( modelVer.getModelName())
+                        .setDistributionStatus(modelVer.getDistributionStatus())
+                        .setToscaModelURL(null)
+                        .setLifecycleState(null)
+                        .setArtifacts(null)
+                        .setResources(null).build();
+
+
 
                 services.add(service);
             }

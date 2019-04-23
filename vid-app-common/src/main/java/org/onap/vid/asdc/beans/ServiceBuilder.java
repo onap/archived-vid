@@ -23,16 +23,16 @@ package org.onap.vid.asdc.beans;
 import java.util.Collection;
 
 public class ServiceBuilder {
-    private String uuid;
-    private String invariantUUID;
-    private String name;
-    private String version;
-    private String toscaModelURL;
-    private String category;
-    private Service.LifecycleState lifecycleState;
-    private String distributionStatus;
-    private Collection<Artifact> artifacts;
-    private Collection<SubResource> resources;
+    String uuid;
+    String invariantUUID;
+    String name;
+    String version;
+    String toscaModelURL;
+    String category;
+    Service.LifecycleState lifecycleState;
+    String distributionStatus;
+    Collection<Artifact> artifacts;
+    Collection<SubResource> resources;
 
     public ServiceBuilder setUuid(String uuid) {
         this.uuid = uuid;
@@ -85,7 +85,7 @@ public class ServiceBuilder {
     }
 
     public Service build() {
-        return new Service(uuid, invariantUUID, category, version, name, distributionStatus, toscaModelURL, lifecycleState, artifacts, resources);
+        return new Service(this);
     }
 }
 

@@ -36,6 +36,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.asdc.beans.ServiceBuilder;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.testUtils.StubServerUtil;
 
@@ -124,15 +125,23 @@ public class SdcRestClientITTest {
 
         assertTrue(first.isPresent());
 
-        assertThat(first.get().getHeaders().keySet(), hasItems(X_ECOMP_INSTANCE_ID.toLowerCase(), REQUEST_ID_HEADER_KEY.toLowerCase()));
-        assertThat(first.get().getHeaders().get(REQUEST_ID_HEADER_KEY.toLowerCase()).get(0), matchesPattern(UUID_REGEX));
+        assertThat(first.get().getHeaders().keySet(),
+                hasItems(X_ECOMP_INSTANCE_ID.toLowerCase(), REQUEST_ID_HEADER_KEY.toLowerCase()));
+        assertThat(first.get().getHeaders().get(REQUEST_ID_HEADER_KEY.toLowerCase()).get(0),
+                matchesPattern(UUID_REGEX));
     }
 
     private Service getExpectedService(String stringId) {
-        return new Service(stringId, stringId,
-                "sampleCategory", "sampleVersion",
-                "sampleName", "sampleDistStatus",
-                "sampleToscaUrl", Service.LifecycleState.CERTIFIED, Collections.emptyList(), Collections.emptyList());
+        return new ServiceBuilder().setUuid(stringId)
+                .setInvariantUUID(stringId)
+                .setCategory("sampleCategory")
+                .setVersion("sampleVersion")
+                .setName( "sampleName")
+                .setDistributionStatus("sampleDistStatus")
+                .setToscaModelURL("sampleToscaUrl")
+                .setLifecycleState(Service.LifecycleState.CERTIFIED)
+                .setArtifacts(Collections.emptyList())
+                .setResources(Collections.emptyList()).build();
     }
 
 
