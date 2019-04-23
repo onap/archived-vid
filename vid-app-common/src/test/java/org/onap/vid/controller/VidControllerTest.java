@@ -35,7 +35,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.SecureServices;
 import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.asdc.beans.ServiceBuilder;
 import org.onap.vid.model.*;
 import org.onap.vid.model.PombaInstance.PombaRequest;
 import org.onap.vid.model.PombaInstance.ServiceInstance;
@@ -171,7 +170,7 @@ public class VidControllerTest {
     }
 
     private Service createService(String uuid, int i) {
-        return new ServiceBuilder().setUuid(uuid).setInvariantUUID("invariantUUID" + i)
+        return new Service.ServiceBuilder().setUuid(uuid).setInvariantUUID("invariantUUID" + i)
             .setCategory("category" + i).setVersion("version" + i).setName("name" + i)
             .setDistributionStatus("distStatus" + i).setToscaModelURL("toscaModelUrl" + i).build();
     }
