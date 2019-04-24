@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e9f433e0_0b8241ad",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/ChangeManagementServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-04-24T07:04:00Z",
+      "side": 1,
+      "message": "this is not a good idea to throw npe  and catch it in next few lines. I suggest to refactor this whole method",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 5
+      },
+      "revId": "ef23bd2ff70c14be5c34866426566db6048b37ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
