@@ -79,7 +79,7 @@ public class CloudOwnerServiceImpl implements CloudOwnerService {
             lcpCloudRegionId = msoRequest.extractValueByPathUsingAdditionalProperties(LCP_CLOUD_REGION_ID_PATH, String.class);
         }
         catch (NotFoundException exception) {
-            LOGGER.debug("Can't find lcp region in RequestDetails. Assume no cloudOwner enrichment is needed. Reason: "+exception.getMessage());
+            LOGGER.debug("Can't find lcp region in RequestDetails. Assume no cloudOwner enrichment is needed. Reason: ", exception);
             return;
         }
         String cloudOwner = aaiClient.getCloudOwnerByCloudRegionId(lcpCloudRegionId);

@@ -61,7 +61,7 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
 
         }
         catch (Exception e) {
-            Log.error("There was an error in updating roles "+e.getMessage());
+            Log.error("There was an error in updating roles ", e);
         }
         return query;
     }

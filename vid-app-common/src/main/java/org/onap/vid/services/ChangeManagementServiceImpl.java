@@ -149,8 +149,6 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
             }
 
         }
-
-        // AH:TODO: return ChangeManagementResponse
         return null;
     }
 
@@ -162,15 +160,15 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
         return currentRequestDetails.getVnfInstanceId();
     }
 
-    protected String extractServiceInstanceId(RequestDetails currentRequestDetails, String requestType) {
-        try {
-            String serviceInstanceId = currentRequestDetails.getRelatedInstList().get(0).getRelatedInstance().getInstanceId();
-            serviceInstanceId.toString(); //throw exception in case that serviceInstanceId is null...
-            return serviceInstanceId;
-        } catch (Exception e) {
+    protected String extractServiceInstanceId(RequestDetails currentRequestDetails,
+            String requestType) {
+        String serviceInstanceId = currentRequestDetails.getRelatedInstList().get(0)
+                .getRelatedInstance().getInstanceId();
+        if (serviceInstanceId == null) {
             logger.error("Failed to extract serviceInstanceId");
             throw new BadRequestException("No instanceId in request " + requestType);
         }
+        return serviceInstanceId;
     }
 
     @Override
@@ -227,6 +225,7 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
                 dataAccessService.saveDomainObject(vnfList.get(0), null);
             } catch (NonUniqueObjectException e) {
                 //In case the relation already exists, we continue running on the list
+                logger.debug("NonUniqueObjectException in addVnfWorkflowRelation", e);
             }
         }
         return vnfWorkflowRelationResponse;
@@ -340,8 +339,11 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
     }
 
     private boolean validateJsonOutput(org.json.JSONObject json) {
-        if (!json.has(PRIMARY_KEY) || !json.getJSONObject(PRIMARY_KEY).keySet().containsAll(REQUIRED_KEYS))
-            return false;
-        return true;
+        boolean isValid = true;
+        if (!json.has(PRIMARY_KEY)
+                || !json.getJSONObject(PRIMARY_KEY).keySet().containsAll(REQUIRED_KEYS)) {
+            isValid = false;
+        }
+        return isValid;
     }
 }
