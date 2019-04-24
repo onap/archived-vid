@@ -122,30 +122,36 @@ public class AAITreeNodeBuilder {
 
         if (topLevelJson.has(nodeType) && topLevelJson.get(nodeType).isArray()) {
             return Streams.fromIterable(topLevelJson.get(nodeType))
-                    .map(item -> parseNodeAndGetChildren(nodeType, requestURL, item,
-                            nodesAccumulator, threadPool, visitedNodes, nodesCounter, pathsTree))
+                    .map(item -> parseNodeAndGetChildren(new ParseNodeAndGetChildrenDataObject().setNodeType(nodeType)
+                            .setRequestURL(requestURL)
+                            .setTopLevelJson(item)
+                            .setNodesAccumulator(nodesAccumulator)
+                            .setThreadPool(threadPool)
+                            .setVisitedNodes(visitedNodes)
+                            .setNodesCounter(nodesCounter)
+                            .setPathsTree(pathsTree)))
                     .collect(toList());
         } else {
-            return ImmutableList.of(parseNodeAndGetChildren(nodeType, requestURL, topLevelJson,
-                    nodesAccumulator, threadPool, visitedNodes, nodesCounter, pathsTree));
+            return ImmutableList.of(parseNodeAndGetChildren(new ParseNodeAndGetChildrenDataObject().setNodeType(nodeType)
+                    .setRequestURL(requestURL)
+                    .setTopLevelJson(topLevelJson)
+                    .setNodesAccumulator(nodesAccumulator)
+                    .setThreadPool(threadPool)
+                    .setVisitedNodes(visitedNodes)
+                    .setNodesCounter(nodesCounter)
+                    .setPathsTree(pathsTree)));
         }
     }
 
-    private AAITreeNode parseNodeAndGetChildren(String nodeType,
-                                                String requestURL,
-                                                JsonNode topLevelJson,
-                                                ConcurrentSkipListSet<AAITreeNode> nodesAccumulator, ExecutorService threadPool,
-                                                ConcurrentLinkedQueue<String> visitedNodes,
-                                                AtomicInteger nodesCounter,
-                                                Tree<AAIServiceTree.AaiRelationship> pathsTree) {
-        AAITreeNode node = jsonToAaiNode(nodeType, topLevelJson, nodesAccumulator, nodesCounter);
+    private AAITreeNode parseNodeAndGetChildren(ParseNodeAndGetChildrenDataObject data) {
+        AAITreeNode node = jsonToAaiNode(data.getNodeType(), data.getTopLevelJson(), data.getNodesAccumulator(), data.getNodesCounter());
 
-        RelationshipList relationships = mapper.convertValue(topLevelJson.get(AAIBaseProperties.RELATIONSHIP_LIST.getAaiKey()), RelationshipList.class);
+        RelationshipList relationships = mapper.convertValue(data.getTopLevelJson().get(AAIBaseProperties.RELATIONSHIP_LIST.getAaiKey()), RelationshipList.class);
         if (relationships != null) {
-            getChildren(threadPool, nodesAccumulator, relationships.getRelationship(), visitedNodes, node, nodesCounter, pathsTree);
+            getChildren(data.getThreadPool(), data.getNodesAccumulator(), relationships.getRelationship(), data.getVisitedNodes(), node, data.getNodesCounter(), data.getPathsTree());
         }
         if (StringUtils.equals(node.getType(), GENERIC_VNF)) {
-            getRelatedVfModules(threadPool, nodesAccumulator, requestURL, node, nodesCounter);
+            getRelatedVfModules(data.getThreadPool(), data.getNodesAccumulator(), data.getRequestURL(), node, data.getNodesCounter());
         }
         return node;
     }
