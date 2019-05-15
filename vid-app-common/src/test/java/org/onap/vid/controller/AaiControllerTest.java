@@ -32,11 +32,13 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
@@ -47,6 +49,7 @@ import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -111,4 +114,27 @@ public class AaiControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedJson.asMap())));
     }
+
+    @Test
+    public void getNodeTemplateInstances_givenParams_shouldReturnCorrectResponse() throws Exception {
+        String globalCustomerId = "testCustomerId";
+        String serviceType = "testServiceType";
+        String modelVersionId = UUID.nameUUIDFromBytes("modelVersionId".getBytes()).toString();
+        String modelInvariantId = UUID.nameUUIDFromBytes("modelInvariantId".getBytes()).toString();
+        String cloudRegion = "testRegion";
+        String urlTemplate = "/aai_get_vnf_instances/{globalCustomerId}/{serviceType}/{modelVersionId}/{modelInvariantId}/{cloudRegion}";
+        String expectedResponseBody = "myResponse";
+        AaiResponse<String> aaiResponse = new AaiResponse<>(expectedResponseBody, "", HttpStatus.OK.value());
+        given(aaiService
+            .getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion))
+            .willReturn(aaiResponse);
+
+        mockMvc
+            .perform(get(urlTemplate, globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
+    }
 }
+
