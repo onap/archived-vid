@@ -69,9 +69,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * Controller to handle a&ai requests.
- */
 
 @RestController
 public class AaiController extends RestrictedBaseController {
@@ -96,12 +93,6 @@ public class AaiController extends RestrictedBaseController {
         this.systemPropertiesWrapper = systemPropertiesWrapper;
     }
 
-    /**
-     * Welcome method.
-     *
-     * @param request the request
-     * @return ModelAndView The view
-     */
     @RequestMapping(value = {"/subscriberSearch"}, method = RequestMethod.GET)
     public ModelAndView welcome(HttpServletRequest request) {
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== AaiController welcome start");
@@ -127,12 +118,7 @@ public class AaiController extends RestrictedBaseController {
         AaiResponse response = aaiService.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
         return aaiResponseToResponseEntity(response);
     }
-    /**
-     * Get services from a&ai.
-     *
-     * @return ResponseEntity<String> The response entity with the logged in user uuid.
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
+
     @RequestMapping(value = {"/getuserID"}, method = RequestMethod.GET)
     public ResponseEntity<String> getUserID(HttpServletRequest request) {
 
@@ -141,12 +127,6 @@ public class AaiController extends RestrictedBaseController {
         return new ResponseEntity<>(userId, HttpStatus.OK);
     }
 
-    /**
-     * Get services from a&ai.
-     *
-     * @return ResponseEntity<String> The response entity
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/aai_get_services", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetServices(HttpServletRequest request) throws IOException {
         RoleValidator roleValidator = RoleValidator.by(roleProvider.getUserRoles(request));
@@ -176,13 +156,6 @@ public class AaiController extends RestrictedBaseController {
         return responseEntity;
     }
 
-    /**
-     * Lookup single service instance in a&ai.  Get the service-subscription and customer, too, i guess?
-     *
-     * @param serviceInstanceId the service instance Id
-     * @return ResponseEntity The response entity
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/aai_get_service_instance/{service-instance-id}/{service-instance-type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetServiceInstance(@PathVariable("service-instance-id") String serviceInstanceId, @PathVariable("service-instance-type") String serviceInstanceType) {
         Response resp = null;
@@ -199,14 +172,6 @@ public class AaiController extends RestrictedBaseController {
         return convertResponseToResponseEntity(resp);
     }
 
-      /**
-     * Get services from a&ai.
-     *
-     * @param globalCustomerId      the global customer id
-     * @param serviceSubscriptionId the service subscription id
-     * @return ResponseEntity The response entity
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetServices(@PathVariable("global-customer-id") String globalCustomerId,
                                                 @PathVariable("service-subscription-id") String serviceSubscriptionId) {
@@ -215,37 +180,17 @@ public class AaiController extends RestrictedBaseController {
         return convertResponseToResponseEntity(resp);
     }
 
-    /**
-     * Obtain the subscriber list from a&ai.
-     *
-     * @param fullSet the full set
-     * @return ResponseEntity The response entity
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/aai_get_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetSubscriberList(HttpServletRequest request, @DefaultValue("n") @QueryParam("fullSet") String fullSet) throws IOException {
         return getFullSubscriberList(request);
     }
 
-    /**
-     * Obtain the Target Prov Status from the System.Properties file.
-     *
-     * @return ResponseEntity The response entity
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/get_system_prop_vnf_prov_status", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getTargetProvStatus() {
         String p = SystemProperties.getProperty("aai.vnf.provstatus");
         return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
-
-    /**
-     * Obtain the Target Prov Status from the System.Properties file.
-     *
-     * @return ResponseEntity The response entity
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/get_operational_environments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public AaiResponse<OperationalEnvironmentList> getOperationalEnvironments(@RequestParam(value="operationalEnvironmentType", required = false) String operationalEnvironmentType,
                                                            @RequestParam(value="operationalEnvironmentStatus", required = false) String operationalEnvironmentStatus) {
@@ -262,13 +207,6 @@ public class AaiController extends RestrictedBaseController {
         return response;
     }
 
-    /**
-     * Obtain the full subscriber list from a&ai.
-     * <p>
-     * g @return ResponseEntity The response entity
-     *
-     * @throws IOException          Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/aai_get_full_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getFullSubscriberList(HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -297,24 +235,11 @@ public class AaiController extends RestrictedBaseController {
         return aaiResponseToResponseEntity(resp);
     }
 
-
-    /**
-     * Refresh the subscriber list from a&ai.
-     *
-     * @return ResponseEntity The response entity
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/aai_refresh_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doRefreshSubscriberList() {
         return refreshSubscriberList();
     }
 
-    /**
-     * Refresh the full subscriber list from a&ai.
-     *
-     * @return ResponseEntity The response entity
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
     @RequestMapping(value = "/aai_refresh_full_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doRefreshFullSubscriberList() {
         return refreshSubscriberList();
@@ -325,12 +250,6 @@ public class AaiController extends RestrictedBaseController {
         return convertResponseToResponseEntity(resp);
     }
 
-    /**
-     * Get subscriber details from a&ai.
-     *
-     * @param subscriberId the subscriber id
-     * @return ResponseEntity The response entity
-     */
     @RequestMapping(value = "/aai_sub_details/{subscriberId}", method = RequestMethod.GET)
     public ResponseEntity<String> GetSubscriberDetails(HttpServletRequest request, @PathVariable("subscriberId") String subscriberId) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -346,15 +265,6 @@ public class AaiController extends RestrictedBaseController {
         return responseEntity;
     }
 
-    /**
-     * Get service instances that match the query from a&ai.
-     *
-     * @param subscriberId the subscriber id
-     * @param instanceIdentifier the service instance name or id.
-     * @param projects the projects that are related to the instance
-     * @param owningEntities the owningEntities that are related to the instance
-     * @return ResponseEntity The response entity
-     */
     @RequestMapping(value = "/search_service_instances", method = RequestMethod.GET)
     public ResponseEntity<String> SearchServiceInstances(HttpServletRequest request,
                                                          @RequestParam(value="subscriberId", required = false) String subscriberId,
@@ -384,17 +294,6 @@ public class AaiController extends RestrictedBaseController {
         return responseEntity;
     }
 
-
-
-    /**
-     * Issue a named query to a&ai.
-     *
-     * @param namedQueryId     the named query id
-     * @param globalCustomerId the global customer id
-     * @param serviceType      the service type
-     * @param serviceInstance  the service instance
-     * @return ResponseEntity The response entity
-     */
     @RequestMapping(value = "/aai_sub_viewedit/{namedQueryId}/{globalCustomerId}/{serviceType}/{serviceInstance}", method = RequestMethod.GET)
     public ResponseEntity<String> viewEditGetComponentList(
             @PathVariable("namedQueryId") String namedQueryId,
@@ -408,14 +307,6 @@ public class AaiController extends RestrictedBaseController {
         return convertResponseToResponseEntity(resp);
     }
 
-    /**
-     * Issue a named query to a&ai.
-     *
-     * @param namedQueryId     the named query id
-     * @param globalCustomerId the global customer id
-     * @param serviceType      the service type
-     * @return ResponseEntity The response entity
-     */
     @RequestMapping(value = "/aai_get_models_by_service_type/{namedQueryId}/{globalCustomerId}/{serviceType}", method = RequestMethod.GET)
     public ResponseEntity<String> viewEditGetComponentList(
             @PathVariable("namedQueryId") String namedQueryId,
@@ -476,8 +367,6 @@ public class AaiController extends RestrictedBaseController {
         return convertResponseToResponseEntity(resp);
     }
 
-
-
     @RequestMapping(value = "/aai_get_configuration/{configuration_id}", method = RequestMethod.GET)
     public ResponseEntity<String> getSpecificConfiguration(@PathVariable("configuration_id") String configurationId) {
 
@@ -495,9 +384,6 @@ public class AaiController extends RestrictedBaseController {
         return aaiService.getServiceInstanceAssociatedPnfs(globalCustomerId, serviceType, serviceInstanceId);
     }
 
-    /**
-     * PNF section
-     */
     @RequestMapping(value = "/aai_get_pnfs/pnf/{pnf_id}", method = RequestMethod.GET)
     public ResponseEntity getSpecificPnf(@PathVariable("pnf_id") String pnfId) {
         AaiResponse<Pnf> resp;
@@ -511,14 +397,6 @@ public class AaiController extends RestrictedBaseController {
         return re;
     }
 
-
-    /**
-     * Obtain tenants for a given service type.
-     *
-     * @param globalCustomerId the global customer id
-     * @param serviceType      the service type
-     * @return ResponseEntity The response entity
-     */
     @RequestMapping(value = "/aai_get_tenants/{global-customer-id}/{service-type}", method = RequestMethod.GET)
     public ResponseEntity<String> viewEditGetTenantsFromServiceType(HttpServletRequest request,
                                                                     @PathVariable("global-customer-id") String globalCustomerId, @PathVariable("service-type") String serviceType) {
@@ -582,11 +460,6 @@ public class AaiController extends RestrictedBaseController {
         return respEnt;
     }
 
-    /**
-     * Gets the subscribers.
-     *
-     * @return the subscribers
-     */
     private Response getSubscribers() {
 
         String depth = "0";
@@ -598,13 +471,6 @@ public class AaiController extends RestrictedBaseController {
         return resp;
     }
 
-    /**
-     * Send a GET request to a&ai.
-     *
-     * @param uri       the uri
-     * @param xml       the xml
-     * @return String The response
-     */
     protected Response doAaiGet(String uri, boolean xml) {
         String methodName = "getSubscriberList";
         String transId = UUID.randomUUID().toString();
@@ -628,14 +494,6 @@ public class AaiController extends RestrictedBaseController {
         return resp;
     }
 
-    /**
-     * Send a POST request to a&ai.
-     *
-     * @param uri       the uri
-     * @param payload   the payload
-     * @param xml       the xml
-     * @return String The response
-     */
     protected Response doAaiPost(String uri, String payload, boolean xml) {
         String methodName = "getSubscriberList";
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + " start");
@@ -653,15 +511,6 @@ public class AaiController extends RestrictedBaseController {
         return resp;
     }
 
-    /**
-     * Gets the component list put payload.
-     *
-     * @param namedQueryId     the named query id
-     * @param globalCustomerId the global customer id
-     * @param serviceType      the service type
-     * @param serviceInstance  the service instance
-     * @return the component list put payload
-     */
     private String getComponentListPutPayload(String namedQueryId, String globalCustomerId, String serviceType, String serviceInstance) {
         return
                 "		{" +
