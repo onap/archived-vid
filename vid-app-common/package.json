@@ -12,7 +12,6 @@
     "ng-file-upload": "^12.2.13"
   },
   "scripts": {
-    "prebuild": "npm install",
     "build": "gulp"
   },
   "devDependencies": {
