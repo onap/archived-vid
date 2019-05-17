@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6c147e49_9251c2e4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-05-17T12:41:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85508b74_677e9d31",
+      "revId": "0688f663ebdde1caf7ba7bbec278a9cdd700df6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b8213bf6_0c4ea040",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-05-17T10:55:09Z",
       "side": 1,
       "message": "Remove this duplicate verification - check my comment below",
+      "revId": "0688f663ebdde1caf7ba7bbec278a9cdd700df6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46f49be7_c652a977",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-05-17T12:41:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8213bf6_0c4ea040",
       "revId": "0688f663ebdde1caf7ba7bbec278a9cdd700df6c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "dac21ab1_4df67506",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-05-17T12:41:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "209f714f_7761af5c",
+      "revId": "0688f663ebdde1caf7ba7bbec278a9cdd700df6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "983cbe8b_4ba8424b",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "d9d13b6b_30e50d37",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-05-17T12:41:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "983cbe8b_4ba8424b",
+      "revId": "0688f663ebdde1caf7ba7bbec278a9cdd700df6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "954bf62b_3a8e8375",
         "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2019-05-17T10:55:09Z",
       "side": 1,
       "message": "Do not verify invocations of methods for which you previously record expected behavior. The Given section is a verification in itself - if the given manualTasks object is not return - the test will fail.",
+      "revId": "0688f663ebdde1caf7ba7bbec278a9cdd700df6c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3d44efee_e63fb422",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/MsoControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-05-17T12:41:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "954bf62b_3a8e8375",
       "revId": "0688f663ebdde1caf7ba7bbec278a9cdd700df6c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
