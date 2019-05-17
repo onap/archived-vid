@@ -20,107 +20,115 @@
 
 package org.onap.vid.controller;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.factories.MsoRequestFactory;
-import org.onap.vid.mso.model.RequestInfo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.jeasy.random.EasyRandom;
+import org.jeasy.random.EasyRandomParameters;
+import org.jeasy.random.randomizers.misc.BooleanRandomizer;
+import org.jeasy.random.randomizers.text.StringRandomizer;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.onap.vid.mso.MsoBusinessLogic;
+import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.Task;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.onap.vid.services.CloudOwnerService;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.List;
+public class MsoControllerTest {
 
+    private static final long STATIC_SEED = 5336L;
+    private EasyRandomParameters parameters = new EasyRandomParameters()
+        .randomize(Boolean.class, new BooleanRandomizer(STATIC_SEED))
+        .randomize(String.class, new StringRandomizer(4, 4, STATIC_SEED))
+        .collectionSizeRange(2, 3);
+    private EasyRandom modelGenerator = new EasyRandom(parameters);
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-@WebAppConfiguration
-@ContextConfiguration(classes = {SystemProperties.class, MsoConfig.class})
-public class MsoControllerTest extends AbstractTestNGSpringContextTests {
+    private MockMvc mockMvc;
+    private MsoBusinessLogic msoBusinessLogic;
+    private CloudOwnerService cloudService;
 
-    @Autowired
-    MsoRequestFactory msoRequestFactory;
+    @Before
+    public void setUp() {
+        msoBusinessLogic = mock(MsoBusinessLogic.class);
+        cloudService = mock(CloudOwnerService.class);
+        MsoController msoController = new MsoController(msoBusinessLogic, cloudService);
 
-    @Test(enabled = false)
-    public void testInstanceCreationNew() throws Exception {
-
-        RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
-        MsoController msoController = new MsoController(null, null);
-        //TODO: make ths test to really test something
-        //ResponseEntity<String> responseEntityNew = msoController.createSvcInstanceNew(null, requestDetails);
-        ResponseEntity<String> responseEntity = msoController.createSvcInstance(null, requestDetails);
-        //Assert.assertEquals(responseEntityNew, responseEntity);
-
+        mockMvc = MockMvcBuilders.standaloneSetup(msoController).build();
     }
 
-    @Test(enabled = false)
-    public void testInstanceCreationLocalWithRest() throws Exception {
+    @Test
+    public void shouldDelegateNewInstanceCreation() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String payload = objectMapper.writeValueAsString(requestDetails);
 
-        RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
-        MsoController msoController = new MsoController(null, null);
-        ResponseEntity<String> responseEntityNew = msoController.createSvcInstance(null, requestDetails);
-        //TODO: make ths test to really test something
-//        ResponseEntity<String> responseEntityRest = msoController.createSvcInstanceNewRest(null, requestDetails);
-//
-//        Assert.assertEquals(responseEntityNew.getBody(), responseEntityRest.getBody());
+        given(msoBusinessLogic.createSvcInstance(any())).willReturn(new MsoResponseWrapper(200, "test"));
 
+        // when & then
+        mockMvc.perform(post("/mso/mso_create_svc_instance")
+            .content(payload)
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json("{ \"status\": 200, \"entity\": test}"));
+
+        ArgumentCaptor<RequestDetails> argCaptor = ArgumentCaptor.forClass(RequestDetails.class);
+        verify(msoBusinessLogic).createSvcInstance(argCaptor.capture());
+        verify(cloudService).enrichRequestWithCloudOwner(argCaptor.capture());
+
+        for (RequestDetails captured : argCaptor.getAllValues()) {
+            assertThat(objectMapper.writeValueAsString(captured)).isEqualTo(payload);
+        }
     }
 
-    @Test(enabled = false)
-    public void testInstanceCreation() throws Exception {
+    @Test
+    public void shouldReturnOrchestrationRequestsForDashboard() throws Exception {
+        // given
+        List<Request> orchestrationRequests = modelGenerator
+            .objects(Request.class, 2)
+            .collect(Collectors.toList());
 
-        RequestDetails requestDetails = msoRequestFactory.createMsoRequest("msoRequest.json");
-        MsoController msoController = new MsoController(null, null);
-        ResponseEntity<String> responseEntity = msoController.createSvcInstance(null, requestDetails);
+        given(msoBusinessLogic.getOrchestrationRequestsForDashboard()).willReturn(orchestrationRequests);
 
+        // when & then
+        mockMvc.perform(get("/mso/mso_get_orch_reqs/dashboard"))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(orchestrationRequests)));
 
-        Assert.assertEquals(responseEntity.getBody(), "{ \"status\": 200, \"entity\": {\n" +
-                "  \"requestReferences\": {\n" +
-                "    \"instanceId\": \"ba00de9b-3c3e-4b0a-a1ad-0c5489e711fb\",\n" +
-                "    \"requestId\": \"311cc766-b673-4a50-b9c5-471f68914586\"\n" +
-                "  }\n" +
-                "}}");
-
+        verify(msoBusinessLogic).getOrchestrationRequestsForDashboard();
     }
 
-    @Test(enabled = false)
-    public void testGetOrchestrationRequestsForDashboard() throws Exception {
-        MsoController msoController = new MsoController(null, null);
-        List<Request> orchestrationRequestsForDashboard = msoController.getOrchestrationRequestsForDashboard();
+    @Test
+    public void shouldReturnManualTasksById() throws Exception {
+        // given
+        List<Task> manualTasks = modelGenerator
+            .objects(Task.class, 2)
+            .collect(Collectors.toList());
 
-        Assert.assertEquals(orchestrationRequestsForDashboard.size(), 2);
+        String originalRequestId = "za1234d1-5a33-55df-13ab-12abad84e335";
+        given(msoBusinessLogic.getManualTasksByRequestId(originalRequestId)).willReturn(manualTasks);
+
+        // when & then
+        mockMvc.perform(get("/mso/mso_get_man_task/" + originalRequestId))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(manualTasks)));
+
+        verify(msoBusinessLogic).getManualTasksByRequestId(originalRequestId);
     }
-
-    @Test(enabled = false)
-    public void testGetManualTasksByRequestId() throws Exception {
-        MsoController msoController = new MsoController(null, null);
-        List<Task> orchestrationRequestsForDashboard = msoController.getManualTasksByRequestId("za1234d1-5a33-55df-13ab-12abad84e335");
-
-        Assert. assertEquals(orchestrationRequestsForDashboard.get(0).getTaskId(), "daf4dd84-b77a-42da-a051-3239b7a9392c");
-    }
-
-
-    public void testCompleteManualTask() throws Exception { // TODO not done yet
-        RequestInfo requestInfo = new RequestInfo();
-        requestInfo.setResponseValue("rollback");
-        requestInfo.setRequestorId("abc");
-        requestInfo.setSource("VID");
-        RequestDetails requestDetails = new RequestDetails();
-        requestDetails.setRequestInfo(requestInfo);
-        MsoController msoController = new MsoController(null, null);
-        ResponseEntity<String> responseEntity = msoController.manualTaskComplete("daf4dd84-b77a-42da-a051-3239b7a9392c", requestDetails);
-        String assertString = "{ \\\"status\\\": 200, \\\"entity\\\": {\\n\" +\n" +
-                "                \"  \\\"taskRequestReference\\\": {\\n\" +\n" +
-                "                \"     \\\"taskId\\\": \\\"daf4dd84-b77a-42da-a051-3239b7a9392c\\\"\\n\" +\n" +
-                "                \"      }\\n\" +\n" +
-                "                \"}\\n\" +\n" +
-                "                \"}";
-        Assert.assertEquals(responseEntity.getBody(), StringEscapeUtils.unescapeJava(assertString));
-    }
-
-
 }
