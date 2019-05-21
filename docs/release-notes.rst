@@ -3,6 +3,21 @@
 VID Release Notes
 =================
 
+Version: 4.1.0
+--------------
+
+:Release Date: 2019-05-25
+
+New Features
+------------
+
+-  [`VID-246`_] - *Centralized Representation and Consistent ID of Cloud Regions*
+-  [`VID-397`_] - *Change Management - Flexible Designer & Orchestrator*: Utilize SO as a repository of workflows, instead of VID's workflows' configuration
+
+.. _VID-246: /browse/VID-246
+.. _VID-397: /browse/VID-397
+
+
 Version: 3.2.3
 --------------
 
