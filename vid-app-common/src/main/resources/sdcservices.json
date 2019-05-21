@@ -71,6 +71,20 @@
       "resources": null
     },
     {
+      "uuid": "3f6bd9e9-0942-49d3-84e8-6cdccd6de339",
+      "invariantUUID": "5461e83e-0b2a-465d-ab45-9d731894afd9",
+      "name": "vLoadBalancerMS",
+      "version": "1.0",
+      "toscaModelURL": "./vLoadBalancerMS-with-policy.TOSCA.zip",
+      "category": "Network L4+",
+      "lifecycleState": "CERTIFIED",
+      "lastUpdaterUserId": "demo",
+      "lastUpdaterFullName": null,
+      "distributionStatus": "DISTRIBUTED",
+      "artifacts": null,
+      "resources": null
+    },
+    {
       "uuid": "90fe6842-aa76-4b68-8329-5c86ff564407",
       "invariantUUID": "0311f998-9268-4fd6-bbba-afff15087b72",
       "name": "4-27_vMME_Service",

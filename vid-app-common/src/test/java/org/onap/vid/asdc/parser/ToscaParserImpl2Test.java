@@ -320,6 +320,7 @@ public class ToscaParserImpl2Test {
 //                new ToscaParserMockHelper(Constants.fabricConfigurationUuid, Constants.fabricConfigurationFilePath),
 //                new ToscaParserMockHelper(Constants.vlanTaggingUuid, Constants.vlanTaggingFilePath),
 //                new ToscaParserMockHelper(Constants.vnfGroupingUuid, Constants.vnfGroupingFilePath)
+            new ToscaParserMockHelper("3f6bd9e9-0942-49d3-84e8-6cdccd6de339", "./vLoadBalancerMS-with-policy.TOSCA.json"),
         };
 
         return mockHelpers;
