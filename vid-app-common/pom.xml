@@ -755,7 +755,7 @@
         <dependency>
             <groupId>org.onap.sdc.sdc-tosca</groupId>
             <artifactId>sdc-tosca</artifactId>
-            <version>1.4.7</version>
+            <version>1.5.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
