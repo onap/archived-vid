@@ -413,7 +413,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 			parameter.optionList = new Array();
 			for (var i = 0; i < cloudRegionTenantList.length; i++) {
 				for (var j = 0; j < parameter.optionList.length; j++) {
-					if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionId) {
+					if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudId) {
                         parameter.optionList[j].isPermitted =
                             parameter.optionList[j].isPermitted || cloudRegionTenantList[i].isPermitted;
                         break;
@@ -428,7 +428,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
                     cloudRegionTenantList[i].cloudRegionId;
 
 				parameter.optionList.push({
-					id : cloudRegionTenantList[i].cloudRegionId,
+					id : cloudRegionTenantList[i].cloudId,
 					name: optionName,
           isPermitted : cloudRegionTenantList[i].isPermitted
 
@@ -438,14 +438,14 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 		return parameter;
 	};
 	
-	var getTenantList = function(cloudRegionId) {
+	var getTenantList = function(cloudId) {
 		var parameter = "";
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
 		if ( UtilityService.hasContents (cloudRegionTenantList) ) {
 			var parameter = FIELD.PARAMETER.TENANT_ENABLED;
 			parameter.optionList = new Array();
 			for (var i = 0; i < cloudRegionTenantList.length; i++) {
-				if (cloudRegionTenantList[i].cloudRegionId === cloudRegionId) {
+				if (cloudRegionTenantList[i].cloudId === cloudId) {
 					parameter.optionList.push({
 						id : cloudRegionTenantList[i].tenantId,
 						name : cloudRegionTenantList[i].tenantName,
