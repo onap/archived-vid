@@ -3,7 +3,7 @@
 VID Release Notes
 =================
 
-Version: 4.1.0
+Version: 4.2.0
 --------------
 
 :Release Date: 2019-05-25
