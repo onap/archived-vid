@@ -547,7 +547,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 parameterList);
         }
         var cloudOwner = _.find(DataService.getCloudRegionTenantList(), function(region){
-            return region.cloudId === lcpRegion;
+            return region.cloudRegionId === lcpRegion;
         }).cloudOwner;
 
         var params = [];
@@ -1108,7 +1108,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
             parameter.optionList = new Array();
             for (var i = 0; i < cloudRegionTenantList.length; i++) {
                 for (var j = 0; j < parameter.optionList.length; j++) {
-                    if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudId) {
+                    if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionId) {
                         parameter.optionList[j].isPermitted =
                             parameter.optionList[j].isPermitted || cloudRegionTenantList[i].isPermitted;
                         break;
@@ -1123,7 +1123,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                     cloudRegionTenantList[i].cloudRegionId;
 
                 parameter.optionList.push({
-                    id : cloudRegionTenantList[i].cloudId,
+                    id : cloudRegionTenantList[i].cloudRegionId,
                     name: optionName,
                     isPermitted : cloudRegionTenantList[i].isPermitted
                 });
@@ -1132,14 +1132,14 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         return parameter;
     };
 
-    var getTenantList = function(cloudId) {
+    var getTenantList = function(cloudRegionId) {
         var cloudRegionTenantList = DataService.getCloudRegionTenantList();
         var parameter = "";
         if ( UtilityService.hasContents (cloudRegionTenantList) ) {
             parameter = FIELD.PARAMETER.TENANT_ENABLED;
             parameter.optionList = new Array();
             for (var i = 0; i < cloudRegionTenantList.length; i++) {
-                if (cloudRegionTenantList[i].cloudId === cloudId) {
+                if (cloudRegionTenantList[i].cloudRegionId === cloudRegionId) {
                     parameter.optionList.push({
                         id : cloudRegionTenantList[i].tenantId,
                         name : cloudRegionTenantList[i].tenantName,
