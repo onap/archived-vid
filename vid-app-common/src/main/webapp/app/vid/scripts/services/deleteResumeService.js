@@ -294,6 +294,29 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 		});
 	};
 
+	var buildCloudConfiguration = function(parameterList) {
+		var lcpRegion;
+		var cloudOwner;
+
+		var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
+
+		if (lcpRegionOptionId === FIELD.KEY.LCP_REGION_TEXT) {
+			lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
+				parameterList);
+			cloudOwner = undefined;
+		} else {
+			var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+			lcpRegion = cloudOwnerAndLcpCloudRegion.cloudRegionId;
+			cloudOwner = cloudOwnerAndLcpCloudRegion.cloudOwner;
+		}
+
+		return {
+			lcpCloudRegionId: lcpRegion,
+			cloudOwner: featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST) ? cloudOwner : undefined,
+			tenantId: getValueFromList(FIELD.ID.TENANT, parameterList)
+		};
+	};
+
 	var getMsoE2ERequest = function(parameterList) {
 		return {
 			"globalSubscriberId": DataService.getSubscriberName(),
@@ -338,7 +361,8 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
                 };
             }
         }
-		
+
+		console.log("getMsoRequestDetails COMPONENT." + _this.componentId);
 		switch (_this.componentId) {
 			case COMPONENT.SERVICE:
 				if (!requestDetails.requestParameters) {
@@ -347,55 +371,17 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 				requestDetails.requestParameters.aLaCarte = DataService.getALaCarte();
 				if ( !(DataService.getALaCarte()) ) {
 					// for macro delete include cloud config.
-					var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-					if (lcpRegion === FIELD.KEY.LCP_REGION_TEXT) {
-						lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
-								parameterList);
-					}
-					requestDetails.cloudConfiguration = {
-						lcpCloudRegionId : lcpRegion,
-						tenantId : getValueFromList(FIELD.ID.TENANT, parameterList)
-					};
+					requestDetails.cloudConfiguration = buildCloudConfiguration(parameterList);
 				}
 			    break;
 			case COMPONENT.VNF:
             case COMPONENT.CONFIGURATION:
-			    console.log("getMsoRequestDetails COMPONENT.VNF");
-				var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-				if (lcpRegion === FIELD.KEY.LCP_REGION_TEXT) {
-					lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
-							parameterList);
-				}
-				requestDetails.cloudConfiguration = {
-					lcpCloudRegionId : lcpRegion,
-					tenantId : getValueFromList(FIELD.ID.TENANT, parameterList)
-				};
-	
-				break;
 			case COMPONENT.VF_MODULE:
 			case COMPONENT.NETWORK:
-					var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-					if (lcpRegion === FIELD.KEY.LCP_REGION_TEXT) {
-						lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
-								parameterList);
-					}
-					requestDetails.cloudConfiguration = {
-							lcpCloudRegionId : lcpRegion,
-							tenantId : getValueFromList(FIELD.ID.TENANT, parameterList)
-					};	
-					break;
 			case COMPONENT.VOLUME_GROUP:
-				var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-				if (lcpRegion === FIELD.KEY.LCP_REGION_TEXT) {
-					lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
-							parameterList);
-				}
-				requestDetails.cloudConfiguration = {
-						lcpCloudRegionId : lcpRegion,
-						tenantId : getValueFromList(FIELD.ID.TENANT, parameterList)
-				};	
-				
+				requestDetails.cloudConfiguration = buildCloudConfiguration(parameterList);
 				break;
+
 			default:
 				requestDetails.cloudConfiguration = {
 					lcpCloudRegionId : DataService.getLcpRegion(),
@@ -404,7 +390,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 		}
 		return requestDetails;
     }
-    
+
     var getLcpRegion = function() {
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
 		var parameter = "";
@@ -413,7 +399,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 			parameter.optionList = new Array();
 			for (var i = 0; i < cloudRegionTenantList.length; i++) {
 				for (var j = 0; j < parameter.optionList.length; j++) {
-					if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionId) {
+					if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionOptionId) {
                         parameter.optionList[j].isPermitted =
                             parameter.optionList[j].isPermitted || cloudRegionTenantList[i].isPermitted;
                         break;
@@ -428,24 +414,32 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
                     cloudRegionTenantList[i].cloudRegionId;
 
 				parameter.optionList.push({
-					id : cloudRegionTenantList[i].cloudRegionId,
+					id : cloudRegionTenantList[i].cloudRegionOptionId,
 					name: optionName,
-          isPermitted : cloudRegionTenantList[i].isPermitted
-
-        });
+            		isPermitted : cloudRegionTenantList[i].isPermitted
+        		});
 			}
 		}
 		return parameter;
 	};
-	
-	var getTenantList = function(cloudRegionId) {
+
+	var getCloudOwnerAndLcpCloudRegionFromOptionId = function (cloudRegionOptionId) {
+		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
+		var cloudRegionTenant = _.find(cloudRegionTenantList, {"cloudRegionOptionId": cloudRegionOptionId});
+		return {
+			cloudOwner: cloudRegionTenant.cloudOwner,
+			cloudRegionId: cloudRegionTenant.cloudRegionId
+		}
+	};
+
+	var getTenantList = function(cloudRegionOptionId) {
 		var parameter = "";
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
 		if ( UtilityService.hasContents (cloudRegionTenantList) ) {
-			var parameter = FIELD.PARAMETER.TENANT_ENABLED;
+			parameter = FIELD.PARAMETER.TENANT_ENABLED;
 			parameter.optionList = new Array();
 			for (var i = 0; i < cloudRegionTenantList.length; i++) {
-				if (cloudRegionTenantList[i].cloudRegionId === cloudRegionId) {
+				if (cloudRegionTenantList[i].cloudRegionOptionId === cloudRegionOptionId) {
 					parameter.optionList.push({
 						id : cloudRegionTenantList[i].tenantId,
 						name : cloudRegionTenantList[i].tenantName,

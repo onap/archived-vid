@@ -445,9 +445,14 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 var aaiLcpCloudRegionTenants = response.data;
 
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
+                    var cloudOwner = aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_OWNER];
+                    var cloudRegionId = aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID];
+                    var cloudRegionOptionId = 'option-' + cloudOwner + '-' + cloudRegionId;
+
                     lcpCloudRegionTenants.push({
-                        "cloudRegionId": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID],
-                        "cloudOwner": aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_OWNER],
+                        "cloudOwner": cloudOwner,
+                        "cloudRegionId": cloudRegionId,
+                        "cloudRegionOptionId": cloudRegionOptionId.toLowerCase(),
                         "tenantName": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_NAME],
                         "tenantId": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_ID],
                         "isPermitted": aaiLcpCloudRegionTenants[i][COMPONENT.IS_PERMITTED]});
