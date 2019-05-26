@@ -541,14 +541,9 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         var modelInfo = DataService.getModelInfo(_this.componentId);
 
         //region id
-        var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-        if (lcpRegion === FIELD.KEY.LCP_REGION_TEXT) {
-            lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
-                parameterList);
-        }
-        var cloudOwner = _.find(DataService.getCloudRegionTenantList(), function(region){
-            return region.cloudRegionId === lcpRegion;
-        }).cloudOwner;
+        let cloudConfiguration = buildCloudConfiguration(parameterList);
+        var lcpRegion = cloudConfiguration.lcpCloudRegionId;
+        var cloudOwner = cloudConfiguration.cloudOwner;
 
         var params = [];
         var displayInputs = modelInfo.displayInputs;
@@ -666,15 +661,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         }
         if ( (_this.componentId != COMPONENT.SERVICE) || ( !DataService.getALaCarte() ) ) {
             // include cloud region for everything but service create alacarte
-            var lcpRegion = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-            if (lcpRegion === FIELD.KEY.LCP_REGION_TEXT) {
-                lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
-                    parameterList);
-            }
-            requestDetails.cloudConfiguration = {
-                lcpCloudRegionId : lcpRegion,
-                tenantId : getValueFromList(FIELD.ID.TENANT, parameterList)
-            };
+            requestDetails.cloudConfiguration = buildCloudConfiguration(parameterList);
         }
         switch (_this.componentId) {
 
@@ -774,6 +761,30 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
         return requestDetails;
     };
+
+    var buildCloudConfiguration = function (parameterList) {
+        var lcpRegion;
+        var cloudOwner;
+
+        var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
+
+        if (lcpRegionOptionId === FIELD.KEY.LCP_REGION_TEXT) {
+            lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
+                parameterList);
+            cloudOwner = undefined;
+        } else {
+            var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+            lcpRegion = cloudOwnerAndLcpCloudRegion.cloudRegionId;
+            cloudOwner = cloudOwnerAndLcpCloudRegion.cloudOwner;
+        }
+
+        return {
+            lcpCloudRegionId: lcpRegion,
+            cloudOwner: featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST) ? cloudOwner : undefined,
+            tenantId: getValueFromList(FIELD.ID.TENANT, parameterList)
+        };
+    };
+
 
     var getRelatedInstanceList = function(parameterList) {
         var relatedInstanceList = new Array();
@@ -1108,7 +1119,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
             parameter.optionList = new Array();
             for (var i = 0; i < cloudRegionTenantList.length; i++) {
                 for (var j = 0; j < parameter.optionList.length; j++) {
-                    if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionId) {
+                    if (parameter.optionList[j].id === cloudRegionTenantList[i].cloudRegionOptionId) {
                         parameter.optionList[j].isPermitted =
                             parameter.optionList[j].isPermitted || cloudRegionTenantList[i].isPermitted;
                         break;
@@ -1123,7 +1134,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                     cloudRegionTenantList[i].cloudRegionId;
 
                 parameter.optionList.push({
-                    id : cloudRegionTenantList[i].cloudRegionId,
+                    id : cloudRegionTenantList[i].cloudRegionOptionId,
                     name: optionName,
                     isPermitted : cloudRegionTenantList[i].isPermitted
                 });
@@ -1132,14 +1143,23 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         return parameter;
     };
 
-    var getTenantList = function(cloudRegionId) {
+    var getCloudOwnerAndLcpCloudRegionFromOptionId = function (cloudRegionOptionId) {
+      var cloudRegionTenantList = DataService.getCloudRegionTenantList();
+      var cloudRegionTenant = _.find(cloudRegionTenantList, {"cloudRegionOptionId": cloudRegionOptionId});
+      return {
+        cloudOwner: cloudRegionTenant.cloudOwner,
+        cloudRegionId: cloudRegionTenant.cloudRegionId
+      }
+    };
+
+    var getTenantList = function(cloudRegionOptionId) {
         var cloudRegionTenantList = DataService.getCloudRegionTenantList();
         var parameter = "";
         if ( UtilityService.hasContents (cloudRegionTenantList) ) {
             parameter = FIELD.PARAMETER.TENANT_ENABLED;
             parameter.optionList = new Array();
             for (var i = 0; i < cloudRegionTenantList.length; i++) {
-                if (cloudRegionTenantList[i].cloudRegionId === cloudRegionId) {
+                if (cloudRegionTenantList[i].cloudRegionOptionId === cloudRegionOptionId) {
                     parameter.optionList.push({
                         id : cloudRegionTenantList[i].tenantId,
                         name : cloudRegionTenantList[i].tenantName,

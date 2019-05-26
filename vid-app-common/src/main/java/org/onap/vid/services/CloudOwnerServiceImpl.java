@@ -73,22 +73,24 @@ public class CloudOwnerServiceImpl implements CloudOwnerService {
         }
     }
 
-    protected void enrichRequestWithCloudOwnerByAdditionalProperties(RequestDetails msoRequest) {
-        String lcpCloudRegionId = null;
+    private void enrichRequestWithCloudOwnerByAdditionalProperties(RequestDetails msoRequest) {
+        final Map cloudConfiguration;
+        final String lcpCloudRegionId;
         try {
+            cloudConfiguration = msoRequest.extractValueByPathUsingAdditionalProperties(CLOUD_CONFIGURATION_PATH, Map.class);
             lcpCloudRegionId = msoRequest.extractValueByPathUsingAdditionalProperties(LCP_CLOUD_REGION_ID_PATH, String.class);
         }
         catch (NotFoundException exception) {
             LOGGER.debug("Can't find lcp region in RequestDetails. Assume no cloudOwner enrichment is needed. Reason: ", exception);
             return;
         }
-        String cloudOwner = aaiClient.getCloudOwnerByCloudRegionId(lcpCloudRegionId);
-        msoRequest.extractValueByPathUsingAdditionalProperties(CLOUD_CONFIGURATION_PATH, Map.class).put("cloudOwner", cloudOwner);
+
+        cloudConfiguration.computeIfAbsent("cloudOwner", k ->  aaiClient.getCloudOwnerByCloudRegionId(lcpCloudRegionId));
     }
 
     @Override
     public void enrichCloudConfigurationWithCloudOwner(CloudConfiguration cloudConfiguration, String lcpCloudRegionId) {
-        if (featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)) {
+        if (StringUtils.isEmpty(cloudConfiguration.getCloudOwner()) && featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)) {
             String cloudOwner = aaiClient.getCloudOwnerByCloudRegionId(lcpCloudRegionId);
             cloudConfiguration.setCloudOwner(cloudOwner);
         }
