@@ -17,6 +17,13 @@ New Features
 .. _VID-246: /browse/VID-246
 .. _VID-397: /browse/VID-397
 
+**Security Notes**
+
+*Fixed Security Issues*
+
+*Known Security Issues*
+
+*Known Vulnerabilities in Used Modules*
 
 Version: 3.2.3
 --------------
@@ -195,7 +202,7 @@ New Features
 -  [`VID-201`_] - User inteface for invoking upgrade workflow
 -  [`VID-202`_] - Verify R1 and R2 features - integration and regression tests
 -  [`VID-216`_] - Update ReadTheDocs docs folder
-            
+
 .. _VID-16: https://jira.onap.org/browse/VID-16
 .. _VID-86: https://jira.onap.org/browse/VID-86
 .. _VID-102: https://jira.onap.org/browse/VID-102
