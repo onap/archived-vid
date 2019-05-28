@@ -357,4 +357,51 @@ describe('Testing workFlows from SO', () => {
       expect(internalWorkFlowParameters).toEqual(result);
     });
   });
+
+  test('Verify get remote workflow should call internal service for params when workflow is native', () =>{
+      let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}})
+      let getLocalWorkflowsParametersStub = Promise.resolve({"data":{
+              "parameterDefinitions": [
+                  {
+                      "id": 1,
+                      "name": "Configuration Parameters",
+                      "required": true,
+                      "type": "text",
+                      "pattern": ".*",
+                      "msgOnPatternError": null,
+                      "msgOnContentError": null,
+                      "acceptableFileType": null
+                  }
+              ],
+          }});
+      let getSOWorkflowsPromiseStub = Promise.resolve({"data":[{
+
+        "id": "ab6478e4-ea33-3346-ac12-ab121484a333",
+        "workflowName": "inPlaceSoftwareUpdate",
+        "name": "inPlaceSoftwareUpdate",
+        "source": "native",
+        "workflowInputParameters": [
+        ]
+    }]
+  });
+
+  $controller.changeManagement.vnfNames = [{modelVersionId: 'test1', name:'test'}];
+  $changeManagementService.getWorkflows = () => getWorkflowsStub;
+  $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
+  $changeManagementService.getSOWorkflows = () =>  getSOWorkflowsPromiseStub;
+
+  return $controller.loadWorkFlows().then(() => {
+    expect($controller.workflows).toContain('inPlaceSoftwareUpdate');
+    expect($controller.localWorkflowsParameters.get('inPlaceSoftwareUpdate')).toEqual([{
+        "id": 1,
+        "name": "Configuration Parameters",
+        "required": true,
+        "type": "text",
+        "pattern": ".*",
+        "msgOnPatternError": null,
+        "msgOnContentError": null,
+        "acceptableFileType": null
+    }]);
+  });
+});
 });

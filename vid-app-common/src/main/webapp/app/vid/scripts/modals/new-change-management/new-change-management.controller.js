@@ -742,7 +742,12 @@
         vm.loadRemoteWorkFlowsParameters = function () {
           vm.remoteWorkflowsParameters = new Map();
           vm.remoteWorkflows.forEach(function(workflow) {
-            vm.loadRemoteWorkFlowParameters(workflow);
+              if (workflow.source ==='SDC' || workflow.source === 'sdc' ){
+                  vm.loadRemoteWorkFlowParameters(workflow);
+              } else {
+                  vm.localWorkflowsParameters = new Map();
+                  vm.loadLocalWorkFlowParameters(workflow.name);
+              }
           });
         };
 
