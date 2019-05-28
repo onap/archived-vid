@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "711d9d24_f1c008e4",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-05-28T08:16:13Z",
+      "side": 1,
+      "message": "Please use localeCompare for string comparision",
+      "revId": "8140332ee31a1cde9cd60d7ffe6ddb01af8f6037",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
