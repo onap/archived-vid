@@ -149,14 +149,14 @@ public class AaiController extends RestrictedBaseController {
     private ResponseEntity<String> aaiResponseToResponseEntity(AaiResponse aaiResponseData)
         throws IOException {
         ResponseEntity<String> responseEntity;
-        ObjectMapper objectMapper = new ObjectMapper();
         if (aaiResponseData.getHttpCode() == 200) {
-            responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(aaiResponseData.getT()),
+            responseEntity = new ResponseEntity<>(new ObjectMapper().writeValueAsString(aaiResponseData.getT()),
                 HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>(aaiResponseData.getErrorMessage(),
                 HttpStatus.valueOf(aaiResponseData.getHttpCode()));
         }
+
         return responseEntity;
     }
 
