@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.onap.vid</groupId>
         <artifactId>vid-parent</artifactId>
-        <version>4.2.0-SNAPSHOT</version>
+        <version>4.3.0-SNAPSHOT</version>
     </parent>
 
     <packaging>pom</packaging>
@@ -64,7 +64,7 @@
                                     <descriptor>assembly/assembly-for-plugin.xml</descriptor>
                                 </assembly>
                                 <tags>
-                                    <tag>4.2-STAGING-latest</tag>
+                                    <tag>4.3-STAGING-latest</tag>
                                     <tag>latest</tag>
                                     <tag>${docker.tag}</tag>
                                     <tag>${docker.latest.tag}</tag>
