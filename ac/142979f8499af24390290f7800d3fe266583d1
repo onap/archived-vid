@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Piotr Darosz <piotr.darosz@nokia.com>
+Code-Review+1: Tomasz Golabek <tomasz.golabek@nokia.com>
+Code-Review+2: Ittay Stern <ittay.stern@att.com>
+Submitted-by: Ittay Stern <ittay.stern@att.com>
+Submitted-at: Thu, 30 May 2019 08:39:06 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/vid/+/88742
+Project: vid
+Branch: refs/heads/dublin
