@@ -433,7 +433,6 @@
             } else {
                 let source = vm.getRemoteWorkflowSource(vm.changeManagement.workflow);
                 if( source === "NATIVE"){
-                    vm.localWorkflowsParameters = vm.remoteWorkflowsParameters;
                     vm.triggerLocalWorkflow();
                 }else {
                     vm.triggerRemoteWorkflow();
@@ -687,7 +686,9 @@
         };
 
         vm.loadWorkFlows = function () {
-          if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_HANDLE_SO_WORKFLOWS)) {
+          vm.localWorkflowsParameters = new Map();
+          vm.remoteWorkflowsParameters = new Map();
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_HANDLE_SO_WORKFLOWS)) {
             return vm.loadRemoteWorkFlows()
             .then(function () {
               vm.workflows = vm.remoteWorkflows.map(item => item.name);
@@ -723,7 +724,6 @@
         };
 
         vm.loadLocalWorkFlowsParameters = function () {
-          vm.localWorkflowsParameters = new Map();
           vm.localWorkflows.forEach(function(workflow) {
             vm.loadLocalWorkFlowParameters(workflow);
           });
@@ -740,12 +740,10 @@
         };
 
         vm.loadRemoteWorkFlowsParameters = function () {
-          vm.remoteWorkflowsParameters = new Map();
           vm.remoteWorkflows.forEach(function(workflow) {
               if (workflow.source ==='SDC' || workflow.source === 'sdc' ){
                   vm.loadRemoteWorkFlowParameters(workflow);
               } else {
-                  vm.localWorkflowsParameters = new Map();
                   vm.loadLocalWorkFlowParameters(workflow.name);
               }
           });

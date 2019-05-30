@@ -127,7 +127,7 @@ describe('Testing workFlows from SO', () => {
     // when
     return $controller.loadWorkFlows().then(() => {
       expect($controller.workflows).toContain('inPlaceSoftwareUpdate');
-      expect($controller.localWorkflowsParameters).toBeUndefined();
+      expect($controller.localWorkflowsParameters).toEqual(new Map());
     });
   });
 
@@ -196,7 +196,7 @@ describe('Testing workFlows from SO', () => {
     return $controller.loadWorkFlows()
     .then(() => {
       expect($controller.workflows).toEqual(["workflow 0"]);
-      expect($controller.remoteWorkflowsParameters).toEqual(undefined);
+      expect($controller.remoteWorkflowsParameters).toEqual(new Map());
     });
   });
 
