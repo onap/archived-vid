@@ -22,6 +22,30 @@
       "revId": "08c35f51fc6f12d5bb0623560148605d328ea88f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bade5a20_56b9b16c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2019-05-31T10:06:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c0e0342_8fceda97",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 9
+      },
+      "revId": "08c35f51fc6f12d5bb0623560148605d328ea88f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
