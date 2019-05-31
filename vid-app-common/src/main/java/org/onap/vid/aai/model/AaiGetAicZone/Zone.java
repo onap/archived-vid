@@ -3,13 +3,14 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,14 +21,27 @@
 
 package org.onap.vid.aai.model.AaiGetAicZone;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Zone {
-    @JsonProperty("zone-id")
-    public String zoneId;
+public final class Zone {
 
-    @JsonProperty("zone-name")
-    public String zoneName;
+    private final String zoneId;
+    private final String zoneName;
+
+    @JsonCreator
+    public Zone(@JsonProperty("zone-id") String zoneId, @JsonProperty("zone-name") String zoneName) {
+        this.zoneId = zoneId;
+        this.zoneName = zoneName;
+    }
+
+    public String getZoneId() {
+        return zoneId;
+    }
+
+    public String getZoneName() {
+        return zoneName;
+    }
 }

@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
@@ -42,6 +43,8 @@ import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
+import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
+import org.onap.vid.aai.model.AaiGetAicZone.Zone;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetails;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsError;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
@@ -59,6 +62,7 @@ public class AaiControllerTest {
 
     private static final String ID_1 = "id1";
     private static final String ID_2 = "id2";
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Mock
     private AaiService aaiService;
     @Mock
@@ -67,7 +71,6 @@ public class AaiControllerTest {
     private RoleProvider roleProvider;
     @Mock
     private SystemPropertiesWrapper systemPropertiesWrapper;
-
     private MockMvc mockMvc;
     private AaiController aaiController;
 
@@ -93,7 +96,7 @@ public class AaiControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedJson)));
+            .andExpect(content().json(objectMapper.writeValueAsString(expectedJson)));
     }
 
     @Test
@@ -112,7 +115,7 @@ public class AaiControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedJson.asMap())));
+            .andExpect(content().json(objectMapper.writeValueAsString(expectedJson.asMap())));
     }
 
     @Test
@@ -135,6 +138,31 @@ public class AaiControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(expectedResponseBody));
+    }
+
+    @Test
+    public void getAicZones_shouldReturnAaiZones_whenAaiHttpStatusIsOK() throws Exception {
+        AicZones aicZones = new AicZones(ImmutableList.of(new Zone("TEST_ZONE_ID", "TEST_ZONE_NAME")));
+        given(aaiService.getAaiZones()).willReturn(new AaiResponse(aicZones, "", HttpStatus.OK.value()));
+
+        mockMvc.perform(get("/aai_get_aic_zones")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(aicZones)));
+    }
+
+    @Test
+    public void getAicZones_shouldReturnErrorResponse_whenAaiHttpStatusOtherThanOK() throws Exception {
+        String expectedErrorMessage = "Calling AAI Failed";
+        given(aaiService.getAaiZones())
+            .willReturn(new AaiResponse(null, expectedErrorMessage, HttpStatus.INTERNAL_SERVER_ERROR.value()));
+
+        mockMvc.perform(get("/aai_get_aic_zones")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError())
+            .andExpect(content().string(expectedErrorMessage));
     }
 }
 

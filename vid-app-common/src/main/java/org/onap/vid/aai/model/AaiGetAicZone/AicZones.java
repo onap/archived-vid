@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +21,22 @@
 
 package org.onap.vid.aai.model.AaiGetAicZone;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Collections;
 import java.util.List;
 
-public class AicZones {
-	@JsonProperty("zone")
-	public List<Zone> zones;
+public final class AicZones {
+
+	private final List<Zone> zones;
+
+	@JsonCreator
+	public AicZones(@JsonProperty("zone") List<Zone> zones) {
+		this.zones = Collections.unmodifiableList(zones);
+	}
+
+	public List<Zone> getZones() {
+		return zones;
+	}
 }
