@@ -88,17 +88,13 @@ public class AaiServiceImpl implements AaiService {
 
     private List<Service> convertModelToService(Model model) {
         List<Service> services = new ArrayList<>();
-        String category = "";
 
         if(validateModel(model)){
-            if(model.getModelType() != null) {
-                category = model.getModelType();
-            }
-
             for (ModelVer modelVer: model.getModelVers().getModelVer()) {
-                Service service = new Service.ServiceBuilder().setUuid(modelVer.getModelVersionId())
+                Service service = new Service.ServiceBuilder()
+                        .setUuid(modelVer.getModelVersionId())
                         .setInvariantUUID(model.getModelInvariantId())
-                        .setCategory(category)
+                        .setCategory(model.getModelType() != null ? model.getModelType() : "")
                         .setVersion(modelVer.getModelVersion())
                         .setName( modelVer.getModelName())
                         .setDistributionStatus(modelVer.getDistributionStatus())
@@ -357,7 +353,7 @@ public class AaiServiceImpl implements AaiService {
 
     @Override
     public AaiResponse<AaiGetVnfResponse> getVNFData(String globalSubscriberId, String serviceType) {
-        AaiResponse response = aaiClient.getVNFData(globalSubscriberId, serviceType);
+        AaiResponse<AaiGetVnfResponse> response = aaiClient.getVNFData(globalSubscriberId, serviceType);
         return filterChangeManagementVNFCandidatesResponse(response);
     }
 
@@ -375,7 +371,7 @@ public class AaiServiceImpl implements AaiService {
             return response;
         }
 
-        return new AaiResponse();
+        return new AaiResponse<>();
     }
 
     @Override
@@ -474,9 +470,9 @@ public class AaiServiceImpl implements AaiService {
     public AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId){
         AaiResponse<AaiGetRelatedInstanceGroupsByVnfId> aaiResponse = aaiClient.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
         if(aaiResponse.getHttpCode() == HttpStatus.SC_OK){
-            return new AaiResponse(convertGetInstanceGroupsResponseToSimpleResponse(aaiResponse.getT()), aaiResponse.getErrorMessage(), aaiResponse.getHttpCode());
+            return new AaiResponse<>(convertGetInstanceGroupsResponseToSimpleResponse(aaiResponse.getT()), aaiResponse.getErrorMessage(), aaiResponse.getHttpCode());
         }
-        return aaiClient.getInstanceGroupsByVnfInstanceId(vnfInstanceId);
+        return aaiResponse;
     }
 
     @Override

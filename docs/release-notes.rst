@@ -23,6 +23,8 @@ New Features
 
 *Known Security Issues*
 
+- In default deployment VID (vid) exposes HTTP port 30238 outside of cluster. [`OJSI-119 <https://jira.onap.org/browse/OJSI-119>`_]
+
 *Known Vulnerabilities in Used Modules*
 
 Version: 3.2.3
