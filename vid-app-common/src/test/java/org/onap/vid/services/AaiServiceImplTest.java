@@ -21,258 +21,761 @@
 
 package org.onap.vid.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import javax.ws.rs.core.Response;
-import org.jeasy.random.EasyRandom;
-import org.jeasy.random.EasyRandomParameters;
-import org.jeasy.random.randomizers.misc.BooleanRandomizer;
-import org.jeasy.random.randomizers.text.StringRandomizer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.joshworks.restclient.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiGetVnfResponse;
+import org.onap.vid.aai.AaiOverTLSClient;
 import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.ServiceInstancesSearchResults;
+import org.onap.vid.aai.ServiceSubscription;
+import org.onap.vid.aai.ServiceSubscriptions;
+import org.onap.vid.aai.Services;
+import org.onap.vid.aai.SubscriberFilteredResults;
+import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetRelatedInstanceGroupsByVnfId;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelatedToProperty;
+import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
+import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.GetServiceModelsByDistributionStatusResponse;
+import org.onap.vid.aai.model.InstanceGroupInfo;
+import org.onap.vid.aai.model.LogicalLinkResponse;
+import org.onap.vid.aai.model.Model;
+import org.onap.vid.aai.model.ModelVer;
+import org.onap.vid.aai.model.ModelVers;
+import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.model.Properties;
+import org.onap.vid.aai.model.Relationship;
+import org.onap.vid.aai.model.RelationshipData;
+import org.onap.vid.aai.model.RelationshipList;
+import org.onap.vid.aai.model.Result;
+import org.onap.vid.aai.model.ServiceRelationships;
 import org.onap.vid.aai.model.VnfResult;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.model.Subscriber;
+import org.onap.vid.model.SubscriberList;
+import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.RelatedVnf;
+import org.onap.vid.model.aaiTree.ServiceInstance;
 import org.onap.vid.roles.RoleValidator;
-import org.onap.vid.roles.RoleValidatorByRoles;
 
+import javax.ws.rs.core.Response;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class AaiServiceImplTest {
 
-    private static final long STATIC_SEED = 5336L;
-    private EasyRandomParameters parameters = new EasyRandomParameters()
-        .randomize(String.class, new StringRandomizer(4, 4, STATIC_SEED))
-        .randomize(Boolean.class, new BooleanRandomizer(STATIC_SEED));
-    private EasyRandom modelGenerator = new EasyRandom(parameters);
+	private static final String GLOBAL_CUSTOMER_ID = "GLOBAL_CUSTOMER_ID";
+	private static final String CLOUD_REGION_ID = "CLOUD_REGION_ID";
+	private static final String VNF_TYPE = "VNF_TYPE";
+	private static final String TENANT_ID = "TENANT_ID";
+	private static final String TENANT_NAME = "TENANT_NAME";
+	private static final String SERVICE_TYPE = "SERVICE_TYPE";
+	private static final String CORRECT_VALUE = "CORRECT_VALUE";
 
-    private AaiClientInterface aaiClient = mock(AaiClientInterface.class);
-    private AaiOverTLSClientInterface aaiSslClient = mock(AaiOverTLSClientInterface.class);
-    private AaiResponseTranslator aaiResponseTranslator = mock(AaiResponseTranslator.class);
-    private AAITreeNodeBuilder aaiTreeNode = mock(AAITreeNodeBuilder.class);
-    private AAIServiceTree aaiServiceTree = mock(AAIServiceTree.class);
+	@Mock
+	private HttpResponse<SubscriberList> responseAllSubscribers;
+	@Mock
+	private AaiResponse<OperationalEnvironmentList> aaiResponseOpEnvList;
+	@Mock
+	private AaiResponse aaiResponse;
+	@Mock
+	private AaiResponse<JsonNode> aaiResponseJsonNode;
 
-    private AaiServiceImpl aaiService = new AaiServiceImpl(
-        aaiClient, aaiSslClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree
-    );
+	private RoleValidator roleValidator = mock(RoleValidator.class);
+	private AaiClientInterface aaiClient = mock(AaiClientInterface.class);
+	private AaiOverTLSClientInterface aaiOverTLSClient = mock(AaiOverTLSClient.class);
+	private AaiResponseTranslator aaiResponseTranslator = mock(AaiResponseTranslator.class);
+	private AAITreeNodeBuilder aaiTreeNodeBuilder = mock(AAITreeNodeBuilder.class);
+	private AAIServiceTree aaiServiceTree = mock(AAIServiceTree.class);
 
-    @Test
-    public void shouldRetrievePnf() {
-        // given
-        String globalCustomerId = "global_customer";
-        String serviceType = "service_type";
-        String modelVersionId = "model_version";
-        String modelInvariantId = "model_invariant_id";
-        String cloudRegion = "cloud_region";
-        String equipVendor = "equip_vendor";
-        String equipModel = "equip_model";
+	private AaiServiceImpl aaiService = new AaiServiceImpl(aaiClient, aaiOverTLSClient,
+			aaiResponseTranslator, aaiTreeNodeBuilder, aaiServiceTree);
 
-        AaiResponse response = mock(AaiResponse.class);
-        when(aaiClient.getPNFData(
-            globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel
-        )).thenReturn(response);
 
-        // when
-        AaiResponse actual = aaiService.getPNFData(
-            globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor, equipModel
-        );
+	@Test
+	public void shouldGetFullSubscriberListWithoutValidator() {
+		when(aaiOverTLSClient.getAllSubscribers()).thenReturn(responseAllSubscribers);
+		HttpResponse<SubscriberList> actualResponse = aaiService.getFullSubscriberList();
+		assertThat(actualResponse).isEqualTo(responseAllSubscribers);
+	}
 
-        // then
-        assertThat(response).isEqualTo(actual);
-    }
+	@Test
+	public void shouldGetFullSubscriberListWithValidator() {
+		final String STATUS_TEXT = "STATUS_TEXT";
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void shouldRetrieveSpecificPnf() {
-        // given
-        String pnfId = "some_pnf_id";
+		Subscriber subscriber = createSubscriber();
+		SubscriberList subscriberList = new SubscriberList(Collections.singletonList(subscriber));
 
-        AaiResponse response = mock(AaiResponse.class);
-        when(aaiClient.getSpecificPnf(pnfId)).thenReturn(response);
+		when(aaiOverTLSClient.getAllSubscribers()).thenReturn(responseAllSubscribers);
+		when(responseAllSubscribers.getBody()).thenReturn(subscriberList);
+		when(responseAllSubscribers.getStatusText()).thenReturn(STATUS_TEXT);
+		when(responseAllSubscribers.getStatus()).thenReturn(HttpStatus.SC_OK);
+		SubscriberFilteredResults expectedSubscribers = new SubscriberFilteredResults(roleValidator, subscriberList,
+				STATUS_TEXT, HttpStatus.SC_OK);
 
-        // when
-        AaiResponse actual = aaiService.getSpecificPnf(pnfId);
+		SubscriberFilteredResults actualSubscribers = aaiService.getFullSubscriberList(roleValidator);
 
-        // then
-        assertThat(response).isEqualTo(actual);
-    }
+		assertThat(actualSubscribers.getHttpCode()).isEqualTo(expectedSubscribers.getHttpCode());
+		assertThat(actualSubscribers.getErrorMessage()).isEqualTo(expectedSubscribers.getErrorMessage());
+	}
 
-    @Test
-    public void shouldRetrieveTenantsByInvariantId() {
-        // given
-        List<String> modelInvariantId = new ArrayList<>();
+	@Test
+	public void shouldGetOperationalEnvironments() {
+		when(aaiClient.getOperationalEnvironments(anyString(), anyString()))
+				.thenReturn(aaiResponseOpEnvList);
+		AaiResponse<OperationalEnvironmentList> expectedEnvList =
+				aaiService.getOperationalEnvironments(anyString(), anyString());
+		assertThat(expectedEnvList).isEqualTo(aaiResponseOpEnvList);
+	}
 
-        Response response = mock(Response.class);
-        when(aaiClient.getVersionByInvariantId(modelInvariantId)).thenReturn(response);
+	@Test
+	public void shouldGetSubscriberData() {
+		final String SUBSCRIBER_ID = "SUBSCRIBER_ID_EXPECTED";
 
-        // when
-        Response actual = aaiService.getVersionByInvariantId(modelInvariantId);
+		Services services = createAaiResponseServices(GLOBAL_CUSTOMER_ID);
+		AaiResponse<Services> aaiResponseServices = new AaiResponse<>(services, null, HttpStatus.SC_OK);
 
-        // then
-        assertThat(response).isEqualTo(actual);
-    }
+		when(aaiClient.getSubscriberData(SUBSCRIBER_ID)).thenReturn(aaiResponseServices);
+		when(roleValidator.isServicePermitted(eq(GLOBAL_CUSTOMER_ID), anyString())).thenReturn(Boolean.TRUE);
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void shouldRetrieveTenants() {
-        // given
-        String globalCustomerId = "global_customer";
-        String serviceType = "service_type";
+		AaiResponse actualResponse = aaiService.getSubscriberData(SUBSCRIBER_ID, roleValidator);
+		List<ServiceSubscription> actualServiceSubscriptions = ((AaiResponse<Services>) actualResponse)
+				.getT().serviceSubscriptions.serviceSubscription;
 
-        GetTenantsResponse permittedTenant = new GetTenantsResponse(
-            "cloud_region", "cloud_owner", "permitted_tenant", "tenant_id", false
-        );
-        GetTenantsResponse unpermittedTenant = new GetTenantsResponse(
-            "cloud_region", "cloud_owner", "unpermitted_tenant", "tenant_id", false
-        );
+		assertThat(actualResponse).isEqualTo(aaiResponseServices);
+		assertThat(actualServiceSubscriptions).allMatch(s -> s.isPermitted);
+	}
 
-        AaiResponse<GetTenantsResponse[]> response = mock(AaiResponse.class);
-        when(response.getT()).thenReturn(new GetTenantsResponse[]{ permittedTenant, unpermittedTenant });
-        when(aaiClient.getTenants(globalCustomerId, serviceType)).thenReturn(response);
+	@Test
+	public void shouldGetServiceInstanceEmptySearchResults() {
+		ServiceInstancesSearchResults serviceInstancesSearchResults = new ServiceInstancesSearchResults();
+		AaiResponse<ServiceInstancesSearchResults> emptyResponse = new AaiResponse<>(serviceInstancesSearchResults,
+				null, HttpStatus.SC_OK);
 
-        RoleValidator roleValidator = mock(RoleValidatorByRoles.class);
-        when(roleValidator.isTenantPermitted(globalCustomerId, serviceType, "permitted_tenant")).thenReturn(true);
-        when(roleValidator.isTenantPermitted(globalCustomerId, serviceType, "unpermitted_tenant")).thenReturn(false);
+		AaiResponse actualResponse = aaiService.getServiceInstanceSearchResults(null, null,
+				null, null, null);
+		assertThat(actualResponse).isEqualToComparingFieldByFieldRecursively(emptyResponse);
+	}
 
-        // when
-        AaiResponse actual = aaiService.getTenants(globalCustomerId, serviceType, roleValidator);
+	@Test
+	public void shouldGetVersionByInvariantId() {
+		Response response = mock(Response.class);
+		when(aaiClient.getVersionByInvariantId(any())).thenReturn(response);
+		Response actualResponse = aaiService.getVersionByInvariantId(any());
 
-        // then
-        assertThat(response).isEqualTo(actual);
-        assertThat(permittedTenant.isPermitted).isTrue();
-        assertThat(unpermittedTenant.isPermitted).isFalse();
-    }
+		assertThat(actualResponse).isEqualTo(response);
+	}
 
-    @Test
-    public void shouldRetrieveVNFs() {
-        // given
-        String globalSubscriber = "global_subscriber";
-        String serviceType = "service_type";
-        String serviceInstanceId = "service_instance";
+	@Test
+	public void shouldGetSpecificPnf() {
+		AaiResponse<Pnf> expectedResponse = new AaiResponse<>(new Pnf(), null, HttpStatus.SC_OK);
+		when(aaiClient.getSpecificPnf(anyString())).thenReturn(expectedResponse);
+		AaiResponse<Pnf> actualResponse = aaiService.getSpecificPnf(anyString());
+		assertThat(actualResponse).isEqualTo(expectedResponse);
+	}
 
-        AaiResponse response = mock(AaiResponse.class);
-        when(aaiClient.getVNFData(globalSubscriber, serviceType, serviceInstanceId)).thenReturn(response);
+	@Test
+	public void shouldGetPnfData() {
+		when(aaiClient.getPNFData(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(),
+				anyString())).thenReturn(aaiResponse);
+		AaiResponse actualResponse = aaiService.getPNFData(anyString(), anyString(), anyString(), anyString(),
+				anyString(), anyString(), anyString());
+		assertThat(actualResponse).isEqualTo(aaiResponse);
+	}
 
-        // when
-        AaiResponse actual = aaiService.getVNFData(globalSubscriber, serviceType, serviceInstanceId);
+	@Test
+	public void shouldGetServices() {
+		org.onap.vid.aai.model.AaiGetServicesRequestModel.Service s1 =
+				createService("ID1", false, "V1", "D1");
+		org.onap.vid.aai.model.AaiGetServicesRequestModel.Service s2 =
+				createService("ID2", false, "V2", "D2");
 
-        // then
-        assertThat(response).isEqualTo(actual);
-    }
+		GetServicesAAIRespone services = new GetServicesAAIRespone();
+		services.service = Arrays.asList(s1, s2);
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void shouldRetrieveAndFilterVNFsBySubscriberAndServiceType() {
-        // given
-        String globalSubscriber = "global_subscriber";
-        String serviceType = "service_type";
+		AaiResponse<GetServicesAAIRespone> aaiResponseServices =
+				new AaiResponse<>(services, null, HttpStatus.SC_OK);
 
-        VnfResult genericVnf = new VnfResult();
-        genericVnf.nodeType = "generic-vnf";
+		when(aaiClient.getServices()).thenReturn(aaiResponseServices);
 
-        VnfResult serviceInstance = new VnfResult();
-        serviceInstance.nodeType = "service-instance";
+		Object actualObjectOfResponse = aaiService.getServices(roleValidator).getT();
 
-        VnfResult someVnf = new VnfResult();
-        someVnf.nodeType = "some-vnf";
+		assertThat(actualObjectOfResponse).isNotNull();
+		assertThat(((GetServicesAAIRespone) actualObjectOfResponse).service).allMatch(s -> s.isPermitted);
+	}
 
-        AaiResponse<AaiGetVnfResponse> response = mock(AaiResponse.class);
-        AaiGetVnfResponse vnfs = new AaiGetVnfResponse();
-        vnfs.results = Arrays.asList(genericVnf, serviceInstance, someVnf);
-        when(response.getT()).thenReturn(vnfs);
+	@Test
+	public void shouldGetTenants() {
+		GetTenantsResponse tenant1 = new GetTenantsResponse("REGION_ID1", "CLOUD_OWNER1",
+				"TENANT_NAME1", "TENANT_ID1", true);
+		GetTenantsResponse tenant2 = new GetTenantsResponse("REGION_ID2", "CLOUD_OWNER2",
+				"TENANT_NAME2", "TENANT_ID2", false);
+		GetTenantsResponse[] tenants = {tenant1, tenant2};
+		AaiResponse<GetTenantsResponse[]> aaiGetTenantsResponse = new AaiResponse<>(tenants,
+				null, HttpStatus.SC_OK);
 
-        when(aaiClient.getVNFData(globalSubscriber, serviceType)).thenReturn(response);
+		when(aaiClient.getTenants(anyString(), anyString())).thenReturn(aaiGetTenantsResponse);
+		when(roleValidator.isTenantPermitted(anyString(), anyString(), anyString()))
+				.thenReturn(Boolean.TRUE);
 
-        // when
-        AaiResponse actual = aaiService.getVNFData(globalSubscriber, serviceType);
+		GetTenantsResponse[] actualResponses = aaiService
+				.getTenants(anyString(), anyString(), roleValidator).getT();
 
-        // then
-        assertThat(response).isEqualTo(actual);
-        assertThat(response.getT().results).containsOnly(genericVnf, serviceInstance);
-    }
+		assertThat(actualResponses).isNotNull();
+		assertThat(actualResponses.length).isEqualTo(2);
+		assertThat(actualResponses).allMatch(tenant -> tenant.isPermitted);
+	}
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void getServicesShouldMarkAllServicesAsPermitted() {
-        // given
-        RoleValidator roleValidator = modelGenerator.nextObject(RoleValidatorByRoles.class);
+	@Test
+	public void shouldGetVNFDataWithoutFiltering() {
+		when(aaiClient.getVNFData(anyString(), anyString(), anyString())).thenReturn(aaiResponse);
+		AaiResponse actualResponse = aaiService.getVNFData(anyString(), anyString(), anyString());
+		assertThat(actualResponse).isEqualTo(aaiResponse);
+	}
 
-        GetServicesAAIRespone inputPayload = modelGenerator.nextObject(GetServicesAAIRespone.class);
-        assertThat(inputPayload.service.stream().allMatch(service -> service.isPermitted)).isFalse();
+	@Test
+	public void shouldGetVNFDataWithFiltering() {
+		final String GLOBAL_SUBSCRIBER_ID_NULL_RESPONSE = "ID_NULL";
+		final String GLOBAL_SUBSCRIBER_ID = "GLOBAL_SUBSCRIBER_ID";
 
-        when(aaiClient.getServices()).thenReturn(new AaiResponse<>(inputPayload, "", 200));
+		VnfResult vnfResult1 = createVnfResult("ID1", "generic-vnf");
+		VnfResult vnfResult2 = createVnfResult("ID2", "service-instance");
+		VnfResult vnfResult3 = createVnfResult("ID3", "anything-else");
 
-        // when
-        AaiResponse<GetServicesAAIRespone> result = aaiService.getServices(roleValidator);
-        GetServicesAAIRespone outputPayload = result.getT();
+		List<VnfResult> vnfResults = Arrays.asList(vnfResult1, vnfResult2, vnfResult3);
+		AaiResponse<AaiGetVnfResponse> aaiResponseGetVnfResponse = createAaiResponseVnfResponse(vnfResults);
 
-        // then
-        assertThat(outputPayload.service.stream().allMatch(service -> service.isPermitted)).isTrue();
-    }
+		vnfResults = Arrays.asList(vnfResult1, vnfResult2);
+		AaiResponse<AaiGetVnfResponse> expectedResponseWithReturnedVnfs = createAaiResponseVnfResponse(vnfResults);
+		AaiResponse expectedResponseWithoutReturnedVnfs = new AaiResponse();
 
-    @Test
-    public void shouldGetNodeTemplateInstances() {
-        // given
-        String globalCustomerId = "gcid";
-        String serviceType = "st";
-        String modelVersionId = "mvid";
-        String modelInvariantId = "miid";
-        String cloudRegion = "cr";
+		when(aaiClient.getVNFData(GLOBAL_SUBSCRIBER_ID, SERVICE_TYPE)).thenReturn(aaiResponseGetVnfResponse);
+		when(aaiClient.getVNFData(GLOBAL_SUBSCRIBER_ID_NULL_RESPONSE, SERVICE_TYPE)).thenReturn(null);
 
-        // when
-        aaiService
-            .getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
+		AaiResponse<AaiGetVnfResponse> actualResponseWithReturnedVnfs =
+				aaiService.getVNFData(GLOBAL_SUBSCRIBER_ID, SERVICE_TYPE);
+		AaiResponse<AaiGetVnfResponse> actualResponseWithoutReturnedVnfs =
+				aaiService.getVNFData(GLOBAL_SUBSCRIBER_ID_NULL_RESPONSE, SERVICE_TYPE);
 
-        // then
-        verify(aaiClient)
-            .getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion);
-    }
+		assertThat(actualResponseWithReturnedVnfs)
+				.isEqualToComparingFieldByFieldRecursively(expectedResponseWithReturnedVnfs);
+		assertThat(actualResponseWithoutReturnedVnfs)
+				.isEqualToComparingFieldByField(expectedResponseWithoutReturnedVnfs);
+	}
 
-    @Test
-    public void shouldGetNetworkCollectionDetails() {
-        // given
-        String serviceInstanceId = "siid";
+	@Test
+	public void shouldGetAaiZones() {
+		when(aaiClient.getAllAicZones()).thenReturn(aaiResponse);
+		AaiResponse actualResponse = aaiService.getAaiZones();
+		assertThat(actualResponse).isEqualTo(aaiResponse);
+	}
 
-        // when
-        aaiService.getNetworkCollectionDetails(serviceInstanceId);
+	@Test
+	public void shouldGetAicZoneForPnf() {
+		ServiceRelationships relationsService = createServiceRelationships(CORRECT_VALUE);
+		AaiResponse<ServiceRelationships> expectedServiceInstanceResp =
+				new AaiResponse<>(relationsService, null, HttpStatus.SC_OK);
 
-        // then
-        verify(aaiClient).getNetworkCollectionDetails(serviceInstanceId);
-    }
+		AaiResponse<String> expectedResponse =
+				new AaiResponse<>(CORRECT_VALUE, null, HttpStatus.SC_OK);
 
-    @Test
-    public void shouldGetInstanceGroupsByCloudRegion() {
-        // given
-        String cloudOwner = "co";
-        String cloudRegionId = "crid";
-        String networkFunction = "nf";
+		when(aaiClient.getServiceInstance(anyString(), anyString(), anyString()))
+				.thenReturn(expectedServiceInstanceResp);
 
-        // when
-        aaiService.getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
+		AaiResponse actualResponse = aaiService.getAicZoneForPnf(anyString(), anyString(), anyString());
 
-        // then
-        verify(aaiClient).getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
-    }
+		assertThat(actualResponse).isEqualToComparingFieldByField(expectedResponse);
+	}
 
-    @Test
-    public void getAAIServiceTree() {
-        // given
-        String globalCustomerId = "gcid";
-        String serviceType = "st";
-        String serviceInstanceId = "siid";
+	@Test
+	public void shouldGetNodeTemplateInstances() {
+		when(aaiClient.getNodeTemplateInstances(anyString(), anyString(), anyString(),
+				anyString(), anyString())).thenReturn(aaiResponse);
+		AaiResponse expectedResponse = aaiService.getNodeTemplateInstances(anyString(), anyString(), anyString(),
+				anyString(), anyString());
+		assertThat(expectedResponse).isEqualTo(aaiResponse);
+	}
 
-        // when
-        aaiService.getAAIServiceTree(globalCustomerId, serviceType, serviceInstanceId);
+	@Test
+	public void shouldGetNetworkCollectionDetails() {
+		when(aaiClient.getNetworkCollectionDetails(anyString())).thenReturn(aaiResponse);
+		AaiResponse expectedResponse = aaiService.getNetworkCollectionDetails(anyString());
+		assertThat(expectedResponse).isEqualTo(aaiResponse);
+	}
 
-        // then
-        verify(aaiServiceTree).getServiceInstanceTopology(globalCustomerId, serviceType, serviceInstanceId);
-    }
+	@Test
+	public void shouldGetInstanceGroupsByCloudRegion() {
+		AaiGetInstanceGroupsByCloudRegion aaiGetInstanceGroupsByCloudRegion =
+				mock(AaiGetInstanceGroupsByCloudRegion.class);
+		AaiResponse<AaiGetInstanceGroupsByCloudRegion> expectedResponse =
+				new AaiResponse<>(aaiGetInstanceGroupsByCloudRegion, null, HttpStatus.SC_OK);
+
+		when(aaiClient.getInstanceGroupsByCloudRegion(anyString(), anyString(), anyString()))
+				.thenReturn(expectedResponse);
+
+		AaiResponse<AaiGetInstanceGroupsByCloudRegion> actualResponse =
+				aaiService.getInstanceGroupsByCloudRegion(anyString(), anyString(), anyString());
+		assertThat(actualResponse).isEqualTo(expectedResponse);
+	}
+
+	@Test
+	public void shouldGetServicesByDistributionStatus() {
+		Result resultWithModelType = createResult("MODEL_TYPE1", "1");
+		Result resultWithEmptyModelType = createResult(null, "2");
+		Result resultWithoutModel = new Result();
+		resultWithoutModel.setModel(null);
+		Result resultWithoutValidModel = createResultWithoutValidModel();
+		List<Result> results = Arrays.asList(resultWithModelType, resultWithEmptyModelType, resultWithoutModel,
+				resultWithoutValidModel);
+
+		GetServiceModelsByDistributionStatusResponse serviceModels = new GetServiceModelsByDistributionStatusResponse();
+		serviceModels.setResults(results);
+
+		AaiResponse<GetServiceModelsByDistributionStatusResponse> serviceModelsByDistributionStatusResponse
+				= new AaiResponse<>(serviceModels, null, HttpStatus.SC_OK);
+
+		Service[] expectedServices = {
+				createService("MODEL_TYPE1", "1"),
+				createService("", "2")
+		};
+
+		when(aaiClient.getServiceModelsByDistributionStatus()).thenReturn(serviceModelsByDistributionStatusResponse);
+
+		Collection<Service> actualServices = aaiService.getServicesByDistributionStatus();
+
+		assertThat(actualServices)
+				.hasSize(2)
+				.usingFieldByFieldElementComparator()
+				.containsExactly(expectedServices);
+	}
+
+	@Test
+	public void shouldReturnEmptyListOfServices() {
+		AaiResponse<GetServiceModelsByDistributionStatusResponse> emptyResponse
+				= new AaiResponse<>(null, null, HttpStatus.SC_OK);
+		when(aaiClient.getServiceModelsByDistributionStatus()).thenReturn(emptyResponse);
+		Collection<Service> actualServices = aaiService.getServicesByDistributionStatus();
+		assertThat(actualServices).isEqualTo(Collections.EMPTY_LIST);
+	}
+
+	@Test
+	public void shouldGetServiceInstanceAssociatedPnfs() {
+		ServiceRelationships relationsList = createServiceRelationships(CORRECT_VALUE);
+
+		LogicalLinkResponse logicalLinkResponse = new LogicalLinkResponse();
+		logicalLinkResponse.setRelationshipList(relationsList.getRelationshipList());
+
+		AaiResponse<LogicalLinkResponse> aaiResponseLogicalLinkResponse =
+				new AaiResponse<>(logicalLinkResponse, null, HttpStatus.SC_OK);
+		AaiResponse<ServiceRelationships> aaiResponseServiceRelations =
+				new AaiResponse<>(relationsList, null, HttpStatus.SC_OK);
+
+		when(aaiClient.getServiceInstance(anyString(), anyString(), anyString()))
+				.thenReturn(aaiResponseServiceRelations);
+		when(aaiClient.getLogicalLink(anyString())).thenReturn(aaiResponseLogicalLinkResponse);
+
+
+		List<String> expectedPnfs = Collections.singletonList(CORRECT_VALUE);
+		List<String> actualPnfs = aaiService.getServiceInstanceAssociatedPnfs(anyString(), anyString(), anyString());
+
+		assertThat(actualPnfs).isEqualTo(expectedPnfs);
+	}
+
+	@Test
+	public void shouldGetPortMirroringConfigData() {
+		AaiResponseTranslator.PortMirroringConfigData expectedData
+				= mock(AaiResponseTranslator.PortMirroringConfigData.class);
+
+		when(aaiClient.getCloudRegionAndSourceByPortMirroringConfigurationId(anyString())).thenReturn(aaiResponseJsonNode);
+		when(aaiResponseTranslator.extractPortMirroringConfigData(aaiResponseJsonNode)).thenReturn(expectedData);
+
+		AaiResponseTranslator.PortMirroringConfigData actualData = aaiService.getPortMirroringConfigData(anyString());
+		assertThat(actualData).isEqualTo(expectedData);
+	}
+
+
+	@Test
+	public void shouldGetInstanceGroupsByVnfInstanceId() {
+		final String VNF_INSTANCE_ID_OK = "VNF_INSTANCE_ID_OK";
+		final String VNF_INSTANCE_ID_FAIL = "VNF_INSTANCE_ID_FAIL";
+
+		List<InstanceGroupInfo> instanceGroupInfo = Collections.singletonList(new InstanceGroupInfo(CORRECT_VALUE));
+		AaiGetRelatedInstanceGroupsByVnfId relatedInstanceGroups = new AaiGetRelatedInstanceGroupsByVnfId();
+		relatedInstanceGroups.setRelationshipList(createRelationshipList());
+
+		AaiResponse<AaiGetRelatedInstanceGroupsByVnfId> correctCodeResponse =
+				new AaiResponse<>(relatedInstanceGroups, null, HttpStatus.SC_OK);
+
+		AaiResponse<List<InstanceGroupInfo>> expectedCorrectCodeResponse =
+				new AaiResponse<>(instanceGroupInfo, null, HttpStatus.SC_OK);
+		AaiResponse<AaiGetRelatedInstanceGroupsByVnfId> expectedIncorrectCodeResponse =
+				new AaiResponse<>(relatedInstanceGroups, null, HttpStatus.SC_PAYMENT_REQUIRED);
+		List<InstanceGroupInfo> expectedCorrectResponseObject = expectedCorrectCodeResponse.getT();
+
+		when(aaiClient.getInstanceGroupsByVnfInstanceId(VNF_INSTANCE_ID_OK)).thenReturn(correctCodeResponse);
+		when(aaiClient.getInstanceGroupsByVnfInstanceId(VNF_INSTANCE_ID_FAIL)).thenReturn(expectedIncorrectCodeResponse);
+
+		AaiResponse actualCorrectCodeResponse = aaiService.getInstanceGroupsByVnfInstanceId(VNF_INSTANCE_ID_OK);
+		AaiResponse actualIncorrectCodeResponse = aaiService.getInstanceGroupsByVnfInstanceId(VNF_INSTANCE_ID_FAIL);
+
+		List<InstanceGroupInfo> actualCorrectResponseObject =
+				(List<InstanceGroupInfo>) actualCorrectCodeResponse.getT();
+
+		assertThat(actualCorrectResponseObject)
+				.usingFieldByFieldElementComparator()
+				.hasSameElementsAs(expectedCorrectResponseObject);
+
+		assertThat(actualIncorrectCodeResponse).isEqualTo(expectedIncorrectCodeResponse);
+	}
+
+	@Test
+	public void shouldGetHomingDataByVfModule() {
+		GetTenantsResponse expectedResponse = new GetTenantsResponse();
+		when(aaiClient.getHomingDataByVfModule(anyString(), anyString())).thenReturn(expectedResponse);
+
+		GetTenantsResponse actualResponse = aaiService.getHomingDataByVfModule(anyString(), anyString());
+		assertThat(actualResponse).isEqualTo(expectedResponse);
+	}
+
+	@Test
+	public void shouldSearchGroupMembers() {
+		//given
+		final String PARENT_NAME = "PARENT_NAME";
+		final String PARENT_ID = "PARENT_ID";
+		final String INVARIANT_ID = "INVARIANT_ID";
+		final String GROUP_TYPE_FAILING = "GROUP_TYPE_FAILING";
+		final String GROUP_ROLE_OK = "GROUP_ROLE_OK";
+		final String GROUP_ROLE_FAILING = "GROUP_ROLE_FAILING";
+		final String GROUP_TYPE_OK = "GROUP_TYPE_OK";
+		final String CLOUD_TYPE = "CLOUD_TYPE";
+
+
+		Properties properties = createProperties(TENANT_ID, TENANT_NAME, CLOUD_REGION_ID);
+		Map<String, Properties> regionsAndTenants = createRegionsAndTenantsMap(properties);
+
+
+		AAITreeNode validTreeNode = new AAITreeNode();
+		addAdditionalPropertiesToAaiTreeNode(validTreeNode, GROUP_ROLE_OK, GROUP_TYPE_OK, VNF_TYPE, CLOUD_TYPE);
+		List<AAITreeNode> validNodes = Arrays.asList(validTreeNode, validTreeNode);
+
+		AAITreeNode validBranch = createTree(validNodes, PARENT_ID, PARENT_NAME);
+		addAdditionalPropertiesToAaiTreeNode(validBranch, GROUP_ROLE_OK, GROUP_TYPE_OK, VNF_TYPE, CLOUD_TYPE);
+		List<AAITreeNode> testedBranches = Collections.singletonList(validBranch);
+
+		AAITreeNode testedTree = createTree(testedBranches, PARENT_ID, PARENT_NAME);
+
+
+		RelatedVnf expectedVnf = createExpectedVnf(PARENT_ID, PARENT_NAME, validBranch);
+		List<RelatedVnf> expectedResult = Collections.singletonList(expectedVnf);
+
+		when(aaiServiceTree.buildAAITree(anyString(), any())).thenReturn(Collections.singletonList(testedTree));
+		when(aaiClient.getCloudRegionAndTenantByVnfId(anyString())).thenReturn(regionsAndTenants);
+
+		//when
+		List<RelatedVnf> actualGroupMembers = aaiService.searchGroupMembers(GLOBAL_CUSTOMER_ID, SERVICE_TYPE,
+				INVARIANT_ID, GROUP_TYPE_FAILING, GROUP_ROLE_FAILING);
+
+		//then
+		assertThat(actualGroupMembers)
+				.usingFieldByFieldElementComparator()
+				.hasSameElementsAs(expectedResult);
+	}
+
+	@Test
+	public void shouldGetPortMirroringSourcePorts() {
+		PortDetailsTranslator.PortDetails details = mock(PortDetailsTranslator.PortDetails.class);
+		List<PortDetailsTranslator.PortDetails> expectedDetailsList = Arrays.asList(
+				details, details, details
+		);
+		when(aaiClient.getPortMirroringSourcePorts(anyString())).thenReturn(expectedDetailsList);
+		List<PortDetailsTranslator.PortDetails> actualDetails = aaiService.getPortMirroringSourcePorts(anyString());
+		assertThat(actualDetails).isEqualTo(expectedDetailsList);
+	}
+
+	@Test
+	public void shouldGetAAIServiceTree() throws JsonProcessingException {
+		ServiceInstance serviceInstance = mock(ServiceInstance.class);
+		String expectedResult = new ObjectMapper().writeValueAsString(serviceInstance);
+
+		when(aaiServiceTree.getServiceInstanceTopology(anyString(), anyString(), anyString()))
+				.thenReturn(serviceInstance);
+
+		String actualResult = aaiService.getAAIServiceTree(anyString(), anyString(), anyString());
+
+		assertThat(actualResult).isEqualTo(expectedResult);
+	}
+
+	@NotNull
+	private Map<String, Properties> createRegionsAndTenantsMap(Properties properties) {
+		Map<String, Properties> regionsAndTenants = new HashMap<>();
+		regionsAndTenants.put("tenant", properties);
+		regionsAndTenants.put("cloud-region", properties);
+		return regionsAndTenants;
+	}
+
+	private Properties createProperties(String tenantId, String tenantName, String cloudRegionId) {
+		Properties properties = new Properties();
+		properties.setTenantId(tenantId);
+		properties.setTenantName(tenantName);
+		properties.setCloudRegionId(cloudRegionId);
+		return properties;
+	}
+
+	@NotNull
+	private RelatedVnf createExpectedVnf(String parentId, String parentName, AAITreeNode validBranch) {
+		RelatedVnf expectedVnf = RelatedVnf.from(validBranch);
+		expectedVnf.setTenantId(TENANT_ID);
+		expectedVnf.setTenantName(TENANT_NAME);
+		expectedVnf.setLcpCloudRegionId(CLOUD_REGION_ID);
+		expectedVnf.setServiceInstanceId(parentId);
+		expectedVnf.setServiceInstanceName(parentName);
+		expectedVnf.setInstanceType(VNF_TYPE);
+
+		return expectedVnf;
+	}
+
+
+	private AAITreeNode createTree(List<AAITreeNode> children, String parentId, String parentName) {
+		AAITreeNode tree = new AAITreeNode();
+		tree.addChildren(children);
+		tree.setId(parentId);
+		tree.setName(parentName);
+		return tree;
+	}
+
+	private void addAdditionalPropertiesToAaiTreeNode(AAITreeNode tree, String groupRole, String groupType, String vnfType, String cloudType) {
+		Map<String, Object> additionalProperties = new HashMap<>();
+		additionalProperties.put("instance-group-role", groupRole);
+		additionalProperties.put("instance-group-type", groupType);
+		additionalProperties.put("vnf-type", vnfType);
+		additionalProperties.put("cloud-region", cloudType);
+		tree.setAdditionalProperties(additionalProperties);
+	}
+
+	private org.onap.vid.asdc.beans.Service createService(String category, String suffix) {
+		return new Service.ServiceBuilder()
+				.setUuid("MODELVER_VERSION_ID" + suffix)
+				.setInvariantUUID("MODEL_INVARIANT_NAME" + suffix)
+				.setCategory(category)
+				.setVersion("MODELVER_VERSION" + suffix)
+				.setName("MODELVER_NAME" + suffix)
+				.setDistributionStatus("MODELVER_DIST_STATUS" + suffix)
+				.setToscaModelURL(null)
+				.setLifecycleState(null)
+				.setArtifacts(null)
+				.setResources(null)
+				.build();
+	}
+
+	@NotNull
+	private Result createResultWithoutValidModel() {
+		ModelVers modelVers = new ModelVers();
+		modelVers.setModelVer(Collections.singletonList(new ModelVer()));
+
+		Model model = new Model();
+		model.setModelVers(modelVers);
+
+		Result result1 = new Result();
+		result1.setModel(model);
+		return result1;
+	}
+
+	@NotNull
+	private Result createResult(String modelType, String suffix) {
+		ModelVer modelVer = new ModelVer();
+		modelVer.setModelVersionId("MODELVER_VERSION_ID" + suffix);
+		modelVer.setModelVersion("MODELVER_VERSION" + suffix);
+		modelVer.setModelName("MODELVER_NAME" + suffix);
+		modelVer.setDistributionStatus("MODELVER_DIST_STATUS" + suffix);
+
+		ModelVers modelVers = new ModelVers();
+		modelVers.setModelVer(Collections.singletonList(modelVer));
+
+		Model model = new Model();
+		model.setModelType(modelType);
+		model.setModelInvariantId("MODEL_INVARIANT_NAME" + suffix);
+		model.setModelVers(modelVers);
+
+		Result result = new Result();
+		result.setModel(model);
+		return result;
+	}
+
+	@NotNull
+	private ServiceRelationships createServiceRelationships(String expectedValue) {
+		RelationshipList relationsList = createRelationshipList(expectedValue);
+		ServiceRelationships relationsService = new ServiceRelationships();
+		relationsService.setRelationshipList(relationsList);
+		return relationsService;
+	}
+
+	@NotNull
+	private RelationshipList createRelationshipList(String expectedValue) {
+		List<RelationshipData> relationsDataList = createRelationshipDataList(expectedValue);
+		return createRelationshipList(relationsDataList);
+	}
+
+	@NotNull
+	private RelationshipList createRelationshipList(List<RelationshipData> relationsDataList) {
+		Relationship relation1 = crateRelationship("any", relationsDataList);
+		Relationship relation2 = crateRelationship("zone", relationsDataList);
+		Relationship relation3 = crateRelationship("logical-link", relationsDataList);
+		Relationship relation4 = crateRelationship("lag-interface", relationsDataList);
+		Relationship relation5 = crateRelationship("pnf", relationsDataList);
+
+		RelationshipList relationsList = new RelationshipList();
+		relationsList.setRelationship(Arrays.asList(relation1, relation2, relation3, relation4, relation5));
+		return relationsList;
+	}
+
+	@NotNull
+	private List<RelationshipData> createRelationshipDataList(String expectedValue) {
+		RelationshipData relationData1 = createRelationshipData("any-key", "incorrect_key");
+		RelationshipData relationData2 = createRelationshipData("zone.zone-id", expectedValue);
+		RelationshipData relationData3 = createRelationshipData("logical-link.link-name", expectedValue);
+		RelationshipData relationData4 = createRelationshipData("pnf.pnf-name", expectedValue);
+
+		return Arrays.asList(relationData1, relationData2, relationData3, relationData4);
+	}
+
+	@NotNull
+	private Relationship crateRelationship(String relatedTo, List<RelationshipData> relationsDataList) {
+		Relationship relation = new Relationship();
+		relation.setRelatedTo(relatedTo);
+		relation.setRelationDataList(relationsDataList);
+		return relation;
+	}
+
+	@NotNull
+	private RelationshipData createRelationshipData(String key, String value) {
+		RelationshipData relationData = new RelationshipData();
+		relationData.setRelationshipKey(key);
+		relationData.setRelationshipValue(value);
+		return relationData;
+	}
+
+	private org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelationshipList createRelationshipList() {
+		RelatedToProperty property1 =
+				createRelatedToProperty("instance-group.instance-group-name", CORRECT_VALUE);
+		RelatedToProperty property2 =
+				createRelatedToProperty("anything-key", "anything-value");
+		List<RelatedToProperty> properties = Arrays.asList(property1, property2);
+
+		org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship relationship1 =
+				createRelationship("instance-group", properties);
+		org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship relationship2 =
+				createRelationship("any-key", properties);
+
+		List<org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship> relationships =
+				Arrays.asList(relationship1, relationship2);
+
+		org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelationshipList relationshipList =
+				new org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelationshipList();
+		relationshipList.setRelationship(relationships);
+
+		return relationshipList;
+	}
+
+	@NotNull
+	private org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship createRelationship(String relatedTo,
+	                                                                                              List<RelatedToProperty> relatedToPropertyList) {
+		org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship relationship1 =
+				new org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship();
+		relationship1.setRelatedTo(relatedTo);
+		relationship1.setRelatedToPropertyList(relatedToPropertyList);
+		return relationship1;
+	}
+
+	@NotNull
+	private RelatedToProperty createRelatedToProperty(String key, String value) {
+		RelatedToProperty prop = new RelatedToProperty();
+		prop.setPropertyKey(key);
+		prop.setPropertyValue(value);
+		return prop;
+	}
+
+	@NotNull
+	private AaiResponse<AaiGetVnfResponse> createAaiResponseVnfResponse(List<VnfResult> vnfResults) {
+		AaiGetVnfResponse vnfResponse = new AaiGetVnfResponse();
+		vnfResponse.setResults(vnfResults);
+		return new AaiResponse<>(vnfResponse, null, HttpStatus.SC_OK);
+	}
+
+	private VnfResult createVnfResult(String id, String nodeType) {
+		VnfResult result = new VnfResult();
+		result.setJsonId(id);
+		result.setJsonNodeType(nodeType);
+		return result;
+	}
+
+
+	private org.onap.vid.aai.model.AaiGetServicesRequestModel.Service createService(String serviceId,
+	                                                                                boolean isPermitted,
+	                                                                                String resourceVersion,
+	                                                                                String serviceDescription) {
+		org.onap.vid.aai.model.AaiGetServicesRequestModel.Service service
+				= new org.onap.vid.aai.model.AaiGetServicesRequestModel.Service();
+		service.isPermitted = isPermitted;
+		service.resourceVersion = resourceVersion;
+		service.serviceDescription = serviceDescription;
+		service.serviceId = serviceId;
+		return service;
+	}
+
+	@NotNull
+	private Services createAaiResponseServices(String globalCustomerId) {
+		ServiceSubscription sub1 = new ServiceSubscription();
+		sub1.isPermitted = false;
+		sub1.serviceType = "serviceSubsType1";
+
+		ServiceSubscription sub2 = new ServiceSubscription();
+		sub2.isPermitted = true;
+		sub2.serviceType = "serviceSubsType2";
+
+		ServiceSubscriptions serviceSubs = new ServiceSubscriptions();
+		serviceSubs.serviceSubscription = Collections.singletonList(sub2);
+
+		Services services = new Services();
+		services.globalCustomerId = globalCustomerId;
+		services.resourceVersion = "v-1";
+		services.subscriberName = "name-1";
+		services.subscriberType = "type-1";
+		services.serviceSubscriptions = serviceSubs;
+		return services;
+	}
+
+	@NotNull
+	private Subscriber createSubscriber() {
+		Subscriber subscriber = new Subscriber();
+		subscriber.globalCustomerId = "id-1";
+		subscriber.resourceVersion = "v-1";
+		subscriber.subscriberName = "name-1";
+		subscriber.subscriberType = "type-1";
+		return subscriber;
+	}
 }
