@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70468042_eae1dd81",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceImplTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-06-05T12:44:16Z",
+      "side": 1,
+      "message": "Please leave AT\u0026T as the owner of the code. Instead, add information at the license header\u0027s ending that modifications have been made, like:\n\n * Modifications Copyright (c) 2019 Nokia",
+      "revId": "46904edb7477f9690292787338be01e1cbbc2812",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
