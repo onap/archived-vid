@@ -45,6 +45,7 @@ import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.AaiGetAicZone.Zone;
+import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetails;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsError;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
@@ -163,6 +164,40 @@ public class AaiControllerTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string(expectedErrorMessage));
+    }
+
+    @Test
+    public void getSpecificPnf_shouldReturnPnfObjectForPnfId() throws Exception {
+        String pnfId = "MyPnfId";
+        Pnf pnf = createPnf(pnfId);
+        AaiResponse<Pnf> aaiResponse = new AaiResponse<>(pnf, "", HttpStatus.OK.value());
+        given(aaiService.getSpecificPnf(pnfId)).willReturn(aaiResponse);
+
+        mockMvc.perform(get("/aai_get_pnfs/pnf/{pnf_id}", pnfId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(pnf)));
+    }
+
+    @Test
+    public void getSpecificPnf_shouldHandleAAIServiceException() throws Exception {
+        String pnfId = "MyPnfId";
+        String expectedErrorMessage = "AAI Service Error";
+        given(aaiService.getSpecificPnf(pnfId)).willThrow(new RuntimeException(expectedErrorMessage));
+
+        mockMvc.perform(get("/aai_get_pnfs/pnf/{pnf_id}", pnfId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError())
+            .andExpect(content().string(expectedErrorMessage));
+    }
+
+    private Pnf createPnf(String pnfId) {
+        Pnf pnf = new Pnf();
+        pnf.setPnfId(pnfId);
+        pnf.setPnfName("TestPnf");
+        return pnf;
     }
 }
 

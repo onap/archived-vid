@@ -401,13 +401,12 @@ public class AaiController extends RestrictedBaseController {
 
     @RequestMapping(value = "/aai_get_pnfs/pnf/{pnf_id}", method = RequestMethod.GET)
     public ResponseEntity getSpecificPnf(@PathVariable("pnf_id") String pnfId) {
-        AaiResponse<Pnf> resp;
         ResponseEntity<Pnf> re;
         try {
-            resp = aaiService.getSpecificPnf(pnfId);
+            AaiResponse<Pnf> resp = aaiService.getSpecificPnf(pnfId);
             re = new ResponseEntity<>(resp.getT(), HttpStatus.valueOf(resp.getHttpCode()));
         } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return re;
     }
