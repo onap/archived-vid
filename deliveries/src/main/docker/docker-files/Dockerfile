@@ -4,8 +4,6 @@ FROM tomcat:9.0-jre8-alpine
 RUN apk update && apk add openjdk8 vim net-tools
 
 RUN adduser --disabled-password onap onap
-RUN mkdir -p /opt/app
-COPY conf.d/ /etc/onap/vid/conf.d/
 
 # MariaDB variables
 ENV VID_MYSQL_HOST="vid-mariadb-docker-instance" \
@@ -84,7 +82,8 @@ ENV VID_CONTACT_US_LINK="https://todo_contact_us_link.com" \
 
 # Custom options
 ENV JAVA_OPTS="-Xmx1536m -Xms1536m"
-ENV CATALINA_OPTS="-Dvid.keystore.password=${VID_KEYSTORE_PASSWORD} -Dvid.keyalias=vid@vid.onap.org -Dvid.keystore.filename=${VID_KEYSTORE_FILENAME}"
+ENV CATALINA_OPTS="-Dvid.keystore.password=${VID_KEYSTORE_PASSWORD} -Dvid.keyalias=vid@vid.onap.org -Dvid.keystore.filename=${VID_KEYSTORE_FILENAME} -Dcom.att.eelf.logging.file=logback.xml -Dcom.att.eelf.logging.path=/tmp"
+
 
 ADD maven/config/org.onap.vid.jks ${VID_KEYSTORE_FILENAME}
 ADD maven/config/org.onap.vid.trust.jks ${VID_TRUSTSTORE_FILENAME}
@@ -92,7 +91,7 @@ ADD maven/config/server.xml ${VID_TOMCAT_PATH}
 ADD maven/scripts/*.sh /tmp/vid/
 ADD maven/artifacts/vid.war /tmp/vid/stage/
 
-RUN chown onap:onap /tmp/vid /usr/local/tomcat /etc/onap/vid /opt/app -R
+RUN chown onap:onap /tmp/vid /usr/local/tomcat /opt/app -R
 RUN chmod +x /tmp/vid/localize.sh
 USER onap
 CMD ["/tmp/vid/localize.sh"]

@@ -1,10 +1,5 @@
 #!/bin/bash
 
-source /tmp/vid/localize_logback.sh || {
-	echo "ERROR: Localizing logback.xml failed"
-	exit 1
-}
-
 source /tmp/vid/localize_portal.sh $1 || {
 	echo "ERROR: Localizing portal.properties failed"
 	exit 1
