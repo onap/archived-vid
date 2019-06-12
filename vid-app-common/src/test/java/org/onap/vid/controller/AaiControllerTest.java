@@ -199,5 +199,30 @@ public class AaiControllerTest {
         pnf.setPnfName("TestPnf");
         return pnf;
     }
+
+    public void getPNFInstances_shouldReturnOKResponseFromAAIService() throws Exception {
+        String globalCustomerId = "testCustomerId";
+        String serviceType = "testServiceType";
+        String modelVersionId = UUID.nameUUIDFromBytes("modelVersionId".getBytes()).toString();
+        String modelInvariantId = UUID.nameUUIDFromBytes("modelInvariantId".getBytes()).toString();
+        String cloudRegion = "testRegion";
+        String equipVendor = "testVendor";
+        String equipModel = "model123";
+        String urlTemplate = "/aai_get_pnf_instances/{globalCustomerId}/{serviceType}/{modelVersionId}/{modelInvariantId}/{cloudRegion}/{equipVendor}/{equipModel}";
+        String expectedResponseBody = "myResponse";
+        AaiResponse<String> aaiResponse = new AaiResponse<>(expectedResponseBody, "", HttpStatus.OK.value());
+
+        given(aaiService
+            .getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor,
+                equipModel)).willReturn(aaiResponse);
+
+        mockMvc.perform(
+            get(urlTemplate, globalCustomerId, serviceType, modelVersionId,
+                modelInvariantId, cloudRegion, equipVendor, equipModel)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
+    }
 }
 
