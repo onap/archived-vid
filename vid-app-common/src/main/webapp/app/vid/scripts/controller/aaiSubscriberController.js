@@ -24,6 +24,24 @@
 appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService", "OwningEntityService", "AsdcService","featureFlags", "$q", "_",
     function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, AsdcService, featureFlags, $q, _) {
 
+        $scope.showReportWindow = function() {
+            console.log('report works');
+
+            const modalWindow = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
+                controller: 'reportModalController',
+                controllerAs: 'vm',
+                resolve: {
+                    requestId: function () {
+                        return undefined;
+                    },
+                    errorMsg: function () {
+                        return $scope.errorMsg;
+                    }
+                }
+            });
+        };
+
         $scope.showVnfDetails = function (vnf) {
             console.log("showVnfDetails");
             DataService.setVnfInstanceId(COMPONENT.VNF_INSTANCE_ID);
@@ -726,6 +744,10 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
         $scope.isShowVerifyService = function () {
             return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_SHOW_VERIFY_SERVICE);
+        }
+
+        $scope.isShowErrorReport = function() {
+            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_CREATE_ERROR_REPORTS);
         }
 
         $scope.isEnableVerifyService = function () {

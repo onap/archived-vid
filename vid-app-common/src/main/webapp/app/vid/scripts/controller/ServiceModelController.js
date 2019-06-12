@@ -22,8 +22,8 @@
 (function () {
 	'use strict';
 
-	appDS2.controller("ServiceModelController", function ($scope, $http, $location, COMPONENT, VIDCONFIGURATION, FIELD, DataService, vidService,
-			PropertyService, UtilityService, AsdcService,$timeout) {
+	appDS2.controller("ServiceModelController",function ($uibModal, $scope, $http, $location, COMPONENT, VIDCONFIGURATION, FIELD, DataService, vidService,
+			PropertyService, UtilityService, AsdcService, $timeout, featureFlags) {
 
 		$scope.popup = {};
 		var defaultViewPerPage = 10;
@@ -53,7 +53,7 @@
 			$http.get(pathQuery)
 			.then(function (response) {
 				$scope.services = [];
-				if (response.data && angular.isArray(response.data.services)) {
+				if (response.data && angular.isArray(response.data.services) && response.data.services.length !== 0) {
 					wholeData = response.data.services;
                     $scope.services = $scope.filterDataWithHigherVersion(wholeData);
                     $scope.viewPerPage = defaultViewPerPage;
@@ -132,7 +132,28 @@
 			$scope.currentPage++;
 		};
 
+		$scope.showReportWindow = function() {
+			console.log('report works');
 
+			const modalWindow = $uibModal.open({
+				templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
+				controller: 'reportModalController',
+				controllerAs: 'vm',
+				resolve: {
+					requestId: function () {
+						return undefined;
+					},
+					errorMsg: function () {
+						return $scope.status;
+					}
+				}
+			});
+
+		};
+
+		$scope.isShowErrorReport = function() {
+			return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_CREATE_ERROR_REPORTS);
+		};
 		
 		$scope.createType = COMPONENT.A_LA_CARTE;
 		$scope.deployService = function(service) {

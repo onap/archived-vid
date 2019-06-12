@@ -21,14 +21,41 @@
 "use strict";
 
 var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $http, $timeout, $log,
-                                         CreationService, UtilityService, DataService, VIDCONFIGURATION, $location) {
+                                         CreationService, UtilityService, DataService, VIDCONFIGURATION, $location, $uibModal, featureFlags) {
 
     $scope.isDialogVisible = false;
+    $scope.isServiceError = false;
     $scope.summaryControl = {};
     $scope.userProvidedControl = {};
 
+
     var callbackFunction = undefined;
     var componentId = undefined;
+
+    $scope.showReportWindow = function() {
+        console.log('report works');
+
+        const modalWindow = $uibModal.open({
+            templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
+            controller: 'reportModalController',
+            controllerAs: 'vm',
+            resolve: {
+                requestId: function () {
+                    return undefined;
+                },
+                errorMsg: function () {
+                    return $scope.error;
+                }
+            }
+        });
+
+        $scope.isDialogVisible = false;
+        $scope.popup.isVisible = false;
+    };
+
+    $scope.isShowErrorReport = function() {
+        return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_CREATE_ERROR_REPORTS);
+    };
 
     $scope.shouldShowOldPopup = function () {
         return !DataService.getShouldIncludeInAsyncInstantiationFlow();
@@ -68,6 +95,7 @@ var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $h
             CreationService.initializeComponent(request.componentId);
 
             CreationService.setHttpErrorHandler(function (response) {
+                $scope.isServiceError = true;
                 showError(FIELD.ERROR.SYSTEM_FAILURE, UtilityService
                     .getHttpErrorMessage(response));
             });
@@ -373,4 +401,5 @@ var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $h
 
 appDS2.controller("creationDialogController", ["COMPONENT", "FIELD", "PARAMETER", "$scope", "$http",
     "$timeout", "$log", "CreationService", "UtilityService", "DataService", "VIDCONFIGURATION", "$location",
+    "$uibModal", "featureFlags",
     creationDialogController]);
