@@ -27,7 +27,10 @@
 				<label>Status:</label><span class="status">{{status}}</span>
 			</div>
 
-			<div data-tests-id="subDetailsErrMsg" ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font></div>
+			<div data-tests-id="subDetailsErrMsg" ng-if="errorMsg != null">
+				<font color='red'>{{errorMsg}}<pre>{{errorDetails | json}}</pre></font>
+				<button class="btn btn-danger" ng-click="showReportWindow()" ng-if="isShowErrorReport()">Create report</button>
+			</div>
 	
 			 <h1 class="heading1"><center>Subscriber Details for {{selectedSubscriberId}} ({{selectedSubscriberName}})</center></h1>
 	     		<br>
