@@ -29,7 +29,8 @@
             <label>Status:</label><span class="status">{{status}}</span>
         </div>
 
-        <div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}
+        <div ng-if="errorMsg != null"><font color='red'>{{errorMsg}}<br/>
+            <button class="btn btn-danger" ng-click="showReportWindow()" ng-if="isShowErrorReport()">create report</button>
             <pre>{{errorDetails | json}}</pre>
         </font></div>
 

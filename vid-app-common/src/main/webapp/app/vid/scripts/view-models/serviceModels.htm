@@ -30,7 +30,9 @@
 			<img src="app/vid/images/spinner.gif"></img>
 			</span>
 			<span class="statusLine" ng-class="{true:'progVisible', false:'progHidden'}[isProgressVisible]">
-			<label>Status:</label><span class="status"><span ng-show="error"><font color='red'><b>Error: </b></font></span>{{status}}</span>
+			<label>Status:</label><span class="status"><span ng-show="error"><font color='red'><b>Error: </b></font></span>{{status}} <br/>
+			<button ng-show="error" class="btn btn-danger" ng-click="showReportWindow()" ng-if="isShowErrorReport()">create report</button>
+			</span>
 		</span>
 	<br><br>
 
