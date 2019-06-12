@@ -222,9 +222,7 @@
 				try{
 				var requestInfoData ={};
 				var requestParametersData ={};
-                var moduleToScale = _.find(vnf.vfModules, function(key, item){
-                    return !item.scale;
-                });
+                var moduleToScale = _.find(vnf.vfModules, {"scale": true});
 				if (vnf.availableVersions && vnf.availableVersions.length!=0){
 
 					requestInfoData ={
