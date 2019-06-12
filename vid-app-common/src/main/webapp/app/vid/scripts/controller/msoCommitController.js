@@ -63,14 +63,37 @@
  * "$scope.popup".
  */
 
-var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $window, $log,
-		MsoService, PropertyService, UtilityService, TestEnvironmentsService) {
+var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $window, $log, $uibModal,
+		MsoService, PropertyService, UtilityService, TestEnvironmentsService, DataService) {
 
 	$scope.isViewVisible = false;
 	$scope.progressBarControl = {};
 	$scope.popupWindowControl = {};
     var getRequestStatusFunc = getOrchestrationRequestStatus; //default
 	var _this = this;
+
+	$scope.showReportWindow = function() {
+		let requestInfo = {};
+		requestInfo.requestId = _this.requestId;
+		requestInfo.instanceId = $scope.instanceId;
+
+		const modalWindow = $uibModal.open({
+			templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
+			controller: 'reportModalInstanceController',
+			controllerAs: 'vm',
+			resolve: {
+				errorMsg: function () {
+					return $scope.log;
+				},
+				requestInfo: function () {
+					return requestInfo;
+				}
+			}
+		});
+
+		$scope.isViewVisible = false;
+		$scope.popup.isVisible = false;
+	};
 
 	$scope.$on("createInstance", function(event, request) {
 		init(request, COMPONENT.MSO_CREATE_REQ, getOrchestrationRequestStatus );
@@ -318,5 +341,5 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 }
 
 appDS2.controller("msoCommitController", [ "COMPONENT", "FIELD", "$scope", "$http", "$timeout",
-		"$window", "$log", "MsoService", "PropertyService", "UtilityService", "TestEnvironmentsService",
+		"$window", "$log", "$uibModal", "MsoService", "PropertyService", "UtilityService", "TestEnvironmentsService", "DataService",
 		msoCommitController ]);

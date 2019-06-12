@@ -43,6 +43,8 @@
 
 <script src="app/vid/scripts/modals/new-test-environment/new-test-environment.controller.js"></script>
 <script src="app/vid/scripts/modals/alert-modal/alert-modal.controller.js"></script>
+<script src="app/vid/scripts/modals/report-modal/report-modal.controller.js"></script>
+<script src="app/vid/scripts/modals/report-modal/report-modal-request.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
 <script src="app/vid/scripts/controller/creationDialogController.js"></script>
 <script src="app/vid/scripts/controller/iframeDialogController.js"></script>
@@ -87,6 +89,7 @@
 <script src="app/vid/scripts/services/vnfService.js"></script>
 <script src="app/vid/scripts/services/pnfService.js"></script>
 <script src="app/vid/scripts/services/crService.js"></script>
+<script src="app/vid/scripts/services/reportService.js"></script>
 <script src="app/vid/scripts/services/change-management.service.js"></script>
 <script src="app/vid/scripts/modals/cancel-pending-workflow/cancel-pending-workflow.controller.js"></script>
 <script src="app/vid/scripts/services/OwningEntityService.js"></script>

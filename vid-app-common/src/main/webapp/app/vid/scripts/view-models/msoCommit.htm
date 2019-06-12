@@ -43,6 +43,8 @@
 	<div class="buttonRow">
 		<button data-tests-id="msoCommitDialogCloseButton" ngx-enabled="{{isCloseEnabled}}" att-button size="small"
 			ng-click="close();">Close</button>
+		<button class="btn-danger" att-button size="small" ng-show="!isProgressVisible"
+				ng-click="showReportWindow()">Create report</button>
 	</div>
 </div>
 </div>
