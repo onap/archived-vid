@@ -22,7 +22,7 @@
 (function () {
 	'use strict';
 
-	appDS2.controller("ServiceModelController", function ($scope, $http, $location, COMPONENT, VIDCONFIGURATION, FIELD, DataService, vidService,
+	appDS2.controller("ServiceModelController",function ($uibModal, $scope, $http, $location, COMPONENT, VIDCONFIGURATION, FIELD, DataService, vidService,
 			PropertyService, UtilityService, AsdcService,$timeout) {
 
 		$scope.popup = {};
@@ -53,7 +53,7 @@
 			$http.get(pathQuery)
 			.then(function (response) {
 				$scope.services = [];
-				if (response.data && angular.isArray(response.data.services)) {
+				if (response.data && angular.isArray(response.data.services) && response.data.services.length !== 0) {
 					wholeData = response.data.services;
                     $scope.services = $scope.filterDataWithHigherVersion(wholeData);
                     $scope.viewPerPage = defaultViewPerPage;
@@ -132,6 +132,16 @@
 			$scope.currentPage++;
 		};
 
+		$scope.showReportWindow = function() {
+			console.log('report works');
+
+			const modalWindow = $uibModal.open({
+				templateUrl: 'app/vid/scripts/modals/report-modals/report-window.html',
+				controller: 'reportWindowController',
+				controllerAs: 'vm',
+				resolve: {}
+			});
+		};
 
 		
 		$scope.createType = COMPONENT.A_LA_CARTE;

@@ -24,6 +24,17 @@
 appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER", "DataService", "PropertyService", "$scope", "$http", "$timeout", "$location", "$log", "$route", "$uibModal", "VIDCONFIGURATION", "UtilityService", "vidService", "AaiService", "MsoService", "OwningEntityService", "AsdcService","featureFlags", "$q", "_",
     function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, AsdcService, featureFlags, $q, _) {
 
+        $scope.showReportWindow = function() {
+            console.log('report works');
+
+            const modalWindow = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/report-modals/report-window.html',
+                controller: 'reportWindowController',
+                controllerAs: 'vm',
+                resolve: {}
+            });
+        };
+
         $scope.showVnfDetails = function (vnf) {
             console.log("showVnfDetails");
             DataService.setVnfInstanceId(COMPONENT.VNF_INSTANCE_ID);
