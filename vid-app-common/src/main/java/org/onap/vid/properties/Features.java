@@ -62,7 +62,8 @@ public enum Features implements Feature {
     FLAG_1902_NEW_VIEW_EDIT,
     FLAG_EXP_USE_DEFAULT_HOST_NAME_VERIFIER,
     FLAG_1902_VNF_GROUPING,
-    FLAG_HANDLE_SO_WORKFLOWS
+    FLAG_HANDLE_SO_WORKFLOWS,
+    FLAG_CREATE_ERROR_REPORTS
     ;
 
     public boolean isActive() {

@@ -22,6 +22,7 @@
 <div class="modal-header">
     <h3 class="modal-title" id="modal-title">New VNF Change</h3>
     <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+    <div ng-if="vm.errorMsg!==''"><font color='red'>{{vm.errorMsg.message}}</font></div>
 </div>
 <form class="form-create" name="newChangeManagement" ng-submit="vm.openModal();vm.close();" novalidate>
     <div class="modal-body step1" ng-show="vm.wizardStep === 1" >
@@ -156,6 +157,7 @@
             <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
             <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2)" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">{{vm.hasScheduler ? "Schedule" : "Confirm"}}</button>
             <button ng-if="vm.isScaleOut() && vm.wizardStep === 1" ng-click="vm.nextStep();" type="button" id="next" name="next" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Next</button>
+            <button ng-if="isShowErrorReport() && vm.errorMsg!==''" ng-click="showReportWindow()" type="button" class="btn btn-danger" >Create report</button>
         </div>
     </div>
 </form>
