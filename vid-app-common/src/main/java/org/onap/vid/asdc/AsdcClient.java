@@ -20,6 +20,7 @@
 
 package org.onap.vid.asdc;
 
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.vid.asdc.beans.Service;
 
 import java.nio.file.Path;
@@ -32,6 +33,7 @@ public interface AsdcClient {
 	class URIS{
 		public static final String METADATA_URL_TEMPLATE = "%s%s/%s/metadata";
 		public static final String TOSCA_MODEL_URL_TEMPLATE = "%s%s/%s/toscaModel";
+		public static final String HEALTH_CHECK_ENDPOINT = "/sdc2/rest/healthCheck";
 	}
 	/**
 	 * Gets the service.
@@ -51,4 +53,6 @@ public interface AsdcClient {
 	 */
 	Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException;
 
+
+	HttpResponse<String> checkSDCConnectivity();
 }

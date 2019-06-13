@@ -22,10 +22,13 @@ package org.onap.vid.services;
 
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.probes.ExternalComponentStatus;
 
 public interface VidService {
 
 	ServiceModel getService(String uuid) throws AsdcCatalogException;
 
     void invalidateServiceCache();
+
+    ExternalComponentStatus probeSDCConnection();
 }
