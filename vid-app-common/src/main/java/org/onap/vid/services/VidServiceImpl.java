@@ -8,9 +8,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ package org.onap.vid.services;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.vid.asdc.AsdcCatalogException;
@@ -33,7 +34,10 @@ import org.onap.vid.asdc.parser.ToscaParserImpl;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.togglz.core.manager.FeatureManager;
 
 import java.nio.file.Path;
@@ -96,7 +100,7 @@ public class VidServiceImpl implements VidService {
     public ServiceModel getService(String uuid) throws AsdcCatalogException {
         if (featureManager.isActive(FLAG_SERVICE_MODEL_CACHE)) {
             return getServiceFromCache(uuid);
-        }else {
+        } else {
             return getServiceFromSdc(uuid);
         }
     }
@@ -136,10 +140,24 @@ public class VidServiceImpl implements VidService {
             return tosca.makeServiceModel(uuid, serviceCsar, asdcServiceMetadata);
         }
     }
-    
+
     @Override
-    public void invalidateServiceCache(){
+    public void invalidateServiceCache() {
         serviceModelCache.invalidateAll();
     }
 
+    @Override
+    public ExternalComponentStatus checkSdcConnection() {
+        long startTime = System.currentTimeMillis();
+        ExternalComponentStatus externalComponentStatus;
+        try {
+            HttpResponse<String> stringHttpResponse = asdcClient.checkSDCConnectivity();
+            HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(stringHttpResponse, HttpMethod.GET, "", System.currentTimeMillis() - startTime, "");
+            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.SDC, stringHttpResponse.isSuccessful(), httpRequestMetadata);
+        } catch (Exception e) {
+            HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(HttpMethod.GET, 500, "", "", e.getMessage(), System.currentTimeMillis() - startTime);
+            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.SDC, false, httpRequestMetadata);
+        }
+        return externalComponentStatus;
+    }
 }

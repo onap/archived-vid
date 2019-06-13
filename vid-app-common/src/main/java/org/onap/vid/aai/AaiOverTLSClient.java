@@ -23,6 +23,7 @@ package org.onap.vid.aai;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
 import io.vavr.collection.HashMap;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.model.ResourceType;
@@ -30,6 +31,9 @@ import org.onap.vid.aai.util.AAIProperties;
 import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.SubscriberList;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.model.probes.HttpRequestMetadata;
+import org.springframework.http.HttpMethod;
 
 import javax.ws.rs.core.MediaType;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +41,11 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.*;
+import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.ACCEPT;
+import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.CONTENT_TYPE;
+import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.FROM_APP_ID_HEADER;
+import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.REQUEST_ID;
+import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.TRANSACTION_ID_HEADER;
 
 public class AaiOverTLSClient implements AaiOverTLSClientInterface {
 
@@ -87,6 +95,28 @@ public class AaiOverTLSClient implements AaiOverTLSClientInterface {
         String uri = urlBase + String.format(URIS.SUBSCRIBERS, 0);
         return syncRestClient.get(uri, getRequestHeaders(), Collections.emptyMap(), SubscriberList.class);
     }
+
+    @Override
+    public ExternalComponentStatus probeAAiOverTLS() {
+        String url = "aai/aai/v13/business/customers?subscriber-type=INFRA&depth=0";
+        long startTime = System.currentTimeMillis();
+        ExternalComponentStatus externalComponentStatus;
+
+        try {
+            HttpResponse<SubscriberList> allSubscribers = getAllSubscribers();
+
+            HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(HttpMethod.GET, allSubscribers.getStatus(), url,
+                    IOUtils.toString(allSubscribers.getRawBody()), "getAllSubscribers", System.currentTimeMillis() - startTime);
+            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.AAI, allSubscribers.isSuccessful(), httpRequestMetadata);
+
+        } catch (Exception e) {
+            HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(HttpMethod.GET, 500, url, "", e.getMessage(), System.currentTimeMillis() - startTime);
+            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.AAI, false, httpRequestMetadata);
+        }
+
+        return externalComponentStatus;
+    }
+
 
     private Map<String, String> getRequestHeaders() {
         Map<String, String> result = HashMap.of(

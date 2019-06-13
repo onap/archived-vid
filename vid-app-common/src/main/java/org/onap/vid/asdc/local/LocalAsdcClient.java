@@ -23,6 +23,7 @@ package org.onap.vid.asdc.local;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.joshworks.restclient.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.onap.vid.asdc.AsdcCatalogException;
@@ -154,6 +155,11 @@ public class LocalAsdcClient implements AsdcClient {
         } catch (UnsupportedEncodingException e) {
             throw new GenericUncheckedException(e);
         }
+    }
+
+    @Override
+    public HttpResponse<String> checkSDCConnectivity() {
+        return HttpResponse.fallback("");
     }
 
     /**

@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
@@ -37,6 +38,9 @@ import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.model.probes.HttpRequestMetadata;
+import org.onap.vid.model.probes.StatusMetadata;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
@@ -52,6 +56,7 @@ import org.onap.vid.mso.rest.RequestWrapper;
 import org.onap.vid.mso.rest.Task;
 import org.onap.vid.mso.rest.TaskList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.togglz.core.manager.FeatureManager;
 
@@ -404,7 +409,8 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         } catch (IOException e) {
             throw new GenericUncheckedException(e);
         }
-        return requestList.getRequestList();
+        List<RequestWrapper> requestsList = requestList.getRequestList();
+        return (requestList != null) ? requestsList : Lists.newArrayList();
     }
 
 
@@ -857,6 +863,32 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         return msoClientInterface.addRelationshipToServiceInstance(requestDetails, addRelationshipsPath);
     }
+
+
+    @Override
+    public ExternalComponentStatus probeGetOrchestrationRequests() {
+        String url = SystemProperties.getProperty(
+                MsoProperties.MSO_SERVER_URL) + "/" + SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
+        long startTime = System.currentTimeMillis();
+        ExternalComponentStatus externalComponentStatus;
+        try {
+            List<Request> orchestrationRequestsForDashboard = getOrchestrationRequestsForDashboard();
+            RestObject<List<Request>> restObject = new RestObject<>();
+            restObject.set(orchestrationRequestsForDashboard);
+            restObject.setStatusCode(200);
+
+            StatusMetadata statusMetadata = new HttpRequestMetadata(new RestObjectWithRequestInfo(HttpMethod.GET, url, restObject), "", System.currentTimeMillis() - startTime);
+
+            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, true, statusMetadata);
+        } catch (Exception e) {
+            e.printStackTrace();
+            StatusMetadata statusMetadata = new HttpRequestMetadata(HttpMethod.GET, 500, url, "", e.getMessage(), System.currentTimeMillis() - startTime);
+            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, false, statusMetadata);
+        }
+
+        return externalComponentStatus;
+    }
+
 
     private void validateUpdateVnfConfig(RequestDetails requestDetails) {
         final String noValidPayloadMsg = "No valid payload in " + ChangeManagementRequest.CONFIG_UPDATE + " request";
