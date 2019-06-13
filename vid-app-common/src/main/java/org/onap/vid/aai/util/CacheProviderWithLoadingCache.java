@@ -26,6 +26,8 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.aai.AaiClient;
 import org.onap.vid.properties.Features;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +48,7 @@ public class CacheProviderWithLoadingCache implements CacheProvider {
     private final FeatureManager featureManager;
     private final CacheConfigProvider cacheConfigProvider;
     private final ConcurrentHashMap<String, Cache> caches;
-
+    EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(CacheProviderWithLoadingCache.class);
 
     @Autowired
     public CacheProviderWithLoadingCache(FeatureManager featureManager, CacheConfigProvider cacheConfigProvider) {
@@ -89,6 +91,7 @@ public class CacheProviderWithLoadingCache implements CacheProvider {
                     return activeCache.getUnchecked(key);
                 }
                 catch (UncheckedExecutionException exception) {
+                	logger.error("Error loading cache {}", exception.getMessage());
                     return ExceptionUtils.rethrow(exception.getCause());
                 }
             } else {
