@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@
 package org.onap.vid.services;
 
 import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Answers;
 import org.mockito.Mock;
@@ -31,6 +32,8 @@ import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.properties.Features;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -40,22 +43,30 @@ import java.util.Map;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toMap;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.IsSame.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class VidServiceImplTest {
 
     @Mock(answer = Answers.RETURNS_MOCKS)
-    AsdcClient asdcClientMock;
+    private AsdcClient asdcClientMock;
 
     @Mock(answer = Answers.RETURNS_MOCKS)
-    ToscaParserImpl2 toscaParserMock;
+    private ToscaParserImpl2 toscaParserMock;
 
     @Mock
-    FeatureManager featureManager;
+    private FeatureManager featureManager;
+
+    @Mock
+    private HttpResponse<String> httpResponse;
 
     private final UUID uuid1 = UUID.randomUUID();
     private final UUID uuid2 = UUID.randomUUID();
@@ -86,8 +97,8 @@ public class VidServiceImplTest {
 
         when(featureManager.isActive(Features.FLAG_SERVICE_MODEL_CACHE)).thenReturn(true);
 
-        when(asdcClientMock.getService(any())).thenAnswer(invocation ->  pseudoServiceByUuid.get(invocation.getArguments()[0]));
-        when(toscaParserMock.makeServiceModel(any(), any())).thenAnswer(invocation ->  pseudoModelByService.get(invocation.getArguments()[1]));
+        when(asdcClientMock.getService(any())).thenAnswer(invocation -> pseudoServiceByUuid.get(invocation.getArguments()[0]));
+        when(toscaParserMock.makeServiceModel(any(), any())).thenAnswer(invocation -> pseudoModelByService.get(invocation.getArguments()[1]));
     }
 
     @Test
@@ -138,5 +149,29 @@ public class VidServiceImplTest {
         vidService.getService(uuid1.toString());
     }
 
+    @Test
+    public void shouldCheckConnectionToSdc() {
+        when(asdcClientMock.checkSDCConnectivity()).thenReturn(httpResponse);
+        when(httpResponse.isSuccessful()).thenReturn(true);
+        when(httpResponse.getBody()).thenReturn("sampleBody");
+
+
+        ExternalComponentStatus externalComponentStatus = vidService.probeSDCConnection();
+
+        assertThat(externalComponentStatus.isAvailable(), is(true));
+        assertThat(externalComponentStatus.getComponent(), is(ExternalComponentStatus.Component.SDC));
+        HttpRequestMetadata metadata = (HttpRequestMetadata) externalComponentStatus.getMetadata();
+        assertThat(metadata.getRawData(), is("sampleBody"));
+    }
+
+    @Test
+    public void shouldProperlyHandleNotWorkingSDCConnection(){
+        when(asdcClientMock.checkSDCConnectivity()).thenThrow(new RuntimeException("not working"));
+
+        ExternalComponentStatus externalComponentStatus = vidService.probeSDCConnection();
+
+        assertThat(externalComponentStatus.isAvailable(), is(false));
+        assertThat(externalComponentStatus.getMetadata().getDescription(),is("not working"));
+    }
 }
 
