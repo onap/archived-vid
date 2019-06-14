@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +22,7 @@
 package org.onap.vid.model.probes;
 
 import com.google.common.base.MoreObjects;
+import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
@@ -77,6 +79,10 @@ public class HttpRequestMetadata extends StatusMetadata {
                 exception.getRawData(),
                 Logging.exceptionToDescription(exception.getCause()),
                 duration);
+    }
+
+    public HttpRequestMetadata(HttpResponse<String> response, HttpMethod method, String description, long duration, String url) {
+        this(method, response.getStatus(), url, response.getBody(), description, duration);
     }
 
 

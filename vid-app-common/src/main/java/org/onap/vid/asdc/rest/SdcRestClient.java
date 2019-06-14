@@ -22,6 +22,7 @@ package org.onap.vid.asdc.rest;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
 import io.vavr.control.Try;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.AsdcCatalogException;
@@ -96,6 +97,13 @@ public class SdcRestClient implements AsdcClient {
         return createTmpFile(inputStream);
     }
 
+
+    public HttpResponse<String> checkSDCConnectivity() {
+        String finalUrl = baseUrl + URIS.HEALTH_CHECK_ENDPOINT;
+
+        return syncRestClient
+                .get(finalUrl, prepareHeaders(auth, APPLICATION_JSON), Collections.emptyMap(), String.class);
+    }
 
     private Map<String, String> prepareHeaders(String auth, String contentType) {
         return ImmutableMap.of(
