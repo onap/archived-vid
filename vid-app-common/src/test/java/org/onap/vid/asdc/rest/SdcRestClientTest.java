@@ -27,17 +27,23 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClient;
 
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -58,6 +64,9 @@ public class SdcRestClientTest {
 
     @Mock
     private HttpResponse<InputStream> httpStreamResponse;
+
+    @Mock
+    private HttpResponse<String> httpStringResponse;
 
     @Mock
     private InputStream inputStream;
@@ -123,6 +132,16 @@ public class SdcRestClientTest {
         restClient.getServiceToscaModel(randomId);
     }
 
+    @Test
+    public void shouldCallSDCHealthCheck() {
+        when(mockedSyncRestClient.get(contains(AsdcClient.URIS.HEALTH_CHECK_ENDPOINT), anyMap(),
+                eq(Collections.emptyMap()), eq(String.class))).thenReturn(httpStringResponse);
+
+
+        HttpResponse<String> stringHttpResponse = restClient.checkSDCConnectivity();
+
+        assertThat(httpStringResponse, is(stringHttpResponse));
+    }
 
     private Service createTestService() {
         Service service = new Service();
