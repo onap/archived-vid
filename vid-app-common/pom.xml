@@ -186,7 +186,7 @@
                     <execution>
                         <id>npm install</id>
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>install -ddd</arguments>
                         </configuration>
                         <goals>
                             <goal>npm</goal>
