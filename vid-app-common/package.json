@@ -20,7 +20,7 @@
     "gulp-inject": "^5.0.2",
     "gulp-jest": "^4.0.2",
     "gulp-uglify": "^3.0.1",
-    "jest": "^24.0.0",
+    "jest": "24.7.0",
     "jest-mock": "24.7.0",
     "stream-series": "^0.1.1"
   }
