@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "f9fc426d_9811dcbf",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-17T08:27:15Z",
+      "side": 1,
+      "message": "I think should be named `probeGetAllSubscribers`.",
+      "range": {
+        "startLine": 101,
+        "startChar": 35,
+        "endLine": 101,
+        "endChar": 50
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6ebb7edf_5b17c0a8",
         "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
         "patchSetId": 3
@@ -18,6 +41,75 @@
         "startChar": 21,
         "endLine": 102,
         "endChar": 83
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b7ddcc3_b60c1b9f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-17T08:27:15Z",
+      "side": 1,
+      "message": "I see here two issues.\nI do NOT think these should block this commit (or be part of), but still should be addressed:\n\n1. From generalization perspective, it should be good to have the request info in the return value.\n   e.g. Extending HttpResponse model.\n   Same applies for the exceptions: if can throw ExceptionWithRequestInfo, this is much better, in my view.\n\n2. `syncRestClient.get` has a fallback mechanism -- `callWithRetryOverHttp`. In case of probing, we will lose the indication of root case when `causedBySslHandshakeError` is positive. I think it\u0027s an important information we _should_ give somehow.",
+      "range": {
+        "startLine": 107,
+        "startChar": 58,
+        "endLine": 107,
+        "endChar": 75
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f24bb2f9_7f4af6e0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-17T08:27:15Z",
+      "side": 1,
+      "message": "I suggest leaking the whole URI, including host, port, protocol. i.e. `urlBase + String.format(URIS.SUBSCRIBERS, 0)`.\nThis will assist understanding misconfigs.",
+      "range": {
+        "startLine": 109,
+        "startChar": 122,
+        "endLine": 109,
+        "endChar": 125
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d8c1cae_7306126a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-17T08:27:15Z",
+      "side": 1,
+      "message": "I suggest leaking the whole URI, including host, port, protocol.",
+      "range": {
+        "startLine": 115,
+        "startChar": 20,
+        "endLine": 115,
+        "endChar": 23
       },
       "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
