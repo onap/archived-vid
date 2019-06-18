@@ -184,9 +184,19 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>npm show config</id>
+                        <configuration>
+                            <arguments>npm config ls -l</arguments>
+                        </configuration>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                    <execution>
                         <id>npm install</id>
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>install -ddd</arguments>
                         </configuration>
                         <goals>
                             <goal>npm</goal>
