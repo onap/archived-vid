@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "615d9fe2_e4259790",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/ServiceModelController.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-18T11:17:26Z",
+      "side": 1,
+      "message": "I suggest this debug messages may be removed, or changed to console.debug.",
+      "range": {
+        "startLine": 136,
+        "startChar": 3,
+        "endLine": 136,
+        "endChar": 14
+      },
+      "revId": "5dfb2177ed60eb8b6fe0866f5a89598456ede8da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "564de07b_7b14c01e",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/aaiSubscriberController.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-18T11:17:26Z",
+      "side": 1,
+      "message": "Can this method be reused across here AND ServiceModelController? I suppose other contextes will pop later as well.",
+      "revId": "5dfb2177ed60eb8b6fe0866f5a89598456ede8da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97ca5ba1_8489796a",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/report-modal/report-modal.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-18T11:17:26Z",
+      "side": 1,
+      "message": "On my machine `vm.download` is initialized before `vm.report`, so file-content is always \"undefined\".\nStill, this is very nice, I like it.",
+      "revId": "5dfb2177ed60eb8b6fe0866f5a89598456ede8da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
