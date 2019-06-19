@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "73343c3b_8b5b1c84",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9fc426d_9811dcbf",
+      "range": {
+        "startLine": 101,
+        "startChar": 35,
+        "endLine": 101,
+        "endChar": 50
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6ebb7edf_5b17c0a8",
         "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2019-06-14T11:41:43Z",
       "side": 1,
       "message": "shouldn\u0027t that be stored in some external properties ?",
+      "range": {
+        "startLine": 102,
+        "startChar": 21,
+        "endLine": 102,
+        "endChar": 83
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ff16c94_67921d50",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ebb7edf_5b17c0a8",
       "range": {
         "startLine": 102,
         "startChar": 21,
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "4cd6c025_64941aaa",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f24bb2f9_7f4af6e0",
+      "range": {
+        "startLine": 109,
+        "startChar": 122,
+        "endLine": 109,
+        "endChar": 125
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6c0b0ec3_ea9da8b7",
         "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
         "patchSetId": 3
@@ -105,6 +177,30 @@
       "writtenOn": "2019-06-17T08:48:07Z",
       "side": 1,
       "message": "I prefer having the value \"0\", as it clearly signal \"no response\" instead of a fabricated return value.",
+      "range": {
+        "startLine": 114,
+        "startChar": 105,
+        "endLine": 114,
+        "endChar": 126
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "063bff25_8642f07f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c0b0ec3_ea9da8b7",
       "range": {
         "startLine": 114,
         "startChar": 105,
@@ -140,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "e78d69be_e9e49b6c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiOverTLSClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d8c1cae_7306126a",
+      "range": {
+        "startLine": 115,
+        "startChar": 20,
+        "endLine": 115,
+        "endChar": 23
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a11b63e2_aaf8310b",
         "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/AsdcClient.java",
         "patchSetId": 3
@@ -151,6 +271,30 @@
       "writtenOn": "2019-06-17T08:48:07Z",
       "side": 1,
       "message": "Redundant slash here.",
+      "range": {
+        "startLine": 37,
+        "startChar": 54,
+        "endLine": 37,
+        "endChar": 55
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "949de4bf_7ab3c982",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/AsdcClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a11b63e2_aaf8310b",
       "range": {
         "startLine": 37,
         "startChar": 54,
@@ -209,6 +353,30 @@
     },
     {
       "key": {
+        "uuid": "c151f3ec_165cf0d6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cba50d1e_18666cee",
+      "range": {
+        "startLine": 414,
+        "startChar": 16,
+        "endLine": 414,
+        "endChar": 28
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f7cad485_6403e6eb",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
         "patchSetId": 3
@@ -220,6 +388,30 @@
       "writtenOn": "2019-06-17T10:04:52Z",
       "side": 1,
       "message": "Or:\n```\nimport org.apache.commons.collections4.ListUtils\n\nreturn ListUtils.emptyIfNull(requestList.getRequestList());\n```",
+      "range": {
+        "startLine": 413,
+        "startChar": 0,
+        "endLine": 415,
+        "endChar": 0
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86fd8cb4_a6e858ec",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7cad485_6403e6eb",
       "range": {
         "startLine": 413,
         "startChar": 0,
@@ -272,6 +464,30 @@
     },
     {
       "key": {
+        "uuid": "67ec00b2_6bd84975",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestObjectWithRequestInfo.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ff972c4_3c5e0bec",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 89
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3af408f1_7b94f680",
         "filename": "vid-app-common/src/main/java/org/onap/vid/services/VidServiceImpl.java",
         "patchSetId": 3
@@ -312,6 +528,30 @@
     },
     {
       "key": {
+        "uuid": "1f60cc4a_a3589856",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/VidServiceImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "448f7c40_455d1984",
+      "range": {
+        "startLine": 160,
+        "startChar": 105,
+        "endLine": 160,
+        "endChar": 126
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "945d4899_44b3b8a2",
         "filename": "vid-app-common/src/main/java/org/onap/vid/services/VidServiceImpl.java",
         "patchSetId": 3
@@ -335,6 +575,30 @@
     },
     {
       "key": {
+        "uuid": "4f12d0a2_8cc8c657",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/VidServiceImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "945d4899_44b3b8a2",
+      "range": {
+        "startLine": 161,
+        "startChar": 64,
+        "endLine": 161,
+        "endChar": 79
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f4d1d50d_e1202552",
         "filename": "vid-app-common/src/test/java/org/onap/vid/aai/AaiOverTLSClientTest.java",
         "patchSetId": 3
@@ -346,6 +610,30 @@
       "writtenOn": "2019-06-17T10:04:52Z",
       "side": 1,
       "message": "Can we add a test where syncRestClient.get throws an exception?",
+      "range": {
+        "startLine": 92,
+        "startChar": 16,
+        "endLine": 92,
+        "endChar": 56
+      },
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39538d7b_59624ea9",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/aai/AaiOverTLSClientTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4d1d50d_e1202552",
       "range": {
         "startLine": 92,
         "startChar": 16,
