@@ -459,6 +459,24 @@
     },
     {
       "key": {
+        "uuid": "57cf5f9d_81c01285",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 877,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-19T11:05:35Z",
+      "side": 1,
+      "message": "I tried to fit into existing implementation as much as I could. But I agree that this method should be refactored - I\u0027ll try to do that in separate commit",
+      "parentUuid": "b71e4bce_bf67e960",
+      "revId": "62f4b0e07183a55083c8340ec2e43a3ae4e16610",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ff972c4_3c5e0bec",
         "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestObjectWithRequestInfo.java",
         "patchSetId": 3
