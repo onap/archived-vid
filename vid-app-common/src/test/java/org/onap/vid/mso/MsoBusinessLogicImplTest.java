@@ -23,12 +23,17 @@ package org.onap.vid.mso;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.hamcrest.MockitoHamcrest;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.model.SOWorkflowList;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.mso.rest.RequestList;
+import org.onap.vid.mso.rest.RequestWrapper;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -84,8 +89,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.endsWith;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
 import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
@@ -1382,6 +1389,31 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         given(workflowListResponse.getStatus()).willReturn(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         msoBusinessLogic.getWorkflowListByModelId("sampleModelId");
+    }
+
+
+    @Test
+    public void probeShouldReturnOrchestrationRequestsAndConnectionStatus(){
+        MsoResponseWrapper wrapper = getMsoResponseWrapper();
+        given(msoInterface.getOrchestrationRequest(anyString(),anyString(),
+                anyString(),any(RestObject.class),anyBoolean())).willReturn(wrapper);
+
+        ExternalComponentStatus externalComponentStatus = msoBusinessLogic.probeGetOrchestrationRequests();
+
+        assertThat(externalComponentStatus.isAvailable()).isTrue();
+        assertThat(externalComponentStatus.getComponent()).isEqualTo(ExternalComponentStatus.Component.MSO);
+    }
+
+    @NotNull
+    private MsoResponseWrapper getMsoResponseWrapper() {
+        MsoResponseWrapper wrapper=new MsoResponseWrapper();
+        RequestWrapper requestWrapper = new RequestWrapper();
+        requestWrapper.setRequest(new Request());
+        RequestList requestList = new RequestList();
+        List<RequestWrapper> response = Lists.newArrayList(requestWrapper);
+        requestList.setRequestList(response);
+        wrapper.setEntity(new Gson().toJson(requestList));
+        return wrapper;
     }
 
     private WorkflowRequestDetail createWorkflowRequestDetail() {
