@@ -38,10 +38,10 @@
                 <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
                 <epsdk.version>1.1.0-SNAPSHOT</epsdk.version>
                 <nexusproxy>https://nexus.onap.org</nexusproxy>
-                <snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
-                <releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
-                <stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
-                <sitePath>/content/sites/site/org/openecomp/vid/${project.version}</sitePath>
+                <snapshotNexusPath>content/repositories/snapshots/</snapshotNexusPath>
+                <releaseNexusPath>content/repositories/releases/</releaseNexusPath>
+                <stagingNexusPath>content/repositories/staging/</stagingNexusPath>
+                <sitePath>content/sites/site/org/openecomp/vid/${project.version}</sitePath>
             </properties>
 
             <repositories>

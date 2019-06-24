@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.onap.oparent</groupId>
         <artifactId>oparent</artifactId>
-        <version>1.2.3</version>
+        <version>2.0.0</version>
         <relativePath/>
     </parent>
 
@@ -31,10 +31,10 @@
         <!-- Skip assembling the zip; assemble via mvn -Dskipassembly=false .. -->
         <skipassembly>true</skipassembly>
         <nexusproxy>https://nexus.onap.org</nexusproxy>
-        <snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
-        <releaseNexusPath>/content/repositories/releases/</releaseNexusPath>
-        <stagingNexusPath>/content/repositories/staging/</stagingNexusPath>
-        <sitePath>/content/sites/site/org/onap/vid/${project.version}</sitePath>
+        <snapshotNexusPath>content/repositories/snapshots/</snapshotNexusPath>
+        <releaseNexusPath>content/repositories/releases/</releaseNexusPath>
+        <stagingNexusPath>content/repositories/staging/</stagingNexusPath>
+        <sitePath>content/sites/site/org/onap/vid/${project.version}</sitePath>
 
         <!-- SONAR -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -48,17 +48,17 @@
         <repository>
             <id>ecomp-releases</id>
             <name>VID Release Repository</name>
-            <url>${nexusproxy}${releaseNexusPath}</url>
+            <url>${nexusproxy}/${releaseNexusPath}</url>
         </repository>
         <repository>
             <id>ecomp-snapshots</id>
             <name>VID Snapshot Repository</name>
-            <url>${nexusproxy}${snapshotNexusPath}</url>
+            <url>${nexusproxy}/${snapshotNexusPath}</url>
         </repository>
         <repository>
             <id>ecomp-staging</id>
             <name>VID Staging Repository</name>
-            <url>${nexusproxy}${stagingNexusPath}</url>
+            <url>${nexusproxy}/${stagingNexusPath}</url>
         </repository>
         <repository>
             <!-- Snapshots repository has ECOMP snapshot artifacts -->
@@ -81,7 +81,7 @@
         <!-- added for javadoc -->
         <site>
             <id>ecomp-site</id>
-            <url>dav:${nexusproxy}${sitePath}</url>
+            <url>dav:${nexusproxy}/${sitePath}</url>
         </site>
     </distributionManagement>
 
@@ -110,18 +110,6 @@
     <build>
         <finalName>vid</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <nexusUrl>${nexusproxy}</nexusUrl>
-                    <stagingProfileId>176c31dfe190a</stagingProfileId>
-                    <serverId>ecomp-staging</serverId>
-                </configuration>
-            </plugin>
-
             <!-- Compile to Java 1.8 class output format -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
