@@ -69,8 +69,8 @@ public class WebConfig {
 
 
     @Bean
-    public VidService vidService(AsdcClient asdcClient, FeatureManager featureManager) {
-        return new VidServiceImpl(asdcClient, featureManager);
+    public VidService vidService(AsdcClient asdcClient, ToscaParserImpl2 toscaParserImpl2,FeatureManager featureManager) {
+        return new VidServiceImpl(asdcClient,toscaParserImpl2, featureManager);
     }
 
     @Bean

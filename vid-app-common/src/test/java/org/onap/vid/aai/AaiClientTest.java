@@ -146,8 +146,8 @@ public class AaiClientTest {
                 new AaiResponseWithRequestInfo<>(
                         HttpMethod.GET, "url", new AaiResponse<>(subscribers, null, 200),
                         "rawData"));
-        Mockito.when(aaiClientMock.probeAaiGetAllSubscribers()).thenCallRealMethod();
-        ExternalComponentStatus result  = aaiClientMock.probeAaiGetAllSubscribers();
+        Mockito.when(aaiClientMock.probeComponent()).thenCallRealMethod();
+        ExternalComponentStatus result  = aaiClientMock.probeComponent();
         assertThat(statusDataReflected(result),is(statusDataReflected(expectedStatus)));
         assertThat(requestMetadataReflected(result.getMetadata()),is(requestMetadataReflected(expectedStatus.getMetadata())));
     }
@@ -278,8 +278,8 @@ public class AaiClientTest {
     }
 
     private ExternalComponentStatus callProbeAaiGetAllSubscribersAndAssertNotAvailable() {
-        Mockito.when(aaiClientMock.probeAaiGetAllSubscribers()).thenCallRealMethod();
-        ExternalComponentStatus result  = aaiClientMock.probeAaiGetAllSubscribers();
+        Mockito.when(aaiClientMock.probeComponent()).thenCallRealMethod();
+        ExternalComponentStatus result  = aaiClientMock.probeComponent();
         assertFalse(result.isAvailable());
         return result;
     }

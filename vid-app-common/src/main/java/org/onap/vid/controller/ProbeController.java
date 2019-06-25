@@ -58,12 +58,11 @@ public class ProbeController extends RestrictedBaseController {
     @GetMapping
     public List<ExternalComponentStatus> getProbe() {
         List<ExternalComponentStatus> componentStatuses = new ArrayList<>();
-        componentStatuses.add(aaiClient.probeAaiGetAllSubscribers());
-        componentStatuses.add(newAaiClient.probeGetAllSubscribers());
-        componentStatuses.add(schedulerService.probeGetSchedulerChangeManagements());
-        componentStatuses.add(msoBusinessLogic.probeGetOrchestrationRequests());
-        componentStatuses.add(vidService.probeSDCConnection());
+        componentStatuses.add(aaiClient.probeComponent());
+        componentStatuses.add(newAaiClient.probeComponent());
+        componentStatuses.add(schedulerService.probeComponent());
+        componentStatuses.add(msoBusinessLogic.probeComponent());
+        componentStatuses.add(vidService.probeComponent());
         return componentStatuses;
     }
-
 }

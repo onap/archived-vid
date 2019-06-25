@@ -31,13 +31,12 @@ import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.ResourceType;
+import org.onap.vid.controller.ProbeInterface;
 import org.onap.vid.model.SubscriberList;
-import org.onap.vid.model.probes.ExternalComponentStatus;
-
 /**
  * Created by Oren on 7/4/17.
  */
-public interface AaiClientInterface {
+public interface AaiClientInterface  extends ProbeInterface {
 
     boolean isNodeTypeExistsByName(String name, ResourceType type);
 
@@ -86,8 +85,6 @@ public interface AaiClientInterface {
     List<PortDetailsTranslator.PortDetails> getPortMirroringSourcePorts(String configurationID);
 
     AaiResponse getInstanceGroupsByVnfInstanceId(String vnfInstanceId);
-
-    ExternalComponentStatus probeAaiGetAllSubscribers();
 
     Response doAaiGet(String uri, boolean xml);
 

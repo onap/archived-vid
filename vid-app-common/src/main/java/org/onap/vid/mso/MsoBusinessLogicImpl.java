@@ -26,9 +26,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
 import io.joshworks.restclient.http.HttpResponse;
 import org.apache.commons.collections4.ListUtils;
-import org.jetbrains.annotations.NotNull;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
@@ -866,17 +866,15 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
 
     @Override
-    public ExternalComponentStatus probeGetOrchestrationRequests() {
+    public ExternalComponentStatus probeComponent() {
         String url = SystemProperties.getProperty(
                 MsoProperties.MSO_SERVER_URL) + "/" + SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
         long startTime = System.currentTimeMillis();
         ExternalComponentStatus externalComponentStatus;
 
         try {
-            RestObject<List<Request>> restObject = createRequestsList(getOrchestrationRequestsForDashboard());
-
-            StatusMetadata statusMetadata = new HttpRequestMetadata(new RestObjectWithRequestInfo(HttpMethod.GET, url, restObject),
-                    "VID-SO communication works", System.currentTimeMillis() - startTime);
+            String rawBody = new Gson().toJson(getOrchestrationRequestsForDashboard());
+            StatusMetadata statusMetadata=new HttpRequestMetadata(HttpMethod.GET,200,url,rawBody,"VID-SO",System.currentTimeMillis() - startTime);
 
             externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, true, statusMetadata);
         } catch (Exception e) {
@@ -886,15 +884,6 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         return externalComponentStatus;
     }
-
-    @NotNull
-    private RestObject<List<Request>> createRequestsList(List<Request> orchestrationRequestsForDashboard) {
-        RestObject<List<Request>> restObject = new RestObject<>();
-        restObject.set(orchestrationRequestsForDashboard);
-        restObject.setStatusCode(200);
-        return restObject;
-    }
-
 
     private void validateUpdateVnfConfig(RequestDetails requestDetails) {
         final String noValidPayloadMsg = "No valid payload in " + ChangeManagementRequest.CONFIG_UPDATE + " request";

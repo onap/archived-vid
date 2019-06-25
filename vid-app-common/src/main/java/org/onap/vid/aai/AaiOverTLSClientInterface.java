@@ -23,10 +23,10 @@ package org.onap.vid.aai;
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.model.ResourceType;
+import org.onap.vid.controller.ProbeInterface;
 import org.onap.vid.model.SubscriberList;
-import org.onap.vid.model.probes.ExternalComponentStatus;
 
-public interface AaiOverTLSClientInterface {
+public interface AaiOverTLSClientInterface extends ProbeInterface {
 
     class URIS {
 
@@ -47,8 +47,5 @@ public interface AaiOverTLSClientInterface {
     boolean isNodeTypeExistsByName(String name, ResourceType type);
 
     HttpResponse<SubscriberList> getAllSubscribers();
-
-
-    ExternalComponentStatus probeGetAllSubscribers();
 
 }

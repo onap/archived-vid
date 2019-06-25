@@ -24,9 +24,9 @@ package org.onap.vid.mso;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.controller.ProbeInterface;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
-import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
@@ -37,7 +37,7 @@ import org.onap.vid.mso.rest.Task;
 import java.util.List;
 import java.util.UUID;
 
-public interface MsoBusinessLogic {
+public interface MsoBusinessLogic extends ProbeInterface {
 
     // this function should get params from tosca and send them to instance at mso, then return success response.
     MsoResponseWrapper createSvcInstance(RequestDetails msoRequest);
@@ -142,6 +142,4 @@ public interface MsoBusinessLogic {
     MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails);
 
     SOWorkflowList getWorkflowListByModelId(String modelVersionId);
-
-    ExternalComponentStatus probeGetOrchestrationRequests();
 }

@@ -52,6 +52,7 @@ import static org.onap.vid.properties.Features.FLAG_SERVICE_MODEL_CACHE;
  * The Class VidController.
  */
 
+@org.springframework.stereotype.Service
 public class VidServiceImpl implements VidService {
     /**
      * The Constant LOG.
@@ -61,7 +62,6 @@ public class VidServiceImpl implements VidService {
     protected final AsdcClient asdcClient;
     private final FeatureManager featureManager;
 
-    @Autowired
     private ToscaParserImpl2 toscaParser;
     private final LoadingCache<String, ServiceModel> serviceModelCache;
 
@@ -72,10 +72,11 @@ public class VidServiceImpl implements VidService {
         }
     }
 
-    public VidServiceImpl(AsdcClient asdcClient, FeatureManager featureManager) {
+    @Autowired
+    public VidServiceImpl(AsdcClient asdcClient, ToscaParserImpl2 toscaParser, FeatureManager featureManager) {
         this.asdcClient = asdcClient;
         this.featureManager = featureManager;
-
+        this.toscaParser=toscaParser;
         this.serviceModelCache = CacheBuilder.newBuilder()
                 .maximumSize(1000)
                 .expireAfterAccess(7, TimeUnit.DAYS)
@@ -148,13 +149,13 @@ public class VidServiceImpl implements VidService {
     }
 
     @Override
-    public ExternalComponentStatus probeSDCConnection() {
+    public ExternalComponentStatus probeComponent() {
         long startTime = System.currentTimeMillis();
         ExternalComponentStatus externalComponentStatus;
         try {
             HttpResponse<String> stringHttpResponse = asdcClient.checkSDCConnectivity();
-            HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(stringHttpResponse, HttpMethod.GET, "SDC healthCheck",
-                    System.currentTimeMillis() - startTime, AsdcClient.URIS.HEALTH_CHECK_ENDPOINT);
+            HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(HttpMethod.GET, stringHttpResponse.getStatus(), asdcClient.getBaseUrl() + AsdcClient.URIS.HEALTH_CHECK_ENDPOINT, stringHttpResponse.getBody(), "SDC healthCheck",
+                    System.currentTimeMillis() - startTime);
             externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.SDC, stringHttpResponse.isSuccessful(), httpRequestMetadata);
         } catch (Exception e) {
             HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(HttpMethod.GET, 0,
