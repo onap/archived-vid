@@ -93,7 +93,7 @@ public class VidServiceImplTest {
     public void initMocks() throws AsdcCatalogException, SdcToscaParserException, IllegalAccessException {
         MockitoAnnotations.initMocks(this);
 
-        vidService = new VidServiceImpl(asdcClientMock, featureManager);
+        vidService = new VidServiceImpl(asdcClientMock, toscaParserMock, featureManager);
         FieldUtils.writeField(vidService, "toscaParser", toscaParserMock, true);
 
         when(featureManager.isActive(Features.FLAG_SERVICE_MODEL_CACHE)).thenReturn(true);
@@ -157,7 +157,7 @@ public class VidServiceImplTest {
         when(httpResponse.getBody()).thenReturn("sampleBody");
 
 
-        ExternalComponentStatus externalComponentStatus = vidService.probeSDCConnection();
+        ExternalComponentStatus externalComponentStatus = vidService.probeComponent();
 
         assertThat(externalComponentStatus.isAvailable(), is(true));
         assertThat(externalComponentStatus.getComponent(), is(ExternalComponentStatus.Component.SDC));
@@ -169,7 +169,7 @@ public class VidServiceImplTest {
     public void shouldProperlyHandleNotWorkingSDCConnection(){
         when(asdcClientMock.checkSDCConnectivity()).thenThrow(new RuntimeException("not working"));
 
-        ExternalComponentStatus externalComponentStatus = vidService.probeSDCConnection();
+        ExternalComponentStatus externalComponentStatus = vidService.probeComponent();
 
         assertThat(externalComponentStatus.isAvailable(), is(false));
         assertThat(externalComponentStatus.getMetadata().getDescription(),containsString("not working"));

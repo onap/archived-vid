@@ -56,4 +56,6 @@ public interface AsdcClient {
 
 
 	HttpResponse<String> checkSDCConnectivity();
+
+	String getBaseUrl();
 }

@@ -98,7 +98,7 @@ public class AaiOverTLSClient implements AaiOverTLSClientInterface {
     }
 
     @Override
-    public ExternalComponentStatus probeGetAllSubscribers() {
+    public ExternalComponentStatus probeComponent() {
         String url = urlBase + String.format(URIS.SUBSCRIBERS, 0);
         long startTime = System.currentTimeMillis();
         ExternalComponentStatus externalComponentStatus;

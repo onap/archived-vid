@@ -98,11 +98,17 @@ public class SdcRestClient implements AsdcClient {
     }
 
 
+    @Override
     public HttpResponse<String> checkSDCConnectivity() {
         String finalUrl = baseUrl + URIS.HEALTH_CHECK_ENDPOINT;
 
         return syncRestClient
                 .get(finalUrl, prepareHeaders(auth, APPLICATION_JSON), Collections.emptyMap(), String.class);
+    }
+
+    @Override
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
     private Map<String, String> prepareHeaders(String auth, String contentType) {

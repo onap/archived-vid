@@ -744,7 +744,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public ExternalComponentStatus probeAaiGetAllSubscribers(){
+    public ExternalComponentStatus probeComponent(){
         long startTime = System.currentTimeMillis();
         try {
             AaiResponseWithRequestInfo<SubscriberList> responseWithRequestInfo = getAllSubscribers(true);
