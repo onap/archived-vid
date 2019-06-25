@@ -81,10 +81,6 @@ public class HttpRequestMetadata extends StatusMetadata {
                 duration);
     }
 
-    public HttpRequestMetadata(HttpResponse<String> response, HttpMethod method, String description, long duration, String url) {
-        this(method, response.getStatus(), url, response.getBody(), description, duration);
-    }
-
 
 
     public HttpMethod getHttpMethod() {

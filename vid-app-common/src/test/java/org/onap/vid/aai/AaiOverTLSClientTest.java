@@ -102,7 +102,7 @@ public class AaiOverTLSClientTest {
         when(response.isSuccessful()).thenReturn(true);
 
 
-        ExternalComponentStatus externalComponentStatus = aaiRestClient.probeGetAllSubscribers();
+        ExternalComponentStatus externalComponentStatus = aaiRestClient.probeComponent();
 
         assertThat(externalComponentStatus.isAvailable()).isTrue();
         assertThat(externalComponentStatus.getComponent()).isEqualTo(ExternalComponentStatus.Component.AAI);
@@ -114,7 +114,7 @@ public class AaiOverTLSClientTest {
         when(syncRestClient.get(contains(SUBSCRIBERS), eq(getHeaders()), eq(Collections.emptyMap()),
                 eq(SubscriberList.class))).thenThrow(new RuntimeException("call failed"));
 
-        ExternalComponentStatus externalComponentStatus = aaiRestClient.probeGetAllSubscribers();
+        ExternalComponentStatus externalComponentStatus = aaiRestClient.probeComponent();
 
         assertThat(externalComponentStatus.isAvailable()).isFalse();
         assertThat(externalComponentStatus.getComponent()).isEqualTo(ExternalComponentStatus.Component.AAI);

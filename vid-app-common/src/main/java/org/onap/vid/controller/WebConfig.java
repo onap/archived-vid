@@ -69,11 +69,6 @@ public class WebConfig {
 
 
     @Bean
-    public VidService vidService(AsdcClient asdcClient, FeatureManager featureManager) {
-        return new VidServiceImpl(asdcClient, featureManager);
-    }
-
-    @Bean
     public SchedulerService schedulerService(ChangeManagementService changeManagementService) {
         return new SchedulerServiceImpl(changeManagementService);
     }

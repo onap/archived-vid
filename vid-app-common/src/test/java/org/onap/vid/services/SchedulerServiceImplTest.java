@@ -123,7 +123,7 @@ public class SchedulerServiceImplTest extends AbstractTestNGSpringContextTests {
                 restObjectWithRequestInfo
         );
 
-        final ExternalComponentStatus schedulerStatus = schedulerService.probeGetSchedulerChangeManagements();
+        final ExternalComponentStatus schedulerStatus = schedulerService.probeComponent();
 
         assertSchedulerStatus(schedulerStatus, true);
         assertMetadata(schedulerStatus, 200, startsWith(responseString.substring(0, 400)), "my pretty url", equalTo("OK"));
@@ -142,7 +142,7 @@ public class SchedulerServiceImplTest extends AbstractTestNGSpringContextTests {
                 restObjectWithRequestInfo
         );
 
-        final ExternalComponentStatus schedulerStatus = schedulerService.probeGetSchedulerChangeManagements();
+        final ExternalComponentStatus schedulerStatus = schedulerService.probeComponent();
 
         assertSchedulerStatus(schedulerStatus, true);
 
@@ -160,7 +160,7 @@ public class SchedulerServiceImplTest extends AbstractTestNGSpringContextTests {
         when(changeManagementService.getSchedulerChangeManagementsWithRequestInfo()).thenThrow(new ExceptionWithRequestInfo(HttpMethod.GET,
                 "my pretty url", responseString, 200, new JsonParseException(null, "Unrecognized token")));
 
-        final ExternalComponentStatus schedulerStatus = schedulerService.probeGetSchedulerChangeManagements();
+        final ExternalComponentStatus schedulerStatus = schedulerService.probeComponent();
 
         assertSchedulerStatus(schedulerStatus, false);
 
@@ -172,7 +172,7 @@ public class SchedulerServiceImplTest extends AbstractTestNGSpringContextTests {
         when(changeManagementService.getSchedulerChangeManagementsWithRequestInfo()).thenThrow(
                 new GenericUncheckedException(new NotFoundException("Get with status = 400")));
 
-        final ExternalComponentStatus schedulerStatus = schedulerService.probeGetSchedulerChangeManagements();
+        final ExternalComponentStatus schedulerStatus = schedulerService.probeComponent();
 
         assertThat(schedulerStatus.isAvailable(), is(false));
         assertThat(schedulerStatus.getComponent(), is(SCHEDULER));
