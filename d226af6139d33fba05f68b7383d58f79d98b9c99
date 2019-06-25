@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb7245bc_3d2881b7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ProbeController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-06-25T12:49:36Z",
+      "side": 1,
+      "message": "woudnt it better to keep all components able to probe in a collection and just iterate over them?",
+      "revId": "d226af6139d33fba05f68b7383d58f79d98b9c99",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
