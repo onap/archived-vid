@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,25 +24,34 @@ import java.util.Properties;
 
 public class GitRepositoryState {
 
-    private final String commitId;
-    private final String commitMessageShort;
-    private final String commitTime;
+	public static final GitRepositoryState EMPTY = new GitRepositoryState("", "", "");
 
-    public GitRepositoryState(Properties properties) {
-        this.commitId = String.valueOf(properties.get("git.commit.id"));
-        this.commitMessageShort = String.valueOf(properties.get("git.commit.message.short"));
-        this.commitTime = String.valueOf(properties.get("git.commit.time"));
-    }
+	private final String commitId;
+	private final String commitMessageShort;
+	private final String commitTime;
 
-    public String getCommitId() {
-        return commitId;
-    }
+	public GitRepositoryState(Properties properties) {
+		this(String.valueOf(String.valueOf(properties.get("git.commit.id"))),
+				String.valueOf(properties.get("git.commit.message.short")),
+				String.valueOf(properties.get("git.commit.time"))
+		);
+	}
 
-    public String getCommitMessageShort() {
-        return commitMessageShort;
-    }
+	private GitRepositoryState(String commitId, String commitMessageShort, String commitTime) {
+		this.commitId = commitId;
+		this.commitMessageShort = commitMessageShort;
+		this.commitTime = commitTime;
+	}
 
-    public String getCommitTime() {
-        return commitTime;
-    }
+	public String getCommitId() {
+		return commitId;
+	}
+
+	public String getCommitMessageShort() {
+		return commitMessageShort;
+	}
+
+	public String getCommitTime() {
+		return commitTime;
+	}
 }
