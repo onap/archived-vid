@@ -2,14 +2,14 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,9 +18,33 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.scheduler;
+package org.onap.vid.model.errorReport;
 
-import org.onap.vid.services.ProbeInterface;
+public class ReportCreationParameters {
+	private String requestId;
+	private String serviceUuid;
 
-public interface SchedulerService  extends ProbeInterface {
+	public ReportCreationParameters() {}
+
+	public ReportCreationParameters(String requestId, String serviceUuid) {
+		this.requestId = requestId;
+		this.serviceUuid = serviceUuid;
+	}
+
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public String getServiceUuid() {
+		return serviceUuid;
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
+
+	public void setServiceUuid(String serviceUuid) {
+		this.serviceUuid = serviceUuid;
+	}
 }
+
