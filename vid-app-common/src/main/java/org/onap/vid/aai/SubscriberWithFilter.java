@@ -26,6 +26,7 @@ import org.onap.vid.model.Subscriber;
 /**
  * Created by Oren on 7/5/17.
  */
+
 public class SubscriberWithFilter extends Subscriber{
 
     @JsonProperty("is-permitted")
@@ -37,5 +38,16 @@ public class SubscriberWithFilter extends Subscriber{
 
     public void setIsPermitted(boolean isPermitted) {
         this.isPermitted = isPermitted;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriberWithFilter{" +
+                "isPermitted=" + isPermitted +
+                ", globalCustomerId='" + globalCustomerId + '\'' +
+                ", subscriberName='" + subscriberName + '\'' +
+                ", subscriberType='" + subscriberType + '\'' +
+                ", resourceVersion='" + resourceVersion + '\'' +
+                '}';
     }
 }
