@@ -23,7 +23,7 @@ package org.onap.vid.aai;
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.model.ResourceType;
-import org.onap.vid.controller.ProbeInterface;
+import org.onap.vid.services.ProbeInterface;
 import org.onap.vid.model.SubscriberList;
 
 public interface AaiOverTLSClientInterface extends ProbeInterface {

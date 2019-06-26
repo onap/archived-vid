@@ -17,7 +17,7 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-package org.onap.vid.controller;
+package org.onap.vid.services;
 
 import org.onap.vid.model.probes.ExternalComponentStatus;
 
