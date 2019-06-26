@@ -47,4 +47,11 @@ public class SubscriberListWithFilterData {
     }
 
     public List<SubscriberWithFilter> customer;
+
+    @Override
+    public String toString() {
+        return "SubscriberListWithFilterData{" +
+                "customer=" + customer +
+                '}';
+    }
 }
