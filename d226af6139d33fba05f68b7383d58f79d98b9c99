@@ -16,6 +16,24 @@
       "revId": "d226af6139d33fba05f68b7383d58f79d98b9c99",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9730e049_7e2664b3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ProbeController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-06-26T06:00:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb7245bc_3d2881b7",
+      "revId": "d226af6139d33fba05f68b7383d58f79d98b9c99",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
