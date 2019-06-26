@@ -31,7 +31,7 @@ import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.ResourceType;
-import org.onap.vid.controller.ProbeInterface;
+import org.onap.vid.services.ProbeInterface;
 import org.onap.vid.model.SubscriberList;
 /**
  * Created by Oren on 7/4/17.
