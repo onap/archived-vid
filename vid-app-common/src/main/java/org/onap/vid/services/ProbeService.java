@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,26 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
+package org.onap.vid.services;
 
-package org.onap.vid.controller;
-
-import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.vid.model.probes.ExternalComponentStatus;
-import org.onap.vid.services.ProbeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("probe")
-public class ProbeController extends RestrictedBaseController {
+@Service
+public class ProbeService {
 
-    final private ProbeService probeService;
+	private final List<ProbeInterface> probes;
 
-    @Autowired
-    public ProbeController(ProbeService probeService) {
-        this.probeService = probeService;
-    }
+	@Autowired
+	public ProbeService(List<ProbeInterface> probes) {
+		this.probes = probes;
+	}
 
-    @GetMapping
-    public List<ExternalComponentStatus> getProbe() {
-        return probeService.getProbe();
-    }
+	public List<ExternalComponentStatus> getProbe(){
+		return probes.stream().map(ProbeInterface::probeComponent).collect(Collectors.toList());
+	}
 }
