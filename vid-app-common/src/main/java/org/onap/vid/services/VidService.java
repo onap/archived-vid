@@ -22,7 +22,6 @@
 package org.onap.vid.services;
 
 import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.controller.ProbeInterface;
 import org.onap.vid.model.ServiceModel;
 
 public interface VidService extends ProbeInterface {

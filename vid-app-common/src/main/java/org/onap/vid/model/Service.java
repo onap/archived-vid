@@ -33,19 +33,19 @@ public class Service {
 
 	/** The uuid. */
 	private String uuid;
-	
+
 	/** The invariant uuid. */
 	private String invariantUuid;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The version. */
 	private String version;
-	
+
 	/** The tosca model URL. */
 	private String toscaModelURL;
-	
+
 	/** The category. */
 	private String category;
 
@@ -54,10 +54,10 @@ public class Service {
 
 	/** The Service Role */
 	private String serviceRole;
-	
+
 	/** The description. */
 	private String description;
-	
+
 	/** The service ecomp naming flag */
 	private String serviceEcompNaming;
 
@@ -77,7 +77,7 @@ public class Service {
 	public String getUuid() {
 		return uuid;
 	}
-	
+
 	/**
 	 * Gets the invariant uuid.
 	 *
@@ -86,7 +86,7 @@ public class Service {
 	public String getInvariantUuid() {
 		return invariantUuid;
 	}
-	
+
 	/**
 	 * Gets the name.
 	 *
@@ -95,7 +95,7 @@ public class Service {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Gets the version.
 	 *
@@ -104,7 +104,7 @@ public class Service {
 	public String getVersion() {
 		return version;
 	}
-	
+
 	/**
 	 * Gets the tosca model URL.
 	 *
@@ -113,7 +113,7 @@ public class Service {
 	public String getToscaModelURL() {
 		return toscaModelURL;
 	}
-	
+
 	/**
 	 * Gets the category.
 	 *
@@ -122,7 +122,7 @@ public class Service {
 	public String getCategory() {
 		return category;
 	}
-	
+
 	/**
 	 * Gets the description.
 	 *
@@ -131,7 +131,7 @@ public class Service {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	/**
 	 * Gets the inputs.
 	 *
@@ -161,7 +161,7 @@ public class Service {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	
+
 	/**
 	 * Sets the invariant uuid.
 	 *
@@ -170,7 +170,7 @@ public class Service {
 	public void setInvariantUuid(String invariantUuid) {
 		this.invariantUuid = invariantUuid;
 	}
-	
+
 	/**
 	 * Sets the name.
 	 *
@@ -179,7 +179,7 @@ public class Service {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Sets the version.
 	 *
@@ -188,7 +188,7 @@ public class Service {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	
+
 	/**
 	 * Sets the tosca model URL.
 	 *
@@ -197,7 +197,7 @@ public class Service {
 	public void setToscaModelURL(String toscaModelURL) {
 		this.toscaModelURL = toscaModelURL;
 	}
-	
+
 	/**
 	 * Sets the category.
 	 *
@@ -206,7 +206,7 @@ public class Service {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	/**
 	 * Sets the description.
 	 *
@@ -215,7 +215,7 @@ public class Service {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	/**
 	 * Sets the inputs.
 	 *
@@ -239,7 +239,7 @@ public class Service {
 	public int hashCode() {
 		return UUID.fromString(getUuid()).hashCode();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -247,9 +247,9 @@ public class Service {
 	public boolean equals(Object o) {
 		if (o == this) return true;
 		if (!(o instanceof Service)) return false;
-		
+
 		final Service service = (Service) o;
-		
+
 		return (service.getUuid().equals(getUuid()));
 	}
 
