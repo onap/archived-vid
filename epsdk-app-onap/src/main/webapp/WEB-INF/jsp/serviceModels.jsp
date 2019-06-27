@@ -40,7 +40,7 @@
 <script src="app/vid/scripts/filters/date.filter.js"></script>
 <script src="app/vid/scripts/modals/change-management-manual-tasks-controller/change-management-manual-tasks.controller.js"></script>
 <script src="app/vid/scripts/modals/new-change-management/new-change-management.controller.js"></script>
-
+<script src="app/vid/scripts/modals/vf-module-homing-data-action/vf-module-homing-data-action.controller.js"></script>
 <script src="app/vid/scripts/modals/new-test-environment/new-test-environment.controller.js"></script>
 <script src="app/vid/scripts/modals/alert-modal/alert-modal.controller.js"></script>
 <script src="app/vid/scripts/controller/aaiSubscriberController.js"></script>
