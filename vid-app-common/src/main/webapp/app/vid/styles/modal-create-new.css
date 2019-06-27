@@ -192,9 +192,12 @@ a.item-unselected:before {
 .vnf-versions-name {
     padding-top: 6px;
     font-family: "OpenSans-Regular";
+}
+.vnf-versions-file {
+    padding-top: 6px;
+    font-family: "OpenSans-Regular";
     position: absolute;
 }
-
 .vnf-versions-select-as-text {
     font-family: "OpenSans-Regular";
     appearance: none;

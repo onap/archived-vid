@@ -65,9 +65,9 @@
                             <option ng-repeat="version in vnfName.availableVersions">{{version.modelInfo.modelVersion}}</option>
                         </select>
                     </td>
-                    <td class="col-md-1 vnf-versions-name">
+                    <td class="col-md-1 vnf-versions-file">
                         <input ng-model="vnfName.filePath" onchange="angular.element(this).scope().selectFileForVNFName(this)" type="file" id="{{vnfName['invariant-id']}}" class="vnf-files-select" />
-                        <span class="vnf-versions-name">Select File<span class="caret"></span></span></td>
+                        <span class="vnf-versions-file">Select File<span class="caret"></span></span></td>
                 </tr>
                 </tbody>
             </table>
