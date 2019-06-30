@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fab7344_59b4a4c4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-30T13:42:32Z",
+      "side": 1,
+      "message": "As a side-note, here\u0027s a good example of why we would like an exceptionWithREquestInfo:\n1. MSO_REST_API_GET_ORC_REQS is only part of the request, as query params are added later.\n2. As getOrchestrationRequestsForDashboard yields two requests, and we will not know which of them failed.",
+      "range": {
+        "startLine": 871,
+        "startChar": 97,
+        "endLine": 871,
+        "endChar": 122
+      },
+      "revId": "5491f170c0c0564e5d3d8f05607f9c2fc8521e21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24c80a62_89642b5a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-06-30T13:42:32Z",
+      "side": 1,
+      "message": "Please use `objectMapper.writeValueAsString`, to keep with current implementations.",
+      "range": {
+        "startLine": 876,
+        "startChar": 29,
+        "endLine": 876,
+        "endChar": 46
+      },
+      "revId": "5491f170c0c0564e5d3d8f05607f9c2fc8521e21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
