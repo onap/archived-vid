@@ -26,6 +26,7 @@
                 <module>vid-app-common</module>
                 <module>vid-webpack-master</module>
                 <module>epsdk-app-onap</module>
+                <module>vid-ext-services-simulator</module>
             </modules>
 
             <repositories>
