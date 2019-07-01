@@ -40,7 +40,7 @@ public class SchedulerServiceImpl implements SchedulerService{
     }
 
     @Override
-    public ExternalComponentStatus probeGetSchedulerChangeManagements() {
+    public ExternalComponentStatus probeComponent() {
         long startTime = System.currentTimeMillis();
         try {
             RestObjectWithRequestInfo response = this.changeManagementService.getSchedulerChangeManagementsWithRequestInfo();

@@ -1398,7 +1398,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         given(msoInterface.getOrchestrationRequest(anyString(),anyString(),
                 anyString(),any(RestObject.class),anyBoolean())).willReturn(wrapper);
 
-        ExternalComponentStatus externalComponentStatus = msoBusinessLogic.probeGetOrchestrationRequests();
+        ExternalComponentStatus externalComponentStatus = msoBusinessLogic.probeComponent();
 
         assertThat(externalComponentStatus.isAvailable()).isTrue();
         assertThat(externalComponentStatus.getComponent()).isEqualTo(ExternalComponentStatus.Component.MSO);

@@ -163,6 +163,12 @@ public class LocalAsdcClient implements AsdcClient {
         return HttpResponse.fallback("");
     }
 
+
+    @Override
+    public String getBaseUrl(){
+        return "";
+    }
+
     /**
      * The Class Builder.
      */

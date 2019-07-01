@@ -20,8 +20,7 @@
 
 package org.onap.vid.scheduler;
 
-import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.controller.ProbeInterface;
 
-public interface SchedulerService {
-    ExternalComponentStatus probeGetSchedulerChangeManagements();
+public interface SchedulerService  extends ProbeInterface {
 }
