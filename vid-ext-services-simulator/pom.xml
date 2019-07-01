@@ -28,6 +28,10 @@
 
         <!-- "none" will skip cobertura by default; enable the profile "cobertura" to enable it -->
         <coberturaBuildPhase>none</coberturaBuildPhase>
+
+        <!-- will skip docker-maven-plugin by default; enable the profile "docker" to enable it -->
+        <dockerBuildPhase>none</dockerBuildPhase>
+        <dockerPushPhase>none</dockerPushPhase>
     </properties>
 
     <profiles>
@@ -81,6 +85,14 @@
             <id>cobertura</id>
             <properties>
                 <coberturaBuildPhase>package</coberturaBuildPhase>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>docker</id>
+            <properties>
+                <dockerBuildPhase>package</dockerBuildPhase>
+                <dockerPushPhase>deploy</dockerPushPhase>
             </properties>
         </profile>
 
@@ -195,7 +207,7 @@
                 <executions>
                     <execution>
                         <id>generate-image</id>
-                        <phase>package</phase>
+                        <phase>${dockerBuildPhase}</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
@@ -203,7 +215,7 @@
 
                     <execution>
                         <id>push-image</id>
-                        <phase>deploy</phase>
+                        <phase>${dockerPushPhase}</phase>
                         <goals>
                             <goal>build</goal>
                             <goal>push</goal>
