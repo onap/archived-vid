@@ -48,6 +48,9 @@
         <eirslett.version>1.6</eirslett.version>
         <node.version>v6.16.0</node.version>
 
+        <release_version>${env.RELEASE_VERSION}</release_version>
+        <patch_version>-</patch_version>
+
     </properties>
 
 
@@ -236,6 +239,29 @@
                     </execution>
                 </executions>
 
+            </plugin>
+
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <file>${project.basedir}/src/main/webapp/app/vid/scripts/constants/version.json</file>
+                    <replacements>
+                        <replacement>
+                            <token>BUILD_NUMBER</token>
+                            <value>${release_version}.${patch_version}.${env.BUILD_NUMBER}</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
             </plugin>
 
             <plugin>
