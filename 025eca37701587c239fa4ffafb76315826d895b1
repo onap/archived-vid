@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99da6199_a73ac644",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/reports/BasicReportGenerator.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-07-02T14:54:47Z",
+      "side": 1,
+      "message": "extract service from ProbeController and use here",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 2
+      },
+      "revId": "025eca37701587c239fa4ffafb76315826d895b1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
