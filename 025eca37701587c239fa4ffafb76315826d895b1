@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "65cd8c4d_04e062d1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/reports/BasicReportGenerator.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-03T13:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99da6199_a73ac644",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 2
+      },
+      "revId": "025eca37701587c239fa4ffafb76315826d895b1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bad829a0_3e3a2a33",
         "filename": "vid-app-common/src/main/java/org/onap/vid/reports/DeploymentReportGenerator.java",
         "patchSetId": 8
@@ -36,6 +60,24 @@
       "writtenOn": "2019-07-03T09:31:10Z",
       "side": 1,
       "message": "use Serializable instead of object",
+      "revId": "025eca37701587c239fa4ffafb76315826d895b1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6425117_204fca8c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/reports/DeploymentReportGenerator.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-03T13:24:20Z",
+      "side": 1,
+      "message": "Jackson doesn\u0027t require Serializable to create JSON",
+      "parentUuid": "bad829a0_3e3a2a33",
       "revId": "025eca37701587c239fa4ffafb76315826d895b1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
