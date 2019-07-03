@@ -25,3 +25,11 @@ Where to Access Log Information
 | /opt/app/vid/logs/vid/metrics.log              | Application logging | This log holds the metrics info on application's transactions.                                                                                                                            |
 +------------------------------------------------+---------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+
+How to create error report
+--------------------------
+
+In case of error appearance a red button with "Create report" on it, will show up.
+Pressing that button will show window with data collected from GUI and fetched from API.
+That data may be download by pressing "download" button.
+After closing the report window, data may not be available.
