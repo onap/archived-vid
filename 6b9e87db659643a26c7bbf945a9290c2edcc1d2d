@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ae108684_893a1f10",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-03T13:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf1cd033_80ed0a0f",
+      "range": {
+        "startLine": 43,
+        "startChar": 15,
+        "endLine": 44,
+        "endChar": 68
+      },
+      "revId": "6b9e87db659643a26c7bbf945a9290c2edcc1d2d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b662e502_c2d407cb",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
         "patchSetId": 7
@@ -77,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "85565432_59ac4b00",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-03T13:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "608363c0_10fd7878",
+      "revId": "6b9e87db659643a26c7bbf945a9290c2edcc1d2d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b1c91794_1442d89a",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
         "patchSetId": 7
@@ -94,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "c5cd8420_7db58d1e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-03T13:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1c91794_1442d89a",
+      "revId": "6b9e87db659643a26c7bbf945a9290c2edcc1d2d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ad4dffc0_99505066",
         "filename": "vid-app-common/src/main/java/org/onap/vid/reports/BasicReportGenerator.java",
         "patchSetId": 7
@@ -105,6 +165,30 @@
       "writtenOn": "2019-07-02T14:27:27Z",
       "side": 1,
       "message": "please don\u0027t use multiple returns - applies also to other methods",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 2
+      },
+      "revId": "6b9e87db659643a26c7bbf945a9290c2edcc1d2d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72172abc_f574e1ab",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/reports/BasicReportGenerator.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-03T13:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad4dffc0_99505066",
       "range": {
         "startLine": 83,
         "startChar": 0,
