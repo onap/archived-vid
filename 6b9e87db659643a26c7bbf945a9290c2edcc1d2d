@@ -42,6 +42,40 @@
     },
     {
       "key": {
+        "uuid": "a2bd305c_3b9e80ec",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-07-03T12:28:27Z",
+      "side": 1,
+      "message": "So what do you think about injecting list of generators in place of creation of it manually?",
+      "revId": "6b9e87db659643a26c7bbf945a9290c2edcc1d2d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b1c91794_1442d89a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-07-03T12:28:27Z",
+      "side": 1,
+      "message": "please rename it to provider",
+      "revId": "6b9e87db659643a26c7bbf945a9290c2edcc1d2d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ad4dffc0_99505066",
         "filename": "vid-app-common/src/main/java/org/onap/vid/reports/BasicReportGenerator.java",
         "patchSetId": 7
