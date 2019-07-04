@@ -16,6 +16,24 @@
       "revId": "2e327ad7f3f649357a86b5284b42c9969fd59b3f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2298fdf8_700d4164",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/errorReport/ReportCreationParametersKotlin.kt",
+        "patchSetId": 13
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-04T11:47:19Z",
+      "side": 1,
+      "message": "Removing assignment creates more different problems, so i\u0027ll just switch back to Java version of this class.",
+      "parentUuid": "13b3a927_3664fa15",
+      "revId": "2e327ad7f3f649357a86b5284b42c9969fd59b3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
