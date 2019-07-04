@@ -16,6 +16,24 @@
       "revId": "73a80ee4ec920c7dbcd9aa802fb94d2e33df4141",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e33ead34_db16fe71",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/errorReport/ReportCreationParameters.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-07-04T09:53:09Z",
+      "side": 1,
+      "message": "it can be, lets @Michal decide",
+      "parentUuid": "f209142a_fe754bdd",
+      "revId": "73a80ee4ec920c7dbcd9aa802fb94d2e33df4141",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
