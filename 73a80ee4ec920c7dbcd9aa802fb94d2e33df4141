@@ -34,6 +34,24 @@
       "revId": "73a80ee4ec920c7dbcd9aa802fb94d2e33df4141",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "281d4c8d_dcfdc09c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/errorReport/ReportCreationParameters.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-04T11:15:07Z",
+      "side": 1,
+      "message": "I changed it to kt data class, looks simpler.",
+      "parentUuid": "e33ead34_db16fe71",
+      "revId": "73a80ee4ec920c7dbcd9aa802fb94d2e33df4141",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
