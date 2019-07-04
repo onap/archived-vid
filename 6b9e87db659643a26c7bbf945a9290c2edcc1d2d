@@ -66,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "50019dbb_64cade9b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2019-07-04T11:15:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b662e502_c2d407cb",
+      "revId": "6b9e87db659643a26c7bbf945a9290c2edcc1d2d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a2bd305c_3b9e80ec",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/ErrorReportController.java",
         "patchSetId": 7
