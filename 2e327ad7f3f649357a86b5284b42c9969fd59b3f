@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "13b3a927_3664fa15",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/errorReport/ReportCreationParametersKotlin.kt",
+        "patchSetId": 13
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2019-07-04T11:23:55Z",
+      "side": 1,
+      "message": "thats not the same as in java class from patch set 13. You shouldnt initialize variables by null - it will give you ability to create an object e.g. ReportCreationparameters(serviceUuid \u003d \"abc\") which is not needed here",
+      "revId": "2e327ad7f3f649357a86b5284b42c9969fd59b3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
