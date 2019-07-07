@@ -12,6 +12,7 @@ import * as _ from "lodash";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {ServiceState} from "../main.reducer";
+import {updateServiceValidationCounter} from "../reducersHelper";
 
 export function generalReducer(state: ServiceState, action: Action) : ServiceState {
   switch (action.type) {
@@ -90,6 +91,8 @@ export function generalReducer(state: ServiceState, action: Action) : ServiceSta
       newState.serviceInstance[serviceId][typeNodeInformation.hierarchyName] = Object.assign({}, newState.serviceInstance[serviceId][typeNodeInformation.hierarchyName], objects);
       return newState;
     }
+
+
   }
 }
 
@@ -135,13 +138,6 @@ const updateIsMissingDataOnDeleteVFModule = (state: any, serviceModelId: string,
   });
 };
 
-const updateServiceValidationCounter = (newState: any, oldValidationState: boolean, newValidationState: boolean, serviceUuid: string) => {
-  if (oldValidationState && !newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter--;
-  } else if (!oldValidationState && newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter++;
-  }
-};
 
 
 

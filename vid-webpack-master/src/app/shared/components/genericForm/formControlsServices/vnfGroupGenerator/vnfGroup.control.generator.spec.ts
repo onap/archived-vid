@@ -28,15 +28,10 @@ class MockAppStore<T> {
           "CREATE_INSTANCE_TEST": false,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
-          "FLAG_ASYNC_INSTANTIATION": true,
-          "FLAG_ASYNC_JOBS": true,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,
-          "FLAG_UNASSIGN_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": false,
-          "FLAG_COLLECTION_RESOURCE_SUPPORT": true,
           "FLAG_SHOW_ASSIGNMENTS": true,
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
-          "FLAG_DUPLICATE_VNF": true,
           "FLAG_DEFAULT_VNF": true,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
           "FLAG_A_LA_CARTE_AUDIT_INFO": true,
@@ -70,15 +65,15 @@ class MockAppStore<T> {
             },
             "vnfs": {},
             "networks": {},
-            "collectionResource": {},
+            "collectionResources": {},
             "configurations": {},
             "fabricConfigurations": {},
             "serviceProxies": {
-              "vdbe_svc_vprs_proxy 0": {
+              "vdorothea_svc_vprs_proxy 0": {
                 "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
                 "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
-                "description": "A Proxy for Service vDBE_Svc_vPRS",
-                "name": "vDBE_Svc_vPRS Service Proxy",
+                "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
+                "name": "vDOROTHEA_Svc_vPRS Service Proxy",
                 "version": "1.0",
                 "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
                 "inputs": {},
@@ -87,7 +82,7 @@ class MockAppStore<T> {
                 "type": "Service Proxy",
                 "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
                 "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
-                "sourceModelName": "vDBE_Svc_vPRS"
+                "sourceModelName": "vDOROTHEA_Svc_vPRS"
               },
               "tsbc0001vm001_svc_proxy 0": {
                 "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
@@ -125,11 +120,11 @@ class MockAppStore<T> {
                   "type": "LOAD-GROUP"
                 },
                 "members": {
-                  "vdbe_svc_vprs_proxy 0": {
+                  "vdorothea_svc_vprs_proxy 0": {
                     "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
                     "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
-                    "description": "A Proxy for Service vDBE_Svc_vPRS",
-                    "name": "vDBE_Svc_vPRS Service Proxy",
+                    "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
+                    "name": "vDOROTHEA_Svc_vPRS Service Proxy",
                     "version": "1.0",
                     "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
                     "inputs": {},
@@ -138,7 +133,7 @@ class MockAppStore<T> {
                     "type": "Service Proxy",
                     "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
                     "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
-                    "sourceModelName": "vDBE_Svc_vPRS"
+                    "sourceModelName": "vDOROTHEA_Svc_vPRS"
                   }
                 }
               },

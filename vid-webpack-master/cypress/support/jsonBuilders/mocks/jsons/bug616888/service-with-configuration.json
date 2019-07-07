@@ -15,7 +15,7 @@
   },
   "vnfs": {},
   "networks": {},
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {
     "Port Mirroring Configuration By Policy 1": {
       "uuid": "f58d039d-4cfc-40ec-bd75-1f05f0458a6c",
@@ -35,9 +35,9 @@
       "type": "Configuration",
       "modelCustomizationName": "Port Mirroring Configuration By Policy 1",
       "sourceNodes": [
-        "vmmeservice2_proxy 2",
-        "vmmeservice2_proxy 3",
-        "vmmeservice_proxy 1"
+        "vflorenceservice2_proxy 2",
+        "vflorenceservice2_proxy 3",
+        "vflorenceservice_proxy 1"
       ],
       "collectorNodes": [
         "pprobeservice_proxy 5"
@@ -62,9 +62,9 @@
       "type": "Configuration",
       "modelCustomizationName": "Port Mirroring Configuration By Policy 0",
       "sourceNodes": [
-        "vmmeservice2_proxy 2",
-        "vmmeservice_proxy 1",
-        "vmmeservice_proxy 0"
+        "vflorenceservice2_proxy 2",
+        "vflorenceservice_proxy 1",
+        "vflorenceservice_proxy 0"
       ],
       "collectorNodes": [
         "pprobeservice_proxy 4"
@@ -73,11 +73,11 @@
     }
   },
   "serviceProxies": {
-    "vmmeservice_proxy 0": {
+    "vflorenceservice_proxy 0": {
       "uuid": "a32fee17-5b59-4c34-ba6f-6dd2f1c61fee",
       "invariantUuid": "2933b574-d28d-45ea-bf22-4df2907e4a10",
-      "description": "A Proxy for Service vmmeService",
-      "name": "vmmeService Service Proxy",
+      "description": "A Proxy for Service vflorenceService",
+      "name": "vflorenceService Service Proxy",
       "version": "1.0",
       "customizationUuid": "d7cfe338-eeda-4217-ba13-f24b0811fb17",
       "inputs": {},
@@ -86,13 +86,13 @@
       "type": "Service Proxy",
       "sourceModelUuid": "c3e6c9bd-b24d-458e-aa99-e0cadf70c5e5",
       "sourceModelInvariant": "dd8a805d-3946-4f11-9831-e26cd6aec9a3",
-      "sourceModelName": "vmmeService"
+      "sourceModelName": "vflorenceService"
     },
-    "vmmeservice_proxy 1": {
+    "vflorenceservice_proxy 1": {
       "uuid": "a32fee17-5b59-4c34-ba6f-6dd2f1c61fee",
       "invariantUuid": "2933b574-d28d-45ea-bf22-4df2907e4a10",
-      "description": "A Proxy for Service vmmeService",
-      "name": "vmmeService Service Proxy",
+      "description": "A Proxy for Service vflorenceService",
+      "name": "vflorenceService Service Proxy",
       "version": "1.0",
       "customizationUuid": "7a69f133-564c-4eb6-b93e-0a8281967efb",
       "inputs": {},
@@ -101,13 +101,13 @@
       "type": "Service Proxy",
       "sourceModelUuid": "c3e6c9bd-b24d-458e-aa99-e0cadf70c5e5",
       "sourceModelInvariant": "dd8a805d-3946-4f11-9831-e26cd6aec9a3",
-      "sourceModelName": "vmmeService"
+      "sourceModelName": "vflorenceService"
     },
-    "vmmeservice2_proxy 3": {
+    "vflorenceservice2_proxy 3": {
       "uuid": "a32fee17-5b59-4c34-ba6f-6dd2f1c61fee",
       "invariantUuid": "2933b574-d28d-45ea-bf22-4df2907e4a10",
-      "description": "A Proxy for Service vmmeService2",
-      "name": "vmmeService2 Service Proxy",
+      "description": "A Proxy for Service vflorenceService2",
+      "name": "vflorenceService2 Service Proxy",
       "version": "1.0",
       "customizationUuid": "9d81c21f-e29c-44f6-b5f6-caa974ee078a",
       "inputs": {},
@@ -116,7 +116,7 @@
       "type": "Service Proxy",
       "sourceModelUuid": "2a2ea15f-07c6-4b89-bfca-e8aba39a34d6",
       "sourceModelInvariant": "a7eac2b3-8444-40ee-92e3-b3359b32445c",
-      "sourceModelName": "vmmeService2"
+      "sourceModelName": "vflorenceService2"
     },
     "pprobeservice_proxy 4": {
       "uuid": "a32fee17-5b59-4c34-ba6f-6dd2f1c61fee",
@@ -148,11 +148,11 @@
       "sourceModelInvariant": "83b458fd-5dd3-419b-a9e3-7335814a0911",
       "sourceModelName": "pProbeService"
     },
-    "vmmeservice2_proxy 2": {
+    "vflorenceservice2_proxy 2": {
       "uuid": "a32fee17-5b59-4c34-ba6f-6dd2f1c61fee",
       "invariantUuid": "2933b574-d28d-45ea-bf22-4df2907e4a10",
-      "description": "A Proxy for Service vmmeService2",
-      "name": "vmmeService2 Service Proxy",
+      "description": "A Proxy for Service vflorenceService2",
+      "name": "vflorenceService2 Service Proxy",
       "version": "1.0",
       "customizationUuid": "060be63d-5f9c-4fd0-8ef7-830d5e8eca17",
       "inputs": {},
@@ -161,7 +161,7 @@
       "type": "Service Proxy",
       "sourceModelUuid": "2a2ea15f-07c6-4b89-bfca-e8aba39a34d6",
       "sourceModelInvariant": "a7eac2b3-8444-40ee-92e3-b3359b32445c",
-      "sourceModelName": "vmmeService2"
+      "sourceModelName": "vflorenceService2"
     }
   },
   "vfModules": {},

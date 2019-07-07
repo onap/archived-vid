@@ -117,7 +117,7 @@ export class VfModulePopuopService implements GenericPopupInterface {
   }
 
   getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean) {
-    if (this._store.getState().service.serviceHierarchy[serviceId].service.instantiationType === 'Macro') {
+    if (this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
       return this._vfModuleControlGenerator.getMacroFormControls(serviceId, vnfStoreKey, vfModuleStoreKey, this.uuidData, isUpdateMode);
     } else {
       return this._vfModuleControlGenerator.getAlaCarteFormControls(serviceId, vnfStoreKey, vfModuleStoreKey,  this.uuidData, isUpdateMode);

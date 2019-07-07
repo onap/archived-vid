@@ -20,10 +20,21 @@ import {
   undoDeleteActionVnfGroupInstance
 } from "../../../../../shared/storeUtil/utils/vnfGroup/vnfGroup.actions";
 import {RelatedVnfMemberInfoModel} from "../relatedVnfMember/relatedVnfMember.info.model";
-import {SearchMembersModalComponent} from "../../../../../shared/components/searchMembersModal/search-members-modal.component";
+import {SearchElementsModalComponent} from "../../../../../shared/components/searchMembersModal/search-elements-modal.component";
 import * as _ from "lodash";
 import {MessageBoxData} from "../../../../../shared/components/messageBox/messageBox.data";
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
+import {ComponentInfoType} from "../../../component-info/component-info-model";
+import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
+import {Level1Instance} from "../../../../../shared/models/level1Instance";
+import {AaiService} from "../../../../../shared/services/aaiService/aai.service";
+import {Observable} from "rxjs";
+import {createRelatedVnfMemberInstance} from "../../../../../shared/storeUtil/utils/relatedVnfMember/relatedVnfMember.actions";
+import {
+  ITableContent,
+  SearchFieldItemType
+} from "../../../../../shared/components/searchMembersModal/members-table/element-table-row.model";
+import {CustomTableColumnDefinition} from "../../../../../shared/components/searchMembersModal/members-table/elements-table.component";
 
 export class VnfGroupingModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -31,15 +42,16 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
               private _dialogService: DialogService,
               private _vnfGroupPopupService: VnfGroupPopupService,
               private _iframeService: IframeService,
+              private _aaiService: AaiService,
               private _store: NgRedux<AppState>) {
   }
 
   name: string = 'vnfGroups';
   type: string = 'VnfGroup';
   typeName: string = 'G';
-  childType: string = 'RelatedVnfMemberInfoModel';
-  childName: string = 'vnfs';
-  limitMembers : number;
+  childNames: string[] = ['vnfs'];
+  componentInfoType = ComponentInfoType.VNFGROUP;
+  limitMembers: number;
 
   /***********************************************************
    * return if user should provide instance name or not.
@@ -78,7 +90,7 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
     node.typeName = this.typeName;
     node.menuActions = this.getMenuAction(<any>node, model.uuid);
     node.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
-    node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage: "";
+    node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
     node.limitMembers = (!_.isNil(model.properties.quantity)) ? model.properties.quantity : null;
     return node;
   }
@@ -182,29 +194,61 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
         visible: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node),
         enable: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node)
       },
+
       addGroupMember: {
         method: (node, serviceModelId) => {
           let serviceHierarchy = this._store.getState().service.serviceHierarchy[serviceModelId];
           let serviceInstance = this._store.getState().service.serviceInstance[serviceModelId];
           let vnfGroupModel = new VnfGroupModel(serviceHierarchy['vnfGroups'][node.data.modelName]);
-          this._dialogService.addDialog(SearchMembersModalComponent, {
-              title: 'Add members to group',
-              description: 'Select VNF instances to associate',
-              subscriberId: serviceInstance.globalSubscriberId,
-              serviceType: serviceInstance.subscriptionServiceType,
-              vnfGroupModel: vnfGroupModel,
-              serviceModelId: serviceModelId,
-              node: node.data,
-              searchFields: [{
-                title: 'Service model name',
-                dataTestId: 'sourceModelName',
-                value: (Object.values(vnfGroupModel.members))[0].sourceModelName
-              },
-                {
-                  title: 'Service invariant UUID',
-                  dataTestId: 'sourceModelInvariant',
-                  value: (Object.values(vnfGroupModel.members))[0].sourceModelInvariant
-                }]
+          this._dialogService.addDialog(SearchElementsModalComponent, {
+              modalInformation: {
+                type: 'VNF',
+                serviceModelId : serviceModelId,
+                title: 'Add members to group',
+                description: 'Select VNF instances to associate',
+                noElementsMsg: 'No VNFs were found that can belong to this group.',
+                uniqObjectField: 'instanceId',
+                topButton: {
+                  text: 'SET MEMBERS',
+                  /********************************************************************************************************************************
+                   iterate over all current elements:
+
+                   1) if element is selected then update REDUX store
+                   2) if element is not selected then delete member
+
+                   @searchElementsModalComponent - all modal information (allElementsStatusMap, vnfGroupStoreKey, serviceId)
+                   ********************************************************************************************************************************/
+
+                  action: (searchElementsModalComponent) => {
+                    let tmpMembers = searchElementsModalComponent._membersTableService.allElementsStatusMap;
+                    for (let key in tmpMembers) {
+                      if (tmpMembers[key].isSelected) {
+                        this._store.dispatch(createRelatedVnfMemberInstance(node.data.vnfGroupStoreKey, serviceModelId, tmpMembers[key]));
+                      }
+                    }
+                    searchElementsModalComponent.closeDialog();
+                  }
+                },
+                getElements: (): Observable<Level1Instance[]> => {
+                  return this._aaiService.getOptionalGroupMembers(serviceModelId, serviceInstance.globalSubscriberId, serviceInstance.subscriptionServiceType, (Object.values(vnfGroupModel.members))[0].sourceModelInvariant, vnfGroupModel.properties.type, vnfGroupModel.properties.role).map((result) => {
+                    return this.filterUsedVnfMembers(serviceModelId, result);
+                  });
+                },
+                tableHeaders : this.getTableHeaders(),
+                tableContent: this.generateRelatedMemberTableContent(),
+                searchFields: [{
+                  title: 'Service model name',
+                  dataTestId: 'sourceModelName',
+                  value: (Object.values(vnfGroupModel.members))[0].sourceModelName,
+                  type: SearchFieldItemType.LABEL
+                },
+                  {
+                    title: 'Service invariant UUID',
+                    dataTestId: 'sourceModelInvariant',
+                    value: (Object.values(vnfGroupModel.members))[0].sourceModelInvariant,
+                    type: SearchFieldItemType.LABEL
+                  }]
+              }
             }
           );
         },
@@ -223,9 +267,9 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           if ((!_.isNil(node.data.children) && node.data.children.length === 0) || _.isNil(node.data.children)) {
             this._store.dispatch(deleteActionVnfGroupInstance(node.data.vnfGroupStoreKey, serviceModelId));
-          }else {
-            this._sharedTreeService.shouldShowDeleteInstanceWithChildrenModal(node, serviceModelId, (node, serviceModelId)=>{
-              this._sharedTreeService.removeDeleteAllChild(node, serviceModelId, (node, serviceModelId)=>{
+          } else {
+            this._sharedTreeService.shouldShowDeleteInstanceWithChildrenModal(node, serviceModelId, (node, serviceModelId) => {
+              this._sharedTreeService.removeDeleteAllChild(node, serviceModelId, (node, serviceModelId) => {
                 this._store.dispatch(deleteActionVnfGroupInstance(node.data.vnfGroupStoreKey, serviceModelId));
               });
             });
@@ -252,13 +296,101 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
 
   }
 
+
+  generateRelatedMemberTableContent(): ITableContent[] {
+    return [
+      {
+        id: 'vnfName',
+        contents: [{
+          id: ['instanceName'],
+          value: ['instanceName']
+        }, {
+          id: ['instanceId'],
+          value: ["instanceId"],
+          prefix: 'UUID: '
+        }]
+      },
+      {
+        id: 'version',
+        contents: [{
+          id: ['modelInfo', 'modelVersion'],
+          value: ['modelInfo', 'modelVersion']
+        }]
+      },
+      {
+        id: 'modelName',
+        contents: [{
+          id: ['modelInfo', 'modelName'],
+          value: ['modelInfo', 'modelName']
+        }]
+      },
+      {
+        id: 'provStatus',
+        contents: [{
+          id: ['provStatus'],
+          value: ['provStatus']
+        }]
+      },
+      {
+        id: 'serviceInstance',
+        contents: [{
+          id: ['serviceInstanceName'],
+          value: ['serviceInstanceName']
+        }, {
+          id: ['serviceInstanceId'],
+          value: ["serviceInstanceId"],
+          prefix: 'UUID: '
+        }]
+      },
+      {
+        id: 'cloudRegion',
+        contents: [{
+          id: ['lcpCloudRegionId'],
+          value: ['lcpCloudRegionId']
+        }]
+      },
+      {
+        id: 'tenantName',
+        contents: [{
+          id: ['tenantName'],
+          value: ['tenantName']
+        }]
+      }
+    ];
+  }
+
+  getTableHeaders() : CustomTableColumnDefinition[]{
+    const type : string = 'VNF';
+    return  [
+      {displayName: `${type} instance name`, key: ['instanceName']},
+      {displayName: `${type} version`, key: ['modelInfo', 'modelVersion']},
+      {displayName: `${type} model name`, key: ['modelInfo', 'modelName']},
+      {displayName: 'Prov Status', key: ['provStatus']},
+      {displayName: 'Service instance name', key: ['serviceInstanceName']},
+      {displayName: 'Cloud Region', key: ['lcpCloudRegionId']},
+      {displayName: 'Tenant Name', key: ['tenantName']}
+    ];
+  }
+
+  filterUsedVnfMembers = (serviceModelId: string, result: Level1Instance[]): Level1Instance[] => {
+    const allMembersMap = _.keyBy(result as Level1Instance[], 'instanceId');
+    const vnfGroupsData = this._store.getState().service.serviceInstance[serviceModelId].vnfGroups;
+    const vnfMembersArr = _.flatMap(vnfGroupsData).map((vnfGroup) => vnfGroup.vnfs);
+    for (let vnf of vnfMembersArr) {
+      for (let member in vnf) {
+        delete allMembersMap[member];
+      }
+    }
+    return _.flatMap(allMembersMap);
+  };
+
   removeGroup(this, node, serviceModelId) {
     this._store.dispatch(removeInstance(node.data.modelName, serviceModelId, node.data.vnfGroupStoreKey, node));
     this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceModelId, -1, node));
     this._sharedTreeService.selectedVNF = null;
   }
 
-  updatePosition(that , node, instanceId): void {
+  updatePosition(that, node, instanceId): void {
     // TODO
   }
 
@@ -266,7 +398,8 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
     return !_.isNil(instance) ? instance.position : null;
   }
 
-  onSelectedNode(node: ITreeNode): void {
+  getInfo(model, instance): ModelInformationItem[] {
+    return [];
   }
 
 }

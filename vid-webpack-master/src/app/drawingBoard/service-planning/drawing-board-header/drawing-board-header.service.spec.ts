@@ -85,7 +85,7 @@ describe('Generate path to old View/Edit ', () => {
   });
 
   test('deployShouldBeDisabled with validationCounter greater then 0',()=>{
-    jest.spyOn(store, 'getState').mockReturnValue({
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
       service: {
         serviceInstance : {
           'serviceInstanceId' : {
@@ -94,12 +94,12 @@ describe('Generate path to old View/Edit ', () => {
         }
       }
     });
-    let result = service.deployShouldBeDisabled("serviceInstanceId");
+    let result = service.deployShouldBeDisabled("serviceInstanceId", DrawingBoardModes.RETRY_EDIT);
     expect(result).toBeTruthy();
   });
 
   test('deployShouldBeDisabled with validationCounter is 0 and not dirty',()=>{
-    jest.spyOn(store, 'getState').mockReturnValue({
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
       service: {
         serviceInstance : {
           'serviceInstanceId' : {
@@ -109,12 +109,12 @@ describe('Generate path to old View/Edit ', () => {
         }
       }
     });
-    let result = service.deployShouldBeDisabled("serviceInstanceId");
+    let result = service.deployShouldBeDisabled("serviceInstanceId", DrawingBoardModes.RETRY_EDIT);
     expect(result).toBeFalsy();
   });
 
   test('deployShouldBeDisabled with validationCounter is 0 and dirty',()=>{
-    jest.spyOn(store, 'getState').mockReturnValue({
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
       service: {
         serviceInstance : {
           'serviceInstanceId' : {
@@ -125,12 +125,12 @@ describe('Generate path to old View/Edit ', () => {
         }
       }
     });
-    let result = service.deployShouldBeDisabled("serviceInstanceId");
+    let result = service.deployShouldBeDisabled("serviceInstanceId", DrawingBoardModes.RETRY_EDIT);
     expect(result).not.toBeTruthy();
   });
 
   test('deployShouldBeDisabled with validationCounter is 0 and not and action is None and dirty',()=>{
-    jest.spyOn(store, 'getState').mockReturnValue({
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
       service: {
         serviceInstance : {
           'serviceInstanceId' : {
@@ -141,7 +141,7 @@ describe('Generate path to old View/Edit ', () => {
         }
       }
     });
-    let result = service.deployShouldBeDisabled("serviceInstanceId");
+    let result = service.deployShouldBeDisabled("serviceInstanceId", DrawingBoardModes.RETRY_EDIT);
     expect(result).not.toBeTruthy();
   });
 
@@ -157,8 +157,8 @@ describe('Generate path to old View/Edit ', () => {
     expect(result).toEqual('REDEPLOY');
   });
   test('getButtonText',()=>{
-    expect(service.getButtonText("VIEW")).toEqual('EDIT');
-    expect(service.getButtonText("RETRY")).toEqual('REDEPLOY');
+    expect(service.getButtonText(DrawingBoardModes.VIEW)).toEqual('EDIT');
+    expect(service.getButtonText(DrawingBoardModes.RETRY)).toEqual('REDEPLOY');
 
   });
   const showEditServiceDataProvider = [
@@ -169,7 +169,7 @@ describe('Generate path to old View/Edit ', () => {
     ['None action EDIT mode',DrawingBoardModes.EDIT,  ServiceInstanceActions.None, false],
     ['None action RETRY_EDIT mode', DrawingBoardModes.RETRY_EDIT, ServiceInstanceActions.None, false]];
   each(showEditServiceDataProvider).test('showEditService service with %s', (description, mode, action, enabled) => {
-    jest.spyOn(store, 'getState').mockReturnValue({
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
       service: {
         serviceInstance : {
           'serviceInstanceId' : {
@@ -181,4 +181,49 @@ describe('Generate path to old View/Edit ', () => {
     expect(service.showEditService(mode, 'serviceInstanceId')).toBe(enabled);
 
   });
+
+  const showResumeServiceDataProvider = [
+    ['all conditions of resume- should show resume',true, 'MACRO', 'VPE', 'AssiGNed', true],
+    ['flag is disabled- should not show resume ',false, 'MACRO', 'VPE', 'AssiGNed', false],
+    ['transport service (PNF)- should not show resume', true, 'Macro', 'transport', 'Assigned', false],
+    ['instantiationType is a-la-carte- should not show resume', true, 'ALaCarte', 'VPE', 'Assigned', false],
+    ['orchestration Status is not assigned- should not show resume', true, 'Macro', 'VPE', 'Created', false],
+    ['orchestration Status is Inventoried - should show resume', true, 'Macro', 'VPE', 'iNventOriEd', true]
+  ];
+
+  each(showResumeServiceDataProvider).test('showResumeService when %s', (description, flagResumeMacroService,instantiationType, subscriptionServiceType, orchStatus, shouldShowResumeService) => {
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
+      global: {
+        flags:{
+          'FLAG_1908_RESUME_MACRO_SERVICE': flagResumeMacroService
+        }
+      },
+      service: {
+        serviceInstance : {
+          'serviceModelId' : {
+            'vidNotions': {
+              'instantiationType': instantiationType
+            },
+            'subscriptionServiceType':subscriptionServiceType,
+            'orchStatus': orchStatus
+          }
+        }
+      }
+    });
+    expect(service.showResumeService('serviceModelId')).toBe(shouldShowResumeService);
+
+  });
+
+
+  const toggleResumeServiceDataProvider = [
+    [ServiceInstanceActions.None, true],
+    [ServiceInstanceActions.Resume, false]
+  ];
+
+  each(toggleResumeServiceDataProvider).test('toggleResumeService - should call %s for resume/ undo Resume',(serviceAction, isResume)=>{
+    jest.spyOn(store, 'dispatch');
+    service.toggleResumeService("serviceInstanceId", isResume);
+    expect(store.dispatch).toHaveBeenCalledWith(addServiceAction("serviceInstanceId", serviceAction));
+  });
+
 });

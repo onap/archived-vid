@@ -3,6 +3,8 @@ import {NetworkInstance} from "./networkInstance";
 import {NodeInstance} from "./nodeInstance";
 import {VnfGroupInstance} from "./vnfGroupInstance";
 import {VnfMember} from "./VnfMember";
+import {VrfInstance} from "./vrfInstance";
+import {VidNotions} from "./vidNotions";
 
 export class ServiceInstance extends NodeInstance{
   isEcompGeneratedNaming: boolean;
@@ -20,6 +22,7 @@ export class ServiceInstance extends NodeInstance{
   pause: boolean;
   bulkSize: number;
   vnfs: { [vnf_module_model_name: string]: VnfInstance; };
+  vrfs: { [vrf_model_name: string]: VrfInstance; };
   vnfGroups : {[vnf_module_model_name: string]: VnfGroupInstance; };
   networks: { [vnf_module_model_name: string]: NetworkInstance; };
   isDirty : boolean;
@@ -30,20 +33,23 @@ export class ServiceInstance extends NodeInstance{
   existingNames:  {[key: string] : any};
   modelInavariantId?: string;
   existingVNFCounterMap : { [vnf_module_model_name: string]: number; };
+  existingVRFCounterMap : { [vrf_module_model_name: string]: number; };
   existingVnfGroupCounterMap : { [vnf_group_module_model_name: string]: number; };
   existingNetworksCounterMap : { [network_module_model_name: string]: number; };
   optionalGroupMembersMap?: { [path: string]: VnfMember[]; };
-  isFailed: boolean;
   statusMessage: string;
+  vidNotions?: VidNotions;
 
   constructor() {
     super();
     this.isDirty = false;
     this.vnfs = {};
+    this.vrfs = {};
     this.instanceParams = [];
     this.validationCounter = 0;
     this.existingNames = {};
     this.existingVNFCounterMap = {};
+    this.existingVRFCounterMap = {};
     this.existingVnfGroupCounterMap = {};
     this.existingNetworksCounterMap = {};
     this.optionalGroupMembersMap = {};

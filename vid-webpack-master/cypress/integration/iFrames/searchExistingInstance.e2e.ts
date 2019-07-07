@@ -35,7 +35,7 @@ describe('search existing instance', function () {
         "serviceInstanceId":SERVICE_INSTANCE_ID,
         "globalCustomerId": SUBSCRIBER_ID,
         "serviceType": SERVICE_TYPE,
-        "serviceInstanceName": "abc_mdns_2017_1011_IST_Service_CSI",
+        "serviceInstanceName": "abc_CHARLOTTE_2017_1011_IST_Service_CSI",
         "subscriberName": SUBSCRIBER_NAME,
         "aaiModelInvariantId": SERVICE_MODEL_INVARIANT_ID,
         "aaiModelVersionId": SERVICE_MODEL_VERSION_ID,

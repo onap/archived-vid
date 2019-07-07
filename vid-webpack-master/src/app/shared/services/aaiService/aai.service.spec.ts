@@ -65,10 +65,10 @@ describe("AaiService", () => {
       aaiService.retrieveServiceInstanceTopology(serviceInstanceId, subscriberId, serviceType).subscribe((result: ServiceInstance) => {
         expect(result.instanceName).toEqual("mCaNkinstancename");
         expect(result.modelInavariantId).toEqual("6b528779-44a3-4472-bdff-9cd15ec93450");
-        expect(result.vnfs["2017-388_ADIOD-vPE 0"].instanceName).toEqual("2017388_ADIODvPEmCaNkinstanceName");
-        expect(result.vnfs["2017-488_ADIOD-vPE 0"].
-          vfModules["2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0"]
-          ["2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0uvfot"].instanceName
+        expect(result.vnfs["2017-388_PASQUALE-vPE 0"].instanceName).toEqual("2017388_PASQUALEvPEmCaNkinstanceName");
+        expect(result.vnfs["2017-488_PASQUALE-vPE 0"].
+          vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"]
+          ["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot"].instanceName
         ).toEqual("VFinstancenameZERO");
       });
 
@@ -88,10 +88,10 @@ describe("AaiService", () => {
       aaiService.retrieveServiceInstanceRetryTopology(jobId).subscribe((result: ServiceInstance) => {
         expect(result.instanceName).toEqual("mCaNkinstancename");
         expect(result.modelInavariantId).toEqual("6b528779-44a3-4472-bdff-9cd15ec93450");
-        expect(result.vnfs["2017-388_ADIOD-vPE 0"].instanceName).toEqual("2017388_ADIODvPEmCaNkinstanceName");
-        expect(result.vnfs["2017-488_ADIOD-vPE 0"].
-          vfModules["2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0"]
-          ["2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0uvfot"].instanceName
+        expect(result.vnfs["2017-388_PASQUALE-vPE 0"].instanceName).toEqual("2017388_PASQUALEvPEmCaNkinstanceName");
+        expect(result.vnfs["2017-488_PASQUALE-vPE 0"].
+          vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"]
+          ["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot"].instanceName
         ).toEqual("VFinstancenameZERO");
       });
 
@@ -104,9 +104,9 @@ describe("AaiService", () => {
   describe('# get optional group members tests', () =>{
     test('aai service get getOptionalGroupMembers and return list of VnfMember', () => {
       jest.spyOn(store, 'dispatch');
-      jest.spyOn(store, 'getState').mockReturnValue({
+      jest.spyOn(store, 'getState').mockReturnValue( <any>{
         service :{
-          serviceInstance : {
+          serviceInstance :{
             "serviceModelId" : {
               optionalGroupMembersMap : {}
             }
@@ -132,6 +132,24 @@ describe("AaiService", () => {
       req.flush(mockedResult);
     });
   });
+
+
+  describe('# get active networks', () =>{
+    test('aai service get active networks', () => {
+      const mockedResult = getMockActiveNetworks();
+      const cloudRegion: string = "cloudRegion";
+      const tenantId: string = "tenantId";
+      aaiService.retrieveActiveNetwork(cloudRegion, tenantId).subscribe((res)=>{
+        expect(res.length).toEqual(mockedResult.length);
+      });
+
+      const req = httpMock.expectOne(`${Constants.Path.AAI_GET_ACTIVE_NETWORKS_PATH}?cloudRegion=${cloudRegion}&tenantId=${tenantId}`);
+      expect(req.request.method).toEqual('GET');
+      req.flush(mockedResult);
+    });
+  });
+
+
   describe('#cloud owner tests', () => {
     let featureFlagToLcpRegionName = [
       ['aai service extract lcpRegion, flag is true=> lcp region include cloud owner', true, 'id (OWNER)' ],
@@ -158,7 +176,7 @@ describe("AaiService", () => {
   function getTopology() {
     return  {
       "vnfs": {
-        "2017-388_ADIOD-vPE 0": {
+        "2017-388_PASQUALE-vPE 0": {
           "vfModules": {},
           "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
           "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
@@ -169,27 +187,27 @@ describe("AaiService", () => {
           "modelInfo": {
             "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
             "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
-            "modelName": "2017-388_ADIOD-vPE",
+            "modelName": "2017-388_PASQUALE-vPE",
             "modelVersion": "4.0",
             "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
-            "modelCustomizationName": "2017-388_ADIOD-vPE 0",
+            "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
             "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168"
           },
-          "instanceName": "2017388_ADIODvPEmCaNkinstanceName",
+          "instanceName": "2017388_PASQUALEvPEmCaNkinstanceName",
           "legacyRegion": "some legacy region"
         },
-        "2017-488_ADIOD-vPE 0": {
+        "2017-488_PASQUALE-vPE 0": {
           "vfModules": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
-              "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0uvfot": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+              "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot": {
                 "instanceName": "VFinstancenameZERO",
                 "modelInfo": {
                   "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
                   "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-                  "modelName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "modelVersion": "5",
                   "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db"
                 },
                 "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
@@ -198,8 +216,8 @@ describe("AaiService", () => {
                 "inMaint": true
               }
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
-              "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1fshmc": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+              "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc": {
                 "instanceName": "VFinstancename",
                 "volumeGroupName": "VFinstancename_vol_abc",
                 "orchStatus": "Create",
@@ -208,10 +226,10 @@ describe("AaiService", () => {
                 "modelInfo": {
                   "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
                   "modelVersionId": "25284168-24bb-4698-8cb4-3f509146eca5",
-                  "modelName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "modelVersion": "6",
                   "modelCustomizationId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "uuid": "25284168-24bb-4698-8cb4-3f509146eca5"
                 },
                 "uuid": "25284168-24bb-4698-8cb4-3f509146eca5"
@@ -227,47 +245,47 @@ describe("AaiService", () => {
           "modelInfo": {
             "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
             "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-            "modelName": "2017-488_ADIOD-vPE",
+            "modelName": "2017-488_PASQUALE-vPE",
             "modelVersion": "5.0",
             "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
-            "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+            "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
             "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09"
           },
           "orchStatus": "Created",
           "inMaint": false,
-          "instanceName": "2017488_ADIODvPEVNFinstancename",
+          "instanceName": "2017488_PASQUALEvPEVNFinstancename",
           "legacyRegion": "some legacy region"
         },
-        "2017-488_ADIOD-vPE 0:0001": {
+        "2017-488_PASQUALE-vPE 0:0001": {
           "vfModules": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
-              "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0uvfot": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+              "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot": {
                 "instanceName": "VFinstancenameZERO_001",
                 "provStatus": "Prov Status",
                 "inMaint": true,
                 "modelInfo": {
                   "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
                   "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-                  "modelName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "modelVersion": "5",
                   "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db"
                 },
                 "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db"
               }
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
-              "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1fshmc": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+              "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc": {
                 "instanceName": "VFinstancename_001",
                 "volumeGroupName": "VFinstancename_vol_abc_001",
                 "modelInfo": {
                   "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
                   "modelVersionId": "25284168-24bb-4698-8cb4-3f509146eca5",
-                  "modelName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "modelVersion": "6",
                   "modelCustomizationId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "uuid": "25284168-24bb-4698-8cb4-3f509146eca5"
                 },
                 "uuid": "25284168-24bb-4698-8cb4-3f509146eca5"
@@ -284,43 +302,43 @@ describe("AaiService", () => {
           "modelInfo": {
             "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
             "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-            "modelName": "2017-488_ADIOD-vPE",
+            "modelName": "2017-488_PASQUALE-vPE",
             "modelVersion": "5.0",
             "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
-            "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+            "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
             "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09"
           },
-          "instanceName": "2017488_ADIODvPEVNFinstancename_001",
+          "instanceName": "2017488_PASQUALEvPEVNFinstancename_001",
           "legacyRegion": "some legacy region"
         },
-        "2017-488_ADIOD-vPE 0:0002": {
+        "2017-488_PASQUALE-vPE 0:0002": {
           "vfModules": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
-              "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0uvfot": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+              "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot": {
                 "instanceName": "VFinstancenameZERO_002",
                 "modelInfo": {
                   "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
                   "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-                  "modelName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "modelVersion": "5",
                   "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db"
                 },
                 "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db"
               }
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
-              "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1fshmc": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+              "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc": {
                 "instanceName": "VFinstancename_002",
                 "volumeGroupName": "VFinstancename_vol_abc_002",
                 "modelInfo": {
                   "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
                   "modelVersionId": "25284168-24bb-4698-8cb4-3f509146eca5",
-                  "modelName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "modelVersion": "6",
                   "modelCustomizationId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "uuid": "25284168-24bb-4698-8cb4-3f509146eca5"
                 },
                 "uuid": "25284168-24bb-4698-8cb4-3f509146eca5"
@@ -336,13 +354,13 @@ describe("AaiService", () => {
           "modelInfo": {
             "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
             "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-            "modelName": "2017-488_ADIOD-vPE",
+            "modelName": "2017-488_PASQUALE-vPE",
             "modelVersion": "5.0",
             "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
-            "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+            "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
             "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09"
           },
-          "instanceName": "2017488_ADIODvPEVNFinstancename_002",
+          "instanceName": "2017488_PASQUALEvPEVNFinstancename_002",
           "legacyRegion": "some legacy region"
         }
       },
@@ -378,6 +396,110 @@ describe("AaiService", () => {
       "orchStatus": "Active",
       "modelInavariantId": "6b528779-44a3-4472-bdff-9cd15ec93450"
     }
+  }
+
+  function getMockActiveNetworks(){
+    return [
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_1",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: ["network role 1", "network role 2"],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_2",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: ["network role 1", "network role 3"],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_3",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: ["network role 4", "network role 8"],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_4",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: [],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_5",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: ["network role 6", "network role 1"],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_6",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: ["network role 5"],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_7",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: ["network role 3"],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_8",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: ["network role 4"],
+      },
+      {
+        networkInstanceName: "networkInstanceName",
+        instanceVersion: "instanceVersion",
+        networkModel: "networkModel",
+        instanceUUID: "instanceUUID_9",
+        provStatus: "provStatus",
+        orchStatus: "orchStatus",
+        serviceInstanceName: "serviceInstanceName",
+        serviceUUID: "serviceUUID",
+        roles: [],
+      }
+    ]
   }
 
   const getMockMembers = (): any[] => {

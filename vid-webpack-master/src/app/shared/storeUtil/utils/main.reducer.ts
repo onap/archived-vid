@@ -18,6 +18,12 @@ import {VnfGroupActions} from "./vnfGroup/vnfGroup.actions";
 import {vnfGroupReducer} from "./vnfGroup/vnfGroup.reducers";
 import {RelatedVnfActions} from "./relatedVnfMember/relatedVnfMember.actions";
 import {relatedVnfMemeberReducer} from "./relatedVnfMember/relatedVnfMember.reducers";
+import {VrfActions} from "./vrf/vrf.actions";
+import {vrfReducer} from "./vrf/vrf.reducer";
+import {CrActions} from "./cr/cr.actions";
+import {crReducer} from "./cr/cr.reducer";
+import {NcfActions} from "./ncf/ncf.actions";
+import {ncfReducer} from "./ncf/ncf.reducer";
 
 export let initialState: ServiceState = {
   serviceHierarchy: {},
@@ -27,7 +33,8 @@ export let initialState: ServiceState = {
   productFamilies: null,
   serviceTypes: {},
   aicZones: null,
-  categoryParameters: new CategoryParams()
+  categoryParameters: new CategoryParams(),
+  genericModalCriteria : {}
 };
 
 
@@ -40,6 +47,7 @@ export interface ServiceState {
   serviceTypes: { [subscriberId: string]: ServiceType[]; };
   aicZones: SelectOptionInterface[];
   categoryParameters: CategoryParams;
+  genericModalCriteria : { [field: string]: any; }
 }
 
 export const MainReducer = function (state: ServiceState = initialState, action: Action): ServiceState {
@@ -58,6 +66,12 @@ export const MainReducer = function (state: ServiceState = initialState, action:
     return vnfGroupReducer(state, action);
   }else if(Object.values(RelatedVnfActions).includes(action.type)){
     return relatedVnfMemeberReducer(state, action);
+  }else if(Object.values(VrfActions).includes(action.type)) {
+    return vrfReducer(state, action);
+  }else if(Object.values(CrActions).includes(action.type)){
+      return crReducer(state, action);
+  }else if(Object.values(NcfActions).includes(action.type)){
+      return ncfReducer(state, action);
   } else {
     return Object.assign({}, state);
   }

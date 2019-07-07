@@ -1,5 +1,5 @@
 import {NodeModel, NodeModelResponseInterface} from "./nodeModel";
-import * as _ from "lodash";
+import {VidNotions} from "./vidNotions";
 
 
 export interface ServiceModelResponseInterface extends NodeModelResponseInterface{
@@ -17,7 +17,7 @@ export class ServiceModel extends NodeModel{
   servicesQty: number;
   isEcompGeneratedNaming: boolean;
   isMultiStepDesign: boolean;
-  vidNotions?: any;
+  vidNotions?: VidNotions;
 
   constructor(serviceModelJson?: any){
     super(serviceModelJson.service);

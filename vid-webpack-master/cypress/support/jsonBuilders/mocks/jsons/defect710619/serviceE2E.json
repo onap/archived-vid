@@ -1,0 +1,144 @@
+{
+  "service": {
+    "uuid": "afe751ef-2687-4647-8474-aba4d64cc3a3",
+    "invariantUuid": "5c3eb5cb-a3ef-4089-bdbe-3b5ebd20541d",
+    "name": "E2E_vCCF_6610SD _SVC",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L4+",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "vCCF for Soft Delete in DPA2b CL tenant",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "legacy",
+      "modelCategory": "other",
+      "viewEditUI": "legacy"
+    }
+  },
+  "vnfs": {
+    "E2E_vCCF_6610SD _VSP 0": {
+      "uuid": "229ac49e-61de-43d9-ab1a-9e6951226efe",
+      "invariantUuid": "57437138-b11e-47b1-aaca-4578251ee173",
+      "description": "vCCF for SoftDelete in DPA2b CL tenant",
+      "name": "E2E_vCCF_6610SD _VSP",
+      "version": "1.0",
+      "customizationUuid": "b80c20bb-35b5-4e16-9819-4d09692e9435",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "iox_flavor_name": "nd.c4r4d50",
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "nf_function": "VUSP-VCCF",
+        "nf_naming_code": "ccfx",
+        "app_volume_size_0": "130.0",
+        "ieccf_debug": "no",
+        "availability_zone_max_count": "1",
+        "app_flavor_name": "nd.c12r4d50",
+        "plt_pair_uuid": "573f433e25ba8",
+        "ecomp_generated_naming": "true",
+        "int_internal_subnet_cidr": "169.30.12.0/24",
+        "nf_type": "CDR-GENERATOR",
+        "plt_servicedata2_volume_size_0": "150.0",
+        "plt_servicedata1_volume_size_0": "70.0",
+        "iox_image_name": "USP_IECF-IO_30.3.3-mcas4.4.6.qcow2",
+        "nf_role": "vCCF",
+        "iox_pair_uuid": "573f433e284b4",
+        "plt_image_name": "USP_IECF-PILOT_30.3.3-mcas4.4.6.qcow2",
+        "app_image_name": "USP_IECF-APP_30.3.3-mcas4.4.6.qcow2",
+        "plt_flavor_name": "nd.c2r4d50"
+      },
+      "type": "VF",
+      "modelCustomizationName": "E2E_vCCF_6610SD _VSP 0",
+      "vfModules": {
+        "e2e_vccf_6610sd_vsp0..E2eVccf6610sdVsp..base_vIECCF..module-0": {
+          "uuid": "ce92010b-3520-49c7-b37f-9b10ce5a8009",
+          "invariantUuid": "4453a55f-13fa-44eb-a158-eb36e7803787",
+          "customizationUuid": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+          "description": null,
+          "name": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+          "version": "1",
+          "modelCustomizationName": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_vIECCF",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        }
+      },
+      "volumeGroups": {
+        "e2e_vccf_6610sd_vsp0..E2eVccf6610sdVsp..base_vIECCF..module-0": {
+          "uuid": "ce92010b-3520-49c7-b37f-9b10ce5a8009",
+          "invariantUuid": "4453a55f-13fa-44eb-a158-eb36e7803787",
+          "customizationUuid": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+          "description": null,
+          "name": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+          "version": "1",
+          "modelCustomizationName": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_vIECCF",
+            "baseModule": true
+          },
+          "inputs": {}
+        }
+      },
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "e2e_vccf_6610sd_vsp0..E2eVccf6610sdVsp..base_vIECCF..module-0": {
+      "uuid": "ce92010b-3520-49c7-b37f-9b10ce5a8009",
+      "invariantUuid": "4453a55f-13fa-44eb-a158-eb36e7803787",
+      "customizationUuid": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+      "description": null,
+      "name": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+      "version": "1",
+      "modelCustomizationName": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_vIECCF",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    }
+  },
+  "volumeGroups": {
+    "e2e_vccf_6610sd_vsp0..E2eVccf6610sdVsp..base_vIECCF..module-0": {
+      "uuid": "ce92010b-3520-49c7-b37f-9b10ce5a8009",
+      "invariantUuid": "4453a55f-13fa-44eb-a158-eb36e7803787",
+      "customizationUuid": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+      "description": null,
+      "name": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+      "version": "1",
+      "modelCustomizationName": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_vIECCF",
+        "baseModule": true
+      },
+      "inputs": {}
+    }
+  },
+  "pnfs": {},
+  "vnfGroups": {}
+}

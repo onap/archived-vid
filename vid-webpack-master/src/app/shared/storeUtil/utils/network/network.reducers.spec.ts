@@ -1,12 +1,13 @@
 import {networkReducer} from "./network.reducers";
 import {
-  CreateNetworkInstanceAction, DeleteActionNetworkInstanceAction,
-  NetworkActions, UndoDeleteActionNetworkInstanceAction,
+  CreateNetworkInstanceAction,
+  NetworkActions,
   UpdateNetworkCollectionFunction,
   UpdateNetworkInstanceAction
 } from "./network.actions";
 import {NetworkInstance} from "../../../models/networkInstance";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import {ActionOnFirstLevel} from "../firstLevel/firstLevel.actions";
 
 
 describe('networkReducer', () => {
@@ -78,9 +79,10 @@ describe('networkReducer', () => {
             }
           }
         }},
-      <DeleteActionNetworkInstanceAction>{
+      <ActionOnFirstLevel>{
         type: NetworkActions.DELETE_ACTION_NETWORK_INSTANCE,
-        networkStoreKey: 'networkStoreKey',
+        firstLevelName: 'networks',
+        storeKey: 'networkStoreKey',
         serviceId: 'serviceModelId'
       }).serviceInstance['serviceModelId'].networks['networkStoreKey'];
 
@@ -99,9 +101,9 @@ describe('networkReducer', () => {
             }
           }
         }},
-      <UndoDeleteActionNetworkInstanceAction>{
+      <ActionOnFirstLevel>{
         type: NetworkActions.UNDO_DELETE_ACTION_NETWORK_INSTANCE,
-        networkStoreKey: 'networkStoreKey',
+        storeKey: 'networkStoreKey',
         serviceId: 'serviceModelId'
       }).serviceInstance['serviceModelId'].networks['networkStoreKey'];
 

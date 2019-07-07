@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import {ErrorMsgService} from "../../../shared/components/error-msg/error-msg.service";
 import {DrawingBoardModes} from "../drawing-board.modes";
 import {ServiceInstance} from "../../../shared/models/serviceInstance";
+import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class DrawingBoardHeaderService{
@@ -38,7 +39,13 @@ export class DrawingBoardHeaderService{
   showAuditInfo(serviceModelId) : void {
     let instance: ServiceInstance = this.store.getState().service.serviceInstance[serviceModelId];
     let model =  new ServiceModel(this.store.getState().service.serviceHierarchy[serviceModelId]);
-    AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance, trackById: instance.trackById});
+    AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
+  }
+
+  toggleResumeService(serviceModelId, isResume: boolean) : void {
+    const action: ServiceInstanceActions = isResume ? ServiceInstanceActions.Resume : ServiceInstanceActions.None;
+    this.store.dispatch(addServiceAction(serviceModelId, action));
+
   }
 
 
@@ -49,7 +56,7 @@ export class DrawingBoardHeaderService{
     const serviceInstance = this.store.getState().service.serviceInstance[serviceInstanceId];
     if(!_.isNil(serviceInstance)){
       const validationCounter = serviceInstance.validationCounter;
-      if (!_.isNil(this.errorMsgService.errorMsgObject)&& mode !== DrawingBoardModes.RETRY_EDIT) return true;
+      if (!_.isNil(this.errorMsgService.errorMsgObject) && mode !== DrawingBoardModes.RETRY_EDIT) return true;
       if(validationCounter > 0) return true;
       if(serviceInstance.action !== ServiceInstanceActions.None) return false;
       if(mode === DrawingBoardModes.RETRY_EDIT) return false;
@@ -82,5 +89,19 @@ export class DrawingBoardHeaderService{
     const serviceInstance = this.store.getState().service.serviceInstance;
     return mode === DrawingBoardModes.CREATE || ((mode === DrawingBoardModes.RETRY_EDIT || mode === DrawingBoardModes.EDIT)&&
       !_.isNil(serviceInstance) && !_.isNil(serviceInstance[serviceModelId])&& serviceInstance[serviceModelId].action === ServiceInstanceActions.Create);
+  }
+
+  showResumeService(serviceModelId: string): boolean {
+    const serviceInstance: ServiceInstance = !_.isNil(this.store.getState().service.serviceInstance)? this.store.getState().service.serviceInstance[serviceModelId] : null;
+    if (serviceInstance)
+    {
+      return FeatureFlagsService.getFlagState(Features.FLAG_1908_RESUME_MACRO_SERVICE, this.store) &&
+        serviceInstance.vidNotions.instantiationType.toLowerCase() === "macro" &&
+        serviceInstance.subscriptionServiceType.toLowerCase() !== "transport" &&
+        serviceInstance.orchStatus &&
+        (serviceInstance.orchStatus.toLowerCase() === "assigned" ||
+          serviceInstance.orchStatus.toLowerCase() === "inventoried");
+    }
+    return false;
   }
 }

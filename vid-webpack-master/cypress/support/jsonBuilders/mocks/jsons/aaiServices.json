@@ -2,7 +2,7 @@
   "service": [
     {
       "service-id": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
-      "service-description": "SCOTTIE",
+      "service-description": "ERICA",
       "resource-version": "1494001985150",
       "is-permitted": true
     },
@@ -32,7 +32,7 @@
     },
     {
       "service-id": "323d69d9-2efe-4r45-ay0a-89ea7ard4e6f",
-      "service-description": "vSCP",
+      "service-description": "vEsmeralda",
       "resource-version": "1494001903012",
       "is-permitted": true
     },
@@ -85,7 +85,7 @@
       "is-permitted": true
     },
     {
-      "service-id": "Cisneros",
+      "service-id": "vMuriel",
       "service-description": "vMuriel",
       "resource-version": "1490910058887",
       "is-permitted": true
@@ -116,7 +116,7 @@
     },
     {
       "service-id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4",
-      "service-description": "Josefina",
+      "service-description": "JOSEFINA",
       "resource-version": "1494001941772",
       "is-permitted": true
     },

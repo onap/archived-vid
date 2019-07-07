@@ -28,6 +28,8 @@ import {
   updateNetworkPosition
 } from "../../../../../shared/storeUtil/utils/network/network.actions";
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
+import {ComponentInfoType} from "../../../component-info/component-info-model";
+import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 
 export class NetworkModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -43,6 +45,8 @@ export class NetworkModelInfo implements ILevelNodeInfo {
   name: string = 'networks';
   type: string = 'Network';
   typeName: string = 'N';
+  childNames: string[];
+  componentInfoType = ComponentInfoType.NETWORK;
 
   /***********************************************************
    * return model dynamic inputs
@@ -83,7 +87,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
     node.typeName = this.typeName;
     node.menuActions = this.getMenuAction(<any>node, model.uuid);
     node.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
-    node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage: "";
+    node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
     node = this._sharedTreeService.addingStatusProperty(node);
     return node;
   };
@@ -141,7 +145,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
       map = this._store.getState().service.serviceInstance[serviceModelId].existingNetworksCounterMap || 0;
       if (!_.isNil(map)) {
         let count = map[node.data.modelUniqueId] || 0;
-        count -= this._sharedTreeService.getExistingInstancesWithDeleteMode(node, serviceModelId , 'networks');
+        count -= this._sharedTreeService.getExistingInstancesWithDeleteMode(node, serviceModelId, 'networks');
         return count;
       }
     }
@@ -157,7 +161,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
     let counter: number = !_.isNil(this._store.getState().service.serviceInstance[serviceModelId]) ?
       (this._store.getState().service.serviceInstance[serviceModelId].existingNetworksCounterMap[node.data.modelUniqueId] || 0) : 0;
 
-    counter -= this._sharedTreeService.getExistingInstancesWithDeleteMode(node, serviceModelId , 'networks');
+    counter -= this._sharedTreeService.getExistingInstancesWithDeleteMode(node, serviceModelId, 'networks');
 
     const properties = this._store.getState().service.serviceHierarchy[serviceModelId].networks[node.data.name].properties;
     const maxInstances: number = !_.isNil(properties) ? (properties.max_instances || 1) : 1;
@@ -167,7 +171,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
     return new AvailableNodeIcons(showAddIcon, isReachedLimit)
   }
 
-  getMenuAction(node: ITreeNode, serviceModelId: string): { [methodName: string]: { method: Function, visible: Function, enable: Function }} {
+  getMenuAction(node: ITreeNode, serviceModelId: string): { [methodName: string]: { method: Function, visible: Function, enable: Function } } {
     const mode = this._store.getState().global.drawingBoardStatus;
     return {
       edit: {
@@ -186,64 +190,63 @@ export class NetworkModelInfo implements ILevelNodeInfo {
             isUpdateMode: true
           });
         },
-        visible: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node),
-        enable: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowRemoveAndEdit(node),
+        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowRemoveAndEdit(node)
       },
       showAuditInfo: {
         method: (node, serviceModelId) => {
           let instance = this._store.getState().service.serviceInstance[serviceModelId].networks[node.data.networkStoreKey];
           this._sharedTreeService.openAuditInfoModal(node, serviceModelId, instance, 'NETWORK', this);
         },
-        visible: (node) => this._sharedTreeService.shouldShowAuditInfo(node),
-        enable: (node) => this._sharedTreeService.shouldShowAuditInfo(node)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowAuditInfo(node),
+        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowAuditInfo(node)
       },
       duplicate: {
         method: (node, serviceModelId) => {
-          if (this._store.getState().global.flags['FLAG_DUPLICATE_VNF']) {
-            const storeKey = node.data.networkStoreKey;
-            let modalConfig: IModalConfig = this._duplicateService.openDuplicateModal(serviceModelId, node.data.modelUniqueId, node.data.modelName, storeKey, 1, this._store, node);
-            this.modalService.openCustomModal(modalConfig, DuplicateVnfComponent);
-          }
+          const storeKey = node.data.networkStoreKey;
+          let modalConfig: IModalConfig = this._duplicateService.openDuplicateModal(serviceModelId, node.data.modelUniqueId, node.data.modelName, storeKey, 1, this._store, node);
+          this.modalService.openCustomModal(modalConfig, DuplicateVnfComponent);
         },
-        visible: (node) => this._sharedTreeService.shouldShowDuplicate(node) && !_.isNil(node.data) && !_.isNil(node.data.action) && node.data.action === ServiceInstanceActions.Create && this._duplicateService.canDuplicate(node),
-        enable: (node, serviceModelId) => this._duplicateService.isEnabled(node, this._store, serviceModelId)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDuplicate(node) && !_.isNil(node.data) && !_.isNil(node.data.action) && node.data.action === ServiceInstanceActions.Create && this._duplicateService.canDuplicate(node),
+        enable: (node, serviceModelId) => node.data.parentType !== 'VRF' && this._duplicateService.isEnabled(node, this._store, serviceModelId)
       },
       remove: {
         method: (node, serviceModelId) => {
           let storeKey: string = node.data.networkStoreKey;
           this._store.dispatch(removeInstance(node.data.networkStoreKey, serviceModelId, storeKey, node));
-          this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId , serviceModelId, -1, node));
+          this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceModelId, -1, node));
           this._sharedTreeService.selectedVNF = null;
         },
-        visible: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node),
-        enable: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node),
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowRemoveAndEdit(node),
+        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowRemoveAndEdit(node),
       },
-      delete : {
-        method : (node, serviceModelId) => {
+      delete: {
+        method: (node, serviceModelId) => {
           if ((!_.isNil(node.data.children) && node.data.children.length === 0) || _.isNil(node.data.children)) {
             this._store.dispatch(deleteActionNetworkInstance(node.data.networkStoreKey, serviceModelId));
-          }else {
-            this._sharedTreeService.removeDeleteAllChild(node, serviceModelId, (node, serviceModelId)=>{
+          } else {
+            this._sharedTreeService.removeDeleteAllChild(node, serviceModelId, (node, serviceModelId) => {
               this._store.dispatch(deleteActionNetworkInstance(node.data.networkStoreKey, serviceModelId));
             });
           }
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node),
+        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node)
       },
-      undoDelete : {
-        method : (node, serviceModelId) => {
+      undoDelete: {
+        method: (node, serviceModelId) => {
           if ((!_.isNil(node.data.children) && node.data.children.length === 0) || _.isNil(node.data.children)) {
             this._store.dispatch(undoDeleteActionNetworkInstance(node.data.networkStoreKey, serviceModelId));
-          }else {
-            this._sharedTreeService.undoDeleteAllChild(node, serviceModelId, (node, serviceModelId)=>{
+          } else {
+            this._sharedTreeService.undoDeleteAllChild(node, serviceModelId, (node, serviceModelId) => {
               this._store.dispatch(undoDeleteActionNetworkInstance(node.data.networkStoreKey, serviceModelId));
             });
           }
         },
-        visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
-        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowUndoDelete(node),
+        enable: (node, serviceModelId) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowUndoDelete(node) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
       }
+
     };
   }
 
@@ -251,7 +254,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
    * should update node position inside the tree
    * @param node - current ITrees node
    ************************************************************/
-  updatePosition(that , node, instanceId): void {
+  updatePosition(that, node, instanceId): void {
     that.store.dispatch(updateNetworkPosition(node));
   }
 
@@ -259,6 +262,16 @@ export class NetworkModelInfo implements ILevelNodeInfo {
     return !_.isNil(instance) ? instance.position : null;
   }
 
-  onSelectedNode(node: ITreeNode): void {
+  getInfo(model, instance): ModelInformationItem[] {
+    const modelInformation = !_.isEmpty(model) && !_.isEmpty(model.properties) ? [
+      ModelInformationItem.createInstance("Network role", model.properties.network_role)] : [];
+    ModelInformationItem.createInstance("Min instances", !_.isNull(model.min) ? String(model.min) : null),
+      ModelInformationItem.createInstance("Max instances", !_.isNull(model.max) ? String(model.max) : null)
+    const instanceInfo = !_.isEmpty(instance) ? [
+        ModelInformationItem.createInstance("Route target id", instance.routeTargetId ? instance.routeTargetId : null),
+        ModelInformationItem.createInstance("Route target role", instance.routeTargetRole ? instance.routeTargetRole : null)] :
+      [];
+    const result = [modelInformation, instanceInfo];
+    return _.uniq(_.flatten(result));
   }
 }

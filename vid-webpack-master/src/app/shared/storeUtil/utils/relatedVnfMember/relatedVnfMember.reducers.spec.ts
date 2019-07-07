@@ -105,7 +105,7 @@ describe('relatedVnfMemberReducer', () => {
       "instanceId":"VNF1_INSTANCE_ID",
       "orchStatus":null,
       "productFamilyId":null,
-      "lcpCloudRegionId":"mtn23b",
+      "lcpCloudRegionId":"hvf23b",
       "tenantId":"3e9a20a3e89e45f884e09df0cc2d2d2a",
       "tenantName":"APPC-24595-T-IST-02C",
       "modelInfo":{

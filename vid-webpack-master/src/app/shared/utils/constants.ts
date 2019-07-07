@@ -27,6 +27,7 @@ export module Constants {
     public static GET_SCHEDULER_CHANGE_MANAGEMENTS = 'change-management/scheduler';
     public static CANCEL_SCHEDULE_REQUEST = 'change-management/scheduler/schedules';
     public static ASSIGN = '?r=';
+    public static AAI_OMIT_SERVICE_INSTANCES = '&omitServiceInstances=';
     public static AAI_GET_SERVICE_INSTANCE_PATH = 'aai_get_service_instance/';
     public static AAI_GET_SERVICES = '../../aai_get_services';
     public static AAI_GET_AIC_ZONES = '../../aai_get_aic_zones';
@@ -35,6 +36,8 @@ export module Constants {
     public static AAI_GET_TENANTS = '../../aai_get_tenants/';
     public static AAI_SUB_DETAILS_PATH = '../../aai_sub_details/';
     public static AAI_GET_SERVICE_INSTANCE_TOPOLOGY_PATH = '../../aai_get_service_instance_topology/';
+    public static AAI_GET_ACTIVE_NETWORKS_PATH = '../../aai_get_active_networks/';
+    public static AAI_GET_VPNS_PATH = '../../aai_get_vpn_list/';
     public static AAI_GET_SERVICE_GROUP_MEMBERS_PATH = '../../aai_search_group_members/';
     public static AAI_GET_VERSION_BY_INVARIANT_ID = 'aai_get_version_by_invariant_id/';
     public static SEARCH_SERVICE_INSTANCES = 'search_service_instances';
@@ -122,12 +125,12 @@ export module Constants {
     public static MODEL_CUSTOMIZATION_ID = 'model-customization-id';
     public static MODEL_INVAR_ID = 'model-invariant-id';
     public static MODEL_VERSION_ID = 'model-version-id';
-    public static NETWORK_NAME = 'network-name';
-    public static NETWORK_ID = 'network-id';
-    public static NETWORK_TYPE = 'network-type';
+    public static NETWORK_NAME = 'instanceName';
+    public static NETWORK_ID = 'instanceId';
+    public static NETWORK_TYPE = 'instanceType';
     public static NETWORKS = 'networks';
     public static OPERATIONAL_STATUS = 'operational-status';
-    public static ORCHESTRATION_STATUS = 'orchestration-status';
+    public static ORCHESTRATION_STATUS = 'orchStatus';
     public static PERCENT_PROGRESS = 'percent-progress';
     public static PERSONA_MODEL_ID = 'persona-model-id';
     public static PERSONA_MODEL_VERSION = 'persona-model-version';

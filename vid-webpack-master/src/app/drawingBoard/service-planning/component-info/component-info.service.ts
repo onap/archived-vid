@@ -6,36 +6,27 @@ import {Subject} from "rxjs";
 import {ComponentInfoModel, ComponentInfoType} from "./component-info-model";
 import {ModelInformationItem} from "../../../shared/components/model-information/model-information.component";
 import * as _ from 'lodash';
+import {SharedTreeService} from "../objectsToTree/shared.tree.service";
 @Injectable()
 export class ComponentInfoService {
   static triggerComponentInfoChange: Subject<ComponentInfoModel> = new Subject<ComponentInfoModel>();
-  constructor( private _store: NgRedux<AppState>, private _aaiService : AaiService){ }
+  constructor( private _store: NgRedux<AppState>, private _aaiService : AaiService, private _sharedTreeService : SharedTreeService){ }
 
   getInfoForService(serviceModelId):ComponentInfoModel {
     if(_.isNil(this._store.getState().service.serviceHierarchy[serviceModelId])) return null;
 
-    let serviceHierarchy = this._store.getState().service.serviceHierarchy[serviceModelId].service;
+    const serviceHierarchy = this._store.getState().service.serviceHierarchy[serviceModelId].service;
     const serviceInstance = this._store.getState().service.serviceInstance[serviceModelId];
     const modelInfoItems: ModelInformationItem[] = [
-     ModelInformationItem.createInstance("Subscriber Name",this._aaiService.extractSubscriberNameBySubscriberId(serviceInstance.globalSubscriberId)),
-     ModelInformationItem.createInstance("Service Type",serviceInstance.subscriptionServiceType),
-     ModelInformationItem.createInstance("Service Role",serviceHierarchy.serviceRole),
+       ModelInformationItem.createInstance("Type", serviceHierarchy.serviceType),
+       ModelInformationItem.createInstance("Model version", serviceHierarchy.version ),
+       ModelInformationItem.createInstance("Model customization ID", serviceHierarchy.customizationUuid ),
+       ModelInformationItem.createInstance("Instance ID", serviceInstance.instanceId),
+       ModelInformationItem.createInstance("Subscriber name",this._aaiService.extractSubscriberNameBySubscriberId(serviceInstance.globalSubscriberId)),
+       ModelInformationItem.createInstance("Service type",serviceInstance.subscriptionServiceType),
+       ModelInformationItem.createInstance("Service role",serviceHierarchy.serviceRole),
     ];
-    serviceHierarchy.type = serviceHierarchy.serviceType;
-    return this.addGeneralInfoItems(modelInfoItems, ComponentInfoType.SERVICE, serviceHierarchy, serviceInstance );
-  }
 
-
-  addGeneralInfoItems(modelInfoSpecificItems: ModelInformationItem[], type: ComponentInfoType, model, instance) {
-    let modelInfoItems: ModelInformationItem[] = [
-      ModelInformationItem.createInstance("Type", (model && model.type) ? model.type : ((instance && instance.modelInfo) ? instance.modelInfo.modelType : null)),
-      ModelInformationItem.createInstance("Model Version", model ? model.version : null),
-      ModelInformationItem.createInstance("Model Customization ID", model ? model.customizationUuid : null),
-      ModelInformationItem.createInstance("Instance ID", instance ? instance.instanceId : null),
-      ModelInformationItem.createInstance("In Maintenance", instance? instance.inMaint : null),
-    ];
-    modelInfoItems = modelInfoItems.concat(modelInfoSpecificItems);
-    const modelInfoItemsWithoutEmpty = _.filter(modelInfoItems, function(item){ return !item.values.every(_.isNil)});
-    return new ComponentInfoModel(type, modelInfoItemsWithoutEmpty, []);
+    return this._sharedTreeService.getComponentInfoModelByModelInformationItems(modelInfoItems, ComponentInfoType.SERVICE, serviceInstance );
   }
 }

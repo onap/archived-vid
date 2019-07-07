@@ -18,13 +18,9 @@ import {Constants} from "../../../../utils/constants";
 import {ServiceInstance} from "../../../../models/serviceInstance";
 import {ModelInfo} from "../../../../models/modelInfo";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
-import {
-  ServiceActions,
-  createServiceInstance,
-  updateServiceInstance
-} from "../../../../storeUtil/utils/service/service.actions";
-import {ServiceInstanceActions} from "../../../../models/serviceInstanceActions";
+import {createServiceInstance, updateServiceInstance} from "../../../../storeUtil/utils/service/service.actions";
 import * as _ from 'lodash';
+
 @Injectable()
 export class ServicePopupService implements GenericPopupInterface {
   dynamicInputs: any;
@@ -73,7 +69,7 @@ export class ServicePopupService implements GenericPopupInterface {
 
 
   getControls(serviceId: string) {
-    if(this._store.getState().service.serviceHierarchy[serviceId].service.instantiationType === 'Macro') {
+    if(this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
       return this._serviceControlGenerator.getMacroFormControls(serviceId, this.dynamicInputs);
     }else {
       return this._serviceControlGenerator.getAlaCartControls(serviceId, this.dynamicInputs);
@@ -156,7 +152,7 @@ export class ServicePopupService implements GenericPopupInterface {
   storeServiceInstance = (formValues:any, servicesQty:number, dynamicInputs:any, serviceModel:ModelInfo, serviceDetails: any ) => {
     formValues.bulkSize = this.uuidData['bulkSize'];
     formValues.modelInfo = serviceModel;
-    let instantiationType = this._store.getState().service.serviceHierarchy[serviceModel.modelVersionId].service.instantiationType;
+    let instantiationType = this._store.getState().service.serviceHierarchy[serviceModel.modelVersionId].service.vidNotions.instantiationType;
     this.setIsALaCarte(formValues, instantiationType);
     this.setTestApi(formValues);
     Object.assign(formValues, serviceDetails);
@@ -173,7 +169,7 @@ export class ServicePopupService implements GenericPopupInterface {
   };
 
   setIsALaCarte = (formValues: any, instantiationType) => {
-    formValues.isALaCarte = instantiationType === 'A-La-Carte';
+    formValues.isALaCarte = instantiationType === 'ALaCarte';
   };
 
   setTestApi = (formValues: any) =>{

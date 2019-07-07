@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
-import { ITreeNode } from 'angular-tree-component/dist/defs/api';
-import { AppState } from '../../../shared/store/reducers';
-import { LogService } from '../../../shared/utils/log/log.service';
-import { NgRedux } from '@angular-redux/store';
+import {Injectable} from '@angular/core';
+import {ITreeNode} from 'angular-tree-component/dist/defs/api';
+import {AppState} from '../../../shared/store/reducers';
+import {LogService} from '../../../shared/utils/log/log.service';
+import {NgRedux} from '@angular-redux/store';
 import {VnfInstance} from "../../../shared/models/vnfInstance";
 import {VfModuleMap} from "../../../shared/models/vfModulesMap";
 import * as _ from "lodash";
 import {DefaultDataGeneratorService} from "../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
 import {TypeNodeInformation} from "../typeNodeInformation.model";
-import { SdcUiServices} from "onap-ui-angular";
-import { SdcUiCommon} from "onap-ui-angular";
+import {SdcUiCommon, SdcUiServices} from "onap-ui-angular";
 import {changeInstanceCounter, duplicateBulkInstances} from "../../../shared/storeUtil/utils/general/general.actions";
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 
@@ -39,7 +38,7 @@ export class DuplicateService {
 
   canDuplicate(node: ITreeNode): boolean {
     let reduxState = <AppState>JSON.parse(sessionStorage.getItem('reduxState'));
-    return reduxState.global.flags['FLAG_DUPLICATE_VNF'] && (node.data.type === 'VF' || node.data.type === 'VL');
+    return node.data.type === 'VF' || node.data.type === 'VL';
   }
 
   isEnabled(node: ITreeNode, store: NgRedux<AppState>, serviceId : string): boolean {

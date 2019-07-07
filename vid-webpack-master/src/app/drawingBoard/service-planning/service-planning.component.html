@@ -3,9 +3,15 @@
     <drawing-board-header></drawing-board-header>
   </div>
   <div class="service-planning-content">
-    <available-models-tree class="left-side" [ngClass]="isShowComponentInfo() ?'col-md-5':'col-md-6'"
+    <available-models-tree class="left-side"
+                           [ngClass]="isShowComponentInfo() ?'col-md-5':'col-md-6'"
                            (highlightInstances)="highlightInstancesBySelectingNode($event)"></available-models-tree>
-    <drawing-board-tree *ngIf="isShowTree()" class="span-over" [ngClass]="isShowComponentInfo() ?'col-md-5':'col-md-6'" (highlightNode)="highlightNodeBySelectingInstance($event)"></drawing-board-tree>
+    <drawing-board-tree
+      *ngIf="isShowTree()"
+      class="span-over"
+      [ngClass]="isShowComponentInfo() ?'col-md-5':'col-md-6'"
+      [pageMode]="pageMode"
+      (highlightNode)="highlightNodeBySelectingInstance($event)"></drawing-board-tree>
     <component-info *ngIf="isShowComponentInfo()" class="col-md-2"></component-info>
   </div>
 
