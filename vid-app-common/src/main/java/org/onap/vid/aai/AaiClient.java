@@ -736,11 +736,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     private static String encodePathSegment(String segmentToEncode) {
-        try {
-            return UriUtils.encodePathSegment(segmentToEncode, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new GenericUncheckedException("URI encoding failed unexpectedly", e);
-        }
+        return UriUtils.encodePathSegment(segmentToEncode, "UTF-8");
     }
 
     @Override
