@@ -1,0 +1,310 @@
+{
+  "inventory-response-item": [{
+    "model-name": "E2E_vCCF_6610SD _SVC",
+    "service-instance": {
+      "service-instance-id": "dedd680f-f3bd-46d8-97c7-b6fc28db9317",
+      "service-instance-name": "SI_E2E_vCCF_6610SD_SVC"
+    },
+    "extra-properties": {},
+    "inventory-response-items": {
+      "inventory-response-item": [{
+        "model-name": "E2E_vCCF_6610SD _VSP",
+        "generic-vnf": {
+          "vnf-id": "1d45e992-e282-4ba5-b17a-9ca6562169e3",
+          "vnf-name": "dpa2bccfx5992v",
+          "vnf-type": "E2E_vCCF_6610SD _SVC/E2E_vCCF_6610SD _VSP 0",
+          "service-id": "e433710f-9217-458d-a79d-1c7aff376d89",
+          "prov-status": "PREPROV",
+          "equipment-role": "vCCF",
+          "orchestration-status": "Active",
+          "in-maint": false,
+          "is-closed-loop-disabled": false,
+          "resource-version": "1551298829859",
+          "model-invariant-id": "57437138-b11e-47b1-aaca-4578251ee173",
+          "model-version-id": "229ac49e-61de-43d9-ab1a-9e6951226efe",
+          "model-customization-id": "b80c20bb-35b5-4e16-9819-4d09692e9435",
+          "nf-type": "CDR-GENERATOR",
+          "nf-function": "VUSP-VCCF",
+          "nf-role": "vCCF",
+          "nf-naming-code": "ccfx",
+          "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/dedd680f-f3bd-46d8-97c7-b6fc28db9317/service-data/vnfs/vnf/1d45e992-e282-4ba5-b17a-9ca6562169e3/vnf-data/vnf-topology/"
+        },
+        "extra-properties": {},
+        "inventory-response-items": {
+          "inventory-response-item": [{
+            "volume-group": {
+              "volume-group-id": "2ca48b79-062a-4471-a731-4fe15c2d961d",
+              "volume-group-name": "dpa2bccfx5992_vol",
+              "heat-stack-id": "dpa2bccfx5992_vol/43e17f84-0d50-4f99-9f9d-7c27fc1b39d8",
+              "vnf-type": "E2E_vCCF_6610SD _SVC/E2E_vCCF_6610SD _VSP 0",
+              "orchestration-status": "Active",
+              "model-customization-id": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+              "vf-module-model-customization-id": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+              "resource-version": "1548831528407"
+            },
+            "extra-properties": {}
+          }, {
+            "model-name": "E2eVccf6610sdVsp..base_vIECCF..module-0",
+            "vf-module": {
+              "vf-module-id": "f1688a69-2792-4f1f-bc95-4864f4742e7b",
+              "vf-module-name": "dpa2bccfx5992v_base_module",
+              "orchestration-status": "Assigned",
+              "is-base-vf-module": true,
+              "automated-assignment": false,
+              "resource-version": "1551299087384",
+              "model-invariant-id": "4453a55f-13fa-44eb-a158-eb36e7803787",
+              "model-version-id": "ce92010b-3520-49c7-b37f-9b10ce5a8009",
+              "model-customization-id": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+              "module-index": 0,
+              "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/dedd680f-f3bd-46d8-97c7-b6fc28db9317/service-data/vnfs/vnf/1d45e992-e282-4ba5-b17a-9ca6562169e3/vnf-data/vf-modules/vf-module/f1688a69-2792-4f1f-bc95-4864f4742e7b/vf-module-data/vf-module-topology/"
+            },
+            "extra-properties": {},
+            "inventory-response-items": {
+              "inventory-response-item": [{
+                "volume-group": {
+                  "volume-group-id": "2ca48b79-062a-4471-a731-4fe15c2d961d",
+                  "volume-group-name": "dpa2bccfx5992_vol",
+                  "heat-stack-id": "dpa2bccfx5992_vol/43e17f84-0d50-4f99-9f9d-7c27fc1b39d8",
+                  "vnf-type": "E2E_vCCF_6610SD _SVC/E2E_vCCF_6610SD _VSP 0",
+                  "orchestration-status": "Active",
+                  "model-customization-id": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+                  "vf-module-model-customization-id": "ed87e68b-1b32-4aae-8aea-d2725a5e5602",
+                  "resource-version": "1548831528407"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "ca2a6247-8ed7-4b6e-ae60-1979c24db55d",
+                  "vserver-name": "dpa2bccfx5992vm011",
+                  "vserver-name2": "dpa2bccfx5992vm011",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/ca2a6247-8ed7-4b6e-ae60-1979c24db55d",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896212439"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "6354b5e7-e5eb-48b1-b770-8fb9de5ab21f",
+                  "vserver-name": "dpa2bccfx5992vm005",
+                  "vserver-name2": "dpa2bccfx5992vm005",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/6354b5e7-e5eb-48b1-b770-8fb9de5ab21f",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896353025"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "dafb62ad-36cf-4aa1-8286-337dc7232c05",
+                  "vserver-name": "dpa2bccfx5992vm010",
+                  "vserver-name2": "dpa2bccfx5992vm010",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/dafb62ad-36cf-4aa1-8286-337dc7232c05",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896347787"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "7c6e8a86-97d4-47d0-bbec-9046925f0a0c",
+                  "vserver-name": "dpa2bccfx5992vm002",
+                  "vserver-name2": "dpa2bccfx5992vm002",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/7c6e8a86-97d4-47d0-bbec-9046925f0a0c",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896385541"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "25d1e26b-fd12-4db7-85cf-900cef7af347",
+                  "vserver-name": "dpa2bccfx5992vm003",
+                  "vserver-name2": "dpa2bccfx5992vm003",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/25d1e26b-fd12-4db7-85cf-900cef7af347",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896421775"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "c6d36d19-3a31-46a1-98e7-e173807e4e57",
+                  "vserver-name": "dpa2bccfx5992vm004",
+                  "vserver-name2": "dpa2bccfx5992vm004",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/c6d36d19-3a31-46a1-98e7-e173807e4e57",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896345784"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "957e5f81-5b90-4a31-a3ff-0f34fdd9e487",
+                  "vserver-name": "dpa2bccfx5992vm006",
+                  "vserver-name2": "dpa2bccfx5992vm006",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/957e5f81-5b90-4a31-a3ff-0f34fdd9e487",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896285901"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "97f82bd5-1522-4c9d-8061-e362a3cbfdb8",
+                  "vserver-name": "dpa2bccfx5992vm008",
+                  "vserver-name2": "dpa2bccfx5992vm008",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/97f82bd5-1522-4c9d-8061-e362a3cbfdb8",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896282486"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "fd2f0db6-fcc5-46a1-8fd6-d9c4233f0e10",
+                  "vserver-name": "dpa2bccfx5992vm001",
+                  "vserver-name2": "dpa2bccfx5992vm001",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/fd2f0db6-fcc5-46a1-8fd6-d9c4233f0e10",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896275425"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "75bac4b9-dd19-40b1-848f-d3ce5ce109da",
+                  "vserver-name": "dpa2bccfx5992vm007",
+                  "vserver-name2": "dpa2bccfx5992vm007",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/75bac4b9-dd19-40b1-848f-d3ce5ce109da",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896218468"
+                },
+                "extra-properties": {}
+              }, {
+                "vserver": {
+                  "vserver-id": "f255dc26-7ffb-40a1-a37a-02f858ebbd52",
+                  "vserver-name": "dpa2bccfx5992vm009",
+                  "vserver-name2": "dpa2bccfx5992vm009",
+                  "vserver-selflink": "https://comp.onap.org:8774/v2/b60da4f71c1d4b35b8113d4eca6deaa1/servers/f255dc26-7ffb-40a1-a37a-02f858ebbd52",
+                  "in-maint": false,
+                  "is-closed-loop-disabled": false,
+                  "resource-version": "1550896341966"
+                },
+                "extra-properties": {}
+              }, {
+                "l3-network": {
+                  "network-id": "b90ea5aa-5079-470b-8e79-3e2dc1a4e502",
+                  "network-name": "Control_Loop-23804-T-01-dpa2b_CORE-VIF-TSIG0_net_0",
+                  "network-type": "CONTRAIL30_BASIC",
+                  "network-role": "Control_Loop-23804-T-01-dpa2b_CORE-VIF-TSIG0",
+                  "network-technology": "contrail",
+                  "neutron-network-id": "4e996ec6-2c17-4881-b8c4-9225ec64678b",
+                  "is-bound-to-vpn": true,
+                  "service-id": "e433710f-9217-458d-a79d-1c7aff376d89",
+                  "network-role-instance": 0,
+                  "resource-version": "1547969639781",
+                  "orchestration-status": "Created",
+                  "heat-stack-id": "Control_Loop-23804-T-01-dpa2b_CORE-VIF-TSIG0_net_0/9e260519-dde7-4b9a-9692-cef542089ed5",
+                  "contrail-network-fqdn": "default-domain:Closed_Loop-23804-T-01-dpa2b:Control_Loop-23804-T-01-dpa2b_CORE-VIF-TSIG0_net_0",
+                  "physical-network-name": "Not Aplicable",
+                  "is-provider-network": false,
+                  "is-shared-network": false,
+                  "is-external-network": false,
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/cd48e066-08f5-4134-9c83-34615d6bba5c/service-data/networks/network/b90ea5aa-5079-470b-8e79-3e2dc1a4e502/network-data/network-topology/"
+                },
+                "extra-properties": {},
+                "inventory-response-items": {
+                  "inventory-response-item": [{
+                    "subnet": {
+                      "subnet-id": "2eaceba4-58ae-4abc-b6a5-bb7f2248699d",
+                      "subnet-name": "Control_Loop-23804-T-01-dpa2b_CORE-VIF-TSIG0_net_0_IPv6_Subnet1",
+                      "neutron-subnet-id": "d342e7c9-62af-4e88-939d-65b032be8078",
+                      "gateway-address": "2001:1890:1001:22D5:0:0:0:1",
+                      "network-start-address": "2001:1890:1001:22D5::",
+                      "cidr-mask": "64",
+                      "ip-version": "6",
+                      "orchestration-status": "Created",
+                      "dhcp-enabled": true,
+                      "dhcp-start": "2001:1890:1001:22D5:ffff:ffff:ffff:0",
+                      "dhcp-end": "2001:1890:1001:22D5:ffff:ffff:ffff:fffe",
+                      "ip-assignment-direction": "true",
+                      "resource-version": "1517256523275"
+                    },
+                    "extra-properties": {}
+                  }, {
+                    "subnet": {
+                      "subnet-id": "124278b1-b77b-4bb3-aeca-83d1deb58409",
+                      "subnet-name": "Control_Loop-23804-T-01-dpa2b_CORE-VIF-TSIG0_net_0_IPv4_Subnet1",
+                      "neutron-subnet-id": "9edb7006-7936-4e9d-84e0-55eb04e6a9b1",
+                      "gateway-address": "10.0.0.10",
+                      "network-start-address": "10.0.0.10",
+                      "cidr-mask": "25",
+                      "ip-version": "4",
+                      "orchestration-status": "Created",
+                      "dhcp-enabled": true,
+                      "dhcp-start": "10.0.0.10",
+                      "dhcp-end": "10.0.0.10",
+                      "ip-assignment-direction": "true",
+                      "resource-version": "1517256523267"
+                    },
+                    "extra-properties": {}
+                  }
+                  ]
+                }
+              }, {
+                "l3-network": {
+                  "network-id": "16f9455e-05d9-42b4-a40c-f2a900cebbcf",
+                  "network-name": "Control_Loop-23804-T-01-dpa2b_CORE-NSD-TOAM0_net_0",
+                  "network-type": "CONTRAIL30_BASIC",
+                  "network-role": "Control_Loop-23804-T-01-dpa2b_CORE-NSD-TOAM0",
+                  "network-technology": "contrail",
+                  "neutron-network-id": "26b26c1e-7903-478c-ad3d-9e27ef194456",
+                  "is-bound-to-vpn": true,
+                  "service-id": "e433710f-9217-458d-a79d-1c7aff376d89",
+                  "network-role-instance": 0,
+                  "resource-version": "1547969631952",
+                  "orchestration-status": "Created",
+                  "heat-stack-id": "Control_Loop-23804-T-01-dpa2b_CORE-NSD-TOAM0_net_0/f161b66f-cb65-4e97-a386-1f2e6758cbed",
+                  "contrail-network-fqdn": "default-domain:Closed_Loop-23804-T-01-dpa2b:Control_Loop-23804-T-01-dpa2b_CORE-NSD-TOAM0_net_0",
+                  "physical-network-name": "Not Aplicable",
+                  "is-provider-network": false,
+                  "is-shared-network": false,
+                  "is-external-network": false,
+                  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/cd48e066-08f5-4134-9c83-34615d6bba5c/service-data/networks/network/16f9455e-05d9-42b4-a40c-f2a900cebbcf/network-data/network-topology/"
+                },
+                "extra-properties": {},
+                "inventory-response-items": {
+                  "inventory-response-item": [{
+                    "subnet": {
+                      "subnet-id": "b09c8d09-a873-446e-ac12-ee55c15d4915",
+                      "subnet-name": "Control_Loop-23804-T-01-dpa2b_CORE-NSD-TOAM0_net_0_IPv4_Subnet1",
+                      "neutron-subnet-id": "3dfb5920-f438-473b-9273-2c10c57ca7e5",
+                      "gateway-address": "10.0.0.10",
+                      "network-start-address": "10.0.0.10",
+                      "cidr-mask": "24",
+                      "ip-version": "4",
+                      "orchestration-status": "Created",
+                      "dhcp-enabled": true,
+                      "dhcp-start": "10.0.0.10",
+                      "dhcp-end": "10.0.0.10",
+                      "ip-assignment-direction": "true",
+                      "resource-version": "1517256872855"
+                    },
+                    "extra-properties": {}
+                  }
+                  ]
+                }
+              }
+              ]
+            }
+          }
+          ]
+        }
+      }
+      ]
+    }
+  }
+  ]
+}

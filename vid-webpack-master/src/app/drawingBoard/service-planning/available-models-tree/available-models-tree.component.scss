@@ -168,7 +168,7 @@ available-models-tree {
                 .node-content-wrapper.node-content-wrapper-focused {
                   tree-node-content {
                     > div {
-                      background: #009FDB;
+                      background: #009FDB !important;
                       color: white;
                     }
                   }
@@ -178,7 +178,7 @@ available-models-tree {
                     > div {
                       background: #F2F2F2;
                       &.tree-node-focused:not(.tree-node-disabled) {
-                        background: #009FDB;
+                        background: #009FDB !important;
                         color: white;
                       }
                       span.actions {
@@ -206,6 +206,8 @@ available-models-tree {
                   border-color: #1EB9F3;
                 }
                 .node-content-wrapper-focused{
+                  background: #009FDB !important;
+                  border-color: #1EB9F3;
                   box-shadow: none;
                   tree-node-content {
 
@@ -395,6 +397,7 @@ available-models-tree {
 
   .node-content-wrapper.node-content-wrapper-focused{
      border-color:#1EB9F3 ;
+     background: #009FDB !important;
      tree-node-content > div{
        .vf-type,.model-info,.model-info .property-name {
          color: white;
@@ -410,7 +413,9 @@ available-models-tree {
   }
 
 
-
+  available-models-tree .node-content-wrapper.node-content-wrapper-focused {
+    background: #009FDB !important;
+  }
   .vf-type {
     width: 40px;
     height: 45px;

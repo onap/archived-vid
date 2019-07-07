@@ -33,7 +33,7 @@ import {
 } from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
 import * as _ from 'lodash';
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
-import {ComponentInfoModel, ComponentInfoType} from "../../../component-info/component-info-model";
+import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 
@@ -53,9 +53,9 @@ export class VnfModelInfo implements ILevelNodeInfo {
 
   name: string = 'vnfs';
   type: string = 'VNF';
-  childName: string = 'vfModules';
-  childType: string = 'VFModuleModelInfo';
+  childNames: string[] = ['vfModules'];
   typeName: string = 'VNF';
+  componentInfoType = ComponentInfoType.VNF;
 
   /***********************************************************
    * return if user should provide instance name or not.
@@ -215,11 +215,9 @@ export class VnfModelInfo implements ILevelNodeInfo {
       },
       duplicate: {
         method: (node, serviceModelId) => {
-          if (this._store.getState().global.flags['FLAG_DUPLICATE_VNF']) {
-            const storeKey = node.data.vnfStoreKey;
-            let modalConfig: IModalConfig = this._duplicateService.openDuplicateModal(serviceModelId, node.data.modelUniqueId, node.data.modelName, storeKey, 1, this._store, node);
-            this.modalService.openCustomModal(modalConfig, DuplicateVnfComponent);
-          }
+          const storeKey = node.data.vnfStoreKey;
+          let modalConfig: IModalConfig = this._duplicateService.openDuplicateModal(serviceModelId, node.data.modelUniqueId, node.data.modelName, storeKey, 1, this._store, node);
+          this.modalService.openCustomModal(modalConfig, DuplicateVnfComponent);
         },
         visible: (node) => this._sharedTreeService.shouldShowDuplicate(node) && !_.isNil(node.data) && !_.isNil(node.data.action) && node.data.action === ServiceInstanceActions.Create && this._duplicateService.canDuplicate(node),
         enable: (node, serviceModelId) => this._duplicateService.isEnabled(node, this._store, serviceModelId)
@@ -306,27 +304,18 @@ export class VnfModelInfo implements ILevelNodeInfo {
     return !_.isNil(instance) ? instance.position : null;
   }
 
-  /***********************************************************
-   * When user is click on some nod element
-   * @param node - current ITrees node
-   ************************************************************/
-  onSelectedNode(node: ITreeNode): void {
-    ComponentInfoService.triggerComponentInfoChange.next(new ComponentInfoModel(ComponentInfoType.VNF,[], []));
+  getInfo(model, instance): ModelInformationItem[] {
+    const modelInformation = !_.isEmpty(model) ? [
+      ModelInformationItem.createInstance("Min instances",  !_.isNull(model.min)? String(model.min): null),
+      ModelInformationItem.createInstance("Max instances",  !_.isNull(model.max)? String(model.max): null)
+    ] : [];
+
+    const instanceInfo = !_.isEmpty(instance) ? [
+      ModelInformationItem.createInstance("NF type", instance.nfType),
+      ModelInformationItem.createInstance("NF role", instance.nfRole)
+    ] : [];
+
+    const result = [modelInformation, instanceInfo];
+    return _.uniq(_.flatten(result));
   }
-
-  getInfoForVnf(model, instance): ComponentInfoModel {
-    let modelInfoItems: ModelInformationItem[] = [];
-    if (model) {
-      modelInfoItems.push(ModelInformationItem.createInstance("Min Instances",  model.min));
-      modelInfoItems.push(ModelInformationItem.createInstance("Max Instances",  model.max));
-    }
-    if (instance) {
-      modelInfoItems.push(ModelInformationItem.createInstance("NF Type", instance.nfType));
-      modelInfoItems.push(ModelInformationItem.createInstance("NF Role",  instance.nfRole));
-    }
-    return this._componentInfoService.addGeneralInfoItems(modelInfoItems, ComponentInfoType.VNF, model, instance);
-
-  }
-
-
 }

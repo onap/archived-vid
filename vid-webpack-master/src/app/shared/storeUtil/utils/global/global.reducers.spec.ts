@@ -1,4 +1,14 @@
-import {GlobalActions, UpdateFlagsAction, UpdateGlobalAction, UpdateDrawingBoardStatusAction} from "./global.actions";
+import {
+  GlobalActions,
+  UpdateFlagsAction,
+  UpdateGlobalAction,
+  UpdateDrawingBoardStatusAction,
+  UpdateGenericModalCriteria,
+  UpdateGenericModalHelper,
+  DeleteGenericModalHelper,
+  ClearGenericModalHelper,
+  UpdateGenericModalTableDataHelper
+} from "./global.actions";
 import {globalReducer} from "./global.reducers";
 
 
@@ -42,6 +52,96 @@ describe('globalReducer', () => {
     expect(globalDrawingBoardState).toBeDefined();
     expect(globalDrawingBoardState.drawingBoardStatus).toEqual(drawingBoardStatus);
   });
+
+  test('#UPDATE_GENERIC_MODAL_CRITERIA : should update updateGenericModalCriteria object',  ()=> {
+    const values  = ["value1", "value2"];
+    const fieldName = "someFieldName";
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalCriteria : {}},
+      <UpdateGenericModalCriteria>{
+        type: GlobalActions.UPDATE_GENERIC_MODAL_CRITERIA,
+        field : fieldName,
+        values : values
+      });
+    expect(globalDrawingBoardState).toBeDefined();
+    expect(globalDrawingBoardState.genericModalCriteria[fieldName]).toEqual(values);
+  });
+
+  test('#UPDATE_GENERIC_MODAL_HELPER : should update updateGenericModalHelper object',  ()=> {
+    const uniqObjectField = "uniqObjectField";
+    const values  = {name : "value1", uniqObjectField: uniqObjectField};
+    const fieldName = "someFieldName";
+
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalHelper : {}},
+      <UpdateGenericModalHelper>{
+        type: GlobalActions.UPDATE_GENERIC_MODAL_HELPER,
+        field : fieldName,
+        values : values,
+        uniqObjectField : uniqObjectField
+      });
+    expect(globalDrawingBoardState).toBeDefined();
+    expect(globalDrawingBoardState.genericModalHelper[fieldName][uniqObjectField]).toEqual({"name": "value1", "uniqObjectField": "uniqObjectField"});
+  });
+
+  test('#DELETE_GENERIC_MODAL_HELPER : should delete exist ',  ()=> {
+    const uniqObjectField = "uniqObjectField";
+    const fieldName = "someFieldName";
+
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalHelper : {
+          "someFieldName" : {
+            "uniqObjectField" : true
+          }
+        }},
+      <DeleteGenericModalHelper>{
+        type: GlobalActions.DELETE_GENERIC_MODAL_HELPER,
+        field : fieldName,
+        uniqObjectField : uniqObjectField
+      });
+    expect(globalDrawingBoardState).toBeDefined();
+    expect(globalDrawingBoardState.genericModalHelper[fieldName][uniqObjectField]).toBeUndefined();
+  });
+
+  test('#CLEAR_ALL_GENERIC_MODAL_HELPER : should clear  generic modal object',  ()=> {
+
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalHelper : {
+          "someFieldName" : {
+            "uniqObjectField" : true
+          }
+        }},
+      <ClearGenericModalHelper>{
+        type: GlobalActions.CLEAR_ALL_GENERIC_MODAL_HELPER
+      });
+    expect(globalDrawingBoardState.genericModalHelper).toEqual({});
+  });
+
+  test('#UPDATE_GENERIC_MODAL_TABLE_DATA_HELPER : should update table data with some values',  ()=> {
+    const keyName: string = 'VPN_DATA';
+    const someValue: string = 'SOME_VALUE';
+
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalHelper : {
+
+        }},
+      <UpdateGenericModalTableDataHelper>{
+        type: GlobalActions.UPDATE_GENERIC_MODAL_TABLE_DATA_HELPER,
+        field : keyName,
+        values : someValue
+      });
+    expect(globalDrawingBoardState.genericModalHelper[keyName]).toEqual(someValue);
+  });
+
+  test('#DELETE_GENERIC_MODAL_TABLE_DATA_HELPER : should delete table data',  ()=> {
+    const keyName: string = 'VPN_DATA';
+    const someValue: string = 'SOME_VALUE';
+
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalHelper : {
+          [keyName] : someValue
+        }},
+      <UpdateGenericModalTableDataHelper>{
+        type: GlobalActions.DELETE_GENERIC_MODAL_TABLE_DATA_HELPER,
+        field : keyName
+      });
+    expect(globalDrawingBoardState.genericModalHelper[keyName]).toBeUndefined();
+  });
+
 });
 
 

@@ -10,6 +10,7 @@ import {ServiceInstance} from "../../../models/serviceInstance";
 import {VfModuleMap} from "../../../models/vfModulesMap";
 import {ServiceState} from "../main.reducer";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import {updateServiceValidationCounter} from "../reducersHelper";
 
 
 export function vfModuleReducer(state: ServiceState , action: Action) : ServiceState{
@@ -132,13 +133,6 @@ const updateUniqueNames = (oldName : string, newName : string, serviceInstance :
   }
 };
 
-const updateServiceValidationCounter = (newState: any, oldValidationState: boolean, newValidationState: boolean, serviceUuid: string) => {
-  if (oldValidationState && !newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter--;
-  } else if (!oldValidationState && newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter++;
-  }
-};
 
 const generateId = () => {
   return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);

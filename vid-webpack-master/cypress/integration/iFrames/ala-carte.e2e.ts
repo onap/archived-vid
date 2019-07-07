@@ -54,7 +54,7 @@ describe('A la carte', function () {
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
 
         cy.setTestApiParamToGR();
-        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.instantiationType = 'A-La-Carte';
+        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.inputs = null;
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
@@ -96,7 +96,7 @@ describe('A la carte', function () {
     it(`VNF a-la-carte`, ()=> {
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setTestApiParamToGR();
-        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.instantiationType = 'A-La-Carte';
+        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.inputs = null;
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
@@ -119,9 +119,9 @@ describe('A la carte', function () {
 
         cy.get('#quantity-select').should('have.attr', 'disabled');
         cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
-          cy.getElementByDataTestsId('node-2017-488_ADIOD-vPE 0-add-btn').click({force: true}).then(() => {
+          cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0-add-btn').click({force: true}).then(() => {
             cy.selectDropdownOptionByText('productFamily', 'Emanuel');
-            cy.selectDropdownOptionByText('lcpRegion', 'JANET25');
+            cy.selectDropdownOptionByText('lcpRegion', 'AAIAIC25');
             cy.typeToInput("lcpRegionText", "just another region");
             cy.selectDropdownOptionByText('tenant', 'USP-SIP-IC-24335-T-01');
             cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
@@ -129,12 +129,12 @@ describe('A la carte', function () {
             cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
               cy.getReduxState().then((state) => {
 
-                const vnf = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_ADIOD-vPE 0'];
+                const vnf = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'];
 
                 cy.readFile('../vid-automation/src/test/resources/a-la-carte/redux-a-la-carte.json').then((file) => {
-                  file.vnfs['2017-488_ADIOD-vPE 0'].trackById = vnf.trackById;
-                  file.vnfs['2017-488_ADIOD-vPE 0'].vfModules = {};
-                  cy.deepCompare(vnf, file.vnfs['2017-488_ADIOD-vPE 0'])
+                  file.vnfs['2017-488_PASQUALE-vPE 0'].trackById = vnf.trackById;
+                  file.vnfs['2017-488_PASQUALE-vPE 0'].vfModules = {};
+                  cy.deepCompare(vnf, file.vnfs['2017-488_PASQUALE-vPE 0'])
                 });
               });
             });
@@ -147,7 +147,7 @@ describe('A la carte', function () {
     it(`Network a-la-carte`, ()=> {
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setTestApiParamToGR();
-        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.instantiationType = 'A-La-Carte';
+        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.inputs = null;
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].networks = {
           "ExtVL 0": {
@@ -175,9 +175,9 @@ describe('A la carte', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.getElementByDataTestsId("node-ExtVL 0-add-btn").click({force: true});
         cy.selectDropdownOptionByText("platform", "xxx1");
-        cy.selectDropdownOptionByText("lcpRegion", "JANET25");
+        cy.selectDropdownOptionByText("lcpRegion", "AAIAIC25");
         cy.selectDropdownOptionByText("tenant", "USP-SIP-IC-24335-T-01");
-        cy.selectDropdownOptionByText("productFamily", "SCOTTIE");
+        cy.selectDropdownOptionByText("productFamily", "ERICA");
         cy.selectDropdownOptionByText("lineOfBusiness", "zzz1");
         cy.typeToInput("lcpRegionText", "lcpRegionText");
 
@@ -201,28 +201,28 @@ describe('A la carte', function () {
       }
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setTestApiParamToGR();
-        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.instantiationType = 'A-La-Carte';
+        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.inputs = null;
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
 
-        cy.getElementByDataTestsId('node-2017-488_ADIOD-vPE 0-add-btn').click({force: true}).then(() => {
+        cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0-add-btn').click({force: true}).then(() => {
           cy.selectDropdownOptionByText('productFamily', 'Emanuel');
           cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
           cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
           cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
           cy.selectDropdownOptionByText('platform', 'xxx1');
           cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
-            const vnfName = '2017-488_ADIOD-vPE 0';
+            const vnfName = '2017-488_PASQUALE-vPE 0';
             let vfModulesNames: Array<string> = [
-              '2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0',
-              '2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1',
-              '2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2',
+              '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0',
+              '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1',
+              '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2',
             ];
 
             addVfModule(vnfName, vfModulesNames[0], 'mimazepubi', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, false)
               .then(() => {
-                addVfModule(vnfName, vfModulesNames[1], 'puwesovabe', 'JANET25', 'my region', 'USP-SIP-IC-24335-T-01', true, true, false)
+                addVfModule(vnfName, vfModulesNames[1], 'puwesovabe', 'AAIAIC25', 'my region', 'USP-SIP-IC-24335-T-01', true, true, false)
                   .then(() => {
                     addVfModule(vnfName, vfModulesNames[2], 'bnmgtrx', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, true)
                       .then(() => {

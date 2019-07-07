@@ -7,6 +7,7 @@ import {HttpClient, HttpHandler} from '@angular/common/http';
 import {FeatureFlagsService} from '../../../shared/services/featureFlag/feature-flags.service';
 import {ModelInformationItem} from "../../../shared/components/model-information/model-information.component";
 import {ComponentInfoModel, ComponentInfoType} from "./component-info-model";
+import {SharedTreeService} from "../objectsToTree/shared.tree.service";
 
 class MockAppStore<T> {
   getState() {
@@ -58,6 +59,7 @@ beforeAll(done => (async () => {
       HttpHandler,
       FeatureFlagsService,
       ComponentInfoService,
+      SharedTreeService,
       {provide: NgRedux, useClass: MockAppStore},
       MockNgRedux]
   });
@@ -77,12 +79,12 @@ describe('Service Info Data', () => {
     let actualServiceInfo = service.getInfoForService('1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
     let expectedServiceInfo = [
       ModelInformationItem.createInstance('Type', 'pnf'),
-      ModelInformationItem.createInstance('Model Version', '1.0'),
-      ModelInformationItem.createInstance('Model Customization ID', ''),
+      ModelInformationItem.createInstance('Model version', '1.0'),
+      ModelInformationItem.createInstance('Model customization ID', ''),
       ModelInformationItem.createInstance('Instance ID', '2f7130e8-27d6-4c01-8988-60ca67e8dae4'),
-      ModelInformationItem.createInstance('Subscriber Name', 'SILVIA ROBBINS'),
-      ModelInformationItem.createInstance('Service Type', 'TYLER SILVIA'),
-      ModelInformationItem.createInstance('Service Role', 'Testing'),
+      ModelInformationItem.createInstance('Subscriber name', 'SILVIA ROBBINS'),
+      ModelInformationItem.createInstance('Service type', 'TYLER SILVIA'),
+      ModelInformationItem.createInstance('Service role', 'Testing'),
     ];
     expect(actualServiceInfo).toEqual(new ComponentInfoModel(ComponentInfoType.SERVICE, expectedServiceInfo, []));
 

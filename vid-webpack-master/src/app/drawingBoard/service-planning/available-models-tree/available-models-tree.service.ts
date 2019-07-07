@@ -7,6 +7,8 @@ import {MessageBoxService} from "../../../shared/components/messageBox/messageBo
 import * as _ from "lodash";
 import { SdcUiCommon} from "onap-ui-angular";
 import {SharedTreeService} from "../objectsToTree/shared.tree.service";
+import {VrfModel} from "../../../shared/models/vrfModel";
+import {clearAllGenericModalhelper} from "../../../shared/storeUtil/utils/global/global.actions";
 
 export class AvailableNodeIcons {
    addIcon: boolean;
@@ -16,6 +18,7 @@ export class AvailableNodeIcons {
     this.addIcon = addIcon;
     this.vIcon = vIcon;
   }
+
 }
 
 @Injectable()
@@ -71,6 +74,22 @@ export class AvailableModelsTreeService {
       ]);
 
     MessageBoxService.openModal.next(messageBoxData);
+  }
+
+  shouldOpenVRFModal(nodes, serviceModelId: string , service)  {
+    for(const node of nodes){
+      if(node.type === 'VRF' && service.serviceInstance[serviceModelId].existingVRFCounterMap && !service.serviceInstance[serviceModelId].existingVRFCounterMap[node.modelUniqueId]){
+        const vrfModel : VrfModel = node.getModel(node.name, node, service.serviceInstance[serviceModelId]);
+        const vrfCounter : number = service.serviceInstance[serviceModelId].existingVRFCounterMap[node.modelUniqueId];
+        console.log('vrfCounter', vrfCounter);
+        if(vrfModel.min > 0 && (_.isNil(vrfCounter) || vrfCounter === 0)){
+          node.data = node;
+          this.store.dispatch(clearAllGenericModalhelper());
+          return node;
+        }
+      }
+    }
+    return null;
   }
 
 }

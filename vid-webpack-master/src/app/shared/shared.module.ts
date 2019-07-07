@@ -59,9 +59,9 @@ import {AuditInfoModalComponent} from "./components/auditInfoModal/auditInfoModa
 import {BootstrapModalModule} from 'ng2-bootstrap-modal';
 import {DataTableModule} from "angular2-datatable";
 import {AuditInfoModalComponentService} from "./components/auditInfoModal/auditInfoModal.component.service";
-import {SearchMembersModalComponent} from "./components/searchMembersModal/search-members-modal.component";
-import {MembersTableComponent} from "./components/searchMembersModal/members-table/members-table.component";
-import {MembersTableService} from "./components/searchMembersModal/members-table/members-table.service";
+import {SearchElementsModalComponent} from "./components/searchMembersModal/search-elements-modal.component";
+import {ElementsTableComponent} from "./components/searchMembersModal/members-table/elements-table.component";
+import {ElementsTableService} from "./components/searchMembersModal/members-table/elements-table.service";
 import {ObjectToArrayPipe} from "./pipes/objectToArray/objectToArray.pipe";
 import {DataFilterPipe} from "./pipes/dataFilter/data-filter.pipe";
 import {SvgComponent} from "./components/svg/svg-component";
@@ -115,11 +115,11 @@ import {ModelInformationService} from "./components/model-information/model-info
     InputFormControlComponent,
     FormControlMessageErrorComponent,
     GenericFormPopupComponent,
-    SearchMembersModalComponent,
+    SearchElementsModalComponent,
     AuditInfoModalComponent,
     GenericFormComponent,
     CheckboxFormControlComponent,
-    MembersTableComponent,
+    ElementsTableComponent,
     SvgComponent,
     ErrorMsgComponent,
     DynamicInputsComponent,
@@ -146,11 +146,11 @@ import {ModelInformationService} from "./components/model-information/model-info
     InputFormControlComponent,
     FormControlMessageErrorComponent,
     GenericFormPopupComponent,
-    SearchMembersModalComponent,
+    SearchElementsModalComponent,
     AuditInfoModalComponent,
     GenericFormComponent,
     CheckboxFormControlComponent,
-    MembersTableComponent,
+    ElementsTableComponent,
     ErrorMsgComponent,
     SvgComponent,
     DynamicInputsComponent,
@@ -158,7 +158,7 @@ import {ModelInformationService} from "./components/model-information/model-info
   ],
   entryComponents : [
     GenericFormPopupComponent,
-    SearchMembersModalComponent
+    SearchElementsModalComponent
   ],
   providers: [
     ServiceInfoService,
@@ -190,7 +190,7 @@ import {ModelInformationService} from "./components/model-information/model-info
     VnfPopupService,
     AuditInfoModalComponentService,
     VnfPopupService,
-    MembersTableService,
+    ElementsTableService,
     ErrorMsgService,
     DataFilterPipe,
     ModelInformationService,

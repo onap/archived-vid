@@ -15,6 +15,8 @@ import {VnfInstance} from "../../../../../shared/models/vnfInstance";
 import {VNFModel} from "../../../../../shared/models/vnfModel";
 import {VnfTreeNode} from "../../../../../shared/models/vnfTreeNode";
 import {InputType} from "../../../../../shared/models/inputTypes";
+import {ComponentInfoType} from "../../../component-info/component-info-model";
+import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 
 export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
   constructor(private _sharedTreeService: SharedTreeService,
@@ -25,6 +27,7 @@ export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
   name: string = 'vnfs';
   type: string = 'relatedVnfMember';
   typeName: string = 'VNF';
+  componentInfoType = ComponentInfoType.VNFMEMBER;
 
   /***********************************************************
    * return if user should provide instance name or not.
@@ -153,6 +156,8 @@ export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
     return null;
   }
 
-  onSelectedNode(node: ITreeNode): void {
+  getInfo(model, instance): ModelInformationItem[] {
+    return [];
   }
+
 }

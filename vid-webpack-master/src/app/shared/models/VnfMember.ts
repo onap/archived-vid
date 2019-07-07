@@ -7,5 +7,4 @@ export class VnfMember extends Level1Instance{
   constructor(){
     super();
   }
-
 }

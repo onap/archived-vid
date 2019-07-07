@@ -64,7 +64,7 @@ export class VnfPopupService implements GenericPopupInterface{
   }
 
   getControls(serviceId: string, modelName: string, vnfStoreKey: string){
-    if(this._store.getState().service.serviceHierarchy[serviceId].service.instantiationType === 'Macro') {
+    if(this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
       return this._vnfControlGenerator.getMacroFormControls(serviceId, vnfStoreKey, modelName);
     } else {
       return this._vnfControlGenerator.getAlaCarteFormControls(serviceId, vnfStoreKey, modelName);

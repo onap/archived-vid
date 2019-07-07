@@ -36,6 +36,11 @@
   }
 }
 
+
+.icon-browse.isLinked {
+  display: none !important;
+}
+
 #RETRY_EDIT drawing-board-tree tree-node-collection > div,
 #RETRY drawing-board-tree tree-node-collection > div {
    margin-top: 0px;
@@ -98,11 +103,54 @@ drawing-board-tree {
             @include highlight-toggle-children;
             .node-content-wrapper-focused,
             .node-content-wrapper-active {
+              background: transparent !important;
+              .main-row {
+                //background-color: #E6F6FB;
+                //color: #009FDB;
+                //border-right: none !important;
+                //border: #009FDB 1px solid;
+              }
+              .instance-type {
+                background-color: #E6F6FB;
+                color: #009FDB;
+                border-right: none !important;
+                border: #009FDB 1px solid !important;
+              }
+
+              .isLinked {
+                .model-info {
+                  border-top: 1px #009FDB dashed !important;
+                  border-bottom: 1px #009FDB dashed !important;
+                }
+                .model-info.rightBorder {
+                  border-right: 1px #009FDB dashed !important ;
+                }
+              }
+              .model-info {
+                background-color: #E6F6FB;
+                color: #009FDB;
+                border-right: none !important;
+                border: #009FDB 1px solid;
+              }
+
+              .model-info.rightBorder {
+                border-right: #009FDB 1px solid !important;
+              }
+
+              .model-actions {
+                background-color: #E6F6FB;
+                color: #009FDB;
+                color: #009FDB;
+                border-left: none !important;
+                border: #009FDB 1px solid;
+              }
+
               @include highlight-toggle-children;
-              @include highlight(#E6F6FB, #009FDB);
               .property-name,.instance-type {
                 color: #009FDB !important;
                 position: relative;
+                background-color: #E6F6FB;
+                color: #009FDB !important;
               }
               .status-properties {
                 .status-property-value,.status-property-name {
@@ -119,7 +167,7 @@ drawing-board-tree {
       }
       & .tree-node-expanded {
         > tree-node-wrapper .node-wrapper {
-          box-shadow: 0 0px 2px rgba(90,90,90,0.24);
+
         }
       }
 
@@ -136,7 +184,7 @@ drawing-board-tree {
       }
 
       .tree-node.tree-node-expanded > tree-node-wrapper{
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);
+
         position: relative;
         z-index: 1;
         display: block;
@@ -146,7 +194,11 @@ drawing-board-tree {
           height: 45px;
           &:hover {
             .node-content-wrapper:not(.node-content-wrapper-focused) {
-              background: #F2F2F2;
+              .instance-type ,
+              .model-info ,
+              .model-actions {
+                background: #F2F2F2;
+              }
               .icon-browse:before {
                 color: #5A5A5A;
               }
@@ -164,11 +216,12 @@ drawing-board-tree {
               display: block;
               height: 100%;
               span.toggle-children {
+                height: 43px;
                 display: flex;
                 width: 45px;
+                margin-top: 1px;
                 padding: 0;
                 top: 0;
-                height: inherit;
                 background-image: none;
                 background-color: white;
                 border: 1px solid #D2D2D2;
@@ -196,18 +249,44 @@ drawing-board-tree {
               width:45px;
             }
           }
+          .node-content-wrapper-active,
+          .node-content-wrapper.node-content-wrapper-active:hover,
+          .node-content-wrapper-active.node-content-wrapper-focused {
+            background: white !important;
+          }
 
+          .node-content-wrapper-active.node-content-wrapper-focused {
+            background: white !important;
+          }
           .node-content-wrapper {
+
             padding: 0;
             background: none;
             box-shadow: none;
             border-radius: 0;
-            border: 1px solid #D2D2D2;
+            border: 1px solid white;
             height: 100%;
             flex: 1;
             .resourceGroup {
               border: 1px dashed #D2D2D2 !important;
             }
+
+            .isLinked {
+              .instance-type  {
+                border-style: dashed !important;
+              }
+
+              .model-info {
+                border: 1px #D2D2CD dashed !important;
+                border-right: none !important;
+              }
+
+              .model-actions {
+                border-style: dashed !important;
+                border-left-style: none !important;
+              }
+            }
+
             tree-node-content {
               > div {
                 height: 100%;
@@ -217,14 +296,18 @@ drawing-board-tree {
                 .instance-type {
                   width: 40px;
                   height: 100%;
-                  padding-top: 16px;
                   text-transform: uppercase;
-                  text-align: center;
                   border-right: 1px solid #D2D2D2;
                   word-break: break-all;
                   color: #959595;
                   font-size: 13px;
                   font-family: OpenSans-SemiBold;
+                  display: flex;
+                  text-align: center;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+
                   .newIcon {
                     background: #45B16D;
                     position: absolute;
@@ -247,9 +330,42 @@ drawing-board-tree {
                     display: block;
                   }
                 }
+                .node-content-wrapper-active {
+                  .action-status {
+                    background-color: white !important;
+                  }
+                }
+                .action-status {
+                  padding-left: 10px;
+                  background-color: white !important;
+                  line-height: 42px;
+                  width: 95px;
+                  min-width: 95px;
+                  .action-status-type.delete {
+                    background: transparent;
+                    font-family: OpenSans-SemiBold;
+                    font-size: 12px;
+                    color: red;
+                    border-radius: 50px;
+                    border: 1px solid gray;
+                    padding: 5px 20px;
+                  }
+                }
+
+                .model-info.rightBorder {
+                  border-right: 1px solid #D2D2CD !important;
+                }
                 .model-info {
+                  border: 1px solid #D2D2CD;
+                  line-height: normal;
                   padding-left: 16px;
                   width: 100%;
+                  height: 100%;
+                  flex-direction: column;
+                  display: flex;
+                  justify-content: center;
+                  border-right: none;
+
                   .property-name {
                     font-family: OpenSans-SemiBold;
                     font-size: 13px;
@@ -285,9 +401,17 @@ drawing-board-tree {
                     margin-right: 3px;
                   }
                 }
+
                 .model-actions {
+                  :hover {
+                    background: transparent !important;
+                  }
                   display: flex;
                   align-items: center;
+                  border: 1px solid #D2D2CD;
+                  line-height: normal;
+                  height: 100%;
+                  border-left: none;
                   .icon-browse {
                     padding: 0;
                     width: 30px;
@@ -298,11 +422,11 @@ drawing-board-tree {
                       display: none;
                     }
                     &:hover:before {
-                      color: #009FDB;
+                      //color: #009FDB;
                     }
                     &:focus:before,
                     &:active:before {
-                      color: #009FDB;
+                      //color: #009FDB;
                     }
                   }
 
@@ -319,7 +443,7 @@ drawing-board-tree {
         .tree-children {
           padding-left: 45px;
           .model-info span:first-child {
-            flex: 1.1 !important;
+            //flex: 1.1 !important;
           }
         }
       }

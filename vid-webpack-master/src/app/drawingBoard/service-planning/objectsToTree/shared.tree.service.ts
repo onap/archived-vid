@@ -9,6 +9,8 @@ import {DrawingBoardModes} from "../drawing-board.modes";
 import {AuditInfoModalComponent} from "../../../shared/components/auditInfoModal/auditInfoModal.component";
 import {VnfModelInfo} from "./models/vnf/vnf.model.info";
 import {ILevelNodeInfo} from "./models/basic.model.info";
+import {ComponentInfoModel, ComponentInfoType} from "../component-info/component-info-model";
+import {ModelInformationItem} from "../../../shared/components/model-information/model-information.component";
 
 @Injectable()
 export class SharedTreeService {
@@ -265,14 +267,29 @@ export class SharedTreeService {
    @modelInfoService : the model (vnf, vfmodule, network, vnfgroup)object that call to the function (this)
    ************************************************/
   openAuditInfoModal(node, serviceModelId, instance, instanceType, modelInfoService : ILevelNodeInfo){
-    let isInstanceFailed  = this.isFailed(node);
-      AuditInfoModalComponent.openInstanceAuditInfoModal.next({
-        instanceId: serviceModelId,
-        type: instanceType,
-        model: modelInfoService.getModel(node.data.modelName, instance, this._store.getState().service.serviceHierarchy[serviceModelId]),
-        instance,
-        isInstanceFailed,
-        trackById: instance.trackById
-      });
-    }
+    AuditInfoModalComponent.openInstanceAuditInfoModal.next({
+      instanceId: serviceModelId,
+      type: instanceType,
+      model: modelInfoService.getModel(node.data.modelName, instance, this._store.getState().service.serviceHierarchy[serviceModelId]),
+      instance
+    });
+  }
+
+
+  addGeneralInfoItems(modelInfoSpecificItems: ModelInformationItem[], type: ComponentInfoType, model, instance):ComponentInfoModel {
+    let modelInfoItems: ModelInformationItem[] = [
+      ModelInformationItem.createInstance("Model version", model ? model.version : null),
+      ModelInformationItem.createInstance("Model customization ID", model ? model.customizationUuid : null),
+      ModelInformationItem.createInstance("Instance ID", instance ? instance.instanceId : null),
+      ModelInformationItem.createInstance("Instance type", instance ? instance.instanceType : null),
+      ModelInformationItem.createInstance("In maintenance", instance? instance.inMaint : null),
+    ];
+    modelInfoItems = modelInfoItems.concat(modelInfoSpecificItems);
+    return this.getComponentInfoModelByModelInformationItems(modelInfoItems, type, instance);
+  }
+
+  getComponentInfoModelByModelInformationItems(modelInfoItems: ModelInformationItem[], type: ComponentInfoType, instance){
+    const modelInfoItemsWithoutEmpty = _.filter(modelInfoItems, function(item){ return !item.values.every(_.isNil)});
+    return new ComponentInfoModel(type, modelInfoItemsWithoutEmpty, [], instance != null);
+  }
 }

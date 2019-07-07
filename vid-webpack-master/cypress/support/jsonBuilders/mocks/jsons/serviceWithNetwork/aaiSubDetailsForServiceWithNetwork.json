@@ -278,7 +278,7 @@
               "resource-version": "1516045827731",
               "orchestration-status": "Active",
               "model-invariant-id": "92a72881-0a97-4d16-8c29-4831062e7e9b",
-              "model-version-id": "5a3ad576-c01d-4bed-8194-0e72b4a3d020"
+              "model-version-id": "f6f4e9ee-4f2f-4a9d-9b42-56485fd4a225"
             }
           ]
         },
@@ -288,3 +288,4 @@
     ]
   }
 }
+
