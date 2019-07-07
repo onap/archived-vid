@@ -1,16 +1,34 @@
 import {Action} from 'redux';
-import {GlobalActions, UpdateFlagsAction, UpdateGlobalAction, UpdateDrawingBoardStatusAction} from "./global.actions";
+import {
+  GlobalActions,
+  UpdateFlagsAction,
+  UpdateGlobalAction,
+  UpdateDrawingBoardStatusAction,
+  UpdateGenericModalCriteria,
+  UpdateGenericModalHelper,
+  DeleteGenericModalHelper,
+  DeleteGenericModalTabelDataHelper,
+  UpdateGenericModalTableDataHelper
+} from "./global.actions";
+import * as _ from "lodash";
 
 export interface GlobalState {
   name : string;
   flags : { [key: string]: boolean };
   drawingBoardStatus : string;
+  genericModalCriteria : { [key: string]: any };
+  genericModalHelper : { [key: string]: any };
+
 }
 
 const initialState: GlobalState = {
   name : null,
   flags : null,
-  drawingBoardStatus : null
+  drawingBoardStatus : null,
+  genericModalCriteria : {
+    roles : []
+  },
+  genericModalHelper : {}
 };
 
 export const globalReducer =
@@ -23,6 +41,46 @@ export const globalReducer =
         return Object.assign({}, state);
       case GlobalActions.UPDATE_DRAWING_BOARD_STATUS:
         return Object.assign(state, state, (<UpdateDrawingBoardStatusAction>action));
+      case GlobalActions.UPDATE_GENERIC_MODAL_CRITERIA : {
+        const updateGenericModalCriteria = <UpdateGenericModalCriteria>action;
+        let newState = _.cloneDeep(state);
+        if(_.isNil(newState.genericModalCriteria)){
+          newState.genericModalCriteria = {};
+        }
+        newState.genericModalCriteria[updateGenericModalCriteria.field] = updateGenericModalCriteria.values;
+        return newState;
+      }
+      case GlobalActions.UPDATE_GENERIC_MODAL_HELPER : {
+        const updateGenericModalHelper= <UpdateGenericModalHelper>action;
+        let newState = _.cloneDeep(state);
+        if(_.isNil(newState.genericModalHelper) ){newState.genericModalHelper = {}; }
+        if(_.isNil(newState.genericModalHelper[updateGenericModalHelper.field])){
+          newState.genericModalHelper[updateGenericModalHelper.field] = {};
+        }
+        newState.genericModalHelper[updateGenericModalHelper.field][updateGenericModalHelper.values[updateGenericModalHelper.uniqObjectField]] = updateGenericModalHelper.values;
+        return newState;
+      }
+      case GlobalActions.DELETE_GENERIC_MODAL_HELPER : {
+        const deleteGenericModalHelper= <DeleteGenericModalHelper>action;
+        let newState = _.cloneDeep(state);
+        delete newState.genericModalHelper[deleteGenericModalHelper.field][deleteGenericModalHelper.uniqObjectField];
+        return newState;
+      }
+      case GlobalActions.CLEAR_ALL_GENERIC_MODAL_HELPER : {
+        let newState = _.cloneDeep(state);
+        newState.genericModalHelper = {};
+        return newState;
+      }
+      case GlobalActions.DELETE_GENERIC_MODAL_TABLE_DATA_HELPER : {
+        let newState = _.cloneDeep(state);
+        delete newState.genericModalHelper[(<DeleteGenericModalTabelDataHelper>action).field];
+        return newState;
+      }
+      case GlobalActions.UPDATE_GENERIC_MODAL_TABLE_DATA_HELPER : {
+        let newState = _.cloneDeep(state);
+        newState.genericModalHelper[(<UpdateGenericModalTableDataHelper>action).field] = (<UpdateGenericModalTableDataHelper>action).values ;
+        return newState;
+      }
       default:
         return state;
     }

@@ -42,6 +42,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   name: string = 'vfModules';
   type: string = 'Module';
   typeName: string = 'M';
+  componentInfoType = ComponentInfoType.VFMODULE;
 
   /***********************************************************
    * return if user should provide instance name or not.
@@ -367,22 +368,16 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     return (!_.isNil(instance) && !_.isNil(instance[deepDynamicName])) ? instance[deepDynamicName].position : null;
   }
 
-  onSelectedNode(node: ITreeNode): void {
+  getInfo(model, instance): ModelInformationItem[] {
+    const modelInformation = !_.isEmpty(model) && !_.isEmpty(model.properties) ? [
+      ModelInformationItem.createInstance("Base module", model.properties.baseModule),
+      ModelInformationItem.createInstance("Min instances", !_.isNull(model.properties.minCountInstances)? String(model.properties.minCountInstances): null),
+      ModelInformationItem.createInstance("Max instances", !_.isNull(model.properties.maxCountInstances)? String(model.properties.maxCountInstances): null),
+      ModelInformationItem.createInstance("Initial instances count", !_.isNull(model.properties.initialCount)? String(model.properties.initialCount): null)
+    ] : [];
+
+    const instanceInfo =  [];
+    const result = [modelInformation, instanceInfo];
+    return _.uniq(_.flatten(result));
   }
-
-  getInfoForVFModule(model, instance): ComponentInfoModel {
-    let modelInfoItems: ModelInformationItem[] = [];
-    if (model && !_.isNil(model.properties))
-    {
-      modelInfoItems = [
-        ModelInformationItem.createInstance("Base Module", model.properties.baseModule),
-        ModelInformationItem.createInstance("Min Instances", model.properties.minCountInstances),
-        ModelInformationItem.createInstance("Max Instances", model.properties.maxCountInstances),
-        ModelInformationItem.createInstance("Initial Instances Count", model.properties.initialCount)
-      ];
-    }
-    return this._componentInfoService.addGeneralInfoItems(modelInfoItems, ComponentInfoType.VFMODULE, model, instance);
-  }
-
-
 }

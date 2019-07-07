@@ -44,12 +44,12 @@
   }
 
   .content-wrapper {
-    display: flex;
 
     .sidebar-left {
-      flex-basis: 285px;
+      width: 20%;
       border-right: 1px solid #D2D2D2;
       height: calc(100vh - 60px);
+      float: left;
 
       .search-criteria-wrapper{
 
@@ -82,8 +82,34 @@
     }
 
     .sidebar-right {
-      flex: 1;
-      margin: 80px 50px;
+      padding: 15px 30px 0px 30px;
+      width: 80%;
+      float: right;
     }
   }
 }
+
+select.select-criteria {
+    webkit-appearance: none;
+    background: url('../../../../assets/img/chevron.svg') 0 0 no-repeat;
+    background-size: 24px;
+    background-position-x: right;
+    background-position-y: center;
+    font-family: OpenSans-Italic;
+    font-size: 14px;
+    height: 38px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.required:after {
+  content: " * ";
+  color: #cf2a2a;
+  margin-left: 3px;
+}
+
+.search-button {
+  display: flex;
+  justify-content: space-around;
+}
+

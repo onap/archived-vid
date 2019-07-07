@@ -8,6 +8,7 @@ declare namespace Cypress {
 
 function assertComponentInfoTitleLabelsAndValues(expectedTitle: string, labelsAndValues: string[][]) : void{
   cy.getElementByDataTestsId('component-info-section-title').should('have.text', expectedTitle);
+  cy.get('.componentInfoItem').should('have.length', labelsAndValues.length);
   labelsAndValues.forEach((tuple: string[], index: number, array: string[][]) => {
     let label = tuple[0];
     let value = tuple[1];

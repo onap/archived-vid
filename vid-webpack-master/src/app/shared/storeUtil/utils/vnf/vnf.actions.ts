@@ -1,5 +1,6 @@
 import {Action, ActionCreator} from "redux";
 import {VnfInstance} from "../../../models/vnfInstance";
+import {ActionOnFirstLevel} from "../firstLevel/firstLevel.actions";
 
 export enum VNFActions {
   CREATE_VNF_INSTANCE = "CREATE_VNF_INSTANCE",
@@ -31,18 +32,6 @@ export interface UpdateVnfInstanceAction extends Action {
   vnfStoreKey?:string;
 }
 
-
-
-export interface DeleteActionVnfInstanceAction extends Action {
-  vnfStoreKey: string;
-  serviceId?: string;
-}
-
-export interface UndoDeleteActionVnfInstanceAction extends Action {
-  vnfStoreKey: string;
-  serviceId?: string;
-}
-
 export interface RemoveVnfInstanceAction extends Action {
   vnfStoreKey: string;
   serviceId?: string;
@@ -66,15 +55,17 @@ export const updateVNFInstance: ActionCreator<UpdateVnfInstanceAction> = (vnfIns
 });
 
 
-export const deleteActionVnfInstance: ActionCreator<DeleteActionVnfInstanceAction> = (vnfStoreKey, serviceId) => ({
+export const deleteActionVnfInstance: ActionCreator<ActionOnFirstLevel> = (vnfStoreKey, serviceId) => ({
   type: VNFActions.DELETE_ACTION_VNF_INSTANCE,
-  vnfStoreKey: vnfStoreKey,
+  firstLevelName: 'vnfs',
+  storeKey: vnfStoreKey,
   serviceId: serviceId
 });
 
-export const undoDeleteActionVnfInstance: ActionCreator<UndoDeleteActionVnfInstanceAction> = (vnfStoreKey, serviceId) => ({
+export const undoDeleteActionVnfInstance: ActionCreator<ActionOnFirstLevel> = (vnfStoreKey, serviceId) => ({
   type: VNFActions.UNDO_DELETE_ACTION_VNF_INSTANCE,
-  vnfStoreKey: vnfStoreKey,
+  firstLevelName: 'vnfs',
+  storeKey: vnfStoreKey,
   serviceId: serviceId
 });
 

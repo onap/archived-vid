@@ -1,5 +1,4 @@
-
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {MockNgRedux, NgReduxTestingModule} from "@angular-redux/store/testing";
 import {VnfGroupingModelInfo} from "./vnfGrouping.model.info";
@@ -10,9 +9,11 @@ import {DialogService} from "ng2-bootstrap-modal";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {VnfGroupModel} from "../../../../../shared/models/vnfGroupModel";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
-import {ActivatedRoute} from "@angular/router";
 import {RouterTestingModule} from "@angular/router/testing";
 import {DrawingBoardModes} from "../../../drawing-board.modes";
+import {AaiService} from "../../../../../shared/services/aaiService/aai.service";
+import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {ITableContent} from "../../../../../shared/components/searchMembersModal/members-table/element-table-row.model";
 
 describe('VnfGroupingModelInfo Model Info', () => {
   let injector;
@@ -22,6 +23,7 @@ describe('VnfGroupingModelInfo Model Info', () => {
   let _sharedTreeService : SharedTreeService;
   let _iframeService : IframeService;
   let vnfGroupModel: VnfGroupingModelInfo;
+  let _aaiService : AaiService;
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgReduxTestingModule, RouterTestingModule],
@@ -31,13 +33,16 @@ describe('VnfGroupingModelInfo Model Info', () => {
         DynamicInputsService,
         SharedTreeService,
         IframeService,
+        AaiService,
+        FeatureFlagsService,
         MockNgRedux]
     });
     await TestBed.compileComponents();
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
+    _aaiService = injector.get(AaiService);
 
-    vnfGroupModel =  new VnfGroupingModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vnfGroupPopupService, _iframeService,  MockNgRedux.getInstance());
+    vnfGroupModel =  new VnfGroupingModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vnfGroupPopupService, _iframeService,  _aaiService, MockNgRedux.getInstance());
   })().then(done).catch(done.fail));
 
 
@@ -59,7 +64,6 @@ describe('VnfGroupingModelInfo Model Info', () => {
     expect(isEcompGeneratedNaming).toBeTruthy();
   });
 
-
   test('getTooltip should return "vnfGrouping"', () => {
     let tooltip: string = vnfGroupModel.getTooltip();
     expect(tooltip).toEqual('VnfGroup');
@@ -74,7 +78,6 @@ describe('VnfGroupingModelInfo Model Info', () => {
     let nextLevel = vnfGroupModel.getNextLevelObject();
     expect(nextLevel).not.toBeNull();
   });
-
 
   test('showNodeIcons should return true if not reachLimit of max', ()=>{
     let serviceId : string = 'servicedId';
@@ -199,6 +202,70 @@ describe('VnfGroupingModelInfo Model Info', () => {
     expect(result['showAuditInfo']['method']).toHaveBeenCalledWith(node, serviceModelId);
   });
 
+
+  test('generateRelatedMemberTableContent', ()=> {
+    const tableContents: ITableContent[] = vnfGroupModel.generateRelatedMemberTableContent();
+    expect(tableContents).toEqual([
+      {
+        id: 'vnfName',
+        contents: [{
+          id: ['instanceName'],
+          value: ['instanceName']
+        }, {
+          id: ['instanceId'],
+          value: ["instanceId"],
+          prefix: 'UUID: '
+        }]
+      },
+      {
+        id: 'version',
+        contents: [{
+          id: ['modelInfo', 'modelVersion'],
+          value: ['modelInfo', 'modelVersion']
+        }]
+      },
+      {
+        id: 'modelName',
+        contents: [{
+          id: ['modelInfo', 'modelName'],
+          value: ['modelInfo', 'modelName']
+        }]
+      },
+      {
+        id: 'provStatus',
+        contents: [{
+          id: ['provStatus'],
+          value: ['provStatus']
+        }]
+      },
+      {
+        id: 'serviceInstance',
+        contents: [{
+          id: ['serviceInstanceName'],
+          value: ['serviceInstanceName']
+        }, {
+          id: ['serviceInstanceId'],
+          value: ["serviceInstanceId"],
+          prefix: 'UUID: '
+        }]
+      },
+      {
+        id: 'cloudRegion',
+        contents: [{
+          id: ['lcpCloudRegionId'],
+          value: ['lcpCloudRegionId']
+        }]
+      },
+      {
+        id: 'tenantName',
+        contents: [{
+          id: ['tenantName'],
+          value: ['tenantName']
+        }]
+      }
+    ]);
+  });
+
   function getServiceHierarchy(){
     return {
       "service": {
@@ -214,7 +281,7 @@ describe('VnfGroupingModelInfo Model Info', () => {
         "serviceEcompNaming": "false",
         "instantiationType": "Macro",
         "inputs": {
-          "2017488_adiodvpe0_ASN": {
+          "2017488_pasqualevpe0_ASN": {
             "type": "string",
             "description": "AV/PE",
             "entry_schema": null,
@@ -245,11 +312,11 @@ describe('VnfGroupingModelInfo Model Info', () => {
             "type": "LOAD-GROUP"
           },
           "members": {
-            "vdbe_svc_vprs_proxy 0": {
+            "vdorothea_svc_vprs_proxy 0": {
               "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
               "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
-              "description": "A Proxy for Service vDBE_Svc_vPRS",
-              "name": "vDBE_Svc_vPRS Service Proxy",
+              "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
+              "name": "vDOROTHEA_Svc_vPRS Service Proxy",
               "version": "1.0",
               "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
               "inputs": {},
@@ -258,12 +325,12 @@ describe('VnfGroupingModelInfo Model Info', () => {
               "type": "Service Proxy",
               "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
               "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
-              "sourceModelName": "vDBE_Svc_vPRS"
+              "sourceModelName": "vDOROTHEA_Svc_vPRS"
             },
-            "vdbe_svc_vprs_proxy 1": {
+            "vdorothea_svc_vprs_proxy 1": {
               "uuid": "111dfa8-a0d9-443f-95ad-836cd044e26c",
               "invariantUuid": "111ae0c-b3a5-4ca1-a777-afbffe7010bc",
-              "description": "A Proxy for Service vDBE_Svc_vPRS",
+              "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
               "name": "111_Svc_vPRS Service Proxy",
               "version": "1.0",
               "customizationUuid": "1113d23-e132-4ce7-af2c-a493b4cafac9",
@@ -279,7 +346,7 @@ describe('VnfGroupingModelInfo Model Info', () => {
         }
       },
       "networks": {},
-      "collectionResource": {},
+      "collectionResources": {},
       "configurations": {},
       "fabricConfigurations": {},
       "serviceProxies": {},
@@ -288,4 +355,67 @@ describe('VnfGroupingModelInfo Model Info', () => {
       "pnfs": {}
     }
   }
+
+  function loadMockMembers(): any[] {
+    return [
+      {
+        "action": "None",
+        "instanceName": "VNF1_INSTANCE_NAME",
+        "instanceId": "VNF1_INSTANCE_ID",
+        "orchStatus": null,
+        "productFamilyId": null,
+        "lcpCloudRegionId": "hvf23b",
+        "tenantId": "3e9a20a3e89e45f884e09df0cc2d2d2a",
+        "tenantName": "APPC-24595-T-IST-02C",
+        "modelInfo": {
+          "modelInvariantId": "vnf-instance-model-invariant-id",
+          "modelVersionId": "7a6ee536-f052-46fa-aa7e-2fca9d674c44",
+          "modelVersion": "2.0",
+          "modelName": "vf_vEPDG",
+          "modelType": "vnf"
+        },
+        "instanceType": "VNF1_INSTANCE_TYPE",
+        "provStatus": null,
+        "inMaint": false,
+        "uuid": "7a6ee536-f052-46fa-aa7e-2fca9d674c44",
+        "originalName": null,
+        "legacyRegion": null,
+        "lineOfBusiness": null,
+        "platformName": null,
+        "trackById": "7a6ee536-f052-46fa-aa7e-2fca9d674c44:002",
+        "serviceInstanceId": "service-instance-id1",
+        "serviceInstanceName": "service-instance-name"
+      },
+      {
+        "action": "None",
+        "instanceName": "VNF2_INSTANCE_NAME",
+        "instanceId": "VNF2_INSTANCE_ID",
+        "orchStatus": null,
+        "productFamilyId": null,
+        "lcpCloudRegionId": "hvf23b",
+        "tenantId": "3e9a20a3e89e45f884e09df0cc2d2d2a",
+        "tenantName": "APPC-24595-T-IST-02C",
+        "modelInfo": {
+          "modelInvariantId": "vnf-instance-model-invariant-id",
+          "modelVersionId": "eb5f56bf-5855-4e61-bd00-3e19a953bf02",
+          "modelVersion": "1.0",
+          "modelName": "vf_vEPDG",
+          "modelType": "vnf"
+        },
+        "instanceType": "VNF2_INSTANCE_TYPE",
+        "provStatus": null,
+        "inMaint": true,
+        "uuid": "eb5f56bf-5855-4e61-bd00-3e19a953bf02",
+        "originalName": null,
+        "legacyRegion": null,
+        "lineOfBusiness": null,
+        "platformName": null,
+        "trackById": "eb5f56bf-5855-4e61-bd00-3e19a953bf02:003",
+        "serviceInstanceId": "service-instance-id2",
+        "serviceInstanceName": "service-instance-name"
+      }
+    ];
+  }
+
+
 });

@@ -157,7 +157,7 @@ describe('View Edit Page', function () {
 
     it(`should display service model name and version on each info form`, function () {
       let typesToIncludeModel:Array<string> = ['service', 'vnf', 'vfmodule', 'volume-group', 'network'];
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       cy.wait('@aai_getPortMirroringConfigsDate - empty response');
       cy.get('div').contains('VOLUME GROUP: f'); // waits for the view/edit to be ready after ports' redraw
@@ -170,7 +170,7 @@ describe('View Edit Page', function () {
     });
 
     it(`Check fabric configuration service with some configuration with diff orchStatus`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f61234&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671234&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f61234&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671234&isPermitted=true');
       cy.wait('@service-FabricConfig');
       cy.get('.error-msg').should("be.visible").should('contain','Activate fabric configuration button is not available as some of the configuration objects are not in Assigned status. Check MSO logs for the reasons for this abnormal case.');
       cy.getElementByDataTestsId("activateFabricConfigurationButton").should('have.attr', 'disabled');
@@ -178,7 +178,7 @@ describe('View Edit Page', function () {
     });
 
     it(`Check fabric configuration service with active status`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f65678&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671234&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f65678&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671234&isPermitted=true');
       cy.wait('@service-FabricConfig');
       cy.getElementByDataTestsId("activateFabricConfigurationButton").should('not.be.visible');
       cy.getElementByDataTestsId("activateButton").should('have.attr', 'disabled');
@@ -186,7 +186,7 @@ describe('View Edit Page', function () {
     });
 
     it(`Check fabric configuration service with created status`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f69000&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d679000&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f69000&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d679000&isPermitted=true');
       cy.wait('@service-FabricConfig');
       cy.getElementByDataTestsId("activateFabricConfigurationButton").should('not.be.visible');
       cy.getElementByDataTestsId("activateButton").should('have.attr', 'disabled');
@@ -194,7 +194,7 @@ describe('View Edit Page', function () {
     });
 
     it(`Check fabric configuration service with pendingdeLete status`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f61000&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671000&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f61000&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671000&isPermitted=true');
       cy.wait('@service-FabricConfig');
       cy.getElementByDataTestsId("activateFabricConfigurationButton").should('not.be.visible');
       cy.getElementByDataTestsId("activateButton").should('not.have.attr', 'disabled');
@@ -210,11 +210,11 @@ describe('View Edit Page', function () {
   function changeServiceModel(serviceModel: ServiceModel) {
     serviceModel.service.uuid = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
     serviceModel.vnfs = {
-      "VF_vMee 0": {
+      "VF_vGeraldine 0": {
         "uuid": "d6557200-ecf2-4641-8094-5393ae3aae60",
         "invariantUuid": "4160458e-f648-4b30-a176-43881ffffe9e",
-        "description": "VSP_vMee",
-        "name": "VF_vMee",
+        "description": "VSP_vGeraldine",
+        "name": "VF_vGeraldine",
         "version": "2.0",
         "customizationUuid": "91415b44-753d-494c-926a-456a9172bbb9",
         "inputs": {},
@@ -383,74 +383,74 @@ describe('View Edit Page', function () {
           "sctp-b-egress-dst_end_port": "65535.0"
         },
         "type": "VF",
-        "modelCustomizationName": "VF_vMee 0",
+        "modelCustomizationName": "VF_vGeraldine 0",
         "vfModules": {
-          "vf_vmee0..VfVmee..vmme_vlc..module-1": {
+          "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1": {
             "uuid": "522159d5-d6e0-4c2a-aa44-5a542a12a830",
             "invariantUuid": "98a7c88b-b577-476a-90e4-e25a5871e02b",
             "customizationUuid": "55b1be94-671a-403e-a26c-667e9c47d091",
             "description": null,
-            "name": "VfVmee..vmme_vlc..module-1",
+            "name": "VfVgeraldine..vflorence_vlc..module-1",
             "version": "2",
-            "modelCustomizationName": "VfVmee..vmme_vlc..module-1",
+            "modelCustomizationName": "VfVgeraldine..vflorence_vlc..module-1",
             "properties": {
               "minCountInstances": 0,
               "maxCountInstances": null,
               "initialCount": 0,
-              "vfModuleLabel": "vmme_vlc"
+              "vfModuleLabel": "vflorence_vlc"
             },
             "inputs": {},
             "volumeGroupAllowed": false
           },
-          "vf_vmee0..VfVmee..vmme_gpb..module-2": {
+          "vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2": {
             "uuid": "41708296-e443-4c71-953f-d9a010f059e1",
             "invariantUuid": "1cca90b8-3490-495e-87da-3f3e4c57d5b9",
             "customizationUuid": "6add59e0-7fe1-4bc4-af48-f8812422ae7c",
             "description": null,
-            "name": "VfVmee..vmme_gpb..module-2",
+            "name": "VfVgeraldine..vflorence_gpb..module-2",
             "version": "2",
-            "modelCustomizationName": "VfVmee..vmme_gpb..module-2",
+            "modelCustomizationName": "VfVgeraldine..vflorence_gpb..module-2",
             "properties": {
               "minCountInstances": 0,
               "maxCountInstances": null,
               "initialCount": 0,
-              "vfModuleLabel": "vmme_gpb"
+              "vfModuleLabel": "vflorence_gpb"
             },
             "inputs": {},
             "volumeGroupAllowed": false
           },
-          "vf_vmee0..VfVmee..base_vmme..module-0": {
+          "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0": {
             "uuid": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
             "invariantUuid": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
             "customizationUuid": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
             "description": null,
-            "name": "VfVmee..base_vmme..module-0",
+            "name": "VfVgeraldine..base_vflorence..module-0",
             "version": "2",
-            "modelCustomizationName": "VfVmee..base_vmme..module-0",
+            "modelCustomizationName": "VfVgeraldine..base_vflorence..module-0",
             "properties": {
               "minCountInstances": 1,
               "maxCountInstances": 1,
               "initialCount": 1,
-              "vfModuleLabel": "base_vmme"
+              "vfModuleLabel": "base_vflorence"
             },
             "inputs": {},
             "volumeGroupAllowed": true
           }
         },
         "volumeGroups": {
-          "vf_vmee0..VfVmee..base_vmme..module-0": {
+          "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0": {
             "uuid": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
             "invariantUuid": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
             "customizationUuid": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
             "description": null,
-            "name": "VfVmee..base_vmme..module-0",
+            "name": "VfVgeraldine..base_vflorence..module-0",
             "version": "2",
-            "modelCustomizationName": "VfVmee..base_vmme..module-0",
+            "modelCustomizationName": "VfVgeraldine..base_vflorence..module-0",
             "properties": {
               "minCountInstances": 1,
               "maxCountInstances": 1,
               "initialCount": 1,
-              "vfModuleLabel": "base_vmme"
+              "vfModuleLabel": "base_vflorence"
             },
             "inputs": {}
           }
@@ -459,72 +459,72 @@ describe('View Edit Page', function () {
       }
     };
     serviceModel.vfModules = {
-      "vf_vmee0..VfVmee..vmme_vlc..module-1": {
+      "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1": {
         "uuid": "522159d5-d6e0-4c2a-aa44-5a542a12a830",
         "invariantUuid": "98a7c88b-b577-476a-90e4-e25a5871e02b",
         "customizationUuid": "55b1be94-671a-403e-a26c-667e9c47d091",
         "description": null,
-        "name": "VfVmee..vmme_vlc..module-1",
+        "name": "VfVgeraldine..vflorence_vlc..module-1",
         "version": "2",
-        "modelCustomizationName": "VfVmee..vmme_vlc..module-1",
+        "modelCustomizationName": "VfVgeraldine..vflorence_vlc..module-1",
         "properties": {
           "minCountInstances": 0,
           "maxCountInstances": null,
           "initialCount": 0,
-          "vfModuleLabel": "vmme_vlc"
+          "vfModuleLabel": "vflorence_vlc"
         },
         "inputs": {},
         "volumeGroupAllowed": false
       },
-      "vf_vmee0..VfVmee..vmme_gpb..module-2": {
+      "vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2": {
         "uuid": "41708296-e443-4c71-953f-d9a010f059e1",
         "invariantUuid": "1cca90b8-3490-495e-87da-3f3e4c57d5b9",
         "customizationUuid": "6add59e0-7fe1-4bc4-af48-f8812422ae7c",
         "description": null,
-        "name": "VfVmee..vmme_gpb..module-2",
+        "name": "VfVgeraldine..vflorence_gpb..module-2",
         "version": "2",
-        "modelCustomizationName": "VfVmee..vmme_gpb..module-2",
+        "modelCustomizationName": "VfVgeraldine..vflorence_gpb..module-2",
         "properties": {
           "minCountInstances": 0,
           "maxCountInstances": null,
           "initialCount": 0,
-          "vfModuleLabel": "vmme_gpb"
+          "vfModuleLabel": "vflorence_gpb"
         },
         "inputs": {},
         "volumeGroupAllowed": false
       },
-      "vf_vmee0..VfVmee..base_vmme..module-0": {
+      "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0": {
         "uuid": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
         "invariantUuid": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
         "customizationUuid": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
         "description": null,
-        "name": "VfVmee..base_vmme..module-0",
+        "name": "VfVgeraldine..base_vflorence..module-0",
         "version": "2",
-        "modelCustomizationName": "VfVmee..base_vmme..module-0",
+        "modelCustomizationName": "VfVgeraldine..base_vflorence..module-0",
         "properties": {
           "minCountInstances": 1,
           "maxCountInstances": 1,
           "initialCount": 1,
-          "vfModuleLabel": "base_vmme"
+          "vfModuleLabel": "base_vflorence"
         },
         "inputs": {},
         "volumeGroupAllowed": true
       }
     };
     serviceModel.volumeGroups = {
-      "vf_vmee0..VfVmee..base_vmme..module-0": {
+      "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0": {
         "uuid": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
         "invariantUuid": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
         "customizationUuid": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
         "description": null,
-        "name": "VfVmee..base_vmme..module-0",
+        "name": "VfVgeraldine..base_vflorence..module-0",
         "version": "2",
-        "modelCustomizationName": "VfVmee..base_vmme..module-0",
+        "modelCustomizationName": "VfVgeraldine..base_vflorence..module-0",
         "properties": {
           "minCountInstances": 1,
           "maxCountInstances": 1,
           "initialCount": 1,
-          "vfModuleLabel": "base_vmme"
+          "vfModuleLabel": "base_vflorence"
         },
         "inputs": {}
       }

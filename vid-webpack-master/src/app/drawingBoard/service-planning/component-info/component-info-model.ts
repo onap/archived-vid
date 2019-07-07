@@ -7,11 +7,11 @@ export class ComponentInfoModel {
   title: string;
 
 
-  constructor(type: ComponentInfoType, modelInfoItems: ModelInformationItem[], additionalInfoItems: ModelInformationItem[], isInstance:boolean=true) {
+  constructor(type: ComponentInfoType, modelInfoItems: ModelInformationItem[], additionalInfoItems: ModelInformationItem[], isInstance:boolean = true) {
     this.type = type;
     this.modelInfoItems = modelInfoItems;
     this.additionalInfoItems = additionalInfoItems;
-    this.title=this.type+(isInstance ? " Instance" : "");
+    this.title = this.type + (isInstance ? " Instance" : "");
   }
 }
 
@@ -22,5 +22,11 @@ export enum ComponentInfoType {
   NETWORK = "Network",
   VFMODULE = "VFModule",
   VNFGROUP = "Group",
-  VNFMEMBER = "VNF"
+  VNFMEMBER = "VNF",
+  CONFIGURATION = "Configuration",
+  COLLECTION_RESOURCE  = "Collection Resource",
+  VRF = "VRF",
+  PNF = "PNF",
+  VPN = "VPN",
+  NCF = "Network Collection Function"
 }

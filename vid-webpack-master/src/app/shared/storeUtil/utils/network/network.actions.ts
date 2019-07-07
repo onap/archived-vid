@@ -1,5 +1,7 @@
 import {Action, ActionCreator} from "redux";
 import {NetworkInstance} from "../../../models/networkInstance";
+import {ActionOnFirstLevel} from "../firstLevel/firstLevel.actions";
+
 
 export enum NetworkActions {
   UPDATE_NETWORK_INSTANCE = "UPDATE_NETWORK_INSTANCE",
@@ -37,15 +39,7 @@ export interface CreateNetworkInstanceAction extends Action {
   networkStoreKey?:string;
 }
 
-export interface DeleteActionNetworkInstanceAction extends Action {
-  networkStoreKey: string;
-  serviceId?: string;
-}
 
-export interface UndoDeleteActionNetworkInstanceAction extends Action {
-  networkStoreKey: string;
-  serviceId?: string;
-}
 
 export const updateNetworkInstance: ActionCreator<UpdateNetworkInstanceAction> = (networkInstance, networkfModelName, serviceUuid, networkStoreKey) => ({
   type: NetworkActions.UPDATE_NETWORK_INSTANCE,
@@ -71,15 +65,17 @@ export const createNetworkInstance: ActionCreator<CreateNetworkInstanceAction> =
 });
 
 
-export const deleteActionNetworkInstance: ActionCreator<DeleteActionNetworkInstanceAction> = (networkStoreKey, serviceId) => ({
+export const deleteActionNetworkInstance: ActionCreator<ActionOnFirstLevel> = (networkStoreKey, serviceId) => ({
   type: NetworkActions.DELETE_ACTION_NETWORK_INSTANCE,
-  networkStoreKey: networkStoreKey,
+  firstLevelName: 'networks',
+  storeKey: networkStoreKey,
   serviceId: serviceId
 });
 
-export const undoDeleteActionNetworkInstance: ActionCreator<UndoDeleteActionNetworkInstanceAction> = (networkStoreKey, serviceId) => ({
+export const undoDeleteActionNetworkInstance: ActionCreator<ActionOnFirstLevel> = (networkStoreKey, serviceId) => ({
   type: NetworkActions.UNDO_DELETE_ACTION_NETWORK_INSTANCE,
-  networkStoreKey: networkStoreKey,
+  firstLevelName: 'networks',
+  storeKey: networkStoreKey,
   serviceId: serviceId
 });
 

@@ -11,8 +11,14 @@
     "description": "",
     "serviceEcompNaming": "false",
     "instantiationType": "A-La-Carte",
+    "vidNotions": {
+      "instantiationUI": "legacy",
+      "modelCategory": "other",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    },
     "inputs": {
-      "2017488_adiodvpe0_ASN": {
+      "2017488_pasqualevpe0_ASN": {
         "type": "string",
         "description": "AV/PE",
         "entry_schema": null,
@@ -46,7 +52,7 @@
       "modelCustomizationName": "ExtVL 0"
     }
   },
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {},
   "fabricConfigurations": {},
   "serviceProxies": {},

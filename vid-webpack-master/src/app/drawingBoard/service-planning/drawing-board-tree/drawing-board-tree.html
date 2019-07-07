@@ -1,33 +1,54 @@
 <error-msg></error-msg>
 <div class="drawing-board-tree" style="height: calc(100vh - 55px);">
   <div *ngIf="nodes?.length == 0" style="text-align: center;    margin-top: 50px;">
-    <no-content-message-and-icon class="span-over"
+
+    <no-content-message-and-icon *ngIf="objectToModelTreeService.numberOfPlusButton != 0" class="span-over"
                                  data-title="Please add objects (VNFs, network, modules etc.)"
                                  title2="from the left tree to design the service instance"
                                  subtitle="Once done, click Deploy to start instantiation"
+                                 iconPath="./assets/img/UPLOAD.svg"
+                                 iconClass="upload-icon-service-planing"></no-content-message-and-icon>
+
+    <no-content-message-and-icon *ngIf="objectToModelTreeService.numberOfPlusButton == 0" class="span-over"
+                                 data-title="No objects to add in this service instance."
+                                 title2=""
+                                 subtitle="Click Deploy to start instantiation"
                                  iconPath="./assets/img/UPLOAD.svg"
                                  iconClass="upload-icon-service-planing"></no-content-message-and-icon>
   </div>
   <div class="tree-header" *ngIf="nodes?.length > 0">
     <div class="title-tree">Instance:</div>
     <search-component (updateNodes)="updateNodes($event)"
-                        [nodes]="nodes" [tree]="tree"
-                        [inputTestId]="'search-right-tree'"
-                        *ngIf="drawingBoardTreeService.isViewEditFlagTrue()"></search-component>
+                      [nodes]="nodes" [tree]="tree"
+                      [inputTestId]="'search-right-tree'"
+                      *ngIf="drawingBoardTreeService.isViewEditFlagTrue()"></search-component>
   </div>
   <tree-root [attr.data-tests-id]="'drawing-board-tree'" #tree [nodes]="nodes" [options]="options"
              id="drawing-board-tree">
 
-    <ng-template #treeNodeTemplate let-node let-index="index" >
-       <div [attr.id]="getNodeId(node)" [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName" (click)="selectNode(node)" >
-         <custom-popover class="failed-popover-wrap" *ngIf= "node?.data?.isFailed"  [value]= "node?.data?.statusMessage" [placement]="'left'" [popoverType]="'error'">
-          <div class="failed-msg" [attr.data-tests-id]="'failed-error-message'" *ngIf= "node?.data?.isFailed">Failed</div>
-         </custom-popover>
-          <div class="instance-type" style="position: relative;">
-            <div *ngIf="node?.data?.action == 'Create'" class="notShowOnViewMode notShowOnCreateMode newIcon"></div>
-            <div><span title="{{node.data.type}}" [attr.data-tests-id]="'node-type-indicator'">{{node?.data?.typeName}}</span></div>
+    <ng-template #treeNodeTemplate let-node let-index="index">
+      <div class="main-row" [attr.id]="getNodeId(node)" [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName"
+           (click)="selectNode(node)"
+           [ngClass]="{'isLinked' : isLinkedInstance(node?.data)}">
+        <custom-popover class="failed-popover-wrap" *ngIf="node?.data?.isFailed" [value]="node?.data?.statusMessage"
+                        [placement]="'left'" [popoverType]="'error'">
+          <div class="failed-msg" [attr.data-tests-id]="'failed-error-message'" *ngIf="node?.data?.isFailed">Failed
           </div>
-          <div class="model-info">
+        </custom-popover>
+        <div class="instance-type" style="position: relative;border: 1px solid #D2D2CD;">
+          <div *ngIf="node?.data?.action == 'Create'" class="notShowOnViewMode notShowOnCreateMode newIcon"></div>
+          <div><span title="{{node.data.type}}"
+                     [attr.data-tests-id]="'node-type-indicator'">{{node?.data?.typeName}}</span></div>
+          <div *ngIf="isLinkedInstance(node?.data)">
+            <svg-icon
+              [ngClass]="'link'"
+              class="icon-link"
+              [size]="'small'"
+              [name]="'link'">
+            </svg-icon>
+          </div>
+        </div>
+        <div class="model-info" [ngClass]="{'rightBorder' : pageMode === 'VIEW'}">
           <span class="header-info">
             <span class="property-name">
               <span class="auto-name"
@@ -37,15 +58,16 @@
               ></span>
             </span>
           </span>
-            <tree-node-header-properties
-              *ngIf="(node?.data?.action !== 'Create' || node?.data?.parentType === 'VnfGroup') && !node?.data?.isFailed"
-              [properties]="node.data.statusProperties"></tree-node-header-properties>
-          </div>
-          <div class="scaling invalid" *ngIf="node?.data?.errors?.scalingError" [attr.data-tests-id]="'scaling-policy'">
-            <span>Limit</span><span>{{node?.data?.limitMembers}}</span>
-          </div>
-          <div class="model-actions notShowOnViewMode">
+          <tree-node-header-properties
+            *ngIf="(node?.data?.action !== 'Create' || node?.data?.parentType === 'VnfGroup') && !node?.data?.isFailed"
+            [properties]="node.data.statusProperties"></tree-node-header-properties>
+        </div>
+        <div class="scaling invalid" *ngIf="node?.data?.errors?.scalingError" [attr.data-tests-id]="'scaling-policy'">
+          <span>Limit</span><span>{{node?.data?.limitMembers}}</span>
+        </div>
+        <div class="model-actions notShowOnViewMode ">
           <span class="icon-browse"
+                [ngClass]="{'isLinked' : isLinkedInstance(node?.data)}"
                 [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-menu-btn'"
                 (click)="onContextMenu($event, node)">
           <context-menu>
@@ -66,12 +88,12 @@
             </ng-template>
           </context-menu>
           </span>
-            <span
-              *ngIf="drawingBoardTreeService.isVNFMissingData(node, serviceModelId)"
-              tooltip="{{ missingDataTooltip }}"
-              tooltipPlacement="left"
-              [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"
-              class="icon-alert" >
+          <span
+            *ngIf="drawingBoardTreeService.isVNFMissingData(node, serviceModelId)"
+            tooltip="{{ missingDataTooltip }}"
+            tooltipPlacement="left"
+            [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"
+            class="icon-alert">
               <svg-icon
                 [mode]="'warning'"
                 [testId]="'icon-alert'"
@@ -79,16 +101,17 @@
                 [name]="'alert-triangle-o'">
               </svg-icon>
             </span>
+          <span *ngIf="drawingBoardTreeService.isVFModuleMissingData(node, serviceModelId)" class="icon-alert"
+                tooltip="{{ missingDataTooltip }}" tooltipPlacement="left"
+                [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>
+        </div>
 
-            <!--<span *ngIf="drawingBoardTreeService.isVNFMissingData(node, serviceModelId)" class="icon-alert"-->
-                  <!--tooltip="{{ missingDataTooltip }}" tooltipPlacement="left"-->
-                  <!--[attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>-->
-            <span *ngIf="drawingBoardTreeService.isVFModuleMissingData(node, serviceModelId)" class="icon-alert"
-                  tooltip="{{ missingDataTooltip }}" tooltipPlacement="left"
-                  [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>
-          </div>
-        </div >
-      </ng-template>
+        <div class="action-status">
+          <span class="action-status-type delete" [attr.data-tests-id]="'delete-status-type'" [ngStyle]="{ 'opacity': node.data.action.split('_').pop() !== 'Delete' ? '0' : '1'}">Delete</span>
+        </div>
+
+      </div>
+    </ng-template>
   </tree-root>
 </div>
 

@@ -27,6 +27,9 @@ export class TreeNodeModel {
   provStatus?:string;
   inMaint?:boolean;
   action : string ;
+  instanceId?: string;
+  instanceType?: string;
+  instanceName?: string;
 
   constructor(instance: ChildNodeInstance, nodeModel: NodeModel){
     this.modelCustomizationId = nodeModel.customizationUuid;
@@ -47,6 +50,18 @@ export class TreeNodeModel {
     if(!_.isNil(instance.inMaint)){
       this.inMaint= instance.inMaint;
     }
+
+    if(!_.isNil(instance.instanceId)){
+      this.instanceId= instance.instanceId;
+    }
+    if(!_.isNil(instance.instanceType)){
+      this.instanceType= instance.instanceType;
+    }
+    if(!_.isNil(instance.instanceName)){
+      this.instanceName= instance.instanceName;
+    }
+
+
 
 
   }

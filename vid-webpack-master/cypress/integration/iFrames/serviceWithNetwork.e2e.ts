@@ -94,7 +94,7 @@ describe('View Edit Page', function () {
     });
 
     it(`should allow delete network on view edit`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb&subscriberName=Mobility&serviceType=vMOG&serviceInstanceId=9cdd1b2a-43a7-47bc-a88e-759ba2399f0b&aaiModelVersionId=5a3ad576-c01d-4bed-8194-0e72b4a3d020&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb&subscriberName=Emanuel&serviceType=vMOG&serviceInstanceId=9cdd1b2a-43a7-47bc-a88e-759ba2399f0b&aaiModelVersionId=5a3ad576-c01d-4bed-8194-0e72b4a3d020&isPermitted=true');
        cy.wait('@aai_getPortMirroringSourcePorts - empty response');
       cy.getElementByDataTestsId("deleteNetworkButton").should('not.have.attr', 'disabled');
       cy.get(".vlansTreeNode").should('have.length', 2);

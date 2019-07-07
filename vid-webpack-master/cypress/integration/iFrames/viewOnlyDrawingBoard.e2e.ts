@@ -77,24 +77,24 @@ describe('View only drawing board', function () {
     //cy.visit("welcome.htm"); //relaod page to not break the following tests
 
     //testing left side
-    cy.getElementByDataTestsId('node-2017-388_ADIOD-vPE 1').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'VNF');
-    cy.getElementByDataTestsId('node-2017-488_ADIOD-vPE 0').click({force: true});
-    cy.getElementByDataTestsId('node-2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'M');
+    cy.getElementByDataTestsId('node-2017-388_PASQUALE-vPE 1').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'VNF');
+    cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0').click({force: true});
+    cy.getElementByDataTestsId('node-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'M');
 
     //testing right side
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_ADIOD-vPE 0').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'VNF');
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_ADIOD-vPE 0').click({force: true});
-    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0').eq(0).find(`[data-tests-id='node-type-indicator']`).should('have.text', 'M');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'VNF');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').click({force: true});
+    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').eq(0).find(`[data-tests-id='node-type-indicator']`).should('have.text', 'M');
 
     //check vnf node tree sub header
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_ADIOD-vPE 0').find("[data-tests-id='status-property-orchStatus']").should('have.text', 'Created');
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_ADIOD-vPE 0').find("[data-tests-id='status-property-provStatus']").should('have.text', '');
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_ADIOD-vPE 0').find("[data-tests-id='status-property-inMaint']").should('not.exist');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-orchStatus']").should('have.text', 'Created');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-provStatus']").should('have.text', '');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-inMaint']").should('not.exist');
 
     //check vf Module node tree sub header
-    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0').find("[data-tests-id='status-property-provStatus']").eq(0).should('have.text', 'Prov Status');
-    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0').find("[data-tests-id='status-property-orchStatus']").eq(0).should('have.text', 'Active');
-    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0').find("[data-tests-id='status-property-inMaint']").eq(0).should('have.text', '');
+    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').find("[data-tests-id='status-property-provStatus']").eq(0).should('have.text', 'Prov Status');
+    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').find("[data-tests-id='status-property-orchStatus']").eq(0).should('have.text', 'Active');
+    cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').find("[data-tests-id='status-property-inMaint']").eq(0).should('have.text', '');
 
     cy.getElementByDataTestsId("serviceInstance").should('have.text', 'Service instance:');
     cy.getElementByDataTestsId("serviceName").should('have.text', 'mCaNkinstancename');
@@ -105,8 +105,7 @@ describe('View only drawing board', function () {
 
 
   });
-
-  it(`when open service planning in view mode service instance is shown as expected - e2e with API's ServiceTreeWithMultipleChildren`, function () {
+  function initServicePlanning(){
     const SUBSCRIBER_ID: string = "e433710f-9217-458d-a79d-1c7aff376d89";
     const SERVICE_TYPE: string = "TYLER SILVIA";
     const SERVICE_INSTANCE_ID: string = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
@@ -133,6 +132,16 @@ describe('View only drawing board', function () {
 
     cy.openIframe(`app/ui/#/servicePlanning/VIEW?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
 
+  }
+  it('check component info for 2 trees for vnf, vf-module, and network', function(){
+    initServicePlanning();
+    testComponentInfoForVNF();
+    testComponentInfoForVFMODULE();
+    testComponentInfoForNetwork();
+  });
+
+  it(`when open service planning in view mode service instance is shown as expected - e2e with API's ServiceTreeWithMultipleChildren`, function () {
+    initServicePlanning();
     /*
     0. title area -> generic stuff
                      instance name
@@ -151,9 +160,9 @@ describe('View only drawing board', function () {
 
     // test component info of service-level
     let labelsAndValues = [
-      ['Model Version', '1.0'],
+      ['Model version', '1.0'],
       ['Instance ID', 'service-instance-id'],
-      ['Service Type', 'service-instance-type'],
+      ['Service type', 'service-instance-type'],
     ];
     cy.assertComponentInfoTitleLabelsAndValues('Service Instance INFO', labelsAndValues);
 
@@ -167,24 +176,24 @@ describe('View only drawing board', function () {
                     Configuration
     */
     const leftShouldHaves: { [dataTestId: string]: { [dataTestId: string]: string; }; } = {
-      'node-VF_vMee 0': {
+      'node-VF_vGeraldine 0': {
         'node-type-indicator': 'VNF',
-        'node-name': 'VF_vMee 0',
+        'node-name': 'VF_vGeraldine 0',
         'numberButton': '1',
       },
-      'node-vf_vmee0..VfVmee..base_vmme..module-0': {
+      'node-vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0': {
         'node-type-indicator': 'M',
-        'node-name': 'vf_vmee0..VfVmee..base_vmme..module-0',
+        'node-name': 'vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0',
         'numberButton': '',
       },
-      'node-vf_vmee0..VfVmee..vmme_vlc..module-1': {
+      'node-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1': {
         'node-type-indicator': 'M',
-        'node-name': 'vf_vmee0..VfVmee..vmme_vlc..module-1',
+        'node-name': 'vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1',
         'numberButton': '1',
       },
-      'node-vf_vmee0..VfVmee..vmme_gpb..module-2': {
+      'node-vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2': {
         'node-type-indicator': 'M',
-        'node-name': 'vf_vmee0..VfVmee..vmme_gpb..module-2',
+        'node-name': 'vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2',
         'numberButton': '',
       },
       'node-ExtVL 0': {
@@ -212,7 +221,7 @@ describe('View only drawing board', function () {
                      IGNORE, don't check: first node, which have no Service connection
     */
     const rightShouldHaves: { [dataTestId: string]: { [dataTestId: string]: string; }; } = {
-      'node-d6557200-ecf2-4641-8094-5393ae3aae60-VF_vMee 0:0': {
+      'node-d6557200-ecf2-4641-8094-5393ae3aae60-VF_vGeraldine 0:0': {
         'node-type-indicator': 'VNF',
         'node-name': 'VNF2_INSTANCE_NAME',
         'status-property-orchStatus': '',
@@ -225,7 +234,7 @@ describe('View only drawing board', function () {
         'status-property-orchStatus': 'Assigned',
         'status-property-provStatus': '',
       },
-      'node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vmee0..VfVmee..vmme_vlc..module-1:0': {
+      'node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1:0': {
         'node-type-indicator': 'M',
         'node-name': 'ss820f_0918_db',
         'status-property-orchStatus': 'deleted',
@@ -263,10 +272,10 @@ describe('View only drawing board', function () {
                     configuration: # of instances = 0, click -> nothing
     */
     const leftShouldHighlight: { [text: string]: string[] } = {
-      'VF_vMee 0': ['VNF2_INSTANCE_NAME'],
-      'vf_vmee0..VfVmee..base_vmme..module-0': [],
-      'vf_vmee0..VfVmee..vmme_vlc..module-1': ['ss820f_0918_db'],
-      'vf_vmee0..VfVmee..vmme_gpb..module-2': [],
+      'VF_vGeraldine 0': ['VNF2_INSTANCE_NAME'],
+      'vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0': [],
+      'vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1': ['ss820f_0918_db'],
+      'vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2': [],
       'ExtVL 0': ['NETWORK3_INSTANCE_NAME', 'NETWORK4_INSTANCE_NAME'],
       'Port Mirroring Configuration By Policy 0': [],
     };
@@ -286,9 +295,9 @@ describe('View only drawing board', function () {
                     network2: click -> network selected
      */
     const rightShouldHighlight: { [text: string]: string[] } = {
-      'VNF2_INSTANCE_NAME': ['VF_vMee 0'],
+      'VNF2_INSTANCE_NAME': ['VF_vGeraldine 0'],
       'ss820f_0918_base': [],
-      'ss820f_0918_db': ['vf_vmee0..VfVmee..vmme_vlc..module-1'],
+      'ss820f_0918_db': ['vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1'],
       'NETWORK3_INSTANCE_NAME': ['ExtVL 0'],
       'NETWORK4_INSTANCE_NAME': ['ExtVL 0'],
     };
@@ -312,4 +321,54 @@ describe('View only drawing board', function () {
 
 
   });
+
+  function testComponentInfoForVNF(){
+    const labelsAndValuesForModel = [
+      ['Model version', '2.0'],
+      ['Model customization ID', '91415b44-753d-494c-926a-456a9172bbb9'],
+      ['Min instances', '0'],
+      ['Max instances', '1']
+    ];
+    const extraLabelsAndValuesForInstance = [['Instance type', 'VNF2_INSTANCE_TYPE'],['In maintenance','true'], ['Instance ID', 'VNF2_INSTANCE_ID']];
+    testComponentInfoByType('node-VF_vGeraldine 0', labelsAndValuesForModel,'VNF INFO',
+      'VNF2_INSTANCE_NAME', extraLabelsAndValuesForInstance,'VNF Instance INFO');
+
+  }
+
+  function testComponentInfoForVFMODULE(){
+    const labelsAndValuesForModel = [
+      ['Model version', '2'],
+      ['Model customization ID', '55b1be94-671a-403e-a26c-667e9c47d091'],
+      ['Base module', 'false'],
+      ['Min instances', '0'],
+      ['Initial instances count', '0']
+    ];
+    const extraLabelsAndValuesForInstance = [['In maintenance','true'], ['Instance ID', '2c1ca484-cbc2-408b-ab86-25a2c15ce280']];
+    testComponentInfoByType('node-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1',labelsAndValuesForModel,'VFModule INFO',
+      'ss820f_0918_db',extraLabelsAndValuesForInstance,'VFModule Instance INFO')
+
+  }
+
+  function testComponentInfoForNetwork(){
+    const labelsAndValuesForModel = [
+      ['Model version', '37.0'],
+      ['Model customization ID', '94fdd893-4a36-4d70-b16a-ec29c54c184f'],
+      ['Network role','network role 1, network role 2']
+    ];
+    const extraLabelsAndValuesForInstance = [['In maintenance','false'], ['Instance ID', 'NETWORK3_INSTANCE_ID'],['Instance type', 'CONTRAIL30_BASIC']];
+    testComponentInfoByType('node-ExtVL 0',labelsAndValuesForModel,'Network INFO',
+      'NETWORK3_INSTANCE_NAME',extraLabelsAndValuesForInstance,'Network Instance INFO');
+
+  }
+
+  function testComponentInfoByType(leftNode:string, labelsAndValuesForModel: string[][], expectedTitleForModel:string, rightNode:string, extraLabelsAndValuesForInstance: string[][], expectedTitleForInstance:string){
+    cy.getElementByDataTestsId(leftNode).eq(0).click({force: true});
+    cy.assertComponentInfoTitleLabelsAndValues(expectedTitleForModel, labelsAndValuesForModel);
+
+    let labelsAndValuesForInstance = labelsAndValuesForModel.concat(extraLabelsAndValuesForInstance);
+    cy.get('drawing-board-tree').contains(rightNode).click();
+    cy.assertComponentInfoTitleLabelsAndValues(expectedTitleForInstance, labelsAndValuesForInstance);
+  }
+
+
 });

@@ -18,7 +18,7 @@
     "CONTRAIL30_BASIC 0": {
       "uuid": "2920cd06-f585-436b-a002-c3081f6a91b3",
       "invariantUuid": "56f4e746-c58e-4b76-93d4-6717b8f59205",
-      "description": "Basic contrail 3.0.x L3 network for AIC 3.x sites. Keeping for existing mobility networks. ",
+      "description": "Basic contrail 3.0.x L3 network for AIC 3.x sites. Keeping for existing emanuel networks. ",
       "name": "CONTRAIL30_BASIC",
       "version": "3.0",
       "customizationUuid": "8e2128bf-77e8-4a48-84d0-520c44718161",
@@ -37,7 +37,7 @@
       "modelCustomizationName": "CONTRAIL30_BASIC 0"
     }
   },
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {},
   "fabricConfigurations": {},
   "serviceProxies": {},

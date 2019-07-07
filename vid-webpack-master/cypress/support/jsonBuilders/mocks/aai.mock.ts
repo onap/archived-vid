@@ -5,6 +5,8 @@ declare namespace Cypress {
     initZones : typeof initZones;
     initTenants : typeof initTenants;
     initSearchVNFMemebers : typeof  initSearchVNFMemebers;
+    initActiveNetworks : typeof  initActiveNetworks;
+    initActiveVPNs : typeof  initActiveVPNs;
   }
 }
 
@@ -109,13 +111,36 @@ function initSearchVNFMemebers(response? : JSON) : void {
   });
 }
 
+function initActiveNetworks(response? : JSON) : void {
+  cy.readFile('../vid-automation/src/test/resources/viewEdit/aaiGetActiveNetworks.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        status : 200,
+        url : Cypress.config('baseUrl') + "/aai_get_active_networks/**",
+        response : response ? response : res
+      }).as(('getActiveNetworks'));
+  });
+}
 
+function initActiveVPNs(response? : JSON) : void {
+  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiActiveVPNs.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        status : 200,
+        url : Cypress.config('baseUrl') + "/aai_get_vpn_list/**",
+        response : response ? response : res
+      }).as(('getVPNs'));
+  });
+}
 
 function initAAIMock(): void {
   initAaiGetFullSubscribers();
   initGetSubscribers();
   initAAIServices();
   initTenants();
+
 }
 
 
@@ -125,5 +150,7 @@ Cypress.Commands.add('initZones', initZones);
 Cypress.Commands.add('initTenants', initTenants);
 Cypress.Commands.add('initAaiGetFullSubscribers', initAaiGetFullSubscribers);
 Cypress.Commands.add('initSearchVNFMemebers', initSearchVNFMemebers);
+Cypress.Commands.add('initActiveNetworks', initActiveNetworks);
+Cypress.Commands.add('initActiveVPNs', initActiveVPNs);
 
 

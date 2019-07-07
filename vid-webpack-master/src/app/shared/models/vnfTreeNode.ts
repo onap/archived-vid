@@ -1,10 +1,10 @@
 import {VfModuleTreeNode} from "./vfModuleTreeNode";
-import {NetworkTreeNode} from "./networkTreeNode";
 import {Level1Model} from "./nodeModel";
 import {VnfInstance} from "./vnfInstance";
 import {ServiceNodeTypes} from "./ServiceNodeTypes";
+import {FirstLevelTreeNode} from "./firstLevelTreeNode";
 
-export class VnfTreeNode extends NetworkTreeNode{
+export class VnfTreeNode extends FirstLevelTreeNode {
 
   children: VfModuleTreeNode[];
   vnfStoreKey : string;

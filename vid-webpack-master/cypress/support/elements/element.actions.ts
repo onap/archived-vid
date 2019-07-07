@@ -8,6 +8,7 @@ declare namespace Cypress {
     hasClass : typeof hasClass;
     getElementByDataTestsId : typeof getElementByDataTestsId;
     getTagElementContainsText : typeof  getTagElementContainsText;
+    isElementNotContainsAttr : typeof  isElementNotContainsAttr;
   }
 }
 
@@ -16,6 +17,13 @@ declare namespace Cypress {
  *************************************************************************/
 function isElementContainsAttr(id : string, attr: string) : void {
   cy.getElementByDataTestsId(id).should('have.attr', attr);
+}
+
+/*************************************************************************
+ isElementContainsAttr : check if element with id not contains some attribute
+ *************************************************************************/
+function isElementNotContainsAttr(id : string, attr: string) : void {
+  cy.getElementByDataTestsId(id).should('not.have.attr', attr);
 }
 
 /*********************************************************
@@ -54,3 +62,4 @@ Cypress.Commands.add('isElementEnabled', isElementEnabled);
 Cypress.Commands.add('hasClass', hasClass);
 Cypress.Commands.add('getElementByDataTestsId', getElementByDataTestsId);
 Cypress.Commands.add('getTagElementContainsText', getTagElementContainsText);
+Cypress.Commands.add('isElementNotContainsAttr', isElementNotContainsAttr);
