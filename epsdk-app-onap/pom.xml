@@ -26,7 +26,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <epsdk.version>2.4.0</epsdk.version>
         <jackson.version>2.9.8</jackson.version>
-        <springframework.version>4.3.22.RELEASE</springframework.version>
+        <springframework.version>5.1.6.RELEASE</springframework.version>
+        <!-- epsdk-core is importing this class, which is only on spring-orm 4 but not in orm 5:
+         org.springframework.orm.hibernate4.HibernateTransactionManager
+         so following orm.version lets epsdk-core find it -->
+        <springframework.orm.version>4.3.22.RELEASE</springframework.orm.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
         <!-- Skip assembling the zip; assemble via mvn -Dskipassembly=false .. -->
         <skipassembly>true</skipassembly>
@@ -427,7 +431,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>${springframework.version}</version>
+            <version>${springframework.orm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
