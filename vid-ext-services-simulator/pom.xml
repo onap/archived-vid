@@ -13,8 +13,9 @@
     <properties>
         <encoding>UTF-8</encoding>
         <epsdk.version>1.3.0</epsdk.version>
-        <springframework.version>4.3.22.RELEASE</springframework.version>
+        <springframework.version>5.1.6.RELEASE</springframework.version>
         <hibernate.version>5.3.4.Final</hibernate.version>
+        <jackson.version>2.9.8</jackson.version>
         <!-- Skip assembling the zip by default -->
         <skipassembly>true</skipassembly>
         <!-- Tests usually require some setup that maven cannot do, so skip. -->
@@ -132,8 +133,18 @@
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.8.7</version>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
