@@ -10,20 +10,20 @@
       "inventory-response-items": {
         "inventory-response-item": [
           {
-            "model-name": "VID-PCRF-05-15-17",
+            "model-name": "VID-RODERICK-05-15-17",
             "generic-vnf": {
               "vnf-id": "c015cc0f-0f37-4488-aabf-53795fd93cd3",
               "vnf-name": "fsd",
-              "vnf-type": "1707vidnf/VID-PCRF-05-15-17 0",
+              "vnf-type": "1707vidnf/VID-RODERICK-05-15-17 0",
               "service-id": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
               "prov-status": "PREPROV",
               "orchestration-status": "Created",
               "in-maint": false,
               "is-closed-loop-disabled": false,
               "resource-version": "1502299355826",
-              "model-invariant-id": "4160458e-f648-4b30-a176-43881ffffe9e",
-              "model-version-id": "d6557200-ecf2-4641-8094-5393ae3aae60",
-              "model-customization-id": "91415b44-753d-494c-926a-456a9172bbb9",
+              "modelInvariantId": "4160458e-f648-4b30-a176-43881ffffe9e",
+              "modelVersionId": "d6557200-ecf2-4641-8094-5393ae3aae60",
+              "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
               "nf-type": "null",
               "nf-function": "null",
               "nf-role": "null",
@@ -52,9 +52,9 @@
                     "orchestration-status": "pendingactivation",
                     "is-base-vf-module": true,
                     "resource-version": "1504770843380",
-                    "model-invariant-id": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
-                    "model-version-id": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
-                    "model-customization-id": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
+                    "modelInvariantId": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
+                    "modelVersionId": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
+                    "modelCustomizationId": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
                     "module-index": 0
                   },
                   "extra-properties": {}

@@ -34,6 +34,8 @@ import {SdcUiServices} from "onap-ui-angular/dist";
 import {CreateDynamicComponentService} from "onap-ui-angular/dist/utils/create-dynamic-component.service";
 import {ComponentInfoComponent} from './service-planning/component-info/component-info.component';
 import {ComponentInfoService} from "./service-planning/component-info/component-info.service";
+import {NetworkStepService} from "./service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.service";
+import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfModal/vpnStep/vpn.step.service";
 
 
 @NgModule({
@@ -66,7 +68,9 @@ import {ComponentInfoService} from "./service-planning/component-info/component-
     SdcUiServices.LoaderService,
     CreateDynamicComponentService,
     ComponentInfoService,
-    DragAndDropService],
+    DragAndDropService,
+    NetworkStepService,
+    VpnStepService],
   declarations: [
     AvailableModelsTreeComponent,
     HighlightPipe,

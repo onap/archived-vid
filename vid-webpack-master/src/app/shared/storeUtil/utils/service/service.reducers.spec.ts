@@ -1,13 +1,16 @@
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {
-  AddServiceAction, ChangeServiceDirty,
+  AddServiceAction,
+  ChangeServiceDirty,
+  CreateServiceInstanceAction,
   DeleteServiceInstanceAction,
   ServiceActions,
-  CreateServiceInstanceAction,
-  UpdateServiceModelAction, UpdateServiceInstanceAction
+  UpdateServiceInstanceAction,
+  UpdateServiceModelAction
 } from "./service.actions";
 import {serviceReducer} from "./service.reducers";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import {VidNotions} from "../../../models/vidNotions";
 
 describe('serviceReducer', () => {
 
@@ -17,15 +20,15 @@ describe('serviceReducer', () => {
 
     const elemntThatShouldNotOverideOnUpdateService = {
       vnfs: {
-        "2017-388_ADIOD-vPE 0": {
+        "2017-388_PASQUALE-vPE 0": {
           "action": "Create",
           "inMaint": false,
           "rollbackOnFailure": "true",
-          "originalName": "2017-388_ADIOD-vPE 0",
+          "originalName": "2017-388_PASQUALE-vPE 0",
           "isMissingData": false,
           "trackById": "eymgwlevh54",
           "vfModules": {},
-          "vnfStoreKey": "2017-388_ADIOD-vPE 0",
+          "vnfStoreKey": "2017-388_PASQUALE-vPE 0",
           "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
           "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
           "lcpCloudRegionId": "JANET25",
@@ -35,14 +38,14 @@ describe('serviceReducer', () => {
           "modelInfo": {
             "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
             "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
-            "modelName": "2017-388_ADIOD-vPE",
+            "modelName": "2017-388_PASQUALE-vPE",
             "modelVersion": "4.0",
             "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
-            "modelCustomizationName": "2017-388_ADIOD-vPE 0",
+            "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
             "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
             "modelUniqueId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c"
           },
-          "instanceName": "2017-388_ADIOD-vPEAjXzainstanceName",
+          "instanceName": "2017-388_PASQUALE-vPEAjXzainstanceName",
           "legacyRegion": "some legacy region",
           "instanceParams": [
             {
@@ -55,26 +58,26 @@ describe('serviceReducer', () => {
             }
           ]
         },
-        "2017-488_ADIOD-vPE 0": {
+        "2017-488_PASQUALE-vPE 0": {
           "action": "Create",
           "inMaint": false,
           "rollbackOnFailure": "true",
-          "originalName": "2017-488_ADIOD-vPE 0",
+          "originalName": "2017-488_PASQUALE-vPE 0",
           "isMissingData": false,
           "trackById": "xr6o2782z7",
           "vfModules": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
-              "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0wmkjw": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+              "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0wmkjw": {
                 "isMissingData": true,
                 "sdncPreReload": null,
                 "modelInfo": {
                   "modelType": "VFmodule",
                   "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
                   "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-                  "modelName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "modelVersion": "5",
                   "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "modelUniqueId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3"
                 },
                 "instanceParams": [
@@ -84,7 +87,7 @@ describe('serviceReducer', () => {
               }
             }
           },
-          "vnfStoreKey": "2017-488_ADIOD-vPE 0",
+          "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
           "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
           "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
           "lcpCloudRegionId": "JANET25",
@@ -94,14 +97,14 @@ describe('serviceReducer', () => {
           "modelInfo": {
             "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
             "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-            "modelName": "2017-488_ADIOD-vPE",
+            "modelName": "2017-488_PASQUALE-vPE",
             "modelVersion": "5.0",
             "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
-            "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+            "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
             "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
             "modelUniqueId": "1da7b585-5e61-4993-b95e-8e6606c81e45"
           },
-          "instanceName": "2017-488_ADIOD-vPEVNFinstancename",
+          "instanceName": "2017-488_PASQUALE-vPEVNFinstancename",
           "legacyRegion": "some legacy region",
           "instanceParams": [
             {
@@ -135,14 +138,14 @@ describe('serviceReducer', () => {
           "vnfs": elemntThatShouldNotOverideOnUpdateService.vnfs,
           "instanceParams": [
             {
-              "2017488_adiodvpe0_ASN": "AV_vPE"
+              "2017488_pasqualevpe0_ASN": "AV_vPE"
             }
           ],
           "validationCounter": 1,
           "existingNames": {
             "ajxzainstancename": "",
-            "2017-488_adiod-vpevnfinstancename": "",
-            "2017-388_adiod-vpeajxzainstancename": ""
+            "2017-488_pasquale-vpevnfinstancename": "",
+            "2017-388_pasquale-vpeajxzainstancename": ""
           },
           "existingVNFCounterMap": elemntThatShouldNotOverideOnUpdateService.existingVNFCounterMap,
           "existingVnfGroupCounterMap": elemntThatShouldNotOverideOnUpdateService.existingVnfGroupCounterMap,
@@ -264,8 +267,14 @@ describe('serviceReducer', () => {
     expect(service.serviceInstance[serviceUuid]['action']).toEqual(actionName);
   });
 
-  test('#UPDATE_SERVICE_INSTANCE', () => {
+  test('#CREATE_SERVICE_INSTANCE shall put the instance on state with all its values ', () => {
     const serviceUuid: string = 'serviceUuid';
+    const vidNotions:VidNotions = {
+      instantiationUI: "some5G",
+      modelCategory: "5G Provider Network",
+      viewEditUI: "legacy",
+      instantiationType: "ALaCarte"
+    };
 
     let serviceInstanceObject: ServiceInstance = <any>{
       isDirty: false,
@@ -298,7 +307,17 @@ describe('serviceReducer', () => {
       action: ServiceInstanceActions.Create
     };
 
-    let serviceState = serviceReducer(<any>{serviceInstance: {}},
+    let serviceState = serviceReducer(
+      <any>{
+        serviceInstance: {},
+        serviceHierarchy: {
+          [serviceUuid]: {
+            service: {
+              vidNotions: vidNotions
+            }
+          }
+        }
+      },
       <CreateServiceInstanceAction>{
         type: ServiceActions.CREATE_SERVICE_INSTANCE,
         serviceUuid: serviceUuid,
@@ -324,6 +343,7 @@ describe('serviceReducer', () => {
     expect(serviceState.instanceParams).toEqual(serviceInstanceObject.instanceParams);
     expect(serviceState.rollbackOnFailure).toEqual(serviceInstanceObject.rollbackOnFailure);
     expect(serviceState.subscriberName).toEqual(serviceInstanceObject.subscriberName);
+    expect(serviceState.vidNotions).toEqual(vidNotions);
   });
 
 

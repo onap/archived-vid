@@ -16,12 +16,12 @@
               "configuration-name": "dummy_instance_1",
               "configuration-type": "fabric-configuration-type-1",
               "configuration-sub-type": "fabric-configuration-sub-type-1",
-              "model-invariant-id": "model-invariant-id-1",
-              "model-version-id": "model-version-id-1",
+              "modelInvariantId": "model-invariant-id-1",
+              "modelVersionId": "model-version-id-1",
               "orchestration-status": "Assigned",
               "operational-status": "",
               "configuration-selflink": "",
-              "model-customization-id": "model-customization-id-1",
+              "modelCustomizationId": "model-customization-id-1",
               "resource-version": "1504038855716"
             },
             "extra-properties": {
@@ -34,12 +34,12 @@
               "configuration-name": "dummy_instance_2",
               "configuration-type": "fabric-configuration-type-2",
               "configuration-sub-type": "fabric-configuration-sub-type-2",
-              "model-invariant-id": "model-invariant-id-2",
-              "model-version-id": "model-version-id-2",
+              "modelInvariantId": "model-invariant-id-2",
+              "modelVersionId": "model-version-id-2",
               "orchestration-status": "Active",
               "operational-status": "",
               "configuration-selflink": "",
-              "model-customization-id": "model-customization-id-2",
+              "modelCustomizationId": "model-customization-id-2",
               "resource-version": "1504038855712"
             },
             "extra-properties": {

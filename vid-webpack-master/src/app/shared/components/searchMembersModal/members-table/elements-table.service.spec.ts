@@ -1,11 +1,9 @@
-import {MembersTableService} from "./members-table.service";
+import {ElementsTableService} from "./elements-table.service";
 import {TestBed, getTestBed} from "@angular/core/testing";
 import {NgRedux} from "@angular-redux/store";
-import {CustomTableColumnDefinition} from "./members-table.component";
+import {CustomTableColumnDefinition} from "./elements-table.component";
 import {AppState} from "../../../store/reducers";
-import {createRelatedVnfMemberInstance} from "../../../storeUtil/utils/relatedVnfMember/relatedVnfMember.actions";
 import {DataFilterPipe} from "../../../pipes/dataFilter/data-filter.pipe";
-import {VnfMember} from "../../../models/VnfMember";
 
 
 
@@ -27,7 +25,7 @@ class MockAppStore<T> {
                       "instanceName": "VNF1_INSTANCE_NAME",
                       "instanceId": "VNF1_INSTANCE_ID",
                       "orchStatus": null,
-                      "lcpCloudRegionId": "mtn23b",
+                      "lcpCloudRegionId": "hvf23b",
                       "tenantId": "3e9a20a3e89e45f884e09df0cc2d2d2a",
                       "tenantName": "APPC-24595-T-IST-02C",
                       "modelInfo": {
@@ -62,9 +60,9 @@ class MockAppStore<T> {
   }
 }
 
-describe('MembersTableService view member count', () => {
+describe('ElementsTableService view member count', () => {
   let injector;
-  let service: MembersTableService;
+  let service: ElementsTableService;
   let store: NgRedux<AppState>;
   let data = loadMockMembers();
 
@@ -73,7 +71,7 @@ describe('MembersTableService view member count', () => {
     TestBed.configureTestingModule(
       {
         providers: [
-          MembersTableService,
+          ElementsTableService,
           {provide: NgRedux, useClass: MockAppStore},
           DataFilterPipe
 
@@ -83,94 +81,80 @@ describe('MembersTableService view member count', () => {
     await TestBed.compileComponents();
 
     injector = getTestBed();
-    service = injector.get(MembersTableService);
+    service = injector.get(ElementsTableService);
     store = injector.get(NgRedux)
 
   })().then(done).catch(done.fail));
 
 
   test('should return number of displayed members', () => {
-    service.allMemberStatusMap = MembersTableService.generateAllMembersStatus(<any>data);
+    service.modalInformation = <any>{
+      uniqObjectField : "instanceId"
+    };
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
     service.filteredMembers = <any>data;
-    expect(service.calculateNotHideVnfMembers()).toEqual(2);
+    expect(service.calculateNotHideRows()).toEqual(2);
   });
 
   test('should return number of selected members', () => {
-    service.allMemberStatusMap = MembersTableService.generateAllMembersStatus(<any>data);
-    service.allMemberStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
-    service.allMemberStatusMap['VNF2_INSTANCE_ID'].isSelected = true;
-    expect(service.calculateSelectedVnfMembers()).toEqual(2);
+    ElementsTableService.uniqObjectField = "instanceId";
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
+    service.allElementsStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
+    service.allElementsStatusMap['VNF2_INSTANCE_ID'].isSelected = true;
+    expect(service.calculateSelectedRows()).toEqual(2);
   });
 
   test('should return number of selected members', () => {
-    service.allMemberStatusMap = MembersTableService.generateAllMembersStatus(<any>data);
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
     service.filteredMembers = <any>data;
-    service.allMemberStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
-    service.filterMembers('VNF2');
-    service.allMemberStatusMap['VNF2_INSTANCE_ID'].isSelected = true;
-    expect(service.calculateNotHideVnfMembers()).toEqual(1);
-  });
-
-  test('getHeader should return labels with array of keys', () => {
-    const headers: CustomTableColumnDefinition[] = MembersTableService.getHeaders();
-    expect(headers).toEqual([
-      {displayName: 'VNF instance name', key: ['instanceName']},
-      {displayName: 'VNF version', key: ['modelInfo', 'modelVersion']},
-      {displayName: 'VNF model name', key: ['modelInfo', 'modelName']},
-      {displayName: 'Prov Status', key: ['provStatus']},
-      {displayName: 'Service instance name', key: ['serviceInstanceName']},
-      {displayName: 'Cloud Region', key: ['lcpCloudRegionId']},
-      {displayName: 'Tenant Name', key: ['tenantName']}
-    ]);
-  });
-
-
-  test('setMembers should dispatch action only on selected members', () => {
-    const vnfGroupStoreKey: string = 'vnfGroupStoreKey';
-    const serviceId: string = 'serviceId';
-
-    jest.spyOn(store, 'dispatch');
-    service.allMemberStatusMap = MembersTableService.generateAllMembersStatus(<any>data);
-    service.allMemberStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
-    service.setMembers({serviceId: serviceId, vnfGroupStoreKey: vnfGroupStoreKey});
-    expect(store.dispatch).toHaveBeenCalledTimes(1);
-    expect(store.dispatch).toHaveBeenCalledWith(createRelatedVnfMemberInstance(vnfGroupStoreKey, serviceId, service.allMemberStatusMap['VNF1_INSTANCE_ID']));
+    service.allElementsStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
+    service.filterMembers('VNF2', "VNF");
+    service.allElementsStatusMap['VNF2_INSTANCE_ID'].isSelected = true;
+    expect(service.calculateNotHideRows()).toEqual(1);
   });
 
   test('generateAllMembersStatus should add to each instance isHide and isSelected and convert to map', () => {
 
-    let allMemberStatusMapMock = MembersTableService.generateAllMembersStatus(<any>data);
+    let allMemberStatusMapMock = service.generateAllMembersStatus(<any>data);
     for (const key in allMemberStatusMapMock) {
       expect(allMemberStatusMapMock[key].isSelected).toBeFalsy();
     }
   });
 
   test('changeAllCheckboxStatus', () => {
+    service.modalInformation = <any>{
+      type : 'SomeType',
+      uniqObjectField : 'instanceId'
+    };
     let data = loadMockMembers();
-    service.allMemberStatusMap = MembersTableService.generateAllMembersStatus(<any>data);
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
     service.filteredMembers = <any>data;
     service.changeAllCheckboxStatus(true);
-    for (let key in service.allMemberStatusMap) {
-      expect(service.allMemberStatusMap[key].isSelected).toEqual(true);
+    for (let key in service.allElementsStatusMap) {
+      expect(service.allElementsStatusMap[key].isSelected).toEqual(true);
     }
   });
 
   test('should reset all numbers and lists', () => {
+    service.modalInformation = <any>{
+      type : 'SomeType',
+      uniqObjectField : 'instanceId'
+    };
     let data = loadMockMembers();
-    service.allMemberStatusMap = MembersTableService.generateAllMembersStatus(<any>data);
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
     service.filteredMembers = <any>data;
     service.changeAllCheckboxStatus(true);
-    service.resetAll();
-    expect(service.numberOfNotHideVnfMembers).toEqual(0);
-    expect(service.numberOfSelectedAndNotHideVnfMembers).toEqual(0);
-    expect(service.numberOfSelectedVnfMembers).toEqual(0);
-    expect(service.allMemberStatusMap).toEqual({});
+    service.resetAll("instanceId");
+    expect(service.numberOfNotHideRows).toEqual(0);
+    expect(service.numberOfSelectedAndNotHideRows).toEqual(0);
+    expect(service.numberOfSelectedRows).toEqual(0);
+    expect(service.allElementsStatusMap).toEqual({});
     expect(service.filteredMembers.length).toEqual(0);
   });
 
   test('checkAllCheckboxStatus should be false if not all are selected', () => {
-    service.allMemberStatusMap = MembersTableService.generateAllMembersStatus(<any>loadMockMembers());
-    service.updateAmountsAndCheckAll();
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>loadMockMembers());
+    service.updateAmountsAndCheckAll("instanceId", <any>{});
 
     expect(service.allCheckboxAreSelected).toEqual(false);
   });
@@ -178,7 +162,7 @@ describe('MembersTableService view member count', () => {
 
   test('sortVnfMembersByName should sort list by vnf name', () => {
     let data = <any>loadMockMembers();
-    let sortedList = MembersTableService.sortVnfMembersByName(data, "instanceName");
+    let sortedList = service.sortElementsByName(data, "instanceName");
 
     expect(sortedList[0].instanceName).toEqual("VNF1_INSTANCE_NAME");
     expect(sortedList[1].instanceName).toEqual("VNF2_INSTANCE_NAME");
@@ -187,21 +171,62 @@ describe('MembersTableService view member count', () => {
     data[0] = data[1];
     data[1] = tmp;
 
-    sortedList = MembersTableService.sortVnfMembersByName(data, "instanceName");
+    sortedList = service.sortElementsByName(data, "instanceName");
 
     expect(sortedList[1].instanceName).toEqual("VNF1_INSTANCE_NAME");
     expect(sortedList[0].instanceName).toEqual("VNF2_INSTANCE_NAME");
-    sortedList = MembersTableService.sortVnfMembersByName(null, "instanceName");
+    sortedList = service.sortElementsByName(null, "instanceName");
     expect(sortedList).toEqual([]);
-    sortedList = MembersTableService.sortVnfMembersByName(data, undefined);
+    sortedList = service.sortElementsByName(data, undefined);
     expect(sortedList).toEqual([]);
   });
 
-  test('should return only vnf members not associated to any vnf group', ()=>{
-    const result: VnfMember[] = service.filterUsedVnfMembers("serviceModelId",loadMockMembers());
-    expect(result.length).toEqual(1);
-    expect(result[0].instanceId).toEqual("VNF2_INSTANCE_ID");
+  test('isRowDisabled should return false current row is selected', ()=> {
+    let isDisabled = service.isRowDisabled(true, null);
+    expect(isDisabled).toBeFalsy();
   });
+
+
+  test('isRowDisabled should return false if there is no limit', ()=> {
+    let isDisabled = service.isRowDisabled(false, null);
+    expect(isDisabled).toBeFalsy();
+  });
+
+  test('isRowDisabled should return false if number of rows are less then limit ', ()=> {
+    service.modalInformation = <any>{
+      uniqObjectField : "instanceId"
+    };
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
+    service.allElementsStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
+    service.allElementsStatusMap['VNF2_INSTANCE_ID'].isSelected = true;
+
+    let isDisabled = service.isRowDisabled(false, 3);
+    expect(isDisabled).toBeFalsy();
+  });
+
+  test('isRowDisabled should return true if number of rows are equal or more then limit ', ()=> {
+    ElementsTableService.uniqObjectField = "instanceId";
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
+    service.allElementsStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
+    service.allElementsStatusMap['VNF2_INSTANCE_ID'].isSelected = true;
+
+    let isDisabled = service.isRowDisabled(false, 2);
+    expect(isDisabled).toBeTruthy();
+  });
+
+
+  test('isCheckAllDisabled should false true if number of rows are equal or more then limit ', ()=> {
+    service.modalInformation = <any>{
+      uniqObjectField : "instanceId"
+    };
+    service.allElementsStatusMap = service.generateAllMembersStatus(<any>data);
+    service.allElementsStatusMap['VNF1_INSTANCE_ID'].isSelected = true;
+    service.allElementsStatusMap['VNF2_INSTANCE_ID'].isSelected = true;
+
+    let isDisabled = service.isCheckAllDisabled( 2);
+    expect(isDisabled).toBeFalsy();
+  });
+
 
 });
 
@@ -214,7 +239,7 @@ function loadMockMembers(): any[] {
       "instanceId": "VNF1_INSTANCE_ID",
       "orchStatus": null,
       "productFamilyId": null,
-      "lcpCloudRegionId": "mtn23b",
+      "lcpCloudRegionId": "hvf23b",
       "tenantId": "3e9a20a3e89e45f884e09df0cc2d2d2a",
       "tenantName": "APPC-24595-T-IST-02C",
       "modelInfo": {
@@ -242,7 +267,7 @@ function loadMockMembers(): any[] {
       "instanceId": "VNF2_INSTANCE_ID",
       "orchStatus": null,
       "productFamilyId": null,
-      "lcpCloudRegionId": "mtn23b",
+      "lcpCloudRegionId": "hvf23b",
       "tenantId": "3e9a20a3e89e45f884e09df0cc2d2d2a",
       "tenantName": "APPC-24595-T-IST-02C",
       "modelInfo": {

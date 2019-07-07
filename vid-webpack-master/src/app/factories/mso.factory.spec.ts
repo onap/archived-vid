@@ -25,23 +25,23 @@ describe('Vlantagging', () => {
       "service": {
         "uuid": "6bce7302-70bd-4057-b48e-8d5b99e686ca",
         "invariantUuid": "9aa04749-c02c-432d-a90c-18caa361c833",
-        "name": "vDBE_srv",
+        "name": "vDOROTHEA_srv",
         "version": "1.0",
         "toscaModelURL": null,
         "category": "Network L4+",
         "serviceType": "",
         "serviceRole": "",
-        "description": "vDBE_srv",
+        "description": "vDOROTHEA_srv",
         "serviceEcompNaming": "true",
         "instantiationType": "A-La-Carte",
         "inputs": {}
       },
       "vnfs": {
-        "vDBE 0": {
+        "vDOROTHEA 0": {
           "uuid": "61535073-2e50-4141-9000-f66fea69b433",
           "invariantUuid": "fcdf49ce-6f0b-4ca2-b676-a484e650e734",
-          "description": "vDBE",
-          "name": "vDBE",
+          "description": "vDOROTHEA",
+          "name": "vDOROTHEA",
           "version": "0.2",
           "customizationUuid": "1",
           "inputs": {},
@@ -57,16 +57,16 @@ describe('Vlantagging', () => {
             "untr_network_collection_function": "untraaa"
           },
           "type": "VF",
-          "modelCustomizationName": "vDBE 0",
+          "modelCustomizationName": "vDOROTHEA 0",
           "vfModules": {
-            "vdbe0..Vdbe..main..module-0": {
+            "vdorothea0..Vdorothea..main..module-0": {
               "uuid": "25a4d009-2f5a-44b4-b02a-62c584c15912",
               "invariantUuid": "614afb1a-3e7e-44e9-90ab-424d0070c781",
               "customizationUuid": "3443b341-7b0b-498c-a84a-a7ee736cba7e",
               "description": null,
-              "name": "Vdbe..main..module-0",
+              "name": "Vdorothea..main..module-0",
               "version": "1",
-              "modelCustomizationName": "Vdbe..main..module-0",
+              "modelCustomizationName": "Vdorothea..main..module-0",
               "properties": {
                 "minCountInstances": 1,
                 "maxCountInstances": 1,
@@ -107,18 +107,18 @@ describe('Vlantagging', () => {
         }
       },
       "networks": {},
-      "collectionResource": {},
+      "collectionResources": {},
       "configurations": {},
       "serviceProxies": {},
       "vfModules": {
-        "vdbe0..Vdbe..main..module-0": {
+        "vdorothea0..Vdorothea..main..module-0": {
           "uuid": "25a4d009-2f5a-44b4-b02a-62c584c15912",
           "invariantUuid": "614afb1a-3e7e-44e9-90ab-424d0070c781",
           "customizationUuid": "3443b341-7b0b-498c-a84a-a7ee736cba7e",
           "description": null,
-          "name": "Vdbe..main..module-0",
+          "name": "Vdorothea..main..module-0",
           "version": "1",
-          "modelCustomizationName": "Vdbe..main..module-0",
+          "modelCustomizationName": "Vdorothea..main..module-0",
           "properties": {
             "minCountInstances": 1,
             "maxCountInstances": 1,
@@ -259,8 +259,8 @@ describe('Vlantagging', () => {
       "modelInfo": {
         modelCustomizationId :'1',
         "modelVersionId": "61535073-2e50-4141-9000-f66fea69b433",
-        "modelCustomizationName": "vDBE 0",
-        "modelName": "vDBE",
+        "modelCustomizationName": "vDOROTHEA 0",
+        "modelName": "vDOROTHEA",
         "modelInvariantId": "fcdf49ce-6f0b-4ca2-b676-a484e650e734",
         "modelType": "vnf",
         "modelVersion": "0.2"
@@ -275,7 +275,7 @@ describe('Vlantagging', () => {
             "instanceId": "6bce7302-70bd-4057-b48e-8d5b99e686ca",
             "modelInfo": {
               "modelVersionId": "6bce7302-70bd-4057-b48e-8d5b99e686ca",
-              "modelName": "vDBE_srv",
+              "modelName": "vDOROTHEA_srv",
               "modelInvariantId": "9aa04749-c02c-432d-a90c-18caa361c833",
               "modelType": "service",
               "modelVersion": "1.0"
@@ -302,10 +302,10 @@ describe('Vlantagging', () => {
     };
 
 
-    let actualResult_withEcompGeneratedNaming = <any>createRequest("az2016",userInputs_withEcompGeneratedNaming, service, serviceInstanceId, networkInstanceGroups,'vDBE 0','1');
+    let actualResult_withEcompGeneratedNaming = <any>createRequest("az2016",userInputs_withEcompGeneratedNaming, service, serviceInstanceId, networkInstanceGroups,'vDOROTHEA 0','1');
     expect(actualResult_withEcompGeneratedNaming).toEqual(expectedResult);
     expectedResult["requestInfo"]["instanceName"] = "New Name";
-    let actualResult_withoutEcompGeneratedNaming = <any>createRequest("az2016",userInputs_withoutEcompGeneratedNaming, service, serviceInstanceId, networkInstanceGroups,'vDBE 0','1');
+    let actualResult_withoutEcompGeneratedNaming = <any>createRequest("az2016",userInputs_withoutEcompGeneratedNaming, service, serviceInstanceId, networkInstanceGroups,'vDOROTHEA 0','1');
     expect(actualResult_withoutEcompGeneratedNaming).toEqual(expectedResult);
     sessionStorage.removeItem("msoRequestParametersTestApiValue");
   });

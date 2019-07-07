@@ -2,11 +2,7 @@ import {Injectable} from "@angular/core";
 import {GenericFormService} from "../generic-form.service";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../store/reducers";
-import {
-  FormControlModel,
-  ValidatorModel,
-  ValidatorOptions
-} from "../../../models/formControlModels/formControl.model";
+import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../models/formControlModels/formControl.model";
 import {DropdownFormControl} from "../../../models/formControlModels/dropdownFormControl.model";
 import * as _ from 'lodash';
 import {BasicControlGenerator} from "./basic.control.generator";
@@ -15,12 +11,12 @@ import {FormGroup} from "@angular/forms";
 import {FormControlType} from "../../../models/formControlModels/formControlTypes.enum";
 import {HttpClient} from "@angular/common/http";
 import {SelectOption} from "../../../models/selectOption";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {LogService} from "../../../utils/log/log.service";
 import {ServiceModel} from "../../../models/serviceModel";
-import {of} from "rxjs";
 
 import {CheckboxFormControl} from "../../../models/formControlModels/checkboxFormControl.model";
+import {VidNotions} from "../../../models/vidNotions";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -96,9 +92,11 @@ export class  ServiceControlGenerator {
       result.push(this.getServiceTypeControl(serviceInstance, result, true));
       result.push(this.getOwningEntityControl(serviceInstance, result));
       result.push(this.getProductFamilyControl(serviceInstance, result));
-      result.push(this.getLcpRegionControl(serviceInstance, result));
-      result.push(this.getTenantControl(serviceInstance, result),);
+      result.push(this.getLcpRegionControl(serviceInstance, result, serviceModel.vidNotions));
+      result.push(this.getTenantControl(serviceInstance, result, serviceModel.vidNotions),);
       result.push(this.getAICZoneControl(serviceInstance, result));
+
+
 
       if(serviceModel.isMultiStepDesign){
         result.push(new CheckboxFormControl({
@@ -221,7 +219,11 @@ export class  ServiceControlGenerator {
     })
   };
 
-  getLcpRegionControl = (serviceInstance : any, controls : FormControlModel[]) : DropdownFormControl => {
+  isRegionAndTenantOptional = (vidNotions?: VidNotions) : boolean => {
+    return !_.isNil(vidNotions) && vidNotions.modelCategory === "Transport"
+  };
+
+  getLcpRegionControl = (serviceInstance: any, controls: FormControlModel[], vidNotions?: VidNotions) : DropdownFormControl => {
     return new DropdownFormControl({
       type : FormControlType.DROPDOWN,
       controlName : FormControlNames.LCPCLOUD_REGION_ID,
@@ -231,7 +233,8 @@ export class  ServiceControlGenerator {
       name : "lcpRegion",
       isDisabled : _.isNil(serviceInstance),
       value : serviceInstance ? serviceInstance.lcpCloudRegionId : null,
-      validations : [new ValidatorModel(ValidatorOptions.required, 'is required')],
+      validations : this.isRegionAndTenantOptional(vidNotions) ? [] :
+          [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField : ['lcpRegionList'],
       onInit : serviceInstance ? this._basicControlGenerator.getSubscribeInitResult.bind(
         this._aaiService,
@@ -255,7 +258,7 @@ export class  ServiceControlGenerator {
     })
   };
 
-  getTenantControl = (serviceInstance : any, controls : FormControlModel[]) : DropdownFormControl => {
+  getTenantControl = (serviceInstance: any, controls: FormControlModel[], vidNotions?: VidNotions) : DropdownFormControl => {
     return  new DropdownFormControl({
       type : FormControlType.DROPDOWN,
       controlName : FormControlNames.TENANT_ID,
@@ -264,12 +267,12 @@ export class  ServiceControlGenerator {
       placeHolder : 'Select Tenant',
       name : "tenant",
       isDisabled : _.isNil(serviceInstance),
-      onInitSelectedField :serviceInstance ?  ['lcpRegionsTenantsMap', serviceInstance.lcpCloudRegionId] : null,
+      onInitSelectedField : serviceInstance ? ['lcpRegionsTenantsMap', serviceInstance.lcpCloudRegionId] : null,
       onInit : serviceInstance ? this._basicControlGenerator.getSubscribeInitResult.bind(
         this._aaiService,
         this.aaiService.getLcpRegionsAndTenants.bind(this, serviceInstance.globalSubscriberId, serviceInstance.subscriptionServiceType)) : ()=>{},
       value : serviceInstance ? serviceInstance.tenantId : null,
-      validations : [new ValidatorModel(ValidatorOptions.required, 'is required')],
+      validations :  this.isRegionAndTenantOptional(vidNotions) ? [] : [new ValidatorModel(ValidatorOptions.required, 'is required')],
     })
   };
 

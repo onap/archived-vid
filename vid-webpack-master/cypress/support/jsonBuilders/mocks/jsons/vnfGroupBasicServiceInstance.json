@@ -7,7 +7,7 @@
   "vnfGroups":{},
   "instanceParams":[
     {
-      "2017488_adiodvpe0_ASN":"AV_vPE"
+      "2017488_pasqualevpe0_ASN":"AV_vPE"
     }],
   "globalSubscriberId":"e433710f-9217-458d-a79d-1c7aff376d89",
   "subscriptionServiceType":"TYLER SILVIA",
@@ -20,6 +20,12 @@
     "modelVersionId":"4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
     "modelName":"Grouping Service for Test",
     "modelVersion":"1.0"
+  },
+  "vidNotions": {
+    "instantiationUI": "serviceWithVnfGrouping",
+    "modelCategory": "other",
+    "viewEditUI": "serviceWithVnfGrouping",
+    "instantiationType": "ALaCarte"
   },
   "existingNames":{},
   "instanceName": "Grouping_Service_Instance",

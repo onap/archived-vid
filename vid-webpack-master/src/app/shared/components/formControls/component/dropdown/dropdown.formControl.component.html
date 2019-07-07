@@ -6,7 +6,7 @@
           [attr.data-tests-id]="data?.dataTestId"
           name="{{data?.name}}"
           [formControl]="form.controls[data.controlName]"
-          [ngClass]="{'error-style' : (form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors) || data?.hasEmptyOptions ,
+          [ngClass]="{'error-style' : ((form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors) || data?.hasEmptyOptions) &&  data?.isRequired(),
                       'grayColor': form?.controls[data?.controlName]?.value == null || form?.controls[data?.controlName]?.value == undefined,
                       'blackColor' : form?.controls[data?.controlName]?.value != null}"
           (blur)="data.onBlur()">
@@ -16,6 +16,5 @@
             [value]="option[data.ngValue]" [disabled]="!option?.isPermitted && option?.isPermitted != undefined">{{option.name}}
     </option>
   </select>
-  <form-control-error *ngIf="data?.hasEmptyOptions" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+  <form-control-error *ngIf="data?.hasEmptyOptions && data?.isRequired()" [message]="'No results for this request. Please change criteria.'"></form-control-error>
 </div>
-

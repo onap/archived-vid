@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import {SharedTreeService} from "../../shared.tree.service";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
+import {ComponentInfoType} from "../../../component-info/component-info-model";
+import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 
 export class ConfigurationModelInfo implements ILevelNodeInfo{
   constructor(private _dynamicInputsService : DynamicInputsService,
@@ -11,6 +13,7 @@ export class ConfigurationModelInfo implements ILevelNodeInfo{
   name: string = 'configurations';
   type : string = 'Configuration';
   typeName : string = 'C';
+  componentInfoType = ComponentInfoType.CONFIGURATION;
 
   isEcompGeneratedNaming = () : boolean => true;
 
@@ -38,8 +41,7 @@ export class ConfigurationModelInfo implements ILevelNodeInfo{
 
   createInstanceTreeNode(instance: any, model: any, storeKey: string): any {return null;}
 
-  childName: string;
-  childType: string;
+  childNames: string[];
 
   /***********************************************************
    * return if instance has missing data
@@ -82,6 +84,10 @@ export class ConfigurationModelInfo implements ILevelNodeInfo{
   }
 
   onSelectedNode(node: ITreeNode): void {
+  }
+
+  getInfo(model, instance): ModelInformationItem[] {
+    return [];
   }
 
 }

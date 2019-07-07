@@ -11,11 +11,13 @@ export class DropdownFormControlComponent implements OnChanges{
   @Input() data: DropdownFormControl = null;
   @Input() form: FormGroup = null;
 
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["data"] !== undefined && changes["data"].currentValue !== changes["data"].previousValue && changes["data"].firstChange) {
       if(this.data.onInit){
         this.data.onInit(this.data, this.form);
       }
+      let isRequired: boolean =this.data.isRequired();
     }
 
     if (changes["data"] !== undefined) {

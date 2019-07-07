@@ -17,6 +17,7 @@ import {ServiceInfoModel} from "../../server/serviceInfo/serviceInfo.model";
 import {HttpClient} from '@angular/common/http';
 import {getTestBed} from "@angular/core/testing";
 import {of} from 'rxjs';
+import {NodeInstance} from "../../models/nodeInstance";
 
 class MockAppStore<T> {
   getState() {
@@ -126,23 +127,21 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
     const instanceId: string = "instanceID";
     const type: string = 'VNF';
     const model = {};
-    const instance = {};
-    const isInstanceFailed: boolean = true;
-    const trackById = "trackById";
+    const instance: NodeInstance = new NodeInstance();
+    instance.trackById = 'trackById';
+    instance.isFailed= true;
 
     AuditInfoModalComponent.openInstanceAuditInfoModal.next({
       instanceId: instanceId,
       type: type,
       model: model,
-      instance: instance,
-      isInstanceFailed: isInstanceFailed,
-      trackById: trackById
+      instance: instance
     });
 
     expect(component.showVidStatus).toEqual(false);
     expect(component.initializeProperties).toHaveBeenCalled();
     expect(component.setModalTitles).toHaveBeenCalled();
-    expect(_serviceInfoService.getAuditStatusForRetry).toHaveBeenCalledWith(trackById);
+    expect(_serviceInfoService.getAuditStatusForRetry).toHaveBeenCalledWith(instance.trackById);
     expect(component.auditInfoModal.show).toHaveBeenCalled();
     expect(AuditInfoModalComponentService.getInstanceModelName).toHaveBeenCalledWith(model);
   });
@@ -160,16 +159,12 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
     const type: string = 'VNF';
     const model = {};
     const instance = {};
-    const isInstanceFailed: boolean = false;
-    const trackById = "trackById";
 
     AuditInfoModalComponent.openInstanceAuditInfoModal.next({
       instanceId: instanceId,
       type: type,
       model: model,
-      instance: instance,
-      isInstanceFailed: isInstanceFailed,
-      trackById: trackById
+      instance: instance
     });
 
     expect(component.showVidStatus).toEqual(false);

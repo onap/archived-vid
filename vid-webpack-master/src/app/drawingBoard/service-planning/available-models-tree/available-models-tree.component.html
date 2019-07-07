@@ -34,7 +34,7 @@
                   [name]="'maximum'">
               </svg-icon>
             </span>
-            <span class="icon-plus" *ngIf="node?.data?.showNodeIcons(node, serviceModelId)?.addIcon">
+            <span class="icon-plus" *ngIf="_store.getState().service.serviceInstance[serviceModelId].action !== 'Delete' && node?.data?.showNodeIcons(node, serviceModelId)?.addIcon">
               <span tooltip="Add" [attr.data-tests-id]="'node-'+node.data.name+'-add-btn'" (click)="onClickAdd(node, serviceModelId)">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
               </span>

@@ -133,7 +133,7 @@ export class VnfControlGenerator {
       isDisabled: false,
       name: "lineOfBusiness",
       value: instance ? instance.lineOfBusiness : null,
-      validations: [],
+      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField: ['lineOfBusinessList'],
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
     })

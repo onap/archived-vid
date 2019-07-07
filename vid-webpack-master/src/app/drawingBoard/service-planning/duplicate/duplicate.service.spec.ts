@@ -1,8 +1,8 @@
-import { DuplicateService } from './duplicate.service';
-import { LogService } from '../../../shared/utils/log/log.service';
-import { NgRedux } from '@angular-redux/store';
+import {DuplicateService} from './duplicate.service';
+import {LogService} from '../../../shared/utils/log/log.service';
+import {NgRedux} from '@angular-redux/store';
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
-import { SdcUiServices} from "onap-ui-angular";
+import {SdcUiServices} from "onap-ui-angular";
 import {IModalConfig} from "onap-ui-angular/dist/components/common";
 import {AppState} from "../../../shared/store/reducers";
 import {getTestBed, TestBed} from "@angular/core/testing";
@@ -121,7 +121,6 @@ describe('Drawing board tree service', () => {
   });
 
   test('canDuplicate VNF should return true', () => {
-    sessionStorage.setItem('reduxState' , JSON.stringify({global : { flags : {FLAG_DUPLICATE_VNF : true}}}));
     let node : ITreeNode = <any> {data : {type : 'VF'}};
 
     let result = service.canDuplicate(node);
@@ -129,7 +128,6 @@ describe('Drawing board tree service', () => {
   });
 
   test('canDuplicate Network should return true', () => {
-    sessionStorage.setItem('reduxState' , JSON.stringify({global : { flags : {FLAG_DUPLICATE_VNF : true}}}));
     let node : ITreeNode = <any> {data : {type : 'VL'}};
 
     let result = service.canDuplicate(node);
@@ -137,7 +135,6 @@ describe('Drawing board tree service', () => {
   });
 
   test('canDuplicate VFModule should return false', () => {
-    sessionStorage.setItem('reduxState' , JSON.stringify({global : { flags : {FLAG_DUPLICATE_VNF : true}}}));
     let node : ITreeNode = <any> {data : {type : 'VFModule'}};
 
     let result = service.canDuplicate(node);
@@ -154,14 +151,14 @@ describe('Drawing board tree service', () => {
 
   test('Duplicate multi vnfs should save multi vnfs in redux', () => {
     service.existingNames = {
-      "2017488_adiodvpe": "",
+      "2017488_pasqualevpe": "",
       "rrr": "",
       "ttt": ""
     };
     let newVnfs = service.cloneVnf(<any>{
       "vfModules": {
-        "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
-          "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2mtlfi": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2mtlfi": {
             "instanceName": "rrr",
             "volumeGroupName": "ttt"
           }
@@ -169,17 +166,17 @@ describe('Drawing board tree service', () => {
       },
       "originalName": null,
       "trackById": "pfs1f0len3",
-      "instanceName": "2017488_ADIODvPE"
-    }, "2017-488_ADIOD-vPE 0");
+      "instanceName": "2017488_PASQUALEvPE"
+    }, "2017-488_PASQUALE-vPE 0");
 
-    expect(newVnfs.instanceName).toBe("2017488_ADIODvPE_001");
-    expect(newVnfs.vfModules['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2']['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2mtlfi'].instanceName).toBe("rrr_001");
-    expect(newVnfs.vfModules['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2']['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2mtlfi'].volumeGroupName).toBe("ttt_001");
+    expect(newVnfs.instanceName).toBe("2017488_PASQUALEvPE_001");
+    expect(newVnfs.vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2mtlfi'].instanceName).toBe("rrr_001");
+    expect(newVnfs.vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2mtlfi'].volumeGroupName).toBe("ttt_001");
 
     newVnfs = service.cloneVnf(<any>{
       "vfModules": {
-        "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
-          "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2mtlfi": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2mtlfi": {
             "instanceName": "rrr",
             "volumeGroupName": "ttt"
           }
@@ -187,17 +184,17 @@ describe('Drawing board tree service', () => {
       },
       "originalName": null,
       "trackById": "pfs1f0len3",
-      "instanceName": "2017488_ADIODvPE"
-    }, "2017-488_ADIOD-vPE 0");
+      "instanceName": "2017488_PASQUALEvPE"
+    }, "2017-488_PASQUALE-vPE 0");
 
-    expect(newVnfs.instanceName).toBe("2017488_ADIODvPE_002");
-    expect(newVnfs.vfModules['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2']['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2mtlfi'].instanceName).toBe("rrr_002");
-    expect(newVnfs.vfModules['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2']['2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2mtlfi'].volumeGroupName).toBe("ttt_002");
+    expect(newVnfs.instanceName).toBe("2017488_PASQUALEvPE_002");
+    expect(newVnfs.vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2mtlfi'].instanceName).toBe("rrr_002");
+    expect(newVnfs.vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2mtlfi'].volumeGroupName).toBe("ttt_002");
   });
 
   test('ensure name is unique - send new name - shouldn\'t change name', () => {
     service.existingNames = {
-      "2017488_adiodvpe": "",
+      "2017488_pasqualevpe": "",
       "uniqueinstancename": ""
     };
     const name = "uniqueInstanceName-1";
@@ -207,7 +204,7 @@ describe('Drawing board tree service', () => {
 
   test('ensure name is unique send existing name should change name', () => {
     service.existingNames = {
-      "2017488_adiodvpe": "",
+      "2017488_pasqualevpe": "",
       "uniqueinstancename-1": ""
     };
     const name = "uniqueInstanceName-1";
@@ -217,7 +214,7 @@ describe('Drawing board tree service', () => {
 
   test('isAlreadyExist - send new name should return false', () => {
     service.existingNames = {
-      "2017488_adiodvpe": "",
+      "2017488_pasqualevpe": "",
       "uniqueinstancename": ""
     };
     const name = "uniqueinstancename-1";
@@ -227,7 +224,7 @@ describe('Drawing board tree service', () => {
 
   test('isAlreadyExist - send existing name should return true', () => {
     service.existingNames = {
-      "2017488_adiodvpe": "",
+      "2017488_pasqualevpe": "",
       "uniqueinstancename-1": ""
     };
     const name = "uniqueinstancename-1";
@@ -237,7 +234,7 @@ describe('Drawing board tree service', () => {
 
   test('isAlreadyExist - send existing name case insensitive should return true', () => {
     service.existingNames = {
-      "2017488_adiodvpe": "",
+      "2017488_pasqualevpe": "",
       "uniqueinstancename-1": ""
     };
     const name = "uniqueInstanceName-1";
@@ -256,7 +253,7 @@ describe('Drawing board tree service', () => {
   });
 
   test('generateVNFUniqueName should return the next free number', () => {
-    const vnfName: string = "VF_vMee 0";
+    const vnfName: string = "VF_vGeraldine 0";
     let result: string = service.generateUniqueStoreKey(
       "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
       vnfName,
@@ -380,7 +377,7 @@ describe('Drawing board tree service', () => {
   });
 
   function getExistingVNFs(){
-    return {"VF_vMee 0":{"rollbackOnFailure":"true","vfModules":{"vf_vmee0..VfVmee..vmme_vlc..module-1":{"vf_vmee0..VfVmee..vmme_vlc..module-1dgbxq":{"modelInfo":{"modelInvariantId":"98a7c88b-b577-476a-90e4-e25a5871e02b","modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830","modelName":"VfVmee..vmme_vlc..module-1","modelVersion":"2","modelCustomizationId":"55b1be94-671a-403e-a26c-667e9c47d091","modelCustomizationName":"VfVmee..vmme_vlc..module-1"},"instanceParams":[{}]}}},"productFamilyId":"17cc1042-527b-11e6-beb8-9e71128cae77","lcpCloudRegionId":"hvf6","tenantId":"bae71557c5bb4d5aac6743a4e5f1d054","lineOfBusiness":"ONAP","platformName":"platform","modelInfo":{"modelInvariantId":"4160458e-f648-4b30-a176-43881ffffe9e","modelVersionId":"d6557200-ecf2-4641-8094-5393ae3aae60","modelName":"VF_vMee","modelVersion":"2.0","modelCustomizationId":"91415b44-753d-494c-926a-456a9172bbb9","modelCustomizationName":"VF_vMee 0"}},"VF_vMee 0:0001":{"rollbackOnFailure":"true","vfModules":{"vf_vmee0..VfVmee..vmme_vlc..module-1":{"vf_vmee0..VfVmee..vmme_vlc..module-1dgbxq":{"modelInfo":{"modelInvariantId":"98a7c88b-b577-476a-90e4-e25a5871e02b","modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830","modelName":"VfVmee..vmme_vlc..module-1","modelVersion":"2","modelCustomizationId":"55b1be94-671a-403e-a26c-667e9c47d091","modelCustomizationName":"VfVmee..vmme_vlc..module-1"},"instanceParams":[{}]}}},"productFamilyId":"17cc1042-527b-11e6-beb8-9e71128cae77","lcpCloudRegionId":"hvf6","tenantId":"bae71557c5bb4d5aac6743a4e5f1d054","lineOfBusiness":"ONAP","platformName":"platform","modelInfo":{"modelInvariantId":"4160458e-f648-4b30-a176-43881ffffe9e","modelVersionId":"d6557200-ecf2-4641-8094-5393ae3aae60","modelName":"VF_vMee","modelVersion":"2.0","modelCustomizationId":"91415b44-753d-494c-926a-456a9172bbb9","modelCustomizationName":"VF_vMee 0"},"originalName":"VF_vMee 0"},"VF_vMee 0:0002":{"rollbackOnFailure":"true","vfModules":{"vf_vmee0..VfVmee..vmme_vlc..module-1":{"vf_vmee0..VfVmee..vmme_vlc..module-1dgbxq":{"modelInfo":{"modelInvariantId":"98a7c88b-b577-476a-90e4-e25a5871e02b","modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830","modelName":"VfVmee..vmme_vlc..module-1","modelVersion":"2","modelCustomizationId":"55b1be94-671a-403e-a26c-667e9c47d091","modelCustomizationName":"VfVmee..vmme_vlc..module-1"},"instanceParams":[{}]}}},"productFamilyId":"17cc1042-527b-11e6-beb8-9e71128cae77","lcpCloudRegionId":"hvf6","tenantId":"bae71557c5bb4d5aac6743a4e5f1d054","lineOfBusiness":"ONAP","platformName":"platform","modelInfo":{"modelInvariantId":"4160458e-f648-4b30-a176-43881ffffe9e","modelVersionId":"d6557200-ecf2-4641-8094-5393ae3aae60","modelName":"VF_vMee","modelVersion":"2.0","modelCustomizationId":"91415b44-753d-494c-926a-456a9172bbb9","modelCustomizationName":"VF_vMee 0"},"originalName":"VF_vMee 0"}}
+    return {"VF_vGeraldine 0":{"rollbackOnFailure":"true","vfModules":{"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1":{"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1dgbxq":{"modelInfo":{"modelInvariantId":"98a7c88b-b577-476a-90e4-e25a5871e02b","modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830","modelName":"VfVgeraldine..vflorence_vlc..module-1","modelVersion":"2","modelCustomizationId":"55b1be94-671a-403e-a26c-667e9c47d091","modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1"},"instanceParams":[{}]}}},"productFamilyId":"17cc1042-527b-11e6-beb8-9e71128cae77","lcpCloudRegionId":"hvf6","tenantId":"bae71557c5bb4d5aac6743a4e5f1d054","lineOfBusiness":"ONAP","platformName":"platform","modelInfo":{"modelInvariantId":"4160458e-f648-4b30-a176-43881ffffe9e","modelVersionId":"d6557200-ecf2-4641-8094-5393ae3aae60","modelName":"VF_vGeraldine","modelVersion":"2.0","modelCustomizationId":"91415b44-753d-494c-926a-456a9172bbb9","modelCustomizationName":"VF_vGeraldine 0"}},"VF_vGeraldine 0:0001":{"rollbackOnFailure":"true","vfModules":{"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1":{"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1dgbxq":{"modelInfo":{"modelInvariantId":"98a7c88b-b577-476a-90e4-e25a5871e02b","modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830","modelName":"VfVgeraldine..vflorence_vlc..module-1","modelVersion":"2","modelCustomizationId":"55b1be94-671a-403e-a26c-667e9c47d091","modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1"},"instanceParams":[{}]}}},"productFamilyId":"17cc1042-527b-11e6-beb8-9e71128cae77","lcpCloudRegionId":"hvf6","tenantId":"bae71557c5bb4d5aac6743a4e5f1d054","lineOfBusiness":"ONAP","platformName":"platform","modelInfo":{"modelInvariantId":"4160458e-f648-4b30-a176-43881ffffe9e","modelVersionId":"d6557200-ecf2-4641-8094-5393ae3aae60","modelName":"VF_vGeraldine","modelVersion":"2.0","modelCustomizationId":"91415b44-753d-494c-926a-456a9172bbb9","modelCustomizationName":"VF_vGeraldine 0"},"originalName":"VF_vGeraldine 0"},"VF_vGeraldine 0:0002":{"rollbackOnFailure":"true","vfModules":{"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1":{"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1dgbxq":{"modelInfo":{"modelInvariantId":"98a7c88b-b577-476a-90e4-e25a5871e02b","modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830","modelName":"VfVgeraldine..vflorence_vlc..module-1","modelVersion":"2","modelCustomizationId":"55b1be94-671a-403e-a26c-667e9c47d091","modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1"},"instanceParams":[{}]}}},"productFamilyId":"17cc1042-527b-11e6-beb8-9e71128cae77","lcpCloudRegionId":"hvf6","tenantId":"bae71557c5bb4d5aac6743a4e5f1d054","lineOfBusiness":"ONAP","platformName":"platform","modelInfo":{"modelInvariantId":"4160458e-f648-4b30-a176-43881ffffe9e","modelVersionId":"d6557200-ecf2-4641-8094-5393ae3aae60","modelName":"VF_vGeraldine","modelVersion":"2.0","modelCustomizationId":"91415b44-753d-494c-926a-456a9172bbb9","modelCustomizationName":"VF_vGeraldine 0"},"originalName":"VF_vGeraldine 0"}}
   }
 
   function getStoreState(){

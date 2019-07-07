@@ -85,6 +85,13 @@
         font-family: OpenSans-Regular;
         font-size: 14px;
         color: #191919;
+        &.tag-status-value {
+          background: #009fdb;
+          color: white;
+          border-radius: 2px;
+          text-align: center;
+          padding: 5px;
+        }
       }
       .scale-value {
         font-family: OpenSans-Regular;
@@ -111,9 +118,25 @@
         height: 45px;
       }
     }
+
     .right-header {
       display: flex;
       align-items: center;
+      .action-status-type-header {
+          background: transparent;
+          font-family: OpenSans-SemiBold;
+          font-size: 12px;
+          border-radius: 50px;
+          border: 1px solid gray;
+          padding: 5px 20px;
+          margin-right: 10px;
+        &.delete {
+          color: red;
+        }
+        &.resume {
+          color: #009fdb;
+        }
+      }
       .quantity-container {
         .quantity-label {
           padding-left: 10px;

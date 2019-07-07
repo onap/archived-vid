@@ -17,7 +17,6 @@ import {AppState} from "../../../../store/reducers";
 import {FormGroup} from "@angular/forms";
 import {DropdownFormControl} from "../../../../models/formControlModels/dropdownFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
-import {InputFormControl} from "../../../../models/formControlModels/inputFormControl.model";
 import {SelectOption} from "../../../../models/selectOption";
 import {NetworkInstance} from "../../../../models/networkInstance";
 import {NetworkModel} from "../../../../models/networkModel";
@@ -137,7 +136,7 @@ export class NetworkControlGenerator {
       isDisabled: false,
       name: "lineOfBusiness",
       value: instance ? instance.lineOfBusiness : null,
-      validations: [],
+      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField: ['lineOfBusinessList'],
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
     })
@@ -153,7 +152,7 @@ export class NetworkControlGenerator {
       isDisabled: false,
       name: "platform",
       value: instance ? instance.platformName : null,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
+      validations: [],
       onInitSelectedField: ['platformList'],
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
     })

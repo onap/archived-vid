@@ -1,5 +1,4 @@
-
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {MockNgRedux, NgReduxTestingModule} from "@angular-redux/store/testing";
 import {VFModuleModelInfo} from "./vfModule.model.info";
@@ -8,17 +7,16 @@ import {SharedTreeService} from "../../shared.tree.service";
 import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
 import {DialogService} from "ng2-bootstrap-modal";
 import {NgRedux} from "@angular-redux/store";
-import {AppState} from "../../../../../shared/store/reducers";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
 import {DrawingBoardModes} from "../../../drawing-board.modes";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
-import {ComponentInfoModel, ComponentInfoType} from "../../../component-info/component-info-model";
 import {AaiService} from "../../../../../shared/services/aaiService/aai.service";
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+
 class MockAppStore<T> {
   getState() {
     return {
@@ -120,7 +118,7 @@ describe('VFModule Model Info', () => {
   });
 
   test('getModel should return Module model', () => {
-    let model = vfModuleModel.getModel('2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1',{}, getServiceHierarchy());
+    let model = vfModuleModel.getModel('2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1',{}, getServiceHierarchy());
     expect(model.uuid).toEqual('25284168-24bb-4698-8cb4-3f509146eca5');
   });
 
@@ -460,18 +458,14 @@ describe('VFModule Model Info', () => {
   test('Info for vfModule should be correct', () => {
     const model = getVFModule();
     const instance = getVFModuleInstance();
-    let actualVNFInfo = vfModuleModel.getInfoForVFModule(model,instance);
+    let actualVNFInfo = vfModuleModel.getInfo(model,instance);
     let expectedVNFInfo = [
-      ModelInformationItem.createInstance('Type', 'vfModule'),
-      ModelInformationItem.createInstance('Model Version', '2'),
-      ModelInformationItem.createInstance('Model Customization ID','55b1be94-671a-403e-a26c-667e9c47d091'),
-      ModelInformationItem.createInstance('Instance ID', '2c1ca484-cbc2-408b-ab86-25a2c15ce280'),
-      ModelInformationItem.createInstance('In Maintenance', true),
-      ModelInformationItem.createInstance('Base Module', false),
-      ModelInformationItem.createInstance('Min Instances', 0),
-      ModelInformationItem.createInstance('Initial Instances Count',0)
+      ModelInformationItem.createInstance('Base module', false),
+      ModelInformationItem.createInstance('Min instances', "0"),
+      ModelInformationItem.createInstance("Max instances", null),
+      ModelInformationItem.createInstance('Initial instances count',"0")
     ];
-    expect(actualVNFInfo).toEqual(new ComponentInfoModel(ComponentInfoType.VFMODULE, expectedVNFInfo, []));
+    expect(actualVNFInfo).toEqual(expectedVNFInfo);
   });
 
   function getVFModule(){
@@ -480,14 +474,14 @@ describe('VFModule Model Info', () => {
       "invariantUuid":"98a7c88b-b577-476a-90e4-e25a5871e02b",
       "customizationUuid":"55b1be94-671a-403e-a26c-667e9c47d091",
       "description":null,
-      "name":"VfVmee..vmme_vlc..module-1",
+      "name":"VfVgeraldine..vflorence_vlc..module-1",
       "version":"2",
-      "modelCustomizationName":"VfVmee..vmme_vlc..module-1",
+      "modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1",
       "properties":{
         "minCountInstances":0,
         "maxCountInstances":null,
         "initialCount":0,
-        "vfModuleLabel":"vmme_vlc",
+        "vfModuleLabel":"vflorence_vlc",
         "baseModule":false
       },
       "inputs":{},
@@ -505,7 +499,7 @@ describe('VFModule Model Info', () => {
       "lcpCloudRegionId":null,
       "tenantId":null,
       "modelInfo":{
-        "modelCustomizationName":"VfVmee..vmme_vlc..module-1",
+        "modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1",
         "modelCustomizationId":"b200727a-1bf9-4e7c-bd06-b5f4c9d920b9",
         "modelInvariantId":"09edc9ef-85d0-4b26-80de-1f569d49e750",
         "modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830",
@@ -515,11 +509,11 @@ describe('VFModule Model Info', () => {
       "provStatus":null,
       "inMaint":true,
       "uuid":"522159d5-d6e0-4c2a-aa44-5a542a12a830",
-      "originalName":"VfVmee..vmme_vlc..module-1",
+      "originalName":"VfVgeraldine..vflorence_vlc..module-1",
       "legacyRegion":null,
       "lineOfBusiness":null,
       "platformName":null,
-      "trackById":"vf_vmee0..VfVmee..vmme_vlc..module-1:008",
+      "trackById":"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1:008",
       "isBase":false,
       "volumeGroupName":null
     };
@@ -541,7 +535,7 @@ describe('VFModule Model Info', () => {
         "serviceEcompNaming": "false",
         "instantiationType": "Macro",
         "inputs": {
-          "2017488_adiodvpe0_ASN": {
+          "2017488_pasqualevpe0_ASN": {
             "type": "string",
             "description": "AV/PE",
             "entry_schema": null,
@@ -557,11 +551,11 @@ describe('VFModule Model Info', () => {
         }
       },
       "vnfs": {
-        "2017-388_ADIOD-vPE 1": {
+        "2017-388_PASQUALE-vPE 1": {
           "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413",
           "invariantUuid": "00beb8f9-6d39-452f-816d-c709b9cbb87d",
-          "description": "Name ADIOD vPE Description The provider edge function for the ADIOD service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
-          "name": "2017-388_ADIOD-vPE",
+          "description": "Name PASQUALE vPE Description The provider edge function for the PASQUALE service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
+          "name": "2017-388_PASQUALE-vPE",
           "version": "1.0",
           "customizationUuid": "280dec31-f16d-488b-9668-4aae55d6648a",
           "inputs": {
@@ -624,37 +618,37 @@ describe('VFModule Model Info', () => {
             "vnf_config_template_version": {
               "displayName": "vnf_config_template_version",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_vnf_config_template_version"
+              "inputName": "2017488_pasqualevpe0_vnf_config_template_version"
             },
             "bandwidth_units": {
               "displayName": "bandwidth_units",
               "command": "get_input",
-              "inputName": "adiodvpe0_bandwidth_units"
+              "inputName": "pasqualevpe0_bandwidth_units"
             },
             "bandwidth": {
               "displayName": "bandwidth",
               "command": "get_input",
-              "inputName": "adiodvpe0_bandwidth"
+              "inputName": "pasqualevpe0_bandwidth"
             },
             "AIC_CLLI": {
               "displayName": "AIC_CLLI",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_AIC_CLLI"
+              "inputName": "2017488_pasqualevpe0_AIC_CLLI"
             },
             "ASN": {
               "displayName": "ASN",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_ASN"
+              "inputName": "2017488_pasqualevpe0_ASN"
             },
             "vnf_instance_name": {
               "displayName": "vnf_instance_name",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_vnf_instance_name"
+              "inputName": "2017488_pasqualevpe0_vnf_instance_name"
             }
           },
           "properties": {
             "vmxvre_retype": "RE-VMX",
-            "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
+            "vnf_config_template_version": "get_input:2017488_pasqualevpe0_vnf_config_template_version",
             "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
             "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
             "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
@@ -699,7 +693,7 @@ describe('VFModule Model Info', () => {
             "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
             "vmxvre_int_ctl_ip_0": "10.0.0.10",
             "ecomp_generated_naming": "false",
-            "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
+            "AIC_CLLI": "get_input:2017488_pasqualevpe0_AIC_CLLI",
             "vnf_name": "mtnj309me6vre",
             "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
             "vmxvre_volume_type_1": "HITACHI",
@@ -707,14 +701,14 @@ describe('VFModule Model Info', () => {
             "vmxvre_volume_type_0": "HITACHI",
             "vmxvpfe_volume_type_0": "HITACHI",
             "vmxvpfe_sriov43_0_port_broadcastallow": "true",
-            "bandwidth_units": "get_input:adiodvpe0_bandwidth_units",
+            "bandwidth_units": "get_input:pasqualevpe0_bandwidth_units",
             "vnf_id": "123",
             "vmxvre_oam_prefix": "24",
             "availability_zone_0": "mtpocfo-kvm-az01",
-            "ASN": "get_input:2017488_adiodvpe0_ASN",
+            "ASN": "get_input:2017488_pasqualevpe0_ASN",
             "vmxvre_chassis_i2cid": "161",
             "vmxvpfe_name_0": "vPFEXI",
-            "bandwidth": "get_input:adiodvpe0_bandwidth",
+            "bandwidth": "get_input:pasqualevpe0_bandwidth",
             "availability_zone_max_count": "1",
             "vmxvre_volume_size_0": "45.0",
             "vmxvre_volume_size_1": "50.0",
@@ -724,7 +718,7 @@ describe('VFModule Model Info', () => {
             "vmxvre_ore_present": "0",
             "vmxvre_volume_name_0": "vREXI_FBVolume",
             "vmxvre_type": "0",
-            "vnf_instance_name": "get_input:2017488_adiodvpe0_vnf_instance_name",
+            "vnf_instance_name": "get_input:2017488_pasqualevpe0_vnf_instance_name",
             "vmxvpfe_sriov41_0_port_unknownmulticastallow": "true",
             "oam_net_id": "b95eeb1d-d55d-4827-abb4-8ebb94941429",
             "vmx_int_ctl_len": "24",
@@ -738,16 +732,16 @@ describe('VFModule Model Info', () => {
             "vmxvpfe_flavor_name": "ns.c20r16d25.v5"
           },
           "type": "VF",
-          "modelCustomizationName": "2017-388_ADIOD-vPE 1",
+          "modelCustomizationName": "2017-388_PASQUALE-vPE 1",
           "vfModules": {},
           "volumeGroups": {},
           "vfcInstanceGroups": {}
         },
-        "2017-388_ADIOD-vPE 0": {
+        "2017-388_PASQUALE-vPE 0": {
           "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
           "invariantUuid": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
-          "description": "Name ADIOD vPE Description The provider edge function for the ADIOD service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
-          "name": "2017-388_ADIOD-vPE",
+          "description": "Name PASQUALE vPE Description The provider edge function for the PASQUALE service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
+          "name": "2017-388_PASQUALE-vPE",
           "version": "4.0",
           "customizationUuid": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
           "inputs": {
@@ -810,37 +804,37 @@ describe('VFModule Model Info', () => {
             "vnf_config_template_version": {
               "displayName": "vnf_config_template_version",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_vnf_config_template_version"
+              "inputName": "2017488_pasqualevpe0_vnf_config_template_version"
             },
             "bandwidth_units": {
               "displayName": "bandwidth_units",
               "command": "get_input",
-              "inputName": "adiodvpe0_bandwidth_units"
+              "inputName": "pasqualevpe0_bandwidth_units"
             },
             "bandwidth": {
               "displayName": "bandwidth",
               "command": "get_input",
-              "inputName": "adiodvpe0_bandwidth"
+              "inputName": "pasqualevpe0_bandwidth"
             },
             "AIC_CLLI": {
               "displayName": "AIC_CLLI",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_AIC_CLLI"
+              "inputName": "2017488_pasqualevpe0_AIC_CLLI"
             },
             "ASN": {
               "displayName": "ASN",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_ASN"
+              "inputName": "2017488_pasqualevpe0_ASN"
             },
             "vnf_instance_name": {
               "displayName": "vnf_instance_name",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_vnf_instance_name"
+              "inputName": "2017488_pasqualevpe0_vnf_instance_name"
             }
           },
           "properties": {
             "vmxvre_retype": "RE-VMX",
-            "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
+            "vnf_config_template_version": "get_input:2017488_pasqualevpe0_vnf_config_template_version",
             "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
             "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
             "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
@@ -886,7 +880,7 @@ describe('VFModule Model Info', () => {
             "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
             "vmxvre_int_ctl_ip_0": "10.0.0.10",
             "ecomp_generated_naming": "false",
-            "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
+            "AIC_CLLI": "get_input:2017488_pasqualevpe0_AIC_CLLI",
             "vnf_name": "mtnj309me6vre",
             "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
             "vmxvre_volume_type_1": "HITACHI",
@@ -894,14 +888,14 @@ describe('VFModule Model Info', () => {
             "vmxvre_volume_type_0": "HITACHI",
             "vmxvpfe_volume_type_0": "HITACHI",
             "vmxvpfe_sriov43_0_port_broadcastallow": "true",
-            "bandwidth_units": "get_input:adiodvpe0_bandwidth_units",
+            "bandwidth_units": "get_input:pasqualevpe0_bandwidth_units",
             "vnf_id": "123",
             "vmxvre_oam_prefix": "24",
             "availability_zone_0": "mtpocfo-kvm-az01",
-            "ASN": "get_input:2017488_adiodvpe0_ASN",
+            "ASN": "get_input:2017488_pasqualevpe0_ASN",
             "vmxvre_chassis_i2cid": "161",
             "vmxvpfe_name_0": "vPFEXI",
-            "bandwidth": "get_input:adiodvpe0_bandwidth",
+            "bandwidth": "get_input:pasqualevpe0_bandwidth",
             "availability_zone_max_count": "1",
             "vmxvre_volume_size_0": "45.0",
             "vmxvre_volume_size_1": "50.0",
@@ -911,7 +905,7 @@ describe('VFModule Model Info', () => {
             "vmxvre_ore_present": "0",
             "vmxvre_volume_name_0": "vREXI_FBVolume",
             "vmxvre_type": "0",
-            "vnf_instance_name": "get_input:2017488_adiodvpe0_vnf_instance_name",
+            "vnf_instance_name": "get_input:2017488_pasqualevpe0_vnf_instance_name",
             "vmxvpfe_sriov41_0_port_unknownmulticastallow": "true",
             "oam_net_id": "b95eeb1d-d55d-4827-abb4-8ebb94941429",
             "vmx_int_ctl_len": "24",
@@ -925,16 +919,16 @@ describe('VFModule Model Info', () => {
             "vmxvpfe_flavor_name": "ns.c20r16d25.v5"
           },
           "type": "VF",
-          "modelCustomizationName": "2017-388_ADIOD-vPE 0",
+          "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
           "vfModules": {},
           "volumeGroups": {},
           "vfcInstanceGroups": {}
         },
-        "2017-488_ADIOD-vPE 0": {
+        "2017-488_PASQUALE-vPE 0": {
           "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
           "invariantUuid": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
-          "description": "Name ADIOD vPE Description The provider edge function for the ADIOD service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
-          "name": "2017-488_ADIOD-vPE",
+          "description": "Name PASQUALE vPE Description The provider edge function for the PASQUALE service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
+          "name": "2017-488_PASQUALE-vPE",
           "version": "5.0",
           "customizationUuid": "1da7b585-5e61-4993-b95e-8e6606c81e45",
           "inputs": {
@@ -997,37 +991,37 @@ describe('VFModule Model Info', () => {
             "vnf_config_template_version": {
               "displayName": "vnf_config_template_version",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_vnf_config_template_version"
+              "inputName": "2017488_pasqualevpe0_vnf_config_template_version"
             },
             "bandwidth_units": {
               "displayName": "bandwidth_units",
               "command": "get_input",
-              "inputName": "adiodvpe0_bandwidth_units"
+              "inputName": "pasqualevpe0_bandwidth_units"
             },
             "bandwidth": {
               "displayName": "bandwidth",
               "command": "get_input",
-              "inputName": "adiodvpe0_bandwidth"
+              "inputName": "pasqualevpe0_bandwidth"
             },
             "AIC_CLLI": {
               "displayName": "AIC_CLLI",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_AIC_CLLI"
+              "inputName": "2017488_pasqualevpe0_AIC_CLLI"
             },
             "ASN": {
               "displayName": "ASN",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_ASN"
+              "inputName": "2017488_pasqualevpe0_ASN"
             },
             "vnf_instance_name": {
               "displayName": "vnf_instance_name",
               "command": "get_input",
-              "inputName": "2017488_adiodvpe0_vnf_instance_name"
+              "inputName": "2017488_pasqualevpe0_vnf_instance_name"
             }
           },
           "properties": {
             "vmxvre_retype": "RE-VMX",
-            "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
+            "vnf_config_template_version": "get_input:2017488_pasqualevpe0_vnf_config_template_version",
             "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
             "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
             "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
@@ -1074,7 +1068,7 @@ describe('VFModule Model Info', () => {
             "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
             "vmxvre_int_ctl_ip_0": "10.0.0.10",
             "ecomp_generated_naming": "false",
-            "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
+            "AIC_CLLI": "get_input:2017488_pasqualevpe0_AIC_CLLI",
             "vnf_name": "mtnj309me6vre",
             "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
             "vmxvre_volume_type_1": "HITACHI",
@@ -1082,14 +1076,14 @@ describe('VFModule Model Info', () => {
             "vmxvre_volume_type_0": "HITACHI",
             "vmxvpfe_volume_type_0": "HITACHI",
             "vmxvpfe_sriov43_0_port_broadcastallow": "true",
-            "bandwidth_units": "get_input:adiodvpe0_bandwidth_units",
+            "bandwidth_units": "get_input:pasqualevpe0_bandwidth_units",
             "vnf_id": "123",
             "vmxvre_oam_prefix": "24",
             "availability_zone_0": "mtpocfo-kvm-az01",
-            "ASN": "get_input:2017488_adiodvpe0_ASN",
+            "ASN": "get_input:2017488_pasqualevpe0_ASN",
             "vmxvre_chassis_i2cid": "161",
             "vmxvpfe_name_0": "vPFEXI",
-            "bandwidth": "get_input:adiodvpe0_bandwidth",
+            "bandwidth": "get_input:pasqualevpe0_bandwidth",
             "availability_zone_max_count": "1",
             "vmxvre_volume_size_0": "45.0",
             "vmxvre_volume_size_1": "50.0",
@@ -1099,7 +1093,7 @@ describe('VFModule Model Info', () => {
             "vmxvre_ore_present": "0",
             "vmxvre_volume_name_0": "vREXI_FBVolume",
             "vmxvre_type": "0",
-            "vnf_instance_name": "get_input:2017488_adiodvpe0_vnf_instance_name",
+            "vnf_instance_name": "get_input:2017488_pasqualevpe0_vnf_instance_name",
             "vmxvpfe_sriov41_0_port_unknownmulticastallow": "true",
             "oam_net_id": "b95eeb1d-d55d-4827-abb4-8ebb94941429",
             "vmx_int_ctl_len": "24",
@@ -1113,21 +1107,21 @@ describe('VFModule Model Info', () => {
             "vmxvpfe_flavor_name": "ns.c20r16d25.v5"
           },
           "type": "VF",
-          "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+          "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
           "vfModules": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
               "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
               "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
               "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "baseModule": false
               },
               "inputs": {
@@ -1137,10 +1131,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "vnf_config_template_version"
                   },
-                  "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
+                  "fromInputName": "2017488_pasqualevpe0_vnf_config_template_version",
                   "constraints": null,
                   "required": true,
                   "default": "17.2"
@@ -1151,10 +1145,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "bandwidth_units"
                   },
-                  "fromInputName": "adiodvpe0_bandwidth_units",
+                  "fromInputName": "pasqualevpe0_bandwidth_units",
                   "constraints": null,
                   "required": true,
                   "default": "Gbps"
@@ -1165,10 +1159,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "bandwidth"
                   },
-                  "fromInputName": "adiodvpe0_bandwidth",
+                  "fromInputName": "pasqualevpe0_bandwidth",
                   "constraints": null,
                   "required": true,
                   "default": "10"
@@ -1179,10 +1173,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "AIC_CLLI"
                   },
-                  "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
+                  "fromInputName": "2017488_pasqualevpe0_AIC_CLLI",
                   "constraints": null,
                   "required": true,
                   "default": "ATLMY8GA"
@@ -1193,10 +1187,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "vnf_instance_name"
                   },
-                  "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
+                  "fromInputName": "2017488_pasqualevpe0_vnf_instance_name",
                   "constraints": null,
                   "required": true,
                   "default": "mtnj309me6"
@@ -1204,37 +1198,37 @@ describe('VFModule Model Info', () => {
               },
               "volumeGroupAllowed": true
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
               "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
               "invariantUuid": "b34833bb-6aa9-4ad6-a831-70b06367a091",
               "customizationUuid": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+              "name": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
               "version": "5",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
               "properties": {
                 "minCountInstances": 1,
                 "maxCountInstances": 1,
                 "initialCount": 1,
-                "vfModuleLabel": "ADIOD_base_vPE_BV",
+                "vfModuleLabel": "PASQUALE_base_vPE_BV",
                 "baseModule": true
               },
               "inputs": {},
               "volumeGroupAllowed": false
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
               "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
               "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
               "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vPFE_BV",
+                "vfModuleLabel": "PASQUALE_vPFE_BV",
                 "baseModule": false
               },
               "inputs": {},
@@ -1242,19 +1236,19 @@ describe('VFModule Model Info', () => {
             }
           },
           "volumeGroups": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
               "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
               "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
               "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "baseModule": false
               },
               "inputs": {
@@ -1264,10 +1258,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "vnf_config_template_version"
                   },
-                  "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
+                  "fromInputName": "2017488_pasqualevpe0_vnf_config_template_version",
                   "constraints": null,
                   "required": true,
                   "default": "17.2"
@@ -1278,10 +1272,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "bandwidth_units"
                   },
-                  "fromInputName": "adiodvpe0_bandwidth_units",
+                  "fromInputName": "pasqualevpe0_bandwidth_units",
                   "constraints": null,
                   "required": true,
                   "default": "Gbps"
@@ -1292,10 +1286,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "bandwidth"
                   },
-                  "fromInputName": "adiodvpe0_bandwidth",
+                  "fromInputName": "pasqualevpe0_bandwidth",
                   "constraints": null,
                   "required": true,
                   "default": "10"
@@ -1306,10 +1300,10 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "AIC_CLLI"
                   },
-                  "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
+                  "fromInputName": "2017488_pasqualevpe0_AIC_CLLI",
                   "constraints": null,
                   "required": true,
                   "default": "ATLMY8GA"
@@ -1320,29 +1314,29 @@ describe('VFModule Model Info', () => {
                   "entry_schema": null,
                   "inputProperties": {
                     "sourceType": "HEAT",
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "paramName": "vnf_instance_name"
                   },
-                  "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
+                  "fromInputName": "2017488_pasqualevpe0_vnf_instance_name",
                   "constraints": null,
                   "required": true,
                   "default": "mtnj309me6"
                 }
               }
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
               "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
               "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
               "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vPFE_BV",
+                "vfModuleLabel": "PASQUALE_vPFE_BV",
                 "baseModule": false
               },
               "inputs": {}
@@ -1352,24 +1346,24 @@ describe('VFModule Model Info', () => {
         }
       },
       "networks": {},
-      "collectionResource": {},
+      "collectionResources": {},
       "configurations": {},
       "fabricConfigurations": {},
       "serviceProxies": {},
       "vfModules": {
-        "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
           "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
           "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
           "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
           "description": null,
-          "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+          "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
           "version": "6",
-          "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+          "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
           "properties": {
             "minCountInstances": 0,
             "maxCountInstances": null,
             "initialCount": 0,
-            "vfModuleLabel": "ADIOD_vRE_BV",
+            "vfModuleLabel": "PASQUALE_vRE_BV",
             "baseModule": false
           },
           "inputs": {
@@ -1379,10 +1373,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "vnf_config_template_version"
               },
-              "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
+              "fromInputName": "2017488_pasqualevpe0_vnf_config_template_version",
               "constraints": null,
               "required": true,
               "default": "17.2"
@@ -1393,10 +1387,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "bandwidth_units"
               },
-              "fromInputName": "adiodvpe0_bandwidth_units",
+              "fromInputName": "pasqualevpe0_bandwidth_units",
               "constraints": null,
               "required": true,
               "default": "Gbps"
@@ -1407,10 +1401,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "bandwidth"
               },
-              "fromInputName": "adiodvpe0_bandwidth",
+              "fromInputName": "pasqualevpe0_bandwidth",
               "constraints": null,
               "required": true,
               "default": "10"
@@ -1421,10 +1415,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "AIC_CLLI"
               },
-              "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
+              "fromInputName": "2017488_pasqualevpe0_AIC_CLLI",
               "constraints": null,
               "required": true,
               "default": "ATLMY8GA"
@@ -1435,10 +1429,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "vnf_instance_name"
               },
-              "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
+              "fromInputName": "2017488_pasqualevpe0_vnf_instance_name",
               "constraints": null,
               "required": true,
               "default": "mtnj309me6"
@@ -1446,37 +1440,37 @@ describe('VFModule Model Info', () => {
           },
           "volumeGroupAllowed": true
         },
-        "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
           "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
           "invariantUuid": "b34833bb-6aa9-4ad6-a831-70b06367a091",
           "customizationUuid": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
           "description": null,
-          "name": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+          "name": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
           "version": "5",
-          "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+          "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
           "properties": {
             "minCountInstances": 1,
             "maxCountInstances": 1,
             "initialCount": 1,
-            "vfModuleLabel": "ADIOD_base_vPE_BV",
+            "vfModuleLabel": "PASQUALE_base_vPE_BV",
             "baseModule": true
           },
           "inputs": {},
           "volumeGroupAllowed": false
         },
-        "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
           "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
           "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
           "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
           "description": null,
-          "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+          "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
           "version": "6",
-          "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+          "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
           "properties": {
             "minCountInstances": 0,
             "maxCountInstances": null,
             "initialCount": 0,
-            "vfModuleLabel": "ADIOD_vPFE_BV",
+            "vfModuleLabel": "PASQUALE_vPFE_BV",
             "baseModule": false
           },
           "inputs": {},
@@ -1484,19 +1478,19 @@ describe('VFModule Model Info', () => {
         }
       },
       "volumeGroups": {
-        "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
           "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
           "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
           "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
           "description": null,
-          "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+          "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
           "version": "6",
-          "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+          "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
           "properties": {
             "minCountInstances": 0,
             "maxCountInstances": null,
             "initialCount": 0,
-            "vfModuleLabel": "ADIOD_vRE_BV",
+            "vfModuleLabel": "PASQUALE_vRE_BV",
             "baseModule": false
           },
           "inputs": {
@@ -1506,10 +1500,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "vnf_config_template_version"
               },
-              "fromInputName": "2017488_adiodvpe0_vnf_config_template_version",
+              "fromInputName": "2017488_pasqualevpe0_vnf_config_template_version",
               "constraints": null,
               "required": true,
               "default": "17.2"
@@ -1520,10 +1514,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "bandwidth_units"
               },
-              "fromInputName": "adiodvpe0_bandwidth_units",
+              "fromInputName": "pasqualevpe0_bandwidth_units",
               "constraints": null,
               "required": true,
               "default": "Gbps"
@@ -1534,10 +1528,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "bandwidth"
               },
-              "fromInputName": "adiodvpe0_bandwidth",
+              "fromInputName": "pasqualevpe0_bandwidth",
               "constraints": null,
               "required": true,
               "default": "10"
@@ -1548,10 +1542,10 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "AIC_CLLI"
               },
-              "fromInputName": "2017488_adiodvpe0_AIC_CLLI",
+              "fromInputName": "2017488_pasqualevpe0_AIC_CLLI",
               "constraints": null,
               "required": true,
               "default": "ATLMY8GA"
@@ -1562,29 +1556,29 @@ describe('VFModule Model Info', () => {
               "entry_schema": null,
               "inputProperties": {
                 "sourceType": "HEAT",
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "paramName": "vnf_instance_name"
               },
-              "fromInputName": "2017488_adiodvpe0_vnf_instance_name",
+              "fromInputName": "2017488_pasqualevpe0_vnf_instance_name",
               "constraints": null,
               "required": true,
               "default": "mtnj309me6"
             }
           }
         },
-        "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
           "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
           "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
           "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
           "description": null,
-          "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+          "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
           "version": "6",
-          "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+          "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
           "properties": {
             "minCountInstances": 0,
             "maxCountInstances": null,
             "initialCount": 0,
-            "vfModuleLabel": "ADIOD_vPFE_BV",
+            "vfModuleLabel": "PASQUALE_vPFE_BV",
             "baseModule": false
           },
           "inputs": {}

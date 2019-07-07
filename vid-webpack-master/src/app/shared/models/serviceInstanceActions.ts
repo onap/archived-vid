@@ -3,6 +3,7 @@ export enum ServiceInstanceActions{
   Update="Update",
   Create="Create",
   None="None",
+  Resume = "Resume",
   Update_Delete = 'Update_Delete',
   None_Delete = 'None_Delete'
 }

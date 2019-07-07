@@ -6,7 +6,6 @@ export class VnfInstance extends Level1Instance {
 
   vfModules: { [vf_module_model_name: string] : VfModuleMap; };
   vnfStoreKey : string;
-  isFailed: boolean;
   position: number;
   statusMessage?: string;
 

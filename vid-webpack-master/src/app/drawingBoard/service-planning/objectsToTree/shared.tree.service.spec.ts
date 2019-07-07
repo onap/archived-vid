@@ -36,6 +36,10 @@ import {ServiceInstanceActions} from "../../../shared/models/serviceInstanceActi
 import each from "jest-each";
 import {DrawingBoardModes} from "../drawing-board.modes";
 import {ComponentInfoService} from "../component-info/component-info.service";
+import {ComponentInfoModel, ComponentInfoType} from "../component-info/component-info-model";
+import {ModelInformationItem} from "../../../shared/components/model-information/model-information.component";
+import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
+import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
 
 class MockAppStore<T> {
   getState() {
@@ -90,6 +94,8 @@ describe('Shared Tree Service', () => {
         ErrorMsgService,
         ObjectToInstanceTreeService,
         ComponentInfoService,
+        NetworkStepService,
+        VpnStepService,
         {provide: NgRedux, useClass: MockAppStore}
       ]
     });
@@ -122,7 +128,7 @@ describe('Shared Tree Service', () => {
   test('openAuditInfoModal should open modal for failed instance', () => {
     jest.spyOn(AuditInfoModalComponent.openInstanceAuditInfoModal, 'next');
 
-    let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null, null, null, null, null, null, null, null, null);
+    let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null, null, null, null, null, null, null, null, null,null);
     const modelMock = {"a": "a"};
     const instanceMock = {"instance": "instance", "trackById": "123456789"};
     const instanceTypeMock = "instanceTypeMock";
@@ -139,9 +145,7 @@ describe('Shared Tree Service', () => {
       {
         "instance": instanceMock,
         "instanceId": "serviceModelId",
-        "isInstanceFailed": node.data.isFailed,
         "model": modelMock,
-        "trackById": instanceMock.trackById,
         "type": instanceTypeMock
       });
   });
@@ -160,6 +164,25 @@ describe('Shared Tree Service', () => {
     service.shouldShowDeleteInstanceWithChildrenModal(node, "serviceModelId", foo);
     expect(MessageBoxService.openModal.next).not.toHaveBeenCalled();
   });
+
+  test ('addGeneralInfoItems should return correct info - ordered',()=>{
+    let specificNetworkInfo = [
+      ModelInformationItem.createInstance('Network role', "network role 1, network role 2")
+    ];
+    const actualInfoModel: ComponentInfoModel = service.addGeneralInfoItems(specificNetworkInfo,ComponentInfoType.NETWORK, getNetworkModel(),getNetworkInstance());
+
+    let expectedGeneralInfo = [
+      ModelInformationItem.createInstance('Model version', '37.0'),
+      ModelInformationItem.createInstance('Model customization ID', '94fdd893-4a36-4d70-b16a-ec29c54c184f'),
+      ModelInformationItem.createInstance('Instance ID', 'NETWORK4_INSTANCE_ID'),
+      ModelInformationItem.createInstance('Instance type', 'CONTRAIL30_HIMELGUARD'),
+      ModelInformationItem.createInstance('In maintenance', false),
+      ModelInformationItem.createInstance('Network role', 'network role 1, network role 2')
+    ];
+    expect(actualInfoModel.modelInfoItems).toEqual(expectedGeneralInfo);
+  });
+
+
 
   test('statusProperties should be prop on node according to node properties', () => {
     let node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', inMaint: false});
@@ -189,7 +212,7 @@ describe('Shared Tree Service', () => {
     ['None action EDIT mode',DrawingBoardModes.EDIT,  ServiceInstanceActions.None, false],
     ['None action RETRY_EDIT mode', DrawingBoardModes.RETRY_EDIT, ServiceInstanceActions.None, false]];
   each(enableRemoveAndEditItemsDataProvider).test('shouldShowEditAndDelete if child exist with %s', (description, mode, action, enabled) => {
-    jest.spyOn(store, 'getState').mockReturnValue({
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
         global: {
           drawingBoardStatus: mode
         }
@@ -206,32 +229,32 @@ describe('Shared Tree Service', () => {
 function generateService() {
   return {
     "vnfs": {
-      "2017-488_ADIOD-vPE 0": {
+      "2017-488_PASQUALE-vPE 0": {
         "inMaint": false,
         "rollbackOnFailure": "true",
-        "originalName": "2017-488_ADIOD-vPE 0",
+        "originalName": "2017-488_PASQUALE-vPE 0",
         "isMissingData": false,
         "trackById": "stigekyxrqi",
         "vfModules": {
-          "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0gytfi": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0gytfi": {
               "isMissingData": false,
               "sdncPreReload": null,
               "modelInfo": {
                 "modelType": "VFmodule",
                 "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
                 "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-                "modelName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                 "modelVersion": "5",
                 "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-                "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0"
+                "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"
               },
               "instanceParams": [{}],
               "trackById": "3oj23o7nupo"
             }
           }
         },
-        "vnfStoreKey": "2017-488_ADIOD-vPE 0",
+        "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
         "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
         "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
         "lcpCloudRegionId": "JANET25",
@@ -241,23 +264,23 @@ function generateService() {
         "modelInfo": {
           "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
           "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-          "modelName": "2017-488_ADIOD-vPE",
+          "modelName": "2017-488_PASQUALE-vPE",
           "modelVersion": "5.0",
-          "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+          "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
           "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
           "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09"
         },
         "legacyRegion": "11111111",
         "instanceParams": [{}]
       },
-      "2017-388_ADIOD-vPE 0": {
+      "2017-388_PASQUALE-vPE 0": {
         "inMaint": false,
         "rollbackOnFailure": "true",
-        "originalName": "2017-388_ADIOD-vPE 0",
+        "originalName": "2017-388_PASQUALE-vPE 0",
         "isMissingData": false,
         "trackById": "nib719t5vca",
         "vfModules": {},
-        "vnfStoreKey": "2017-388_ADIOD-vPE 0",
+        "vnfStoreKey": "2017-388_PASQUALE-vPE 0",
         "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
         "lcpCloudRegionId": "JANET25",
         "legacyRegion": "11111",
@@ -268,22 +291,22 @@ function generateService() {
         "modelInfo": {
           "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
           "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
-          "modelName": "2017-388_ADIOD-vPE",
+          "modelName": "2017-388_PASQUALE-vPE",
           "modelVersion": "4.0",
           "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
-          "modelCustomizationName": "2017-388_ADIOD-vPE 0",
+          "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
           "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168"
         },
         "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168"
       },
-      "2017-388_ADIOD-vPE 1": {
+      "2017-388_PASQUALE-vPE 1": {
         "inMaint": false,
         "rollbackOnFailure": "true",
-        "originalName": "2017-388_ADIOD-vPE 1",
+        "originalName": "2017-388_PASQUALE-vPE 1",
         "isMissingData": false,
         "trackById": "cv7l1ak8vpe",
         "vfModules": {},
-        "vnfStoreKey": "2017-388_ADIOD-vPE 1",
+        "vnfStoreKey": "2017-388_PASQUALE-vPE 1",
         "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
         "lcpCloudRegionId": "JANET25",
         "legacyRegion": "123",
@@ -294,10 +317,10 @@ function generateService() {
         "modelInfo": {
           "modelInvariantId": "00beb8f9-6d39-452f-816d-c709b9cbb87d",
           "modelVersionId": "0903e1c0-8e03-4936-b5c2-260653b96413",
-          "modelName": "2017-388_ADIOD-vPE",
+          "modelName": "2017-388_PASQUALE-vPE",
           "modelVersion": "1.0",
           "modelCustomizationId": "280dec31-f16d-488b-9668-4aae55d6648a",
-          "modelCustomizationName": "2017-388_ADIOD-vPE 1",
+          "modelCustomizationName": "2017-388_PASQUALE-vPE 1",
           "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413"
         },
         "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413"
@@ -391,7 +414,7 @@ function generateService() {
     "isALaCarte": false,
     "name": "action-data",
     "version": "1.0",
-    "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+    "description": "PASQUALE vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
     "category": "Network L1-3",
     "uuid": "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
     "invariantUuid": "cdb90b57-ed78-4d44-a5b4-7f43a02ec632",
@@ -410,15 +433,10 @@ function getStore() {
         "CREATE_INSTANCE_TEST": false,
         "EMPTY_DRAWING_BOARD_TEST": false,
         "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
-        "FLAG_ASYNC_INSTANTIATION": true,
-        "FLAG_ASYNC_JOBS": true,
         "FLAG_ADD_MSO_TESTAPI_FIELD": true,
-        "FLAG_UNASSIGN_SERVICE": true,
         "FLAG_SERVICE_MODEL_CACHE": true,
-        "FLAG_COLLECTION_RESOURCE_SUPPORT": true,
         "FLAG_SHOW_ASSIGNMENTS": true,
         "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
-        "FLAG_DUPLICATE_VNF": true,
         "FLAG_DEFAULT_VNF": true,
         "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
         "FLAG_A_LA_CARTE_AUDIT_INFO": true,
@@ -431,7 +449,6 @@ function getStore() {
         "FLAG_SHOW_VERIFY_SERVICE": true,
         "FLAG_ASYNC_ALACARTE_VFMODULE": true,
         "FLAG_ASYNC_ALACARTE_VNF": true,
-        "FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF": true,
         "FLAG_1810_AAI_LOCAL_CACHE": true,
         "FLAG_EXP_USE_DEFAULT_HOST_NAME_VERIFIER": false,
         "FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI": false,
@@ -455,25 +472,25 @@ function getStore() {
             "category": "Network L1-3",
             "serviceType": "pnf",
             "serviceRole": "Testing",
-            "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+            "description": "PASQUALE vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
             "serviceEcompNaming": "false",
             "instantiationType": "Macro",
             "inputs": {},
             "vidNotions": {"instantiationUI": "legacy", "modelCategory": "other", "viewEditUI": "legacy"}
           },
           "vnfs": {
-            "2017-388_ADIOD-vPE 1": {
+            "2017-388_PASQUALE-vPE 1": {
               "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413",
               "invariantUuid": "00beb8f9-6d39-452f-816d-c709b9cbb87d",
-              "description": "Name ADIOD vPE Description The provider edge function for the ADIOD service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
-              "name": "2017-388_ADIOD-vPE",
+              "description": "Name PASQUALE vPE Description The provider edge function for the PASQUALE service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
+              "name": "2017-388_PASQUALE-vPE",
               "version": "1.0",
               "customizationUuid": "280dec31-f16d-488b-9668-4aae55d6648a",
               "inputs": {},
               "commands": {},
               "properties": {
                 "vmxvre_retype": "RE-VMX",
-                "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
+                "vnf_config_template_version": "get_input:2017488_pasqualevpe0_vnf_config_template_version",
                 "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
                 "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
                 "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
@@ -519,7 +536,7 @@ function getStore() {
                 "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
                 "vmxvre_int_ctl_ip_0": "10.0.0.10",
                 "ecomp_generated_naming": "true",
-                "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
+                "AIC_CLLI": "get_input:2017488_pasqualevpe0_AIC_CLLI",
                 "vnf_name": "mtnj309me6vre",
                 "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
                 "vmxvre_volume_type_1": "HITACHI",
@@ -527,14 +544,14 @@ function getStore() {
                 "vmxvre_volume_type_0": "HITACHI",
                 "vmxvpfe_volume_type_0": "HITACHI",
                 "vmxvpfe_sriov43_0_port_broadcastallow": "true",
-                "bandwidth_units": "get_input:2017488_adiodvpe0_bandwidth_units",
+                "bandwidth_units": "get_input:2017488_pasqualevpe0_bandwidth_units",
                 "vnf_id": "123",
                 "vmxvre_oam_prefix": "24",
                 "availability_zone_0": "mtpocfo-kvm-az01",
-                "ASN": "get_input:2017488_adiodvpe0_ASN",
+                "ASN": "get_input:2017488_pasqualevpe0_ASN",
                 "vmxvre_chassis_i2cid": "161",
                 "vmxvpfe_name_0": "vPFEXI",
-                "bandwidth": "get_input:2017488_adiodvpe0_bandwidth",
+                "bandwidth": "get_input:2017488_pasqualevpe0_bandwidth",
                 "availability_zone_max_count": "1",
                 "vmxvre_volume_size_0": "45.0",
                 "vmxvre_volume_size_1": "50.0",
@@ -544,7 +561,7 @@ function getStore() {
                 "vmxvre_ore_present": "0",
                 "vmxvre_volume_name_0": "vREXI_FBVolume",
                 "vmxvre_type": "0",
-                "vnf_instance_name": "get_input:2017488_adiodvpe0_vnf_instance_name",
+                "vnf_instance_name": "get_input:2017488_pasqualevpe0_vnf_instance_name",
                 "vmxvpfe_sriov41_0_port_unknownmulticastallow": "true",
                 "oam_net_id": "b95eeb1d-d55d-4827-abb4-8ebb94941429",
                 "vmx_int_ctl_len": "24",
@@ -558,23 +575,23 @@ function getStore() {
                 "vmxvpfe_flavor_name": "ns.c20r16d25.v5"
               },
               "type": "VF",
-              "modelCustomizationName": "2017-388_ADIOD-vPE 1",
+              "modelCustomizationName": "2017-388_PASQUALE-vPE 1",
               "vfModules": {},
               "volumeGroups": {},
               "vfcInstanceGroups": {}
             },
-            "2017-388_ADIOD-vPE 0": {
+            "2017-388_PASQUALE-vPE 0": {
               "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
               "invariantUuid": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
-              "description": "Name ADIOD vPE Description The provider edge function for the ADIOD service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
-              "name": "2017-388_ADIOD-vPE",
+              "description": "Name PASQUALE vPE Description The provider edge function for the PASQUALE service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
+              "name": "2017-388_PASQUALE-vPE",
               "version": "4.0",
               "customizationUuid": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
               "inputs": {},
               "commands": {},
               "properties": {
                 "vmxvre_retype": "RE-VMX",
-                "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
+                "vnf_config_template_version": "get_input:2017488_pasqualevpe0_vnf_config_template_version",
                 "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
                 "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
                 "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
@@ -620,7 +637,7 @@ function getStore() {
                 "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
                 "vmxvre_int_ctl_ip_0": "10.0.0.10",
                 "ecomp_generated_naming": "true",
-                "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
+                "AIC_CLLI": "get_input:2017488_pasqualevpe0_AIC_CLLI",
                 "vnf_name": "mtnj309me6vre",
                 "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
                 "vmxvre_volume_type_1": "HITACHI",
@@ -628,14 +645,14 @@ function getStore() {
                 "vmxvre_volume_type_0": "HITACHI",
                 "vmxvpfe_volume_type_0": "HITACHI",
                 "vmxvpfe_sriov43_0_port_broadcastallow": "true",
-                "bandwidth_units": "get_input:2017488_adiodvpe0_bandwidth_units",
+                "bandwidth_units": "get_input:2017488_pasqualevpe0_bandwidth_units",
                 "vnf_id": "123",
                 "vmxvre_oam_prefix": "24",
                 "availability_zone_0": "mtpocfo-kvm-az01",
-                "ASN": "get_input:2017488_adiodvpe0_ASN",
+                "ASN": "get_input:2017488_pasqualevpe0_ASN",
                 "vmxvre_chassis_i2cid": "161",
                 "vmxvpfe_name_0": "vPFEXI",
-                "bandwidth": "get_input:2017488_adiodvpe0_bandwidth",
+                "bandwidth": "get_input:2017488_pasqualevpe0_bandwidth",
                 "availability_zone_max_count": "1",
                 "vmxvre_volume_size_0": "45.0",
                 "vmxvre_volume_size_1": "50.0",
@@ -645,7 +662,7 @@ function getStore() {
                 "vmxvre_ore_present": "0",
                 "vmxvre_volume_name_0": "vREXI_FBVolume",
                 "vmxvre_type": "0",
-                "vnf_instance_name": "get_input:2017488_adiodvpe0_vnf_instance_name",
+                "vnf_instance_name": "get_input:2017488_pasqualevpe0_vnf_instance_name",
                 "vmxvpfe_sriov41_0_port_unknownmulticastallow": "true",
                 "oam_net_id": "b95eeb1d-d55d-4827-abb4-8ebb94941429",
                 "vmx_int_ctl_len": "24",
@@ -659,16 +676,16 @@ function getStore() {
                 "vmxvpfe_flavor_name": "ns.c20r16d25.v5"
               },
               "type": "VF",
-              "modelCustomizationName": "2017-388_ADIOD-vPE 0",
+              "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
               "vfModules": {},
               "volumeGroups": {},
               "vfcInstanceGroups": {}
             },
-            "2017-488_ADIOD-vPE 0": {
+            "2017-488_PASQUALE-vPE 0": {
               "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
               "invariantUuid": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
-              "description": "Name ADIOD vPE Description The provider edge function for the ADIOD service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
-              "name": "2017-488_ADIOD-vPE",
+              "description": "Name PASQUALE vPE Description The provider edge function for the PASQUALE service supported by the Junipers VMX product Category Router Vendor Juniper Vendor Release Code 17.2 Owners Mary Fragale. Updated 9-25 to use v8.0 of the Juniper Valid 2 VLM",
+              "name": "2017-488_PASQUALE-vPE",
               "version": "5.0",
               "customizationUuid": "1da7b585-5e61-4993-b95e-8e6606c81e45",
               "inputs": {},
@@ -676,7 +693,7 @@ function getStore() {
               "properties": {
                 "max_instances": 1,
                 "vmxvre_retype": "RE-VMX",
-                "vnf_config_template_version": "get_input:2017488_adiodvpe0_vnf_config_template_version",
+                "vnf_config_template_version": "get_input:2017488_pasqualevpe0_vnf_config_template_version",
                 "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
                 "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
                 "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
@@ -722,7 +739,7 @@ function getStore() {
                 "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
                 "vmxvre_int_ctl_ip_0": "10.0.0.10",
                 "ecomp_generated_naming": "true",
-                "AIC_CLLI": "get_input:2017488_adiodvpe0_AIC_CLLI",
+                "AIC_CLLI": "get_input:2017488_pasqualevpe0_AIC_CLLI",
                 "vnf_name": "mtnj309me6vre",
                 "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
                 "vmxvre_volume_type_1": "HITACHI",
@@ -730,14 +747,14 @@ function getStore() {
                 "vmxvre_volume_type_0": "HITACHI",
                 "vmxvpfe_volume_type_0": "HITACHI",
                 "vmxvpfe_sriov43_0_port_broadcastallow": "true",
-                "bandwidth_units": "get_input:2017488_adiodvpe0_bandwidth_units",
+                "bandwidth_units": "get_input:2017488_pasqualevpe0_bandwidth_units",
                 "vnf_id": "123",
                 "vmxvre_oam_prefix": "24",
                 "availability_zone_0": "mtpocfo-kvm-az01",
-                "ASN": "get_input:2017488_adiodvpe0_ASN",
+                "ASN": "get_input:2017488_pasqualevpe0_ASN",
                 "vmxvre_chassis_i2cid": "161",
                 "vmxvpfe_name_0": "vPFEXI",
-                "bandwidth": "get_input:2017488_adiodvpe0_bandwidth",
+                "bandwidth": "get_input:2017488_pasqualevpe0_bandwidth",
                 "availability_zone_max_count": "1",
                 "vmxvre_volume_size_0": "45.0",
                 "vmxvre_volume_size_1": "50.0",
@@ -747,7 +764,7 @@ function getStore() {
                 "vmxvre_ore_present": "0",
                 "vmxvre_volume_name_0": "vREXI_FBVolume",
                 "vmxvre_type": "0",
-                "vnf_instance_name": "get_input:2017488_adiodvpe0_vnf_instance_name",
+                "vnf_instance_name": "get_input:2017488_pasqualevpe0_vnf_instance_name",
                 "vmxvpfe_sriov41_0_port_unknownmulticastallow": "true",
                 "oam_net_id": "b95eeb1d-d55d-4827-abb4-8ebb94941429",
                 "vmx_int_ctl_len": "24",
@@ -761,57 +778,57 @@ function getStore() {
                 "vmxvpfe_flavor_name": "ns.c20r16d25.v5"
               },
               "type": "VF",
-              "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+              "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
               "vfModules": {
-                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
                   "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
                   "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
                   "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
                   "description": null,
-                  "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "version": "6",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "properties": {
                     "minCountInstances": 0,
                     "maxCountInstances": null,
                     "initialCount": 0,
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "baseModule": false
                   },
                   "inputs": {},
                   "volumeGroupAllowed": true
                 },
-                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
                   "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
                   "invariantUuid": "b34833bb-6aa9-4ad6-a831-70b06367a091",
                   "customizationUuid": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
                   "description": null,
-                  "name": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "name": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "version": "5",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                   "properties": {
                     "minCountInstances": 1,
                     "maxCountInstances": 1,
                     "initialCount": 1,
-                    "vfModuleLabel": "ADIOD_base_vPE_BV",
+                    "vfModuleLabel": "PASQUALE_base_vPE_BV",
                     "baseModule": true
                   },
                   "inputs": {},
                   "volumeGroupAllowed": false
                 },
-                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
                   "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
                   "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
                   "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
                   "description": null,
-                  "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+                  "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
                   "version": "6",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
                   "properties": {
                     "minCountInstances": 0,
                     "maxCountInstances": null,
                     "initialCount": 0,
-                    "vfModuleLabel": "ADIOD_vPFE_BV",
+                    "vfModuleLabel": "PASQUALE_vPFE_BV",
                     "baseModule": false
                   },
                   "inputs": {},
@@ -819,36 +836,36 @@ function getStore() {
                 }
               },
               "volumeGroups": {
-                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
                   "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
                   "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
                   "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
                   "description": null,
-                  "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "version": "6",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
                   "properties": {
                     "minCountInstances": 0,
                     "maxCountInstances": null,
                     "initialCount": 0,
-                    "vfModuleLabel": "ADIOD_vRE_BV",
+                    "vfModuleLabel": "PASQUALE_vRE_BV",
                     "baseModule": false
                   },
                   "inputs": {}
                 },
-                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
                   "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
                   "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
                   "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
                   "description": null,
-                  "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+                  "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
                   "version": "6",
-                  "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+                  "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
                   "properties": {
                     "minCountInstances": 0,
                     "maxCountInstances": null,
                     "initialCount": 0,
-                    "vfModuleLabel": "ADIOD_vPFE_BV",
+                    "vfModuleLabel": "PASQUALE_vPFE_BV",
                     "baseModule": false
                   },
                   "inputs": {}
@@ -877,60 +894,60 @@ function getStore() {
               "modelCustomizationName": "ExtVL 0"
             }
           },
-          "collectionResource": {},
+          "collectionResources": {},
           "configurations": {},
           "fabricConfigurations": {},
           "serviceProxies": {},
           "vfModules": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
               "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
               "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
               "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "baseModule": false
               },
               "inputs": {},
               "volumeGroupAllowed": true
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
               "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
               "invariantUuid": "b34833bb-6aa9-4ad6-a831-70b06367a091",
               "customizationUuid": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+              "name": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
               "version": "5",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
               "properties": {
                 "minCountInstances": 1,
                 "maxCountInstances": 1,
                 "initialCount": 1,
-                "vfModuleLabel": "ADIOD_base_vPE_BV",
+                "vfModuleLabel": "PASQUALE_base_vPE_BV",
                 "baseModule": true
               },
               "inputs": {},
               "volumeGroupAllowed": false
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
               "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
               "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
               "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vPFE_BV",
+                "vfModuleLabel": "PASQUALE_vPFE_BV",
                 "baseModule": false
               },
               "inputs": {},
@@ -938,36 +955,36 @@ function getStore() {
             }
           },
           "volumeGroups": {
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vRE_BV..module-1": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
               "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
               "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
               "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "name": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vRE_BV..module-1",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vRE_BV",
+                "vfModuleLabel": "PASQUALE_vRE_BV",
                 "baseModule": false
               },
               "inputs": {}
             },
-            "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_vPFE_BV..module-2": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
               "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
               "invariantUuid": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
               "customizationUuid": "3cd946bb-50e0-40d8-96d3-c9023520b557",
               "description": null,
-              "name": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "name": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "version": "6",
-              "modelCustomizationName": "2017488AdiodVpe..ADIOD_vPFE_BV..module-2",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "properties": {
                 "minCountInstances": 0,
                 "maxCountInstances": null,
                 "initialCount": 0,
-                "vfModuleLabel": "ADIOD_vPFE_BV",
+                "vfModuleLabel": "PASQUALE_vPFE_BV",
                 "baseModule": false
               },
               "inputs": {}
@@ -991,11 +1008,11 @@ function getStore() {
                 "ecomp_generated_naming": "true"
               },
               "members": {
-                "vdbe_svc_vprs_proxy 0": {
+                "vdorothea_svc_vprs_proxy 0": {
                   "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
                   "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
-                  "description": "A Proxy for Service vDBE_Svc_vPRS",
-                  "name": "vDBE_Svc_vPRS Service Proxy",
+                  "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
+                  "name": "vDOROTHEA_Svc_vPRS Service Proxy",
                   "version": "1.0",
                   "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
                   "inputs": {},
@@ -1004,7 +1021,7 @@ function getStore() {
                   "type": "Service Proxy",
                   "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
                   "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
-                  "sourceModelName": "vDBE_Svc_vPRS"
+                  "sourceModelName": "vDOROTHEA_Svc_vPRS"
                 }
               }
             },
@@ -1083,7 +1100,7 @@ function getStore() {
               "modelCustomizationName": "AIC30_CONTRAIL_BASIC 0"
             }
           },
-          "collectionResource": {},
+          "collectionResources": {},
           "configurations": {},
           "fabricConfigurations": {},
           "serviceProxies": {},
@@ -1096,33 +1113,33 @@ function getStore() {
       "serviceInstance": {
         "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd": {
           "vnfs": {
-            "2017-488_ADIOD-vPE 0": {
+            "2017-488_PASQUALE-vPE 0": {
               "action": "None",
               "inMaint": false,
               "rollbackOnFailure": "true",
-              "originalName": "2017-488_ADIOD-vPE 0",
+              "originalName": "2017-488_PASQUALE-vPE 0",
               "isMissingData": false,
               "trackById": "stigekyxrqi",
               "vfModules": {
-                "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0": {
-                  "2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0gytfi": {
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+                  "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0gytfi": {
                     "isMissingData": false,
                     "sdncPreReload": null,
                     "modelInfo": {
                       "modelType": "VFmodule",
                       "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
                       "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-                      "modelName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0",
+                      "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
                       "modelVersion": "5",
                       "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-                      "modelCustomizationName": "2017488AdiodVpe..ADIOD_base_vPE_BV..module-0"
+                      "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"
                     },
                     "instanceParams": [{}],
                     "trackById": "3oj23o7nupo"
                   }
                 }
               },
-              "vnfStoreKey": "2017-488_ADIOD-vPE 0",
+              "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
               "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
               "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
               "lcpCloudRegionId": "JANET25",
@@ -1132,24 +1149,24 @@ function getStore() {
               "modelInfo": {
                 "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
                 "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-                "modelName": "2017-488_ADIOD-vPE",
+                "modelName": "2017-488_PASQUALE-vPE",
                 "modelVersion": "5.0",
-                "modelCustomizationName": "2017-488_ADIOD-vPE 0",
+                "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
                 "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
                 "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09"
               },
               "legacyRegion": "11111111",
               "instanceParams": [{}]
             },
-            "2017-388_ADIOD-vPE 0": {
+            "2017-388_PASQUALE-vPE 0": {
               "action": "Create",
               "inMaint": false,
               "rollbackOnFailure": "true",
-              "originalName": "2017-388_ADIOD-vPE 0",
+              "originalName": "2017-388_PASQUALE-vPE 0",
               "isMissingData": false,
               "trackById": "nib719t5vca",
               "vfModules": {},
-              "vnfStoreKey": "2017-388_ADIOD-vPE 0",
+              "vnfStoreKey": "2017-388_PASQUALE-vPE 0",
               "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
               "lcpCloudRegionId": "JANET25",
               "legacyRegion": "11111",
@@ -1160,23 +1177,23 @@ function getStore() {
               "modelInfo": {
                 "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
                 "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
-                "modelName": "2017-388_ADIOD-vPE",
+                "modelName": "2017-388_PASQUALE-vPE",
                 "modelVersion": "4.0",
                 "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
-                "modelCustomizationName": "2017-388_ADIOD-vPE 0",
+                "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
                 "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168"
               },
               "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168"
             },
-            "2017-388_ADIOD-vPE 1": {
+            "2017-388_PASQUALE-vPE 1": {
               "action": "None",
               "inMaint": false,
               "rollbackOnFailure": "true",
-              "originalName": "2017-388_ADIOD-vPE 1",
+              "originalName": "2017-388_PASQUALE-vPE 1",
               "isMissingData": false,
               "trackById": "cv7l1ak8vpe",
               "vfModules": {},
-              "vnfStoreKey": "2017-388_ADIOD-vPE 1",
+              "vnfStoreKey": "2017-388_PASQUALE-vPE 1",
               "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
               "lcpCloudRegionId": "JANET25",
               "legacyRegion": "123",
@@ -1187,10 +1204,10 @@ function getStore() {
               "modelInfo": {
                 "modelInvariantId": "00beb8f9-6d39-452f-816d-c709b9cbb87d",
                 "modelVersionId": "0903e1c0-8e03-4936-b5c2-260653b96413",
-                "modelName": "2017-388_ADIOD-vPE",
+                "modelName": "2017-388_PASQUALE-vPE",
                 "modelVersion": "1.0",
                 "modelCustomizationId": "280dec31-f16d-488b-9668-4aae55d6648a",
-                "modelCustomizationName": "2017-388_ADIOD-vPE 1",
+                "modelCustomizationName": "2017-388_PASQUALE-vPE 1",
                 "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413"
               },
               "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413"
@@ -1284,7 +1301,7 @@ function getStore() {
           "isALaCarte": false,
           "name": "action-data",
           "version": "1.0",
-          "description": "ADIOD vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
+          "description": "PASQUALE vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
           "category": "Network L1-3",
           "uuid": "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
           "invariantUuid": "cdb90b57-ed78-4d44-a5b4-7f43a02ec632",
@@ -1314,13 +1331,143 @@ function getStore() {
             "isPermitted": true,
             "cloudOwner": "irma-aic"
           }, {
-            "id": "d0a3e3f2964542259d155a81c41aadc3",
-            "name": "test-hvf6-09",
+            "id": "229bcdc6eaeb4ca59d55221141d01f8e",
+            "name": "AIN Web Tool-15-D-STTest2",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "1178612d2b394be4834ad77f567c0af2",
+            "name": "AIN Web Tool-15-D-SSPtestcustome",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "19c5ade915eb461e8af52fb2fd8cd1f2",
+            "name": "AIN Web Tool-15-D-UncheckedEcopm",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "de007636e25249238447264a988a927b",
+            "name": "AIN Web Tool-15-D-dfsdf",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "62f29b3613634ca6a3065cbe0e020c44",
+            "name": "AIN/SMS-16-D-Multiservices1",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "649289e30d3244e0b48098114d63c2aa",
+            "name": "AIN Web Tool-15-D-SSPST66",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "3f21eeea6c2c486bba31dab816c05a32",
+            "name": "AIN Web Tool-15-D-ASSPST47",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "f60ce21d3ee6427586cff0d22b03b773",
+            "name": "CESAR-100-D-sspjg67246",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "8774659e425f479895ae091bb5d46560",
+            "name": "CESAR-100-D-sspjg68359",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "624eb554b0d147c19ff8885341760481",
+            "name": "AINWebTool-15-D-iftach",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "214f55f5fc414c678059c383b03e4962",
+            "name": "CESAR-100-D-sspjg612401",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "c90666c291664841bb98e4d981ff1db5",
+            "name": "CESAR-100-D-sspjg621340",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "ce5b6bc5c7b348e1bf4b91ac9a174278",
+            "name": "sspjg621351cloned",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "b386b768a3f24c8e953abbe0b3488c02",
+            "name": "AINWebTool-15-D-eteancomp",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "dc6c4dbfd225474e9deaadd34968646c",
+            "name": "AINWebTool-15-T-SPFET",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "02cb5030e9914aa4be120bd9ed1e19eb",
+            "name": "AINWebTool-15-X-eeweww",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "f2f3830e4c984d45bcd00e1a04158a79",
+            "name": "CESAR-100-D-spjg61909",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "05b91bd5137f4929878edd965755c06d",
+            "name": "CESAR-100-D-sspjg621512cloned",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "7002fbe8482d4a989ddf445b1ce336e0",
+            "name": "AINWebTool-15-X-vdr",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "4008522be43741dcb1f5422022a2aa0b",
+            "name": "AINWebTool-15-D-ssasa",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "f44e2e96a1b6476abfda2fa407b00169",
+            "name": "AINWebTool-15-D-PFNPT",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "b69a52bec8a84669a37a1e8b72708be7",
+            "name": "AINWebTool-15-X-vdre",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "fac7d9fd56154caeb9332202dcf2969f",
+            "name": "AINWebTool-15-X-NONPODECOMP",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "2d34d8396e194eb49969fd61ffbff961",
+            "name": "DN5242-Nov16-T5",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "cb42a77ff45b48a8b8deb83bb64acc74",
+            "name": "ro-T11",
             "isPermitted": true,
             "cloudOwner": "irma-aic"
           }, {
             "id": "fa45ca53c80b492fa8be5477cd84fc2b",
             "name": "ro-T112",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "4914ab0ab3a743e58f0eefdacc1dde77",
+            "name": "DN5242-Nov21-T1",
+            "isPermitted": true,
+            "cloudOwner": "irma-aic"
+          }, {
+            "id": "d0a3e3f2964542259d155a81c41aadc3",
+            "name": "test-hvf6-09",
             "isPermitted": true,
             "cloudOwner": "irma-aic"
           }, {
@@ -1404,9 +1551,9 @@ function getStore() {
           "isPermitted": false
         }, {"id": "18", "name": "vCarroll", "isPermitted": false}, {
           "id": "9",
-          "name": "vMME",
+          "name": "vFLORENCE",
           "isPermitted": false
-        }, {"id": "13", "name": "vMMSC", "isPermitted": false}, {
+        }, {"id": "13", "name": "vWINIFRED", "isPermitted": false}, {
           "id": "10",
           "name": "vMNS",
           "isPermitted": false
@@ -1414,34 +1561,205 @@ function getStore() {
           "id": "8",
           "name": "vOTA",
           "isPermitted": false
-        }, {"id": "11", "name": "vSCP", "isPermitted": false}, {
+        }, {"id": "11", "name": "vEsmeralda", "isPermitted": false}, {
           "id": "6",
-          "name": "vSEGW",
+          "name": "vPorfirio",
           "isPermitted": false
         }, {"id": "7", "name": "vVM", "isPermitted": false}, {"id": "4", "name": "vVoiceMail", "isPermitted": false}]
       },
-      "aicZones": [
-        {
-          "id": "NFT1",
-          "name": "NFTJSSSS-NFT1"
-        },
-        {
-          "id": "JAG1",
-          "name": "YUDFJULP-JAG1"
-        },
-        {
-          "id": "YYY1",
-          "name": "UUUAIAAI-YYY1"
-        },
-        {
-          "id": "AVT1",
-          "name": "AVTRFLHD-AVT1"
-        },
-        {
-          "id": "ATL34",
-          "name": "ATLSANAI-ATL34"
-        }
-      ],
+      "aicZones": [{"id": "ATL53", "name": "AAIATLTE-ATL53"}, {"id": "ABC15", "name": "AAITESAN-ABC15"}, {
+        "id": "TES36",
+        "name": "ABCEETES-TES36"
+      }, {"id": "ATL54", "name": "AICFTAAI-ATL54"}, {"id": "ATL43", "name": "AICLOCID-ATL43"}, {
+        "id": "AMD15",
+        "name": "AMDFAA01-AMD15"
+      }, {"id": "AMF11", "name": "AMDOCS01-AMF11"}, {"id": "RCT1", "name": "AMSTERNL-RCT1"}, {
+        "id": "AMS1",
+        "name": "AMSTNLBW-AMS1"
+      }, {"id": "HJH1", "name": "AOEEQQQD-HJH1"}, {"id": "HJE1", "name": "AOEEWWWD-HJE1"}, {
+        "id": "MCS1",
+        "name": "ASACMAMS-MCS1"
+      }, {"id": "AUG1", "name": "ASDFGHJK-AUG1"}, {"id": "LUC1", "name": "ATLDFGYC-LUC1"}, {
+        "id": "ATL1",
+        "name": "ATLNGAMA-ATL1"
+      }, {"id": "ATL2", "name": "ATLNGANW-ATL2"}, {"id": "HPO1", "name": "ATLNGAUP-HPO1"}, {
+        "id": "ANI1",
+        "name": "ATLNGTRE-ANI1"
+      }, {"id": "ATL44", "name": "ATLSANAB-ATL44"}, {"id": "ATL56", "name": "ATLSANAC-ATL56"}, {
+        "id": "ABC11",
+        "name": "ATLSANAI-ABC11"
+      }, {"id": "ATL34", "name": "ATLSANAI-ATL34"}, {"id": "ATL63", "name": "ATLSANEW-ATL63"}, {
+        "id": "ABC12",
+        "name": "ATLSECIA-ABC12"
+      }, {"id": "AMD18", "name": "AUDIMA01-AMD18"}, {"id": "AVT1", "name": "AVTRFLHD-AVT1"}, {
+        "id": "KIT1",
+        "name": "BHYJFGLN-KIT1"
+      }, {"id": "BHY17", "name": "BHYTFRF3-BHY17"}, {"id": "RTW5", "name": "BHYTFRY4-RTW5"}, {
+        "id": "RTZ4",
+        "name": "BHYTFRZ6-RTZ4"
+      }, {"id": "RTD2", "name": "BHYTFRk4-RTD2"}, {"id": "BNA1", "name": "BNARAGBK-BNA1"}, {
+        "id": "VEL1",
+        "name": "BNMLKUIK-VEL1"
+      }, {"id": "BOT1", "name": "BOTHWAKY-BOT1"}, {"id": "CAL33", "name": "CALIFORN-CAL33"}, {
+        "id": "ATL84",
+        "name": "CANTTCOC-ATL84"
+      }, {"id": "HSD1", "name": "CHASKCDS-HSD1"}, {"id": "CHI1", "name": "CHILLIWE-CHI1"}, {
+        "id": "XCP12",
+        "name": "CHKGH123-XCP12"
+      }, {"id": "JNL1", "name": "CJALSDAC-JNL1"}, {"id": "KJN1", "name": "CKALDKSA-KJN1"}, {
+        "id": "CLG1",
+        "name": "CLGRABAD-CLG1"
+      }, {"id": "CKL1", "name": "CLKSKCKK-CKL1"}, {"id": "ATL66", "name": "CLLIAAII-ATL66"}, {
+        "id": "CQK1",
+        "name": "CQKSCAKK-CQK1"
+      }, {"id": "CWY1", "name": "CWYMOWBS-CWY1"}, {"id": "DKJ1", "name": "DKJSJDKA-DKJ1"}, {
+        "id": "DSF45",
+        "name": "DSFBG123-DSF45"
+      }, {"id": "DSL12", "name": "DSLFK242-DSL12"}, {"id": "FDE55", "name": "FDERT555-FDE55"}, {
+        "id": "VEN2",
+        "name": "FGHJUHIL-VEN2"
+      }, {"id": "ATL64", "name": "FORLOAAJ-ATL64"}, {"id": "GNV1", "name": "GNVLSCTL-GNV1"}, {
+        "id": "SAN22",
+        "name": "GNVLSCTL-SAN22"
+      }, {"id": "KAP1", "name": "HIOUYTRQ-KAP1"}, {"id": "LIS1", "name": "HOSTPROF-LIS1"}, {
+        "id": "HRG1",
+        "name": "HRGHRGGS-HRG1"
+      }, {"id": "HST25", "name": "HSTNTX01-HST25"}, {"id": "STN27", "name": "HSTNTX01-STN27"}, {
+        "id": "HST70",
+        "name": "HSTNTX70-HST70"
+      }, {"id": "KOR1", "name": "HYFLNBVT-KOR1"}, {"id": "RAD10", "name": "INDIPUNE-RAD10"}, {
+        "id": "REL1",
+        "name": "INGERFGT-REL1"
+      }, {"id": "JAD1", "name": "JADECLLI-JAD1"}, {"id": "HKA1", "name": "JAKHLASS-HKA1"}, {
+        "id": "JCS1",
+        "name": "JCSJSCJS-JCS1"
+      }, {"id": "JCV1", "name": "JCVLFLBW-JCV1"}, {"id": "KGM2", "name": "KGMTNC20-KGM2"}, {
+        "id": "KJF12",
+        "name": "KJFDH123-KJF12"
+      }, {"id": "JGS1", "name": "KSJKKKKK-JGS1"}, {"id": "LAG1", "name": "LARGIZON-LAG1"}, {
+        "id": "LAG1a",
+        "name": "LARGIZON-LAG1a"
+      }, {"id": "LAG45", "name": "LARGIZON-LAG1a"}, {"id": "LAG1b", "name": "LARGIZON-LAG1b"}, {
+        "id": "WAN1",
+        "name": "LEIWANGW-WAN1"
+      }, {"id": "DSA1", "name": "LKJHGFDS-DSA1"}, {"id": "LON1", "name": "LONEENCO-LON1"}, {
+        "id": "SITE",
+        "name": "LONEENCO-SITE"
+      }, {"id": "ZXL1", "name": "LWLWCANN-ZXL1"}, {"id": "hvf20", "name": "MDTWNJ21-hvf20"}, {
+        "id": "hvf32",
+        "name": "MDTWNJ21-hvf32"
+      }, {"id": "AMD13", "name": "MEMATLAN-AMD13"}, {"id": "MIC54", "name": "MICHIGAN-MIC54"}, {
+        "id": "MAR1",
+        "name": "MNBVCXZM-MAR1"
+      }, {"id": "NCA1", "name": "NCANCANN-NCA1"}, {"id": "NFT1", "name": "NFTJSSSS-NFT1"}, {
+        "id": "GAR1",
+        "name": "NGFVSJKO-GAR1"
+      }, {"id": "NYC1", "name": "NYCMNY54-NYC1"}, {"id": "OKC1", "name": "OKCBOK55-OKC1"}, {
+        "id": "OLG1",
+        "name": "OLHOLHOL-OLG1"
+      }, {"id": "OLK1", "name": "OLKOLKLS-OLK1"}, {"id": "NIR1", "name": "ORFLMANA-NIR1"}, {
+        "id": "JAN1",
+        "name": "ORFLMATT-JAN1"
+      }, {"id": "ORL1", "name": "ORLDFLMA-ORL1"}, {"id": "PAR1", "name": "PARSFRCG-PAR1"}, {
+        "id": "PBL1",
+        "name": "PBLAPBAI-PBL1"
+      }, {"id": "mac10", "name": "PKGTESTF-mac10"}, {"id": "mac20", "name": "PKGTESTF-mac20"}, {
+        "id": "TIR2",
+        "name": "PLKINHYI-TIR2"
+      }, {"id": "IBB1", "name": "PLMKOIJU-IBB1"}, {"id": "COM1", "name": "PLMKOPIU-COM1"}, {
+        "id": "POI1",
+        "name": "PLMNJKIU-POI1"
+      }, {"id": "PLT1", "name": "PLTNCA60-PLT1"}, {"id": "POI22", "name": "POIUY123-POI22"}, {
+        "id": "DCC1",
+        "name": "POIUYTGH-DCC1"
+      }, {"id": "DCC1a", "name": "POIUYTGH-DCC1a"}, {"id": "DCC1b", "name": "POIUYTGH-DCC1b"}, {
+        "id": "DCC2",
+        "name": "POIUYTGH-DCC2"
+      }, {"id": "DCC3", "name": "POIUYTGH-DCC3"}, {"id": "IAA1", "name": "QAZXSWED-IAA1"}, {
+        "id": "QWE1",
+        "name": "QWECLLI1-QWE1"
+      }, {"id": "NUM1", "name": "QWERTYUI-NUM1"}, {"id": "RAD1", "name": "RADICAL1-RAD1"}, {
+        "id": "RJN1",
+        "name": "RJNRBZAW-RJN1"
+      }, {"id": "SAA13", "name": "SAIT1AA9-SAA13"}, {"id": "SAA14", "name": "SAIT1AA9-SAA14"}, {
+        "id": "SDD81",
+        "name": "SAIT1DD6-SDD81"
+      }, {"id": "SDD82", "name": "SAIT1DD9-SDD82"}, {"id": "SAA11", "name": "SAIT9AA2-SAA11"}, {
+        "id": "SAA80",
+        "name": "SAIT9AA3-SAA80"
+      }, {"id": "SAA12", "name": "SAIT9AF8-SAA12"}, {"id": "SCC80", "name": "SAIT9CC3-SCC80"}, {
+        "id": "ATL75",
+        "name": "SANAAIRE-ATL75"
+      }, {"id": "ICC1", "name": "SANJITAT-ICC1"}, {"id": "SCK1", "name": "SCKSCKSK-SCK1"}, {
+        "id": "EHH78",
+        "name": "SDCSHHH5-EHH78"
+      }, {"id": "SAA78", "name": "SDCTAAA1-SAA78"}, {"id": "SAX78", "name": "SDCTAXG1-SAX78"}, {
+        "id": "SBX78",
+        "name": "SDCTBXG1-SBX78"
+      }, {"id": "SEE78", "name": "SDCTEEE4-SEE78"}, {"id": "SGG78", "name": "SDCTGGG1-SGG78"}, {
+        "id": "SXB78",
+        "name": "SDCTGXB1-SXB78"
+      }, {"id": "SJJ78", "name": "SDCTJJJ1-SJJ78"}, {"id": "SKK78", "name": "SDCTKKK1-SKK78"}, {
+        "id": "SLF78",
+        "name": "SDCTLFN1-SLF78"
+      }, {"id": "SLL78", "name": "SDCTLLL1-SLL78"}, {"id": "MAD11", "name": "SDFQWGKL-MAD11"}, {
+        "id": "HGD1",
+        "name": "SDFQWHGD-HGD1"
+      }, {"id": "SBB78", "name": "SDIT1BBB-SBB78"}, {"id": "SDG78", "name": "SDIT1BDG-SDG78"}, {
+        "id": "SBU78",
+        "name": "SDIT1BUB-SBU78"
+      }, {"id": "SHH78", "name": "SDIT1HHH-SHH78"}, {"id": "SJU78", "name": "SDIT1JUB-SJU78"}, {
+        "id": "SNA1",
+        "name": "SNANTXCA-SNA1"
+      }, {"id": "SAM1", "name": "SNDGCA64-SAN1"}, {"id": "SNG1", "name": "SNGPSIAU-SNG1"}, {
+        "id": "SSA56",
+        "name": "SSIT2AA7-SSA56"
+      }, {"id": "STG1", "name": "STTGGE62-STG1"}, {"id": "STT1", "name": "STTLWA02-STT1"}, {
+        "id": "SYD1",
+        "name": "SYDNAUBV-SYD1"
+      }, {"id": "ATL99", "name": "TEESTAAI-ATL43"}, {"id": "ATL98", "name": "TEESTAAI-ATL43"}, {
+        "id": "ATL76",
+        "name": "TELEPAAI-ATL76"
+      }, {"id": "ABC14", "name": "TESAAISA-ABC14"}, {"id": "TAT33", "name": "TESAAISA-TAT33"}, {
+        "id": "TAT34",
+        "name": "TESAAISB-TAT34"
+      }, {"id": "TAT37", "name": "TESAAISD-TAT37"}, {"id": "ATL62", "name": "TESSASCH-ATL62"}, {
+        "id": "TLP1",
+        "name": "TLPNXM18-TLP1"
+      }, {"id": "SAN13", "name": "TOKYJPFA-SAN13"}, {"id": "TOK1", "name": "TOKYJPFA-TOK1"}, {
+        "id": "TOL1",
+        "name": "TOLDOH21-TOL1"
+      }, {"id": "TOR1", "name": "TOROONXN-TOR1"}, {"id": "TOY1", "name": "TORYONNZ-TOY1"}, {
+        "id": "ATL35",
+        "name": "TTESSAAI-ATL35"
+      }, {"id": "TUF1", "name": "TUFCLLI1-TUF1"}, {"id": "SAI1", "name": "UBEKQLPD-SAI1"}, {
+        "id": "UUU4",
+        "name": "UUUAAAUU-UUU4"
+      }, {"id": "YYY1", "name": "UUUAIAAI-YYY1"}, {"id": "BAN1", "name": "VSDKYUTP-BAN1"}, {
+        "id": "WAS1",
+        "name": "WASHDCSW-WAS1"
+      }, {"id": "APP1", "name": "WBHGTYUI-APP1"}, {"id": "SUL2", "name": "WERTYUJK-SUL2"}, {
+        "id": "DEF2",
+        "name": "WSBHGTYL-DEF2"
+      }, {"id": "DHA12", "name": "WSXEDECF-DHA12"}, {"id": "MNT11", "name": "WSXEFBTH-MNT11"}, {
+        "id": "RAJ1",
+        "name": "YGBIJNLQ-RAJ1"
+      }, {"id": "JAG1", "name": "YUDFJULP-JAG1"}, {"id": "ZEN1", "name": "ZENCLLI1-ZEN1"}, {
+        "id": "ZOG1",
+        "name": "ZOGASTRO-ZOG1"
+      }, {"id": "SDE1", "name": "ZXCVBNMA-SDE1"}, {"id": "SIP1", "name": "ZXCVBNMK-SIP1"}, {
+        "id": "JUL1",
+        "name": "ZXCVBNMM-JUL1"
+      }, {"id": "ERT1", "name": "ertclli1-ERT1"}, {"id": "IOP1", "name": "iopclli1-IOP1"}, {
+        "id": "OPA1",
+        "name": "opaclli1-OPA1"
+      }, {"id": "RAI1", "name": "poiuytre-RAI1"}, {"id": "PUR1", "name": "purelyde-PUR1"}, {
+        "id": "RTY1",
+        "name": "rtyclli1-RTY1"
+      }, {"id": "SDF1", "name": "sdfclli1-SDF1"}, {"id": "SSW56", "name": "ss8126GT-SSW56"}, {
+        "id": "UIO1",
+        "name": "uioclli1-UIO1"
+      }],
       "categoryParameters": {
         "owningEntityList": [{
           "id": "aaa1",
@@ -1457,4 +1775,64 @@ function getStore() {
       "type": "UPDATE_LCP_REGIONS_AND_TENANTS"
     }
   }
+}
+
+function getNetworkModel(){
+  return {
+    "customizationUuid":"94fdd893-4a36-4d70-b16a-ec29c54c184f",
+    "name":"ExtVL",
+    "version":"37.0",
+    "description":"ECOMP generic virtual link (network) base type for all other service-level and global networks",
+    "uuid":"ddc3f20c-08b5-40fd-af72-c6d14636b986",
+    "invariantUuid":"379f816b-a7aa-422f-be30-17114ff50b7c",
+    "max":1,
+    "min":0,
+    "isEcompGeneratedNaming":false,
+    "type":"VL",
+    "modelCustomizationName":"ExtVL 0",
+    "roles":["network role 1"," network role 2"],
+    "properties":{
+      "network_role":"network role 1, network role 2",
+      "network_assignments":
+        "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
+      "exVL_naming":"{ecomp_generated_naming=true}","network_flows":"{is_network_policy=false, is_bound_to_vpn=false}",
+      "network_homing":"{ecomp_selected_instance_node_target=false}"
+    }
+  };
+
+}
+
+function getNetworkInstance() {
+  return {
+    "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+    "modelId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
+    "modelUniqueId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+    "missingData": true,
+    "id": "NETWORK4_INSTANCE_ID",
+    "action": "None",
+    "orchStatus": "Created",
+    "provStatus": "preprov",
+    "inMaint": false,
+    "instanceId": "NETWORK4_INSTANCE_ID",
+    "instanceType": "CONTRAIL30_HIMELGUARD",
+    "instanceName": "NETWORK4_INSTANCE_NAME",
+    "name": "NETWORK4_INSTANCE_NAME",
+    "modelName": "ExtVL 0",
+    "type": "VL",
+    "isEcompGeneratedNaming": false,
+    "networkStoreKey": "NETWORK4_INSTANCE_ID",
+    "typeName": "N",
+    "menuActions": {"edit": {}, "showAuditInfo": {}, "duplicate": {}, "remove": {}, "delete": {}, "undoDelete": {}},
+    "isFailed": false,
+    "statusMessage": "",
+    "statusProperties": [{"key": "Prov Status:", "value": "preprov", "testId": "provStatus"}, {
+      "key": "Orch Status:",
+      "value": "Created",
+      "testId": "orchStatus"
+    }],
+    "trackById": "1wvr73xl999",
+    "parentType": "",
+    "componentInfoType": "Network",
+    "errors": {}
+  };
 }

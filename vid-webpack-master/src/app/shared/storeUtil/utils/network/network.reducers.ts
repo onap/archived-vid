@@ -2,8 +2,8 @@ import {Action} from "redux";
 import * as _ from "lodash";
 import {NetworkInstance} from "../../../models/networkInstance";
 import {
-  CreateNetworkInstanceAction, DeleteActionNetworkInstanceAction,
-  NetworkActions, UndoDeleteActionNetworkInstanceAction,
+  CreateNetworkInstanceAction,
+  NetworkActions,
   UpdateNetworkCollectionFunction,
   UpdateNetworkInstanceAction
 } from "./network.actions";
@@ -11,6 +11,8 @@ import {ServiceInstance} from "../../../models/serviceInstance";
 import {calculateNextUniqueModelName} from "../vnf/vnf.reducers";
 import {ServiceState} from "../main.reducer";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import {deleteFirstLevel, updateServiceValidationCounter} from "../reducersHelper";
+import {ActionOnFirstLevel} from "../firstLevel/firstLevel.actions";
 
 
 export function networkReducer(state: ServiceState , action: Action) : ServiceState {
@@ -58,23 +60,18 @@ export function networkReducer(state: ServiceState , action: Action) : ServiceSt
       Object.assign(state, {'networkFunctions': networkFunctionReduxObj});
       return Object.assign({}, state);
     }
-    case NetworkActions.DELETE_ACTION_NETWORK_INSTANCE : {
-      let newState = _.cloneDeep(state);
-      let network = newState.serviceInstance[(<DeleteActionNetworkInstanceAction>action).serviceId].networks[(<DeleteActionNetworkInstanceAction>action).networkStoreKey];
-      let oldAction = network.action;
-      if(oldAction === ServiceInstanceActions.None_Delete || oldAction === ServiceInstanceActions.Update_Delete) return newState;
-      newState.serviceInstance[(<DeleteActionNetworkInstanceAction>action).serviceId].networks[(<DeleteActionNetworkInstanceAction>action).networkStoreKey].action = (oldAction + '_Delete') as ServiceInstanceActions;
-      updateServiceValidationCounter(newState, network['isMissingData'], false , (<DeleteActionNetworkInstanceAction>action).serviceId);
 
-      return newState;
+    case NetworkActions.DELETE_ACTION_NETWORK_INSTANCE : {
+      return deleteFirstLevel(state, <ActionOnFirstLevel>action,true);
+
     }
 
     case NetworkActions.UNDO_DELETE_ACTION_NETWORK_INSTANCE : {
       let newState = _.cloneDeep(state);
-      let network = newState.serviceInstance[(<UndoDeleteActionNetworkInstanceAction>action).serviceId].networks[(<UndoDeleteActionNetworkInstanceAction>action).networkStoreKey];
+      let network = newState.serviceInstance[(<ActionOnFirstLevel>action).serviceId].networks[(<ActionOnFirstLevel>action).storeKey];
       let oldState = network.action;
-      newState.serviceInstance[(<UndoDeleteActionNetworkInstanceAction>action).serviceId].networks[(<UndoDeleteActionNetworkInstanceAction>action).networkStoreKey].action = (oldState.split('_')[0]) as ServiceInstanceActions;
-      updateServiceValidationCounter(newState, network['isMissingData'], false , (<DeleteActionNetworkInstanceAction>action).serviceId);
+      newState.serviceInstance[(<ActionOnFirstLevel>action).serviceId].networks[(<ActionOnFirstLevel>action).storeKey].action = (oldState.split('_')[0]) as ServiceInstanceActions;
+      updateServiceValidationCounter(newState, network['isMissingData'], false , (<ActionOnFirstLevel>action).serviceId);
       return newState;
     }
   }
@@ -91,12 +88,5 @@ const updateUniqueNames = (oldName : string, newName : string, serviceInstance :
 };
 
 
-const updateServiceValidationCounter = (newState: any, oldValidationState: boolean, newValidationState: boolean, serviceUuid: string) => {
-  if (oldValidationState && !newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter--;
-  } else if (!oldValidationState && newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter++;
-  }
-};
 
 

@@ -18,6 +18,12 @@ import {DuplicateService} from "../duplicate/duplicate.service";
 import {SdcUiServices} from "onap-ui-angular";
 import {IframeService} from "../../../shared/utils/iframe.service";
 import {ComponentInfoService} from "../component-info/component-info.service";
+import {PnfModelInfo} from "./models/pnf/pnf.model.info";
+import {CollectionResourceModelInfo} from "./models/collectionResource/collectionResource.model.info";
+import {AaiService} from "../../../shared/services/aaiService/aai.service";
+import {VrfModelInfo} from "./models/vrf/vrf.model.info";
+import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
+import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
 
 @Injectable()
 export class ObjectToTreeService {
@@ -33,6 +39,9 @@ export class ObjectToTreeService {
               private _modalService: SdcUiServices.ModalService,
               private _iframeService : IframeService,
               private _componentInfoService : ComponentInfoService,
+              private _networkStepService : NetworkStepService,
+              private _vpnStepService : VpnStepService,
+              private _aaiService : AaiService,
               private _store : NgRedux<AppState>) {
   }
 
@@ -45,7 +54,10 @@ export class ObjectToTreeService {
   getFirstLevelOptions(): ILevelNodeInfo[] {
     return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._store)
       , new NetworkModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._networkPopupService, this._duplicateService, this._modalService, this._iframeService,  this._store),
+      new PnfModelInfo(),
+      new VrfModelInfo(this._store, this._sharedTreeService, this._dialogService, this._iframeService, this._networkStepService, this._vpnStepService),
+      new CollectionResourceModelInfo(this._store, this._sharedTreeService),
       new ConfigurationModelInfo(this._dynamicInputsService, this._sharedTreeService),
-      new VnfGroupingModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vnfGroupPopupService, this._iframeService, this._store)];
+      new VnfGroupingModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vnfGroupPopupService, this._iframeService, this._aaiService, this._store)];
   };
 }

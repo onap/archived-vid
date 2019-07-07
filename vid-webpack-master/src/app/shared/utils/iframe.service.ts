@@ -16,4 +16,19 @@ export class IframeService {
       parentBodyElement.classList.remove("modal-open");
     }
   }
+
+
+  addFullScreen(){
+    let parentBodyElement =  parent.document.getElementsByClassName('service-model-content')[0];
+    if (parentBodyElement)  {
+      parentBodyElement.classList.add("full-screen");
+    }
+  }
+
+  removeFullScreen(){
+    let parentBodyElement =  parent.document.getElementsByClassName('service-model-content')[0];
+    if (parentBodyElement)  {
+      parentBodyElement.classList.remove("full-screen");
+    }
+  }
 }

@@ -1,5 +1,7 @@
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../available-models-tree/available-models-tree.service";
+import {ComponentInfoModel, ComponentInfoType} from "../../component-info/component-info-model";
+import {ModelInformationItem} from "../../../../shared/components/model-information/model-information.component";
 
 export interface ILevelNodeInfo {
   /** Name of the key inside the serviceHierarchy object **/
@@ -9,13 +11,12 @@ export interface ILevelNodeInfo {
   type: string;
 
   /** Child name inside the of the serviceHierarchy object (if exist) **/
-  childName?: string;
-
-  /** Child type the of object (if exist) **/
-  childType?: string;
+  childNames?: string[];
 
   /** model type name **/
   typeName?: string;
+
+  componentInfoType? :ComponentInfoType;
 
   /** is instance failed **/
   isFailed?: boolean;
@@ -86,7 +87,7 @@ export interface ILevelNodeInfo {
   /************************************
    * return child model option object
    ***********************************/
-  getNextLevelObject(): any;
+  getNextLevelObject(type?:string): any;
 
   /***********************************************************
    * open popup
@@ -116,6 +117,10 @@ export interface ILevelNodeInfo {
    ************************************************************/
   getMenuAction(node: ITreeNode, serviceModelId: string): { [methodName: string]: { method: Function, visible: Function, enable: Function } };
 
-
-  onSelectedNode(node : ITreeNode): void
+   /*******************************************************************************************
+   * should generate array of node information
+   * @param model - node model
+   * @param node - current ITrees node
+   *****************************************************************************************/
+  getInfo?(model, instance): ModelInformationItem[];
 }

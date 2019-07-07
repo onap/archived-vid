@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormPopupDetails} from "../../models/formControlModels/formPopupDetails.model";
 import {DialogComponent, DialogService} from "ng2-bootstrap-modal";
 import {FormGroup} from "@angular/forms";
@@ -82,7 +82,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
           this._genericFormPopupService.initReduxOnCreateNewService().then((serviceModelId : string)=>{
             this.uuidData = <any>{
               bulkSize : 1,
-              isMacro : this._store.getState().service.serviceHierarchy[serviceModelId].service.instantiationType === 'Macro',
+              isMacro : this._store.getState().service.serviceHierarchy[serviceModelId].service.vidNotions.instantiationType === 'Macro',
               type : PopupType.SERVICE,
               serviceId: serviceModelId,
               popupService: this._servicePopupService,
@@ -113,7 +113,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
         this.closeDialog(that);
       });
 
-      this.uuidData['isMacro'] = this._store.getState().service.serviceHierarchy[this.uuidData['serviceId']].service.instantiationType === 'Macro';
+      this.uuidData['isMacro'] = this._store.getState().service.serviceHierarchy[this.uuidData['serviceId']].service.vidNotions.instantiationType === 'Macro';
       this.formPopupDetails = this._genericFormPopupService.getGenericFormDetails(this.uuidData, this.node, this.isUpdateMode);
     }
   }
@@ -133,7 +133,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
       }
     }
 
-    return formPopupDetails.formControlList.filter((item : FormControlModel) =>item.type === 'DROPDOWN' && item['hasEmptyOptions']).length > 0
+    return formPopupDetails.formControlList.filter((item : FormControlModel) => item.type === 'DROPDOWN' && item['hasEmptyOptions'] && item.isRequired()).length > 0
   }
 }
 

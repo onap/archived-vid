@@ -1,14 +1,15 @@
 import {VnfInstance} from "../../../models/vnfInstance";
 import {
   CreateVnfInstanceAction,
-  DeleteActionVnfInstanceAction, RemoveVnfInstanceAction,
-  UndoDeleteActionVnfInstanceAction, UpdateVnfPosition,
+  RemoveVnfInstanceAction,
+  UpdateVnfPosition,
   VNFActions
 } from "./vnf.actions";
 import {vnfReducer} from "./vnf.reducers";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import {ActionOnFirstLevel} from "../firstLevel/firstLevel.actions";
 
-describe('networkReducer', () => {
+describe('vnfReducer', () => {
   test('#UPDATE_VNF_POSITION', () => {
     let vnfInstance: VnfInstance = new VnfInstance();
     vnfInstance.isMissingData = false;
@@ -70,9 +71,10 @@ describe('networkReducer', () => {
             }
           }
         }},
-      <DeleteActionVnfInstanceAction>{
+      <ActionOnFirstLevel>{
         type: VNFActions.DELETE_ACTION_VNF_INSTANCE,
-        vnfStoreKey: 'vnfStoreKey',
+        firstLevelName: 'vnfs',
+        storeKey: 'vnfStoreKey',
         serviceId: 'serviceModelId'
       }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'];
 
@@ -91,9 +93,10 @@ describe('networkReducer', () => {
             }
           }
         }},
-      <UndoDeleteActionVnfInstanceAction>{
+      <ActionOnFirstLevel>{
         type: VNFActions.UNDO_DELETE_ACTION_VNF_INSTANCE,
-        vnfStoreKey: 'vnfStoreKey',
+        storeKey: 'vnfStoreKey',
+        firstLevelName: 'vnfs',
         serviceId: 'serviceModelId'
       }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'];
 

@@ -89,13 +89,13 @@ export class NetworkPopupService implements GenericPopupInterface {
         new ModelInformationItem("Invariant UUID", "invariantUuid", [this.model.invariantUuid], Constants.ServicePopup.TOOLTIP_INVARIANT_UUID, true),
         new ModelInformationItem("Service type", "serviceType", [this.serviceModel.serviceType]),
         new ModelInformationItem("Service role", "serviceRole", [this.serviceModel.serviceRole]),
-        new ModelInformationItem("Network roles", "network-role", this.model.roles, "", false)
+        new ModelInformationItem("Network roles", "role", this.model.roles, "", false)
       ];
     });
   }
 
   getControls(serviceId: string, networkName: string, networkStoreKey: string, isUpdateMode: boolean) {
-    if (this._store.getState().service.serviceHierarchy[serviceId].service.instantiationType === 'Macro') {
+    if (this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
       return this._networkControlGenerator.getMacroFormControls(serviceId, networkStoreKey, networkName, isUpdateMode);
     } else {
       return this._networkControlGenerator.getAlaCarteFormControls(serviceId, networkStoreKey, networkName, isUpdateMode);

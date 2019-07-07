@@ -96,11 +96,11 @@ describe('Permissions ',  ()=> {
     cy.readFile('../vid-automation/src/test/resources/aaiGetInstanceTopology/getServiceInstanceTopologyResult.json').then((res) => {
 
       // Adding VNF with isFailed.
-      res.vnfs["2017-388_ADIOD-vPE 0"].isFailed = true;
-      res.vnfs["2017-488_ADIOD-vPE 0"].isFailed = true;
+      res.vnfs["2017-388_PASQUALE-vPE 0"].isFailed = true;
+      res.vnfs["2017-488_PASQUALE-vPE 0"].isFailed = true;
 
       // Adding VFModule with isFailed.
-      res.vnfs["2017-488_ADIOD-vPE 0"].vfModules["2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0"]["2017488_adiodvpe0..2017488AdiodVpe..ADIOD_base_vPE_BV..module-0uvfot"].isFailed = true;
+      res.vnfs["2017-488_PASQUALE-vPE 0"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"]["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot"].isFailed = true;
 
       jsonBuilderAndMock.basicJson(
         res,
