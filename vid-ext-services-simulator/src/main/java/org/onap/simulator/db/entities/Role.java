@@ -1,12 +1,9 @@
 package org.onap.simulator.db.entities;
 
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "fn_role")
 public class Role {
