@@ -1,9 +1,9 @@
 package org.onap.simulator.db.entities;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity(name = "fn_role_function")
 public class RoleFunction implements Serializable {

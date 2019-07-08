@@ -7,7 +7,7 @@
         "simple"
       ]
     },
-    "body": "{\"start\": [\"business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances\"],\"query\": \"query/vnf-topology-fromServiceInstance\"}"
+    "body": "{\"start\": [\"business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances\"],\"query\": \"query/vnf-topology-fromServiceInstance\"}"
   },
   "simulatorResponse": {
     "responseCode": 200,
@@ -16,7 +16,7 @@
         {
           "id": "3400916992",
           "node-type": "service-instance",
-          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/66b13cb4-b575-449f-aa45-ffbfe005c7b1",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/66b13cb4-b575-449f-aa45-ffbfe005c7b1",
           "properties": {
             "service-instance-id": "66b13cb4-b575-449f-aa45-ffbfe005c7b1",
             "service-instance-name": "CHARLOTTE_preload_1710_0914",
@@ -29,7 +29,7 @@
             {
               "id": "10207440",
               "node-type": "service-subscription",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
             },
             {
               "id": "3481829392",
@@ -41,7 +41,7 @@
         {
           "id": "3771572432",
           "node-type": "service-instance",
-          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/f195837b-ef28-42c3-8dea-47ad37eaed95",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/f195837b-ef28-42c3-8dea-47ad37eaed95",
           "properties": {
             "service-instance-id": "f195837b-ef28-42c3-8dea-47ad37eaed95",
             "service-instance-name": "CHARLOTTE_preload_1710_0914_0920",
@@ -54,7 +54,7 @@
             {
               "id": "10207440",
               "node-type": "service-subscription",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
             },
             {
               "id": "3484520464",
@@ -66,7 +66,7 @@
         {
           "id": "3775807704",
           "node-type": "service-instance",
-          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/9ad4ac55-a5e0-4b49-95c0-b2d846abf700",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/9ad4ac55-a5e0-4b49-95c0-b2d846abf700",
           "properties": {
             "service-instance-id": "9ad4ac55-a5e0-4b49-95c0-b2d846abf700",
             "service-instance-name": "CHARLOTTE_preload_1710_0914_100417",
@@ -79,7 +79,7 @@
             {
               "id": "10207440",
               "node-type": "service-subscription",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
             },
             {
               "id": "3783459064",
@@ -91,7 +91,7 @@
         {
           "id": "4178862184",
           "node-type": "service-instance",
-          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/599c7247-b083-447c-b6b1-0cdd5170dfd2",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/599c7247-b083-447c-b6b1-0cdd5170dfd2",
           "properties": {
             "service-instance-id": "599c7247-b083-447c-b6b1-0cdd5170dfd2",
             "service-instance-name": "CHARLOTTE_preload_1710_0914_1010",
@@ -104,7 +104,7 @@
             {
               "id": "10207440",
               "node-type": "service-subscription",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
             },
             {
               "id": "3892133896",
@@ -116,7 +116,7 @@
         {
           "id": "3008335920",
           "node-type": "service-instance",
-          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08",
           "properties": {
             "service-instance-id": "97315a05-e6f3-4c47-ae7e-d850c327aa08",
             "service-instance-name": "CHARLOTTE_preload_1710_0914_0927",
@@ -129,7 +129,7 @@
             {
               "id": "10207440",
               "node-type": "service-subscription",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
             },
             {
               "id": "3418898432",
@@ -179,7 +179,7 @@
             {
               "id": "3400916992",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/66b13cb4-b575-449f-aa45-ffbfe005c7b1"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/66b13cb4-b575-449f-aa45-ffbfe005c7b1"
             },
             {
               "id": "3477385312",
@@ -254,7 +254,7 @@
             {
               "id": "3771572432",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/f195837b-ef28-42c3-8dea-47ad37eaed95"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/f195837b-ef28-42c3-8dea-47ad37eaed95"
             }
           ]
         },
@@ -284,7 +284,7 @@
             {
               "id": "3775807704",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/9ad4ac55-a5e0-4b49-95c0-b2d846abf700"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/9ad4ac55-a5e0-4b49-95c0-b2d846abf700"
             }
           ]
         },
@@ -314,7 +314,7 @@
             {
               "id": "4178862184",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/599c7247-b083-447c-b6b1-0cdd5170dfd2"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/599c7247-b083-447c-b6b1-0cdd5170dfd2"
             }
           ]
         },
@@ -349,7 +349,7 @@
             {
               "id": "3008335920",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
             },
             {
               "id": "3477385312",
@@ -389,7 +389,7 @@
             {
               "id": "3008335920",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
             },
             {
               "id": "3477385312",
@@ -429,7 +429,7 @@
             {
               "id": "3008335920",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
             },
             {
               "id": "3477385312",
@@ -504,7 +504,7 @@
             {
               "id": "3008335920",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
             },
             {
               "id": "3477385312",
@@ -579,7 +579,7 @@
             {
               "id": "3008335920",
               "node-type": "service-instance",
-              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vFlowLogic/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+              "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
             },
             {
               "id": "3477385312",

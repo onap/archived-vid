@@ -2,7 +2,7 @@
   {
     "simulatorRequest": {
       "method": "GET",
-      "path": "/ONAPPORTAL/auxapi/v[0-9]+/getSessionSlotCheckInterval"
+      "path": "/(ONAPPORTAL|ecompportal_att)/auxapi/v[0-9]+/getSessionSlotCheckInterval"
     },
     "simulatorResponse": {
       "responseCode": 200,
@@ -12,7 +12,7 @@
   {
     "simulatorRequest": {
       "method": "POST",
-      "path": "/ONAPPORTAL/auxapi//extendSessionTimeOuts"
+      "path": "/(ONAPPORTAL|ecompportal_att)/auxapi//extendSessionTimeOuts"
     },
     "simulatorResponse": {
       "responseCode": 200,
@@ -22,7 +22,7 @@
   {
     "simulatorRequest": {
       "method": "GET",
-      "path": "/ONAPPORTAL/auxapi/v[0-9]+/getSessionSlotCheckInterval"
+      "path": "/(ONAPPORTAL|ecompportal_att)/auxapi/v[0-9]+/getSessionSlotCheckInterval"
     },
     "simulatorResponse": {
       "responseCode": 200,
@@ -32,7 +32,7 @@
   {
     "simulatorRequest": {
       "method": "POST",
-      "path": "/ONAPPORTAL/auxapi/extendSessionTimeOuts"
+      "path": "/(ONAPPORTAL|ecompportal_att)/auxapi/extendSessionTimeOuts"
     },
     "simulatorResponse": {
       "responseCode": 200,
@@ -42,7 +42,7 @@
   {
     "simulatorRequest": {
       "method": "GET",
-      "path": "/ONAPPORTAL/auxapi/context/get_user"
+      "path": "/(ONAPPORTAL|ecompportal_att)/auxapi/context/get_user"
     },
     "simulatorResponse": {
       "responseCode": 200,
