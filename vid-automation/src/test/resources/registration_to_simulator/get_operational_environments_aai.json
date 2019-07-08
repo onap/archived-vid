@@ -10,7 +10,7 @@
         "operational-environment-id": "UUID_of_Operational_Environment",
         "operational-environment-name": "Op Env Name",
         "operational-environment-type": "VNF",
-        "operational-environment-status": "Activate",
+        "operational-environment-status": "ACTIVE",
         "tenant-context": "Test",
         "workload-context": "VNF_Development",
         "resource-version": "1505228226913",
@@ -39,7 +39,7 @@
           "operational-environment-id": "UUID of ECOMP Operational Environment",
           "operational-environment-name": "ECOMP Env Name",
           "operational-environment-type": "ONAP",
-          "operational-environment-status": "Activate",
+          "operational-environment-status": "ACTIVE",
           "tenant-context": "ECOMP Test",
           "workload-context": "ECOMP_Development",
           "resource-version": "1505228226912"

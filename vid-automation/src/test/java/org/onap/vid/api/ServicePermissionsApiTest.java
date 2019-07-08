@@ -1,17 +1,18 @@
 package org.onap.vid.api;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
 import com.google.common.collect.ImmutableMap;
-import java.util.Map;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.model.User;
 import vid.automation.test.services.SimulatorApi;
+
+import java.util.Map;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 public class ServicePermissionsApiTest extends BaseApiTest {
 

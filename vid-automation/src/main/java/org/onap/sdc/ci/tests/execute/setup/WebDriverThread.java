@@ -93,11 +93,7 @@ public class WebDriverThread {
 					cap.setCapability("browserName","firefox");
 					cap.setCapability(FirefoxDriver.PROFILE, initFirefoxProfile());
 					cap.setCapability(MARIONETTE_CAPABILITY, true);
-					
-			        firefoxProfile.setPreference("network.proxy.type", 2);
-					firefoxProfile.setPreference("network.proxy.autoconfig_url", "http://emea.onap.org:8001/");
-					firefoxProfile.setPreference("network.proxy.no_proxies_on", "localhost");
-					
+
 					webdriver = new FirefoxDriver(cap);
 				}								
 			} else {

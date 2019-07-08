@@ -1,0 +1,70 @@
+{
+  "service": {
+    "vidNotions": {
+      "instantiationUI": "serviceWithCollectionResource",
+      "modelCategory": "other",
+      "viewEditUI": "serviceWithCollectionResource",
+      "instantiationType": "Macro"
+    },
+    "uuid":"b0650fa9-145f-4c4a-98d9-c035f9cc72b1",
+    "invariantUuid":"fedbf04e-4af8-4e0f-b5f6-15eb8a68579a",
+    "name":"Dror_SVC_Network_Collector",
+    "version":"3.0",
+    "toscaModelURL":null,
+    "category":"Network L1-3",
+    "serviceType":"INFRASTRUCTURE",
+    "serviceRole":"","description":"VT feature CR part Dror",
+    "serviceEcompNaming":"true",
+    "instantiationType":"Macro",
+    "inputs":{}
+  },
+  "isDirty" : false,
+  "vnfs": {},
+  "vrfs": { },
+  "networks": {},
+  "collectionResources": {
+    "Dror_CR_Network_1810 0": {
+      "uuid":"648d4e9f-74dc-46f2-aab4-c114ee8df24b",
+      "invariantUuid":"34f62a07-17c2-4f0d-a50e-3ad516e04658",
+      "description":"Testing VT feature on 1810. CR part. Dror",
+      "name":"Dror_CR_Network_1810","version":"4.0",
+      "customizationUuid":"a5e69ff2-119c-4aca-9c0c-fe653f9e419e",
+      "inputs":{},
+      "commands":{},
+      "properties":{
+        "dror_cr_network_1810..NetworkCollection..0_network_collection_function":"vTSBC Customer Landing Network Collection",
+        "cr_role":"SUB-INTERFACE",
+        "cr_type":"L3-NETWORK",
+        "dror_cr_network_1810..NetworkCollection..0_network_collection_description":"Landing Networks for vTSBC Customer",
+        "ecomp_generated_naming":"false","dror_cr_network_1810..Fixed..1_quantity":"10"
+      },
+      "type":"CR",
+      "category":"Generic",
+      "subcategory":"Infrastructure",
+      "resourceVendor":"AT&T",
+      "resourceVendorRelease":"0.1",
+      "resourceVendorModelNumber":"",
+      "customizationUUID":"a5e69ff2-119c-4aca-9c0c-fe653f9e419e",
+      "networksCollection":{
+        "dror_cr_network_1810..NetworkCollection..0":{
+          "uuid":"0c5e0919-3a6e-47dd-98e9-ad7c55c3552f",
+          "invariantUuid":"2434c82c-8607-46d2-a4fd-da91a75294e1",
+          "name":"dror_cr_network_1810..NetworkCollection..0",
+          "version":"1",
+          "networkCollectionProperties":
+          {
+            "networkCollectionFunction":"vTSBC Customer Landing Network Collection",
+            "networkCollectionDescription":"Landing Networks for vTSBC Customer"
+          }
+        }
+      }
+    }
+  },
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {}
+}

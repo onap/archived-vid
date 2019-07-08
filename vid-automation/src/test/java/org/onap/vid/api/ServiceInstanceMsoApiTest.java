@@ -2,8 +2,6 @@ package org.onap.vid.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import org.apache.commons.text.StringEscapeUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfiguration;
@@ -13,8 +11,9 @@ import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndClou
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
-import vid.automation.test.infra.FeatureTogglingTest;
-import vid.automation.test.infra.Features;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
 
@@ -64,7 +63,6 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
     }
 
     @Test
-    @FeatureTogglingTest(Features.FLAG_UNASSIGN_SERVICE)
     public void testUnassignServiceInstanceSucceed() throws Exception {
         String requestBody = TestUtils.convertRequest(objectMapper, DELETE_AND_UNASSIGN_SERVICE_REQUEST_DETAILS);
         callMsoWithFineRequest(UNASSIGN_OK_JSON, ImmutableMap.of(), buildUri(MSO_UNASSIGN_SERVICE_INSTANCE), requestBody,
@@ -73,7 +71,6 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
 
 
     @Test
-    @FeatureTogglingTest(Features.FLAG_UNASSIGN_SERVICE)
     public void testDeleteServiceInstanceSucceed() throws Exception {
         String requestBody = TestUtils.convertRequest(objectMapper, DELETE_AND_UNASSIGN_SERVICE_REQUEST_DETAILS);
         callMsoWithFineRequest(UNASSIGN_OK_JSON, ImmutableMap.of(
@@ -82,16 +79,7 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
                 HttpStatus.ACCEPTED.value(), EXPECTED_SUCCESS_MSO_RESPONSE, HttpMethod.POST);
     }
 
-    @Test
-    @FeatureTogglingTest(value = Features.FLAG_UNASSIGN_SERVICE, flagActive = false)
-    public void testUnassignServiceInstanceBecomesDelete() throws Exception {
-        String requestBody = TestUtils.convertRequest(objectMapper, DELETE_AND_UNASSIGN_SERVICE_REQUEST_DETAILS);
-        callMsoWithFineRequest(DELETE_SERVICE_REQUEST_DETAILS, ImmutableMap.of(), buildUri(MSO_DELETE_SERVICE_INSTANCE), requestBody,
-                HttpStatus.ACCEPTED.value(), EXPECTED_SUCCESS_MSO_RESPONSE, HttpMethod.POST);
-    }
-
     @Test(dataProvider = "errorCodes")
-    @FeatureTogglingTest(Features.FLAG_UNASSIGN_SERVICE)
     public void testUnassignServiceInstanceFailed(int errorCode) throws IOException {
         String requestBody = TestUtils.convertRequest(objectMapper, DELETE_AND_UNASSIGN_SERVICE_REQUEST_DETAILS);
         callMsoWithSimulatedErrorResponse(DELETE_OR_UNASSIGN_FAILED_JSON,
@@ -101,7 +89,6 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
     }
 
     @Test(dataProvider = "errorCodes")
-    @FeatureTogglingTest(Features.FLAG_UNASSIGN_SERVICE)
     public void testDeleteServiceInstanceFailed(int errorCode) throws IOException {
         String requestBody = TestUtils.convertRequest(objectMapper, DELETE_AND_UNASSIGN_SERVICE_REQUEST_DETAILS);
         callMsoWithSimulatedErrorResponse(DELETE_OR_UNASSIGN_FAILED_JSON,

@@ -1,7 +1,8 @@
 package org.onap.simulator.presetGenerator.presets.BasePresets;
 
-import java.util.Map;
 import vid.automation.test.infra.Features;
+
+import java.util.Map;
 
 /**
  * Created by itzikliderman on 27/12/2017.
@@ -31,6 +32,13 @@ public abstract class BaseMSOPreset extends BasePreset {
     protected String addCloudOwnerIfNeeded() {
         return Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST.isActive() ?
                 "\"cloudOwner\": \""+cloudOwner+"\"," : "";
+    }
+
+    protected String addPlatformIfNeeded(String platform) {
+        return platform != "" ?
+                " \"platform\": {" +
+                        " \"platformName\": \""+platform+"\"," +
+                        "}," : "";
     }
 
     @Override

@@ -11,7 +11,6 @@ import vid.automation.test.services.SimulatorApi;
 
 import java.io.IOException;
 
-import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 

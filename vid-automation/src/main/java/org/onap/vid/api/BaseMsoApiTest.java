@@ -1,5 +1,6 @@
 package org.onap.vid.api;
 
+//import com.automation.common.report_portal_integration.annotations.Step;
 import com.google.common.collect.ImmutableMap;
 import org.json.JSONException;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
@@ -82,6 +83,7 @@ public class BaseMsoApiTest extends BaseApiTest {
         }
     }
 
+    //@Step(description = "method: ${method}, uri: ${uri}, body: ${body}")
     protected MsoResponseWrapper2 callMsoForResponseWrapper(HttpMethod method, String uri, String body) {
         MsoResponseWrapper2 responseWrapper;
         switch (method) {

@@ -1,0 +1,139 @@
+{
+  "action":"Delete",
+  "isDirty":true,
+  "vnfs":{
+
+  },
+  "vrfs":{
+    "VRF_INSTANCE_ID":{
+      "action":"None_Delete",
+      "cloudOwner":null,
+      "inMaint":false,
+      "instanceId":"VRF_INSTANCE_ID",
+      "instanceName":"VRF_INSTANCE_NAME",
+      "instanceType":null,
+      "lcpCloudRegionId":"AAIAIC25",
+      "legacyRegion":null,
+      "lineOfBusiness":null,
+      "modelInfo":{
+        "modelVersionId":"9cac02be-2489-4374-888d-2863b4511a59",
+        "modelInvariantId":"b67a289b-1688-496d-86e8-1583c828be0a",
+        "modelCustomizationId":"dd024d73-9bd1-425d-9db5-476338d53433",
+        "modelName":"VRF Entry Configuration",
+        "modelVersion":"5.0",
+        "modelType":"collection"
+      },
+      "vpns":{
+        "VPN_INSTANCE_ID":{
+          "action":"None",
+          "instanceId":"VPN_INSTANCE_ID",
+          "trackById":"VPN_INSTANCE_ID",
+          "instanceName":"VPN_INSTANCE_NAME",
+          "instanceType":"SERVICE-INFRASTRUCTURE",
+          "orchStatus":"Active",
+          "provStatus":"prov",
+          "inMaint":false,
+          "modelInfo":{
+            "modelVersionId":"vpn-model-version-id",
+            "modelInvariantId":"vpn-model-invariant-id",
+            "modelCustomizationId":"vpn-model-customization-id",
+            "modelName":"vf_vEPDG",
+            "modelVersion":"6.0",
+            "modelType":"vpnBinding"
+          },
+          "routeTargets":[
+
+          ],
+          "uuid":"vpn-model-version-id"
+        }
+      },
+      "networks":{
+        "NETWORK_INSTANCE_ID":{
+          "action":"None",
+          "boundToVpn":true,
+          "inMaint":false,
+          "instanceId":"NETWORK_INSTANCE_ID",
+          "instanceName":"NETWORK_INSTANCE_NAME",
+          "instanceType":"SR-IOV-PROVIDER2-2",
+          "modelInfo":{
+            "modelVersionId":"network-instance-model-version-id",
+            "modelInvariantId":"network-instance-model-invariant-id",
+            "modelCustomizationId":"network-instance-model-customization-id",
+            "modelType":"network",
+            "modelVersion":"6.0",
+            "modelName":"Network Entry"
+          },
+          "orchStatus":"Assigned",
+          "provStatus":"prov",
+          "role":"NETWORK_INSTANCE_ROLE",
+          "trackById":"NETWORK_INSTANCE_ID",
+          "uuid":"network-instance-model-version-id"
+        }
+      },
+      "orchStatus":"Create",
+      "originalName":null,
+      "platformName":null,
+      "productFamilyId":null,
+      "provStatus":null,
+      "tenantId":"092eb9e8e4b7412e8787dd091bc58e86",
+      "trackById":"VRF_INSTANCE_ID",
+      "uuid":"9cac02be-2489-4374-888d-2863b4511a59"
+    }
+  },
+  "instanceParams":[
+
+  ],
+  "validationCounter":0,
+  "existingNames":{
+    "service_instance_name":""
+  },
+  "existingVNFCounterMap":{
+
+  },
+  "existingVRFCounterMap":{
+    "dd024d73-9bd1-425d-9db5-476338d53433":1
+  },
+  "existingVnfGroupCounterMap":{
+
+  },
+  "existingNetworksCounterMap":{
+
+  },
+  "networks":{
+
+  },
+  "vnfGroups":{
+
+  },
+  "bulkSize":1,
+  "instanceName":"InstanceName",
+  "globalSubscriberId":"global-customer-id",
+  "subscriptionServiceType":"service-instance-type",
+  "owningEntityId":"d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+  "productFamilyId":null,
+  "lcpCloudRegionId":"AAIAIC25",
+  "tenantId":"092eb9e8e4b7412e8787dd091bc58e86",
+  "aicZoneId":"JAG1",
+  "projectName": "WATKINS",
+  "rollbackOnFailure":false,
+  "aicZoneName":"YUDFJULP-JAG1",
+  "cloudOwner":null,
+  "owningEntityName":"WayneHolland",
+  "tenantName":"USP-SIP-IC-24335-T-01",
+  "instanceId":"service-instance-id",
+  "modelInfo":{
+    "modelInvariantId":"dfc2c44c-2429-44ca-ae26-1e6dc1f207fb",
+    "modelVersionId":"f028b2e2-7080-4b13-91b2-94944d4c42d8",
+    "modelName":"Service with VRF",
+    "modelVersion":"5.0",
+    "modelType":"service"
+  },
+  "isALaCarte":false,
+  "orchStatus":"GARBAGE DATA",
+  "vidNotions":{
+    "instantiationUI":"infrastructureVpn",
+    "modelCategory":"other",
+    "viewEditUI":"infrastructureVpn",
+    "instantiationType":"Macro"
+  }
+}

@@ -44,10 +44,10 @@ public class PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress extends Prese
                 "      \"modelType\":\"" + select("volumeGroup", "vfModule") + "\"," +
                 "      \"modelInvariantId\":\"7253ff5c-97f0-4b8b-937c-77aeb4d79aa1\"," +
                 "      \"modelVersionId\":\"25284168-24bb-4698-8cb4-3f509146eca5\"," +
-                "      \"modelName\":\"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\"," +
+                "      \"modelName\":\"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\"," +
                 "      \"modelVersion\":\"6\"," +
                 "      \"modelCustomizationId\":\"f7e7c365-60cf-49a9-9ebf-a1aa11b9d401\"," +
-                "      \"modelCustomizationName\":\"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\"" +
+                "      \"modelCustomizationName\":\"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\"" +
                 "    }," +
                 "    \"cloudConfiguration\":{" +
                 "      \"lcpCloudRegionId\":\"my region\"," +
@@ -97,11 +97,11 @@ public class PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress extends Prese
                 "    \"requestParameters\":{" +
                addTestApi()+
                 "       \"userParams\":[{" +
-                "          \"2017488_PASQUALEvpe0_vnf_instance_name\":\"mtnj309me6\"," +
-                "          \"2017488_PASQUALEvpe0_vnf_config_template_version\":\"17.2\"," +
-                "          \"PASQUALEvpe0_bandwidth\":\"10\"," +
-                "          \"2017488_PASQUALEvpe0_AIC_CLLI\":\"ATLMY8GA\"," +
-                "          \"PASQUALEvpe0_bandwidth_units\":\"Gbps\"" +
+                "          \"2017488_pasqualevpe0_vnf_instance_name\":\"mtnj309me6\"," +
+                "          \"2017488_pasqualevpe0_vnf_config_template_version\":\"17.2\"," +
+                "          \"pasqualevpe0_bandwidth\":\"10\"," +
+                "          \"2017488_pasqualevpe0_AIC_CLLI\":\"ATLMY8GA\"," +
+                "          \"pasqualevpe0_bandwidth_units\":\"Gbps\"" +
                 "        }" +
                 "      ]," +
                 "      \"usePreload\":true" +

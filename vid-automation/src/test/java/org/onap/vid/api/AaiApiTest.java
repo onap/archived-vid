@@ -1,44 +1,15 @@
 package org.onap.vid.api;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofL3Network;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofServiceInstance;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVlanTag;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVnf;
-import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.util.UUID;
 import net.javacrumbs.jsonunit.JsonAssert;
 import net.javacrumbs.jsonunit.core.Configuration;
 import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.text.StringEscapeUtils;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIBadBodyForGetServicesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetHomingForVfModule;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegion;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsInvalidRequest;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsRequiredMissing;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePortsError;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.aai.*;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.model.aai.AaiResponse;
@@ -57,6 +28,24 @@ import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.utils.TestHelper;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.UUID;
+
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.*;
+import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
 
 public class AaiApiTest extends BaseApiAaiTest {
 
@@ -217,6 +206,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "  }],\n" +
             "  \"readOnly\": false\n" +
             "}";
+    private static final String AAI_GET_ACTIVE_NETWORKS = "/aai_get_active_networks";
 
     private String getGetOperationEnvironmentsUri() {
         return uri.toASCIIString() + "/get_operational_environments";
@@ -270,7 +260,7 @@ public class AaiApiTest extends BaseApiAaiTest {
         AaiResponse<OperationalEnvironmentList> response = loginAndDoGetWithUrl(url);
         assertEquals(HttpStatus.OK.value(), response.getHttpCode());
         OperationalEnvironmentList list = response.getT();
-        assertNotEquals(null, list.getOperationalEnvironment());
+        assertNotNull(list.getOperationalEnvironment());
         assertEquals(2, list.getOperationalEnvironment().size());
         assertEquals(uuidOfOperationalEnvironment, list.getOperationalEnvironment().get(0).getOperationalEnvironmentId());
         assertEquals(1, list.getOperationalEnvironment().get(0).getRelationshipList().getRelationship().size());
@@ -681,12 +671,14 @@ public class AaiApiTest extends BaseApiAaiTest {
                 ImmutableMultimap.of("vlan-tag", vlanTagPreset3.getReqPath(), "vlan-tag", vlanTagPreset4.getReqPath()), "Created");
 
         PresetAAIStandardQueryGet vnfPreset1 = ofVnf("c015cc0f-0f37-4488-aabf-53795fd93cd3",
-                ImmutableMultimap.of("l3-network", l3NetworkPreset1.getReqPath() , "l3-network", l3NetworkPreset2.getReqPath()));
+                ImmutableMultimap.of("l3-network", l3NetworkPreset1.getReqPath() , "l3-network", l3NetworkPreset2.getReqPath()),
+                defaultPlacement());
 
         PresetAAIStandardQueryGet l3NetworkPreset3 = ofL3Network("12aa7f3d-2bc2-48f5-aaf8-418520c54330","XXXYYYZZZ", "Network",
                 ImmutableMultimap.of("vlan-tag", vlanTagPreset5.getReqPath(), "vlan-tag", vlanTagPreset6.getReqPath()), "Created");
 
-        PresetAAIStandardQueryGet vnfPreset2 = ofVnf("c55da606-cf38-42c7-bc3c-be8e23b19299", ImmutableMultimap.of("l3-network", l3NetworkPreset3.getReqPath()));
+        PresetAAIStandardQueryGet vnfPreset2 = ofVnf("c55da606-cf38-42c7-bc3c-be8e23b19299", ImmutableMultimap.of("l3-network", l3NetworkPreset3.getReqPath()),
+                defaultPlacement());
 
         PresetAAIStandardQueryGet serviceInstance = ofServiceInstance("9cdd1b2a-43a7-47bc-a88e-759ba2399f0b",
                 "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "6e59c5de-f052-46fa-aa7e-2fca9d674c44", globalCustomerId, serviceType,
@@ -716,7 +708,7 @@ public class AaiApiTest extends BaseApiAaiTest {
 
         SimulatorApi.registerExpectation(AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON, APPEND);
 
-        String url = uri + "/get_vnf_data_by_globalid_and_service_type/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/vFlowLogic";
+        String url = uri + "/get_vnf_data_by_globalid_and_service_type/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/vRichardson";
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 //reduced_vnf_data_by_globalid_and_service_type.json
@@ -725,6 +717,58 @@ public class AaiApiTest extends BaseApiAaiTest {
                 getResourceAsString("changeManagement/reduced_vnf_data_by_globalid_and_service_type.json"),
                 response.getBody());
 
+    }
+
+    @Test
+    public void getVpnList() {
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetVpnsByType(), CLEAR_THEN_SET);
+        String url = uri + "/aai_get_vpn_list";
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        String expected = getResourceAsString("viewEdit/aaiGetVpnList.json");
+        assertThat(response.getBody(), jsonEquals(expected).when(Option.IGNORING_ARRAY_ORDER).when(Option.IGNORING_EXTRA_FIELDS));
+    }
+
+    @DataProvider
+    public static Object[][] getActiveNetworkAaiStates() {
+        return new Object[][] {
+                {1, "viewEdit/aaiGetActiveNetworks.json"},
+                {2, "viewEdit/aaiGetActiveNetworks2.json"}
+        };
+    }
+
+    @Test(dataProvider = "getActiveNetworkAaiStates")
+    public void getActiveNetworks_givenSpecificAAIState_cypressPresetMatch(int state, String expectedResultFileName) {
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+            new PresetAAIGetL3NetworksByCloudRegionSpecificState(state),
+            PresetAAIGetCloudOwnersByCloudRegionId.PRESET_AUK51A_TO_ATT_NC
+        ), CLEAR_THEN_SET);
+        String url = uri + AAI_GET_ACTIVE_NETWORKS
+            + "?cloudRegion=" + AAIBaseGetL3NetworksByCloudRegionPreset.DEFAULT_CLOUD_REGION_ID
+            + "&tenantId=" + AAIBaseGetL3NetworksByCloudRegionPreset.DEFAULT_TENANT_ID;
+        String response = restTemplate.getForObject(url, String.class);
+        System.out.println("response = " + response);
+        String expected = getResourceAsString(expectedResultFileName);
+        assertThat(response, jsonEquals(expected));
+    }
+
+    @Test
+    public void getActiveNetworks() throws JsonProcessingException {
+        String networkRole = "Some role";
+        PresetAAIGetL3NetworksByCloudRegion presetAAIGetL3NetworksByCloudRegion = new PresetAAIGetL3NetworksByCloudRegion(networkRole);
+        List<BasePreset> presets = ImmutableList.of(
+                presetAAIGetL3NetworksByCloudRegion,
+                PresetAAIGetCloudOwnersByCloudRegionId.PRESET_AUK51A_TO_ATT_NC
+        );
+        SimulatorApi.registerExpectationFromPresets(presets, CLEAR_THEN_SET);
+        String url = uri + AAI_GET_ACTIVE_NETWORKS +
+                "?cloudRegion=" + presetAAIGetL3NetworksByCloudRegion.getCloudRegionId() +
+                "&tenantId=" + presetAAIGetL3NetworksByCloudRegion.getTenantId() +
+                 "&networkRole=" + networkRole;
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertResponse(JsonAssert.when(Option.IGNORING_EXTRA_FIELDS, Option.IGNORING_ARRAY_ORDER),
+                presetAAIGetL3NetworksByCloudRegion.getActiveNetworksWithNameAndRelatedToVpnBindingAsJsonString(),
+                response.getBody());
     }
 
     private void assertResponse(Object expected, String response) {

@@ -1,13 +1,6 @@
 package org.onap.vid.api;
 
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy;
-import static vid.automation.test.services.SimulatorApi.registerExpectation;
-
 import com.google.common.collect.ImmutableMap;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -15,6 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy;
+import static vid.automation.test.services.SimulatorApi.registerExpectation;
 
 
 public class pProbeAaiApiTest extends BaseApiAaiTest {
@@ -35,7 +36,7 @@ public class pProbeAaiApiTest extends BaseApiAaiTest {
     //URIs
     private static final String GET_SERVICE_INSTANCE_PNFS = "aai_get_service_instance_pnfs/31739f3e-526b-11e6-beb8-9e71128cae77/AIM Transport/f36f5734-e9df-4fbf-9f35-61be13f028a1";
     private static final String GET_SPECIFIC_PNF_URI = "aai_get_pnfs/pnf/DEAAI78";
-    private static final String GET_PNF_BY_REGION = "aai_get_pnf_instances/e433710f-9217-458d-a79d-1c7aff376d89/TYLER SILVIA/8a84e59b-45fe-4851-8ff1-34225a0b32c3/83b458fd-5dd3-419b-a9e3-7335814a0911/JANET25/Cisco/Nexus 3048-TP";
+    private static final String GET_PNF_BY_REGION = "aai_get_pnf_instances/e433710f-9217-458d-a79d-1c7aff376d89/TYLER SILVIA/8a84e59b-45fe-4851-8ff1-34225a0b32c3/83b458fd-5dd3-419b-a9e3-7335814a0911/AAIAIC25/Cisco/Nexus 3048-TP";
 
 
 

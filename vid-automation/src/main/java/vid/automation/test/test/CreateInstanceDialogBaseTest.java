@@ -108,7 +108,7 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
     }
 
     protected void addVNF(String name, String lcpRegion, String cloudOwner, String tenant, String suppressRollback,
-                          String legacyRegion, String productFamily, String platform, ArrayList<String> permittedTenants, List<String> lobs, ServiceModel serviceModel, String instanceName) {
+                          String legacyRegion, String productFamily, String platform, ArrayList<String> permittedTenants, String lobs, ServiceModel serviceModel, String instanceName) {
         openAndFillVnfPopup(name, lcpRegion, cloudOwner, tenant, suppressRollback, legacyRegion, productFamily, platform,permittedTenants, lobs, serviceModel, instanceName);
         viewEditPage.clickConfirmButton();
         successConfirmVnfAndClosePopup();
@@ -116,7 +116,7 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
     }
 
     protected void openAndFillVnfPopup(String name, String lcpRegion, String cloudOwner, String tenant, String suppressRollback,
-                                       String legacyRegion, String productFamily, String platform, ArrayList<String> permittedTenants, List<String> lobs, ServiceModel serviceModel, String instanceName) {
+                                       String legacyRegion, String productFamily, String platform, ArrayList<String> permittedTenants, String lobs, ServiceModel serviceModel, String instanceName) {
         viewEditPage.selectNodeInstanceToAdd(name);
         GeneralUIUtils.ultimateWait();
         if(serviceModel != null) {
@@ -130,7 +130,7 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
             Click.onFirstSelectOptionById(Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
         }
         if(lobs != null) {
-            SelectOption.selectOptionsFromMultiselectById(Constants.OwningEntity.LOB_SELECT_TEST_ID, lobs);
+            viewEditPage.selectLineOfBusiness(lobs);
         }
         fillDetailsInDialog(instanceName, lcpRegion, cloudOwner, tenant, suppressRollback, legacyRegion, permittedTenants);
     }
@@ -144,7 +144,7 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
     protected void assertConfirmShowMissingDataErrorOnCurrentPopup(String field) {
         viewEditPage.clickConfirmButton();
         boolean byclassAndText = Exists.byClassAndText(Constants.ViewEdit.ERROR_CLASS, String.format(Constants.MISSING_DATA, field));
-        Assert.assertFalse(field + " " + Constants.REQUIRED, byclassAndText);
+        Assert.assertTrue(field + " " + Constants.REQUIRED, byclassAndText);
     }
 
     protected void cancelPopup() {

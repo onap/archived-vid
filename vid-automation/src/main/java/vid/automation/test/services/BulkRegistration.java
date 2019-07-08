@@ -1,35 +1,9 @@
 package vid.automation.test.services;
 
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
-import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIFilterServiceInstanceById;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetHomingForVfModule;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByOwningEntity;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByProject;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfiguration;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModule;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndCloudDelete;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteInstanceOrchestrationRequestGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteNetwork;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVfModule;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVnf;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVolumeGroup;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.aai.*;
+import org.onap.simulator.presetGenerator.presets.mso.*;
 import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSOActOnConfiguration;
 import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSOCreateConfiguration;
 import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSODeleteConfiguration;
@@ -37,6 +11,12 @@ import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMsoEna
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import vid.automation.test.Constants;
+import vid.automation.test.Constants.ViewEdit;
+
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
+import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 public class BulkRegistration {
 
@@ -74,7 +54,7 @@ public class BulkRegistration {
                         new PresetSDCGetServiceToscaModelGet(serviceFabricSriovService),
                         new PresetAAIGetNetworkZones(),
                         new PresetMSOActivateFabricConfiguration("c187e9fe-40c3-4862-b73e-84ff056205f61234"),
-                        new PresetMSOOrchestrationRequestGet("COMPLETE", "318cc766-b673-4a50-b9c5-471f68914584", "Success")),
+                        new PresetMSOOrchestrationRequestGet(COMPLETE, "318cc766-b673-4a50-b9c5-471f68914584", "Success", false)),
                 SimulatorApi.RegistrationStrategy.APPEND);
     }
 
@@ -137,11 +117,14 @@ public class BulkRegistration {
     public static void searchExistingServiceInstancePortMirroring(String orchStatus, boolean isMirrored, String desiredCloudRegionId) {
         genericSearchExistingServiceInstance();
         final String configurationId = "9533-config-LB1113";
+        final String configurationId2 = "9533-config-LB1114";
         final String portInterfaceId = "d35bf534-7d8e-4cb4-87f9-0a8bb6cd47b2";
         final String modelToReplaceWith ="pm1111_equip_model_rename.zip";
 
         SimulatorApi.registerExpectationFromPreset(new PresetAAICloudRegionAndSourceFromConfigurationPut(configurationId, desiredCloudRegionId), APPEND);
-        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetPortMirroringSourcePorts(configurationId, portInterfaceId, "i'm a port", isMirrored), APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetPortMirroringSourcePorts(configurationId, portInterfaceId, ViewEdit.COMMON_PORT_MIRRORING_PORT_NAME, isMirrored), APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAICloudRegionAndSourceFromConfigurationPut(configurationId2, desiredCloudRegionId), APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetPortMirroringSourcePorts(configurationId2, portInterfaceId, "i'm not your port", isMirrored), APPEND);
         SimulatorApi.registerExpectationFromPreset(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC, APPEND);
         SimulatorApi.registerExpectation(
                 new String [] {
@@ -284,7 +267,7 @@ public class BulkRegistration {
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
                 createInstancePreset,
                 cloudOwnerPreset,
-                new PresetMSOOrchestrationRequestGet(PresetMSOOrchestrationRequestGet.COMPLETE, createInstancePreset.getRequestId(), "Success")),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, createInstancePreset.getRequestId(), "Success", false)),
                 SimulatorApi.RegistrationStrategy.APPEND);
     }
 
@@ -423,7 +406,11 @@ public class BulkRegistration {
                         new PresetMSOCreateVfModule("3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
                                 "c015cc0f-0f37-4488-aabf-53795fd93cd3", ATT_NC, vfModuleName,
                                 "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0", "ComplexService"),
-                        new PresetMSOOrchestrationRequestGet("COMPLETE","c0011670-0e1a-4b74-945d-8bf5aede1d9c",Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT)),
+                        new PresetMSOOrchestrationRequestGet(
+                                COMPLETE,
+                                "c0011670-0e1a-4b74-945d-8bf5aede1d9c",
+                                Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT,
+                                false)),
                 SimulatorApi.RegistrationStrategy.APPEND);
     }
 
@@ -434,7 +421,11 @@ public class BulkRegistration {
                         new PresetAAIGetTenants(),
                         PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
                         new PresetMSOCreateVfModule(serviceInstanceId,vnfInstanceId, ATT_NC),
-                        new PresetMSOOrchestrationRequestGet("COMPLETE","c0011670-0e1a-4b74-945d-8bf5aede1d9c",Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT)),
+                        new PresetMSOOrchestrationRequestGet(
+                                COMPLETE,
+                                "c0011670-0e1a-4b74-945d-8bf5aede1d9c",
+                                Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT,
+                                false)),
                 SimulatorApi.RegistrationStrategy.APPEND);
 
     }

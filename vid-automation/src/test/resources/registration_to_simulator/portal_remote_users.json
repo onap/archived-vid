@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method" : "GET",
-    "path" : "/ecompportal_att/auxapi//v3/user/1"
+    "path" : "/(ONAPPORTAL|ecompportal_att)/auxapi//v[0-9]+/user/1"
   } ,
   "simulatorResponse": {
     "responseCode": 200,

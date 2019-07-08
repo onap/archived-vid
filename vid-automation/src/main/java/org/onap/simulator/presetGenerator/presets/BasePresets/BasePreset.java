@@ -1,10 +1,11 @@
 package org.onap.simulator.presetGenerator.presets.BasePresets;
 
+import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
+import org.springframework.http.HttpMethod;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
-import org.springframework.http.HttpMethod;
 
 /**
  * Created by itzikliderman on 13/12/2017.

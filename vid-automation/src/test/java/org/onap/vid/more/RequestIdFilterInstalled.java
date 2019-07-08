@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.vid.api.CategoryParametersApiTest.GET_CATEGORY_PARAMETER_PROPERTIES;
+import static org.onap.vid.api.CategoryParametersApiTest.MAINTENANCE_CATEGORY_PARAMETER;
 import static org.onap.vid.api.pProbeMsoApiTest.MSO_CREATE_CONFIGURATION;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
@@ -90,7 +90,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
 
         final Pair<HttpEntity, String> responseAndUuid = makeRequest(
                 HttpMethod.GET,
-                "/" + GET_CATEGORY_PARAMETER_PROPERTIES + "?familyName=PARAMETER_STANDARDIZATION",
+                "/" + MAINTENANCE_CATEGORY_PARAMETER + "?familyName=PARAMETER_STANDARDIZATION",
                 null
         );
         assertThatUuidInResponseAndUuidIsInARecentLog(responseAndUuid);

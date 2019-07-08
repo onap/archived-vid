@@ -13,8 +13,8 @@
             "userId": "1",
             "password": "1"
           },
-          "roles": ["SILVIA ROBBINS___TYLER SILVIA", "SILVIA ROBBINS___HOSTED COMMUNICATIONS", "CAR_2020_ER___HOSTED COMMUNICATIONS", "CAR_2020_ER___MSO-dev-service-type", "CAR_2020_ER___TYLER SILVIA"],
-          "subscriberNames": ["SILVIA ROBBINS", "CAR_2020_ER"],
+          "roles": ["SILVIA ROBBINS___TYLER SILVIA", "SILVIA ROBBINS___DARREN MCGEE", "CAR_2020_ER___DARREN MCGEE", "CAR_2020_ER___MSO-dev-service-type", "CAR_2020_ER___TYLER SILVIA","READ___LOGS___PERMITTED","Emanuel___mySubType", "global-customer-id___service-instance-type"],
+          "subscriberNames": ["SILVIA ROBBINS", "CAR_2020_ER", "Emanuel", "global-customer-id"],
           "serviceTypes": ["TYLER SILVIA", "DARREN MCGEE", "MSO-dev-service-type"],
           "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
         },
@@ -43,7 +43,7 @@
             "userId": "4",
             "password": "4"
           },
-          "roles": ["Emanuel___vWINIFRED", "Emanuel___vFlowLogic"],
+          "roles": ["Emanuel___vWINIFRED", "Emanuel___vRichardson"],
           "subscriberNames": ["Emanuel"],
           "serviceTypes": ["vWINIFRED", "vRichardson"],
           "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
@@ -55,20 +55,20 @@
           },
           "roles": [
             "JULIO ERICKSON___Emanuel",
-            "JULIO ERICKSON___vFlowLogic"
+            "JULIO ERICKSON___vRichardson"
 
           ],
           "subscriberNames": ["JULIO ERICKSON"],
           "serviceTypes": ["Emanuel", "vRichardson"],
           "tenants": null
         },
-        "Emanuel vFlowLogic": {
+        "Emanuel vRichardson": {
           "credentials": {
             "userId": "321",
             "password": "312"
           },
           "roles": [
-            "Emanuel___vFlowLogic"
+            "Emanuel___vRichardson"
           ],
           "subscriberNames": ["Emanuel"],
           "serviceTypes": ["vRichardson"],
