@@ -1,14 +1,15 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
-import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
-
 import com.google.common.collect.ImmutableMap;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
 import org.springframework.http.HttpMethod;
 import vid.automation.test.infra.ModelInfo;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
 
 public class PresetAAIGetSubDetailsGetSpecificService extends BaseAAIPreset {
     private String subscriberId;
@@ -60,13 +61,13 @@ public class PresetAAIGetSubDetailsGetSpecificService extends BaseAAIPreset {
                 "  \"service-subscriptions\":{" +
                 "    \"service-subscription\":[" +
                 "      {" +
-                "        \"service-type\":\"vFlowLogic\"," +
+                "        \"service-type\":\"vRichardson\"," +
                 "        \"resource-version\":\"1501700976809\"," +
                 "        \"service-instances\":{" +
                 "          \"service-instance\":[" +
                 "            {" +
                 "              \"service-instance-id\":\"414db2d4-18d0-415e-aac2-f255b586cfb5\"," +
-                "              \"service-instance-name\":\"vFlowLogic-vflf_080117\"," +
+                "              \"service-instance-name\":\"vRichardson-vflf_080117\"," +
                 "              \"persona-model-id\":null," +
                 "              \"persona-model-version\":null," +
                 "              \"resource-version\":\"1502391806301\"," +
@@ -76,7 +77,7 @@ public class PresetAAIGetSubDetailsGetSpecificService extends BaseAAIPreset {
                 "            }," +
                 "            {" +
                 "              \"service-instance-id\":\"769be44e-981a-4da8-af3b-ca5fa76b7fb1\"," +
-                "              \"service-instance-name\":\"vFlowLogic-vflp_080117\"," +
+                "              \"service-instance-name\":\"vRichardson-vflp_080117\"," +
                 "              \"persona-model-id\":null," +
                 "              \"persona-model-version\":null," +
                 "              \"resource-version\":\"1501712783617\"," +

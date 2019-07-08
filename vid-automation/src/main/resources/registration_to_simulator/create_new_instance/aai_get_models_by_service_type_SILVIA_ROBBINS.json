@@ -9727,7 +9727,7 @@
                 }
               },
               {
-                "model-name": "4-27_vMME_Service",
+                "model-name": "4-27_vFLORENCE_Service",
                 "service-instance": {
                   "service-instance-id": "5164a1ed-d7ba-4e33-b82d-3a5f90543c47",
                   "service-instance-name": "Lital39887395",
@@ -9742,7 +9742,7 @@
                   "extra-property": [
                     {
                       "property-name": "model-ver.model-description",
-                      "property-value": "4-27_vMME_Service"
+                      "property-value": "4-27_vFLORENCE_Service"
                     },
                     {
                       "property-name": "model-ver.model-version-id",
@@ -9750,7 +9750,7 @@
                     },
                     {
                       "property-name": "model-ver.model-name",
-                      "property-value": "4-27_vMME_Service"
+                      "property-value": "4-27_vFLORENCE_Service"
                     },
                     {
                       "property-name": "model.model-type",

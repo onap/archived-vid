@@ -1,8 +1,8 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-
 import java.util.Map;
+
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
 
 public class PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork extends PresetMSOCreateServiceInstanceGen2WithNames {
 
@@ -31,13 +31,13 @@ public class PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork extends 
                 "    }," +
                 "    \"owningEntity\": {" +
                 "      \"owningEntityId\": \"d61e6f2d-12fa-4cc2-91df-7c244011d6fc\"," +
-                "      \"owningEntityName\": \"MetroPacketCore\"" +
+                "      \"owningEntityName\": \"WayneHolland\"" +
                 "    }," +
                 "    \"subscriberInfo\": {" +
                 "      \"globalSubscriberId\": \"e433710f-9217-458d-a79d-1c7aff376d89\"" +
                 "    }," +
                 "    \"project\": {" +
-                "      \"projectName\": \"DFW\"" +
+                "      \"projectName\": \"WATKINS\"" +
                 "    }," +
                 "    \"requestInfo\": {" +
                 "      \"instanceName\": \""+names.get(SERVICE_NAME)+"\"," +

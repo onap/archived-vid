@@ -1,23 +1,19 @@
 package vid.automation.test.test;
 
+//import com.automation.common.report_portal_integration.annotations.Step;
+//import com.automation.common.report_portal_integration.listeners.ReportPortalListener;
+//import com.automation.common.report_portal_integration.screenshots.WebDriverScreenshotsProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 import org.junit.Assert;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
+import org.onap.sdc.ci.tests.datatypes.Configuration;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
+import org.onap.simulator.presetGenerator.presets.aai.*;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils;
+import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstancePost;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
@@ -35,8 +31,10 @@ import org.springframework.web.client.RestTemplate;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
+import vid.automation.test.Constants.ViewEdit;
 import vid.automation.test.infra.*;
 import vid.automation.test.model.Credentials;
 import vid.automation.test.model.User;
@@ -66,11 +64,13 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.fail;
 import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
 import static vid.automation.test.utils.TestHelper.GET_TENANTS;
 
+//@Listeners(com.automation.common.report_portal_integration.listeners.ReportPortalListener.class)
 public class VidBaseTestCase extends SetupCDTest{
 
     protected final UsersService usersService = new UsersService();
@@ -129,7 +129,7 @@ public class VidBaseTestCase extends SetupCDTest{
     }
 
     @Override
-    protected org.onap.sdc.ci.tests.datatypes.Configuration getEnvConfiguration() {
+    protected Configuration getEnvConfiguration() {
 
         return TestConfigurationHelper.getEnvConfiguration();
     }
@@ -170,29 +170,14 @@ public class VidBaseTestCase extends SetupCDTest{
         LoginExternalPage.performLoginExternal(userCredentials);
     }
 
-    protected String getReduxState() {
-        final JavascriptExecutor javascriptExecutor = (JavascriptExecutor) GeneralUIUtils.getDriver();
-        String reduxState = (String)javascriptExecutor.executeScript("return window.sessionStorage.getItem('reduxState');");
-        System.out.println(reduxState);
-        return reduxState;
-    }
-
-    protected void setReduxState(String state) {
-        final JavascriptExecutor javascriptExecutor = (JavascriptExecutor) GeneralUIUtils.getDriver();
-        String script = String.format("window.sessionStorage.setItem('reduxState', '%s');", state);
-        System.out.println("executing script:");
-        System.out.println(script);
-        javascriptExecutor.executeScript(script);
-    }
-
     protected void registerExpectationForLegacyServiceDeployment(ModelInfo modelInfo, String subscriberId) {
         List<BasePreset> presets = new ArrayList<>(Arrays.asList(
                 new PresetAAIPostNamedQueryForViewEdit(BaseMSOPreset.DEFAULT_INSTANCE_ID, true, false),
-                new PresetAAIGetPortMirroringSourcePorts("9533-config-LB1113", "myRandomInterfaceId", "i'm a port", true)
+                new PresetAAIGetPortMirroringSourcePorts("9533-config-LB1113", "myRandomInterfaceId", ViewEdit.COMMON_PORT_MIRRORING_PORT_NAME, true)
         ));
 
         presets.add(new PresetMSOCreateServiceInstancePost());
-        presets.add(new PresetMSOOrchestrationRequestGet());
+        presets.add(new PresetMSOOrchestrationRequestGet(COMPLETE, false));
 
         presets.addAll(getPresetForServiceBrowseAndDesign(ImmutableList.of(modelInfo), subscriberId));
 
@@ -202,7 +187,7 @@ public class VidBaseTestCase extends SetupCDTest{
     protected void registerExpectationForServiceDeployment(List<ModelInfo> modelInfoList, String subscriberId, PresetMSOCreateServiceInstanceGen2 createServiceInstancePreset) {
         List<BasePreset> presets = new ArrayList<>(Arrays.asList(
                 new PresetAAIPostNamedQueryForViewEdit(BaseMSOPreset.DEFAULT_INSTANCE_ID, true, false),
-                new PresetAAIGetPortMirroringSourcePorts("9533-config-LB1113", "myRandomInterfaceId", "i'm a port", true)
+                new PresetAAIGetPortMirroringSourcePorts("9533-config-LB1113", "myRandomInterfaceId", ViewEdit.COMMON_PORT_MIRRORING_PORT_NAME, true)
         ));
 
         if (createServiceInstancePreset != null) {
@@ -222,6 +207,7 @@ public class VidBaseTestCase extends SetupCDTest{
     protected List<BasePreset> getPresetForServiceBrowseAndDesign(List<ModelInfo> modelInfoList, String subscriberId) {
 
         List<BasePreset> presets = new ArrayList<>(Arrays.asList(
+                    new PresetGetSessionSlotCheckIntervalGet(),
                     new PresetAAIGetSubDetailsGet(subscriberId),
                     new PresetAAIGetSubDetailsWithoutInstancesGet(subscriberId),
                     new PresetAAIGetSubscribersGet(),
@@ -342,9 +328,9 @@ public class VidBaseTestCase extends SetupCDTest{
         viewEditPage.selectTenant(tenant);
 
         viewEditPage.selectSuppressRollback(suppressRollback);
-        viewEditPage.selectPlatform(platform);
-        //viewEditPage.setLegacyRegion(legacyRegion);
-
+        if(platform != null){
+            viewEditPage.selectPlatform(platform);
+        }
         viewEditPage.clickConfirmButton();
         viewEditPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);
         viewEditPage.clickCloseButton();
@@ -371,6 +357,7 @@ public class VidBaseTestCase extends SetupCDTest{
         Assert.assertTrue(Constants.ViewEdit.VF_MODULE_CREATION_FAILED_MESSAGE, byText);
     }
 
+    //@Step("${method}: ${instanceUUID}")
     void goToExistingInstanceById(String instanceUUID) {
         SearchExistingPage searchExistingPage = searchExistingInstanceById(instanceUUID);
         assertViewEditButtonState( Constants.VIEW_EDIT_BUTTON_TEXT, instanceUUID);
@@ -498,13 +485,9 @@ public class VidBaseTestCase extends SetupCDTest{
     }
 
     public DeployMacroDialogBase getMacroDialog(){
-        if (Features.FLAG_ASYNC_INSTANTIATION.isActive()) {
-            VidBasePage vidBasePage =new VidBasePage();
-            vidBasePage.goToIframe();
-            return new DeployMacroDialog();
-        }
-        else
-            return  new DeployMacroDialogOld();
+        VidBasePage vidBasePage =new VidBasePage();
+        vidBasePage.goToIframe();
+        return new DeployMacroDialog();
     }
 
     protected void loadServicePopup(ModelInfo modelInfo) {
@@ -591,8 +574,8 @@ public class VidBaseTestCase extends SetupCDTest{
         SideMenu.navigateToWelcomePage();
         vidBasePage.navigateTo("serviceModels.htm#/instantiate?" +
                 "subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&" +
-                "subscriberName=USP%20VOICE&" +
-                "serviceType=VIRTUAL%20USP&" +
+                "subscriberName=SILVIA%20ROBBINS&" +
+                "serviceType=TYLER%20SILVIA&" +
                 "serviceInstanceId=" + serviceInstanceId + "&" +
                 "aaiModelVersionId=" + aaiModelVersionId + "&" +
                 "isPermitted=true");

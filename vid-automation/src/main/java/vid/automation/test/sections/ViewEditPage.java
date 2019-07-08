@@ -76,6 +76,11 @@ public class ViewEditPage extends VidBasePage {
         return this;
     }
 
+    public ViewEditPage selectLineOfBusiness(String lineOfBusiness, String cloudOwner){
+        selectLineOfBusiness(lineOfBusiness);
+        return this;
+    }
+
     public ViewEditPage setLegacyRegion(String legacyRegionName){
         setInputText(Constants.ViewEdit.LEGACY_REGION_INPUT_TESTS_ID, legacyRegionName);
         return this;
@@ -126,16 +131,16 @@ public class ViewEditPage extends VidBasePage {
         return this;
     }
 
-    public ViewEditPage selectLineOfBusiness(String lineOfBusiness) {
-        try {
-            SelectOption.selectFirstTwoOptionsFromMultiselectById(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return this;
-        }
-        //TODO multi SelectOption.byValue(lineOfBusiness, Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
-        return this;
-    }
+//    public ViewEditPage selectLineOfBusiness(String lineOfBusiness) {
+//        try {
+//            SelectOption.selectFirstTwoOptionsFromMultiselectById(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//            return this;
+//        }
+//        //TODO multi SelectOption.byValue(lineOfBusiness, Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
+//        return this;
+//    }
 
     public ViewEditPage selectPlatform(String platform) {
         SelectOption.byValue(platform, Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);

@@ -35,10 +35,10 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService 
                 "    }, " +
                 "    \"owningEntity\": { " +
                 "      \"owningEntityId\": \"d61e6f2d-12fa-4cc2-91df-7c244011d6fc\", " +
-                "      \"owningEntityName\": \"MetroPacketCore\" " +
+                "      \"owningEntityName\": \"WayneHolland\" " +
                 "    }, " +
                 "    \"project\": { " +
-                "      \"projectName\": \"DFW\" " +
+                "      \"projectName\": \"WATKINS\" " +
                 "    }, " +
                 "    \"subscriberInfo\": { " +
                 "      \"globalSubscriberId\": \"e433710f-9217-458d-a79d-1c7aff376d89\" " +

@@ -15,7 +15,8 @@
     "vidNotions": {
       "instantiationUI": "legacy",
       "modelCategory": "other",
-      "viewEditUI": "legacy"
+      "viewEditUI": "legacy",
+      "instantiationType": "Macro"
     }
   },
   "vnfs": {
@@ -292,7 +293,7 @@
       "modelCustomizationName": "ExtVL 0"
     }
   },
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {
     "Port Mirroring Configuration By Policy 0": {
       "uuid": "b4398538-e89d-4f13-b33d-ca323434ba50",

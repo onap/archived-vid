@@ -1,11 +1,12 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetPortMirroringSourcePorts extends BaseAAIPreset {
     public PresetAAIGetPortMirroringSourcePorts(String configurationId, String interfaceId, String interfaceName, boolean isPortMirrored) {

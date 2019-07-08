@@ -1,0 +1,213 @@
+{
+  "action": "Create",
+  "isDirty": false,
+  "vrfs": {
+    "VRF Entry Configuration 0": {
+      "originalName": null,
+      "trackById": "VRF1_INSTANCE_ID",
+      "action": "None",
+      "instanceId": "VRF1_INSTANCE_ID",
+      "instanceType": "VRF1_INSTANCE_TYPE",
+      "orchStatus": null,
+      "provStatus": null,
+      "inMaint": false,
+      "modelInfo": {
+        "modelInvariantId": "vnf-instance-model-invariant-id",
+        "modelVersionId": "vnf-instance-model-version-id",
+        "modelCustomizationId": "vnf-instance-model-customization-id",
+        "modelType": "vrf"
+      },
+      "uuid": "vnf-instance-model-version-id",
+      "productFamilyId": null,
+      "lcpCloudRegionId": "olson3",
+      "cloudOwner": "att-nc",
+      "legacyRegion": null,
+      "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e",
+      "lineOfBusiness": null,
+      "platformName": null,
+      "vfModules": {},
+      "networks": {
+        "NETWORK1_INSTANCE_ID": {
+          "originalName": null,
+          "trackById": "NETWORK1_INSTANCE_ID",
+          "instanceName": "NETWORK1_INSTANCE_NAME",
+          "action": "None",
+          "instanceId": "NETWORK1_INSTANCE_ID",
+          "instanceType": "CONTRAIL30_BASIC",
+          "orchStatus": "Assigned",
+          "provStatus": "prov",
+          "inMaint": false,
+          "modelInfo": {
+            "modelInvariantId": "network-instance-model-invariant-id",
+            "modelVersionId": "network-instance-model-version-id",
+            "modelCustomizationId": "network-instance-model-customization-id",
+            "modelName": "modelName",
+            "modelType": "network"
+          },
+          "uuid": "network-instance-model-version-id",
+          "productFamilyId": null,
+          "lcpCloudRegionId": null,
+          "legacyRegion": null,
+          "tenantId": null,
+          "lineOfBusiness": null,
+          "platformName": null
+        }
+      },
+      "vpns": {
+        "VPN1_INSTANCE_ID": {
+          "originalName": null,
+          "trackById": "VPN1_INSTANCE_ID",
+          "instanceName": "VPN1_INSTANCE_NAME",
+          "action": "None",
+          "instanceId": "VPN1_INSTANCE_ID",
+          "instanceType": "CONTRAIL30_BASIC",
+          "orchStatus": "Assigned",
+          "provStatus": "prov",
+          "inMaint": false,
+          "modelInfo": {
+            "modelInvariantId": "network-instance-model-invariant-id",
+            "modelVersionId": "network-instance-model-version-id",
+            "modelCustomizationId": "network-instance-model-customization-id",
+            "modelName": "modelName",
+            "modelType": "vpnBinding"
+          },
+          "uuid": "network-instance-model-version-id",
+          "productFamilyId": null,
+          "lcpCloudRegionId": null,
+          "legacyRegion": null,
+          "tenantId": null,
+          "lineOfBusiness": null,
+          "platformName": null
+        }
+      }
+    },
+    "VRF Entry Configuration": {
+      "uuid": "9cac02be-2489-4374-888d-2863b4511a59",
+      "invariantUuid": "b67a289b-1688-496d-86e8-1583c828be0a",
+      "description": "VRF Entry configuration object",
+      "name": "VRF Entry Configuration",
+      "version": "30.0",
+      "customizationUuid": "dd024d73-9bd1-425d-9db5-476338d53433",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
+      "type": "Configuration",
+      "modelCustomizationName": "VRF Entry Configuration 0",
+      "sourceNodes": [],
+      "collectorNodes": null,
+      "configurationByPolicy": false,
+      "vpns": {
+        "VRF Entry Configuration vpns 1": {
+          "instanceId": "120d39fb-3627-473d-913c-d228dd0f8e5b",
+          "instanceName": "LPPVPN",
+          "platformName": "AVPN",
+          "instanceType": "SERVICE-INFRASTRUCTURE",
+          "region": "USA,EMEA",
+          "customerId": "VPN1260",
+          "modelInfo": {
+            "modelCustomizationId": null,
+            "modelInvariantId": null,
+            "modelVersionId": null
+          },
+          "routeTargets": [
+            {
+              "globalRouteTarget": "globalRouteTarget_1",
+              "routeTargetRole": "routeTargetRole_1"
+            },
+            {
+              "globalRouteTarget": "globalRouteTarget_2",
+              "routeTargetRole": "routeTargetRole_2"
+            },
+            {
+              "globalRouteTarget": "globalRouteTarget_3",
+              "routeTargetRole": "routeTargetRole_3"
+            }
+          ],
+          "isSelected": true
+        }
+      },
+      "networks": {
+        "VRF Entry Configuration networks 1": {
+          "action": "None",
+          "boundToVpn": true,
+          "cloudOwner": "att-nc",
+          "inMaint": false,
+          "instanceId": "10a74149-c9d7-4918-bbcf-d5fb9b1799ce",
+          "instanceName": "AUK51a_oam_calea_net_2",
+          "role": "oam_calea_net_2",
+          "instanceType": "SR-IOV-PROVIDER2-2",
+          "orchStatus": "Active",
+          "physicalName": "sriovnet2",
+          "lcpCloudRegionId": "auk51a",
+          "serviceUUID": "b28d8a84-7d93-4b56-b525-c239c1e780a4",
+          "serviceName": "AUK51a_oam_calea_net_service_2",
+          "tenantName": "ecomp_ispt",
+          "tenantId": "b530fc990b6d4334bd45518bebca6a51",
+          "trackById": "10a74149-c9d7-4918-bbcf-d5fb9b1799ce",
+          "uuid": "77010093-df36-4dcb-8428-c3d02bf3f88d",
+          "modelInfo": {
+            "modelCustomizationId": "10a74149-c9d7-4918-bbcf-d5fb9b1799ce",
+            "modelInvariantId": "3b3308d4-0cd3-43e4-9a7b-d1925c861135",
+            "modelVersionId": "77010093-df36-4dcb-8428-c3d02bf3f88d",
+            "modelType": "network"
+          },
+          "isSelected": true
+        }
+      }
+    }
+  },
+  "vnfs": {},
+  "instanceParams": [
+    {}
+  ],
+  "validationCounter": 0,
+  "existingNames": {
+    "dfd": ""
+  },
+  "existingVNFCounterMap": {},
+  "existingVRFCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": 1,
+  "instanceName": "dfd",
+  "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "subscriptionServiceType": "TYLER SILVIA",
+  "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+  "lcpCloudRegionId": "lcpCloudRegionId",
+  "tenantName": "tenantName",
+  "projectName": "WATKINS",
+  "rollbackOnFailure": true,
+  "aicZoneName": null,
+  "owningEntityName": "WayneHolland",
+  "testApi": "VNF_API",
+  "modelInfo": {
+    "modelInvariantId": "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb",
+    "modelVersionId": "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+    "modelName": "infraVPN",
+    "modelVersion": "1.0",
+    "uuid": "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+    "modelUniqueId": "f028b2e2-7080-4b13-91b2-94944d4c42d8"
+  },
+  "isALaCarte": true,
+  "name": "infraVPN",
+  "version": "1.0",
+  "description": "ddd",
+  "category": "Network Service",
+  "uuid": "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+  "invariantUuid": "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb",
+  "serviceType": "BONDING",
+  "serviceRole": "INFRASTRUCTURE-VPN",
+  "vidNotions": {
+    "instantiationUI": "macroService",
+    "modelCategory": "other",
+    "viewEditUI": "legacy",
+    "instantiationType": "Macro"
+  },
+  "isEcompGeneratedNaming": true,
+  "isMultiStepDesign": false,
+  "subscriberName": "SILVIA ROBBINS"
+}

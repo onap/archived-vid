@@ -3,11 +3,13 @@ package org.onap.simulator.presetGenerator.presets.mso;
 public class PresetMSOCreateNetworkALaCarteOldViewEdit extends PresetMSOBaseCreateInstancePost {
     private final String networkInstanceName;
     private final String serviceInstanceId;
+    private final String platform;
 
-    public PresetMSOCreateNetworkALaCarteOldViewEdit(String overrideRequestId, String serviceInstanceId, String responseInstanceId, String networkInstanceName) {
+    public PresetMSOCreateNetworkALaCarteOldViewEdit(String overrideRequestId, String serviceInstanceId, String responseInstanceId, String networkInstanceName, String platform) {
         super(overrideRequestId, responseInstanceId);
         this.serviceInstanceId = serviceInstanceId;
         this.networkInstanceName = networkInstanceName;
+        this.platform = platform == null ? "" : platform;
     }
 
     @Override
@@ -17,12 +19,12 @@ public class PresetMSOCreateNetworkALaCarteOldViewEdit extends PresetMSOBaseCrea
 
     @Override
     public Object getRequestBody() {
-        return "{\"requestDetails\": {" +
+       return "{\"requestDetails\": {" +
                 "        \"requestInfo\": {" +
-                "          \"instanceName\": \""+networkInstanceName+"\"," +
+                "          \"instanceName\": \"" + networkInstanceName + "\"," +
                 "          \"source\": \"VID\"," +
                 "          \"suppressRollback\": false," +
-                "          \"requestorId\": \"mo57174000\"," +
+                "          \"requestorId\": \"em1536000\"," +
                 "          \"productFamilyId\": \"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb\"" +
                 "        }," +
                 "        \"modelInfo\": {" +
@@ -40,16 +42,14 @@ public class PresetMSOCreateNetworkALaCarteOldViewEdit extends PresetMSOBaseCrea
                 "        }," +
                 "        \"cloudConfiguration\": {" +
                 "          \"lcpCloudRegionId\": \"One\"," +
-                            addCloudOwnerIfNeeded() +
+                addCloudOwnerIfNeeded() +
                 "          \"tenantId\": \"c630e297a3ae486497d63eacec1d7c14\"" +
                 "        }," +
-                "       \"platform\": {" +
-                "           \"platformName\": \"xxx1\"" +
-                "        }," +
+                addPlatformIfNeeded(platform) +
                 "        \"relatedInstanceList\": [" +
                 "          {" +
                 "            \"relatedInstance\": {" +
-                "              \"instanceId\": \""+serviceInstanceId+"\"," +
+                "              \"instanceId\": \"" + serviceInstanceId + "\"," +
                 "              \"modelInfo\": {" +
                 "                \"modelType\": \"service\"," +
                 "                \"modelName\": \"Using VID for VoIP Network Instantiations Shani\"," +

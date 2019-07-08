@@ -8,6 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 
+//import com.automation.common.report_portal_integration.listeners.ReportPortalListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -33,10 +34,12 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import vid.automation.test.infra.FeaturesTogglingConfiguration;
 import vid.automation.test.services.UsersService;
 import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
 
+//@Listeners(ReportPortalListener.class)
 public class BaseApiTest {
     protected static final Logger LOGGER = LogManager.getLogger(BaseApiTest.class);
 
@@ -63,7 +66,7 @@ public class BaseApiTest {
     }
 
     private URI getUri() {
-        String host = System.getProperty("VID_HOST", "10.0.0.10");
+        String host = System.getProperty("VID_HOST", "127.0.0.1");
         int port = Integer.valueOf(System.getProperty("VID_PORT", "8080"));
         return new JerseyUriBuilder().host(host).port(port).scheme("http").path("vid").build();
     }

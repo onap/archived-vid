@@ -1,14 +1,10 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VFM_NAME1;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VFM_NAME2;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VG_NAME;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VNF_NAME;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VNF_NAME2;
+import vid.automation.test.infra.Features;
 
 import java.util.Map;
-import vid.automation.test.infra.Features;
+
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.*;
 
 public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends PresetMSOCreateServiceInstanceGen2WithNames {
 
@@ -60,10 +56,6 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
     }
 
     protected String getVnfInstanceParams() {
-        if (!Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF.isActive()) {
-            return "";
-        }
-
         if (Features.FLAG_SUPPLEMENTARY_FILE.isActive())  {
             return INSTANCE_PARAMS_WITH_SUPP_FILE_VNF;
         }
@@ -91,13 +83,13 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "    }, " +
                 "    \"owningEntity\": { " +
                 "      \"owningEntityId\": \"d61e6f2d-12fa-4cc2-91df-7c244011d6fc\", " +
-                "      \"owningEntityName\": \"MetroPacketCore\" " +
+                "      \"owningEntityName\": \"WayneHolland\" " +
                 "    }, " +
                 "    \"subscriberInfo\": { " +
                 "      \"globalSubscriberId\": \"e433710f-9217-458d-a79d-1c7aff376d89\" " +
                 "    }, " +
                 "    \"project\": { " +
-                "      \"projectName\": \"DFW\" " +
+                "      \"projectName\": \"WATKINS\" " +
                 "    }, " +
                 "    \"requestInfo\": { " +
                 "      \"instanceName\": \"" + names.get(SERVICE_NAME) + suffix + "\", " +
@@ -118,7 +110,7 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "              \"modelType\": \"service\" " +
                 "            }, " +
                 "            \"instanceParams\": [{ " +
-                "                \"2017488_PASQUALEvpe0_ASN\": \"AV_vPE\"" +
+                "                \"2017488_pasqualevpe0_ASN\": \"AV_vPE\"" +
                 "              }" +
                 "            ], " +
                 "            \"resources\": { " +
@@ -142,7 +134,7 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "                   \"platformName\": \"platform\" " +
                 "                  }, " +
                 "                  \"lineOfBusiness\": { " +
-                "                   \"lineOfBusinessName\": \"ECOMP\" " +
+                "                   \"lineOfBusinessName\": \"ONAP\" " +
                 "                  }, " +
                 "                  \"productFamilyId\": \"e433710f-9217-458d-a79d-1c7aff376d89\", " +
                 "                  \"instanceParams\": [" + INSTANCE_PARAMS_VNF + "] " +
@@ -167,18 +159,18 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "                    \"platformName\": \"platform\" " +
                 "                  }, " +
                 "                  \"lineOfBusiness\": { " +
-                "                    \"lineOfBusinessName\": \"ECOMP\" " +
+                "                    \"lineOfBusinessName\": \"ONAP\" " +
                 "                  }, " +
                 "                  \"productFamilyId\": \"e433710f-9217-458d-a79d-1c7aff376d89\", " +
                 "                  \"instanceParams\": [" + getVnfInstanceParams() + "], " +
                 "                  \"vfModules\": [{ " +
                 "                     \"instanceName\": \"" + names.get(VFM_NAME1) + suffix + "\", " +
                 "                     \"modelInfo\": { " +
-                "                      \"modelCustomizationName\": \"2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0\", " +
+                "                      \"modelCustomizationName\": \"2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0\", " +
                 "                      \"modelCustomizationId\": \"a55961b2-2065-4ab0-a5b7-2fcee1c227e3\", " +
                 "                      \"modelInvariantId\": \"b34833bb-6aa9-4ad6-a831-70b06367a091\", " +
                 "                      \"modelVersionId\": \"f8360508-3f17-4414-a2ed-6bc71161e8db\", " +
-                "                      \"modelName\": \"2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0\", " +
+                "                      \"modelName\": \"2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0\", " +
                 "                      \"modelType\": \"vfModule\", " +
                 "                      \"modelVersion\": \"5\" " +
                 "                     }, " +
@@ -187,11 +179,11 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "                      \"instanceName\": \"" + names.get(VFM_NAME2) + suffix + "\", " +
                 "                      \"volumeGroupInstanceName\": \"" + names.get(VG_NAME) + suffix + "\", " +
                 "                      \"modelInfo\": { " +
-                "                        \"modelCustomizationName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
+                "                        \"modelCustomizationName\": \"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelCustomizationId\": \"f7e7c365-60cf-49a9-9ebf-a1aa11b9d401\", " +
                 "                        \"modelInvariantId\": \"7253ff5c-97f0-4b8b-937c-77aeb4d79aa1\", " +
                 "                        \"modelVersionId\": \"25284168-24bb-4698-8cb4-3f509146eca5\", " +
-                "                        \"modelName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
+                "                        \"modelName\": \"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelType\": \"vfModule\", " +
                 "                        \"modelVersion\": \"6\" " +
                 "                      }, " +
@@ -212,10 +204,6 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
     }
 
     private String addDuplicatedVnfIfFeatureOn() {
-        if (!Features.FLAG_DUPLICATE_VNF.isActive()) {
-            return "";
-        }
-
         return
                 "                ,{ " + //start of vnf
                 "                  \"instanceName\": \"" + names.get(VNF_NAME)+ "_001" + suffix + "\", " +
@@ -237,18 +225,18 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "                    \"platformName\": \"platform\" " +
                 "                  }, " +
                 "                  \"lineOfBusiness\": { " +
-                "                    \"lineOfBusinessName\": \"ECOMP\" " +
+                "                    \"lineOfBusinessName\": \"ONAP\" " +
                 "                  }, " +
                 "                  \"productFamilyId\": \"e433710f-9217-458d-a79d-1c7aff376d89\", " +
                 "                  \"instanceParams\": [" + getVnfInstanceParams() + "], " +
                 "                  \"vfModules\": [{ " +
                 "                     \"instanceName\": \"" + names.get(VFM_NAME1) + "_001" + suffix + "\", " +
                 "                     \"modelInfo\": { " +
-                "                      \"modelCustomizationName\": \"2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0\", " +
+                "                      \"modelCustomizationName\": \"2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0\", " +
                 "                      \"modelCustomizationId\": \"a55961b2-2065-4ab0-a5b7-2fcee1c227e3\", " +
                 "                      \"modelInvariantId\": \"b34833bb-6aa9-4ad6-a831-70b06367a091\", " +
                 "                      \"modelVersionId\": \"f8360508-3f17-4414-a2ed-6bc71161e8db\", " +
-                "                      \"modelName\": \"2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0\", " +
+                "                      \"modelName\": \"2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0\", " +
                 "                      \"modelType\": \"vfModule\", " +
                 "                      \"modelVersion\": \"5\" " +
                 "                     }, " +
@@ -257,11 +245,11 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "                      \"instanceName\": \"" + names.get(VFM_NAME2) + "_001" + suffix + "\", " +
                 "                      \"volumeGroupInstanceName\": \"" + names.get(VG_NAME) + "_001" + suffix + "\", " +
                 "                      \"modelInfo\": { " +
-                "                        \"modelCustomizationName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
+                "                        \"modelCustomizationName\": \"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelCustomizationId\": \"f7e7c365-60cf-49a9-9ebf-a1aa11b9d401\", " +
                 "                        \"modelInvariantId\": \"7253ff5c-97f0-4b8b-937c-77aeb4d79aa1\", " +
                 "                        \"modelVersionId\": \"25284168-24bb-4698-8cb4-3f509146eca5\", " +
-                "                        \"modelName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
+                "                        \"modelName\": \"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelType\": \"vfModule\", " +
                 "                        \"modelVersion\": \"6\" " +
                 "                      }, " +
@@ -289,18 +277,18 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "                    \"platformName\": \"platform\" " +
                 "                  }, " +
                 "                  \"lineOfBusiness\": { " +
-                "                    \"lineOfBusinessName\": \"ECOMP\" " +
+                "                    \"lineOfBusinessName\": \"ONAP\" " +
                 "                  }, " +
                 "                  \"productFamilyId\": \"e433710f-9217-458d-a79d-1c7aff376d89\", " +
                 "                  \"instanceParams\": [" + getVnfInstanceParams() + "], " +
                 "                  \"vfModules\": [{ " +
                 "                     \"instanceName\": \"" + names.get(VFM_NAME1) + "_002" + suffix + "\", " +
                 "                     \"modelInfo\": { " +
-                "                      \"modelCustomizationName\": \"2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0\", " +
+                "                      \"modelCustomizationName\": \"2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0\", " +
                 "                      \"modelCustomizationId\": \"a55961b2-2065-4ab0-a5b7-2fcee1c227e3\", " +
                 "                      \"modelInvariantId\": \"b34833bb-6aa9-4ad6-a831-70b06367a091\", " +
                 "                      \"modelVersionId\": \"f8360508-3f17-4414-a2ed-6bc71161e8db\", " +
-                "                      \"modelName\": \"2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0\", " +
+                "                      \"modelName\": \"2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0\", " +
                 "                      \"modelType\": \"vfModule\", " +
                 "                      \"modelVersion\": \"5\" " +
                 "                     }, " +
@@ -309,11 +297,11 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse extends
                 "                      \"instanceName\": \"" + names.get(VFM_NAME2) + "_002" + suffix + "\", " +
                 "                      \"volumeGroupInstanceName\": \"" + names.get(VG_NAME) + "_002" + suffix + "\", " +
                 "                      \"modelInfo\": { " +
-                "                        \"modelCustomizationName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
+                "                        \"modelCustomizationName\": \"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelCustomizationId\": \"f7e7c365-60cf-49a9-9ebf-a1aa11b9d401\", " +
                 "                        \"modelInvariantId\": \"7253ff5c-97f0-4b8b-937c-77aeb4d79aa1\", " +
                 "                        \"modelVersionId\": \"25284168-24bb-4698-8cb4-3f509146eca5\", " +
-                "                        \"modelName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
+                "                        \"modelName\": \"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelType\": \"vfModule\", " +
                 "                        \"modelVersion\": \"6\" " +
                 "                      }, " +

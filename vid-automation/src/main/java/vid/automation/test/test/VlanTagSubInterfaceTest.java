@@ -1,27 +1,10 @@
 package vid.automation.test.test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_AAIAIC25_TO_ATT_AIC;
-import static org.testng.AssertJUnit.assertEquals;
-import static vid.automation.test.infra.Features.FLAG_COLLECTION_RESOURCE_SUPPORT;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.test.ALaCarteflowTest.AIC;
-
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.aai.*;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfVlanTagging;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -30,7 +13,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
-import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
 import vid.automation.test.sections.SearchExistingPage;
@@ -38,7 +20,19 @@ import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
 
-@FeatureTogglingTest(FLAG_COLLECTION_RESOURCE_SUPPORT)
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_AAIAIC25_TO_ATT_AIC;
+import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.test.ALaCarteflowTest.AIC;
+
 public class VlanTagSubInterfaceTest extends CreateInstanceDialogBaseTest {
 
     private final String ecompNamingFalseInstanceId = "dc3a893e-0104-4ef6-abfe-6c2932294a3e";
@@ -56,7 +50,7 @@ public class VlanTagSubInterfaceTest extends CreateInstanceDialogBaseTest {
         );
 
         final PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest presetAAIGetInstanceGroupsByCloudRegion1 = new PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest("irma-aic", "hvf6", "untraaa");
-        final PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest presetAAIGetInstanceGroupsByCloudRegion2 = new PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest("irma-aic", "JANET25", "untraaa");
+        final PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest presetAAIGetInstanceGroupsByCloudRegion2 = new PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest("irma-aic", "AAIAIC25", "untraaa");
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
                     new PresetAAIGetServicesGet(),
@@ -67,8 +61,8 @@ public class VlanTagSubInterfaceTest extends CreateInstanceDialogBaseTest {
                     new PresetAAIGetTenants(),
                     presetAAIGetInstanceGroupsByCloudRegion1,
                     presetAAIGetInstanceGroupsByCloudRegion2,
-                    new PresetMSOOrchestrationRequestGet("IN_PROGRESS"),
-                    new PresetMSOOrchestrationRequestGet("COMPLETE")
+                new PresetMSOOrchestrationRequestGet("IN_PROGRESS", false),
+                new PresetMSOOrchestrationRequestGet("COMPLETE", false)
                 ),
                 APPEND);
 
@@ -104,7 +98,7 @@ public class VlanTagSubInterfaceTest extends CreateInstanceDialogBaseTest {
         WebElement instanceNameInput = GeneralUIUtils.getInputElement(Constants.INSTANCE_NAME_SELECT_TESTS_ID);
         instanceNameInput.sendKeys("NewName");
         SelectOption.byTestIdAndVisibleText("TYLER SILVIA", Constants.ViewEdit.PRODUCT_FAMILY_SELECT_TESTS_ID);
-        viewEditPage.selectLcpRegion("JANET25", AIC);
+        viewEditPage.selectLcpRegion("AAIAIC25", AIC);
         SelectOption.byTestIdAndVisibleText("USP-SIP-IC-24335-T-01", Constants.ViewEdit.TENANT_SELECT_TESTS_ID);
         SelectOption.byTestIdAndVisibleText("UUUAIAAI-YYY1", Constants.ViewEdit.AIC_ZONE_TEST_ID);
         SelectOption.byTestIdAndVisibleText("xxx1", Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);

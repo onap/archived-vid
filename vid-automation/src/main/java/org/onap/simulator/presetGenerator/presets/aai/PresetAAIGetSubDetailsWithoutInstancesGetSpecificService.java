@@ -1,11 +1,12 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetSubDetailsWithoutInstancesGetSpecificService extends BaseAAIPreset {
     private String subscriberId;
@@ -49,7 +50,7 @@ public class PresetAAIGetSubDetailsWithoutInstancesGetSpecificService extends Ba
                 "  \"service-subscriptions\":{" +
                 "    \"service-subscription\":[" +
                 "      {" +
-                "        \"service-type\":\"vFlowLogic\"," +
+                "        \"service-type\":\"vRichardson\"," +
                 "        \"resource-version\":\"1501700976809\"," +
                 "        \"is-permitted\":false" +
                 "      }," +

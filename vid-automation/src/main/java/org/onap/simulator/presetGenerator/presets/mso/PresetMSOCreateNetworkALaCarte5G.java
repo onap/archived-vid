@@ -54,7 +54,7 @@ public class PresetMSOCreateNetworkALaCarte5G extends PresetMSOBaseCreateInstanc
                 "      \"platformName\": \"platform\"" +
                 "    }," +
                 "    \"lineOfBusiness\": {" +
-                "      \"lineOfBusinessName\": \"ECOMP\"" +
+                "      \"lineOfBusinessName\": \"ONAP\"" +
                 "    }," +
                 "    \"relatedInstanceList\": [{" +
                 "        \"relatedInstance\": {" +

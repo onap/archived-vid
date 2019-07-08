@@ -1,0 +1,87 @@
+{
+  "service": {
+      "vidNotions": {
+      "instantiationUI": "infrastructureVpn",
+      "modelCategory": "other",
+      "viewEditUI": "serviceWithVRF",
+      "instantiationType": "Macro"
+    },
+    "uuid": "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
+    "invariantUuid": "7ee41ce4-4827-44b0-a48e-2707a59905d2",
+    "name": "VRF Service for Test",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Network L4+",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "CONFIGURATION",
+    "description": "xxx",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {}
+  },
+  "vnfs": {},
+  "vrfs": {
+    "VRF Entry Configuration 0": {
+      "uuid": "9cac02be-2489-4374-888d-2863b4511a59",
+      "invariantUuid": "b67a289b-1688-496d-86e8-1583c828be0a",
+      "description": "VRF Entry configuration object",
+      "name": "VRF Entry Configuration",
+      "version": "30.0",
+      "customizationUuid": "dd024d73-9bd1-425d-9db5-476338d53433",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
+      "type": "Configuration",
+      "modelCustomizationName": "VRF Entry Configuration 0",
+      "sourceNodes": [],
+      "collectorNodes": null,
+      "configurationByPolicy": false
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {
+    "vdorothea_svc_vprs_proxy 0": {
+      "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
+      "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
+      "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
+      "name": "vDOROTHEA_Svc_vPRS Service Proxy",
+      "version": "1.0",
+      "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
+      "type": "Service Proxy",
+      "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
+      "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
+      "sourceModelName": "vDOROTHEA_Svc_vPRS"
+    },
+    "tsbc0001vm001_svc_proxy 0": {
+      "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
+      "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
+      "description": "A Proxy for Service tsbc0001vm001_Svc",
+      "name": "tsbc0001vm001_Svc Service Proxy",
+      "version": "1.0",
+      "customizationUuid": "3d814462-30fb-4c62-b997-9aa360d27ead",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "ecomp_generated_naming": "false"
+      },
+      "type": "Service Proxy",
+      "sourceModelUuid": "28aeb8f6-5620-4148-8bfb-a5fb406f0309",
+      "sourceModelInvariant": "c989ab9a-33c7-46ec-b521-1b2daef5f047",
+      "sourceModelName": "tsbc0001vm001_Svc"
+    }
+  },
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": { }
+}

@@ -1,14 +1,10 @@
 package vid.automation.test.sections;
 
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.Click;
 import vid.automation.test.infra.Get;
-
-import java.util.List;
+import vid.automation.test.infra.SelectOption;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,5 +31,12 @@ public class TestEnvironmentPage extends VidBasePage {
     public static WebElement getTestEnvironmentAttachButton(String envId) {
         WebElement webElement = Get.byId(Constants.TestEnvironments.attachButtonIdPrefix + envId);
         return webElement;
+    }
+
+    public static String selectEnvRelease(String envRelease){
+        GeneralUIUtils.ultimateWait();
+        String selectedOption;
+        selectedOption = SelectOption.getSelectedOption(Constants.TestEnvironments.ENVIRONMENT_RELEASE);
+        return selectedOption;
     }
 }

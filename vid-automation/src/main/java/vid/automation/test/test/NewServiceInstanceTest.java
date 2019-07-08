@@ -1,64 +1,19 @@
 package vid.automation.test.test;
 
-import static junit.framework.TestCase.assertNull;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_SOME_LEGACY_REGION_TO_ATT_AIC;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID;
-import static org.testng.Assert.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
-import static vid.automation.test.infra.Features.FLAG_1902_VNF_GROUPING;
-import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
-import static vid.automation.test.infra.Features.FLAG_ASYNC_INSTANTIATION;
-import static vid.automation.test.infra.ModelInfo.PASQUALEVmxVpeBvService488Annotations;
-import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
-import static vid.automation.test.infra.ModelInfo.aLaCarteVnfGroupingService;
-import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails;
-import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse;
-import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse;
-import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-import static vid.automation.test.test.ALaCarteflowTest.AIC;
-
+//import com.automation.common.report_portal_integration.annotations.Step;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateNetworkALaCarte5G;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork;
+import org.onap.simulator.presetGenerator.presets.aai.*;
+import org.onap.simulator.presetGenerator.presets.mso.*;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork.ResponseDetails;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
@@ -69,33 +24,44 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.Constants.BrowseASDC.NewServicePopup;
-import vid.automation.test.infra.Click;
-import vid.automation.test.infra.FeatureTogglingTest;
-import vid.automation.test.infra.Features;
-import vid.automation.test.infra.Get;
-import vid.automation.test.infra.Input;
-import vid.automation.test.infra.ModelInfo;
-import vid.automation.test.infra.SelectOption;
-import vid.automation.test.infra.Wait;
+import vid.automation.test.infra.*;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.User;
-import vid.automation.test.sections.BrowseASDCPage;
-import vid.automation.test.sections.DrawingBoardPage;
-import vid.automation.test.sections.InstantiationStatusPage;
-import vid.automation.test.sections.SideMenu;
-import vid.automation.test.sections.VidBasePage;
+import vid.automation.test.sections.*;
 import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.test.NewServiceInstanceTest.ServiceData.IS_GENERATED_NAMING;
 import vid.automation.test.utils.ReadFile;
 
-@FeatureTogglingTest(FLAG_ASYNC_INSTANTIATION)
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static junit.framework.TestCase.assertNull;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_SOME_LEGACY_REGION_TO_ATT_AIC;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+import static vid.automation.test.infra.Features.*;
+import static vid.automation.test.infra.ModelInfo.*;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+import static vid.automation.test.test.ALaCarteflowTest.AIC;
+
 public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
-    private static final String COMPLETED = "COMPLETED";
+    public static final String COMPLETED = "COMPLETED";
     private static final String IN_PROGRESS = "IN_PROGRESS";
     private static final String PENDING = "PENDING";
-    private final String vfModule0Name = "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0";
+    private final String vfModule0Name = "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0";
     private final String vfModule0UUID = "f8360508-3f17-4414-a2ed-6bc71161e8db";
     private ServicesService servicesService = new ServicesService();
     private DrawingBoardPage drawingBoardPage = new DrawingBoardPage();
@@ -215,13 +181,13 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails.modelVersionId,
                 new ArrayList<>(),
-                false, true, true, true,
+                IS_GENERATED_NAMING.FALSE, true, true, true,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
-        final String serviceInstanceName = createSriovService(serviceData, true);
+        final String serviceInstanceName = createMacroService(serviceData, true);
         createVnf(serviceData, true, true, serviceInstanceName);
 
         createVfModule(serviceData, serviceInstanceName, false, false);
@@ -261,19 +227,19 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         ServiceData serviceData = new ServiceData(
                 macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse.modelVersionId,
-                Collections.singletonList("2017488 PASQUALEvpe0 asn:"),
-                false, false, true, false,
+                Collections.singletonList("2017488 pasqualevpe0 asn:"),
+                IS_GENERATED_NAMING.FALSE, false, true, false,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1", 0, 1, ImmutableList.of("Bandwidth", "Bandwidth units"),
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, ImmutableList.of("Bandwidth", "Bandwidth units"),
                 "25284168-24bb-4698-8cb4-3f509146eca5");
 
-        // this is the instance-name that createSriovService is going to use
+        // this is the instance-name that createMacroService is going to use
         String serviceInstanceName = randomAlphabetic + "instancename";
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () -> {
             prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse,
                     false);
-            createSriovService(serviceData, false, randomAlphabetic);
+            createMacroService(serviceData, false, randomAlphabetic, true, 3);
         });
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () ->
@@ -295,9 +261,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () -> {
 
             editVfModuleAndJustSetName(vfModule0Name, vfModule0UUID);
-            if (Features.FLAG_DUPLICATE_VNF.isActive()) {
-                duplicateVnf(serviceData.vnfData, 2);
-            }
+            duplicateVnf(serviceData.vnfData, 2);
             vidBasePage.screenshotDeployDialog(serviceInstanceName);
         });
 
@@ -305,8 +269,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse,
                     true);
 
-            final String vfModuleName1 = "2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0";
-            final String vfModuleName2 = "2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1";
+            final String vfModuleName1 = "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0";
+            final String vfModuleName2 = "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1";
             final String request1 = PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
             final String request2 = "ce010256-3fdd-4cb5-aed7-37112a2c6e93";
             final ImmutableMap<Keys, String> vars = ImmutableMap.<Keys, String>builder()
@@ -333,6 +297,97 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
+    @FeatureTogglingTest(FLAG_1908_INFRASTRUCTURE_VPN)
+    public void createNewServiceInstance_infraStructureVpn() {
+        String requestId = UUID.randomUUID().toString();
+        String instanceId = UUID.randomUUID().toString();
+
+        prepareServicePreset(infrastructureVpnService, false);
+
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+            PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC,
+                new PresetAAIGetL3NetworksByCloudRegionSpecificState("irma-aic", "hvf6", "AIN Web Tool-15-D-testalexandria"),
+            new PresetAAIGetVpnsByType()
+        ), APPEND);
+
+        ServiceData serviceData = new ServiceData(
+                infrastructureVpnService.modelVersionId,
+                new ArrayList<>(),
+                IS_GENERATED_NAMING.TRUE_BUT_GIVE_NAME_EITHER_WAY, true, true, false,
+                null,
+                null, 0, 1, new ArrayList<>(), null);
+        final String serviceInstanceName = createMacroService(serviceData, false);
+
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+            PresetMsoCreateMacroCommonPre1806.ofServiceWithVRF(requestId, instanceId, serviceInstanceName),
+            new PresetMSOOrchestrationRequestGet(COMPLETE, requestId)
+        ), APPEND);
+
+        // Wizard pages of Network and VPN
+        Click.byTestIdOnceItsAvailable("10a74149-c9d7-4918-bbcf-d5fb9b1799ce", 20);
+        Click.byTestId("setMembersBtn");
+        GeneralUIUtils.ultimateWait();
+
+        Click.byTestIdOnceItsAvailable("120d39fb-3627-473d-913c-d228dd0f8e5b", 20);
+        Click.byTestId("setMembersBtn");
+        GeneralUIUtils.ultimateWait();
+
+        Assert.assertEquals(Get.byTestId("node-type-indicator").getText(),"VRF");
+
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "Service "+serviceInstanceName);
+    }
+
+    @Test
+    @FeatureTogglingTest(FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI)
+    public void createNewServiceInstance_collectionResource() {
+        prepareServicePreset(collectionResourceService, false);
+        String requestId = UUID.randomUUID().toString();
+        String instanceId = UUID.randomUUID().toString();
+
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC,
+                PresetMsoCreateMacroCommonPre1806.ofCollectionResource(requestId, instanceId),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, requestId)
+        ), APPEND);
+
+        ServiceData serviceData = new ServiceData(
+                collectionResourceService.modelVersionId,
+                new ArrayList<>(),
+                IS_GENERATED_NAMING.TRUE, true, true, false,
+                null,
+                null, 0, 1, new ArrayList<>(), null);
+        createMacroService(serviceData, false, randomAlphabetic(5), true, 1);
+
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime("CR_sanity", "service with collection resource");
+    }
+
+    @Test
+    @FeatureTogglingTest(FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI)
+    public void createNewServiceInstance_transportService() {
+        prepareServicePreset(transportWithPnfsService, false);
+        String requestId = UUID.randomUUID().toString();
+        String instanceId = UUID.randomUUID().toString();
+
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                PresetMsoCreateMacroCommonPre1806.ofTransportService(requestId, instanceId),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, requestId)
+            ), APPEND);
+
+        ServiceData serviceData = new ServiceData(
+                transportWithPnfsService.modelVersionId,
+                new ArrayList<>(),
+                IS_GENERATED_NAMING.TRUE, true, true, false,
+                null,
+                null, 0, 1, new ArrayList<>(), null);
+        createMacroService(serviceData, false, randomAlphabetic(5), false, 1);
+
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime("AIM Transport SVC_ym161f", "transport service");
+    }
+
+    @Test
     @FeatureTogglingTest(FLAG_1902_VNF_GROUPING)
     public void createNewServiceInstance_aLaCarte_VnfGrouping() {
 
@@ -341,7 +396,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         ServiceData serviceData = new ServiceData(
                 aLaCarteVnfGroupingService.modelVersionId,
                 ImmutableList.of(),
-                false, false, true, false,
+                IS_GENERATED_NAMING.FALSE, false, true, false,
                 null, null, 0, 1, ImmutableList.of(), null);
         prepareServicePreset(aLaCarteVnfGroupingService, false);
 
@@ -360,7 +415,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new PresetAAIPostNamedQueryForViewEdit(serviceInstanceId, serviceInstanceName, false, false)
         ), SimulatorApi.RegistrationStrategy.APPEND);
 
-        deploy();
+        drawingBoardPage.deploy();
         verifyModuleInPendingTable(serviceInstanceName, requestId, null, ImmutableSet.of(IN_PROGRESS), false, false);
         verifyModuleInPendingTable(serviceInstanceName, requestId, null, ImmutableSet.of(COMPLETED), false, true);
         InstantiationStatusPage.verifyOpenNewViewEdit(serviceInstanceName, serviceInstanceId, aLaCarteVnfGroupingService.modelVersionId, "TYLER SILVIA", "e433710f-9217-458d-a79d-1c7aff376d89", "EDIT");
@@ -379,20 +434,20 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                         return;
                     } else if (currentStep.getValue() == startInStep) {
 
-                        setReduxState(reduxForStep);
+                        vidBasePage.setReduxState(reduxForStep);
 
                         vidBasePage.navigateTo("serviceModels.htm#/servicePlanning?serviceModelId=6b528779-44a3-4472-bdff-9cd15ec93450");
                         vidBasePage.goToIframe();
                     }
 
-                    reduxStates.put(String.valueOf(currentStep), getReduxState());
+                    reduxStates.put(String.valueOf(currentStep), vidBasePage.getReduxState());
                     break;
 
                 case "RUNTIME":
                 default:
                     // log current redux state, before invocation
-                    reduxStates.put(String.valueOf(currentStep), getReduxState());
-                    logger.info("reduxGator runtime reduxState for step {}:\n{}", currentStep, getReduxState());
+                    reduxStates.put(String.valueOf(currentStep), vidBasePage.getReduxState());
+                    logger.info("reduxGator runtime reduxState for step {}:\n{}", currentStep, vidBasePage.getReduxState());
                     break;
             }
 
@@ -403,7 +458,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                         "Current step: " + currentStep,
                         "Random alphabetic: " + randomAlphabetic,
                         "Starting reduxState: " + reduxStates.get(String.valueOf(currentStep)),
-                        "Current reduxState:  " + getReduxState()
+                        "Current reduxState:  " + vidBasePage.getReduxState()
                 ), e);
             }
         } finally {
@@ -412,6 +467,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         }
     }
 
+    //@Step("duplicate vnf")
     private void duplicateVnf(VnfData vnfData, int count) {
         hoverAndClickDuplicateButton(extractNodeToEdit(vnfData));
         vidBasePage.screenshotDeployDialog("duplicateVnf-" + vnfData.vnfName);
@@ -425,6 +481,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         return String.join("", s).replace(" ", "");
     }
 
+    //@Step("edit vf module and just set name")
     private void editVfModuleAndJustSetName(String vfModuleName, String vfModuleUUID) {
         if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
             hoverAndClickEditButton(vfModuleUUID + "-" + vfModuleName);
@@ -432,7 +489,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             drawingBoardPage.clickAddButtonByNodeName(vfModuleName);
         }
         Input.text("VF instance name ZERO", "instanceName");
-        Click.byTestId("form-set");
+        Click.byTestId(VNF_SET_BUTTON_TEST_ID);
     }
 
     @Test
@@ -440,13 +497,13 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails.modelVersionId,
                 new ArrayList<>(),
-                false, true, false, true,
+                IS_GENERATED_NAMING.FALSE, true, false, true,
                 "2017-488_PASQUALE-vPE 0",
                 vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
-        final String serviceInstanceName = createSriovService(serviceData, true);
+        final String serviceInstanceName = createMacroService(serviceData, true);
         createVnf(serviceData, true, true, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
 
@@ -457,13 +514,13 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse.modelVersionId,
                 new ArrayList<>(),
-                false, false, false, false,
+                IS_GENERATED_NAMING.FALSE, false, false, false,
                 "2017-488_PASQUALE-vPE 0",
                 vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
-        final String serviceInstanceName = createSriovService(serviceData, true);
+        final String serviceInstanceName = createMacroService(serviceData, true);
         createVnf(serviceData, true, true, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
 
@@ -474,13 +531,13 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse.modelVersionId,
                 new ArrayList<>(),
-                false, false, true, false,
+                IS_GENERATED_NAMING.FALSE, false, true, false,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
-        final String serviceInstanceName = createSriovService(serviceData, true);
+        final String serviceInstanceName = createMacroService(serviceData, true);
         createVnf(serviceData, true, true, serviceInstanceName);
         clickRemoveVfModule(vfModule0UUID, vfModule0Name);
         createVfModule(serviceData, serviceInstanceName, false, true);
@@ -530,69 +587,45 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         browseASDCPage.goToIframe();
         VnfData networkData = new VnfData("SR-IOV Provider-1", "840ffc47-e4cf-46de-8e23-525fd8c6fdc3", defactoNetworkInstanceName, false);
         createNetwork(networkData, false, false, serviceInstanceName);
-        drawingBoardPage.clickDeployButton();
 
-        VidBasePage.goOutFromIframe();
-        GeneralUIUtils.ultimateWait();
-        vidBasePage.goToIframe();
-        GeneralUIUtils.ultimateWait();
-
-        DrawingBoardPage.ServiceStatusChecker serviceStatusChecker = new DrawingBoardPage.ServiceStatusChecker(serviceInstanceName, Collections.singleton(COMPLETED));
-        boolean statusIsShown = Wait.waitFor(serviceStatusChecker, null, 20, 2);
-        assertTrue("service "+serviceInstanceName+" wasnt completed after in time", statusIsShown);
-
-        VidBasePage.goOutFromIframe();
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
     }
 
     @Test
     public void createNewServiceInstance_macro_validPopupDataAndUI() {
 
-        List<String> serviceDynamicFields = Arrays.asList("2017488 PASQUALEvpe0 asn:");
+        List<String> serviceDynamicFields = Arrays.asList("2017488 pasqualevpe0 asn:");
         ServiceData serviceData = new ServiceData(
                 macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails.modelVersionId,
                 serviceDynamicFields,
-                true, true, true, false,
+                IS_GENERATED_NAMING.TRUE, true, true, false,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
 
         prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails, false);
 
-        final String serviceInstanceName = createSriovService(serviceData, true);
+        final String serviceInstanceName = createMacroService(serviceData, true);
         createVnf(serviceData, true, true, serviceInstanceName);
         clickRemoveVfModule(vfModule0UUID, vfModule0Name);
         createVfModule(serviceData, serviceInstanceName, false, false);
 
     }
 
+    //@Step("deploy and verify module in pending table")
     private void deployAndVerifyModuleInPendingTableMacro(String serviceInstanceName, String requestId1, String requestId2) {
-        deploy();
+        drawingBoardPage.deploy();
 
         boolean simulatorUpdated = false;
 
         int[] ids = {0, 0, 1, 2};
         String[] statuses = {IN_PROGRESS, COMPLETED, IN_PROGRESS, PENDING};
         for (int i = 0; i < ids.length; i++) {
-            String actualInstanceName = getActualInstanceName(serviceInstanceName, ids[i], statuses[i]);
+            String actualInstanceName = getActualInstanceName(serviceInstanceName, ids[i]);
             verifyModuleInPendingTable(actualInstanceName, requestId1, requestId2, ImmutableSet.of(statuses[i]), true, simulatorUpdated);
             simulatorUpdated = true;
         }
         vidBasePage.screenshotDeployDialog(serviceInstanceName);
-    }
-
-    private void deploy() {
-        try {
-            logger.info("Redux state before deploy:");
-            logger.info(getReduxState());
-        }
-        catch (Exception e) {
-            //do nothing just logging
-        }
-        drawingBoardPage.clickDeployButton();
-
-        VidBasePage.goOutFromIframe();
-        GeneralUIUtils.ultimateWait();
-        vidBasePage.goToIframe();
-        GeneralUIUtils.ultimateWait();
     }
 
     private void verifyModuleInPendingTable(String serviceInstanceName, String requestId1, String requestId2, Set<String> expectedStatuses, boolean isMacro, boolean simulatorUpdated) {
@@ -622,15 +655,16 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         vidBasePage.screenshotDeployDialog(serviceInstanceName);
     }
 
-    private String getActualInstanceName(String serviceInstanceName, Integer i, String status) {
+    private String getActualInstanceName(String serviceInstanceName, Integer i) {
         return i==0 ? serviceInstanceName : serviceInstanceName + "_00" + i;
     }
 
+    //@Step("verify open view edit")
     private void verifyOpenViewEdit(String serviceInstanceName) {
         boolean[] openEnabled = {true, false, false};
         String[] statuses = {COMPLETED, IN_PROGRESS, PENDING};
         ImmutableList.of(0, 1, 2).forEach(i -> {
-            String actualInstanceName = getActualInstanceName(serviceInstanceName, i, statuses[i]);
+            String actualInstanceName = getActualInstanceName(serviceInstanceName, i);
             if (Features.FLAG_1902_NEW_VIEW_EDIT.isActive()) {
                 InstantiationStatusPage.verifyOpenNewViewEdit(actualInstanceName, openEnabled[i], "EDIT");
             }
@@ -640,11 +674,12 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         });
     }
 
+    //@Step("verify open audit info")
     private void verifyOpenAuditInfo(String serviceInstanceName) {
         boolean auditInfoEnabled = true;
         String[] statuses = {COMPLETED, IN_PROGRESS, PENDING};
         for (Integer i : ImmutableList.of(0, 1, 2)) {
-            String actualInstanceName = getActualInstanceName(serviceInstanceName, i, statuses[i]);
+            String actualInstanceName = getActualInstanceName(serviceInstanceName, i);
             InstantiationStatusPage.checkMenuItem(actualInstanceName, Constants.InstantiationStatus.CONTEXT_MENU_HEADER_AUDIT_INFO_ITEM, auditInfoEnabled, contextMenuOpen -> {
                 Click.byTestId(contextMenuOpen);
                 checkAuditInfoModal(actualInstanceName, i, statuses);
@@ -672,8 +707,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 .collect(Collectors.toList());
 
         List<String> serviceStatus = Arrays.asList(Arrays.copyOfRange(statuses, i, statuses.length));
-        assertThat("statuses for " + actualInstanceName + " must be as expected", vidStatuses, is(Lists.reverse(serviceStatus)));
-
+        assertThat("statuses for " + actualInstanceName + " must be as expected", vidStatuses, containsInAnyOrder(serviceStatus.toArray()));
         String dateString = vidTableElement.findElements(By.id("vidStatusTime")).get(0).getText();
         assertTrue("vid Status Time column must contains valid date in format : MMM dd, yyyy HH:mm", isDateValid(dateString, "MMM dd, yyyy HH:mm"));
 
@@ -710,12 +744,14 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         return true;
     }
 
+    //@Step("verifyDeleteJob")
     private void verifyDeleteJob(String serviceInstanceName) {
         boolean[] deleteEnabled = {false, false, true};
         String[] statuses = {COMPLETED, IN_PROGRESS, PENDING};
         verifyDeleteOrHideOperation(serviceInstanceName, Constants.InstantiationStatus.CONTEXT_MENU_REMOVE, statuses, deleteEnabled, "deleted");
     }
 
+    //@Step("verify hide job")
     private void verifyHideJob(String serviceInstanceName) {
         boolean[] hideEnabled = {true, false};
         String[] statuses = {COMPLETED, IN_PROGRESS};
@@ -724,7 +760,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     private void verifyDeleteOrHideOperation(String serviceInstanceName, String contextMenuItem, String[] statuses, boolean[] operationEnabled, String operationName) {
         for (int i = 0; i < statuses.length; i++) {
-            String actualInstanceName = getActualInstanceName(serviceInstanceName, i, statuses[i]);
+            String actualInstanceName = getActualInstanceName(serviceInstanceName, i);
             InstantiationStatusPage.checkMenuItem(actualInstanceName, contextMenuItem, operationEnabled[i], contextMenuDelete -> {
                 Click.byTestId(contextMenuDelete);
                 GeneralUIUtils.ultimateWait();
@@ -766,11 +802,13 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 .build();
     }
 
-    private String createSriovService(ServiceData serviceData, boolean tryCancelsAndReentries) {
-        return createSriovService(serviceData, tryCancelsAndReentries, randomAlphabetic(5));
+    //@Step("create sriov service")
+    private String createMacroService(ServiceData serviceData, boolean tryCancelsAndReentries) {
+        return createMacroService(serviceData, tryCancelsAndReentries, randomAlphabetic(5), true, 3);
     }
 
-    private String createSriovService(ServiceData serviceData, boolean tryCancelsAndReentries, String randomAlphabetic) {
+    //@Step("create sriov service")
+    private String createMacroService(ServiceData serviceData, boolean tryCancelsAndReentries, String randomAlphabetic, boolean fillLcpRegionAndTenantAndZone, int bulkSize) {
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
         User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
 
@@ -788,14 +826,17 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
             WebElement instanceName = Get.byId("instanceName");
             boolean isRequired = isElementByIdRequired("instanceName-label");
-            if (serviceData.isGeneratedNaming) {
+            if (serviceData.isGeneratedNaming == IS_GENERATED_NAMING.TRUE || serviceData.isGeneratedNaming == IS_GENERATED_NAMING.TRUE_BUT_GIVE_NAME_EITHER_WAY) {
                 Assert.assertNotNull(instanceName, "instance name input should be visible when serviceEcompNaming == true.");
                 Assert.assertFalse(isRequired,"instance name input should be optional when ecompNaming == true.");
-
             } else {
                 Assert.assertTrue(isRequired,"instance name input should be required when serviceEcompNaming == false.");
+            }
+
+            if (serviceData.isGeneratedNaming == IS_GENERATED_NAMING.FALSE || serviceData.isGeneratedNaming == IS_GENERATED_NAMING.TRUE_BUT_GIVE_NAME_EITHER_WAY) {
                 instanceName.sendKeys(serviceInstanceName);
             }
+            String setButtonTestId = "form-set";
 
             //serviceType should be dependent on subscriber selection
             assertElementDisabled("serviceType-select");
@@ -816,38 +857,47 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             Wait.waitByClassAndText(Constants.CreateNewInstance.SERVICE_TYPE_OPTION_CLASS, serviceType, 30);
             browseASDCPage.selectServiceTypeByName(serviceType);
 
-            //tenant should be dependent on lcpRegion selection
-            assertElementDisabled("tenant-select");
-
-            String lcpRegion = "hvf6";
-            Wait.waitByClassAndText("lcpRegionOption", lcpRegion, 30);
-            viewEditPage.selectLcpRegion(lcpRegion, AIC);
-
+            String owningEntity = "WayneHolland";
             GeneralUIUtils.ultimateWait();
-            browseASDCPage.selectTenant("bae71557c5bb4d5aac6743a4e5f1d054");
-
-            String setButtonTestId = "form-set";
-            assertSetButtonDisabled(setButtonTestId);
-
-            SelectOption.byTestIdAndVisibleText("WayneHolland", (Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID));
+            Wait.waitByClassAndText(Constants.CreateNewInstance.OWNING_ENTITY_OPTION, owningEntity, 30);
+            SelectOption.byTestIdAndVisibleText(owningEntity, (Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID));
             assertSetButtonDisabled(setButtonTestId);
 
             SelectOption.byTestIdAndVisibleText("ERICA", Constants.ViewEdit.PRODUCT_FAMILY_SELECT_TESTS_ID);
-            assertSetButtonEnabled(setButtonTestId);
-
             browseASDCPage.selectProductFamily("e433710f-9217-458d-a79d-1c7aff376d89");
 
-            browseASDCPage.selectAicZone("NFT1");
+            if (fillLcpRegionAndTenantAndZone) {
+
+                //we assume that if fillLcpRegionAndTenantAndZone is true tenant and lcpRegion are required for this service model
+                //If you want to fill lcpRegionAndTenant where they are optional you can refactor this test...
+                assertSetButtonDisabled(setButtonTestId);
+
+                //tenant should be dependent on lcpRegion selection
+                assertElementDisabled("tenant-select");
+
+                String lcpRegion = "hvf6";
+                Wait.waitByClassAndText("lcpRegionOption", lcpRegion, 30);
+                viewEditPage.selectLcpRegion(lcpRegion, AIC);
+
+                GeneralUIUtils.ultimateWait();
+                browseASDCPage.selectTenant("bae71557c5bb4d5aac6743a4e5f1d054");
+
+                browseASDCPage.selectAicZone("NFT1");
+            }
+
+            assertSetButtonEnabled(setButtonTestId);
+
 
             SelectOption.byTestIdAndVisibleText("WATKINS", Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
-
-            assertNotificationAreaVisibilityBehaviour();
+            if (bulkSize!=1) {
+                assertNotificationAreaVisibilityBehaviourAndSetBulkSize(bulkSize);
+            }
 
             assertPauseOnPausePointsVisibility(serviceData.multiStageDesign);
 
             validateDynamicFields(serviceData.dynamicFields);
 
-            vidBasePage.screenshotDeployDialog("createSriovService-" + serviceInstanceName);
+            vidBasePage.screenshotDeployDialog("createMacroService-" + serviceInstanceName);
 
             if ("WILL_CANCEL".equals(cycle)) {
                 Click.byTestId(Constants.CANCEL_BUTTON_TEST_ID);
@@ -874,9 +924,10 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         loadServicePopup(serviceData.modelUuid);
 
         WebElement instanceName = Get.byId("instanceName");
-        if (serviceData.isGeneratedNaming) {
+        if (serviceData.isGeneratedNaming == IS_GENERATED_NAMING.TRUE || serviceData.isGeneratedNaming == IS_GENERATED_NAMING.TRUE_BUT_GIVE_NAME_EITHER_WAY) {
             Assert.assertNull(instanceName, "instance name input should be invisible when serviceEcompNaming == true.");
-        } else {
+        }
+        if (serviceData.isGeneratedNaming == IS_GENERATED_NAMING.FALSE || serviceData.isGeneratedNaming == IS_GENERATED_NAMING.TRUE_BUT_GIVE_NAME_EITHER_WAY) {
             instanceName.sendKeys(serviceInstanceName);
         }
 
@@ -922,6 +973,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Assert.assertEquals(webElement.getTagName(), tag);
     }
 
+    //@Step("create vnf")
     private void createVnf(ServiceData serviceData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName) {
         createVnf(serviceData.vnfData, tryCancelsAndReentries, addedByDefault, serviceInstanceName);
     }
@@ -957,12 +1009,12 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         assertElementDisabled("tenant-select");
 
         WebElement legacyRegion = Get.byTestId("lcpRegionText");
-        Assert.assertNull(legacyRegion, "legacy region shouldn't be visible when lcp region isn't JANET25,olson3 or olson5a.");
+        Assert.assertNull(legacyRegion, "legacy region shouldn't be visible when lcp region isn't AAIAIC25,olson3 or olson5a.");
 
-        browseASDCPage.selectLcpRegion("JANET25");
+        browseASDCPage.selectLcpRegion("AAIAIC25");
 
         legacyRegion = Get.byTestId("lcpRegionText");
-        Assert.assertNotNull(legacyRegion, "legacy region should be visible when lcp region is JANET25,olson3 or olson5a.");
+        Assert.assertNotNull(legacyRegion, "legacy region should be visible when lcp region is AAIAIC25,olson3 or olson5a.");
 
         browseASDCPage.selectTenant("092eb9e8e4b7412e8787dd091bc58e86");
 
@@ -970,10 +1022,11 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         browseASDCPage.selectPlatform("platform");
 
+        browseASDCPage.selectLineOfBusiness("ONAP");
         assertSetButtonEnabled(VNF_SET_BUTTON_TEST_ID);
 
         browseASDCPage.setLegacyRegion("some legacy region");
-        browseASDCPage.selectLineOfBusiness("ONAP");
+
 
         Wait.waitByTestId("model-item-value-subscriberName", 10);
         Assert.assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
@@ -993,7 +1046,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
             Wait.byText("TYLER SILVIA");
             GeneralUIUtils.ultimateWait();
-            assertThat(Get.selectedOptionText(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID), startsWith("JANET25"));
+            assertThat(Get.selectedOptionText(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID), startsWith("AAIAIC25"));
             Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.TENANT_SELECT_TESTS_ID), "USP-SIP-IC-24335-T-01");
             Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID), "ONAP");
             Assert.assertEquals(Get.selectedOptionText(Constants.OwningEntity.PLATFORM_SELECT_TEST_ID), "platform");
@@ -1053,6 +1106,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         }
     }
 
+    //@Step("create vf module")
     private void createVfModule(ServiceData serviceData, String serviceInstanceName, boolean addedByDefault, boolean addOpensPopup) {
         clickAddVfModule(serviceData, addedByDefault);
         if (!addOpensPopup) {
@@ -1133,33 +1187,34 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         }
     }
 
-    private void assertNotificationAreaVisibilityBehaviour() {
+    private void assertNotificationAreaVisibilityBehaviourAndSetBulkSize(int size) {
         WebElement webElement = Get.byId("notification-area");
         Assert.assertNull(webElement, "notification area should be invisible if only 1 qty.");
 
-        SelectOption.byIdAndVisibleText("quantity-select", "3");
+        SelectOption.byIdAndVisibleText("quantity-select", String.valueOf(size));
 
         webElement = Get.byId("notification-area");
         Assert.assertNotNull(webElement, "notification area should be visible if more then 1 qty.");
     }
 
+    //@Step("prepare service preset")
     private void prepareServicePreset(ModelInfo modelInfo, boolean deploy) {
         String subscriberId = "e433710f-9217-458d-a79d-1c7aff376d89";
 
         if (deploy) {
             registerExpectationForServiceDeployment(
-                    ImmutableList.of(
-                            modelInfo,
-                            PASQUALEVmxVpeBvService488Annotations
-                    ),
-                    subscriberId, null);
+                ImmutableList.of(
+                    modelInfo,
+                    pasqualeVmxVpeBvService488Annotations
+                ),
+                subscriberId, null);
         } else {
             registerExpectationForServiceBrowseAndDesign(ImmutableList.of(modelInfo), subscriberId);
         }
     }
 
-    private class ServiceData {
-        ServiceData(String modelUuid, List<String> dynamicFields, boolean isServiceGeneratedNaming, boolean isVnfGeneratedNaming, boolean isVgEnabled, boolean multiStageDesign, String vnfName, String vfName, int vfMin, int vfMax, List<String> vfModuleDynamicFields, String vfVersionId) {
+    static class ServiceData {
+        ServiceData(String modelUuid, List<String> dynamicFields, IS_GENERATED_NAMING isServiceGeneratedNaming, boolean isVnfGeneratedNaming, boolean isVgEnabled, boolean multiStageDesign, String vnfName, String vfName, int vfMin, int vfMax, List<String> vfModuleDynamicFields, String vfVersionId) {
             this.modelUuid = modelUuid;
             this.dynamicFields = dynamicFields;
             this.isGeneratedNaming = isServiceGeneratedNaming;
@@ -1170,13 +1225,15 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         final String modelUuid;
         final List<String> dynamicFields;
-        final boolean isGeneratedNaming;
+        final IS_GENERATED_NAMING isGeneratedNaming;
         final boolean multiStageDesign;
         final VnfData vnfData;
         final VfData vfData;
+
+        enum IS_GENERATED_NAMING { TRUE, FALSE, TRUE_BUT_GIVE_NAME_EITHER_WAY}
     }
 
-    private class VnfData {
+    private static class VnfData {
         VnfData(String vnfName, String vnfUuid, String vnfInstanceName, boolean isGeneratedNaming) {
             this.vnfName = vnfName;
             this.vnfUuid = vnfUuid;
@@ -1191,7 +1248,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
 
-    private class VfData {
+    private static class VfData {
         VfData(String vfName, boolean vgEnabled, int vfMin, int vfMax, List<String> dynamicFields, String uuid) {
             this.vfName = vfName;
             this.vgEnabled = vgEnabled;

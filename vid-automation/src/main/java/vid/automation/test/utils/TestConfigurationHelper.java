@@ -1,18 +1,19 @@
 package vid.automation.test.utils;
 
+import org.onap.sdc.ci.tests.datatypes.Configuration;
 import vid.automation.test.infra.FeaturesTogglingConfiguration;
 
 public class TestConfigurationHelper {
 
     private TestConfigurationHelper(){}
 
-    public static org.onap.sdc.ci.tests.datatypes.Configuration getEnvConfiguration() {
+    public static Configuration getEnvConfiguration() {
 
         try {
             String envUrl = System.getProperty("ENV_URL");
             boolean isCustomLogin = Boolean.parseBoolean(System.getProperty("CUSTOM_LOGIN"));
 
-            org.onap.sdc.ci.tests.datatypes.Configuration configuration = new org.onap.sdc.ci.tests.datatypes.Configuration(envUrl, isCustomLogin);
+            Configuration configuration = new Configuration(envUrl, isCustomLogin);
 
             String geckoDriverPath = System.getProperty("GECKO_PATH");
             if(geckoDriverPath == null){

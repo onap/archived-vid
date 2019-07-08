@@ -2,7 +2,6 @@ package vid.automation.test.sections;
 
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import vid.automation.test.Constants;
-import vid.automation.test.model.Service;
 
 /**
  * Created by itzikliderman on 13/06/2017.

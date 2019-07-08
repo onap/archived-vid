@@ -1,34 +1,13 @@
 package org.onap.vid.api;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseDelete;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2ErrorResponse;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteALaCarteService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGetErrorResponse;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGetByRequestId;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGetByServiceInstanceId;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames;
+import org.onap.simulator.presetGenerator.presets.mso.*;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus.SourceStatus;
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
@@ -43,7 +22,22 @@ import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
-@FeatureTogglingTest({Features.FLAG_ASYNC_JOBS, Features.FLAG_ASYNC_INSTANTIATION, Features.FLAG_ASYNC_ALACARTE_VNF})
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+
+@FeatureTogglingTest({Features.FLAG_ASYNC_ALACARTE_VNF})
 public class AsyncInstantiationALaCarteApiTest2 extends AsyncInstantiationBase {
 
     private static final String CREATE_BULK_OF_ALACARTE_MULTIPLE_VNF_NETWORK_REQUEST_CYPRESS = "a-la-carte/redux-multiple-vnf-network.json";
@@ -190,7 +184,7 @@ public class AsyncInstantiationALaCarteApiTest2 extends AsyncInstantiationBase {
     }
 
     private void assertServiceInfoSpecificDeletion(String jobId, JobStatus jobStatus, String serviceInstanceName, String serviceType) {
-        assertExpectedStatusAndServiceInfo(jobStatus, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(jobStatus, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", jobStatus, false,
                 null, null, null,
                 null, null,

@@ -42,15 +42,15 @@
       },
       "uuid": "vnf-instance-model-version-id",
       "productFamilyId": null,
-      "lcpCloudRegionId": null,
+      "lcpCloudRegionId": "olson3",
+      "cloudOwner": "att-nc",
       "legacyRegion": null,
-      "tenantId": null,
+      "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e",
       "lineOfBusiness": null,
       "platformName": null,
       "vfModules": {},
       "networks": {
         "NETWORK1_INSTANCE_ID": {
-          "originalName": null,
           "trackById": "NETWORK1_INSTANCE_ID",
           "instanceName": "NETWORK1_INSTANCE_NAME",
           "action": "None",
@@ -65,16 +65,9 @@
             "modelCustomizationId": "network-instance-model-customization-id",
             "modelType": "network"
           },
-          "uuid": "network-instance-model-version-id",
-          "productFamilyId": null,
-          "lcpCloudRegionId": null,
-          "legacyRegion": null,
-          "tenantId": null,
-          "lineOfBusiness": null,
-          "platformName": null
+          "uuid": "network-instance-model-version-id"
         },
         "NETWORK2_INSTANCE_ID": {
-          "originalName": null,
           "trackById": "NETWORK2_INSTANCE_ID",
           "instanceName": "NETWORK2_INSTANCE_NAME",
           "action": "None",
@@ -89,13 +82,7 @@
             "modelCustomizationId": "network-instance-model-customization-id",
             "modelType": "network"
           },
-          "uuid": "network-instance-model-version-id",
-          "productFamilyId": null,
-          "lcpCloudRegionId": null,
-          "legacyRegion": null,
-          "tenantId": null,
-          "lineOfBusiness": null,
-          "platformName": null
+          "uuid": "network-instance-model-version-id"
         }
       }
     },
@@ -118,15 +105,16 @@
       },
       "uuid": "d6557200-ecf2-4641-8094-5393ae3aae60",
       "productFamilyId": null,
-      "lcpCloudRegionId": null,
+      "lcpCloudRegionId": "hvf6",
+      "cloudOwner": "irma-aic",
       "legacyRegion": null,
-      "tenantId": null,
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e",
       "lineOfBusiness": null,
       "platformName": null,
       "vfModules": {
         "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1": {
           "2c1ca484-cbc2-408b-ab86-25a2c15ce280": {
-            "originalName": "VfVgeraldine..vflorence_vlc..module-1",
+            "originalName": "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1",
             "trackById": "2c1ca484-cbc2-408b-ab86-25a2c15ce280",
             "instanceName": "ss820f_0918_db",
             "action": "None",
@@ -203,13 +191,7 @@
         "modelVersionId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
         "modelType": "network"
       },
-      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
-      "productFamilyId": null,
-      "lcpCloudRegionId": null,
-      "legacyRegion": null,
-      "tenantId": null,
-      "lineOfBusiness": null,
-      "platformName": null
+      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986"
     },
     "NETWORK4_INSTANCE_ID": {
       "originalName": "ExtVL 0",
@@ -228,38 +210,8 @@
         "modelVersionId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
         "modelType": "network"
       },
-      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
-      "productFamilyId": null,
-      "lcpCloudRegionId": null,
-      "legacyRegion": null,
-      "tenantId": null,
-      "lineOfBusiness": null,
-      "platformName": null
+      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986"
     }
-  },
-  "instanceName": "SERVICE_INSTANCE_NAME",
-  "action": "None",
-  "instanceId": "service-instance-id",
-  "orchStatus": "GARBAGE DATA",
-  "globalSubscriberId": "global-customer-id",
-  "subscriptionServiceType": "service-instance-type",
-  "owningEntityId": null,
-  "owningEntityName": null,
-  "productFamilyId": null,
-  "lcpCloudRegionId": null,
-  "tenantId": null,
-  "tenantName": null,
-  "aicZoneId": null,
-  "aicZoneName": null,
-  "projectName": null,
-  "rollbackOnFailure": null,
-  "isALaCarte": false,
-  "modelInfo": {
-    "modelInvariantId": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
-    "modelVersionId": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
-    "modelName": "vf_vEPDG",
-    "modelType": "service",
-    "modelVersion": "5.0"
   },
   "validationCounter": 0,
   "vnfGroups": {},

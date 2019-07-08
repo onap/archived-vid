@@ -3,7 +3,8 @@
     "vidNotions": {
       "instantiationUI": "legacy",
       "modelCategory": "other",
-      "viewEditUI": "legacy"
+      "viewEditUI": "legacy",
+      "instantiationType": "Macro"
     },
     "uuid": "4d71990b-d8ad-4510-ac61-496288d9078e",
     "invariantUuid": "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba",
@@ -19,6 +20,7 @@
     "inputs": {}
   },
   "vnfs": {},
+  "vrfs": {},
   "networks": {
     "MULTI_PROVIDER_PORT_GROUP 0": {
       "uuid": "e5d235de-2188-4f9f-a28c-fe38967883f2",
@@ -43,7 +45,7 @@
       "modelCustomizationName": "MULTI_PROVIDER_PORT_GROUP 0"
     }
   },
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {},
   "fabricConfigurations": {},
   "serviceProxies": {},

@@ -7327,7 +7327,7 @@
               "relationship": [
                 {
                   "related-to": "tenant",
-                  "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/JANET25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86",
+                  "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/AAIAIC25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86",
                   "relationship-data": [
                     {
                       "relationship-key": "cloud-region.cloud-owner",
@@ -7335,7 +7335,7 @@
                     },
                     {
                       "relationship-key": "cloud-region.cloud-region-id",
-                      "relationship-value": "JANET25"
+                      "relationship-value": "AAIAIC25"
                     },
                     {
                       "relationship-key": "tenant.tenant-id",
@@ -8399,7 +8399,7 @@
                 "relationship": [
                   {
                     "related-to": "tenant",
-                    "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/JANET25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86",
+                    "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/AAIAIC25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86",
                     "relationship-data": [
                       {
                         "relationship-key": "cloud-region.cloud-owner",
@@ -8407,7 +8407,7 @@
                       },
                       {
                         "relationship-key": "cloud-region.cloud-region-id",
-                        "relationship-value": "JANET25"
+                        "relationship-value": "AAIAIC25"
                       },
                       {
                         "relationship-key": "tenant.tenant-id",

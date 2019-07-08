@@ -1,10 +1,7 @@
 package vid.automation.test.test;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
@@ -14,6 +11,9 @@ import vid.automation.test.sections.SearchExistingPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
+
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class SearchExistingInstanceTest extends VidBaseTestCase {
 

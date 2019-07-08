@@ -45,7 +45,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
 import org.onap.sdc.ci.tests.execute.setup.SetupCDTest;
 import org.yaml.snakeyaml.Yaml;

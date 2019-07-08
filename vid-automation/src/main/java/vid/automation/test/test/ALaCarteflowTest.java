@@ -1,33 +1,21 @@
 package vid.automation.test.test;
 
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.MDT_1;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_SOME_LEGACY_REGION_TO_ATT_AIC;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.SOME_LEGACY_REGION;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.Assert;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleOldViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteOldViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVolumeGroupOldViewEdit;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Get;
-import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.ServiceModel;
 import vid.automation.test.model.User;
 import vid.automation.test.sections.SideMenu;
@@ -35,6 +23,12 @@ import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.*;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 
 public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
@@ -49,7 +43,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     public static final String STATUS_MESSAGE = "status_message";
     public static final String REQUEST_TYPE = "REQUEST-TYPE";
     public static final String CREATE = "Create";
-    public static final String AAIAIC_25 = "JANET25";
+    public static final String AAIAIC_25 = "AAIAIC25";
     public static final String AIC = "AIC";
     public static final String TENANT = "092eb9e8e4b7412e8787dd091bc58e86";
     public static final String FALSE = "false";
@@ -100,7 +94,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
             GeneralUIUtils.ultimateWait();
             goToInstance();
             ServiceModel serviceInstance = new ServicesService().getServiceModel(MODEL_UUID);
-            addVFModule("Vsp1710pid298109Vmmsc..mmsc_mod1_ltm..module-8", vfModuleName, AAIAIC_25, AIC,
+            addVFModule("Vsp1710pid298109Vwinifred..mmsc_mod1_ltm..module-8", vfModuleName, AAIAIC_25, AIC,
                     TENANT, FALSE, MDT_1, getCurrentUser().tenants, serviceInstance);
 
         });
@@ -145,7 +139,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
             goToInstance();
             ServiceModel serviceInstance = new ServicesService().getServiceModel(MODEL_UUID);
             addVNF(NODE_INSTANCE, AAIAIC_25, AIC, TENANT,
-                    FALSE, SOME_LEGACY_REGION, "ebc3bc3d-62fd-4a3f-a037-f619df4ff034", "platform", getCurrentUser().tenants, new ArrayList<>(Arrays.asList("ONAP")), serviceInstance, instanceName);
+                    FALSE, SOME_LEGACY_REGION, "ebc3bc3d-62fd-4a3f-a037-f619df4ff034", "platform", getCurrentUser().tenants, "ONAP", serviceInstance, instanceName);
         });
     }
 
@@ -171,7 +165,6 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
             openAndFillVnfPopup(NODE_INSTANCE, AAIAIC_25, AIC, TENANT,
                     FALSE, SOME_LEGACY_REGION, "ebc3bc3d-62fd-4a3f-a037-f619df4ff034", "platform", getCurrentUser().tenants, null, null, instanceName);
             assertConfirmShowMissingDataErrorOnCurrentPopup(Constants.ViewEdit.LINE_OF_BUSINESS_TEXT);
-            successConfirmVnfAndClosePopup();
         });
     }
 
@@ -182,11 +175,11 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
         ViewEditPage viewEditPage = new ViewEditPage();
         viewEditPage.selectNodeInstanceToAdd(NODE_INSTANCE);
         GeneralUIUtils.ultimateWait();
-        SelectOption.selectOptionsFromMultiselectById(Constants.OwningEntity.LOB_SELECT_TEST_ID, new ArrayList<>(Arrays.asList(lobToSelect)));
+        viewEditPage.selectLineOfBusiness(lobToSelect);
         viewEditPage.clickCancelButtonByTestID();
         viewEditPage.selectNodeInstanceToAdd(NODE_INSTANCE);
         GeneralUIUtils.ultimateWait();
-        AssertUnselectedOptionInMultiselectById(Constants.OwningEntity.LOB_SELECT_TEST_ID, lobToSelect);
+        viewEditPage.selectLineOfBusiness(lobToSelect);
         viewEditPage.clickCancelButtonByTestID();
     }
 
@@ -212,7 +205,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
             GeneralUIUtils.ultimateWait();
             goToInstance();
             ServiceModel serviceInstance = new ServicesService().getServiceModel(MODEL_UUID);
-            addVolumeGroup("Vsp1710pid298109Vmmsc..mmsc_mod6_eca_oam..module-3", vgName, AAIAIC_25, AIC, TENANT,
+            addVolumeGroup("Vsp1710pid298109Vwinifred..mmsc_mod6_eca_oam..module-3", vgName, AAIAIC_25, AIC, TENANT,
                     FALSE, SOME_LEGACY_REGION, getCurrentUser().tenants, serviceInstance);
         });
     }

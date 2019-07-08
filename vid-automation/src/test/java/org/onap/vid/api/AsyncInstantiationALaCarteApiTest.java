@@ -1,39 +1,12 @@
 package org.onap.vid.api;
 
-import static java.util.Collections.emptyMap;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_INSTANCE_ID;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAddOrRemoveOneInstanceGroupMember;
+import org.onap.simulator.presetGenerator.presets.mso.*;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAddOrRemoveOneInstanceGroupMember.InstanceGroupMemberAction;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseDelete;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateNetworkALaCarteCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteServiceCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleALaCarteCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteCypress2;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfGroup;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteALaCarteService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteInstanceGroup;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
@@ -51,7 +24,22 @@ import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
-@FeatureTogglingTest({Features.FLAG_ASYNC_JOBS, Features.FLAG_ASYNC_INSTANTIATION, Features.FLAG_ASYNC_ALACARTE_VNF})
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static java.util.Collections.emptyMap;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_INSTANCE_ID;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+
+@FeatureTogglingTest({Features.FLAG_ASYNC_ALACARTE_VNF})
 public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
     private static final String CREATE_BULK_OF_ALACARTE_REQUEST = "asyncInstantiation/vidRequestCreateALaCarte.json";
@@ -484,12 +472,12 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
     }
 
     private void assertServiceInfoSpecific2(String jobId, JobStatus jobStatus, String serviceInstanceName, ServiceAction serviceAction) {
-        assertExpectedStatusAndServiceInfo(jobStatus, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(jobStatus, jobId, PATIENCE_LEVEL.FAIL_VERY_SLOW, new ServiceInfo(
                 "us16807000", jobStatus, false,
                 "d61e6f2d-12fa-4cc2-91df-7c244011d6fc", "WayneHolland", "WATKINS",
                 "JAG1", null,
                 "092eb9e8e4b7412e8787dd091bc58e86", null,
-                "JANET25", null,
+                "AAIAIC25", null,
                 "TYLER SILVIA", null,
                 null, serviceInstanceName,
                 "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd", "action-data", "1.0",
@@ -498,7 +486,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
     }
 
     private void assertServiceInfoSpecificDeletion(String jobId, JobStatus jobStatus, String serviceInstanceName, String serviceType) {
-        assertExpectedStatusAndServiceInfo(jobStatus, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(jobStatus, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", jobStatus, false,
                 null, null, null,
                 null, null,
@@ -512,7 +500,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
     }
 
     private void assertServiceInfoSpecificUpdate(String jobId, JobStatus jobStatus, String serviceInstanceName) {
-        assertExpectedStatusAndServiceInfo(jobStatus, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(jobStatus, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", jobStatus, false,
                 null, null, null,
                 null, null,

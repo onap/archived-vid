@@ -34,10 +34,10 @@ public class PresetMSOCreateVnfVlanTagging extends PresetMSOBaseCreateInstancePo
                 "      \"requestorId\": \"us16807000\"" +
                 "    }," +
                 "    \"lineOfBusiness\": {" +
-                "      \"lineOfBusinessName\": \"ECOMP\"" +
+                "      \"lineOfBusinessName\": \"ONAP\"" +
                 "    }," +
                 "    \"cloudConfiguration\": {" +
-                "      \"lcpCloudRegionId\": \"JANET25\"," +
+                "      \"lcpCloudRegionId\": \"AAIAIC25\"," +
                         addCloudOwnerIfNeeded() +
                 "      \"tenantId\": \"092eb9e8e4b7412e8787dd091bc58e86\"" +
                 "    }," +

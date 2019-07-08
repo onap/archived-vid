@@ -1,13 +1,8 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VFM_NAME1;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VFM_NAME2;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VG_NAME;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VNF_NAME;
-
 import java.util.Map;
-import vid.automation.test.infra.Features;
+
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.*;
 
 public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBaseCreateInstancePost {
 
@@ -42,9 +37,6 @@ public abstract class PresetMSOServiceInstanceGen2WithNames extends PresetMSOBas
     }
 
     protected String getVnfInstanceParams() {
-        if (!Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF.isActive()) {
-            return "";
-        }
         return " {" +
                 "  \"vmx_int_net_len\": \"24\"," +
                 "  \"vre_a_volume_size_0\": \"100\"," +

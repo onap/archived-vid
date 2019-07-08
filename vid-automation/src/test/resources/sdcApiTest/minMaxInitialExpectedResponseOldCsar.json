@@ -2,30 +2,30 @@
   "service": {
     "uuid": "281b5f7d-c7ac-4ea9-92fb-2c1d625ca681",
     "invariantUuid": "a977af77-db15-4375-a637-e9b994ecd569",
-    "name": "vMME_rVPMS_FE AIC3.0-11.2.1.7_SVC",
+    "name": "vFLORENCE_rVPMS_FE AIC3.0-11.2.1.7_SVC",
     "version": "1.0",
     "toscaModelURL": null,
     "category": "Emanuel",
     "serviceType": null,
     "serviceRole": null,
-    "description": "New service for vMME vProbe Front End AIC3.0 VPMS Radcom 11.2.1.7. Front End includes Qrouter, vProbe aff, vLB Agent aff and vLB.",
+    "description": "New service for vFLORENCE vProbe Front End AIC3.0 VPMS Radcom 11.2.1.7. Front End includes Qrouter, vProbe aff, vLB Agent aff and vLB.",
     "serviceEcompNaming": "true",
     "instantiationType": null,
     "inputs": {}
   },
   "vnfs": {
-    "vMMEvProbe_FE_AIC3-11.2.1_VF 1": {
+    "vFLORENCEvProbe_FE_AIC3-11.2.1_VF 1": {
       "uuid": "245562de-3984-49ef-a708-6c9d7cfcabd1",
       "invariantUuid": "124216d6-71d0-41c8-ac81-0c5acfee514a",
-      "description": " New service for vMME vProbe Front End AIC3.0 VPMS Radcom 11.2.1.7. Front End includes Qrouter, vProbe aff, vLB Agent aff and vLB. ",
-      "name": "vMMEvProbe_FE_AIC3-11.2.1_VF",
+      "description": " New service for vFLORENCE vProbe Front End AIC3.0 VPMS Radcom 11.2.1.7. Front End includes Qrouter, vProbe aff, vLB Agent aff and vLB. ",
+      "name": "vFLORENCEvProbe_FE_AIC3-11.2.1_VF",
       "version": "1.0",
       "customizationUuid": "8293273d-0e76-4661-926f-06a01ad2e683",
       "inputs": {},
       "commands": {},
       "properties": {},
       "type": null,
-      "modelCustomizationName": "vMMEvProbe_FE_AIC3-11.2.1_VF 1",
+      "modelCustomizationName": "vFLORENCEvProbe_FE_AIC3-11.2.1_VF 1",
       "vfModules": {
         "vflorencevprobe_fe_aic31121_vf1..VflorencevprobeFeAic31121Vf..FE_Add_On_Module_vprobe_eph..module-1": {
           "uuid": "e67e5b39-1f3b-4692-beec-eda94a0375a5",
@@ -191,8 +191,9 @@
       "vfcInstanceGroups": {}
     }
   },
+  "vrfs": null,
   "networks": {},
-  "collectionResource": null,
+  "collectionResources": null,
   "configurations": null,
   "fabricConfigurations": {},
   "serviceProxies": null,

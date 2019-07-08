@@ -1,26 +1,8 @@
 package vid.automation.test.services;
 
-import static org.testng.Assert.assertEquals;
-import static vid.automation.test.services.DropTestApiField.dropFieldCloudOwnerFromString;
-import static vid.automation.test.services.DropTestApiField.dropTestApiFieldFromString;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
@@ -31,6 +13,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import vid.automation.test.utils.ReadFile;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+
+import static org.testng.Assert.assertEquals;
+import static vid.automation.test.services.DropTestApiField.dropFieldCloudOwnerFromString;
+import static vid.automation.test.services.DropTestApiField.dropTestApiFieldFromString;
 
 public class SimulatorApi {
 
@@ -62,7 +63,7 @@ public class SimulatorApi {
             ImmutableList.of(dropTestApiFieldFromString(), dropFieldCloudOwnerFromString());
 
     static {
-        String host = System.getProperty("VID_HOST", "10.0.0.10" );
+        String host = System.getProperty("VID_HOST", "127.0.0.1" );
         Integer port = Integer.valueOf(System.getProperty("SIM_PORT", System.getProperty("VID_PORT", "8080"))); //port for registration
         uri = new JerseyUriBuilder().host(host).port(port).scheme("http").path("vidSimulator").build();
         client = ClientBuilder.newClient();
@@ -114,6 +115,12 @@ public class SimulatorApi {
     public static void registerExpectationFromPreset(BasePreset preset, RegistrationStrategy registrationStrategy) {
         RegistrationRequest content = preset.generateScenario();
         registerToSimulatorAndAssertSuccess(preset.getClass().getCanonicalName(), content, registrationStrategy);
+    }
+
+    public static void registerExpectationFromPresetsCollections(Collection<Collection<BasePreset>> presets, RegistrationStrategy registrationStrategy) {
+        registerExpectationFromPresets(presets.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList()), registrationStrategy);
     }
 
     public static void registerExpectationFromPresets(Collection<BasePreset> presets, RegistrationStrategy registrationStrategy) {
