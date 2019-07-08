@@ -63,6 +63,8 @@
  * "$scope.popup".
  */
 
+// 642e366d-794b-4414-be03-6a13e199fa65
+
 var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $window, $log, $uibModal,
 		MsoService, PropertyService, UtilityService, TestEnvironmentsService, DataService) {
 
@@ -75,7 +77,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 	$scope.showReportWindow = function() {
 		let requestInfo = {};
 		requestInfo.requestId = _this.requestId;
-		requestInfo.serviceUuid = $scope.instanceId;
+		requestInfo.serviceUuid = $scope.service.model.service.uuid;
 
 		const modalWindow = $uibModal.open({
 			templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
