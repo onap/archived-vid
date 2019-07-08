@@ -1,8 +1,8 @@
-//package org.onap.simulator.service;
+//package org.openecomp.simulator.service;
 //
 //import org.mockserver.model.HttpRequest;
 //import org.mockserver.model.HttpResponse;
-//import org.onap.simulator.model.ExpectationModel;
+//import org.openecomp.simulator.model.ExpectationModel;
 //import org.springframework.stereotype.Component;
 //
 //import static org.mockserver.model.HttpRequest.request;

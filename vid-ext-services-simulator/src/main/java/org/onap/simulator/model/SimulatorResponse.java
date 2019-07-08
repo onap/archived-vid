@@ -2,6 +2,7 @@ package org.onap.simulator.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.Map;
 
 public class SimulatorResponse {

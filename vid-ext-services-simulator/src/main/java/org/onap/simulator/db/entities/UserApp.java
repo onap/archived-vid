@@ -1,11 +1,7 @@
 package org.onap.simulator.db.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity(name = "fn_user_role")
 public class UserApp implements Serializable {
