@@ -75,7 +75,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 	$scope.showReportWindow = function() {
 		let requestInfo = {};
 		requestInfo.requestId = _this.requestId;
-		requestInfo.serviceUuid = $scope.instanceId;
+		requestInfo.serviceUuid = DataService.getServiceUuid();
 
 		const modalWindow = $uibModal.open({
 			templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
