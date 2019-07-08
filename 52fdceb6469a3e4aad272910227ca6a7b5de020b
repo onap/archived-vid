@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "20042a9e_27d0e5bb",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/web.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-08T07:26:42Z",
+      "side": 1,
+      "message": "problem",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "52fdceb6469a3e4aad272910227ca6a7b5de020b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
