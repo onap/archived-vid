@@ -9,8 +9,8 @@
       "action": "Create",
       "rollbackOnFailure": "true",
       "vfModules": {
-        "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0": {
-          "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
             "instanceName": "mimazepubi",
             "lcpCloudRegionId": "hvf6",
             "tenantId": "624eb554b0d147c19ff8885341760481",
@@ -21,50 +21,50 @@
             "modelInfo": {
               "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
               "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-              "modelName": "2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0",
+              "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
               "modelVersion": "5",
               "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
               "modelUniqueId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-              "modelCustomizationName": "2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
               "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db"
             },
             "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
             "isMissingData": false
           }
         },
-        "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1": {
-          "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
             "instanceName": "puwesovabe",
             "volumeGroupName": "puwesovabe_vol",
-            "lcpCloudRegionId": "JANET25",
+            "lcpCloudRegionId": "AAIAIC25",
             "legacyRegion": "my region",
             "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
             "rollbackOnFailure": "true",
             "sdncPreLoad": true,
             "instanceParams": [{
-              "PASQUALEvpe0_bandwidth": "10",
-              "2017488_PASQUALEvpe0_vnf_instance_name": "mtnj309me6",
-              "2017488_PASQUALEvpe0_vnf_config_template_version": "17.2",
-              "2017488_PASQUALEvpe0_AIC_CLLI": "ATLMY8GA",
-              "PASQUALEvpe0_bandwidth_units": "Gbps"
+              "pasqualevpe0_bandwidth": "10",
+              "2017488_pasqualevpe0_vnf_instance_name": "mtnj309me6",
+              "2017488_pasqualevpe0_vnf_config_template_version": "17.2",
+              "2017488_pasqualevpe0_AIC_CLLI": "ATLMY8GA",
+              "pasqualevpe0_bandwidth_units": "Gbps"
             }
             ],
             "modelInfo": {
               "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
               "modelVersionId": "25284168-24bb-4698-8cb4-3f509146eca5",
-              "modelName": "2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1",
+              "modelName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "modelVersion": "6",
               "modelCustomizationId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
               "modelUniqueId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
-              "modelCustomizationName": "2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "uuid": "25284168-24bb-4698-8cb4-3f509146eca5"
             },
             "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
             "isMissingData": false
           }
         },
-        "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vPFE_BV..module-2": {
-          "2017488_PASQUALEvpe0..2017488PASQUALEVpe..PASQUALE_vPFE_BV..module-2": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2": {
             "instanceName": "bnmgtrx",
             "volumeGroupName": "",
             "lcpCloudRegionId": "hvf6",
@@ -76,11 +76,11 @@
             "modelInfo": {
               "modelInvariantId": "eff8cc59-53a1-4101-aed7-8cf24ecf8339",
               "modelVersionId": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
-              "modelName": "2017488PASQUALEVpe..PASQUALE_vPFE_BV..module-2",
+              "modelName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "modelVersion": "6",
               "modelCustomizationId": "3cd946bb-50e0-40d8-96d3-c9023520b557",
               "modelUniqueId": "3cd946bb-50e0-40d8-96d3-c9023520b557",
-              "modelCustomizationName": "2017488PASQUALEVpe..PASQUALE_vPFE_BV..module-2",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2",
               "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a"
             },
             "uuid": "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a",
@@ -95,7 +95,7 @@
       "instanceName": "2017-488_PASQUALE-vPE",
       "inMaint":false,
       "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-      "lcpCloudRegionId": "JANET25",
+      "lcpCloudRegionId": "AAIAIC25",
       "legacyRegion": "just another region",
       "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
       "platformName": "xxx1",
@@ -128,7 +128,7 @@
       "inMaint":false,
       "legacyRegion": "lcpRegionText",
       "productFamilyId": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
-      "lcpCloudRegionId": "JANET25",
+      "lcpCloudRegionId": "AAIAIC25",
       "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
       "platformName": "xxx1",
       "lineOfBusiness": "zzz1",
@@ -188,7 +188,7 @@
   "tenantName": null,
   "aicZoneId": "JAG1",
   "aicZoneName": null,
-  "lcpCloudRegionId": "JANET25",
+  "lcpCloudRegionId": "AAIAIC25",
   "productFamilyId": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
   "isMultiStepDesign": false
 }

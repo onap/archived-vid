@@ -1,16 +1,23 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.springframework.http.HttpMethod;
+import vid.automation.test.infra.Features;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
 
 /**
  * Created by itzikliderman on 13/12/2017.
@@ -26,6 +33,7 @@ public class PresetMSOOrchestrationRequestGet extends BaseMSOPreset {
     private String statusMessage;
     private String requestState;
     private int startedHoursAgo = 1;
+    private boolean isDetailed = true;
 
 
     public PresetMSOOrchestrationRequestGet() {
@@ -38,6 +46,16 @@ public class PresetMSOOrchestrationRequestGet extends BaseMSOPreset {
         this.requestId = DEFAULT_REQUEST_ID;
     }
 
+    /**
+     * @param requestState
+     * @param isDetailed   - is expect to query param format=detail. Angular1 flows dont' expect it
+     */
+    public PresetMSOOrchestrationRequestGet(String requestState, boolean isDetailed) {
+        this.requestState = requestState;
+        this.requestId = DEFAULT_REQUEST_ID;
+        this.isDetailed = isDetailed;
+    }
+
     public PresetMSOOrchestrationRequestGet(String requestState, String overrideRequestId) {
         this.requestState = requestState;
         this.requestId = overrideRequestId;
@@ -47,6 +65,16 @@ public class PresetMSOOrchestrationRequestGet extends BaseMSOPreset {
         this.requestState = requestState;
         this.requestId = overrideRequestId;
         this.statusMessage = statusMessage;
+    }
+
+    /**
+     * @param isDetailed - is expect to query param format=detail. Angular1 flows dont' expect it
+     */
+    public PresetMSOOrchestrationRequestGet(String requestState, String overrideRequestId, String statusMessage, boolean isDetailed) {
+        this.requestState = requestState;
+        this.requestId = overrideRequestId;
+        this.statusMessage = statusMessage;
+        this.isDetailed = isDetailed;
     }
 
     public PresetMSOOrchestrationRequestGet(String requestState, String overrideRequestId, String statusMessage, int startedHoursAgo) {
@@ -69,6 +97,13 @@ public class PresetMSOOrchestrationRequestGet extends BaseMSOPreset {
 
     public String getReqPath() {
         return getRootPath() + "/orchestrationRequests/v./" + requestId;
+    }
+
+    @Override
+    public Map<String, List> getQueryParams() {
+        return (isDetailed && Features.FLAG_1908_RESUME_MACRO_SERVICE.isActive()) ?
+                ImmutableMap.of("format", singletonList("detail")) :
+                Collections.emptyMap();
     }
 
     @Override

@@ -1,10 +1,19 @@
 package vid.automation.test.sections;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
-
 import com.aventstack.extentreports.Status;
+import org.junit.Assert;
+import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import vid.automation.test.Constants;
+import vid.automation.test.Constants.ViewEdit;
+import vid.automation.test.infra.*;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,21 +22,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
-import org.junit.Assert;
-import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import vid.automation.test.Constants;
-import vid.automation.test.infra.Click;
-import vid.automation.test.infra.Exists;
-import vid.automation.test.infra.Get;
-import vid.automation.test.infra.Input;
-import vid.automation.test.infra.SelectOption;
-import vid.automation.test.infra.Wait;
+
+import static java.util.stream.Collectors.toMap;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
+import static org.testng.Assert.assertEquals;
 
 public class VidBasePage {
 
@@ -192,6 +192,12 @@ public class VidBasePage {
         return this;
     }
 
+    public VidBasePage selectLineOfBusiness(String lineOfBusines) {
+        GeneralUIUtils.ultimateWait();
+        SelectOption.byValue(lineOfBusines, Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
+        return this;
+    }
+
     public VidBasePage selectTenant(String tenant) {
         GeneralUIUtils.ultimateWait();
         SelectOption.byValue(tenant, Constants.ViewEdit.TENANT_SELECT_TESTS_ID);
@@ -213,10 +219,6 @@ public class VidBasePage {
         return this;
     }
 
-    public VidBasePage selectLineOfBusiness(String lob) {
-        SelectOption.byValue(lob, Constants.OwningEntity.LOB_SELECT_TEST_ID);
-        return this;
-    }
 
     public void assertButtonState(String dataTestId, boolean shouldBeEnabled) {
         assertButtonStateInternal(dataTestId, shouldBeEnabled,
@@ -312,7 +314,7 @@ public class VidBasePage {
 
             if (checkPortMirroring) {
                 Wait.byText("Add node instance");
-                Wait.byText("i'm a port");
+                Wait.byText(ViewEdit.COMMON_PORT_MIRRORING_PORT_NAME);
             }
 
             if (checkAddVnf) {
@@ -334,5 +336,19 @@ public class VidBasePage {
         return new WebDriverWait(getDriver(), (long)time);
     }
 
+    public String getReduxState() {
+        final JavascriptExecutor javascriptExecutor = (JavascriptExecutor) GeneralUIUtils.getDriver();
+        String reduxState = (String)javascriptExecutor.executeScript("return window.sessionStorage.getItem('reduxState');");
+        System.out.println(reduxState);
+        return reduxState;
+    }
+
+    public void setReduxState(String state) {
+        final JavascriptExecutor javascriptExecutor = (JavascriptExecutor) GeneralUIUtils.getDriver();
+        String script = String.format("window.sessionStorage.setItem('reduxState', '%s');", state);
+        System.out.println("executing script:");
+        System.out.println(script);
+        javascriptExecutor.executeScript(script);
+    }
 
 }

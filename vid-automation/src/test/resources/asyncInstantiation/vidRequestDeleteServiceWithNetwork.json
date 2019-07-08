@@ -6,7 +6,7 @@
   },
   "instanceParams":[
     {
-      "2017488_PASQUALEvpe0_ASN":"AV_vPE"
+      "2017488_pasqualevpe0_ASN":"AV_vPE"
     }
   ],
   "validationCounter":0,
@@ -56,7 +56,7 @@
   "subscriptionServiceType":"TYLER SILVIA",
   "owningEntityId":"d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
   "productFamilyId":"17cc1042-527b-11e6-beb8-9e71128cae77",
-  "lcpCloudRegionId":"JANET25",
+  "lcpCloudRegionId":"AAIAIC25",
   "tenantId":"092eb9e8e4b7412e8787dd091bc58e86",
   "aicZoneId":"JAG1",
   "projectName":"WATKINS",

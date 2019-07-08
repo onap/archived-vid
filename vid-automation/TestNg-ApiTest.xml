@@ -7,21 +7,43 @@
     </listeners>
 
     <test name="test">
-        <groups>
-            <run>
-                <!-- These tests require the settings in asdc.properties to be like
-                asdc.client.type=LOCAL so cannot run on pipeline-->
-                <exclude name="worksOnlyWithLocalASDC"/>
+        <method-selectors>
+            <method-selector>
+                <script language="beanshell">
+                    <![CDATA[
 
-                <!-- these tests call to MaintenanceController which is restricted to
-                localhost, so it can not run on jenkins pipeline -->
-                <exclude name="worksOnlyWithLocalhostVID"/>
+                        //these tests call to MaintenanceController which is restricted to localhost, so it can not run on jenkins pipeline
 
-                <!-- tests and features that are still under development but are pushed to develop -->
-                <exclude name="underDevelopment"/>
+                        String [] exclusionGroups = new String [] {
+                            "worksOnlyWithLocalASDC",
+                            "worksOnlyWithLocalhostVID",
+                            "underDevelopment"
+                        };
 
-            </run>
-        </groups>
+                        String [] classes1 = new String [] {
+                            "AsyncInstantiationALaCarteApiTest"
+                        };
+                        int selectPart = 0;
+
+                        for (g: exclusionGroups) {
+                            if (groups.containsKey(g)) return false;
+                        }
+                        if (selectPart == 0) return true;
+
+                        methodClass = method.getDeclaringClass().toString();
+
+                        if (methodClass.contains("org.onap.vid.api.Base")) return true;
+
+                        for (c: classes1) {
+                            if (methodClass.endsWith(c)) return selectPart==1;
+                        }
+
+                        // else
+                        return selectPart==2;
+                    ]]>
+                </script>
+            </method-selector>
+        </method-selectors>
         <packages>
             <package name="org.onap.vid.*"/>
         </packages>

@@ -21,7 +21,7 @@ public class PresetMSOCreateVnfALaCarteOldViewEdit extends PresetMSOCreateVnfBas
                 "          \"instanceName\": \""+vnfInstanceName+"\"," +
                 "          \"source\": \"VID\"," +
                 "          \"suppressRollback\": false," +
-                "          \"requestorId\": \"mo37915000\"," +
+                "          \"requestorId\": \"em35993000\"," +
                 "          \"productFamilyId\": \"ebc3bc3d-62fd-4a3f-a037-f619df4ff034\"" +
                 "        }," +
                 "        \"modelInfo\": {" +
@@ -42,7 +42,7 @@ public class PresetMSOCreateVnfALaCarteOldViewEdit extends PresetMSOCreateVnfBas
                            addCloudOwnerIfNeeded() +
                 "          \"tenantId\": \"092eb9e8e4b7412e8787dd091bc58e86\"" +
                 "        }," +
-                selectLob("\"lineOfBusiness\": {\"lineOfBusinessName\": \"ECOMP\"},", "") +
+                selectLob("\"lineOfBusiness\": {\"lineOfBusinessName\": \"ONAP\"},", "") +
                 "        \"platform\": {" +
                 "          \"platformName\": \"platform\"" +
                 "        }," +

@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.springframework.http.HttpStatus;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -71,7 +70,7 @@ public class EnvironmentsTest extends VidBaseTestCase {
         GET_STATUS_FAILURE
     }
 
-    @BeforeClass
+    @BeforeMethod
     //Sometimes we clear registration while we are in view/edit page
     //And there is alert so we can not navigate any more.
     //So we first navigate to welcome page, and only the, clear registration
@@ -200,6 +199,10 @@ public class EnvironmentsTest extends VidBaseTestCase {
         String environmentTypeDefault = Get.selectedOptionText(Constants.TestEnvironments.ENVIRONMENT_TYPE_DROP_DOWN);
         Assert.assertEquals(environment.operationalEnvironmentType, environmentTypeDefault);
 
+        if (Features.FLAG_1908_RELEASE_TENANT_ISOLATION.isActive()) {
+            SelectOption.byTestIdAndVisibleText(environment.release, Constants.TestEnvironments.ENVIRONMENT_RELEASE);
+            environment.workloadContext = environment.workloadContext.concat("_" + environment.release);
+        }
         SelectOption.byTestIdAndVisibleText(environment.workloadContext, Constants.TestEnvironments.WORKLOAD_CONTEXT_DROP_DOWN);
 
         WebElement submitButton = Get.byTestId(Constants.TestEnvironments.SUBMIT_BUTTON);
@@ -212,14 +215,14 @@ public class EnvironmentsTest extends VidBaseTestCase {
         GeneralUIUtils.ultimateWait();
 
         // refresh table
-        Map <String, List<String>> file = ReadFile.getJsonFile(ENVIRONMENTS_CONF, Map.class);
+        Map <String, List<List<String>>> file = ReadFile.getJsonFile(ENVIRONMENTS_CONF, Map.class);
         String tableId = Constants.TestEnvironments.ENVIRONMENTS_TABLE;
         SimulatorApi.registerExpectation(GET_FULL_OPERATIONAL_ENVIRONMENT_JSON,
                 ImmutableMap.of("new_name", environment.operationalEnvironmentName, "new_tenant", environment.tenantContext, "new_ecomp_id", environment.EcompEnvironmentId, "new_ecomp_name", environment.EcompEnvironmentName, "new_workload_context", environment.workloadContext), SimulatorApi.RegistrationStrategy.APPEND);
         Click.byTestId(REFRESH_BUTTON);
         Wait.angularHttpRequestsLoaded();
         List<List<String>> body = Get.tableBodyValuesByTestId(tableId);
-        Assert.assertEquals(file.get(Constants.TestEnvironments.FULL_LIST), body);
+        Assert.assertEquals(file.get(fullListId()), body);
         GeneralUIUtils.ultimateWait();
     }
 
@@ -277,7 +280,7 @@ public class EnvironmentsTest extends VidBaseTestCase {
 
         Click.byId(Constants.generalSubmitButtonId);
         SimulatorApi.registerExpectation("environment/activate/get_operational_environments_aai1.json",
-                ImmutableMap.of("Deactivate", "Activate"), SimulatorApi.RegistrationStrategy.APPEND);
+                ImmutableMap.of("INACTIVE", "ACTIVE"), SimulatorApi.RegistrationStrategy.APPEND);
 
         boolean waitForTextResult = Wait.waitByClassAndText("status", Constants.TestEnvironments.environmentActivatedSuccesfullyMessage, 60);
         assertTrue(Constants.TestEnvironments.environmentActivatedSuccesfullyMessage + " message didn't appear on time", waitForTextResult);
@@ -290,7 +293,7 @@ public class EnvironmentsTest extends VidBaseTestCase {
         assertTrue("Failed to find Deactivate button for test env with id: "+envId, deactivationButton.isDisplayed());
 
         WebElement status = Get.byId(Constants.TestEnvironments.environmentStatusIdPrefix + envId);
-        assertEquals("Active", status.getText());
+        assertEquals("ACTIVE", status.getText());
 
         WebElement attachButton = TestEnvironmentPage.getTestEnvironmentAttachButton(envId);
         assertTrue("Failed to find Attach button for test env with id: "+envId, attachButton.isDisplayed());
@@ -321,7 +324,7 @@ public class EnvironmentsTest extends VidBaseTestCase {
         assertTrue("Failed to find Activate button for test env with id: "+envId, activationButton.isDisplayed());
 
         WebElement status = Get.byId(Constants.TestEnvironments.environmentStatusIdPrefix + envId);
-        assertEquals("Inactive", status.getText());
+        assertEquals("INACTIVE", status.getText());
 
         WebElement attachButton = TestEnvironmentPage.getTestEnvironmentAttachButton(envId);
         assertFalse("attach button shouldn't be displayed for test env with id: "+envId, attachButton.isDisplayed());
@@ -499,6 +502,12 @@ public class EnvironmentsTest extends VidBaseTestCase {
         //make sure page is clickable
         SideMenu.navigateToTestEnvironmentsPage();
     }
+
+    private String fullListId() {
+        return Features.FLAG_1908_RELEASE_TENANT_ISOLATION.isActive() ?
+                Constants.TestEnvironments.FULL_LIST : Constants.TestEnvironments.FULL_LIST_WITHOUT_RELEASE_LABEL;
+    }
+
 
 
 }

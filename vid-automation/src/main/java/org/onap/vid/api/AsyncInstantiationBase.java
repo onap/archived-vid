@@ -1,34 +1,8 @@
 package org.onap.vid.api;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toMap;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
-import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Uninterruptibles;
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -63,6 +37,33 @@ import vid.automation.test.model.JobStatus;
 import vid.automation.test.model.ServiceAction;
 import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toMap;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
 
 public class AsyncInstantiationBase extends BaseMsoApiTest {
 
@@ -408,10 +409,12 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
     }
 
     protected void assertExpectedStatusAndServiceInfo(JobStatus finalState, String jobId, ServiceInfo expectedServiceInfo) {
-        assertExpectedStatusAndServiceInfo(finalState, jobId, false, expectedServiceInfo);
+        assertExpectedStatusAndServiceInfo(finalState, jobId, PATIENCE_LEVEL.FAIL_FAST, expectedServiceInfo);
     }
 
-    protected void assertExpectedStatusAndServiceInfo(JobStatus finalState, String jobId, boolean longWait, ServiceInfo expectedServiceInfo) {
+    enum PATIENCE_LEVEL { FAIL_FAST, FAIL_SLOW, FAIL_VERY_SLOW }
+
+    protected void assertExpectedStatusAndServiceInfo(JobStatus finalState, String jobId, PATIENCE_LEVEL patienceLevel, ServiceInfo expectedServiceInfo) {
         JobInfoChecker<Integer> jobInfoChecker = new JobInfoChecker<>(
                 restTemplate, ImmutableSet.of(JobStatus.PENDING, JobStatus.IN_PROGRESS, finalState), jobId, expectedServiceInfo);
         boolean result = jobInfoChecker.test(null);
@@ -421,8 +424,19 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
         if (ImmutableList.of(JobStatus.COMPLETED, JobStatus.PAUSE).contains(finalState) && expectedServiceInfo.serviceInstanceId==null) {
             expectedServiceInfo.serviceInstanceId = BaseMSOPreset.DEFAULT_INSTANCE_ID;
         }
-        result = Wait.waitFor(jobInfoChecker, null, 30, longWait ? 2 : 1);
+        result = Wait.waitFor(jobInfoChecker, null, 30, waitIntervalBy(patienceLevel));
         assertTrue("service info of jobId: " + jobId + " was in status: " + jobInfoChecker.lastStatus, result);
+    }
+
+    private int waitIntervalBy(PATIENCE_LEVEL patienceLevel) {
+        switch (patienceLevel) {
+            case FAIL_SLOW:
+                return 2;
+            case FAIL_VERY_SLOW:
+                return 3;
+            default:
+                return 1;
+        }
     }
 
     protected List<String> createBulkOfMacroInstances(ImmutableList<BasePreset> presets, boolean isPause, int bulkSize, Map<Keys, String> names) {

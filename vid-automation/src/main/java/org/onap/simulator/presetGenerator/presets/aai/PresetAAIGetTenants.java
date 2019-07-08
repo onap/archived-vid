@@ -1,9 +1,9 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
-import static vid.automation.test.utils.ReadFile.loadResourceAsString;
-
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
 import org.springframework.http.HttpMethod;
+
+import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 
 public class PresetAAIGetTenants extends BaseAAIPreset {
     private final String subscriberId;

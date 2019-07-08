@@ -17,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,8 +26,7 @@ import static org.testng.AssertJUnit.assertEquals;
 //This is integration test that require running tomcat
 public class CategoryParametersApiTest extends BaseApiTest {
 
-    public static final String GET_CATEGORY_PARAMETER_PROPERTIES = "maintenance/category_parameter";
-    public static final String DELETE_CATEGORY_PARAMETER_PROPERTIES = "maintenance/delete_category_parameter";
+    public static final String MAINTENANCE_CATEGORY_PARAMETER = "maintenance/category_parameter";
     public static final String PROPERTY_NAME = "owningEntity";
     public static final String PROPERTY_FAMILY = "PARAMETER_STANDARDIZATION";
 
@@ -56,7 +54,7 @@ public class CategoryParametersApiTest extends BaseApiTest {
         findPropertyNameInGetResponse(UPDATE_PARAMETER_PROPERTY_NAME);
         CategoryParameterOption deleteReq = new CategoryParameterOption();
         deleteReq.setName(UPDATE_PARAMETER_PROPERTY_NAME);
-        deleteCPPropertiesRequest(HttpMethod.POST, deleteReq, HttpStatus.OK);
+        deleteCPPropertiesRequest(HttpMethod.DELETE, deleteReq, HttpStatus.OK);
     }
 
     @Test(groups = { "worksOnlyWithLocalhostVID" })
@@ -89,7 +87,7 @@ public class CategoryParametersApiTest extends BaseApiTest {
     }
 
     private Response getCPPropertiesRequest(String method, HttpStatus exceptedHttpStatus) throws IOException {
-        UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUri(uri).path("/"+GET_CATEGORY_PARAMETER_PROPERTIES)
+        UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUri(uri).path("/"+ MAINTENANCE_CATEGORY_PARAMETER)
                 .queryParam("familyName", PROPERTY_FAMILY);
         WebTarget webTarget = client.target(urlBuilder.toUriString());
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).method(method, Entity.json(null));
@@ -98,22 +96,22 @@ public class CategoryParametersApiTest extends BaseApiTest {
     }
 
     private Response addCPPropertiesRequest(String method, AddCategoryOptionsRequest request, HttpStatus exceptedHttpStatus) throws IOException {
-        WebTarget webTarget = client.target(uri).path(GET_CATEGORY_PARAMETER_PROPERTIES+"/"+PROPERTY_NAME);
+        WebTarget webTarget = client.target(uri).path(MAINTENANCE_CATEGORY_PARAMETER +"/"+PROPERTY_NAME);
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).method(method, Entity.json(request));
         TestUtils.assertHttpStatus(request, webTarget, response, exceptedHttpStatus);
         return response;
     }
 
     private Response updateCPPropertiesRequest(String method, CategoryParameterOptionRep request, HttpStatus exceptedHttpStatus) throws IOException {
-        WebTarget webTarget = client.target(uri).path(GET_CATEGORY_PARAMETER_PROPERTIES+"/"+PROPERTY_NAME);
+        WebTarget webTarget = client.target(uri).path(MAINTENANCE_CATEGORY_PARAMETER +"/"+PROPERTY_NAME);
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).method(method, Entity.json(request));
         TestUtils.assertHttpStatus(request, webTarget, response, exceptedHttpStatus);
         return response;
     }
 
     private Response deleteCPPropertiesRequest(String method, CategoryParameterOption request, HttpStatus exceptedHttpStatus) throws IOException {
-        WebTarget webTarget = client.target(uri).path(DELETE_CATEGORY_PARAMETER_PROPERTIES+"/"+PROPERTY_NAME);
-        Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).method(method, Entity.json(request));
+        WebTarget webTarget = client.target(uri).path(MAINTENANCE_CATEGORY_PARAMETER+"/"+PROPERTY_NAME+"/"+request.getName());
+        Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).method(method, Entity.json(null));
         TestUtils.assertHttpStatus(request, webTarget, response, exceptedHttpStatus);
         return response;
     }

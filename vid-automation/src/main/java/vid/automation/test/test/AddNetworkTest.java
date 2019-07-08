@@ -1,13 +1,11 @@
 package vid.automation.test.test;
 
 import com.google.common.collect.ImmutableList;
-import java.util.HashMap;
-import java.util.Map;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateNetworkALaCarteOldViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.model.User;
@@ -15,18 +13,41 @@ import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AddNetworkTest extends VidBaseTestCase {
 
     private ViewEditPage viewEditPage = new ViewEditPage();
     private String serviceInstanceIdWithNetwork = "d198cc45-158b-480e-8d2c-03943c51268e";
+    private  User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
+    private String instanceName = viewEditPage.generateInstanceName(Constants.ViewEdit.NETWORK_INSTANCE_NAME_PREFIX);
 
     @Test
     public void testAddNetworkFullFlow() {
-        User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
+        String platform = "xxx1";
+        this.goToNetworkPopup(platform);
+        Map<String, String> networkMetadata=  getNetworkExpectedMetadata();
+        addNetwork(networkMetadata,instanceName, "AIC30_CONTRAIL_BASIC 0", "One", "FUSION", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", platform, "zzz1","c630e297a3ae486497d63eacec1d7c14",
+                "false", "some legacy region",user.tenants);
+    }
+
+
+    @Test
+    public void testAddNetworkFullFlowWithoutPlatform() {
+        this.goToNetworkPopup(null);
+        Map<String, String> networkMetadata=  getNetworkExpectedMetadata();
+        addNetwork(networkMetadata,instanceName, "AIC30_CONTRAIL_BASIC 0", "One", "FUSION", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",null, "zzz1","c630e297a3ae486497d63eacec1d7c14",
+                "false", "some legacy region",user.tenants);
+    }
+
+
+    private void goToNetworkPopup(String platform){
+
         SimulatorApi.clearAll();
         BulkRegistration.genericSearchExistingServiceInstance();
         BulkRegistration.addNetwork();
-        String instanceName = viewEditPage.generateInstanceName(Constants.ViewEdit.NETWORK_INSTANCE_NAME_PREFIX);
+
 
         SimulatorApi.registerExpectationFromPresets(
                 ImmutableList.of(
@@ -35,18 +56,17 @@ public class AddNetworkTest extends VidBaseTestCase {
                                 PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID,
                                 "d198cc45-158b-480e-8d2c-03943c51268e",
                                 "c187e9fe-40c3-4862-b73e-84ff056205f6",
-                                instanceName
+                                instanceName,
+                                platform
                         ),
                         new PresetMSOOrchestrationRequestGet(
                                 PresetMSOOrchestrationRequestGet.COMPLETE,
                                 PresetMSOOrchestrationRequestGet.DEFAULT_REQUEST_ID,
-                                "Success")),
+                                "Success",
+                                false)),
                 SimulatorApi.RegistrationStrategy.APPEND);
 
         goToExistingInstanceById(serviceInstanceIdWithNetwork);
-        Map<String, String> networkMetadata=  getNetworkExpectedMetadata();
-        addNetwork(networkMetadata,instanceName, "AIC30_CONTRAIL_BASIC 0", "One", "FUSION", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb","xxx1", "y1","c630e297a3ae486497d63eacec1d7c14",
-                "false", "some legacy region",user.tenants);
     }
 
     private Map<String, String> getNetworkExpectedMetadata() {

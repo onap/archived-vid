@@ -3,13 +3,14 @@ package org.onap.simulator.presetGenerator.presets.aai;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.onap.simulator.presetGenerator.presets.model.Subscriber;
+import org.springframework.http.HttpMethod;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.onap.simulator.presetGenerator.presets.model.Subscriber;
-import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetSubscribersGet extends BaseAAIPreset {
 

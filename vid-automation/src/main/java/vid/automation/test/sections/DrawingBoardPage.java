@@ -1,7 +1,34 @@
 package vid.automation.test.sections;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.testng.AssertJUnit.assertTrue;
+import static vid.automation.test.Constants.DrawingBoard.DEPLOY_BUTTON;
+import static vid.automation.test.Constants.DrawingBoard.HIGHLIGHTED_COLOR;
+import static vid.automation.test.Constants.DrawingBoard.QUANTITY_LABEL_TEST_ID;
+import static vid.automation.test.Constants.DrawingBoard.QUANTITY_LABEL_VALUE;
+import static vid.automation.test.Constants.DrawingBoard.SERVICE_INSTANCE_TEST_ID;
+import static vid.automation.test.Constants.DrawingBoard.SERVICE_INSTANCE_VALUE;
+import static vid.automation.test.Constants.DrawingBoard.SERVICE_NAME;
+import static vid.automation.test.Constants.DrawingBoard.SERVICE_QUANTITY;
+import static vid.automation.test.Constants.DrawingBoard.SERVICE_STATUS;
+import static vid.automation.test.Constants.DrawingBoard.STATUS_TEXT;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -12,19 +39,11 @@ import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.Wait;
-
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static vid.automation.test.Constants.DrawingBoard.*;
+import vid.automation.test.test.NewServiceInstanceTest;
 
 public class DrawingBoardPage extends VidBasePage {
+
+    private static final Logger logger = LogManager.getLogger(DrawingBoardPage.class);
 
     public DrawingBoardPage(){
         super();
@@ -219,7 +238,7 @@ public class DrawingBoardPage extends VidBasePage {
         assertThat(webElement.getText(), is("Missing required information. Please open and fill in the details."));
     }
 
-    public void clickDeployButton(){
+    private void clickDeployButton(){
         GeneralUIUtils.ultimateWait();
 
         try {
@@ -231,6 +250,22 @@ public class DrawingBoardPage extends VidBasePage {
             }
         }
 
+    }
+
+    public void deploy() {
+        try {
+            logger.info("Redux state before deploy:");
+            logger.info(getReduxState());
+        }
+        catch (Exception e) {
+            //do nothing just logging
+        }
+        clickDeployButton();
+
+        VidBasePage.goOutFromIframe();
+        GeneralUIUtils.ultimateWait();
+        VidBasePage.goToIframe();
+        GeneralUIUtils.ultimateWait();
     }
 
     public void checkDeployButtonDisabled(){
@@ -256,22 +291,22 @@ public class DrawingBoardPage extends VidBasePage {
     }
 
     public static class  ServiceStatusChecker implements Predicate<Boolean> {
-        private String actualInstanceName;
+        private String uniqueText;
         private Set<String> expectedStatuses;
         private Set<String> columnClassesSet;
 
-        public ServiceStatusChecker(String actualInstanceName, Set<String> expectedStatuses) {
-            this.actualInstanceName = actualInstanceName;
+        public ServiceStatusChecker(String uniqueText, Set<String> expectedStatuses) {
+            this.uniqueText = uniqueText;
             this.expectedStatuses = expectedStatuses;
         }
 
         @Override
         public boolean test(Boolean noMeaning) {
             InstantiationStatusPage.clickRefreshButton();
-            final WebElement row = InstantiationStatusPage.getInstantiationStatusRow(actualInstanceName);
+            final WebElement row = InstantiationStatusPage.getInstantiationStatusRow(uniqueText);
             if (row == null) {
-                System.err.println("**********************" + actualInstanceName + "************************************************");
-                columnClassesSet = Collections.singleton(actualInstanceName + " NOT FOUND");
+                System.err.println("**********************" + uniqueText + "************************************************");
+                columnClassesSet = Collections.singleton(uniqueText + " NOT FOUND");
                 return false; // treat missing row as if test condition not fulfilled
             } else {
                 columnClassesSet = new HashSet<>(Arrays.asList(
@@ -284,4 +319,13 @@ public class DrawingBoardPage extends VidBasePage {
             return columnClassesSet;
         }
     }
+
+    public void verifyServiceCompletedOnTime(String uniqueStatusText, String nameToDisplay) {
+        DrawingBoardPage.ServiceStatusChecker serviceStatusChecker =
+            new DrawingBoardPage.ServiceStatusChecker(uniqueStatusText, Collections.singleton(NewServiceInstanceTest.COMPLETED));
+        boolean statusIsShown = Wait.waitFor(serviceStatusChecker, null, 20, 2);
+        assertTrue(nameToDisplay + " wasn't completed in time", statusIsShown);
+        VidBasePage.goOutFromIframe();
+    }
+
 }

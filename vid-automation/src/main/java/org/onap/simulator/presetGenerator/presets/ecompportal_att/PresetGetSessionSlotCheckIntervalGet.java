@@ -13,6 +13,6 @@ public class PresetGetSessionSlotCheckIntervalGet extends BaseEcompPortalPreset 
     }
 
     public String getReqPath() {
-        return getRootPath() + "/v3/getSessionSlotCheckInterval";
+        return getRootPath() + "/*v3/getSessionSlotCheckInterval";
     }
 }

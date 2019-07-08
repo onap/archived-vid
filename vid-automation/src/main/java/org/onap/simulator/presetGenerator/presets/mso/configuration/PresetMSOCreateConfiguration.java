@@ -63,7 +63,7 @@ public class PresetMSOCreateConfiguration extends PresetMSOBaseCreateInstancePos
                 "    }," +
                 "    \"cloudConfiguration\": {" +
                 addCloudOwnerIfNeeded() +
-                "      \"lcpCloudRegionId\": \"JANET25\"" +
+                "      \"lcpCloudRegionId\": \"AAIAIC25\"" +
                 "    }," +
                 "    \"requestInfo\": {" +
                 "      \"instanceName\": \"dummy_instance\"," +

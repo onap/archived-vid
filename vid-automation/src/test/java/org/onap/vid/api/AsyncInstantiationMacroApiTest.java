@@ -1,11 +1,13 @@
 package org.onap.vid.api;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import net.bytebuddy.utility.RandomString;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hamcrest.collection.IsCollectionWithSize;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
@@ -21,9 +23,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
-import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Wait;
 import vid.automation.test.model.JobStatus;
+import vid.automation.test.model.ServiceAction;
 import vid.automation.test.services.SimulatorApi;
 
 import java.util.*;
@@ -35,15 +37,16 @@ import static java.util.stream.Collectors.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 import static vid.automation.test.infra.Features.FLAG_1906_INSTANTIATION_API_USER_VALIDATION;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
 
-@FeatureTogglingTest({Features.FLAG_ASYNC_JOBS, Features.FLAG_ASYNC_INSTANTIATION})
-public class AsyncInstantiationApiTest extends AsyncInstantiationBase {
-    private static final Logger logger = LogManager.getLogger(AsyncInstantiationApiTest.class);
+public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
+    private static final Logger logger = LogManager.getLogger(AsyncInstantiationMacroApiTest.class);
 
     private static final String MSO_BASE_ERROR =
             "Received error from SDN-C: java.lang.IllegalArgumentException: All keys must be specified for class org."+
@@ -54,6 +57,8 @@ public class AsyncInstantiationApiTest extends AsyncInstantiationBase {
     private static final String INSTANCE_GROUP_ID_LABEL = "instanceGroupId";
 
     private static final String INSTANCE_GROUP_LABEL = "instanceGroup";
+
+    private static final String DELETE_MACRO_SERVICE_FILE_NAME = "asyncInstantiation/vidRequestDeleteMacroService.json";
 
     @Test
     public void createBulkOfCreateInstances(){
@@ -352,7 +357,7 @@ public class AsyncInstantiationApiTest extends AsyncInstantiationBase {
     @Test(dataProvider = "macroAndALaCarteBulk", expectedExceptions = HttpClientErrorException.class)
     @FeatureTogglingTest(FLAG_1906_INSTANTIATION_API_USER_VALIDATION)
     public void verifyCreateBulkOfInstancesUserPermissionValidation(String requestDetailsFileName) {
-        login(new UserCredentials("mo57174000", "mo57174000", null, null, null));
+        login(new UserCredentials("em1536000", "em1536000", null, null, null));
         try {
             createBulkOfInstances(false, 1, Collections.EMPTY_MAP, requestDetailsFileName);
         } catch (HttpClientErrorException e){
@@ -363,6 +368,33 @@ public class AsyncInstantiationApiTest extends AsyncInstantiationBase {
             login();
         }
 
+    }
+
+    @Test
+    public void deleteMacroService_getAuditStatus_verifyCompleted() {
+        String deleteServiceRequestId = UUID.randomUUID().toString();
+        String serviceInstanceId = "service-instance-id";
+        registerExpectationFromPresets(ImmutableList.of(
+                new PresetAAIGetSubscribersGet(),
+                new PresetMSODeleteMacroService(deleteServiceRequestId, serviceInstanceId),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, deleteServiceRequestId)
+        ), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
+
+        List<String> uuids = createBulkOfInstances(false, 1, ImmutableMap.of(), DELETE_MACRO_SERVICE_FILE_NAME);
+        assertThat(uuids, IsCollectionWithSize.hasSize(1));
+        String jobId = uuids.get(0);
+
+        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, PATIENCE_LEVEL.FAIL_FAST, new ServiceInfo(
+                "us16807000", JobStatus.COMPLETED, false,
+                "d61e6f2d-12fa-4cc2-91df-7c244011d6fc", "WayneHolland", "WATKINS",
+                "JAG1", "YUDFJULP-JAG1",
+                "092eb9e8e4b7412e8787dd091bc58e86", "USP-SIP-IC-24335-T-01",
+                "AAIAIC25", null,
+                "service-instance-type", null,
+                null, "InstanceName",
+                "f028b2e2-7080-4b13-91b2-94944d4c42d8", "Service with VRF", "5.0",
+                jobId, null, ServiceAction.DELETE, false)
+        );
     }
 
 }

@@ -1,10 +1,9 @@
 package vid.automation.test.test;
 
-import java.io.IOException;
 import org.junit.Assert;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -15,6 +14,8 @@ import vid.automation.test.model.User;
 import vid.automation.test.sections.SearchExistingPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.SimulatorApi;
+
+import java.io.IOException;
 
 public class SanityTest extends VidBaseTestCase {
 

@@ -16,10 +16,15 @@ import vid.automation.test.services.SimulatorApi;
 
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static org.apache.commons.text.StringEscapeUtils.escapeJson;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.*;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 
 public class ServiceTreeApiTest extends BaseApiTest {
@@ -106,15 +111,15 @@ public class ServiceTreeApiTest extends BaseApiTest {
                         "\"in-maint\": true,", ImmutableMultimap.of("instance-group", instanceGroup2.getReqPath()));
 
         Multimap<String, String> serviceInstance1 = ImmutableMultimap.<String, String>builder()
-                        .putAll("generic-vnf", vnfPreset1.getReqPath())
-                        .putAll("generic-vnf", vnfPreset3.getReqPath())
-                        .build();
+                .putAll("generic-vnf", vnfPreset1.getReqPath())
+                .putAll("generic-vnf", vnfPreset3.getReqPath())
+                .build();
 
         Multimap<String, String> serviceInstance2 = ImmutableMultimap.<String, String>builder()
-                        .putAll("generic-vnf", vnfPreset2.getReqPath())
-                        .putAll("generic-vnf", vnfPreset4.getReqPath())
-                        .putAll("generic-vnf", vnfPreset5.getReqPath())
-                        .build();
+                .putAll("generic-vnf", vnfPreset2.getReqPath())
+                .putAll("generic-vnf", vnfPreset4.getReqPath())
+                .putAll("generic-vnf", vnfPreset5.getReqPath())
+                .build();
 
         PresetAAIGetServiceInstancesByInvariantId serviceInstancesList = new PresetAAIGetServiceInstancesByInvariantId(
                 "global-customer-id", "service-instance-type", "24632e6b-584b-4f45-80d4-fefd75fd9f14",
@@ -207,16 +212,22 @@ public class ServiceTreeApiTest extends BaseApiTest {
         PresetAAIStandardQueryGet instanceGroup1 = PresetAAIStandardQueryGet.ofInstanceGroup("L3-NETWORK", "Ruby Figueroa", ImmutableMultimap.of());
 
         PresetAAIStandardQueryGet collection1 =
-                PresetAAIStandardQueryGet.ofCollectionResource("Assigned",
-                        ImmutableMultimap.of("instance-group", instanceGroup1.getReqPath()));
+                PresetAAIStandardQueryGet.ofCollectionResource(
+                        "Assigned",
+                        ImmutableMultimap.of("instance-group", instanceGroup1.getReqPath()),
+                        "081ceb56-eb71-4566-a72d-3e7cbee5cdf1",
+                        "ce8c98bc-4691-44fb-8ff0-7a47487c11c4"
+                );
 
         PresetAAIStandardQueryGet vnfPreset1 =
                 PresetAAIStandardQueryGet.ofVnf(randUuid(),
-                        ImmutableMultimap.of("l3-network", l3NetworkPreset1.getReqPath(), "l3-network", l3NetworkPreset2.getReqPath()));
+                        ImmutableMultimap.of("l3-network", l3NetworkPreset1.getReqPath(), "l3-network", l3NetworkPreset2.getReqPath()),
+                        new Placement(ATT_NC, olson3, "229bcdc6eaeb4ca59d55221141d01f8e"));
 
         PresetAAIStandardQueryGet vnfPreset2 =
                 PresetAAIStandardQueryGet.ofVnf(randUuid(), "d6557200-ecf2-4641-8094-5393ae3aae60","91415b44-753d-494c-926a-456a9172bbb9",
-                        "\"in-maint\": true,", ImmutableMultimap.of("volume-group", volumeGroup1.getReqPath()));
+                        "\"in-maint\": true,", ImmutableMultimap.of("volume-group", volumeGroup1.getReqPath()),
+                        new Placement(ATT_AIC, hvf6, "88a6ca3ee0394ade9403f075db23167e"));
 
         PresetAAIGetVfModulesByVnf vfModules2 = new PresetAAIGetVfModulesByVnf(vnfPreset2.getInstanceId());
 
@@ -264,12 +275,21 @@ public class ServiceTreeApiTest extends BaseApiTest {
         assertJsonEquals(response, expected);
     }
 
+    @Override
+    protected void assertJsonEquals(String actual, String expected) {
+        assertThat(actual, jsonEquals(expected)
+                .when(IGNORING_ARRAY_ORDER)
+                .when(IGNORING_EXTRA_FIELDS)
+        );
+    }
+
     @Test
     public void serviceWithVnfGotError_exceptionIsThrown() {
 
         PresetAAIStandardQueryGet vnfPreset =
                 PresetAAIStandardQueryGet.ofVnf(randUuid(),
-                        ImmutableMultimap.of("l3-network", "/aai/v../I'm a wrong path"));
+                        ImmutableMultimap.of("l3-network", "/aai/v../I'm a wrong path"),
+                        defaultPlacement());
 
         final PresetAAIStandardQueryGet serviceInstance =
                 PresetAAIStandardQueryGet.ofServiceInstance("service-instance-id", "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "service-instance-model-invariant-id", "global-customer-id", "service-instance-type",
@@ -364,7 +384,61 @@ public class ServiceTreeApiTest extends BaseApiTest {
         assertJsonEquals(response, expected);
     }
 
+    @Test
+    public void serviceWithVrf_resultAsExpected(){
+        PresetAAIStandardQueryGet vpnBindingPreset =
+                PresetAAIStandardQueryGet.ofVpn("Active", ImmutableMultimap.of(), "mock-global-1", "mock-role-x", "VPN1260","USA,EMEA");
+
+        // in order to verify thst only one route target is parsed from the Vpn - binding of the network
+        PresetAAIStandardQueryGet vpnBindingPresetOnlyForTheNetwork =
+                PresetAAIStandardQueryGet.ofVpn("Active", ImmutableMultimap.of(), "shouldNotBeOnResult", "shouldNotBeOnResult","shouldNotBeOnResult","shouldNotBeOnResult");
+
+        PresetAAIStandardQueryGet l3NetworkPreset =
+                PresetAAIStandardQueryGet.ofL3Network("SR-IOV-PROVIDER2-2", "Assigned",
+                        ImmutableMultimap.of("vpn-binding", vpnBindingPreset.getReqPath(),
+                                "vpn-binding", vpnBindingPresetOnlyForTheNetwork.getReqPath()));
+
+        PresetAAIStandardQueryGet vrfPreset =
+                PresetAAIStandardQueryGet.ofVrf("Create",
+                        ImmutableMultimap.of(
+                                "l3-network", l3NetworkPreset.getReqPath(),
+                                "vpn-binding", vpnBindingPreset.getReqPath()));
+
+        final PresetAAIStandardQueryGet serviceInstance =
+                PresetAAIStandardQueryGet.ofServiceInstance("service-instance-id", "BONDING", "INFRASTRUCTURE-VPN", "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+                        "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb", "global-customer-id", "service-instance-type", "GARBAGE DATA",
+                        ImmutableMultimap.of("configuration", vrfPreset.getReqPath()));
+
+        String expected = TestUtils.convertRequest(objectMapper, "aaiGetInstanceTopology/serviceWithVrfTopology.json");
+        expected = expected
+                .replace("SERVICE_INSTANCE_NAME", serviceInstance.getInstanceName())
+                .replace("VRF_INSTANCE_ID", vrfPreset.getInstanceId())
+                .replace("VRF_INSTANCE_NAME", vrfPreset.getInstanceName())
+                .replace("VPN_INSTANCE_ID", vpnBindingPreset.getInstanceId())
+                .replace("VPN_INSTANCE_NAME", vpnBindingPreset.getInstanceName())
+                .replace("NETWORK_INSTANCE_NAME", l3NetworkPreset.getInstanceName())
+                .replace("NETWORK_INSTANCE_ROLE", l3NetworkPreset.getInstanceRole())
+                .replace("NETWORK_INSTANCE_ID", l3NetworkPreset.getInstanceId());
+
+        SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                serviceInstance,
+                vrfPreset,
+                vpnBindingPreset,
+                l3NetworkPreset,
+                new PresetAAIModelsByInvariantIdGet(ImmutableList.of("network-instance-model-invariant-id", "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb", "b67a289b-1688-496d-86e8-1583c828be0a" )),
+                new PresetGetSessionSlotCheckIntervalGet(),
+                new PresetAAIGetSubscribersGet(),
+                new PresetSDCGetServiceMetadataGet("f028b2e2-7080-4b13-91b2-94944d4c42d8", "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb", "service-Infravpn-csar.zip"),
+                new PresetSDCGetServiceToscaModelGet("f028b2e2-7080-4b13-91b2-94944d4c42d8", "service-Infravpn-csar.zip")
+        ), CLEAR_THEN_SET);
+
+        final String response = restTemplate.getForObject(buildUri(API_URL), String.class, "global-customer-id", "service-instance-type", "service-instance-id");
+
+        assertJsonEquals(response, expected);
+    }
+
     private String randUuid() {
         return UUID.randomUUID().toString();
     }
+
 }

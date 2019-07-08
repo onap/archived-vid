@@ -8,6 +8,7 @@
   },
   "existingNetworksCounterMap": {},
   "existingVNFCounterMap": {},
+  "existingVRFCounterMap": {},
   "existingVnfGroupCounterMap": {
     "daeb6568-cef8-417f-9075-ed259ce59f48": 2,
     "c2b300e6-45de-4e5e-abda-3032bee2de56": 0
@@ -17,6 +18,12 @@
   "instanceName": "SERVICE_INSTANCE_NAME",
   "instanceParams": [],
   "isALaCarte": true,
+  "vidNotions": {
+    "instantiationUI": "serviceWithVnfGrouping",
+    "modelCategory": "other",
+    "viewEditUI": "serviceWithVnfGrouping",
+    "instantiationType": "ALaCarte"
+  },
   "isDirty": true,
   "lcpCloudRegionId": null,
   "modelInfo": {
@@ -205,5 +212,6 @@
       "vnfs": {}
     }
   },
-  "vnfs": {}
+  "vnfs": {},
+  "vrfs": {}
 }

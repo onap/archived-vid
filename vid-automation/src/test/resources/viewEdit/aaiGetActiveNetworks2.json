@@ -1,0 +1,22 @@
+[
+  {
+    "action":"None",
+    "instanceName":"CHICGIL01VDBE01_SubIntNtwk043",
+    "instanceId":"l3network2-550-as988q",
+    "orchStatus":"active",
+    "lcpCloudRegionId":"cloud-region-id-CC-ANAI-528",
+    "tenantId":"tenant-id-CC-ANAI-528T1",
+    "cloudOwner":"cloud-owner-CC-ANAI-528",
+    "modelInfo":{
+      "modelCustomizationId":"wgmn6PrJ5",
+      "modelType":"network"
+    },
+    "instanceType":"K6VD",
+    "inMaint":false,
+    "trackById":"l3network2-550-as988q",
+    "role":"X92XE0j",
+    "physicalName":"wq6OKbZMTY",
+    "tenantName":"tenant-name-CC-ANAI-528T1",
+    "boundToVpn":true
+  }
+]

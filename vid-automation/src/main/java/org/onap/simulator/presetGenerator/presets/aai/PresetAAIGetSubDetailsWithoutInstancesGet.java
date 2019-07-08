@@ -1,11 +1,12 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetSubDetailsWithoutInstancesGet extends BaseAAIPreset {
     private String subscriberId;
@@ -52,7 +53,7 @@ public class PresetAAIGetSubDetailsWithoutInstancesGet extends BaseAAIPreset {
                 "  \"service-subscriptions\":{" +
                 "    \"service-subscription\":[" +
                 "      {" +
-                "        \"service-type\":\"vFlowLogic\"," +
+                "        \"service-type\":\"vRichardson\"," +
                 "        \"resource-version\":\"1501700976809\"," +
                 "        \"is-permitted\":false" +
                 "      }," +
@@ -67,7 +68,7 @@ public class PresetAAIGetSubDetailsWithoutInstancesGet extends BaseAAIPreset {
                 "        \"is-permitted\":false" +
                 "      }," +
                 "      {" +
-                "        \"service-type\":\"vBNG\"," +
+                "        \"service-type\":\"vJamie\"," +
                 "        \"resource-version\":\"1498068165053\"," +
                 "        \"is-permitted\":false" +
                 "      }," +
@@ -82,7 +83,7 @@ public class PresetAAIGetSubDetailsWithoutInstancesGet extends BaseAAIPreset {
                 "        \"is-permitted\":true" +
                 "      }," +
                 "      {" +
-                "        \"service-type\":\"vSEGW\"," +
+                "        \"service-type\":\"vPorfirio\"," +
                 "        \"resource-version\":\"1494254851983\"," +
                 "        \"is-permitted\":false" +
                 "      }," +
@@ -97,7 +98,7 @@ public class PresetAAIGetSubDetailsWithoutInstancesGet extends BaseAAIPreset {
                 "        \"is-permitted\":false" +
                 "      }," +
                 "      {" +
-                "        \"service-type\":\"vMME\"," +
+                "        \"service-type\":\"vFLORENCE\"," +
                 "        \"resource-version\":\"1497729820723\"," +
                 "        \"is-permitted\":false" +
                 "      }," +
@@ -132,17 +133,17 @@ public class PresetAAIGetSubDetailsWithoutInstancesGet extends BaseAAIPreset {
                 "        \"is-permitted\":false" +
                 "      }," +
                 "      {" +
-                "        \"service-type\":\"FIRSTNET\"," +
+                "        \"service-type\":\"LINDSEY\"," +
                 "        \"resource-version\":\"1509387060781\"," +
                 "        \"is-permitted\":false" +
                 "      }," +
                 "      {" +
-                "        \"service-type\":\"ACTIVE_CHARGE\"," +
+                "        \"service-type\":\"JOHANNA_SANTOS\"," +
                 "        \"resource-version\":\"1494255101364\"," +
                 "        \"is-permitted\":false" +
                 "      }," +
                 "      {" +
-                "        \"service-type\":\"vHSS\"," +
+                "        \"service-type\":\"vCarroll\"," +
                 "        \"resource-version\":\"1494254877333\"," +
                 "        \"is-permitted\":false" +
                 "      }" +

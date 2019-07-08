@@ -1,12 +1,13 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import static java.util.Collections.singletonList;
-
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
-import java.util.Map;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.springframework.http.HttpMethod;
+
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
 
 public class PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork extends BaseMSOPreset {
 
@@ -84,7 +85,7 @@ public class PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork extend
                 "            \"testApi\": \"VNF_API\"" +
                 "          }," +
                 "          \"project\": {" +
-                "            \"projectName\": \"DFW\"" +
+                "            \"projectName\": \"WATKINS\"" +
                 "          }," +
                 "          \"owningEntity\": {" +
                 "            \"owningEntityId\": \"3f592a6f-459b-435e-b0d4-59959ab1d385\"," +
@@ -155,7 +156,7 @@ public class PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork extend
                 "            \"platformName\": \"plat1\"" +
                 "          }," +
                 "          \"lineOfBusiness\": {" +
-                "            \"lineOfBusinessName\": \"ECOMP\"" +
+                "            \"lineOfBusinessName\": \"ONAP\"" +
                 "          }" +
                 "        }," +
                 "        \"instanceReferences\": {" +

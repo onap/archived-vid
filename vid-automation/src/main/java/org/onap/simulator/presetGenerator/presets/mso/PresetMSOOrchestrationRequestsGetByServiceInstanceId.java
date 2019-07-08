@@ -1,14 +1,25 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import static java.util.Collections.singletonList;
-
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
-import java.util.Map;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.springframework.http.HttpMethod;
 
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
+
 public class PresetMSOOrchestrationRequestsGetByServiceInstanceId extends BaseMSOPreset {
+
+    private final String instanceId;
+
+    public PresetMSOOrchestrationRequestsGetByServiceInstanceId() {
+        this.instanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+    }
+
+    public PresetMSOOrchestrationRequestsGetByServiceInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
 
     @Override
     public HttpMethod getReqMethod() {
@@ -22,7 +33,7 @@ public class PresetMSOOrchestrationRequestsGetByServiceInstanceId extends BaseMS
 
     @Override
     public Map<String, List> getQueryParams() {
-        return ImmutableMap.of("filter", singletonList("serviceInstanceId:EQUALS:bc305d54-75b4-431b-adb2-eb6b9e546014"));
+        return ImmutableMap.of("filter", singletonList("serviceInstanceId:EQUALS:" + instanceId));
     }
 
     @Override

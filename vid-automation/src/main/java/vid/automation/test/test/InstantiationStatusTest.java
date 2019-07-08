@@ -1,39 +1,34 @@
 package vid.automation.test.test;
 
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VNF_NAME;
-import static org.testng.Assert.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
-import static vid.automation.test.Constants.DrawingBoard.DEPLOY_BUTTON;
-import static vid.automation.test.infra.Features.FLAG_ASYNC_INSTANTIATION;
-
 import com.google.common.collect.ImmutableMap;
-import java.util.Collections;
 import org.junit.Assert;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames;
 import org.onap.vid.api.AsyncInstantiationBase;
 import org.onap.vid.api.CreateServiceWithFailedVnf;
 import org.onap.vid.api.TestUtils;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.Click;
-import vid.automation.test.infra.FeatureTogglingTest;
-import vid.automation.test.infra.Features;
-import vid.automation.test.infra.Get;
-import vid.automation.test.infra.Wait;
+import vid.automation.test.infra.*;
 import vid.automation.test.sections.DrawingBoardPage;
 import vid.automation.test.sections.InstantiationStatusPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.services.AsyncJobsService;
 
-@FeatureTogglingTest(FLAG_ASYNC_INSTANTIATION)
+import java.util.Collections;
+
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VNF_NAME;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+import static vid.automation.test.Constants.DrawingBoard.DEPLOY_BUTTON;
+
 public class InstantiationStatusTest extends VidBaseTestCase {
 
     private final String serviceModelVersion = "5.1";

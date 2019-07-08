@@ -1,50 +1,15 @@
 package org.onap.vid.api;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.RELATED_VNF1_ACTION;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.RELATED_VNF2_ACTION;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.VNF_GROUP1_ACTION;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Function;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAISearchNodeQueryNonEmptyResult;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAddOrRemoveOneInstanceGroupMember;
+import org.onap.simulator.presetGenerator.presets.mso.*;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAddOrRemoveOneInstanceGroupMember.InstanceGroupMemberAction;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateNetworkALaCarteServiceCypress2;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceMultipleVnfsServiceCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteServiceCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteServiceCypress2;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfGroup;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteBaseVfModuleCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteNetworkAlaCarteCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteService;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVfModuleCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVnfAlaCarteCypress;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
@@ -61,7 +26,25 @@ import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
-@FeatureTogglingTest({Features.FLAG_ASYNC_JOBS, Features.FLAG_ASYNC_INSTANTIATION, Features.FLAG_ASYNC_ALACARTE_VNF})
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.*;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+
+@FeatureTogglingTest({Features.FLAG_ASYNC_ALACARTE_VNF})
 public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
 
     private static final String CREATE_BULK_OF_ALACARTE_REQUEST = "asyncInstantiation/vidRequestCreateALaCarte.json";
@@ -385,12 +368,12 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
         assertThat(uuids, hasSize(1));
         String jobId = uuids.get(0);
 
-        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", JobStatus.COMPLETED, false,
                 "d61e6f2d-12fa-4cc2-91df-7c244011d6fc", "WayneHolland", "WATKINS",
                 "JAG1", "YUDFJULP-JAG1",
                 "092eb9e8e4b7412e8787dd091bc58e86", "USP-SIP-IC-24335-T-01",
-                "JANET25", null,
+                "AAIAIC25", null,
                 "TYLER SILVIA", null,
                 null, "InstanceName",
                 "6b528779-44a3-4472-bdff-9cd15ec93450", "action-data", "1.0",
@@ -417,12 +400,12 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
         assertThat(uuids, hasSize(1));
         String jobId = uuids.get(0);
 
-        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", JobStatus.COMPLETED, false,
                 "d61e6f2d-12fa-4cc2-91df-7c244011d6fc", "WayneHolland", "WATKINS",
                 "JAG1", "YUDFJULP-JAG1",
                 "092eb9e8e4b7412e8787dd091bc58e86", "USP-SIP-IC-24335-T-01",
-                "JANET25", null,
+                "AAIAIC25", null,
                 "TYLER SILVIA", null,
                 null, "InstanceName",
                 "6b528779-44a3-4472-bdff-9cd15ec93450", "action-data", "1.0",
@@ -460,7 +443,7 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
         assertThat(uuids, hasSize(1));
         String jobId = uuids.get(0);
 
-        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", JobStatus.COMPLETED, false,
                 "d61e6f2d-12fa-4cc2-91df-7c244011d6fc", "WayneHolland", "WATKINS",
                 "NFT1", "NFTJSSSS-NFT1",
@@ -492,7 +475,7 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
         assertThat(uuids, hasSize(1));
         String jobId = uuids.get(0);
 
-        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(JobStatus.COMPLETED, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", JobStatus.COMPLETED, false,
                 "d61e6f2d-12fa-4cc2-91df-7c244011d6fc", "WayneHolland", "WATKINS",
                 "NFT1", "NFTJSSSS-NFT1",
@@ -549,7 +532,7 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
     }
 
     private void assertServiceInfoSpecific3(String jobId, JobStatus jobStatus, String serviceInstanceName) {
-        assertExpectedStatusAndServiceInfo(jobStatus, jobId, true, new ServiceInfo(
+        assertExpectedStatusAndServiceInfo(jobStatus, jobId, PATIENCE_LEVEL.FAIL_SLOW, new ServiceInfo(
                 "us16807000", jobStatus, false,
                 "aaa1", "aaa1", "yyy1",
                 "YYY1", "UUUAIAAI-YYY1",

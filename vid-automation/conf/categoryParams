@@ -21,25 +21,33 @@
       "categoryId": "1"
     },
     {
-      "name": "DFW",
+      "name": "WATKINS",
       "categoryId": "2"
     },
     {
-      "name": "ECOMP",
+      "name": "ONAP",
       "categoryId": "3"
     },
     {
-      "name": "Wireline",
+      "name": "Melissa",
       "categoryId": "4"
     },
     {
-      "name": "MetroPacketCore",
+      "name": "WayneHolland",
       "appId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
       "categoryId": "4"
     },
     {
       "name": "x1",
       "categoryId": "2"
+    },
+    {
+      "name": "1908.19",
+      "categoryId": "7"
+    },
+    {
+      "name": "1908.27",
+      "categoryId": "7"
     }
   ]
 }

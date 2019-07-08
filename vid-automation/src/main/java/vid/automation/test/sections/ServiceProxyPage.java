@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
+import vid.automation.test.Constants.ViewEdit;
 import vid.automation.test.infra.SelectOption;
 
 import static org.hamcrest.core.Is.is;
@@ -40,18 +41,34 @@ public class ServiceProxyPage extends VidBasePage {
     }
 
     public ServiceProxyPage clickDeleteConfigurationButton() {
-        GeneralUIUtils.clickOnElementByTestId(Constants.DELETE_CONFIGURATION_BUTTON, 60);
+        GeneralUIUtils.clickOnElementByTestId(deleteConfigurationButtonTestId(), 60);
         return this;
+    }
+
+    private String configurationInstanceName() {
+        return "dummy_instance";
+    }
+
+    private String deleteConfigurationButtonTestId() {
+        return Constants.DELETE_CONFIGURATION_BUTTON + "-" + configurationInstanceName();
+    }
+
+    private String activateDeactivateButtonTestId() {
+        return Constants.ACTIVATE_DEACTIVATE_BUTTON + "-" + configurationInstanceName();
+    }
+
+    private String enableDisableButtonTestId(String portName) {
+        return Constants.ENABLE_DISABLE_BUTTON + "-" + configurationInstanceName() + "-" + portName;
     }
 
     public ServiceProxyPage assertDeleteConfigurationButtonExists(boolean shouldExist){
 
         if (shouldExist) {
-            WebElement selectedV = GeneralUIUtils.getWebElementByTestID(Constants.DELETE_CONFIGURATION_BUTTON, 3);
+            WebElement selectedV = GeneralUIUtils.getWebElementByTestID(deleteConfigurationButtonTestId(), 3);
             Assert.assertThat(selectedV != null, is(shouldExist));
             Assert.assertThat(selectedV.isDisplayed(), is(shouldExist));
         } else {
-            boolean webElementExistByTestId = GeneralUIUtils.isWebElementExistByTestId(Constants.DELETE_CONFIGURATION_BUTTON);
+            boolean webElementExistByTestId = GeneralUIUtils.isWebElementExistByTestId(deleteConfigurationButtonTestId());
             Assert.assertThat(webElementExistByTestId, is(shouldExist));
         }
         return this;
@@ -86,12 +103,12 @@ public class ServiceProxyPage extends VidBasePage {
     }
 
     public ServiceProxyPage clickActivateDeactivateButton() {
-        GeneralUIUtils.clickOnElementByTestId(Constants.ACTIVATE_DEACTIVATE_BUTTON, 60);
+        GeneralUIUtils.clickOnElementByTestId(activateDeactivateButtonTestId(), 60);
         return this;
     }
 
     public ServiceProxyPage clickEnableDisableButton(){
-        GeneralUIUtils.clickOnElementByTestId(Constants.ENABLE_DISABLE_BUTTON, 60);
+        GeneralUIUtils.clickOnElementByTestId(enableDisableButtonTestId(ViewEdit.COMMON_PORT_MIRRORING_PORT_NAME), 60);
         return this;
     }
 }

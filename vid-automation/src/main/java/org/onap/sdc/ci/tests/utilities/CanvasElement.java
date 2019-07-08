@@ -21,7 +21,6 @@
 package org.onap.sdc.ci.tests.utilities;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.onap.sdc.ci.tests.datatypes.DataTestIdEnum.LeftPanelCanvasItems;
 import org.openqa.selenium.WebElement;
 
 public final class CanvasElement {

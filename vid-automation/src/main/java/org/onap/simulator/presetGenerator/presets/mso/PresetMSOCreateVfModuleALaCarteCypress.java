@@ -1,6 +1,7 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
 import com.google.common.collect.ImmutableMap;
+
 import java.util.Map;
 
 public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOBaseCreateInstancePost {
@@ -16,20 +17,20 @@ public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOBaseCreateI
             .put(Keys.instanceName, "mimazepubi")
             .put(Keys.modelInvariantId, "b34833bb-6aa9-4ad6-a831-70b06367a091")
             .put(Keys.modelVersionId, "f8360508-3f17-4414-a2ed-6bc71161e8db")
-            .put(Keys.modelName, "2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0")
+            .put(Keys.modelName, "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0")
             .put(Keys.modelVersion, "5")
             .put(Keys.modelCustomizationId, "a55961b2-2065-4ab0-a5b7-2fcee1c227e3")
-            .put(Keys.modelCustomizationName, "2017488PASQUALEVpe..PASQUALE_base_vPE_BV..module-0")
+            .put(Keys.modelCustomizationName, "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0")
             .build();
 
     public static final Map<Keys, String> module2Names = ImmutableMap.<Keys, String>builder()
             .put(Keys.instanceName, "bnmgtrx")
             .put(Keys.modelInvariantId, "eff8cc59-53a1-4101-aed7-8cf24ecf8339")
             .put(Keys.modelVersionId, "0a0dd9d4-31d3-4c3a-ae89-a02f383e6a9a")
-            .put(Keys.modelName, "2017488PASQUALEVpe..PASQUALE_vPFE_BV..module-2")
+            .put(Keys.modelName, "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2")
             .put(Keys.modelVersion, "6")
             .put(Keys.modelCustomizationId, "3cd946bb-50e0-40d8-96d3-c9023520b557")
-            .put(Keys.modelCustomizationName, "2017488PASQUALEVpe..PASQUALE_vPFE_BV..module-2")
+            .put(Keys.modelCustomizationName, "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2")
             .build();
 
     public PresetMSOCreateVfModuleALaCarteCypress(String overrideRequestId, String serviceInstanceId, String vnfInstanceId, Map<Keys, String> names, String testApi, boolean withTestApi) {

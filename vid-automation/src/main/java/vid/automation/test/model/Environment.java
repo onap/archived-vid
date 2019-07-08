@@ -8,4 +8,5 @@ public class Environment {
     public String EcompEnvironmentName;
     public String tenantContext;
     public String workloadContext;
+    public String release;
 }

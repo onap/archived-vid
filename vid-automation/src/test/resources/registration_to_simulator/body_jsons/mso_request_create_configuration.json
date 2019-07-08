@@ -10,7 +10,7 @@
       "modelCustomizationName": "Port Mirroring Configuration By Policy 1"
     },
     "cloudConfiguration": {
-      "lcpCloudRegionId": "JANET25"
+      "lcpCloudRegionId": "AAIAIC25"
     },
     "requestInfo": {
       "instanceName": "dummy_instance",
