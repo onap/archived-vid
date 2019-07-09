@@ -18,12 +18,16 @@
   ============LICENSE_END=========================================================
   -->
 
+<link rel="stylesheet" type="text/css" href="app/vid/styles/serviceModels.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/styles/modals.css">
 <link rel="stylesheet" type="text/css" href="app/vid/styles/modal-create-new.css" />
 <link rel="stylesheet" type="text/css" href="app/vid/scripts/modals/report-modal/report-modal.css" />
 
 <div class="modal-header">
     <h3 id="modal-title">Error report</h3>
+    <span class="statusLine" ng-hide="!isSpinnerVisible">
+			<img src="app/vid/images/spinner.gif">
+    </span>
 </div>
 <div class="modal-body">
     <textarea style="height: 500px">{{vm.report}}</textarea>

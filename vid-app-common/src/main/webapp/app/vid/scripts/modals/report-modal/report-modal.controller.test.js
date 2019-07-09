@@ -22,6 +22,8 @@ require('./report-modal.controller');
 const jestMock = require('jest-mock');
 
 describe('Testing error report creation', () => {
+    const mockAPI = "testAPI";
+
     let $notNeeded;
     let $controller;
 
@@ -31,6 +33,7 @@ describe('Testing error report creation', () => {
     let mockWindow;
     let mockReportService;
     let testErrorMsg;
+    let mockDataService;
 
     let correctResponse;
     let failResponse;
@@ -42,6 +45,11 @@ describe('Testing error report creation', () => {
     beforeEach(inject(function (_$controller_) {
         $notNeeded = jestMock.fn();
         mockHttp = jestMock.fn();
+        mockDataService = jestMock.fn();
+
+        mockDataService.getMsoRequestParametersTestApi = function() {
+            return mockAPI;
+        };
 
         mockModalInstance = {};
         mockWindow = {
@@ -72,7 +80,8 @@ describe('Testing error report creation', () => {
             $scope: $notNeeded,
             $window: mockWindow,
             ReportService: mockReportService,
-            errorMsg: testErrorMsg
+            errorMsg: testErrorMsg,
+            DataService: mockDataService
         });
     }));
 
@@ -88,7 +97,11 @@ describe('Testing error report creation', () => {
 
         $controller.saveReportData(correctResponse);
 
-        expect($controller.report).toEqual(testErrorMsg + "\n\n Collected data from API:\n" + JSON.stringify(correctResponse.data,  null, "\t"));
+        expect($controller.report).toEqual(
+            "Selected test API: \n" + mockAPI
+            + "\n\n Data from GUI:\n" + testErrorMsg
+            + "\n\n Collected data from API:\n" + JSON.stringify(correctResponse.data,  null, "\t"));
+
         expect($controller.downloadEnable).toBeTruthy();
         expect($controller.download).toEqual(new Blob([ $controller.report ], { type : 'text/plain' }));
     });

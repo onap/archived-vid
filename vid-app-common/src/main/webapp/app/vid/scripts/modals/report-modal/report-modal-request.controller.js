@@ -21,24 +21,31 @@
 (function () {
     'use strict';
 
-    appDS2.controller("reportModalInstanceController", ["$uibModalInstance", "$scope", "$window", "ReportService", "errorMsg", "requestInfo", reportModalInstanceController]);
+    appDS2.controller("reportModalInstanceController", ["$uibModalInstance", "$scope", "$window", "DataService", "ReportService", "errorMsg", "requestInfo", reportModalInstanceController]);
 
-    function reportModalInstanceController($uibModalInstance, $scope, $window, ReportService, errorMsg, requestInfo) {
+    function reportModalInstanceController($uibModalInstance, $scope, $window, DataService, ReportService, errorMsg, requestInfo) {
         const vm = this;
 
         const init = function() {
             vm.timestamp =  ReportService.getReportTimeStamp();
             vm.downloadEnable = false;
+            $scope.isSpinnerVisible = true;
+
             ReportService.getReportData(requestInfo).then(
                 response => {
+                    $scope.isSpinnerVisible = false;
                     vm.saveReportData(response);
                 }, response => {
+                    $scope.isSpinnerVisible = false;
                     vm.printReportFail(response);
                 });
         };
 
         vm.saveReportData = function(response) {
-            vm.report = errorMsg + "\n\n Collected data from API:\n" + JSON.stringify(response.data,  null, "\t") ;
+            vm.report =
+                "Selected test API: \n" + DataService.getMsoRequestParametersTestApi()
+                + "\n\n Data from GUI:\n" + errorMsg
+                + "\n\n Collected data from API:\n" + JSON.stringify(response.data,  null, "\t") ;
 
             const blob = new Blob([ vm.report ], { type : 'text/plain' });
             vm.download = ($window.URL || $window.webkitURL).createObjectURL( blob );
