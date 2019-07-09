@@ -3,7 +3,8 @@
     "vidNotions": {
       "instantiationUI": "serviceWithVnfGrouping",
       "modelCategory": "other",
-      "viewEditUI": "serviceWithVnfGrouping"
+      "viewEditUI": "serviceWithVnfGrouping",
+      "instantiationType": "ALaCarte"
     },
     "uuid": "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
     "invariantUuid": "7ee41ce4-4827-44b0-a48e-2707a59905d2",
@@ -19,12 +20,13 @@
     "inputs": {}
   },
   "vnfs": {},
+  "vrfs": {},
   "networks": {},
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {},
   "fabricConfigurations": {},
   "serviceProxies": {
-    "vDOROTHEA_svc_vprs_proxy 0": {
+    "vdorothea_svc_vprs_proxy 0": {
       "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
       "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
       "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
@@ -80,7 +82,7 @@
         "quantity": 4
       },
       "members": {
-        "vDOROTHEA_svc_vprs_proxy 0": {
+        "vdorothea_svc_vprs_proxy 0": {
           "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
           "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
           "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",

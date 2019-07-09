@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild,} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild,} from '@angular/core';
 import {ContextMenuComponent, ContextMenuService} from 'ngx-contextmenu';
 import {Constants} from '../../../shared/utils/constants';
 import {IDType, ITreeNode} from "angular-tree-component/dist/defs/api";
@@ -24,7 +24,10 @@ import * as _ from 'lodash';
 import {ErrorMsgService} from "../../../shared/components/error-msg/error-msg.service";
 import {DragAndDropService} from "./dragAndDrop/dragAndDrop.service";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
-import {PopoverPlacement} from "../../../shared/components/popover/popover.component";
+import {ComponentInfoService} from "../component-info/component-info.service";
+import {ComponentInfoModel} from "../component-info/component-info-model";
+import {ObjectToModelTreeService} from "../objectsToTree/objectToModelTree/objectToModelTree.service";
+import {DrawingBoardModes} from "../drawing-board.modes";
 
 @Component({
   selector: 'drawing-board-tree',
@@ -37,10 +40,14 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
   _store: NgRedux<AppState>;
   duplicateService: DuplicateService;
   drawingBoardTreeService: DrawingBoardTreeService;
+  objectToModelTreeService : ObjectToModelTreeService;
+  objectToInstanceTreeService : ObjectToInstanceTreeService;
   errorMsgService: ErrorMsgService;
   isFilterEnabled: boolean = false;
   filterValue: string = '';
   contextMenuOptions: TreeNodeContextMenuModel[];
+
+  @Input() pageMode : DrawingBoardModes;
   static triggerDeleteActionService: Subject<string> = new Subject<string>();
   static triggerUndoDeleteActionService: Subject<string> = new Subject<string>();
   static triggerreCalculateIsDirty: Subject<string> = new Subject<string>();
@@ -62,13 +69,16 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
               private _highlightPipe: HighlightPipe,
               private _objectToInstanceTreeService: ObjectToInstanceTreeService,
               private _sharedTreeService: SharedTreeService,
-              private _dragAndDropService : DragAndDropService) {
+              private _dragAndDropService : DragAndDropService,
+              private _objectToModelTreeService : ObjectToModelTreeService,
+              private _componentInfoService: ComponentInfoService) {
 
     this.errorMsgService = _errorMsgService;
     this.duplicateService = _duplicateService;
     this.drawingBoardTreeService = _drawingBoardTreeService;
     this.contextMenuOptions = _drawingBoardTreeService.generateContextMenuOptions();
-
+    this.objectToModelTreeService = _objectToModelTreeService;
+    this.objectToInstanceTreeService = _objectToInstanceTreeService;
     DrawingBoardTreeComponent.triggerDeleteActionService.subscribe((serviceModelId) => {
       this._sharedTreeService.shouldShowDeleteInstanceWithChildrenModal(this.nodes, serviceModelId, (node, serviceModelId)=>{
         this.drawingBoardTreeService.deleteActionService(this.nodes, serviceModelId);
@@ -101,6 +111,10 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
     this.nodes = updateData.nodes;
     this.filterValue = updateData.filterValue;
   }
+
+  isLinkedInstance = (node) : boolean => {
+    return !_.isNil(node) && node.parentType === "VRF" || node.parentType === "VnfGroup";
+  };
 
   @Output()
   highlightNode: EventEmitter<number> = new EventEmitter<number>();
@@ -138,7 +152,7 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
 
   updateTree() {
     const serviceInstance = this.store.getState().service.serviceInstance[this.serviceModelId];
-    this.nodes = this._objectToInstanceTreeService.convertServiceInstanceToTreeData(serviceInstance, this.store.getState().service.serviceHierarchy[this.serviceModelId]);
+    this.nodes = this._objectToInstanceTreeService.convertServiceInstanceToTreeData(serviceInstance, this.store.getState().service.serviceHierarchy[this.serviceModelId]).filter((item) => item !== null);
     console.log('right nodes', this.nodes);
 
   }
@@ -194,7 +208,11 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
     this._sharedTreeService.setSelectedVNF(node);
     this.highlightNode.emit(node.data.modelUniqueId);
     if (FeatureFlagsService.getFlagState(Features.FLAG_1906_COMPONENT_INFO, this.store)) {
-      node.data.onSelectedNode(node);
+      const serviceHierarchy = this._store.getState().service.serviceHierarchy[this.serviceModelId];
+      const model = node.data.getModel(node.data.modelName, node.data, serviceHierarchy);
+      const modelInfoItems = node.data.getInfo(model, node.data);
+      const componentInfoModel: ComponentInfoModel = this._sharedTreeService.addGeneralInfoItems(modelInfoItems, node.data.componentInfoType, model, node.data);
+      ComponentInfoService.triggerComponentInfoChange.next(componentInfoModel);
     }
   }
 

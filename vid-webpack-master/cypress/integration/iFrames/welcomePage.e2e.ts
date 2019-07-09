@@ -18,7 +18,7 @@ describe('Welcome page', function () {
 
     it(`verifying Contact Us link"`, function () {
     cy.visit('/welcome.htm');
-    cy.get('A[href="mailto:portal@lists.onap.org"]').contains('Contact Us');
+    cy.get('A[href="mailto:VID-Tier4@list.att.com"]').contains('Contact Us');
       });
 
   it(`verifying VID version"`, function () {

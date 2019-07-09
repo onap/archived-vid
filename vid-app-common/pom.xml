@@ -50,7 +50,8 @@
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
 
         <eirslett.version>1.6</eirslett.version>
-        <node.version>v6.16.0</node.version>
+        <node.version>v8.9.4</node.version>
+        <npm.version>5.6.0</npm.version>
 
         <!-- override using -Drelease_version=foo -Dpatch_version=bar -->
         <release_version>${env.RELEASE_VERSION}</release_version>
@@ -175,6 +176,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
+                            <npmVersion>${npm.version}</npmVersion>
                             <nodeVersion>${node.version}</nodeVersion>
                         </configuration>
                     </execution>

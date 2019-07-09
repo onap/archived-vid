@@ -12,6 +12,9 @@ export class Level1Instance extends ChildNodeInstance{
   lineOfBusiness: string;
   rollbackOnFailure: string;
   originalName: string;
+  region: string;
+  routeTargets: any[];
+  customerId: string;
 
   constructor() {
     super();

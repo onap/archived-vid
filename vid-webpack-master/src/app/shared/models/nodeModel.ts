@@ -87,7 +87,10 @@ export class Level1Model extends NodeModel{
     }
   }
   private getIsEcompGeneratedNaming(vnfJson) {
-    const ecompGeneratedNaming = vnfJson.properties.ecomp_generated_naming;
+    let ecompGeneratedNaming;
+    if (vnfJson.properties) {
+      ecompGeneratedNaming = vnfJson.properties.ecomp_generated_naming;
+    }
     return ecompGeneratedNaming === "true";
   };
 }

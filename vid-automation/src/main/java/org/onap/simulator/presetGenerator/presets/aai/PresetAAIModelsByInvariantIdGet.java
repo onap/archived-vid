@@ -118,6 +118,34 @@ public class PresetAAIModelsByInvariantIdGet extends BaseAAIPreset {
                 "                }" +
                 "              }," +
                 "              {" +
+                "                \"model-version-id\": \"f028b2e2-7080-4b13-91b2-94944d4c42d8\"," +
+                "                \"model-name\": \"Service with VRF\"," +
+                "                \"model-version\": \"5.0\"," +
+                "                \"model-description\": \"vEPDG\"," +
+                "                \"resource-version\": \"1507472057702\"" +
+                "              }," +
+                "              {" +
+                "                \"model-version-id\": \"9cac02be-2489-4374-888d-2863b4511a59\"," +
+                "                \"model-name\": \"VRF Entry Configuration\"," +
+                "                \"model-version\": \"5.0\"," +
+                "                \"model-description\": \"vEPDG\"," +
+                "                \"resource-version\": \"1507472057702\"" +
+                "              }," +
+                "              {" +
+                "                \"model-version-id\": \"network-instance-model-version-id\"," +
+                "                \"model-name\": \"Network Entry\"," +
+                "                \"model-version\": \"6.0\"," +
+                "                \"model-description\": \"vEPDG\"," +
+                "                \"resource-version\": \"1507472057702\"" +
+                "              }," +
+                "              {" +
+                "                \"model-version-id\": \"vpn-model-version-id\"," +
+                "                \"model-name\": \"vf_vEPDG\"," +
+                "                \"model-version\": \"6.0\"," +
+                "                \"model-description\": \"vEPDG\"," +
+                "                \"resource-version\": \"1507472057702\"" +
+                "              }," +
+                "              {" +
                 "                \"model-version-id\": \"eb5f56bf-5855-4e61-bd00-3e19a953bf02\"," +
                 "                \"model-name\": \"vf_vEPDG\"," +
                 "                \"model-version\": \"1.0\"," +

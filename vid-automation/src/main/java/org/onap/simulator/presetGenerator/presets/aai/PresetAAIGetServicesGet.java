@@ -10,17 +10,17 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
     private String responseBody = "{\"service\":[" +
             "        {" +
             "          \"service-id\":\"ebc3bc3d-62fd-4a3f-a037-f619df4ff034\"," +
-            "          \"service-description\":\"DHV\"," +
+            "          \"service-description\":\"ERICA\"," +
             "          \"resource-version\":\"1494001985150\"" +
             "        }," +
             "        {" +
             "          \"service-id\":\"17cc1042-527b-11e6-beb8-9e71128cae77\"," +
-            "          \"service-description\":\"FLEXREACH\"," +
+            "          \"service-description\":\"IGNACIO\"," +
             "          \"resource-version\":\"1494001922171\"" +
             "        }," +
             "        {" +
             "          \"service-id\":\"36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e\"," +
-            "          \"service-description\":\"Netbond\"," +
+            "          \"service-description\":\"Christie\"," +
             "          \"resource-version\":\"1494001855144\"" +
             "        }," +
             "        {" +
@@ -50,7 +50,7 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "        }," +
             "        {" +
             "          \"service-id\":\"db171b8f-115c-4992-a2e3-ee04cae357e0\"," +
-            "          \"service-description\":\"FIRSTNET\"," +
+            "          \"service-description\":\"LINDSEY\"," +
             "          \"resource-version\":\"1490910095155\"" +
             "        }," +
             "        {" +
@@ -85,12 +85,12 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "        }," +
             "        {" +
             "          \"service-id\":\"0ee8c1bc-7cbd-4b0a-a1ac-e9999255abc1\"," +
-            "          \"service-description\":\"WAN Bonding\"," +
+            "          \"service-description\":\"CARA Griffin\"," +
             "          \"resource-version\":\"1498053422512\"" +
             "        }," +
             "        {" +
             "          \"service-id\":\"c7611ebe-c324-48f1-8085-94aef0c6ef3d\"," +
-            "          \"service-description\":\"HOSTED COMMUNICATIONS\"," +
+            "          \"service-description\":\"DARREN MCGEE\"," +
             "          \"resource-version\":\"1494001913639\"" +
             "        }," +
             "        {" +
@@ -105,7 +105,7 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "        }," +
             "        {" +
             "          \"service-id\":\"d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4\"," +
-            "          \"service-description\":\"uCPE-VMS\"," +
+            "          \"service-description\":\"JOSEFINA\"," +
             "          \"resource-version\":\"1494001941772\"" +
             "        }," +
             "        {" +
@@ -115,7 +115,7 @@ public class PresetAAIGetServicesGet extends PresetAAIBaseGetServicesGet {
             "        }," +
             "        {" +
             "          \"service-id\":\"12a96a9d-4b4c-4349-a950-fe1159602621\"," +
-            "          \"service-description\":\"HOSTED COMMUNICATIONS\"," +
+            "          \"service-description\":\"DARREN MCGEE\"," +
             "          \"resource-version\":\"1494001817126\"" +
             "        }" +
             "      ]}";

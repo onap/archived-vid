@@ -39,6 +39,7 @@ export class DrawingBoardHeader {
   mode : DrawingBoardModes = DrawingBoardModes.CREATE;
   serviceOrchStatus: string;
   isDeleted: boolean = false;
+  isResume: boolean = false;
   store : NgRedux<AppState>;
   drawingBoardPermissions : DrawingBoardPermissions;
   drawingBoardHeaderService : DrawingBoardHeaderService;
@@ -122,12 +123,38 @@ export class DrawingBoardHeader {
       type: PopupType.SERVICE,
       uuidData: <any>{
         type : PopupType.SERVICE,
-        isMacro : this.store.getState().service.serviceHierarchy[this.serviceModelId].service.instantiationType === 'Macro',
+        isMacro : this.store.getState().service.serviceHierarchy[this.serviceModelId].service.vidNotions.instantiationType === 'Macro',
         serviceId: this.serviceModelId,
         popupService: this._servicePopupService
       },
       isUpdateMode: true
     });
+  }
+
+  onDeleteUndoDeleteClick(){
+    this.cancelResume(this.serviceModelId);
+    this.isDeleted = !this.isDeleted;
+    this._drawingBoardHeaderService.deleteService(this.serviceModelId, this.isDeleted)
+  }
+
+  onResumeUndoResumeClick(){
+    this.cancelDelete(this.serviceModelId);
+    this.isResume = !this.isResume;
+    this._drawingBoardHeaderService.toggleResumeService(this.serviceModelId, this.isResume);
+  }
+
+  cancelDelete(serviceModelId: string) {
+    if (this.isDeleted) {
+      this.isDeleted = false;
+      this._drawingBoardHeaderService.deleteService(serviceModelId,this.isDeleted);
+    }
+  }
+
+  cancelResume(serviceModelId: string) {
+    if (this.isResume) {
+      this.isResume = false;
+      this._drawingBoardHeaderService.toggleResumeService(serviceModelId,this.isResume);
+    }
   }
 
   extractOwningEntityNameAccordingtoId(id:String): string {

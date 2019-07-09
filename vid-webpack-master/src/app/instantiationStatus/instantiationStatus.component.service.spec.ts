@@ -107,7 +107,7 @@ describe('Instantiation Status Service', () => {
       serviceType : 'serviceType',
       subscriberId : 'subscriberId'
     };
-    let params:UrlTree = service.getNewViewEditUrlTree(item, DrawingBoardModes.VIEW);
+    let params:UrlTree = service.getNewViewEditUrlTree(<any>item, DrawingBoardModes.VIEW);
     expect(params.toString().startsWith('/servicePlanning/VIEW')).toBeTruthy();
     expect(params.queryParams).toEqual(
       {
@@ -124,7 +124,7 @@ describe('Instantiation Status Service', () => {
     };
     let serviceModelUrl: string = '/servicePlanning/EDIT?serviceModelId=28aeb8f6-5620-4148-8bfb-a5fb406f0309';
     let suffix:string = '../../serviceModels.htm#';
-    let tree:UrlTree = service.getNewViewEditUrlTree(item, DrawingBoardModes.EDIT);
+    let tree:UrlTree = service.getNewViewEditUrlTree(<any>item, DrawingBoardModes.EDIT);
     let result = service.getViewEditUrl(tree);
     expect (suffix + serviceModelUrl).toEqual(result);
   });

@@ -6,7 +6,7 @@
     },
     "simulatorResponse": {
       "responseCode": 200,
-      "file": "service-vDOROTHEASrv-csar.zip"
+      "file": "service-VdorotheaSrv-csar.zip"
     }
   },
   {
@@ -16,7 +16,7 @@
     },
     "simulatorResponse": {
       "responseCode": 200,
-      "file": "service-vDOROTHEASrv-csar_ecomp_false6.zip"
+      "file": "service-VdorotheaSrv-csar_ecomp_false6.zip"
     }
   },
   {
@@ -34,7 +34,7 @@
         "invariantUUID": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
         "name": "Demo Service",
         "version": "1.0",
-        "toscaModelURL": "./service-vDOROTHEASrv-csar.zip",
+        "toscaModelURL": "./service-VdorotheaSrv-csar.zip",
         "category": "TYLER SILVIA",
         "lifecycleState": "CERTIFIED",
         "lastUpdaterUserId": "rg276b",
@@ -60,7 +60,7 @@
         "invariantUUID": "709d1be4-9a3f-4a29-8c4d-a20465e808a3",
         "name": "Demo Service",
         "version": "1.0",
-        "toscaModelURL": "./service-vDOROTHEASrv-csar_ecomp_false6.zip",
+        "toscaModelURL": "./service-VdorotheaSrv-csar_ecomp_false6.zip",
         "category": "TYLER SILVIA",
         "lifecycleState": "CERTIFIED",
         "lastUpdaterUserId": "rg276b",

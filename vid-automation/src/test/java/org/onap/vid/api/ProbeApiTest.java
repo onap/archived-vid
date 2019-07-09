@@ -1,17 +1,6 @@
 package org.onap.vid.api;
 
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.both;
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-
 import com.google.common.collect.ImmutableList;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -21,13 +10,13 @@ import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGetInvalidResponse;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsManyStatusesGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsManyStatusesInvalidResponseGet;
-import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagementInvalidResponse;
-import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagements;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGetEmptyResult;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGetInvalidResponse;
 import org.onap.vid.model.probe.ExternalComponentStatus;
 import org.onap.vid.model.probe.HttpRequestMetadata;
+import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagementInvalidResponse;
+import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagements;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +24,13 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.services.SimulatorApi;
+
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.*;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 
 public class ProbeApiTest extends BaseApiTest {
 
@@ -65,7 +61,7 @@ public class ProbeApiTest extends BaseApiTest {
                                 new HttpRequestMetadata(HttpMethod.GET,
                                         200,
                                         AAI_QUERY_PARMAS,
-                                        "{\"customer\":[{\"global-customer-id\":\"CAR_2020_ER\",\"subscriber-name\":\"CAR_2020_ER\",\"subscriber-type\":\"INFRA\",\"resource-version\":\"1494001902987\",\"relationship-list\":null},{\"global-customer-id\":\"21014aa2-526b-11e6-beb8-9e71128cae77\",\"subscriber-name\":\"JULIO ERICKSON\",\"subscriber-type\":\"INFRA\",\"resource-version\":\"1494001776295\",\"relationship-list\":null},{\"global-customer-id\":\"DHV1707-TestSubscriber-2\",\"subscriber-name\":\"DALE BRIDGES\",\"subscriber-type\":\"INFRA\",\"resource-version\":\"1498751754450\",\"relationsh",
+                                        "{\"customer\":[{\"global-customer-id\":\"CAR_2020_ER\",\"subscriber-name\":\"CAR_2020_ER\",\"subscriber-type\":\"INFRA\",\"resource-version\":\"1494001902987\",\"relationship-list\":null},{\"global-customer-id\":\"21014aa2-526b-11e6-beb8-9e71128cae77\",\"subscriber-name\":\"JULIO ERICKSON\",\"subscriber-type\":\"INFRA\",\"resource-version\":\"1494001776295\",\"relationship-list\":null},{\"global-customer-id\":\"DHV1707-TestSubscriber-2\",\"subscriber-name\":\"DALE BRIDGES\",\"subscriber-type\":\"INFRA\",\"resource-version\":\"1498751754450\",\"relat",
                                         "OK"
                                 )
                         ), new ExternalComponentStatus(ExternalComponentStatus.Component.MSO,

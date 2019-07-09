@@ -8366,7 +8366,7 @@
                 },
                 {
                   "service-instance-id": "8b5e21c0-6466-4ac5-919f-6469b2a65fe5",
-                  "service-instance-name": "VIK_test_vDOROTHEA",
+                  "service-instance-name": "VIK_test_VDOROTHEA",
                   "service-type": "",
                   "service-role": "",
                   "environment-context": "General_Revenue-Bearing",
@@ -27085,7 +27085,7 @@
                 },
                 {
                   "service-instance-id": "f416d2f3-92c1-43e3-8d36-2adb10e180bc",
-                  "service-instance-name": "oren-PASQUALE",
+                  "service-instance-name": "oren-pasquale",
                   "service-type": "",
                   "service-role": "",
                   "environment-context": "null",

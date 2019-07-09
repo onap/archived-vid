@@ -2,7 +2,7 @@ import {Action} from "redux";
 import {VnfInstance} from "../../../models/vnfInstance";
 import {
   CreateVnfInstanceAction,
-  DeleteActionVnfInstanceAction, RemoveVnfInstanceAction, UndoDeleteActionVnfInstanceAction,
+  RemoveVnfInstanceAction,
   UpdateVnfInstanceAction, UpdateVnfPosition,
   VNFActions
 } from "./vnf.actions";
@@ -10,6 +10,8 @@ import * as _ from "lodash";
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {ServiceState} from "../main.reducer";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import {deleteFirstLevel, updateServiceValidationCounter} from "../reducersHelper";
+import {ActionOnFirstLevel} from "../firstLevel/firstLevel.actions";
 
 export function vnfReducer(state: ServiceState, action: Action): ServiceState {
   switch (action.type) {
@@ -52,21 +54,16 @@ export function vnfReducer(state: ServiceState, action: Action): ServiceState {
     }
 
     case VNFActions.DELETE_ACTION_VNF_INSTANCE : {
-      let newState = _.cloneDeep(state);
-      let vnf = newState.serviceInstance[(<DeleteActionVnfInstanceAction>action).serviceId].vnfs[(<DeleteActionVnfInstanceAction>action).vnfStoreKey];
-      let oldAction = vnf.action;
-      if(oldAction === ServiceInstanceActions.None_Delete || oldAction === ServiceInstanceActions.Update_Delete) return newState;
-      newState.serviceInstance[(<DeleteActionVnfInstanceAction>action).serviceId].vnfs[(<DeleteActionVnfInstanceAction>action).vnfStoreKey].action = (oldAction + '_Delete') as ServiceInstanceActions;
-      updateServiceValidationCounter(newState, vnf['isMissingData'], false,  (<RemoveVnfInstanceAction>action).serviceId);
-      return newState;
+      return deleteFirstLevel(state, <ActionOnFirstLevel>action,true);
+
     }
 
     case VNFActions.UNDO_DELETE_ACTION_VNF_INSTANCE : {
       let newState = _.cloneDeep(state);
-      let vnf = newState.serviceInstance[(<UndoDeleteActionVnfInstanceAction>action).serviceId].vnfs[(<UndoDeleteActionVnfInstanceAction>action).vnfStoreKey];
+      let vnf = newState.serviceInstance[(<ActionOnFirstLevel>action).serviceId].vnfs[(<ActionOnFirstLevel>action).storeKey];
       let oldState = vnf.action;
-      newState.serviceInstance[(<UndoDeleteActionVnfInstanceAction>action).serviceId].vnfs[(<UndoDeleteActionVnfInstanceAction>action).vnfStoreKey].action = (oldState.split('_')[0]) as ServiceInstanceActions;
-      updateServiceValidationCounter(newState, vnf['isMissingData'], false,  (<UndoDeleteActionVnfInstanceAction>action).serviceId);
+      newState.serviceInstance[(<ActionOnFirstLevel>action).serviceId].vnfs[(<ActionOnFirstLevel>action).storeKey].action = (oldState.split('_')[0]) as ServiceInstanceActions;
+      updateServiceValidationCounter(newState, vnf['isMissingData'], false,  (<ActionOnFirstLevel>action).serviceId);
       return newState;
     }
 
@@ -86,13 +83,7 @@ export function vnfReducer(state: ServiceState, action: Action): ServiceState {
   }
 }
 
-const updateServiceValidationCounter = (newState: any, oldValidationState: boolean, newValidationState: boolean, serviceUuid: string) => {
-  if (oldValidationState && !newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter--;
-  } else if (!oldValidationState && newValidationState) {
-    newState.serviceInstance[serviceUuid].validationCounter++;
-  }
-};
+
 
 
 const updateUniqueNames = (oldName: string, newName: string, serviceInstance: ServiceInstance): void => {

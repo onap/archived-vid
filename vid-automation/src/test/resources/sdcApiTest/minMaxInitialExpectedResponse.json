@@ -3,7 +3,8 @@
     "vidNotions": {
       "instantiationUI": "legacy",
       "modelCategory": "other",
-      "viewEditUI": "legacy"
+      "viewEditUI": "legacy",
+      "instantiationType": "ClientConfig"
     },
     "uuid": "43f13072-fe50-496b-b673-7af075d10143",
     "invariantUuid": "35fb95d8-d1f0-4e46-99ac-e01b423e8e3f",
@@ -17,7 +18,7 @@
     "serviceEcompNaming": "true",
     "instantiationType": "ClientConfig",
     "inputs": {
-      "2017488PASQUALEvpe20_ASN": {
+      "2017488pasqualevpe20_ASN": {
         "type": "string",
         "description": "AV/PE",
         "entry_schema": null,
@@ -26,7 +27,7 @@
         "required": true,
         "default": "AV_vPE"
       },
-      "2017488PASQUALEvpe20_bandwidth": {
+      "2017488pasqualevpe20_bandwidth": {
         "type": "string",
         "description": "Requested VPE bandwidth",
         "entry_schema": null,
@@ -35,7 +36,7 @@
         "required": true,
         "default": "10"
       },
-      "2017488PASQUALEvpe20_bandwidth_units": {
+      "2017488pasqualevpe20_bandwidth_units": {
         "type": "string",
         "description": "Units of bandwidth",
         "entry_schema": null,
@@ -44,7 +45,7 @@
         "required": true,
         "default": "Gbps"
       },
-      "2017488PASQUALEvpe20_AIC_CLLI": {
+      "2017488pasqualevpe20_AIC_CLLI": {
         "type": "string",
         "description": "AIC Site CLLI",
         "entry_schema": null,
@@ -53,7 +54,7 @@
         "required": true,
         "default": "ATLMY8GA"
       },
-      "2017488PASQUALEvpe20_vnf_config_template_version": {
+      "2017488pasqualevpe20_vnf_config_template_version": {
         "type": "string",
         "description": "VPE Software Version",
         "entry_schema": null,
@@ -62,7 +63,7 @@
         "required": true,
         "default": "17.2"
       },
-      "2017488PASQUALEvpe20_vnf_instance_name": {
+      "2017488pasqualevpe20_vnf_instance_name": {
         "type": "string",
         "description": "The hostname assigned to the vpe.",
         "entry_schema": null,
@@ -141,37 +142,37 @@
         "vnf_config_template_version": {
           "displayName": "vnf_config_template_version",
           "command": "get_input",
-          "inputName": "2017488PASQUALEvpe20_vnf_config_template_version"
+          "inputName": "2017488pasqualevpe20_vnf_config_template_version"
         },
         "bandwidth_units": {
           "displayName": "bandwidth_units",
           "command": "get_input",
-          "inputName": "2017488PASQUALEvpe20_bandwidth_units"
+          "inputName": "2017488pasqualevpe20_bandwidth_units"
         },
         "bandwidth": {
           "displayName": "bandwidth",
           "command": "get_input",
-          "inputName": "2017488PASQUALEvpe20_bandwidth"
+          "inputName": "2017488pasqualevpe20_bandwidth"
         },
         "AIC_CLLI": {
           "displayName": "AIC_CLLI",
           "command": "get_input",
-          "inputName": "2017488PASQUALEvpe20_AIC_CLLI"
+          "inputName": "2017488pasqualevpe20_AIC_CLLI"
         },
         "ASN": {
           "displayName": "ASN",
           "command": "get_input",
-          "inputName": "2017488PASQUALEvpe20_ASN"
+          "inputName": "2017488pasqualevpe20_ASN"
         },
         "vnf_instance_name": {
           "displayName": "vnf_instance_name",
           "command": "get_input",
-          "inputName": "2017488PASQUALEvpe20_vnf_instance_name"
+          "inputName": "2017488pasqualevpe20_vnf_instance_name"
         }
       },
       "properties": {
         "vmxvre_retype": "RE-VMX",
-        "vnf_config_template_version": "get_input:2017488PASQUALEvpe20_vnf_config_template_version",
+        "vnf_config_template_version": "get_input:2017488pasqualevpe20_vnf_config_template_version",
         "sriov44_net_id": "48d399b3-11ee-48a8-94d2-f0ea94d6be8d",
         "int_ctl_net_id": "2f323477-6936-4d01-ac53-d849430281d9",
         "vmxvpfe_sriov41_0_port_mac": "00:11:22:EF:AC:DF",
@@ -217,7 +218,7 @@
         "vmxvpfe_sriov43_0_port_unknownmulticastallow": "true",
         "vmxvre_int_ctl_ip_0": "10.0.0.10",
         "ecomp_generated_naming": "true",
-        "AIC_CLLI": "get_input:2017488PASQUALEvpe20_AIC_CLLI",
+        "AIC_CLLI": "get_input:2017488pasqualevpe20_AIC_CLLI",
         "vnf_name": "mtnj309me6vre",
         "vmxvpfe_sriov41_0_port_unknownunicastallow": "true",
         "vmxvre_volume_type_1": "HITACHI",
@@ -225,14 +226,14 @@
         "vmxvre_volume_type_0": "HITACHI",
         "vmxvpfe_volume_type_0": "HITACHI",
         "vmxvpfe_sriov43_0_port_broadcastallow": "true",
-        "bandwidth_units": "get_input:2017488PASQUALEvpe20_bandwidth_units",
+        "bandwidth_units": "get_input:2017488pasqualevpe20_bandwidth_units",
         "vnf_id": "123",
         "vmxvre_oam_prefix": "24",
         "availability_zone_0": "mtpocfo-kvm-az01",
-        "ASN": "get_input:2017488PASQUALEvpe20_ASN",
+        "ASN": "get_input:2017488pasqualevpe20_ASN",
         "vmxvre_chassis_i2cid": "161",
         "vmxvpfe_name_0": "vPFEXI",
-        "bandwidth": "get_input:2017488PASQUALEvpe20_bandwidth",
+        "bandwidth": "get_input:2017488pasqualevpe20_bandwidth",
         "availability_zone_max_count": "1",
         "vmxvre_volume_size_0": "45.0",
         "vmxvre_volume_size_1": "50.0",
@@ -242,7 +243,7 @@
         "vmxvre_ore_present": "0",
         "vmxvre_volume_name_0": "vREXI_FBVolume",
         "vmxvre_type": "0",
-        "vnf_instance_name": "get_input:2017488PASQUALEvpe20_vnf_instance_name",
+        "vnf_instance_name": "get_input:2017488pasqualevpe20_vnf_instance_name",
         "vmxvpfe_sriov41_0_port_unknownmulticastallow": "true",
         "oam_net_id": "b95eeb1d-d55d-4827-abb4-8ebb94941429",
         "vmx_int_ctl_len": "24",
@@ -258,14 +259,14 @@
       "type": "VF",
       "modelCustomizationName": "2017 488 PASQUALE vPE 2 0",
       "vfModules": {
-        "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2": {
+        "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2": {
           "uuid": "13bea14d-9405-43c6-920b-97bab64b6a01",
           "invariantUuid": "83dc51de-a337-498e-9fee-763603a057b4",
           "customizationUuid": "a90865d5-6de0-4ef8-bf53-d45fa3edddfc",
           "description": null,
-          "name": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+          "name": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
           "version": "1",
-          "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+          "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
           "properties": {
             "minCountInstances": null,
             "maxCountInstances": null,
@@ -276,14 +277,14 @@
           "inputs": {},
           "volumeGroupAllowed": true
         },
-        "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1": {
+        "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1": {
           "uuid": "3f6d5e51-a9a0-4c53-bb6d-be836767d96f",
           "invariantUuid": "54466b6d-e33c-4f4d-87e2-32bc5b103589",
           "customizationUuid": "dba1d1ff-77e2-4f4d-b1b4-1bed564f13b1",
           "description": null,
-          "name": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+          "name": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
           "version": "1",
-          "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+          "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
           "properties": {
             "minCountInstances": 0,
             "maxCountInstances": null,
@@ -294,14 +295,14 @@
           "inputs": {},
           "volumeGroupAllowed": true
         },
-        "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_base_vPE_BV..module-0": {
+        "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_base_vPE_BV..module-0": {
           "uuid": "0a45a870-3a19-4238-a72a-eadfc583d4fe",
           "invariantUuid": "c636b302-fba2-4ed7-9f3b-c99715b6bb2e",
           "customizationUuid": "a0b634e6-514e-4977-91dd-3b8c295e6bc8",
           "description": null,
-          "name": "2017488PASQUALEVpe2..PASQUALE_base_vPE_BV..module-0",
+          "name": "2017488PasqualeVpe2..PASQUALE_base_vPE_BV..module-0",
           "version": "1",
-          "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_base_vPE_BV..module-0",
+          "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_base_vPE_BV..module-0",
           "properties": {
             "minCountInstances": 1,
             "maxCountInstances": 1,
@@ -314,14 +315,14 @@
         }
       },
       "volumeGroups": {
-        "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2": {
+        "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2": {
           "uuid": "13bea14d-9405-43c6-920b-97bab64b6a01",
           "invariantUuid": "83dc51de-a337-498e-9fee-763603a057b4",
           "customizationUuid": "a90865d5-6de0-4ef8-bf53-d45fa3edddfc",
           "description": null,
-          "name": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+          "name": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
           "version": "1",
-          "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+          "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
           "properties": {
             "minCountInstances": null,
             "maxCountInstances": null,
@@ -331,14 +332,14 @@
           },
           "inputs": {}
         },
-        "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1": {
+        "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1": {
           "uuid": "3f6d5e51-a9a0-4c53-bb6d-be836767d96f",
           "invariantUuid": "54466b6d-e33c-4f4d-87e2-32bc5b103589",
           "customizationUuid": "dba1d1ff-77e2-4f4d-b1b4-1bed564f13b1",
           "description": null,
-          "name": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+          "name": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
           "version": "1",
-          "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+          "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
           "properties": {
             "minCountInstances": 0,
             "maxCountInstances": null,
@@ -352,20 +353,21 @@
       "vfcInstanceGroups": {}
     }
   },
+  "vrfs": {},
   "networks": {},
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {},
   "fabricConfigurations": {},
   "serviceProxies": {},
   "vfModules": {
-    "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2": {
+    "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2": {
       "uuid": "13bea14d-9405-43c6-920b-97bab64b6a01",
       "invariantUuid": "83dc51de-a337-498e-9fee-763603a057b4",
       "customizationUuid": "a90865d5-6de0-4ef8-bf53-d45fa3edddfc",
       "description": null,
-      "name": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+      "name": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
       "version": "1",
-      "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+      "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
       "properties": {
         "minCountInstances": null,
         "maxCountInstances": null,
@@ -376,14 +378,14 @@
       "inputs": {},
       "volumeGroupAllowed": true
     },
-    "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_base_vPE_BV..module-0": {
+    "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_base_vPE_BV..module-0": {
       "uuid": "0a45a870-3a19-4238-a72a-eadfc583d4fe",
       "invariantUuid": "c636b302-fba2-4ed7-9f3b-c99715b6bb2e",
       "customizationUuid": "a0b634e6-514e-4977-91dd-3b8c295e6bc8",
       "description": null,
-      "name": "2017488PASQUALEVpe2..PASQUALE_base_vPE_BV..module-0",
+      "name": "2017488PasqualeVpe2..PASQUALE_base_vPE_BV..module-0",
       "version": "1",
-      "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_base_vPE_BV..module-0",
+      "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_base_vPE_BV..module-0",
       "properties": {
         "minCountInstances": 1,
         "maxCountInstances": 1,
@@ -394,14 +396,14 @@
       "inputs": {},
       "volumeGroupAllowed": false
     },
-    "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1": {
+    "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1": {
       "uuid": "3f6d5e51-a9a0-4c53-bb6d-be836767d96f",
       "invariantUuid": "54466b6d-e33c-4f4d-87e2-32bc5b103589",
       "customizationUuid": "dba1d1ff-77e2-4f4d-b1b4-1bed564f13b1",
       "description": null,
-      "name": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+      "name": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
       "version": "1",
-      "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+      "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
       "properties": {
         "minCountInstances": 0,
         "maxCountInstances": null,
@@ -414,14 +416,14 @@
     }
   },
   "volumeGroups": {
-    "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2": {
+    "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2": {
       "uuid": "13bea14d-9405-43c6-920b-97bab64b6a01",
       "invariantUuid": "83dc51de-a337-498e-9fee-763603a057b4",
       "customizationUuid": "a90865d5-6de0-4ef8-bf53-d45fa3edddfc",
       "description": null,
-      "name": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+      "name": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
       "version": "1",
-      "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vPFE_BV..module-2",
+      "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vPFE_BV..module-2",
       "properties": {
         "minCountInstances": null,
         "maxCountInstances": null,
@@ -431,14 +433,14 @@
       },
       "inputs": {}
     },
-    "2017488PASQUALEvpe20..2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1": {
+    "2017488pasqualevpe20..2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1": {
       "uuid": "3f6d5e51-a9a0-4c53-bb6d-be836767d96f",
       "invariantUuid": "54466b6d-e33c-4f4d-87e2-32bc5b103589",
       "customizationUuid": "dba1d1ff-77e2-4f4d-b1b4-1bed564f13b1",
       "description": null,
-      "name": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+      "name": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
       "version": "1",
-      "modelCustomizationName": "2017488PASQUALEVpe2..PASQUALE_vRE_BV..module-1",
+      "modelCustomizationName": "2017488PasqualeVpe2..PASQUALE_vRE_BV..module-1",
       "properties": {
         "minCountInstances": 0,
         "maxCountInstances": null,

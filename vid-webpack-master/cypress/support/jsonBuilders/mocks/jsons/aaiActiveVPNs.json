@@ -1,0 +1,139 @@
+[
+  {
+    "instanceId": "120d39fb-3627-473d-913c-d228dd0f8e5b",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "VPN1260",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": [{
+      "globalRouteTarget": "globalRouteTarget_1",
+      "routeTargetRole": "routeTargetRole_1"
+    },
+      {
+        "globalRouteTarget": "globalRouteTarget_2",
+        "routeTargetRole": "routeTargetRole_2"
+      },
+      {
+        "globalRouteTarget": "globalRouteTarget_3",
+        "routeTargetRole": "routeTargetRole_3"
+      }]
+  },
+  {
+    "instanceId": "c70391f3-a6e3-4874-9834-cbe12d7bf8b6",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "VPN1274",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  },
+  {
+    "instanceId": "4776516b-7da2-446c-9ba7-47ca8c30c571",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "VPN1275",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  },
+  {
+    "instanceId": "46fcb25a-e7ba-4d96-99ba-3bb6eae6aba7",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "VPN1271",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  },
+  {
+    "instanceId": "ffefbe38-3087-418a-87ae-f6582a15be78",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "VPN1272",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  },
+  {
+    "instanceId": "961d05be-ee41-40a2-8653-f603fc495175",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "type": "SERVICE-INFRASTRUCTURE",
+    "instanceType": "USA,EMEA",
+    "customerId": "VPN1273",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  },
+  {
+    "instanceId": "14bcfc2f-bbee-4fd9-89a5-42eb5dbb08d5",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "913443",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  },
+  {
+    "instanceId": "89d4c968-158c-4722-a22c-c5c2ccc17fd5",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "VPN1276",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  },
+  {
+    "instanceId": "3e7834fb-a8e0-4243-a837-5352ccab4602",
+    "instanceName": "LPPVPN",
+    "platformName": "AVPN",
+    "instanceType": "SERVICE-INFRASTRUCTURE",
+    "region": "USA,EMEA",
+    "customerId": "VPN1259",
+    "modelInfo" : {
+      "modelCustomizationId": null,
+      "modelInvariantId": null,
+      "modelVersionId": null
+    },
+    "routeTargets": null
+  }
+]

@@ -18,6 +18,7 @@
     "modelVersion": "5.1",
     "modelVersionId": "e3c34d88-a216-4f1d-a782-9af9f9588705"
   },
+  "vidNotions":null,
   "networks": {
   },
   "owningEntityId": "038d99af-0427-42c2-9d15-971b99b9b489",
@@ -35,6 +36,7 @@
   "trackById": "TRACK_BY_ID",
   "vnfGroups": {
   },
+  "vrfs": {},
   "vnfs": {
     "vSAMP12 1": {
       "action": "Create",

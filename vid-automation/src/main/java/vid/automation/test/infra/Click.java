@@ -1,5 +1,8 @@
 package vid.automation.test.infra;
 
+import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
+
+import java.util.List;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.Alert;
@@ -7,10 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
-
-import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
 
 public class Click {
     public static void byText(String text) {
@@ -31,6 +30,11 @@ public class Click {
         WebElement element = Get.byTestId(testId);
         Assert.assertTrue(element != null);
         clickWhenClickable(element);
+    }
+
+    public static void byTestIdOnceItsAvailable(String testId, int timeout) {
+        GeneralUIUtils.clickElementUsingActions(
+            Get.byXpath("//*[@data-tests-id='" + testId + "']", timeout));
     }
 
     public static void byClass(String className) {

@@ -10,6 +10,7 @@ import * as _ from 'lodash';
           class="ellipsis"
           id="{{id}}"
           [innerHtml]="displayValue | safe : 'html'"
+          [ngClass]="{'breakWord' : breakWord == true}"
           [tooltip-text]="value">
       </span>`,
   styles : [
@@ -22,6 +23,11 @@ import * as _ from 'lodash';
         width: 99%;
         text-align: left;
       }
+      
+      .breakWord {
+        word-wrap: break-word;
+        white-space: normal;
+      }
     `
   ],
   providers : [HighlightPipe]
@@ -30,6 +36,7 @@ export class EllipsisComponent implements OnChanges{
   @Input() value : string;
   @Input() id : string;
   @Input() hightlight : string;
+  @Input() breakWord : boolean = false;
 
   displayValue : string;
   constructor(private _highlightPipe : HighlightPipe){

@@ -26,13 +26,13 @@ public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateInsta
                 "    }, " +
                 "    \"owningEntity\": { " +
                 "      \"owningEntityId\": \"d61e6f2d-12fa-4cc2-91df-7c244011d6fc\", " +
-                "      \"owningEntityName\": \"MetroPacketCore\" " +
+                "      \"owningEntityName\": \"WayneHolland\" " +
                 "    }, " +
                 "    \"subscriberInfo\": { " +
                 "      \"globalSubscriberId\": \"e433710f-9217-458d-a79d-1c7aff376d89\" " +
                 "    }, " +
                 "    \"project\": { " +
-                "      \"projectName\": \"DFW\" " +
+                "      \"projectName\": \"WATKINS\" " +
                 "    }, " +
                 "    \"requestInfo\": { " +
 //                "      \"instanceName\": \"some instance name_0" + suffix + "\", " +
@@ -73,7 +73,7 @@ public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateInsta
                 "                    \"platformName\": \"platform\" " +
                 "                  }, " +
                 "                  \"lineOfBusiness\": { " +
-                "                    \"lineOfBusinessName\": \"ECOMP\" " +
+                "                    \"lineOfBusinessName\": \"ONAP\" " +
                 "                  }, " +
                 "                  \"productFamilyId\": \"e433710f-9217-458d-a79d-1c7aff376d89\", " +
                 "                  \"instanceParams\": [], " +
@@ -82,7 +82,7 @@ public class PresetMSOCreateServiceInstanceGen2 extends PresetMSOBaseCreateInsta
                 "                      \"modelInfo\": { " +
                 "                        \"modelInvariantId\": \"7253ff5c-97f0-4b8b-937c-77aeb4d79aa1\", " +
                 "                        \"modelVersionId\": \"25284168-24bb-4698-8cb4-3f509146eca5\", " +
-                "                        \"modelName\": \"2017488PASQUALEVpe..PASQUALE_vRE_BV..module-1\", " +
+                "                        \"modelName\": \"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\", " +
                 "                        \"modelType\": \"vfModule\", " +
                 "                        \"modelVersion\": \"6\" " +
                 "                      }, " +

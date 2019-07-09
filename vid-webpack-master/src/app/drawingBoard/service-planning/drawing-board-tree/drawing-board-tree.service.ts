@@ -42,7 +42,8 @@ export class  DrawingBoardTreeService {
       new TreeNodeContextMenuModel('addGroupMember', 'context-menu-addGroupMember', 'Add group members', 'plus'),
       new TreeNodeContextMenuModel('delete', 'context-menu-delete', 'Delete', 'trash-o'),
       new TreeNodeContextMenuModel('remove', 'context-menu-remove', 'Remove', 'trash-o'),
-      new TreeNodeContextMenuModel('undoDelete', 'context-menu-undoDelete', 'Undo Delete', 'undo-delete')
+      new TreeNodeContextMenuModel('undoDelete', 'context-menu-undoDelete', 'Undo Delete', 'undo-delete'),
+      new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o')
     ];
   }
 

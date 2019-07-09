@@ -48,7 +48,7 @@ export class ObjectToInstanceTreeService {
    * @param node - the current node
    ****************************************************************/
   increaseNumberOfFailed(node) {
-    if (node.isFailed) {
+    if (node && node.isFailed) {
       this.numberOfFailed++;
       node['errors'] = !_.isNil(node['errors']) ? node['errors'] : {};
       node['errors']["isFailed"] = true;
@@ -92,11 +92,16 @@ export class ObjectToInstanceTreeService {
   }
 
   addingExtraDataToNode(node, modelName: string, parentModel: any, instance: any, serviceHierarchy, option: ILevelNodeInfo, parentType ?: string) {
-    node.trackById = _.isNil(node.trackById) ? DefaultDataGeneratorService.createRandomTrackById() : node['trackById'];
-    node.parentType = !_.isNil(parentType) ? parentType : "";
-    node.updatePoistionFunction = option.updatePosition;
-    node.position = option.getNodePosition(instance, node.dynamicModelName);
-    node.onSelectedNode = option.onSelectedNode;
+    if(!_.isNil(node)){
+      node.trackById = _.isNil(node.trackById) ? DefaultDataGeneratorService.createRandomTrackById() : node['trackById'];
+      node.parentType = !_.isNil(parentType) ? parentType : "";
+      node.updatePoistionFunction = option.updatePosition;
+      node.position = option.getNodePosition(instance, node.dynamicModelName);
+      node.getModel = option.getModel.bind(option);
+      node.getInfo = !_.isNil(option.getInfo) ? option.getInfo.bind(option) : ()=>{};
+      node.componentInfoType = option.componentInfoType;
+    }
+
     return node;
   }
 
@@ -116,24 +121,27 @@ export class ObjectToInstanceTreeService {
    * @param serviceHierarchy - The service Hierarchy store
    ****************************************************************/
   addNextInstanceTreeNode(parentInstance, parentModel, levelNodeInfo: ILevelNodeInfo, parentNode, serviceHierarchy): any[] {
-    if (!_.isNil(levelNodeInfo.childName)) {
+    if (!_.isNil(levelNodeInfo.childNames)&& levelNodeInfo.childNames.length > 0) {
+      const that = this;
       parentNode.children = [];
-      if (!_.isNil(parentInstance[levelNodeInfo.childName])) {
-        let parentType = levelNodeInfo.type;
-        let nextLevelNodeInfo = levelNodeInfo.getNextLevelObject.apply(this);
-        Object.keys(parentInstance[levelNodeInfo.childName]).map((modelName) => {
-          let nextLevelInstance = parentInstance[levelNodeInfo.childName][modelName];
-          let nodes: any[] | any = this.getNodeInstance(modelName, parentModel, nextLevelInstance, serviceHierarchy, nextLevelNodeInfo, parentType);
-          if (_.isArray(nodes)) {
-            parentNode.children = parentNode.children.concat(nodes);
-          } else {
-            parentNode.children.push(nodes);
-          }
-        });
-        return this.sortElementsByPosition(parentNode.children);
-      }
+      levelNodeInfo.childNames.forEach(function (childName)  {
+        if (!_.isNil(parentInstance[childName])) {
+          let parentType = levelNodeInfo.type;
+          let nextLevelNodeInfo = levelNodeInfo.getNextLevelObject.apply(that, [childName]);
+          Object.keys(parentInstance[childName]).map((modelName) => {
+            let nextLevelInstance = parentInstance[childName][modelName];
+            let nodes: any[] | any = that.getNodeInstance(modelName, parentModel, nextLevelInstance, serviceHierarchy, nextLevelNodeInfo, parentType);
+            if (_.isArray(nodes)) {
+              parentNode.children = parentNode.children.concat(nodes);
+            } else {
+              parentNode.children.push(nodes);
+            }
+          });
+        }
+      });
+      return this.sortElementsByPosition(parentNode.children);
     }
-    return parentNode.children;
+    return !_.isNil(parentNode) ? parentNode.children : null;
   }
 
 
@@ -142,6 +150,7 @@ export class ObjectToInstanceTreeService {
    * @param node
    *********************************************************************************/
   updateScalingPolicy(node): void {
+    if(_.isNil(node)) return node;
     node['errors'] = !_.isNil(node['errors']) ? node['errors'] : {};
     if (!_.isNil(node['limitMembers']) && !_.isNil(node.children)) {
       let effectiveChildren = (node.children).filter(child => [

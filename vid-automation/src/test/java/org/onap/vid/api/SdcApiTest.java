@@ -1,16 +1,5 @@
 package org.onap.vid.api;
 
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.testng.Assert.assertFalse;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-import static vid.automation.test.services.SimulatorApi.registerExpectation;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-import static vid.automation.test.utils.ReadFile.loadResourceAsString;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
@@ -24,6 +13,17 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
+
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.testng.Assert.assertFalse;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.services.SimulatorApi.registerExpectation;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 
 public class SdcApiTest extends BaseApiTest {
 
@@ -170,7 +170,7 @@ public class SdcApiTest extends BaseApiTest {
 
         // using json-pointers instead of path, because vnf name has
         // dots and spaces
-        final String myVnf = "vMMEvProbe_FE_AIC3-11.2.1_VF 1";
+        final String myVnf = "vFLORENCEvProbe_FE_AIC3-11.2.1_VF 1";
         final String base = "/vnfs/" + myVnf;
 
         assertFalse(response.at(base).isMissingNode(),

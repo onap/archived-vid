@@ -1,17 +1,13 @@
 package vid.automation.test.test;
 
-import static org.hamcrest.Matchers.containsString;
-import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-
 import com.google.common.collect.ImmutableList;
 import org.junit.Assert;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateMacroPre1806Post;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -21,6 +17,10 @@ import vid.automation.test.model.User;
 import vid.automation.test.sections.BrowseASDCPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.SimulatorApi;
+
+import static org.hamcrest.Matchers.containsString;
+import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 public class SanityMacroDeployTest extends CreateInstanceDialogBaseTest {
 

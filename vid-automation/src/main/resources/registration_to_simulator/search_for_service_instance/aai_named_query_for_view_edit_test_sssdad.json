@@ -55,6 +55,24 @@
                 },
                 "extra-properties": {
                 }
+              },
+              {
+                "model-name": "Proxy-Config-Instance",
+                "configuration": {
+                  "configuration-id": "9533-config-LB1114",
+                  "configuration-name": "dummy_instance_2",
+                  "configuration-type": "configuration-type-9533",
+                  "configuration-sub-type": "configuration-sub-type-9533",
+                  "model-invariant-id": "model-invariant-id-9533",
+                  "model-version-id": "model-version-id-9533",
+                  "orchestration-status": "PendingDelete",
+                  "operational-status": "",
+                  "configuration-selflink": "",
+                  "model-customization-id": "08a181aa-72eb-435f-9593-e88a3ad0a86b",
+                  "resource-version": "1504038855716"
+                },
+                "extra-properties": {
+                }
               }
             ]
           }

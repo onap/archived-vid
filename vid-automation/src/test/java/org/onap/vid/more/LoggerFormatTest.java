@@ -1,14 +1,6 @@
 package org.onap.vid.more;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.junit.Assert.assertThat;
-
 import com.fasterxml.jackson.databind.JsonNode;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,11 +11,20 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.services.SimulatorApi;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.junit.Assert.assertThat;
+
 public class LoggerFormatTest extends BaseApiTest {
 
 
-    // See: https://www.openecomp.org/KSAT/REST-based+Log+Checker
-    private final static String logChecker = "http://eelf.onap.org:31820/validate";
+    // See: https://wiki.web.att.com/display/KSAT/REST-based+Log+Checker
+    private final static String logChecker = "http://eelflogcheck.it.att.com:31820/validate";
     private final Logger logger = LogManager.getLogger(LoggerFormatTest.class);
 
     @BeforeClass

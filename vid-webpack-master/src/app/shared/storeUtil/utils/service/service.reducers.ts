@@ -2,9 +2,10 @@ import {Action} from "redux";
 import {
   AddServiceAction,
   ChangeServiceDirty,
-  ServiceActions,
   CreateServiceInstanceAction,
-  UpdateServiceModelAction, UpdateServiceInstanceAction
+  ServiceActions,
+  UpdateServiceInstanceAction,
+  UpdateServiceModelAction
 } from "./service.actions";
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {ServiceState} from "../main.reducer";
@@ -34,6 +35,7 @@ export function serviceReducer(state: ServiceState, action: Action) : ServiceSta
         const currentInstaceName = state.serviceInstance[uuid] ? serviceInstance.instanceName : null;
 
         newState.serviceInstance[uuid] = Object.assign(serviceInstance, updateServiceInstanceAction.serviceInstance);
+        newState.serviceInstance[uuid].vidNotions = _.get(state,`serviceHierarchy[${uuid}].service.vidNotions`);
         if (!_.isNil(updateServiceInstanceAction.serviceInstance)) {
           updateUniqueNames(currentInstaceName, updateServiceInstanceAction.serviceInstance.instanceName, newState.serviceInstance[uuid]);
         }

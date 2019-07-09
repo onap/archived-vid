@@ -20,6 +20,7 @@
 
 package org.onap.sdc.ci.tests.utilities;
 
+//import com.automation.common.report_portal_integration.annotations.Step;
 import com.aventstack.extentreports.Status;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
@@ -600,12 +601,14 @@ public final class GeneralUIUtils {
 		wait.until(ExpectedConditions.textToBePresentInElementValue(element, text));
     }
 
+	//@Step
     public static void waitForAngular(){
     	WebDriverWait wait = newWait(90);
     	wait.until(AdditionalConditions.pageLoadWait());
     	wait.until(AdditionalConditions.angularHasFinishedProcessing());
     }
 
+	//@Step
     public static void waitForAngular2(){
     	WebDriverWait wait = newWait(90);
     	wait.until(AdditionalConditions.pageLoadWait());
@@ -645,6 +648,7 @@ public final class GeneralUIUtils {
     			waitForElementVisibilityByTestId(dataTestId));
     }
 
+    //@Step
     public static void ultimateWait(){
 		logger.info("ultimateWait: starting");
     	long startTime = System.nanoTime();

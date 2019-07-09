@@ -7,8 +7,8 @@ import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'component-info',
   templateUrl: './component-info.component.html',
-  styleUrls: ['./component-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./component-info.component.scss']//,
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ComponentInfoComponent implements OnInit {
   componentInfoModel: ComponentInfoModel = null;

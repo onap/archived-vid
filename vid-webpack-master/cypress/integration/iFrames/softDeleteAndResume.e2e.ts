@@ -63,13 +63,13 @@ describe('Soft delete tests', function () {
     });
 
     it(`Soft delete button will be display also if base module is true`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       checkSoftDeleteAndDeletePopup('aa', 'vfModuleTreeNode-pendingactivation', true, true);
     });
 
     it(`Soft delete button not display in assigned orch status`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       checkSoftDeleteAndDeletePopup('gg', 'vfModuleTreeNode-assigned', false, true);
     });
@@ -90,7 +90,7 @@ describe('Soft delete tests', function () {
           }).as('initFlags');
       });
 
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
 
       checkResumeAndPopup('aa', 'vfModuleTreeNode-pendingactivation');
@@ -105,7 +105,7 @@ describe('Soft delete tests', function () {
 
     it(`Resume button display in orch status - pendingactivation, assigned, created - feature FLAG_VF_MODULE_RESUME_STATUS_CREATE - is ON`, function () {
 
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
 
       checkResumeAndPopup('aa', 'vfModuleTreeNode-pendingactivation');
@@ -118,10 +118,10 @@ describe('Soft delete tests', function () {
     });
 
     it(`Delete popup with not homing data from AAI`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       checkSoftDeleteAndDeletePopup('gg', 'vfModuleTreeNode-assigned', false, true);
-      cy.selectDropdownOptionByText('lcpRegion', 'JANET25');
+      cy.selectDropdownOptionByText('lcpRegion', 'AAIAIC25');
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('have.attr', 'disabled');
       cy.typeToInput("lcpRegionText", "just another region");
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('have.attr', 'disabled');
@@ -147,11 +147,11 @@ describe('Soft delete tests', function () {
       });
 
 
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       checkSoftDeleteAndDeletePopup('my_vfModule', 'vfModuleTreeNode-pending-delete', true, true);
       cy.getElementByDataTestsId('lcpRegionText').should('be.visible');
-      cy.getElementByDataTestsId('lcpRegion').contains('JANET25');
+      cy.getElementByDataTestsId('lcpRegion').contains('AAIAIC25');
       cy.getElementByDataTestsId('tenant').contains('USP-SIP-IC-24335-T-01');
     });
 
@@ -166,13 +166,13 @@ describe('Soft delete tests', function () {
           "aai-get-homing-data")
       });
 
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       checkSoftDeleteAndDeletePopup('vf_module2', 'vfModuleTreeNode-pendingcreate', true, false);
     });
 
-    it(`Soft delete and Delete - Mega region is JANET25 - not 'olson3', 'olson5a'`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+    it(`Soft delete and Delete - Mega region is AAIAIC25 - not 'olson3', 'olson5a'`, function () {
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       //Delete
       checkSoftDeleteAndDeletePopup('gg', 'vfModuleTreeNode-assigned', false, true);
@@ -190,7 +190,7 @@ describe('Soft delete tests', function () {
     });
 
     function checkLegacyRegion() {
-      checkIsLegacyRegionTextIsDisplay('JANET25', true);
+      checkIsLegacyRegionTextIsDisplay('AAIAIC25', true);
       checkIsLegacyRegionTextIsDisplay('olson3', false);
       checkIsLegacyRegionTextIsDisplay('olson5a', false);
       checkIsLegacyRegionTextIsDisplay('hvf6', false);

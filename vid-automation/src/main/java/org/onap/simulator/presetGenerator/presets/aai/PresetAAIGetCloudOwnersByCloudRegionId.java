@@ -1,15 +1,16 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
-
 import com.google.common.collect.ImmutableMap;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
+
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 public class PresetAAIGetCloudOwnersByCloudRegionId extends BaseAAIPreset {
     public static final String SOME_LEGACY_REGION = "some legacy region";
@@ -23,9 +24,10 @@ public class PresetAAIGetCloudOwnersByCloudRegionId extends BaseAAIPreset {
     public static final String olson3 = "olson3";
     public static final String olson5B = "olson5b";
     public static final String ATT_SABABA = "att-sababa";
-    public static final String AAIAIC_25 = "JANET25";
+    public static final String AAIAIC_25 = "AAIAIC25";
     public static final String ONE = "One";
     public static final String hvf6 = "hvf6";
+    public static final String AUK51A = "auk51a";
     private final String cloudRegionId;
     private final String cloudOwner;
 
@@ -61,7 +63,10 @@ public class PresetAAIGetCloudOwnersByCloudRegionId extends BaseAAIPreset {
     public static final PresetAAIGetCloudOwnersByCloudRegionId PRESET_LCP_REGION_TEXT_TO_ATT_AIC =
             new PresetAAIGetCloudOwnersByCloudRegionId(LCP_REGION_TEXT, ATT_AIC);
 
-    private PresetAAIGetCloudOwnersByCloudRegionId(String cloudRegionId, String cloudOwnerResult) {
+    public static final PresetAAIGetCloudOwnersByCloudRegionId PRESET_AUK51A_TO_ATT_NC =
+            new PresetAAIGetCloudOwnersByCloudRegionId(AUK51A, ATT_NC);
+
+    public PresetAAIGetCloudOwnersByCloudRegionId(String cloudRegionId, String cloudOwnerResult) {
         this.cloudRegionId = cloudRegionId;
         this.cloudOwner = cloudOwnerResult;
     }

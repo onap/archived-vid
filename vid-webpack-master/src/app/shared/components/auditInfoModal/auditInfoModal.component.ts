@@ -18,7 +18,7 @@ import {AuditInfoModalComponentService} from "./auditInfoModal.component.service
 })
 export class AuditInfoModalComponent {
   static openModal: Subject<ServiceInfoModel> = new Subject<ServiceInfoModel>();
-  static openInstanceAuditInfoModal: Subject<{instanceId , type, model, instance, isInstanceFailed?, trackById?}> = new Subject<{instanceId , type, model, instance, isInstanceFailed, trackById}>();
+  static openInstanceAuditInfoModal: Subject<{instanceId , type, model, instance}> = new Subject<{instanceId , type, model, instance}>();
   @ViewChild('auditInfoModal') public auditInfoModal: ModalDirective;
   title: string = 'Service Instantiation Information';
   modelInfoItems: ModelInformationItem[] = [];
@@ -55,14 +55,14 @@ export class AuditInfoModalComponent {
       }
     });
 
-    AuditInfoModalComponent.openInstanceAuditInfoModal.subscribe(({instanceId  , type ,  model, instance, isInstanceFailed, trackById}) => {
+    AuditInfoModalComponent.openInstanceAuditInfoModal.subscribe(({instanceId  , type ,  model, instance}) => {
       this.showVidStatus = false;
       this.initializeProperties();
       this.setModalTitles(type);
       this.serviceModelName = AuditInfoModalComponentService.getInstanceModelName(model);
 
-      if (isInstanceFailed) {
-        this._serviceInfoService.getAuditStatusForRetry(trackById).subscribe((res: AuditStatus) => {
+      if (instance.isFailed) {
+        this._serviceInfoService.getAuditStatusForRetry(instance.trackById).subscribe((res: AuditStatus) => {
           this.msoInfoData = [res];
         });
       }else{
@@ -116,7 +116,7 @@ export class AuditInfoModalComponent {
 
 
   onNavigate(){
-    window.open("https://wiki.onap.org/display/DW/SO+Building+blocks", "_blank");
+    window.open("http://ecompguide.web.att.com:8000/#ecomp_ug/c_ecomp_ops_vid.htmll#r_ecomp_ops_vid_bbglossary", "_blank");
   }
 }
 

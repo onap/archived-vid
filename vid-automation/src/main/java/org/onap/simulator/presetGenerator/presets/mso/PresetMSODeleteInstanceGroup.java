@@ -22,7 +22,6 @@ public class PresetMSODeleteInstanceGroup extends PresetMSOBaseDelete {
         Map<String, String> map = super.getRequestHeaders();
         map.put("X-RequestorID", userId);
         return map;
-
     }
 
 }

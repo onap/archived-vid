@@ -10,7 +10,7 @@
               </svg-icon>
     </span>
 
-    <div class="header-col middleDetails" style="padding-top: 5px;padding-left: 13px;line-height: 100%;" *ngIf="isServiceFailed">
+    <div class="header-col middleDetails" style="padding-top: 7px;padding-left: 13px;line-height: 100%;" *ngIf="isServiceFailed">
       <custom-popover class="failed-popover-wrap" [value]= "serviceStatusMessage" [placement]="'bottom'" [popoverType]="'error'">
         <span [attr.data-tests-id]="'service-failed-msg'" class="failed-msg labelPosition" >Failed</span>
       </custom-popover>
@@ -22,7 +22,9 @@
     <div class="header-col middleDetails notShowOnCreateMode"
          style="padding-top: 0px;padding-left: 13px;line-height: 100%;">
       <span [attr.data-tests-id]="'orchStatusLabel'" class="service-instance-label labelPosition">Orch Status:</span>
-      <span [attr.data-tests-id]="'orchStatusValue'" class="orch-status-value">{{serviceOrchStatus}}</span>
+      <span [attr.data-tests-id]="'orchStatusValue'"
+            [ngClass]="{'tag-status-value' :serviceOrchStatus?.toLowerCase()!= 'active'}"
+            class="orch-status-value">{{serviceOrchStatus}}</span>
     </div>
     <div class="quantity-container header-col middleDetails"
          style="padding-top: 0px;padding-left: 13px;line-height: 100%;"
@@ -38,6 +40,8 @@
 
 
   <div class="right-header">
+    <span class="action-status-type-header delete" [attr.data-tests-id]="'delete-status-type-header'" *ngIf="isDeleted === true">Delete</span>
+    <span class="action-status-type-header resume" [attr.data-tests-id]="'resume-status-type-header'" *ngIf="isResume === true">Resume</span>
     <span class="menu-container notShowOnViewMode notShowOnRetryMode">
       <span [attr.data-tests-id]="'openMenuBtn'" class="icon-browse" (click)="onContextMenu($event)"></span>
       <context-menu>
@@ -46,7 +50,7 @@
             <span class="icon-edit"></span>Edit</div>
         </ng-template>
         <ng-template *ngIf="mode === 'EDIT'" contextMenuItem
-                     (execute)="isDeleted=!isDeleted; drawingBoardHeaderService.deleteService(serviceModelId,isDeleted)">
+                     (execute)="onDeleteUndoDeleteClick()">
           <div [attr.data-tests-id]="'context-menu-header-delete-item'"><span class="icon-trash"></span>{{isDeleted ? 'Undo delete': 'Delete'}}</div>
         </ng-template>
         <ng-template *ngIf="mode !== 'CREATE'" contextMenuItem
@@ -59,6 +63,10 @@
                     [name]="'eye-o'">
                 </svg-icon></div>
                 <div style="padding-left: 12px;">Show Audit Info</div>
+        </ng-template>
+        <ng-template *ngIf="drawingBoardHeaderService?.showResumeService(serviceModelId)" contextMenuItem
+                     (execute)="onResumeUndoResumeClick()">
+          <div [attr.data-tests-id]="'context-menu-header-resume-item'"><span class="icon-trash"></span>{{isResume ? 'Undo resume': 'Resume'}}</div>
         </ng-template>
       </context-menu>
     </span>

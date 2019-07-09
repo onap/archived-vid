@@ -33,13 +33,13 @@ describe('Basic Control Generator', () => {
   })().then(done).catch(done.fail));
 
 
-  test('getlegacyRegion with JANET25 - isVisible true', () => {
-    const instance = {lcpCloudRegionId : 'JANET25'};
+  test('getlegacyRegion with AAIAIC25 - isVisible true', () => {
+    const instance = {lcpCloudRegionId : 'AAIAIC25'};
     const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
     expect(legacyRegionControl.isVisible).toBeTruthy();
   });
 
-  test('getlegacyRegion without JANET25 - isVisible false', () => {
+  test('getlegacyRegion without AAIAIC25 - isVisible false', () => {
     const instance = {lcpCloudRegionId : 'olson3'};
     const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
     expect(legacyRegionControl.isVisible).toBeFalsy();

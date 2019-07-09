@@ -1,12 +1,13 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetModelsByProject extends BaseAAIPreset {
     private String projectName;

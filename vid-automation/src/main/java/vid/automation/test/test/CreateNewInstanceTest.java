@@ -1,7 +1,5 @@
 package vid.automation.test.test;
 
-import java.io.IOException;
-import java.util.List;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -17,6 +15,9 @@ import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
+
+import java.io.IOException;
+import java.util.List;
 
 public class CreateNewInstanceTest extends CreateInstanceDialogBaseTest {
     private ServicesService servicesService = new ServicesService();

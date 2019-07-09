@@ -77,7 +77,7 @@ describe('Service With VNF network', function () {
     });
 
     it(`Display VNF's network and its vlans hierarchically`, function () {
-      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       cy.get('div').contains('VNF: fsd')
         .get('div').contains('NETWORK: AAAAABBBBCCCC')

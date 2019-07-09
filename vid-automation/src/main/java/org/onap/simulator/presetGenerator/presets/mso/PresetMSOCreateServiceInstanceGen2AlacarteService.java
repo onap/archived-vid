@@ -26,11 +26,11 @@ public class PresetMSOCreateServiceInstanceGen2AlacarteService extends PresetMSO
                 "      \"modelVersion\": \"1.0\" " +
                 "    }, " +
                 "    \"owningEntity\": { " +
-                "      \"owningEntityName\": \"MetroPacketCore\", " +
+                "      \"owningEntityName\": \"WayneHolland\", " +
                 "      \"owningEntityId\": \"d61e6f2d-12fa-4cc2-91df-7c244011d6fc\" " +
                 "    }, " +
                 "    \"project\": { " +
-                "      \"projectName\": \"DFW\" " +
+                "      \"projectName\": \"WATKINS\" " +
                 "    }, " +
                 "    \"subscriberInfo\": { " +
                 "      \"globalSubscriberId\": \"e433710f-9217-458d-a79d-1c7aff376d89\" " +

@@ -50,8 +50,8 @@ public class Constants {
     public static final String SERVICE_INSTANCEID_TH_ID = "service-instanceId-th-id";
     public static final String MULTI_SELECT_UNSELECTED_CLASS = "item-unselected";
     public static final String MULTI_SELECT_SELECTED_CLASS = "item-selected";
-    public static final String ACTIVE = "Active";
-    public static final String INACTIVE = "Inactive";
+    public static final String ACTIVE = "ACTIVE";
+    public static final String INACTIVE = "INACTIVE";
     public static final String MSO_COMMIT_DIALOG_CLOSE_BUTTON = "msoCommitDialogCloseButton";
     public static final String REQUIRED = "is required";
     public static final String MISSING_DATA = "Missing data (\"%s\")";
@@ -182,6 +182,7 @@ public class Constants {
         public static final String STATUS_TEXT = "Designing a new service";
         public static final String CONTEXT_MENU_BUTTON_HEADER = "openMenuBtn";
         public static final String CONTEXT_MENU_HEADER_EDIT_ITEM = "context-menu-header-edit-item";
+        public static final String CONTEXT_MENU_HEADER_RESUME_ITEM = "context-menu-header-resume-item";
         public static final String CONTEXT_MENU_HEADER_DELETE_ITEM = "context-menu-header-delete-item";
         public static final String SERVICE_QUANTITY = "servicesQuantity";
         public static final String BACK_BUTTON = "backBtn";
@@ -241,6 +242,7 @@ public class Constants {
         public static final String ECOMP_NAME_INPUT = "ecomp-instance-name";
         public static final String TENANT_CONTEXT_INPUT = "tenant-context";
         public static final String ENVIRONMENT_TYPE_DROP_DOWN = "operational-environment-type";
+        public static final String ENVIRONMENT_RELEASE = "operational-release";
         public static final String WORKLOAD_CONTEXT_DROP_DOWN = "workload-context";
         public static final String SUBMIT_BUTTON = "submit-button";
         public static final String CANCEL_BUTTON = "cancel-button";
@@ -248,10 +250,12 @@ public class Constants {
         public static final String POPUP_ERROR_MESSAGE = "test-new-environment-error";
         public static final String environmentCreatedSuccesfullyMessage = "Operational Environment successfully created";
 
+
         // json content
         public static final String HEADERS_LIST = "headers";
         public static final String BASIC_LIST = "basicList";
         public static final String FULL_LIST = "fullList";
+        public static final String FULL_LIST_WITHOUT_RELEASE_LABEL = "fullListWithoutReleaseLabel";
         public static final String FILTERED_LIST = "filteredList";
         public static final String SORTED_LIST = "sortedList";
 
@@ -323,6 +327,7 @@ public class Constants {
     public class CreateNewInstance {
         public static final String SUBSCRIBER_NAME_OPTION_CLASS = "subscriberNameOption";
         public static final String SERVICE_TYPE_OPTION_CLASS = "serviceTypeOption";
+        public static final String OWNING_ENTITY_OPTION = "owningEntityOption";
         public static final String SELECTED_SUBSCRIBER_NAME_TEST_ID = "selectedSubscriberName";
         public static final String SELECTED_SERVICE_TYPE_NAME_TEST_ID = "selectedServiceTypeName";
         public static final String SERVICE_INSTANCE_NAME_PREFIX = "vid-e2e-test_aai_service_";
@@ -403,6 +408,7 @@ public class Constants {
         public static final String SUBDETAILS_ERROR_MESSAGE_TEST_ID = "subDetailsErrMsg";
 
         public static final String ERROR_CLASS = "error";
+        public static final String COMMON_PORT_MIRRORING_PORT_NAME = "i am a port";
     }
     public class PnfAssociation {
         public static final String PNF_NAME_TEST_ID = "pnfName";

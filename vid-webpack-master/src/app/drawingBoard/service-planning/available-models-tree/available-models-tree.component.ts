@@ -25,6 +25,9 @@ import {VnfGroupControlGenerator} from "../../../shared/components/genericForm/f
 import {HighlightPipe} from "../../../shared/pipes/highlight/highlight-filter.pipe";
 import * as _ from 'lodash';
 import {DrawingBoardTreeComponent} from "../drawing-board-tree/drawing-board-tree.component";
+import {ComponentInfoModel} from "../component-info/component-info-model";
+import {ComponentInfoService} from "../component-info/component-info.service";
+import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
 
 
 @Component({
@@ -72,6 +75,7 @@ export class AvailableModelsTreeComponent {
           value => {
             this.serviceHierarchy = value;
             this.nodes = this._objectToModelTreeService.convertServiceHierarchyModelToTreeNodes(this.serviceHierarchy);
+            this.shouldOpenVRFModal(this.nodes);
           },
           error => {
             console.log('error is ', error)
@@ -102,6 +106,13 @@ export class AvailableModelsTreeComponent {
   };
 
 
+  shouldOpenVRFModal(nodes) :void {
+    const node = this._availableModelsTreeService.shouldOpenVRFModal(nodes, this.serviceModelId, this.store.getState().service);
+    if(!_.isNil(node)){
+      this.onClickAdd(node,  this.serviceModelId);
+    }
+  }
+
   getNodeName(node : ITreeNode, filter : string) {
     return this._highlightPipe.transform(node.data.name ,filter ? filter : '');
   }
@@ -119,6 +130,13 @@ export class AvailableModelsTreeComponent {
     node.expand();
     this._sharedTreeService.setSelectedVNF(null);
     this.highlightInstances.emit(node.data.modelUniqueId);
+    if (FeatureFlagsService.getFlagState(Features.FLAG_1906_COMPONENT_INFO, this.store)) {
+      const serviceHierarchy = this._store.getState().service.serviceHierarchy[this.serviceModelId];
+      const model = node.data.getModel(node.data.name, node.data, serviceHierarchy);
+      const modelInfoItems  = node.data.getInfo(model, null);
+      const componentInfoModel :ComponentInfoModel = this._sharedTreeService.addGeneralInfoItems(modelInfoItems, node.data.componentInfoType, model, null);
+      ComponentInfoService.triggerComponentInfoChange.next(componentInfoModel);
+    }
   }
 
 
@@ -127,7 +145,7 @@ export class AvailableModelsTreeComponent {
     this.isNewObject = isNewObject;
     let data = node.data;
     let dynamicInputs = data.dynamicInputs;
-    let isAlaCarte: boolean = this.serviceHierarchy.service.instantiationType == "A-La-Carte";
+    let isAlaCarte: boolean = this.serviceHierarchy.service.vidNotions.instantiationType == 'ALaCarte';
     let isEcompGeneratedNaming: boolean = data.isEcompGeneratedNaming;
     let type: string = data.type;
     if (!this.store.getState().global.flags['FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD'] || node.data.type === ServiceNodeTypes.VF ||
@@ -150,7 +168,8 @@ export class AvailableModelsTreeComponent {
           let existVnf = this._store.getState().service.serviceInstance[this.serviceModelId].vnfs;
           if(!_.isNil(existVnf)){
             for(let vnfKey in existVnf){
-              if(existVnf[vnfKey]['modelInfo'].modelUniqueId === node.parent.data.id){
+              const modelUniqueId =  existVnf[vnfKey]['modelInfo'].modelCustomizationId || existVnf[vnfKey]['modelInfo'].modelInvariantId;
+              if(modelUniqueId === node.parent.data.id){
                 this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, null, vnfKey));
                 DrawingBoardTreeComponent.triggerreCalculateIsDirty.next(this.serviceModelId);
               }

@@ -1,13 +1,14 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
-import static vid.automation.test.utils.ReadFile.loadResourceAsString;
-
 import com.google.common.collect.ImmutableMap;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
+
+import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 
 public class PresetAAIGetSubDetailsGet extends BaseAAIPreset {
     private String subscriberId;

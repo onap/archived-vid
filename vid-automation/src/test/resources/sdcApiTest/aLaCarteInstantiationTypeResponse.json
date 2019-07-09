@@ -3,7 +3,8 @@
     "vidNotions": {
       "instantiationUI": "legacy",
       "modelCategory": "other",
-      "viewEditUI": "legacy"
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
     },
     "uuid": "4d71990b-d8ad-4510-ac61-496288d9078e",
     "invariantUuid": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
@@ -19,6 +20,7 @@
     "inputs": {}
   },
   "vnfs": {},
+  "vrfs": {},
   "networks": {
     "MULTI_PROVIDER_PORT_GROUP 0": {
       "uuid": "e5d235de-2188-4f9f-a28c-fe38967883f2",
@@ -43,7 +45,7 @@
       "modelCustomizationName": "MULTI_PROVIDER_PORT_GROUP 0"
     }
   },
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {},
   "fabricConfigurations": {},
   "serviceProxies": {},

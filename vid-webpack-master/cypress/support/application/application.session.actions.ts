@@ -61,7 +61,8 @@ function buildReduxStateWithServiceRespone(res: any, serviceId:string, isEcompGe
             "vnfs": {},
             "vnfGroups": {},
             "isEcompGeneratedNaming": isEcompGeneratedNaming,
-            "existingNames": {}
+            "existingNames": {},
+            "vidNotions": res.service.vidNotions
           }
         }
       }

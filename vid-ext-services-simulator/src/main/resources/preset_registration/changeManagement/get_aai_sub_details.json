@@ -22,7 +22,7 @@
               "service-instance":[
                 {
                   "service-instance-id":"414db2d4-18d0-415e-aac2-f255b586cfb5",
-                  "service-instance-name":"vFlowLogic-vflf_080117",
+                  "service-instance-name":"vRichardson-vflf_080117",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1502391806301",
@@ -32,7 +32,7 @@
                 },
                 {
                   "service-instance-id":"769be44e-981a-4da8-af3b-ca5fa76b7fb1",
-                  "service-instance-name":"vFlowLogic-vflp_080117",
+                  "service-instance-name":"vRichardson-vflp_080117",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1501712783617",
@@ -1718,13 +1718,13 @@
             "is-permitted":false
           },
           {
-            "service-type":"vMME",
+            "service-type":"vFLORENCE",
             "resource-version":"1497729820723",
             "service-instances":{
               "service-instance":[
                 {
                   "service-instance-id":"26731151-6854-4936-8ddc-1eb2b28cef26",
-                  "service-instance-name":"vMME_2017-33_Svc",
+                  "service-instance-name":"vFLORENCE_2017-33_Svc",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1494255152917",
@@ -1734,7 +1734,7 @@
                 },
                 {
                   "service-instance-id":"b75fb352-0719-465b-ba48-3aa7d781b394",
-                  "service-instance-name":"vMME1610Svc",
+                  "service-instance-name":"vFLORENCE1610Svc",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1494255148345",
@@ -1744,7 +1744,7 @@
                 },
                 {
                   "service-instance-id":"1d291ab5-0440-4263-8648-1846a09d6135",
-                  "service-instance-name":"vMME_1610_Svc",
+                  "service-instance-name":"vFLORENCE_1610_Svc",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1494255148352",
@@ -1764,7 +1764,7 @@
                 },
                 {
                   "service-instance-id":"14ce9494-9a75-49bf-a898-3503697c29f1",
-                  "service-instance-name":"vMME+Svc+Jul+14",
+                  "service-instance-name":"vFLORENCE+Svc+Jul+14",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1494255135820",
@@ -1774,7 +1774,7 @@
                 },
                 {
                   "service-instance-id":"72960ff3-a1e9-493d-93f4-ac026b22326b",
-                  "service-instance-name":"vMME_CI_110216_Svc",
+                  "service-instance-name":"vFLORENCE_CI_110216_Svc",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1494255136021",
@@ -1784,7 +1784,7 @@
                 },
                 {
                   "service-instance-id":"c9bf0fc4-b621-40d1-8b89-7f8235171ffb",
-                  "service-instance-name":"vMME1.8_LAB_8152017_Svc",
+                  "service-instance-name":"vFLORENCE1.8_LAB_8152017_Svc",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1504727411210",
@@ -1794,7 +1794,7 @@
                 },
                 {
                   "service-instance-id":"aee4df10-4289-4ae1-acdc-7f8cffa61603",
-                  "service-instance-name":"xx_2017_417_vMME_0622_Svc",
+                  "service-instance-name":"xx_2017_417_vFLORENCE_0622_Svc",
                   "persona-model-id":null,
                   "persona-model-version":null,
                   "resource-version":"1498675414340",

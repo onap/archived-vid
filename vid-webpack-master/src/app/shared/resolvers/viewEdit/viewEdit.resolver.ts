@@ -21,7 +21,7 @@ export class ViewEditResolver implements Resolve<Observable<boolean>> {
       let serviceModelApi = this._aaiService.getServiceModelById(serviceModeId);
       let serviceInstanceApi = this._aaiService.retrieveAndStoreServiceInstanceTopology(serviceInstanceId, subscriberId, serviceType, serviceModeId);
       return forkJoin([serviceModelApi, serviceInstanceApi]).map(([serviceModel, serviceInstance ]) => {
-        this.setIsALaCarte(serviceInstance,serviceModel.service.instantiationType );
+        this.setIsALaCarte(serviceInstance,serviceModel.service.vidNotions.instantiationType );
         this.setTestApi(serviceInstance);
         this._store.dispatch(createServiceInstance( serviceInstance, serviceModeId));
           return true;
@@ -34,7 +34,7 @@ export class ViewEditResolver implements Resolve<Observable<boolean>> {
     }
   };
   setIsALaCarte = (service: any, instantiationType) => {
-    service.isALaCarte = instantiationType === 'A-La-Carte';
+    service.isALaCarte = instantiationType === 'ALaCarte';
   };
 
 }

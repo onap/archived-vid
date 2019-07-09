@@ -145,6 +145,7 @@ describe('Vnf Groups', function () {
 
           reduxRes.service.serviceHierarchy[SERVICE_MODEL_ID] = serviceModel;
           reduxRes.service.serviceInstance[SERVICE_MODEL_ID] = basicServiceInstance;
+          reduxRes.global.genericModalHelper = {};
 
           cy.setReduxState(<any>reduxRes);
 
@@ -205,6 +206,7 @@ describe('Vnf Groups', function () {
         });
 
         cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
+        cy.getElementByDataTestsId('orchStatusValue').should('not.have.class', 'tag-status-value');
         cy.getElementByDataTestsId('openMenuBtn').click();
         cy.getElementByDataTestsId('context-menu-header-delete-item').should('have.text', 'Delete');
         cy.getElementByDataTestsId('context-menu-header-delete-item').click();
@@ -545,7 +547,7 @@ describe('Vnf Groups', function () {
         });
       });
 
-      it(`vnf group with vnf members, add group members option open modal"`, () => {
+      it(`vnf group with vnf members, add group members option open modal`, () => {
         const SUBSCRIBER_ID: string = "global-customer-id";
         const SERVICE_TYPE: string = "service-instance-type";
         const SERVICE_INSTANCE_ID: string = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
@@ -594,17 +596,16 @@ describe('Vnf Groups', function () {
         cy.getElementByDataTestsId('node-daeb6568-cef8-417f-9075-ed259ce59f48-groupingservicefortest..ResourceInstanceGroup..0-menu-btn')
           .eq(0).click({force: true}).then(() => {
           cy.getElementByDataTestsId('context-menu-addGroupMember').click({force: true}).then(() => {
-            cy.getElementByDataTestsId('sourceModelName').contains("vDBE_Svc_vPRS");
+            cy.getElementByDataTestsId('sourceModelName').contains("vDOROTHEA_Svc_vPRS");
             cy.getElementByDataTestsId('sourceModelInvariant').contains("24632e6b-584b-4f45-80d4-fefd75fd9f14");
             cy.get('#vnfName').eq(0).get('#VNF1_INSTANCE_NAME').contains('VNF1_INSTANCE_NAME');
             cy.get('#vnfName').eq(0).get('#VNF1_INSTANCE_ID').contains('VNF1_INSTANCE_ID');
-            cy.getElementByDataTestsId('total-amount').should('have.text', '4 VNFs match your criteria');
+            cy.getElementByDataTestsId('total-amount').should('have.text', '4 VNFs match your criteria |');
             cy.getElementByDataTestsId('total-selected').should('have.text', '0 VNF selected');
             cy.getElementByDataTestsId('setMembersBtn').should('have.attr', 'disabled');
             testCheckbox();
             testResetAddMemberModal();
             testUpdateBtn();
-
           });
         });
       });
@@ -650,7 +651,7 @@ describe('Vnf Groups', function () {
         cy.getElementByDataTestsId('node-daeb6568-cef8-417f-9075-ed259ce59f48-groupingservicefortest..ResourceInstanceGroup..0-menu-btn')
           .eq(0).click({force: true}).then(() => {
           cy.getElementByDataTestsId('context-menu-addGroupMember').click({force: true}).then(() => {
-            cy.getElementByDataTestsId('total-amount').should('have.text', '0 VNFs match your criteria');
+            cy.getElementByDataTestsId('total-amount').should('have.text', '0 VNFs match your criteria |');
             cy.getElementByDataTestsId('total-selected').should('have.text', '0 VNF selected');
             cy.get('.no-result').should('have.text', 'No VNFs were found that can belong to this group.');
           });
@@ -714,22 +715,10 @@ describe('Vnf Groups', function () {
           cy.getElementByDataTestsId('node-' + NODE_ID + '-' + GROUP_NAME_TO_DEPLOY + '-menu-btn').each((row, index) => {
             cy.wrap(row).click({force: true}).then(() => {
               cy.getElementByDataTestsId('context-menu-addGroupMember').click({force: true}).then(() => {
-                cy.getElementByDataTestsId('total-amount').should('have.text', '4 VNFs match your criteria');
-                cy.get('.allCheckboxAreSelected input').click({force: true});
-                cy.getElementByDataTestsId('setMembersBtn').click({force: true}).then(() => {
-                  checkIsErrorAppear(true, 'node-' + NODE_ID + '-' + GROUP_NAME_TO_DEPLOY, 3, index);
-                  cy.get('.toggle-children').click({force: true}).then(() => {
-                    let memberIndex = 3;
-                    while (!index && memberIndex >= 0) {
-                      clickOnVnfMemberAndAssertScaling(memberIndex--, 'context-menu-remove', false, FULL_GROUP_NAME, 3, index);
-                    }
-                  });
-                });
+
               });
             });
           });
-          clickOnVnfMemberAndAssertScaling(0, 'context-menu-remove', false, FULL_GROUP_NAME, 3, 1);
-          cy.getElementByDataTestsId('deployBtn').should('have.text', 'DEPLOY').click();
         });
       });
 
@@ -786,7 +775,7 @@ describe('Vnf Groups', function () {
         cy.getElementByDataTestsId('node-' + NODE_ID + '-' + GROUP_NAME_TO_DEPLOY + '-menu-btn')
           .eq(0).click({force: true}).then(() => {
           cy.getElementByDataTestsId('context-menu-addGroupMember').click({force: true}).then(() => {
-            cy.getElementByDataTestsId('total-amount').should('have.text', '4 VNFs match your criteria');
+            cy.getElementByDataTestsId('total-amount').should('have.text', '4 VNFs match your criteria |');
             cy.get('.allCheckboxAreSelected input').click({force: true});
             cy.getElementByDataTestsId('setMembersBtn').click({force: true}).then(() => {
               checkIsErrorAppear(true, FULL_GROUP_NAME, 4, 0);
@@ -824,32 +813,32 @@ describe('Vnf Groups', function () {
         let totalNumber = 4;
         cy.get('.allCheckboxAreSelected input').click({force: true});
         cy.getElementByDataTestsId('setMembersBtn').should('not.have.attr', 'disabled');
-        cy.getElementByDataTestsId('numberOfNotHideVnfMembers').contains(totalNumber);
-        cy.getElementByDataTestsId('numberOfSelectedVnfMembers').contains(totalNumber);
+        cy.getElementByDataTestsId('numberOfNotHideRows').contains(totalNumber);
+        cy.getElementByDataTestsId('numberOfSelectedRows').contains(totalNumber);
         cy.get('.sdcCheckboxMember input').eq(0).click({force: true});
-        cy.getElementByDataTestsId('numberOfSelectedVnfMembers').contains(totalNumber - 1);
+        cy.getElementByDataTestsId('numberOfSelectedRows').contains(totalNumber - 1);
         cy.get('.sdcCheckboxMember input').eq(1).click({force: true});
-        cy.getElementByDataTestsId('numberOfSelectedVnfMembers').contains(totalNumber - 2);
+        cy.getElementByDataTestsId('numberOfSelectedRows').contains(totalNumber - 2);
         cy.get('.allCheckboxAreSelected input').click({force: true});
-        cy.getElementByDataTestsId('numberOfSelectedVnfMembers').contains(totalNumber);
+        cy.getElementByDataTestsId('numberOfSelectedRows').contains(totalNumber);
         cy.get('.allCheckboxAreSelected input').click({force: true});
-        cy.getElementByDataTestsId('numberOfSelectedVnfMembers').contains(0);
+        cy.getElementByDataTestsId('numberOfSelectedRows').contains(0);
 
         cy.getElementByDataTestsId("vnf-members-search").find('input').type("2.0");
-        cy.getElementByDataTestsId('numberOfNotHideVnfMembers').contains(1);
+        cy.getElementByDataTestsId('numberOfNotHideRows').contains(1);
         cy.getElementByDataTestsId("vnf-members-search").find('input').clear().type("vnf1");
-        cy.getElementByDataTestsId('numberOfNotHideVnfMembers').contains(1);
+        cy.getElementByDataTestsId('numberOfNotHideRows').contains(1);
         cy.get('.allCheckboxAreSelected input').click({force: true});
-        cy.getElementByDataTestsId('numberOfSelectedVnfMembers').contains(1);
+        cy.getElementByDataTestsId('numberOfSelectedRows').contains(1);
         cy.getElementByDataTestsId("vnf-members-search").find('input').clear();
-        cy.getElementByDataTestsId('numberOfSelectedVnfMembers').contains(1);
+        cy.getElementByDataTestsId('numberOfSelectedRows').contains(1);
 
         cy.getElementByDataTestsId('setMembersBtn').click({force: true});
         //check second time behavior (selected VNFs should be filtered)
         cy.getElementByDataTestsId('node-daeb6568-cef8-417f-9075-ed259ce59f48-groupingservicefortest..ResourceInstanceGroup..0-menu-btn')
           .eq(1).click({force: true}).then(() => {
           cy.getElementByDataTestsId('context-menu-addGroupMember').click({force: true}).then(() => {
-            cy.getElementByDataTestsId('numberOfNotHideVnfMembers').contains(totalNumber - 1);
+            cy.getElementByDataTestsId('numberOfNotHideRows').contains(totalNumber - 1);
             cy.getElementByDataTestsId('cancelBtn').click({force: true});
           });
         });
@@ -859,7 +848,7 @@ describe('Vnf Groups', function () {
         cy.getElementByDataTestsId('node-groupingservicefortest..ResourceInstanceGroup..1-add-btn').click({force: true})
           .getElementByDataTestsId('node-c2b300e6-45de-4e5e-abda-3032bee2de56-groupingservicefortest..ResourceInstanceGroup..1-menu-btn').eq(0).click({force: true}).then(() => {
           cy.getElementByDataTestsId('context-menu-addGroupMember').click({force: true}).then(() => {
-            cy.getElementByDataTestsId('numberOfNotHideVnfMembers').contains(0);
+            cy.getElementByDataTestsId('numberOfNotHideRows').contains(0);
             cy.getElementByDataTestsId('cancelBtn').click({force: true});
           });
           cy.getElementByDataTestsId('node-c2b300e6-45de-4e5e-abda-3032bee2de56-groupingservicefortest..ResourceInstanceGroup..1-menu-btn').eq(0).click({force: true}).then(() => {
@@ -883,8 +872,6 @@ describe('Vnf Groups', function () {
           checkIsErrorAppear(isError, groupRowId, limit, index);
         });
       }
-
-
     }
   );
 });

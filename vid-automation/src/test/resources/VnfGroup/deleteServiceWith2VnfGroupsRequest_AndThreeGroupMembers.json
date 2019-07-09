@@ -1,10 +1,12 @@
 {
   "existingVNFCounterMap": {},
+  "existingVRFCounterMap": {},
   "existingVnfGroupCounterMap": {
     "daeb6568-cef8-417f-9075-ed259ce59f48": 2
   },
   "existingNetworksCounterMap": {},
   "vnfs": {},
+  "vrfs": {},
   "vnfGroups": {
     "VNF_GROUP1_INSTANCE_ID": {
       "originalName": "groupingservicefortest..ResourceInstanceGroup..0",
@@ -163,6 +165,12 @@
   "rollbackOnFailure": false,
   "testApi": "VNF_API",
   "isALaCarte": true,
+  "vidNotions": {
+    "instantiationUI": "serviceWithVnfGrouping",
+    "modelCategory": "other",
+    "viewEditUI": "serviceWithVnfGrouping",
+    "instantiationType": "ALaCarte"
+  },
   "action": "Delete",
   "isDirty": true,
   "instanceId": "service-instance-id",

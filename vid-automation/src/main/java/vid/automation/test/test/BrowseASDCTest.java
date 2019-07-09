@@ -1,26 +1,16 @@
 package vid.automation.test.test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
-import static vid.automation.test.infra.ModelInfo.aLaCarteForBrowseSdc;
-import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationTest;
-import static vid.automation.test.infra.ModelInfo.instantiationTypeAlacarte_vidNotionsInstantiationUIByUUID;
-import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
-
 import com.google.common.collect.ImmutableList;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -29,22 +19,21 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.Click;
-import vid.automation.test.infra.Exists;
-import vid.automation.test.infra.FeatureTogglingTest;
-import vid.automation.test.infra.Features;
-import vid.automation.test.infra.Get;
-import vid.automation.test.infra.ModelInfo;
-import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.*;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.User;
-import vid.automation.test.sections.BrowseASDCPage;
-import vid.automation.test.sections.DeployMacroDialogBase;
-import vid.automation.test.sections.DeployMacroDialogOld;
-import vid.automation.test.sections.SideMenu;
-import vid.automation.test.sections.ViewEditPage;
+import vid.automation.test.sections.*;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
+
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.ModelInfo.*;
 
 
 public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
@@ -193,7 +182,8 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
-    private void browseServiceModel_deployServiceMacroWithCR_creationPopupIsOldMacro() throws Exception {
+    @FeatureTogglingTest(flagActive = false, value = FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI)
+    public void browseServiceModel_deployServiceMacroWithCR_creationPopupIsOldMacro() throws Exception {
         deployServiceAndAssertInstantiationType(
                 "csar15782222_instantiationTypeMacroWithCR.zip",
                 invariantUUIDMacro,
@@ -204,7 +194,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test
     private void browseServiceModel_deployServiceMacroWithNetwork_creationPopupIsMacroByFF() throws Exception {
-        String macroInstantiationAccordingFF = Features.FLAG_ASYNC_INSTANTIATION.isActive() && Features.FLAG_NETWORK_TO_ASYNC_INSTANTIATION.isActive() ? instantiationTypeNameMacro : oldMacro;
+        String macroInstantiationAccordingFF = Features.FLAG_NETWORK_TO_ASYNC_INSTANTIATION.isActive() ? instantiationTypeNameMacro : oldMacro;
         deployServiceAndAssertInstantiationType(
                 "csar15782222_instantiationTypeMacroWithNetwork.zip",
                 invariantUUIDMacro,
@@ -406,7 +396,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         viewEditPage.selectNodeInstanceToAdd("VID-RODERICK-05-15-17 0");
         viewEditPage.generateAndSetInstanceName(Constants.ViewEdit.VNF_INSTANCE_NAME_PREFIX);
         viewEditPage.selectProductFamily("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
-        viewEditPage.selectLcpRegion("JANET25", "AIC");
+        viewEditPage.selectLcpRegion("AAIAIC25", "AIC");
         viewEditPage.selectTenant("092eb9e8e4b7412e8787dd091bc58e86");
         viewEditPage.setLegacyRegion("llkjhlkjhlkjh");
 
