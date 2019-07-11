@@ -66,7 +66,7 @@ public class VidController extends RestrictedBaseController {
      */
     @RequestMapping(value = {"/rest/models/services"}, method = RequestMethod.GET)
     public SecureServices getServices(HttpServletRequest request) {
-        LOG.info("Start API for browse ASDC was called");
+        LOG.info("Start API for browse SDC was called");
         SecureServices secureServices = new SecureServices();
         List<Role> roles = roleProvider.getUserRoles(request);
         secureServices.setServices(aaiService.getServicesByDistributionStatus());

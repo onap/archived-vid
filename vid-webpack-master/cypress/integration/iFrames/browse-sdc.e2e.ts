@@ -53,7 +53,7 @@ describe('Browse SDC', function () {
           'MACRO_FOR_NEW_FLOW');
       });
 
-      cy.get('span').contains('Browse ASDC Service Models').click({force: true});
+      cy.get('span').contains('Browse SDC Service Models').click({force: true});
       cy.wait("@list_services").then(() => {
         cy.getElementByDataTestsId('deploy-' + MACRO_WITH_NETWORK_ID).click({force: true})
           .getElementByDataTestsId(CANCEL_BUTTON).click({force: true});
@@ -87,7 +87,7 @@ describe('Browse SDC', function () {
         'MACRO_WITH_CONFIGURATION');
     });
 
-    cy.get('span').contains('Browse ASDC Service Models').click({force: true});
+    cy.get('span').contains('Browse SDC Service Models').click({force: true});
     cy.wait("@list_services").then(() => {
       cy.getElementByDataTestsId('deploy-' + VERY_OLD_SERVICE_UUID).click({force: true})
         .getElementByDataTestsId('create-modal-title').contains("Create Service Instance -- a la carte");

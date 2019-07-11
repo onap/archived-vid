@@ -12,7 +12,7 @@ public class SideMenu {
     static final Logger logger = LoggerFactory.getLogger(SideMenu.class);
 
     public static void navigateToBrowseASDCPage() {
-        navigateToPage(Constants.SideMenu.BROWSE_ASDC_SERVICE_MODELS);
+        navigateToPage(Constants.SideMenu.BROWSE_SDC_SERVICE_MODELS);
     }
 
     public static void navigateToSearchExistingPage() {

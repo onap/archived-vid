@@ -251,7 +251,7 @@ describe('A la carte', function () {
     }
 
     function checkServiceNameInputIdMandatory() {
-      cy.get('span').contains('Browse ASDC Service Models').click({force: true})
+      cy.get('span').contains('Browse SDC Service Models').click({force: true})
         .getElementByDataTestsId('deploy-' + SERVICE_ID).click({force: true})
         .wait(1000).getElementByDataTestsId(CONFIRM_BUTTON).click({force: true})
         .get('.error').contains(INSTANCE_NAME_MANDATORY_MESSAGE)
