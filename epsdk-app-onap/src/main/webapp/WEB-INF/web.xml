@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee" 
-         xmlns:web="http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
-
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
 	<display-name>ecomp-sdk-app-os</display-name>
 
 	<!-- The app can function on a HA cluster -->
@@ -13,6 +12,7 @@
 		<session-timeout>30</session-timeout>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
+
 	<filter>
     <filter-name>SecurityXssFilter</filter-name>
     <filter-class>org.onap.portalapp.filter.SecurityXssFilter</filter-class>
@@ -20,6 +20,55 @@
     <filter-mapping>
     <filter-name>SecurityXssFilter</filter-name>
     <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--
+  `vid-webpack-master` servlet and it's servlet mapping below, serves
+  Angular's index.html for any requests like the following, letting
+  the JavaScript router do its magic:
+  * /vid/app/ui/
+  * /vid/app/ui/servicePlanning
+  * /vid/app/ui/browseSdc
+  -->
+  <servlet>
+    <servlet-name>vid-webpack-master</servlet-name>
+    <jsp-file>/app/ui/index.html</jsp-file>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>vid-webpack-master</servlet-name>
+    <url-pattern>/app/ui/</url-pattern>
+  </servlet-mapping>
+
+  <!--
+  All the files under the paths below are served as static files, using
+  tomcat's `default` servlet. This overrides the `vid-webpack-master`
+  url-pattern.
+  The filter `charset-to-utf8-filter` adds "charset=UTF-8" to these files
+  content type, as the default content-type is platform-dependant (which
+  is not ok for Windows stations).
+  -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/app/ui/*</url-pattern>
+  </servlet-mapping>
+
+  <filter>
+    <filter-name>charset-to-utf8-filter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>charset-to-utf8-filter</filter-name>
+    <url-pattern>/app/ui/*</url-pattern>
   </filter-mapping>
 
 </web-app>
