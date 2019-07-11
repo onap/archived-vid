@@ -36,7 +36,7 @@
             </activation>
             <properties>
                 <docker.buildArg.http_proxy>${env.http_proxy}</docker.buildArg.http_proxy>
-            </properties>
+    </properties>
         </profile>
 
     </profiles>
@@ -51,6 +51,7 @@
 
                 <configuration>
                     <verbose>true</verbose>
+
                     <apiVersion>1.23</apiVersion>
                     <images>
                         <image>
