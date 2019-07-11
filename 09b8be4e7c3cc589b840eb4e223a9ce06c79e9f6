@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "029c7515_10f81efc",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-11T06:53:54Z",
+      "side": 1,
+      "message": "It\u0027s not an issue, but I hesitate for the v14, as system_template.properties is directing to ${VID_AAI_URL}/aai/v13/\nThe \"localhost\" is ok though.",
+      "range": {
+        "startLine": 118,
+        "startChar": 41,
+        "endLine": 118,
+        "endChar": 44
+      },
+      "revId": "09b8be4e7c3cc589b840eb4e223a9ce06c79e9f6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
