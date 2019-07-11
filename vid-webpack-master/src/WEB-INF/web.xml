@@ -20,9 +20,8 @@
 
   <servlet-mapping>
     <servlet-name>vid-webpack-master</servlet-name>
-    <url-pattern>/app/ui/*</url-pattern>
+    <url-pattern>/app/ui/</url-pattern>
   </servlet-mapping>
-
 
   <!--
   All the files under the paths below are served as static files, using
@@ -34,10 +33,7 @@
   -->
   <servlet-mapping>
     <servlet-name>default</servlet-name>
-    <url-pattern>/app/ui/css/*</url-pattern>
-    <url-pattern>/app/ui/fonts/*</url-pattern>
-    <url-pattern>/app/ui/img/*</url-pattern>
-    <url-pattern>/app/ui/js/*</url-pattern>
+    <url-pattern>/app/ui/*</url-pattern>
   </servlet-mapping>
 
   <filter>
