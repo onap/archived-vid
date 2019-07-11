@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe99ace5_f746eb49",
+        "filename": "deliveries/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "Please revert this file changes.",
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ddec255_003bc499",
+        "filename": "epsdk-app-onap/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "is this the latest?",
+      "range": {
+        "startLine": 456,
+        "startChar": 21,
+        "endLine": 456,
+        "endChar": 27
+      },
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d26ece46_95cb3007",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "correct here, and remove block below",
+      "range": {
+        "startLine": 49,
+        "startChar": 27,
+        "endLine": 49,
+        "endChar": 30
+      },
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3af2ee58_62ab6cfc",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "remove this block",
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0df0b73d_f1a7c4cf",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "it\u0027s ok as is",
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c05b02b_b43ab565",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "discard",
+      "range": {
+        "startLine": 781,
+        "startChar": 30,
+        "endLine": 781,
+        "endChar": 42
+      },
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b60ef091_c705f035",
+        "filename": "vid-webpack-master/package-lock.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "revert file",
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1566717_a6b625f1",
+        "filename": "vid-webpack-master/package.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "revert file",
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b8da732_c08fec99",
+        "filename": "vid-webpack-master/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-07-11T13:38:08Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "b8af315744affeabc59f5ee5fb0a74861d3d2cb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
