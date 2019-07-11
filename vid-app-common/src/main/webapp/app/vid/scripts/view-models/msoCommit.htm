@@ -33,7 +33,9 @@
 			ngx-show="{{isProgressVisible}}"></div>
 
 		<div class="error" ng-show="!isProgressVisible">
-			<img src="app/vid/images/error.png"></img>{{error}}
+			<button class="btn-danger" att-button size="small" ng-click="showReportWindow()">Create report</button>
+			<img src="app/vid/images/error.png"></img>
+			{{error}}
 		</div>
 
 	</div>
@@ -43,8 +45,6 @@
 	<div class="buttonRow">
 		<button data-tests-id="msoCommitDialogCloseButton" ngx-enabled="{{isCloseEnabled}}" att-button size="small"
 			ng-click="close();">Close</button>
-		<button class="btn-danger" att-button size="small" ng-show="!isProgressVisible"
-				ng-click="showReportWindow()">Create report</button>
 	</div>
 </div>
 </div>

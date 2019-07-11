@@ -9,7 +9,9 @@
 			</div>
 
 			<div class="error" ng-show="isErrorVisible">
-				<img src="app/vid/images/error.png"></img>{{error}}
+				<button class="btn-danger" att-button size="small" ng-click="showReportWindow()">Create report</button>
+				<img src="app/vid/images/error.png"></img>
+				{{error}} <br>
 			</div>
 
 			<div ngx-visible="{{isDataVisible}}">
@@ -36,8 +38,6 @@
 						ng-click="confirm();">Confirm</button>
 				<button type="button" data-tests-id="cancelButton" ng-click="cancel();" att-button
 						btn-type="primary" size="small">Cancel</button>
-				<button class="btn-danger" ng-if="isShowErrorReport() && isServiceError" att-button size="small"
-						ng-click="showReportWindow()">Create report</button>
 			</div>
 		</div>
 	</div>
