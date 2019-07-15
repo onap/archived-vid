@@ -1,0 +1,345 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "468dce5a_41365c0d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "I\u0027m not sure this commit-message describes the commit.\nIt should either describe what changed in new-change-management.html, or should the commit there be modified.",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc54eec3_4caa5f9c",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "I think there\u0027s some merging problem here, as many items were duplicated",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80ab9540_f0d91e9f",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ec5e0b8_d78cc34e",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f5e6fd5_1096bbce",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92a99c06_7b6ce61f",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb52e869_81da46e5",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "538ea561_855de7af",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "Reformatting wasn\u0027t good here.",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2941b25a_3d320a04",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "Lots of code is missing here below.",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65c4219c_125427b5",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "795a3e0e_6c0b6b5c",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0226a275_cb6cfb85",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "There are several places where this commit removes a recent commit by Bartosz (instead of being merged-with).\nI\u0027m marking them below with overrides-Bartosz.",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5b034c2_aad576f6",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "I this change intentional? The conditions look pretty different.",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65c9bc94_941e4ded",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "This commented out block shall be removed.",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77f3e98e_30b57462",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "I\u0027m not sure this block is needed here. It was removed as part of a refactoring, that should make it redundant. Isn\u0027t it?",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5782d0bd_534d0110",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "Not sure it\u0027s intentional.",
+      "range": {
+        "startLine": 160,
+        "startChar": 31,
+        "endLine": 160,
+        "endChar": 48
+      },
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "375fd17e_789ae417",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "overrides-Bartosz",
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87d6247d_f2eb373b",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "Can be \"ScheduledJob\", not \"Jod\"",
+      "range": {
+        "startLine": 240,
+        "startChar": 50,
+        "endLine": 240,
+        "endChar": 51
+      },
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fafddbe_f75ced5b",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-15T06:55:16Z",
+      "side": 1,
+      "message": "Should this be `updateSimulatorWithParametersOfScaleOut`?",
+      "range": {
+        "startLine": 241,
+        "startChar": 8,
+        "endLine": 241,
+        "endChar": 51
+      },
+      "revId": "3ac80d5968a3ab635fb36c4b37e04bb03e38e740",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
