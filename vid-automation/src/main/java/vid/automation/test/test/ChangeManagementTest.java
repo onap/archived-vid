@@ -164,6 +164,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                         , "changeManagement/service-design-and-creation.json"
                         , "changeManagement/mso_get_manual_task.json"
                         , "changeManagement/mso_post_manual_task.json"
+                        , "changeManagement/mso_get_change_managements_scaleout.json"
         );
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(),SimulatorApi.RegistrationStrategy.APPEND);
 
@@ -237,6 +238,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @Test
     public void regretToCancelWorkflowOnPendingPopUp() {
         updateSimulatorWithParametersOfScheduledJod("get_scheduler_details_short.json");
+        updateSimulatorWithParametersOfScheduledJod("get_scheduler_details_short.json");
         ChangeManagementPage.openChangeManagementPage();
 
         Wait.angularHttpRequestsLoaded();
@@ -306,6 +308,13 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Assert.assertTrue(isNotDisplayed);
     }
     public void updateSimulatorWithParametersOfScheduledJod(String jasonFile){
+        SimulatorApi.registerExpectation(
+                new String[] {"changeManagement/"+jasonFile},
+                ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), SimulatorApi.RegistrationStrategy.APPEND
+        );
+    }
+
+    public void updateSimulatorWithParametersOfScaleOut(String jasonFile){
         SimulatorApi.registerExpectation(
                 new String[] {"changeManagement/"+jasonFile},
                 ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), SimulatorApi.RegistrationStrategy.APPEND
