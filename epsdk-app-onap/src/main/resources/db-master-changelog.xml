@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="em088y" id="vid-schema-old">
+        <validCheckSum>7:5dfe06641ec9741b03d03a9d18ab8d1f</validCheckSum>
+        <validCheckSum>7:4d5f58859c45a470469614655e0c7b98</validCheckSum>
+        <validCheckSum>7:c72bd6fd6b710d2f4f8f8a48033eef12</validCheckSum>
+        <sqlFile encoding="utf8" path="vid-schema-deprecated.sql" relativeToChangelogFile="true" splitStatements="true" stripComments="true"/>
+    </changeSet>
+
+    <changeSet author="em088y" id="vid-data-old">
+        <validCheckSum>7:ad0ceb32f9ae0bbd02082d187b42216c</validCheckSum>
+        <validCheckSum>7:aa5782ba5be838989f2b5e267da8aa1d</validCheckSum>
+        <sqlFile encoding="utf8" path="vid-data-deprecated.sql" relativeToChangelogFile="true" splitStatements="true" stripComments="true"/>
+    </changeSet>
+
+    <include file="db.changelog-01.sql" relativeToChangelogFile="true"/>
+
+
+
+</databaseChangeLog>

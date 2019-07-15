@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,6 +35,10 @@ DELETE FROM `fn_lu_priority`;
 DELETE FROM `fn_lu_state`;
 DELETE FROM `fn_lu_tab_set`;
 
+INSERT IGNORE INTO `fn_role` (`ROLE_ID`, `ROLE_NAME`, `ACTIVE_YN`, `PRIORITY`) VALUES
+	(1, 'System Administrator', 'Y', 1),
+	(16, 'Standard User', 'Y', 5);
+
 --
 -- Dumping data for table `cr_raptor_action_img`
 --
@@ -46,16 +50,13 @@ REPLACE INTO `cr_raptor_action_img` VALUES ('DELETE','/static/fusion/raptor/img/
 --
 INSERT IGNORE INTO `fn_app` VALUES (1,'Default',null,'Some Default Description','Some Default Note',null,null,null,'ECPP','?',1,'okYTaDrhzibcbGVq5mjkVQ==','N','N',null,'Default',null,null,'ECOMP-PORTAL-INBOX');
 
-
 --
 -- Dumping data for table `vid_workflow`
 --
---update & replace workflows are disabled in ONAP
---INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (1, 'Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Update';
---INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (2, 'Replace') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Replace';
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (1, 'Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Update';
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (2, 'Replace') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='Replace';
 INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (3, 'VNF In Place Software Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='VNF In Place Software Update';
-INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (4, 'VNF Scale Out') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='VNF Scale Out';
-INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (5, 'VNF Config Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='VNF Config Update';
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (4, 'VNF Config Update') ON DUPLICATE KEY UPDATE WORKFLOW_APP_NAME='VNF Config Update';
 
 
 --
@@ -79,44 +80,51 @@ INSERT INTO `vid_category_parameter_option` (`CATEGORY_OPT_APP_ID`, `NAME`, `CAT
 --
 -- Dumping data for table `fn_function`
 --
-INSERT INTO `fn_function` VALUES ('1','test role function','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='test role function';
-INSERT INTO `fn_function` VALUES ('doclib','Document Library','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Document Library';
-INSERT INTO `fn_function` VALUES ('doclib_admin','Document Library Admin','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Document Library Admin';
-INSERT INTO `fn_function` VALUES ('login','Login','url','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Login';
-INSERT INTO `fn_function` VALUES ('menu_admin','Admin Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Admin Menu';
-INSERT INTO `fn_function` VALUES ('menu_ajax','Ajax Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Ajax Menu';
-INSERT INTO `fn_function` VALUES ('menu_servicemodels','Browse SDC Service Instances','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Browse SDC Service Instances';
-INSERT INTO `fn_function` VALUES ('menu_concept','CoNCEPT','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='CoNCEPT';
-INSERT INTO `fn_function` VALUES ('menu_customer','Customer Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Customer Menu';
-INSERT INTO `fn_function` VALUES ('menu_customer_create','Customer Create','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Customer Create';
-INSERT INTO `fn_function` VALUES ('menu_doclib','Document Library Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Document Library Menu';
-INSERT INTO `fn_function` VALUES ('menu_feedback','Feedback Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Feedback Menu';
-INSERT INTO `fn_function` VALUES ('menu_help','Help Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Help Menu';
-INSERT INTO `fn_function` VALUES ('menu_home','Home Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Home Menu';
-INSERT INTO `fn_function` VALUES ('menu_itracker','iTracker Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='iTracker Menu';
-INSERT INTO `fn_function` VALUES ('menu_itracker_admin','Itracker Admin/Support menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Itracker Admin/Support menu';
-INSERT INTO `fn_function` VALUES ('menu_job','Job Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Job Menu';
-INSERT INTO `fn_function` VALUES ('menu_job_create','Job Create','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Job Create';
-INSERT INTO `fn_function` VALUES ('menu_job_designer','Process in Designer view','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Process in Designer view';
-INSERT INTO `fn_function` VALUES ('menu_logout','Logout Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Logout Menu';
-INSERT INTO `fn_function` VALUES ('menu_map','Map Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Map Menu';
-INSERT INTO `fn_function` VALUES ('menu_newserinstance','Create New Service Instance','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Create New Service Instance';
-INSERT INTO `fn_function` VALUES ('menu_notes','Notes Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Notes Menu';
-INSERT INTO `fn_function` VALUES ('menu_process','Process List','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Process List';
-INSERT INTO `fn_function` VALUES ('menu_profile','Profile Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Profile Menu';
-INSERT INTO `fn_function` VALUES ('menu_profile_create','Profile Create','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Profile Create';
-INSERT INTO `fn_function` VALUES ('menu_profile_import','Profile Import','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Profile Import';
-INSERT INTO `fn_function` VALUES ('menu_reports','Reports Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Reports Menu';
-INSERT INTO `fn_function` VALUES ('menu_sample','Sample Pages Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Sample Pages Menu';
-INSERT INTO `fn_function` VALUES ('menu_tab','Sample Tab Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Sample Tab Menu';
-INSERT INTO `fn_function` VALUES ('menu_task','Task Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Task Menu';
-INSERT INTO `fn_function` VALUES ('menu_task_search','Task Search','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Task Search';
-INSERT INTO `fn_function` VALUES ('menu_test','Test Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Test Menu';
-INSERT INTO `fn_function` VALUES ('menu_viewlog','Log Menu','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Log Menu';
-INSERT INTO `fn_function` VALUES ('view_reports','View Raptor reports','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='View Raptor reports';
-INSERT INTO `fn_function` VALUES ('menu_searchexisting', 'Search for Existing Service Instances','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Search for Existing Service Instances';
-INSERT INTO `fn_function` VALUES ('menu_changemanagement','VNF Changes','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='VNF Changes';
---INSERT INTO `fn_function` VALUES ('menu_testenvironment','Test Environments','menu','*') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Test Environments';
+INSERT INTO `fn_function` VALUES ('1','test role function') ON DUPLICATE KEY UPDATE FUNCTION_NAME='test role function';
+INSERT INTO `fn_function` VALUES ('doclib','Document Library') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Document Library';
+INSERT INTO `fn_function` VALUES ('doclib_admin','Document Library Admin') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Document Library Admin';
+INSERT INTO `fn_function` VALUES ('login','Login') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Login';
+INSERT INTO `fn_function` VALUES ('menu_admin','Admin Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Admin Menu';
+INSERT INTO `fn_function` VALUES ('menu_ajax','Ajax Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Ajax Menu';
+INSERT INTO `fn_function` VALUES ('menu_servicemodels','Browse ASDC Service Instances') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Browse ASDC Service Instances';
+INSERT INTO `fn_function` VALUES ('menu_concept','CoNCEPT') ON DUPLICATE KEY UPDATE FUNCTION_NAME='CoNCEPT';
+INSERT INTO `fn_function` VALUES ('menu_customer','Customer Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Customer Menu';
+INSERT INTO `fn_function` VALUES ('menu_customer_create','Customer Create') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Customer Create';
+INSERT INTO `fn_function` VALUES ('menu_doclib','Document Library Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Document Library Menu';
+INSERT INTO `fn_function` VALUES ('menu_feedback','Feedback Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Feedback Menu';
+INSERT INTO `fn_function` VALUES ('menu_help','Help Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Help Menu';
+INSERT INTO `fn_function` VALUES ('menu_hiveconfig','Hive Configuration') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Hive Configuration';
+INSERT INTO `fn_function` VALUES ('menu_hiveconfig_create','Hive Configuration Create') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Hive Configuration Create';
+INSERT INTO `fn_function` VALUES ('menu_hiveconfig_search','Hive Configuration Search') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Hive Configuration Search';
+INSERT INTO `fn_function` VALUES ('menu_home','Home Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Home Menu';
+INSERT INTO `fn_function` VALUES ('menu_itracker','iTracker Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='iTracker Menu';
+INSERT INTO `fn_function` VALUES ('menu_itracker_admin','Itracker Admin/Support menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Itracker Admin/Support menu';
+INSERT INTO `fn_function` VALUES ('menu_job','Job Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Job Menu';
+INSERT INTO `fn_function` VALUES ('menu_job_create','Job Create') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Job Create';
+INSERT INTO `fn_function` VALUES ('menu_job_designer','Process in Designer view') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Process in Designer view';
+INSERT INTO `fn_function` VALUES ('menu_logout','Logout Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Logout Menu';
+INSERT INTO `fn_function` VALUES ('menu_map','Map Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Map Menu';
+INSERT INTO `fn_function` VALUES ('menu_mapreduce','Map Reduce Configuration') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Map Reduce Configuration';
+INSERT INTO `fn_function` VALUES ('menu_mapreduce_create','Map Reduce Configuration Create') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Map Reduce Configuration Create';
+INSERT INTO `fn_function` VALUES ('menu_mapreduce_search','Map Reduce Configuration Search') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Map Reduce Configuration Search';
+INSERT INTO `fn_function` VALUES ('menu_newserinstance','Create New Service Instance') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Create New Service Instance';
+INSERT INTO `fn_function` VALUES ('menu_notes','Notes Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Notes Menu';
+INSERT INTO `fn_function` VALUES ('menu_process','Process List') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Process List';
+INSERT INTO `fn_function` VALUES ('menu_profile','Profile Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Profile Menu';
+INSERT INTO `fn_function` VALUES ('menu_profile_create','Profile Create') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Profile Create';
+INSERT INTO `fn_function` VALUES ('menu_profile_import','Profile Import') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Profile Import';
+INSERT INTO `fn_function` VALUES ('menu_reports','Reports Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Reports Menu';
+INSERT INTO `fn_function` VALUES ('menu_sample','Sample Pages Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Sample Pages Menu';
+INSERT INTO `fn_function` VALUES ('menu_tab','Sample Tab Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Sample Tab Menu';
+INSERT INTO `fn_function` VALUES ('menu_task','Task Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Task Menu';
+INSERT INTO `fn_function` VALUES ('menu_task_search','Task Search') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Task Search';
+INSERT INTO `fn_function` VALUES ('menu_test','Test Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Test Menu';
+INSERT INTO `fn_function` VALUES ('menu_viewlog','Log Menu') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Log Menu';
+INSERT INTO `fn_function` VALUES ('quantum_bd','Big Data Function') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Big Data Function';
+INSERT INTO `fn_function` VALUES ('view_reports','View Raptor reports') ON DUPLICATE KEY UPDATE FUNCTION_NAME='View Raptor reports';
+INSERT INTO `fn_function` VALUES ('menu_searchexisting', 'Search for Existing Service Instances') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Search for Existing Service Instances';
+INSERT INTO `fn_function` VALUES ('menu_changemanagement','VNF Changes') ON DUPLICATE KEY UPDATE FUNCTION_NAME='VNF Changes';
+INSERT INTO `fn_function` VALUES ('menu_testenvironment','Test Environments') ON DUPLICATE KEY UPDATE FUNCTION_NAME='Test Environments';
 
 --
 -- Dumping data for table `fn_lu_activity`
@@ -532,11 +540,10 @@ INSERT INTO `fn_lu_timezone` VALUES (70,'US/Hawaii','US/Hawaii') ON DUPLICATE KE
 --
 INSERT INTO `fn_menu` VALUES (1,'Root',NULL,10,NULL,'menu_home','N',NULL,NULL,NULL,NULL,'APP','N',NULL) ON DUPLICATE KEY UPDATE LABEL='Root', PARENT_ID=NULL, SORT_ORDER=10, ACTION=NULL, FUNCTION_CD='menu_home', ACTIVE_YN='N', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC=NULL;
 INSERT INTO `fn_menu` VALUES (2,'VID Home',1,10,'welcome.htm','menu_home','Y',NULL,NULL,NULL,NULL,'APP','N','icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='VID Home', PARENT_ID=1, SORT_ORDER=10, ACTION='welcome.htm', FUNCTION_CD='menu_home', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
-
 INSERT INTO `fn_menu` VALUES (3,'Search for Existing Service Instances',1,10,'serviceModels.htm#/instances/services','menu_searchexisting','Y',NULL,NULL,NULL,NULL,'APP','N','icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Search for Existing Service Instances', PARENT_ID=1, SORT_ORDER=10, ACTION='serviceModels.htm#/instances/services', FUNCTION_CD='menu_searchexisting', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
 INSERT INTO `fn_menu` VALUES (10,'Admin',1,110,'role_list.htm','menu_admin','Y',NULL,NULL,NULL,NULL,'APP','N','icon-settings') ON DUPLICATE KEY UPDATE LABEL='Admin', PARENT_ID=1, SORT_ORDER=110, ACTION='admin', FUNCTION_CD='menu_admin', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-settings';
 INSERT INTO `fn_menu` VALUES (13,'VID Logout',1,130,'app_logout.htm','menu_logout','N',NULL,NULL,NULL,NULL,'APP','N','icon-sign-out') ON DUPLICATE KEY UPDATE LABEL='VID Logout', PARENT_ID=1, SORT_ORDER=130, ACTION='app_logout.htm', FUNCTION_CD='menu_logout', ACTIVE_YN='N', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-sign-out';
-INSERT INTO `fn_menu` VALUES (42,'Browse SDC Service Models',1,10,'serviceModels.htm','menu_servicemodels','Y',NULL,NULL,NULL,NULL,'APP','N','icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Browse SDC Service Instances', PARENT_ID=1, SORT_ORDER=10, ACTION='serviceModels.htm', FUNCTION_CD='menu_servicemodels', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
+INSERT INTO `fn_menu` VALUES (42,'Browse ASDC Service Models',1,10,'serviceModels.htm','menu_servicemodels','Y',NULL,NULL,NULL,NULL,'APP','N','icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Browse ASDC Service Instances', PARENT_ID=1, SORT_ORDER=10, ACTION='serviceModels.htm', FUNCTION_CD='menu_servicemodels', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
 INSERT INTO `fn_menu` VALUES (41,'Create New Service Instance',1,10,'serviceModels.htm#/instances/subscribers','menu_newserinstance','Y',NULL,NULL,NULL,NULL,'APP','N','icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Create New Service Instance', PARENT_ID=1, SORT_ORDER=10, ACTION='serviceModels.htm#/instances/subscribers', FUNCTION_CD='menu_newserinstance', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
 INSERT INTO `fn_menu` VALUES (43,'View Log',1,10,'viewlog.htm','menu_viewlog','N',NULL,NULL,NULL,NULL,'APP','N','icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='View Log', PARENT_ID=1, SORT_ORDER=10, ACTION='viewlog.htm', FUNCTION_CD='menu_viewlog', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
 INSERT INTO `fn_menu` VALUES (101,'Roles',10,20,'admin','menu_admin','Y',NULL,NULL,NULL,NULL,'APP','N','/static/fusion/images/users.png') ON DUPLICATE KEY UPDATE LABEL='Roles', PARENT_ID=10, SORT_ORDER=20, ACTION='admin', FUNCTION_CD='menu_admin', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='/static/fusion/images/users.png';
@@ -546,7 +553,7 @@ INSERT INTO `fn_menu` VALUES (105,'Cache Admin',10,40,'admin#/jcs_admin','menu_a
 INSERT INTO `fn_menu` VALUES (106,'Lock/Unlock Application',10,60,'application_lockout.htm','menu_admin','N',NULL,NULL,NULL,NULL,'APP','N','/static/fusion/images/decrypted.png') ON DUPLICATE KEY UPDATE LABEL='Lock/Unlock Application', PARENT_ID=10, SORT_ORDER=60, ACTION='application_lockout.htm', FUNCTION_CD='menu_admin', ACTIVE_YN='N', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='/static/fusion/images/decrypted.png';
 INSERT INTO `fn_menu` VALUES (108,'Usage',10,80,'admin#/usage_list','menu_admin','N',NULL,NULL,NULL,NULL,'APP','N','/static/fusion/images/users.png') ON DUPLICATE KEY UPDATE LABEL='Usage', PARENT_ID=10, SORT_ORDER=80, ACTION='admin#/usage_list', FUNCTION_CD='menu_admin', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='/static/fusion/images/users.png';
 INSERT INTO `fn_menu` VALUES (109, 'VNF Changes', 1, 11, 'serviceModels.htm#/change-management', 'menu_changemanagement', 'Y', NULL, NULL, NULL, NULL, 'APP', 'N', 'icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='VNF Changes', PARENT_ID=1, SORT_ORDER=11, ACTION='serviceModels.htm#/change-management', FUNCTION_CD='menu_changemanagement', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
---INSERT INTO `fn_menu` VALUES (110, 'Test Environments', 1, 12, 'serviceModels.htm#/testEnvironments', 'menu_testenvironment', 'Y', NULL, NULL, NULL, NULL, 'APP', 'N', 'icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Test Environments', PARENT_ID=1, SORT_ORDER=12, ACTION='serviceModels.htm#/testEnvironments', FUNCTION_CD='menu_testenvironment', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
+INSERT INTO `fn_menu` VALUES (110, 'Test Environments', 1, 12, 'serviceModels.htm#/testEnvironments', 'menu_testenvironment', 'Y', NULL, NULL, NULL, NULL, 'APP', 'N', 'icon-location-pin') ON DUPLICATE KEY UPDATE LABEL='Test Environments', PARENT_ID=1, SORT_ORDER=12, ACTION='serviceModels.htm#/testEnvironments', FUNCTION_CD='menu_testenvironment', ACTIVE_YN='Y', SERVLET=NULL, QUERY_STRING=NULL, EXTERNAL_URL=NULL, TARGET=NULL, MENU_SET_CD='APP', SEPARATOR_YN='N', IMAGE_SRC='icon-location-pin';
 --
 -- Dumping data for table `fn_restricted_url`
 --
@@ -578,7 +585,7 @@ REPLACE INTO `fn_restricted_url` VALUES ('support_ticket.htm','menu_itracker');
 REPLACE INTO `fn_restricted_url` VALUES ('jbpm_designer.htm','menu_job_create');
 REPLACE INTO `fn_restricted_url` VALUES ('jbpm_drools.htm','menu_job_create');
 REPLACE INTO `fn_restricted_url` VALUES ('process_job.htm','menu_job_create');
--- REPLACE INTO `fn_restricted_url` VALUES ('novamap_controller.htm','menu_map');
+REPLACE INTO `fn_restricted_url` VALUES ('novamap_controller.htm','menu_map');
 REPLACE INTO `fn_restricted_url` VALUES ('createnewserviceinstance.htm','menu_newserinstance');
 REPLACE INTO `fn_restricted_url` VALUES ('profile.htm','menu_profile_create');
 REPLACE INTO `fn_restricted_url` VALUES ('raptor.htm','menu_reports');
@@ -594,8 +601,8 @@ REPLACE INTO `fn_restricted_url` VALUES ('map.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('map_download.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('map_grid_search.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('sample_animated_map.htm','menu_tab');
--- REPLACE INTO `fn_restricted_url` VALUES ('sample_heat_map.htm','menu_tab');
--- REPLACE INTO `fn_restricted_url` VALUES ('sample_heat_map_no_header.htm','menu_tab');
+REPLACE INTO `fn_restricted_url` VALUES ('sample_heat_map.htm','menu_tab');
+REPLACE INTO `fn_restricted_url` VALUES ('sample_heat_map_no_header.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('sample_map_2.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('sample_map_3.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('tab2_sub1.htm','menu_tab');
@@ -605,33 +612,23 @@ REPLACE INTO `fn_restricted_url` VALUES ('tab2_sub3.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('tab3.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('tab4.htm','menu_tab');
 REPLACE INTO `fn_restricted_url` VALUES ('viewlog.htm','menu_viewlog');
--- REPLACE INTO `fn_restricted_url` VALUES ('bd_optima.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('bd_optima_interactive.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('bd_p2t.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('grid_heatmap.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('hive.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('hiveconfig.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('hiveconfig_popup.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('hive_search.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('hive_search_popup.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('jbpmTestProcess.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('job_progress.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('mapreduce.htm','quantum_bd');
--- REPLACE INTO `fn_restricted_url` VALUES ('mapreduce_search.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('bd_optima.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('bd_optima_interactive.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('bd_p2t.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('grid_heatmap.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('hive.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('hiveconfig.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('hiveconfig_popup.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('hive_search.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('hive_search_popup.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('jbpmTestProcess.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('job_progress.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('mapreduce.htm','quantum_bd');
+REPLACE INTO `fn_restricted_url` VALUES ('mapreduce_search.htm','quantum_bd');
 REPLACE INTO `fn_restricted_url` VALUES ('raptor.htm','view_reports');
 REPLACE INTO `fn_restricted_url` VALUES ('raptor_blob_extract.htm','view_reports');
 REPLACE INTO `fn_restricted_url` VALUES ('serviceModels.htm','menu_servicemodels');
---
--- Dumping data for table `fn_role`
---
-INSERT INTO `fn_role` VALUES (1,'System Administrator','Y',1) ON DUPLICATE KEY UPDATE ROLE_NAME='System Administrator', ACTIVE_YN='Y', PRIORITY=1;
-INSERT INTO `fn_role` VALUES (16,'Standard User','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Standard User', ACTIVE_YN='Y', PRIORITY=5;
-INSERT INTO `fn_role` VALUES (17,'Demonstration___vFWCL','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vFWCL', ACTIVE_YN='Y', PRIORITY=5;
-INSERT INTO `fn_role` VALUES (18,'Demonstration___vFW','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vFW', ACTIVE_YN='Y', PRIORITY=5;
-INSERT INTO `fn_role` VALUES (19,'Demonstration___vCPE','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vCPE', ACTIVE_YN='Y', PRIORITY=5;
-INSERT INTO `fn_role` VALUES (20,'Demonstration___vIMS','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vIMS', ACTIVE_YN='Y', PRIORITY=5;
-INSERT INTO `fn_role` VALUES (21,'Demonstration___vLB','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___vLB', ACTIVE_YN='Y', PRIORITY=5;
-INSERT INTO `fn_role` VALUES (22,'Demonstration___gNB','Y',5) ON DUPLICATE KEY UPDATE ROLE_NAME='Demonstration___gNB', ACTIVE_YN='Y', PRIORITY=5;
+
 
 --
 -- Dumping data for table `fn_role_composite`
@@ -651,18 +648,18 @@ REPLACE INTO `fn_role_function` VALUES (1,'menu_customer');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_customer_create');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_feedback');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_help');
--- REPLACE INTO `fn_role_function` VALUES (1,'menu_hiveconfig');
--- REPLACE INTO `fn_role_function` VALUES (1,'menu_hiveconfig_create');
--- REPLACE INTO `fn_role_function` VALUES (1,'menu_hiveconfig_search');
+REPLACE INTO `fn_role_function` VALUES (1,'menu_hiveconfig');
+REPLACE INTO `fn_role_function` VALUES (1,'menu_hiveconfig_create');
+REPLACE INTO `fn_role_function` VALUES (1,'menu_hiveconfig_search');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_home');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_itracker');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_itracker_admin');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_job');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_job_create');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_logout');
--- REPLACE INTO `fn_role_function` VALUES (1,'menu_mapreduce');
--- REPLACE INTO `fn_role_function` VALUES (1,'menu_mapreduce_create');
--- REPLACE INTO `fn_role_function` VALUES (1,'menu_mapreduce_search');
+REPLACE INTO `fn_role_function` VALUES (1,'menu_mapreduce');
+REPLACE INTO `fn_role_function` VALUES (1,'menu_mapreduce_create');
+REPLACE INTO `fn_role_function` VALUES (1,'menu_mapreduce_search');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_newserinstance');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_notes');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_process');
@@ -674,7 +671,7 @@ REPLACE INTO `fn_role_function` VALUES (1,'menu_sample');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_tab');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_test');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_viewlog');
--- REPLACE INTO `fn_role_function` VALUES (1,'quantum_bd');
+REPLACE INTO `fn_role_function` VALUES (1,'quantum_bd');
 REPLACE INTO `fn_role_function` VALUES (16,'login');
 REPLACE INTO `fn_role_function` VALUES (16,'menu_ajax');
 REPLACE INTO `fn_role_function` VALUES (16,'menu_servicemodels');
@@ -689,13 +686,13 @@ REPLACE INTO `fn_role_function` VALUES (16,'menu_profile');
 REPLACE INTO `fn_role_function` VALUES (16,'menu_reports');
 REPLACE INTO `fn_role_function` VALUES (16,'menu_tab');
 REPLACE INTO `fn_role_function` VALUES (16,'menu_viewlog');
--- REPLACE INTO `fn_role_function` VALUES (16,'quantum_bd');
+REPLACE INTO `fn_role_function` VALUES (16,'quantum_bd');
 REPLACE INTO `fn_role_function` VALUES ('1', 'menu_searchexisting');
 REPLACE INTO `fn_role_function` VALUES ('16', 'menu_searchexisting');
 REPLACE INTO `fn_role_function` VALUES (1,'menu_changemanagement');
 REPLACE INTO `fn_role_function` VALUES (16,'menu_changemanagement');
---REPLACE INTO `fn_role_function` VALUES (1,'menu_testenvironment');
---REPLACE INTO `fn_role_function` VALUES (16,'menu_testenvironment');
+REPLACE INTO `fn_role_function` VALUES (1,'menu_testenvironment');
+REPLACE INTO `fn_role_function` VALUES (16,'menu_testenvironment');
 
 update fn_menu set active_yn = 'Y' where label = 'Admin';
 update fn_menu set active_yn = 'Y' where label = 'Root';
@@ -726,26 +723,3 @@ REPLACE INTO `fn_tab_selected` VALUES ('TAB2_SUB2','tab2_sub2');
 REPLACE INTO `fn_tab_selected` VALUES ('TAB2_SUB3','tab2_sub3');
 REPLACE INTO `fn_tab_selected` VALUES ('TAB3','tab3');
 REPLACE INTO `fn_tab_selected` VALUES ('TAB4','tab4');
-
-
---
--- Dumping data for table `fn_user`
---
-INSERT IGNORE `fn_user` VALUES (1,null,null,'Demo',null,'User',null,null,null,null,null,null,null,'demo',null,'demo','Kp8bJ4SXszM0WX','2016-11-14 13:24:07','Y',null,'2016-10-17 00:00:00',1,'2016-11-14 13:24:07','N',null,null,null,'NJ',null,'US',null,null,null,null,null,10,null,null,null,null,null,null);
-INSERT IGNORE `fn_user` VALUES (2,null,null,'vid1',null,'User',null,null,null,null,null,null,null,'vid1',null,'vid1','Kp8bJ4SXszM0WX','2016-11-14 13:24:07','Y',null,'2016-10-17 00:00:00',1,'2016-11-14 13:24:07','N',null,null,null,'NJ',null,'US',null,null,null,null,null,10,null,null,null,null,null,null);
-INSERT IGNORE `fn_user` VALUES (3,null,null,'vid2',null,'User',null,null,null,null,null,null,null,'vid2',null,'vid2','Kp8bJ4SXszM0WX','2016-11-14 13:24:07','Y',null,'2016-10-17 00:00:00',1,'2016-11-14 13:24:07','N',null,null,null,'NJ',null,'US',null,null,null,null,null,10,null,null,null,null,null,null);
-INSERT IGNORE `fn_user` VALUES (4,null,null,'vid3',null,'User',null,null,null,null,null,null,null,'vid3',null,'vid3','Kp8bJ4SXszM0WX','2016-11-14 13:24:07','Y',null,'2016-10-17 00:00:00',1,'2016-11-14 13:24:07','N',null,null,null,'NJ',null,'US',null,null,null,null,null,10,null,null,null,null,null,null);
-INSERT IGNORE `fn_user` VALUES (5,null,null,'vid4',null,'User',null,null,null,null,null,null,null,'vid4',null,'vid4','Kp8bJ4SXszM0WX','2016-11-14 13:24:07','Y',null,'2016-10-17 00:00:00',1,'2016-11-14 13:24:07','N',null,null,null,'NJ',null,'US',null,null,null,null,null,10,null,null,null,null,null,null);
-
-INSERT IGNORE `fn_user_role` VALUES (1,1,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (2,1,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (3,1,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (4,1,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (5,1,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (1,17,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (1,18,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (1,19,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (1,20,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (1,21,NULL,1);
-INSERT IGNORE `fn_user_role` VALUES (1,22,NULL,1);
-
