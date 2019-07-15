@@ -64,7 +64,7 @@ public class SimulatorApi {
 
     static {
         String host = System.getProperty("VID_HOST", "127.0.0.1" );
-        Integer port = Integer.valueOf(System.getProperty("SIM_PORT", System.getProperty("VID_PORT", "8080"))); //port for registration
+        Integer port = Integer.valueOf(System.getProperty("SIM_PORT", System.getProperty("VID_PORT", "8090"))); //port for registration
         uri = new JerseyUriBuilder().host(host).port(port).scheme("http").path("vidSimulator").build();
         client = ClientBuilder.newClient();
         client.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);

@@ -35,6 +35,10 @@ DELETE FROM `fn_lu_priority`;
 DELETE FROM `fn_lu_state`;
 DELETE FROM `fn_lu_tab_set`;
 
+INSERT IGNORE INTO `fn_role` (`ROLE_ID`, `ROLE_NAME`, `ACTIVE_YN`, `PRIORITY`) VALUES
+	(1, 'System Administrator', 'Y', 1),
+	(16, 'Standard User', 'Y', 5);
+
 --
 -- Dumping data for table `cr_raptor_action_img`
 --

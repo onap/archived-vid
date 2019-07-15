@@ -67,7 +67,7 @@ public class BaseApiTest {
 
     private URI getUri() {
         String host = System.getProperty("VID_HOST", "127.0.0.1");
-        int port = Integer.valueOf(System.getProperty("VID_PORT", "8080"));
+        int port = Integer.valueOf(System.getProperty("VID_PORT", "8090"));
         return new JerseyUriBuilder().host(host).port(port).scheme("http").path("vid").build();
     }
 
