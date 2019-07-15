@@ -40,6 +40,8 @@ package org.onap.portalapp.conf;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+
+import liquibase.integration.spring.SpringLiquibase;
 import org.onap.portalapp.login.LoginStrategyImpl;
 import org.onap.portalsdk.core.auth.LoginStrategy;
 import org.onap.portalsdk.core.conf.AppConfig;
@@ -49,7 +51,6 @@ import org.onap.portalsdk.core.objectcache.AbstractCacheManager;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.CacheManager;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -58,10 +59,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -86,14 +83,6 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 
 	/** The Constant LOG. */
     private static final EELFLoggerDelegate LOG = EELFLoggerDelegate.getLogger(ExternalAppConfig.class);
-
-    /** The vid schema script. */
-    @Value("classpath:vid-schema.sql")
-    private Resource vidSchemaScript;
-
-    /** The vid data script. */
-    @Value("classpath:vid-data.sql")
-    private Resource vidDataScript;
 
     /**
      * The Class InnerConfiguration.
@@ -156,7 +145,6 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	 * @return New instance of {@link SchedulerFactoryBean}
 	 */
 	@Bean
-	@DependsOn("dataSourceInitializer")
 	public SchedulerFactoryBean schedulerFactoryBean() {
 		SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
 		schedulerFactory.setJobFactory(new SpringBeanJobFactory());
@@ -164,36 +152,13 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	}
 
 
-	/**
-     * Data source initializer.
-     *
-     * @param dataSource the data source
-     * @return the data source initializer
-     */
-    @Bean
-    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
-
-        LOG.info("Initializing VID data source");
-
-        final DataSourceInitializer initializer = new DataSourceInitializer();
-        initializer.setDataSource(dataSource);
-        initializer.setDatabasePopulator(databasePopulator());
-        return initializer;
-    }
-
-    /**
-     * Database populator.
-     *
-     * @return the database populator
-     */
-    public DatabasePopulator databasePopulator() {
-        LOG.info("Populating VID data source");
-
-        final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(vidSchemaScript);
-        populator.addScript(vidDataScript);
-        return populator;
-    }
+	@Bean
+	public SpringLiquibase liquibaseBean(DataSource dataSource) {
+		SpringLiquibase springLiquibase = new SpringLiquibase();
+		springLiquibase.setDataSource(dataSource);
+		springLiquibase.setChangeLog("classpath:db-master-changelog.xml");
+		return springLiquibase;
+	}
 
 	@Bean
 	public LoginStrategy loginStrategy() {
