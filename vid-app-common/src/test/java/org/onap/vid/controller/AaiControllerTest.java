@@ -194,10 +194,7 @@ public class AaiControllerTest {
     }
 
     private Pnf createPnf(String pnfId) {
-        Pnf pnf = new Pnf();
-        pnf.setPnfId(pnfId);
-        pnf.setPnfName("TestPnf");
-        return pnf;
+        return Pnf.builder().withPnfId(pnfId).withPnfName("TestPnf").build();
     }
 
     public void getPNFInstances_shouldReturnOKResponseFromAAIService() throws Exception {
