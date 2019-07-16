@@ -1,0 +1,43 @@
+{
+  "id": "6b3536cf-3a12-457f-abb5-fa2203e0d923",
+  "instance-group-role": "SUB_INTERFACE",
+  "model-invariant-id": "868b109c-9481-4a18-891b-af974db7705a",
+  "model-version-id": "dd182d7d-6949-4b90-b3cc-5befe400742e",
+  "description": "vTSBC Customer Landing Network Collection Desc",
+  "instance-group-type": "L3-NETWORK",
+  "resource-version": "1539158492730",
+  "instance-group-name": "NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection",
+  "instance-group-function": "vTSBC Customer Landing Network Collection",
+  "relationship-list": {
+    "relationship": [
+      {
+        "related-to-property": [
+          {
+            "property-value": "APPC-24595-T-IST-02AShared_cps_internal_net_1",
+            "property-key": "l3-network.network-name"
+          }
+        ],
+        "relationship-data": [
+          {
+            "relationship-value": "1fea0624-dac2-4997-904d-34ca1bc12fa9",
+            "relationship-key": "l3-network.network-id"
+          }
+        ],
+        "related-link": "/aai/v14/network/l3-networks/l3-network/1fea0624-dac2-4997-904d-34ca1bc12fa9",
+        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+        "related-to": "l3-network"
+      },
+      {
+        "related-to": "collection",
+        "relationship-label": "org.onap.inventory.BelongsTo",
+        "related-link": "/aai/v14/network/collections/collection/84a351ae-3601-45e2-98df-878d6c816abc",
+        "relationship-data": [
+          {
+            "relationship-key": "collection.collection-id",
+            "relationship-value": "84a351ae-3601-45e2-98df-878d6c816abc"
+          }
+        ]
+      }
+    ]
+  }
+}

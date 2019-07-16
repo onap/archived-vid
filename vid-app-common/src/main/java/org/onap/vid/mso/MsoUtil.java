@@ -21,9 +21,15 @@
 
 package org.onap.vid.mso;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import io.joshworks.restclient.http.HttpResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.vid.exceptions.GenericUncheckedException;
 
+import java.io.IOException;
 import java.util.Objects;
+
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 public class MsoUtil {
 
@@ -43,5 +49,25 @@ public class MsoUtil {
             msoResponseWrapper.setEntity(Objects.toString(httpResponse.getBody()));
         }
         return msoResponseWrapper;
+    }
+
+    public static String formatExceptionAdditionalInfo(int statusCode, String msoResponse) {
+        String errorMsg = "Http Code:" + statusCode;
+        if (!StringUtils.isEmpty(msoResponse)) {
+            String filteredJson;
+            try {
+                filteredJson = StringUtils.defaultIfEmpty(
+                        JACKSON_OBJECT_MAPPER.readTree(msoResponse).path("serviceException").toString().replaceAll("[\\{\\}]","") ,
+                        msoResponse
+                );
+            } catch (JsonParseException e) {
+                filteredJson = msoResponse;
+            } catch (IOException e) {
+                throw new GenericUncheckedException(e);
+            }
+
+            errorMsg = errorMsg + ", " + filteredJson;
+        }
+        return errorMsg;
     }
 }

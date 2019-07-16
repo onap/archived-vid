@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,14 +20,14 @@
 
 package org.onap.vid.mso.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @JsonInclude(NON_NULL)
 public class BaseResourceInstantiationRequestDetails {
@@ -83,21 +83,21 @@ public class BaseResourceInstantiationRequestDetails {
         this.requestParameters = requestParameters;
     }
 
-     public static class RequestInfo {
+    public static class RequestInfo {
 
-        @JsonInclude(NON_NULL) public final String instanceName;
-        @JsonInclude(NON_NULL) public final String productFamilyId;
+        @JsonInclude(NON_EMPTY) public final String instanceName;
+        @JsonInclude(NON_EMPTY) public final String productFamilyId;
         public final String source;
-        public final boolean suppressRollback;
+        @JsonInclude(NON_NULL) public final Boolean suppressRollback;
         public final String requestorId;
 
-        public RequestInfo(String instanceName, String productFamilyId, String source, boolean rollbackOnFailure, String requestorId) {
+        public RequestInfo(String instanceName, String productFamilyId, String source, Boolean rollbackOnFailure, String requestorId) {
             this.instanceName = instanceName;
             this.productFamilyId = productFamilyId;
             this.source = source;
             this.requestorId = requestorId;
             // in the FE we are asking for "RollbackOnFailure" but to MSO we are passing the negative value "suppressRollback"
-            this.suppressRollback = !rollbackOnFailure;
+            this.suppressRollback = rollbackOnFailure != null ? (!rollbackOnFailure) : null;
         }
     }
 
@@ -120,8 +120,12 @@ public class BaseResourceInstantiationRequestDetails {
     public static class LineOfBusiness{
         public final String lineOfBusinessName;
 
-        public LineOfBusiness(String lineOfBusiness) {
+        private LineOfBusiness(String lineOfBusiness) {
             this.lineOfBusinessName = lineOfBusiness;
+        }
+
+        public static LineOfBusiness of(String lineOfBusiness) {
+            return lineOfBusiness==null ? null : new LineOfBusiness(lineOfBusiness);
         }
     }
 
@@ -150,12 +154,17 @@ public class BaseResourceInstantiationRequestDetails {
     public static class RequestParameters {
         public final List<? extends UserParamTypes> userParams;
 
-        public RequestParameters(List<? extends UserParamTypes> userParams) {
+        @JsonInclude(NON_NULL) public final String testApi;
+        public RequestParameters(List<? extends UserParamTypes> userParams, String testApi) {
             this.userParams = userParams;
+            this.testApi = testApi;
         }
 
         public List<? extends UserParamTypes> getUserParams() {
             return userParams;
+        }
+        public String getTestApi() {
+            return testApi;
         }
     }
 }

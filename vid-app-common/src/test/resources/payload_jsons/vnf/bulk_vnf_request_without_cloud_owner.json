@@ -1,0 +1,48 @@
+ {
+   "requestDetails": {
+     "modelInfo": {
+       "modelType": "vnf",
+       "modelInvariantId": "11111111-f63c-463e-ba94-286933b895f9",
+       "modelVersionId": "7f40c192-f63c-463e-ba94-286933b895f8",
+       "modelName": "2016-73_MOW-AVPN-vPE-BV-L",
+       "modelVersion": "10.0",
+       "modelCustomizationName": "2016-73_MOW-AVPN-vPE-BV-L 0",
+       "modelCustomizationId": "ab153b6e-c364-44c0-bef6-1f2982117f04"
+     },
+     "cloudConfiguration": {
+       "lcpCloudRegionId": "mdt1",
+       "tenantId": "88a6ca3ee0394ade9403f075db23167e"
+     },
+     "requestInfo": {
+       "instanceName": "vmxnjr001",
+       "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+       "source": "VID",
+       "suppressRollback": true,
+       "requestorId": "pa0916"
+     },
+     "platform": {
+       "platformName": "platformName"
+     },
+     "lineOfBusiness": {
+       "lineOfBusinessName": "lineOfBusinessName"
+     },
+       "relatedInstanceList": [
+          {
+             "relatedInstance": {
+                "instanceId": "aa3514e3-5a33-55df-13ab-12abad84e7aa",
+                "modelInfo": {
+                   "modelType": "service",
+                   "modelInvariantId": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+                   "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe",
+                   "modelName": "sriov",
+                   "modelVersion": "1.0"
+                }
+             }
+          }
+       ],
+       "requestParameters": {
+         "userParams": [],
+         "testApi" : "VNF_API"
+       }
+   }
+ }

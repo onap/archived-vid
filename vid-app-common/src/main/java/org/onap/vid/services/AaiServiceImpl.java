@@ -24,6 +24,7 @@ package org.onap.vid.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.*;
@@ -39,16 +40,19 @@ import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceInstanceSearchResult;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.model.aaiTree.RelatedVnf;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.utils.Intersection;
 import org.onap.vid.utils.Tree;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 /**
@@ -68,6 +72,8 @@ public class AaiServiceImpl implements AaiService {
     private AaiResponseTranslator aaiResponseTranslator;
     private AAITreeNodeBuilder aaiTreeNode;
     private AAIServiceTree aaiServiceTree;
+    private ExecutorService executorService;
+
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
 
@@ -77,13 +83,15 @@ public class AaiServiceImpl implements AaiService {
         AaiOverTLSClientInterface aaiOverTLSClient,
         AaiResponseTranslator aaiResponseTranslator,
         AAITreeNodeBuilder aaiTreeNode,
-        AAIServiceTree aaiServiceTree)
+        AAIServiceTree aaiServiceTree,
+        ExecutorService executorService)
     {
         this.aaiClient = aaiClient;
         this.aaiOverTLSClient = aaiOverTLSClient;
         this.aaiResponseTranslator = aaiResponseTranslator;
         this.aaiTreeNode = aaiTreeNode;
         this.aaiServiceTree = aaiServiceTree;
+        this.executorService = executorService;
     }
 
     private List<Service> convertModelToService(Model model) {
@@ -220,8 +228,8 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public AaiResponse getSubscriberData(String subscriberId, RoleValidator roleValidator) {
-        AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId);
+    public AaiResponse getSubscriberData(String subscriberId, RoleValidator roleValidator, boolean omitServiceInstances) {
+        AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId, omitServiceInstances);
         String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
         for (ServiceSubscription serviceSubscription : subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
             String serviceType = serviceSubscription.serviceType;
@@ -254,7 +262,7 @@ public class AaiServiceImpl implements AaiService {
 
 
     private List<ServiceInstanceSearchResult> getServicesBySubscriber(String subscriberId, String instanceIdentifier, RoleValidator roleValidator) {
-        AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId);
+        AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId, false);
         String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
         String subscriberName = subscriberResponse.getT().subscriberName;
         ServiceSubscriptions serviceSubscriptions = subscriberResponse.getT().serviceSubscriptions;
@@ -483,25 +491,36 @@ public class AaiServiceImpl implements AaiService {
     @Override
     public List<RelatedVnf> searchGroupMembers(String globalCustomerId, String serviceType, String invariantId, String groupType, String groupRole) {
         String getURL = "business/customers/customer/" +
-                    globalCustomerId + "/service-subscriptions/service-subscription/" +
-                    serviceType + "/service-instances?model-invariant-id=" + invariantId;
+                globalCustomerId + "/service-subscriptions/service-subscription/" +
+                serviceType + "/service-instances?model-invariant-id=" + invariantId;
 
-        Tree<AAIServiceTree.AaiRelationship> pathsToSearch = new Tree<>(new AAIServiceTree.AaiRelationship(AAITreeNodeBuilder.SERVICE_INSTANCE));
-        pathsToSearch.addPath(AAITreeNodeBuilder.toAaiRelationshipList(AAITreeNodeBuilder.GENERIC_VNF, AAITreeNodeBuilder.INSTANCE_GROUP));
+        Tree<AAIServiceTree.AaiRelationship> pathsToSearch = new Tree<>(new AAIServiceTree.AaiRelationship(NodeType.SERVICE_INSTANCE));
+        pathsToSearch.addPath(AAIServiceTree.toAaiRelationshipList(NodeType.GENERIC_VNF, NodeType.INSTANCE_GROUP));
 
         //get all vnfs related to service-instances from the model-invariant-id
-        List<AAITreeNode> aaiTree = aaiServiceTree.buildAAITree(getURL, pathsToSearch);
+        List<AAITreeNode> aaiTree = aaiServiceTree.buildAAITree(getURL, null, HttpMethod.GET, pathsToSearch, true);
 
         //filter by instance-group-role & instance-group-type properties (from getAdditionalProperties)
         //only vnfs has related instance-group with the same groupType & groupRole - are filtered out.
         List<AAITreeNode> filteredVnfs = filterByInstanceGroupRoleAndType(aaiTree, groupRole, groupType);
 
         //convert vnfs to expected result
-        return filteredVnfs.stream()
+        List<RelatedVnf> convertedVnfs = filteredVnfs.stream()
                 .map(RelatedVnf::from)
-                .map(this::enrichRelatedVnfWithCloudRegionAndTenant)
                 .collect(Collectors.toList());
+
+        try {
+            return executorService.submit(() ->
+                    convertedVnfs.parallelStream()
+                            .map(this::enrichRelatedVnfWithCloudRegionAndTenant)
+                            .collect(Collectors.toList())
+            ).get();
+        } catch (Exception e) {
+            LOGGER.error(EELFLoggerDelegate.errorLogger, "Search group Members - Failed to enrich vnf with cloud region", e);
+            return convertedVnfs;
+        }
     }
+
 
     private List<AAITreeNode> filterByInstanceGroupRoleAndType(List<AAITreeNode> aaiTree, String groupRole, String groupType) {
 
@@ -544,10 +563,10 @@ public class AaiServiceImpl implements AaiService {
     }
 
     private void getInstanceGroupInfoFromRelationship(org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship relationship, List<InstanceGroupInfo> instanceGroupInfoList) {
-        if(relationship.getRelatedTo().equals("instance-group")){
+        if(StringUtils.equals(relationship.getRelatedTo(),"instance-group")){
             for(org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelatedToProperty relatedToProperty: relationship.getRelatedToPropertyList()){
-                if(relatedToProperty.getPropertyKey().equals("instance-group.instance-group-name")){
-                    instanceGroupInfoList.add(new InstanceGroupInfo(relatedToProperty.getPropertyValue()));
+                if(StringUtils.equals(relatedToProperty.getKey(),"instance-group.instance-group-name")){
+                    instanceGroupInfoList.add(new InstanceGroupInfo(relatedToProperty.getValue()));
                 }
             }
         }

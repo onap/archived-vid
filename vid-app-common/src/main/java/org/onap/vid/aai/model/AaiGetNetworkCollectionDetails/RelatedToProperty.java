@@ -25,33 +25,29 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RelatedToProperty {
-
-	public String getPropertyKey() {
-		return propertyKey;
-	}
-
-
-	public void setPropertyKey(String propertyKey) {
-		this.propertyKey = propertyKey;
-	}
-
-
-	public String getPropertyValue() {
-		return propertyValue;
-	}
-
-
-	public void setPropertyValue(String propertyValue) {
-		this.propertyValue = propertyValue;
-	}
-
-
+public class RelatedToProperty extends KeyValueModel {
+	@Override
 	@JsonProperty("property-key")
-	public String propertyKey;
+	public String getKey() {
+		return super.getKey();
+	}
 
+	@Override
+	@JsonProperty("property-key")
+	public void setKey(String propertyKey) {
+		super.setKey(propertyKey);
+	}
 
+	@Override
 	@JsonProperty("property-value")
-	public String propertyValue;
+	public String getValue() {
+		return super.getValue();
+	}
 
+	@Override
+	@JsonProperty("property-value")
+	public void setValue(String propertyValue) {
+		super.setValue(propertyValue);
+	}
 }
+

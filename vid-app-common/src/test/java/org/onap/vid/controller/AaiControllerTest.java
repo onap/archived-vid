@@ -21,8 +21,14 @@
 
 package org.onap.vid.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -34,13 +40,16 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
@@ -53,14 +62,18 @@ import org.onap.vid.aai.model.PortDetailsTranslator.PortDetails;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsError;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
 import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.properties.Features;
+import org.onap.vid.roles.Role;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
 import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.togglz.core.manager.FeatureManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AaiControllerTest {
@@ -76,12 +89,16 @@ public class AaiControllerTest {
     private RoleProvider roleProvider;
     @Mock
     private SystemPropertiesWrapper systemPropertiesWrapper;
+
+    @Mock
+    private FeatureManager featureManager;
+
     private MockMvc mockMvc;
     private AaiController aaiController;
 
     @Before
     public void setUp() {
-        aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper);
+        aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper, featureManager);
         mockMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
     }
 
@@ -247,6 +264,43 @@ public class AaiControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(expectedResponse));
+    }
+
+    @Test
+    public void getSubscriberDetailsOmitServiceInstances_reduceDepthEnabledAndOmitQueryParam() throws IOException {
+        getSubscriberDetailsOmitServiceInstances("some subscriber id",
+                true, true, true);
+    }
+
+    @Test
+    public void getSubscriberDetailsOmitServiceInstances_reduceDepthDisabledAndOmitQueryParam() throws IOException {
+        getSubscriberDetailsOmitServiceInstances("another-subscriber-id-123",
+                false, true, false);
+    }
+
+    @Test
+    public void getSubscriberDetailsOmitServiceInstances_reduceDepthDisabled() throws IOException {
+        getSubscriberDetailsOmitServiceInstances("123-456-789-123-345-567-6",
+                false,  false,  false);
+    }
+
+    @Test
+    public void getSubscriberDetailsOmitServiceInstances_reduceDepthEnabled() throws IOException {
+        getSubscriberDetailsOmitServiceInstances("0000000000000000000000000",
+                true, false,  false);
+    }
+
+    private void getSubscriberDetailsOmitServiceInstances(String subscriberId, boolean isFlag1906AaiSubDetailsReduceDepthEnabled,
+        boolean omitServiceInstancesQueryParam, boolean omitServiceInstancesExpectedGetSubscriberDataParam) throws IOException {
+        when(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).thenReturn(isFlag1906AaiSubDetailsReduceDepthEnabled);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(roleProvider.getUserRoles(request)).thenReturn(ImmutableList.of(mock(Role.class), mock(Role.class)));
+        AaiResponse subscriberData = mock(AaiResponse.class);
+        when(subscriberData.getT()).thenReturn(null);
+        when(subscriberData.getHttpCode()).thenReturn(200);
+        when(aaiService.getSubscriberData(any(), any(), anyBoolean())).thenReturn(subscriberData);
+        aaiController.getSubscriberDetails(request, subscriberId, omitServiceInstancesQueryParam);
+        verify(aaiService).getSubscriberData(argThat(subscriberId::equals), any(RoleValidator.class), booleanThat(b -> omitServiceInstancesExpectedGetSubscriberDataParam == b));
     }
 }
 

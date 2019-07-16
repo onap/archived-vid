@@ -20,6 +20,9 @@
 
 package org.onap.vid.controller;
 
+import static org.mockito.Mockito.mock;
+
+import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoInterface;
@@ -27,17 +30,12 @@ import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
 import org.onap.vid.services.CloudOwnerServiceImpl;
 import org.springframework.http.ResponseEntity;
-import org.togglz.core.manager.FeatureManager;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static org.mockito.Mockito.mock;
 
 public class MsoControllerNewTest {
 
     private MsoController createTestSubject() {
         try {
-            return new MsoController(new MsoBusinessLogicImpl(mock(MsoInterface.class),mock(FeatureManager.class)), new CloudOwnerServiceImpl(null, null));
+            return new MsoController(new MsoBusinessLogicImpl(mock(MsoInterface.class)), new CloudOwnerServiceImpl(null, null));
         } catch (Exception e) {
             return null;
         }

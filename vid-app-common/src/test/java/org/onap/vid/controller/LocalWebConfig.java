@@ -44,6 +44,7 @@ import org.togglz.core.manager.FeatureManager;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.util.concurrent.ExecutorService;
 
 @Configuration
 public class LocalWebConfig {
@@ -66,8 +67,8 @@ public class LocalWebConfig {
 
     @Bean
     public AaiService getAaiService(AaiClientInterface aaiClient, AaiOverTLSClientInterface aaiOverTLSClient,
-        AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree) {
-        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree);
+        AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
+        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree, executorService);
     }
 
     @Bean
