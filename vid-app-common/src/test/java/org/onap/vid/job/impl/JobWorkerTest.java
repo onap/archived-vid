@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,7 @@ import org.onap.vid.job.command.HttpCallCommand;
 import org.onap.vid.job.command.JobCommandFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 import java.util.Map;
 import java.util.UUID;
@@ -51,6 +52,9 @@ public class JobWorkerTest {
     @Mock
     private JobCommandFactory jobCommandFactory;
 
+    @Mock
+    private FeatureManager featureManager;
+
     private final JobCommand jobCommand = mock(JobCommand.class);
     private Job jobUnderTest;
     private JobAdapter.AsyncJobRequest originalData;
@@ -68,11 +72,12 @@ public class JobWorkerTest {
         };
 
         originalType = JobType.MacroServiceInstantiation;
-        jobUnderTest = new JobAdapterImpl().createServiceInstantiationJob(
+        jobUnderTest = new JobAdapterImpl(featureManager).createServiceInstantiationJob(
                 originalType,
                 originalData,
                 UUID.randomUUID(),
                 "my user id",
+                "VNF_API",
                 "optimisticUniqueServiceInstanceName",
                 RandomUtils.nextInt()
         );

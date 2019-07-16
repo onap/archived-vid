@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,21 @@
 
 package org.onap.vid.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -28,14 +43,6 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 import org.hibernate.annotations.Type;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.job.Job.JobStatus;
-
-import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.UUID;
 
 /*
  The following 2 annotations let hibernate to update only fields that actually have been changed.
@@ -54,42 +61,39 @@ public class JobAuditStatus extends VidBaseEntity {
 
     public JobAuditStatus(){}
 
-    public JobAuditStatus(UUID jobId, String jobStatus, SourceStatus source){
+    private JobAuditStatus(UUID jobId, String instanceName, String instanceType, String jobStatus,
+                           SourceStatus source, UUID requestId, String additionalInfo, Date date, int ordinal) {
         this.jobId = jobId;
+        this.instanceName = instanceName;
+        this.instanceType = instanceType;
         this.jobStatus = jobStatus;
         this.source = source;
+        this.requestId = requestId;
+        setAdditionalInfo(additionalInfo);
+        this.ordinal = ordinal;
+        this.created = date;
     }
 
-    public JobAuditStatus(UUID jobId, String jobStatus, SourceStatus source, Date date){
-        this(jobId, jobStatus, source);
-        this.created = date;
+    public JobAuditStatus(UUID jobId, String jobStatus, SourceStatus source){
+        this(jobId, null, null, jobStatus, source, null, null, null, 0);
     }
 
     public JobAuditStatus(UUID jobId, String jobStatus, SourceStatus source, UUID requestId, String additionalInfo) {
-        this(jobId, jobStatus, source);
-        this.requestId = requestId;
-        setAdditionalInfo(additionalInfo);
-    }
-
-    public JobAuditStatus(UUID jobId, String jobStatus, SourceStatus source, UUID requestId, String additionalInfo, Date date){
-        this(jobId, jobStatus, source, requestId, additionalInfo);
-        this.created = date;
-    }
-
-    public JobAuditStatus(String instanceName, String jobStatus, UUID requestId, String additionalInfo) {
-        this.instanceName = instanceName;
-        this.jobStatus = jobStatus;
-        this.requestId = requestId;
-        this.additionalInfo = additionalInfo;
-
+        this(jobId, null, null, jobStatus, source, requestId, additionalInfo, null, 0);
     }
 
     public JobAuditStatus(String instanceName, String jobStatus, UUID requestId, String additionalInfo, String date, String instanceType) {
-       this(instanceName, jobStatus, requestId, additionalInfo);
-       this.created = dateStringToDate(date);
-       this.instanceType = instanceType;
+        this(null, instanceName, instanceType, jobStatus, null, requestId, additionalInfo, null, 0);
+        this.created = dateStringToDate(date);
     }
 
+    public static JobAuditStatus createForTest(UUID jobId, String jobStatus, SourceStatus source, Date date, int ordinal) {
+        return new JobAuditStatus(jobId, null, null, jobStatus, source, null, null, date, ordinal);
+    }
+
+    public static JobAuditStatus createForTest(UUID jobId, String jobStatus, SourceStatus source, UUID requestId, String additionalInfo, Date date) {
+        return new JobAuditStatus(jobId, null, null, jobStatus, source, requestId, additionalInfo, date, 0);
+    }
 
     private Date dateStringToDate(String dateAsString){
         if (StringUtils.isEmpty(dateAsString)) {
@@ -121,6 +125,7 @@ public class JobAuditStatus extends VidBaseEntity {
                 .append(source, that.source)
                 .append(requestId, that.requestId)
                 .append(additionalInfo, that.additionalInfo)
+                // ordinal is not part of equality (similarly to "created" field)
                 .isEquals();
     }
 
@@ -132,6 +137,7 @@ public class JobAuditStatus extends VidBaseEntity {
                 .append(source)
                 .append(requestId)
                 .append(additionalInfo)
+                // ordinal is not part of equality (similarly to "created" field)
                 .toHashCode();
     }
 
@@ -140,6 +146,25 @@ public class JobAuditStatus extends VidBaseEntity {
         VID
     }
 
+    public enum ResourceTypeFilter {
+        SERVICE("serviceInstanceId"),
+        VNF("vnfInstanceId"),
+        VFMODULE("vfModuleInstanceId"),
+        NETWORK("networkInstanceId"),
+        VNFGROUP("instanceGroupId");
+
+        private final String filterBy;
+
+        ResourceTypeFilter(String filterBy) {
+            this.filterBy = filterBy;
+        }
+
+        public String getFilterBy() {
+            return filterBy;
+        }
+    }
+
+
     private UUID jobId;
     private String instanceName;
     private String instanceType;
@@ -147,6 +172,7 @@ public class JobAuditStatus extends VidBaseEntity {
     private SourceStatus source;
     private UUID requestId;
     private String additionalInfo;
+    private int ordinal;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -204,6 +230,18 @@ public class JobAuditStatus extends VidBaseEntity {
 
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = StringUtils.substring(additionalInfo, 0, MAX_ADDITIONAL_INFO_LENGTH);
+    }
+
+    @Column(name = "ORDINAL", columnDefinition = "INT")
+    public int getOrdinal() {
+        // Ordinal allows sorting audit statuses by
+        // insertion order, regardless of "created"
+        // field
+        return ordinal;
+    }
+
+    public void setOrdinal(int ordinal) {
+        this.ordinal = ordinal;
     }
 
     @Transient

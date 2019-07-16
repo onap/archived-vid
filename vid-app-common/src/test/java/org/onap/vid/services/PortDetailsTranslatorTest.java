@@ -53,7 +53,7 @@ public class PortDetailsTranslatorTest {
                 "        {" +
                 "            \"id\": \"4876980240\"," +
                 "            \"node-type\": \"l-interface\"," +
-                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
+                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "            \"properties\": {" +
                 "                \"interface-name\": \"zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "                \"selflink\": \"https://network-aic.rdm5b.cci.att.com:9696/v2.0/ports/6de7bf87-6faa-4984-9492-18d1188b3d4a\"," +
@@ -89,7 +89,7 @@ public class PortDetailsTranslatorTest {
                 "        {" +
                 "            \"id\": \"4876980240\"," +
                 "            \"node-type\": \"l-interface\"," +
-                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
+                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "            \"properties\": {" +
                 "                \"interface-name\": null," +
                 "                \"selflink\": \"https://network-aic.rdm5b.cci.att.com:9696/v2.0/ports/6de7bf87-6faa-4984-9492-18d1188b3d4a\"," +
@@ -122,7 +122,7 @@ public class PortDetailsTranslatorTest {
                 "        {" +
                 "            \"id\": \"4876980240\"," +
                 "            \"node-type\": \"l-interface\"," +
-                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
+                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "            \"properties\": {" +
                 "                \"interface-name\": \"zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "                \"selflink\": \"https://network-aic.rdm5b.cci.att.com:9696/v2.0/ports/6de7bf87-6faa-4984-9492-18d1188b3d4a\"," +
@@ -155,7 +155,7 @@ public class PortDetailsTranslatorTest {
                 "        {" +
                 "            \"id\": \"4876980240\"," +
                 "            \"node-type\": \"l-interface\"," +
-                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
+                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "            \"properties\": {" +
                 "                \"interface-name\": \"\"," +
                 "                \"selflink\": \"https://network-aic.rdm5b.cci.att.com:9696/v2.0/ports/6de7bf87-6faa-4984-9492-18d1188b3d4a\"," +
@@ -188,7 +188,7 @@ public class PortDetailsTranslatorTest {
                 "        {" +
                 "            \"id\": \"4876980240\"," +
                 "            \"node-type\": \"l-interface\"," +
-                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
+                "            \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/460f35aeb53542dc9f77105066483e83/vservers/vserver/15e46e2f-4b98-4e06-9644-f0e6e35cc79a/l-interfaces/l-interface/zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "            \"properties\": {" +
                 "                \"interface-name\": \"zrdm5bfprbVLBA005-vlbagent_aff_int_pktmirror_1_port-dr5jhyxva5ib\"," +
                 "                \"selflink\": \"https://network-aic.rdm5b.cci.att.com:9696/v2.0/ports/6de7bf87-6faa-4984-9492-18d1188b3d4a\"," +

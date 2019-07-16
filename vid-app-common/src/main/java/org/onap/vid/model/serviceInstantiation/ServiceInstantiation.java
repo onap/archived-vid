@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,18 @@
 package org.onap.vid.model.serviceInstantiation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.ObjectUtils;
 import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
+import org.onap.vid.model.VidNotions;
 import org.onap.vid.mso.model.ModelInfo;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ServiceInstantiation extends BaseResource implements JobAdapter.AsyncJobRequest {
 
@@ -58,11 +64,14 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
 
     private final boolean isPause;
 
-    private final int bulkSize;
+    private int bulkSize;
 
     private final String testApi;
 
     private final boolean isALaCarte;
+
+    private final VidNotions vidNotions;
+    private Map<String, VrfEntry> vrfs;
 
     public ServiceInstantiation(@JsonProperty("modelInfo") ModelInfo modelInfo,
                                 @JsonProperty("owningEntityId") String owningEntityId,
@@ -82,6 +91,7 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
                                 @JsonProperty("vnfs") Map<String, Vnf> vnfs,
                                 @JsonProperty("networks") Map<String, Network> networks,
                                 @JsonProperty("vnfGroups") Map<String, InstanceGroup> vnfGroups,
+                                @JsonProperty("vrfs") Map<String, VrfEntry> vrfs,
                                 @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
                                 @JsonProperty("pause") boolean isPause,
                                 @JsonProperty("bulkSize") int bulkSize,
@@ -89,9 +99,12 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
                                 @JsonProperty("isALaCarte") boolean isALaCarte,
                                 @JsonProperty("testApi") String testApi,
                                 @JsonProperty("instanceId") String instanceId,
-                                @JsonProperty("action") String action
-                               ) {
-        super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId);
+                                @JsonProperty("action") String action,
+                                @JsonProperty("trackById") String trackById,
+                                @JsonProperty("isFailed") Boolean isFailed,
+                                @JsonProperty("statusMessage") String statusMessage,
+                                @JsonProperty("vidNotions") VidNotions vidNotions) {
+        super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage);
         this.owningEntityId = owningEntityId;
         this.owningEntityName = owningEntityName;
         this.projectName = projectName;
@@ -105,11 +118,14 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
         this.vnfs = vnfs;
         this.networks = networks;
         this.vnfGroups = vnfGroups;
+        this.vrfs = vrfs;
         this.isPause = isPause;
         this.bulkSize = bulkSize;
         this.isALaCarte = isALaCarte;
         this.testApi = isALaCarte ? testApi : null;
+        this.vidNotions = vidNotions;
     }
+
 
     public String getOwningEntityId() {
         return owningEntityId;
@@ -152,15 +168,19 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
     }
 
     public Map<String, Vnf> getVnfs() {
-        return vnfs == null ? Collections.emptyMap() : vnfs;
+        return emptyMapIfNull(vnfs);
     }
 
     public Map<String, Network> getNetworks() {
-        return networks == null ? Collections.emptyMap() : networks;
+        return emptyMapIfNull(networks);
     }
 
     public Map<String, InstanceGroup> getVnfGroups() {
-        return vnfGroups == null ? Collections.emptyMap() : vnfGroups;
+        return emptyMapIfNull(vnfGroups);
+    }
+
+    public Map<String, VrfEntry> getVrfs() {
+        return emptyMapIfNull(vrfs);
     }
 
     public boolean isPause() {
@@ -169,9 +189,22 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
 
     public int getBulkSize() { return bulkSize; }
 
+    public void setBulkSize(int bulkSize) {
+        this.bulkSize = bulkSize;
+    }
+
+    public VidNotions getVidNotions() {
+        return vidNotions;
+    }
+
     @Override
     protected String getModelType() {
         return "service";
+    }
+
+    @Override
+    public Collection<BaseResource> getChildren() {
+        return Stream.of(getNetworks().values(), getVnfs().values(), getVnfGroups().values()).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     @JsonProperty("isALaCarte")
@@ -181,6 +214,15 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
 
     public String getTestApi() {
         return this.testApi;
+    }
+
+    @Override
+    public JobType getJobType() {
+        return JobType.ALaCarteService;
+    }
+
+    private <T> Map<String, T> emptyMapIfNull(Map<String, T> map) {
+        return ObjectUtils.defaultIfNull(map, Collections.emptyMap());
     }
 
 }

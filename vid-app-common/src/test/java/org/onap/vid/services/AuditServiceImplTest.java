@@ -19,71 +19,88 @@
  */
 package org.onap.vid.services;
 
-import org.glassfish.grizzly.http.util.HttpStatus;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.model.JobAuditStatus;
+import org.onap.vid.mso.RestMsoImplementation;
+import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.AsyncRequestStatusList;
 import org.onap.vid.testUtils.TestUtils;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 public class AuditServiceImplTest {
+
   @Mock
-  private AsyncInstantiationBusinessLogic asyncInstantiationBL;
+  private RestMsoImplementation restMso;
+  @Mock
+  private AsyncInstantiationRepository asyncInstantiationRepository;
 
   @InjectMocks
   private AuditServiceImpl auditService;
 
-  @BeforeClass
-  public void init() {
-    initMocks(this);
+  @BeforeMethod
+  public void setUp() {
+    restMso = null;
+    asyncInstantiationRepository = null;
+    auditService = null;
+    MockitoAnnotations.initMocks(this);
   }
 
   @Test
-  public void setFailedAuditStatusFromMsoTest() {
+  public void testGetRequestsIdsByServiceIdAndRequestTypeAndScope() throws Exception {
 
-    UUID jobUuid = UUID.randomUUID();
-    String requestId = "1";
-    int statusCode = HttpStatus.OK_200.getStatusCode();
-    String msoResponse = "{}";
+    String instanceId = "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2";
+    //the request id in multipleOrchestrationRequestsServiceInstance.json
+    String expectedRequestId = "fab854bf-e53c-415e-b3cc-b6fcce8414b2";
+    String msoBasePath = "/someMsoPath/v2019?";
 
-    auditService.setFailedAuditStatusFromMso(jobUuid, requestId, statusCode, msoResponse);
-
-    verify(asyncInstantiationBL, times(1))
-        .auditMsoStatus(
-            Mockito.any(UUID.class),
-            Mockito.anyString(),
-            Mockito.anyString(),
-            Mockito.anyString());
+    AsyncRequestStatusList asyncRequestStatusList = TestUtils.readJsonResourceFileAsObject(
+        "/responses/mso/multipleOrchestrationRequestsServiceInstance.json",
+        AsyncRequestStatusList.class);
+    RestObject<AsyncRequestStatusList> msoResponse = new RestObject<>();
+    msoResponse.set(asyncRequestStatusList);
+    msoResponse.setStatusCode(200);
+    when(restMso.GetForObject(eq(msoBasePath + "filter=serviceInstanceId:EQUALS:" + instanceId),
+        eq(AsyncRequestStatusList.class)))
+        .thenReturn(msoResponse);
+    TestUtils.testWithSystemProperty("mso.restapi.get.orc.reqs", msoBasePath, () -> {
+      List<AsyncRequestStatus.Request> result = auditService
+          .retrieveRequestsFromMsoByServiceIdAndRequestTypeAndScope(instanceId, "createInstance", "service");
+      assertThat(result.size(), equalTo(1));
+      assertThat(result.get(0).requestId, equalTo(expectedRequestId));
+      assertThat(result.get(0).startTime, equalTo("Mon, 04 Mar 2019 20:47:15 GMT"));
+    });
   }
 
   @Test
-  public void testConvertMsoResponseStatusToJobAuditStatus_missingDateFromMso_shouldNoError() throws IOException {
-    final AsyncRequestStatusList asyncRequestStatusList = TestUtils.readJsonResourceFileAsObject("/orchestrationRequestsByServiceInstanceId.json", AsyncRequestStatusList.class);
+  public void nextOrdinalAfter_givenNull_returnZero() {
+    assertThat(
+        auditService.nextOrdinalAfter(null),
+        equalTo(0)
+    );
+  }
 
-    AuditServiceImpl auditService = new AuditServiceImpl(null, null);
+  @Test
+  public void nextOrdinalAfter_givenX_returnXplus1() {
+    final int x = 6;
+    final JobAuditStatus jobAuditStatus = new JobAuditStatus();
+    jobAuditStatus.setOrdinal(x);
 
-    final List<JobAuditStatus> jobAuditStatuses = auditService.convertMsoResponseStatusToJobAuditStatus(asyncRequestStatusList.getRequestList(), "foo");
-
-    final List<Date> dates = jobAuditStatuses.stream().map(JobAuditStatus::getCreatedDate).collect(toList());
-    final List<String> statuses = jobAuditStatuses.stream().map(JobAuditStatus::getJobStatus).collect(toList());
-
-    assertThat(dates, containsInAnyOrder(notNullValue(), notNullValue(), nullValue()));
-    assertThat(statuses, containsInAnyOrder("COMPLETE", "COMPLETE", "IN_PROGRESS"));
+    assertThat(
+        auditService.nextOrdinalAfter(jobAuditStatus),
+        equalTo(x + 1)
+    );
   }
 
 }

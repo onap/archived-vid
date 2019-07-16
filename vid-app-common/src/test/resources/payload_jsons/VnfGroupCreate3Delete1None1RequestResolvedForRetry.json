@@ -1,0 +1,176 @@
+{
+  "action": "None",
+  "isDirty": true,
+  "trackById":"aabbcc",
+  "vnfs": {},
+  "instanceParams": [],
+  "validationCounter": 0,
+  "existingNames": {
+    "service_instance_name": "",
+    "vnf_group3_instance_name": ""
+  },
+  "existingVNFCounterMap": {},
+  "existingVnfGroupCounterMap": {
+    "daeb6568-cef8-417f-9075-ed259ce59f48": 3
+  },
+  "existingNetworksCounterMap": {},
+  "networks": {},
+  "vnfGroups": {
+    "groupingservicefortest..ResourceInstanceGroup..0:001": {
+      "originalName": "groupingservicefortest..ResourceInstanceGroup..0",
+      "trackById": "groupingservicefortest..ResourceInstanceGroup..0:001",
+      "instanceName": "VNF_GROUP1_INSTANCE_NAME",
+      "lcpCloudRegionId": null,
+      "legacyRegion": null,
+      "lineOfBusiness": null,
+      "action": "None",
+      "statusMessage": "Vnf has been created successfully.",
+      "instanceId": "VNF_GROUP1_INSTANCE_ID",
+      "instanceType": "VNF_GROUP1_INSTANCE_TYPE",
+      "orchStatus": null,
+      "platformName": null,
+      "productFamilyId": null,
+      "provStatus": null,
+      "tenantId": null,
+      "inMaint": false,
+      "modelInfo": {
+        "modelType": "instanceGroup",
+        "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "modelInvariantId": "4bb2e27e-ddab-4790-9c6d-1f731bc14a45",
+        "modelVersionId": "daeb6568-cef8-417f-9075-ed259ce59f48"
+      },
+      "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48",
+      "instanceGroupRole": "VNF_GROUP1_INSTANCE_ROLE",
+      "instanceGroupFunction": "vTSBC Customer Landing Network Collection",
+      "vnfs":{}
+    },
+    "groupingservicefortest..ResourceInstanceGroup..0:002": {
+      "originalName": "groupingservicefortest..ResourceInstanceGroup..0",
+      "trackById": "groupingservicefortest..ResourceInstanceGroup..0:002",
+      "instanceName": "VNF_GROUP2_INSTANCE_NAME",
+      "lcpCloudRegionId": null,
+      "legacyRegion": null,
+      "lineOfBusiness": null,
+      "action": "None",
+      "instanceId": "VNF_GROUP2_INSTANCE_ID",
+      "instanceType": "VNF_GROUP2_INSTANCE_TYPE",
+      "orchStatus": null,
+      "platformName": null,
+      "productFamilyId": null,
+      "provStatus": null,
+      "inMaint": false,
+      "modelInfo": {
+        "modelType": "instanceGroup",
+        "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "modelInvariantId": "4bb2e27e-ddab-4790-9c6d-1f731bc14a45",
+        "modelVersionId": "daeb6568-cef8-417f-9075-ed259ce59f48"
+      },
+      "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48",
+      "tenantId": null,
+      "instanceGroupRole": "VNF_GROUP2_INSTANCE_ROLE",
+      "instanceGroupFunction": "vTSBC Customer Landing Network Collection",
+      "vnfs": {}
+    },
+    "groupingservicefortest..ResourceInstanceGroup..0": {
+      "action": "Create",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "groupingservicefortest..ResourceInstanceGroup..0",
+      "isMissingData": false,
+      "trackById": "ag5aav86u4j",
+      "vnfGroupStoreKey": "groupingservicefortest..ResourceInstanceGroup..0",
+      "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48",
+      "instanceName": "VNF_GROUP3_INSTANCE_NAME",
+      "isFailed": true,
+      "statusMessage": "Vnf has been created successfully.",
+      "modelInfo": {
+        "modelInvariantId": "4bb2e27e-ddab-4790-9c6d-1f731bc14a45",
+        "modelVersionId": "daeb6568-cef8-417f-9075-ed259ce59f48",
+        "modelName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "modelVersion": "1",
+        "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48"
+      },
+      "instanceParams": [{}
+      ],
+      "vnfs":{}
+    },
+    "groupingservicefortest..ResourceInstanceGroup..0:003": {
+      "action": "None",
+      "isFailed": false,
+      "instanceId": "VNF_GROUP1_INSTANCE_ID_3",
+      "statusMessage": "Vnf has been created successfully.",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "groupingservicefortest..ResourceInstanceGroup..0",
+      "isMissingData": false,
+      "trackById": "asedrftjko",
+      "vnfGroupStoreKey": "groupingservicefortest..ResourceInstanceGroup..0",
+      "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48",
+      "instanceName": "VNF_GROUP4_INSTANCE_NAME",
+      "modelInfo": {
+        "modelInvariantId": "4bb2e27e-ddab-4790-9c6d-1f731bc14a45",
+        "modelVersionId": "daeb6568-cef8-417f-9075-ed259ce59f48",
+        "modelName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "modelVersion": "1",
+        "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48"
+      },
+      "instanceParams": [{}
+      ],
+      "vnfs":{}
+    },
+    "groupingservicefortest..ResourceInstanceGroup..0:004": {
+      "action": "None",
+      "isFailed": false,
+      "statusMessage": "Vnf has been created successfully.",
+      "instanceId": "VNF_GROUP1_INSTANCE_ID_4",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "groupingservicefortest..ResourceInstanceGroup..0",
+      "isMissingData": false,
+      "trackById": "rgedfdged4",
+      "vnfGroupStoreKey": "groupingservicefortest..ResourceInstanceGroup..0",
+      "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48",
+      "instanceName": "VNF_GROUP5_INSTANCE_NAME",
+      "modelInfo": {
+        "modelInvariantId": "4bb2e27e-ddab-4790-9c6d-1f731bc14a45",
+        "modelVersionId": "daeb6568-cef8-417f-9075-ed259ce59f48",
+        "modelName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "modelVersion": "1",
+        "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..0",
+        "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48"
+      },
+      "instanceParams": [{}
+      ],
+      "vnfs":{}
+    }
+  },
+  "bulkSize": 1,
+  "instanceName": "SERVICE_INSTANCE_NAME",
+
+  "instanceId": "service-instance-id",
+  "orchStatus": "GARBAGE DATA",
+  "globalSubscriberId": "global-customer-id",
+  "subscriptionServiceType": "service-instance-type",
+  "owningEntityId": null,
+  "owningEntityName": null,
+  "productFamilyId": null,
+  "lcpCloudRegionId": null,
+  "tenantId": null,
+  "tenantName": null,
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "projectName": null,
+  "rollbackOnFailure": false,
+  "isALaCarte": true,
+  "modelInfo": {
+    "modelInvariantId": "7ee41ce4-4827-44b0-a48e-2707a59905d2",
+    "modelVersionId": "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
+    "modelName": "Grouping Service for Test",
+    "modelType": "service",
+    "modelVersion": "1.0"
+  },
+
+  "testApi": "VNF_API"
+}

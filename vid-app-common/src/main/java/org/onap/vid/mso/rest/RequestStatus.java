@@ -43,6 +43,14 @@ import java.util.Map;
 })
 public class RequestStatus {
 
+    public RequestStatus() {}
+
+    public RequestStatus(String requestState, String statusMessage, String timestamp) {
+        this.requestState = requestState;
+        this.statusMessage = statusMessage;
+        this.timestamp = timestamp;
+    }
+
     /**
      * percentage complete estimate from 0 to 100
      * 

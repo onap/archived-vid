@@ -50,6 +50,7 @@ import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
+import org.onap.vid.properties.Features;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.roles.RoleValidator;
@@ -68,6 +69,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.togglz.core.manager.FeatureManager;
 
 
 @RestController
@@ -80,17 +82,22 @@ public class AaiController extends RestrictedBaseController {
     private AAIRestInterface aaiRestInterface;
     private RoleProvider roleProvider;
     private SystemPropertiesWrapper systemPropertiesWrapper;
+    private FeatureManager featureManager;
+
 
     @Autowired
     public AaiController(AaiService aaiService,
         AAIRestInterface aaiRestInterface,
         RoleProvider roleProvider,
-        SystemPropertiesWrapper systemPropertiesWrapper) {
+        SystemPropertiesWrapper systemPropertiesWrapper,
+        FeatureManager featureManager
+    ) {
 
         this.aaiService = aaiService;
         this.aaiRestInterface = aaiRestInterface;
         this.roleProvider = roleProvider;
         this.systemPropertiesWrapper = systemPropertiesWrapper;
+        this.featureManager = featureManager;
     }
 
     @RequestMapping(value = {"/subscriberSearch"}, method = RequestMethod.GET)
@@ -261,13 +268,13 @@ public class AaiController extends RestrictedBaseController {
     }
 
     @RequestMapping(value = "/aai_sub_details/{subscriberId}", method = RequestMethod.GET)
-    public ResponseEntity<String> GetSubscriberDetails(HttpServletRequest request,
-        @PathVariable("subscriberId") String subscriberId) throws IOException {
+    public ResponseEntity<String> getSubscriberDetails(HttpServletRequest request, @PathVariable("subscriberId") String subscriberId,
+                                                       @RequestParam(value="omitServiceInstances", required = false, defaultValue = "false") boolean omitServiceInstances) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity responseEntity;
         List<Role> roles = roleProvider.getUserRoles(request);
         RoleValidator roleValidator = RoleValidator.by(roles);
-        AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator);
+        AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator, featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH) && omitServiceInstances);
         String httpMessage = subscriberData.getT() != null ?
             objectMapper.writeValueAsString(subscriberData.getT()) :
             subscriberData.getErrorMessage();
