@@ -1,55 +1,73 @@
-/*-
- * ============LICENSE_START=======================================================
- * VID
- * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
- * ================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ============LICENSE_END=========================================================
- */
-
 package org.onap.vid.asdc.parser;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.onap.sdc.toscaparser.api.NodeTemplate;
+import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
 import org.onap.vid.properties.Features;
 import org.togglz.core.manager.FeatureManager;
 
-import static org.apache.commons.lang3.StringUtils.equalsAnyIgnoreCase;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class VidNotionsBuilder {
 
     private final FeatureManager featureManager;
 
+    //map of service type that are always macro services, and their relevant featureFlag
+    private static final Map<VidNotions.ModelCategory, Features> macroServicesByModelCategory = ImmutableMap.of(
+            VidNotions.ModelCategory.INFRASTRUCTURE_VPN, Features.FLAG_1908_INFRASTRUCTURE_VPN,
+            VidNotions.ModelCategory.Transport, Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI,
+            VidNotions.ModelCategory.SERVICE_WITH_COLLECTION_RESOURCE, Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI
+    );
+
     public VidNotionsBuilder(FeatureManager featureManager) {
         this.featureManager = featureManager;
     }
 
-    public VidNotions buildVidNotions(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
-        final VidNotions.InstantiationUI instantiationUI = suggestInstantiationUI(csarHelper);
+    VidNotions buildVidNotions(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
+        VidNotions.ModelCategory modelCategory = suggestModelCategory(csarHelper, serviceModel);
+        return new VidNotions(
+                suggestInstantiationUI(csarHelper, serviceModel),
+                modelCategory,
+                suggestViewEditUI(csarHelper, serviceModel),
+                suggestInstantiationType(serviceModel, modelCategory));
+    }
 
-        return new VidNotions(instantiationUI, suggestModelCategory(csarHelper), suggestViewEditUI(csarHelper, serviceModel));
+    private boolean isMacroTypeByModelCategory(VidNotions.ModelCategory modelCategory) {
+        Features featureOfMacroType = macroServicesByModelCategory.get(modelCategory);
+        //if featureOfMacroType is null this service is not a macro by its type
+        return (featureOfMacroType!=null && featureManager.isActive(featureOfMacroType));
+    }
+
+    VidNotions.InstantiationType suggestInstantiationType(ServiceModel serviceModel, VidNotions.ModelCategory modelCategory) {
+        if (isMacroTypeByModelCategory(modelCategory)) {
+            return VidNotions.InstantiationType.Macro;
+        }
+        if (serviceModel==null || serviceModel.getService()==null || isEmpty(serviceModel.getService().getInstantiationType())) {
+            return VidNotions.InstantiationType.ClientConfig;
+        }
+        String instantiationType = serviceModel.getService().getInstantiationType();
+        if (instantiationType.equals(ToscaParserImpl2.Constants.MACRO)) {
+            return VidNotions.InstantiationType.Macro;
+        }
+        if (instantiationType.equals(ToscaParserImpl2.Constants.A_LA_CARTE)) {
+            return VidNotions.InstantiationType.ALaCarte;
+        }
+
+        return VidNotions.InstantiationType.ClientConfig;
     }
 
     //UI route a-la-carte services to old UI only if InstantiationUI is LEGACY
     //So any other value for InstantiationUI other than LEGACY make UI to route
     //a-la-carte services to new UI
-    VidNotions.InstantiationUI suggestInstantiationUI(ISdcCsarHelper csarHelper) {
+    VidNotions.InstantiationUI suggestInstantiationUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
         if(featureManager.isActive(Features.FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI) && isALaCarte(csarHelper)) {
             return VidNotions.InstantiationUI.ANY_ALACARTE_NEW_UI;
         }
@@ -57,42 +75,91 @@ public class VidNotionsBuilder {
             return VidNotions.InstantiationUI.SERVICE_WITH_VNF_GROUPING;
         }
         if (featureManager.isActive(Features.FLAG_5G_IN_NEW_INSTANTIATION_UI)) {
-            if (isUuidExactlyHardCoded1ffce89fef3f(csarHelper)) {
-                return VidNotions.InstantiationUI.SERVICE_UUID_IS_1ffce89f_ef3f_4cbb_8b37_82134590c5de;
-            } else if (isALaCarte(csarHelper) && hasAnyNetworkWithPropertyNetworkTechnologyEqualsStandardSriovOrOvs(csarHelper)) {
-                return VidNotions.InstantiationUI.NETWORK_WITH_PROPERTY_NETWORK_TECHNOLOGY_EQUALS_STANDARD_SRIOV_OR_OVS;
-            } else if (isALaCarte(csarHelper) && hasFabricConfiguration(csarHelper)) {
-                return VidNotions.InstantiationUI.SERVICE_WITH_FABRIC_CONFIGURATION;
-            }
+            VidNotions.InstantiationUI instantiationUI = determine5GInstantiationUI(csarHelper);
+            if ( instantiationUI != null ) return instantiationUI;
         }
-
+        if (featureManager.isActive(Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI) && isTransportService(csarHelper)){
+            return VidNotions.InstantiationUI.TRANSPORT_SERVICE;
+        }
+        if (featureManager.isActive(Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI) && isServiceWithCollectionResource(serviceModel)){
+            return VidNotions.InstantiationUI.SERVICE_WITH_COLLECTION_RESOURCE;
+        }
+        if (featureManager.isActive(Features.FLAG_1908_INFRASTRUCTURE_VPN) && isInfraStructureVpn(csarHelper)){
+            return VidNotions.InstantiationUI.INFRASTRUCTURE_VPN;
+        }
+        if (featureManager.isActive(Features.FLAG_1908_A_LA_CARTE_VNF_NEW_INSTANTIATION_UI) && isVnfServiceRole(csarHelper)){
+            return VidNotions.InstantiationUI.A_LA_CARTE_VNF_SERVICE_ROLE;
+        }
         return VidNotions.InstantiationUI.LEGACY;
 
     }
 
-    VidNotions.ModelCategory suggestModelCategory(ISdcCsarHelper csarHelper) {
+    private boolean isVnfServiceRole(ISdcCsarHelper csarHelper) {
+        final String serviceRole = csarHelper.getServiceMetadata().getValue(ToscaParserImpl2.Constants.SERVICE_ROLE );
+        return StringUtils.equalsIgnoreCase("VNF" , serviceRole);
+    }
+
+    @Nullable
+    private VidNotions.InstantiationUI determine5GInstantiationUI(ISdcCsarHelper csarHelper) {
+        if (isUuidExactlyHardCoded1ffce89fef3f(csarHelper)) {
+            return VidNotions.InstantiationUI.SERVICE_UUID_IS_1ffce89f_ef3f_4cbb_8b37_82134590c5de;
+        } else if (isALaCarte(csarHelper) && hasAnyNetworkWithPropertyNetworkTechnologyEqualsStandardSriovOrOvs(csarHelper)) {
+            return VidNotions.InstantiationUI.NETWORK_WITH_PROPERTY_NETWORK_TECHNOLOGY_EQUALS_STANDARD_SRIOV_OR_OVS;
+        } else if (isALaCarte(csarHelper) && hasFabricConfiguration(csarHelper)) {
+            return VidNotions.InstantiationUI.SERVICE_WITH_FABRIC_CONFIGURATION;
+        }
+        return null;
+    }
+
+    private boolean isTransportService(ISdcCsarHelper csarHelper) {
+        return ("TRANSPORT".equalsIgnoreCase(csarHelper.getServiceMetadata().getValue(ToscaParserImpl2.Constants.SERVICE_TYPE)));
+    }
+
+    private boolean isServiceWithCollectionResource(ServiceModel serviceModel){
+        return MapUtils.isNotEmpty(serviceModel.getCollectionResources());
+    }
+
+    private boolean isInfraStructureVpn(ISdcCsarHelper csarHelper) {
+        Metadata serviceMetadata = csarHelper.getServiceMetadata();
+        return ("BONDING".equalsIgnoreCase(serviceMetadata.getValue(ToscaParserImpl2.Constants.SERVICE_TYPE)) &&
+                "INFRASTRUCTURE-VPN".equalsIgnoreCase(serviceMetadata.getValue(ToscaParserImpl2.Constants.SERVICE_ROLE)));
+    }
+
+    VidNotions.ModelCategory suggestModelCategory(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
         if (isALaCarte(csarHelper) && hasAnyNetworkWithPropertyNetworkTechnologyEqualsStandardSriovOrOvs(csarHelper)){
             return VidNotions.ModelCategory.IS_5G_PROVIDER_NETWORK_MODEL;
-          } else if(isALaCarte(csarHelper) && hasFabricConfiguration(csarHelper)) {
-            return VidNotions.ModelCategory.IS_5G_FABRIC_CONFIGURATION_MODEL;
-        } else {
-            return VidNotions.ModelCategory.OTHER;
         }
+        if(isALaCarte(csarHelper) && hasFabricConfiguration(csarHelper)) {
+            return VidNotions.ModelCategory.IS_5G_FABRIC_CONFIGURATION_MODEL;
+        }
+        if (isInfraStructureVpn(csarHelper)) {
+            return VidNotions.ModelCategory.INFRASTRUCTURE_VPN;
+        }
+        if (isTransportService(csarHelper)) {
+            return VidNotions.ModelCategory.Transport;
+        }
+        if (isServiceWithCollectionResource(serviceModel)) {
+            return VidNotions.ModelCategory.SERVICE_WITH_COLLECTION_RESOURCE;
+        }
+        return VidNotions.ModelCategory.OTHER;
     }
 
     VidNotions.InstantiationUI suggestViewEditUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
-        if (!featureManager.isActive(Features.FLAG_ASYNC_INSTANTIATION)){
-            return VidNotions.InstantiationUI.LEGACY;
-        }
         if (featureManager.isActive(Features.FLAG_1902_VNF_GROUPING) && isGrouping(csarHelper)) {
             return VidNotions.InstantiationUI.SERVICE_WITH_VNF_GROUPING;
+        }
+
+        if (featureManager.isActive(Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI) &&
+                featureManager.isActive(Features.FLAG_1908_RESUME_MACRO_SERVICE) &&
+                isServiceWithCollectionResource(serviceModel)) {
+            return VidNotions.InstantiationUI.SERVICE_WITH_COLLECTION_RESOURCE;
         }
 
         if (featureManager.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)) {
             if (isMacro(serviceModel) && !isMacroExcludedFromAsyncFlow(serviceModel)) {
                 return VidNotions.InstantiationUI.MACRO_SERVICE;
             }
-            VidNotions.InstantiationUI instantiationUISuggestion = suggestInstantiationUI(csarHelper);
+            VidNotions.InstantiationUI instantiationUISuggestion = suggestInstantiationUI(csarHelper, serviceModel);
             if (instantiationUISuggestion!=VidNotions.InstantiationUI.LEGACY) {
                 return instantiationUISuggestion;
             }
@@ -137,10 +204,8 @@ public class VidNotionsBuilder {
 
     boolean isMacroExcludedFromAsyncFlow(ServiceModel serviceModel) {
         return (MapUtils.isNotEmpty(serviceModel.getPnfs()) ||
-                MapUtils.isNotEmpty(serviceModel.getCollectionResource()) ||
+                MapUtils.isNotEmpty(serviceModel.getCollectionResources()) ||
                 (MapUtils.isNotEmpty(serviceModel.getNetworks()) && !featureManager.isActive(Features.FLAG_NETWORK_TO_ASYNC_INSTANTIATION)));
-
-
     }
 
     private boolean isGrouping(ISdcCsarHelper csarHelper) {

@@ -1,27 +1,4 @@
-/*-
- * ============LICENSE_START=======================================================
- * VID
- * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
- * ================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ============LICENSE_END=========================================================
- */
-
 package org.onap.vid.model.aaiTree;
-
-import org.onap.vid.aai.util.AAITreeConverter;
-import org.onap.vid.services.AAITreeNodeBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +11,8 @@ public class Vnf extends Node {
     private Map<String, Network> networks = new HashMap<>();
 
     public Vnf(AAITreeNode node) {
-        super(node, AAITreeConverter.ModelType.vnf);
+        super(node);
+        fillCloudConfigurationProperties(this, node.getCloudConfiguration());
     }
 
     public Map<String, Map<String, VfModule>> getVfModules() {
@@ -60,11 +38,11 @@ public class Vnf extends Node {
         }
 
         node.getChildren().forEach(child -> {
-            if (child.getType().equals(AAITreeNodeBuilder.VF_MODULE)) {
+            if (child.getType() == NodeType.VF_MODULE) {
                 vnf.getVfModules().putIfAbsent(child.getNodeKey(), new HashMap<>());
                 vnf.getVfModules().get(child.getNodeKey())
-                                    .put(child.getUniqueNodeKey(), VfModule.from(child));
-            } else if (child.getType().equals(AAITreeNodeBuilder.NETWORK)) {
+                        .put(child.getUniqueNodeKey(), VfModule.from(child));
+            } else if (child.getType() == NodeType.NETWORK) {
                 vnf.getNetworks().put(child.getUniqueNodeKey(), Network.from(child));
             }
         });

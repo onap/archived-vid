@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,25 +20,29 @@
 
 package org.onap.vid.model.serviceInstantiation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
 import org.onap.vid.model.Action;
 import org.onap.vid.mso.model.ModelInfo;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
-	protected final String instanceId;
+	protected String instanceId;
+
 	protected ModelInfo modelInfo;
 
 	protected String instanceName;
 
-	protected final Action action;
+	protected Action action;
 
 	protected String lcpCloudRegionId;
 
@@ -48,13 +52,21 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 	protected boolean rollbackOnFailure;
 
-	private static final Map<String, Action> actionStingToEnumMap = ImmutableMap.of(
-			"Delete", Action.Delete,
-			"Create", Action.Create,
-			"None", Action.None,
-			"Update_Delete", Action.Delete,
-			"None_Delete", Action.Delete
-	);
+	protected String trackById;
+
+	protected Boolean isFailed;
+
+	protected String statusMessage;
+
+	private static final Map<String, Action> actionStingToEnumMap = ImmutableMap.<String, Action>builder()
+			.put("Delete", Action.Delete)
+			.put("Create", Action.Create)
+			.put("None", Action.None)
+			.put("Update_Delete", Action.Delete)
+			.put("None_Delete", Action.Delete)
+			.put("Resume", Action.Resume)
+			.put("Replace", Action.Replace)
+			.build();
 
 
 	protected BaseResource(@JsonProperty("modelInfo") ModelInfo modelInfo,
@@ -65,16 +77,22 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 						   @JsonProperty("tenantId") String tenantId,
 						   @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
 						   @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
-						   @JsonProperty("instanceId") String instanceId) {
+						   @JsonProperty("instanceId") String instanceId,
+						   @JsonProperty("trackById") String trackById,
+						   @JsonProperty("isFailed") Boolean isFailed,
+						   @JsonProperty("statusMessage") String statusMessage) {
 		this.modelInfo = modelInfo;
 		this.modelInfo.setModelType(getModelType());
 		this.rollbackOnFailure = rollbackOnFailure;
-		this.instanceName = StringUtils.defaultString(instanceName, "");;
+		this.instanceName = StringUtils.defaultString(instanceName, "");
 		this.action = actionStringToEnum(action);
 		this.lcpCloudRegionId = StringUtils.isNotEmpty(legacyRegion) ? legacyRegion : lcpCloudRegionId;
 		this.tenantId = tenantId;
 		this.instanceParams = instanceParams;
 		this.instanceId = instanceId;
+		this.trackById = trackById;
+		this.isFailed = isFailed!= null ? isFailed: false;
+		this.statusMessage = statusMessage;
 	}
 
 	private Action actionStringToEnum(String actionAsString) {
@@ -90,7 +108,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 	}
 
 	public Action getAction() {
-		return action;
+		return (action == null ? Action.Create : action);
 	}
 
 	public String getLcpCloudRegionId() {
@@ -105,11 +123,49 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		return instanceParams == null ? Collections.emptyList() : instanceParams;
 	}
 
-    public boolean isRollbackOnFailure() { return rollbackOnFailure; }
+	public boolean isRollbackOnFailure() { return rollbackOnFailure; }
 
 	public String getInstanceId() {
 		return instanceId;
 	}
 
 	protected abstract String getModelType();
+
+	public String getTrackById() {
+		return trackById;
+	}
+
+	public void setTrackById(String trackById) {
+		this.trackById = trackById;
+	}
+
+	public Boolean getIsFailed() {
+		return isFailed;
+	}
+
+	public void setIsFailed(Boolean isFailed) {
+		this.isFailed = isFailed;
+	}
+
+	public void setInstanceId(String instanceId) {
+		this.instanceId = instanceId;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+
+	@JsonIgnore
+	public abstract Collection<? extends BaseResource> getChildren();
+
+	@JsonIgnore
+	public abstract JobType getJobType();
 }

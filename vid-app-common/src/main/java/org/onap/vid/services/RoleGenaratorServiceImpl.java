@@ -71,7 +71,7 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
         String availableRoles="";
         HashMap<String,String> servicesNames = new HashMap<>();
         for (Subscriber subscriber: subscribers.customer) {
-            AaiResponse<Services> subscriberResponse = client.getSubscriberData(subscriber.globalCustomerId);
+            AaiResponse<Services> subscriberResponse = client.getSubscriberData(subscriber.globalCustomerId, true);
             for(ServiceSubscription service: subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
                 servicesNames.put(service.serviceType,"");
                 String roleName = "'" + subscriber.subscriberName + ModelConstants.ROLE_DELIMITER + service.serviceType + "'";

@@ -21,11 +21,13 @@
 package org.onap.vid.aai;
 
 import static java.util.Collections.emptyList;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -37,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -49,6 +52,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.exceptions.InvalidAAIResponseException;
+import org.onap.vid.aai.model.*;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
 import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetNetworkCollectionDetails;
@@ -116,6 +120,7 @@ public class AaiClient implements AaiClientInterface {
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AaiClient.class);
 
     private static final String GET_SERVICE_MODELS_RESPONSE_BODY = "{\"start\" : \"service-design-and-creation/models/\", \"query\" : \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}";
+
 
     @Inject
     public AaiClient(AAIRestInterface restController, PortDetailsTranslator portDetailsTranslator, CacheProvider cacheProvider) {
@@ -425,12 +430,47 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public AaiResponse getSubscriberData(String subscriberId) {
-        String depth = "2";
+    public AaiResponse getSubscriberData(String subscriberId, boolean omitServiceInstances) {
+        String depth = omitServiceInstances ? "1" : "2";
         AaiResponse subscriberDataResponse;
         Response resp = doAaiGet(BUSINESS_CUSTOMERS_CUSTOMER + subscriberId + "?depth=" + depth, false);
         subscriberDataResponse = processAaiResponse(resp, Services.class, null);
         return subscriberDataResponse;
+    }
+
+    @Override
+    public ModelVer getLatestVersionByInvariantId(String modelInvariantId) {
+        if (modelInvariantId.isEmpty()) {
+            throw new GenericUncheckedException("no invariant-id provided to getLatestVersionByInvariantId; request is rejected");
+        }
+
+        // add the modelInvariantId to the payload
+        StringBuilder payload = new StringBuilder(GET_SERVICE_MODELS_RESPONSE_BODY);
+        payload.insert(50, modelInvariantId);
+
+        Response response = doAaiPut("service-design-and-creation/models/model/", payload.toString(),false);
+        AaiResponse<ModelVersions> aaiResponse = processAaiResponse(response, ModelVersions.class, null, VidObjectMapperType.FASTERXML);
+        Stream<ModelVer> modelVerStream = toModelVerStream(aaiResponse.getT());
+        return maxModelVer(modelVerStream);
+
+    }
+
+    protected Stream<ModelVer> toModelVerStream(ModelVersions modelVersions) {
+
+        return Stream.of(modelVersions)
+                .map(ModelVersions::getResults)
+                .flatMap(java.util.Collection::stream)
+                .flatMap(map -> map.entrySet().stream())
+                .filter(kv -> StringUtils.equals(kv.getKey(), "model-ver"))
+                .map(Map.Entry::getValue);
+
+    }
+
+    protected ModelVer maxModelVer(Stream<ModelVer> modelVerStream) {
+        return modelVerStream
+                .filter(modelVer -> StringUtils.isNotEmpty(modelVer.getModelVersion()))
+                .max(comparing(ModelVer::getModelVersion, comparing(DefaultArtifactVersion::new)))
+                .orElseThrow(() -> new GenericUncheckedException("Could not find any version"));
     }
 
     @Override

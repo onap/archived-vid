@@ -20,6 +20,24 @@
  */
 package org.onap.vid.mso;
 
+import static com.fasterxml.jackson.module.kotlin.ExtensionsKt.jacksonObjectMapper;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang.StringUtils.upperCase;
+import static org.onap.vid.changeManagement.ChangeManagementRequest.MsoChangeManagementRequest;
+import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
+import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
+import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.WORKFLOW_ID;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_DEACTIVATE;
+import static org.onap.vid.mso.MsoProperties.MSO_REST_API_WORKFLOW_SPECIFICATIONS;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+import static org.onap.vid.utils.Logging.debugRequestDetails;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -27,6 +45,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.ws.rs.BadRequestException;
 import org.apache.commons.collections4.ListUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
@@ -35,7 +65,6 @@ import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.controller.OperationalEnvironmentController;
 import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.model.probes.ExternalComponentStatus;
@@ -58,37 +87,6 @@ import org.onap.vid.mso.rest.TaskList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.togglz.core.manager.FeatureManager;
-
-import javax.ws.rs.BadRequestException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang.StringUtils.upperCase;
-import static org.onap.vid.changeManagement.ChangeManagementRequest.MsoChangeManagementRequest;
-import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
-import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
-import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
-import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
-import static org.onap.vid.controller.MsoController.WORKFLOW_ID;
-import static org.onap.vid.mso.MsoProperties.MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS;
-import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE;
-import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE;
-import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_DEACTIVATE;
-import static org.onap.vid.mso.MsoProperties.MSO_REST_API_WORKFLOW_SPECIFICATIONS;
-import static org.onap.vid.properties.Features.FLAG_UNASSIGN_SERVICE;
-import static org.onap.vid.utils.Logging.debugRequestDetails;
 
 public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
@@ -120,12 +118,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
      * This should be replaced with mso client factory.
      */
     private final MsoInterface msoClientInterface;
-    FeatureManager featureManager;
 
     @Autowired
-    public MsoBusinessLogicImpl(MsoInterface msoClientInterface, FeatureManager featureManager) {
+    public MsoBusinessLogicImpl(MsoInterface msoClientInterface) {
         this.msoClientInterface = msoClientInterface;
-        this.featureManager = featureManager;
     }
 
     public static String validateEndpointPath(String endpointEnvVariable) {
@@ -168,17 +164,19 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     public MsoResponseWrapper createNwInstance(RequestDetails requestDetails, String serviceInstanceId) {
         logInvocationInDebug("createNwInstance");
 
-        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
+        String endpoint;
+        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
 
-        String nw_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        return msoClientInterface.createNwInstance(requestDetails, nw_endpoint);
+        String nwEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        return msoClientInterface.createNwInstance(requestDetails, nwEndpoint);
     }
 
     @Override
     public MsoResponseWrapper createVolumeGroupInstance(RequestDetails requestDetails, String serviceInstanceId, String vnfInstanceId) {
         logInvocationInDebug("createVolumeGroupInstance");
 
-        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
+        String endpoint;
+        endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
 
         String vnfEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
         vnfEndpoint = vnfEndpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
@@ -192,10 +190,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
 
-        String partial_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        String vf_module_endpoint = partial_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        String partialEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        String vfModuleEndpoint = partialEndpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
 
-        return msoClientInterface.createVfModuleInstance(requestDetails, vf_module_endpoint);
+        return msoClientInterface.createVfModuleInstance(requestDetails, vfModuleEndpoint);
     }
 
     @Override
@@ -259,19 +257,15 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("deleteSvcInstance");
         String endpoint;
 
-        if (featureManager.isActive(FLAG_UNASSIGN_SERVICE)) {
-            endpoint = validateEndpointPath(MsoProperties.MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE);
-            if (shouldUnassignService(serviceStatus)) {
-                logger.debug(EELFLoggerDelegate.debugLogger, "unassign service");
-                String svc_endpoint = endpoint + "/" + serviceInstanceId + "/unassign";
-                return msoClientInterface.unassignSvcInstance(requestDetails, svc_endpoint);
-            }
-        } else {
-            endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        endpoint = validateEndpointPath(MsoProperties.MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE);
+        if (shouldUnassignService(serviceStatus)){
+            logger.debug(EELFLoggerDelegate.debugLogger, "unassign service");
+            String svcEndpoint = endpoint + "/" + serviceInstanceId + "/unassign";
+            return msoClientInterface.unassignSvcInstance(requestDetails, svcEndpoint);
         }
 
-        String svc_endpoint = endpoint + "/" + serviceInstanceId;
-        return msoClientInterface.deleteSvcInstance(requestDetails, svc_endpoint);
+        String svcEndpoint = endpoint + "/" + serviceInstanceId;
+        return msoClientInterface.deleteSvcInstance(requestDetails, svcEndpoint);
     }
 
     private boolean shouldUnassignService(String serviceStatus) {
@@ -294,10 +288,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("deleteVfModule");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
-        String vf__modules_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId).replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-        String delete_vf_endpoint = vf__modules_endpoint + '/' + vfModuleId;
+        String vfModulesEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId).replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        String deleteVfEndpoint = vfModulesEndpoint + '/' + vfModuleId;
 
-        return msoClientInterface.deleteVfModule(requestDetails, delete_vf_endpoint);
+        return msoClientInterface.deleteVfModule(requestDetails, deleteVfEndpoint);
     }
 
     @Override
@@ -305,11 +299,11 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("deleteVolumeGroupInstance");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
-        String svc_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        String vnfEndpoint = svc_endpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-        String delete_volume_group_endpoint = vnfEndpoint + "/" + volumeGroupId;
+        String svcEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        String vnfEndpoint = svcEndpoint.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
+        String deleteVolumeGroupEndpoint = vnfEndpoint + "/" + volumeGroupId;
 
-        return msoClientInterface.deleteVolumeGroupInstance(requestDetails, delete_volume_group_endpoint);
+        return msoClientInterface.deleteVolumeGroupInstance(requestDetails, deleteVolumeGroupEndpoint);
     }
 
     @Override
@@ -317,10 +311,10 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("deleteNwInstance");
 
         String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
-        String svc_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        String delete_nw_endpoint = svc_endpoint + "/" + networkInstanceId;
+        String svcEndpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
+        String deleteNwEndpoint = svcEndpoint + "/" + networkInstanceId;
 
-        return msoClientInterface.deleteNwInstance(requestDetails, delete_nw_endpoint);
+        return msoClientInterface.deleteNwInstance(requestDetails, deleteNwEndpoint);
     }
 
     @Override
@@ -400,7 +394,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     private List<RequestWrapper> deserializeOrchestrationRequestsJson(String orchestrationRequestsJson) {
         logInvocationInDebug("deserializeOrchestrationRequestsJson");
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = jacksonObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
         RequestList requestList;
@@ -423,7 +417,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String path = p + "?originalRequestId=" + originalRequestId;
 
             RestObject<String> restObjStr = new RestObject<>();
-            String str = new String();
+            String str = "";
             restObjStr.set(str);
 
             MsoResponseWrapper msoResponseWrapper = msoClientInterface.getManualTasksByRequestId(str, "", path, restObjStr);
@@ -438,9 +432,8 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     private List<Task> deserializeManualTasksJson(String manualTasksJson) {
         logInvocationInDebug("deserializeManualTasksJson");
 
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            TaskList taskList = mapper.readValue(manualTasksJson, TaskList.class);
+            TaskList taskList = JACKSON_OBJECT_MAPPER.readValue(manualTasksJson, TaskList.class);
             return taskList.getTaskList();
         } catch (IOException e) {
             throw new GenericUncheckedException(e);
@@ -457,7 +450,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String path = p + "/" + taskId + "/complete";
 
             RestObject<String> restObjStr = new RestObject<>();
-            String str = new String();
+            String str = "";
             restObjStr.set(str);
 
             return msoClientInterface.completeManualTask(requestDetails, str, "", path, restObjStr);
@@ -561,9 +554,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         requestInfo.setRequestorId(softDeleteRequest.getUserId());
         requestDetails.setRequestInfo(requestInfo);
 
-        CloudConfiguration cloudConfiguration = new CloudConfiguration();
-        cloudConfiguration.setTenantId(softDeleteRequest.getTenantId());
-        cloudConfiguration.setLcpCloudRegionId(softDeleteRequest.getLcpCloudRegionId());
+        CloudConfiguration cloudConfiguration = new CloudConfiguration(softDeleteRequest.getLcpCloudRegionId(), softDeleteRequest.getTenantId(), null);
         requestDetails.setCloudConfiguration(cloudConfiguration);
 
         ModelInfo modelInfo = new ModelInfo();
@@ -575,18 +566,6 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         requestDetails.setRequestParameters(requestParameters);
 
         return requestDetails;
-    }
-
-    @Override
-    public MsoResponseWrapper2 deactivateAndCloudDelete(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId, RequestDetails requestDetails) {
-        String path = getDeactivateAndCloudDeletePath(serviceInstanceId, vnfInstanceId, vfModuleInstanceId);
-        return new MsoResponseWrapper2<>(msoClientInterface.post(path, requestDetails, RequestReferencesContainer.class));
-    }
-
-    @Override
-    public MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails) {
-        String path = getActivateFabricConfigurationPath(serviceInstanceId);
-        return new MsoResponseWrapper2<>(msoClientInterface.post(path, requestDetails, RequestReferencesContainer.class));
     }
 
     @Override
@@ -634,7 +613,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         }
         Object payloadRaw = requestDetails.getRequestParameters().getAdditionalProperties().get("payload");
         try {
-            return objectMapper.readValue((String) payloadRaw, Map.class);
+            return JACKSON_OBJECT_MAPPER.readValue((String) payloadRaw, Map.class);
         } catch (Exception exception) {
             throw new BadRequestException(message);
         }
@@ -912,7 +891,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         }
     }
 
-    enum RequestType {
+    public enum RequestType {
 
         CREATE_INSTANCE("createInstance"),
         DELETE_INSTANCE("deleteInstance"),

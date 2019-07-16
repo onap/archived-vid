@@ -696,8 +696,8 @@
                - lcpCloudRegionId == 'rdm5b'
                - tenantId == '0675e0709bd7444a9e13eba8b40edb3c'
 
-             "url": "https://aai-conexus-e2e.ecomp.cci.att.com:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
-             "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
+             "url": "https://aai-conexus-e2e.ecomp.cci.att.com:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
+             "url": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/0675e0709bd7444a9e13eba8b40edb3c/vservers/vserver/932b330d-733e-427d-a519-14eebd261f70"
              */
 
             var cloudRegionMatch = url.match(/\/cloud-regions\/cloud-region\/[^\/]+\/([^\/]+)/);

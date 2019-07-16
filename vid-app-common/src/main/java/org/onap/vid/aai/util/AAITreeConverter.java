@@ -1,31 +1,11 @@
-/*-
- * ============LICENSE_START=======================================================
- * VID
- * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
- * ================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ============LICENSE_END=========================================================
- */
-
 package org.onap.vid.aai.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.model.aaiTree.*;
 import org.onap.vid.mso.model.ModelInfo;
-import org.onap.vid.services.AAITreeNodeBuilder;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.function.Function.identity;
@@ -38,18 +18,18 @@ public class AAITreeConverter {
 
     public static final String VNF_TYPE = "vnf-type";
     public static final String NETWORK_TYPE = "network-type";
+    public static final String NETWORK_ROLE = "network-role";
+    public static final String PHYSICAL_NETWORK_NAME = "physical-network-name";
+    public static final String SERVICE_INSTANCE = "service-instance";
+    public static final String TENANT = "tenant";
+    public static final String VPN_BINDING = "vpn-binding";
 
     public static final String IS_BASE_VF_MODULE = "is-base-vf-module";
+    public static final String SERVICE_INSTANCE_SERVICE_INSTANCE_NAME = "service-instance.service-instance-name";
+    public static final String SERVICE_INSTANCE_SERVICE_INSTANCE_ID = "service-instance.service-instance-id";
+    public static final String TENANT_TENANT_NAME = "tenant.tenant-name";
 
-    public enum ModelType {
-        service,
-        vnf,
-        network,
-        instanceGroup,
-        vfModule
-    }
-
-    public ServiceInstance convertTreeToUIModel(AAITreeNode rootNode, String globalCustomerId, String serviceType, String instantiationType) {
+    public ServiceInstance convertTreeToUIModel(AAITreeNode rootNode, String globalCustomerId, String serviceType, String instantiationType, String instanceRole, String instanceType) {
         ServiceInstance serviceInstance = new ServiceInstance();
         serviceInstance.setInstanceId(rootNode.getId());
         serviceInstance.setInstanceName(rootNode.getName());
@@ -58,46 +38,60 @@ public class AAITreeConverter {
         serviceInstance.setSubscriptionServiceType(serviceType);
         serviceInstance.setIsALaCarte(StringUtils.equals(instantiationType, A_LA_CARTE));
 
-        serviceInstance.setModelInfo(createModelInfo(rootNode, ModelType.service));
+        serviceInstance.setModelInfo(createModelInfo(rootNode));
 
         //set children: vnf, network,group
         rootNode.getChildren().forEach(child -> {
-            if (child.getType().equals(AAITreeNodeBuilder.GENERIC_VNF)) {
+            if (child.getType() == NodeType.GENERIC_VNF) {
                 serviceInstance.getVnfs().put(child.getUniqueNodeKey(), Vnf.from(child));
-            } else if (child.getType().equals(AAITreeNodeBuilder.NETWORK)) {
+            } else if (child.getType() == NodeType.NETWORK) {
                 serviceInstance.getNetworks().put(child.getUniqueNodeKey(), Network.from(child));
-            } else if (child.getType().equals(AAITreeNodeBuilder.INSTANCE_GROUP)) {
-                serviceInstance.getVnfGroups().put(child.getUniqueNodeKey(), VnfGroup.from(child));
+            } else if (child.getType() == NodeType.INSTANCE_GROUP) {
+                serviceInstance.getVnfGroups().put(child.getUniqueNodeKey(), new VnfGroup(child));
+            } else if (child.getType() == NodeType.COLLECTION_RESOURCE) {
+                serviceInstance.getCollectionResources().put(child.getUniqueNodeKey(), new CollectionResource(child));
+            } else if (isChildVrf(instanceType, instanceRole, child)){
+                serviceInstance.getVrfs().put(child.getUniqueNodeKey(), Vrf.from(child));
             }
         });
 
         serviceInstance.setExistingVNFCounterMap(
-                serviceInstance.getVnfs().entrySet().stream()
-                        .map(k -> k.getValue().getModelInfo().getModelVersionId())
-                        .collect(groupingBy(identity(), counting()))
+                getExistingCounterMap(serviceInstance.getVnfs())
         );
 
         serviceInstance.setExistingNetworksCounterMap(
-                serviceInstance.getNetworks().entrySet().stream()
-                .map(k -> k.getValue().getModelInfo().getModelVersionId())
-                .filter(Objects::nonNull)
-                        .collect(groupingBy(identity(), counting()))
+                getExistingCounterMap(serviceInstance.getNetworks())
         );
 
 
         serviceInstance.setExistingVnfGroupCounterMap(
-                serviceInstance.getVnfGroups().entrySet().stream()
-                .map(k -> k.getValue().getModelInfo().getModelVersionId())
-                .filter(Objects::nonNull)
-                        .collect(groupingBy(identity(), counting()))
+                getExistingCounterMap(serviceInstance.getVnfGroups())
+        );
+
+        serviceInstance.setExistingVRFCounterMap(
+                getExistingCounterMap(serviceInstance.getVrfs())
         );
 
         return serviceInstance;
     }
 
-    private static ModelInfo createModelInfo(AAITreeNode aaiNode, ModelType modelType) {
+    protected boolean isChildVrf(String instanceType, String serviceRole, AAITreeNode child) {
+        return child.getType() == NodeType.CONFIGURATION && StringUtils.equalsIgnoreCase(instanceType, "BONDING") && StringUtils.equalsIgnoreCase(serviceRole, "INFRASTRUCTURE-VPN");
+    }
+
+    private <T extends Node> Map<String, Long> getExistingCounterMap(Map<String, T> nodeList) {
+        return nodeList.entrySet().stream()
+                .map(k -> {
+                    ModelInfo modelInfo = k.getValue().getModelInfo();
+                    return StringUtils.defaultIfEmpty(modelInfo.getModelCustomizationId(), modelInfo.getModelVersionId());
+                })
+                .filter(Objects::nonNull)
+                .collect(groupingBy(identity(), counting()));
+    }
+
+    private static ModelInfo createModelInfo(AAITreeNode aaiNode) {
         ModelInfo modelInfo = new ModelInfo();
-        modelInfo.setModelType(modelType.name());
+        modelInfo.setModelType(aaiNode.getType().getModelType());
         modelInfo.setModelName(aaiNode.getModelName());
         modelInfo.setModelVersion(aaiNode.getModelVersion());
         modelInfo.setModelVersionId(aaiNode.getModelVersionId());

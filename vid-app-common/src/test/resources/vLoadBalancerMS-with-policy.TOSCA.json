@@ -167,7 +167,7 @@
     }
   },
   "networks": {},
-  "collectionResource": {},
+  "collectionResources": {},
   "configurations": {},
   "fabricConfigurations": {},
   "serviceProxies": {},

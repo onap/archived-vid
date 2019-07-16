@@ -76,8 +76,8 @@ public class ServiceInstantiationRequestDetails {
 
     public static class RequestInfo {
 
-        @JsonInclude(NON_NULL) public final String instanceName;
-        @JsonInclude(NON_NULL) public final String productFamilyId;
+        @JsonInclude(NON_EMPTY) public final String instanceName;
+        @JsonInclude(NON_EMPTY) public final String productFamilyId;
         public final String source;
         public final boolean suppressRollback;
         public final String requestorId;
@@ -150,7 +150,7 @@ public class ServiceInstantiationRequestDetails {
 
         private static class ServiceInstantiationServiceInner implements UserParamTypes {
             public ModelInfo modelInfo = new ModelInfo();
-            @JsonInclude(NON_NULL)
+            @JsonInclude(NON_EMPTY)
             public String instanceName;
             public List<Map<String, String>> instanceParams;
             public ServiceInstantiationVnfList resources;
@@ -182,7 +182,7 @@ public class ServiceInstantiationRequestDetails {
         public final String productFamilyId;
         public final List<Map<String, String>>  instanceParams;
         @JsonInclude(NON_EMPTY) public final List<VfModuleMacro> vfModules;
-        @JsonInclude(NON_NULL) public final String instanceName;
+        @JsonInclude(NON_EMPTY) public final String instanceName;
 
         public ServiceInstantiationVnf(ModelInfo modelInfo, CloudConfiguration cloudConfiguration, String platform, String lineOfBusiness, String productFamilyId, List<Map<String, String>>  instanceParams, List<VfModuleMacro> vfModules, String instanceName) {
             this.modelInfo = modelInfo;
