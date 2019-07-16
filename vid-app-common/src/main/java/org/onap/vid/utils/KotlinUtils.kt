@@ -27,4 +27,4 @@ inline fun <reified E: Enum<E>> getEnumFromMapOfStrings(map: Map<String, Any>, k
     return java.lang.Enum.valueOf(E::class.java, (map.getOrDefault(key, defaultValue.name) as String))
 }
 
-val JACKSON_OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper()
+@JvmField val JACKSON_OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper()

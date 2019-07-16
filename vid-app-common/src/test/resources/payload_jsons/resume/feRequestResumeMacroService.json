@@ -1,0 +1,107 @@
+{
+  "isDirty": false,
+  "instanceParams": [],
+  "existingNames": {
+    "ncmvlansvcym161f_77": ""
+  },
+  "vidNotions": {
+    "instantiationType": "Macro",
+    "instantiationUI": "serviceWithCollectionResource",
+    "modelCategory": "other",
+    "viewEditUI": "serviceWithCollectionResource"
+  },
+  "bulkSize": 1,
+  "action": "Resume",
+  "instanceName": "NcmVlanSvcYm161f_77",
+  "instanceId": "a565e6ad-75d1-4493-98f1-33234b5c17e2",
+  "orchStatus": "Assigned",
+  "productFamilyId": null,
+  "lcpCloudRegionId": null,
+  "tenantId": null,
+  "cloudOwner": null,
+  "modelInfo": {
+    "modelInvariantId": "f6342be5-d66b-4d03-a1aa-c82c3094c4ea",
+    "modelVersionId": "6e0bec91-09f3-43aa-9cf3-e617cd0146be",
+    "modelName": "NCM_VLAN_SVC_ym161f",
+    "modelType": "service",
+    "modelVersion": "8.0"
+  },
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriptionServiceType": "Emanuel",
+  "owningEntityId": null,
+  "owningEntityName": null,
+  "tenantName": null,
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "projectName": null,
+  "rollbackOnFailure": false,
+  "isALaCarte": false,
+  "vnfs": {},
+  "vrfs": {},
+  "networks": {},
+  "vnfGroups": {},
+  "validationCounter": 0,
+  "existingVNFCounterMap": {},
+  "existingVRFCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "collectionResources": {
+    "84a351ae-3601-45e2-98df-878d6c816abc": {
+      "action": "None",
+      "instanceName": "NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection",
+      "instanceId": "84a351ae-3601-45e2-98df-878d6c816abc",
+      "orchStatus": "Active",
+      "productFamilyId": null,
+      "lcpCloudRegionId": null,
+      "tenantId": null,
+      "cloudOwner": null,
+      "modelInfo": {
+        "modelInvariantId": "081ceb56-eb71-4566-a72d-3e7cbee5cdf1",
+        "modelVersionId": "ce8c98bc-4691-44fb-8ff0-7a47487c11c4",
+        "modelName": "NCM_VLAN_ym161f",
+        "modelType": "collection",
+        "modelVersion": "5.0"
+      },
+      "instanceType": null,
+      "provStatus": null,
+      "inMaint": false,
+      "uuid": "ce8c98bc-4691-44fb-8ff0-7a47487c11c4",
+      "originalName": "NCM_VLAN_ym161f 0",
+      "legacyRegion": null,
+      "lineOfBusiness": null,
+      "platformName": null,
+      "trackById": "84a351ae-3601-45e2-98df-878d6c816abc",
+      "ncfs": {
+        "6b3536cf-3a12-457f-abb5-fa2203e0d923": {
+          "action": "None",
+          "instanceName": "NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection",
+          "instanceId": "6b3536cf-3a12-457f-abb5-fa2203e0d923",
+          "orchStatus": null,
+          "productFamilyId": null,
+          "lcpCloudRegionId": null,
+          "tenantId": null,
+          "cloudOwner": null,
+          "modelInfo": {
+            "modelInvariantId": "868b109c-9481-4a18-891b-af974db7705a",
+            "modelVersionId": "dd182d7d-6949-4b90-b3cc-5befe400742e",
+            "modelName": "ncm_vlan_ym161f..NetworkCollection..0",
+            "modelType": "instanceGroup",
+            "modelVersion": "1"
+          },
+          "instanceType": "L3-NETWORK",
+          "provStatus": null,
+          "inMaint": false,
+          "uuid": "dd182d7d-6949-4b90-b3cc-5befe400742e",
+          "originalName": "ncm_vlan_ym161f..NetworkCollection..0",
+          "legacyRegion": null,
+          "lineOfBusiness": null,
+          "platformName": null,
+          "trackById": "6b3536cf-3a12-457f-abb5-fa2203e0d923",
+          "instanceGroupRole": "SUB_INTERFACE",
+          "instanceGroupFunction": "vTSBC Customer Landing Network Collection",
+          "numberOfNetworks": 1
+        }
+      }
+    }
+  }
+}

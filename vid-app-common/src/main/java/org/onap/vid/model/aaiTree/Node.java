@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,11 @@
 
 package org.onap.vid.model.aaiTree;
 
-import org.onap.vid.aai.util.AAITreeConverter;
+import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.ModelInfo;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class Node extends AbstractNode {
     private String instanceType;
@@ -38,7 +41,11 @@ public class Node extends AbstractNode {
 
     private final String trackById;
 
-    public Node(AAITreeNode aaiNode, AAITreeConverter.ModelType modelType) {
+    public Node() {
+        trackById = UUID.randomUUID().toString();
+    }
+
+    public Node(AAITreeNode aaiNode) {
         super();
         this.instanceId = aaiNode.getId();
         this.instanceName = aaiNode.getName();
@@ -46,11 +53,13 @@ public class Node extends AbstractNode {
         this.provStatus = aaiNode.getProvStatus();
         this.inMaint = aaiNode.getInMaint();
         this.uuid = aaiNode.getModelVersionId();
-        this.originalName = aaiNode.getModelCustomizationName();
+        this.originalName = aaiNode.getKeyInModel();
         this.trackById = aaiNode.getUniqueNodeKey();
 
         ModelInfo nodeModelInfo = new ModelInfo();
-        nodeModelInfo.setModelType(modelType.name());
+        if (aaiNode.getType() != null) {
+            nodeModelInfo.setModelType(aaiNode.getType().getModelType());
+        }
         nodeModelInfo.setModelName(aaiNode.getModelName());
         nodeModelInfo.setModelVersion(aaiNode.getModelVersion());
         nodeModelInfo.setModelVersionId(aaiNode.getModelVersionId());
@@ -155,5 +164,17 @@ public class Node extends AbstractNode {
 
     public String getTrackById() {
         return trackById;
+    }
+
+    public static void fillCloudConfigurationProperties(AbstractNode that, CloudConfiguration cloudConfiguration) {
+        if (cloudConfiguration !=null) {
+            that.lcpCloudRegionId = cloudConfiguration.getLcpCloudRegionId();
+            that.tenantId = cloudConfiguration.getTenantId();
+            that.cloudOwner = cloudConfiguration.getCloudOwner();
+        }
+    }
+
+    public static String readValueAsStringFromAdditionalProperties(AAITreeNode node, String key) {
+        return Objects.toString(node.getAdditionalProperties().get(key), null);
     }
 }

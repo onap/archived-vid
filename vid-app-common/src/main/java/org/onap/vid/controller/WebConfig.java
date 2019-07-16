@@ -21,6 +21,8 @@
 
 package org.onap.vid.controller;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,6 +31,7 @@ import io.joshworks.restclient.http.mapper.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletContext;
+import java.util.concurrent.Executors;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
@@ -54,6 +57,7 @@ import org.onap.vid.asdc.rest.SdcRestClient;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.properties.AsdcClientConfiguration;
+import org.onap.vid.properties.VidProperties;
 import org.onap.vid.scheduler.SchedulerService;
 import org.onap.vid.scheduler.SchedulerServiceImpl;
 import org.onap.vid.services.AAIServiceTree;
@@ -72,6 +76,12 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
 @EnableSwagger2
 @Configuration
@@ -95,8 +105,8 @@ public class WebConfig {
 
     @Bean
     public AaiService getAaiService(AaiClientInterface aaiClient, AaiOverTLSClientInterface aaiOverTLSClient,
-        AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree) {
-        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree);
+        AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
+        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree, executorService);
     }
 
     @Bean
@@ -222,5 +232,11 @@ public class WebConfig {
                 .apis(RequestHandlerSelectors.basePackage("org.onap.vid.controller.open"))
                 .paths(PathSelectors.any())
                 .build();
+    }
+
+    @Bean
+    public ExecutorService executorService() {
+        int threadsCount = defaultIfNull(Integer.parseInt(SystemProperties.getProperty(VidProperties.VID_THREAD_COUNT)), 1);
+        return Executors.newFixedThreadPool(threadsCount);
     }
 }

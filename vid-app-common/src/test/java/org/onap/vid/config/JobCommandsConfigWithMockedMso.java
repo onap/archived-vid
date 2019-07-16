@@ -28,6 +28,7 @@ import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.aai.util.SSLContextProvider;
 import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.*;
@@ -52,8 +53,13 @@ public class JobCommandsConfigWithMockedMso {
     }
 
     @Bean
-    public JobsBrokerService jobsBrokerService(DataAccessService dataAccessService, SessionFactory sessionFactory) {
-        return new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, 200, 0);
+    public VersionService versionService() {
+        return Mockito.mock(VersionService.class);
+    }
+
+    @Bean
+    public JobsBrokerService jobsBrokerService(DataAccessService dataAccessService, SessionFactory sessionFactory, VersionService versionService) {
+        return new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, 200, 0,versionService);
     }
 
     @Bean
@@ -76,9 +82,10 @@ public class JobCommandsConfigWithMockedMso {
         return new HttpsAuthClient("some random path", systemPropertyHelper, sslContextProvider, featureManager);
     }
 
+
     @Bean
-    public JobAdapter jobAdapter() {
-        return new JobAdapterImpl();
+    public JobAdapter jobAdapter(FeatureManager featureManager) {
+        return new JobAdapterImpl(featureManager);
     }
 
     @Bean
@@ -100,119 +107,159 @@ public class JobCommandsConfigWithMockedMso {
     }
 
     @Bean
-    public AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic(DataAccessService dataAccessService,
-                                                                           JobAdapter jobAdapter,
+    public MsoRequestBuilder msoRequestHandlerService(AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
+                                                      CloudOwnerService cloudOwnerService,
+                                                      AaiClientInterface aaiClient,
+                                                      FeatureManager featureManager) {
+        return new MsoRequestBuilder(asyncInstantiationBusinessLogic, cloudOwnerService, aaiClient, featureManager);
+    }
+    @Bean
+    public AsyncInstantiationRepository asyncInstantiationRepository(DataAccessService dataAccessService) {
+        return new AsyncInstantiationRepository(dataAccessService);
+    }
+
+    @Bean
+    public AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic(JobAdapter jobAdapter,
                                                                            JobsBrokerService jobsBrokerService,
                                                                            SessionFactory sessionFactory,
                                                                            AaiClientInterface aaiClient,
                                                                            FeatureManager featureManager,
-                                                                           CloudOwnerService cloudOwnerService) {
-        return new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapter, jobsBrokerService, sessionFactory, aaiClient, featureManager, cloudOwnerService);
+                                                                           CloudOwnerService cloudOwnerService,
+                                                                           AsyncInstantiationRepository asyncInstantiationRepository,
+                                                                           AuditService auditService) {
+        return new AsyncInstantiationBusinessLogicImpl(jobAdapter, jobsBrokerService, sessionFactory, aaiClient, featureManager, cloudOwnerService, asyncInstantiationRepository, auditService);
     }
 
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public MacroServiceInstantiationCommand serviceInstantiationCommand() {
-        return new MacroServiceInstantiationCommand();
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public ServiceInProgressStatusCommand inProgressStatusCommand() {
-        return new ServiceInProgressStatusCommand();
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public ALaCarteServiceInstantiationCommand aLaCarteServiceInstantiationCommand() {
-        return new ALaCarteServiceInstantiationCommand();
-    }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public ALaCarteServiceCommand aLaCarteServiceCommand(
             AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
             JobsBrokerService jobsBrokerService,
+            MsoRequestBuilder msoRequestBuilder,
             MsoResultHandlerService msoResultHandlerService,
             JobAdapter jobAdapter,
             InProgressStatusService inProgressStatusService,
             WatchChildrenJobsBL watchChildrenJobsBL,
-            RestMsoImplementation restMso) {
-        return new ALaCarteServiceCommand(inProgressStatusService, watchChildrenJobsBL, asyncInstantiationBusinessLogic, jobsBrokerService, msoResultHandlerService, jobAdapter, restMso);
+            RestMsoImplementation restMso,
+            AuditService auditService) {
+        return new ALaCarteServiceCommand(inProgressStatusService, watchChildrenJobsBL, asyncInstantiationBusinessLogic, jobsBrokerService, msoRequestBuilder, msoResultHandlerService, jobAdapter, restMso, auditService);
     }
 
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public MacroServiceCommand macroServiceCommand(
+            AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
+            JobsBrokerService jobsBrokerService,
+            MsoRequestBuilder msoRequestBuilder,
+            MsoResultHandlerService msoResultHandlerService,
+            JobAdapter jobAdapter,
+            InProgressStatusService inProgressStatusService,
+            WatchChildrenJobsBL watchChildrenJobsBL,
+            RestMsoImplementation restMso,
+            AuditService auditService) {
+        return new MacroServiceCommand(inProgressStatusService, watchChildrenJobsBL, asyncInstantiationBusinessLogic, jobsBrokerService, msoRequestBuilder, msoResultHandlerService, jobAdapter, restMso, auditService);
+    }
+
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public NetworkCommand networkCommand(
+            AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
+            RestMsoImplementation restMso,
+            MsoRequestBuilder msoRequestBuilder,
+            MsoResultHandlerService msoResultHandlerService,
+            InProgressStatusService inProgressStatusService,
+            WatchChildrenJobsBL watchChildrenJobsBL,
+            JobsBrokerService jobsBrokerService,
+            JobAdapter jobAdapter) {
+        return new NetworkCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService,
+                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter);
+    }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public InstanceGroupCommand instanceGroupCommand(
             AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
-            MsoResultHandlerService msoResultHandlerService, InProgressStatusService inProgressStatusService,
+            MsoRequestBuilder msoRequestBuilder,
+            MsoResultHandlerService msoResultHandlerService,
+            InProgressStatusService inProgressStatusService,
             WatchChildrenJobsBL watchChildrenJobsBL,
-            RestMsoImplementation restMso) {
-        return new InstanceGroupCommand(asyncInstantiationBusinessLogic, restMso, msoResultHandlerService, inProgressStatusService, watchChildrenJobsBL);
+            RestMsoImplementation restMso,
+            JobsBrokerService jobsBrokerService,
+            JobAdapter jobAdapter) {
+        return new InstanceGroupCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService, inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public VnfInstantiationCommand vnfInstantiationCommand() {
-        return new VnfInstantiationCommand();
+    public InstanceGroupMemberCommand instanceGroupMemberCommand (
+            AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
+            MsoRequestBuilder msoRequestBuilder,
+            MsoResultHandlerService msoResultHandlerService,
+            InProgressStatusService inProgressStatusService,
+            WatchChildrenJobsBL watchChildrenJobsBL,
+            RestMsoImplementation restMso,
+            JobsBrokerService jobsBrokerService,
+            JobAdapter jobAdapter) {
+        return new InstanceGroupMemberCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService, inProgressStatusService,
+                watchChildrenJobsBL, jobsBrokerService, jobAdapter);
+    }
+
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public VnfCommand VnfCommand(
+            AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
+            RestMsoImplementation restMso,
+            MsoRequestBuilder msoRequestBuilder,
+            MsoResultHandlerService msoResultHandlerService,
+            InProgressStatusService inProgressStatusService,
+            WatchChildrenJobsBL watchChildrenJobsBL,
+            JobsBrokerService jobsBrokerService,
+            JobAdapter jobAdapter,
+            FeatureManager featureManager) {
+        return new VnfCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService,
+                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService ,jobAdapter,
+                featureManager);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public VolumeGroupInstantiationCommand volumeGroupInstantiationCommand() {
-        return new VolumeGroupInstantiationCommand();
+    public VolumeGroupCommand volumeGroupCommand(
+            AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
+            RestMsoImplementation restMso,
+            MsoRequestBuilder msoRequestBuilder,
+            MsoResultHandlerService msoResultHandlerService,
+            InProgressStatusService inProgressStatusService,
+            WatchChildrenJobsBL watchChildrenJobsBL,
+            JobsBrokerService jobsBrokerService,
+            JobAdapter jobAdapter) {
+        return new VolumeGroupCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService,
+                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService ,jobAdapter);
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public WatchingCommandBaseModule watchingCommandBaseModule() {
-        return new WatchingCommandBaseModule();
+    public VfmoduleCommand VfmoduleCommand(
+            AsyncInstantiationBusinessLogic asyncInstantiationBusinessLogic,
+            RestMsoImplementation restMso,
+            MsoRequestBuilder msoRequestBuilder,
+            MsoResultHandlerService msoResultHandlerService,
+            InProgressStatusService inProgressStatusService,
+            WatchChildrenJobsBL watchChildrenJobsBL,
+            JobsBrokerService jobsBrokerService,
+            JobAdapter jobAdapter) {
+        return new VfmoduleCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService,
+                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter);
+    }
+    @Bean
+    public AuditService auditService(RestMsoImplementation msoClient, AsyncInstantiationRepository asyncInstantiationRepository) {
+        return new AuditServiceImpl(msoClient, asyncInstantiationRepository);
     }
 
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public VolumeGroupInProgressStatusCommand volumeGroupInProgressStatusCommand() {
-        return new VolumeGroupInProgressStatusCommand();
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public VfmoduleInstantiationCommand vfmoduleInstantiationCommand() {
-        return new VfmoduleInstantiationCommand();
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public WatchingCommand watchingCommandCommand() {
-        return new WatchingCommand();
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public ResourceInProgressStatusCommand resourceInProgressStatusCommand() {
-        return new ResourceInProgressStatusCommand();
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public VnfInProgressStatusCommand vnfInProgressStatusCommand() {
-        return new VnfInProgressStatusCommand();
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public InstanceGroupInstantiationCommand instanceGroupInstantiationCommand() {
-        return new InstanceGroupInstantiationCommand();
-    }
-
-    @Bean
-    public AuditService auditService(AsyncInstantiationBusinessLogic asyncInstantiationBL, RestMsoImplementation msoClient) {
-        return new AuditServiceImpl(asyncInstantiationBL, msoClient);
-    }
-
-    @Bean
-    public InProgressStatusService inProgressStatusService(AsyncInstantiationBusinessLogic asyncInstantiationBL, RestMsoImplementation restMso, AuditService auditService) {
-        return new InProgressStatusService(asyncInstantiationBL, restMso, auditService);
+    public InProgressStatusService inProgressStatusService(AsyncInstantiationBusinessLogic asyncInstantiationBL, RestMsoImplementation restMso, AuditService auditService, FeatureManager featureManager) {
+        return new InProgressStatusService(asyncInstantiationBL, restMso, auditService, featureManager);
     }
 
     @Bean
