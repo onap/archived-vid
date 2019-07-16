@@ -63,7 +63,7 @@ public class DataSourceConfig {
         Resource[] mappingLocations = {
                 new ClassPathResource("WEB-INF/fusion/orm/Fusion.hbm.xml"),
                 new ClassPathResource("WEB-INF/fusion/orm/Workflow.hbm.xml"),
-                new ClassPathResource("WEB-INF/fusion/orm/RNoteBookIntegration.hbm.xml")
+//                new ClassPathResource("WEB-INF/fusion/orm/RNoteBookIntegration.hbm.xml")
         };
 
         sessionFactory.setHibernateProperties(properties);

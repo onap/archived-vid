@@ -17,6 +17,7 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
+
 package org.onap.vid.model.errorReport;
 
 public class ReportCreationParameters {

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,43 +20,55 @@
 
 package org.onap.vid.job.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.NotNull;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.hamcrest.MockitoHamcrest;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.config.DataSourceConfig;
-import org.onap.vid.config.JobCommandsConfigWithMockedMso;
-import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.job.JobType;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.CommandUtils;
 import org.onap.vid.job.command.InternalState;
-import org.onap.vid.model.Action;
-import org.onap.vid.model.NameCounter;
-import org.onap.vid.model.RequestReferencesContainer;
-import org.onap.vid.model.ServiceInfo;
+import org.onap.vid.model.*;
+import org.onap.vid.model.serviceInstantiation.BaseResource;
+import org.onap.vid.model.serviceInstantiation.InstanceGroup;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.RequestReferences;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
+import org.onap.vid.mso.rest.AsyncRequestStatusList;
 import org.onap.vid.properties.Features;
-import org.onap.vid.services.AsyncInstantiationBaseTest;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
+import org.onap.vid.services.AuditService;
+import org.onap.vid.services.VersionService;
 import org.onap.vid.utils.DaoUtils;
+import org.onap.vid.config.DataSourceConfig;
+import org.onap.vid.config.JobCommandsConfigWithMockedMso;
+import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
+import org.onap.vid.services.AsyncInstantiationBaseTest;
+import org.onap.vid.testUtils.TestUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
 
 import javax.inject.Inject;
 import javax.ws.rs.ProcessingException;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -66,7 +78,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
+import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
@@ -77,7 +90,7 @@ import static org.mockito.ArgumentMatchers.endsWith;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.onap.vid.job.Job.JobStatus.*;
-import static org.onap.vid.model.JobAuditStatus.SourceStatus.MSO;
+import static org.onap.vid.job.impl.JobSchedulerInitializer.WORKERS_TOPICS;
 import static org.onap.vid.model.JobAuditStatus.SourceStatus.VID;
 import static org.testng.AssertJUnit.*;
 
@@ -97,6 +110,9 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     public static String SERVICE_INSTANCE_ID = UUID.randomUUID().toString();
 
     @Inject
+    private VersionService versionService;
+
+    @Inject
     private JobsBrokerService jobsBrokerService;
 
     @Inject
@@ -107,6 +123,9 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     @Inject
     private AsyncInstantiationBusinessLogic asyncInstantiationBL;
+
+    @Inject
+    private AuditService auditService;
 
     @Inject
     private RestMsoImplementation restMso;
@@ -120,6 +139,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     @BeforeClass
     void initServicesInfoService() {
         createInstanceParamsMaps();
+        when(versionService.retrieveBuildNumber()).thenReturn("fakeBuild");
     }
 
     @BeforeMethod
@@ -131,10 +151,12 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     @BeforeMethod
     void defineMocks() {
+        Mockito.reset(restMso);
+        Mockito.reset(aaiClient);
         mockAaiClientAnyNameFree();
     }
 
-    //@Test
+    @Test
     public void whenPushNewBulk_thenAllServicesAreInPending() {
 
         pushMacroBulk();
@@ -144,8 +166,8 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     private List<UUID> pushMacroBulk() {
         ServiceInstantiation serviceInstantiation = generateMockMacroServiceInstantiationPayload(false,
-                createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
-                3, true,PROJECT_NAME, true);
+            createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
+            3, true,PROJECT_NAME, true);
         return asyncInstantiationBL.pushBulkJob(serviceInstantiation, USER_ID);
     }
 
@@ -167,6 +189,10 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         return createResponse(statusCode, SERVICE_INSTANCE_ID, REQUEST_ID);
     }
 
+    public static RestObject<RequestReferencesContainer> createResponseRandomIds(int statusCode) {
+        return createResponse(statusCode, UUID.randomUUID().toString(), UUID.randomUUID().toString());
+    }
+
     public static RestObject<RequestReferencesContainer> createResponse(int statusCode, String instanceId, String requestId) {
         RequestReferences requestReferences = new RequestReferences();
         requestReferences.setRequestId(requestId);
@@ -180,7 +206,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     ImmutableList<String> statusesToStrings(JobStatus... jobStatuses) {
         return Stream.of(jobStatuses).map(
-                Enum::toString).collect(ImmutableList.toImmutableList());
+            Enum::toString).collect(ImmutableList.toImmutableList());
     }
 
     /*
@@ -190,81 +216,85 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     Make sure service state is Completed successfully once we got from MSO complete, and that next job is peeked.
     Once a service in the bulk is failed, other services moved to Stopped, and no other jobs from the bulk are peeked.
     */
-    //@Test
+    @Test
     public void testStatusesOfMacroServiceInBulkDuringBulkLifeCycle() {
-        when(restMso.PostForObject(any(), any(), eq(RequestReferencesContainer.class))).thenReturn(createResponse(200));
+
+        final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
+        final String SERVICE_INSTANCE_ID = UUID.randomUUID().toString();
+        final String SERVICE2_REQUEST_ID = UUID.randomUUID().toString();
+        final String SERVICE2_INSTANCE_ID = UUID.randomUUID().toString();
+
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty())))
+            .thenReturn(createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
+
         ImmutableList<ImmutableList<String>> expectedStatusesForVid = ImmutableList.of(
-                statusesToStrings(PENDING, IN_PROGRESS, COMPLETED),
-                statusesToStrings(PENDING, IN_PROGRESS, FAILED),
-                statusesToStrings(PENDING, STOPPED)
+            statusesToStrings(PENDING, IN_PROGRESS, COMPLETED),
+            statusesToStrings(PENDING, IN_PROGRESS, FAILED),
+            statusesToStrings(PENDING, STOPPED)
         );
 
         ImmutableList<ImmutableList<String>> expectedStatusesForMso = ImmutableList.of(
-                ImmutableList.of(REQUESTED, IN_PROGRESS_STR, "not a state", FAILED_STR ,COMPLETE_STR),
-                ImmutableList.of(REQUESTED, FAILED_STR),
-                ImmutableList.of()
+            ImmutableList.of(REQUESTED, IN_PROGRESS_STR, "not a state", FAILED_STR ,COMPLETE_STR),
+            ImmutableList.of(REQUESTED, FAILED_STR),
+            ImmutableList.of()
         );
 
         List<UUID> uuids = pushMacroBulk();
-        pullPendingJobAndAssertJobStatus(JobStatus.IN_PROGRESS, PENDING);
-
+        UUID firstJobUuid = uuids.get(0);
+        UUID secondJobUuid = uuids.get(1);
         //assert that when get ProcessingException from restMso, status remain the same
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).thenThrow(new ProcessingException("fake message"));
-        Job job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS);
-        UUID firstHandledJobUUID = job.getUuid();
-        listServicesAndAssertStatus(JobStatus.IN_PROGRESS, PENDING, job);
+        when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).thenThrow(new ProcessingException("fake message"));
+        processJobsCountTimesAndAssertStatus(firstJobUuid, 10, IN_PROGRESS, PENDING);
 
         //assert that when get IN_PROGRESS status from restMso, status remain IN_PROGRESS
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR));
-        job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS);
-        listServicesAndAssertStatus(JobStatus.IN_PROGRESS, PENDING, job);
+        when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR));
+        processJobsCountTimesAndAssertStatus(firstJobUuid, 10, IN_PROGRESS, PENDING);
 
         //assert that when get unrecognized status from restMso, status remain IN_PROGRESS
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject("not a state"));
-        job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS);
-        listServicesAndAssertStatus(JobStatus.IN_PROGRESS, PENDING, job);
+        when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject("not a state"));
+        processJobsCountTimesAndAssertStatus(firstJobUuid, 10, IN_PROGRESS, PENDING);
 
         //assert that when get non 200 status code during IN_PROGRESS, status remain IN_PROGRESS
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR, 404));
-        job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS);
-        listServicesAndAssertStatus(JobStatus.IN_PROGRESS, PENDING, job);
+        when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR, 404));
+        processJobsCountTimesAndAssertStatus(firstJobUuid, 10, IN_PROGRESS, PENDING);
 
         //when get job COMPLETE from MSO, service status become COMPLETED
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        job = pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, COMPLETED);
-        List<ServiceInfo> serviceInfoList = listServicesAndAssertStatus(COMPLETED, PENDING, job);
-        
-        
+        when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, COMPLETED);
+        List<ServiceInfo> serviceInfoList = listServicesAndAssertStatus(COMPLETED, PENDING, firstJobUuid);
+
+
         //for use later in the test
         Map<UUID, JobStatus> expectedJobStatusMap = serviceInfoList.stream().collect(
-                Collectors.toMap(ServiceInfo::getJobId, x-> PENDING));
-        expectedJobStatusMap.put(job.getUuid(), COMPLETED);
+            Collectors.toMap(ServiceInfo::getJobId, x-> PENDING));
+        expectedJobStatusMap.put(firstJobUuid, COMPLETED);
 
         //when handling another PENDING job, statuses are : COMPLETED, IN_PROGRESS, PENDING
-        job =  pullJobProcessAndPushBack(PENDING, JobStatus.IN_PROGRESS);
-        assertThat(job.getUuid(), not(equalTo(firstHandledJobUUID))); //assert different job was handled now
-        expectedJobStatusMap.put(job.getUuid(), JobStatus.IN_PROGRESS);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty())))
+            .thenReturn(createResponse(200, SERVICE2_INSTANCE_ID, SERVICE2_REQUEST_ID));
+        when(restMso.GetForObject(endsWith(SERVICE2_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR));
+        processJobsCountTimes(10);
+
+        expectedJobStatusMap.put(secondJobUuid, JobStatus.IN_PROGRESS);
         listServicesAndAssertStatus(expectedJobStatusMap);
 
+
         //when get FAILED status from MSO statuses are : COMPLETED, FAILED, STOPPED
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(FAILED_STR));
-        job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.FAILED);
-        expectedJobStatusMap.put(job.getUuid(), JobStatus.FAILED);
+        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).thenReturn(asyncRequestStatusResponseAsRestObject(FAILED_STR));
+        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.FAILED);
+        expectedJobStatusMap.put(secondJobUuid, JobStatus.FAILED);
         expectedJobStatusMap = expectedJobStatusMap.entrySet().stream().collect(Collectors.toMap(
-                e -> e.getKey(), e -> e.getValue() == PENDING ? JobStatus.STOPPED : e.getValue()
+            e -> e.getKey(), e -> e.getValue() == PENDING ? JobStatus.STOPPED : e.getValue()
         ));
 
         listServicesAndAssertStatus(expectedJobStatusMap);
         IntStream.range(0, uuids.size()).forEach(i -> {
             UUID uuid = uuids.get(i);
-            List<String> msoStatuses = asyncInstantiationBL.getAuditStatuses(uuid, MSO).stream().map(x -> x.getJobStatus()).collect(Collectors.toList());
-            List<String> vidStatuses = asyncInstantiationBL.getAuditStatuses(uuid, VID).stream().map(x -> x.getJobStatus()).collect(Collectors.toList());
-            assertThat(msoStatuses, is(expectedStatusesForMso.get(i)));
+            List<String> vidStatuses = auditService.getAuditStatuses(uuid, VID).stream().map(x -> x.getJobStatus()).collect(Collectors.toList());
             assertThat(vidStatuses, is(expectedStatusesForVid.get(i)));
         });
-        //
+
+        //assert no more jobs to pull
         assertFalse(jobsBrokerService.pull(PENDING, randomUuid()).isPresent());
         assertFalse(jobsBrokerService.pull(JobStatus.IN_PROGRESS, randomUuid()).isPresent());
     }
@@ -273,8 +303,8 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     @DataProvider
     public static Object[][] AlaCarteStatuses(Method test) {
         return new Object[][]{
-                {COMPLETE_STR, JobStatus.COMPLETED, JobStatus.COMPLETED},
-                {FAILED_STR, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.FAILED},
+            {COMPLETE_STR, JobStatus.COMPLETED},
+            {FAILED_STR, JobStatus.COMPLETED_WITH_ERRORS},
         };
     }
 
@@ -285,8 +315,8 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     Make sure service state is Completed successfully once we got from MSO complete for the vnf job.
     status Creating
      */
-    //@Test(dataProvider = "AlaCarteStatuses")
-    public void testStatusesOfServiceDuringALaCarteLifeCycleIgnoringVfModules(String msoVnfStatus, JobStatus expectedServiceStatus,  JobStatus expectedVnfStatus) {
+    @Test(dataProvider = "AlaCarteStatuses")
+    public void testStatusesOfServiceDuringALaCarteLifeCycleIgnoringVfModules(String msoVnfStatus, JobStatus expectedServiceStatus) {
         /*
             [v]  + push alacarte with 1 vnf
             [v]    verify STATUS pending
@@ -305,6 +335,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
            * not looking on audit (yet)
         */
+        reset(restMso);
         when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VNF)).thenReturn(true);
         when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(false);
         final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
@@ -315,39 +346,22 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         //push alacarte with 1 vnf, verify STATUS pending
         UUID uuid = pushALaCarteWithVnf();
         singleServicesAndAssertStatus(JobStatus.PENDING, uuid);
-
         //mock mso to answer 200 of create service instance request, verify STATUS in progress
-        when(restMso.PostForObject(any(), endsWith("serviceInstances"), eq(RequestReferencesContainer.class))).thenReturn(
-                createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.PENDING, JobStatus.IN_PROGRESS, JobType.InProgressStatus);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
-
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith("serviceInstances"), any())).thenReturn(
+            createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
         //mock mso to answer COMPLETE for service instance create, job status shall remain IN_PROGRESS and type shall be Watching
-        reset(restMso);
         when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS, JobType.Watching);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
-
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
         //mock mso to answer 200 of create vnf instance request, pull+execute vnf job, STATUS resource in progress
-        reset(restMso);
-        when(restMso.PostForObject(any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs"), eq(RequestReferencesContainer.class))).thenReturn(
-                createResponse(200, UUID.randomUUID().toString(), VNF_REQUEST_ID));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.CREATING, JobStatus.RESOURCE_IN_PROGRESS, JobType.VnfInProgressStatus);
-
-        //verify service job  STATUS in progress
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS, JobType.Watching);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
-
-        //mock mso to answer msoVnfStatus (COMPLETE/FAILED) for vnf creation status,
-        //job status shall be final (COMPLETE/COMPLETE_WITH_ERRORS)
-        reset(restMso);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs"), any())).thenReturn(
+            createResponse(200, UUID.randomUUID().toString(), VNF_REQUEST_ID));
         when(restMso.GetForObject(endsWith(VNF_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(
-                asyncRequestStatusResponseAsRestObject(msoVnfStatus));
-        pullJobProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, expectedVnfStatus, false);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
-        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, expectedServiceStatus, true);
-        singleServicesAndAssertStatus(expectedServiceStatus, uuid);
+            asyncRequestStatusResponseAsRestObject(msoVnfStatus));
+
+        processJobsCountTimesAndAssertStatus(uuid, 100, expectedServiceStatus);
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), eq("/serviceInstantiation/v7/serviceInstances"), any());
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs"), any());
+        verify(restMso, times(2)).GetForObject(any(), any());
 
     }
 
@@ -361,13 +375,11 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     And union these tests to single one.
      */
 
-    //@Test
+    @Test
     public void testALaCarteLifeCycle1Vnf2VfModules() {
 
 
         String msoVnfStatus = COMPLETE_STR;
-        JobStatus expectedServiceStatus = IN_PROGRESS;
-        JobStatus expectedVnfStatus = RESOURCE_IN_PROGRESS;
         when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VNF)).thenReturn(true);
         when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
         final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
@@ -383,39 +395,27 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         //push alacarte with 1 vnf, verify STATUS pending
         UUID uuid = pushALaCarteWithVnf();
         singleServicesAndAssertStatus(JobStatus.PENDING, uuid);
+        reset(restMso);
 
         /*---------- service -----------*/
 
         //mock mso to answer 200 of create service instance request, verify STATUS in progress
-        when(restMso.PostForObject(any(), endsWith("serviceInstances"), eq(RequestReferencesContainer.class))).thenReturn(
-                createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.PENDING, JobStatus.IN_PROGRESS, JobType.InProgressStatus);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith("serviceInstances"), any())).thenReturn(
+            createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
 
-        //mock mso to answer COMPLETE for service instance create, job status shall remain IN_PROGRESS and type shall be Watching
-        reset(restMso);
+        //mock mso to answer COMPLETE for service instance create
         when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS, JobType.Watching);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
         /*---------- vnf -----------*/
 
-        //mock mso to answer 200 of create vnf instance request, pull+execute vnf job, STATUS resource in progress
-        reset(restMso);
-        when(restMso.PostForObject(any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs"), eq(RequestReferencesContainer.class))).thenReturn(
-                createResponse(200, VNF_INSTANCE_ID, VNF_REQUEST_ID));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.CREATING, JobStatus.RESOURCE_IN_PROGRESS, JobType.VnfInProgressStatus);
-
-        //verify service job  STATUS in progress
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS, JobType.Watching);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
+        //mock mso to answer 200 of create vnf instance request
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs"), any())).thenReturn(
+            createResponse(200, VNF_INSTANCE_ID, VNF_REQUEST_ID));
 
         //mock mso to answer msoVnfStatus (COMPLETE/FAILED) for vnf creation status,
-        //job status shall be final (COMPLETE/COMPLETE_WITH_ERRORS)
-        reset(restMso);
         when(restMso.GetForObject(endsWith(VNF_REQUEST_ID), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
         try {
             reset(commandUtils);
@@ -425,113 +425,164 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
         }
 
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.RESOURCE_IN_PROGRESS, JobStatus.RESOURCE_IN_PROGRESS, JobType.WatchingBaseModule);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
-        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS, true);
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
-
         /*---------- vf Module without volume group name (base) -----------*/
 
-        //vg name not exist, so vf module created immediately
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.CREATING, JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching);
-
-        //verify vnf/volumeGroup job  STATUS still watching with resource in progress
-        pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching, JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching);
-
         //mock mso to answer 200 of create vfModule instance request, pull+execute volumeGroup job, STATUS resource in progress
-        reset(restMso);
-        when(restMso.PostForObject(any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/vfModules"), eq(RequestReferencesContainer.class))).thenReturn(
-                createResponse(200, UUID.randomUUID().toString(), VF_MODULE_REQUEST_ID));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.CREATING, JobStatus.RESOURCE_IN_PROGRESS, JobType.ResourceInProgressStatus);
-
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/vfModules"), any())).thenReturn(
+            createResponse(200, UUID.randomUUID().toString(), VG_REQUEST_ID));
         //mock mso to answer for vf module orchestration request
-        reset(restMso);
         when(restMso.GetForObject(endsWith(VF_MODULE_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(
-                asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, JobType.ResourceInProgressStatus, JobStatus.COMPLETED, JobType.ResourceInProgressStatus);
+            asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        //verify volume group become completed
-        pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching, JobStatus.COMPLETED, JobType.Watching);
-
-        //vnf become watching after volume group completed, and new volume group created
-        pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, JobType.WatchingBaseModule, JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching);
-
-        /*---------- volume group & vf module (non base) -----------*/
-
-        /*---------- volume group -----------*/
-
-        //mock mso to answer 200 of create volumeGroup instance request, pull+execute volumeGroup job, STATUS resource in progress
-        reset(restMso);
-        when(restMso.PostForObject(any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/volumeGroups"), eq(RequestReferencesContainer.class))).thenReturn(
-                createResponse(200, VG_INSTANCE_ID, VG_REQUEST_ID));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.CREATING, JobStatus.RESOURCE_IN_PROGRESS, JobType.VolumeGroupInProgressStatus);
-
-        //verify vnf job  STATUS still watching with resource in progress
-        pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching, JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching);
-
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/volumeGroups"), any())).thenReturn(
+            createResponse(200, VG_INSTANCE_ID, VG_REQUEST_ID));
         //mock mso to answer for volume group orchestration request
-        reset(restMso);
         when(restMso.GetForObject(endsWith(VG_REQUEST_ID), eq(AsyncRequestStatus.class))).thenReturn(
-                asyncRequestStatusResponseAsRestObject(msoVnfStatus));
-        pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, JobType.VolumeGroupInProgressStatus, JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching);
+            asyncRequestStatusResponseAsRestObject(msoVnfStatus));
 
         /*---------- vfModule -----------*/
 
         //mock mso to answer 200 of create vfModule instance request, pull+execute volumeGroup job, STATUS resource in progress
-        reset(restMso);
-        when(restMso.PostForObject(any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/vfModules"), eq(RequestReferencesContainer.class))).thenReturn(
-                createResponse(200, UUID.randomUUID().toString(), VF_MODULE_REQUEST_ID2));
-        pullJobProcessAndPushBackWithTypeAssertion(JobStatus.CREATING, JobStatus.RESOURCE_IN_PROGRESS, JobType.ResourceInProgressStatus);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/vfModules"), any())).thenReturn(
+            createResponse(200, UUID.randomUUID().toString(), VF_MODULE_REQUEST_ID2));
 
         //mock mso to answer for vf module orchestration request
-        reset(restMso);
         when(restMso.GetForObject(endsWith(VF_MODULE_REQUEST_ID2), eq(AsyncRequestStatus.class))).thenReturn(
-                asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus.RESOURCE_IN_PROGRESS, JobType.ResourceInProgressStatus, JobStatus.COMPLETED, JobType.ResourceInProgressStatus);
+            asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        //execute twice - 1 for parent volume group, 1 for parent vnf
-        pullAllJobProcessAndPushBackByType(JobStatus.RESOURCE_IN_PROGRESS, JobType.Watching , JobStatus.COMPLETED);
-
-        singleServicesAndAssertStatus(JobStatus.IN_PROGRESS, uuid);
-        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.COMPLETED, true);
-        singleServicesAndAssertStatus(JobStatus.COMPLETED, uuid);
+        processJobsCountTimesAndAssertStatus(uuid, 200, COMPLETED);
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), eq("/serviceInstantiation/v7/serviceInstances"), any());
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs"), any());
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/volumeGroups"), any());
+        verify(restMso, times(2)).restCall(eq(HttpMethod.POST), any(), any(), endsWith(SERVICE_INSTANCE_ID + "/vnfs/" + VNF_INSTANCE_ID + "/vfModules"), any());
+        verify(restMso, times(5)).GetForObject(any(), any());
     }
 
-    //@Test
+    @Test
+    public void testALaCarteLifeCycle2Networks() {
+
+        //Create Service with 2 networks, and make sure they created in sequence (and not in parallel)
+        //Config MSO to response 200 only to first network creation. And answer 500 for second one.
+        //Then MSO return in_progress some times (like 10 times), and then return COMPLETE.
+        //Only when MSO return COMPLETE for first network, config MSO to return 200 for second network creation
+
+        final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
+        final String SERVICE_INSTANCE_ID = UUID.randomUUID().toString();
+        final String NETWORK_REQUEST_ID1 = UUID.randomUUID().toString();
+        final String NETWORK_INSTANCE_ID1 = UUID.randomUUID().toString();
+        //TODO use them later for different networks
+        final String NETWORK_REQUEST_ID2 = UUID.randomUUID().toString();
+        final String NETWORK_INSTANCE_ID2 = UUID.randomUUID().toString();
+
+
+        NetworkDetails networkDetails1 = new NetworkDetails("LukaDoncic", "1");
+        NetworkDetails networkDetails2 = new NetworkDetails("KevinDurant", "2");
+
+        reset(restMso);
+
+        /*---------- service -----------*/
+
+        //mock mso to answer 200 of create service instance request, verify STATUS in progress
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith("serviceInstances"), any())).thenReturn(
+            createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
+
+        //mock mso to answer COMPLETE for service instance create
+        when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+        final MutableInt secondNetworkCode = new MutableInt(500);
+        final MutableInt inProgressCount = new MutableInt(0);
+
+        /*---------- network 1-----------*/
+
+        //mock mso to answer 200 of first create network instance request
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class),
+            MockitoHamcrest.argThat(jsonPartMatches("requestDetails.requestInfo.instanceName", equalTo(networkDetails1.name))) ,
+            endsWith(SERVICE_INSTANCE_ID + "/networks"), any())).thenReturn(
+            createResponse(200, NETWORK_INSTANCE_ID1, NETWORK_REQUEST_ID1));
+
+        //mock mso to answer IN_PROGRESS 10 times, and only then COMPLETE for first network
+        //Once COMPLETE, second network creation will return 200
+        when(restMso.GetForObject(endsWith(NETWORK_REQUEST_ID1), eq(AsyncRequestStatus.class))).
+            thenAnswer(x->{
+                String status;
+                if (inProgressCount.getValue()<10) {
+                    status = IN_PROGRESS_STR;
+                } else {
+                    secondNetworkCode.setValue(200);
+                    status = COMPLETE_STR;
+                }
+                inProgressCount.add(1);
+                return asyncRequestStatusResponseAsRestObject(status);
+            });
+
+        /*---------- network 2-----------*/
+
+        //mock MSO to return status code of secondNetworkCode (500 and 200 after first one COMPLETED)
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class),
+            MockitoHamcrest.argThat(jsonPartMatches("requestDetails.requestInfo.instanceName", equalTo(networkDetails2.name))) ,
+            endsWith(SERVICE_INSTANCE_ID + "/networks"), any())).thenAnswer(x->
+            createResponse(secondNetworkCode.intValue(), NETWORK_INSTANCE_ID2, NETWORK_REQUEST_ID2));
+
+//        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any() , endsWith(SERVICE_INSTANCE_ID + "/networks"), any())).thenReturn(
+//                createResponse(200, NETWORK_INSTANCE_ID1, NETWORK_REQUEST_ID1));
+        //mock mso to answer COMPLETE for network creation status,
+
+        when(restMso.GetForObject(endsWith(NETWORK_REQUEST_ID2), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+
+        /*---------- Create request and process it -----------*/
+        //push alacarte with 2 networks, verify STATUS pending
+        when(featureManager.isActive(Features.FLAG_EXP_CREATE_RESOURCES_IN_PARALLEL)).thenReturn(false);
+        ServiceInstantiation serviceInstantiation = generateALaCarteWithNetworksPayload(ImmutableList.of(networkDetails1, networkDetails2));
+        UUID uuid = asyncInstantiationBL.pushBulkJob(serviceInstantiation, USER_ID).get(0);
+        singleServicesAndAssertStatus(JobStatus.PENDING, uuid);
+
+        processJobsCountTimesAndAssertStatus(uuid, 200, COMPLETED);
+
+        //validate the mso request id is the right one
+        List<ServiceInfo> serviceInfoList = asyncInstantiationBL.getAllServicesInfo();
+        ServiceInfo serviceInfo = serviceInfoList.get(0);
+        assertThat(serviceInfo.getMsoRequestId(), is(UUID.fromString(SERVICE_REQUEST_ID)));
+
+        /*---------- verify -----------*/
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), eq("/serviceInstantiation/v7/serviceInstances"), any());
+        verify(restMso, times(2)).restCall(eq(HttpMethod.POST), any(), any(), endsWith(SERVICE_INSTANCE_ID + "/networks"), any());
+        //get status
+        verify(restMso, times(1)).GetForObject(endsWith(SERVICE_REQUEST_ID), any());
+        verify(restMso, times(11)).GetForObject(endsWith(NETWORK_REQUEST_ID1), any());
+        verify(restMso, times(1)).GetForObject(endsWith(NETWORK_REQUEST_ID2), any());
+    }
+
+    @Test
     public void testBadAaiResponseForSearchNamesAndBackToNormal() {
         when(aaiClient.isNodeTypeExistsByName(any(), any())).thenThrow(aaiNodeQueryBadResponseException());
-        pushMacroBulk();        //JOB shall become IN_PROGRESS but service info is still pending
-        Job job = pullJobProcessAndPushBack(PENDING, JobStatus.IN_PROGRESS, true);
-        listServicesAndAssertStatus(PENDING, PENDING, job);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty()))).thenReturn(createResponse(200));
+        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        //JOB shall remain in IN_PROGRESS
-        job = pullJobProcessAndPushBack( JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS, true);
-        //make sure the job command is still ServiceInstantiation
-        assertThat(job.getType(), is(JobType.MacroServiceInstantiation));
-        listServicesAndAssertStatus(PENDING, PENDING, job);
+        List<UUID> uuids = pushMacroBulk();
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 5, IN_PROGRESS, PENDING);  //JOB shall become IN_PROGRESS but service info is still pending
 
         //simulate AAI back to normal, AAI return name is free, and MSO return good response
         Mockito.reset(aaiClient); // must forget the "thenThrow"
         when(aaiClient.isNodeTypeExistsByName(any(), any())).thenReturn(false);
-        when(restMso.PostForObject(any(),any(), eq(RequestReferencesContainer.class))).thenReturn(createResponse(200));
-        job = pullJobProcessAndPushBack( JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS, true);
-        listServicesAndAssertStatus(JobStatus.IN_PROGRESS, PENDING, job);
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 30, COMPLETED, COMPLETED);
 
-        //when get job COMPLETE from MSO, service status become COMPLETED
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        job = pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, COMPLETED);
-        listServicesAndAssertStatus(COMPLETED, PENDING, job);
     }
 
-    //@Test
+    @Test
     public void testAaiResponseNameUsedTillMaxRetries() {
         when(aaiClient.isNodeTypeExistsByName(any(), any())).thenReturn(true);
+        //simulate MSO to return good result, for making sure we failed because of AAI error
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty()))).thenReturn(createResponse(200));
+        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
         asyncInstantiationBL.setMaxRetriesGettingFreeNameFromAai(10);
-        pushMacroBulk();
-        //JOB shall become IN_PROGRESS but service info is still pending
-        Job job = pullJobProcessAndPushBack(PENDING, JobStatus.FAILED, true);
-        listServicesAndAssertStatus(JobStatus.FAILED, JobStatus.STOPPED, job);
+        List<UUID> uuids = pushMacroBulk();
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 20, FAILED, STOPPED);
     }
 
     private Job pullJobProcessAndPushBack(JobStatus topic, JobStatus expectedNextJobStatus) {
@@ -559,22 +610,23 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         return job.get();
     }
 
+    private void simplePullJobProcessAndPushBack(JobStatus topic) {
+        Optional<Job> optionalJob =  jobsBrokerService.pull(topic, randomUuid());
+        optionalJob.ifPresent(job->{
+            Job nextJob = jobWorker.executeJobAndGetNext(job);
+            jobsBrokerService.pushBack(nextJob);
+        });
+    }
+
     private Job pullJobProcessAndPushBackWithTypeAssertion(JobStatus topic, JobStatus expectedNextJobStatus,
-                                                           JobType expectedNextJobType) {
+        JobType expectedNextJobType) {
         Job job = pullJobProcessAndPushBack(topic, expectedNextJobStatus, false);
         assertThat("job not ok: " + job.getData(), job.getType(), is(expectedNextJobType));
         return job;
     }
 
     private Job pullJobProcessAndPushBackWithTypeAssertion(JobStatus topic, JobStatus expectedNextJobStatus,
-                                                           JobType expectedNextJobType, int retries) {
-        return retryWithAssertionsLimit(retries, () -> {
-            return pullJobProcessAndPushBackWithTypeAssertion(topic, expectedNextJobStatus, expectedNextJobType);
-        });
-    }
-
-    private Job pullJobProcessAndPushBackWithTypeAssertion(JobStatus topic, JobStatus expectedNextJobStatus,
-                                                           JobType expectedNextJobType, Action actionPhase, InternalState internalState, int retries) {
+        JobType expectedNextJobType, Action actionPhase, InternalState internalState, int retries) {
         return retryWithAssertionsLimit(retries, () -> {
             Job job = pullJobProcessAndPushBackWithTypeAssertion(topic, expectedNextJobStatus, expectedNextJobType);
             assertThat("job not ok: " + job.getData(), job.getData(), is(jsonPartEquals("actionPhase", actionPhase.name())));
@@ -598,49 +650,11 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
         // No success:
         throw new AssertionError("No luck while all of these assertion errors: " + history.stream()
-                .map(Throwable::getMessage)
-                .map(s -> s.replace('\n', ' '))
-                .map(s -> s.replaceAll("\\s{2,}"," "))
-                .distinct()
-                .collect(joining("\n   ", "\n   ", "")), history.peek());
-    }
-
-    private Job pullMultipleJobsFindExpectedProcessAndPushBack(JobStatus topic, JobType expectedCurrentJobType, JobStatus expectedNextJobStatus,
-                                                               JobType expectedNextJobType) {
-        List<Job> pulledJobs = new ArrayList<>();
-        Job lastJob = null;
-        while (lastJob == null || lastJob.getType() != expectedCurrentJobType) {
-            lastJob = pullJob(topic, false).get();
-            if (lastJob.getType() != expectedCurrentJobType) {
-                pulledJobs.add(lastJob);
-            }
-        }
-
-        Job nextJob = jobWorker.executeJobAndGetNext(lastJob);
-        assertThat(nextJob.getStatus(), is(expectedNextJobStatus));
-        assertThat(nextJob.getType(), is(expectedNextJobType));
-
-        jobsBrokerService.pushBack(nextJob);
-        assertThat(jobsBrokerService.peek(nextJob.getUuid()).getStatus(), is(expectedNextJobStatus));
-
-        pulledJobs.forEach(job ->
-                jobsBrokerService.pushBack(job)
-        );
-
-        return nextJob;
-    }
-
-    private void pullAllJobProcessAndPushBackByType(JobStatus topic, JobType commandType, JobStatus expectedFinalStatus) {
-        Map<UUID, JobStatus> jobStatusMap = new HashMap<>();
-        Optional<Job> job = pullJob(topic, false);
-        for (int i=0; i<1000 && job.isPresent() && job.get().getType() == commandType; i++) {
-            Job nextJob = jobWorker.executeJobAndGetNext(job.get());
-            jobStatusMap.put(nextJob.getUuid(), nextJob.getStatus());
-            jobsBrokerService.pushBack(nextJob);
-            job = jobsBrokerService.pull(topic, UUID.randomUUID().toString());
-        }
-        assertThat(jobStatusMap.values(), everyItem(is(expectedFinalStatus)));
-
+            .map(Throwable::getMessage)
+            .map(s -> s.replace('\n', ' '))
+            .map(s -> s.replaceAll("\\s{2,}"," "))
+            .distinct()
+            .collect(joining("\n   ", "\n   ", "")), history.peek());
     }
 
     private Optional<Job> pullJob(JobStatus topic, boolean pullingAssertion) {
@@ -665,49 +679,37 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     }
 
 
-    //@Test
+    @Test
     public void whenPushNewBulk_andGetNoResponseFromMsoOnCreation_thenServiceMoveToFailedAndOtherToStopped() {
-        when(restMso.PostForObject(any(), any(), eq(RequestReferencesContainer.class))).thenReturn(createResponse(500));
-        pushBulkPullPendingJobAndAssertJobStatus(JobStatus.FAILED, JobStatus.STOPPED);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty()))).thenReturn(createResponse(500));
+        //assert that when get ProcessingException from restMso, status remain the same
+        List<UUID> uuids = pushMacroBulk();
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 30, JobStatus.FAILED, JobStatus.STOPPED);
     }
 
-    //@Test
+    @Test
     public void whenMsoStatusIsPendingManualTask_ThenJobStatusIsPaused() {
-        when(restMso.PostForObject(any(), any(), eq(RequestReferencesContainer.class))).thenReturn(createResponse(200));
-
-        Job firstJob = pushBulkPullPendingJobAndAssertJobStatus(JobStatus.IN_PROGRESS, PENDING);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty()))).thenReturn(createResponse(200));
+        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(PENDING_MANUAL_TASK));
 
         //assert that when get ProcessingException from restMso, status remain the same
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(PENDING_MANUAL_TASK));
-        Job job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS);
-        listServicesAndAssertStatus(PAUSE, PENDING, job);
+        List<UUID> uuids = pushMacroBulk();
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 30, PAUSE, PENDING);
 
-        //The paused job is pulled and remain in pause state. Other jobs from bulk remain pending
-        job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS);
-        listServicesAndAssertStatus(PAUSE, PENDING, job);
 
         //the job get IN_PROGRESS response (simulate activate operation) and status changed to IN_PROGRESS
         when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR));
-        job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS);
-        listServicesAndAssertStatus(JobStatus.IN_PROGRESS, PENDING, job);
+            thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR));
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 30, IN_PROGRESS, PENDING);
 
+        //the job get COMPLETE response this job is copmpleted and then also other jobs
         when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        job =  pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, COMPLETED);
-        listServicesAndAssertStatus(COMPLETED, PENDING, job);
-
-        //Pulling PENDING job return another job
-        assertThat(jobsBrokerService.pull(PENDING, randomUuid()).get().getUuid(), not(equalTo(job.getUuid())));
-
-
-        ImmutableList<String> expectedStatusesForMso = ImmutableList.of(REQUESTED, PENDING_MANUAL_TASK, IN_PROGRESS_STR, COMPLETE_STR);
-        List<String> msoStatuses = asyncInstantiationBL.getAuditStatuses(firstJob.getUuid(), MSO).stream().map(x -> x.getJobStatus()).collect(Collectors.toList());
-        assertThat(msoStatuses, is(expectedStatusesForMso));
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 200, COMPLETED, COMPLETED);
 
         ImmutableList<String> expectedStatusesForVid = statusesToStrings(PENDING, IN_PROGRESS, PAUSE, IN_PROGRESS, COMPLETED);
-        List<String> vidStatuses = asyncInstantiationBL.getAuditStatuses(firstJob.getUuid(), VID).stream().map(x -> x.getJobStatus()).collect(Collectors.toList());
+        List<String> vidStatuses = auditService.getAuditStatuses(uuids.get(0), VID).stream().map(x -> x.getJobStatus()).collect(Collectors.toList());
         assertThat(vidStatuses, is(expectedStatusesForVid));
     }
 
@@ -718,65 +720,76 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     private Job pullPendingJobAndAssertJobStatus(JobStatus pulledJobStatus, JobStatus otherJobsStatus) {
         Job job = pullJobProcessAndPushBack(PENDING, pulledJobStatus, false);
-        listServicesAndAssertStatus(pulledJobStatus, otherJobsStatus, job);
+        listServicesAndAssertStatus(pulledJobStatus, otherJobsStatus, job.getUuid());
         return job;
     }
 
-    //@Test
+    @Test
     public void test2BulksLifeCyclesAreIndependent() {
-        pushMacroBulk();
-        when(restMso.PostForObject(any(), any(), eq(RequestReferencesContainer.class))).thenReturn(createResponse(200));
-        //push 2nd job, then when pulling first job the job become in_progress, other jobs (from 2 bulks) remain pending
-        Job firstJob = pushBulkPullPendingJobAndAssertJobStatus(JobStatus.IN_PROGRESS, PENDING);
 
-        //assert we can pull another job from pending from other template id
-        Job secondJob = pullJobProcessAndPushBack(PENDING, JobStatus.IN_PROGRESS, false);
-        assertThat(firstJob.getTemplateId(), not(equalTo(secondJob.getTemplateId())));
+        final String SERVICE1_REQUEST_ID = UUID.randomUUID().toString();
+        final String SERVICE1_INSTANCE_ID = UUID.randomUUID().toString();
+        final String SERVICE2_REQUEST_ID = UUID.randomUUID().toString();
+        final String SERVICE2_INSTANCE_ID = UUID.randomUUID().toString();
+        final String SERVICE3_4_REQUEST_ID = UUID.randomUUID().toString();
+        final String SERVICE3_4_INSTANCE_ID = UUID.randomUUID().toString();
 
-        //assert no more PENDING jobs to pull
-        assertFalse(jobsBrokerService.pull(PENDING, randomUuid()).isPresent());
 
-        //when get FAILED status from MSO statuses for failed bulk are: FAILED, STOPPED, for other bulk: IN_PROGRESS, 2 pending
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(FAILED_STR));
-        Job failedJob = pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, JobStatus.FAILED, false);
+        //create first bulk and make one job in progress
+        List<UUID> firstBulksIDs = pushMacroBulk();
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty())))
+            .thenReturn(createResponse(200, SERVICE1_INSTANCE_ID, SERVICE1_REQUEST_ID));
+        when(restMso.GetForObject(endsWith(SERVICE1_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR));
+        processJobsCountTimesAndAssertStatus(firstBulksIDs.get(0), 30, IN_PROGRESS, PENDING);
+
+        //create 2nd bulk, then when pulling first job the job become in_progress, other jobs (from 2 bulks) remain pending
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty())))
+            .thenReturn(createResponse(200, SERVICE2_INSTANCE_ID, SERVICE2_REQUEST_ID));
+        when(restMso.GetForObject(endsWith(SERVICE2_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR));
+        List<UUID> secondBulksIDs = pushMacroBulk();
+        processJobsCountTimes(30);
+        Map<JobStatus, Long> statusCount = getJobStatusesCount();
+        assertThat(statusCount.get(IN_PROGRESS), is(2L));
+        assertThat(statusCount.get(PENDING), is(4L));
+
+        //return failed to first job
+        //first bulk statuses shall be: FAILED, STOPPED, STOPPED
+        //second bulk statuses shall be: IN_PROGRESS, PENDING, PENDING
+        when(restMso.GetForObject(endsWith(SERVICE1_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(FAILED_STR));
+        processJobsCountTimes(30);
         Map<UUID, List<ServiceInfo>> servicesByTemplateId =
-                asyncInstantiationBL.getAllServicesInfo()
-                        .stream().collect(groupingBy(ServiceInfo::getTemplateId));
-        assertServicesStatus(servicesByTemplateId.get(failedJob.getTemplateId()), JobStatus.FAILED, JobStatus.STOPPED, failedJob);
-        Job successJob = failedJob.getUuid().equals(firstJob.getUuid()) ? secondJob : firstJob;
-        assertServicesStatus(servicesByTemplateId.get(successJob.getTemplateId()), JobStatus.IN_PROGRESS, PENDING, successJob);
+            asyncInstantiationBL.getAllServicesInfo()
+                .stream().collect(groupingBy(ServiceInfo::getTemplateId));
+        ServiceInfo failedJob = asyncInstantiationBL.getAllServicesInfo().stream().filter(x->x.getJobId().equals(firstBulksIDs.get(0))).findFirst().get();
+        assertServicesStatus(servicesByTemplateId.get(failedJob.getTemplateId()), JobStatus.FAILED, JobStatus.STOPPED, failedJob.getJobId());
+        ServiceInfo successJob = asyncInstantiationBL.getAllServicesInfo().stream().filter(x->x.getJobId().equals(secondBulksIDs.get(0))).findFirst().get();
+        assertServicesStatus(servicesByTemplateId.get(successJob.getTemplateId()), JobStatus.IN_PROGRESS, PENDING, successJob.getJobId());
 
-        //yet no more PENDING jobs to pull
-        assertFalse(jobsBrokerService.pull(PENDING, randomUuid()).isPresent());
+        //return completed to all other jobs
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), any(), eq(Optional.empty())))
+            .thenReturn(createResponse(200, SERVICE3_4_INSTANCE_ID, SERVICE3_4_REQUEST_ID));
+        when(restMso.GetForObject(endsWith(SERVICE2_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+        when(restMso.GetForObject(endsWith(SERVICE3_4_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        //assert that job from non failed bulk can progress.
-        //When completed,  failed bulk statuses: FAILED, STOPPED. Succeeded bulk statuses are : COMPLETED, 2 pending
-        when(restMso.GetForObject(any(), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
-        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, COMPLETED, false);
-        servicesByTemplateId =
-                asyncInstantiationBL.getAllServicesInfo()
-                        .stream().collect(groupingBy(ServiceInfo::getTemplateId));
-        assertServicesStatus(servicesByTemplateId.get(failedJob.getTemplateId()), JobStatus.FAILED, JobStatus.STOPPED, failedJob);
-        assertServicesStatus(servicesByTemplateId.get(successJob.getTemplateId()), COMPLETED, PENDING, successJob);
-
-        //advance other jobs of succeeded bulk till al of them reach to COMPLETED
-        pullJobProcessAndPushBack(PENDING, JobStatus.IN_PROGRESS, false);
-        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, COMPLETED, false);
-        pullJobProcessAndPushBack(PENDING, JobStatus.IN_PROGRESS, false);
-        pullJobProcessAndPushBack(JobStatus.IN_PROGRESS, COMPLETED, false);
-        servicesByTemplateId =
-                asyncInstantiationBL.getAllServicesInfo()
-                        .stream().collect(groupingBy(ServiceInfo::getTemplateId));
-        assertServicesStatus(servicesByTemplateId.get(failedJob.getTemplateId()), JobStatus.FAILED, JobStatus.STOPPED, failedJob);
-        assertServicesStatus(servicesByTemplateId.get(successJob.getTemplateId()), COMPLETED, COMPLETED, successJob);
-
+        processJobsCountTimes(30);
+        servicesByTemplateId = asyncInstantiationBL.getAllServicesInfo().stream().collect(groupingBy(ServiceInfo::getTemplateId));
+        assertServicesStatus(servicesByTemplateId.get(failedJob.getTemplateId()), JobStatus.FAILED, JobStatus.STOPPED, failedJob.getJobId());
+        assertServicesStatus(servicesByTemplateId.get(successJob.getTemplateId()), COMPLETED, COMPLETED, successJob.getJobId());
         //assert no more PENDING jobs nor IN_PROGRESS jobs to pull
         assertFalse(jobsBrokerService.pull(PENDING, randomUuid()).isPresent());
         assertFalse(jobsBrokerService.pull(JobStatus.IN_PROGRESS, randomUuid()).isPresent());
     }
 
+    protected Map<JobStatus, Long> getJobStatusesCount() {
+        return asyncInstantiationBL.getAllServicesInfo().stream().collect(groupingBy(ServiceInfo::getJobStatus, counting()));
+    }
+
+    @Test
     public void deploy2NewGroupsToServiceWith1ExistingGroup() {
 
         /*
@@ -795,18 +808,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         [v]  + pull+execute  (should NOT post to MSO)
         [v]    verify STATUS in progress; TYPE watching
                ...
-        [v]    verify job#2 *new* GROUP job STATUS completed with no action TYPE group INTERNAL STATE terminal PHASE delete
-        [v]    verify job#3 *new* GROUP job STATUS completed with no action TYPE group INTERNAL STATE terminal PHASE delete
-        [v]    verify job#4 *new* GROUP job STATUS completed with no action TYPE group INTERNAL STATE terminal PHASE delete
 
-        [v]  + pull+execute job#1 (should NOT post to MSO)
-        [v]    verify STATUS in progress; TYPE watching
-        [v]    verify job#5 *new* GROUP job STATUS creating TYPE group INTERNAL STATE initial PHASE create
-        [v]    verify job#6 *new* GROUP job STATUS creating TYPE group INTERNAL STATE initial PHASE create
-        [v]    verify job#7 *new* GROUP job STATUS creating TYPE group INTERNAL STATE initial PHASE create
-
-        [v]  + pull+execute job#5 (should NOT post to MSO)
-        [v]    verify job#5 STATUS completed with no action TYPE group INTERNAL STATE terminal PHASE create
         [v]  + pull+execute job#1
         [v]    verify job#1 STATUS in progress; TYPE watching
 
@@ -845,70 +847,265 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         singleServicesAndAssertStatus(PENDING, uuid);
 
         // take from pending, put in-progress -> 3 delete-child were born
-        pullJobProcessAndPushBackWithTypeAssertion(PENDING, IN_PROGRESS, JobType.ALaCarteService, Action.Delete, InternalState.WATCHING, 1);
+        pullJobProcessAndPushBackWithTypeAssertion(PENDING, IN_PROGRESS, JobType.ALaCarteService, Action.Create, InternalState.INITIAL, 1);
         verifyQueueSizes(ImmutableMap.of(
-                IN_PROGRESS, 1, CREATING, 3
-        ));
-
-        Stream.of(1, 2, 3).forEach(i -> {
-            // take each child creating, put in-progress
-            verify_Job1InProgress.accept(Action.Delete, IN_PROGRESS);
-            pullJobProcessAndPushBackWithTypeAssertion(CREATING, RESOURCE_IN_PROGRESS, JobType.InstanceGroup, Action.Delete, null, 1);
-
-            // execute each in-progress -> job is completed
-            verify_Job1InProgress.accept(Action.Delete, IN_PROGRESS);
-            pullJobProcessAndPushBackWithTypeAssertion(RESOURCE_IN_PROGRESS, COMPLETED/*_WITH_NO_ACTION*/, JobType.InstanceGroup,1);
-        });
-        verifyQueueSizes(ImmutableMap.of(
-                IN_PROGRESS, 1, COMPLETED, 3
+            IN_PROGRESS, 1
         ));
 
         // take job #1 from phase delete to phase create -> 3 create-child were born
         verify_Job1InProgress.accept(Action.Create, IN_PROGRESS);
         verifyQueueSizes(ImmutableMap.of(
-                IN_PROGRESS, 1, CREATING, 3, COMPLETED, 3
+            IN_PROGRESS, 1, PENDING_RESOURCE, 3
         ));
 
         // prepare MSO mock
-        when(restMso.PostForObject(any(), endsWith("instanceGroups"), eq(RequestReferencesContainer.class)))
-                .thenReturn(createResponse(200, GROUP1_INSTANCE_ID, GROUP1_REQUEST_ID))
-                .thenReturn(createResponse(200, GROUP2_INSTANCE_ID, GROUP2_REQUEST_ID))
-                .thenReturn(null);
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith("instanceGroups"), eq(Optional.empty())))
+            .thenReturn(createResponse(200, GROUP1_INSTANCE_ID, GROUP1_REQUEST_ID))
+            .thenReturn(createResponse(200, GROUP2_INSTANCE_ID, GROUP2_REQUEST_ID))
+            .thenReturn(null);
         when(restMso.GetForObject(argThat(uri -> StringUtils.endsWithAny(uri, GROUP1_REQUEST_ID, GROUP2_REQUEST_ID)), eq(AsyncRequestStatus.class))).
-                thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        // take first "none" child from creating to completed
+        // take first "none" child from creating to COMPLETED_WITH_NO_ACTION
         // note there's no concrete mechanism that makes the first child be
-        // the "action=None" case, but that's what happens, and following line
+        // the "action=None" case, but that's what happens, and following lines
         // relies on that fact.
-        pullJobProcessAndPushBackWithTypeAssertion(CREATING, COMPLETED_WITH_NO_ACTION, JobType.InstanceGroupInstantiation, 1);
+        pullJobProcessAndPushBackWithTypeAssertion(PENDING_RESOURCE, COMPLETED_WITH_NO_ACTION, JobType.InstanceGroup, Action.Create, null, 1);
 
         // take each of next two children from creating to in-progress, then to completed
         // verify job #1 is watching, and MSO is getting requests
         Stream.of(1, 2).forEach(i -> {
             verify_Job1InProgress.accept(Action.Create, IN_PROGRESS);
-            pullJobProcessAndPushBackWithTypeAssertion(CREATING, RESOURCE_IN_PROGRESS, JobType.ResourceInProgressStatus);
-            verify(restMso, times(i)).PostForObject(any(), any(), any());
+            pullJobProcessAndPushBackWithTypeAssertion(PENDING_RESOURCE, RESOURCE_IN_PROGRESS, JobType.InstanceGroup, Action.Create, InternalState.IN_PROGRESS, 1);
+            verify(restMso, times(i)).restCall(any(), any(), any(), any(), any());
 
             verify_Job1InProgress.accept(Action.Create, IN_PROGRESS);
-            pullJobProcessAndPushBackWithTypeAssertion(RESOURCE_IN_PROGRESS, COMPLETED, JobType.ResourceInProgressStatus);
+            pullJobProcessAndPushBackWithTypeAssertion(RESOURCE_IN_PROGRESS, COMPLETED, JobType.InstanceGroup, Action.Create, null, 3);
             verify(restMso, times(i)).GetForObject(any(), any());
         });
 
         // job #1 is done as all children are done
         verify_Job1InProgress.accept(Action.Create, COMPLETED);
-        verifyQueueSizes(ImmutableMap.of(COMPLETED, 7));
+        verifyQueueSizes(ImmutableMap.of(COMPLETED, 3, COMPLETED_WITH_NO_ACTION, 1));
     }
+
+    @DataProvider
+    public static Object[][] createAndDeleteIntegrationTestDataProvider(Method test) {
+        return new Object[][]{
+            {"create and delete both bad http code", createResponse(400), createResponse(500), null, null, FAILED, 0},
+            {"create and delete success and status is success ", createResponseRandomIds(202), createResponseRandomIds(202),
+                asyncRequestStatusResponseAsRestObject(COMPLETE_STR), asyncRequestStatusResponseAsRestObject(COMPLETE_STR), COMPLETED, 2},
+            {"create and delete success, create status FAILED, delete status COMPLETED", createResponseRandomIds(202), createResponseRandomIds(202),
+                asyncRequestStatusResponseAsRestObject(FAILED_STR), asyncRequestStatusResponseAsRestObject(COMPLETE_STR), COMPLETED_WITH_ERRORS, 2},
+            {"create and delete success, create status FAILED, delete status FAILED", createResponseRandomIds(202), createResponseRandomIds(202),
+                asyncRequestStatusResponseAsRestObject(FAILED_STR), asyncRequestStatusResponseAsRestObject(FAILED_STR), FAILED, 2},
+            {"create success but delete failed and status is success ", createResponseRandomIds(202), createResponseRandomIds(400),
+                asyncRequestStatusResponseAsRestObject(COMPLETE_STR), null, COMPLETED_WITH_ERRORS, 1},
+            {"delete success but create failed and status is success ", createResponseRandomIds(400), createResponseRandomIds(202),
+                null, asyncRequestStatusResponseAsRestObject(COMPLETE_STR), COMPLETED_WITH_ERRORS, 1},
+            {"delete success but create failed and status of delete is FAILED ", createResponseRandomIds(400), createResponseRandomIds(202),
+                null, asyncRequestStatusResponseAsRestObject(FAILED_STR), FAILED, 1}
+        };
+    }
+
+    //this test is going along with AsyncInstantiationALaCarteApiTest.viewEditVnfGroup__verifyStatusAndAudit API test
+    //The API test has only the happy flow scenario, while this test also test additional MSO responses (mostly non happy)
+    @Test(dataProvider="createAndDeleteIntegrationTestDataProvider")
+    public void vnfGropingIntegrationTest(
+        String desc,
+        RestObject<RequestReferencesContainer> createGroupResponse,
+        RestObject<RequestReferencesContainer> deleteGroupResponse,
+        RestObject<AsyncRequestStatus> createStatusResponse,
+        RestObject<AsyncRequestStatus> deleteStatusResponse,
+        JobStatus expectedJobStatus,
+        int getStatusCounter) throws IOException {
+
+        UUID jobUUID = createAndDeleteIntegrationTest("/payload_jsons/VnfGroupCreate1Delete1None1Request.json",
+            "/serviceInstantiation/v7/instanceGroups",
+            createGroupResponse,
+            "/serviceInstantiation/v7/instanceGroups/VNF_GROUP1_INSTANCE_ID",
+            deleteGroupResponse,
+            createStatusResponse,
+            deleteStatusResponse,
+            expectedJobStatus,
+            getStatusCounter);
+
+        ServiceInstantiation bulkForRetry = asyncInstantiationBL.getBulkForRetry(jobUUID);
+        InstanceGroup vnfGroupShouldBeDeleted = bulkForRetry.getVnfGroups().get("groupingservicefortest..ResourceInstanceGroup..0:001");
+        InstanceGroup vnfGroupShouldBeCreated = bulkForRetry.getVnfGroups().get("groupingservicefortest..ResourceInstanceGroup..0");
+
+        if (deleteStatusResponse == null || deleteStatusResponse.get().request.requestStatus.getRequestState().equals(FAILED_STR)) {
+            assertThat(vnfGroupShouldBeDeleted.getAction(), equalTo(Action.Delete));
+            assertErrorForResource(vnfGroupShouldBeDeleted, deleteGroupResponse, deleteStatusResponse);
+        }
+
+        if (createStatusResponse == null || createStatusResponse.get().request.requestStatus.getRequestState().equals(FAILED_STR)) {
+            assertThat(vnfGroupShouldBeCreated.getAction(), equalTo(Action.Create));
+            assertErrorForResource(vnfGroupShouldBeCreated, createGroupResponse, createStatusResponse);
+        }
+    }
+
+    //this test is going along with AsyncInstantiationALaCarteApiTest3.delete1Create1VnfFromService API test
+    //The API test has only the happy flow scenario, while this test also test additional MSO responses (mostly non happy)
+    @Test(dataProvider="createAndDeleteIntegrationTestDataProvider")
+    public void vnfsIntegrationTest(
+        String desc,
+        RestObject<RequestReferencesContainer> createVnfResponse,
+        RestObject<RequestReferencesContainer> deleteVnfResponse,
+        RestObject<AsyncRequestStatus> createStatusResponse,
+        RestObject<AsyncRequestStatus> deleteStatusResponse,
+        JobStatus expectedJobStatus,
+        int getStatusCounter) throws IOException {
+
+        createAndDeleteIntegrationTest("/payload_jsons/vnfDelete1Create1Request.json",
+            "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/vnfs",
+            createVnfResponse,
+            "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/vnfs/VNF_INSTANCE_ID",
+            deleteVnfResponse,
+            createStatusResponse,
+            deleteStatusResponse,
+            expectedJobStatus,
+            getStatusCounter);
+    }
+
+    @Test(dataProvider="createAndDeleteIntegrationTestDataProvider")
+    public void vfModulesIntegrationTest(
+        String desc,
+        RestObject<RequestReferencesContainer> createVfModuleResponse,
+        RestObject<RequestReferencesContainer> deleteVfModuleResponse,
+        RestObject<AsyncRequestStatus> createStatusResponse,
+        RestObject<AsyncRequestStatus> deleteStatusResponse,
+        JobStatus expectedJobStatus,
+        int getStatusCounter) throws IOException, AsdcCatalogException {
+
+        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
+        reset(commandUtils);
+        when(commandUtils.isVfModuleBaseModule("6b528779-44a3-4472-bdff-9cd15ec93450", "f8360508-3f17-4414-a2ed-6bc71161e8db")).thenReturn(true);
+        when(commandUtils.isVfModuleBaseModule("6b528779-44a3-4472-bdff-9cd15ec93450", "25284168-24bb-4698-8cb4-3f509146eca5")).thenReturn(false);
+
+        createAndDeleteIntegrationTest("/payload_jsons/vfModuleDelete1Create1None1Request.json",
+            "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/vnfs/VNF_INSTANCE_ID/vfModules",
+            createVfModuleResponse,
+            "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/vnfs/VNF_INSTANCE_ID/vfModules/VF_MODULE_INSTANCE_ID",
+            deleteVfModuleResponse,
+            createStatusResponse,
+            deleteStatusResponse,
+            expectedJobStatus,
+            getStatusCounter);
+    }
+
+    //this test is going along with AsyncInstantiationALaCarteApiTest.delete1Create1NetworkFromService API test
+    //The API test has only the happy flow scenario, while this test also test additional MSO responses (mostly non happy)
+    @Test(dataProvider="createAndDeleteIntegrationTestDataProvider")
+    public void networksIntegrationTest(
+        String desc,
+        RestObject<RequestReferencesContainer> createNetworkResponse,
+        RestObject<RequestReferencesContainer> deleteNetworkResponse,
+        RestObject<AsyncRequestStatus> createStatusResponse,
+        RestObject<AsyncRequestStatus> deleteStatusResponse,
+        JobStatus expectedJobStatus,
+        int getStatusCounter) throws IOException {
+
+        createAndDeleteIntegrationTest("/payload_jsons/networkDelete1Create1Request.json",
+            "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/networks",
+            createNetworkResponse,
+            "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/networks/NETWORK_INSTANCE_ID",
+            deleteNetworkResponse,
+            createStatusResponse,
+            deleteStatusResponse,
+            expectedJobStatus,
+            getStatusCounter);
+    }
+
+    private UUID createAndDeleteIntegrationTest(String payload,
+        String createPath,
+        RestObject<RequestReferencesContainer> createResponse,
+        String deletePath,
+        RestObject<RequestReferencesContainer> deleteResponse,
+        RestObject<AsyncRequestStatus> createStatusResponse,
+        RestObject<AsyncRequestStatus> deleteStatusResponse,
+        JobStatus expectedJobStatus,
+        int getStatusCounter) throws IOException {
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(
+            TestUtils.readJsonResourceFileAsObject(payload, ServiceInstantiation.class), "userId")
+            .get(0);
+
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), eq(createPath), any())).thenReturn(createResponse);
+        when(restMso.restCall(eq(HttpMethod.DELETE), eq(RequestReferencesContainer.class), any(), eq(deletePath), any())).thenReturn(deleteResponse);
+        if  (createStatusResponse!=null) {
+            when(restMso.GetForObject(endsWith(createResponse.get().getRequestReferences().getRequestId()), eq(AsyncRequestStatus.class))).thenReturn(createStatusResponse);
+        }
+        if  (deleteStatusResponse!=null) {
+            when(restMso.GetForObject(endsWith(deleteResponse.get().getRequestReferences().getRequestId()), eq(AsyncRequestStatus.class))).thenReturn(deleteStatusResponse);
+        }
+
+        processJobsCountTimesAndAssertStatus(jobUUID, 40, expectedJobStatus);
+
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), eq(createPath), any());
+        verify(restMso, times(1)).restCall(eq(HttpMethod.DELETE), any(), any(), eq(deletePath), any());
+        verify(restMso, times(getStatusCounter)).GetForObject(any(), any());
+
+        return jobUUID;
+    }
+
+    @Test
+    public void whenCreateTransportService_thanExpectedPre1806MacroRequestSent() throws IOException {
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(generatePre1806MacroTransportServiceInstantiationPayload(null, null),"az2016").get(0);
+        RestObject<RequestReferencesContainer> createResponse = createResponseRandomIds(202);
+
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), eq("/serviceInstantiation/v7/serviceInstances"), any()))
+            .thenReturn(createResponse);
+        when(restMso.GetForObject(endsWith(createResponse.get().getRequestReferences().getRequestId()), eq(AsyncRequestStatus.class)))
+            .thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+        processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
+
+        JsonNode expectedJson = TestUtils.readJsonResourceFileAsObject("/payload_jsons/pre_1806_macro_without_cloudConfiguration.json", JsonNode.class);
+        ArgumentCaptor<RequestDetailsWrapper> requestCaptor = ArgumentCaptor.forClass(RequestDetailsWrapper.class);
+        verify(restMso).restCall(any(), any(), requestCaptor.capture(), any(), any());
+        requestCaptor.getAllValues().forEach(x->assertJsonEquals(expectedJson, x));
+    }
+
+    private void assertErrorForResource(BaseResource resource,
+        RestObject<RequestReferencesContainer> deleteOrCreateResponse,
+        RestObject<AsyncRequestStatus> statusResponse) {
+        JobAuditStatus auditStatus = auditService.getResourceAuditStatus(resource.getTrackById());
+        assertThat(auditStatus, is(notNullValue()));
+        assertThat(auditStatus.getJobStatus(), equalTo(FAILED_STR));
+        if (statusResponse == null) {
+            String errorMessage = "Http Code:" + deleteOrCreateResponse.getStatusCode() + ", " + RAW_DATA_FROM_MSO;
+            assertThat(auditStatus.getAdditionalInfo(), equalTo(errorMessage));
+            assertThat(auditStatus.getRequestId(), is(nullValue()));
+        } else {
+            assertThat(auditStatus.getRequestId().toString(), equalTo(statusResponse.get().request.requestId));
+        }
+    }
+
+    protected void processJobsCountTimesAndAssertStatus(UUID serviceJobId, int times, JobStatus expectedStatus) {
+        processJobsCountTimes(times);
+        singleServicesAndAssertStatus(expectedStatus, serviceJobId);
+    }
+
+    private void processJobsCountTimes(int times) {
+        for (int i = 0; i < times; i++) {
+            WORKERS_TOPICS.forEach(this::simplePullJobProcessAndPushBack);
+        }
+    }
+
+    protected void processJobsCountTimesAndAssertStatus(UUID serviceJobId, int times, JobStatus expectedStatus, JobStatus otherJobsStatus) {
+        processJobsCountTimes(times);
+        listServicesAndAssertStatus(expectedStatus, otherJobsStatus, serviceJobId);
+    }
+
 
     private void verifyQueueSizes(ImmutableMap<JobStatus, Integer> expected) {
         final Collection<Job> peek = jobsBrokerService.peek();
         final Map<JobStatus, Long> jobTypes = peek.stream().collect(groupingBy(Job::getStatus, counting()));
-        assertThat(jobTypes, is(expected));
+        assertThat(jobTypes, jsonEquals(expected));
     }
 
-    private List<ServiceInfo> listServicesAndAssertStatus(JobStatus pulledJobStatus, JobStatus otherJobsStatus, Job job) {
+    private List<ServiceInfo> listServicesAndAssertStatus(JobStatus pulledJobStatus, JobStatus otherJobsStatus, UUID jobUUID) {
         List<ServiceInfo> serviceInfoList = asyncInstantiationBL.getAllServicesInfo();
-        assertServicesStatus(serviceInfoList, pulledJobStatus, otherJobsStatus, job);
+        assertServicesStatus(serviceInfoList, pulledJobStatus, otherJobsStatus, jobUUID);
 
         return serviceInfoList;
     }
@@ -922,9 +1119,15 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         return serviceInfo;
     }
 
-    private void assertServicesStatus(List<ServiceInfo> serviceInfoList, JobStatus pulledJobStatus, JobStatus otherJobsStatus, Job job) {
+    private boolean isServiceOnStatus(JobStatus expectedStatus) {
+        List<ServiceInfo> serviceInfoList = asyncInstantiationBL.getAllServicesInfo();
+        assertEquals(1, serviceInfoList.size());
+        return serviceInfoList.get(0).getJobStatus()==expectedStatus;
+    }
+
+    private void assertServicesStatus(List<ServiceInfo> serviceInfoList, JobStatus pulledJobStatus, JobStatus otherJobsStatus, UUID jobUUID) {
         serviceInfoList.forEach(si->{
-            if (si.getJobId().equals(job.getUuid())) {
+            if (si.getJobId().equals(jobUUID)) {
                 assertThat(si.getJobStatus(), is(pulledJobStatus));
             }
             else {
@@ -935,11 +1138,104 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     private void listServicesAndAssertStatus(Map<UUID, JobStatus> expectedJobStatusMap) {
         Map<UUID, JobStatus> actualStatuses = asyncInstantiationBL.getAllServicesInfo()
-                .stream().collect(Collectors.toMap(ServiceInfo::getJobId, ServiceInfo::getJobStatus));
+            .stream().collect(Collectors.toMap(ServiceInfo::getJobId, ServiceInfo::getJobStatus));
         assertThat(actualStatuses.entrySet(), equalTo(expectedJobStatusMap.entrySet()));
     }
 
     private String randomUuid() {
         return UUID.randomUUID().toString();
+    }
+
+    @Test
+    public void whenResumeService_thanExpectedResumeRequestSent() throws IOException {
+        String instanceId = "a565e6ad-75d1-4493-98f1-33234b5c17e2"; //from feRequestResumeMacroService.json
+        String originalRequestId = "894089b8-f7f4-418d-81da-34186fd32670"; //from msoResponseGetRequestsOfServiceInstance.json
+        String resumeRequestId = randomUuid();
+        String userId = TestUtils.generateRandomAlphaNumeric(6);
+
+        //prepare mocks for get all requests for instance id
+        RestObject<AsyncRequestStatusList> getRequestByIdResponse = createAsyncRequestStatusListByInstanceId();
+        when(restMso.GetForObject(
+            eq("/orchestrationRequests/v7?filter=serviceInstanceId:EQUALS:" + instanceId),
+            eq(AsyncRequestStatusList.class)))
+            .thenReturn(getRequestByIdResponse);
+
+        //prepare mocks resume request
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), isNull(), eq(String.format("/orchestrationRequests/v7/%s/resume", originalRequestId)), eq(Optional.of(userId))))
+            .thenReturn(createResponse(202, instanceId, resumeRequestId));
+
+        //prepare mocks for get resume status
+        when(restMso.GetForObject(eq("/orchestrationRequests/v7/" + resumeRequestId), eq(AsyncRequestStatus.class)))
+            .thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(generateResumeMacroPayload(), userId).get(0);
+        processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
+        verify(restMso).GetForObject(
+            eq("/orchestrationRequests/v7?filter=serviceInstanceId:EQUALS:" + instanceId),
+            eq(AsyncRequestStatusList.class));
+        verify(restMso).restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), isNull(), eq(String.format("/orchestrationRequests/v7/%s/resume", originalRequestId)), eq(Optional.of(userId)));
+        verify(restMso, times(3)).GetForObject(eq("/orchestrationRequests/v7/" + resumeRequestId), eq(AsyncRequestStatus.class));
+    }
+
+    @Test
+    public void givenResumeRequest_whenMsoReturnBadResponse_thanJobIsFailed() throws IOException {
+        //there is no mocks for restMSO which means restMso return bad response...
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(generateResumeMacroPayload(), "abc").get(0);
+        processJobsCountTimesAndAssertStatus(jobUUID, 20, FAILED);
+    }
+
+    @NotNull
+    private RestObject<AsyncRequestStatusList> createAsyncRequestStatusListByInstanceId() throws IOException {
+        AsyncRequestStatusList asyncRequestStatusList = TestUtils.readJsonResourceFileAsObject(
+            "/payload_jsons/resume/msoResponseGetRequestsOfServiceInstance.json",
+            AsyncRequestStatusList.class);
+        RestObject<AsyncRequestStatusList> getRequestByIdResponse = new RestObject<>();
+        getRequestByIdResponse.set(asyncRequestStatusList);
+        getRequestByIdResponse.setStatusCode(200);
+        return getRequestByIdResponse;
+    }
+
+    private ServiceInstantiation generateResumeMacroPayload() throws IOException {
+        return TestUtils.readJsonResourceFileAsObject("/payload_jsons/resume/feRequestResumeMacroService.json", ServiceInstantiation.class);
+    }
+
+    @Test
+    public void whenUpgradingAvfModule_thanExpectedReplaceRequestSent() throws IOException {
+        String instanceId = "5d49c3b1-fc90-4762-8c98-e800170baa55"; //from feRequestResumeMacroService.json
+        String replaceRequestId = randomUuid();
+        String userId = "az2016";
+
+
+        //prepare mocks resume request
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), eq("/serviceInstantiation/v7/serviceInstances/e9993045-cc96-4f3f-bf9a-71b2a400a956/vnfs/5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5/vfModules/5d49c3b1-fc90-4762-8c98-e800170baa55/replace"), eq(Optional.of(userId))))
+            .thenReturn(createResponse(202, instanceId, replaceRequestId));
+
+
+        when(restMso.GetForObject(eq("/orchestrationRequests/v7/" + replaceRequestId), eq(AsyncRequestStatus.class)))
+            .thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+        ///orchestrationRequests/v7/0174b25a-dd81-45b7-b4af-0057bcc30857
+
+        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
+        enableAddCloudOwnerOnMsoRequest();
+
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(generateReplaceVfModulePayload(), userId).get(0);
+        processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
+
+
+
+        JsonNode expectedJson = TestUtils.readJsonResourceFileAsObject("/payload_jsons/vfmodule/replace_vfmodule.json", JsonNode.class);
+        ArgumentCaptor<RequestDetailsWrapper> requestCaptor = ArgumentCaptor.forClass(RequestDetailsWrapper.class);
+        verify(restMso).restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), requestCaptor.capture(), eq("/serviceInstantiation/v7/serviceInstances/e9993045-cc96-4f3f-bf9a-71b2a400a956/vnfs/5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5/vfModules/5d49c3b1-fc90-4762-8c98-e800170baa55/replace"), eq(Optional.of(userId)));
+        requestCaptor.getAllValues().forEach(x->assertJsonEquals(expectedJson, x));
+    }
+
+    private ServiceInstantiation generateReplaceVfModulePayload() throws IOException {
+        return TestUtils.readJsonResourceFileAsObject("/payload_jsons/vfmodule/replace_vfmodule_fe_input.json", ServiceInstantiation.class);
     }
 }

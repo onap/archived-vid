@@ -1,0 +1,46 @@
+{
+  "requestDetails": {
+    "modelInfo": {
+      "modelCustomizationName": "xbi test VID noFC HEAT 0",
+      "modelCustomizationId": "e9745411-1f7d-47e3-9857-47363cb9ff92",
+      "modelInvariantId": "77d3a011-affb-4166-89b2-c4be7bc4ff23",
+      "modelVersionId": "9bb0edd9-3631-455b-bdfd-979b2ab53d07",
+      "modelName": "xbi test VID noFC HEAT",
+      "modelType": "vnf",
+      "modelVersion": "1.0"
+    },
+    "cloudConfiguration": {
+      "lcpCloudRegionId": "olson52b",
+      "tenantId": "bbf14e449c954feea272e926a8c2b244",
+      "cloudOwner" : "irma-aic"
+    },
+    "requestInfo": {
+      "instanceName": "zolson52bfrwl01",
+      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "source": "VID",
+      "suppressRollback": false,
+      "requestorId": "pa0916"
+    },
+    "platform": {
+      "platformName": "NETWORK-CLOUD"
+    },
+    "relatedInstanceList": [
+      {
+        "relatedInstance": {
+          "instanceId": "aa3514e3-5a33-55df-13ab-12abad84e7aa",
+          "modelInfo": {
+            "modelType": "service",
+            "modelInvariantId": "ff3514e3-5a33-55df-13ab-12abad84e7ff",
+            "modelVersionId": "fe6985cd-ea33-3346-ac12-ab121484a3fe",
+            "modelName": "sriov",
+            "modelVersion": "1.0"
+          }
+        }
+      }
+    ],
+    "requestParameters": {
+      "userParams": [],
+      "testApi": "VNF_API"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "network-id": "94c86b39-bbbf-4027-8120-ff37c6d2493a",
+  "network-name": "AUK51a_oam_calea_net_1",
+  "network-type": "SR-IOV-PROVIDER2-1",
+  "network-role": "oam_calea_net_1",
+  "network-technology": "STANDARD-SR-IOV",
+  "is-bound-to-vpn": false,
+  "resource-version": "1540925016770",
+  "orchestration-status": "Assigned",
+  "model-invariant-id": "b9a9b549-0ee4-49fc-b4f2-5edc6701da68",
+  "model-version-id": "77010093-df36-4dcb-8428-c3d02bf3f88d",
+  "model-customization-id": "e5f33853-f84c-4cdd-99f2-93846957aa18",
+  "physical-network-name": "sriovnet1",
+  "is-provider-network": true,
+  "is-shared-network": true,
+  "is-external-network": false,
+  "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/4b7cc8d1-f8ec-4461-ac43-5805e4ca3126/service-data/networks/network/94c86b39-bbbf-4027-8120-ff37c6d2493a/network-data/network-topology/",
+  "relationship-list": {
+    "relationship": [{
+      "related-to": "service-instance",
+      "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+      "related-link": "/aai/v14/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Emanuel/service-instances/service-instance/4b7cc8d1-f8ec-4461-ac43-5805e4ca3126",
+      "relationship-data": [{
+        "relationship-key": "customer.global-customer-id",
+        "relationship-value": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+      }, {
+        "relationship-key": "service-subscription.service-type",
+        "relationship-value": "Emanuel"
+      }, {
+        "relationship-key": "service-instance.service-instance-id",
+        "relationship-value": "4b7cc8d1-f8ec-4461-ac43-5805e4ca3126"
+      }
+      ],
+      "related-to-property": [{
+        "property-key": "service-instance.service-instance-name",
+        "property-value": "AUK51a_oam_calea_net_service"
+      }
+      ]
+    }, {
+      "related-to": "tenant",
+      "relationship-label": "org.onap.relationships.inventory.Uses",
+      "related-link": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-nc/auk51a/tenants/tenant/b530fc990b6d4334bd45518bebca6a51",
+      "relationship-data": [{
+        "relationship-key": "cloud-region.cloud-owner",
+        "relationship-value": "att-nc"
+      }, {
+        "relationship-key": "cloud-region.cloud-region-id",
+        "relationship-value": "auk51a"
+      }, {
+        "relationship-key": "tenant.tenant-id",
+        "relationship-value": "b530fc990b6d4334bd45518bebca6a51"
+      }
+      ],
+      "related-to-property": [{
+        "property-key": "tenant.tenant-name",
+        "property-value": "ecomp_ispt"
+      }
+      ]
+    }, {
+      "related-to": "cloud-region",
+      "relationship-label": "org.onap.relationships.inventory.Uses",
+      "related-link": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-nc/auk51a",
+      "relationship-data": [{
+        "relationship-key": "cloud-region.cloud-owner",
+        "relationship-value": "att-nc"
+      }, {
+        "relationship-key": "cloud-region.cloud-region-id",
+        "relationship-value": "auk51a"
+      }
+      ],
+      "related-to-property": [{
+        "property-key": "cloud-region.owner-defined-type",
+        "property-value": "lcp"
+      }
+      ]
+    }
+    ]
+  }
+}

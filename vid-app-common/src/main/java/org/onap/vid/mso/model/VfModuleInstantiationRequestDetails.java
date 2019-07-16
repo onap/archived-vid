@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,10 @@
 
 package org.onap.vid.mso.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,14 +111,14 @@ public class VfModuleInstantiationRequestDetails extends BaseResourceInstantiati
     }
 
     public static class RequestParametersVfModule extends BaseResourceInstantiationRequestDetails.RequestParameters {
-        private final boolean usePreload;
+        @JsonInclude(NON_NULL) private final Boolean usePreload;
 
-        public RequestParametersVfModule(List<? extends UserParamTypes> userParams, boolean usePreload) {
-            super(userParams);
+        public RequestParametersVfModule(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi) {
+            super(userParams, testApi);
             this.usePreload = usePreload;
         }
 
-        public boolean isUsePreload() {
+        public Boolean isUsePreload() {
             return usePreload;
         }
     }

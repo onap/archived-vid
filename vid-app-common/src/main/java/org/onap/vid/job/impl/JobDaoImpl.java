@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,6 @@ package org.onap.vid.job.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
@@ -41,6 +40,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+
 /*
  The following 2 annotations let hibernate to update only fields that actually have been changed.
  DynamicUpdate tell hibernate to update only dirty fields.
@@ -52,7 +53,6 @@ import java.util.UUID;
 @Table(name = "vid_job")
 public class JobDaoImpl extends VidBaseEntity implements Job {
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
     private Job.JobStatus status;
     private JobType type;
     private JobData data = new JobData();
@@ -63,6 +63,7 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
     private Integer age = 0;
     private Integer indexInBulk = 0;
     private Date deletedAt;
+    private String build;
 
     @Id
     @Column(name = "JOB_ID", columnDefinition = "CHAR(36)")
@@ -107,7 +108,7 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
     @Column(name = "JOB_DATA", columnDefinition = "VARCHAR(30000)")
     public String getDataRaw() {
         try {
-            return objectMapper.writeValueAsString(data);
+            return JACKSON_OBJECT_MAPPER.writeValueAsString(data);
         } catch (JsonProcessingException e) {
             throw new GenericUncheckedException(e);
         }
@@ -115,7 +116,7 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
 
     public void setDataRaw(String data) {
         try {
-            this.data = objectMapper.readValue(data, JobData.class);
+            this.data = JACKSON_OBJECT_MAPPER.readValue(data, JobData.class);
         } catch (IOException e) {
             throw new JobException("Error parsing job's data", uuid, e);
         }
@@ -202,6 +203,15 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
         this.deletedAt = deletedAt;
     }
 
+    @Column(name = "BUILD", columnDefinition = "VARCHAR(100)")
+    public String getBuild() {
+        return build;
+    }
+
+    public void setBuild(String build) {
+        this.build = build;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -220,15 +230,15 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
         return MoreObjects.toStringHelper(this)
                 .add("status", status)
                 .add("type", type)
+                .add("data", data)
                 .add("templateId", templateId)
                 .add("uuid", uuid)
                 .add("takenBy", takenBy)
                 .add("userId", userId)
                 .add("age", age)
-                .add("created", created)
-                .add("modified", modified)
+                .add("indexInBulk", indexInBulk)
                 .add("deletedAt", deletedAt)
-                .add("data", data)
+                .add("build", build)
                 .toString();
     }
 }

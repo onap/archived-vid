@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,6 +39,14 @@ data class Tree<T>(private val root:Node<T>) {
         path.forEach {
             currentNode = currentNode.children.getOrPut(it) {Node(it)}
         }
+    }
+
+    fun getChildrenDepth(): Int {
+        return getMaxDepth(root) - 1
+    }
+
+    private fun getMaxDepth(level:Node<T>): Int {
+        return (level.children.map{getMaxDepth(it.value)}.max() ?: 0) + 1
     }
 
     fun getSubTree(vararg path: T): Tree<T>? {

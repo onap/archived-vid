@@ -21,48 +21,54 @@
 package org.onap.vid.controller;
 
 
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Network;
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.ServiceInstance;
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Vlan;
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Vnf;
-import org.onap.vid.aai.util.ServiceInstanceStandardQuery;
+import static java.util.stream.Collectors.toList;
+
+import com.google.common.collect.ImmutableMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.text.StrSubstitutor;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.properties.Features;
+import org.onap.vid.services.AAIServiceTree;
 import org.onap.vid.services.VidService;
-import org.onap.vid.utils.Multival;
+import org.onap.vid.utils.Tree;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.togglz.core.manager.FeatureManager;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.UUID;
-
-import static java.util.stream.Collectors.toList;
-
 
 @RestController
 @RequestMapping(AaiServiceInstanceStandardQueryController.AAI_STANDARD_QUERY)
 public class AaiServiceInstanceStandardQueryController extends VidRestrictedBaseController {
 
-    public static final String AAI_STANDARD_QUERY = "aai/standardQuery";
+    static final String AAI_STANDARD_QUERY = "aai/standardQuery";
+    private static final String SERVICE_INSTANCE_URI_TEMPLATE = "" +
+            "business/customers/customer/${global-customer-id}" +
+            "/service-subscriptions/service-subscription/${service-type}" +
+            "/service-instances/service-instance/${service-instance-id}";
 
-    private final ServiceInstanceStandardQuery serviceInstanceStandardQuery;
     private final FeatureManager featureManager;
     private final VidService sdcService;
+    private final AAIServiceTree aaiServiceTree;
 
     @Autowired
-    public AaiServiceInstanceStandardQueryController(FeatureManager featureManager, ServiceInstanceStandardQuery serviceInstanceStandardQuery, VidService sdcService) {
+    public AaiServiceInstanceStandardQueryController(FeatureManager featureManager,
+                                                     VidService sdcService, AAIServiceTree aaiServiceTree) {
         this.featureManager = featureManager;
-        this.serviceInstanceStandardQuery = serviceInstanceStandardQuery;
         this.sdcService = sdcService;
+        this.aaiServiceTree = aaiServiceTree;
     }
 
     @RequestMapping(value = "vlansByNetworks", method = RequestMethod.GET)
@@ -80,54 +86,50 @@ public class AaiServiceInstanceStandardQueryController extends VidRestrictedBase
             return new VlansByNetworksHierarchy();
         }
 
-        final ServiceInstance serviceInstance =
-                serviceInstanceStandardQuery.fetchServiceInstance(globalCustomerId, serviceType, serviceInstanceId);
+        Tree<AAIServiceTree.AaiRelationship> pathsToSearch = new Tree<>(new AAIServiceTree.AaiRelationship(NodeType.SERVICE_INSTANCE));
+        pathsToSearch.addPath(AAIServiceTree.toAaiRelationshipList(NodeType.GENERIC_VNF, NodeType.NETWORK, NodeType.VLAN_TAG));
+        pathsToSearch.addPath(AAIServiceTree.toAaiRelationshipList(NodeType.NETWORK, NodeType.VLAN_TAG));
 
-        Multival<ServiceInstance, Multival<Vnf, Multival<Network, Vlan>>> l3NetworksWithVlansForVnfForService =  fetchVnfsForService(serviceInstance);
-        Multival<ServiceInstance, Multival<Network, Vlan>> l3NetworksWithVlansForService = fetchNetworksForService(serviceInstance);
+        AAITreeNode aaiTree = aaiServiceTree.buildAAITree(getServiceInstanceUri(globalCustomerId, serviceType, serviceInstanceId),
+                null, HttpMethod.GET, pathsToSearch, false).get(0);
 
         // translate to response's format
         return new VlansByNetworksHierarchy(
-                l3NetworksWithVlansForService.getValues().stream().map(this::translateNetworksFormat
-                    ).collect(toList()),
+            aaiTree.getChildren().stream()
+                .filter(child -> child.getType() == NodeType.NETWORK)
+                .map(this::translateNetworksFormat)
+                .collect(toList()),
 
-                l3NetworksWithVlansForVnfForService.getValues().stream().map(vnfWithNetworks ->
-                        new VnfVlansByNetworks(vnfWithNetworks.getKey().getVnfId(),
-                                vnfWithNetworks.getValues().stream().map(this::translateNetworksFormat
-                                ).collect(toList())
-                        )
-                ).collect(toList())
+            aaiTree.getChildren().stream()
+                    .filter(child -> child.getType() == NodeType.GENERIC_VNF)
+                    .map(vnf -> new VnfVlansByNetworks(vnf.getId(),
+                                    vnf.getChildren().stream()
+                                            .map(this::translateNetworksFormat)
+                                            .collect(toList())
+                            ))
+                    .collect(toList())
         );
     }
 
-    private Multival<ServiceInstance, Multival<Vnf, Multival<Network, Vlan>>> fetchVnfsForService(ServiceInstance serviceInstance) {
-        final Multival<ServiceInstance, Vnf> vnfsForService =
-                serviceInstanceStandardQuery.fetchRelatedVnfs(serviceInstance);
-
-        final Multival<ServiceInstance, Multival<Vnf, Network>> vnfsWithL3NetworksForService =
-                vnfsForService.mapEachVal(vnf -> serviceInstanceStandardQuery.fetchRelatedL3Networks("vnf", vnf));
-
-        return  vnfsWithL3NetworksForService.mapEachVal(vnfMulti->
-                        vnfMulti.mapEachVal(serviceInstanceStandardQuery::fetchRelatedVlanTags)
-                );
+    private String getServiceInstanceUri(String globalCustomerId, String serviceType, String serviceInstanceId) {
+        return new StrSubstitutor(ImmutableMap.of(
+                "global-customer-id", globalCustomerId,
+                "service-type", serviceType,
+                "service-instance-id", serviceInstanceId
+        )).replace(SERVICE_INSTANCE_URI_TEMPLATE);
 
     }
 
-    private Multival<ServiceInstance, Multival<Network, Vlan>> fetchNetworksForService(ServiceInstance serviceInstance) {
-        final Multival<ServiceInstance, Network> l3NetworksForService =
-                serviceInstanceStandardQuery.fetchRelatedL3Networks("service", serviceInstance);
-
-        return l3NetworksForService.mapEachVal(serviceInstanceStandardQuery::fetchRelatedVlanTags);
-    }
-
-    private NetworksToVlans translateNetworksFormat(Multival<Network, Vlan> networkWithVlan) {
+    private NetworksToVlans translateNetworksFormat(AAITreeNode networkWithVlan) {
         return new NetworksToVlans(
-                networkWithVlan.getKey().getNetworkId(),
-                networkWithVlan.getKey().getNetworkName(),
-                networkWithVlan.getKey().getNetworkType(),
-                networkWithVlan.getKey().getOrchestrationStatus(),
-                networkWithVlan.getValues().stream().map(
-                        vlan -> new NetworksToVlans.Vlan(vlan.getVlanIdInner())
+                networkWithVlan.getId(),
+                networkWithVlan.getName(),
+                Objects.toString(networkWithVlan.getAdditionalProperties().get("network-type"), null),
+                networkWithVlan.getOrchestrationStatus(),
+                networkWithVlan.getChildren().stream().map(
+                        vlan -> new NetworksToVlans.Vlan(
+                                Objects.toString(vlan.getAdditionalProperties().get("vlan-id-outer"), null)
+                        )
                 ).collect(toList())
         );
     }
@@ -138,8 +140,8 @@ public class AaiServiceInstanceStandardQueryController extends VidRestrictedBase
             throw new GenericUncheckedException("Internal error while fetching Service Model: " + sdcModelUuid);
         }
         VidNotions.ModelCategory serviceModelCategory = serviceModel.getService().getVidNotions().getModelCategory();
-        return serviceModelCategory.equals(VidNotions.ModelCategory.IS_5G_PROVIDER_NETWORK_MODEL) ||
-                serviceModelCategory.equals(VidNotions.ModelCategory.IS_5G_FABRIC_CONFIGURATION_MODEL);
+        return (serviceModelCategory == VidNotions.ModelCategory.IS_5G_PROVIDER_NETWORK_MODEL) ||
+                (serviceModelCategory == VidNotions.ModelCategory.IS_5G_FABRIC_CONFIGURATION_MODEL);
     }
 
     protected static class VlansByNetworksHierarchy {
@@ -182,10 +184,10 @@ public class AaiServiceInstanceStandardQueryController extends VidRestrictedBase
         }
 
         private static class Vlan {
-            public final String vlanIdInner;
+            public final String vlanIdOuter;
 
-            private Vlan(String vlanIdInner) {
-                this.vlanIdInner = vlanIdInner;
+            private Vlan(String vlanIdOuter) {
+                this.vlanIdOuter = vlanIdOuter;
             }
         }
 

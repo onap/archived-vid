@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,8 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate
 import org.onap.vid.job.Job
 import org.onap.vid.job.JobAdapter
 import org.onap.vid.job.JobCommand
+import org.onap.vid.job.JobsBrokerService
+import org.onap.vid.model.serviceInstantiation.BaseResource
 import org.onap.vid.model.serviceInstantiation.InstanceGroup
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
@@ -39,29 +41,42 @@ import java.util.*
 class InstanceGroupCommand @Autowired constructor(
         private val asyncInstantiationBL: AsyncInstantiationBusinessLogic,
         restMso: RestMsoImplementation,
+        private val msoRequestBuilder: MsoRequestBuilder,
         msoResultHandlerService: MsoResultHandlerService,
         inProgressStatusService:InProgressStatusService,
-        watchChildrenJobsBL: WatchChildrenJobsBL
-) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService, watchChildrenJobsBL), JobCommand {
+        watchChildrenJobsBL: WatchChildrenJobsBL,
+        jobsBrokerService: JobsBrokerService,
+        jobAdapter: JobAdapter
+        ) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService,
+        watchChildrenJobsBL, jobsBrokerService, jobAdapter), JobCommand {
 
     companion object {
         private val LOGGER = EELFLoggerDelegate.getLogger(InstanceGroupCommand::class.java)
     }
 
     override fun createChildren(): Job.JobStatus {
+        val dataForChild = buildDataForChild(getRequest(), actionPhase)
+
+        childJobs = pushChildrenJobsToBroker(getRequest().vnfGroupMembers.values, dataForChild);
+
         return Job.JobStatus.COMPLETED_WITH_NO_ACTION
     }
 
-    override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String): MsoRestCallPlan {
+    override fun addMyselfToChildrenData(commandParentData: CommandParentData, request: BaseResource) {
+        commandParentData.addInstanceId(CommandParentData.CommandDataKey.VNF_GROUP_INSTANCE_ID, request.instanceId)
+    }
+
+    override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {
         val serviceInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.SERVICE_INSTANCE_ID)
         val serviceModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
 
         val instantiatePath = asyncInstantiationBL.getInstanceGroupInstantiationPath()
 
-        val requestDetailsWrapper = asyncInstantiationBL.generateInstanceGroupInstantiationRequest(
+        val requestDetailsWrapper = msoRequestBuilder.generateInstanceGroupInstantiationRequest(
                 request as InstanceGroup,
                 serviceModelInfo, serviceInstanceId,
-                userId
+                userId,
+                testApi
         )
 
         val actionDescription = "create instance group in $serviceInstanceId"
@@ -76,4 +91,7 @@ class InstanceGroupCommand @Autowired constructor(
 
     }
 
+    override fun getRequest(): InstanceGroup {
+        return sharedData.request as InstanceGroup
+    }
 }

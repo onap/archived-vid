@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,26 +24,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RelationshipData {
-	@JsonProperty("relationship-key")
-	public String getRelationshipKey() {
-		return relationshipKey;
-	}
-	@JsonProperty("relationship-key")
-	public void setRelationshipKey(String relationshipKey) {
-		this.relationshipKey = relationshipKey;
-	}
-	@JsonProperty("relationship-value")
-	public String getRelationshipValue() {
-		return relationshipValue;
-	}
-	@JsonProperty("relationship-value")
-	public void setRelationshipValue(String relationshipValue) {
-		this.relationshipValue = relationshipValue;
-	}
+public class RelationshipData extends KeyValueModel {
 
-	public String relationshipKey;
-	
-	public String relationshipValue;
-
+	@Override
+	@JsonProperty("relationship-key")
+	public String getKey() {
+		return super.getKey();
+	}
+	@Override
+	@JsonProperty("relationship-key")
+	public void setKey(String relationshipKey) {
+		super.setKey(relationshipKey);
+	}
+	@Override
+	@JsonProperty("relationship-value")
+	public String getValue() {
+		return super.getValue();
+	}
+	@Override
+	@JsonProperty("relationship-value")
+	public void setValue(String relationshipValue) {
+		super.setValue(relationshipValue);
+	}
 }

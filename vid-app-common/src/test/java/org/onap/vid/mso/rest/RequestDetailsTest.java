@@ -20,10 +20,16 @@
 
 package org.onap.vid.mso.rest;
 
+import com.google.code.beanmatchers.BeanMatchers;
+import com.google.code.beanmatchers.ValueGenerator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.onap.vid.exceptions.NotFoundException;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -34,6 +40,7 @@ import java.util.Map;
 
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsExcluding;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -48,6 +55,14 @@ public class RequestDetailsTest {
 	private static final ImmutableList<String> LCP_CLOUD_REGION_ID_PATH =
 			ImmutableList.of("requestDetails", "cloudConfiguration", "lcpCloudRegionId");
 
+	@BeforeClass
+	public static void registerValueGenerator() {
+		BeanMatchers.registerValueGenerator(new ValueGenerator<CloudConfiguration>() {
+			public CloudConfiguration generate() {
+				return new CloudConfiguration(randomAlphabetic(7), randomAlphabetic(7), randomAlphabetic(7));
+			}
+		}, CloudConfiguration.class);
+	}
 
 	@BeforeMethod
 	public void setUp() {

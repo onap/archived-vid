@@ -78,6 +78,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.http.HttpMethod;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -178,10 +179,10 @@ public class AaiServiceImplTest {
 		Services services = createAaiResponseServices();
 		AaiResponse<Services> aaiResponseServices = new AaiResponse<>(services, null, HttpStatus.SC_OK);
 
-		when(aaiClient.getSubscriberData(SUBSCRIBER_ID)).thenReturn(aaiResponseServices);
+		when(aaiClient.getSubscriberData(SUBSCRIBER_ID, false )).thenReturn(aaiResponseServices);
 		when(roleValidator.isServicePermitted(eq(GLOBAL_CUSTOMER_ID), anyString())).thenReturn(Boolean.TRUE);
 
-		AaiResponse actualResponse = aaiService.getSubscriberData(SUBSCRIBER_ID, roleValidator);
+		AaiResponse actualResponse = aaiService.getSubscriberData(SUBSCRIBER_ID, roleValidator, false);
 		List<ServiceSubscription> actualServiceSubscriptions = ((AaiResponse<Services>) actualResponse)
 				.getT().serviceSubscriptions.serviceSubscription;
 
@@ -504,7 +505,7 @@ public class AaiServiceImplTest {
 		RelatedVnf expectedVnf = createExpectedVnf(validBranch);
 		List<RelatedVnf> expectedResult = Collections.singletonList(expectedVnf);
 
-		when(aaiServiceTree.buildAAITree(anyString(), any())).thenReturn(Collections.singletonList(testedTree));
+		when(aaiServiceTree.buildAAITree(anyString(), anyString(), HttpMethod.GET, any(), any())).thenReturn(Collections.singletonList(testedTree));
 		when(aaiClient.getCloudRegionAndTenantByVnfId(anyString())).thenReturn(regionsAndTenants);
 
 		List<RelatedVnf> actualGroupMembers = aaiService.searchGroupMembers(GLOBAL_CUSTOMER_ID, SERVICE_TYPE,
@@ -724,8 +725,8 @@ public class AaiServiceImplTest {
 	@NotNull
 	private RelatedToProperty createRelatedToProperty(String key, String value) {
 		RelatedToProperty prop = new RelatedToProperty();
-		prop.setPropertyKey(key);
-		prop.setPropertyValue(value);
+		prop.setKey(key);
+		prop.setValue(value);
 		return prop;
 	}
 
