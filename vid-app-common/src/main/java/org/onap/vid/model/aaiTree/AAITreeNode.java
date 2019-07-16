@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,17 +20,19 @@
 
 package org.onap.vid.model.aaiTree;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelationshipList;
+import org.onap.vid.mso.model.CloudConfiguration;
 
 import java.util.*;
 
 public class AAITreeNode {
 
-    private String type;
-    private int uniqueNumber;
+    private NodeType type;
     private String orchestrationStatus;
     private String provStatus;
-    private Boolean inMaint = null;
+    private boolean inMaint;
     private String modelVersionId;
     private String modelCustomizationId;
     private String modelInvariantId;
@@ -41,25 +43,19 @@ public class AAITreeNode {
     private String modelCustomizationName;
     private final List<AAITreeNode> children = Collections.synchronizedList(new LinkedList<>());
     private Map<String, Object> additionalProperties = new HashMap<>();
+    private CloudConfiguration cloudConfiguration;
+    private RelationshipList relationshipList;
     private String keyInModel;
     private AAITreeNode parent;
 
-    public String getType() {
+    public NodeType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(NodeType type) {
         this.type = type;
     }
 
-    public int getUniqueNumber() {
-        return uniqueNumber;
-    }
-
-    public void setUniqueNumber(int uniqueNumber) {
-        this.uniqueNumber = uniqueNumber;
-    }
-    
     public String getOrchestrationStatus() {
         return orchestrationStatus;
     }
@@ -76,11 +72,11 @@ public class AAITreeNode {
         this.provStatus = provStatus;
     }
 
-    public Boolean getInMaint() {
+    public boolean getInMaint() {
         return inMaint;
     }
 
-    public void setInMaint(Boolean inMaint) {
+    public void setInMaint(boolean inMaint) {
         this.inMaint = inMaint;
     }
 
@@ -169,7 +165,7 @@ public class AAITreeNode {
     }
 
     public String getUniqueNodeKey() {
-        return getNodeKey() + ":" + String.format("%03d", this.uniqueNumber);
+        return this.id;
     }
 
     public void setKeyInModel(String keyInModel) {
@@ -180,12 +176,30 @@ public class AAITreeNode {
         return keyInModel;
     }
 
+    //prevent cyclic serialization of parent and children
+    @JsonIgnore
     public AAITreeNode getParent() {
         return parent;
     }
 
     public void setParent(AAITreeNode parent) {
         this.parent = parent;
+    }
+
+    public CloudConfiguration getCloudConfiguration() {
+        return cloudConfiguration;
+    }
+
+    public void setCloudConfiguration(CloudConfiguration cloudConfiguration) {
+        this.cloudConfiguration = cloudConfiguration;
+    }
+
+    public RelationshipList getRelationshipList() {
+        return relationshipList;
+    }
+
+    public void setRelationshipList(RelationshipList relationshipList) {
+        this.relationshipList = relationshipList;
     }
 
     public void addChildren(List<AAITreeNode> children) {

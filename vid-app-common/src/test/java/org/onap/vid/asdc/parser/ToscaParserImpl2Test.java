@@ -142,10 +142,12 @@ public class ToscaParserImpl2Test {
         }
     }
 
+
+
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenCollectionResourcesOfTosca(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, CR> expectedVnfsMap = mockHelper.getNewServiceModel().getCollectionResource();
-            Map<String, CR> actualCRsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getCollectionResource();
+            Map<String, CR> actualCRsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getCollectionResources();
             if(!actualCRsMap.isEmpty()) {
                 for (Map.Entry<String, CR> entry : expectedVnfsMap.entrySet()) {
                     CR expectedCR = entry.getValue();

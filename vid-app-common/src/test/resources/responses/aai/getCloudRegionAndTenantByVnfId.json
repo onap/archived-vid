@@ -34,7 +34,7 @@
     {
       "id": "264798392",
       "node-type": "vserver",
-      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a/vservers/vserver/088c2bf0-80e2-4bdf-93ae-b2469fbeba84",
+      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a/vservers/vserver/088c2bf0-80e2-4bdf-93ae-b2469fbeba84",
       "properties": {
         "vserver-id": "088c2bf0-80e2-4bdf-93ae-b2469fbeba84",
         "vserver-name": "zrdm3mogx01oam001",
@@ -49,7 +49,7 @@
           "id": "211808464",
           "relationship-label": "tosca.relationships.AttachesTo",
           "node-type": "volume",
-          "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a/vservers/vserver/088c2bf0-80e2-4bdf-93ae-b2469fbeba84/volumes/volume/28e1246e-2aeb-4a59-bb51-f20fb8e93c42"
+          "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a/vservers/vserver/088c2bf0-80e2-4bdf-93ae-b2469fbeba84/volumes/volume/28e1246e-2aeb-4a59-bb51-f20fb8e93c42"
         }
       ]
     },
@@ -75,7 +75,7 @@
     {
       "id": "8757432",
       "node-type": "tenant",
-      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a",
+      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mtn23b/tenants/tenant/3e9a20a3e89e45f884e09df0cc2d2d2a",
       "properties": {
         "tenant-id": "3e9a20a3e89e45f884e09df0cc2d2d2a",
         "tenant-name": "APPC-24595-T-IST-02C",
@@ -93,9 +93,9 @@
     {
       "id": "302227536",
       "node-type": "cloud-region",
-      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b",
+      "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mtn23b",
       "properties": {
-        "cloud-owner": "att-aic",
+        "cloud-owner": "irma-aic" ,
         "cloud-region-id": "mtn23b",
         "cloud-type": "openstack",
         "owner-defined-type": "lcp",
@@ -111,7 +111,7 @@
           "id": "2744328",
           "relationship-label": "org.onap.relationships.inventory.BelongsTo",
           "node-type": "tenant",
-          "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/att-aic/mtn23b/tenants/tenant/5452d6bd0cb34e99a3553d349456c642"
+          "url": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mtn23b/tenants/tenant/5452d6bd0cb34e99a3553d349456c642"
         }
       ]
     }

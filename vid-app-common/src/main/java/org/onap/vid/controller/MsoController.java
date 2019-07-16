@@ -22,6 +22,8 @@ package org.onap.vid.controller;
 
 import static org.onap.vid.utils.Logging.getMethodName;
 
+import static org.onap.vid.utils.Logging.getMethodName;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -31,10 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.model.ExceptionResponse;
-import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapper;
-import org.onap.vid.mso.MsoResponseWrapper2;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
@@ -674,34 +674,6 @@ public class MsoController extends RestrictedBaseController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(w.getResponse(), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mso_activate_fabric_configuration/{serviceInstanceId}", method = RequestMethod.POST)
-    public MsoResponseWrapper2 activateFabricConfiguration(
-        @PathVariable("serviceInstanceId") String serviceInstanceId,
-        @RequestBody RequestDetails requestDetails) {
-
-        String methodName = "activateFabricConfiguration";
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + START_LOG);
-
-        return msoBusinessLogic.activateFabricConfiguration(serviceInstanceId, requestDetails);
-    }
-
-    @RequestMapping(value = "/mso_vfmodule_soft_delete/{serviceInstanceId}/{vnfInstanceId}/{vfModuleInstanceId}", method = RequestMethod.POST)
-    public MsoResponseWrapper2 deactivateAndCloudDelete(
-        @PathVariable("serviceInstanceId") String serviceInstanceId,
-        @PathVariable("vnfInstanceId") String vnfInstanceId,
-        @PathVariable("vfModuleInstanceId") String vfModuleInstanceId,
-        @RequestBody SoftDeleteRequest softDeleteRequest) {
-
-        String methodName = "deactivateAndCloudDelete";
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + START_LOG);
-
-        RequestDetails requestDetails = msoBusinessLogic.buildRequestDetailsForSoftDelete(softDeleteRequest);
-
-        cloudOwnerService.enrichRequestWithCloudOwner(requestDetails);
-        return msoBusinessLogic
-            .deactivateAndCloudDelete(serviceInstanceId, vnfInstanceId, vfModuleInstanceId, requestDetails);
     }
 
     /**

@@ -19,9 +19,9 @@
  */
 
 package org.onap.vid.changeManagement;
+import org.onap.vid.mso.model.CloudConfiguration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.onap.vid.mso.model.CloudConfiguration;
 
 /**
  * Created by Oren on 9/5/17.

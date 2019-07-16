@@ -1,0 +1,72 @@
+{
+  "service": {
+    "uuid": "6e0bec91-09f3-43aa-9cf3-e617cd0146be",
+    "invariantUuid": "f6342be5-d66b-4d03-a1aa-c82c3094c4ea",
+    "name": "NCM_VLAN_SVC_ym161f",
+    "version": "8.0",
+    "toscaModelURL": null,
+    "category": "Network L4+",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "",
+    "description": "Network Collection service for vLAN tagging",
+    "serviceEcompNaming": "true",
+    "instantiationType": "Macro",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationType": "Macro",
+      "instantiationUI": "serviceWithCollectionResource",
+      "modelCategory": "other",
+      "viewEditUI": "serviceWithCollectionResource"
+    }
+  },
+  "vnfs": {},
+  "networks": {},
+  "collectionResources": {
+    "NCM_VLAN_ym161f 0": {
+      "uuid": "ce8c98bc-4691-44fb-8ff0-7a47487c11c4",
+      "invariantUuid": "081ceb56-eb71-4566-a72d-3e7cbee5cdf1",
+      "description": "Network Collection Service VF for VLAN TAgging",
+      "name": "NCM_VLAN_ym161f",
+      "version": "5.0",
+      "customizationUuid": "bac6ffe5-c851-495f-a64a-28751400ff03",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "ncm_vlan_ym161f..Fixed..0_quantity": "3",
+        "cr_function": "vTSBC_function",
+        "ncm_vlan_ym161f..NetworkCollection..0_network_collection_description": "vTSBC Customer Landing Network Collection Desc",
+        "cr_role": "SUB_INTERFACE",
+        "cr_type": "L3-NETWORK",
+        "ecomp_generated_naming": "false",
+        "ncm_vlan_ym161f..NetworkCollection..0_network_collection_function": "vTSBC Customer Landing Network Collection"
+      },
+      "type": "CR",
+      "category": "Generic",
+      "subcategory": "Infrastructure",
+      "resourceVendor": "ATT",
+      "resourceVendorRelease": "201810",
+      "resourceVendorModelNumber": "294455b",
+      "customizationUUID": "bac6ffe5-c851-495f-a64a-28751400ff03",
+      "networksCollection": {
+        "ncm_vlan_ym161f..NetworkCollection..0": {
+          "uuid": "dd182d7d-6949-4b90-b3cc-5befe400742e",
+          "invariantUuid": "868b109c-9481-4a18-891b-af974db7705a",
+          "name": "ncm_vlan_ym161f..NetworkCollection..0",
+          "version": "1",
+          "networkCollectionProperties": {
+            "networkCollectionFunction": "vTSBC Customer Landing Network Collection",
+            "networkCollectionDescription": "vTSBC Customer Landing Network Collection Desc"
+          }
+        }
+      }
+    }
+  },
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}

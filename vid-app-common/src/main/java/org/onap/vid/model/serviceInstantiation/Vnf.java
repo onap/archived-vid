@@ -2,14 +2,14 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,10 +23,12 @@ package org.onap.vid.model.serviceInstantiation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
 import org.onap.vid.mso.model.ModelInfo;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * The Class VNF.
@@ -42,24 +44,27 @@ public class Vnf extends BaseResource implements JobAdapter.AsyncJobRequest {
 	private final Map<String, Map<String, VfModule>> vfModules;
 
 	public Vnf(@JsonProperty("modelInfo") ModelInfo modelInfo,
-               @JsonProperty("productFamilyId") String productFamilyId,
-               @JsonProperty("instanceName") String instanceName,
+			   @JsonProperty("productFamilyId") String productFamilyId,
+			   @JsonProperty("instanceName") String instanceName,
 			   @JsonProperty("action") String action,
-               @JsonProperty("platformName") String platformName,
-               @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
-               @JsonProperty("legacyRegion") String legacyRegion,
-               @JsonProperty("tenantId") String tenantId,
-               @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
-               @JsonProperty("lineOfBusinessName") String lineOfBusiness,
-               @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+			   @JsonProperty("platformName") String platformName,
+			   @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
+			   @JsonProperty("legacyRegion") String legacyRegion,
+			   @JsonProperty("tenantId") String tenantId,
+			   @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
+			   @JsonProperty("lineOfBusinessName") String lineOfBusiness,
+			   @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
 			   @JsonProperty("instanceId") String instanceId,
-               @JsonProperty("vfModules") Map<String, Map<String, VfModule>> vfModules) {
+			   @JsonProperty("vfModules") Map<String, Map<String, VfModule>> vfModules,
+			   @JsonProperty("trackById") String trackById,
+			   @JsonProperty("isFailed") Boolean isFailed,
+			   @JsonProperty("statusMessage") String statusMessage) {
 
-		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId);
+		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage);
 		this.productFamilyId = productFamilyId;
 		this.platformName = platformName;
 		this.lineOfBusiness = lineOfBusiness;
-		this.vfModules = vfModules;
+		this.vfModules = vfModules==null ? Collections.emptyMap() : vfModules;
 	}
 
 	public String getProductFamilyId() {
@@ -81,5 +86,18 @@ public class Vnf extends BaseResource implements JobAdapter.AsyncJobRequest {
 	@Override
 	protected String getModelType() {
 		return "vnf";
+	}
+
+	@Override
+	public Collection<BaseResource> getChildren() {
+		return getVfModules().values().stream()
+				.filter(Objects::nonNull)
+				.flatMap(x->x.values().stream())
+				.collect(toList());
+	}
+
+	@Override
+	public JobType getJobType() {
+		return JobType.VnfInstantiation;
 	}
 }

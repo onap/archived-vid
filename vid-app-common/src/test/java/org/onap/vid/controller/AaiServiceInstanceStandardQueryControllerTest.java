@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,18 +20,20 @@
 
 package org.onap.vid.controller;
 
-import org.mockito.Answers;
+import com.google.common.collect.ImmutableList;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.onap.vid.aai.util.ServiceInstanceStandardQuery;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.model.Service;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
 import org.onap.vid.model.VidNotions.ModelCategory;
+import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.properties.Features;
+import org.onap.vid.services.AAIServiceTree;
 import org.onap.vid.services.VidService;
+import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -56,8 +58,9 @@ public class AaiServiceInstanceStandardQueryControllerTest {
     @Mock
     private VidService sdcService;
 
-    @Mock(answer = Answers.RETURNS_MOCKS)
-    private ServiceInstanceStandardQuery serviceInstanceStandardQuery;
+    @Mock
+    private AAIServiceTree aaiServiceTree;
+
 
     //Don't use initMocks with @BeforeMethod
     //because AaiServiceInstanceStandardQueryController contains final members that can not be injected twice
@@ -69,7 +72,7 @@ public class AaiServiceInstanceStandardQueryControllerTest {
 
     @AfterMethod
     public void resetMocks() {
-        reset(sdcService, featureManager, serviceInstanceStandardQuery);
+        reset(sdcService, featureManager);
     }
 
     @Test
@@ -80,13 +83,14 @@ public class AaiServiceInstanceStandardQueryControllerTest {
         //  - assert that AAI was accessed
 
         when(featureManager.isActive(Features.FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS)).thenReturn(true);
+        when(aaiServiceTree.buildAAITree(any(), any(), any(HttpMethod.class), any(), anyBoolean())).thenReturn(ImmutableList.of(mock(AAITreeNode.class)));
 
         final UUID randomModelUuid = UUID.randomUUID();
         mockServiceModel(ModelCategory.IS_5G_PROVIDER_NETWORK_MODEL, randomModelUuid);
 
         doGetNetworksToVlansByServiceInstance(randomModelUuid);
 
-        verify(serviceInstanceStandardQuery).fetchServiceInstance(any(), any(), any());
+        verify(aaiServiceTree).buildAAITree(any(), any(), any(HttpMethod.class), any(), anyBoolean());
     }
 
     @Test
@@ -103,7 +107,7 @@ public class AaiServiceInstanceStandardQueryControllerTest {
         mockServiceModel(ModelCategory.OTHER, randomModelUuid);
 
         assertThat(doGetNetworksToVlansByServiceInstance(randomModelUuid).serviceNetworks, hasSize(0));
-        verifyZeroInteractions(serviceInstanceStandardQuery);
+        verifyZeroInteractions(aaiServiceTree);
     }
 
     @Test
@@ -123,7 +127,7 @@ public class AaiServiceInstanceStandardQueryControllerTest {
         Service mockedService = mock(Service.class);
         when(mockedModel.getService()).thenReturn(mockedService);
         when(mockedService.getVidNotions()).thenReturn(
-                new VidNotions(instantiationUI, modelCategory, VidNotions.InstantiationUI.LEGACY)
+                new VidNotions(instantiationUI, modelCategory, VidNotions.InstantiationUI.LEGACY, VidNotions.InstantiationType.ALaCarte)
         );
 
         when(sdcService.getService(randomModelUuid.toString())).thenReturn(mockedModel);

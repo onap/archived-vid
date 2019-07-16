@@ -2,14 +2,14 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,11 @@ package org.onap.vid.model.serviceInstantiation;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
 import org.onap.vid.mso.model.ModelInfo;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,22 +40,25 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest {
 
 	@JsonInclude(NON_NULL) private final String volumeGroupInstanceName;
-	private boolean usePreload;
+	@JsonInclude(NON_NULL) private Boolean usePreload;
 	private Map<String, String> supplementaryParams;
 
 	public VfModule( @JsonProperty("modelInfo") ModelInfo modelInfo,
-                     @JsonProperty("instanceName") String instanceName,
-                     @JsonProperty("volumeGroupName") String volumeGroupInstanceName,
+					 @JsonProperty("instanceName") String instanceName,
+					 @JsonProperty("volumeGroupName") String volumeGroupInstanceName,
 					 @JsonProperty("action") String action,
-                     @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
-                     @JsonProperty("legacyRegion") String legacyRegion,
-                     @JsonProperty("tenantId") String tenantId,
-                     @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
-                     @JsonProperty("supplementaryFileContent") Map<String, String> supplementaryParams,
-                     @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
-                     @JsonProperty("sdncPreLoad") boolean usePreload,
-					 @JsonProperty("instanceId") String instanceId) {
-		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId);
+					 @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
+					 @JsonProperty("legacyRegion") String legacyRegion,
+					 @JsonProperty("tenantId") String tenantId,
+					 @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
+					 @JsonProperty("supplementaryFileContent") Map<String, String> supplementaryParams,
+					 @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+					 @JsonProperty("sdncPreLoad") Boolean usePreload,
+					 @JsonProperty("instanceId") String instanceId,
+					 @JsonProperty("trackById") String trackById,
+					 @JsonProperty("isFailed") Boolean isFailed,
+					 @JsonProperty("statusMessage") String statusMessage) {
+		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage);
 		this.volumeGroupInstanceName = volumeGroupInstanceName;
 		this.usePreload = usePreload;
 		this.supplementaryParams = supplementaryParams;
@@ -62,7 +68,8 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		return volumeGroupInstanceName;
 	}
 
-	public boolean isUsePreload() {
+	public Boolean isUsePreload() {
+
 		return usePreload;
 	}
 
@@ -75,5 +82,13 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		return "vfModule";
 	}
 
+	@Override
+	public Collection<BaseResource> getChildren() {
+		return Collections.emptyList();
+	}
 
+	@Override
+	public JobType getJobType() {
+		return JobType.VfmoduleInstantiation;
+	}
 }

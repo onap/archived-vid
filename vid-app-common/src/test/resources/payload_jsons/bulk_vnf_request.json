@@ -12,7 +12,7 @@
      "cloudConfiguration": {
        "lcpCloudRegionId": "mdt1",
        "tenantId": "88a6ca3ee0394ade9403f075db23167e",
-       "cloudOwner" : "att-aic"
+       "cloudOwner" : "irma-aic"
      },
      "requestInfo": {
        "instanceName": "vmxnjr001_001",

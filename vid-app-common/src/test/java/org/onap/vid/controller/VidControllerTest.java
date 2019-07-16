@@ -178,7 +178,7 @@ public class VidControllerTest {
     private ServiceModel createServiceModel(int i) {
         ServiceModel model = new ServiceModel();
 
-        model.setCollectionResource(ImmutableMap.of("resKey" + i, new CR()));
+        model.setCollectionResources(ImmutableMap.of("resKey" + i, new CR()));
         model.setNetworks(ImmutableMap.of("network" + i, new Network()));
         model.setPnfs(ImmutableMap.of("pnf" + i, new Node()));
         model.setServiceProxies(ImmutableMap.of("servProxy" + i, new ServiceProxy()));
