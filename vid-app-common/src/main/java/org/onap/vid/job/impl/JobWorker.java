@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,17 +25,17 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.job.*;
 import org.onap.vid.job.command.JobCommandFactory;
-import org.onap.vid.properties.Features;
 import org.quartz.JobExecutionContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
-import org.togglz.core.manager.FeatureManager;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.onap.vid.job.Job.JobStatus.FAILED;
 import static org.onap.vid.job.Job.JobStatus.STOPPED;
+import static org.onap.vid.job.command.ResourceCommandKt.ACTION_PHASE;
+import static org.onap.vid.job.command.ResourceCommandKt.INTERNAL_STATE;
 
 @Component
 public class JobWorker extends QuartzJobBean {
@@ -43,17 +43,12 @@ public class JobWorker extends QuartzJobBean {
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(JobWorker.class);
 
     private JobsBrokerService jobsBrokerService;
-    private FeatureManager featureManager;
     private JobCommandFactory jobCommandFactory;
     private Job.JobStatus topic;
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
         Optional<Job> job;
-
-        if (!isMsoNewApiActive()) {
-            return;
-        }
 
         job = pullJob();
 
@@ -85,10 +80,16 @@ public class JobWorker extends QuartzJobBean {
     }
 
     protected Job executeJobAndGetNext(Job job) {
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "going to execute job {} of {}: {}/{}",
+        Object internalState = job.getData().get(INTERNAL_STATE);
+        Object actionPhase = job.getData().get(ACTION_PHASE);
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "going to execute job {} of {}: {}/{}  {}/{}",
                 StringUtils.substring(String.valueOf(job.getUuid()), 0, 8),
                 StringUtils.substring(String.valueOf(job.getTemplateId()), 0, 8),
-                job.getStatus(), job.getType());
+                job.getStatus(),
+                job.getType(),
+                actionPhase,
+                internalState
+                );
 
         NextCommand nextCommand = executeCommandAndGetNext(job);
 
@@ -128,10 +129,6 @@ public class JobWorker extends QuartzJobBean {
         return job;
     }
 
-    private boolean isMsoNewApiActive() {
-        return featureManager.isActive(Features.FLAG_ASYNC_INSTANTIATION);
-    }
-
     private void tryMutingJobFromException(Exception e) {
         // If there's JobException in the stack, read job uuid from
         // the exception, and mute it in DB.
@@ -156,10 +153,6 @@ public class JobWorker extends QuartzJobBean {
     //see JobSchedulerInitializer
     public void setJobsBrokerService(JobsBrokerService jobsBrokerService) {
         this.jobsBrokerService = jobsBrokerService;
-    }
-
-    public void setFeatureManager(FeatureManager featureManager) {
-        this.featureManager = featureManager;
     }
 
     public void setJobCommandFactory(JobCommandFactory jobCommandFactory) {

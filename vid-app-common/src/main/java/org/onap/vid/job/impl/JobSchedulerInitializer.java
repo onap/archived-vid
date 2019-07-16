@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,13 +20,13 @@
 
 package org.onap.vid.job.impl;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.JobCommandFactory;
-import org.onap.vid.properties.Features;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -34,6 +34,7 @@ import org.springframework.stereotype.Component;
 import org.togglz.core.manager.FeatureManager;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 
@@ -51,24 +52,26 @@ public class JobSchedulerInitializer {
             JobsBrokerService jobsBrokerService,
             SchedulerFactoryBean schedulerFactoryBean,
             FeatureManager featureManager,
-            JobCommandFactory JobCommandFactory
+            JobCommandFactory jobCommandFactory
     ) {
         this.jobsBrokerService = jobsBrokerService;
         this.schedulerFactoryBean = schedulerFactoryBean;
         this.featureManager = featureManager;
-        this.jobCommandFactory = JobCommandFactory;
+        this.jobCommandFactory = jobCommandFactory;
 
     }
 
+    public static final List<Job.JobStatus> WORKERS_TOPICS = ImmutableList.of(
+            Job.JobStatus.PENDING,
+            Job.JobStatus.CREATING,
+            Job.JobStatus.IN_PROGRESS,
+            Job.JobStatus.RESOURCE_IN_PROGRESS,
+            Job.JobStatus.PENDING_RESOURCE
+    );
+
     @PostConstruct
     public void init() {
-        if (!featureManager.isActive(Features.FLAG_ASYNC_JOBS)) {
-            return;
-        }
-        scheduleJobWorker(Job.JobStatus.PENDING, 1);
-        scheduleJobWorker(Job.JobStatus.CREATING, 1);
-        scheduleJobWorker(Job.JobStatus.IN_PROGRESS, 1);
-        scheduleJobWorker(Job.JobStatus.RESOURCE_IN_PROGRESS, 1);
+        WORKERS_TOPICS.forEach(topic->scheduleJobWorker(topic, 1));
     }
 
     private void scheduleJobWorker(Job.JobStatus topic, int intervalInSeconds) {

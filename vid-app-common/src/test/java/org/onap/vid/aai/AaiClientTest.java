@@ -20,9 +20,51 @@
 
 package org.onap.vid.aai;
 
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.either;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+import static org.onap.vid.utils.Unchecked.toURI;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.fail;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
+import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import javax.crypto.BadPaddingException;
+import javax.net.ssl.SSLHandshakeException;
+import javax.servlet.ServletContext;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -32,10 +74,20 @@ import org.apache.http.HttpStatus;
 import org.mockito.Mockito;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelatedToProperty;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
-import org.onap.vid.aai.model.*;
-import org.onap.vid.aai.util.*;
+import org.onap.vid.aai.model.CustomQuerySimpleResult;
+import org.onap.vid.aai.model.ModelVer;
+import org.onap.vid.aai.model.ModelVersions;
+import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.model.Properties;
+import org.onap.vid.aai.model.RelatedToProperty;
+import org.onap.vid.aai.model.ResourceType;
+import org.onap.vid.aai.model.SimpleResult;
+import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.CacheProvider;
+import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.ServletRequestHelper;
+import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.controller.LocalWebConfig;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.Subscriber;
@@ -54,37 +106,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import sun.security.provider.certpath.SunCertPathBuilderException;
 import sun.security.validator.ValidatorException;
-
-import javax.crypto.BadPaddingException;
-import javax.net.ssl.SSLHandshakeException;
-import javax.servlet.ServletContext;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.core.Response;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URI;
-import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Mockito.*;
-import static org.onap.vid.utils.Unchecked.toURI;
-import static org.testng.Assert.*;
 
 @ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})
 @WebAppConfiguration
@@ -345,7 +366,7 @@ public class AaiClientTest {
 
         Assert.assertTrue(response.t.length> 0);
 
-        Assert.assertEquals(tenants[0].cloudOwner,"att-aic-cloud-owner");
+        Assert.assertEquals(tenants[0].cloudOwner,"irma-aic-cloud-owner");
     }
 
     final String tenantResponseRaw ="" +
@@ -355,10 +376,10 @@ public class AaiClientTest {
             "\"relationship-list\": {" +
             "\"relationship\": [{" +
             "\"related-to\": \"tenant\"," +
-            "\"related-link\": \"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/att-aic/AAIAIC25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86\"," +
+            "\"related-link\": \"/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/AAIAIC25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86\"," +
             "\"relationship-data\": [{" +
             "\"relationship-key\": \"cloud-region.cloud-owner\"," +
-            "\"relationship-value\": \"att-aic-cloud-owner\"" +
+            "\"relationship-value\": \"irma-aic-cloud-owner\"" +
             "}," +
             "{" +
             "\"relationship-key\": \"cloud-region.cloud-region-id\"," +
@@ -427,11 +448,11 @@ public class AaiClientTest {
             "            {" +
             "                \"related-to\": \"volume-group\"," +
             "                \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
-            "                \"related-link\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/volume-groups/volume-group/66013ebe-0c81-44b9-a24f-7c6acba73a39\"," +
+            "                \"related-link\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/volume-groups/volume-group/66013ebe-0c81-44b9-a24f-7c6acba73a39\"," +
             "                \"relationship-data\": [" +
             "                    {" +
             "                        \"relationship-key\": \"cloud-region.cloud-owner\"," +
-            "                        \"relationship-value\": \"att-aic\"" +
+            "                        \"relationship-value\": \"irma-aic\"" +
             "                    }," +
             "                    {" +
             "                        \"relationship-key\": \"cloud-region.cloud-region-id\"," +
@@ -446,11 +467,11 @@ public class AaiClientTest {
             "            {" +
             "                \"related-to\": \"vserver\"," +
             "                \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
-            "                \"related-link\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/rdm5b/tenants/tenant/db1818f7f2e34862b378bfb2cc520f91/vservers/vserver/5eef9f6d-9933-4bc6-9a1a-862d61309437\"," +
+            "                \"related-link\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/rdm5b/tenants/tenant/db1818f7f2e34862b378bfb2cc520f91/vservers/vserver/5eef9f6d-9933-4bc6-9a1a-862d61309437\"," +
             "                \"relationship-data\": [" +
             "                    {" +
             "                        \"relationship-key\": \"cloud-region.cloud-owner\"," +
-            "                        \"relationship-value\": \"att-aic\"" +
+            "                        \"relationship-value\": \"irma-aic\"" +
             "                    }," +
             "                    {" +
             "                        \"relationship-key\": \"cloud-region.cloud-region-id\"," +
@@ -490,7 +511,7 @@ public class AaiClientTest {
 
         GetTenantsResponse tenant = aaiClientMock.getHomingDataByVfModule("vnfInstanceId", "vfModuleId");
 
-        Assert.assertEquals(tenant.cloudOwner,"att-aic");
+        Assert.assertEquals(tenant.cloudOwner,"irma-aic" );
         Assert.assertEquals(tenant.cloudRegionID,"rdm5b");
         Assert.assertEquals(tenant.tenantID,"db1818f7f2e34862b378bfb2cc520f91");
 
@@ -601,7 +622,7 @@ public class AaiClientTest {
                 // double each case to propagateExceptions = true/false, to verify that "don't propagate" really still work
                 ImmutableList.of(l.getLeft(), l.getRight(), true).toArray(),
                 ImmutableList.of(l.getLeft(), l.getRight(), false).toArray()
-        )).collect(Collectors.toList()).toArray(new Object[][]{});
+        )).collect(toList()).toArray(new Object[][]{});
     }
 
     private static UncheckedBiConsumer<HttpsAuthClient, Client> mockExceptionOnClientProvider(Exception e) {
@@ -734,6 +755,83 @@ public class AaiClientTest {
         };
     }
 
+    @Test
+    public void testGetLatestVersionByInvariantId() throws IOException {
+
+        ModelVersions modelVersions = JACKSON_OBJECT_MAPPER.readValue("" +
+                "{\n" +
+                "    \"results\": [\n" +
+                "        {\n" +
+                "            \"model\": {\n" +
+                "                \"model-invariant-id\": \"f6342be5-d66b-4d03-a1aa-c82c3094c4ea\",\n" +
+                "                \"model-type\": \"service\",\n" +
+                "                \"resource-version\": \"1534274421300\"\n" +
+                "            }\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"model-ver\": {\n" +
+                "                \"model-version-id\": \"a92f899d-a3ec-465b-baed-1663b0a5aee1\",\n" +
+                "                \"model-name\": \"NCM_VLAN_SVC_ym161f\",\n" +
+                "                \"model-version\": \"bbb\",\n" +
+                "                \"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
+                "                \"model-description\": \"Network Collection service for vLAN tagging\",\n" +
+                "                \"resource-version\": \"1534788756086\"\n" +
+                "            }\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"model-ver\": {\n" +
+                "                \"model-version-id\": \"d2fda667-e92e-4cfa-9620-5da5de01a319\",\n" +
+                "                \"model-name\": \"NCM_VLAN_SVC_ym161f\",\n" +
+                "                \"model-version\": \"aaa\",\n" +
+                "                \"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
+                "                \"model-description\": \"Network Collection service for vLAN tagging\",\n" +
+                "                \"resource-version\": \"1534444087221\"\n" +
+                "            }\n" +
+                "        }]}", ModelVersions.class);
+
+
+        final AaiClient aaiClient = new AaiClient(null, null, null);
+
+        assertThat(aaiClient.toModelVerStream(modelVersions).collect(toList()),
+                containsInAnyOrder(
+                        hasProperty("modelVersionId", is("a92f899d-a3ec-465b-baed-1663b0a5aee1")),
+                        hasProperty("modelVersionId", is("d2fda667-e92e-4cfa-9620-5da5de01a319"))
+                ));
+
+    }
+
+    @DataProvider
+    public static Object[][]  versionsDataProvider() {
+        return new Object[][] {
+                { Stream.of("10","20","30"), "30" },
+                { Stream.of("10","20","20"), "20" },
+                { Stream.of("c","b","a"), "c" },
+                { Stream.of("1.0","2.0","1.8"), "2.0" },
+                { Stream.of("1.0.7","2.0.2","2.0.9"), "2.0.9" },
+                { Stream.of("0","0","0"), "0" },
+                { Stream.of("","10"), "10" },
+
+        };
+    }
+
+    @Test(dataProvider = "versionsDataProvider")
+    public void maxModelVer(Stream<String> input, String expected) {
+        Stream<ModelVer> modelVerStream = input.map(version -> {
+            ModelVer mv = new ModelVer();
+            mv.setModelVersion(version);
+            return mv;
+        });
+
+        final AaiClient aaiClient = new AaiClient(null, null, null);
+
+        assertThat(aaiClient.maxModelVer(modelVerStream), hasProperty("modelVersion", is(expected)));
+    }
+
+    @Test(expectedExceptions = GenericUncheckedException.class)
+    public void maxModelVerException() {
+        final AaiClient aaiClient = new AaiClient(null, null, null);
+        aaiClient.maxModelVer(Stream.of(new ModelVer()));
+    }
     @Test(dataProvider = "cloudRegionAndTenantDataProvider")
     public void getCloudRegionAndTenantByVnfId(String tenantName, String cloudRegionId) throws JsonProcessingException {
         SimpleResult tenant = new SimpleResult();

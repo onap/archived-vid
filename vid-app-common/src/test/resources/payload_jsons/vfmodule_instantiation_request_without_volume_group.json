@@ -12,7 +12,7 @@
     "cloudConfiguration": {
       "lcpCloudRegionId": "mdt1",
       "tenantId": "88a6ca3ee0394ade9403f075db23167e",
-      "cloudOwner" : "att-aic"
+      "cloudOwner" : "irma-aic"
     },
     "requestInfo": {
       "instanceName": "vmxnjr001_AVPN_base_vRE_BV_expansion",
@@ -54,7 +54,8 @@
         "vre_a_volume_size_0" : "100",
         "vmx_int_net_len" : "24",
         "availability_zone_0": "mtpocdv-kvm-az01"
-      }]
+      }],
+      "testApi" : "VNF_API"
     }
   }
 }

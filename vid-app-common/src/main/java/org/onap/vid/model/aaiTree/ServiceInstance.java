@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,10 +20,9 @@
 
 package org.onap.vid.model.aaiTree;
 
-import org.onap.vid.mso.model.ModelInfo;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.onap.vid.mso.model.ModelInfo;
 
 public class ServiceInstance extends AbstractNode {
 
@@ -43,13 +42,17 @@ public class ServiceInstance extends AbstractNode {
 
     private Map<String, Vnf> vnfs = new HashMap<>();
     private Map<String, Network> networks = new HashMap<>();
+    private Map<String, Vrf> vrfs = new HashMap<>();
+
 
     private Map<String, VnfGroup> vnfGroups = new HashMap<>();
+    private Map<String, CollectionResource> collectionResources = new HashMap<>();
 
     private int validationCounter;
     private Map<String, Long> existingVNFCounterMap;
     private Map<String, Long> existingNetworksCounterMap;
     private Map<String, Long> existingVnfGroupCounterMap;
+    private Map<String, Long> existingVRFCounterMap;
 
     public void setInstanceName(String instanceName) {
         this.instanceName = instanceName;
@@ -175,6 +178,14 @@ public class ServiceInstance extends AbstractNode {
         this.networks = networks;
     }
 
+    public Map<String, CollectionResource> getCollectionResources() {
+        return collectionResources;
+    }
+
+    public void setCollectionResources(Map<String, CollectionResource> collectionResources) {
+        this.collectionResources = collectionResources;
+    }
+
     public Map<String, VnfGroup> getVnfGroups() { return vnfGroups; }
 
     public void setVnfGroups(Map<String, VnfGroup> vnfGroups) { this.vnfGroups = vnfGroups; }
@@ -209,5 +220,21 @@ public class ServiceInstance extends AbstractNode {
 
     public void setExistingVnfGroupCounterMap(Map<String, Long> existingVnfGroupCounterMap) {
         this.existingVnfGroupCounterMap = existingVnfGroupCounterMap;
+    }
+
+    public Map<String, Vrf> getVrfs() {
+        return vrfs;
+    }
+
+    public void setVrfs(Map<String, Vrf> vrfs) {
+        this.vrfs = vrfs;
+    }
+
+    public Map<String, Long> getExistingVRFCounterMap() {
+        return existingVRFCounterMap;
+    }
+
+    public void setExistingVRFCounterMap(Map<String, Long> existingVRFCounterMap) {
+        this.existingVRFCounterMap = existingVRFCounterMap;
     }
 }

@@ -25,11 +25,16 @@ import com.google.common.collect.ImmutableMap;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.model.Action;
+import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.VidNotions.InstantiationType;
+import org.onap.vid.model.VidNotions.InstantiationUI;
+import org.onap.vid.model.VidNotions.ModelCategory;
 import org.onap.vid.model.serviceInstantiation.*;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
+import org.onap.vid.properties.Features;
 import org.onap.vid.utils.TimeUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -38,14 +43,18 @@ import org.togglz.core.manager.FeatureManager;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests {
 
     public static final String OWNING_ENTITY_ID = "038d99af-0427-42c2-9d15-971b99b9b489";
+    public static final String JULIO_ERICKSON = "JULIO ERICKSON";
     public static final String PACKET_CORE = "PACKET CORE";
     public static final String PROJECT_NAME = "{some project name}";
     public static final String SUBSCRIBER_ID = "{some subscriber id}";
@@ -98,7 +107,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
 
         return new ServiceInstantiation ( modelInfo,
                 AsyncInstantiationBusinessLogicTest.OWNING_ENTITY_ID,
-                AsyncInstantiationBusinessLogicTest.PACKET_CORE,
+                AsyncInstantiationBusinessLogicTest.JULIO_ERICKSON,
                 projectName,
                 AsyncInstantiationBusinessLogicTest.SUBSCRIBER_ID,
                 AsyncInstantiationBusinessLogicTest.SUBSCRIBER_NAME,
@@ -114,6 +123,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 vnfs,
                 networks,
                 vnfGroups,
+                null,
                 instanceParams,
                 isPause,
                 bulkSize,
@@ -121,8 +131,8 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 isAlacarte,
                 testApi,
                 instanceId,
-                action.name()
-                );
+                action.name(),
+                UUID.randomUUID().toString(), null, null, null);
     }
 
     private List<Map<String,String>> createInstanceParams() {
@@ -146,10 +156,12 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         if (isAlacarte) {
             vfModuleInfo.setModelInvariantId("22222222-f63c-463e-ba94-286933b895f9");
             vfModuleInfo.setModelVersion("10.0");
-            return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false, true, null);
+            return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), "mdt1", null,
+                    "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false, true, null, UUID.randomUUID().toString(), null, null);
         }
 
-        return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), null, null, null, instanceParams, supplementaryParams, false, false, null);
+        return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), null, null, null,
+                instanceParams, supplementaryParams, false, false, null, UUID.randomUUID().toString(), null, null);
     }
 
     protected ModelInfo createVnfModelInfo(boolean isAlacarte) {
@@ -167,19 +179,20 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return vnfModelInfo;
     }
 
-    private ModelInfo createNetworkModelInfo(boolean isAlacarte) {
-        ModelInfo vnfModelInfo = new ModelInfo();
-        vnfModelInfo.setModelType("network");
-        vnfModelInfo.setModelName("2016-73_MOW-AVPN-vPE-BV-L");
-        vnfModelInfo.setModelVersionId("7f40c192-f63c-463e-ba94-286933b895f8");
-        vnfModelInfo.setModelCustomizationName("2016-73_MOW-AVPN-vPE-BV-L 0");
-        vnfModelInfo.setModelCustomizationId("ab153b6e-c364-44c0-bef6-1f2982117f04");
+    private ModelInfo createNetworkModelInfo(boolean isAlacarte, String modelCustomizationId)
+    {
+        ModelInfo modelInfo = new ModelInfo();
+        modelInfo.setModelType("network");
+        modelInfo.setModelName("2016-73_MOW-AVPN-vPE-BV-L");
+        modelInfo.setModelVersionId("7f40c192-f63c-463e-ba94-286933b895f8");
+        modelInfo.setModelCustomizationName("2016-73_MOW-AVPN-vPE-BV-L 0");
+        modelInfo.setModelCustomizationId(modelCustomizationId);
         //added two conditional fields according to MSO AID - needed only in alacarte
         if (isAlacarte) {
-            vnfModelInfo.setModelInvariantId("11111111-f63c-463e-ba94-286933b895f9");
-            vnfModelInfo.setModelVersion("10.0");
+            modelInfo.setModelInvariantId("11111111-f63c-463e-ba94-286933b895f9");
+            modelInfo.setModelVersion("10.0");
         }
-        return vnfModelInfo;
+        return modelInfo;
     }
 
     private ModelInfo createModelInfo() {
@@ -214,21 +227,33 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         vfModules.get(vfModuleModelName).put(vfModuleModelName + ":002", vfModule2);
 
         Vnf vnf = new Vnf(vnfModelInfo, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", (isUserProvidedNaming ? VNF_NAME : null), Action.Create.name(),
-                "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", vnfInstanceParams,"lineOfBusinessName" , false, null, vfModules);
+                "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", vnfInstanceParams,"lineOfBusinessName" , false, null, vfModules,
+                UUID.randomUUID().toString(), null, null);
 
         vnfs.put(vnf.getModelInfo().getModelName(), vnf);
         return vnfs;
     }
 
-    protected Map<String, Network> createNetworkList(List vnfInstanceParams, boolean isUserProvidedNaming, boolean isALaCarte) {
-        Map<String, Network> networks = new HashMap<>();
-        ModelInfo networkModelInfo = createNetworkModelInfo(isALaCarte);
+    public static class NetworkDetails {
 
-        Network network = new Network(networkModelInfo, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", isUserProvidedNaming ? VNF_NAME : null, Action.Create.name(),
-                "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", vnfInstanceParams,"lineOfBusinessName" , false, null);
+        public NetworkDetails(String name, String modelCustomizationId) {
+            this.name = name;
+            this.modelCustomizationId = modelCustomizationId;
+        }
 
-        networks.put(network.getModelInfo().getModelName(), network);
-        return networks;
+        public String name;
+        public String modelCustomizationId;
+    }
+
+
+    protected Map<String, Network> createNetworkList(List instanceParams, List<NetworkDetails> networkDetails, boolean isALaCarte) {
+        Stream<Network> networkStream = networkDetails.stream().map(
+                details->new Network(createNetworkModelInfo(isALaCarte, details.modelCustomizationId), "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+                        details.name, Action.Create.name(),
+                        "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", instanceParams,"lineOfBusinessName" ,
+                        false, null, UUID.randomUUID().toString(), null, null));
+//        I can't tell why compiler don't like the statement if it's only one line...
+        return networkStream.collect(Collectors.toMap(network -> network.getModelInfo().getModelCustomizationId(), network -> network));
     }
 
     protected InstanceGroup createInstanceGroup(boolean isUserProvidedNaming, Action action) {
@@ -241,7 +266,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         modelInfo.setModelInvariantId("11111111-f63c-463e-ba94-286933b895f9");
         modelInfo.setModelVersion("10.0");
 
-        return new InstanceGroup(modelInfo, (isUserProvidedNaming ? VNF_GROUP_NAME : null), action.name(), false, null);
+        return new InstanceGroup(modelInfo, (isUserProvidedNaming ? VNF_GROUP_NAME : null), action.name(), false, null, emptyMap(), UUID.randomUUID().toString(), null, null);
     }
 
     protected ModelInfo createServiceModelInfo() {
@@ -277,11 +302,11 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return asyncRequestStatus;
     }
 
-    protected RestObject<AsyncRequestStatus> asyncRequestStatusResponseAsRestObject(String msoStatus) {
+    public static RestObject<AsyncRequestStatus> asyncRequestStatusResponseAsRestObject(String msoStatus) {
         return asyncRequestStatusResponseAsRestObject(msoStatus, 200);
     }
 
-    protected RestObject<AsyncRequestStatus> asyncRequestStatusResponseAsRestObject(String msoStatus, int httpStatusCode) {
+    public static RestObject<AsyncRequestStatus> asyncRequestStatusResponseAsRestObject(String msoStatus, int httpStatusCode) {
         RestObject<AsyncRequestStatus> restObject = new RestObject<>();
         restObject.set(asyncRequestStatusResponse(msoStatus));
         restObject.setStatusCode(httpStatusCode);
@@ -302,6 +327,12 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return serviceInstantiation;
     }
 
+    protected ServiceInstantiation generateALaCarteWithNetworksPayload(List<NetworkDetails> networkDetails) {
+        Map<String, Network> networks = createNetworkList(emptyList(), networkDetails, true);
+        ServiceInstantiation serviceInstantiation = generateMockALaCarteServiceInstantiationPayload(false, emptyMap(), networks, emptyMap(), 1, true, PROJECT_NAME, false, "VNF_API");
+        return serviceInstantiation;
+    }
+
     protected ServiceInstantiation generateALaCarteUpdateWith1ExistingGroup2NewGroupsPayload() {
         final InstanceGroup instanceGroup1 = createInstanceGroup(true, Action.None);
         final InstanceGroup instanceGroup2 = createInstanceGroup(false, Action.Create);
@@ -314,5 +345,39 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return generateMockServiceInstantiationPayload(false, emptyMap(), emptyMap(), groups,
                 1, true, PROJECT_NAME, false, true, "VNF_API",
                 Action.None, "1234567890");
+    }
+
+    protected void enableAddCloudOwnerOnMsoRequest() {
+        enableAddCloudOwnerOnMsoRequest(true);
+    }
+
+    protected void enableAddCloudOwnerOnMsoRequest(boolean isActive) {
+        // always turn on the feature flag
+        when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(isActive);
+        when(aaiClient.getCloudOwnerByCloudRegionId(anyString())).thenReturn("irma-aic");
+    }
+
+    protected ServiceInstantiation generateALaCarteServiceInstantiationPayload() {
+        return generateMockALaCarteServiceInstantiationPayload(false, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API");
+    }
+
+    protected ServiceInstantiation generateMacroMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs) {
+        return generateMockMacroServiceInstantiationPayload(isPause, vnfs, 1, true, PROJECT_NAME, false);
+    }
+
+    protected ServiceInstantiation generatePre1806MacroTransportServiceInstantiationPayload(String tenantId, String lcpCloudRegionId) {
+        List<Map<String, String>> instanceParams = ImmutableList.of(ImmutableMap.of("someUserParam","someValue", "anotherUserParam","anotherValue"));
+        ServiceInstantiation serviceInstantiation = new ServiceInstantiation(createServiceModelInfo(), "038d99af-0427-42c2-9d15-971b99b9b489",
+            "JULIO ERICKSON", "some_project_name", "some_subscriber_id", "some_subscriber_name",
+            "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", null, "MOG", lcpCloudRegionId, null, tenantId,
+            null, null, null, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, instanceParams, false, 1, false, false,
+            null, null, null, null, null, null,
+            new VidNotions(InstantiationUI.TRANSPORT_SERVICE, ModelCategory.Transport, InstantiationUI.TRANSPORT_SERVICE, InstantiationType.Macro)
+        );
+        return serviceInstantiation;
+    }
+
+    protected void mockAaiClientAaiStatusOK() {
+        when(aaiClient.isNodeTypeExistsByName(eq(AsyncInstantiationBusinessLogicImpl.NAME_FOR_CHECK_AAI_STATUS), any())).thenReturn(false);
     }
 }

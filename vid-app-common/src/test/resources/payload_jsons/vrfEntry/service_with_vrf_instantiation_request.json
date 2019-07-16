@@ -1,0 +1,59 @@
+{
+  "requestDetails": {
+    "modelInfo": {
+      "modelInvariantId": "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb",
+      "modelVersionId": "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+      "modelName": "infraVPN",
+      "modelVersion": "1.0",
+      "modelType": "service"
+    },
+    "cloudConfiguration": {
+      "cloudOwner": "irma-aic",
+      "lcpCloudRegionId": "lcpCloudRegionId",
+      "tenantId": "4b273bc5-0ae6-4088-aa5d-5a862d84cab2"
+    },
+    "owningEntity": {
+      "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+      "owningEntityName": "WayneHolland"
+    },
+    "project": {
+      "projectName": "WATKINS"
+    },
+    "subscriberInfo": {
+      "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "subscriberName": "SILVIA ROBBINS"
+    },
+    "requestInfo": {
+      "instanceName": "dfd",
+      "productFamilyId": "ddf9cc0f-6331-4d35-bed0-a37f2d5e9cb3",
+      "source": "VID",
+      "suppressRollback": false,
+      "requestorId": "az2016"
+    },
+    "requestParameters": {
+      "subscriptionServiceType": "TYLER SILVIA",
+      "aLaCarte": false,
+      "userParams": []
+    },
+    "relatedInstanceList": [
+      {
+        "relatedInstance": {
+          "instanceId": "7e971d5c-6ddf-4f02-be8a-95dcbc7daf83",
+          "instanceName": "justFakeVPN",
+          "modelInfo": {
+            "modelType": "vpnBinding"
+          }
+        }
+      },
+      {
+        "relatedInstance": {
+          "instanceId": "884b373f-41c0-4a96-9785-7f075cb4ae9d",
+          "instanceName": "myBestNetwork",
+          "modelInfo": {
+            "modelType": "network"
+          }
+        }
+      }
+    ]
+  }
+}

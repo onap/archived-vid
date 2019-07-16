@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,7 @@ public class JobSharedData {
     protected String userId;
     protected Class requestType;
     protected UUID rootJobId;
+    protected String testApi;
 
     @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, property="class")
     protected JobAdapter.AsyncJobRequest request;
@@ -39,16 +40,17 @@ public class JobSharedData {
     public JobSharedData() {
     }
 
-    public JobSharedData(UUID jobUuid, String userId, JobAdapter.AsyncJobRequest request) {
+    public JobSharedData(UUID jobUuid, String userId, JobAdapter.AsyncJobRequest request, String testApi) {
         this.jobUuid = jobUuid;
         this.userId = userId;
         this.requestType = request.getClass();
         this.request = request;
         this.rootJobId = jobUuid;
+        this.testApi = testApi;
     }
 
     public JobSharedData(UUID jobUuid, JobAdapter.AsyncJobRequest request, JobSharedData parentData) {
-        this(jobUuid, parentData.getUserId(), request);
+        this(jobUuid, parentData.getUserId(), request, parentData.getTestApi());
         rootJobId = parentData.getRootJobId() != null ? parentData.getRootJobId() : parentData.getJobUuid();
     }
 
@@ -83,6 +85,14 @@ public class JobSharedData {
 
     public UUID getRootJobId() {
         return rootJobId;
+    }
+
+    public String getTestApi() {
+        return testApi;
+    }
+
+    public void setTestApi(String testApi) {
+        this.testApi = testApi;
     }
 
     @Override

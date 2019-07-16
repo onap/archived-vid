@@ -19,15 +19,17 @@
  */
 package org.onap.vid.changeManagement;
 
-import org.testng.annotations.Test;
-
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.Test;
 
 public class WorkflowRequestDetailTest {
 
     @Test
     public void shouldHaveProperSettersAndGetters() {
+        TestUtils.registerCloudConfigurationValueGenerator();
         assertThat(WorkflowRequestDetail.class, hasValidGettersAndSetters());
     }
 }

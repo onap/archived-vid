@@ -2,14 +2,14 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,14 +40,14 @@ public class ServiceModel {
 
 	/** The service. */
 	private Service service;
-	
+
 	/** The vnfs. */
 	private Map<String, VNF> vnfs;
-	
+
 	/** The networks. */
 	private Map<String, Network> networks;
 
-	private Map<String, CR> collectionResource;
+	private Map<String, CR> collectionResources;
 
 	/** Port Mirroring Configuration node templates */
 	private Map<String, PortMirroringConfig> configurations;
@@ -60,12 +60,12 @@ public class ServiceModel {
 
 	/**
 	 * The vf modules. The VNF also has vfmodules but the vfmodules at the service level may have additional info
-	 * that is not present in the VNF, like the vf module customization String 
+	 * that is not present in the VNF, like the vf module customization String
 	 */
 	private Map<String, VfModule> vfModules;
-	/** 
-	 * The volume groups. The VNF also has volume groups but the volume groups will be populated at the service level 
-	 * for newer models 
+	/**
+	 * The volume groups. The VNF also has volume groups but the volume groups will be populated at the service level
+	 * for newer models
 	 */
 	private Map<String, VolumeGroup> volumeGroups;
 
@@ -74,12 +74,15 @@ public class ServiceModel {
 
 	/** Resource groups of VF (VNF) type. */
 	private Map<String, ResourceGroup> vnfGroups;
-	
+
+	/** The vrfs */
+	private Map<String, Node> vrfs;
+
 	/**
 	 * Instantiates a new service model.
 	 */
 	public ServiceModel() {}
-	
+
 	/**
 	 * Gets the service.
 	 *
@@ -138,6 +141,10 @@ public class ServiceModel {
 
 	public Map<String, ResourceGroup> getVnfGroups() {
 		return vnfGroups;
+	}
+
+	public Map<String, Node> getVrfs() {
+		return vrfs;
 	}
 
 	/**
@@ -230,12 +237,16 @@ public class ServiceModel {
 		this.vnfGroups = vnfGroups;
 	}
 
-	public Map<String, CR> getCollectionResource() {
-		return collectionResource;
+	public void setVrfs(Map<String, Node> vrfs) {
+		this.vrfs = vrfs;
 	}
 
-	public void setCollectionResource(Map<String, CR> collectionResource) {
-		this.collectionResource = collectionResource;
+	public Map<String, CR> getCollectionResources() {
+		return collectionResources;
+	}
+
+	public void setCollectionResources(Map<String, CR> collectionResources) {
+		this.collectionResources = collectionResources;
 	}
 
 	public Map<String, Node> getFabricConfigurations() {
@@ -254,9 +265,9 @@ public class ServiceModel {
 	 * @return the service
 	 */
 	public static Service extractService(ToscaModel serviceToscaModel, org.onap.vid.asdc.beans.Service asdcServiceMetadata) {
-		
+
 		final Service service = new Service();
-		
+
 		service.setCategory(serviceToscaModel.getMetadata().getCategory());
 		service.setInvariantUuid(serviceToscaModel.getMetadata().getInvariantUUID());
 		service.setName(serviceToscaModel.getMetadata().getName());
@@ -274,18 +285,18 @@ public class ServiceModel {
 	public static void extractGroups (ToscaModel serviceToscaModel,ServiceModel serviceModel) {
 		// Get the groups. The groups may duplicate the groups that are in the VNF model and have
 		// additional data like the VF module customization String>
-		
+
 		final Map<String, VfModule> vfModules = new HashMap<> ();
 		final Map<String, VolumeGroup> volumeGroups = new HashMap<> ();
-		
+
 		String asdcModelNamespace = VidProperties.getAsdcModelNamespace();
-    	String vfModuleTag = asdcModelNamespace + ModelConstants.VF_MODULE;
-    	
+		String vfModuleTag = asdcModelNamespace + ModelConstants.VF_MODULE;
+
 		for (Entry<String, Group> component : serviceToscaModel.gettopology_template().getGroups().entrySet()) {
 			final Group group = component.getValue();
 			final String type = group.getType();
 			final String customizationName = component.getKey();
-			
+
 			if (type.startsWith(vfModuleTag)) {
 				VfModule vfMod = VfModule.extractVfModule(customizationName, group);
 				vfModules.put(customizationName, vfMod);
@@ -298,14 +309,14 @@ public class ServiceModel {
 		// add this point vfModules and volume groups are disconnected from VNF
 		serviceModel.setVfModules (vfModules);
 		serviceModel.setVolumeGroups (volumeGroups);
-		
+
 	}
 	/**
 	 * Populate the vf modules and volume groups that we may have under the service level under each VNF.
 	 */
 	public void associateGroups() {
 		String methodName = "associateGroups()";
-        LOG.debug(EELFLoggerDelegate.debugLogger, methodName + " start");
+		LOG.debug(EELFLoggerDelegate.debugLogger, methodName + " start");
 		// go through the vnfs, get the vnf normalized name and look for a vf module with a customization name that starts
 		// with vnf + ".."
 		String vnfCustomizationName = null;
@@ -319,13 +330,13 @@ public class ServiceModel {
 
 				LOG.debug(EELFLoggerDelegate.debugLogger, methodName +
 						" VNF customizationName=" + vnfCustomizationName + "normalized customization name=" + normalizedVnfCustomizationName);
-				
+
 				// now check to see if there is a vf module with customization name that starts with normalizedVnfCustomizationName
 
 				if (!MapUtils.isEmpty(getVolumeGroups())) {
 					for (Entry<String, VfModule> vfModuleComponent : getVfModules().entrySet()) {
 						vfModuleCustomizationName = vfModuleComponent.getValue().getModelCustomizationName();
-						
+
 						LOG.debug(EELFLoggerDelegate.debugLogger, methodName +
 								" VF Module customizationName=" + vfModuleCustomizationName );
 						if ( vfModuleCustomizationName.startsWith(normalizedVnfCustomizationName + ".." )) {
@@ -335,7 +346,7 @@ public class ServiceModel {
 				}
 			}
 		}
-		
+
 	}
 
 
@@ -346,14 +357,14 @@ public class ServiceModel {
 		(tmpVnf.getVfModules()).put(vfModuleComponent.getKey(), vfModuleComponent.getValue());
 
 		LOG.debug(EELFLoggerDelegate.debugLogger, methodName +
-                " Associated VF Module customizationName=" + vfModuleComponent.getKey() + " with VNF customization name=" + vnfCustomizationName);
+				" Associated VF Module customizationName=" + vfModuleComponent.getKey() + " with VNF customization name=" + vnfCustomizationName);
 
 		// now find if this vf module has volume groups, if so, find the volume group with the same customization name and put it under the VNF
 		if ( vfModuleComponent.getValue().isVolumeGroupAllowed() ) {
             if (isVolumeGroupsContainsVfModuleCustomName(vfModuleCustomizationName)) {
-                    (vnfComponent.getValue().getVolumeGroups()).put(vfModuleCustomizationName, (getVolumeGroups()).get(vfModuleCustomizationName));
-            }
-        }
+			(vnfComponent.getValue().getVolumeGroups()).put(vfModuleCustomizationName, (getVolumeGroups()).get(vfModuleCustomizationName));
+		}
+	}
 	}
 
 	private boolean isVolumeGroupsContainsVfModuleCustomName(String vfModuleCustomizationName) {
