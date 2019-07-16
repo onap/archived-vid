@@ -1,0 +1,81 @@
+{
+  "action": "Create",
+  "isDirty": false,
+  "vnfs": {},
+  "vrfs": {
+    "vrf-1": {
+      "networks": {
+        "Network-1": {
+          "instanceName": "myBestNetwork",
+          "instanceId": "884b373f-41c0-4a96-9785-7f075cb4ae9d",
+          "modelInfo": {
+            "modelType": "network"
+          }
+        }
+      },
+      "vpns": {
+        "vpn-1": {
+          "instanceName": "justFakeVPN",
+          "instanceId": "7e971d5c-6ddf-4f02-be8a-95dcbc7daf83",
+          "modelInfo": {
+            "modelType": "vpnBinding"
+          }
+        }
+      }
+    }
+  },
+  "instanceParams": [
+    {}
+  ],
+  "validationCounter": 0,
+  "existingNames": {
+    "dfd": ""
+  },
+  "existingVNFCounterMap": {},
+  "existingVRFCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "optionalGroupMembersMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": 1,
+  "instanceName": "dfd",
+  "productFamilyId": "ddf9cc0f-6331-4d35-bed0-a37f2d5e9cb3",
+  "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "subscriberName": "SILVIA ROBBINS",
+  "subscriptionServiceType": "TYLER SILVIA",
+  "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+  "lcpCloudRegionId": "lcpCloudRegionId",
+  "tenantName": "tenantName",
+  "tenantId": "4b273bc5-0ae6-4088-aa5d-5a862d84cab2",
+  "projectName": "WATKINS",
+  "rollbackOnFailure": "true",
+  "aicZoneName": null,
+  "owningEntityName": "WayneHolland",
+  "testApi": "VNF_API",
+  "modelInfo": {
+    "modelInvariantId": "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb",
+    "modelVersionId": "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+    "modelName": "infraVPN",
+    "modelVersion": "1.0",
+    "uuid": "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+    "modelUniqueId": "f028b2e2-7080-4b13-91b2-94944d4c42d8"
+  },
+  "isALaCarte": true,
+  "name": "infraVPN",
+  "version": "1.0",
+  "description": "ddd",
+  "category": "Network Service",
+  "uuid": "f028b2e2-7080-4b13-91b2-94944d4c42d8",
+  "invariantUuid": "dfc2c44c-2429-44ca-ae26-1e6dc1f207fb",
+  "serviceType": "BONDING",
+  "serviceRole": "INFRASTRUCTURE-VPN",
+  "vidNotions": {
+    "instantiationType": "Macro",
+    "instantiationUI": "infrastructureVpn",
+    "modelCategory": "INFRASTRUCTURE_VPN",
+    "viewEditUI": "legacy"
+  },
+  "isEcompGeneratedNaming": true,
+  "isMultiStepDesign": false
+}

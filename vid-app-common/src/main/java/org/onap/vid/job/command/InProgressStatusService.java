@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,10 +26,12 @@ import org.onap.vid.job.impl.JobSharedData;
 import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
+import org.onap.vid.properties.Features;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.togglz.core.manager.FeatureManager;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
@@ -48,30 +50,37 @@ public class InProgressStatusService {
 
     private final AuditService auditService;
 
+    private final FeatureManager featureManager;
+
     @Autowired
-    public InProgressStatusService(AsyncInstantiationBusinessLogic asyncInstantiationBL, RestMsoImplementation restMso, AuditService auditService) {
+    public InProgressStatusService(AsyncInstantiationBusinessLogic asyncInstantiationBL, RestMsoImplementation restMso, AuditService auditService, FeatureManager featureManager) {
         this.asyncInstantiationBL = asyncInstantiationBL;
         this.restMso = restMso;
         this.auditService = auditService;
+        this.featureManager = featureManager;
     }
 
 
     public Job.JobStatus call(ExpiryChecker expiryChecker, JobSharedData sharedData, String requestId) {
 
         RestObject<AsyncRequestStatus> asyncRequestStatus = getAsyncRequestStatus(requestId);
-        asyncInstantiationBL.auditMsoStatus(sharedData.getRootJobId(), asyncRequestStatus.get().request);
+        auditService.auditMsoStatus(sharedData.getRootJobId(), asyncRequestStatus.get().request);
         Job.JobStatus jobStatus = asyncInstantiationBL.calcStatus(asyncRequestStatus.get());
         ZonedDateTime jobStartTime = getZonedDateTime(asyncRequestStatus, requestId);
         jobStatus = expiryChecker.isExpired(jobStartTime) ? Job.JobStatus.FAILED : jobStatus;
+        asyncInstantiationBL.updateResourceInfo(sharedData, jobStatus, asyncRequestStatus.get());
         return jobStatus;
     }
 
-    private RestObject<AsyncRequestStatus> getAsyncRequestStatus(String requestId) {
-        String path = asyncInstantiationBL.getOrchestrationRequestsPath()+"/"+requestId;
+    RestObject<AsyncRequestStatus> getAsyncRequestStatus(String requestId) {
+        String path = asyncInstantiationBL.getOrchestrationRequestsPath() + "/" + requestId +
+                (featureManager.isActive(Features.FLAG_1908_RESUME_MACRO_SERVICE) ? "?format=detail" : "");
         RestObject<AsyncRequestStatus> msoResponse = restMso.GetForObject(path, AsyncRequestStatus.class);
+
         if (msoResponse.getStatusCode() >= 400 || msoResponse.get() == null) {
             throw new BadResponseFromMso(msoResponse);
         }
+
         return msoResponse;
     }
 

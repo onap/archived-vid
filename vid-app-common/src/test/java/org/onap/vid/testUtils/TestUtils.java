@@ -20,10 +20,14 @@
 
 package org.onap.vid.testUtils;
 
+import static com.fasterxml.jackson.module.kotlin.ExtensionsKt.jacksonObjectMapper;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.text.CharacterPredicates.DIGITS;
+import static org.apache.commons.text.CharacterPredicates.LETTERS;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.RETURNS_DEFAULTS;
 import static org.mockito.Mockito.mock;
@@ -33,6 +37,7 @@ import static org.testng.Assert.fail;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.code.beanmatchers.BeanMatchers;
 import com.google.common.collect.ImmutableList;
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
@@ -50,7 +55,9 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -62,8 +69,9 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.mso.model.CloudConfiguration;
 import org.springframework.core.env.Environment;
-import org.springframework.mock.env.MockEnvironment;
+import org.testng.annotations.DataProvider;
 
 /**
  * Created by Oren on 6/7/17.
@@ -127,13 +135,22 @@ public class TestUtils {
         return readJsonResourceFileAsObject(pathInResource, valueType, false);
     }
 
-    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType, boolean ignoreUnknownProperties)
-            throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, ignoreUnknownProperties);
+    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType,
+        boolean failOnUnknownProperties)
+        throws IOException {
+        ObjectMapper objectMapper = jacksonObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, failOnUnknownProperties);
         return objectMapper.readValue(
-                TestUtils.class.getResource(pathInResource),
-                valueType);
+            TestUtils.class.getResource(pathInResource),
+            valueType);
+    }
+
+    public static String readFileAsString(String pathInResource) {
+        try {
+            return IOUtils.toString(TestUtils.class.getResource(pathInResource), "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static String[] allPropertiesOf(Class<?> aClass) {
@@ -167,6 +184,12 @@ public class TestUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void registerCloudConfigurationValueGenerator() {
+        BeanMatchers.registerValueGenerator(() -> new CloudConfiguration(
+                randomAlphabetic(7), randomAlphabetic(7), randomAlphabetic(7)
+            ), CloudConfiguration.class);
     }
 
 
@@ -275,6 +298,20 @@ public class TestUtils {
         finally {
             systemProperties.setEnvironment(originalEnvironment);
         }
+    }
+
+    private static RandomStringGenerator generator = new RandomStringGenerator.Builder()
+            .withinRange('0', 'z')
+            .filteredBy(LETTERS, DIGITS)
+            .build();
+
+    public static String generateRandomAlphaNumeric(int length) {
+        return generator.generate(length);
+    }
+
+    @DataProvider
+    public static Object[][] trueAndFalse() {
+        return new Object[][]{{true}, {false}};
     }
 
 }

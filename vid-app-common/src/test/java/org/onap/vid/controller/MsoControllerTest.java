@@ -46,6 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapper;
+import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.Task;
@@ -66,12 +67,14 @@ public class MsoControllerTest {
     private MockMvc mockMvc;
     private MsoBusinessLogic msoBusinessLogic;
     private CloudOwnerService cloudService;
+    private MsoRestClientNew msoRestClient;
 
     @Before
     public void setUp() {
         msoBusinessLogic = mock(MsoBusinessLogic.class);
         cloudService = mock(CloudOwnerService.class);
-        MsoController msoController = new MsoController(msoBusinessLogic, cloudService);
+        msoRestClient = mock(MsoRestClientNew.class);
+        MsoController msoController = new MsoController(msoBusinessLogic, msoRestClient, cloudService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(msoController).build();
     }

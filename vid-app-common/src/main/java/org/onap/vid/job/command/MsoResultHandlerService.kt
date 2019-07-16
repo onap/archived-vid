@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,43 +44,42 @@ class MsoResultHandlerService
         return jobSharedData.request as ServiceInstantiation
     }
 
-    fun handleRootResponse(jobUUID: UUID, msoResponse: RestObject<RequestReferencesContainer>): MsoResult {
+    fun handleRootResponse(sharedData: JobSharedData, msoResponse: RestObject<RequestReferencesContainer>): MsoResult {
+        val jobUUID:UUID = sharedData.jobUuid
         return if (msoResponse.statusCode in 200..399) {
             val jobStatus = Job.JobStatus.IN_PROGRESS
             val msoResourceIds = MsoResourceIds(msoResponse.get().requestReferences.requestId, msoResponse.get().requestReferences.instanceId)
-            asyncInstantiationBL.auditVidStatus(jobUUID, jobStatus)
+            auditService.auditVidStatus(jobUUID, jobStatus)
             setInitialRequestAuditStatusFromMso(jobUUID, msoResourceIds.requestId)
             asyncInstantiationBL.updateServiceInfo(jobUUID) { x ->
                 x.jobStatus = jobStatus
                 x.serviceInstanceId = msoResourceIds.instanceId
                 x.msoRequestId = UUID.fromString(msoResourceIds.requestId)
             }
-            MsoResult(jobStatus, msoResourceIds)
+            asyncInstantiationBL.addResourceInfo(sharedData, jobStatus, msoResourceIds.instanceId)
+            MsoResult(Job.JobStatus.COMPLETED_WITH_NO_ACTION, msoResourceIds)
         } else {
             auditService.setFailedAuditStatusFromMso(jobUUID, null, msoResponse.statusCode, msoResponse.raw)
-            handleRootCommandFailed(jobUUID)
+            asyncInstantiationBL.addFailedResourceInfo(sharedData, msoResponse)
+            return MsoResult(Job.JobStatus.FAILED)
         }
     }
 
-    fun handleResponse(msoResponse: RestObject<RequestReferencesContainer>, actionDescription: String): MsoResult {
+    fun handleResponse(sharedData: JobSharedData, msoResponse: RestObject<RequestReferencesContainer>, actionDescription: String): MsoResult {
         return if (msoResponse.statusCode in 200..399) {
             val msoResourceIds = MsoResourceIds(msoResponse.get().requestReferences.requestId, msoResponse.get().requestReferences.instanceId)
             LOGGER.debug("Successfully sent $actionDescription. Request id: ${msoResourceIds.requestId}")
+            asyncInstantiationBL.addResourceInfo(sharedData, Job.JobStatus.IN_PROGRESS, msoResourceIds.instanceId)
             MsoResult(Job.JobStatus.COMPLETED_WITH_NO_ACTION, msoResourceIds)
         } else {
             LOGGER.debug("Failed to $actionDescription. Details: ${msoResponse.raw}")
+            asyncInstantiationBL.addFailedResourceInfo(sharedData, msoResponse)
             MsoResult(Job.JobStatus.FAILED)
         }
     }
 
-
-    fun handleRootCommandFailed(jobUUID: UUID): MsoResult {
-        asyncInstantiationBL.handleFailedInstantiation(jobUUID)
-        return MsoResult(Job.JobStatus.FAILED)
-    }
-
     private fun setInitialRequestAuditStatusFromMso(jobUUID: UUID, requestId: String) {
         val initialMsoRequestStatus = "REQUESTED"
-        asyncInstantiationBL.auditMsoStatus(jobUUID, initialMsoRequestStatus, requestId, null)
+        auditService.auditMsoStatus(jobUUID, initialMsoRequestStatus, requestId, null)
     }
 }

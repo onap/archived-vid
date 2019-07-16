@@ -1,0 +1,300 @@
+{
+  "requestList": [
+    {
+      "request": {
+        "requestId": "2543cd7c-ed76-4e94-83be-0cf0cc55bf23",
+        "startTime": "Mon, 04 Mar 2019 20:47:45 GMT",
+        "finishTime": "Mon, 04 Mar 2019 20:48:46 GMT",
+        "requestScope": "vnf",
+        "requestType": "createInstance",
+        "requestDetails": {
+          "modelInfo": {
+            "modelCustomizationName": "OAM_FRWL_5G_NC 0",
+            "modelInvariantId": "d5f2cc03-fad3-4a5a-bf36-6328771b3915",
+            "modelType": "vnf",
+            "modelName": "OAM_FRWL_5G_NC",
+            "modelVersion": "7.0",
+            "modelCustomizationUuid": "006ad5a0-b8c4-43f3-aa93-0fa379ea613d",
+            "modelVersionId": "f248be17-b66d-4ea0-bb24-51de6f62c240",
+            "modelCustomizationId": "006ad5a0-b8c4-43f3-aa93-0fa379ea613d",
+            "modelUuid": "f248be17-b66d-4ea0-bb24-51de6f62c240",
+            "modelInvariantUuid": "d5f2cc03-fad3-4a5a-bf36-6328771b3915",
+            "modelInstanceName": "OAM_FRWL_5G_NC 0"
+          },
+          "requestInfo": {
+            "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+            "source": "VID",
+            "instanceName": "zauk51bfrwl07",
+            "suppressRollback": false,
+            "requestorId": "pj8646"
+          },
+          "relatedInstanceList": [
+            {
+              "relatedInstance": {
+                "instanceId": "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2",
+                "modelInfo": {
+                  "modelInvariantId": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2",
+                  "modelType": "service",
+                  "modelName": "OAM_FRWL_5G_NC_SVC",
+                  "modelVersion": "6.0",
+                  "modelVersionId": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+                  "modelUuid": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+                  "modelInvariantUuid": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2"
+                }
+              }
+            }
+          ],
+          "cloudConfiguration": {
+            "tenantId": "e2a6af59d1cb43b2874e943bbbf8470a",
+            "cloudOwner": "att-nc",
+            "lcpCloudRegionId": "auk51b"
+          },
+          "requestParameters": {
+            "testApi": "GR_API"
+          },
+          "platform": {
+            "platformName": "NETWORK-CLOUD"
+          },
+          "lineOfBusiness": {
+            "lineOfBusinessName": "EMANUEL-CONSUMER"
+          }
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2",
+          "vnfInstanceId": "05bedd02-b933-40f1-ad20-bab3197489a9",
+          "vnfInstanceName": "zauk51bfrwl07",
+          "requestorId": "pj8646"
+        },
+        "requestStatus": {
+          "requestState": "COMPLETE",
+          "statusMessage": "STATUS: ALaCarte-Vnf-createInstance request was executed correctly. FLOW STATUS: Successfully completed all Building Blocks",
+          "percentProgress": 100,
+          "timestamp": "Mon, 04 Mar 2019 20:48:46 GMT"
+        }
+      }
+    },
+    {
+      "request": {
+        "requestId": "fab854bf-e53c-415e-b3cc-b6fcce8414b2",
+        "startTime": "Mon, 04 Mar 2019 20:47:15 GMT",
+        "finishTime": "Mon, 04 Mar 2019 20:47:38 GMT",
+        "requestScope": "service",
+        "requestType": "createInstance",
+        "requestDetails": {
+          "modelInfo": {
+            "modelInvariantId": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2",
+            "modelType": "service",
+            "modelName": "OAM_FRWL_5G_NC_SVC",
+            "modelVersion": "6.0",
+            "modelVersionId": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+            "modelUuid": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+            "modelInvariantUuid": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2"
+          },
+          "requestInfo": {
+            "source": "VID",
+            "instanceName": "zauk51bfrwl07_vnf_service",
+            "suppressRollback": false,
+            "requestorId": "pj8646"
+          },
+          "subscriberInfo": {
+            "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+          },
+          "requestParameters": {
+            "subscriptionServiceType": "Emanuel",
+            "aLaCarte": true,
+            "testApi": "GR_API"
+          },
+          "project": {
+            "projectName": "Kennedy"
+          },
+          "owningEntity": {
+            "owningEntityId": "e4257a94-21cc-40c5-adc9-e6f4ff868e31",
+            "owningEntityName": "EMANUEL-CORE"
+          }
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2",
+          "serviceInstanceName": "zauk51bfrwl07_vnf_service",
+          "requestorId": "pj8646"
+        },
+        "requestStatus": {
+          "requestState": "COMPLETE",
+          "statusMessage": "STATUS: ALaCarte-Service-createInstance request was executed correctly. FLOW STATUS: Successfully completed all Building Blocks",
+          "percentProgress": 100,
+          "timestamp": "Mon, 04 Mar 2019 20:47:38 GMT"
+        }
+      }
+    },
+    {
+      "request": {
+        "requestId": "3eb7b323-b486-402e-931a-2ad296e6406b",
+        "startTime": "Mon, 04 Mar 2019 20:48:52 GMT",
+        "finishTime": "Mon, 04 Mar 2019 20:50:40 GMT",
+        "requestScope": "vfModule",
+        "requestType": "createInstance",
+        "requestDetails": {
+          "modelInfo": {
+            "modelCustomizationName": "OamFrwl5gNc..base_oam..module-0",
+            "modelInvariantId": "00b03b3e-454f-438c-87ca-5860f98e8dbc",
+            "modelType": "vfModule",
+            "modelName": "OamFrwl5gNc..base_oam..module-0",
+            "modelVersion": "3",
+            "modelCustomizationUuid": "53aef95c-92b5-48d7-912a-1f89d0eb6355",
+            "modelVersionId": "3fb037f3-d629-490f-af49-2bbb97a946be",
+            "modelCustomizationId": "53aef95c-92b5-48d7-912a-1f89d0eb6355",
+            "modelUuid": "3fb037f3-d629-490f-af49-2bbb97a946be",
+            "modelInvariantUuid": "00b03b3e-454f-438c-87ca-5860f98e8dbc",
+            "modelInstanceName": "OamFrwl5gNc..base_oam..module-0"
+          },
+          "requestInfo": {
+            "source": "VID",
+            "instanceName": "zauk51bfrwl07_base_1",
+            "suppressRollback": false,
+            "requestorId": "pj8646"
+          },
+          "relatedInstanceList": [
+            {
+              "relatedInstance": {
+                "instanceId": "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2",
+                "modelInfo": {
+                  "modelInvariantId": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2",
+                  "modelType": "service",
+                  "modelName": "OAM_FRWL_5G_NC_SVC",
+                  "modelVersion": "6.0",
+                  "modelVersionId": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+                  "modelUuid": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+                  "modelInvariantUuid": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2"
+                }
+              }
+            },
+            {
+              "relatedInstance": {
+                "instanceId": "05bedd02-b933-40f1-ad20-bab3197489a9",
+                "modelInfo": {
+                  "modelCustomizationName": "OAM_FRWL_5G_NC 0",
+                  "modelInvariantId": "d5f2cc03-fad3-4a5a-bf36-6328771b3915",
+                  "modelType": "vnf",
+                  "modelName": "OAM_FRWL_5G_NC",
+                  "modelVersion": "7.0",
+                  "modelCustomizationUuid": "006ad5a0-b8c4-43f3-aa93-0fa379ea613d",
+                  "modelVersionId": "f248be17-b66d-4ea0-bb24-51de6f62c240",
+                  "modelCustomizationId": "006ad5a0-b8c4-43f3-aa93-0fa379ea613d",
+                  "modelUuid": "f248be17-b66d-4ea0-bb24-51de6f62c240",
+                  "modelInvariantUuid": "d5f2cc03-fad3-4a5a-bf36-6328771b3915",
+                  "modelInstanceName": "OAM_FRWL_5G_NC 0"
+                }
+              }
+            }
+          ],
+          "cloudConfiguration": {
+            "tenantId": "e2a6af59d1cb43b2874e943bbbf8470a",
+            "cloudOwner": "att-nc",
+            "lcpCloudRegionId": "auk51b"
+          },
+          "requestParameters": {
+            "usePreload": false,
+            "testApi": "GR_API"
+          }
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2",
+          "vnfInstanceId": "05bedd02-b933-40f1-ad20-bab3197489a9",
+          "vfModuleInstanceId": "9276805f-07ba-43c0-a5f1-f327c1d72606",
+          "vfModuleInstanceName": "zauk51bfrwl07_base_1",
+          "requestorId": "pj8646"
+        },
+        "requestStatus": {
+          "requestState": "COMPLETE",
+          "statusMessage": "STATUS: ALaCarte-VfModule-createInstance request was executed correctly. FLOW STATUS: Successfully completed all Building Blocks",
+          "percentProgress": 100,
+          "timestamp": "Mon, 04 Mar 2019 20:50:40 GMT"
+        }
+      }
+    },
+    {
+      "request": {
+        "requestId": "74f5a2dc-1e80-4553-8fac-d30675e510be",
+        "startTime": "Mon, 04 Mar 2019 20:50:47 GMT",
+        "requestScope": "vfModule",
+        "requestType": "createInstance",
+        "requestDetails": {
+          "modelInfo": {
+            "modelCustomizationName": "OamFrwl5gNc..module_oam..module-1",
+            "modelInvariantId": "972a22a1-8cbf-45ce-8ff2-f0f33694695d",
+            "modelType": "vfModule",
+            "modelName": "OamFrwl5gNc..module_oam..module-1",
+            "modelVersion": "3",
+            "modelCustomizationUuid": "cf88008e-c4b6-48b8-99a9-44d850f3d8db",
+            "modelVersionId": "cea74dcd-1174-4f65-adff-87a355849275",
+            "modelCustomizationId": "cf88008e-c4b6-48b8-99a9-44d850f3d8db",
+            "modelUuid": "cea74dcd-1174-4f65-adff-87a355849275",
+            "modelInvariantUuid": "972a22a1-8cbf-45ce-8ff2-f0f33694695d",
+            "modelInstanceName": "OamFrwl5gNc..module_oam..module-1"
+          },
+          "requestInfo": {
+            "source": "VID",
+            "instanceName": "zauk51bfrwl07_mod_1",
+            "suppressRollback": false,
+            "requestorId": "pj8646"
+          },
+          "relatedInstanceList": [
+            {
+              "relatedInstance": {
+                "instanceId": "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2",
+                "modelInfo": {
+                  "modelInvariantId": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2",
+                  "modelType": "service",
+                  "modelName": "OAM_FRWL_5G_NC_SVC",
+                  "modelVersion": "6.0",
+                  "modelVersionId": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+                  "modelUuid": "75a90831-a34f-4b81-8245-4f8b110f93fa",
+                  "modelInvariantUuid": "77ac5b6f-e31a-4477-b2c9-8a49ea58aee2"
+                }
+              }
+            },
+            {
+              "relatedInstance": {
+                "instanceId": "05bedd02-b933-40f1-ad20-bab3197489a9",
+                "modelInfo": {
+                  "modelCustomizationName": "OAM_FRWL_5G_NC 0",
+                  "modelInvariantId": "d5f2cc03-fad3-4a5a-bf36-6328771b3915",
+                  "modelType": "vnf",
+                  "modelName": "OAM_FRWL_5G_NC",
+                  "modelVersion": "7.0",
+                  "modelCustomizationUuid": "006ad5a0-b8c4-43f3-aa93-0fa379ea613d",
+                  "modelVersionId": "f248be17-b66d-4ea0-bb24-51de6f62c240",
+                  "modelCustomizationId": "006ad5a0-b8c4-43f3-aa93-0fa379ea613d",
+                  "modelUuid": "f248be17-b66d-4ea0-bb24-51de6f62c240",
+                  "modelInvariantUuid": "d5f2cc03-fad3-4a5a-bf36-6328771b3915",
+                  "modelInstanceName": "OAM_FRWL_5G_NC 0"
+                }
+              }
+            }
+          ],
+          "cloudConfiguration": {
+            "tenantId": "e2a6af59d1cb43b2874e943bbbf8470a",
+            "cloudOwner": "att-nc",
+            "lcpCloudRegionId": "auk51b"
+          },
+          "requestParameters": {
+            "usePreload": true,
+            "testApi": "GR_API"
+          }
+        },
+        "instanceReferences": {
+          "serviceInstanceId": "d40c8a82-cc04-45e5-a0f6-0c9394c8f8d2",
+          "vnfInstanceId": "05bedd02-b933-40f1-ad20-bab3197489a9",
+          "vfModuleInstanceId": "73a01fe6-d9f9-4022-82f4-082c6d8cf520",
+          "vfModuleInstanceName": "zauk51bfrwl07_mod_1",
+          "requestorId": "pj8646"
+        },
+        "requestStatus": {
+          "requestState": "FAILED",
+          "statusMessage": "STATUS: Error from SDNC: No active l3-network found in AAI with network_name GRP-27529-T-IST-07A_N_oam_protected_net_1 FLOW STATUS: All Rollback flows have completed successfully ROLLBACK STATUS: Rollback has been completed successfully.",
+          "percentProgress": 100,
+          "timestamp": "Mon, 04 Mar 2019 20:51:14 GMT"
+        }
+      }
+    }
+  ]
+}

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,14 +20,14 @@
 
 package org.onap.vid.job.command
 
+
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate
 import org.onap.vid.changeManagement.RequestDetailsWrapper
-import org.onap.vid.job.Job
+import org.onap.vid.exceptions.AbortingException
+import org.onap.vid.exceptions.TryAgainException
+import org.onap.vid.job.*
 import org.onap.vid.job.Job.JobStatus
-import org.onap.vid.job.JobAdapter
-import org.onap.vid.job.JobCommand
-import org.onap.vid.job.NextCommand
 import org.onap.vid.job.impl.JobSharedData
 import org.onap.vid.model.Action
 import org.onap.vid.model.RequestReferencesContainer
@@ -37,6 +37,7 @@ import org.onap.vid.utils.JACKSON_OBJECT_MAPPER
 import org.onap.vid.utils.getEnumFromMapOfStrings
 import org.springframework.http.HttpMethod
 import java.util.*
+
 
 const val INTERNAL_STATE = "internalState"
 const val ACTION_PHASE = "actionPhase"
@@ -51,7 +52,9 @@ enum class InternalState constructor(val immediate:Boolean=false) {
     DELETE_MYSELF,
     CREATE_MYSELF,
     IN_PROGRESS,
-    TERMINAL
+    TERMINAL,
+    RESUME_MYSELF,
+    REPLACE_MYSELF,
 }
 
 data class NextInternalState(val nextActionPhase: Action, val nextInternalState: InternalState)
@@ -69,8 +72,10 @@ abstract class ResourceCommand(
         protected val restMso: RestMsoImplementation,
         protected val inProgressStatusService: InProgressStatusService,
         protected val msoResultHandlerService: MsoResultHandlerService,
-        protected val watchChildrenJobsBL: WatchChildrenJobsBL
-) : CommandBase(), JobCommand {
+        protected val watchChildrenJobsBL: WatchChildrenJobsBL,
+        private val jobsBrokerService: JobsBrokerService,
+        private val jobAdapter: JobAdapter
+        ) : CommandBase(), JobCommand {
 
     companion object {
         private val Logger = EELFLoggerDelegate.getLogger(ResourceCommand::class.java)
@@ -78,7 +83,7 @@ abstract class ResourceCommand(
 
     abstract fun createChildren():JobStatus
 
-    abstract fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String): MsoRestCallPlan
+    abstract fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan
 
     abstract fun planDeleteMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String): MsoRestCallPlan
 
@@ -86,23 +91,28 @@ abstract class ResourceCommand(
             Pair(InternalState.CREATING_CHILDREN, ::createChildren),
             Pair(InternalState.WATCHING, ::watchChildren),
             Pair(InternalState.CREATE_MYSELF, ::createMyself),
+            Pair(InternalState.RESUME_MYSELF, ::resumeMyself),
             Pair(InternalState.DELETE_MYSELF, ::deleteMyself),
-            Pair(InternalState.IN_PROGRESS, ::inProgress)
+            Pair(InternalState.IN_PROGRESS, ::inProgress),
+            Pair(InternalState.REPLACE_MYSELF, ::replaceMyself)
     )
 
     private lateinit var internalState:InternalState
     protected lateinit var actionPhase: Action
-    private var commandParentData: CommandParentData = CommandParentData()
-    private var msoResourceIds: MsoResourceIds = EMPTY_MSO_RESOURCE_ID
+    protected var commandParentData: CommandParentData = CommandParentData()
+    protected var msoResourceIds: MsoResourceIds = EMPTY_MSO_RESOURCE_ID
     protected var childJobs:List<String> = emptyList()
     private lateinit var cumulativeStatus:JobStatus
 
 
     override fun call(): NextCommand {
-        var jobStatus:JobStatus = invokeCommand()
+        var jobStatus:JobStatus = if (internalState!=InternalState.TERMINAL) invokeCommand() else cumulativeStatus
         jobStatus = comulateStatusAndUpdatePropertyIfFinal(jobStatus)
 
-        Logger.debug("command for job ${sharedData.jobUuid} invoked and finished with jobStatus $jobStatus")
+        try {
+            Logger.debug("job: ${this.javaClass.simpleName} ${sharedData.jobUuid} $actionPhase ${getActionType()} $internalState $jobStatus $childJobs")
+        } catch (e:Exception) { /* do nothing. Just failed to log...*/}
+
         if (shallStopJob(jobStatus)) {
             onFinal(jobStatus)
             return NextCommand(jobStatus)
@@ -133,7 +143,17 @@ abstract class ResourceCommand(
     protected open fun getExternalInProgressStatus() = JobStatus.RESOURCE_IN_PROGRESS
 
     private fun invokeCommand(): JobStatus {
-        return commandByInternalState.getOrDefault (internalState, ::throwIllegalState).invoke()
+        return try {
+            commandByInternalState.getOrDefault(internalState, ::throwIllegalState).invoke()
+        }
+        catch (exception: TryAgainException) {
+            Logger.warn("caught TryAgainException. Set job status to IN_PROGRESS")
+            JobStatus.IN_PROGRESS
+        }
+        catch (exception: AbortingException) {
+            Logger.error("caught AbortingException. Set job status to FAILED")
+            JobStatus.FAILED;
+        }
     }
 
     private fun throwIllegalState():JobStatus {
@@ -177,7 +197,7 @@ abstract class ResourceCommand(
             InternalState.DELETE_MYSELF -> InternalState.IN_PROGRESS
 
             InternalState.IN_PROGRESS -> {
-                if (jobStatus == Job.JobStatus.COMPLETED) InternalState.TERMINAL else InternalState.IN_PROGRESS
+                if (jobStatus == JobStatus.COMPLETED) InternalState.TERMINAL else InternalState.IN_PROGRESS
             }
 
             else -> InternalState.TERMINAL
@@ -187,10 +207,28 @@ abstract class ResourceCommand(
     protected fun calcNextStateCreatePhase(jobStatus: JobStatus, internalState: InternalState): InternalState {
         return when (internalState) {
 
-            InternalState.CREATE_MYSELF -> InternalState.IN_PROGRESS
+            InternalState.CREATE_MYSELF -> when (jobStatus) {
+                JobStatus.IN_PROGRESS -> InternalState.CREATE_MYSELF
+                else -> InternalState.IN_PROGRESS
+            }
+
+            InternalState.RESUME_MYSELF -> when (jobStatus) {
+                JobStatus.IN_PROGRESS -> InternalState.RESUME_MYSELF
+                else -> InternalState.IN_PROGRESS
+            }
+
+            InternalState.REPLACE_MYSELF -> when (jobStatus) {
+                JobStatus.IN_PROGRESS -> InternalState.REPLACE_MYSELF
+                else -> InternalState.IN_PROGRESS
+            }
 
             InternalState.IN_PROGRESS -> {
-                if (jobStatus == Job.JobStatus.COMPLETED) InternalState.CREATING_CHILDREN else InternalState.IN_PROGRESS
+                when {
+                    jobStatus != JobStatus.COMPLETED -> InternalState.IN_PROGRESS
+                    isDescendantHasAction(Action.Create) -> InternalState.CREATING_CHILDREN
+                    isDescendantHasAction(Action.Replace) -> InternalState.CREATING_CHILDREN
+                    else -> InternalState.TERMINAL
+                }
             }
 
             InternalState.CREATING_CHILDREN -> InternalState.WATCHING
@@ -201,7 +239,6 @@ abstract class ResourceCommand(
                     else -> InternalState.TERMINAL
                 }
             }
-
 
             else -> InternalState.TERMINAL
         }
@@ -214,7 +251,7 @@ abstract class ResourceCommand(
                 MSO_RESOURCE_ID to msoResourceIds,
                 CHILD_JOBS to childJobs,
                 CUMULATIVE_STATUS to cumulativeStatus
-        )
+        ) + commandParentData.parentData
     }
 
     override fun init(sharedData: JobSharedData, commandData: Map<String, Any>): ResourceCommand {
@@ -232,13 +269,24 @@ abstract class ResourceCommand(
         return this
     }
 
-    private fun calcInitialState(commandData: Map<String, Any>, phase: Action):InternalState {
+    fun calcInitialState(commandData: Map<String, Any>, phase: Action):InternalState {
         val status:InternalState = getEnumFromMapOfStrings(commandData, INTERNAL_STATE, InternalState.INITIAL)
         if (status == InternalState.INITIAL) {
             onInitial(phase)
             return when (phase) {
-                Action.Delete -> InternalState.CREATING_CHILDREN
-                Action.Create -> if (isNeedToCreateMyself()) InternalState.CREATE_MYSELF else InternalState.CREATING_CHILDREN
+                Action.Delete -> when {
+                    isDescendantHasAction(phase) -> InternalState.CREATING_CHILDREN
+                    isNeedToDeleteMyself() -> InternalState.DELETE_MYSELF
+                    else -> InternalState.TERMINAL
+                }
+                Action.Create -> when {
+                    isNeedToCreateMyself() -> InternalState.CREATE_MYSELF
+                    isNeedToResumeMySelf() -> InternalState.RESUME_MYSELF
+                    isNeedToReplaceMySelf() -> InternalState.REPLACE_MYSELF
+                    isDescendantHasAction(phase) -> InternalState.CREATING_CHILDREN
+                    isDescendantHasAction(Action.Replace) -> InternalState.CREATING_CHILDREN
+                    else -> InternalState.TERMINAL
+                }
                 else -> throw IllegalStateException("state $internalState is not supported yet")
             }
         }
@@ -269,7 +317,11 @@ abstract class ResourceCommand(
 
     protected open fun isNeedToCreateMyself(): Boolean = getActionType() == Action.Create
 
-    protected open fun inProgress(): Job.JobStatus {
+    protected open fun isNeedToResumeMySelf(): Boolean = getActionType() == Action.Resume
+
+    protected open fun isNeedToReplaceMySelf(): Boolean = false
+
+    protected open fun inProgress(): JobStatus {
         val requestId:String = msoResourceIds.requestId;
         return try {
             val jobStatus = inProgressStatusService.call(getExpiryChecker(), sharedData, requestId)
@@ -277,29 +329,35 @@ abstract class ResourceCommand(
         } catch (e: javax.ws.rs.ProcessingException) {
             // Retry when we can't connect MSO during getStatus
             Logger.error(EELFLoggerDelegate.errorLogger, "Cannot get orchestration status for {}, will retry: {}", requestId, e, e)
-            Job.JobStatus.IN_PROGRESS;
+            JobStatus.IN_PROGRESS;
         } catch (e: InProgressStatusService.BadResponseFromMso) {
             inProgressStatusService.handleFailedMsoResponse(sharedData.jobUuid, requestId, e.msoResponse)
-            Job.JobStatus.IN_PROGRESS
+            JobStatus.IN_PROGRESS
         } catch (e: RuntimeException) {
             Logger.error(EELFLoggerDelegate.errorLogger, "Cannot get orchestration status for {}, stopping: {}", requestId, e, e)
-            Job.JobStatus.STOPPED
+            JobStatus.STOPPED
         }
     }
 
-    fun createMyself(): Job.JobStatus {
-        val createMyselfCommand = planCreateMyselfRestCall(commandParentData, sharedData.request, sharedData.userId)
-
+    fun createMyself(): JobStatus {
+        val createMyselfCommand = planCreateMyselfRestCall(commandParentData, sharedData.request, sharedData.userId, sharedData.testApi)
         return executeAndHandleMsoInstanceRequest(createMyselfCommand)
     }
 
-    fun deleteMyself(): Job.JobStatus {
-        val deleteMyselfCommand = planDeleteMyselfRestCall(commandParentData, sharedData.request, sharedData.userId)
+    protected open fun resumeMyself(): JobStatus {
+        throw NotImplementedError("Resume is not implemented for this command " + this.javaClass)
+    }
 
+    protected open fun replaceMyself(): JobStatus {
+        throw NotImplementedError("Replace is not implemented for this command " + this.javaClass)
+    }
+
+    fun deleteMyself(): JobStatus {
+        val deleteMyselfCommand = planDeleteMyselfRestCall(commandParentData, sharedData.request, sharedData.userId)
         return executeAndHandleMsoInstanceRequest(deleteMyselfCommand)
     }
 
-    private fun executeAndHandleMsoInstanceRequest(restCallPlan: MsoRestCallPlan): JobStatus {
+    protected fun executeAndHandleMsoInstanceRequest(restCallPlan: MsoRestCallPlan): JobStatus {
         val msoResponse = restMso.restCall(
                 restCallPlan.httpMethod,
                 RequestReferencesContainer::class.java,
@@ -309,9 +367,9 @@ abstract class ResourceCommand(
         )
 
         val msoResult = if (isServiceCommand()) {
-            msoResultHandlerService.handleRootResponse(sharedData.jobUuid, msoResponse)
+            msoResultHandlerService.handleRootResponse(sharedData, msoResponse)
         } else {
-            msoResultHandlerService.handleResponse(msoResponse, restCallPlan.actionDescription)
+            msoResultHandlerService.handleResponse(sharedData, msoResponse, restCallPlan.actionDescription)
         }
 
         this.msoResourceIds = msoResult.msoResourceIds
@@ -321,14 +379,14 @@ abstract class ResourceCommand(
     protected open fun getExpiryChecker(): ExpiryChecker = ExpiryChecker {false}
 
     protected open fun handleInProgressStatus(jobStatus: JobStatus): JobStatus {
-        return  if (jobStatus == Job.JobStatus.PAUSE) Job.JobStatus.IN_PROGRESS else jobStatus
+        return if (jobStatus == JobStatus.PAUSE) JobStatus.IN_PROGRESS else jobStatus
     }
 
     protected open fun watchChildren():JobStatus {
         return watchChildrenJobsBL.retrieveChildrenJobsStatus(childJobs)
     }
 
-    private fun comulateStatusAndUpdatePropertyIfFinal(internalStateStatus: JobStatus): JobStatus {
+    protected fun comulateStatusAndUpdatePropertyIfFinal(internalStateStatus: JobStatus): JobStatus {
         val status = watchChildrenJobsBL.cumulateJobStatus(internalStateStatus, cumulativeStatus)
 
         //we want to update cumulativeStatus only for final status
@@ -338,6 +396,44 @@ abstract class ResourceCommand(
 
         return status
     }
+
+    protected fun buildDataForChild(request: BaseResource, actionPhase: Action): Map<String, Any> {
+        addMyselfToChildrenData(commandParentData, request)
+        commandParentData.setActionPhase(actionPhase)
+        return commandParentData.parentData
+    }
+
+    protected open fun addMyselfToChildrenData(commandParentData: CommandParentData, request: BaseResource) {
+        // Nothing by default
+    }
+
+    protected open fun isDescendantHasAction(phase:Action):Boolean = isDescendantHasAction(getRequest(), phase, true )
+
+
+    @JvmOverloads
+    fun isDescendantHasAction(request: BaseResource, phase: Action, isFirstLevel:Boolean=true): Boolean {
+        if (!isFirstLevel && request.action == phase) {
+            return true;
+        }
+
+        return request.children.map {this.isDescendantHasAction(it, phase, false)}.any {it}
+    }
+
+    protected fun getActualInstanceId(request: BaseResource):String =
+            if (getActionType() == Action.Create) msoResourceIds.instanceId else request.instanceId
+
+
+    protected fun pushChildrenJobsToBroker(children:Collection<BaseResource>,
+                                           dataForChild: Map<String, Any>,
+                                           jobType: JobType?=null): List<String> {
+        var counter = 0;
+        return  children
+                .map {Pair(it, counter++)}
+                .map { jobAdapter.createChildJob(jobType ?: it.first.jobType, it.first, sharedData, dataForChild, it.second) }
+                .map { jobsBrokerService.add(it) }
+                .map { it.toString() }
+    }
+
 }
 
 
