@@ -18,15 +18,8 @@
  * ============LICENSE_END=========================================================
  */
 
-/**
- * 
- */
 package org.onap.vid.model;
 
-/**
- * The Class ModelUtil.
- *
- */
 public class ModelUtil {
 	/**
 	 * Gets the tags for the given element according to the configured namespace

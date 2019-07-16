@@ -93,7 +93,7 @@
         ],
         "cloudConfiguration": {
           "tenantId": "460f35aeb53542dc9f77105066483e83",
-          "cloudOwner": "att-aic",
+          "cloudOwner": "irma-aic" ,
           "lcpCloudRegionId": "rdm5b"
         },
         "requestParameters": {},
@@ -177,7 +177,7 @@
         ],
         "cloudConfiguration": {
           "tenantId": "460f35aeb53542dc9f77105066483e83",
-          "cloudOwner": "att-aic",
+          "cloudOwner": "irma-aic" ,
           "lcpCloudRegionId": "rdm5b"
         },
         "requestParameters": {

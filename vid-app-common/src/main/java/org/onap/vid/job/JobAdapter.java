@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,9 +32,9 @@ import java.util.UUID;
 public interface JobAdapter {
     JobModel toModel(Job job);
 
-    Job createServiceInstantiationJob(JobType jobType, AsyncJobRequest request, UUID templateId, String userId, String optimisticUniqueServiceInstanceName, Integer indexInBulk);
+    Job createServiceInstantiationJob(JobType jobType, AsyncJobRequest request, UUID templateId, String userId, String testApi, String optimisticUniqueServiceInstanceName, Integer indexInBulk);
 
-    Job createChildJob(JobType jobType, Job.JobStatus jobStatus, AsyncJobRequest request, JobSharedData parentSharedData, Map<String, Object> jobData);
+    Job createChildJob(JobType jobType, AsyncJobRequest request, JobSharedData parentSharedData, Map<String, Object> jobData, int indexInBulk);
 
     // Marks types that are an AsyncJob payload
     interface AsyncJobRequest {
