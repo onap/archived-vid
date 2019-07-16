@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,11 @@ package org.onap.vid.job;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.onap.vid.job.impl.JobSharedData;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public interface Job {
 
@@ -63,7 +66,9 @@ public interface Job {
         STOPPED(true, true),
         COMPLETED_WITH_ERRORS(true, true),
         COMPLETED_WITH_NO_ACTION(true, false),
-        CREATING(false);
+        CREATING(false),
+        PENDING_RESOURCE(false),
+        ;
 
         private final Boolean finalStatus;
         public Boolean isFinal(){return finalStatus;}
@@ -82,6 +87,8 @@ public interface Job {
             this.finalStatus = finalStatus;
             this.failure = failure;
         }
+
+        public static final List<JobStatus> FINAL_STATUS = Stream.of(JobStatus.values()).filter(JobStatus::isFinal).collect(Collectors.toList());
 
     }
 }

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,8 @@ package org.onap.vid.asdc.parser;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.onap.sdc.tosca.parser.enums.FilterType;
 import org.onap.sdc.tosca.parser.enums.SdcTypes;
@@ -29,7 +31,6 @@ import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.sdc.tosca.parser.impl.SdcToscaParserFactory;
 import org.onap.sdc.toscaparser.api.Group;
 import org.onap.sdc.toscaparser.api.*;
-import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.sdc.toscaparser.api.parameters.Input;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.model.*;
@@ -66,6 +67,7 @@ public class ToscaParserImpl2 {
         public static final String VF_MODULE_MODEL_NAME = "vfModuleModelName";
         public static final String GET_INPUT = "get_input";
         public static final String TYPE = "type";
+        public static final String QUANTITY = "quantity";
 
         public static final String INSTANTIATION_TYPE = "instantiationType";
         //instantiation type
@@ -106,7 +108,15 @@ public class ToscaParserImpl2 {
 
         public static final String VNF_GROUP = "VnfGroup";
 
+        public static final String VRF_NODE_TYPE = "org.openecomp.nodes.VRFEntry";
+
+        public static final String PORT_MIRRORING_CONFIGURATION_NODE_TYPE = "org.openecomp.nodes.PortMirroringConfiguration";
+
+        public static final String PORT_MIRRORING_CONFIGURATION_BY_POLICY_NODE_TYPE = "org.openecomp.nodes.PortMirroringConfigurationByPolicy";
+
         public static final String NAMING_POLICY_TYPE = "org.openecomp.policies.External";
+
+        public static final String SCALING_POLICY_TYPE = "org.openecomp.policies.scaling.Fixed";
 
         public static final String ECOMP_GENERATED_NAMING_PROPERTY = "ecomp_generated_naming";
     }
@@ -119,6 +129,7 @@ public class ToscaParserImpl2 {
         ServiceModel serviceModel = new ServiceModel();
         ISdcCsarHelper sdcCsarHelper = getSdcCsarHelper(path);
         List<String> policiesTargets = extractNamingPoliciesTargets(sdcCsarHelper);
+        Map<String, Integer> scalingPolicies = extractScalingPolicyOfGroup(sdcCsarHelper);
 
         serviceModel.setService(extractServiceFromCsar(asdcServiceMetadata, sdcCsarHelper));
         serviceModel.setVolumeGroups(extractVolumeGroups(sdcCsarHelper));
@@ -128,9 +139,10 @@ public class ToscaParserImpl2 {
         serviceModel.setServiceProxies(extractServiceProxyFromCsar(sdcCsarHelper, policiesTargets));
         serviceModel.setNetworks(extractNetworksFromCsar(sdcCsarHelper, policiesTargets));
         serviceModel.setPnfs(extractPnfsFromCsar(sdcCsarHelper, policiesTargets));
-        serviceModel.setCollectionResource(extractCRFromCsar(sdcCsarHelper, policiesTargets));
+        serviceModel.setCollectionResources(extractCRFromCsar(sdcCsarHelper, policiesTargets));
         serviceModel.setFabricConfigurations(extractFabricConfigFromCsar(sdcCsarHelper, policiesTargets));
-        serviceModel.setVnfGroups(extractVnfGroupsFromCsar(sdcCsarHelper, policiesTargets));
+        serviceModel.setVnfGroups(extractVnfGroupsFromCsar(sdcCsarHelper, policiesTargets, scalingPolicies));
+        serviceModel.setVrfs(extractVrfsFromCsar(sdcCsarHelper, policiesTargets));
         serviceModel.getService().setVidNotions(vidNotionsBuilder.buildVidNotions(sdcCsarHelper, serviceModel));
         return serviceModel;
     }
@@ -248,7 +260,7 @@ public class ToscaParserImpl2 {
             vnf.setVfModules(getVfModulesFromVF(csarHelper, vnf.getCustomizationUuid()));
             vnf.setVolumeGroups(getVolumeGroupsFromVF(csarHelper, vnf.getCustomizationUuid()));
             vnf.setVfcInstanceGroups(getVfcInstanceGroup(csarHelper, nodeTemplate));
-            if (ToscaNamingPolicy.getEcompNamingValueForNode(nodeTemplate, "nf_naming").equals("true")) {
+            if ("true".equals(ToscaNamingPolicy.getEcompNamingValueForNode(nodeTemplate, "nf_naming"))) {
                 setEcompNamingProperty(vnf.getProperties(), "true");
             }
             vnfsMaps.put(nodeTemplate.getName(), vnf);
@@ -291,7 +303,8 @@ public class ToscaParserImpl2 {
     }
 
     private Map<String, PortMirroringConfig> extractPortMirroringConfigFromCsar(ISdcCsarHelper csarHelper, List<String> policiesTargets) {
-        List<NodeTemplate> nodeTemplates = csarHelper.getServiceNodeTemplateBySdcType(SdcTypes.CONFIGURATION);//TODO change to
+        List<NodeTemplate> nodeTemplates = csarHelper.getServiceNodeTemplatesByType(Constants.PORT_MIRRORING_CONFIGURATION_NODE_TYPE);
+        nodeTemplates.addAll(csarHelper.getServiceNodeTemplatesByType(Constants.PORT_MIRRORING_CONFIGURATION_BY_POLICY_NODE_TYPE));
         Map<String, PortMirroringConfig> configMaps = new HashMap<>();
 
         for (NodeTemplate nodeTemplate : nodeTemplates) {
@@ -379,7 +392,7 @@ public class ToscaParserImpl2 {
             Network newNetwork = new Network();
             populateNodeFromNodeTemplate(nodeTemplate, csarHelper, newNetwork, policiesTargets);
             newNetwork.setModelCustomizationName(nodeTemplate.getName());
-            if (ToscaNamingPolicy.getEcompNamingValueForNode(nodeTemplate, "exVL_naming").equals("true")) {
+            if ("true".equals(ToscaNamingPolicy.getEcompNamingValueForNode(nodeTemplate, "exVL_naming"))) {
                 setEcompNamingProperty(newNetwork.getProperties(), "true");
             }
             networksMap.put(nodeTemplate.getName(), newNetwork);
@@ -389,14 +402,7 @@ public class ToscaParserImpl2 {
 
     private Map<String, Node> extractPnfsFromCsar(ISdcCsarHelper csarHelper, List<String> policiesTargets) {
         List<NodeTemplate> nodeTemplates = csarHelper.getServiceNodeTemplateBySdcType(SdcTypes.PNF);
-        HashMap<String, Node> pnfHashMap = new HashMap<>();
-
-        for (NodeTemplate nodeTemplate : nodeTemplates) {
-            Node pnf = new Node();
-            populateNodeFromNodeTemplate(nodeTemplate, csarHelper, pnf, policiesTargets);
-            pnfHashMap.put(nodeTemplate.getName(), pnf);
-        }
-        return pnfHashMap;
+        return this.extractNodesFromCsar(csarHelper,policiesTargets,nodeTemplates);
     }
 
     private Map<String, VfModule> extractVfModuleFromCsar(ISdcCsarHelper csarHelper) {
@@ -426,7 +432,7 @@ public class ToscaParserImpl2 {
         for (org.onap.sdc.toscaparser.api.parameters.Input input : inputList) {
             //Set only inputs without annotation to the service level
             if ( input.getAnnotations() == null )
-                inputs.put(input.getName(), convertInput(input, new org.onap.vid.asdc.beans.tosca.Input(), null));
+                inputs.put(input.getName(), convertInput(input, new org.onap.vid.asdc.beans.tosca.Input()));
         }
         return inputs;
     }
@@ -546,7 +552,7 @@ public class ToscaParserImpl2 {
     }
 
 
-    public static boolean isModuleTypeIsBaseObjectSafe(Object vfModuleTypeValue) {
+    public static boolean isModuleTypeIsBaseObjectSafe(@Nullable Object vfModuleTypeValue) {
         return (vfModuleTypeValue instanceof String) && (isModuleTypeIsBase((String) vfModuleTypeValue));
     }
 
@@ -567,7 +573,7 @@ public class ToscaParserImpl2 {
             for (Input input : inputs) {
                 if ( input.getName().equals(key) ) {
                     org.onap.vid.asdc.beans.tosca.Input localInput = new org.onap.vid.asdc.beans.tosca.Input();
-                    localInput = convertInput(input, localInput, nodeTemplate);
+                    localInput = convertInput(input, localInput);
                     String name = property.getKey();
                     commandPropertyMap.put(name, extractCommands(name, key));
                     inputMap.put(name, localInput);
@@ -582,23 +588,13 @@ public class ToscaParserImpl2 {
         return inputKey.substring(inputKey.indexOf(':') + 1);
     }
 
-    private org.onap.vid.asdc.beans.tosca.Input convertInput(Input parserInput, org.onap.vid.asdc.beans.tosca.Input localInput, NodeTemplate nodeTemplate){
+    private org.onap.vid.asdc.beans.tosca.Input convertInput(Input parserInput, org.onap.vid.asdc.beans.tosca.Input localInput) {
         localInput.setDefault(parserInput.getDefault());
         localInput.setDescription(parserInput.getDescription());
         localInput.setRequired(parserInput.isRequired());
         localInput.setType(parserInput.getType());
         localInput.setConstraints(parserInput.getConstraints());
 //        localInput.setentry_schema()
-
-        //if inputs of inner nodeTemplate - tell its details
-        if(nodeTemplate != null) {
-            Metadata metadata = nodeTemplate.getMetaData();
-            localInput.setTemplateName(metadata.getValue("name"));
-            localInput.setTemplateUUID(metadata.getValue("UUID"));
-            localInput.setTemplateInvariantUUID(metadata.getValue("invariantUUID"));
-            localInput.setTemplateCustomizationUUID(metadata.getValue("customizationUUID"));
-        }
-
         return localInput;
     }
 
@@ -626,15 +622,30 @@ public class ToscaParserImpl2 {
         return validatedInstantiationType;
     }
 
-    private Map<String, ResourceGroup> extractVnfGroupsFromCsar(ISdcCsarHelper csarHelper, List<String> policiesTargets) {
+    private Map<String, Node> extractVrfsFromCsar(ISdcCsarHelper csarHelper, List<String> policiesTargets) {
+        List<NodeTemplate> nodeTemplates = csarHelper.getServiceNodeTemplatesByType(Constants.VRF_NODE_TYPE);
+        return this.extractNodesFromCsar(csarHelper,policiesTargets,nodeTemplates);
+    }
+
+    private Map<String, Node> extractNodesFromCsar(ISdcCsarHelper csarHelper, List<String> policiesTargets, List<NodeTemplate> nodeTemplates){
+        HashMap<String, Node> nodeHashMap = new HashMap<>();
+        for (NodeTemplate nodeTemplate : nodeTemplates) {
+            Node node = new Node();
+            populateNodeFromNodeTemplate(nodeTemplate, csarHelper, node, policiesTargets);
+            nodeHashMap.put(nodeTemplate.getName(), node);
+        }
+        return nodeHashMap;
+    }
+
+    private Map<String, ResourceGroup> extractVnfGroupsFromCsar(ISdcCsarHelper csarHelper, List<String> policiesTargets, Map<String, Integer> scalingPolicies) {
         List<Group> resourceGroups = csarHelper.getGroupsOfTopologyTemplateByToscaGroupType(Constants.RESOURCE_GROUP_TYPE);
 
         return resourceGroups.stream()
                 .filter(group -> group.getProperties().get(Constants.RESOURCE_GROUP_CONTAINED_TYPE).getValue().equals("VF"))
-                .collect(toMap(Group::getName, group -> parseResourceGroup(group, csarHelper, policiesTargets)));
+                .collect(toMap(Group::getName, group -> parseResourceGroup(group, csarHelper, policiesTargets, scalingPolicies)));
     }
 
-    private ResourceGroup parseResourceGroup(Group group, ISdcCsarHelper csarHelper, List<String> policiesTargets) {
+    private ResourceGroup parseResourceGroup(Group group, ISdcCsarHelper csarHelper, List<String> policiesTargets, Map<String, Integer> scalingPolicies) {
         return new ResourceGroup(
                 Constants.VNF_GROUP,
                 group.getMetadata().getValue(Constants.INVARIANT_UUID),
@@ -642,16 +653,19 @@ public class ToscaParserImpl2 {
                 group.getMetadata().getValue(Constants.VERSION),
                 group.getMetadata().getValue(Constants.NAME),
                 group.getMetadata().getValue(Constants.NAME),
-                getPropertiesOfResourceGroup(group.getProperties(), policiesTargets.contains(group.getName())),
+                getPropertiesOfResourceGroup(group.getProperties(), policiesTargets.contains(group.getName()), scalingPolicies.get(group.getName())),
                 csarHelper.getGroupMembersFromTopologyTemplate(group.getName()).stream()
                         .collect(toMap(NodeTemplate::getName, node -> getServiceProxyFromNodeTemplate(node, csarHelper, policiesTargets)))
         );
     }
 
-    private Map<String, Object> getPropertiesOfResourceGroup(Map<String, Property> properties, boolean hasPolicyTarget) {
+    private Map<String, Object> getPropertiesOfResourceGroup(Map<String, Property> properties, boolean hasPolicyTarget, Integer qty) {
         Map<String, Object> propertiesMap = properties.entrySet().stream()
                 .collect(toMap(Map.Entry::getKey, e -> e.getValue().getValue()));
         propertiesMap.put(Constants.ECOMP_GENERATED_NAMING_PROPERTY, String.valueOf(hasPolicyTarget));
+        if (qty != null)  {
+            propertiesMap.put(Constants.QUANTITY, qty);
+        }
 
         return propertiesMap;
     }
@@ -660,9 +674,22 @@ public class ToscaParserImpl2 {
         List<Policy> policies = csarHelper.getPoliciesOfTopologyTemplateByToscaPolicyType(Constants.NAMING_POLICY_TYPE);
         return policies.stream()
                 .filter(policy -> policy.getProperties().get(Constants.TYPE) != null &&
-                                policy.getProperties().get(Constants.TYPE).getValue() != null &&
+                        policy.getProperties().get(Constants.TYPE).getValue() != null &&
                         StringUtils.equalsIgnoreCase(policy.getProperties().get(Constants.TYPE).getValue().toString(), "naming"))
                 .flatMap(policy -> policy.getTargets().stream())
                 .collect(toList());
+    }
+
+    public Map<String, Integer> extractScalingPolicyOfGroup(ISdcCsarHelper csarHelper)  {
+        return csarHelper.getPoliciesOfTopologyTemplateByToscaPolicyType(Constants.SCALING_POLICY_TYPE)
+                .stream()
+                .filter(policy -> policy.getProperties().containsKey(Constants.QUANTITY))
+                .flatMap(policy -> {
+                    Integer qty = Integer.parseInt(policy.getProperties().get(Constants.QUANTITY).getValue().toString());
+                    return policy
+                            .getTargets().stream()
+                            .map(target -> Pair.of(target, qty));
+                })
+                .collect(toMap(Pair::getKey, Pair::getValue));
     }
 }

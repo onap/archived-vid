@@ -20,11 +20,33 @@
 
 package org.onap.vid.asdc.parser;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.Matchers.aMapWithSize;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.ECOMP_GENERATED_NAMING_PROPERTY;
+import static org.onap.vid.testUtils.TestUtils.assertJsonStringEqualsIgnoreNulls;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.LogManager;
@@ -43,7 +65,19 @@ import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.local.LocalAsdcClient;
 import org.onap.vid.controller.ToscaParserMockHelper;
-import org.onap.vid.model.*;
+import org.onap.vid.model.CR;
+import org.onap.vid.model.Network;
+import org.onap.vid.model.NetworkCollection;
+import org.onap.vid.model.Node;
+import org.onap.vid.model.PortMirroringConfig;
+import org.onap.vid.model.ResourceGroup;
+import org.onap.vid.model.Service;
+import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.ServiceProxy;
+import org.onap.vid.model.VNF;
+import org.onap.vid.model.VfModule;
+import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.VolumeGroup;
 import org.onap.vid.properties.Features;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -51,22 +85,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.ECOMP_GENERATED_NAMING_PROPERTY;
-import static org.onap.vid.testUtils.TestUtils.assertJsonStringEqualsIgnoreNulls;
 
 public class ToscaParserImpl2Test {
 
@@ -101,7 +119,7 @@ public class ToscaParserImpl2Test {
 
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenServices(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
-        Service expectedService = mockHelper.getNewServiceModel().getService();
+        Service expectedService = mockHelper.getServiceModel().getService();
         Service actualService = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getService();
         assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedService), om.writeValueAsString(actualService));
     }
@@ -111,12 +129,12 @@ public class ToscaParserImpl2Test {
         final Path csarPath = getCsarPath(mockHelper.getUuid());
         log.info("Comparing for csar " + csarPath);
         ServiceModel actualServiceModel = toscaParserImpl2.makeServiceModel(csarPath, getServiceByUuid(mockHelper.getUuid()));
-        assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(mockHelper.getNewServiceModel()), om.writeValueAsString(actualServiceModel));
+        assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(mockHelper.getServiceModel()), om.writeValueAsString(actualServiceModel));
     }
 
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenNetworkNodes(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
-        Map<String, Network> expectedNetworksMap = mockHelper.getNewServiceModel().getNetworks();
+        Map<String, Network> expectedNetworksMap = mockHelper.getServiceModel().getNetworks();
         Map<String, Network> actualNetworksMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getNetworks();
         for (Map.Entry<String, Network> entry : expectedNetworksMap.entrySet()) {
             Network expectedNetwork = entry.getValue();
@@ -130,7 +148,7 @@ public class ToscaParserImpl2Test {
     //Because we are not supporting the old flow, the JSON are different by definition.
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenVnfsOfTosca(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
-        Map<String, VNF> expectedVnfsMap = mockHelper.getNewServiceModel().getVnfs();
+        Map<String, VNF> expectedVnfsMap = mockHelper.getServiceModel().getVnfs();
         Map<String, VNF> actualVnfsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVnfs();
         for (Map.Entry<String, VNF> entry : expectedVnfsMap.entrySet()) {
             VNF expectedVnf = entry.getValue();
@@ -142,10 +160,12 @@ public class ToscaParserImpl2Test {
         }
     }
 
+
+
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenCollectionResourcesOfTosca(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
-            Map<String, CR> expectedVnfsMap = mockHelper.getNewServiceModel().getCollectionResource();
-            Map<String, CR> actualCRsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getCollectionResource();
+        Map<String, CR> expectedVnfsMap = mockHelper.getServiceModel().getCollectionResources();
+            Map<String, CR> actualCRsMap = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getCollectionResources();
             if(!actualCRsMap.isEmpty()) {
                 for (Map.Entry<String, CR> entry : expectedVnfsMap.entrySet()) {
                     CR expectedCR = entry.getValue();
@@ -201,28 +221,28 @@ public class ToscaParserImpl2Test {
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenVolumeGroups(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, VolumeGroup> actualVolumeGroups = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVolumeGroups();
-            Map<String, VolumeGroup> expectedVolumeGroups = mockHelper.getNewServiceModel().getVolumeGroups();
+            Map<String, VolumeGroup> expectedVolumeGroups = mockHelper.getServiceModel().getVolumeGroups();
             assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedVolumeGroups), om.writeValueAsString(actualVolumeGroups));
     }
 
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenVfModules(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, VfModule> actualVfModules = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVfModules();
-            Map<String, VfModule> expectedVfModules = mockHelper.getNewServiceModel().getVfModules();
+            Map<String, VfModule> expectedVfModules = mockHelper.getServiceModel().getVfModules();
             assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedVfModules), om.writeValueAsString(actualVfModules));
     }
 
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenPolicyConfigurationNodes(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, PortMirroringConfig> actualConfigurations = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getConfigurations();
-            Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getNewServiceModel().getConfigurations();
+            Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getServiceModel().getConfigurations();
             JsonAssert.assertJsonEquals(actualConfigurations, expectedConfigurations);
     }
 
     @Test
     public void assertEqualsBetweenPolicyConfigurationByPolicyFalse() throws Exception {
         ToscaParserMockHelper mockHelper = new ToscaParserMockHelper(Constants.configurationByPolicyFalseUuid, Constants.configurationByPolicyFalseFilePath);
-        Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getNewServiceModel().getConfigurations();
+        Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getServiceModel().getConfigurations();
         Map<String, PortMirroringConfig> actualConfigurations = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getConfigurations();
 
         setPprobeServiceProxy(expectedConfigurations);
@@ -250,7 +270,7 @@ public class ToscaParserImpl2Test {
         final ToscaParserMockHelper mockHelper = new ToscaParserMockHelper("90fe6842-aa76-4b68-8329-5c86ff564407", "empty.json");
         final ServiceModel serviceModel = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid()));
 
-        assertJsonStringEqualsIgnoreNulls("{ vfModules: { 201712488_adiodvpe10..201712488AdiodVpe1..ADIOD_vRE_BV..module-1: { inputs: { availability_zone_0: { } } } } }", om.writeValueAsString(serviceModel));
+        assertJsonStringEqualsIgnoreNulls("{ vfModules: { 201712488_pasqualevpe10..201712488PasqualeVpe1..PASQUALE_vRE_BV..module-1: { inputs: { availability_zone_0: { } } } } }", om.writeValueAsString(serviceModel));
     }
 
     @Test
@@ -260,7 +280,7 @@ public class ToscaParserImpl2Test {
 
         assertJsonStringEqualsIgnoreNulls("" +
                 "{ vnfs: " +
-                "  { \"201712-488_ADIOD-vPE-1 0\": " +
+                "  { \"201712-488_PASQUALE-vPE-1 0\": " +
                 "    { properties: { " +
                 "      ecomp_generated_naming: \"true\", " +
                 "      nf_naming: \"{naming_policy=SDNC_Policy.Config_MS_1806SRIOV_VPE_ADIoDJson, ecomp_generated_naming=true}\" " +
@@ -278,14 +298,14 @@ public class ToscaParserImpl2Test {
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenServiceProxyNodes(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
             Map<String, ServiceProxy> actualServiceProxies = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getServiceProxies();
-            Map<String, ServiceProxy> expectedServiceProxies = mockHelper.getNewServiceModel().getServiceProxies();
+            Map<String, ServiceProxy> expectedServiceProxies = mockHelper.getServiceModel().getServiceProxies();
             JsonAssert.assertJsonEquals(actualServiceProxies, expectedServiceProxies);
     }
 
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualsBetweenVnfGroups(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
         Map<String, ResourceGroup> actualVnfGroups = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid())).getVnfGroups();
-        Map<String, ResourceGroup> expectedVnfGroups = mockHelper.getNewServiceModel().getVnfGroups();
+        Map<String, ResourceGroup> expectedVnfGroups = mockHelper.getServiceModel().getVnfGroups();
         JsonAssert.assertJsonEquals(actualVnfGroups, expectedVnfGroups);
     }
 
@@ -342,7 +362,7 @@ public class ToscaParserImpl2Test {
         static final String vfWithAnnotationUuid = "f4d84bb4-a416-4b4e-997e-0059973630b9";
         static final String vlUuid = "cb49608f-5a24-4789-b0f7-2595473cb997";
         static final String crUuid = "76f27dfe-33e5-472f-8e0b-acf524adc4f0";
-        static final String vfWithVfcGroup = "6bce7302-70bd-4057-b48e-8d5b99e686ca"; //service-VdbeSrv-csar.zip
+        static final String vfWithVfcGroup = "6bce7302-70bd-4057-b48e-8d5b99e686ca"; //service-VdorotheaSrv-csar.zip
         //        public static final String PNFUuid = "68101369-6f08-4e99-9a28-fa6327d344f3";
         static final String vfFilePath = "vf-csar.JSON";
         static final String vlFilePath = "vl-csar.JSON";
@@ -357,6 +377,8 @@ public class ToscaParserImpl2Test {
         //public static final String vlanTaggingFilePath = "vlan-tagging.json";
         //public static final String vnfGroupingUuid = "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc";
         //public static final String vnfGroupingFilePath = "vnf-grouping-csar.json";
+
+        public static final String QUANTITY = "quantity";
 
     }
 

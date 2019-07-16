@@ -1,0 +1,62 @@
+{
+  "collection-id": "84a351ae-3601-45e2-98df-878d6c816abc",
+  "model-invariant-id": "081ceb56-eb71-4566-a72d-3e7cbee5cdf1",
+  "model-version-id": "ce8c98bc-4691-44fb-8ff0-7a47487c11c4",
+  "collection-name": "NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection",
+  "collection-type": "L3-NETWORK",
+  "collection-role": "SUB_INTERFACE",
+  "collection-function": "vTSBC_function",
+  "orchestration-status": "Active",
+  "collection-customization-id": "bac6ffe5-c851-495f-a64a-28751400ff03",
+  "relationship-list": {
+    "relationship": [
+      {
+        "related-to": "service-instance",
+        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+        "related-link": "/aai/v14/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Emanuel/service-instances/service-instance/a565e6ad-75d1-4493-98f1-33234b5c17e2",
+        "relationship-data": [
+          {
+            "relationship-key": "customer.global-customer-id",
+            "relationship-value": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+          },
+          {
+            "relationship-key": "service-subscription.service-type",
+            "relationship-value": "Emanuel"
+          },
+          {
+            "relationship-key": "service-instance.service-instance-id",
+            "relationship-value": "a565e6ad-75d1-4493-98f1-33234b5c17e2"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "service-instance.service-instance-name",
+            "property-value": "NcmVlanSvcYm161f_77"
+          }
+        ]
+      },
+      {
+        "related-to": "instance-group",
+        "relationship-label": "org.onap.inventory.BelongsTo",
+        "related-link": "/aai/v14/network/instance-groups/instance-group/6b3536cf-3a12-457f-abb5-fa2203e0d923",
+        "relationship-data": [
+          {
+            "relationship-key": "instance-group.id",
+            "relationship-value": "6b3536cf-3a12-457f-abb5-fa2203e0d923"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "instance-group.description",
+            "property-value": "vTSBC Customer Landing Network Collection Desc"
+          },
+          {
+            "property-key": "instance-group.instance-group-name",
+            "property-value": "NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection"
+          }
+        ]
+      }
+    ]
+  },
+  "resource-version": "1539158498209"
+}

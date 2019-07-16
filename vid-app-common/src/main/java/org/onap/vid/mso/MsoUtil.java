@@ -21,15 +21,20 @@
 
 package org.onap.vid.mso;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
+import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-
+import org.onap.vid.exceptions.GenericUncheckedException;
 
 public class MsoUtil {
 
-    final static ObjectMapper objectMapper = new ObjectMapper();
+    static final ObjectMapper objectMapper = new ObjectMapper();
 
     private MsoUtil() {
     }
@@ -48,12 +53,30 @@ public class MsoUtil {
                 T body = httpResponse.getBody();
                 String entityStr = body instanceof String ? (String) body : objectMapper.writeValueAsString(httpResponse.getBody());
                 msoResponseWrapper.setEntity(entityStr);
-            }
-            catch(JsonProcessingException e)
-            {
+            } catch(JsonProcessingException e) {
                 ExceptionUtils.rethrow(e);
             }
         }
         return msoResponseWrapper;
+    }
+
+    public static String formatExceptionAdditionalInfo(int statusCode, String msoResponse) {
+        String errorMsg = "Http Code:" + statusCode;
+        if (!StringUtils.isEmpty(msoResponse)) {
+            String filteredJson;
+            try {
+                filteredJson = StringUtils.defaultIfEmpty(
+                        JACKSON_OBJECT_MAPPER.readTree(msoResponse).path("serviceException").toString().replaceAll("[\\{\\}]","") ,
+                        msoResponse
+                );
+            } catch (JsonParseException e) {
+                filteredJson = msoResponse;
+            } catch (IOException e) {
+                throw new GenericUncheckedException(e);
+            }
+
+            errorMsg = errorMsg + ", " + filteredJson;
+        }
+        return errorMsg;
     }
 }

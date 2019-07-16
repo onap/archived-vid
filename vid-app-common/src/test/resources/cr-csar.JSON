@@ -21,7 +21,7 @@
   "networks": {
 
   },
-  "collectionResource": {
+  "collectionResources": {
     "MSO_Example 0": {
       "uuid": "4f8068d9-fb13-49fc-9e39-634d2094b659",
       "invariantUuid": "2fc1b3b8-b8ed-413e-add8-3d903cf2b458",
@@ -75,5 +75,8 @@
   "pnfs": {
 
   },
-  "vnfGroups": {}
+  "vnfGroups": {},
+  "vrfs": {
+
+  }
 }

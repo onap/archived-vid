@@ -35,11 +35,11 @@ public class JobAuditStatusTest {
     @DataProvider
     public static Object[][] AdditionalInfoSizes() {
         return new Object[][]{
-                {5, 5},
-                {1999,1999},
-                {2000, 2000},
-                {2001, 2000},
-                {10000, 2000}
+            {5, 5},
+            {1999,1999},
+            {2000, 2000},
+            {2001, 2000},
+            {10000, 2000}
         };
     }
 
@@ -53,7 +53,7 @@ public class JobAuditStatusTest {
     @Test(dataProvider = "AdditionalInfoSizes")
     public void testAdditionalInfoMaxLengthInConstructor(int originalSize, int finalSize) {
         final String additionalInfo = StringUtils.repeat("a", originalSize);
-        JobAuditStatus jobAuditStatus = new JobAuditStatus(UUID.randomUUID(), "myJobStatus", JobAuditStatus.SourceStatus.MSO, UUID.randomUUID(), additionalInfo, new Date());
+        JobAuditStatus jobAuditStatus = JobAuditStatus.createForTest(UUID.randomUUID(), "myJobStatus", JobAuditStatus.SourceStatus.MSO, UUID.randomUUID(), additionalInfo, new Date());
         assertThat(jobAuditStatus.getAdditionalInfo().length(), is(finalSize));
     }
 

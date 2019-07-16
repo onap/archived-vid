@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,69 +20,13 @@
 
 package org.onap.vid.services;
 
-import static com.google.common.collect.Maps.newHashMap;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.matchesPattern;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.Every.everyItem;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.onap.vid.job.Job.JobStatus.COMPLETED;
-import static org.onap.vid.job.Job.JobStatus.FAILED;
-import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
-import static org.onap.vid.job.Job.JobStatus.PAUSE;
-import static org.onap.vid.job.Job.JobStatus.PENDING;
-import static org.onap.vid.job.Job.JobStatus.STOPPED;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import javax.inject.Inject;
-import net.javacrumbs.jsonunit.JsonAssert;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.SessionFactory;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -97,48 +41,64 @@ import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.config.DataSourceConfig;
 import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
-import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.exceptions.MaxRetriesException;
+import org.onap.vid.exceptions.NotFoundException;
 import org.onap.vid.exceptions.OperationNotAllowedException;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
 import org.onap.vid.job.JobsBrokerService;
+import org.onap.vid.job.command.MsoRequestBuilder;
+import org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator;
 import org.onap.vid.job.impl.JobDaoImpl;
 import org.onap.vid.job.impl.JobSharedData;
-import org.onap.vid.model.Action;
-import org.onap.vid.model.JobAuditStatus;
-import org.onap.vid.model.JobAuditStatus.SourceStatus;
-import org.onap.vid.model.NameCounter;
-import org.onap.vid.model.ServiceInfo;
-import org.onap.vid.model.serviceInstantiation.InstanceGroup;
-import org.onap.vid.model.serviceInstantiation.Network;
+import org.onap.vid.model.*;
+import org.onap.vid.model.serviceInstantiation.BaseResource;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
-import org.onap.vid.model.serviceInstantiation.VfModule;
 import org.onap.vid.model.serviceInstantiation.Vnf;
 import org.onap.vid.mso.MsoOperationalEnvironmentTest;
-import org.onap.vid.mso.model.InstanceGroupInstantiationRequestDetails;
+import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.ModelInfo;
-import org.onap.vid.mso.model.NetworkInstantiationRequestDetails;
-import org.onap.vid.mso.model.ServiceDeletionRequestDetails;
 import org.onap.vid.mso.model.ServiceInstantiationRequestDetails;
-import org.onap.vid.mso.model.VfModuleInstantiationRequestDetails;
-import org.onap.vid.mso.model.VfModuleMacro;
-import org.onap.vid.mso.model.VnfInstantiationRequestDetails;
-import org.onap.vid.mso.model.VolumeGroupRequestDetails;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
+import org.onap.vid.mso.rest.RequestStatus;
 import org.onap.vid.properties.Features;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.DaoUtils;
+import org.onap.vid.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
+import javax.inject.Inject;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.time.*;
+import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
+import static net.javacrumbs.jsonunit.JsonAssert.whenIgnoringPaths;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.Every.everyItem;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.onap.vid.job.Job.JobStatus.*;
+import static org.onap.vid.testUtils.TestUtils.generateRandomAlphaNumeric;
+import static org.testng.Assert.*;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseTest {
@@ -152,24 +112,42 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     @Mock
     private JobsBrokerService jobsBrokerServiceMock;
 
+    private AsyncInstantiationRepository asyncInstantiationRepository;
+
+    private AuditService auditService;
 
     @Autowired
     private SessionFactory sessionFactory;
 
     private AsyncInstantiationBusinessLogicImpl asyncInstantiationBL;
 
+    protected MsoRequestBuilder msoRequestBuilder;
+
     private int serviceCount = 0;
 
     private static final String UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE =
-            "Failed to retrieve job with uuid .* from ServiceInfo table. Instances found: .*";
+            "Failed to retrieve class .*ServiceInfo with jobId .* from table. no resource found";
 
     private static final String DELETE_SERVICE_INFO_STATUS_EXCEPTION_MESSAGE =
             "Service status does not allow deletion from the queue";
 
+    private String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+    private org.hamcrest.Matcher uuidRegexMatcher = is(matchesPattern(uuidRegex));
+
+
     @BeforeClass
     void initServicesInfoService() {
         MockitoAnnotations.initMocks(this);
-        asyncInstantiationBL = new AsyncInstantiationBusinessLogicImpl(dataAccessService, jobAdapterMock, jobsBrokerServiceMock, sessionFactory, aaiClient, featureManager, cloudOwnerService);
+        AsyncInstantiationRepository realAsyncInstantiationRepository = new AsyncInstantiationRepository(dataAccessService);
+        asyncInstantiationRepository = spy(realAsyncInstantiationRepository);
+
+        auditService = new AuditServiceImpl(null, asyncInstantiationRepository);
+
+        AsyncInstantiationBusinessLogicImpl realAsyncInstantiationBL = new AsyncInstantiationBusinessLogicImpl(jobAdapterMock, jobsBrokerServiceMock, sessionFactory, aaiClient, featureManager, cloudOwnerService, asyncInstantiationRepository, auditService);
+        asyncInstantiationBL = Mockito.spy(realAsyncInstantiationBL);
+
+        msoRequestBuilder = new MsoRequestBuilder(asyncInstantiationBL, cloudOwnerService, aaiClient, featureManager);
+
         createInstanceParamsMaps();
     }
 
@@ -180,16 +158,6 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         Mockito.reset(jobsBrokerServiceMock);
         mockAaiClientAnyNameFree();
         enableAddCloudOwnerOnMsoRequest();
-    }
-
-    private void enableAddCloudOwnerOnMsoRequest() {
-        enableAddCloudOwnerOnMsoRequest(true);
-    }
-
-    private void enableAddCloudOwnerOnMsoRequest(boolean isActive) {
-        // always turn on the feature flag
-        when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(isActive);
-        when(aaiClient.getCloudOwnerByCloudRegionId(anyString())).thenReturn("att-aic");
     }
 
     @BeforeMethod
@@ -215,13 +183,13 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         uuid = UUID.randomUUID();
         addNewJob(uuid);
         createdDate = NOW.minusYears(1);
-        addNewServiceInfo(uuid, userId, "Old", createdDate, createdDate, COMPLETED, false);
+        addNewServiceInfo(uuid, userId, "Old", createdDate, createdDate, COMPLETED, false, false);
 
         uuid = UUID.randomUUID();
         addNewJob(uuid);
         createdDate = NOW.minusDays(20);
         modifiedDate = NOW.minusDays(19);
-        addNewServiceInfo(uuid, userId, "Hidden", createdDate, modifiedDate, PAUSE, true);
+        addNewServiceInfo(uuid, userId, "Hidden", createdDate, modifiedDate, PAUSE, true, false);
 
         createNewTestServicesInfo(String.valueOf(userId));
     }
@@ -236,20 +204,20 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         addNewJob(uuid);
 
         createdDate = NOW.minusDays(40);
-        addNewServiceInfo(uuid, userId, "service instance 5", createdDate, createdDate, COMPLETED, false);
-        addNewServiceInfo(uuid, userId, "service instance 6", createdDate, createdDate, STOPPED, false);
+        addNewServiceInfo(uuid, userId, "service instance 5", createdDate, createdDate, COMPLETED, false, false);
+        addNewServiceInfo(uuid, userId, "service instance 6", createdDate, createdDate, STOPPED, false, false);
 
         uuid = UUID.randomUUID();
         addNewJob(uuid);
 
         createdDate = NOW.minusDays(20);
         modifiedDate = NOW.minusDays(10);
-        addNewServiceInfo(uuid, userId, "service instance 4", createdDate, modifiedDate, STOPPED, false);
-        addNewServiceInfo(uuid, userId, "service instance 2", createdDate, modifiedDate, COMPLETED, false);
-        addNewServiceInfo(uuid, userId, "service instance 3", createdDate, modifiedDate, PAUSE, false);
+        addNewServiceInfo(uuid, userId, "service instance 4", createdDate, modifiedDate, STOPPED, false, false);
+        addNewServiceInfo(uuid, userId, "service instance 2", createdDate, modifiedDate, COMPLETED, false, false);
+        addNewServiceInfo(uuid, userId, "service instance 3", createdDate, modifiedDate, PAUSE, false, false);
 
         modifiedDate = NOW.minusDays(19);
-        addNewServiceInfo(uuid, userId, "service instance 1", createdDate, modifiedDate, FAILED, false);
+        addNewServiceInfo(uuid, userId, "service instance 1", createdDate, modifiedDate, FAILED, false, false);
 
 
         // Job to a different user
@@ -257,7 +225,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         addNewJob(uuid);
 
         createdDate = NOW.minusMonths(2);
-        addNewServiceInfo(uuid, "2221", "service instance 7", createdDate, createdDate, COMPLETED, false);
+        addNewServiceInfo(uuid, "2221", "service instance 7", createdDate, createdDate, COMPLETED, false, false);
 
     }
 
@@ -269,7 +237,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         uuid = UUID.randomUUID();
         addNewJob(uuid, status);
 
-        addNewServiceInfo(uuid, null, "service instance 1", NOW, NOW, status, false);
+        addNewServiceInfo(uuid, null, "service instance 1", NOW, NOW, status, false, false);
 
         return uuid;
 
@@ -292,7 +260,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
                 .toLocalDateTime();
     }
 
-    private void addNewServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate, LocalDateTime statusModifiedDate, Job.JobStatus status, boolean isHidden) {
+    private void addNewServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate, LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled) {
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setJobId(uuid);
         serviceInfo.setUserId(userId);
@@ -302,6 +270,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         serviceInfo.setPause(false);
         serviceInfo.setOwningEntityId("1234");
         serviceInfo.setCreatedBulkDate(toDate(createDate));
+        serviceInfo.setRetryEnabled(retryEnabled);
 
         serviceInfo.setHidden(isHidden);
         dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
@@ -334,6 +303,39 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         dataAccessService.saveDomainObject(jobDao, getPropsMap());
     }
 
+    private ServiceInstantiation addOriginalService(UUID jobId, String userID){
+        addNewServiceInfo(jobId, userID, "name", LocalDateTime.now(), LocalDateTime.now(), COMPLETED_WITH_ERRORS, false, true);
+        assertThat(asyncInstantiationRepository.getServiceInfoByJobId(jobId).isRetryEnabled(), is(true));
+        ServiceInstantiation originalServiceInstantiation = prepareServiceInstantiation(true, 1);
+        doReturn(originalServiceInstantiation).when(asyncInstantiationRepository).getJobRequest(jobId);
+        return originalServiceInstantiation;
+    }
+
+    private void assertRetryDisabled(UUID jobId){
+        assertThat(asyncInstantiationRepository.getServiceInfoByJobId(jobId).isRetryEnabled(), is(false));
+    }
+
+    private void assertNewJobExistsAsExpectedAfterRetry(List<UUID> newJobIds, ServiceInstantiation expectedServiceInstantiation, UUID jobId, String userId){
+        assertThat(newJobIds, hasSize(1));
+        assertThat(newJobIds.get(0), not(equalTo(jobId)));
+
+        ArgumentCaptor<ServiceInstantiation> requestsCaptor = ArgumentCaptor.forClass(ServiceInstantiation.class);
+        ArgumentCaptor<UUID> uuidsCaptor = ArgumentCaptor.forClass(UUID.class);
+        ArgumentCaptor<JobType> jobTypeCaptor = ArgumentCaptor.forClass(JobType.class);
+
+        verify(asyncInstantiationRepository).addJobRequest(uuidsCaptor.capture(), requestsCaptor.capture());
+        verify(jobAdapterMock).createServiceInstantiationJob(jobTypeCaptor.capture(), requestsCaptor.capture(), uuidsCaptor.capture(), eq(userId), any(), anyString(), anyInt());
+        verify(jobsBrokerServiceMock).add(any());
+
+        requestsCaptor.getAllValues().forEach(x->assertJsonEquals(expectedServiceInstantiation, x, whenIgnoringPaths(
+                "trackById",
+                "vnfs.2016-73_MOW-AVPN-vPE-BV-L.trackById",
+                "vnfs.2016-73_MOW-AVPN-vPE-BV-L.vfModules.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0:001.trackById",
+                "vnfs.2016-73_MOW-AVPN-vPE-BV-L.vfModules.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0:002.trackById"
+        )));
+
+    }
+
     @Test
     public void testServiceInfoAreOrderedAsExpected() {
         int userId = 2222;
@@ -341,6 +343,12 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         List<ServiceInfo> expectedOrderServiceInfo = getFullList();
         List<ServiceInfo> serviceInfoListResult = asyncInstantiationBL.getAllServicesInfo();
         assertThat("Services aren't ordered as expected", serviceInfoListResult, equalTo(expectedOrderServiceInfo));
+    }
+
+    @Test
+    public void whenNewServiceInfoCreated_isRetryEnablesIsFalse() {
+        UUID uuid = createServicesInfoWithDefaultValues(PENDING);
+        assertFalse(asyncInstantiationRepository.getServiceInfoByJobId(uuid).isRetryEnabled());
     }
 
     @Test
@@ -364,9 +372,9 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         defineMocks();
         ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true), 2, true, PROJECT_NAME, false);
         final URL resource = this.getClass().getResource("/payload_jsons/bulk_service_request_unique_names.json");
-        when(jobAdapterMock.createServiceInstantiationJob(any(), any(), any(), any(), anyString(), any())).thenAnswer(invocation -> {
+        when(jobAdapterMock.createServiceInstantiationJob(any(), any(), any(), any(), any(), anyString(), any())).thenAnswer(invocation -> {
             Object[] args = invocation.getArguments();
-            return new MockedJob((String)args[4]);
+            return new MockedJob((String)args[5]);
         });
 
         when(jobsBrokerServiceMock.add(any(MockedJob.class))).thenAnswer((Answer<UUID>) invocation -> {
@@ -376,13 +384,13 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
             return job.getUuid();
         });
 
-        when(featureManager.isActive(Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF)).thenReturn(true);
+        when(asyncInstantiationBL.isPartOfBulk(any())).thenReturn(true);
 
         List<UUID> uuids = asyncInstantiationBL.pushBulkJob(serviceInstantiationPayload, "az2016");
         for (int i = 0; i < 2; i++) {
             UUID currentUuid = uuids.get(i);
             RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                    asyncInstantiationBL.generateMacroServiceInstantiationRequest(currentUuid, serviceInstantiationPayload,
+                    msoRequestBuilder.generateMacroServiceInstantiationRequest(currentUuid, serviceInstantiationPayload,
                             MockedJob.getJob(currentUuid).getOptimisticUniqueServiceInstanceName(), "az2016");
             String unique =  i==0 ? "" : String.format("_00%s", i);
             String expected = IOUtils.toString(resource, "UTF-8")
@@ -403,7 +411,9 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     }
 
     protected void verifySearchNodeTypeByName(String unique, String resourceName, ResourceType serviceInstance) {
-        verify(aaiClient, times(1)).isNodeTypeExistsByName(resourceName + unique, serviceInstance);
+        String uniqueName = resourceName + unique;
+        verify(aaiClient, times(1)).isNodeTypeExistsByName(uniqueName, serviceInstance);
+        when(aaiClient.isNodeTypeExistsByName(uniqueName, serviceInstance)).thenReturn(true);
     }
 
     private HashMap<String, Object> getPropsMap() {
@@ -423,16 +433,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
     @Test(dataProvider="dataProviderForInstanceNames")
     public void pushBulkJob_bulkWithSize3_instancesNamesAreExactlyAsExpected(boolean isUserProvidedNaming, List<String> expectedNames) {
-        int bulkSize = 3;
-
-        final ServiceInstantiation request = generateMockMacroServiceInstantiationPayload(
-                false,
-                createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
-                bulkSize, isUserProvidedNaming, PROJECT_NAME, true
-        );
-
-        // in "createServiceInstantiationJob()" we will probe the service, with the generated names
-        configureMockitoWithMockedJob();
+        final ServiceInstantiation request = prepareServiceInstantiation(isUserProvidedNaming, 3);
 
 
         asyncInstantiationBL.pushBulkJob(request, "myUserId");
@@ -441,7 +442,106 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         assertEquals(serviceInfoList.stream().map(ServiceInfo::getServiceInstanceName).collect(Collectors.toList()), expectedNames);
     }
 
-    @Test(dataProvider = "aLaCarteAndMacroPayload")
+    protected ServiceInstantiation prepareServiceInstantiation(String projectName, boolean isUserProvidedNaming, int bulkSize) {
+        final ServiceInstantiation request = generateMockMacroServiceInstantiationPayload(
+                false,
+                createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
+                bulkSize, isUserProvidedNaming, projectName, true
+        );
+
+        // in "createServiceInstantiationJob()" we will probe the service, with the generated names
+        configureMockitoWithMockedJob();
+        return request;
+    }
+
+    protected ServiceInstantiation prepareServiceInstantiation(boolean isUserProvidedNaming, int bulkSize) {
+        return prepareServiceInstantiation(PROJECT_NAME, isUserProvidedNaming, bulkSize);
+    }
+
+
+
+    @Test
+    public void whenPushBulkJob_thenJobRequestIsSaveInJobRequestDb() {
+        Mockito.reset(asyncInstantiationRepository);
+        int bulkSize = 3;
+        final ServiceInstantiation request = prepareServiceInstantiation(true, bulkSize);
+        when(jobsBrokerServiceMock.add(any())).thenReturn(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
+        List<UUID> jobIds = asyncInstantiationBL.pushBulkJob(request, "abc");
+
+        ArgumentCaptor<JobAdapter.AsyncJobRequest> asyncJobRequestCaptor = ArgumentCaptor.forClass(JobAdapter.AsyncJobRequest.class);
+        ArgumentCaptor<ServiceInstantiation> requestsCaptor = ArgumentCaptor.forClass(ServiceInstantiation.class);
+        ArgumentCaptor<UUID> uuidsCaptor = ArgumentCaptor.forClass(UUID.class);
+        verify(asyncInstantiationRepository, times(bulkSize)).addJobRequest(uuidsCaptor.capture(), requestsCaptor.capture());
+        verify(jobsBrokerServiceMock, times(bulkSize)).add(any());
+        verify(jobAdapterMock, times(bulkSize)).createServiceInstantiationJob(any(), asyncJobRequestCaptor.capture(), any(), any(), any(), any(), any());
+
+        //verify that all for each job we saved an row in jobRequest table
+        assertThat(uuidsCaptor.getAllValues(), containsInAnyOrder(jobIds.toArray()));
+
+        //assert that each real job we created with the adaptor, request is save in jobRequest table
+        assertThat(requestsCaptor.getAllValues(), containsInAnyOrder(asyncJobRequestCaptor.getAllValues().toArray()));
+
+        assertThat(requestsCaptor.getAllValues(),everyItem(hasProperty("bulkSize", is(1))));
+
+        //assert that the requests that save in DB are the same as original request expect of the trackById
+        requestsCaptor.getAllValues().forEach(x->assertJsonEquals(request, x, whenIgnoringPaths(
+                "bulkSize",
+                "trackById",
+                "vnfs.2016-73_MOW-AVPN-vPE-BV-L.trackById",
+                "vnfs.2016-73_MOW-AVPN-vPE-BV-L.vfModules.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0:001.trackById",
+                "vnfs.2016-73_MOW-AVPN-vPE-BV-L.vfModules.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0.201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0:002.trackById"
+        )));
+
+        //assert that each trackById on all bulk jobs is unique
+        Set<String> usedUUID = new HashSet<>();
+        requestsCaptor.getAllValues().forEach(x->assertTrackByIdRecursively(x, uuidRegexMatcher, usedUUID));
+    }
+
+    @Test
+    public void whenRetryJob_prevJobRetryIsDisabled() {
+        reset(asyncInstantiationRepository);
+        UUID jobId = UUID.randomUUID();
+        String userID = generateRandomAlphaNumeric(8);
+        addOriginalService(jobId, userID);
+        doReturn(mock(Map.class)).when(asyncInstantiationRepository).getResourceInfoByRootJobId(jobId);
+        asyncInstantiationBL.retryJob(jobId, userID);
+        assertRetryDisabled(jobId);
+    }
+
+    @Test
+    public void whenRetryJobWithEditedData_prevJobRetryIsDisabled() {
+        reset(asyncInstantiationRepository);
+        UUID jobId = UUID.randomUUID();
+        String userID = generateRandomAlphaNumeric(8);
+        addOriginalService(jobId, userID);
+        ServiceInstantiation editedServiceInstantiation = prepareServiceInstantiation("editedProjectName", true, 1);
+        asyncInstantiationBL.retryJob(editedServiceInstantiation, jobId, userID);
+        assertRetryDisabled(jobId);
+    }
+
+    @Test
+    public void retryJobWithEditedData_expectedNewJobDifferentData() {
+        reset(asyncInstantiationRepository);
+        UUID jobId = UUID.randomUUID();
+        String userID = generateRandomAlphaNumeric(8);
+        addOriginalService(jobId, userID);
+        ServiceInstantiation editedServiceInstantiation = prepareServiceInstantiation("editedProjectName", true, 1);
+        List<UUID> newJobIds =  asyncInstantiationBL.retryJob(editedServiceInstantiation, jobId, userID);
+        assertNewJobExistsAsExpectedAfterRetry(newJobIds, editedServiceInstantiation, jobId, userID);
+    }
+
+    @Test
+    public void retryJob_expectedNewJob() {
+        reset(asyncInstantiationRepository);
+        UUID jobId = UUID.randomUUID();
+        String userID = "az2016";
+        ServiceInstantiation originalServiceInstantiation =  addOriginalService(jobId, userID);
+        doReturn(mock(Map.class)).when(asyncInstantiationRepository).getResourceInfoByRootJobId(jobId);
+        List<UUID> newJobIds = asyncInstantiationBL.retryJob(jobId, userID);
+        assertNewJobExistsAsExpectedAfterRetry(newJobIds, originalServiceInstantiation, jobId, userID);
+    }
+
+    @Test (dataProvider = "aLaCarteAndMacroPayload")
     public void generateMockServiceInstantiationPayload_serializeBackAndForth_sourceShouldBeTheSame(ServiceInstantiation serviceInstantiationPayload) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         final String asString = mapper.writeValueAsString(serviceInstantiationPayload);
@@ -449,7 +549,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         final ServiceInstantiation asObject = mapper.readValue(asString, ServiceInstantiation.class);
         final String asString2 = mapper.writeValueAsString(asObject);
 
-        JsonAssert.assertJsonEquals(asString, asString2);
+        assertJsonEquals(asString, asString2);
     }
 
     @DataProvider
@@ -517,10 +617,6 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         };
     }
 
-    private ServiceInstantiation generateMacroMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs) {
-        return generateMockMacroServiceInstantiationPayload(isPause, vnfs, 1, true, PROJECT_NAME, false);
-    }
-
     @Test
     public void testUpdateServiceInfo_WithExistingServiceInfo_ServiceInfoIsUpdated() {
         UUID uuid = createFakedJobAndServiceInfo();
@@ -550,12 +646,12 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         return uuid;
     }
 
-    @Test(expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
+    @Test(expectedExceptions = NotFoundException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
     public void testUpdateServiceInfo_WithNonExisting_ThrowException() {
         asyncInstantiationBL.updateServiceInfo(UUID.randomUUID(), x -> x.setServiceInstanceName("not matter"));
     }
 
-    @Test(expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
+    @Test(expectedExceptions = NotFoundException.class, expectedExceptionsMessageRegExp = UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE)
     public void testUpdateServiceInfo_WithDoubleServiceWithSameJobUuid_ThrowException() {
         UUID uuid = createFakedJobAndServiceInfo();
         ServiceInfo serviceInfo = new ServiceInfo();
@@ -584,219 +680,10 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     @Test
     public void testCreateVnfEndpoint_useProvidedInstanceId() {
         String path = asyncInstantiationBL.getVnfInstantiationPath("myGreatId");
-        assertThat(path, matchesPattern("/serviceInstances/v./myGreatId/vnfs"));
+        assertThat(path, equalTo("/serviceInstantiation/v7/serviceInstances/myGreatId/vnfs"));
     }
 
-    @Test
-    public void createServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected() throws IOException {
-        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(true);
-    }
 
-    @Test
-    public void createServiceInfo_WithUserProvidedNamingFalseAndNoVfmodules_ServiceInfoIsAsExpected() throws IOException {
-        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(false);
-    }
-
-    private void createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(boolean withVfmodules) throws IOException {
-        when(featureManager.isActive(Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF)).thenReturn(true);
-
-        ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
-                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
-                1,
-                false, PROJECT_NAME, true);
-        URL resource;
-        if (withVfmodules) {
-            resource = this.getClass().getResource("/payload_jsons/bulk_service_request_ecomp_naming.json");
-        } else {
-            // remove the vf modules
-            serviceInstantiationPayload.getVnfs().values().forEach(vnf -> vnf.getVfModules().clear());
-            resource = this.getClass().getResource("/payload_jsons/bulk_service_request_no_vfmodule_ecomp_naming.json");
-        }
-
-        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                asyncInstantiationBL.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
-
-        String expected = IOUtils.toString(resource, "UTF-8");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @Test
-    public void createALaCarteService_WithUserProvidedNamingFalse_RequestDetailsIsAsExpected() throws IOException {
-        ServiceInstantiation serviceInstantiationPayload = generateMockALaCarteServiceInstantiationPayload(false,
-                newHashMap(),
-                newHashMap(),
-                newHashMap(),
-                1,
-                false, PROJECT_NAME, true, null);
-
-        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                asyncInstantiationBL.generateALaCarteServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
-
-        URL resource = this.getClass().getResource("/payload_jsons/bulk_alacarte_service_request_naming_false.json");
-        String expected = IOUtils.toString(resource, "UTF-8");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @Test
-    public void generateALaCarteServiceInstantiationRequest_withVnfList_HappyFllow() throws IOException {
-        ServiceInstantiation serviceInstantiationPayload = generateALaCarteWithVnfsServiceInstantiationPayload();
-        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                asyncInstantiationBL.generateALaCarteServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
-
-        String serviceExpected = IOUtils.toString(this.getClass().getResource("/payload_jsons/bulk_alacarte_service_request.json"), "UTF-8");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(serviceExpected, result);
-    }
-
-    @Test(dataProvider = "createVnfParameters")
-    public void createVnfRequestDetails_detailsAreAsExpected(boolean isFlagAddCloudOwnerActive, boolean isUserProvidedNaming, String file) throws IOException {
-
-        final List<Vnf> vnfList = new ArrayList<>(createVnfList(new HashMap<>(), null, isUserProvidedNaming, true).values());
-        ModelInfo siModelInfo = createServiceModelInfo();
-        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
-
-        //we validate that the asyncInstantiationBL call to getUniqueName by simulate that aai retrun that original
-        //vnf name is used, and only next picked name is free.
-        Mockito.reset(aaiClient);
-        mockAaiClientAaiStatusOK();
-        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME), eq(ResourceType.GENERIC_VNF))).thenReturn(true);
-        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME+"_001"), eq(ResourceType.GENERIC_VNF))).thenReturn(false);
-        enableAddCloudOwnerOnMsoRequest(isFlagAddCloudOwnerActive);
-
-        String expected = IOUtils.toString(this.getClass().getResource(file), "UTF-8");
-        final RequestDetailsWrapper<VnfInstantiationRequestDetails> result = asyncInstantiationBL.generateVnfInstantiationRequest(vnfList.get(0), siModelInfo, serviceInstanceId, "pa0916");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @DataProvider
-    public static Object[][] createVnfParameters() {
-        return new Object[][]{
-                {true, true, "/payload_jsons/bulk_vnf_request.json"},
-                {false, true, "/payload_jsons/bulk_vnf_request_without_cloud_owner.json"},
-                {true, false, "/payload_jsons/bulk_vnf_request_without_instance_name.json"},
-        };
-    }
-
-    @DataProvider
-    public static Object[][] vfModuleRequestDetails(Method test) {
-        return new Object[][]{
-                {"cc3514e3-5a33-55df-13ab-12abad84e7cc", true, "/payload_jsons/vfmodule_instantiation_request.json"},
-                {null, true, "/payload_jsons/vfmodule_instantiation_request_without_volume_group.json"},
-                {null, false, "/payload_jsons/vfmodule_instantiation_request_without_instance_name.json"}
-        };
-    }
-
-    @Test(dataProvider = "vfModuleRequestDetails")
-    public void createVfModuleRequestDetails_detailsAreAsExpected(String volumeGroupInstanceId, boolean isUserProvidedNaming, String fileName) throws IOException {
-
-        ModelInfo siModelInfo = createServiceModelInfo();
-        ModelInfo vnfModelInfo = createVnfModelInfo(true);
-        List<Map<String, String>> instanceParams = ImmutableList.of(ImmutableMap.of("vmx_int_net_len", "24",
-                "vre_a_volume_size_0" , "120"));
-        Map<String, String> supplementaryParams = ImmutableMap.of("vre_a_volume_size_0" , "100",
-                "availability_zone_0" , "mtpocdv-kvm-az01");
-        VfModule vfModule = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
-                "72d9d1cd-f46d-447a-abdb-451d6fb05fa8", instanceParams, supplementaryParams,
-                (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion": null), "myVgName", true);
-
-        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
-        String vnfInstanceId = "bb3514e3-5a33-55df-13ab-12abad84e7bb";
-
-        Mockito.reset(aaiClient);
-        mockAaiClientAaiStatusOK();
-        enableAddCloudOwnerOnMsoRequest();
-        when(aaiClient.isNodeTypeExistsByName(eq("vmxnjr001_AVPN_base_vRE_BV_expansion"), eq(ResourceType.VF_MODULE))).thenReturn(false);
-
-        String expected = IOUtils.toString(this.getClass().getResource(fileName), "UTF-8");
-        final RequestDetailsWrapper<VfModuleInstantiationRequestDetails> result = asyncInstantiationBL.generateVfModuleInstantiationRequest(
-                vfModule, siModelInfo, serviceInstanceId,
-                vnfModelInfo, vnfInstanceId, volumeGroupInstanceId, "pa0916");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @DataProvider
-    public static Object[][] expectedAggregatedParams() {
-        return new Object[][]{
-                {ImmutableMap.of("a", "b", "c", "d"), ImmutableMap.of("e", "f", "g", "h"), ImmutableList.of(ImmutableMap.of("c", "d", "a", "b", "e", "f", "g", "h"))},
-                {ImmutableMap.of("a", "b", "c", "g"), ImmutableMap.of("c", "d", "e", "f"), ImmutableList.of(ImmutableMap.of("a", "b", "c", "d", "e", "f"))},
-                {ImmutableMap.of(), ImmutableMap.of("c", "d", "e", "f"), ImmutableList.of(ImmutableMap.of("c", "d", "e", "f"))},
-                {ImmutableMap.of("a", "b", "c", "g"), ImmutableMap.of(), ImmutableList.of(ImmutableMap.of("a", "b", "c", "g"))},
-                {ImmutableMap.of(), ImmutableMap.of(), ImmutableList.of()},
-                {null, ImmutableMap.of(), ImmutableList.of()},
-                {ImmutableMap.of(), null, ImmutableList.of()},
-        };
-    }
-
-    @Test(dataProvider = "expectedAggregatedParams")
-    public void testAggregateInstanceParamsAndSuppFile(Map<String, String> instanceParams, Map<String, String> suppParams, List<VfModuleInstantiationRequestDetails.UserParamMap<String, String>> expected) {
-        List<VfModuleInstantiationRequestDetails.UserParamMap<String, String>> aggParams = ((AsyncInstantiationBusinessLogicImpl)asyncInstantiationBL).aggregateAllInstanceParams(instanceParams, suppParams);
-        assertThat("Aggregated params are not as expected", aggParams, equalTo(expected));
-    }
-
-    @DataProvider
-    public static Object[][] expectedNetworkRequestDetailsParameters() {
-        return new Object[][]{
-            {true, "/payload_jsons/network_instantiation_request.json"},
-            {false, "/payload_jsons/network_instantiation_request_without_instance_name.json"}
-        };
-    }
-
-    @Test(dataProvider = "expectedNetworkRequestDetailsParameters")
-    public void createNetworkRequestDetails_detailsAreAsExpected(boolean isUserProvidedNaming, String filePath) throws IOException {
-
-        final List<Network> networksList = new ArrayList<>(createNetworkList(null, isUserProvidedNaming, true).values());
-        ModelInfo siModelInfo = createServiceModelInfo();
-        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
-
-        Mockito.reset(aaiClient);
-        mockAaiClientAaiStatusOK();
-        enableAddCloudOwnerOnMsoRequest();
-        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME), eq(ResourceType.L3_NETWORK))).thenReturn(true);
-        when(aaiClient.isNodeTypeExistsByName(eq(VNF_NAME+"_001"), eq(ResourceType.L3_NETWORK))).thenReturn(false);
-
-        String expected = IOUtils.toString(this.getClass().getResource(filePath), "UTF-8");
-        final RequestDetailsWrapper<NetworkInstantiationRequestDetails> result = asyncInstantiationBL.generateNetworkInstantiationRequest(networksList.get(0), siModelInfo, serviceInstanceId, "pa0916");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @Test
-    public void createInstanceGroupRequestDetails_detailsAreAsExpected() throws IOException {
-
-        final InstanceGroup instanceGroup = createInstanceGroup(true, Action.Create);
-        ModelInfo siModelInfo = createServiceModelInfo();
-        String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
-
-        Mockito.reset(aaiClient);
-        mockAaiClientAaiStatusOK();
-        enableAddCloudOwnerOnMsoRequest();
-        when(aaiClient.isNodeTypeExistsByName(eq(VNF_GROUP_NAME), eq(ResourceType.INSTANCE_GROUP))).thenReturn(true);
-        when(aaiClient.isNodeTypeExistsByName(eq(VNF_GROUP_NAME+"_001"), eq(ResourceType.INSTANCE_GROUP))).thenReturn(false);
-
-        String expected = IOUtils.toString(this.getClass().getResource("/payload_jsons/instance_group_instantiation_request.json"), "UTF-8");
-        final RequestDetailsWrapper<InstanceGroupInstantiationRequestDetails> result = asyncInstantiationBL.generateInstanceGroupInstantiationRequest(instanceGroup, siModelInfo, serviceInstanceId, "az2018");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @Test
-    public void checkIfNullProjectNameSentToMso(){
-        ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
-                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
-                1,
-                false,null,false);
-        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                asyncInstantiationBL.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
-        JsonNode jsonNode = new ObjectMapper().valueToTree(result.requestDetails);
-        Assert.assertTrue(jsonNode.get("project").isNull());
-        serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
-                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
-                1,
-                false,"not null",false);
-        result = asyncInstantiationBL.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
-        jsonNode = new ObjectMapper().valueToTree(result.requestDetails);
-        Assert.assertTrue(jsonNode.get("project").get("projectName").asText().equalsIgnoreCase("not null"));
-
-
-
-    }
 
     @Test
     public void pushBulkJob_macroServiceverifyCreatedDateBehavior_createdDateIsTheSameForAllServicesInSameBulk() {
@@ -853,7 +740,9 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         Mockito.reset(jobAdapterMock);
         final Job job = mock(Job.class);
         when(job.getStatus()).thenReturn(PENDING);
-        when(jobAdapterMock.createServiceInstantiationJob(any(), any(), any(), any(), any(), any())).thenReturn(job);
+        when(job.getUuid()).thenReturn(UUID.fromString("db2c5ed9-1c19-41ce-9cb7-edf0d878cdeb"));
+        when(jobAdapterMock.createServiceInstantiationJob(any(), any(), any(), any(), any(), any(), any())).thenReturn(job);
+        when(jobsBrokerServiceMock.add(job)).thenReturn(UUID.randomUUID());
     }
 
     @DataProvider
@@ -869,7 +758,11 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
                 {"Paused", JobStatus.PAUSE},
                 {"Pause", JobStatus.PAUSE},
                 {"PENDING_MANUAL_TASK", JobStatus.PAUSE},
-                {"UNLOCKED", JobStatus.IN_PROGRESS}
+                {"UNLOCKED", JobStatus.IN_PROGRESS},
+                {"AbORtEd", COMPLETED_WITH_ERRORS},
+                {"RoLlED_baCK", FAILED},
+                {"ROllED_BAcK_To_ASsIGnED", FAILED},
+                {"rOLLED_bACK_tO_CrEATeD", FAILED},
         };
     }
 
@@ -877,131 +770,6 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     public void whenGetStatusFromMso_calcRightJobStatus(String msoStatus, Job.JobStatus expectedJobStatus) {
         AsyncRequestStatus asyncRequestStatus = asyncRequestStatusResponse(msoStatus);
         assertThat(asyncInstantiationBL.calcStatus(asyncRequestStatus), equalTo(expectedJobStatus));
-    }
-
-    private void createNewAuditStatus(JobAuditStatus auditStatus)
-    {
-        Date createdDate= auditStatus.getCreated();
-        dataAccessService.saveDomainObject(auditStatus, getPropsMap());
-        setDateToStatus(auditStatus.getSource(), auditStatus.getJobStatus(), createdDate);
-    }
-
-
-
-    private static final String MSO_ARBITRARY_STATUS = "completed mso status";
-
-    @DataProvider
-    public static Object[][] auditStatuses(Method test) {
-        return new Object[][]{
-                {
-                        SourceStatus.VID,
-                        new String[]{ JobStatus.PENDING.toString(), JobStatus.IN_PROGRESS.toString()}
-                },
-                {       SourceStatus.MSO,
-                        new String[]{ JobStatus.IN_PROGRESS.toString(), MSO_ARBITRARY_STATUS }
-                }
-        };
-
-    }
-
-    private void setDateToStatus(SourceStatus source, String status, Date date) {
-        List<JobAuditStatus> jobAuditStatusList = dataAccessService.getList(JobAuditStatus.class, getPropsMap());
-        DaoUtils.tryWithSessionAndTransaction(sessionFactory, session -> {
-            jobAuditStatusList.stream()
-                    .filter(auditStatus -> source.equals(auditStatus.getSource()) && status.equals(auditStatus.getJobStatus()))
-                    .forEach(auditStatus -> {
-                        auditStatus.setCreated(date);
-                        session.saveOrUpdate(auditStatus);
-                    });
-            return 1;
-        });
-    }
-
-
-    @Test(dataProvider = "auditStatuses")
-    public void givenSomeAuditStatuses_getStatusesOfSpecificSourceAndJobId_getSortedResultsMatchingToParameters(SourceStatus expectedSource, String [] expectedSortedStatuses){
-        UUID jobUuid = UUID.randomUUID();
-        List<JobAuditStatus> auditStatusList = com.google.common.collect.ImmutableList.of(
-                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.VID, toDate(LocalDateTime.now().minusHours(2))),
-                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, UUID.randomUUID(),"",toDate(LocalDateTime.now().minusHours(30))),
-                new JobAuditStatus(jobUuid, MSO_ARBITRARY_STATUS, SourceStatus.MSO, UUID.randomUUID(),"",toDate(LocalDateTime.now().minusHours(3))),
-                new JobAuditStatus(jobUuid, PENDING.toString(), SourceStatus.VID, toDate(LocalDateTime.now().minusHours(3))),
-                new JobAuditStatus(UUID.randomUUID(), PENDING.toString(), SourceStatus.VID, toDate(LocalDateTime.now().minusHours(3))));
-        auditStatusList.forEach((auditStatus) -> createNewAuditStatus(auditStatus));
-        List<JobAuditStatus> statuses = asyncInstantiationBL.getAuditStatuses(jobUuid, expectedSource);
-        List<String> statusesList = statuses.stream().map(status -> status.getJobStatus()).collect(Collectors.toList());
-        Assert.assertTrue(statuses.stream().allMatch(status -> (status.getSource().equals(expectedSource)&& status.getJobId().equals(jobUuid))),"Only statuses of " + expectedSource + " for " + jobUuid + " should be returned. Returned statuses: " + String.join(",", statusesList ));
-        assertThat(statusesList, contains(expectedSortedStatuses));
-    }
-
-
-
-    @Test
-    public void addSomeVidStatuses_getThem_verifyGetInsertedWithoutDuplicates(){
-        ImmutableList<JobStatus> statusesToBeInserted = ImmutableList.of(PENDING, IN_PROGRESS, IN_PROGRESS, COMPLETED);
-        UUID jobUuid = UUID.randomUUID();
-        statusesToBeInserted.forEach(status->
-            {
-                asyncInstantiationBL.auditVidStatus(jobUuid, status);
-            });
-        List<String> statusesFromDB = asyncInstantiationBL.getAuditStatuses(jobUuid, SourceStatus.VID).stream().map(auditStatus -> auditStatus.getJobStatus()).collect(Collectors.toList());
-        List<String> statusesWithoutDuplicates = statusesToBeInserted.stream().distinct().map(x -> x.toString()).collect(Collectors.toList());
-        assertThat(statusesFromDB, is(statusesWithoutDuplicates));
-    }
-
-    @DataProvider
-    public static Object[][] msoAuditStatuses(Method test) {
-        UUID jobUuid = UUID.randomUUID();
-        UUID requestId = UUID.randomUUID();
-        return new Object[][]{
-                {
-                        jobUuid,
-                        ImmutableList.of(
-                                new JobAuditStatus(jobUuid, PENDING.toString(), SourceStatus.MSO, null, null),
-                                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, requestId, null),
-                                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, requestId, null),
-                                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, requestId, null),
-                                new JobAuditStatus(jobUuid, COMPLETED.toString(), SourceStatus.MSO, requestId, null)),
-                        ImmutableList.of(PENDING.toString(), IN_PROGRESS.toString(), COMPLETED.toString()),
-                        "All distinct statuses should be without duplicates"
-                },
-                {
-                        jobUuid,
-                        ImmutableList.of(
-                                new JobAuditStatus(jobUuid, PENDING.toString(), SourceStatus.MSO, null, null),
-                                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, requestId, null),
-                                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, requestId, "aa"),
-                                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, requestId, "aa"),
-                                new JobAuditStatus(jobUuid, IN_PROGRESS.toString(), SourceStatus.MSO, UUID.randomUUID(), "aa"),
-                                new JobAuditStatus(jobUuid, COMPLETED.toString(), SourceStatus.MSO, requestId, null)),
-                        ImmutableList.of(PENDING.toString(), IN_PROGRESS.toString(), IN_PROGRESS.toString(),IN_PROGRESS.toString(), COMPLETED.toString()),
-                        "Statuses should be without duplicates only with same requestId and additionalInfo"
-
-                }
-        };
-    }
-
-    @Test(dataProvider = "msoAuditStatuses")
-    public void addSomeMsoStatuses_getThem_verifyGetInsertedWithoutDuplicates(UUID jobUuid, ImmutableList<JobAuditStatus> msoStatuses, ImmutableList<String> expectedStatuses, String assertionReason) {
-        msoStatuses.forEach(status -> {
-            asyncInstantiationBL.auditMsoStatus(status.getJobId(), status.getJobStatus(), status.getRequestId() != null ? status.getRequestId().toString() : null, status.getAdditionalInfo());
-        });
-        List<String> statusesFromDB = asyncInstantiationBL.getAuditStatuses(jobUuid, SourceStatus.MSO).stream().map(auditStatus -> auditStatus.getJobStatus()).collect(Collectors.toList());
-        assertThat( assertionReason, statusesFromDB, is(expectedStatuses));
-    }
-
-    @Test
-    public void addSameStatusOfVidAndMso_verifyThatBothWereAdded(){
-        UUID jobUuid = UUID.randomUUID();
-        JobStatus sameStatus = IN_PROGRESS;
-        asyncInstantiationBL.auditMsoStatus(jobUuid, sameStatus.toString(),null,null);
-        asyncInstantiationBL.auditVidStatus(jobUuid, sameStatus);
-        List<JobAuditStatus> list = dataAccessService.getList(
-                JobAuditStatus.class,
-                String.format(" where JOB_ID = '%s'", jobUuid),
-                null, null);
-        Assert.assertEquals(list.size(),2);
-        assertThat(list,everyItem(hasProperty("jobStatus", is(sameStatus.toString()))));
     }
 
     @DataProvider
@@ -1026,7 +794,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         doNothing().when(jobsBrokerServiceMock).delete(any());
         UUID uuid = createServicesInfoWithDefaultValues(PENDING);
         asyncInstantiationBL.deleteJob(uuid);
-        assertNotNull(asyncInstantiationBL.getServiceInfoByJobId(uuid).getDeletedAt(), "service info wasn't deleted");
+        assertNotNull(asyncInstantiationRepository.getServiceInfoByJobId(uuid).getDeletedAt(), "service info wasn't deleted");
     }
 
     @Test(expectedExceptions = IllegalStateException.class, expectedExceptionsMessageRegExp = DELETE_SERVICE_INFO_STATUS_EXCEPTION_MESSAGE)
@@ -1036,7 +804,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         try {
             asyncInstantiationBL.deleteJob(uuid);
         } catch (Exception e) {
-            assertNull(asyncInstantiationBL.getServiceInfoByJobId(uuid).getDeletedAt(), "service info shouldn't deleted");
+            assertNull(asyncInstantiationRepository.getServiceInfoByJobId(uuid).getDeletedAt(), "service info shouldn't deleted");
             throw e;
         }
     }
@@ -1081,7 +849,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         try {
             asyncInstantiationBL.hideServiceInfo(uuid);
         } catch (Exception e) {
-            assertFalse(asyncInstantiationBL.getServiceInfoByJobId(uuid).isHidden(), "service info shouldn't be hidden");
+            assertFalse(asyncInstantiationRepository.getServiceInfoByJobId(uuid).isHidden(), "service info shouldn't be hidden");
             throw e;
         }
     }
@@ -1126,16 +894,23 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         assertThat(asyncInstantiationBL.getUniqueName(name, type), equalTo(name+"_001"));
     }
 
+    @Test(enabled = false) //skip till we will handle macro bulk again...
+    public void whenNamedNotInUsedInAai_getSameNameTwice() {
+        String name = someCommonStepsAndGetName();
+        ResourceType type = ResourceType.GENERIC_VNF;
+        when(aaiClient.isNodeTypeExistsByName(name, type)).thenReturn(false);
+        assertThat(asyncInstantiationBL.getUniqueName(name, type), equalTo(name));
+        assertThat(asyncInstantiationBL.getUniqueName(name, type), equalTo(name));
+        when(aaiClient.isNodeTypeExistsByName(name, type)).thenReturn(true);
+        assertThat(asyncInstantiationBL.getUniqueName(name, type), equalTo(name+"_001"));
+    }
+
     private String someCommonStepsAndGetName() {
         mockAaiClientAaiStatusOK();
         return UUID.randomUUID().toString();
     }
 
-    private void mockAaiClientAaiStatusOK() {
-        when(aaiClient.isNodeTypeExistsByName(eq(AsyncInstantiationBusinessLogicImpl.NAME_FOR_CHECK_AAI_STATUS), any())).thenReturn(false);
-    }
-
-    @Test(expectedExceptions=ExceptionWithRequestInfo.class)
+    @Test(expectedExceptions= ExceptionWithRequestInfo.class)
     public void whenAaiBadResponseCode_throwInvalidAAIResponseException() {
         String name = someCommonStepsAndGetName();
         ResourceType type = ResourceType.SERVICE_INSTANCE;
@@ -1171,7 +946,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
         ArgumentCaptor<JobType> argumentCaptor = ArgumentCaptor.forClass(JobType.class);
         asyncInstantiationBL.pushBulkJob(request, "myUserId");
-        verify(jobAdapterMock).createServiceInstantiationJob(argumentCaptor.capture(),any(),any(),anyString(), anyString(), anyInt());
+        verify(jobAdapterMock).createServiceInstantiationJob(argumentCaptor.capture(),any(),any(),anyString(), anyString(),  anyString(), anyInt());
         assertTrue(argumentCaptor.getValue().equals(JobType.ALaCarteServiceInstantiation));
     }
 
@@ -1184,198 +959,285 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
         ArgumentCaptor<JobType> argumentCaptor = ArgumentCaptor.forClass(JobType.class);
         asyncInstantiationBL.pushBulkJob(request, "myUserId");
-        verify(jobAdapterMock).createServiceInstantiationJob(argumentCaptor.capture(),any(),any(),anyString(), anyString(), anyInt());
+        verify(jobAdapterMock).createServiceInstantiationJob(argumentCaptor.capture(),any(),any(),anyString(), any(),  anyString(), anyInt());
         assertTrue(argumentCaptor.getValue().equals(JobType.MacroServiceInstantiation));
     }
 
-    @Test
-    public void generateALaCarteServiceInstantiationRequest_verifyRequestIsAsExpected() throws IOException {
-        ServiceInstantiation serviceInstantiationPayload = generateALaCarteServiceInstantiationPayload();
-        final URL resource = this.getClass().getResource("/payload_jsons/bulk_alacarte_service_request.json");
-        RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
-                asyncInstantiationBL.generateALaCarteServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
-        String expected = IOUtils.toString(resource, "UTF-8");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
+
 
     @Test
-    public void generateALaCarteServiceDeletionRequest_verifyRequestIsAsExpected() throws IOException {
-        final URL resource = this.getClass().getResource("/payload_jsons/bulk_alacarte_service_deletion_request.json");
-        String expected = IOUtils.toString(resource, "UTF-8");
+    public void getALaCarteServiceDeletionPath_verifyPathIsAsExpected() {
 
-        ServiceInstantiation serviceDeletionPayload = generateALaCarteServiceDeletionPayload();
-        RequestDetailsWrapper<ServiceDeletionRequestDetails> result =
-                asyncInstantiationBL.generateALaCarteServiceDeletionRequest(null, serviceDeletionPayload, "az2016");
-
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @Test
-    public void getALaCarteServiceDeletionPath_verifyPathIsAsExpected() throws IOException {
-
-        String expected = "/serviceInstantiation/v./serviceInstances/f36f5734-e9df-4fbf-9f35-61be13f028a1";
+        String expected = "/serviceInstantiation/v7/serviceInstances/f36f5734-e9df-4fbf-9f35-61be13f028a1";
 
         String result = asyncInstantiationBL.getServiceDeletionPath("f36f5734-e9df-4fbf-9f35-61be13f028a1");
 
-        assertThat(result, matchesPattern(expected));
+        assertThat(expected,equalTo(result));
+    }
+
+    @Test
+    public void getResumeRequestPath_verifyPathIsAsExpected() {
+
+        String expected = "/orchestrationRequests/v7/rq1234d1-5a33-55df-13ab-12abad84e333/resume";
+
+        String result = asyncInstantiationBL.getResumeRequestPath("rq1234d1-5a33-55df-13ab-12abad84e333");
+
+        assertThat(expected, equalTo(result));
     }
 
     @Test
     public void getInstanceGroupsDeletionPath_verifyPathIsAsExpected()  {
-
         assertEquals(asyncInstantiationBL.getInstanceGroupDeletePath("9aada4af-0f9b-424f-ae21-e693bd3e005b"),
                 "/serviceInstantiation/v7/instanceGroups/9aada4af-0f9b-424f-ae21-e693bd3e005b");
-    }
-
-    @DataProvider
-    public static Object[][] testBuildVnfInstanceParamsDataProvider(Method test) {
-        return new Object[][]{
-                {
-                    Collections.EMPTY_LIST,
-                    ImmutableList.of(
-                        ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
-                        ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2"))
-                    ),
-                    true,
-                    ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2","k3","v3"))
-                },
-                {
-                        ImmutableList.of(ImmutableMap.of("j1", "w1", "k1","v1", "vnf_name","w2", "vf_module_name","w3")), //vnf_name, vf_module_name are excluded
-                        ImmutableList.of(
-                                ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
-                                ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2")),
-                                ImmutableList.of(Collections.EMPTY_MAP),
-                                Collections.singletonList(null)
-                        ),
-                        true,
-                        ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2","k3","v3","j1", "w1"))
-                },
-                {
-                        Collections.EMPTY_LIST,
-                        Arrays.asList(null, null),
-                        true,
-                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
-                },
-                {
-                        ImmutableList.of(Collections.EMPTY_MAP),
-                        ImmutableList.of(
-                                ImmutableList.of(Collections.EMPTY_MAP),
-                                ImmutableList.of(Collections.EMPTY_MAP)
-                        ),
-                        true,
-                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
-                },
-                {
-                        Collections.EMPTY_LIST,
-                        ImmutableList.of(
-                                ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
-                                ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2"))
-                        ),
-                        false,
-                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
-                },
-                {
-                        ImmutableList.of(ImmutableMap.of("j1", "w1", "k1","v1", "vnf_name","w2", "vf_module_name","w3")),
-                        ImmutableList.of(
-                                ImmutableList.of(Collections.EMPTY_MAP)
-                        ),
-                        false,
-                        ImmutableList.of(ImmutableMap.of("j1", "w1", "k1","v1"))
-                },
-                {
-                        ImmutableList.of(ImmutableMap.of("vnf_name","w2", "vf_module_name", "w3", "j2", "w2", "j4","w4")),
-                        ImmutableList.of(
-                                ImmutableList.of(ImmutableMap.of("k1","v1","k2","v2")),
-                                ImmutableList.of(ImmutableMap.of("k3","v3","k2","v2"))
-                        ),
-                        false,
-                        ImmutableList.of(ImmutableMap.of("j2", "w2", "j4","w4"))
-                },
-
-        };
-    }
-
-    @Test(dataProvider="testBuildVnfInstanceParamsDataProvider")
-    public void testBuildVnfInstanceParams(List<Map<String, String>> currentVnfInstanceParams,
-                                           List<List<Map<String, String>>> vfModulesInstanceParams,
-                                           boolean isFeatureActive,
-                                           List<Map<String,String>> expectedResult){
-        when(featureManager.isActive(Features.FLAG_SHIFT_VFMODULE_PARAMS_TO_VNF)).thenReturn(isFeatureActive);
-        List<VfModuleMacro> vfModules =
-                vfModulesInstanceParams.stream().map(params-> new VfModuleMacro(new ModelInfo(), null, null, params)).collect(Collectors.toList());
-        List<Map<String,String>> actual = asyncInstantiationBL.buildVnfInstanceParams(currentVnfInstanceParams, vfModules);
-        assertThat(actual, equalTo(expectedResult));
-
     }
 
     @Test
     public void whenLcpRegionNotEmpty_thenCloudRegionIdOfResourceIsLegacy() {
         String legacyCloudRegion = "legacyCloudRegion";
-        Vnf vnf = new Vnf(new ModelInfo(), null, null, Action.Create.name(), null, "anyCloudRegion", legacyCloudRegion, null, null, null, false, null, null);
+        Vnf vnf = new Vnf(new ModelInfo(), null, null, Action.Create.name(), null, "anyCloudRegion", legacyCloudRegion,
+                null, null, null, false, null, null, UUID.randomUUID().toString(), null, null);
         assertThat(vnf.getLcpCloudRegionId(), equalTo(legacyCloudRegion));
-
-
     }
 
     @Test
     public void whenLcpRegionNotEmpty_thenCloudRegionIdOfServiceIsLegacy() {
         String legacyCloudRegion = "legacyCloudRegion";
         ServiceInstantiation service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, "anyCloudRegion", legacyCloudRegion, null, null, null, null, null, null, null, null,
-                false, 1,false, false, null, null, Action.Create.name());
+                null, null, "anyCloudRegion", legacyCloudRegion, null, null, null, null, null, null, null, null, null,
+                false, 1,false, false, null, null, Action.Create.name(), UUID.randomUUID().toString(), null, null, null);
         assertThat(service.getLcpCloudRegionId(), equalTo(legacyCloudRegion));
     }
 
-    @Test
-    public void createVolumeGroup_verifyResultAsExpected() throws IOException {
-        final URL resource = this.getClass().getResource("/payload_jsons/volumegroup_instantiation_request.json");
-        VfModule vfModule = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1",
-                "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
-                "72d9d1cd-f46d-447a-abdb-451d6fb05fa8",
-                Collections.emptyList(),
-                Collections.emptyMap(),
-                "vmxnjr001_AVPN_base_vRE_BV_expansion",
-                "myVgName",
-                true);
-        vfModule.getModelInfo().setModelInvariantId("ff5256d2-5a33-55df-13ab-12abad84e7ff");
-        vfModule.getModelInfo().setModelVersion("1");
-        ModelInfo vnfModelInfo = createVnfModelInfo(true);
-        RequestDetailsWrapper<VolumeGroupRequestDetails> result =
-                asyncInstantiationBL.generateVolumeGroupInstantiationRequest(vfModule,
-                        createServiceModelInfo(),
-                       "ff3514e3-5a33-55df-13ab-12abad84e7ff",
-                        vnfModelInfo,
-                        "vnfInstanceId",
-                        "az2016");
-        String expected = IOUtils.toString(resource, "UTF-8");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+    @DataProvider
+    public static Object[][] getJobTypeByRequest_verifyResultAsExpectedDataProvider() {
+        return new Object[][]{
+                {false, Action.Create, JobType.MacroServiceInstantiation},
+                {true, Action.Create, JobType.ALaCarteServiceInstantiation},
+                {true, Action.Delete, JobType.ALaCarteService},
+        };
+    }
+
+    @Test(dataProvider = "getJobTypeByRequest_verifyResultAsExpectedDataProvider")
+    public void getJobTypeByRequest_verifyResultAsExpected(boolean isALaCarte, Action action, JobType expectedJobType) {
+        ServiceInstantiation service = createServiceWithIsALaCarteAndAction(isALaCarte, action);
+        assertThat(asyncInstantiationBL.getJobType(service), equalTo(expectedJobType));
+    }
+
+    @NotNull
+    protected ServiceInstantiation createServiceWithIsALaCarteAndAction(boolean isALaCarte, Action action) {
+        return new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null,
+                false, 1, false, isALaCarte, null, null, action.name(),
+                UUID.randomUUID().toString(), null, null, null);
+    }
+
+    @DataProvider
+    public static Object[][] isRetryEnabledForStatusDataProvider(Method test) {
+        return new Object[][]{
+                {FAILED, true, true},
+                {COMPLETED_WITH_ERRORS, true, true},
+                {COMPLETED_WITH_NO_ACTION, true, false},
+                {COMPLETED, true, false},
+                {IN_PROGRESS, true, false},
+                {FAILED, false, false},
+                {COMPLETED_WITH_ERRORS, false, false},
+                {COMPLETED, false, false},
+        };
+    }
+
+    @Test(dataProvider = "isRetryEnabledForStatusDataProvider")
+    public void whenUpdateServiceInfoAndAuditStatus_thenServiceInfoRowIsUpdatedAndIsRetryIsRight(
+            JobStatus jobStatus, boolean isRetryfeatureEnabled, boolean expectedIsRetry) {
+        when(featureManager.isActive(Features.FLAG_1902_RETRY_JOB)).thenReturn(isRetryfeatureEnabled);
+        UUID uuid = createFakedJobAndServiceInfo();
+        asyncInstantiationBL.updateServiceInfoAndAuditStatus(uuid, jobStatus);
+        ServiceInfo serviceInfo = ((List<ServiceInfo>)dataAccessService.getList(ServiceInfo.class, getPropsMap())).
+                stream().filter(x->x.getJobId().equals(uuid)).findFirst().get();
+        assertEquals(jobStatus, serviceInfo.getJobStatus());
+
+        //we don't test serviceInfo.getStatusModifiedDate() because it's too complicated
+
+        assertEquals(expectedIsRetry, serviceInfo.isRetryEnabled());
     }
 
     @Test
-    public void getJobTypeByRequest_verifyResultAsExpected(){
-        ServiceInstantiation service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null,
-                false, 1,false, false, null, null, Action.Create.name());
-        JobType jobType = asyncInstantiationBL.getJobType(service) ;
-        assertThat(jobType, equalTo(JobType.MacroServiceInstantiation));
-        service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null,
-                false, 1,false, true, null, null, Action.Create.name());
-        jobType = asyncInstantiationBL.getJobType(service);
-        assertThat(jobType, equalTo(JobType.ALaCarteServiceInstantiation));
-        service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null,
-                false, 1,false, true, null, null, Action.Delete.name());
-        jobType = asyncInstantiationBL.getJobType(service);
-        assertThat(jobType, equalTo(JobType.ALaCarteService));
+    public void givenServiceWithNullTrackByIds_whenReplaceTrackByIds_thenAllLevelsHasTrackByIdWithUUID() {
+        ServiceInstantiation serviceInstantiation = FakeResourceCreator.createServiceWith2InstancesInEachLevel(Action.Create);
+        //assert for the given that all trackById are null
+        assertTrackByIdRecursively(serviceInstantiation, is(nullValue()), new HashSet<>());
+        ServiceInstantiation modifiedServiceInstantiation = asyncInstantiationBL.prepareServiceToBeUnique(serviceInstantiation);
+        assertTrackByIdRecursively(modifiedServiceInstantiation, uuidRegexMatcher, new HashSet<>());
     }
 
-    protected ServiceInstantiation generateALaCarteServiceInstantiationPayload() {
-        return generateMockALaCarteServiceInstantiationPayload(false, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API");
+    private void assertTrackByIdRecursively(BaseResource baseResource, org.hamcrest.Matcher matcher, Set<String> usedUuids) {
+        assertThat(baseResource.getTrackById(), matcher);
+        if (baseResource.getTrackById()!=null) {
+            assertThat(usedUuids, not(hasItem(baseResource.getTrackById())));
+            usedUuids.add(baseResource.getTrackById());
+        }
+        baseResource.getChildren().forEach(x->assertTrackByIdRecursively(x, matcher, usedUuids));
     }
 
-    private ServiceInstantiation generateALaCarteServiceDeletionPayload() {
-        return generateMockALaCarteServiceDeletionPayload(false, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
+    @Test
+    public void givenServicefromDB_returnsTheBulkRequest() throws IOException {
+        ServiceInstantiation serviceInstantiation = TestUtils.readJsonResourceFileAsObject("/payload_jsons/VnfGroupCreate3Delete1None1Request.json", ServiceInstantiation.class);
+        UUID jobId = UUID.randomUUID();
+        doReturn(serviceInstantiation).when(asyncInstantiationRepository).getJobRequest(jobId);
+        doReturn(mock(Map.class)).when(asyncInstantiationRepository).getResourceInfoByRootJobId(jobId);
+        ServiceInstantiation modifiedServiceInstantiation = asyncInstantiationBL.getBulkForRetry(jobId);
+        assertThat(modifiedServiceInstantiation, jsonEquals(serviceInstantiation).when(IGNORING_ARRAY_ORDER));
+    }
+
+    @Test
+    public void givenServiceFromDB_returnsResolvedData() throws IOException {
+        ServiceInstantiation serviceInstantiation = TestUtils.readJsonResourceFileAsObject("/payload_jsons/VnfGroupCreate3Delete1None1Request.json", ServiceInstantiation.class);
+        ServiceInstantiation expectedServiceInstantiation = TestUtils.readJsonResourceFileAsObject("/payload_jsons/VnfGroupCreate3Delete1None1RequestResolvedForRetry.json", ServiceInstantiation.class);
+        UUID jobId = UUID.randomUUID();
+        AsyncRequestStatus asyncRequestStatus = TestUtils.readJsonResourceFileAsObject(
+                "/responses/mso/orchestrationRequestsVnf.json",
+                AsyncRequestStatus.class);
+        Map<String, ResourceInfo> mockedResourceInfoMap = ImmutableMap.of(
+                "groupingservicefortest..ResourceInstanceGroup..0:001", new ResourceInfo("groupingservicefortest..ResourceInstanceGroup..0:001",jobId,"VNF_GROUP1_INSTANCE_ID", COMPLETED, asyncRequestStatus),// TODO case: delete completed
+                "ag5aav86u4j", new ResourceInfo("ag5aav86u4j",jobId, null, FAILED, asyncRequestStatus),// case: failed
+                "asedrftjko", new ResourceInfo("asedrftjko",jobId, "VNF_GROUP1_INSTANCE_ID_3", COMPLETED, asyncRequestStatus),//case: completed after retry failed
+                "rgedfdged4", new ResourceInfo("rgedfdged4", jobId,"VNF_GROUP1_INSTANCE_ID_4", COMPLETED, asyncRequestStatus ));// case: create completed
+
+        doReturn(mockedResourceInfoMap).when(asyncInstantiationRepository).getResourceInfoByRootJobId(jobId);
+        ServiceInstantiation modifiedServiceInstantiation = asyncInstantiationBL.enrichBulkForRetry(serviceInstantiation,jobId);
+        assertThat(modifiedServiceInstantiation, jsonEquals(expectedServiceInstantiation).when(IGNORING_ARRAY_ORDER));
+    }
+
+    @DataProvider
+    public static Object[][] readStatusMsgDataProvider(Method test) throws IOException {
+        AsyncRequestStatus asyncRequestStatus = TestUtils.readJsonResourceFileAsObject(
+                "/responses/mso/orchestrationRequestsVnf.json",
+                AsyncRequestStatus.class);
+        return new Object[][]{
+                {null, null},
+                {new AsyncRequestStatus(), null},
+                {new AsyncRequestStatus(new AsyncRequestStatus.Request()), null},
+                {new AsyncRequestStatus(new AsyncRequestStatus.Request(new RequestStatus())), null},
+                {asyncRequestStatus, "Vnf has been created successfully."}
+        };
+    }
+
+    @Test(dataProvider = "readStatusMsgDataProvider")
+    public void resourceInfoReadStatusMsg_returnsStatusMsgOrNull(AsyncRequestStatus asyncRequestStatus, String expected) {
+        ResourceInfo resourceInfo = new ResourceInfo("groupingservicefortest..ResourceInstanceGroup..0:001",UUID.randomUUID(),"VNF_GROUP1_INSTANCE_ID", COMPLETED, asyncRequestStatus);
+        String msg= asyncInstantiationBL.readStatusMsg(resourceInfo);
+        assertThat(msg, equalTo( expected));
+    }
+
+    @Test
+    public void testAddResourceInfoForOkResponse() {
+        reset(asyncInstantiationRepository);
+        String serviceInstanceId = "service-instance-id";
+        UUID jobUuid = UUID.randomUUID();
+
+        asyncInstantiationBL.addResourceInfo(prepareSharedDataForAddResourceInfo(jobUuid), JobStatus.IN_PROGRESS, serviceInstanceId);
+
+        ArgumentCaptor<ResourceInfo> resourceInfoCaptor = ArgumentCaptor.forClass(ResourceInfo.class);
+        verify(asyncInstantiationRepository).saveResourceInfo(resourceInfoCaptor.capture());
+
+        ResourceInfo resourceInfo = resourceInfoCaptor.getValue();
+        assertResourceInfoValues(resourceInfo, serviceInstanceId, jobUuid, JobStatus.IN_PROGRESS);
+        assertThat(resourceInfo.getErrorMessage(), is(nullValue()));
+    }
+
+    private JobSharedData prepareSharedDataForAddResourceInfo(UUID jobUuid) {
+        ServiceInstantiation serviceInstantiation = mock(ServiceInstantiation.class);
+        when(serviceInstantiation.getTrackById()).thenReturn("track-by-id");
+        return new JobSharedData(jobUuid, "", serviceInstantiation, "");
+    }
+
+    private void assertResourceInfoValues(ResourceInfo resourceInfo, String serviceInstanceId, UUID jobUuid, JobStatus jobStatus) {
+        assertThat(resourceInfo.getInstanceId(), equalTo(serviceInstanceId));
+        assertThat(resourceInfo.getJobStatus(), equalTo(jobStatus));
+        assertThat(resourceInfo.getRootJobId(), equalTo(jobUuid));
+        assertThat(resourceInfo.getTrackById(), equalTo("track-by-id"));
+    }
+
+    @DataProvider
+    public static Object[][] addResourceInfoWithError() {
+        String message = "Failed to create service instance";
+        return new Object[][]{
+                {500, message},
+                {199, "{\"serviceException\":{\"messageId\":\"SVC2000\",\"text\":\"Error: " + message + "\"}}"}
+        };
+    }
+
+    @Test(dataProvider = "addResourceInfoWithError")
+    public void testAddResourceInfoForErrorResponse(int errorCode, String errorMessage) {
+        reset(asyncInstantiationRepository);
+        UUID jobUuid = UUID.randomUUID();
+
+        RestObject restObject = mock(RestObject.class);
+        when(restObject.getStatusCode()).thenReturn(errorCode);
+        when(restObject.getRaw()).thenReturn(errorMessage);
+        asyncInstantiationBL.addFailedResourceInfo(prepareSharedDataForAddResourceInfo(jobUuid), restObject);
+
+        ArgumentCaptor<ResourceInfo> resourceInfoCaptor = ArgumentCaptor.forClass(ResourceInfo.class);
+        verify(asyncInstantiationRepository).saveResourceInfo(resourceInfoCaptor.capture());
+
+        ResourceInfo resourceInfo = resourceInfoCaptor.getValue();
+        assertResourceInfoValues(resourceInfo, null, jobUuid, JobStatus.FAILED);
+        assertThat(resourceInfo.getErrorMessage().request.requestStatus.getStatusMessage(), containsString("Failed to create service instance"));
+        assertThat(resourceInfo.getErrorMessage().request.requestStatus.getStatusMessage(), containsString(String.valueOf(errorCode)));
+        ZonedDateTime parsedDate = TimeUtils.parseZonedDateTime(resourceInfo.getErrorMessage().request.requestStatus.getTimestamp());
+        assertThat(parsedDate.toLocalDate(), is(LocalDate.now()));
+
+        doReturn(resourceInfo).when(asyncInstantiationRepository).getResourceInfoByTrackId(any());
+        JobAuditStatus jobAuditStatus = auditService.getResourceAuditStatus(resourceInfo.getTrackById());
+        assertThat(jobAuditStatus.getJobStatus(), equalTo("FAILED"));
+        assertThat(jobAuditStatus.getAdditionalInfo(), containsString("Failed to create service instance"));
+        assertThat(jobAuditStatus.getAdditionalInfo(), containsString(String.valueOf(errorCode)));
+        assertTrue(DateUtils.isSameDay(jobAuditStatus.getCreatedDate(), new Date()));
+    }
+
+    @DataProvider
+    public static Object[][] updateResourceInfoParameters() {
+        return new Object[][] {
+                {JobStatus.COMPLETED, "Instance was created successfully"},
+                {JobStatus.FAILED, "Failed to create instance"}
+        };
+    }
+
+    @Test(dataProvider = "updateResourceInfoParameters")
+    public void testUpdateResourceInfo(JobStatus jobStatus, String message) {
+        reset(asyncInstantiationRepository);
+        UUID jobUuid = UUID.randomUUID();
+        JobSharedData sharedData = new JobSharedData(jobUuid, "", mock(ServiceInstantiation.class),"");
+
+        ResourceInfo resourceInfoMock = new ResourceInfo();
+        resourceInfoMock.setTrackById(UUID.randomUUID().toString());
+        doReturn(resourceInfoMock).when(asyncInstantiationRepository).getResourceInfoByTrackId(any());
+
+        AsyncRequestStatus asyncRequestStatus = asyncInstantiationBL.convertMessageToAsyncRequestStatus(message);
+
+        asyncInstantiationBL.updateResourceInfo(sharedData, jobStatus, asyncRequestStatus);
+
+        ArgumentCaptor<ResourceInfo> resourceInfoCaptor = ArgumentCaptor.forClass(ResourceInfo.class);
+        verify(asyncInstantiationRepository).saveResourceInfo(resourceInfoCaptor.capture());
+
+        ResourceInfo resourceInfo = resourceInfoCaptor.getValue();
+        assertThat(resourceInfo.getJobStatus(), equalTo(jobStatus));
+        if (jobStatus == JobStatus.FAILED) {
+            assertThat(resourceInfo.getErrorMessage(), is(not(nullValue())));
+            assertThat(resourceInfo.getErrorMessage().request.requestStatus.getStatusMessage(), equalTo(message));
+            ZonedDateTime parsedDate = TimeUtils.parseZonedDateTime(resourceInfo.getErrorMessage().request.requestStatus.getTimestamp());
+            assertThat(parsedDate.toLocalDate(), is(LocalDate.now()));
+        } else {
+            assertThat(resourceInfo.getErrorMessage(), is(nullValue()));
+        }
+
+        JobAuditStatus jobAuditStatus = auditService.getResourceAuditStatus(resourceInfo.getTrackById());
+        if (jobStatus == JobStatus.FAILED) {
+            assertThat(jobAuditStatus.getJobStatus(), equalTo("FAILED"));
+            assertThat(jobAuditStatus.getAdditionalInfo(), equalTo(message));
+        } else {
+            assertThat(jobAuditStatus, is(nullValue()));
+        }
+
     }
 
     static class MockedJob implements Job {
@@ -1426,7 +1288,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
         @Override
         public JobSharedData getSharedData() {
-            return new JobSharedData(uuid, "", null);
+            return new JobSharedData(uuid, "", null,"");
         }
 
         @Override
@@ -1462,5 +1324,14 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         public String getOptimisticUniqueServiceInstanceName() {
             return optimisticUniqueServiceInstanceName;
         }
+    }
+
+
+    @Test
+    public void testGetVfModuleReplacePath_asMSOexpected()
+    {
+        String path = asyncInstantiationBL.getVfModuleReplacePath("myService", "myVNF", "myVFModule");
+        assertThat(path, equalTo("/serviceInstantiation/v7/serviceInstances/myService/vnfs/myVNF/vfModules/myVFModule/replace"));
+
     }
 }

@@ -25,13 +25,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.asdc.AsdcClient;
-import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.exceptions.GenericUncheckedException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -39,6 +32,12 @@ import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.asdc.AsdcClient;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.exceptions.GenericUncheckedException;
 
 /**
  * The Class LocalAsdcClient.
@@ -147,14 +146,14 @@ public class LocalAsdcClient implements AsdcClient {
             return null;
         }
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(toscaModelURL).getFile());
 
         try {
+            File file = new File(classLoader.getResource(toscaModelURL).getFile());
             //using URLDecoder.decode to convert special characters from %XX to real character
             //see https://stackoverflow.com/questions/32251251/java-classloader-getresource-with-special-characters-in-path
             return Paths.get(URLDecoder.decode(file.getPath(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new GenericUncheckedException(e);
+        } catch (RuntimeException | UnsupportedEncodingException e) {
+            throw new GenericUncheckedException("Can't find " + toscaModelURL, e);
         }
     }
 

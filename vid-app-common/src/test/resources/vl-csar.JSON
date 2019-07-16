@@ -75,7 +75,7 @@
             "modelCustomizationName": "ExtVL 0"
         }
     },
-    "collectionResource": {
+    "collectionResources": {
 
     },
     "configurations": {
@@ -93,5 +93,8 @@
     "pnfs": {
 
     },
-    "vnfGroups": {}
+    "vnfGroups": {},
+    "vrfs": {
+
+    }
 }

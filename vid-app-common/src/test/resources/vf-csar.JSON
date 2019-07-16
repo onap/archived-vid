@@ -3,7 +3,7 @@
 
   },
   "service": {
-    "category": "Mobility",
+    "category": "Emanuel",
     "description": "Bla bla",
     "serviceRole": null,
     "serviceType": null,
@@ -96,10 +96,10 @@
       "properties": {
         "availability_zone_max_count": "get_input:greatdefect0_availability_zone_max_count",
         "itc_flavor_name": "nv.c8r24d160",
-        "itc_image_name": "NIMBUS_IXLA-ITC_8.20_EA_KVM_210117.qcow2",
+        "itc_image_name": "KENNEDY_IXLA-ITC_8.20_EA_KVM_210117.qcow2",
         "itc_name_0": "get_input:greatdefect0_itc_name_0",
         "itm_flavor_name": "nv.c2r4d50",
-        "itm_image_name": "NIMBUS_IXLA-ITM_8.20.EA_KVM.qcow2",
+        "itm_image_name": "KENNEDY_IXLA-ITM_8.20.EA_KVM.qcow2",
         "vf_module_id": "get_input:greatdefect0_vf_module_id",
         "ecomp_generated_naming": "false"
       },
@@ -178,5 +178,8 @@
   "pnfs": {
 
   },
-  "vnfGroups": {}
+  "vnfGroups": {},
+  "vrfs": {
+
+  }
 }

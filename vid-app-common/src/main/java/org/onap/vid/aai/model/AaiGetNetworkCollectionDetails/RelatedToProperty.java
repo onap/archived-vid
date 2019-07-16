@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,33 +25,30 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RelatedToProperty {
+public class RelatedToProperty extends KeyValueModel {
 
-	public String getPropertyKey() {
-		return propertyKey;
-	}
+    @Override
+    @JsonProperty("property-key")
+    public String getKey() {
+        return super.getKey();
+    }
 
+    @Override
+    @JsonProperty("property-key")
+    public void setKey(String propertyKey) {
+        super.setKey(propertyKey);
+    }
 
-	public void setPropertyKey(String propertyKey) {
-		this.propertyKey = propertyKey;
-	}
+    @Override
+    @JsonProperty("property-value")
+    public String getValue() {
+        return super.getValue();
+    }
 
-
-	public String getPropertyValue() {
-		return propertyValue;
-	}
-
-
-	public void setPropertyValue(String propertyValue) {
-		this.propertyValue = propertyValue;
-	}
-
-
-	@JsonProperty("property-key")
-	public String propertyKey;
-
-
-	@JsonProperty("property-value")
-	public String propertyValue;
-
+    @Override
+    @JsonProperty("property-value")
+    public void setValue(String propertyValue) {
+        super.setValue(propertyValue);
+    }
 }
+

@@ -18,18 +18,18 @@
   },
   "networks": {
   },
-  "collectionResource": {
+  "collectionResources": {
   },
   "configurations": {
   },
   "fabricConfigurations": {
   },
   "serviceProxies": {
-    "vdbe_svc_vprs_proxy 0": {
+    "vdorothea_svc_vprs_proxy 0": {
       "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
       "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
-      "description": "A Proxy for Service vDBE_Svc_vPRS",
-      "name": "vDBE_Svc_vPRS Service Proxy",
+      "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
+      "name": "vDOROTHEA_Svc_vPRS Service Proxy",
       "version": "1.0",
       "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
       "inputs": {
@@ -42,7 +42,7 @@
       "type": "Service Proxy",
       "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
       "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
-      "sourceModelName": "vDBE_Svc_vPRS"
+      "sourceModelName": "vDOROTHEA_Svc_vPRS"
     },
     "tsbc0001vm001_svc_proxy 0": {
       "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
@@ -87,11 +87,11 @@
         "ecomp_generated_naming": "true"
       },
       "members": {
-        "vdbe_svc_vprs_proxy 0": {
+        "vdorothea_svc_vprs_proxy 0": {
           "uuid": "65fadfa8-a0d9-443f-95ad-836cd044e26c",
           "invariantUuid": "f4baae0c-b3a5-4ca1-a777-afbffe7010bc",
-          "description": "A Proxy for Service vDBE_Svc_vPRS",
-          "name": "vDBE_Svc_vPRS Service Proxy",
+          "description": "A Proxy for Service vDOROTHEA_Svc_vPRS",
+          "name": "vDOROTHEA_Svc_vPRS Service Proxy",
           "version": "1.0",
           "customizationUuid": "bdb63d23-e132-4ce7-af2c-a493b4cafac9",
           "inputs": {},
@@ -102,7 +102,7 @@
           "type": "Service Proxy",
           "sourceModelUuid": "da7827a2-366d-4be6-8c68-a69153c61274",
           "sourceModelInvariant": "24632e6b-584b-4f45-80d4-fefd75fd9f14",
-          "sourceModelName": "vDBE_Svc_vPRS"
+          "sourceModelName": "vDOROTHEA_Svc_vPRS"
         }
       }
     },
@@ -119,7 +119,8 @@
         "function": "SIGNALING",
         "description": "DDD1",
         "type": "LOAD-GROUP",
-        "ecomp_generated_naming": "true"
+        "ecomp_generated_naming": "true",
+        "quantity": 3
       },
       "members": {
         "tsbc0001vm001_svc_proxy 0": {
@@ -141,5 +142,8 @@
         }
       }
     }
+  },
+  "vrfs": {
+
   }
 }
