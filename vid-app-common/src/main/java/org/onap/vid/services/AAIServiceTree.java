@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,6 @@
 package org.onap.vid.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.AaiClientInterface;
@@ -31,21 +30,24 @@ import org.onap.vid.asdc.parser.ServiceModelInflator;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.model.aaiTree.ServiceInstance;
 import org.onap.vid.utils.Tree;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static java.lang.Thread.sleep;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.onap.vid.services.AAITreeNodeBuilder.*;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 @Component
 public class AAIServiceTree {
@@ -60,38 +62,58 @@ public class AAIServiceTree {
 
     private final ServiceModelInflator serviceModelInflator;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ExecutorService executorService;
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AAIServiceTree.class);
 
     public static final Tree<AaiRelationship> AAI_TREE_PATHS =
-            new Tree<>(new AaiRelationship(SERVICE_INSTANCE));
+            new Tree<>(new AaiRelationship(NodeType.SERVICE_INSTANCE));
 
     static {
-        AAI_TREE_PATHS.addPath(toAaiRelationshipList(GENERIC_VNF, VG));
-        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NETWORK));
-        AAI_TREE_PATHS.addPath(toAaiRelationshipList(GENERIC_VNF, NETWORK));
-        AAI_TREE_PATHS.addPath(toAaiRelationshipList(INSTANCE_GROUP));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.GENERIC_VNF, NodeType.VOLUME_GROUP));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.GENERIC_VNF, NodeType.VF_MODULE));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.GENERIC_VNF, NodeType.NETWORK, NodeType.VPN_BINDING));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.NETWORK, NodeType.VPN_BINDING));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.INSTANCE_GROUP, NodeType.GENERIC_VNF));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.COLLECTION_RESOURCE, NodeType.INSTANCE_GROUP));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.CONFIGURATION, NodeType.NETWORK, NodeType.VPN_BINDING));
+        AAI_TREE_PATHS.addPath(toAaiRelationshipList(NodeType.CONFIGURATION, NodeType.VPN_BINDING));
+    }
+
+    public static List<AAIServiceTree.AaiRelationship> toAaiRelationshipList(NodeType... types) {
+        return Stream.of(types).map(AAIServiceTree.AaiRelationship::new).collect(Collectors.toList());
     }
 
     @Inject
     public AAIServiceTree(AaiClientInterface aaiClient, AAITreeNodeBuilder aaiTreeNodeBuilder,
                           AAITreeConverter aaiTreeConverter, VidService sdcService,
-                          ServiceModelInflator serviceModelInflator) {
+                          ServiceModelInflator serviceModelInflator, ExecutorService executorService) {
         this.aaiClient = aaiClient;
         this.aaiTreeNodeBuilder = aaiTreeNodeBuilder;
         this.aaiTreeConverter = aaiTreeConverter;
         this.sdcService = sdcService;
         this.serviceModelInflator = serviceModelInflator;
+        this.executorService = executorService;
     }
 
-    public List<AAITreeNode> buildAAITree(String getUrl, Tree<AaiRelationship> pathsToSearch) {
+    List<AAITreeNode> buildAAITreeForUniqueResource(String getUrl, NodeType nodeType) {
+        return buildAAITreeForUniqueResourceFromCustomQuery(getUrl, null, HttpMethod.GET, nodeType);
+    }
+
+    List<AAITreeNode> buildAAITreeForUniqueResourceFromCustomQuery(String url, String payload, HttpMethod method, NodeType nodeType) {
+        Tree<AAIServiceTree.AaiRelationship> pathsToSearch = new Tree<>(new AAIServiceTree.AaiRelationship(nodeType));
+        return buildAAITree(url, payload, method, pathsToSearch, false);
+    }
+
+    public List<AAITreeNode> buildAAITree(String url, String payload, HttpMethod method, Tree<AaiRelationship> pathsToSearch, boolean enrichWithModelVersion) {
 
         ConcurrentSkipListSet<AAITreeNode> nodesAccumulator = createNodesAccumulator();
 
-        List<AAITreeNode> aaiTreeNodes = fetchAAITree(getUrl, pathsToSearch, nodesAccumulator, true);
+        List<AAITreeNode> aaiTreeNodes = fetchAAITree(url, payload, method, pathsToSearch, nodesAccumulator);
 
-        enrichNodesWithModelVersionAndModelName(nodesAccumulator);
+        if (enrichWithModelVersion) {
+            enrichNodesWithModelVersionAndModelName(nodesAccumulator);
+        }
 
         return aaiTreeNodes;
     }
@@ -105,7 +127,7 @@ public class AAIServiceTree {
         //Used later to get the nodes UUID
         ConcurrentSkipListSet<AAITreeNode> nodesAccumulator = createNodesAccumulator();
 
-        AAITreeNode aaiTree = fetchAAITree(getURL, AAI_TREE_PATHS, nodesAccumulator, false).get(0);
+        AAITreeNode aaiTree = fetchAAITree(getURL, null, HttpMethod.GET, AAI_TREE_PATHS, nodesAccumulator).get(0);
 
         //Populate nodes with model-name & model-version (from aai)
         enrichNodesWithModelVersionAndModelName(nodesAccumulator);
@@ -115,28 +137,28 @@ public class AAIServiceTree {
         //Populate nodes with model-customization-name (from sdc model)
         enrichNodesWithModelCustomizationName(nodesAccumulator, serviceModel);
 
-        return aaiTreeConverter.convertTreeToUIModel(aaiTree, globalCustomerId, serviceType, getInstantiationType(serviceModel));
+        return aaiTreeConverter.convertTreeToUIModel(aaiTree, globalCustomerId, serviceType, getInstantiationType(serviceModel), getInstanceRole(serviceModel), getInstanceType(serviceModel));
     }
 
-    private List<AAITreeNode> fetchAAITree(String getUrl, Tree<AaiRelationship> pathsToSearch,
-                                           ConcurrentSkipListSet<AAITreeNode> nodesAccumulator, boolean partialTreeOnTimeout) {
-        ThreadPoolExecutor threadPool = getThreadPool();
-
-        List<AAITreeNode> aaiTree =  aaiTreeNodeBuilder.buildNode(SERVICE_INSTANCE,
-                getUrl, defaultIfNull(nodesAccumulator, createNodesAccumulator()),
-                threadPool, new ConcurrentLinkedQueue<>(),
-                new AtomicInteger(0), pathsToSearch);
-
-        boolean timeoutOccurred = waitForTreeFetch(threadPool);
-
-        if (timeoutOccurred) {
-            if (!partialTreeOnTimeout) {
-                throw new GenericUncheckedException("Timeout on fetchAAITree. Fetched " + nodesAccumulator.size() + " nodes for url: " + getUrl);
-            }
-            LOGGER.warn(EELFLoggerDelegate.errorLogger, "Timeout on fetchAAITree for url: " + getUrl);
+    private String getInstanceType(ServiceModel serviceModel){
+        if (serviceModel != null && serviceModel.getService() != null) {
+            return serviceModel.getService().getServiceType();
         }
+        return "";
+    }
 
-        return aaiTree;
+    private String getInstanceRole(ServiceModel serviceModel) {
+        if (serviceModel != null && serviceModel.getService() != null) {
+            return serviceModel.getService().getServiceRole();
+        }
+        return "";
+    }
+
+    private List<AAITreeNode> fetchAAITree(String url, String payload, HttpMethod method, Tree<AaiRelationship> pathsToSearch,
+                                           ConcurrentSkipListSet<AAITreeNode> nodesAccumulator) {
+        return aaiTreeNodeBuilder.buildNode(NodeType.fromString(pathsToSearch.getRootValue().type),
+                url, payload, method, defaultIfNull(nodesAccumulator, createNodesAccumulator()),
+                executorService, pathsToSearch);
     }
 
     private ConcurrentSkipListSet<AAITreeNode> createNodesAccumulator() {
@@ -204,12 +226,12 @@ public class AAIServiceTree {
     private JsonNode getModels(AaiClientInterface aaiClient, Collection<String> invariantIDs) {
         Response response = aaiClient.getVersionByInvariantId(ImmutableList.copyOf(invariantIDs));
         try {
-            JsonNode responseJson = mapper.readTree(response.readEntity(String.class));
+            JsonNode responseJson = JACKSON_OBJECT_MAPPER.readTree(response.readEntity(String.class));
             return responseJson.get("model");
         } catch (Exception e) {
             LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to getVersionByInvariantId from A&AI", e);
         }
-        return mapper.createObjectNode();
+        return JACKSON_OBJECT_MAPPER.createObjectNode();
     }
 
     private Set<String> getModelInvariantIds(Collection<AAITreeNode> nodes) {
@@ -219,36 +241,16 @@ public class AAIServiceTree {
                 .collect(toSet());
     }
 
-    private boolean waitForTreeFetch(ThreadPoolExecutor threadPool) {
-        int timer = 60;
-        try {
-            //Stop fetching information if it takes more than 1 minute
-            while (threadPool.getActiveCount() != 0 &&
-                    timer > 0) {
-                sleep(1000);
-                timer--;
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new GenericUncheckedException(e);
-        }
-        threadPool.shutdown();
-        return (timer == 0);
-    }
-
-    private ThreadPoolExecutor getThreadPool() {
-        //Use at least one thread, and never more than 75% of the available thread.
-        int cores = Math.max((int)(Runtime.getRuntime().availableProcessors() * 0.75), 1);
-        BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
-        return new ThreadPoolExecutor(1, cores, 10, TimeUnit.SECONDS, queue);
-    }
-
     public static class AaiRelationship {
 
         public final String type;
 
         public AaiRelationship(String type) {
             this.type = type;
+        }
+
+        public AaiRelationship(NodeType nodeType) {
+            this.type = nodeType.getType();
         }
 
         @Override

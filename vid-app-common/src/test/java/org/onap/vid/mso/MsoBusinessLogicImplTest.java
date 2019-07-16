@@ -21,49 +21,33 @@
 
 package org.onap.vid.mso;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.endsWith;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
+import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
+import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
+import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
+import static org.onap.vid.mso.MsoBusinessLogicImpl.validateEndpointPath;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import io.joshworks.restclient.http.HttpResponse;
-import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
-import org.mockito.hamcrest.MockitoHamcrest;
-import org.onap.vid.changeManagement.WorkflowRequestDetail;
-import org.onap.vid.model.SOWorkflowList;
-import org.onap.vid.model.probes.ExternalComponentStatus;
-import org.onap.vid.mso.rest.RequestList;
-import org.onap.vid.mso.rest.RequestWrapper;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.changeManagement.ChangeManagementRequest;
-import org.onap.vid.controller.OperationalEnvironmentController;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.model.RequestReferencesContainer;
-import org.onap.vid.model.SoftDeleteRequest;
-import org.onap.vid.mso.model.CloudConfiguration;
-import org.onap.vid.mso.model.ModelInfo;
-import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
-import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
-import org.onap.vid.mso.model.RequestInfo;
-import org.onap.vid.mso.model.RequestParameters;
-import org.onap.vid.mso.model.RequestReferences;
-import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
-import org.onap.vid.mso.rest.Request;
-import org.onap.vid.mso.rest.RequestDetails;
-import org.onap.vid.mso.rest.RequestDetailsWrapper;
-import org.onap.vid.mso.rest.Task;
-import org.onap.vid.properties.Features;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
-import org.togglz.core.manager.FeatureManager;
-
-import javax.ws.rs.BadRequestException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -74,37 +58,45 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.endsWith;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
-import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
-import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
-import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
-import static org.onap.vid.mso.MsoBusinessLogicImpl.validateEndpointPath;
+import javax.ws.rs.BadRequestException;
+import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
+import org.mockito.ArgumentMatcher;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.hamcrest.MockitoHamcrest;
+import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.changeManagement.ChangeManagementRequest;
+import org.onap.vid.changeManagement.WorkflowRequestDetail;
+import org.onap.vid.controller.OperationalEnvironmentController;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.model.SOWorkflowList;
+import org.onap.vid.model.SoftDeleteRequest;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
+import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
+import org.onap.vid.mso.model.RequestInfo;
+import org.onap.vid.mso.model.RequestParameters;
+import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
+import org.onap.vid.mso.rest.Request;
+import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.mso.rest.RequestDetailsWrapper;
+import org.onap.vid.mso.rest.RequestList;
+import org.onap.vid.mso.rest.RequestWrapper;
+import org.onap.vid.mso.rest.Task;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 @ContextConfiguration(classes = {SystemProperties.class})
 public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Mock
-    private FeatureManager featureManager;
 
     @Mock
     private MsoInterface msoInterface;
@@ -126,7 +118,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     @BeforeClass
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        msoBusinessLogic = new MsoBusinessLogicImpl(msoInterface, featureManager);
+        msoBusinessLogic = new MsoBusinessLogicImpl(msoInterface);
     }
 
     @Test
@@ -282,39 +274,48 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         assertThat(response).isEqualToComparingFieldByField(expectedResponse);
     }
 
-    @Test
-    public void shouldProperlyDeleteSvcInstanceWithProperParametersAndFalseFeatureFlag() {
+    @DataProvider
+    public Object[][] deleteSvcInstanceShouldDelete() {
+        return new Object[][]{{"Active"}, {"unexpected-status"}};
+    }
+
+    @DataProvider
+    public Object[][] deleteSvcInstanceShouldUnassign() {
+        return new Object[][]{{"Created"}, {"Pendingdelete"}, {"pending-Delete"}, {"Assigned"}};
+    }
+
+
+    @Test(dataProvider = "deleteSvcInstanceShouldDelete")
+    public void shouldProperlyDeleteSvcInstanceWithProperParametersShouldDelete(String status) {
         // given
-        String endpointTemplate = "/serviceInstances/v5/%s";
+        String endpointTemplate = "/serviceInstantiation/v7/serviceInstances/%s";
         String serviceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
         String svcEndpoint = String.format(endpointTemplate, serviceInstanceId);
         RequestDetails requestDetails = new RequestDetails();
         MsoResponseWrapper expectedResponse = createOkResponse();
         given(msoInterface.deleteSvcInstance(requestDetails, svcEndpoint)).willReturn(expectedResponse);
-        given(featureManager.isActive(Features.FLAG_UNASSIGN_SERVICE)).willReturn(false);
 
         // when
         MsoResponseWrapper msoResponseWrapper = msoBusinessLogic
-                .deleteSvcInstance(requestDetails, serviceInstanceId, "unAssignOrDeleteParams");
+                .deleteSvcInstance(requestDetails, serviceInstanceId, status);
 
         // then
         assertThat(msoResponseWrapper).isEqualToComparingFieldByField(expectedResponse);
     }
 
-    @Test
-    public void shouldProperlyDeleteSvcInstanceWithProperParametersAndTrueFeatureFlag() {
+    @Test(dataProvider = "deleteSvcInstanceShouldUnassign")
+    public void shouldProperlyDeleteSvcInstanceWithProperParametersShouldUnassign(String status) {
         // given
-        String endpointTemplate = "/serviceInstantiation/v5/serviceInstances/%s/unassign";
+        String endpointTemplate = "/serviceInstantiation/v7/serviceInstances/%s/unassign";
         String serviceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
         String svcEndpoint = String.format(endpointTemplate, serviceInstanceId);
         RequestDetails requestDetails = new RequestDetails();
         MsoResponseWrapper expectedResponse = createOkResponse();
         given(msoInterface.unassignSvcInstance(requestDetails, svcEndpoint)).willReturn(expectedResponse);
-        given(featureManager.isActive(Features.FLAG_UNASSIGN_SERVICE)).willReturn(true);
 
         // when
         MsoResponseWrapper msoResponseWrapper = msoBusinessLogic
-                .deleteSvcInstance(requestDetails, serviceInstanceId, "assigned");
+                .deleteSvcInstance(requestDetails, serviceInstanceId, status);
 
         // then
         assertThat(msoResponseWrapper).isEqualToComparingFieldByField(expectedResponse);
@@ -323,7 +324,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     @Test
     public void shouldProperlyDeleteVnfWithProperParameters() {
         // when
-        String endpointTemplate = "/serviceInstances/v5/%s/vnfs/%s";
+        String endpointTemplate = "/serviceInstantiation/v7/serviceInstances/%s/vnfs/%s";
         String serviceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
         String vnfInstanceId = "testVnfInstanceTempId";
         String vnfEndpoint = String.format(endpointTemplate, serviceInstanceId, vnfInstanceId);
@@ -342,7 +343,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     @Test
     public void shouldProperlyDeleteVfModuleWithProperParameters() {
         // when
-        String endpointTemplate = "/serviceInstances/v7/%s/vnfs/%s/vfModules/%s";
+        String endpointTemplate = "/serviceInstantiation/v7/serviceInstances/%s/vnfs/%s/vfModules/%s";
         String serviceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
         String vnfInstanceId = "testVnfInstanceTempId";
         String vfModuleId = "testVfModuleId";
@@ -903,58 +904,6 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         ModelInfo modelInfo = new ModelInfo();
         modelInfo.setModelType("vfModule");
         requestDetails.setModelInfo(modelInfo);
-    }
-
-    @Test
-    public void shouldProperlyDeactivateAndCloudDeleteWithProperParameters() {
-        //  given
-        String serviceInstanceId = "testServiceId";
-        String vnfInstanceId = "testVnfInstanceId";
-        String vfModuleInstanceId = "testVfModuleInstanceId";
-        RequestDetails requestDetails = new RequestDetails();
-
-        String path = msoBusinessLogic.getDeactivateAndCloudDeletePath(serviceInstanceId, vnfInstanceId, vfModuleInstanceId);
-
-        RequestReferences requestReferences = new RequestReferences();
-        requestReferences.setInstanceId("testInstance");
-        requestReferences.setRequestId("testRequest");
-
-        HttpResponse<RequestReferencesContainer> expectedResponse = HttpResponse.fallback(new RequestReferencesContainer(requestReferences));
-
-        MsoResponseWrapper2 responseWrapped = new MsoResponseWrapper2<>(expectedResponse);
-
-        given(msoInterface.post(eq(path), any(RequestDetails.class), eq(RequestReferencesContainer.class))).willReturn(expectedResponse);
-
-        //  when
-        MsoResponseWrapper2 response = msoBusinessLogic.deactivateAndCloudDelete(serviceInstanceId, vnfInstanceId, vfModuleInstanceId, requestDetails);
-
-        //  then
-        assertThat(response).isEqualToComparingFieldByField(responseWrapped);
-    }
-
-    @Test
-    public void shouldProperlyActivateFabricConfigurationWithProperParameters() {
-        //  given
-        String serviceInstanceId = "testServiceId";
-        RequestDetails requestDetails = new RequestDetails();
-
-        String path = msoBusinessLogic.getActivateFabricConfigurationPath(serviceInstanceId);
-
-        RequestReferences requestReferences = new RequestReferences();
-        requestReferences.setInstanceId("testInstance");
-        requestReferences.setRequestId("testRequest");
-
-        HttpResponse<RequestReferencesContainer> expectedResponse = HttpResponse.fallback(new RequestReferencesContainer(requestReferences));
-
-        MsoResponseWrapper2 responseWrapped = new MsoResponseWrapper2<>(expectedResponse);
-
-        given(msoInterface.post(eq(path), any(RequestDetails.class), eq(RequestReferencesContainer.class))).willReturn(expectedResponse);
-
-        //  when
-        MsoResponseWrapper2 response = msoBusinessLogic.activateFabricConfiguration(serviceInstanceId, requestDetails);
-
-        //  then
-        assertThat(response).isEqualToComparingFieldByField(responseWrapped);
     }
 
     @Test

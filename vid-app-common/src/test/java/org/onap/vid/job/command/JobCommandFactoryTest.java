@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -105,7 +105,7 @@ public class JobCommandFactoryTest {
 
         final UUID uuid = UUID.randomUUID();
         final Map<String, Object> data = ImmutableMap.of("foo", "bar");
-        final JobSharedData sharedData = new JobSharedData(uuid, "userid", new MockedRequest(1,"a"));
+        final JobSharedData sharedData = new JobSharedData(uuid, "userid", new MockedRequest(1,"a"), "testApi");
 
         when(job.getType()).thenReturn(jobType);
         when(job.getUuid()).thenReturn(uuid);

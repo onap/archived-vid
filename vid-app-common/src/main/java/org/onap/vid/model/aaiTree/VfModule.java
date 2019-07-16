@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,6 @@
 
 package org.onap.vid.model.aaiTree;
 
-import org.onap.vid.aai.util.AAITreeConverter;
-
 import static org.onap.vid.aai.util.AAITreeConverter.IS_BASE_VF_MODULE;
 
 public class VfModule extends Node {
@@ -30,7 +28,8 @@ public class VfModule extends Node {
     private String volumeGroupName;
 
     public VfModule(AAITreeNode node) {
-        super(node, AAITreeConverter.ModelType.vfModule);
+        super(node);
+        fillCloudConfigurationProperties(this, node.getCloudConfiguration());
     }
 
     public boolean getIsBase() {

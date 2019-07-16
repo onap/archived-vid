@@ -38,8 +38,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Properties;
 import java.util.UUID;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -61,7 +61,7 @@ public class MsoRestClientNewTest {
 
     private static StubServer server;
     private static StubServer securedServer;
-    private static Properties props = new Properties();
+    private static PropertiesConfiguration props = new PropertiesConfiguration();
     private static String msoCreateServiceInstanceJson;
     private static String msoScaleOutVfModule;
     private final static String CREATE_INSTANCE_RESPONSE_STR =
@@ -76,7 +76,7 @@ public class MsoRestClientNewTest {
 
 
     @BeforeClass
-    public static void start() throws IOException {
+    public static void start() throws Exception {
         server = new StubServer().run();
         securedServer = new StubServer().secured().run();
 
@@ -109,7 +109,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testCreateSvcInstance() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_CONFIGURATIONS);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_CONFIGURATIONS);
         endpoint = endpoint.replace(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
                 server,
@@ -122,7 +122,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testCreateVnf() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VNF_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_VNF_INSTANCE);
         endpoint = endpoint.replace(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
                 server,
@@ -136,7 +136,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testCreateNwInstance() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
         String nw_endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
                 server,
@@ -149,7 +149,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testCreateVolumeGroupInstance() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
         String vnf_endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         vnf_endpoint = vnf_endpoint.replaceFirst(MsoController.VNF_INSTANCE_ID, SAMPLE_VNF_INSTANCE_ID);
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
@@ -163,7 +163,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testCreateVfModuleInstance() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
         String partial_endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         String vf_module_endpoint =
                 partial_endpoint.replaceFirst(MsoController.VNF_INSTANCE_ID, SAMPLE_VNF_INSTANCE_ID);
@@ -195,7 +195,7 @@ public class MsoRestClientNewTest {
     @Ignore
     @Test
     public void testDeleteSvcInstance() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_SVC_INSTANCE);
         endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
 
 
@@ -211,7 +211,7 @@ public class MsoRestClientNewTest {
     @Ignore
     @Test
     public void testDeleteVnf() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VNF_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_VNF_INSTANCE);
         endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
 
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
@@ -226,7 +226,7 @@ public class MsoRestClientNewTest {
     @Ignore
     @Test
     public void testDeleteVfModule() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
         String part_endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         String vf_modules_endpoint = part_endpoint.replaceFirst(MsoController.VNF_INSTANCE_ID, SAMPLE_VNF_INSTANCE_ID);
         String delete_vf_endpoint = vf_modules_endpoint + '/' + SAMPLE_VNF_MODULE_ID;
@@ -243,7 +243,7 @@ public class MsoRestClientNewTest {
     @Ignore
     @Test
     public void testDeleteVolumeGroupInstance() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_VOLUME_GROUP_INSTANCE);
         String svc_endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         String vnf_endpoint = svc_endpoint.replaceFirst(MsoController.VNF_INSTANCE_ID, SAMPLE_VNF_INSTANCE_ID);
         String delete_volume_group_endpoint = vnf_endpoint + "/" + SAMPLE_VNF_MODULE_ID;
@@ -260,7 +260,7 @@ public class MsoRestClientNewTest {
     @Ignore
     @Test
     public void testDeleteNwInstance() throws Exception {
-        String endpoint = props.getProperty(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_REST_API_NETWORK_INSTANCE);
         String svc_endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         String delete_nw_endpoint = svc_endpoint + "/" + SAMPLE_NETWORK_INSTANCE_ID;
 
@@ -275,7 +275,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testGetOrchestrationRequest() {
-        String p = props.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQ);
+        String p = props.getString(MsoProperties.MSO_REST_API_GET_ORC_REQ);
         String path = p + "/" + SAMPLE_REQUEST_ID;
 
         try(MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
@@ -289,7 +289,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testGetManualTasksByRequestId() {
-        String p = props.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQ);
+        String p = props.getString(MsoProperties.MSO_REST_API_GET_ORC_REQ);
         String path = p + "/" + UUID.randomUUID();
         String validResponse = "" 
             + "{ "
@@ -376,7 +376,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testSetConfigurationActiveStatus() throws Exception {
-        String endpoint = "/serviceInstances/v5/<service_instance_id>/configurations/<configuration_id>";
+        String endpoint = "/serviceInstances/v7/<service_instance_id>/configurations/<configuration_id>";
         endpoint = endpoint.replace(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         endpoint = endpoint.replace(MsoController.CONFIGURATION_ID, SAMPLE_CONFIGURATION_ID);
         endpoint = endpoint + "/activate";
@@ -448,7 +448,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testRemoveRelationshipFromServiceInstance() throws Exception {
-        String serviceEndpoint = props.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String serviceEndpoint = props.getString(MsoProperties.MSO_REST_API_SVC_INSTANCE);
         String removeRelationshipsPath = serviceEndpoint + "/" + SERVICE_INSTANCE_ID + "/removeRelationships";
 
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
@@ -476,7 +476,7 @@ public class MsoRestClientNewTest {
     }
     @Test
     public void testScaleOutVfModule() throws IOException {
-        String serviceEndpoint = props.getProperty(MsoProperties.MSO_REST_API_VF_MODULE_SCALE_OUT);
+        String serviceEndpoint = props.getString(MsoProperties.MSO_REST_API_VF_MODULE_SCALE_OUT);
         String partial_endpoint = serviceEndpoint.replaceFirst(SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         String vf_module_endpoint = partial_endpoint.replaceFirst(VNF_INSTANCE_ID, SAMPLE_VNF_INSTANCE_ID);
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(

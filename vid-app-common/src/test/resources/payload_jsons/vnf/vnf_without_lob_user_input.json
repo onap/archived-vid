@@ -1,0 +1,24 @@
+{
+  "modelInfo": {
+    "modelCustomizationName": "xbi test VID noFC HEAT 0",
+    "modelCustomizationId": "e9745411-1f7d-47e3-9857-47363cb9ff92",
+    "modelInvariantId": "77d3a011-affb-4166-89b2-c4be7bc4ff23",
+    "modelVersionId": "9bb0edd9-3631-455b-bdfd-979b2ab53d07",
+    "modelName": "xbi test VID noFC HEAT",
+    "modelType": "vnf",
+    "modelVersion": "1.0"
+  },
+  "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "instanceName": "zolson52bfrwl01",
+  "action": "Create",
+  "platformName": "NETWORK-CLOUD",
+  "lcpCloudRegionId": "olson52b",
+  "tenantId": "bbf14e449c954feea272e926a8c2b244",
+  "instanceParams": [{}],
+  "rollbackOnFailure": true,
+  "instanceId": null,
+  "vfModules": {},
+  "trackById": "449206d5-54a6-441f-b5c2-beacb2f2e1cc",
+  "isFailed": false,
+  "lineOfBusiness": null
+}

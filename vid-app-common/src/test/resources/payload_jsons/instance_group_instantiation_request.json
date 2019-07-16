@@ -10,7 +10,7 @@
        "modelCustomizationId": "ab153b6e-c364-44c0-bef6-1f2982117f04"
      },
      "requestInfo": {
-       "instanceName": "VNF_GROUP_NAME_001",
+       "instanceName": "VNF_GROUP_NAME",
        "source": "VID",
        "suppressRollback": true,
        "requestorId": "az2018"
@@ -30,7 +30,8 @@
         }
      ],
      "requestParameters": {
-           "userParams": []
+       "userParams": [],
+       "testApi" : "VNF_API"
      }
    }
  }

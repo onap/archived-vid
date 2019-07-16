@@ -21,10 +21,11 @@
 
 package org.onap.vid.mso;
 
+import java.util.List;
+import java.util.UUID;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.controller.OperationalEnvironmentController;
-import org.onap.vid.services.ProbeInterface;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
@@ -33,9 +34,7 @@ import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestD
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.Task;
-
-import java.util.List;
-import java.util.UUID;
+import org.onap.vid.services.ProbeInterface;
 
 public interface MsoBusinessLogic extends ProbeInterface {
 
@@ -136,10 +135,6 @@ public interface MsoBusinessLogic extends ProbeInterface {
     String getDeactivateAndCloudDeletePath(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId);
 
     RequestDetails buildRequestDetailsForSoftDelete(SoftDeleteRequest softDeleteRequest);
-
-    MsoResponseWrapper2 deactivateAndCloudDelete(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId, RequestDetails requestDetails);
-
-    MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails);
 
     SOWorkflowList getWorkflowListByModelId(String modelVersionId);
 }

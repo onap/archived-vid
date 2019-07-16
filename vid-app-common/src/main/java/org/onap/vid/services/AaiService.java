@@ -48,7 +48,7 @@ public interface AaiService {
 
     SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator);
 
-    AaiResponse getSubscriberData(String subscriberId, RoleValidator roleValidator);
+    AaiResponse getSubscriberData(String subscriberId, RoleValidator roleValidator, boolean omitServiceInstances);
 
     AaiResponse getServiceInstanceSearchResults(String subscriberId, String instanceIdentifier, RoleValidator roleProvider, List<String> owningEntities, List<String> projects);
 

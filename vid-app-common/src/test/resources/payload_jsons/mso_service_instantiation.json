@@ -13,7 +13,7 @@
     },
     "owningEntity": {
       "owningEntityId": "038d99af-0427-42c2-9d15-971b99b9b489",
-      "owningEntityName": "PACKET CORE"
+      "owningEntityName": "JULIO ERICKSON"
     },
     "project": {
       "projectName": "TODO"
@@ -49,7 +49,7 @@
     "modelVersion":"10.0"
   },
   "owningEntityId":"038d99af-0427-42c2-9d15-971b99b9b489",
-  "owningEntityName":"PACKET CORE",
+  "owningEntityName":"JULIO ERICKSON",
   "projectName":"{some project name}",
   "globalSubscriberId":"{some subscriber id}",
   "productFamilyId":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",

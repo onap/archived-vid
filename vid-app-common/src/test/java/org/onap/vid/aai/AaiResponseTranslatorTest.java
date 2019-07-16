@@ -45,9 +45,9 @@ public class AaiResponseTranslatorTest {
                 "  \"results\": [{" +
                 "      \"id\": \"2979590232\"," +
                 "      \"node-type\": \"cloud-region\"," +
-                "      \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/SDNO-S-BcloudReg-E1802\"," +
+                "      \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/SDNO-S-BcloudReg-E1802\"," +
                 "      \"properties\": {" +
-                "        \"cloud-owner\": \"att-aic\"," +
+                "        \"cloud-owner\": \"irma-aic\"," +
                 "        \"cloud-region-id\": \"THE-EXPECTED-REGION-ID\"," +
                 "        \"sriov-automation\": false," +
                 "        \"resource-version\": \"1513631040564\"" +
@@ -122,7 +122,7 @@ public class AaiResponseTranslatorTest {
                 "{" +
                 "  \"results\": [{" +
                 "      \"node-type\": \"cloud-region\"," +
-                "      \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/att-aic/SDNO-S-BcloudReg-E1802\"," +
+                "      \"url\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/SDNO-S-BcloudReg-E1802\"," +
                 "      \"properties\": {" +
                 "        \"resource-version\": \"1513631040564\"" +
                 "      }" +
