@@ -20,8 +20,8 @@
 
 "use strict";
 
-var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $timeout, $log,
-    DeleteResumeService, CreationService, DataService, UtilityService) {
+var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $timeout, $log, DataService,
+                                             DeleteResumeService, CreationService, UtilityService) {
 
     $scope.isDialogVisible = false;
     $scope.summaryControl = {};
@@ -29,11 +29,12 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 
     var callbackFunction = undefined;
     var componentId = undefined;
+    var volumeGroups = undefined;
     $scope.dialogMethod = COMPONENT.DELETE;
 
     $scope.$on(COMPONENT.DELETE_RESUME_COMPONENT, function(event, request) {
 
-    $scope.isE2EService = false;
+        $scope.isE2EService = false;
         $scope.isDataVisible = false;
         $scope.isSpinnerVisible = false;
         $scope.isErrorVisible = false;
@@ -44,7 +45,7 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
         $scope.serviceStatus = request.serviceStatus;
         callbackFunction = request.callbackFunction;
         componentId = request.componentId;
-
+        volumeGroups = request.volumeGroups ? request.volumeGroups : [];
         DeleteResumeService.initializeComponent(request.componentId);
 
         $scope.componentName = DeleteResumeService.getComponentDisplayName();
@@ -116,8 +117,17 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
             CreationService.initializeComponent(componentId);
             CreationService.setInventoryInfo();
 
-            var requestDetails = CreationService.getMsoRequestDetails($scope.userProvidedControl.getList());
+            var parameterList = $scope.userProvidedControl.getList();
 
+            if (volumeGroups && volumeGroups.length > 0) {
+                var volumeGroupList = FIELD.PARAMETER.AVAILABLE_VOLUME_GROUP;
+                volumeGroupList.value = _.map(volumeGroups, function (volumeGroup) {
+                    return volumeGroup.name;
+                });
+                parameterList.push(volumeGroupList);
+            }
+
+            var requestDetails = CreationService.getMsoRequestDetails(parameterList);
 
             $scope.$broadcast(COMPONENT.MSO_CREATE_REQ, {
                 url : CreationService.getMsoUrl(),
@@ -147,5 +157,5 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 }
 
 appDS2.controller("deleteResumeDialogController", [ "COMPONENT", "FIELD", "$scope", "$http",
-		"$timeout", "$log", "DeleteResumeService","CreationService", "DataService", "UtilityService",
+    "$timeout", "$log", "DataService", "DeleteResumeService","CreationService", "UtilityService",
     deleteResumeDialogController]);

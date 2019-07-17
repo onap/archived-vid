@@ -101,11 +101,11 @@
         };
 
         vm.isEnvActive = function(testEnv) {
-            return testEnv.operationalEnvironmentStatus==='Activate';
+            return testEnv.operationalEnvironmentStatus==='ACTIVE';
         };
 
         vm.getEnvStatus = function (testEnv) {
-            return this.isEnvActive(testEnv) ? "Active" : "Inactive";
+            return testEnv.operationalEnvironmentStatus;
         };
 
         vm.createNewTestEnvironment = function() {

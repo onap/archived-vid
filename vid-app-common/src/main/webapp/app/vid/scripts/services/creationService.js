@@ -258,7 +258,17 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                         getLcpRegionParameter(), FIELD.PARAMETER.LCP_REGION_TEXT_HIDDEN,
                         FIELD.PARAMETER.TENANT_DISABLED ]);
                     parameterList = parameterList.concat([ getLineOfBusinessParameter() ]);
+
+
+                    if(_this.componentId === COMPONENT.VNF){
+                        parameterList[parameterList.length -1].isRequired = true;
+                    }
+
                     parameterList = parameterList.concat([ getPlatformParameter() ]);
+
+                    if(_this.componentId === COMPONENT.NETWORK){
+                        parameterList[parameterList.length -1].isRequired = false;
+                    }
 
                     break;
                 case COMPONENT.VF_MODULE:
@@ -713,10 +723,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 var lineOfBusiness = getValueFromList(FIELD.ID.LINE_OF_BUSINESS, parameterList);
 
                 if(lineOfBusiness) {
-                    var lineOfBusinessNamesString = _.map(lineOfBusiness, "name").join(", ");
-
                     requestDetails.lineOfBusiness = {
-                        lineOfBusinessName: lineOfBusinessNamesString
+                        lineOfBusinessName: lineOfBusiness
                     }
                 }
 
@@ -738,9 +746,15 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                     }
                 }
 
+                var platform = getValueFromList(FIELD.ID.PLATFORM, parameterList);
+                if(platform !== null && platform !== ""){
                 requestDetails.platform = {
-                    platformName: getValueFromList(FIELD.ID.PLATFORM, parameterList)
+                        platformName: platform
                 };
+                }
+
+
+
                 break;
             case COMPONENT.VF_MODULE:
                 requestDetails.requestParameters.usePreload = getValueFromList(
@@ -1194,6 +1208,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 return parameterList[i].value;
             }
         }
+        return null;
     };
     var updateUserParameterList = function(updatedId, parameterListControl) {
         console.log ("updateUserParameterList() updatedId=" + updatedId);

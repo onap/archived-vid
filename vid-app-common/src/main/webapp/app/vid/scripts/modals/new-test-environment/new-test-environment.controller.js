@@ -22,11 +22,12 @@
     'use strict';
 
     appDS2.controller("newTestEnvironmentModalController", ["$uibModalInstance", "$uibModal", "AaiService", "TestEnvironmentsService","OwningEntityService",
-        "$log", "$scope", "_", "COMPONENT","$rootScope", newTestEnvironmentsModalController]);
+        "$log", "$scope", "_", "COMPONENT","$rootScope", "featureFlags", newTestEnvironmentsModalController]);
 
-    function newTestEnvironmentsModalController($uibModalInstance, $uibModal, AaiService, TestEnvironmentsService,OwningEntityService, $log, $scope, _, COMPONENT, $rootScope) {
+    function newTestEnvironmentsModalController($uibModalInstance, $uibModal, AaiService, TestEnvironmentsService, OwningEntityService, $log, $scope, _, COMPONENT, $rootScope, featureFlags ) {
         var vm = this;
         vm.newEnvironment = {};
+        vm.releaseVersions = {};
 
         var init = function () {
             vm.newEnvironment.operationalEnvironmentType = "VNF";
@@ -35,7 +36,7 @@
         };
 
         var loadEcompEnvironmentsList = function () {
-            TestEnvironmentsService.loadAAIestEnvironments("ECOMP")
+            TestEnvironmentsService.loadAAIestEnvironments("ONAP")
             .then(function(response) {
                 vm.environments = response.operationalEnvironment;
             })
@@ -47,10 +48,12 @@
 
         var loadCategoryParameters = function () {
             OwningEntityService.getOwningEntityProperties(function(response){
-               vm.environmentsTypesList = response["operational-environment-type"].map(function (x){
-                    return x.name;});
-               vm.workloadContextList = response["workload-context"].map(function (x){
-                   return x.name;});
+                vm.environmentsTypesList = response["operational-environment-type"].map(function (environmentType){
+                    return environmentType.name;});
+                vm.workloadContextList = response["workload-context"].map(function (context){
+                    return context.name;});
+                vm.releaseVersions = response["release"].map(function (releaseOptions){
+                    return releaseOptions.name;});
             },COMPONENT.TENANT_ISOLATION_FAMILY);
         }
 
@@ -68,8 +71,8 @@
 
         vm.createEnvironment = function () {
             if($scope.newTestEnvironment.$valid) {
-                vm.newEnvironment.workloadContext = vm.newEnvironment.operationalEnvironmentType + '_' + vm.newEnvironment.workloadContext;
                 var requestDetails = vm.newEnvironment;
+                delete vm.newEnvironment['release'];
                 $rootScope.$broadcast(COMPONENT.MSO_CREATE_ENVIRONMENT, {
                     url : COMPONENT.OPERATIONAL_ENVIRONMENT_CREATE,
                     requestDetails : requestDetails
@@ -78,7 +81,9 @@
             }
         };
 
-
+        vm.isShowReleaseEnabled = function () {
+            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1908_RELEASE_TENANT_ISOLATION)
+        };
 
         init();
     }
