@@ -33,6 +33,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import vid.automation.reportportal.ReportPortalListenerDelegator;
 import vid.automation.test.Constants;
 import vid.automation.test.Constants.ViewEdit;
 import vid.automation.test.infra.*;
@@ -70,7 +71,7 @@ import static org.testng.AssertJUnit.fail;
 import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
 import static vid.automation.test.utils.TestHelper.GET_TENANTS;
 
-//@Listeners(com.automation.common.report_portal_integration.listeners.ReportPortalListener.class)
+@Listeners(ReportPortalListenerDelegator.class)
 public class VidBaseTestCase extends SetupCDTest{
 
     protected final UsersService usersService = new UsersService();
@@ -153,7 +154,7 @@ public class VidBaseTestCase extends SetupCDTest{
     @BeforeSuite(alwaysRun = true)
     public void screenShotsForReportPortal(){
         try {
-            //ReportPortalListener.setScreenShotsProvider(new WebDriverScreenshotsProvider(getDriver()));
+            ReportPortalListenerDelegator.setScreenShotsWebDriver(getDriver());
             System.out.println("Called to ReportPortalListener to set ScreenShotsProvider");
         } catch (Exception e) {
             e.printStackTrace();

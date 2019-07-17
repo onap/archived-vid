@@ -35,11 +35,12 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
+import vid.automation.reportportal.ReportPortalListenerDelegator;
 import vid.automation.test.infra.FeaturesTogglingConfiguration;
 import vid.automation.test.services.UsersService;
 import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
 
-//@Listeners(ReportPortalListener.class)
+@Listeners(ReportPortalListenerDelegator.class)
 public class BaseApiTest {
     protected static final Logger LOGGER = LogManager.getLogger(BaseApiTest.class);
 
