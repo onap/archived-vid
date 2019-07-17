@@ -64,7 +64,8 @@
                     $scope.currentPageNum=1;
                     $scope.isSpinnerVisible = false;
                     $scope.isProgressVisible = false;
-                    if (sessionStorage.getItem("searchKey")!='undefined' && ($scope.rememberFilter)) {
+					var searchKey = sessionStorage.getItem("searchKey");
+                    if (searchKey != 'undefined' && searchKey!=null && ($scope.rememberFilter)) {
                         var searchKey = JSON.parse(sessionStorage.getItem("searchKey"));
                         $scope.searchString = searchKey.searchString || '';
                         $scope.viewPerPage = searchKey.viewPerPage || defaultViewPerPage;
@@ -206,7 +207,7 @@
                     DataService.setShouldIncludeInAsyncInstantiationFlow(shouldTakeTheAsyncInstantiationFlow);
 
                     DataService.setALaCarte (true);
-          DataService.setPnf(!angular.equals(serviceModel.pnfs, {}));
+                    DataService.setPnf(!angular.equals(serviceModel.pnfs, {}));
 					$scope.createType = COMPONENT.A_LA_CARTE;
 					var broadcastType = COMPONENT.CREATE_COMPONENT;
                     if (AsdcService.isMacro(serviceModel) || DataService.getE2EService()) {

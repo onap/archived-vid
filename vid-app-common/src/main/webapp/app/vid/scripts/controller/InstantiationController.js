@@ -74,7 +74,7 @@
             };
 
 
-            $scope.isCR = !_.isEmpty($scope.service.model.collectionResource) && featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_COLLECTION_RESOURCE_SUPPORT);
+            $scope.isCR = !_.isEmpty($scope.service.model.collectionResources);
             if ($scope.isCR)
                 prepareCr();
             else
@@ -222,6 +222,13 @@
                 callbackFunction: deleteOrResumeCallback,
                 dialogMethod: COMPONENT.DELETE
             });
+        };
+
+        $scope.allowTransferToNewScreenAndShowButton = function (){
+          if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_REPLACE_VF_MODULE)) {
+              return $scope.isPermitted && !($scope.isMacro());
+          }
+          return false;
         };
 
         $scope.deleteService = function (serviceObject, serviceOrchestrationStatus) {
@@ -1221,6 +1228,14 @@
         $scope.resume = function (serviceObject, vfModule, vnfModel) {
             populate_popup_vfModule(serviceObject, vfModule, vnfModel);
             setCurrentVNFModelInfo(vnfModel);
+
+            var availableVolumeGroupList = [];
+            angular.forEach(vfModule.volumeGroups, function (volumeGroupInstance, key) {
+                availableVolumeGroupList.push({"instance": volumeGroupInstance});
+            });
+
+            DataService.setAvailableVolumeGroupList(availableVolumeGroupList);
+
             DataService.setVfModuleInstanceName(vfModule.object[FIELD.ID.VF_MODULE_NAME]);
             setCurrentServiceModelInfoFromScope();
 
@@ -1240,6 +1255,7 @@
             else {
                 $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
                     componentId: COMPONENT.VF_MODULE,
+                    volumeGroups: vfModule.volumeGroups,
                     callbackFunction: deleteOrResumeCallback,
                     dialogMethod: COMPONENT.RESUME
                 });

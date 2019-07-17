@@ -551,6 +551,25 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                 requestParams.serviceInstanceId,
                 ''
             ].join(COMPONENT.FORWARD_SLASH), payload);
+        },
+        activateFabricConfiguration: function(requestParams) {
+            var payload = buildPayloadForActivateFabricConfiguration(requestParams.model, requestParams.userId);
+
+            var url = COMPONENT.MSO_ACTIVATE_FABRIC_CONFIGURATION_INSTANCE.replace('@serviceInstanceId', requestParams.serviceInstanceId);
+            return sendPostRequest(url, payload);
+        },
+        deactivateAndCloudDelete : function (requestParams)  {
+            var payload = {
+                tenantId: requestParams.tenantId,
+                lcpCloudRegionId: requestParams.lcpCloudRegionId,
+                userId: requestParams.userId
+            };
+
+            var url = COMPONENT.MSO_DEACTIVATE_AND_CLOUD_DELETE_INSTANCE.replace('@serviceInstanceId', requestParams.serviceInstanceId)
+                        .replace('@vnfInstanceId', requestParams.vnfInstanceId)
+                        .replace('@vfModuleInstanceId', requestParams.vfModuleInstanceId);
+
+            return sendPostRequestWithBody(url, payload);
         }
     }
 };

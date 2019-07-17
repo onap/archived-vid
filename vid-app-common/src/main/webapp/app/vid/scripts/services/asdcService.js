@@ -22,19 +22,19 @@
 
 var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCONFIGURATION, COMPONENT, DataService, featureFlags) {
     var shouldExcludeMacroFromAsyncInstantiationFlow = function(serviceModel){
-            if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ASYNC_INSTANTIATION))
-                return true;
-			if (DataService.getE2EService())
-				return true;
-            if (!_.isEmpty(serviceModel.pnfs))
-                return true;
-            if (!_.isEmpty(serviceModel.collectionResource))
-                return true;
-            if (!_.isEmpty(serviceModel.networks) && !featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_NETWORK_TO_ASYNC_INSTANTIATION))
-                return true;
-            if(serviceModel.service.instantiationType === "ClientConfig")
-                return true;
-            return false;
+        if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ASYNC_INSTANTIATION))
+            return true;
+        if (DataService.getE2EService())
+            return true;
+        if (!_.isEmpty(serviceModel.pnfs))
+            return true;
+        if (!_.isEmpty(serviceModel.collectionResources))
+            return true;
+        if (!_.isEmpty(serviceModel.networks) && !featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_NETWORK_TO_ASYNC_INSTANTIATION))
+            return true;
+        if(serviceModel.service.instantiationType === "ClientConfig")
+            return true;
+        return false;
     };
 
     return {

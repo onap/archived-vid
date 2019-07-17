@@ -20,7 +20,7 @@
 
 "use strict";
 
-var vfModuleActionModalController = function(COMPONENT, $scope, $uibModal, CreationService,
+var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal, CreationService,
     MsoService, AaiService, DeleteResumeService, DataService, $uibModalInstance, action, vfModule, featureFlags) {
 
 
@@ -28,11 +28,12 @@ var vfModuleActionModalController = function(COMPONENT, $scope, $uibModal, Creat
 
     $scope.action = action;
     $scope.vfModuleName = vfModule.name;
+    $scope.volumeGroups = vfModule.volumeGroups;
     $scope.lcpAndTenant = null;
     $scope.regionSelection = {lcpRegion: null, legacyRegion: null, tenant: null};
     $scope.lcpRegionList = null;
     $scope.isHomingData = false;
-    $scope.megaRegion = ['AAIAIC25', 'rdm3', 'rdm5a'];
+    $scope.megaRegion = ['AAIAIC25'];
     $scope.isSoftDeleteEnabled = vfModule.nodeStatus.toLowerCase() !== 'assigned' && action === COMPONENT.DELETE;
 
     $scope.isResumeEnabled = action === COMPONENT.RESUME;
@@ -49,6 +50,7 @@ var vfModuleActionModalController = function(COMPONENT, $scope, $uibModal, Creat
             $scope.lcpAndTenant = response;
             $scope.isFeatureFlagCloudOwner = featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST);
             $scope.lcpRegionList = _.uniqBy(response, 'cloudRegionId');
+            $scope.vendorInCloudOwnerRegex = /^[^-]*-/;
         });
     }
 
@@ -83,8 +85,8 @@ var vfModuleActionModalController = function(COMPONENT, $scope, $uibModal, Creat
 
     $scope.deleteOrResume = function()  {
 
-        var regionSelectionList = [({id: "lcpRegion", value: getLcpRegionId()})];
-        regionSelectionList.push({id: "tenant", value: $scope.regionSelection.tenant});
+        var msoParameterList = [({id: "lcpRegion", value: getLcpRegionId()})];
+        msoParameterList.push({id: "tenant", value: $scope.regionSelection.tenant});
 
         var requestParams = {};
         var requestDetails;
@@ -93,14 +95,24 @@ var vfModuleActionModalController = function(COMPONENT, $scope, $uibModal, Creat
             CreationService.initializeComponent(COMPONENT.VF_MODULE);
             CreationService.setInventoryInfo();
 
-            requestDetails = CreationService.getMsoRequestDetails(regionSelectionList);
+            var availableVolumeGroupList = $scope.volumeGroups;
+
+            if (availableVolumeGroupList && availableVolumeGroupList.length > 0) {
+                var volumeGroupList = FIELD.PARAMETER.AVAILABLE_VOLUME_GROUP;
+                volumeGroupList.value = _.map(availableVolumeGroupList, function (volumeGroup) {
+                    return volumeGroup.name;
+                });
+                msoParameterList.push(volumeGroupList);
+            }
+
+            requestDetails = CreationService.getMsoRequestDetails(msoParameterList);
             requestParams.url = CreationService.getMsoUrl();
             msoType = COMPONENT.MSO_CREATE_REQ;
         }
         else {
             DeleteResumeService.initializeComponent(COMPONENT.VF_MODULE);
 
-            requestDetails = DeleteResumeService.getMsoRequestDetails(regionSelectionList);
+            requestDetails = DeleteResumeService.getMsoRequestDetails(msoParameterList);
             if(DeleteResumeService.isMacro === true)  {
                 requestDetails.requestParameters.aLaCarte = false;
             }
@@ -137,6 +149,6 @@ var vfModuleActionModalController = function(COMPONENT, $scope, $uibModal, Creat
 
 };
 
-appDS2.controller("vfModuleActionModalController", [ "COMPONENT", "$scope", "$uibModal", "CreationService",
+appDS2.controller("vfModuleActionModalController", [ "COMPONENT", "FIELD", "$scope", "$uibModal", "CreationService",
      "MsoService", "AaiService", "DeleteResumeService", "DataService", "$uibModalInstance", "action", "vfModule", "featureFlags",
     vfModuleActionModalController ]);

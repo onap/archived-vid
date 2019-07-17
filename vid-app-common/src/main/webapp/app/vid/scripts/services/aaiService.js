@@ -405,7 +405,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             if ( UtilityService.hasContents(globalCustomerId) ) {
                 $http.get(
                     COMPONENT.AAI_SUB_DETAILS_PATH
-                    + globalCustomerId + COMPONENT.ASSIGN + Math.random(),
+                    + globalCustomerId + COMPONENT.ASSIGN + Math.random() + COMPONENT.AAI_OMIT_SERVICE_INSTANCES + true,
                     {
                         timeout : PropertyService
                             .getServerResponseTimeoutMsec()
