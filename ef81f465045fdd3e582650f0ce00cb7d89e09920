@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a312e3ed_671cf9ba",
+        "filename": "epsdk-app-onap/src/main/resources/db.changelog-01.sql",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-17T17:19:46Z",
+      "side": 1,
+      "message": "Because this might try modifying WORKFLOW_DB_ID from 5 to 4, the result might be without change; i.e.: \"VNF Config Update\"\u003d5, and \"VNF Scale Out\"\u003d4.\nI think it\u0027s ok; please let know what _you_ think.",
+      "range": {
+        "startLine": 286,
+        "startChar": 99,
+        "endLine": 286,
+        "endChar": 122
+      },
+      "revId": "ef81f465045fdd3e582650f0ce00cb7d89e09920",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
