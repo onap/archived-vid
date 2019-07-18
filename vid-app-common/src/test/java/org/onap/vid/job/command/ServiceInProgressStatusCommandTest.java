@@ -58,6 +58,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.onap.vid.job.Job.JobStatus.*;
+import static org.onap.vid.testUtils.TestUtils.testWithSystemProperty;
 
 public class ServiceInProgressStatusCommandTest {
 
@@ -218,11 +219,9 @@ public class ServiceInProgressStatusCommandTest {
     }
 
     @Test(dataProvider = "isExpiredJobStatusData")
-    public void isExpiredJobStatusTest(ZonedDateTime jobStartTime, String configValue, boolean expectedResult) {
-        SystemProperties systemProperties = new SystemProperties();
-        systemProperties.setEnvironment(environment);
-        when(environment.getRequiredProperty(VidProperties.VID_JOB_MAX_HOURS_IN_PROGRESS)).thenReturn(configValue);
-        when(environment.containsProperty(VidProperties.VID_JOB_MAX_HOURS_IN_PROGRESS)).thenReturn(true);
-        Assert.assertEquals(command.getExpiryChecker().isExpired(jobStartTime), expectedResult);
+    public void isExpiredJobStatusTest(ZonedDateTime jobStartTime, String configValue, boolean expectedResult) throws Exception {
+        testWithSystemProperty(VidProperties.VID_JOB_MAX_HOURS_IN_PROGRESS, configValue, ()->
+            Assert.assertEquals(command.getExpiryChecker().isExpired(jobStartTime), expectedResult)
+        );
     }
 }

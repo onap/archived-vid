@@ -50,6 +50,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -61,6 +62,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.beans.Service;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.env.MockEnvironment;
 
 /**
@@ -252,18 +254,27 @@ public class TestUtils {
     }
 
 
-    //Please use resetSystemProperties after using this method, so other test won't be affected
-    public static void mockSystemPropertyWithKeyValue(String key, String value) {
-        MockEnvironment mockEnvironment = new MockEnvironment();
-        mockEnvironment.setProperty(key, value);
+    public interface Test {
 
-        SystemProperties systemProperties = new SystemProperties();
-        systemProperties.setEnvironment(mockEnvironment);
+        void apply();
     }
 
-    public static void resetSystemProperties() {
+    public static void testWithSystemProperty(String key, String value, Test test) throws Exception {
         SystemProperties systemProperties = new SystemProperties();
-        systemProperties.setEnvironment(null);
+        //use reflection to invoke protected method
+        Environment originalEnvironment = (Environment) MethodUtils
+            .invokeMethod(systemProperties, true, "getEnvironment");
+
+        try {
+            Environment environment = mock(Environment.class);
+            systemProperties.setEnvironment(environment);
+            when(environment.getRequiredProperty(key)).thenReturn(value);
+            when(environment.containsProperty(key)).thenReturn(true);
+            test.apply();
+        }
+        finally {
+            systemProperties.setEnvironment(originalEnvironment);
+        }
     }
 
 }
