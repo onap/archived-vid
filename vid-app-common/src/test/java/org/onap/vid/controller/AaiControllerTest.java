@@ -22,7 +22,9 @@
 package org.onap.vid.controller;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,6 +36,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import java.util.Map;
 import java.util.UUID;
+import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +53,7 @@ import org.onap.vid.aai.model.PortDetailsTranslator.PortDetails;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsError;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
 import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.model.VersionByInvariantIdsRequest;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
@@ -223,6 +227,25 @@ public class AaiControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(expectedResponseBody));
+    }
+
+    @Test
+    public void getVersionByInvariantId_shouldReturnOKResponse() throws Exception {
+        String expectedResponse = "OKResponse";
+        VersionByInvariantIdsRequest request = new VersionByInvariantIdsRequest();
+        request.versions = ImmutableList.of("ver1", "ver2");
+        Response response = mock(Response.class);
+        given(response.readEntity(String.class)).willReturn(expectedResponse);
+        given(aaiService
+            .getVersionByInvariantId(request.versions)).willReturn(response);
+
+        mockMvc.perform(
+            post("/aai_get_version_by_invariant_id")
+                .content(new ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponse));
     }
 }
 
