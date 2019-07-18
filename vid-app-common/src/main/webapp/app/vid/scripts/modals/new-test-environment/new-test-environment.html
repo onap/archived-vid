@@ -51,11 +51,18 @@
                 <option data-tests-id="environment-type-option" class="environmentTypeOption" ng-repeat="item in vm.environmentsTypesList" ng-value="item">{{item}}</option>
             </select>
         </div>
+        <div class="form-group" ng-if="vm.isShowReleaseEnabled()">
+            <label class="control-label" for="operationalEnvironmentType">Release</label>
+            <select class="form-control"  ng-class="{'grayedOut': !vm.newEnvironment.operationalEnvironmentType}"  ng-model="vm.newEnvironment.release" name="operationalEnvironmentType" id="operationalRelease" data-tests-id="operational-release" required>
+                <option value="" disabled selected hidden>Select release</option>
+                <option data-tests-id="environment-type-option" class="environmentTypeOption" ng-repeat="item in vm.releaseVersions" ng-value="item">{{item}}</option>
+            </select>
+        </div>
         <div class="form-group">
             <label class="control-label" for="workloadContext">Workload Context</label>
-            <select class="form-control" ng-class="{'grayedOut': !vm.newEnvironment.workloadContext}" ng-model="vm.newEnvironment.workloadContext" name="workloadContext" id="workloadContext" data-tests-id="workload-context" required>
+            <select class="form-control" ng-class="{'grayedOut': !vm.newEnvironment.workloadContext}" ng-disabled="vm.isShowReleaseEnabled() && !vm.newEnvironment.release" ng-model="vm.newEnvironment.workloadContext" name="workloadContext" id="workloadContext" data-tests-id="workload-context" required>
                 <option value="" disabled selected hidden>Select workload context</option>
-                <option data-tests-id="workload-context-option" class="workloadContextOption" ng-repeat="item in vm.workloadContextList" ng-value="item">{{vm.newEnvironment.operationalEnvironmentType + '_' + item}}</option>
+                <option data-tests-id="workload-context-option" class="workloadContextOption" ng-repeat="item in vm.workloadContextList" ng-value="item">{{vm.isShowReleaseEnabled() ? vm.newEnvironment.operationalEnvironmentType + '_' + item + '_' + vm.newEnvironment.release : vm.newEnvironment.operationalEnvironmentType + '_' + item }}</option>
             </select>
         </div>
         <div data-tests-id="test-new-environment-error" class="connect-error" ng-if="vm.aaiConnectError">{{vm.aaiConnectError}}</div>

@@ -720,7 +720,17 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         $scope.isConfigurationDataAvailiable = function (configuration) {
             $log.debug(configuration);
             return configuration.configData && (!configuration.configData.errorDescription);
-        }
+        };
+
+        $scope.allowConfigurationActions = function (configuration) {
+            $log.debug(configuration);
+            return configuration.nodeStatus &&
+                _.some(
+                    [FIELD.STATUS.AAI_ACTIVE, FIELD.STATUS.AAI_INACTIVE, FIELD.STATUS.AAI_CREATED],
+                    function (s) {
+                        return s.toLowerCase() === configuration.nodeStatus.toLowerCase();
+                    });
+        };
 
         $scope.isActivateDeactivateEnabled = function(btnType) {
             if ($scope.serviceOrchestrationStatus) {
@@ -800,8 +810,11 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
         $scope.isResumeShown = function (status) {
             var vfModuleStatus = status.toLowerCase();
-            var serviceStatus = $scope.serviceOrchestrationStatus && $scope.serviceOrchestrationStatus.toLowerCase();
-            return _.includes(['pendingactivation', 'assigned'], vfModuleStatus) && !$scope.isActivateDeactivateEnabled("activate");
+            var vfModuleStatusHasAllowedResume = ['pendingactivation', 'assigned'];
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_VF_MODULE_RESUME_STATUS_CREATE)) {
+                vfModuleStatusHasAllowedResume.push('created');
+            }
+            return _.includes(vfModuleStatusHasAllowedResume, vfModuleStatus) && !$scope.isActivateDeactivateEnabled("activate");
         };
 
         $scope.handleInitialResponseInventoryItems = function (response) {
@@ -1039,7 +1052,6 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                 if( !$scope.hasFabricConfigurations ) {
                                 portMirroringConfigurationIds.push(configObject[FIELD.ID.CONFIGURATION_ID]);
                                     $scope.service.instance[FIELD.ID.CONFIGURATIONS].push(config);
-                                $scope.allowConfigurationActions = [FIELD.STATUS.AAI_ACTIVE, FIELD.STATUS.AAI_INACTIVE, FIELD.STATUS.AAI_CREATED].indexOf(config.nodeStatus) != -1;
                                 } else {
                                    if (config.nodeStatus.toLowerCase() !== FIELD.STATUS.ASSIGNED.toLowerCase()) {
                                        $scope.allConfigurationsAssigned = false;

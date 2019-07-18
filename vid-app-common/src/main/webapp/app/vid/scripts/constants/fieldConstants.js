@@ -187,7 +187,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
 	SERVICE_UUID : "Service UUID",
 	SERVICE_VERSION : "Service Version",
 	SUBSCRIBER_NAME : "Subscriber Name",
-	MOBILITY :  "Mobility",
+	EMANUEL :  "Emanuel",
 	SUPPRESS_ROLLBACK : "Suppress Rollback on Failure",
 	SDN_C_PRELOAD : "SDN-C Pre-Load",
 	UPLOAD_SUPPLEMENTORY_DATA_FILE : "Upload Supplementary Data file",
@@ -488,7 +488,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         LINE_OF_BUSINESS: {
             name: NAME.LINE_OF_BUSINESS,
             id: ID.LINE_OF_BUSINESS,
-            type: PARAMETER.MULTI_SELECT,
+            type: PARAMETER.SELECT,
             isEnabled: true,
             prompt: PROMPT.LINE_OF_BUSINESS,
             isRequired: false
