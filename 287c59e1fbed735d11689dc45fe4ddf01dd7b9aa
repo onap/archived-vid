@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5c9c6ce_2102bffd",
+        "filename": "epsdk-app-onap/src/main/resources/vid-data-deprecated.sql",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-18T02:23:51Z",
+      "side": 1,
+      "message": "I think we need to stick here with onap\u0027s days.\nevomp\u0027s looks too messy.",
+      "revId": "287c59e1fbed735d11689dc45fe4ddf01dd7b9aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "148deae3_c34262ac",
+        "filename": "epsdk-app-onap/src/main/resources/vid-data-deprecated.sql",
+        "patchSetId": 3
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-18T02:23:51Z",
+      "side": 1,
+      "message": "please add a jira task (internally) to handle the way this testEnvironments are hidden for most of the users.",
+      "revId": "287c59e1fbed735d11689dc45fe4ddf01dd7b9aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
