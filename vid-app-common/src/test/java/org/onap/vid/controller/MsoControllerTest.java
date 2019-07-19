@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,8 @@
 
 package org.onap.vid.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -34,7 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
@@ -42,7 +44,6 @@ import org.jeasy.random.randomizers.misc.BooleanRandomizer;
 import org.jeasy.random.randomizers.text.StringRandomizer;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.rest.Request;
@@ -76,26 +77,23 @@ public class MsoControllerTest {
     }
 
     @Test
-    public void shouldDelegateNewInstanceCreation() throws Exception {
+    public void shouldDelegateNewServiceInstantiation() throws Exception {
         // given
-        RequestDetails given = modelGenerator.nextObject(RequestDetails.class);
-        String payload = objectMapper.writeValueAsString(given);
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
 
         MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
         given(msoBusinessLogic
-            .createSvcInstance(argThat(request -> asJson(request).equals(payload))))
+            .createSvcInstance(objectEqualTo(requestDetails)))
             .willReturn(expectedResponse);
 
         // when & then
         mockMvc.perform(post("/mso/mso_create_svc_instance")
-            .content(payload)
+            .content(asJson(requestDetails))
             .contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().json(asJson(expectedResponse)));
 
-        ArgumentCaptor<RequestDetails> captor = ArgumentCaptor.forClass(RequestDetails.class);
-        then(cloudService).should(only()).enrichRequestWithCloudOwner(captor.capture());
-        assertThat(captor.getValue()).matches(request -> asJson(request).equals(payload));
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
     }
 
     @Test
@@ -133,11 +131,115 @@ public class MsoControllerTest {
         then(cloudService).shouldHaveZeroInteractions();
     }
 
+    @Test
+    public void shouldDelegateE2EServiceInstantiation() throws Exception {
+        // given
+        String requestDetails = "some request details";
+        Map<String, Object> payload = new LinkedHashMap<>();
+        payload.put("requestDetails", requestDetails);
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.createE2eSvcInstance(requestDetails)).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post("/mso/mso_create_e2e_svc_instance")
+            .content(asJson(payload))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).shouldHaveZeroInteractions();
+    }
+
+    @Test
+    public void shouldDelegateServiceInstantiation() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.createSvcInstance(objectEqualTo(requestDetails))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post("/mso/mso_create_svc_instance")
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDelegateVnfInstantiation() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.createVnf(objectEqualTo(requestDetails), eq(serviceInstanceId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post("/mso/mso_create_vnf_instance/" + serviceInstanceId)
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDelegateNewInstanceCreation() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.createNwInstance(objectEqualTo(requestDetails), eq(serviceInstanceId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post("/mso/mso_create_nw_instance/" + serviceInstanceId)
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldCompleteManualTask() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String taskId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.completeManualTask(objectEqualTo(requestDetails), eq(taskId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post("/mso/mso_post_man_task/" + taskId)
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).shouldHaveZeroInteractions();
+    }
+
     private <T> String asJson(T value) {
         try {
             return objectMapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private <T> T objectEqualTo(T expected) {
+        return argThat(given -> asJson(given).equals(asJson(expected)));
     }
 }
