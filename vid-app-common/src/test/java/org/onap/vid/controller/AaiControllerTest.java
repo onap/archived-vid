@@ -173,7 +173,15 @@ public class AaiControllerTest {
     @Test
     public void getSpecificPnf_shouldReturnPnfObjectForPnfId() throws Exception {
         String pnfId = "MyPnfId";
-        Pnf pnf = createPnf(pnfId);
+        Pnf pnf = Pnf.builder()
+            .withPnfId(pnfId)
+            .withPnfName("TestPnf")
+            .withPnfName2("pnfName2")
+            .withPnfName2Source("pnfNameSource")
+            .withEquipModel("model")
+            .withEquipType("type")
+            .withEquipVendor("vendor")
+            .build();
         AaiResponse<Pnf> aaiResponse = new AaiResponse<>(pnf, "", HttpStatus.OK.value());
         given(aaiService.getSpecificPnf(pnfId)).willReturn(aaiResponse);
 
@@ -195,13 +203,6 @@ public class AaiControllerTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string(expectedErrorMessage));
-    }
-
-    private Pnf createPnf(String pnfId) {
-        Pnf pnf = new Pnf();
-        pnf.setPnfId(pnfId);
-        pnf.setPnfName("TestPnf");
-        return pnf;
     }
 
     public void getPNFInstances_shouldReturnOKResponseFromAAIService() throws Exception {
