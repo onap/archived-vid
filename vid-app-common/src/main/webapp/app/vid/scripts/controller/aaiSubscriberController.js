@@ -25,6 +25,13 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
     function (COMPONENT, FIELD, PARAMETER, DataService, PropertyService, $scope, $http, $timeout, $location, $log, $route, $uibModal, VIDCONFIGURATION, UtilityService, vidService, AaiService, MsoService, OwningEntityService, AsdcService, featureFlags, $q, _) {
 
         $scope.showReportWindow = function() {
+            let GuiMessage;
+
+            if ($scope.errorMsg !== undefined && $scope.errorMsg !== null) {
+                GuiMessage = $scope.errorMsg;
+            } else {
+                GuiMessage = $scope.status;
+            }
 
             const modalWindow = $uibModal.open({
                 templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
@@ -32,7 +39,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 controllerAs: 'vm',
                 resolve: {
                     errorMsg: function () {
-                        return $scope.errorMsg;
+                        return GuiMessage;
                     }
                 }
             });

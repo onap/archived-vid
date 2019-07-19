@@ -42,10 +42,11 @@
         };
 
         vm.saveReportData = function(response) {
-            vm.report =
-                "Selected test API: \n" + DataService.getMsoRequestParametersTestApi()
-                + "\n\n Data from GUI:\n" + errorMsg
-                + "\n\n Collected data from API:\n" + JSON.stringify(response.data,  null, "\t") ;
+            vm.report = "Selected test API: \n" + DataService.getMsoRequestParametersTestApi();
+            if(errorMsg !== undefined && errorMsg !== null) {
+                vm.report += "\n\n Data from GUI:\n" + errorMsg;
+            }
+            vm.report +="\n\n Collected data from API:\n" + JSON.stringify(response.data,  null, "\t") ;
 
             const blob = new Blob([ vm.report ], { type : 'text/plain' });
             vm.download = ($window.URL || $window.webkitURL).createObjectURL( blob );
