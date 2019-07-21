@@ -92,7 +92,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
 import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
@@ -638,7 +637,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         MsoResponseWrapper expectedResponse = MsoUtil.wrapResponse(restObjStr);
 
         doThrow(new MsoTestException("testException")).
-                when(msoInterface).setServiceInstanceStatus(eq(requestDetails), any(String.class), any(String.class), any(String.class), any(RestObject.class));
+                when(msoInterface).setServiceInstanceStatus(eq(requestDetails), any(String.class));
 
         //when
         MsoResponseWrapper response = msoBusinessLogic.activateServiceInstance(requestDetails, taskId);
@@ -1118,38 +1117,34 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     public void shouldProperlySetServiceInstanceStatusActiveWithProperParameters() {
         //  given
         String serviceInstanceId = "testServiceId";
+        MsoResponseWrapper okResponse = createOkResponse();
 
         org.onap.vid.changeManagement.RequestDetails requestDetails = new org.onap.vid.changeManagement.RequestDetails();
 
-        RestObject<String> restObjStr = new RestObject<>();
-        restObjStr.set("");
-        MsoResponseWrapper expectedResponse = MsoUtil.wrapResponse(restObjStr);
+        given(msoInterface.setServiceInstanceStatus(eq(requestDetails), endsWith(serviceInstanceId + "/activate"))).willReturn(okResponse);
 
         //  when
         MsoResponseWrapper response = msoBusinessLogic.setServiceInstanceStatus(requestDetails, serviceInstanceId, true);
 
         //  then
-        assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-
+        assertThat(response).isEqualToComparingFieldByField(okResponse);
     }
 
     @Test
     public void shouldProperlySetServiceInstanceStatusDeactivateWithProperParameters() {
         //  given
         String serviceInstanceId = "testServiceId";
+        MsoResponseWrapper okResponse = createOkResponse();
 
         org.onap.vid.changeManagement.RequestDetails requestDetails = new org.onap.vid.changeManagement.RequestDetails();
 
-        RestObject<String> restObjStr = new RestObject<>();
-        restObjStr.set("");
-        MsoResponseWrapper expectedResponse = MsoUtil.wrapResponse(restObjStr);
+        given(msoInterface.setServiceInstanceStatus(eq(requestDetails), endsWith(serviceInstanceId + "/deactivate"))).willReturn(okResponse);
 
         //  when
         MsoResponseWrapper response = msoBusinessLogic.setServiceInstanceStatus(requestDetails, serviceInstanceId, false);
 
         //  then
-        assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-
+        assertThat(response).isEqualToComparingFieldByField(okResponse);
     }
 
     @Test(expectedExceptions = MsoTestException.class)
@@ -1158,7 +1153,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         String serviceInstanceId = "testServiceId";
 
         doThrow(new MsoTestException("testException")).
-                when(msoInterface).setServiceInstanceStatus(eq(null), any(String.class), any(String.class), any(String.class), any(RestObject.class));
+                when(msoInterface).setServiceInstanceStatus(eq(null), any(String.class));
 
         //  when
         msoBusinessLogic.setServiceInstanceStatus(null, serviceInstanceId, true);

@@ -20,11 +20,19 @@
  */
 package org.onap.vid.mso.rest;
 
+import static org.apache.commons.io.IOUtils.toInputStream;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.server.StubServer;
+import io.joshworks.restclient.http.HttpResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -413,20 +421,29 @@ public class MsoRestClientNewTest {
     }
 
     @Test
-    public void testSetServiceInstanceStatus() throws Exception {
-        MsoRestClientNew testSubject;
-        RequestDetails requestDetails = null;
+    public void testSetServiceInstanceStatus_givenValidResponse_responseIsPopulatedAccordingly() {
+        RequestDetails requestDetails = new RequestDetails();
         String t = "";
         String sourceId = "";
         String endpoint = "";
-        RestObject<String> restObject = null;
+        final SyncRestClient client = mock(SyncRestClient.class);
+        MsoRestClientNew testSubject = new MsoRestClientNew(client, "", null, new SystemPropertiesWrapper());
 
-        // default test
-        try {
-            testSubject = createTestSubject();
-            testSubject.setServiceInstanceStatus(requestDetails, t, sourceId, endpoint, restObject);
-        } catch (Exception e) {
-        }
+        // setup
+        final HttpResponse<String> response = mock(HttpResponse.class);
+        final int expectedStatus = 202;
+        final String expectedResponse = "expected response";
+
+        when(client.post(eq(endpoint), anyMap(), eq(requestDetails), eq(String.class))).thenReturn(response);
+        when(response.getStatus()).thenReturn(expectedStatus);
+        when(response.getBody()).thenReturn(expectedResponse);
+        when(response.getRawBody()).thenReturn(toInputStream(expectedResponse));
+
+        // test
+        MsoResponseWrapper responseWrapper = testSubject.setServiceInstanceStatus(requestDetails, endpoint);
+
+        assertThat(responseWrapper.getStatus(), is(expectedStatus));
+        assertThat(responseWrapper.getEntity(), is(expectedResponse));
     }
 
     @Test
