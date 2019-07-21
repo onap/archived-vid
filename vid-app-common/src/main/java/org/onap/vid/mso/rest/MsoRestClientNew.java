@@ -397,7 +397,8 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
     }
 
-    public void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject) {
+    public MsoResponseWrapper setServiceInstanceStatus(RequestDetails requestDetails,
+        String endpoint) {
         String methodName = "activateServiceInstance";
         logger.debug(EELFLoggerDelegate.debugLogger, methodName + " start ");
         try {
@@ -405,6 +406,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w =" + w.getResponse());
+            return w;
 
         } catch (Exception e) {
             logger.error(EELFLoggerDelegate.errorLogger, "." + methodName + e.toString());

@@ -92,7 +92,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
 import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
@@ -638,7 +637,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         MsoResponseWrapper expectedResponse = MsoUtil.wrapResponse(restObjStr);
 
         doThrow(new MsoTestException("testException")).
-                when(msoInterface).setServiceInstanceStatus(eq(requestDetails), any(String.class), any(String.class), any(String.class), any(RestObject.class));
+                when(msoInterface).setServiceInstanceStatus(eq(requestDetails), any(String.class));
 
         //when
         MsoResponseWrapper response = msoBusinessLogic.activateServiceInstance(requestDetails, taskId);
@@ -1158,7 +1157,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         String serviceInstanceId = "testServiceId";
 
         doThrow(new MsoTestException("testException")).
-                when(msoInterface).setServiceInstanceStatus(eq(null), any(String.class), any(String.class), any(String.class), any(RestObject.class));
+                when(msoInterface).setServiceInstanceStatus(eq(null), any(String.class));
 
         //  when
         msoBusinessLogic.setServiceInstanceStatus(null, serviceInstanceId, true);

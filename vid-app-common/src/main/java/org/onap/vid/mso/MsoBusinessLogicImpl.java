@@ -480,7 +480,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String str = "";
             restObjStr.set(str);
 
-            msoClientInterface.setServiceInstanceStatus(requestDetails, str, "", activateServicePath, restObjStr);
+            msoClientInterface.setServiceInstanceStatus(requestDetails, activateServicePath);
 
             return MsoUtil.wrapResponse(restObjStr);
 
@@ -712,10 +712,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
             String str = "";
             restObjStr.set(str);
 
-            msoClientInterface.setServiceInstanceStatus(requestDetails, str, "", endpoint, restObjStr);
-
-            return MsoUtil.wrapResponse(restObjStr);
-
+            return msoClientInterface.setServiceInstanceStatus(requestDetails, endpoint);
         } catch (Exception e) {
             logger.error(EELFLoggerDelegate.errorLogger, methodName + e.toString());
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + e.toString());
