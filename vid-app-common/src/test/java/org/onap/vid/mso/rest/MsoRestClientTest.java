@@ -35,11 +35,9 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
-import org.jetbrains.annotations.NotNull;
 import org.mockito.Mock;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.changeManagement.RequestParameters;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.LocalWebConfig;
@@ -49,7 +47,6 @@ import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
-import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.RequestReferences;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.test.context.ContextConfiguration;
@@ -57,9 +54,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -664,7 +659,7 @@ public class MsoRestClientTest {
         when(client.post(eq(baseUrl + endpoint), anyMap(), eq(requestDetails), eq(String.class))).thenReturn(httpResponse);
 
         //  when
-        restClient.setServiceInstanceStatus(requestDetails,"", "", endpoint, restObject);
+        restClient.setServiceInstanceStatus(requestDetails, endpoint);
     }
 
     @Test( expectedExceptions = MsoTestException.class)
@@ -675,7 +670,7 @@ public class MsoRestClientTest {
         when(client.post(eq(baseUrl), anyMap(), eq(null), eq(String.class))).thenThrow(new MsoTestException("test-post-exception"));
 
         //  when
-        restClient.setServiceInstanceStatus(null,"", "", endpoint, null);
+        restClient.setServiceInstanceStatus(null, endpoint);
     }
 
     @Test

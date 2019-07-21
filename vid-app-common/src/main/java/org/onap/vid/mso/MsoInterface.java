@@ -107,7 +107,7 @@ public interface MsoInterface {
 
     MsoResponseWrapper setPortOnConfigurationStatus(RequestDetails requestDetails, String endpoint);
 
-    void setServiceInstanceStatus(RequestDetails requestDetails, String t, String sourceId, String endpoint, RestObject<String> restObject);
+    MsoResponseWrapper setServiceInstanceStatus(RequestDetails requestDetails, String endpoint);
 
     MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint);
 
