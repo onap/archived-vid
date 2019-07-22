@@ -74,8 +74,16 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 
 	$scope.showReportWindow = function() {
 		let requestInfo = {};
-		requestInfo.requestId = _this.requestId;
-		requestInfo.serviceUuid = $scope.service.model.service.uuid;
+		if(_this.requestId !== undefined) {
+			requestInfo.requestId = _this.requestId;
+		} else {
+			requestInfo.requestId = null;
+		}
+		if($scope.service !== undefined) {
+			requestInfo.serviceUuid = $scope.service.model.service.uuid;
+		} else {
+			requestInfo.serviceUuid = null;
+		}
 
 		const modalWindow = $uibModal.open({
 			templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
