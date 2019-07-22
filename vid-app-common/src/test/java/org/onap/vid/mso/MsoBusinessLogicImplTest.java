@@ -923,7 +923,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
         MsoResponseWrapper2 responseWrapped = new MsoResponseWrapper2<>(expectedResponse);
 
-        given(msoInterface.post(eq(path), any(org.onap.vid.changeManagement.RequestDetailsWrapper.class), eq(RequestReferencesContainer.class))).willReturn(expectedResponse);
+        given(msoInterface.post(eq(path), any(RequestDetails.class), eq(RequestReferencesContainer.class))).willReturn(expectedResponse);
 
         //  when
         MsoResponseWrapper2 response = msoBusinessLogic.deactivateAndCloudDelete(serviceInstanceId, vnfInstanceId, vfModuleInstanceId, requestDetails);
@@ -948,7 +948,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
         MsoResponseWrapper2 responseWrapped = new MsoResponseWrapper2<>(expectedResponse);
 
-        given(msoInterface.post(eq(path), any(org.onap.vid.changeManagement.RequestDetailsWrapper.class), eq(RequestReferencesContainer.class))).willReturn(expectedResponse);
+        given(msoInterface.post(eq(path), any(RequestDetails.class), eq(RequestReferencesContainer.class))).willReturn(expectedResponse);
 
         //  when
         MsoResponseWrapper2 response = msoBusinessLogic.activateFabricConfiguration(serviceInstanceId, requestDetails);

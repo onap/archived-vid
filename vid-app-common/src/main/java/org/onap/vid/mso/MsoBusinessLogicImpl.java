@@ -580,13 +580,13 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     @Override
     public MsoResponseWrapper2 deactivateAndCloudDelete(String serviceInstanceId, String vnfInstanceId, String vfModuleInstanceId, RequestDetails requestDetails) {
         String path = getDeactivateAndCloudDeletePath(serviceInstanceId, vnfInstanceId, vfModuleInstanceId);
-        return new MsoResponseWrapper2<>(msoClientInterface.post(path, new RequestDetailsWrapper<>(requestDetails), RequestReferencesContainer.class));
+        return new MsoResponseWrapper2<>(msoClientInterface.post(path, requestDetails, RequestReferencesContainer.class));
     }
 
     @Override
     public MsoResponseWrapper2 activateFabricConfiguration(String serviceInstanceId, RequestDetails requestDetails) {
         String path = getActivateFabricConfigurationPath(serviceInstanceId);
-        return new MsoResponseWrapper2<>(msoClientInterface.post(path, new RequestDetailsWrapper<>(requestDetails), RequestReferencesContainer.class));
+        return new MsoResponseWrapper2<>(msoClientInterface.post(path, requestDetails, RequestReferencesContainer.class));
     }
 
     @Override
