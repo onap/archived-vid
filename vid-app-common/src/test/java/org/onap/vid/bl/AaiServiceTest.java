@@ -67,8 +67,7 @@ public class AaiServiceTest {
 
     @Test
     public void testGetSpecificPnf(){
-        Pnf pnf = new Pnf();
-        pnf.setPnfId("11111");
+        Pnf pnf = Pnf.builder().withPnfId("11111").build();
         AaiResponse<Pnf> aaiResponse = new AaiResponse<>(pnf, "aaaa", 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getSpecificPnf(Mockito.anyString());
         AaiResponse<Pnf> specificPnf = aaiService.getSpecificPnf("1345667");

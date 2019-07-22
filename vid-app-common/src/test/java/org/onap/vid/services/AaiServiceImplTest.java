@@ -213,7 +213,7 @@ public class AaiServiceImplTest {
 
 	@Test
 	public void shouldGetSpecificPnf() {
-		AaiResponse<Pnf> expectedResponse = new AaiResponse<>(new Pnf(), null, HttpStatus.SC_OK);
+		AaiResponse<Pnf> expectedResponse = new AaiResponse<>(Pnf.builder().build(), null, HttpStatus.SC_OK);
 		when(aaiClient.getSpecificPnf(anyString())).thenReturn(expectedResponse);
 
 		AaiResponse<Pnf> actualResponse = aaiService.getSpecificPnf(anyString());
