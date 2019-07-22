@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8413d9b4_3cee4445",
+        "filename": "epsdk-app-onap/src/main/resources/vid-schema-deprecated.sql",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-22T06:23:27Z",
+      "side": 1,
+      "message": "Sorry for noticing it in this late phase, but `schema_info` is actually created twice in the original sql file.\nI see the one removed here, was added to resolve https://jira.onap.org/browse/VID-332 .\nI suppose we should follow this, and remove the other `schema_info` here below. (line 1286)",
+      "revId": "da8cfc287d1e2c32e86a166e81cbe6755d693b29",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
