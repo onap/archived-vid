@@ -22,6 +22,7 @@
 package org.onap.vid.aai.util;
 
 
+import java.nio.file.FileSystems;
 import org.mockito.Mock;
 
 import org.onap.vid.aai.exceptions.HttpClientBuilderException;
@@ -33,6 +34,7 @@ import org.togglz.core.manager.FeatureManager;
 import javax.net.ssl.SSLContext;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -55,6 +57,7 @@ public class HttpsAuthClientTest {
     public void setUp() throws Exception {
         initMocks(this);
         when(systemPropertyHelper.getAAITruststoreFilename()).thenReturn(Optional.of("filename"));
+        when(systemPropertyHelper.getAAIKeystoreFilename()).thenReturn(Optional.of("keystorefilename"));
         when(systemPropertyHelper.getDecryptedKeystorePassword()).thenReturn("password");
         when(systemPropertyHelper.getDecryptedTruststorePassword()).thenReturn("password");
     }
@@ -76,6 +79,34 @@ public class HttpsAuthClientTest {
 
         //then
         verify(sslContextProvider).getSslContext(anyString(), anyString(), any());
+    }
+
+    @Test
+    public void getKeystorePath_whenNotConfigured_yieldEmptyString() {
+        // when
+        when(sslContextProvider.getSslContext(anyString(), anyString(), any())).thenReturn(sslContext);
+
+        //then
+        assertThat(createTestSubject().getKeystorePath()).isEqualTo(CERT_FILE_PATH + FileSystems.getDefault().getSeparator() + "keystorefilename");
+    }
+
+    @Test
+    public void getKeystorePath_whenConfigured_yieldPathAndFile() {
+        // when
+        when(systemPropertyHelper.getAAIKeystoreFilename()).thenReturn(Optional.empty());
+
+        //then
+        assertThat(createTestSubject().getKeystorePath()).isEqualTo("");
+    }
+
+    @Test
+    public void getKeystorePath_whenConfiguredWithSlash_yieldFilenameWithoutPath() {
+        // when
+        final String filenameWithSlash = "/path/to/keystorefilename";
+        when(systemPropertyHelper.getAAIKeystoreFilename()).thenReturn(Optional.of(filenameWithSlash));
+
+        //then
+        assertThat(createTestSubject().getKeystorePath()).isEqualTo(filenameWithSlash);
     }
 
     @Test
