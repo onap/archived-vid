@@ -76,7 +76,7 @@ public class ChangeManagementServiceUnitTest extends AbstractTestNGSpringContext
     void testInPlaceSoftwareUpdateRequest() throws Exception {
 
 
-        doReturn(new HttpResponse<>(any(), RequestReferencesContainer.class, any())).when(restClientUnderTest).post(anyString(), any(), any());
+        doReturn(new HttpResponse<>(any(), RequestReferencesContainer.class, any())).when(restClientUnderTest).post(anyString(), any(RequestDetailsWrapper.class), any());
 
         URL requestJsonUrl = this.getClass().getResource("/services/change_management_software_update_request.json");
         ChangeManagementRequest changeManagementRequest = objectMapper.readValue(requestJsonUrl, ChangeManagementRequest.class);
