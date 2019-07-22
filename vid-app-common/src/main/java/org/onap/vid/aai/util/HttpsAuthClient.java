@@ -116,13 +116,13 @@ public class HttpsAuthClient {
         return new NoopHostnameVerifier();
     }
 
-    private String getKeystorePath() {
-        return getCertificatesPath() + FileSystems.getDefault().getSeparator() + systemPropertyHelper.getAAIKeystoreFilename();
+    protected String getKeystorePath() {
+        return systemPropertyHelper.getAAIKeystoreFilename().map(this::getCertificatesPathOf).orElse("");
     }
 
     private void setSystemProperties() {
-        System.setProperty(SSL_TRUST_STORE, getCertificatesPath() + FileSystems.getDefault().getSeparator() +
-                systemPropertyHelper.getAAITruststoreFilename().orElse(""));
+        System.setProperty(SSL_TRUST_STORE,
+            systemPropertyHelper.getAAITruststoreFilename().map(this::getCertificatesPathOf).orElse(""));
         System.setProperty(SSL_TRUST_STORE_PASS_WORD, systemPropertyHelper.getDecryptedTruststorePassword());
     }
 
@@ -135,8 +135,11 @@ public class HttpsAuthClient {
         return config;
     }
 
-    private String getCertificatesPath() {
-        return certFilePath;
+    private String getCertificatesPathOf(String fileName) {
+        if (fileName.contains("/") || fileName.contains("\\")) {
+            return fileName;
+        }
+        return certFilePath + FileSystems.getDefault().getSeparator() + fileName;
     }
 
 }
