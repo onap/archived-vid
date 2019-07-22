@@ -62,6 +62,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      * The Constant dateFormat.
      */
     public static final String X_FROM_APP_ID = "X-FromAppId";
+    public static final String X_ONAP_PARTNER_NAME = "X-ONAP-PartnerName";
     final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
     private static final String START = " start";
     private final SyncRestClient client;
@@ -543,6 +544,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         map.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         map.put(X_FROM_APP_ID, systemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME));
         map.put(SystemProperties.ECOMP_REQUEST_ID, Logging.extractOrGenerateRequestId());
+        map.put(X_ONAP_PARTNER_NAME, "VID");
         return ImmutableMap.copyOf(map);
     }
 

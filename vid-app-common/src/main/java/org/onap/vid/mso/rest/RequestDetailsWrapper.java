@@ -42,7 +42,9 @@ package org.onap.vid.mso.rest;
 
 public final class RequestDetailsWrapper {
 
-    private final RequestDetails requestDetails;
+    private RequestDetails requestDetails;
+
+    public RequestDetailsWrapper(){}
 
     public RequestDetailsWrapper(RequestDetails requestDetails) {
         this.requestDetails = requestDetails;
