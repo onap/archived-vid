@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
@@ -69,11 +70,13 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     private void openAndFill1stScreen(String vnfName, String vnfTargetVersion, String workflow) {
         String subscriberId = VNF_DATA_WITH_IN_PLACE.subscriberId;
+        String subscriberName = VNF_DATA_WITH_IN_PLACE.subscriberName;
         String serviceType = VNF_DATA_WITH_IN_PLACE.serviceType;
         String vnfType = VNF_DATA_WITH_IN_PLACE.vnfType;
         String vnfSourceVersion = VNF_DATA_WITH_IN_PLACE.vnfSourceVersion;
         ChangeManagementPage.openNewChangeManagementModal();
         Wait.angularHttpRequestsLoaded();
+        SelectOption.waitForOptionInSelect(subscriberName, "subscriberName");
         ChangeManagementPage.selectSubscriberById(subscriberId);
         Wait.angularHttpRequestsLoaded();
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalServiceTypeInputId, serviceType);
@@ -119,6 +122,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         static final int vnfZrdm3amdns02test2Id = 11822;
         static final int vnfHarrisonKrisId = 12822;
         static String subscriberId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
+        static String subscriberName = "Emanuel";
         static String serviceType = "vRichardson";
         static String vnfType = "vMobileDNS";
         static String vnfSourceVersion = "1.0";
@@ -164,6 +168,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                         , "changeManagement/service-design-and-creation.json"
                         , "changeManagement/mso_get_manual_task.json"
                         , "changeManagement/mso_post_manual_task.json"
+                        , "changeManagement/mso_get_change_managements_scaleout.json"
         );
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(),SimulatorApi.RegistrationStrategy.APPEND);
 
@@ -253,8 +258,10 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     @Test
     public void clickOnScheduledJob_SuccessfulMessageAppear() {
+        //TODO https://github.com/Kong/unirest-java upgrade library, bug of nullPointerException in http status 204
+        SimulatorApi.registerExpectationFromPreset(new PresetDeleteSchedulerChangeManagement(),SimulatorApi.RegistrationStrategy.APPEND);
+
         ChangeManagementPage.openChangeManagementPage();
-//        Wait.angularHttpRequestsLoaded();
         GeneralUIUtils.ultimateWait();
         clickAndAssertOnCancelButton(SCHEDULED_ID);
         updateSimulatorWithParametersOfScheduledJod("get_scheduler_details_short_with_after_cancel" +
@@ -305,6 +312,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         boolean isNotDisplayed = GeneralUIUtils.waitForElementInVisibilityByTestId("icon-status-" + scheduledId, 5);
         Assert.assertTrue(isNotDisplayed);
     }
+
     public void updateSimulatorWithParametersOfScheduledJod(String jasonFile){
         SimulatorApi.registerExpectation(
                 new String[] {"changeManagement/"+jasonFile},
@@ -312,12 +320,22 @@ public class ChangeManagementTest extends VidBaseTestCase {
         );
     }
 
+    public void updateSimulatorWithParametersOfScaleOut(String jasonFile){
+        SimulatorApi.registerExpectation(
+                new String[] {"changeManagement/"+jasonFile},
+                ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), SimulatorApi.RegistrationStrategy.APPEND
+        );
+    }
+
+    @FeatureTogglingTest(value = Features.FLAG_HANDLE_SO_WORKFLOWS, flagActive = false)
     @Test
     public void testWorkflowVNFInPlaceSoftwareUpdateNotInWorkflowsListWhenNotExpected() {
+
         List<String> workflows = getListOfWorkflowsFor("Harrison Kris");
         assertThat(workflows, not(hasItem(VNF_DATA_WITH_IN_PLACE.workflowName)));
     }
 
+    @FeatureTogglingTest(value = Features.FLAG_HANDLE_SO_WORKFLOWS, flagActive = false)
     @Test
     public void testWorkflowVNFInPlaceSoftwareUpdateInWorkflowsListWhenExpected()  {
         List<String> workflows = getListOfWorkflowsFor(VNF_DATA_WITH_IN_PLACE.vnfName);
@@ -344,13 +362,14 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     @Test
     public void testWorkflowVNFInPlaceSoftwareUpdateShows3Fields() {
+
         openAndFill1stScreenWithWorkflowVNFInPlaceSoftwareUpdate();
 
         List<String> idsWithoutMatchingElement =
                 Stream.of(
-                        "operations-timeout",
-                        "existing-software-version",
-                        "new-software-version")
+                        "internal-workflow-parameter-text-2",//operations-timeout
+                        "internal-workflow-parameter-text-3",//existing-software-version
+                        "internal-workflow-parameter-text-4")//new-software-version
                         .filter(id -> Get.byId(id) == null)
                         .collect(Collectors.toList());
         assertThat("all three special VNFInPlace fields should appear", idsWithoutMatchingElement, is(empty()));
@@ -403,13 +422,13 @@ public class ChangeManagementTest extends VidBaseTestCase {
     }
 
     private void fillVNFInPlace3Fields(String operationsTimeout, String existingSwVersion, String newSwVersion) {
-        Get.byId("operations-timeout").clear();
-        Get.byId("existing-software-version").clear();
-        Get.byId("new-software-version").clear();
+        Get.byId("internal-workflow-parameter-text-2").clear();
+        Get.byId("internal-workflow-parameter-text-3").clear();
+        Get.byId("internal-workflow-parameter-text-4").clear();
 
-        Get.byId("operations-timeout").sendKeys(operationsTimeout);
-        Get.byId("existing-software-version").sendKeys(existingSwVersion);
-        Get.byId("new-software-version").sendKeys(newSwVersion);
+        Get.byId("internal-workflow-parameter-text-2").sendKeys(operationsTimeout);
+        Get.byId("internal-workflow-parameter-text-3").sendKeys(existingSwVersion);
+        Get.byId("internal-workflow-parameter-text-4").sendKeys(newSwVersion);
     }
 
     private List<String> getListOfWorkflowsFor(String vnfName) {

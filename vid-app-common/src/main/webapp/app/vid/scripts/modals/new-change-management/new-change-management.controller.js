@@ -128,10 +128,10 @@
 
                                                 //list vfmodules ids in AAI that belong to that vnf instance
                                                 var modulesAaiIds = _.filter(newVNFName.relatedTo, function(item){
-                                                                        return item["node-type"] === "vf-module";
-                                                                    }).map(function(item){
-                                                                        return item.id;
-                                                                    });
+                                                    return item["node-type"] === "vf-module";
+                                                }).map(function(item){
+                                                    return item.id;
+                                                });
 
                                                 _.forEach(newVNFName.vfModules, function (mdl, key) {
                                                     mdl.scale = false; //defaults to not scale unless user changes it
@@ -164,10 +164,10 @@
 
         var extractVNFModel = function (csarVNF, sdcService, selectionVNF) {
             /**
-            @param selectionVNF A vnf *instance* selected in "available VNF" drop-down box
-            @param csarVNF      A VNF *MODEL* that has an invariantUuid same as selectionVNF (might be
-                                a different version; i.e. selectionVNF.modelVersionId <> csarVNF.uuid)
-            @param sdcService   The Service *MODEL* which has the related VNF `csarVNF`.
+             @param selectionVNF A vnf *instance* selected in "available VNF" drop-down box
+             @param csarVNF      A VNF *MODEL* that has an invariantUuid same as selectionVNF (might be
+             a different version; i.e. selectionVNF.modelVersionId <> csarVNF.uuid)
+             @param sdcService   The Service *MODEL* which has the related VNF `csarVNF`.
              */
             var versionCsarData = {
                 vnfInstanceId: "",
@@ -233,177 +233,177 @@
         };
 
 
-		/***converting objects to scheduler format (taken from IST) - was altered for Scale out support ***/
-		function extractChangeManagementCallbackDataStr(changeManagement) {
-			console.log(changeManagement);
-			var result = {};
-			result.requestType = changeManagement.workflow;
-			var workflowType = changeManagement.workflow;
-			result.requestDetails = [];
-			_.forEach(changeManagement.vnfNames, function (vnf) {
+        /***converting objects to scheduler format (taken from IST) - was altered for Scale out support ***/
+        function extractChangeManagementCallbackDataStr(changeManagement) {
+            console.log(changeManagement);
+            var result = {};
+            result.requestType = changeManagement.workflow;
+            var workflowType = changeManagement.workflow;
+            result.requestDetails = [];
+            _.forEach(changeManagement.vnfNames, function (vnf) {
 
-				try{
-				var requestInfoData ={};
-				var requestParametersData ={};
-                var moduleToScale = _.find(vnf.vfModules, {"scale": true});
-				if (vnf.availableVersions && vnf.availableVersions.length!=0){
+                try{
+                    var requestInfoData ={};
+                    var requestParametersData ={};
+                    var moduleToScale = _.find(vnf.vfModules, {"scale": true});
+                    if (vnf.availableVersions && vnf.availableVersions.length!=0){
 
-					requestInfoData ={
-						source: vnf.availableVersions[0].requestInfo.source,
-						suppressRollback: vnf.availableVersions[0].requestInfo.suppressRollback,
-						requestorId: vnf.availableVersions[0].requestInfo.requestorId
-					}
+                        requestInfoData ={
+                            source: vnf.availableVersions[0].requestInfo.source,
+                            suppressRollback: vnf.availableVersions[0].requestInfo.suppressRollback,
+                            requestorId: vnf.availableVersions[0].requestInfo.requestorId
+                        }
 
-					if(workflowType=='Update'){
-						requestParametersData = {
-							usePreload: vnf.availableVersions[0].requestParameters.usePreload
-						}
-					}else if(workflowType=="Replace"){
-						requestParametersData = {
-							rebuildVolumeGroups: vnf.availableVersions[0].requestParameters.usePreload
-						}
-					}else if(workflowType=="VNF In Place Software Update"){
-						var payloadObj = {
-							'existing_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Existing software version').value,
-							'new_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'New software version').value,
-							'operations_timeout':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Operations timeout').value
-						};
-						requestParametersData = {
-                            payload: JSON.stringify(payloadObj)
-						}
-					}else if(workflowType=="VNF Config Update"){
-						requestParametersData = {
-							payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
-						}
-					}else if(workflowType=="VNF Scale Out"){
-					  if(!moduleToScale) return null;
-
-					  if(moduleToScale.userParams) {
-					    requestParametersData = {
-					      userParams: moduleToScale.userParams
-                //,usePreload: true
-					    }
-					  }else{
-					    requestParametersData = {
-					      userParams: []
-                //,usePreload: false
-					    }
-					  }
-					}
-					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: workflowType '+ workflowType);
-					$log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: requestParametersData '+ requestParametersData);
-
-				}else if(workflowType=="VNF In Place Software Update"){
-					var payloadObj = {
-						'existing_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Existing software version').value,
-						'new_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'New software version').value,
-						'operations_timeout':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Operations timeout').value
-					};
-					requestParametersData = {
-						payload: JSON.stringify(payloadObj)
-					}
-				}else if(workflowType=="VNF Config Update"){
-					requestParametersData = {
-						payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
-					}
-				}
-
-				var data;
-				if(workflowType=="VNF Scale Out") {
-                    data = {
-                        vnfName: vnf.name,
-                        vnfInstanceId: vnf.id,
-                        modelInfo: {
-                            modelType: 'vfModule',
-                            modelInvariantId: moduleToScale.invariantUuid,
-                            modelName: moduleToScale.modelCustomizationName,
-                            modelVersion: moduleToScale.version,
-                            modelCustomizationName: moduleToScale.modelCustomizationName,
-                            modelCustomizationId: moduleToScale.customizationUuid,
-                            modelVersionId: moduleToScale.uuid
-                        },
-                        cloudConfiguration: vnf.cloudConfiguration,
-                        requestInfo: requestInfoData,
-                        relatedInstanceList: [],
-                        requestParameters:requestParametersData,
-                        configurationParameters: JSON.parse(vm.getInternalWorkFlowParameter("VNF Scale Out", "text", "Configuration Parameters").value)
-                    };
-                    requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
-                }else{
-                    data = {
-                        vnfName: vnf.name,
-                        vnfInstanceId: vnf.id,
-                        modelInfo: {
-                            modelType: 'vnf',
-                            modelInvariantId: vnf.properties['model-invariant-id'],
-                            modelVersionId: vnf.modelVersionId,
-                            modelName: vnf.properties['vnf-name'],
-                            modelVersion: vnf.version,
-                            modelCustomizationName: vnf.properties['model-customization-name'],
-                            modelCustomizationId: vnf.properties['model-customization-id']
-                        },
-                        cloudConfiguration: vnf.cloudConfiguration,
-                        requestInfo: requestInfoData,
-                        relatedInstanceList: [],
-                        requestParameters:requestParametersData
-                    };
-                }
-
-				var serviceInstanceId = '';
-				_.forEach(vnf['service-instance-node'], function (instanceNode) {
-					if(instanceNode['node-type'] === 'service-instance'){
-						serviceInstanceId = instanceNode.properties['service-instance-id'];
-					}
-				});
-
-				if (vnf.availableVersions && vnf.availableVersions.length!=0){
-					_.forEach(vnf.availableVersions[0].relatedInstanceList, function (related) {
-						var rel = related.relatedInstance;
-						var relatedInstance = {
-							instanceId: serviceInstanceId,
-							modelInfo: {
-								modelType: rel.modelInfo.modelType,
-								modelInvariantId: rel.modelInfo.modelInvariantId,
-								modelVersionId: rel.modelInfo.modelVersionId,
-								modelName: rel.modelInfo.modelName,
-								modelVersion: rel.modelInfo.modelVersion,
-								modelCustomizationName: rel.modelInfo.modelCustomizationName,
-								modelCustomizationId: rel.modelInfo.modelCustomizationId
-							}
-						};
-						if (rel.vnfInstanceId)
-							relatedInstance.instanceId = rel.vnfInstanceId;
-
-						data.relatedInstanceList.push({relatedInstance: relatedInstance});
-					});
-                    if(workflowType=="VNF Scale Out") {
-                        //push vnf to related as well as the service instance
-                        var relatedInstance = {
-                            instanceId: vnf.id,
-                            modelInfo: {
-                                modelCustomizationId: vnf.availableVersions[0].modelInfo.modelCustomizationId,
-                                modelCustomizationName: vnf.availableVersions[0].modelInfo.modelCustomizationName,
-                                modelInvariantId: vnf.availableVersions[0].modelInfo.modelInvariantId,
-                                modelName: vnf.availableVersions[0].modelInfo.modelName,
-                                modelType: vnf.availableVersions[0].modelInfo.modelType,
-                                modelVersion: vnf.availableVersions[0].modelInfo.modelVersion,
-                                modelVersionId: vnf.availableVersions[0].modelInfo.modelVersionId
+                        if(workflowType=='Update'){
+                            requestParametersData = {
+                                usePreload: vnf.availableVersions[0].requestParameters.usePreload
                             }
+                        }else if(workflowType=="Replace"){
+                            requestParametersData = {
+                                rebuildVolumeGroups: vnf.availableVersions[0].requestParameters.usePreload
+                            }
+                        }else if(workflowType=="VNF In Place Software Update"){
+                            var payloadObj = {
+                                'existing_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Existing software version').value,
+                                'new_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'New software version').value,
+                                'operations_timeout':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Operations timeout').value
+                            };
+                            requestParametersData = {
+                                payload: JSON.stringify(payloadObj)
+                            }
+                        }else if(workflowType=="VNF Config Update"){
+                            requestParametersData = {
+                                payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
+                            }
+                        }else if(workflowType=="VNF Scale Out"){
+                            if(!moduleToScale) return null;
+
+                            if(moduleToScale.userParams) {
+                                requestParametersData = {
+                                    userParams: moduleToScale.userParams
+                                    //,usePreload: true
+                                }
+                            }else{
+                                requestParametersData = {
+                                    userParams: []
+                                    //,usePreload: false
+                                }
+                            }
+                        }
+                        $log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: workflowType '+ workflowType);
+                        $log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: requestParametersData '+ requestParametersData);
+
+                    }else if(workflowType=="VNF In Place Software Update"){
+                        var payloadObj = {
+                            'existing_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Existing software version').value,
+                            'new_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'New software version').value,
+                            'operations_timeout':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Operations timeout').value
                         };
-                        data.relatedInstanceList.push({relatedInstance: relatedInstance});
+                        requestParametersData = {
+                            payload: JSON.stringify(payloadObj)
+                        }
+                    }else if(workflowType=="VNF Config Update"){
+                        requestParametersData = {
+                            payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
+                        }
                     }
+
+                    var data;
+                    if(workflowType=="VNF Scale Out") {
+                        data = {
+                            vnfName: vnf.name,
+                            vnfInstanceId: vnf.id,
+                            modelInfo: {
+                                modelType: 'vfModule',
+                                modelInvariantId: moduleToScale.invariantUuid,
+                                modelName: moduleToScale.modelCustomizationName,
+                                modelVersion: moduleToScale.version,
+                                modelCustomizationName: moduleToScale.modelCustomizationName,
+                                modelCustomizationId: moduleToScale.customizationUuid,
+                                modelVersionId: moduleToScale.uuid
+                            },
+                            cloudConfiguration: vnf.cloudConfiguration,
+                            requestInfo: requestInfoData,
+                            relatedInstanceList: [],
+                            requestParameters:requestParametersData,
+                            configurationParameters: JSON.parse(vm.getInternalWorkFlowParameter("VNF Scale Out", "text", "Configuration Parameters").value)
+                        };
+                        requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
+                    }else{
+                        data = {
+                            vnfName: vnf.name,
+                            vnfInstanceId: vnf.id,
+                            modelInfo: {
+                                modelType: 'vnf',
+                                modelInvariantId: vnf.properties['model-invariant-id'],
+                                modelVersionId: vnf.modelVersionId,
+                                modelName: vnf.properties['vnf-name'],
+                                modelVersion: vnf.version,
+                                modelCustomizationName: vnf.properties['model-customization-name'],
+                                modelCustomizationId: vnf.properties['model-customization-id']
+                            },
+                            cloudConfiguration: vnf.cloudConfiguration,
+                            requestInfo: requestInfoData,
+                            relatedInstanceList: [],
+                            requestParameters:requestParametersData
+                        };
+                    }
+
+                    var serviceInstanceId = '';
+                    _.forEach(vnf['service-instance-node'], function (instanceNode) {
+                        if(instanceNode['node-type'] === 'service-instance'){
+                            serviceInstanceId = instanceNode.properties['service-instance-id'];
+                        }
+                    });
+
+                    if (vnf.availableVersions && vnf.availableVersions.length!=0){
+                        _.forEach(vnf.availableVersions[0].relatedInstanceList, function (related) {
+                            var rel = related.relatedInstance;
+                            var relatedInstance = {
+                                instanceId: serviceInstanceId,
+                                modelInfo: {
+                                    modelType: rel.modelInfo.modelType,
+                                    modelInvariantId: rel.modelInfo.modelInvariantId,
+                                    modelVersionId: rel.modelInfo.modelVersionId,
+                                    modelName: rel.modelInfo.modelName,
+                                    modelVersion: rel.modelInfo.modelVersion,
+                                    modelCustomizationName: rel.modelInfo.modelCustomizationName,
+                                    modelCustomizationId: rel.modelInfo.modelCustomizationId
+                                }
+                            };
+                            if (rel.vnfInstanceId)
+                                relatedInstance.instanceId = rel.vnfInstanceId;
+
+                            data.relatedInstanceList.push({relatedInstance: relatedInstance});
+                        });
+                        if(workflowType=="VNF Scale Out") {
+                            //push vnf to related as well as the service instance
+                            var relatedInstance = {
+                                instanceId: vnf.id,
+                                modelInfo: {
+                                    modelCustomizationId: vnf.availableVersions[0].modelInfo.modelCustomizationId,
+                                    modelCustomizationName: vnf.availableVersions[0].modelInfo.modelCustomizationName,
+                                    modelInvariantId: vnf.availableVersions[0].modelInfo.modelInvariantId,
+                                    modelName: vnf.availableVersions[0].modelInfo.modelName,
+                                    modelType: vnf.availableVersions[0].modelInfo.modelType,
+                                    modelVersion: vnf.availableVersions[0].modelInfo.modelVersion,
+                                    modelVersionId: vnf.availableVersions[0].modelInfo.modelVersionId
+                                }
+                            };
+                            data.relatedInstanceList.push({relatedInstance: relatedInstance});
+                        }
+                    }
+                }catch(err){
+                    $log.error('SchedulerCtrl::extractChangeManagementCallbackDataStr error: ' + err);
+                    vm.errorMsg = err;
                 }
-				}catch(err){
-					$log.error('SchedulerCtrl::extractChangeManagementCallbackDataStr error: ' + err);
-					vm.errorMsg = err;
-				}
 
-				result.requestDetails.push(data);
-			});
-			return JSON.stringify(result);
-		}
+                result.requestDetails.push(data);
+            });
+            return JSON.stringify(result);
+        }
 
-		function getWorkflowParametersFromForm() {
+        function getWorkflowParametersFromForm() {
             let workflowParameters =
                 {requestDetails:{
                         cloudConfiguration:{},
@@ -414,8 +414,8 @@
             let parameters = vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow);
             parameters.forEach((parameter)=>{
                 let inputField = document.getElementById('so-workflow-parameter-'+parameter.soFieldName);
-                workflowParameters.requestDetails.requestParameters.userParams[0][parameter.soFieldName]=inputField.value;
-            });
+            workflowParameters.requestDetails.requestParameters.userParams[0][parameter.soFieldName]=inputField.value;
+        });
 
             return workflowParameters;
         }
@@ -423,13 +423,13 @@
         vm.openModal = function () {
             if(vm.hasScheduler) { //scheduling supported
                 vm.scheduleWorkflow();
-			} else {
+            } else {
                 //no scheduling support
                 vm.executeWorkflow();
             }
         };
 
-		vm.scheduleWorkflow = function () {
+        vm.scheduleWorkflow = function () {
             $scope.widgetParameter = ""; // needed by the scheduler?
 
             // properties needed by the scheduler so it knows whether to show
@@ -525,8 +525,8 @@
                                 const nodeType = vnfsData[i]['node-type'];
                                 if (nodeType === "generic-vnf") {
                                     if (_.find(vnfsData[i]['related-to'], function (node) {
-                                            return node['node-type'] === 'vserver'
-                                        }) !== undefined) {
+                                        return node['node-type'] === 'vserver'
+                                    }) !== undefined) {
                                         vm.vnfs.push(vnfsData[i]);
                                     }
                                 } else if (nodeType === "service-instance") {
@@ -566,8 +566,8 @@
             var versions = [];
             _.forEach(vm.vnfs, function (vnf) {
                 if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']
-                && vnf.properties["model-invariant-id"]
-                && vnf.properties["model-version-id"]) {
+                    && vnf.properties["model-invariant-id"]
+                    && vnf.properties["model-version-id"]) {
                     vm.serviceInstancesToGetVersions.push({
                             "model-invariant-id": vnf.properties["model-invariant-id"],
                             "model-version-id": vnf.properties["model-version-id"]
@@ -710,70 +710,70 @@
         };
 
         vm.loadWorkFlows = function () {
-          vm.localWorkflowsParameters = new Map();
-          vm.remoteWorkflowsParameters = new Map();
+            vm.localWorkflowsParameters = new Map();
+            vm.remoteWorkflowsParameters = new Map();
             if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_HANDLE_SO_WORKFLOWS)) {
-            return vm.loadRemoteWorkFlows()
-            .then(function () {
-              vm.workflows = vm.remoteWorkflows.map(item => item.name);
-            }).then(function () {
-              vm.loadRemoteWorkFlowsParameters();
-            });
-          }else{
-            return vm.loadLocalWorkFlows()
-            .then(vm.loadLocalWorkFlowsParameters)
-            .then(function () {
-              vm.workflows = vm.localWorkflows;
-            })
-          }
+                return vm.loadRemoteWorkFlows()
+                    .then(function () {
+                        vm.workflows = vm.remoteWorkflows.map(item => item.name);
+                    }).then(function () {
+                        vm.loadRemoteWorkFlowsParameters();
+                    });
+            }else{
+                return vm.loadLocalWorkFlows()
+                    .then(vm.loadLocalWorkFlowsParameters)
+                    .then(function () {
+                        vm.workflows = vm.localWorkflows;
+                    })
+            }
         };
 
         vm.loadLocalWorkFlows = function () {
-          return changeManagementService.getWorkflows(vm.changeManagement.vnfNames)
-          .then(function (response) {
-            vm.localWorkflows = response.data.workflows || [];
-          }).catch(function (error) {
-            $log.error(error);
-            vm.errorMsg = error;
-          });
+            return changeManagementService.getWorkflows(vm.changeManagement.vnfNames)
+                .then(function (response) {
+                    vm.localWorkflows = response.data.workflows || [];
+                }).catch(function (error) {
+                    $log.error(error);
+                    vm.errorMsg = error;
+                });
         };
 
         vm.loadRemoteWorkFlows = function () {
-          let vnfModelIDs = vm.changeManagement.vnfNames.map(vnfName => vnfName.modelVersionId);
-          return changeManagementService.getSOWorkflows(vnfModelIDs)
-          .then(function (response) {
-            vm.remoteWorkflows = response.data || [];
-          }).catch(function (error) {
-            $log.error(error);
-            vm.errorMsg = error;
-          });
+            let vnfModelIDs = vm.changeManagement.vnfNames.map(vnfName => vnfName.modelVersionId);
+            return changeManagementService.getSOWorkflows(vnfModelIDs)
+                .then(function (response) {
+                    vm.remoteWorkflows = response.data || [];
+                }).catch(function (error) {
+                    $log.error(error);
+                    vm.errorMsg = error;
+                });
         };
 
         vm.loadLocalWorkFlowsParameters = function () {
-          vm.localWorkflows.forEach(function(workflow) {
-            vm.loadLocalWorkFlowParameters(workflow);
-          });
+            vm.localWorkflows.forEach(function(workflow) {
+                vm.loadLocalWorkFlowParameters(workflow);
+            });
         };
 
         vm.loadLocalWorkFlowParameters = function (workflow) {
-          changeManagementService.getLocalWorkflowParameter(workflow)
-          .then(function (response) {
-              vm.localWorkflowsParameters.set(workflow, response.data.parameterDefinitions);
-          })
-          .catch(function (error) {
-            $log.error(error);
-            vm.errorMsg = error;
-          });
+            changeManagementService.getLocalWorkflowParameter(workflow)
+                .then(function (response) {
+                    vm.localWorkflowsParameters.set(workflow, response.data.parameterDefinitions);
+                })
+                .catch(function (error) {
+                    $log.error(error);
+                    vm.errorMsg = error;
+                });
         };
 
         vm.loadRemoteWorkFlowsParameters = function () {
-          vm.remoteWorkflows.forEach(function(workflow) {
-              if (workflow.source ==='SDC' || workflow.source === 'sdc' ){
-                  vm.loadRemoteWorkFlowParameters(workflow);
-              } else {
-                  vm.loadLocalWorkFlowParameters(workflow.name);
-              }
-          });
+            vm.remoteWorkflows.forEach(function(workflow) {
+                if (workflow.source ==='SDC' || workflow.source === 'sdc' ){
+                    vm.loadRemoteWorkFlowParameters(workflow);
+                } else {
+                    vm.loadLocalWorkFlowParameters(workflow.name);
+                }
+            });
         };
 
         vm.loadRemoteWorkFlowParameters = function (workflow) {
@@ -783,21 +783,21 @@
                     return param.soPayloadLocation === "userParams"
                 })
                 .forEach(function (param) {
-                    let workflowParams = vm.repackAttributes(param);
-                    if (param.validation.length > 0) {
-                        let validation = param.validation[0];
-                        if ('maxLength' in validation) {
-                            workflowParams.maxLength = validation.maxLength;
+                        let workflowParams = vm.repackAttributes(param);
+                        if (param.validation.length > 0) {
+                            let validation = param.validation[0];
+                            if ('maxLength' in validation) {
+                                workflowParams.maxLength = validation.maxLength;
+                            }
+                            if ('allowableChars' in validation) {
+                                workflowParams.pattern = validation.allowableChars;
+                            }
                         }
-                        if ('allowableChars' in validation) {
-                            workflowParams.pattern = validation.allowableChars;
-                        }
-                    }
-                    workflowParams.type = param.inputType;
+                        workflowParams.type = param.inputType;
 
-                    parameters.push(workflowParams);
-                }
-            );
+                        parameters.push(workflowParams);
+                    }
+                );
             vm.remoteWorkflowsParameters.set(workflow.name, parameters);
         };
 
@@ -813,23 +813,31 @@
         };
 
         vm.getRemoteWorkFlowParameters = function (workflow) {
-          if (workflow && vm.remoteWorkflowsParameters.has(workflow)) {
-            return vm.remoteWorkflowsParameters.get(workflow)
-          }
-          return [];
+            if (workflow && vm.remoteWorkflowsParameters.has(workflow)) {
+                return vm.remoteWorkflowsParameters.get(workflow)
+            }
+            return [];
         };
+
+        vm.hasPatternError = function(form, itemName){
+            return form[itemName].$error.pattern;
+        }
+
+        vm.hasAsyncFnError = function(form, itemName){
+            return form[itemName].$error.validateAsyncFn;
+        }
 
         vm.getInternalWorkFlowParameters = function (workflow, type) {
             if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type) != []) {
-                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type)
-          }
-          return [];
+                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type);
+            }
+            return [];
         };
 
         vm.getInternalWorkFlowParameter = function (workflow, type, parameterName) {
             if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type) != []) {
                 return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type).filter(parameter => parameter.name === parameterName)[0]
-          }
+            }
         };
 
         vm.getRemoteWorkflowSource = (workflow) => {
