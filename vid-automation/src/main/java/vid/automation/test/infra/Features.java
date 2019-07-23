@@ -40,6 +40,7 @@ public enum Features implements Feature {
     FLAG_1908_RESUME_MACRO_SERVICE,
     FLAG_1908_RELEASE_TENANT_ISOLATION,
     FLAG_1908_VNF_FC_NEW_INSTANTIATION_UI,
+    FLAG_HANDLE_SO_WORKFLOWS
     ;
 
     public boolean isActive() {

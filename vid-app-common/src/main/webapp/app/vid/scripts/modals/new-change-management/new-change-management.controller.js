@@ -26,8 +26,10 @@
 
     function newChangeManagementModalController($uibModalInstance, $uibModal,$q, AaiService, changeManagementService, Upload, $log, $scope, _, COMPONENT, VIDCONFIGURATION, DataService, featureFlags) {
 
+
         var vm = this;
         vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
+        vm.errorMsg='';
 
         vm.wizardStep = 1;
         vm.nextStep = function(){
@@ -43,6 +45,24 @@
 
         var attuid;
 
+        $scope.showReportWindow = function() {
+            const modalWindow = $uibModal.open({
+                templateUrl: 'app/vid/scripts/modals/report-modal/report-modal.html',
+                controller: 'reportModalController',
+                controllerAs: 'vm',
+                resolve: {
+                    errorMsg: function () {
+                        return vm.errorMsg.message;
+                    }
+                }
+            });
+
+        };
+
+        $scope.isShowErrorReport = function() {
+            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_CREATE_ERROR_REPORTS);
+        };
+
         function fetchAttUid() {
             var defer = $q.defer();
             if (attuid) {
@@ -54,6 +74,7 @@
                     },
                     function (err) {
                         defer.reject(err);
+                        vm.errorMsg = err;
                     });
             }
             return defer.promise;
@@ -75,6 +96,7 @@
                 })
                 .catch(function (error) {
                     $log.error(error);
+                    vm.errorMsg = err;
                 })
         };
 
@@ -132,6 +154,7 @@
                                     newVNFName.availableVersions = _.sortBy(_.uniq(versions, response.data.service, true),"modelInfo.modelVersion");
                                 }).catch(function (error) {
                                 $log.error(error);
+                                vm.errorMsg = error;
                             });
                         });
                     }
@@ -372,6 +395,7 @@
                     }
                 }catch(err){
                     $log.error('SchedulerCtrl::extractChangeManagementCallbackDataStr error: ' + err);
+                    vm.errorMsg = err;
                 }
 
                 result.requestDetails.push(data);
@@ -475,6 +499,7 @@
                 })
                 .catch(function (error) {
                     $log.error(error);
+                    vm.errorMsg = error;
                 });
         };
 
@@ -602,6 +627,7 @@
                     })
                     .catch(function (error) {
                         reject(error);
+                        vm.errorMsg = error;
                     });
             });
         }
@@ -618,7 +644,7 @@
 
                 var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
 
-                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType && vnf.properties["model-version-id"] &&
+                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType &&
                     selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
@@ -708,6 +734,7 @@
                     vm.localWorkflows = response.data.workflows || [];
                 }).catch(function (error) {
                     $log.error(error);
+                    vm.errorMsg = error;
                 });
         };
 
@@ -718,6 +745,7 @@
                     vm.remoteWorkflows = response.data || [];
                 }).catch(function (error) {
                     $log.error(error);
+                    vm.errorMsg = error;
                 });
         };
 
@@ -734,6 +762,7 @@
                 })
                 .catch(function (error) {
                     $log.error(error);
+                    vm.errorMsg = error;
                 });
         };
 
@@ -790,12 +819,18 @@
             return [];
         };
 
+        vm.hasPatternError = function(form, itemName){
+            return form[itemName].$error.pattern;
+        }
+
+        vm.hasAsyncFnError = function(form, itemName){
+            return form[itemName].$error.validateAsyncFn;
+        }
+
         vm.getInternalWorkFlowParameters = function (workflow, type) {
             if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type) != []) {
-                console.log(vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type));
-                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type)
+                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type);
             }
-            console.log([]);
             return [];
         };
 
@@ -828,6 +863,7 @@
                         vnfName[0].selectedFile = JSON.parse(lines);
                     } catch (error) {
                         $log.error(error);
+                        vm.errorMsg = error;
                     }
                 };
                 fileReader.readAsText(file);
@@ -839,7 +875,6 @@
         };
 
         vm.isConfigUpdate = function () {
-            console.log("get to isConfigUpdate");
             return vm.changeManagement.workflow === COMPONENT.WORKFLOWS.vnfConfigUpdate;
         };
 

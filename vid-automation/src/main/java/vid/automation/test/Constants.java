@@ -97,7 +97,7 @@ public class Constants {
         public static final String newModalFromVNFVersionInputId = "fromVNFVersion";
         public static final String newModalVNFNameInputId = "vnfName";
         public static final String newModalWorkFlowInputId = "workflow";
-        public static final String newModalConfigUpdateInputId = "config-update-input";
+        public static final String newModalConfigUpdateInputId = "internal-workflow-parameter-file-5";
         public static final String newModalTargetVersionInputsClass = "vnf-versions-select-as-text";
         public static final String newModalSubscriberText = "CRAIG/ROBERTS";
         public static final String newModalServiceTypeText = "vRichardson";

@@ -22,6 +22,7 @@
 <div class="modal-header">
     <h3 class="modal-title" id="modal-title">New VNF Change</h3>
     <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
+    <div ng-if="vm.errorMsg!==''"><font color='red'>{{vm.errorMsg.message}}</font></div>
 </div>
 <form class="form-create" name="newChangeManagement" ng-submit="vm.openModal();vm.close();" novalidate>
     <div class="modal-body step1" ng-show="vm.wizardStep === 1" >
@@ -79,16 +80,15 @@
             </select>
         </div>
 
-        <div class="form-group" ng-if="vm.isConfigUpdate()" ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'FILE')">
+        <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'FILE')">
             <label class="control-label">{{item.name}}</label>
             <div class="file-wrapper">
-                <input id="internal-workflow-parameter-file-{{item.id}}" class="file-input" type="file" ngf-select ng-model="item.value" ngf-validate-async-fn="vm.uploadConfigFile($file)" name="configUpdateFile" accept="{{item.acceptableFileType}}" ngf-pattern="{{item.acceptableFileType}}" ng-required="{{item.required}}"/>
+                <input id="internal-workflow-parameter-file-{{item.id}}" ng-change="vm.onChange(item)" class="file-input" type="file" ngf-select ng-model="item.value" ngf-validate-async-fn="vm.uploadConfigFile($file)" ng-attr-name="{{'internal-workflow-parameter-file-name-' + item.id}}" accept="{{item.acceptableFileType}}" ngf-pattern="{{item.acceptableFileType}}" ng-required="{{item.required}}"/>
                 <label id="internal-workflow-parameter-file-{{item.id}}-label" class="file-input-label">{{item.value&&item.value.name||"Select File"}} </label>
                 <label for="internal-workflow-parameter-file-{{item.id}}"><span class="icon-browse"></span></label>
             </div>
-
-            <label id="errorLabel" class="icon-alert error" ng-if="item.value.$error.pattern">{{item.msgOnPatternError}}</label>
-            <label id="errorContentLabel" class="icon-alert error" ng-if="item.value.$error.validateAsyncFn">{{item.msgOnContentError}}</label>
+            <label id="errorLabel" class="icon-alert error" ng-if="vm.hasPatternError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnPatternError}}</label>
+            <label id="errorContentLabel" class="icon-alert error" ng-if="vm.hasAsyncFnError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnContentError}}</label>
         </div>
 
         <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'text')">
@@ -99,34 +99,6 @@
         <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow)">
             <label for="so-workflow-parameter-{{item.id}}" class="control-label">{{item.name}}</label>
             <input  ng-model="item.value" type="text" id="so-workflow-parameter-{{item.id}}" pattern="{{item.pattern}}" maxlength="{{item.maxLength}}" ng-required="{{item.required}}" soFieldName="{{item.soFieldName}}">
-        </div>
-
-        <!--        <div class="form-group" ng-if="vm.isConfigUpdate()">
-                    <label class="control-label">Attach configuration file</label>
-                    <div class="file-wrapper">
-                        <input id="config-update-input" class="file-input" type="file" ngf-select ng-model="vm.configUpdateFile" ngf-validate-async-fn="vm.uploadConfigFile($file)" name="configUpdateFile"
-                               accept=".csv" ngf-pattern=".csv" required> </input>
-                        <label id="config-update-label" class="file-input-label">{{vm.configUpdateFile&&vm.configUpdateFile.name||"Select File"}} </label>
-                        <label for="config-update-input"><span class="icon-browse"></span></label>
-                    </div>
-                    <label id="errorLabel" class="icon-alert error" ng-if="newChangeManagement.configUpdateFile.$error.pattern">{{vm.configUpdatePatternError}}</label>
-                    <label id="errorContentLabel" class="icon-alert error" ng-if="newChangeManagement.configUpdateFile.$error.validateAsyncFn">{{vm.configUpdateContentError}}</label>
-                </div>-->
-
-        <div ng-show="vm.shouldShowVnfInPlaceFields()">
-            <div class="form-group">
-                <label class="control-label">Operations timeout</label>
-                <input class="form-control" ng-model="vm.changeManagement.operationTimeout" name="operationTimeout" type="text" id="operations-timeout" pattern="[0-9]+" required>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Existing software version</label>
-                <input class="form-control" ng-model="vm.changeManagement.existingSoftwareVersion" name="existingSoftwareVersion" type="text" id="existing-software-version" pattern="{{vm.softwareVersionRegex}}" required>
-            </div>
-            <div class="form-group">
-                <label class="control-label">New software version</label>
-                <input class="form-control" ng-model="vm.changeManagement.newSoftwareVersion" name="newSoftwareVersion" type="text" id="new-software-version" pattern="{{vm.softwareVersionRegex}}" required>
-            </div>
-
         </div>
     </div>
 
@@ -157,7 +129,7 @@
                 <div>In Service</div>
                 <div>Scale</div>
                 <div>Module UID</div>
-                <div>File</div>VNF Config Update
+                <div>File</div>
             </div>
 
             <div class="table-row" ng-repeat="(custUUID, moduleArr) in vnf.groupModules">
@@ -184,6 +156,7 @@
             <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
             <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2) || vm.hasScheduler" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">{{vm.hasScheduler ? "Schedule" : "Confirm"}}</button>
             <button ng-if="(vm.isScaleOut() && vm.wizardStep === 1) && !vm.hasScheduler" ng-click="vm.nextStep();" type="button" id="next" name="next" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Next</button>
+            <button ng-if="isShowErrorReport() && vm.errorMsg!==''" ng-click="showReportWindow()" type="button" class="btn btn-danger" >Create report</button>
         </div>
     </div>
 </form>

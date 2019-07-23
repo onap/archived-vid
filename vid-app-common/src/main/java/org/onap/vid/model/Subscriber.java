@@ -23,6 +23,8 @@ package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 /**
  * Created by Oren on 7/4/17.
  */
@@ -40,7 +42,6 @@ public class Subscriber {
     @JsonProperty("resource-version")
     public String resourceVersion;
 
-
-
-
+    @JsonProperty("relationship-list")
+    public Map relationshipList;
 }
