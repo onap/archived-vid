@@ -1,0 +1,209 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b7e79b9_56d07d7a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/Subscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "Why this field is needed, where it is used?",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfb3c4fe_2b7a502d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/Subscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "Type can be `org.onap.vid.aai.model.RelationshipList`",
+      "range": {
+        "startLine": 46,
+        "startChar": 11,
+        "endLine": 46,
+        "endChar": 15
+      },
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff10fe29_a5926263",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "I suggest adding `undefined` check, e.g.:\n```\nreturn form[itemName] \u0026\u0026 form[itemName].$error.pattern;\n```",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e587c2dc_b08e5ced",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "I suggest adding `undefined` check, e.g.:\n```\nreturn form[itemName] \u0026\u0026 form[itemName].$error.validateAsyncFn;\n```",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b09144ed_10e01e40",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "Nice touch.",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c639e85_dc7cdda5",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "Do we really need the `name` attribute? I mean, it is not really sent as form, right?",
+      "range": {
+        "startLine": 86,
+        "startChar": 218,
+        "endLine": 86,
+        "endChar": 230
+      },
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b2ae362_46d917fd",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "Maybe we should add item.name to `id` (ad to label\u0027s `for`), just to keep the *tests* readable. (Though, it will require removing spaces.)\nI mean: id\u003d\"internal-workflow-parameter-text-{{item.id}}-{{item.name}}\"",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "308b66fe_c6a0d234",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/scheduler/PresetDeleteSchedulerChangeManagement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "shouldn\u0027t be null, following `delete_scheduled_task.json`?",
+      "range": {
+        "startLine": 25,
+        "startChar": 15,
+        "endLine": 25,
+        "endChar": 19
+      },
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ea9c41f_0b658c09",
+        "filename": "vid-automation/src/main/java/vid/automation/test/infra/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "please add with a trailing comma (although it\u0027s the last item):\n`FLAG_HANDLE_SO_WORKFLOWS,`",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3aeeb2b1_fecbeb66",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "This one is not needed now, right?",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8af52feb_4463446a",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T08:50:50Z",
+      "side": 1,
+      "message": "Very nice.",
+      "revId": "7f7055a7b378b13710f475c2cff11c3c755696ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
