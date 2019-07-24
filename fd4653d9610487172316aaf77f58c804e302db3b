@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "589a9b80_34ea91aa",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T14:26:05Z",
+      "side": 1,
+      "message": "I prefer not having this config. Mainly because `bTEyMzRAYXR0LmNvbTphYWFh` contains a dummy AT\u0026T username.",
+      "revId": "fd4653d9610487172316aaf77f58c804e302db3b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f1c9548_2ae27813",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-24T14:26:05Z",
+      "side": 1,
+      "message": "Please don\u0027t create new instance for each iteration.\nIt\u0027s better to define a local final static field. (ObjectMapper is thread-safe.)",
+      "range": {
+        "startLine": 47,
+        "startChar": 76,
+        "endLine": 47,
+        "endChar": 94
+      },
+      "revId": "fd4653d9610487172316aaf77f58c804e302db3b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
