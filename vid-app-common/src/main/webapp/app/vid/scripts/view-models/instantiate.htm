@@ -492,8 +492,7 @@
                             <li ng-repeat="pnf in pnfs" ui-tree-node>
                                 <div ui-tree-handle class="tree-node tree-node-content">
                                     PNF: {{pnf}}
-
-                                    <a class="dissociate-pnf pull-right btn btn-primary btn-xs" data-nodrag
+                                    <a ng-if="isMacro()===false" class="dissociate-pnf pull-right btn btn-primary btn-xs" data-nodrag
                                        ng-click="dissociatePnf(pnf)" style="margin-right: 8px;">
                                         <span>Dissociate</span>
                                     </a>
