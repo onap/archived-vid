@@ -8,9 +8,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,11 +21,15 @@
 
 package org.onap.vid.mso;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import java.util.Objects;
 
 public class MsoUtil {
+
+    static ObjectMapper objectMapper = new ObjectMapper();
 
     private MsoUtil() {
     }
@@ -36,11 +40,19 @@ public class MsoUtil {
         return new MsoResponseWrapper(status, response);
     }
 
-    public static <T> MsoResponseWrapper wrapResponse(HttpResponse<T> httpResponse) {
+    public static <T> MsoResponseWrapper wrapResponse(HttpResponse<T> httpResponse)  {
         MsoResponseWrapper msoResponseWrapper = new MsoResponseWrapper();
         msoResponseWrapper.setStatus(httpResponse.getStatus());
         if (httpResponse.getRawBody() != null) {
-            msoResponseWrapper.setEntity(Objects.toString(httpResponse.getBody()));
+            try {
+                T body = httpResponse.getBody();
+                String entityStr = body instanceof String ? (String) body : objectMapper.writeValueAsString(httpResponse.getBody());
+                msoResponseWrapper.setEntity(entityStr);
+            }
+            catch(JsonProcessingException e)
+            {
+                ExceptionUtils.rethrow(e);
+            }
         }
         return msoResponseWrapper;
     }
