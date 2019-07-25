@@ -21,13 +21,32 @@
 
 package org.onap.vid.controller;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
+import java.io.File;
+import java.io.IOException;
+import javax.servlet.ServletContext;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.aai.*;
+import org.onap.vid.aai.AaiClient;
+import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiOverTLSClient;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
+import org.onap.vid.aai.AaiOverTLSPropertySupplier;
+import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.PombaClientImpl;
+import org.onap.vid.aai.PombaClientInterface;
+import org.onap.vid.aai.PombaRestInterface;
 import org.onap.vid.aai.model.PortDetailsTranslator;
-import org.onap.vid.aai.util.*;
+import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.CacheProvider;
+import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.SSLContextProvider;
+import org.onap.vid.aai.util.ServiceInstanceStandardQuery;
+import org.onap.vid.aai.util.ServletRequestHelper;
+import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.parser.VidNotionsBuilder;
@@ -37,7 +56,13 @@ import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.scheduler.SchedulerService;
 import org.onap.vid.scheduler.SchedulerServiceImpl;
-import org.onap.vid.services.*;
+import org.onap.vid.services.AAIServiceTree;
+import org.onap.vid.services.AAITreeNodeBuilder;
+import org.onap.vid.services.AaiService;
+import org.onap.vid.services.AaiServiceImpl;
+import org.onap.vid.services.ChangeManagementService;
+import org.onap.vid.services.PombaService;
+import org.onap.vid.services.PombaServiceImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,11 +72,6 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
 
 @EnableSwagger2
 @Configuration
@@ -177,7 +197,7 @@ public class WebConfig {
             @Override
             public <T> T readValue(String s, Class<T> aClass) {
                 try {
-                    return objectMapper.readValue(s, aClass);
+                    return isEmpty(s) ? null : objectMapper.readValue(s, aClass);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
