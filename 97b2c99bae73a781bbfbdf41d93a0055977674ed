@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78983b7d_eb652ec1",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 890,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-25T17:19:34Z",
+      "side": 1,
+      "message": "can keep with a single dep:\n        \u003cdependency\u003e\n            \u003cgroupId\u003eorg.apache.commons\u003c/groupId\u003e\n            \u003cartifactId\u003ecommons-lang3\u003c/artifactId\u003e\n            \u003cversion\u003e3.8.1\u003c/version\u003e\n        \u003c/dependency\u003e",
+      "range": {
+        "startLine": 879,
+        "startChar": 6,
+        "endLine": 890,
+        "endChar": 21
+      },
+      "revId": "97b2c99bae73a781bbfbdf41d93a0055977674ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60b36ecd_92f9c16e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-25T17:19:34Z",
+      "side": 1,
+      "message": "Are we with the unit-test for that?",
+      "revId": "97b2c99bae73a781bbfbdf41d93a0055977674ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d81f78d_6582a692",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/AaiGetNetworkCollectionDetails/RelatedToProperty.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-25T17:19:34Z",
+      "side": 1,
+      "message": "Please reformat with spaces instead of tabs.",
+      "revId": "97b2c99bae73a781bbfbdf41d93a0055977674ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "292a94f2_429cd449",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/AaiGetNetworkCollectionDetails/Relationship.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-25T17:19:34Z",
+      "side": 1,
+      "message": "Can revert, no change",
+      "revId": "97b2c99bae73a781bbfbdf41d93a0055977674ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b24f069e_22177f5a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/CloudConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-25T17:19:34Z",
+      "side": 1,
+      "message": "Can revert, no change",
+      "revId": "97b2c99bae73a781bbfbdf41d93a0055977674ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55a97085_e070f4a4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/LeanCloudConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-25T17:19:34Z",
+      "side": 1,
+      "message": "Can revert file",
+      "revId": "97b2c99bae73a781bbfbdf41d93a0055977674ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be67b4c6_df7af472",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/MsoController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-25T17:19:34Z",
+      "side": 1,
+      "message": "Should return back",
+      "revId": "97b2c99bae73a781bbfbdf41d93a0055977674ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
