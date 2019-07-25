@@ -478,6 +478,13 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         return client.post(path, commonHeaders, requestDetailsWrapper, responseClass);
     }
 
+    @Override
+    public <T> HttpResponse<T> post(String endpoint, RequestDetails requestDetails, Class<T> responseClass) {
+        String path = baseUrl + endpoint;
+
+        return client.post(path, commonHeaders, requestDetails, responseClass);
+    }
+
 
     public HttpResponse<SOWorkflowList> getWorkflowListByModelId(String endpoint){
         String path = baseUrl + endpoint;

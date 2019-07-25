@@ -121,7 +121,8 @@ public interface MsoInterface {
 
     <T> HttpResponse<T> get(String path, Class<T> responseClass);
 
-    <T> HttpResponse<T> post(String path, RequestDetailsWrapper<?> requestDetailsWrapper,
-      Class<T> responseClass);
+    <T> HttpResponse<T> post(String path, RequestDetailsWrapper<?> requestDetailsWrapper, Class<T> responseClass);
+
+    <T> HttpResponse<T> post(String path, RequestDetails requestDetails, Class<T> responseClass);
 }
 
