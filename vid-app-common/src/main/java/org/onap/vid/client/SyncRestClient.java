@@ -20,12 +20,28 @@
 
 package org.onap.vid.client;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.onap.vid.client.UnirestPatchKt.patched;
+
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
 import io.joshworks.restclient.http.RestClient;
 import io.joshworks.restclient.http.exceptions.RestClientException;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
 import io.joshworks.restclient.request.GetRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.util.Map;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
@@ -35,16 +51,6 @@ import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.properties.VidProperties;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.util.Map;
 
 public class SyncRestClient implements SyncRestClientInterface {
     private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SyncRestClient.class);
@@ -151,11 +157,11 @@ public class SyncRestClient implements SyncRestClientInterface {
 
     private <T> HttpResponse<T> callWithRetryOverHttpThrows(String url, HttpRequest<T> httpRequest) throws IOException {
         try {
-            return httpRequest.apply(url);
+            return patched(httpRequest.apply(url));
         } catch (RestClientException e) {
             if (causedBySslHandshakeError(e)) {
                 logger.warn(EELFLoggerDelegate.debugLogger, "SSL Handshake problem occured. Will try to retry over Http.", e);
-                return httpRequest.apply(url.replaceFirst(HTTPS_SCHEMA, HTTP_SCHEMA));
+                return patched(httpRequest.apply(url.replaceFirst(HTTPS_SCHEMA, HTTP_SCHEMA)));
             }
             throw e;
         }
@@ -172,7 +178,7 @@ public class SyncRestClient implements SyncRestClientInterface {
             @Override
             public <T> T readValue(String value, Class<T> aClass) {
                 try {
-                    return objectMapper.readValue(value, aClass);
+                    return isEmpty(value) ? null : objectMapper.readValue(value, aClass);
                 } catch (IOException e) {
                     throw new SyncRestClientException("IOException while reading value", e);
                 }
