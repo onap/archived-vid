@@ -21,11 +21,16 @@
 package org.onap.vid.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
 
 /**
  * Created by Oren on 7/4/17.
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Subscriber {
 
     @JsonProperty("global-customer-id")
@@ -39,8 +44,4 @@ public class Subscriber {
 
     @JsonProperty("resource-version")
     public String resourceVersion;
-
-
-
-
 }

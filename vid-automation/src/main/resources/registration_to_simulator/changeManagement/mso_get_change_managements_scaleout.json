@@ -1,0 +1,54 @@
+{
+  "simulatorRequest": {
+    "method": "GET",
+    "path": "/mso/orchestrationRequests/v.",
+    "queryParams": {
+      "filter": "action:EQUALS:scaleOut"
+    }
+  },
+  "simulatorResponse": {
+    "responseCode": 200,
+    "body": {
+      "requestList": [
+        {
+          "request": {
+            "requestId":"2a22aff4-620f-44b6-92a1-8a41be396d96\n\n",
+            "requestScope":"vfModule",
+            "requestStatus":{
+              "percentProgress":100.0,
+              "requestState":"IN_PROGRESS",
+              "statusMessage":"Scale-Out Is In Progress",
+              "finishTime":"Fri, 08 Sep 2017 19:34:33 GMT"
+            },
+            "requestType":"scaleOut",
+            "startTime":"Fri, 08 Sep 2017 19:34:32 GMT",
+            "instanceReferences":{
+              "serviceInstanceId":"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48",
+              "vnfInstanceId":"7c00cc1e-6425-4fc3-afc3-0289db288d4c",
+              "requestorId":"ds828e"
+            }
+          }
+        },
+        {
+          "request": {
+            "requestId": "2d6502bf-c488-4903-817e-2ed2c644dcf4",
+            "requestScope": "vfModule",
+            "requestStatus": {
+              "percentProgress": 100.0,
+              "requestState": "COMPLETE",
+              "statusMessage": "Completed successfully",
+              "finishTime": "Thu, 09 Nov 2017 10:58:14 GMT"
+            },
+            "requestType": "scaleOut",
+            "startTime": "Thu, 09 Nov 2017 10:58:14 GMT",
+            "instanceReferences": {
+              "serviceInstanceId": "54ba3628-9ee5-4b32-8a2a-3abf001bed4e",
+              "vnfInstanceId": "b8d99523-1e83-4fd1-b42f-849361ef7024",
+              "requestorId": "az2016"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
