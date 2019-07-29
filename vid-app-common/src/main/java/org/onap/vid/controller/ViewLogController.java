@@ -44,7 +44,7 @@ public class ViewLogController extends RestrictedBaseController{
 	private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(ViewLogController.class);
 	
 	/** The Constant dateFormat. */
-	static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
+	public static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 	
 	/** The servlet context. */
 	private @Autowired ServletContext servletContext;
