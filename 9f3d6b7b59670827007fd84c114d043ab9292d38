@@ -22,6 +22,30 @@
       "revId": "9f3d6b7b59670827007fd84c114d043ab9292d38",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c59daa81_bae951d7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/UnirestPatch.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-29T07:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dcf6d28_784f3f37",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 27
+      },
+      "revId": "9f3d6b7b59670827007fd84c114d043ab9292d38",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
