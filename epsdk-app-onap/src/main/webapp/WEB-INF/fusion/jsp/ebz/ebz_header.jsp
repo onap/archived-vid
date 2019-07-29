@@ -246,7 +246,6 @@
 					<a ng-click="toggleDrawer();isOpen = !isOpen" href="javascript:void(0);" class="arrow-icon-left" >
 					<span class="icon-hamburger"></span></a>	
 					<span ng-init="isOpen = true" ng-show="isOpen" style="font-size:16px; position:relative; top:-8px; left:-15px;">&nbsp&nbsp&nbsp {{app_name}}</span>
-					<span data-tests-id='app-version' ng-show="isOpen" style="font-size:13px; position:relative; top:15px; left:-45px; color:#666666;">{{app_version}}</span>
 				</span>
 				<div att-drawer drawer-slide="left" drawer-custom-top="{{drawer_custom_top}}px" drawer-size="200px" drawer-open="drawerOpen" drawer-custom-height="100%" >
 				    <div ng-style="adjustHLeftMenu('leftMenu')">
@@ -314,7 +313,6 @@
     			fullName:'',
     			email:''
     	}
-		$scope.app_version="";
       	/*Put user info into fields*/
     	$scope.inputUserInfo = function(userInfo){
     		if (typeof(userInfo) != "undefined" && userInfo!=null && userInfo!=''){
@@ -427,23 +425,7 @@
     			console.log('getAppName failed', error);
     		});
 
-		LeftMenuService.getAppVersion().then(function(response){
-			var j = response;
-			try{
-				if(j){
-					$scope.app_version = j.displayVersion;
-
-				}else{
-					throw "Version response is not in expected format.";
-				}
-			}catch (e) {
-				console.log("Error happened while trying to get app version: "+e);
-				return;
-			}
-		},function(error){
-			console.log('getAppVersion failed', error);
-		});
-
+		
 	    $scope.getTopMenuStaticInfo();      
     	$scope.getMenu=function() {
     		
