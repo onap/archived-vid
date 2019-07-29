@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f0c6b5c0_1185c30d",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/dev.features.properties",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-29T06:11:52Z",
+      "side": 1,
+      "message": "I suggest reverting these changes, currently to keep ONAP\u0027s features plane.",
+      "revId": "b29e09ce4d74a755950a4778ff2121288aa231f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee357da5_6d424bfc",
+        "filename": "vid-app-common/src/test/resources/asdc.properties",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-29T06:11:52Z",
+      "side": 1,
+      "message": "Are we sure these changes are required?",
+      "revId": "b29e09ce4d74a755950a4778ff2121288aa231f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
