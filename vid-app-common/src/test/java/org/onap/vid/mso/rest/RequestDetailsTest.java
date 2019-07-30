@@ -20,22 +20,23 @@
 
 package org.onap.vid.mso.rest;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import org.assertj.core.api.AssertionsForClassTypes;
-import org.onap.vid.exceptions.NotFoundException;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsExcluding;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.AssertJUnit.assertEquals;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.onap.vid.exceptions.NotFoundException;
+import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 
 public class RequestDetailsTest {
@@ -48,6 +49,10 @@ public class RequestDetailsTest {
 	private static final ImmutableList<String> LCP_CLOUD_REGION_ID_PATH =
 			ImmutableList.of("requestDetails", "cloudConfiguration", "lcpCloudRegionId");
 
+	@BeforeClass
+	public static void registerValueGenerator() {
+		TestUtils.registerCloudConfigurationValueGenerator();
+	}
 
 	@BeforeMethod
 	public void setUp() {

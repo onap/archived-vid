@@ -20,7 +20,16 @@
 
 package org.onap.vid.asdc.parser;
 
+import static java.util.Collections.emptyMap;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.UUID;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -40,16 +49,6 @@ import org.onap.vid.model.ServiceModel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.UUID;
-
-import static java.util.Collections.emptyMap;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ToscaParserInflatorTest {
 
@@ -83,15 +82,15 @@ public class ToscaParserInflatorTest {
 
     @Test
     public void inflateFabricConfigurationModel_allIdsAreGiven() throws Exception {
-        final String fabricConfigurationUuid = "90fe6842-aa76-4b68-8329-5c86ff564407";
+        final String fabricConfigurationUuid = "12344bb4-a416-4b4e-997e-0059973630b9";
         final Map<String, Names> inflated = inflateModelByUuid(fabricConfigurationUuid);
 
         // see vf-with-annotation-csar.json
         assertThat(inflated, is(ImmutableMap.of(
-                "8df1892c-377d-460b-8a8d-fc8a116e9d92", doubleName("201712-488_ADIOD-vPE-1 0"),
-                "8d521692-7661-4296-b77e-a2058bb62e87", new Names("201712488AdiodVpe1..ADIOD_vRE_BV..module-1", "201712488_adiodvpe10..201712488AdiodVpe1..ADIOD_vRE_BV..module-1"),
-                "79fbee20-7fba-4166-ae4b-b94c869e7d8b", new Names("201712488AdiodVpe1..ADIOD_vPFE_BV..module-2","201712488_adiodvpe10..201712488AdiodVpe1..ADIOD_vPFE_BV..module-2"),
-                "806505b8-7a7c-47a2-acef-b4d26fe95a92", new Names("201712488AdiodVpe1..ADIOD_base_vPE_BV..module-0","201712488_adiodvpe10..201712488AdiodVpe1..ADIOD_base_vPE_BV..module-0")
+                "ea81d6f7-0861-44a7-b7d5-d173b562c350", doubleName("2017-488_PASQUALE-vPE 0"),
+                "a5d8df05-11cb-4351-96e0-b6d4168ea4df", new Names("2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1"),
+                "b3e8b26e-cff0-49fc-a4e6-f3e16c8440fe", new Names("2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2","2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2"),
+                "040e591e-5d30-4e0d-850f-7266e5a8e013", new Names("2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0","2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0")
         )));
     }
 

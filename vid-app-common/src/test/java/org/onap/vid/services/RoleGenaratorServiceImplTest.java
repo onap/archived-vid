@@ -75,7 +75,7 @@ public class RoleGenaratorServiceImplTest {
 
         ServiceSubscription serviceSubscription = createServiceSubscription();
         AaiResponse<Services> subscriberResponse = createServicesAaiResponse(serviceSubscription);
-        doReturn(subscriberResponse).when(aaiClientInterface).getSubscriberData(subscriber.globalCustomerId);
+        doReturn(subscriberResponse).when(aaiClientInterface).getSubscriberData(subscriber.globalCustomerId,false);
 
         String result = testSubject.generateRoleScript(firstRun);
         Assert.assertTrue(StringUtils.isNotBlank(result));
@@ -91,7 +91,7 @@ public class RoleGenaratorServiceImplTest {
 
         ServiceSubscription serviceSubscription = createServiceSubscription();
         AaiResponse<Services> subscriberResponse = createServicesAaiResponse(serviceSubscription);
-        doReturn(subscriberResponse).when(aaiClientInterface).getSubscriberData(subscriber.globalCustomerId);
+        doReturn(subscriberResponse).when(aaiClientInterface).getSubscriberData(subscriber.globalCustomerId, false);
 
         String result = testSubject.generateRoleScript(firstRun);
         Assert.assertTrue(StringUtils.isNotBlank(result));

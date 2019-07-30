@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,22 +18,22 @@
  * ============LICENSE_END=========================================================
  */
 
- package org.onap.vid.model;
+package org.onap.vid.model;
 
 
- import com.fasterxml.jackson.annotation.JsonProperty;
- import org.hibernate.annotations.DynamicUpdate;
- import org.hibernate.annotations.SelectBeforeUpdate;
- import org.hibernate.annotations.Type;
- import org.onap.portalsdk.core.domain.support.DomainVo;
- import org.onap.vid.job.Job;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+import org.hibernate.annotations.Type;
+import org.onap.portalsdk.core.domain.support.DomainVo;
+import org.onap.vid.job.Job;
 
- import javax.persistence.*;
- import java.io.Serializable;
- import java.util.Date;
- import java.util.Objects;
- import java.util.Set;
- import java.util.UUID;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /*
  The following 2 annotations let hibernate to update only fields that actually have been changed.
@@ -49,11 +49,9 @@ public class ServiceInfo extends DomainVo {
     public enum ServiceAction {
         INSTANTIATE,
         DELETE,
-        UPDATE
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+        UPDATE,
+        RESUME,
+        REPLACE
     }
 
     private UUID jobId;
@@ -65,6 +63,7 @@ public class ServiceInfo extends DomainVo {
     private Date statusModifiedDate;
     private boolean hidden;
     private boolean pause;
+    private boolean retryEnabled;
     private Date deletedAt;
     private String owningEntityId;
     private String owningEntityName;
@@ -90,7 +89,12 @@ public class ServiceInfo extends DomainVo {
 
     }
 
-    public ServiceInfo(String userId, Boolean aLaCarte, Job.JobStatus jobStatus, boolean pause, UUID jobId, UUID templateId, String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName, String tenantId, String tenantName, String regionId, String regionName, String serviceType, String subscriberName, String subscriberId, String serviceInstanceId, String serviceInstanceName, String serviceModelId, String serviceModelName, String serviceModelVersion, Date createdBulkDate, ServiceAction action) {
+    public ServiceInfo(String userId, Boolean aLaCarte, Job.JobStatus jobStatus, boolean pause, UUID jobId, UUID templateId,
+                       String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName,
+                       String tenantId, String tenantName, String regionId, String regionName, String serviceType,
+                       String subscriberName, String subscriberId, String serviceInstanceId, String serviceInstanceName,
+                       String serviceModelId, String serviceModelName, String serviceModelVersion, Date createdBulkDate,
+                       ServiceAction action, boolean retryEnabled) {
         this.userId = userId;
         this.aLaCarte = aLaCarte;
         this.jobStatus = jobStatus;
@@ -116,6 +120,7 @@ public class ServiceInfo extends DomainVo {
         this.serviceModelVersion = serviceModelVersion;
         this.createdBulkDate = createdBulkDate;
         this.action = action;
+        this.retryEnabled = retryEnabled;
     }
 
     @Column(name = "JOB_ID", columnDefinition = "CHAR(36)")
@@ -166,6 +171,12 @@ public class ServiceInfo extends DomainVo {
     @Column(name="IS_PAUSE")
     public boolean isPause() {
         return pause;
+    }
+
+    @Column(name="IS_RETRY_ENABLED")
+    @JsonProperty("isRetryEnabled")
+    public boolean isRetryEnabled() {
+        return retryEnabled;
     }
 
     @Column(name="OWNING_ENTITY_ID")
@@ -260,8 +271,8 @@ public class ServiceInfo extends DomainVo {
 
     @Column(name="DELETED_AT")
     public Date getDeletedAt() {
-         return deletedAt;
-     }
+        return deletedAt;
+    }
 
     @Column(name="ACTION")
     @Enumerated(EnumType.STRING)
@@ -319,6 +330,9 @@ public class ServiceInfo extends DomainVo {
         return super.getAuditTrail();
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
     public void setJobId(UUID jobId) {
         this.jobId = jobId;
     }
@@ -349,6 +363,10 @@ public class ServiceInfo extends DomainVo {
 
     public void setPause(boolean pause) {
         this.pause = pause;
+    }
+
+    public void setRetryEnabled(boolean retryEnabled) {
+        this.retryEnabled = retryEnabled;
     }
 
     public void setOwningEntityId(String owningEntityId) {
@@ -424,55 +442,54 @@ public class ServiceInfo extends DomainVo {
     }
 
     public void setDeletedAt(Date deletedAt) {
-         this.deletedAt = deletedAt;
-     }
+        this.deletedAt = deletedAt;
+    }
 
     public void setAction(ServiceAction action) { this.action = action; }
 
-     @Override
-     public boolean equals(Object o) {
-         if (this == o) return true;
-         if (!(o instanceof ServiceInfo)) return false;
-         ServiceInfo that = (ServiceInfo) o;
-         return isHidden() == that.isHidden() &&
-                 isPause() == that.isPause() &&
-                 isALaCarte() == that.isALaCarte() &&
-                 Objects.equals(getDeletedAt(), that.getDeletedAt()) &&
-                 Objects.equals(getJobId(), that.getJobId()) &&
-                 Objects.equals(getTemplateId(), that.getTemplateId()) &&
-                 Objects.equals(getUserId(), that.getUserId()) &&
-                 Objects.equals(getMsoRequestId(), that.getMsoRequestId()) &&
-                 getJobStatus() == that.getJobStatus() &&
-                 Objects.equals(getStatusModifiedDate(), that.getStatusModifiedDate()) &&
-                 Objects.equals(getOwningEntityId(), that.getOwningEntityId()) &&
-                 Objects.equals(getOwningEntityName(), that.getOwningEntityName()) &&
-                 Objects.equals(getProject(), that.getProject()) &&
-                 Objects.equals(getAicZoneId(), that.getAicZoneId()) &&
-                 Objects.equals(getAicZoneName(), that.getAicZoneName()) &&
-                 Objects.equals(getTenantId(), that.getTenantId()) &&
-                 Objects.equals(getTenantName(), that.getTenantName()) &&
-                 Objects.equals(getRegionId(), that.getRegionId()) &&
-                 Objects.equals(getRegionName(), that.getRegionName()) &&
-                 Objects.equals(getServiceType(), that.getServiceType()) &&
-                 Objects.equals(getSubscriberName(), that.getSubscriberName()) &&
-                 Objects.equals(getSubscriberId(), that.getSubscriberId()) &&
-                 Objects.equals(getServiceInstanceId(), that.getServiceInstanceId()) &&
-                 Objects.equals(getServiceInstanceName(), that.getServiceInstanceName()) &&
-                 Objects.equals(getServiceModelId(), that.getServiceModelId()) &&
-                 Objects.equals(getServiceModelName(), that.getServiceModelName()) &&
-                 Objects.equals(getServiceModelVersion(), that.getServiceModelVersion()) &&
-                 Objects.equals(getCreatedBulkDate(), that.getCreatedBulkDate()) &&
-                 Objects.equals(getAction(), that.getAction());
-     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ServiceInfo)) return false;
+        ServiceInfo that = (ServiceInfo) o;
+        return aLaCarte == that.aLaCarte &&
+                isHidden() == that.isHidden() &&
+                isPause() == that.isPause() &&
+                isRetryEnabled() == that.isRetryEnabled() &&
+                Objects.equals(getJobId(), that.getJobId()) &&
+                Objects.equals(getTemplateId(), that.getTemplateId()) &&
+                Objects.equals(getUserId(), that.getUserId()) &&
+                Objects.equals(getMsoRequestId(), that.getMsoRequestId()) &&
+                getJobStatus() == that.getJobStatus() &&
+                Objects.equals(getStatusModifiedDate(), that.getStatusModifiedDate()) &&
+                Objects.equals(getDeletedAt(), that.getDeletedAt()) &&
+                Objects.equals(getOwningEntityId(), that.getOwningEntityId()) &&
+                Objects.equals(getOwningEntityName(), that.getOwningEntityName()) &&
+                Objects.equals(getProject(), that.getProject()) &&
+                Objects.equals(getAicZoneId(), that.getAicZoneId()) &&
+                Objects.equals(getAicZoneName(), that.getAicZoneName()) &&
+                Objects.equals(getTenantId(), that.getTenantId()) &&
+                Objects.equals(getTenantName(), that.getTenantName()) &&
+                Objects.equals(getRegionId(), that.getRegionId()) &&
+                Objects.equals(getRegionName(), that.getRegionName()) &&
+                Objects.equals(getServiceType(), that.getServiceType()) &&
+                Objects.equals(getSubscriberName(), that.getSubscriberName()) &&
+                Objects.equals(getSubscriberId(), that.getSubscriberId()) &&
+                Objects.equals(getServiceInstanceId(), that.getServiceInstanceId()) &&
+                Objects.equals(getServiceInstanceName(), that.getServiceInstanceName()) &&
+                Objects.equals(getServiceModelId(), that.getServiceModelId()) &&
+                Objects.equals(getServiceModelName(), that.getServiceModelName()) &&
+                Objects.equals(getServiceModelVersion(), that.getServiceModelVersion()) &&
+                Objects.equals(getCreatedBulkDate(), that.getCreatedBulkDate()) &&
+                getAction() == that.getAction();
+    }
 
-     @Override
-     public int hashCode() {
-
-         return Objects.hash(getJobId(), getTemplateId(), getUserId(), getMsoRequestId(), isALaCarte(), getJobStatus(), getStatusModifiedDate(),
-                 isHidden(), isPause(), getDeletedAt(), getOwningEntityId(), getOwningEntityName(), getProject(),
-                 getAicZoneId(), getAicZoneName(), getTenantId(), getTenantName(), getRegionId(),
-                 getRegionName(), getServiceType(), getSubscriberName(), getSubscriberId(), getServiceInstanceId(),
-                 getServiceInstanceName(), getServiceModelId(), getServiceModelName(),
-                 getServiceModelVersion(), getCreatedBulkDate(), getAction());
-     }
- }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getJobId(), getTemplateId(), getUserId(), getMsoRequestId(), aLaCarte, getJobStatus(),
+                getStatusModifiedDate(), isHidden(), isPause(), isRetryEnabled(), getDeletedAt(), getOwningEntityId(), getOwningEntityName(),
+                getProject(), getAicZoneId(), getAicZoneName(), getTenantId(), getTenantName(), getRegionId(), getRegionName(), getServiceType(),
+                getSubscriberName(), getSubscriberId(), getServiceInstanceId(), getServiceInstanceName(), getServiceModelId(), getServiceModelName(),
+                getServiceModelVersion(), getCreatedBulkDate(), getAction());
+    }
+}

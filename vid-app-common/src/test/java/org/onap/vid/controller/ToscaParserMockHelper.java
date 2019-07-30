@@ -22,25 +22,21 @@ package org.onap.vid.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.onap.vid.model.NewServiceModel;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.onap.vid.model.ServiceModel;
 
-/**
- * Created by moriya1 on 04/07/2017.
- */
 public class ToscaParserMockHelper {
     private static final Logger logger = LogManager.getLogger(ToscaParserMockHelper.class);
 
     private static final ObjectMapper om = new ObjectMapper();
     private final String uuid;
     private final String filePath;
-    private final NewServiceModel newServiceModel;
+    private final ServiceModel serviceModel;
 
     public ToscaParserMockHelper(String uuid, String filePath) throws IOException {
         this.uuid = uuid;
@@ -50,7 +46,7 @@ public class ToscaParserMockHelper {
         logger.info(jsonFile);
         String expectedJsonAsString = IOUtils.toString(jsonFile, StandardCharsets.UTF_8.name());
         om.registerModule(new KotlinModule());
-        this.newServiceModel = om.readValue(expectedJsonAsString, NewServiceModel.class);
+        this.serviceModel = om.readValue(expectedJsonAsString, ServiceModel.class);
     }
 
     public String getUuid() {
@@ -61,7 +57,7 @@ public class ToscaParserMockHelper {
         return filePath;
     }
 
-    public NewServiceModel getNewServiceModel() {
-        return newServiceModel;
+    public ServiceModel getServiceModel() {
+        return serviceModel;
     }
 }

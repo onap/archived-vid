@@ -1,0 +1,66 @@
+{
+  "vf-module": [{
+    "vf-module-id": "2cb6d41e-2bef-4cb2-80ce-c7815bcdcf4e",
+    "vf-module-name": "dyh3brarf8000v_base",
+    "heat-stack-id": "dyh3brarf8000v_base/5a826d59-cafa-49fd-9860-dfc6eb7515ae",
+    "orchestration-status": "Active",
+    "is-base-vf-module": true,
+    "automated-assignment": false,
+    "resource-version": "1546547784901",
+    "model-invariant-id": "3ecca473-b0c0-46ae-b0b7-bd2969d8b79f",
+    "model-version-id": "5c35b764-e266-4498-af87-a88c4ba92dc4",
+    "model-customization-id": "06b4ece0-f6f8-4003-b445-653418292101",
+    "selflink": "restconf/config/GENERIC-RESOURCE-API:services/service/aea56040-8caf-41b3-a85b-97c44001499e/service-data/vnfs/vnf/9a7a4dc1-8e5f-43fe-a360-7734c5f51382/vnf-data/vf-modules/vf-module/2cb6d41e-2bef-4cb2-80ce-c7815bcdcf4e/vf-module-data/vf-module-topology/",
+    "relationship-list": {
+      "relationship": [{
+        "related-to": "l3-network",
+        "relationship-label": "org.onap.relationships.inventory.DependsOn",
+        "related-link": "/aai/v14/network/l3-networks/l3-network/974345f8-75d5-4ae2-be72-600930bcbe6b",
+        "relationship-data": [{
+          "relationship-key": "l3-network.network-id",
+          "relationship-value": "974345f8-75d5-4ae2-be72-600930bcbe6b"
+        }
+        ],
+        "related-to-property": [{
+          "property-key": "l3-network.network-name",
+          "property-value": "APP-C-24595-T-IST-05B_oam_protected_net_1"
+        }
+        ]
+      }, {
+        "related-to": "vnfc",
+        "relationship-label": "org.onap.relationships.inventory.Uses",
+        "related-link": "/aai/v14/network/vnfcs/vnfc/dyh3brarf8000vm001",
+        "relationship-data": [{
+          "relationship-key": "vnfc.vnfc-name",
+          "relationship-value": "dyh3brarf8000vm001"
+        }
+        ]
+      }, {
+        "related-to": "vserver",
+        "relationship-label": "org.onap.relationships.inventory.Uses",
+        "related-link": "/aai/v14/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/dyh3b/tenants/tenant/c8035f5ee95d4c62bbc8074c044122b9/vservers/vserver/3e3985e1-2369-4191-9721-7858a478ab6d",
+        "relationship-data": [{
+          "relationship-key": "cloud-region.cloud-owner",
+          "relationship-value": "irma-aic"
+        }, {
+          "relationship-key": "cloud-region.cloud-region-id",
+          "relationship-value": "dyh3b"
+        }, {
+          "relationship-key": "tenant.tenant-id",
+          "relationship-value": "c8035f5ee95d4c62bbc8074c044122b9"
+        }, {
+          "relationship-key": "vserver.vserver-id",
+          "relationship-value": "3e3985e1-2369-4191-9721-7858a478ab6d"
+        }
+        ],
+        "related-to-property": [{
+          "property-key": "vserver.vserver-name",
+          "property-value": "dyh3brarf8000vm001"
+        }
+        ]
+      }
+      ]
+    }
+  }
+  ]
+}
