@@ -22,9 +22,12 @@
    The VID user can also search for, and display, existing service instances and direct the instantiation of 
    subsequent instance components.
      <br><br>
+    <%
+        String contactUsUrl = SystemProperties.getProperty(VidProperties.CONTACT_US_URL);
+    %>
   
-    <h1 class="heading1"><a href="mailto:portal@lists.onap.org" target="_top">Contact Us</a></h1>
-    <a href="mailto:portal@lists.onap.org" target="_top">Please click here to contact us.</a>
+    <h1 class="heading1"><a href=<%=contactUsUrl%> target="_top">Contact Us</a></h1>
+    <a href=<%=contactUsUrl%> target="_top">Please click here to contact us.</a>
     <%
         if (Features.FLAG_ADD_MSO_TESTAPI_FIELD.isActive()) {
 
