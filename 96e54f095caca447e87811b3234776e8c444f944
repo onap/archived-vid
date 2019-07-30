@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "832bd6d4_82b48fe1",
+        "filename": "epsdk-app-onap/src/main/webapp/app/fusion/scripts/services/leftMenuService.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-07-30T10:24:30Z",
+      "side": 1,
+      "message": "Wouldn\u0027t it be better to have the `getAppVersion` function in an existing class?",
+      "revId": "96e54f095caca447e87811b3234776e8c444f944",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
