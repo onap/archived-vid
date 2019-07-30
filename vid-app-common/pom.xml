@@ -54,7 +54,7 @@
         <npm.version>5.6.0</npm.version>
 
         <!-- override using -Drelease_version=foo -Dpatch_version=bar -->
-        <release_version>${env.RELEASE_VERSION}</release_version>
+        <release_version>${env.release_version}</release_version>
         <patch_version/>
 
         <reportportal.argline>-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar -Drp.enable=true -Drp.mode=DEFAULT -Drp.tags="CICD;BE_UNIT;BUILD_${env.BUILD_NUMBER}"</reportportal.argline>
