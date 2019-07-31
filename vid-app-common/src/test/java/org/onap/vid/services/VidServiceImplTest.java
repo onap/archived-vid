@@ -20,8 +20,23 @@
 
 package org.onap.vid.services;
 
+import static java.util.stream.Collectors.toMap;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.IsSame.sameInstance;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
+import java.util.Map;
+import java.util.UUID;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Answers;
 import org.mockito.Mock;
@@ -38,22 +53,6 @@ import org.onap.vid.properties.Features;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
-
-import java.util.Map;
-import java.util.UUID;
-
-import static java.util.stream.Collectors.toMap;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsSame.sameInstance;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class VidServiceImplTest {
 

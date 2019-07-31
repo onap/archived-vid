@@ -12,8 +12,8 @@
 			"requestorId": "az2016"
 		},
 		"requestParameters": {
-			"testApi": "VNF_API",
-			"aLaCarte": true
+			"testApi": [TEST_API],
+			"aLaCarte": [IS_ALACARTE]
 		}
 	}
 }
