@@ -22,7 +22,6 @@
 package org.onap.vid.controller;
 
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,8 +29,9 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import javax.servlet.ServletContext;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.servlet.ServletContext;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
@@ -77,12 +77,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-
 @EnableSwagger2
 @Configuration
 public class WebConfig {
@@ -106,7 +100,7 @@ public class WebConfig {
     @Bean
     public AaiService getAaiService(AaiClientInterface aaiClient, AaiOverTLSClientInterface aaiOverTLSClient,
         AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
-        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree, executorService);
+        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiServiceTree, executorService);
     }
 
     @Bean

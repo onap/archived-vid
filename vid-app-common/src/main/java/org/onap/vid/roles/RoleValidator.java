@@ -28,9 +28,11 @@ import org.onap.portalsdk.core.util.SystemProperties;
 public interface RoleValidator {
 
     static RoleValidator by(List<Role> roles) {
-        boolean disableRoles =
-            StringUtils.equals(SystemProperties.getProperty("role_management_activated"), "false");
+        final boolean disableRoles = StringUtils.equals(SystemProperties.getProperty("role_management_activated"), "false");
+        return by(roles, disableRoles);
+    }
 
+    static RoleValidator by(List<Role> roles, boolean disableRoles) {
         return disableRoles
             ? new AlwaysValidRoleValidator()
             : new RoleValidatorByRoles(roles);

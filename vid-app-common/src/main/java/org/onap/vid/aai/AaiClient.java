@@ -20,6 +20,7 @@
 
 package org.onap.vid.aai;
 
+import static com.fasterxml.jackson.module.kotlin.ExtensionsKt.jacksonObjectMapper;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toMap;
@@ -27,7 +28,6 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -46,13 +46,13 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.exceptions.InvalidAAIResponseException;
-import org.onap.vid.aai.model.*;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
 import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetNetworkCollectionDetails;
@@ -69,6 +69,8 @@ import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.CustomQuerySimpleResult;
 import org.onap.vid.aai.model.GetServiceModelsByDistributionStatusResponse;
 import org.onap.vid.aai.model.LogicalLinkResponse;
+import org.onap.vid.aai.model.ModelVer;
+import org.onap.vid.aai.model.ModelVersions;
 import org.onap.vid.aai.model.OwningEntityResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.ProjectResponse;
@@ -89,14 +91,10 @@ import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriUtils;
 
-/**
-
- * Created by Oren on 7/4/17.
- */
 public class AaiClient implements AaiClientInterface {
 
 
-    private static final String QUERY_FORMAT_RESOURCE = "query?format=resource";
+    public static final String QUERY_FORMAT_RESOURCE = "query?format=resource";
     private static final String SERVICE_SUBSCRIPTIONS_PATH = "/service-subscriptions/service-subscription/";
     private static final String MODEL_INVARIANT_ID = "&model-invariant-id=";
     private static final String QUERY_FORMAT_SIMPLE = "query?format=simple";
@@ -112,15 +110,14 @@ public class AaiClient implements AaiClientInterface {
 
     private final CacheProvider cacheProvider;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = jacksonObjectMapper();
 
     /**
      * The logger
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(AaiClient.class);
 
-    private static final String GET_SERVICE_MODELS_RESPONSE_BODY = "{\"start\" : \"service-design-and-creation/models/\", \"query\" : \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}";
-
+    private static final String GET_SERVICE_MODELS_REQUEST_BODY = "{\"start\" : \"service-design-and-creation/models/\", \"query\" : \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}";
 
     @Inject
     public AaiClient(AAIRestInterface restController, PortDetailsTranslator portDetailsTranslator, CacheProvider cacheProvider) {
@@ -158,7 +155,7 @@ public class AaiClient implements AaiClientInterface {
 
     private AaiResponse getServiceModelsByDistributionStatusNonCached(boolean propagateExceptions) {
         GetServiceModelsByDistributionStatusResponse response = typedAaiRest(QUERY_FORMAT_RESOURCE, GetServiceModelsByDistributionStatusResponse.class,
-                GET_SERVICE_MODELS_RESPONSE_BODY, HttpMethod.PUT, propagateExceptions);
+                GET_SERVICE_MODELS_REQUEST_BODY, HttpMethod.PUT, propagateExceptions);
         return new AaiResponse(response, "", HttpStatus.SC_OK);
     }
 
@@ -426,16 +423,7 @@ public class AaiClient implements AaiClientInterface {
             sb.append(id);
 
         }
-        return doAaiGet("service-design-and-creation/models?depth=2"+ sb.toString(), false);
-    }
-
-    @Override
-    public AaiResponse getSubscriberData(String subscriberId, boolean omitServiceInstances) {
-        String depth = omitServiceInstances ? "1" : "2";
-        AaiResponse subscriberDataResponse;
-        Response resp = doAaiGet(BUSINESS_CUSTOMERS_CUSTOMER + subscriberId + "?depth=" + depth, false);
-        subscriberDataResponse = processAaiResponse(resp, Services.class, null);
-        return subscriberDataResponse;
+        return doAaiGet("service-design-and-creation/models?depth=2" + sb.toString(), false);
     }
 
     @Override
@@ -445,7 +433,7 @@ public class AaiClient implements AaiClientInterface {
         }
 
         // add the modelInvariantId to the payload
-        StringBuilder payload = new StringBuilder(GET_SERVICE_MODELS_RESPONSE_BODY);
+        StringBuilder payload = new StringBuilder(GET_SERVICE_MODELS_REQUEST_BODY);
         payload.insert(50, modelInvariantId);
 
         Response response = doAaiPut("service-design-and-creation/models/model/", payload.toString(),false);
@@ -474,6 +462,15 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
+    public AaiResponse getSubscriberData(String subscriberId, boolean omitServiceInstances) {
+        String depth = omitServiceInstances ? "1" : "2";
+        AaiResponse subscriberDataResponse;
+        Response resp = doAaiGet(BUSINESS_CUSTOMERS_CUSTOMER + subscriberId + "?depth=" + depth, false);
+        subscriberDataResponse = processAaiResponse(resp, Services.class, null);
+        return subscriberDataResponse;
+    }
+
+    @Override
     public AaiResponse getServices() {
         Response resp = doAaiGet("service-design-and-creation/services", false);
         return processAaiResponse(resp, GetServicesAAIRespone.class, null);
@@ -494,7 +491,7 @@ public class AaiClient implements AaiClientInterface {
 
     @Override
     public AaiResponse getTenants(String globalCustomerId, String serviceType) {
-        if ((globalCustomerId == null || globalCustomerId.isEmpty()) || ((serviceType == null) || (serviceType.isEmpty())) ){
+        if ((globalCustomerId == null || globalCustomerId.isEmpty()) || ((serviceType == null) || (serviceType.isEmpty()))){
             return buildAaiResponseForGetTenantsFailure(" Failed to retrieve LCP Region & Tenants from A&AI, Subscriber ID or Service Type is missing.");
         }
         try {
