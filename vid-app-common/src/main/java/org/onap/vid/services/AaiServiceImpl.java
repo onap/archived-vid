@@ -21,43 +21,79 @@
 
 package org.onap.vid.services;
 
+import static org.onap.vid.aai.AaiClient.QUERY_FORMAT_RESOURCE;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.aai.*;
-import org.onap.vid.aai.model.*;
+import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiGetVnfResponse;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
+import org.onap.vid.aai.AaiResponse;
+import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.ServiceInstance;
+import org.onap.vid.aai.ServiceInstancesSearchResults;
+import org.onap.vid.aai.ServiceSubscription;
+import org.onap.vid.aai.ServiceSubscriptions;
+import org.onap.vid.aai.Services;
+import org.onap.vid.aai.SubscriberFilteredResults;
+import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
 import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.AaiGetRelatedInstanceGroupsByVnfId;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetServicesRequestModel.GetServicesAAIRespone;
-import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.AaiRelationResponse;
+import org.onap.vid.aai.model.GetServiceModelsByDistributionStatusResponse;
+import org.onap.vid.aai.model.InstanceGroupInfo;
+import org.onap.vid.aai.model.LogicalLinkResponse;
+import org.onap.vid.aai.model.Model;
+import org.onap.vid.aai.model.ModelVer;
+import org.onap.vid.aai.model.OwningEntity;
+import org.onap.vid.aai.model.OwningEntityResponse;
+import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.model.Project;
+import org.onap.vid.aai.model.ProjectResponse;
+import org.onap.vid.aai.model.Properties;
+import org.onap.vid.aai.model.RelatedToProperty;
+import org.onap.vid.aai.model.Relationship;
+import org.onap.vid.aai.model.RelationshipData;
+import org.onap.vid.aai.model.RelationshipList;
+import org.onap.vid.aai.model.Result;
+import org.onap.vid.aai.model.ServiceRelationships;
+import org.onap.vid.aai.model.VnfResult;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceInstanceSearchResult;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.model.aaiTree.RelatedVnf;
+import org.onap.vid.model.aaiTree.VpnBinding;
+import org.onap.vid.model.aaiTree.VpnBindingKt;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.utils.Intersection;
 import org.onap.vid.utils.Tree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
-import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.stream.Collectors;
-
-/**
- * Created by Oren on 7/4/17.
- */
 public class AaiServiceImpl implements AaiService {
     private static final String SERVICE_INSTANCE_ID = "service-instance.service-instance-id";
     private static final String SERVICE_TYPE = "service-subscription.service-type";
@@ -70,7 +106,6 @@ public class AaiServiceImpl implements AaiService {
     private AaiClientInterface aaiClient;
     private AaiOverTLSClientInterface aaiOverTLSClient;
     private AaiResponseTranslator aaiResponseTranslator;
-    private AAITreeNodeBuilder aaiTreeNode;
     private AAIServiceTree aaiServiceTree;
     private ExecutorService executorService;
 
@@ -82,14 +117,12 @@ public class AaiServiceImpl implements AaiService {
         AaiClientInterface aaiClient,
         AaiOverTLSClientInterface aaiOverTLSClient,
         AaiResponseTranslator aaiResponseTranslator,
-        AAITreeNodeBuilder aaiTreeNode,
         AAIServiceTree aaiServiceTree,
         ExecutorService executorService)
     {
         this.aaiClient = aaiClient;
         this.aaiOverTLSClient = aaiOverTLSClient;
         this.aaiResponseTranslator = aaiResponseTranslator;
-        this.aaiTreeNode = aaiTreeNode;
         this.aaiServiceTree = aaiServiceTree;
         this.executorService = executorService;
     }
@@ -365,18 +398,18 @@ public class AaiServiceImpl implements AaiService {
         return filterChangeManagementVNFCandidatesResponse(response);
     }
 
-    private AaiResponse<AaiGetVnfResponse> filterChangeManagementVNFCandidatesResponse(AaiResponse<AaiGetVnfResponse> response) {
-
+    protected AaiResponse<AaiGetVnfResponse> filterChangeManagementVNFCandidatesResponse(AaiResponse<AaiGetVnfResponse> response) {
 
         if (response != null && response.getT() != null) {
-            response.getT().results =
-                    response.getT().results.stream()
-                            .filter(result -> (
-                                    result.nodeType.equalsIgnoreCase("generic-vnf") ||
-                                            result.nodeType.equalsIgnoreCase("service-instance")))
-                            .collect(Collectors.toList());
+            List<VnfResult> filteredVnfs = response.getT().results.stream()
+                    .filter(result -> (
+                            result.nodeType.equalsIgnoreCase("generic-vnf") ||
+                                    result.nodeType.equalsIgnoreCase("service-instance")))
+                    .collect(Collectors.toList());
 
-            return response;
+            AaiGetVnfResponse aaiGetVnfResponse = new AaiGetVnfResponse();
+            aaiGetVnfResponse.results = filteredVnfs;
+            return new AaiResponse<>(aaiGetVnfResponse, response.getErrorMessage(), response.getHttpCode());
         }
 
         return new AaiResponse<>();
@@ -521,7 +554,6 @@ public class AaiServiceImpl implements AaiService {
         }
     }
 
-
     private List<AAITreeNode> filterByInstanceGroupRoleAndType(List<AAITreeNode> aaiTree, String groupRole, String groupType) {
 
         return aaiTree.stream()
@@ -554,6 +586,7 @@ public class AaiServiceImpl implements AaiService {
 
         return vnf;
     }
+
     private List<InstanceGroupInfo> convertGetInstanceGroupsResponseToSimpleResponse(AaiGetRelatedInstanceGroupsByVnfId response) {
         List<InstanceGroupInfo> instanceGroupInfoList = new ArrayList<>();
         for(org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship relationship: response.getRelationshipList().getRelationship()){
@@ -628,14 +661,52 @@ public class AaiServiceImpl implements AaiService {
     }
 
     public String getAAIServiceTree(String globalCustomerId, String serviceType, String serviceInstanceId) {
-        ObjectMapper om = new ObjectMapper();
         String result;
         try {
             org.onap.vid.model.aaiTree.ServiceInstance tree = aaiServiceTree.getServiceInstanceTopology(globalCustomerId, serviceType, serviceInstanceId);
-            result = om.writeValueAsString(tree);
+            result = JACKSON_OBJECT_MAPPER.writeValueAsString(tree);
         } catch (Exception e) {
             throw new GenericUncheckedException(e);
         }
         return result;
+    }
+
+    @Override
+    public List<VpnBinding> getVpnListByVpnType(String vpnType) {
+        String path = "network/vpn-bindings?vpn-type=" + vpnType;
+
+        try {
+            List<AAITreeNode> aaiTree = aaiServiceTree.buildAAITreeForUniqueResource(path, NodeType.VPN_BINDING);
+            return aaiTree.stream().map(VpnBindingKt::from).collect(Collectors.toList());
+        } catch (ExceptionWithRequestInfo exception) {
+            if (Objects.equals(404, exception.getHttpCode())) {
+                return Collections.emptyList();
+            }
+            throw exception;
+        }
+
+    }
+
+    @Override
+    public List<Network> getL3NetworksByCloudRegion(String cloudRegionId, String tenantId, String networkRole) {
+        String payload = buildPayloadForL3NetworksByCloudRegion(cloudRegionId, tenantId, networkRole);
+
+        try {
+            List<AAITreeNode> aaiTree = aaiServiceTree.buildAAITreeForUniqueResourceFromCustomQuery(QUERY_FORMAT_RESOURCE, payload, HttpMethod.PUT, NodeType.NETWORK);
+            return aaiTree.stream().map(Network::from).collect(Collectors.toList());
+        } catch (ExceptionWithRequestInfo exception) {
+            if (Objects.equals(404, exception.getHttpCode())) {
+                return Collections.emptyList();
+            }
+            throw exception;
+        }
+    }
+
+    @NotNull
+    protected String buildPayloadForL3NetworksByCloudRegion(String cloudRegionId, String tenantId, String networkRole) {
+        String networkRolePart = StringUtils.isEmpty(networkRole) ? "" : "&networkRole=" + networkRole;
+        String cloudOwner = aaiClient.getCloudOwnerByCloudRegionId(cloudRegionId);
+        return "{\"start\":\"/cloud-infrastructure/cloud-regions/cloud-region/" + cloudOwner + "/" + cloudRegionId + "\"," +
+                "\"query\":\"query/l3-networks-by-cloud-region?tenantId=" + tenantId + networkRolePart + "\"}";
     }
 }

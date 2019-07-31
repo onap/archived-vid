@@ -22,12 +22,21 @@
 package org.onap.vid.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.util.concurrent.ExecutorService;
+import javax.servlet.ServletContext;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.model.PortDetailsTranslator;
-import org.onap.vid.aai.util.*;
+import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.CacheProvider;
+import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.NonCachingCacheProvider;
+import org.onap.vid.aai.util.SSLContextProvider;
+import org.onap.vid.aai.util.ServletRequestHelper;
+import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.parser.VidNotionsBuilder;
@@ -41,10 +50,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.togglz.core.manager.FeatureManager;
-
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.util.concurrent.ExecutorService;
 
 @Configuration
 public class LocalWebConfig {
@@ -68,7 +73,7 @@ public class LocalWebConfig {
     @Bean
     public AaiService getAaiService(AaiClientInterface aaiClient, AaiOverTLSClientInterface aaiOverTLSClient,
         AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
-        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiTreeNode, aaiServiceTree, executorService);
+        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiServiceTree, executorService);
     }
 
     @Bean

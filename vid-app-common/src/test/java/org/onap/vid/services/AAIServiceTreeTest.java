@@ -20,30 +20,45 @@
 
 package org.onap.vid.services;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toList;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.services.AAITreeNodeBuilderTest.createExpectedVnfTreeNode;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Streams;
+import com.google.common.util.concurrent.MoreExecutors;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.onap.vid.aai.AaiClient;
+import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.asdc.parser.ServiceModelInflator;
 import org.onap.vid.asdc.parser.ServiceModelInflator.Names;
 import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.NodeType;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Unchecked;
+import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import java.util.List;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 
 public class AAIServiceTreeTest {
 
@@ -177,4 +192,30 @@ public class AAIServiceTreeTest {
         return newNode;
     }
 
+    @Test
+    public void whenBuildTreeForOneResource_resultAsExpected() throws IOException {
+
+        AaiClient aaiClientMock = mock(AaiClient.class);
+        ExecutorService executorService = MoreExecutors.newDirectExecutorService();
+        AAIServiceTree aaiServiceTree = new AAIServiceTree(
+                aaiClientMock,
+                new AAITreeNodeBuilder(aaiClientMock),
+                new AAITreeConverter(),
+                null,
+                null,
+                executorService
+        );
+
+        String url = "anyUrl/vnf";
+
+        JsonNode mockedAaiGetVnfResponse = TestUtils.readJsonResourceFileAsObject("/getTopology/vnf.json", JsonNode.class);
+        when(aaiClientMock.typedAaiRest(Unchecked.toURI(url), JsonNode.class, null, HttpMethod.GET, false)).thenReturn(mockedAaiGetVnfResponse);
+
+        CloudConfiguration expectedCloudConfiguration = new CloudConfiguration("dyh3b", "c8035f5ee95d4c62bbc8074c044122b9", "irma-aic");
+        AAITreeNode expectedVnfNode = createExpectedVnfTreeNode(expectedCloudConfiguration);
+
+        List<AAITreeNode> aaiTreeNodes = aaiServiceTree.buildAAITreeForUniqueResource(url, NodeType.GENERIC_VNF);
+        assertEquals(1, aaiTreeNodes.size());
+        assertThat(aaiTreeNodes.get(0), jsonEquals(expectedVnfNode).when(Option.IGNORING_EXTRA_FIELDS).whenIgnoringPaths("relationshipList", "children[0].relationshipList"));
+    }
 }
