@@ -22,6 +22,9 @@
 package org.onap.vid.services;
 
 import io.joshworks.restclient.http.HttpResponse;
+import java.util.Collection;
+import java.util.List;
+import javax.ws.rs.core.Response;
 import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
@@ -33,12 +36,10 @@ import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.model.SubscriberList;
+import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.RelatedVnf;
+import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.roles.RoleValidator;
-
-import javax.ws.rs.core.Response;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Oren on 7/4/17.
@@ -95,4 +96,8 @@ public interface AaiService {
     GetTenantsResponse getHomingDataByVfModule(String vnfInstanceId, String vfModuleId);
 
     List<RelatedVnf> searchGroupMembers(String globalCustomerId, String serviceType, String invariantId, String groupType, String groupRole);
+
+    List<VpnBinding> getVpnListByVpnType(String vpnType);
+
+    List<Network> getL3NetworksByCloudRegion(String cloudRegionId, String tenantId, String networkRole);
 }

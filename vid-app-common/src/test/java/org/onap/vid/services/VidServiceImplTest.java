@@ -20,28 +20,6 @@
 
 package org.onap.vid.services;
 
-import com.google.common.collect.ImmutableMap;
-import io.joshworks.restclient.http.HttpResponse;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.mockito.Answers;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
-import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.asdc.AsdcClient;
-import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.asdc.parser.ToscaParserImpl2;
-import org.onap.vid.model.ServiceModel;
-import org.onap.vid.model.probes.ExternalComponentStatus;
-import org.onap.vid.model.probes.HttpRequestMetadata;
-import org.onap.vid.properties.Features;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import org.togglz.core.manager.FeatureManager;
-
-import java.util.Map;
-import java.util.UUID;
-
 import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -54,6 +32,36 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.AssertJUnit.assertEquals;
+
+import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Map;
+import java.util.UUID;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.mockito.Answers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.asdc.AsdcClient;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.asdc.parser.ToscaParserImpl2;
+import org.onap.vid.asdc.parser.VidNotionsBuilder;
+import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.model.probes.HttpRequestMetadata;
+import org.onap.vid.properties.Features;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 public class VidServiceImplTest {
 
@@ -111,6 +119,36 @@ public class VidServiceImplTest {
         verify(asdcClientMock, times(1)).getService(uuid1);
     }
 
+    //In this test we parse csar with tab character in its definition file. We expect vid to remove the tab and parse it well
+    //with ToscaParser2. ClientConfig value parsed as expected only in ToscaParser2.
+    @Test
+    public void whenParsingCsarWithTabInDefinitionFile_thenInstantiationTypeParsedAsExpected() throws AsdcCatalogException, IllegalAccessException, IOException {
+        String pathToCsar = "src/test/resources/service_201620visbc1svc_csar.csar";
+        Path tempCsarFile = Files.createTempFile("csar", ".zip");
+        Files.copy(Paths.get(pathToCsar), tempCsarFile, StandardCopyOption.REPLACE_EXISTING);
+
+        vidService = new VidServiceImpl(asdcClientMock, toscaParserMock, featureManager);
+        //we want to use real ToscaParserImpl2 and not mocked one, so if there is a tab in the csar, the parsing will fail
+        FieldUtils.writeField(vidService, "toscaParser", new ToscaParserImpl2(new VidNotionsBuilder(featureManager)), true);
+        when(asdcClientMock.getServiceToscaModel(any())).thenReturn(tempCsarFile);
+        try {
+            ServiceModel serviceModel = vidService.getService(uuid1.toString());
+            assertEquals("InstantiationType is not ClientConfig when there is error during parsing",
+                    "ClientConfig", serviceModel.getService().getInstantiationType());
+        }
+        finally {
+            Files.deleteIfExists(tempCsarFile);
+        }
+    }
+
+    public void extractFile(Path zipFile, String fileName, Path tempDataFile) throws IOException {
+        // Wrap the file system in a try-with-resources statement
+        // to auto-close it when finished and prevent a memory leak
+        try (FileSystem fileSystem = FileSystems.newFileSystem(zipFile, null)) {
+            Path fileToExtract = fileSystem.getPath(fileName);
+            Files.copy(fileToExtract, tempDataFile);
+        }
+    }
     @Test
     public void whenGetServiceTwiceWithResetBetween_asdcIsCalledTwice() throws AsdcCatalogException {
         vidService.getService(uuid1.toString());
