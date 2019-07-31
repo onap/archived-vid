@@ -3,6 +3,25 @@
 VID Release Notes
 =================
 
+Version: 5.0.0
+--------------
+
+**Resolved Issues**
+
+
+**Security Notes**
+
+
+
+Version: 4.3.2
+--------------
+
+**Resolved Issues**
+
+Reverted the soft-delete feature, to resolve this:
+  - `VID-503 <https://jira.onap.org/browse/VID-503>`_ Delete VF module does not trigger any action
+
+
 Version: 4.3.0
 --------------
 
