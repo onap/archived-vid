@@ -293,13 +293,12 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 		var cloudOwner;
 
 		var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-
-		if (lcpRegionOptionId === FIELD.KEY.LCP_REGION_TEXT) {
+		var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+		if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
 			lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
 				parameterList);
 			cloudOwner = undefined;
 		} else {
-			var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
 			lcpRegion = cloudOwnerAndLcpCloudRegion.cloudRegionId;
 			cloudOwner = cloudOwnerAndLcpCloudRegion.cloudOwner;
 		}
@@ -478,7 +477,9 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 				parameterListControl
 						.updateList([ FIELD.PARAMETER.TENANT_DISABLED ]);
 			}
-			if (list[0].value === FIELD.KEY.LCP_REGION_TEXT) {
+
+			var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(list[0].value);
+			if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
 				parameterListControl
 						.updateList([ FIELD.PARAMETER.LCP_REGION_TEXT_VISIBLE ]);
 			} else {
