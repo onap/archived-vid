@@ -114,8 +114,6 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
         List<WebElement> enabledTenantOption = tenantOptions.stream().filter(webElement -> webElement.isEnabled()).collect(Collectors.toList());
         Assert.assertTrue(enabledTenantOption.size() == 1);
         Assert.assertTrue(enabledTenantOption.get(0).getText().equals("test-hvf6-09"));
-
-        //        SimulatorApi.registerExpectation("aLacarteFlow/get_sdc_catalog_services_ggghhh.json",APPEND);
     }
 
     @Test(dataProvider = "msoTestApiOptions")

@@ -5,11 +5,12 @@ public class PresetMSOCreateNetworkALaCarteOldViewEdit extends PresetMSOBaseCrea
     private final String serviceInstanceId;
     private final String platform;
 
-    public PresetMSOCreateNetworkALaCarteOldViewEdit(String overrideRequestId, String serviceInstanceId, String responseInstanceId, String networkInstanceName, String platform) {
+    public PresetMSOCreateNetworkALaCarteOldViewEdit(String overrideRequestId, String serviceInstanceId, String responseInstanceId, String networkInstanceName, String platform, String cloudOwner) {
         super(overrideRequestId, responseInstanceId);
         this.serviceInstanceId = serviceInstanceId;
         this.networkInstanceName = networkInstanceName;
         this.platform = platform == null ? "" : platform;
+        this.cloudOwner = cloudOwner;
     }
 
     @Override

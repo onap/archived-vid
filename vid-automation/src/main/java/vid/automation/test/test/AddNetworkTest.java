@@ -51,13 +51,13 @@ public class AddNetworkTest extends VidBaseTestCase {
 
         SimulatorApi.registerExpectationFromPresets(
                 ImmutableList.of(
-                        PresetAAIGetCloudOwnersByCloudRegionId.PRESET_ONE_TO_ATT_AIC,
                         new PresetMSOCreateNetworkALaCarteOldViewEdit(
                                 PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID,
                                 "d198cc45-158b-480e-8d2c-03943c51268e",
                                 "c187e9fe-40c3-4862-b73e-84ff056205f6",
                                 instanceName,
-                                platform
+                                platform,
+                                "fusion"
                         ),
                         new PresetMSOOrchestrationRequestGet(
                                 PresetMSOOrchestrationRequestGet.COMPLETE,
