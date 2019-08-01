@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "512c8f8b_9a5e9bac",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/services/asdcService.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-01T10:20:19Z",
+      "side": 1,
+      "message": "I think this check should be earlier, maybe in the start of `shouldTakeTheAsyncInstantiationFlow()` and `shouldTakeTheDrawingBoardViewEdit()` (supposedly as a common method like `boolean enableWebpackModerUi()`)",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 87
+      },
+      "revId": "d5d1a962e1f180910bede2f2fda4341b052e135d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
