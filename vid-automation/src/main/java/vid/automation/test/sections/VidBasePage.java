@@ -57,8 +57,7 @@ public class VidBasePage {
 
     public String getInputValue(String inputTestsId) {
         WebElement instanceNameInput = GeneralUIUtils.getInputElement(inputTestsId);
-        String value =instanceNameInput.getAttribute("value");
-        return value;
+        return instanceNameInput.getAttribute("value");
     }
 
     public String generateInstanceName(String prefix) {

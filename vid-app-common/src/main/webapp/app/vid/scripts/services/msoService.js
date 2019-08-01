@@ -341,7 +341,8 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                         "modelCustomizationName": requestParams.configurationModelInfo.modelCustomizationName
                     },
                     "cloudConfiguration": {
-                        "lcpCloudRegionId": requestParams.portMirroringConfigFields.lcpRegion.value
+                        "lcpCloudRegionId": requestParams.portMirroringConfigFields.cloudRegionId,
+                        "cloudOwner" : requestParams.portMirroringConfigFields.cloudOwner
                     },
                     "requestInfo": {
                         "instanceName": requestParams.portMirroringConfigFields.instanceName.value,

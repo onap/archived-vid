@@ -37,6 +37,14 @@ var DataService = function($log, DataService) {
 		setCloudRegionTenantList : function(cloudRegionTenantList) {
 			_this.cloudRegionTenantList = cloudRegionTenantList;
 		},
+		getCloudOwnerAndLcpCloudRegionFromOptionId : function (cloudRegionOptionId) {
+			var cloudRegionTenantList = this.getCloudRegionTenantList();
+			var cloudRegionTenant = _.find(cloudRegionTenantList, {"cloudRegionOptionId": cloudRegionOptionId});
+			return {
+				cloudOwner: cloudRegionTenant.cloudOwner,
+				cloudRegionId: cloudRegionTenant.cloudRegionId
+			}
+		},
 		getGlobalCustomerId : function() {
 			return _this.globalCustomerId;
 		},

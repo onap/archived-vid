@@ -53,7 +53,11 @@ appDS2.controller("AddNetworkNodeController", ["COMPONENT", "FIELD", "PARAMETER"
         CreationService.getParameters(handleGetParametersResponse);
 
         $scope.setTenant = function(field)  {
-            $scope.nodeTemplateFields.tenant.optionList = _.filter($scope.tenantList, {'cloudRegionId': field.value, 'isPermitted': true});
+            var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(field.value);
+            $scope.nodeTemplateFields.cloudRegionId = cloudOwnerAndLcpCloudRegion.cloudRegionId;
+            $scope.nodeTemplateFields.cloudOwner = cloudOwnerAndLcpCloudRegion.cloudOwner;
+            $scope.nodeTemplateFields.tenant.optionList = _.filter($scope.tenantList,
+                {'cloudRegionId': cloudOwnerAndLcpCloudRegion.cloudRegionId, 'isPermitted': true});
         };
 
         $scope.cancel = function()  {

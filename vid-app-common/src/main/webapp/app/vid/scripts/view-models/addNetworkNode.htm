@@ -40,12 +40,12 @@ limitations under the License.
                         <input data-tests-id="instanceNameInput" name="{{field.id}}" id="{{field.id}}" type="text" required ng-model="field.value" ng-pattern="regexInstanceName">
                         <span class="error" data-ng-show="!networkNodeForm.instanceName.$error.required && networkNodeForm.instanceName.$dirty && networkNodeForm.instanceName.$invalid">{{errorMsg}}</span>
                     </div>
-                    <select id="{{field.id}}" data-tests-id="regionDropDown" ng-if="key === 'lcpRegion'" required ng-model="field.value"
+                    <select id="{{field.id}}" data-tests-id="lcpRegion" ng-if="key === 'lcpRegion'" required ng-model="field.value"
                             placeholder="Choose {{field.name}}"
                             data-ng-change="setTenant(field)">
                         <option value="" selected>LCP region</option>
                         <option data-ng-disabled="!option.isPermitted" ng-repeat="option in field.optionList"
-                                value="{{option.id}}" data-tests-id="{{'region-' + option.id}}">{{option.id}}</option>
+                                value="{{option.id}}" data-tests-id="{{'region-' + option.id}}">{{option.name}}</option>
                     </select>
                     <select id="{{field.id}}" data-tests-id="tenantDropDown" ng-if="key === 'tenant'" required ng-model="field.value"
                             data-ng-options="option.tenantName for option in field.optionList" placeholder="Choose {{field.name}}"

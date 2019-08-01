@@ -779,13 +779,13 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         var cloudOwner;
 
         var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-        var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+        var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
         if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
             lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
                 parameterList);
             cloudOwner = undefined;
         } else {
-            var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+            var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
             lcpRegion = cloudOwnerAndLcpCloudRegion.cloudRegionId;
             cloudOwner = cloudOwnerAndLcpCloudRegion.cloudOwner;
         }
@@ -1155,15 +1155,6 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         return parameter;
     };
 
-    var getCloudOwnerAndLcpCloudRegionFromOptionId = function (cloudRegionOptionId) {
-      var cloudRegionTenantList = DataService.getCloudRegionTenantList();
-      var cloudRegionTenant = _.find(cloudRegionTenantList, {"cloudRegionOptionId": cloudRegionOptionId});
-      return {
-        cloudOwner: cloudRegionTenant.cloudOwner,
-        cloudRegionId: cloudRegionTenant.cloudRegionId
-      }
-    };
-
     var getTenantList = function(cloudRegionOptionId) {
         var cloudRegionTenantList = DataService.getCloudRegionTenantList();
         var parameter = "";
@@ -1257,7 +1248,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                     .updateList([ FIELD.PARAMETER.TENANT_DISABLED ]);
             }
 
-            var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(list[0].value);
+            var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(list[0].value);
             if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
                 parameterListControl
                     .updateList([ FIELD.PARAMETER.LCP_REGION_TEXT_VISIBLE ]);

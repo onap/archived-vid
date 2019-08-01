@@ -2,17 +2,13 @@ package vid.automation.test.sections;
 
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
 
 public class CreateConfigurationPage extends VidBasePage {
 
     public CreateConfigurationPage setInstanceName(String name) {
         setInputText(Constants.ConfigurationCreation.INSTANCE_NAME_INPUT_TEST_ID, name);
-        return this;
-    }
-
-    public CreateConfigurationPage chooseRegion(String region){
-        SelectOption.byTestIdAndVisibleText(region, Constants.ConfigurationCreation.REGION_DROPDOWN_TEST_ID);
         return this;
     }
 
@@ -35,7 +31,7 @@ public class CreateConfigurationPage extends VidBasePage {
         return getInputValue(Constants.ConfigurationCreation.INSTANCE_NAME_INPUT_TEST_ID);
     }
     public String getRegion() {
-        return getInputValue(Constants.ConfigurationCreation.REGION_DROPDOWN_TEST_ID);
+        return Get.selectedOptionText(Constants.ConfigurationCreation.REGION_DROPDOWN_TEST_ID);
     }
     public String getTenant() {
        return SelectOption.getSelectedOption(Constants.ConfigurationCreation.TENANT_DROPDOWN_TEST_ID);

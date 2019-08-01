@@ -440,7 +440,7 @@ public class Constants {
         public static final String BACK_BUTTON_TEST_ID = "backButton";
         public static final String SUPPRESS_ROLLBACK_INPUT_TEST_ID = "suppressRollbackInput";
         public static final String INSTANCE_NAME_INPUT_TEST_ID = "instanceNameInput";
-        public static final String REGION_DROPDOWN_TEST_ID = "regionDropDown";
+        public static final String REGION_DROPDOWN_TEST_ID = "lcpRegion";
         public static final String TENANT_DROPDOWN_TEST_ID = "tenantDropDown";
         public static final String ENABLE_NEXT_ERROR_MESSAGE = "The Next button is not enabled";
         public static final String DISABLE_NEXT_ASSOCIATE_ERROR_MESSAGE = "The Next button enabled when fields are empty";

@@ -293,7 +293,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 		var cloudOwner;
 
 		var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-		var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+		var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
 		if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
 			lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
 				parameterList);
@@ -416,15 +416,6 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 		return parameter;
 	};
 
-	var getCloudOwnerAndLcpCloudRegionFromOptionId = function (cloudRegionOptionId) {
-		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
-		var cloudRegionTenant = _.find(cloudRegionTenantList, {"cloudRegionOptionId": cloudRegionOptionId});
-		return {
-			cloudOwner: cloudRegionTenant.cloudOwner,
-			cloudRegionId: cloudRegionTenant.cloudRegionId
-		}
-	};
-
 	var getTenantList = function(cloudRegionOptionId) {
 		var parameter = "";
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
@@ -478,7 +469,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 						.updateList([ FIELD.PARAMETER.TENANT_DISABLED ]);
 			}
 
-			var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(list[0].value);
+			var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(list[0].value);
 			if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
 				parameterListControl
 						.updateList([ FIELD.PARAMETER.LCP_REGION_TEXT_VISIBLE ]);

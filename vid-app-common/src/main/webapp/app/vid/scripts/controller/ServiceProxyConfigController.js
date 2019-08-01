@@ -292,7 +292,7 @@ appDS2.controller(
                     serviceType,
                     serviceProxy.sourceModelUuid,
                     serviceProxy.sourceModelInvariant,
-                    configNodeTemplateFields.lcpRegion.value,
+                    configNodeTemplateFields.cloudRegionId,
                     configurationModel.properties.equip_vendor,
                     configurationModel.properties.equip_model
                 )
@@ -311,7 +311,7 @@ appDS2.controller(
                     serviceType,
                     serviceProxy.sourceModelUuid,
                     serviceProxy.sourceModelInvariant,
-                    configNodeTemplateFields.lcpRegion.value
+                    configNodeTemplateFields.cloudRegionId
                 )
                     .then(function (response) {
                         var results = response.results || [];

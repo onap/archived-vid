@@ -1614,6 +1614,7 @@ div.hide-password-placeholder>div.form-field>label.form-field__label.form-field_
 	top:60px; 
 	right:20px;
 	z-index: 999;
+	display: none;
 }
 @font-face {
   font-family: 'icoPrimary';

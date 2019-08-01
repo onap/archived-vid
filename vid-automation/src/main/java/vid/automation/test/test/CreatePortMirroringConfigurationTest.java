@@ -12,6 +12,7 @@ import vid.automation.test.infra.Get;
 import vid.automation.test.infra.Wait;
 import vid.automation.test.sections.CreateConfigurationPage;
 import vid.automation.test.sections.ServiceProxyPage;
+import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
@@ -310,17 +311,15 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     private void fillAllFormFields() {
         createConfigurationPage.setInstanceName("dummy_instance");
         createConfigurationPage.assertButtonState(Constants.ConfigurationCreation.TENANT_DROPDOWN_TEST_ID,false);
-        //WebElement tenantDDL= Get.byTestId(Constants.ConfigurationCreation.TENANT_DROPDOWN_TEST_ID);
-
-        createConfigurationPage.chooseRegion("AAIAIC25");
+        VidBasePage vidBasePage = new VidBasePage();
+        vidBasePage.selectLcpRegion("AAIAIC25", "AIC");
         GeneralUIUtils.ultimateWait();
-       // Wait.waitByTestId(Constants.ConfigurationCreation.TENANT_DROPDOWN_TEST_ID, 30);
         createConfigurationPage.chooseTenant("USP-SIP-IC-24335-T-01");
         createConfigurationPage.assertButtonState(Constants.ConfigurationCreation.NEXT_BUTTON_TEST_ID,true);
     }
     private void assertFormFields() {
         Assert.assertEquals("dummy_instance",createConfigurationPage.getInstanceName());
-        Assert.assertEquals("AAIAIC25", createConfigurationPage.getRegion());
+        Assert.assertEquals("AAIAIC25 (AIC)", createConfigurationPage.getRegion());
         Assert.assertEquals("USP-SIP-IC-24335-T-01",createConfigurationPage.getTenant());
 
         createConfigurationPage.assertButtonState(Constants.ConfigurationCreation.NEXT_BUTTON_TEST_ID,true);
