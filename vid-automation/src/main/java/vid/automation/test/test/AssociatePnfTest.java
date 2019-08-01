@@ -2,6 +2,7 @@ package vid.automation.test.test;
 
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSpecificPnf;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -30,6 +31,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
 
     @Test
     public void testAssociatePnf() throws Exception {
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSpecificPnf(),SimulatorApi.RegistrationStrategy.APPEND);
         SimulatorApi.clearAll();
         BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.associatePnf();
