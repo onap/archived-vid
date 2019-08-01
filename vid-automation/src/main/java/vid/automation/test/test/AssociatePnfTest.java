@@ -56,6 +56,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         vidBasePage.assertMsoRequestModal("Error");
         vidBasePage.clickCloseButton();
     }
+
     @Test
     public void testRainyChoosePnf() throws Exception {
         SimulatorApi.clearAll();
@@ -70,6 +71,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         boolean waitForElementResult = Wait.waitByTestId(Constants.ViewEdit.VNF_OPTION_TEST_ID_PREFIX + pnfName, 60);
         Assert.assertTrue(message, !waitForElementResult);
     }
+
     @Test
     public void testRainySearchPnfInstance() throws Exception {
         SimulatorApi.clearAll();
@@ -98,6 +100,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         }
         GeneralUIUtils.ultimateWait();
     }
+
     private void associatePNF() throws InterruptedException {
         pnfSearchAssociationPage.clickAssociateButton();
     }
@@ -118,6 +121,7 @@ public class AssociatePnfTest extends VidBaseTestCase {
         Wait.angularHttpRequestsLoaded();
         assertAssociateButtonState(true);
     }
+
     private void checkServiceModelInfo() {
         Wait.angularHttpRequestsLoaded();
         //Service name
@@ -188,7 +192,4 @@ public class AssociatePnfTest extends VidBaseTestCase {
         infoItemText = GeneralUIUtils.getWebElementByTestID(elementTestId, 60).getText();
         Assert.assertEquals(String.format(Constants.PnfAssociation.PNF_INSTANCE_ERROR_MESSAGE,elementTestId),infoItemText,"ASR1002-X");
     }
-
-
-
 }

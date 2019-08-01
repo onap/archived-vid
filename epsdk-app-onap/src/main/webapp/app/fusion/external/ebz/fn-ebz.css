@@ -1610,6 +1610,7 @@ div.hide-password-placeholder>div.form-field>label.form-field__label.form-field_
 }
 
 .license-notification{
+	display: none;
 	position:fixed; 
 	top:60px; 
 	right:20px;
