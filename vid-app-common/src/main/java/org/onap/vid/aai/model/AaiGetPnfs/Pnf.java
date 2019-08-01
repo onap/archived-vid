@@ -21,9 +21,9 @@
 
 package org.onap.vid.aai.model.AaiGetPnfs;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.onap.vid.aai.model.AaiRelationResponse;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -39,10 +39,10 @@ public final class Pnf extends AaiRelationResponse {
 
     @JsonCreator
     public Pnf(
-        @JsonAlias("pnf-id") String pnfId, @JsonAlias("pnf-name") String pnfName,
-        @JsonAlias("pnf-name2") String pnfName2, @JsonAlias("pnf-name2-source") String pnfName2Source,
-        @JsonAlias("equip-type") String equipType, @JsonAlias("equip-vendor") String equipVendor,
-        @JsonAlias("equip-model") String equipModel) {
+            @JsonProperty("pnf-id") String pnfId, @JsonProperty("pnf-name") String pnfName,
+            @JsonProperty("pnf-name2") String pnfName2, @JsonProperty("pnf-name2-source") String pnfName2Source,
+            @JsonProperty("equip-type") String equipType, @JsonProperty("equip-vendor") String equipVendor,
+            @JsonProperty("equip-model") String equipModel) {
 
         this.pnfId = pnfId;
         this.pnfName = pnfName;
