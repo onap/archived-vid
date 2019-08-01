@@ -626,8 +626,6 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
     var getMsoRequestDetails = function(parameterList) {
         console.log("getMsoRequestDetails invoked, parameterList="); console.log(JSON.stringify(parameterList,null,4));
-        //console.log("getMsoRequestDetails invoked, DataService.getArbitraryParameters()=");
-        //console.log(JSON.stringify(DataService.getArbitraryParameters(),null,4));
 
         //VoLTE logic goes here
         if(DataService.getE2EService() === true) {
@@ -781,8 +779,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         var cloudOwner;
 
         var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-
-        if (lcpRegionOptionId === FIELD.KEY.LCP_REGION_TEXT) {
+        var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+        if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
             lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
                 parameterList);
             cloudOwner = undefined;
@@ -1258,7 +1256,9 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 parameterListControl
                     .updateList([ FIELD.PARAMETER.TENANT_DISABLED ]);
             }
-            if (list[0].value === FIELD.KEY.LCP_REGION_TEXT) {
+
+            var cloudOwnerAndLcpCloudRegion = getCloudOwnerAndLcpCloudRegionFromOptionId(list[0].value);
+            if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
                 parameterListControl
                     .updateList([ FIELD.PARAMETER.LCP_REGION_TEXT_VISIBLE ]);
             } else {

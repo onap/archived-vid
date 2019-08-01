@@ -45,12 +45,6 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 	};
 	
 	var getLcpCloudRegionTenantList = function() {
-		//console.log ( "global customer id: " ); 
-		//console.log ( JSON.stringify (DataService.getGlobalCustomerId()) );
-		
-		//console.log ( "service type: " ); 
-		//console.log ( JSON.stringify (DataService.getServiceType()) );
-		
 		AaiService.getLcpCloudRegionTenantList(DataService
 				.getGlobalCustomerId(), DataService.getServiceType(), function(
 				response) {
