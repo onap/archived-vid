@@ -67,15 +67,6 @@ public class ViewEditPage extends VidBasePage {
         return this;
     }
 
-    public ViewEditPage selectLcpRegion(String lcpRegion, String cloudOwner){
-        selectLcpRegion(lcpRegion);
-        if (Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST.isActive()) {
-            String selectedOption = SelectOption.getSelectedOption(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID);
-            Assert.assertEquals(lcpRegion + " (" + cloudOwner.toUpperCase() + ")", selectedOption);
-        }
-        return this;
-    }
-
     public ViewEditPage selectLineOfBusiness(String lineOfBusiness, String cloudOwner){
         selectLineOfBusiness(lineOfBusiness);
         return this;

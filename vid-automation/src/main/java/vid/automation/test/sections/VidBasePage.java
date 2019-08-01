@@ -185,10 +185,15 @@ public class VidBasePage {
         return this;
     }
 
-
     public VidBasePage selectLcpRegion(String lcpRegion) {
+        return selectLcpRegion(lcpRegion, "AIC");
+    }
+
+    public VidBasePage selectLcpRegion(String lcpRegion, String cloudOwner) {
         GeneralUIUtils.ultimateWait();
-        SelectOption.byValue(lcpRegion, Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID);
+        String visibleText = (Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST.isActive()) ?
+            String.format("%s (%s)", lcpRegion, cloudOwner) : lcpRegion;
+        SelectOption.byTestIdAndVisibleText(visibleText, Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID);
         return this;
     }
 
