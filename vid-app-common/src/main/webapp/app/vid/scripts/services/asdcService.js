@@ -22,8 +22,6 @@
 
 var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCONFIGURATION, COMPONENT, DataService, featureFlags) {
     var shouldExcludeMacroFromAsyncInstantiationFlow = function(serviceModel){
-        if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ASYNC_INSTANTIATION))
-            return true;
         if (DataService.getE2EService())
             return true;
         if (!_.isEmpty(serviceModel.pnfs))
@@ -51,7 +49,8 @@ var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCON
         },
 
         shouldTakeTheDrawingBoardViewEdit: function(serviceModel) {
-            if (serviceModel.service.vidNotions
+            if (this.enableWebpackModernUi()
+                && serviceModel.service.vidNotions
                 && serviceModel.service.vidNotions.viewEditUI
                 && serviceModel.service.vidNotions.viewEditUI !== 'legacy'
             ) return true;
@@ -59,8 +58,14 @@ var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCON
             return false;
         },
 
+        enableWebpackModernUi: function(){
+            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ENABLE_WEBPACK_MODERN_UI);
+        },
+
         shouldTakeTheAsyncInstantiationFlow: function(serviceModel) {
-            // First of all, respect serviceModel.service.vidNotions.instantiationUI
+            if (!(this.enableWebpackModernUi()))
+                return false;
+            // Assuming positive flag - first of all, respect serviceModel.service.vidNotions.instantiationUI
             if (serviceModel.service.vidNotions
                 && serviceModel.service.vidNotions.instantiationUI
                 && serviceModel.service.vidNotions.instantiationUI !== 'legacy'
