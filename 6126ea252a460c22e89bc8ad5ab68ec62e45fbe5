@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd4aa15b_a1f32232",
+        "filename": "epsdk-app-onap/src/main/webapp/app/fusion/external/ebz/fn-ebz.css",
+        "patchSetId": 1
+      },
+      "lineNbr": 1617,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-01T16:54:17Z",
+      "side": 1,
+      "message": "is this relevant, or just by the way?",
+      "revId": "6126ea252a460c22e89bc8ad5ab68ec62e45fbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58f2faa2_7e8ae38b",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/services/dataService.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-01T16:54:17Z",
+      "side": 1,
+      "message": "nice.",
+      "revId": "6126ea252a460c22e89bc8ad5ab68ec62e45fbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59df9e98_5af491b7",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/CreatePortMirroringConfigurationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-01T16:54:17Z",
+      "side": 1,
+      "message": "no feature flag edit here?",
+      "revId": "6126ea252a460c22e89bc8ad5ab68ec62e45fbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
