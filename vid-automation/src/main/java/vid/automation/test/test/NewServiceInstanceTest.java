@@ -56,6 +56,7 @@ import static vid.automation.test.services.SimulatorApi.registerExpectationFromP
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 import static vid.automation.test.test.ALaCarteflowTest.AIC;
 
+@FeatureTogglingTest(FLAG_ENABLE_WEBPACK_MODERN_UI)
 public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     public static final String COMPLETED = "COMPLETED";

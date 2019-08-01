@@ -22,7 +22,7 @@
 
 var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCONFIGURATION, COMPONENT, DataService, featureFlags) {
     var shouldExcludeMacroFromAsyncInstantiationFlow = function(serviceModel){
-        if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ASYNC_INSTANTIATION))
+        if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ENABLE_WEBPACK_MODERN_UI))
             return true;
         if (DataService.getE2EService())
             return true;
