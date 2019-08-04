@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateMacroPre1806Post;
@@ -60,8 +59,7 @@ public class SanityMacroDeployTest extends CreateInstanceDialogBaseTest {
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
                 new PresetAAIServiceDesignAndCreationPut(),
                 new PresetMSOCreateMacroPre1806Post(),
-                new PresetAAIGetSubscribersGet(),
-                PresetAAIGetCloudOwnersByCloudRegionId.PRESET_RDM3_TO_ATT_NC
+                new PresetAAIGetSubscribersGet()
                 ),
                 APPEND);
     }

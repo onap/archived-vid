@@ -36,6 +36,7 @@ public final class AicZones {
 		this.zones = Collections.unmodifiableList(zones);
 	}
 
+	@JsonProperty("zone")
 	public List<Zone> getZones() {
 		return zones;
 	}
