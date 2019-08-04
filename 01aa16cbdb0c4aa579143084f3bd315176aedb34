@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "67e53334_c75675f0",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system_template.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-04T06:47:52Z",
+      "side": 1,
+      "message": "I see this config had lots of changes over the last 18 months; I suggest reverting this change, and keep it for a separate discussion.",
+      "parentUuid": "766d2bfa_dba22d16",
+      "revId": "01aa16cbdb0c4aa579143084f3bd315176aedb34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b1c94725_ca15895a",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/AssociatePnfTest.java",
         "patchSetId": 1
