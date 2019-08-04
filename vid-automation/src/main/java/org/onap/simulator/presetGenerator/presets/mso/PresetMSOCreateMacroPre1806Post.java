@@ -1,11 +1,9 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
-
 public class PresetMSOCreateMacroPre1806Post extends PresetMSOBaseCreateInstancePost {
 
     public PresetMSOCreateMacroPre1806Post() {
-        this.cloudOwner = ATT_NC;
+        this.cloudOwner = "irma-aic";
     }
 
     @Override

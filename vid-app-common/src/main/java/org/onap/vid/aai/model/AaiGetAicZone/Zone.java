@@ -37,10 +37,12 @@ public final class Zone {
         this.zoneName = zoneName;
     }
 
+    @JsonProperty("zone-id")
     public String getZoneId() {
         return zoneId;
     }
 
+    @JsonProperty("zone-name")
     public String getZoneName() {
         return zoneName;
     }
