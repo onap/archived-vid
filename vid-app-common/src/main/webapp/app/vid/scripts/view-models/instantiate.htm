@@ -20,19 +20,19 @@
 
 <div>
 
-	<div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
-		 ng-cloak>
-		<div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"></div>
-		<div ng-include="'app/vid/scripts/view-models/deleteResumeDialog.htm'"></div>
-		<div ng-include="'app/vid/scripts/view-models/detailsDialog.htm'"></div>
-		<div ng-include="'app/vid/scripts/view-models/statusDialog.htm'"></div>
-	    <div ng-include="'app/vid/scripts/view-models/iframeDialog.htm'"></div>
-	</div>
-	<div ng-controller="aaiSubscriberController" ng-init="getComponentList() ">
-		<div class="statusLine" ng-class="{true:'aaiVisible', false:'aaiHidden'}[isSpinnerVisible]">
-			<img src="app/vid/images/spinner.gif"></img>
-			<label>Status:</label><span class="status">{{status}}</span>
-		</div>
+    <div popup-window class="popupContents" ngx-show="{{popup.isVisible}}"
+         ng-cloak>
+        <div ng-include="'app/vid/scripts/view-models/creationDialog.htm'"></div>
+        <div ng-include="'app/vid/scripts/view-models/deleteResumeDialog.htm'"></div>
+        <div ng-include="'app/vid/scripts/view-models/detailsDialog.htm'"></div>
+        <div ng-include="'app/vid/scripts/view-models/statusDialog.htm'"></div>
+        <div ng-include="'app/vid/scripts/view-models/iframeDialog.htm'"></div>
+    </div>
+    <div ng-controller="aaiSubscriberController" ng-init="getComponentList() ">
+        <div class="statusLine" ng-class="{true:'aaiVisible', false:'aaiHidden'}[isSpinnerVisible]">
+            <img src="app/vid/images/spinner.gif"></img>
+            <label>Status:</label><span class="status">{{status}}</span>
+        </div>
 
         <div class="error-msg" ng-if="errorMsg != null" style="white-space: pre-line"><font color='red'>{{errorMsg}}
             <pre>{{errorDetails | json}}</pre>
@@ -394,7 +394,7 @@
                                             <li ng-repeat="vlan in network.vlans" ui-tree-node>
                                                 <div ui-tree-handle class="tree-node tree-node-content"
                                                      ng-class="'vlansTreeNode'">
-                                                    VLAN: {{vlan.vlanIdInner}} | TYPE: VLAN
+                                                    VLAN: {{vlan.vlanIdOuter}} | TYPE: VLAN
                                                 </div>
 
                                             </li>
@@ -429,7 +429,7 @@
                                     <li ng-repeat="vlan in network.vlans" ui-tree-node>
                                         <div ui-tree-handle class="tree-node tree-node-content"
                                              ng-class="'vlansTreeNode'">
-                                            VLAN: {{vlan.vlanIdInner}} | TYPE: VLAN
+                                            VLAN: {{vlan.vlanIdOuter}} | TYPE: VLAN
                                         </div>
 
                                     </li>
@@ -452,7 +452,7 @@
                                     <a class="pull-right btn btn-danger btn-xs"
                                        ng-if="!isMacro() && isPermitted && configuration.nodeStatus !== STATUS_CONSTANTS.AAI_ACTIVE"
                                        ng-disabled="!isConfigurationDataAvailiable(configuration)"
-                                       data-tests-id="deleteConfigurationButton"
+                                       data-tests-id="deleteConfigurationButton-{{configuration.name}}"
                                        data-nodrag
                                        ng-click="deleteConfiguration(aService, configuration)">
                                         <span class="glyphicon glyphicon-remove"></span>
@@ -461,9 +461,9 @@
 
                                     <a class="pull-right btn btn-primary btn-xs" data-nodrag
                                        ng-click="toggleConfigurationStatus(aService, configuration)"
-                                       ng-if="isPermitted && allowConfigurationActions"
+                                       ng-if="isPermitted && allowConfigurationActions(configuration)"
                                        ng-disabled="!isConfigurationDataAvailiable(configuration)"
-                                       data-tests-id="activateDeactivateButton">
+                                       data-tests-id="activateDeactivateButton-{{configuration.name}}">
                                         {{configuration.nodeStatus === STATUS_CONSTANTS.AAI_ACTIVE ? "Deactivate" :
                                         "Activate"}}
                                     </a>
@@ -473,7 +473,7 @@
                                         <div ui-tree-handle class="tree-node tree-node-content">
                                             PORT: {{port.portName}} | ORCH STATUS: {{port.portStatus}}
 
-                                            <button type="button" data-tests-id="enableDisableButton"
+                                            <button type="button" data-tests-id="enableDisableButton-{{configuration.name}}-{{port.portName}}"
                                                     class="pull-right btn btn-primary btn-xs"
                                                     ng-if="configuration.nodeStatus == STATUS_CONSTANTS.AAI_ACTIVE"
                                                     ng-disabled="!isConfigurationDataAvailiable(configuration)"
