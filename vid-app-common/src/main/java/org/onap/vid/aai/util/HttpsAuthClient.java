@@ -72,7 +72,7 @@ public class HttpsAuthClient {
      *
      * @return the client
      */
-    public Client getClient(HttpClientMode mode) throws GeneralSecurityException, IOException {
+    public Client getClient(HttpClientMode mode) {
         ClientConfig config = prepareClientConfig(mode);
 
         try {
