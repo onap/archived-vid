@@ -25,7 +25,6 @@ import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +33,6 @@ import org.onap.vid.exceptions.GenericUncheckedException;
 
 public class MsoUtil {
 
-    static final ObjectMapper objectMapper = new ObjectMapper();
 
     private MsoUtil() {
     }
@@ -51,13 +49,29 @@ public class MsoUtil {
         if (httpResponse.getRawBody() != null) {
             try {
                 T body = httpResponse.getBody();
-                String entityStr = body instanceof String ? (String) body : objectMapper.writeValueAsString(httpResponse.getBody());
+                String entityStr = body instanceof String ? (String) body : JACKSON_OBJECT_MAPPER.writeValueAsString(httpResponse.getBody());
                 msoResponseWrapper.setEntity(entityStr);
             } catch(JsonProcessingException e) {
                 ExceptionUtils.rethrow(e);
             }
         }
         return msoResponseWrapper;
+    }
+
+    public static <T> MsoResponseWrapper2<T> wrapResponse2(HttpResponse<String> httpResponse, Class<T> clazz) {
+        String raw = httpResponse.getBody(); // As body's T is String, use getBody as a simple way to get raw
+        if (raw != null) {
+            try {
+                T entity = JACKSON_OBJECT_MAPPER.readValue(raw, clazz);
+                return new MsoResponseWrapper2<>(httpResponse.getStatus(), entity, raw);
+            } catch (JsonProcessingException exception) {
+                return new MsoResponseWrapper2<>(httpResponse.getStatus(), null, raw);
+            } catch (IOException exception) {
+                ExceptionUtils.rethrow(exception);
+            }
+        }
+
+        return new MsoResponseWrapper2<>(httpResponse.getStatus(), null, null);
     }
 
     public static String formatExceptionAdditionalInfo(int statusCode, String msoResponse) {
