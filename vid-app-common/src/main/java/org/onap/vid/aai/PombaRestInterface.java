@@ -35,12 +35,13 @@ import java.util.UUID;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 public class PombaRestInterface extends AAIRestInterface {
+	
+	private Client client = null;
 
     public PombaRestInterface (HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
         super(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
     }
 
-    private Client client = null;
 
     @Override
     protected void initRestClient()
@@ -57,7 +58,7 @@ public class PombaRestInterface extends AAIRestInterface {
     }
 
 
-    public Response RestPost(String fromAppId, String url, String payload) {
+    public Response restPost(String fromAppId, String url, String payload) {
         String methodName = "RestPost";
         String transId = UUID.randomUUID().toString();
         try {
