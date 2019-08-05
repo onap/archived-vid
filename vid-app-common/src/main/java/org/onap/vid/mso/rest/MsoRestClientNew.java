@@ -330,8 +330,8 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     @Override
     public MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint) {
         String path = baseUrl + endpoint;
-        HttpResponse<RequestReferencesContainer> response = client.post(path, commonHeaders, requestDetails, RequestReferencesContainer.class);
-        return MsoUtil.wrapResponse(response);
+        HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
+        return MsoUtil.wrapResponse2(response, RequestReferencesContainer.class);
     }
 
     public MsoResponseWrapper replaceInstance(org.onap.vid.changeManagement.RequestDetails request, String path) {
