@@ -64,11 +64,10 @@ public class ChangeManagementApiTest extends BaseApiTest {
     @DataProvider
     public static Object[][] requestWithoutServiceInstanceId(Method test) {
         return new Object[][]{
-                {(Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).setRelatedInstList(null)},
-                {(Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).setRelatedInstList(new ArrayList<>())},
-                {(Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).getRelatedInstList().get(0).setRelatedInstance(null)},
-                {(Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).getRelatedInstList().get(0).getRelatedInstance().setInstanceId(null)}
-
+                {"RelatedInstList null", (Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).setRelatedInstList(null)},
+                {"Empty list", (Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).setRelatedInstList(new ArrayList<>())},
+                {"Related instance null", (Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).getRelatedInstList().get(0).setRelatedInstance(null)},
+                {"instanceId null", (Consumer<ChangeManagementRequest>) changeManagementRequest -> changeManagementRequest.getRequestDetails().get(0).getRelatedInstList().get(0).getRelatedInstance().setInstanceId(null)}
         };
     }
 
@@ -178,7 +177,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
     }
 
     @Test(dataProvider = "requestWithoutServiceInstanceId")
-    public void testInPlaceSoftwareUpdateWithoutServiceInstanceId(Consumer<ChangeManagementRequest> dropInstanceIdMethod) throws IOException {
+    public void testInPlaceSoftwareUpdateWithoutServiceInstanceId(String desc, Consumer<ChangeManagementRequest> dropInstanceIdMethod) throws IOException {
         testChangeManagementServiceInstanceId(dropInstanceIdMethod, ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
@@ -289,7 +288,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
     }
 
     @Test(dataProvider = "requestWithoutServiceInstanceId")
-    public void testConfigUpdateWithoutServiceInstanceId(Consumer<ChangeManagementRequest> dropInstanceIdMethod) throws IOException {
+    public void testConfigUpdateWithoutServiceInstanceId(String desc, Consumer<ChangeManagementRequest> dropInstanceIdMethod) throws IOException {
         testChangeManagementServiceInstanceId(dropInstanceIdMethod, ChangeManagementRequest.CONFIG_UPDATE);
     }
 

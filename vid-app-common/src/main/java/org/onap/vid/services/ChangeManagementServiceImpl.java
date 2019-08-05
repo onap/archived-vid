@@ -162,13 +162,19 @@ public class ChangeManagementServiceImpl implements ChangeManagementService {
 
     protected String extractServiceInstanceId(RequestDetails currentRequestDetails,
             String requestType) {
-        String serviceInstanceId = currentRequestDetails.getRelatedInstList().get(0)
-                .getRelatedInstance().getInstanceId();
-        if (serviceInstanceId == null) {
+        try {
+            String serviceInstanceId = currentRequestDetails.getRelatedInstList().get(0)
+                    .getRelatedInstance().getInstanceId();
+            if (serviceInstanceId == null) {
+                logger.error("Failed to extract serviceInstanceId");
+                throw new BadRequestException("No instanceId in request " + requestType);
+            }
+            return serviceInstanceId;
+        }
+        catch (Exception e) {
             logger.error("Failed to extract serviceInstanceId");
             throw new BadRequestException("No instanceId in request " + requestType);
         }
-        return serviceInstanceId;
     }
 
     @Override
