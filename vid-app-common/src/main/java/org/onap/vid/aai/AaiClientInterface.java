@@ -29,7 +29,6 @@ import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.model.SubscriberList;
-import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.services.ProbeInterface;
 import org.springframework.http.HttpMethod;
 
