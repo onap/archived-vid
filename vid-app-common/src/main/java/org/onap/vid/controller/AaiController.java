@@ -529,7 +529,7 @@ public class AaiController extends RestrictedBaseController {
         Response resp = null;
         try {
 
-            resp = aaiRestInterface.RestPost(FROM_APP_ID, uri, payload, xml);
+            resp = aaiRestInterface.restPost(FROM_APP_ID, uri, payload, xml);
 
         } catch (Exception e) {
             LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + "." + methodName + e.toString());

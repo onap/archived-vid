@@ -49,7 +49,7 @@ public class PombaClientImpl implements PombaClientInterface {
         String uri = systemPropertiesWrapper.getProperty("pomba.server.url");
 
         try {
-            pombaRestInterface.RestPost(fromAppId, uri, new ObjectMapper().writeValueAsString(request));
+            pombaRestInterface.restPost(fromAppId, uri, new ObjectMapper().writeValueAsString(request));
         } catch (Exception e) {
             logger.info(EELFLoggerDelegate.errorLogger, methodName, e);
             logger.debug(EELFLoggerDelegate.debugLogger, methodName, e);

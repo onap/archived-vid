@@ -297,8 +297,8 @@ public class AAIRestInterface {
 	 * @param xml the xml
 	 * @return the string
 	 */
-	public Response RestPost(String fromAppId, String path, String payload, boolean xml) {
-		String methodName = "RestPost";
+	public Response restPost(String fromAppId, String path, String payload, boolean xml) {
+		String methodName = "restPost";
 		String url=systemPropertyHelper.getServiceBasePath(path);
 		String transId = UUID.randomUUID().toString();
 		logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
