@@ -33,6 +33,7 @@ import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.MsoResponseWrapper2;
+import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
@@ -80,9 +81,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         RequestDetailsWrapper<OperationEnvironmentRequestDetails> requestDetailsWrapper = msoBusinessLogic.convertParametersToRequestDetails(operationalEnvironment, userId);
         String path = msoBusinessLogic.getOperationalEnvironmentCreationPath();
 
-        HttpResponse<RequestReferencesContainer> msoResponse = restMso.post(path, requestDetailsWrapper, RequestReferencesContainer.class);
-        debugEnd(msoResponse);
-        return new MsoResponseWrapper2<>(msoResponse);
+        return MsoUtil.wrapResponse2(restMso.post(path, requestDetailsWrapper, String.class), RequestReferencesContainer.class);
     }
 
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
@@ -105,10 +104,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         String path = msoBusinessLogic.getOperationalEnvironmentActivationPath(activateInfo);
         RequestDetailsWrapper<RequestDetails> requestDetailsWrapper = msoBusinessLogic.createOperationalEnvironmentActivationRequestDetails(activateInfo);
 
-        HttpResponse<RequestReferencesContainer> msoResponse = restMso.post(path, requestDetailsWrapper, RequestReferencesContainer.class);
-
-        debugEnd(msoResponse);
-        return new MsoResponseWrapper2<>(msoResponse);
+        return MsoUtil.wrapResponse2(restMso.post(path, requestDetailsWrapper, String.class), RequestReferencesContainer.class);
     }
 
     @RequestMapping(value = "/deactivate", method = RequestMethod.POST)
@@ -126,10 +122,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         String path = msoBusinessLogic.getOperationalEnvironmentDeactivationPath(deactivateInfo);
         RequestDetailsWrapper<RequestDetails> requestDetailsWrapper =  msoBusinessLogic.createOperationalEnvironmentDeactivationRequestDetails(deactivateInfo);
 
-        HttpResponse<RequestReferencesContainer> msoResponse = restMso.post(path, requestDetailsWrapper, RequestReferencesContainer.class);
-
-        debugEnd(msoResponse);
-        return new MsoResponseWrapper2<>(msoResponse);
+        return MsoUtil.wrapResponse2(restMso.post(path, requestDetailsWrapper, String.class), RequestReferencesContainer.class);
     }
 
     @RequestMapping(value = "/requestStatus", method = RequestMethod.GET)
@@ -140,10 +133,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
         verifyIsNotEmpty(requestId, "requestId");
         String path = msoBusinessLogic.getCloudResourcesRequestsStatusPath(requestId);
 
-        HttpResponse<HashMap> msoResponse = restMso.get(path, HashMap.class);
-
-        LOGGER.debug(EELFLoggerDelegate.debugLogger, "end {}() => {}", getMethodName(), msoResponse);
-        return new MsoResponseWrapper2<>(msoResponse);
+        return MsoUtil.wrapResponse2(restMso.get(path, String.class), HashMap.class);
     }
 
     @ExceptionHandler({
