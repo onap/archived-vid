@@ -29,6 +29,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonMapper;
 import org.apache.http.ProtocolVersion;
@@ -60,6 +61,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 
 @ContextConfiguration(classes = {LocalWebConfig.class, SystemProperties.class})
@@ -593,19 +595,19 @@ public class MsoRestClientTest {
     }
 
     @Test
-    public void shouldProperlyChangeManagementUpdate() {
+    public void shouldProperlyChangeManagementUpdate() throws JsonProcessingException {
         //  given
         RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
         RequestDetailsWrapper<RequestDetails> requestDetailsWrapper = new RequestDetailsWrapper<>(requestDetails);
 
         String endpoint = "testEndpoint";
-        HttpResponse<RequestReferencesContainer> httpResponse = HttpResponse.fallback(
-                new RequestReferencesContainer(
-                        new RequestReferences()));
+        HttpResponse<String> httpResponse = HttpResponse.fallback(
+                JACKSON_OBJECT_MAPPER.writeValueAsString(new RequestReferencesContainer(
+                        new RequestReferences())));
 
         MsoResponseWrapperInterface expectedResponse = MsoUtil.wrapResponse(httpResponse);
 
-        when(client.post(eq(baseUrl + endpoint), anyMap(), eq(requestDetailsWrapper), eq(RequestReferencesContainer.class))).thenReturn(httpResponse);
+        when(client.post(eq(baseUrl + endpoint), anyMap(), eq(requestDetailsWrapper), eq(String.class))).thenReturn(httpResponse);
 
         //  when
         MsoResponseWrapperInterface response = restClient.changeManagementUpdate(requestDetailsWrapper, endpoint);
