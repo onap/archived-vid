@@ -24,6 +24,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VnfDetails {
 
+    @JsonProperty("UUID")
+	private String UUID;
+	
+	@JsonProperty("invariantUUID")
+	private String invariantUUID;
+	
 	public VnfDetails() {
 	}
 
@@ -32,11 +38,6 @@ public class VnfDetails {
 		this.invariantUUID = invariantUUID;
 	}
 
-	@JsonProperty("UUID")
-	private String UUID;
-	
-	@JsonProperty("invariantUUID")
-	private String invariantUUID;
 	
 	@JsonProperty("UUID")
 	public String getUUID() {
