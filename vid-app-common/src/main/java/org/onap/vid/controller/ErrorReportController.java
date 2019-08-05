@@ -22,7 +22,6 @@ package org.onap.vid.controller;
 
 import org.jetbrains.annotations.NotNull;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
-import org.onap.portalsdk.core.controller.UnRestrictedBaseController;
 import org.onap.vid.model.errorReport.ReportCreationParameters;
 import org.onap.vid.reports.ReportGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
