@@ -65,6 +65,12 @@ public class MsoResponseWrapper2<T> implements MsoResponseWrapperInterface {
         this.raw = null;
     }
 
+    public MsoResponseWrapper2(int status, T entity, String raw) {
+        this.status = status;
+        this.entity = entity;
+        this.raw = raw;
+    }
+
     public int getStatus() {
         return status;
     }
