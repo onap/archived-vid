@@ -20,10 +20,14 @@
 
 package org.onap.vid.controller;
 
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.Permissions;
+import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.RelatedVnf;
+import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +98,22 @@ public class AaiController2 extends VidRestrictedBaseController {
         return aaiService.searchGroupMembers(globalCustomerId, serviceType, invariantId, groupType, groupRole);
     }
 
+    @RequestMapping(value = "/aai_get_vpn_list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<VpnBinding> getVpnList() {
+        return aaiService.getVpnListByVpnType("SERVICE-INFRASTRUCTURE");
+    }
 
+    @RequestMapping(value = "/aai_get_active_networks",
+        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Network> getActiveNetworkList(
+        @RequestParam("cloudRegion") String cloudRegion,
+        @RequestParam("tenantId") String tenantId,
+        @RequestParam(value = "networkRole", required = false) String networkRole) {
+        return aaiService.getL3NetworksByCloudRegion(cloudRegion, tenantId, networkRole)
+            .stream()
+            .filter(Network::isBoundToVpn)
+            .filter(network -> StringUtils.isNotEmpty(network.getInstanceName()))
+            .filter(network -> StringUtils.equalsIgnoreCase(network.getOrchStatus(), "active"))
+            .collect(Collectors.toList());
+    }
 }
