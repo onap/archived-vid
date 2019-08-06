@@ -55,7 +55,7 @@ public class ExternalAppInitializer extends AppInitializer {
 	}
 
 	//set time zone to UTC so Dates would be written to DB in UTC timezone
-	private void setDefaultTimeZoneToUTC() {
+public void setDefaultTimeZoneToUTC() {
 		System.setProperty("user.timezone", "UTC");
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC")); //since TimeZone cache previous user.timezone
 	}
