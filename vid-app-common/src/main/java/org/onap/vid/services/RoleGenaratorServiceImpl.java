@@ -47,10 +47,11 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
     public static final String TBL_NAME = "fn_role";
     public static final String TEMP_DELIMITER ="***";
     public static final String OLD_DELIMITER = "_";
+	public static final String CrLf = ";\r\n";
 
     @Override
     public String generateRoleScript(Boolean firstRun) {
-        String query =  "USE " + DB_NAME + ";\r\n" +
+        String query =  "USE " + DB_NAME + CrLf +
                 "SET SQL_SAFE_UPDATES = 0;\r\n";
         try {
             HttpResponse<SubscriberList> allSubscribers = aaiOverTLSClient.getAllSubscribers();
@@ -100,7 +101,7 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
             query = query + "('" + subscriber.globalCustomerId + "','" + subscriberName + "') ,";
         }
         if(query.length() > 0)
-            query = query.substring(0, query.length()-1) + ";\r\n";
+            query = query.substring(0, query.length()-1) + CrLf;
         return query;
     }
 
@@ -112,7 +113,7 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
             }
         });
         if(query[0].length() > 0)
-            query[0] = query[0].substring(0, query[0].length()-1) + ";\r\n";
+            query[0] = query[0].substring(0, query[0].length()-1) + CrLf;
         return query[0];
     }
 
@@ -153,7 +154,7 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
 
     private String createTemporaryTableAvailableRoles(String availableRoles) {
         String query = "CREATE TEMPORARY TABLE IF NOT EXISTS available_roles(rname VARCHAR(255));\r\n";
-        query += "INSERT INTO available_roles VALUES "+availableRoles+";\r\n";
+        query += "INSERT INTO available_roles VALUES "+availableRoles+CrLf;
                 return query;
     }
 
@@ -185,6 +186,6 @@ public class RoleGenaratorServiceImpl implements RoleGeneratorService {
     }
 
     private String dropTemporaryTable(String table) {
-        return "DROP TEMPORARY TABLE IF EXISTS " + table + ";\r\n";
+        return "DROP TEMPORARY TABLE IF EXISTS " + table + CrLf;
     }
 }
