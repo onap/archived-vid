@@ -45,6 +45,10 @@ public class CommandParentData {
 
     private static final String RESOURCE_INSTANCE_IDS = "resourceInstancesIds";
     private static final String RESOURCE_MODEL_INFOS = "resourceModelInfos";
+	
+	private Map<CommandDataKey, String> resourceInstancesIds = new HashMap<>();
+    private Map<CommandDataKey, ModelInfo> resourceModelInfos = new HashMap<>();
+    private Action actionPhase = null;
 
     private final TypeReference<Map<CommandDataKey, String>> mapCommandKeyToString =
             new TypeReference<Map<CommandDataKey, String>> () {};
@@ -74,9 +78,6 @@ public class CommandParentData {
 
         return data;
     }
-    private Map<CommandDataKey, String> resourceInstancesIds = new HashMap<>();
-    private Map<CommandDataKey, ModelInfo> resourceModelInfos = new HashMap<>();
-    private Action actionPhase = null;
 
     public void addModelInfo(CommandDataKey modelInfoKey, ModelInfo modelInfo) {
         resourceModelInfos.put(modelInfoKey, modelInfo);
