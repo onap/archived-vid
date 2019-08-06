@@ -19,40 +19,39 @@
  */
 package org.onap.vid.reports;
 
+import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
+
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
-import org.onap.vid.controller.ControllersUtils;
-import org.onap.vid.model.GitRepositoryState;
-import org.onap.vid.model.SubscriberList;
-import org.onap.vid.model.errorReport.ReportCreationParameters;
-import org.onap.vid.model.probes.ExternalComponentStatus;
-import org.onap.vid.services.AaiService;
-import org.onap.vid.services.ProbeService;
-import org.onap.vid.utils.SystemPropertiesWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
+import javax.servlet.http.HttpServletRequest;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
+import org.onap.vid.controller.ControllersUtils;
+import org.onap.vid.model.GitRepositoryState;
+import org.onap.vid.model.SubscriberList;
+import org.onap.vid.model.errorReport.ReportCreationParameters;
+import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.services.ProbeService;
+import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class BasicReportGenerator implements ReportGenerator {
 
 	private static final String GIT_PROPERTIES_FILENAME = "git.properties";
-	private final AaiService aaiService;
+	private final AaiOverTLSClientInterface aaiOverTLSClient;
 	private final SystemPropertiesWrapper systemPropertiesWrapper;
 	private final ProbeService probeService;
 
 	@Autowired
-	public BasicReportGenerator(AaiService aaiService, SystemPropertiesWrapper systemPropertiesWrapper,
+	public BasicReportGenerator(AaiOverTLSClientInterface aaiOverTLSClient, SystemPropertiesWrapper systemPropertiesWrapper,
 	                            ProbeService probeService) {
-		this.aaiService = aaiService;
+		this.aaiOverTLSClient = aaiOverTLSClient;
 		this.systemPropertiesWrapper = systemPropertiesWrapper;
 		this.probeService = probeService;
 	}
@@ -96,7 +95,7 @@ public class BasicReportGenerator implements ReportGenerator {
 	ImmutableMap<String, Object> getFullSubscriberList() {
 		ImmutableMap<String, Object> fullSubscriberList;
 		try {
-			HttpResponse<SubscriberList> fullSubscriberListResponse = aaiService.getFullSubscriberList();
+			HttpResponse<SubscriberList> fullSubscriberListResponse = aaiOverTLSClient.getAllSubscribers();
 			fullSubscriberList = ImmutableMap.<String, Object>builder()
 					.put("status", fullSubscriberListResponse.getStatus())
 					.put("body", fullSubscriberListResponse.getBody())

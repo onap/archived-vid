@@ -68,7 +68,7 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
                 null,
                 executorService
         );
-        return new AaiServiceImpl(aaiClient, null, null, aaiServiceTree, executorService);
+        return new AaiServiceImpl(aaiClient, null, aaiServiceTree, executorService);
     }
 
     @BeforeMethod
