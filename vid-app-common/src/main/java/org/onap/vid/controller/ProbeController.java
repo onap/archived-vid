@@ -34,7 +34,7 @@ import java.util.List;
 @RequestMapping("probe")
 public class ProbeController extends RestrictedBaseController {
 
-    final private ProbeService probeService;
+    private final ProbeService probeService;
 
     @Autowired
     public ProbeController(ProbeService probeService) {
