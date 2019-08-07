@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +32,8 @@ import java.util.List;
  * Created by Oren on 7/5/17.
  */
 public class SubscriberListWithFilterData {
+	
+	public List<SubscriberWithFilter> customer;
 
     public SubscriberListWithFilterData(SubscriberList subscriberList, RoleValidator roleValidator){
         List<Subscriber> subscribers = subscriberList != null ? subscriberList.customer : new ArrayList<>();
@@ -46,5 +49,4 @@ public class SubscriberListWithFilterData {
         }
     }
 
-    public List<SubscriberWithFilter> customer;
 }
