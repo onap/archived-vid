@@ -23,7 +23,6 @@ package org.onap.vid.roles;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.joshworks.restclient.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +33,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.web.support.UserUtils;
+import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
 import org.onap.vid.model.ModelConstants;
 import org.onap.vid.model.Subscriber;
@@ -123,8 +123,8 @@ public class RoleProvider {
 
     private String replaceSubscriberNameToGlobalCustomerID(String subscriberName, String logPrefix) {
         // SubscriberList should be cached by cacheProvider so by calling getFullSubscriberList() method we just gat it from cache
-        HttpResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
-        SubscriberList subscribers = subscribersResponse.getBody();
+        AaiResponse<SubscriberList> subscribersResponse = aaiService.getFullSubscriberList();
+        SubscriberList subscribers = subscribersResponse.getT();
 
         try {
             LOG.debug(EELFLoggerDelegate.debugLogger, logPrefix + "subscribers list size is  " + subscribers.customer.size() + " with the values " + om.writeValueAsString(subscribers.customer));

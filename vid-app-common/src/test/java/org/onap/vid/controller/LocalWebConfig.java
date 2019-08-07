@@ -71,9 +71,9 @@ public class LocalWebConfig {
     }
 
     @Bean
-    public AaiService getAaiService(AaiClientInterface aaiClient, AaiOverTLSClientInterface aaiOverTLSClient,
-        AaiResponseTranslator aaiResponseTranslator, AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
-        return new AaiServiceImpl(aaiClient, aaiOverTLSClient, aaiResponseTranslator, aaiServiceTree, executorService);
+    public AaiService getAaiService(AaiClientInterface aaiClient, AaiResponseTranslator aaiResponseTranslator,
+        AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
+        return new AaiServiceImpl(aaiClient, aaiResponseTranslator, aaiServiceTree, executorService);
     }
 
     @Bean

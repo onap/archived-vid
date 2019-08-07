@@ -33,6 +33,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.portalsdk.core.domain.User;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
+import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.model.errorReport.ReportCreationParameters;
 import org.onap.vid.model.probes.ExternalComponentStatus;
@@ -67,13 +68,8 @@ public class BasicReportGeneratorTest {
 	private ProbeService probeService;
 
 	@Mock
-	private AaiClient aaiClient;
-	@Mock
-	private SchedulerService schedulerService;
-	@Mock
-	private AaiService aaiService;
-	@Mock
-	private RoleProvider roleProvider;
+	AaiOverTLSClientInterface aaiOverTLSClient;
+
 	@Mock
 	private SystemPropertiesWrapper systemPropertiesWrapper;
 
@@ -136,7 +132,7 @@ public class BasicReportGeneratorTest {
 				.put("headers", headers)
 				.build();
 
-		when(aaiService.getFullSubscriberList()).thenReturn(subscriberListResponse);
+		when(aaiOverTLSClient.getAllSubscribers()).thenReturn(subscriberListResponse);
 		when(subscriberListResponse.getStatus()).thenReturn(status);
 		when(subscriberListResponse.getBody()).thenReturn(subscriberList);
 		when(subscriberListResponse.getHeaders()).thenReturn(headers);
@@ -154,7 +150,7 @@ public class BasicReportGeneratorTest {
 		RestClientException expectedException = mock(RestClientException.class);
 		ImmutableMap<String, Object> expectedResult = ImmutableMap.of("exception", expectedException.toString());
 
-		when(aaiService.getFullSubscriberList()).thenThrow(expectedException);
+		when(aaiOverTLSClient.getAllSubscribers()).thenThrow(expectedException);
 
 		//when
 		ImmutableMap<String, Object> actualResult = basicReportGenerator.getFullSubscriberList();

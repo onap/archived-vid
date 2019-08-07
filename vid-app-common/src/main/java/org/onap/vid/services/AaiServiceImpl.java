@@ -25,7 +25,6 @@ import static org.onap.vid.aai.AaiClient.QUERY_FORMAT_RESOURCE;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.joshworks.restclient.http.HttpResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -104,7 +103,6 @@ public class AaiServiceImpl implements AaiService {
     private int indexOfSubscriberName = 6;
 
     private AaiClientInterface aaiClient;
-    private AaiOverTLSClientInterface aaiOverTLSClient;
     private AaiResponseTranslator aaiResponseTranslator;
     private AAIServiceTree aaiServiceTree;
     private ExecutorService executorService;
@@ -115,13 +113,11 @@ public class AaiServiceImpl implements AaiService {
     @Autowired
     public AaiServiceImpl(
         AaiClientInterface aaiClient,
-        AaiOverTLSClientInterface aaiOverTLSClient,
         AaiResponseTranslator aaiResponseTranslator,
         AAIServiceTree aaiServiceTree,
         ExecutorService executorService)
     {
         this.aaiClient = aaiClient;
-        this.aaiOverTLSClient = aaiOverTLSClient;
         this.aaiResponseTranslator = aaiResponseTranslator;
         this.aaiServiceTree = aaiServiceTree;
         this.executorService = executorService;
@@ -241,13 +237,11 @@ public class AaiServiceImpl implements AaiService {
 
     @Override
     public SubscriberFilteredResults getFullSubscriberList(RoleValidator roleValidator) {
-        HttpResponse<SubscriberList> allSubscribers = aaiOverTLSClient.getAllSubscribers();
-        return new SubscriberFilteredResults(
-            roleValidator,
-            allSubscribers.getBody(),
-            allSubscribers.getStatusText(),
-            allSubscribers.getStatus()
-        );
+        AaiResponse<SubscriberList> subscriberResponse = aaiClient.getAllSubscribers();
+
+        return new SubscriberFilteredResults(roleValidator, subscriberResponse.getT(),
+                subscriberResponse.getErrorMessage(),
+                subscriberResponse.getHttpCode());
     }
 
     @Override
@@ -256,8 +250,8 @@ public class AaiServiceImpl implements AaiService {
     }
 
     @Override
-    public HttpResponse<SubscriberList> getFullSubscriberList() {
-        return aaiOverTLSClient.getAllSubscribers();
+    public AaiResponse<SubscriberList> getFullSubscriberList() {
+        return aaiClient.getAllSubscribers();
     }
 
     @Override

@@ -21,24 +21,23 @@
 package org.onap.vid.roles;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import com.google.common.collect.ImmutableMap;
-import io.joshworks.restclient.http.HttpResponse;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.assertj.core.util.Lists;
 import org.mockito.Mock;
+import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.services.AaiService;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RoleProviderTest {
 
@@ -57,8 +56,7 @@ public class RoleProviderTest {
     private HttpServletRequest request;
 
     @Mock
-    private HttpResponse<SubscriberList> subscriberListHttpResponse;
-
+    private AaiResponse<SubscriberList> subscriberListResponse;
 
     private RoleProvider roleProvider;
 
@@ -150,8 +148,8 @@ public class RoleProviderTest {
         subscriber.subscriberName = SAMPLE_SUBSCRIBER;
         subscriber.globalCustomerId = SAMPLE_CUSTOMER_ID;
         SubscriberList subscriberList = new SubscriberList(Lists.list(subscriber));
-        when(aaiService.getFullSubscriberList()).thenReturn(subscriberListHttpResponse);
-        when(subscriberListHttpResponse.getBody()).thenReturn(subscriberList);
+        when(aaiService.getFullSubscriberList()).thenReturn(subscriberListResponse);
+        when(subscriberListResponse.getT()).thenReturn(subscriberList);
     }
 
     private Map<Long, org.onap.portalsdk.core.domain.Role> createRoles() {

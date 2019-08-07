@@ -34,7 +34,6 @@ import static org.onap.vid.model.aaiTree.NodeType.SERVICE_INSTANCE;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.joshworks.restclient.http.HttpResponse;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,7 +53,6 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiGetVnfResponse;
-import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.ServiceInstancesSearchResults;
@@ -118,7 +116,7 @@ public class AaiServiceImplTest {
     private static final String CLOUD_TYPE = "CLOUD_TYPE";
 
     @Mock
-    private HttpResponse<SubscriberList> responseAllSubscribers;
+    private AaiResponse<SubscriberList> responseAllSubscribers;
     @Mock
     private AaiResponse<OperationalEnvironmentList> aaiResponseOpEnvList;
     @Mock
@@ -130,8 +128,7 @@ public class AaiServiceImplTest {
 
     @Mock
     private AaiClientInterface aaiClient;
-    @Mock
-    private AaiOverTLSClientInterface aaiOverTLSClient;
+
     @Mock
     private AaiResponseTranslator aaiResponseTranslator;
     @Mock
@@ -144,11 +141,8 @@ public class AaiServiceImplTest {
 
     @Test
     public void shouldGetFullSubscriberListWithoutValidator() {
-        when(aaiOverTLSClient.getAllSubscribers()).thenReturn(responseAllSubscribers);
-
-        HttpResponse<SubscriberList> actualResponse = aaiService.getFullSubscriberList();
-
-        assertThat(actualResponse).isEqualTo(responseAllSubscribers);
+        when(aaiClient.getAllSubscribers()).thenReturn(responseAllSubscribers);
+        assertThat(aaiService.getFullSubscriberList()).isEqualTo(responseAllSubscribers);
     }
 
     @Test
@@ -156,10 +150,10 @@ public class AaiServiceImplTest {
         Subscriber subscriber = createSubscriber();
         SubscriberList subscriberList = new SubscriberList(Collections.singletonList(subscriber));
 
-        when(aaiOverTLSClient.getAllSubscribers()).thenReturn(responseAllSubscribers);
-        when(responseAllSubscribers.getBody()).thenReturn(subscriberList);
-        when(responseAllSubscribers.getStatusText()).thenReturn(STATUS_TEXT);
-        when(responseAllSubscribers.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(aaiClient.getAllSubscribers()).thenReturn(responseAllSubscribers);
+        when(responseAllSubscribers.getT()).thenReturn(subscriberList);
+        when(responseAllSubscribers.getErrorMessage()).thenReturn(STATUS_TEXT);
+        when(responseAllSubscribers.getHttpCode()).thenReturn(HttpStatus.SC_OK);
         SubscriberFilteredResults expectedSubscribers = new SubscriberFilteredResults(roleValidator, subscriberList,
             STATUS_TEXT, HttpStatus.SC_OK);
 
