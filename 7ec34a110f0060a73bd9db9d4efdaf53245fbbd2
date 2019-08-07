@@ -16,6 +16,24 @@
       "revId": "7ec34a110f0060a73bd9db9d4efdaf53245fbbd2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c84952e_53ab1ad8",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/resume.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5613
+      },
+      "writtenOn": "2019-08-07T09:12:36Z",
+      "side": 1,
+      "message": "I see its OK, it selects by value and not by visible text",
+      "parentUuid": "ba0f5589_630060b0",
+      "revId": "7ec34a110f0060a73bd9db9d4efdaf53245fbbd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
