@@ -33,6 +33,8 @@ class ServiceModelInflator {
                 .plus(inflate(model.networks))
                 .plus(inflate(model.vnfs))
                 .plus(inflate(model.vnfGroups))
+                .plus(inflate(model.vrfs))
+                .plus(inflate(model.collectionResources))
     }
 
     private fun inflate(instances: Map<String, *>): Map<String, Names> {
@@ -45,6 +47,11 @@ class ServiceModelInflator {
                 .plus(inflate(vnf.volumeGroups))
     }
 
+    private fun inflate(modelKey: String, cr: CR): Map<String, Names> {
+        return mapOf(cr.uuid to Names(null, modelKey))
+                .plus(inflate(cr.networksCollection))
+    }
+
     private fun inflate(modelKey: String, instance: Any?): Map<String, Names> {
         return when (instance) {
             is Network -> mapOf(instance.uuid to Names(instance.modelCustomizationName, modelKey))
@@ -52,6 +59,9 @@ class ServiceModelInflator {
             is VolumeGroup -> mapOf(instance.uuid to Names(instance.modelCustomizationName, modelKey))
             is ResourceGroup -> mapOf(instance.uuid to Names(instance.modelCustomizationName, modelKey))
             is VNF -> inflate(modelKey, instance)
+            is CR -> inflate(modelKey, instance)
+            is NetworkCollection -> mapOf(instance.uuid to Names(null, modelKey))
+            is Node -> mapOf(instance.uuid to Names(null, modelKey))
 
             else -> {
                 // sink
