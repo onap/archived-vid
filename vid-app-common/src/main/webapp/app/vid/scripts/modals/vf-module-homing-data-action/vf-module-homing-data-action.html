@@ -58,11 +58,11 @@
                         data-tests-id="lcpRegion" data-ng-model="regionSelection.lcpRegion"
                         data-ng-change="regionSelection.tenant = null; regionSelection.legacyRegion = null;">
                     <option class="lcp-region-placeholder" value="" selected>Select LCP Region</option>
-                    <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionId}}"
+                    <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionOptionId}}"
                             data-ng-if="option.isPermitted && !isFeatureFlagCloudOwner">{{option.cloudRegionId}}
                     </option>
 
-                    <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionId}}"
+                    <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionOptionId}}"
                             data-ng-if="option.isPermitted && isFeatureFlagCloudOwner">
                         {{option.cloudRegionId}} ({{removeVendorFromCloudOwner(option.cloudOwner).toUpperCase()}})
                     </option>
@@ -81,7 +81,7 @@
                         data-tests-id="tenant" data-ng-model="regionSelection.tenant">
                     <option class="tenant-placeholder" value="" selected>Select Tenant Name</option>
                     <option ng-repeat="option in lcpAndTenant" class="tenantOption" value="{{option.tenantId}}"
-                            data-ng-if="option.isPermitted && option.cloudRegionId === regionSelection.lcpRegion">{{option.tenantName}}
+                            data-ng-if="option.isPermitted && option.cloudRegionOptionId === regionSelection.lcpRegion">{{option.tenantName}}
                     </option>
                 </select>
             </div>

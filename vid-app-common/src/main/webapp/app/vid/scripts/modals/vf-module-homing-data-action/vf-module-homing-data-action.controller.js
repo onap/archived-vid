@@ -50,7 +50,7 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
             DataService.setCloudRegionTenantList(response);
             $scope.lcpAndTenant = response;
             $scope.isFeatureFlagCloudOwner = featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST);
-            $scope.lcpRegionList = _.uniqBy(response, 'cloudRegionId');
+            $scope.lcpRegionList = _.uniqBy(response, 'cloudRegionOptionId');
             $scope.vendorInCloudOwnerRegex = /^[^-]*-/;
         });
     }
