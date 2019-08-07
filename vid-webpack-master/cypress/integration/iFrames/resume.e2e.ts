@@ -84,6 +84,7 @@ describe('Resume tests', function () {
             status :  200,
             url : Cypress.config('baseUrl') + "/flags**",
             response : {
+              "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST" : true,
               "FLAG_ADD_MSO_TESTAPI_FIELD": true,
               "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE": false
             }
@@ -103,7 +104,7 @@ describe('Resume tests', function () {
         .getElementByDataTestsId('resumeVFModuleButton-' + vfModuleName).click().then(()=> {
         cy.getElementByDataTestsId('confirmResumeDeleteButton').should('be.visible')
           .getElementByDataTestsId('softDeleteButton').should('not.be.visible')
-          .getElementByDataTestsId('lcpRegion').should('be.visible').select("hvf6")
+          .getElementByDataTestsId('lcpRegion').should('be.visible').select("option-irma-aic-hvf6")
           .getElementByDataTestsId('tenant').should('be.visible').select("bae71557c5bb4d5aac6743a4e5f1d054");
         cy.getElementByDataTestsId('confirmResumeDeleteButton').not('.button--inactive').click().then(()=> {
             cy.wait('@actualResumeCall').then(xhr => {
