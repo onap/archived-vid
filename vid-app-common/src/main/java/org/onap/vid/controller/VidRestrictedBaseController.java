@@ -24,6 +24,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.exceptions.AccessDeniedException;
+import org.onap.vid.exceptions.NotFoundException;
+import org.onap.vid.exceptions.OperationNotAllowedException;
 import org.onap.vid.model.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +36,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import static org.onap.vid.utils.Logging.getMethodCallerName;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 public abstract class VidRestrictedBaseController extends RestrictedBaseController {
 
@@ -57,6 +63,24 @@ public abstract class VidRestrictedBaseController extends RestrictedBaseControll
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value=INTERNAL_SERVER_ERROR)
     public ExceptionResponse exceptionHandler(Exception e) {
+        return ControllersUtils.handleException(e, LOGGER);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(value=NOT_FOUND)
+    public ExceptionResponse notFoundExceptionHandler(Exception e) {
+        return ControllersUtils.handleException(e, LOGGER);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value=FORBIDDEN)
+    public ExceptionResponse accessDeniedExceptionHandler(Exception e) {
+        return ControllersUtils.handleException(e, LOGGER);
+    }
+
+    @ExceptionHandler(OperationNotAllowedException.class)
+    @ResponseStatus(value=METHOD_NOT_ALLOWED)
+    public ExceptionResponse illegalStateExceptionHandler(Exception e) {
         return ControllersUtils.handleException(e, LOGGER);
     }
 }
