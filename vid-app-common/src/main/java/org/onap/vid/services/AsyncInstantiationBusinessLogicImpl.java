@@ -577,7 +577,7 @@ public class AsyncInstantiationBusinessLogicImpl implements
         return counter==0 ? name : name + "_" + String.format("%03d", counter);
     }
 
-    private boolean isNameFreeInAai(String name, ResourceType resourceType) throws ExceptionWithRequestInfo {
+    private boolean isNameFreeInAai(String name, ResourceType resourceType){
         return !aaiClient.isNodeTypeExistsByName(name, resourceType);
     }
 
