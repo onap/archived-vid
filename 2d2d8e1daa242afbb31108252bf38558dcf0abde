@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d2a76c1_00637346",
+        "filename": "epsdk-app-onap/src/main/java/org/onap/portalapp/scheduler/RegistryAdapter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-07T16:09:27Z",
+      "side": 1,
+      "message": "Please rework the message a bit.\nRemove the empty line, and remove the redundant \"Â\". \n\nThanks.",
+      "revId": "2d2d8e1daa242afbb31108252bf38558dcf0abde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
