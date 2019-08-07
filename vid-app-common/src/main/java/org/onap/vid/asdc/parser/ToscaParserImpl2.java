@@ -511,7 +511,9 @@ public class ToscaParserImpl2 {
                 final Object values = property.getValue();
                 final String vfModuleLabel = group.getProperties().getVfModuleLabel();
                 if ( values instanceof List ) {
-                    if ( listContainsAsString((List) values, vfModuleLabel) ) return true;
+                    if ( listContainsAsString((List) values, vfModuleLabel) ) {
+                    	return true;
+                    }
                 } else {
                     return getPropertyValueAsString(property).equals(vfModuleLabel);
                 }
