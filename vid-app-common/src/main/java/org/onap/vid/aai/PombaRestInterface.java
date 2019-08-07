@@ -4,6 +4,7 @@
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
  * Modifications Copyright (C) 2018 - 2019 Nokia. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,12 +36,12 @@ import java.util.UUID;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 public class PombaRestInterface extends AAIRestInterface {
+	
+    private Client client = null;
 
     public PombaRestInterface (HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
         super(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
     }
-
-    private Client client = null;
 
     @Override
     protected void initRestClient()
