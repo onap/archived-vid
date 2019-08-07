@@ -72,7 +72,7 @@ public class HttpsAuthClient {
      *
      * @return the client
      */
-    public Client getClient(HttpClientMode mode) throws GeneralSecurityException, IOException {
+    public Client getClient(HttpClientMode mode){
         ClientConfig config = prepareClientConfig(mode);
 
         try {
@@ -99,7 +99,7 @@ public class HttpsAuthClient {
         return ClientBuilder.newBuilder().withConfig(config).build().register(CustomJacksonJaxBJsonProvider.class);
     }
 
-    private Client getTrustedClient(ClientConfig config, String keystorePath, String keystorePassword, HttpClientMode httpClientMode) throws HttpClientBuilderException {
+    private Client getTrustedClient(ClientConfig config, String keystorePath, String keystorePassword, HttpClientMode httpClientMode){
         return ClientBuilder.newBuilder()
                 .sslContext(sslContextProvider.getSslContext(keystorePath, keystorePassword, httpClientMode))
                 .hostnameVerifier(getHostnameVerifier())
