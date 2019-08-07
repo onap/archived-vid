@@ -20,6 +20,10 @@
 
 package org.onap.vid.properties;
 
+import static org.apache.commons.lang3.StringUtils.startsWith;
+
+import java.io.File;
+import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -29,9 +33,6 @@ import org.togglz.core.manager.FeatureManager;
 import org.togglz.core.manager.FeatureManagerBuilder;
 import org.togglz.core.repository.file.FileBasedStateRepository;
 import org.togglz.spring.listener.TogglzApplicationContextBinderApplicationListener;
-
-import javax.servlet.ServletContext;
-import java.io.File;
 
 @Configuration
 public class FeaturesTogglingConfiguration {
@@ -44,6 +45,7 @@ public class FeaturesTogglingConfiguration {
     public FeatureManager featureManager(ServletContext servletContext, Environment environment) {
         final String defaultFilename = "features.properties";
 
+        String pathToWebinfConf = environment.resolveRequiredPlaceholders("${container.classpath:}/WEB-INF/conf/");
         String filename = environment.getProperty("features.set.filename");
 
         if (StringUtils.isBlank(filename)) {
@@ -53,10 +55,22 @@ public class FeaturesTogglingConfiguration {
         filename = StringUtils.trimToNull(filename);
 
         return new FeatureManagerBuilder()
-                .featureEnum(Features.class)
-                .stateRepository(new FileBasedStateRepository(
-                        new File(filename.startsWith("/")? filename : servletContext.getRealPath("/WEB-INF/conf/" + filename))
-                ))
-                .build();
+            .featureEnum(Features.class)
+            .stateRepository(
+                new FileBasedStateRepository(file(pathToWebinfConf, filename, servletContext))
+            ).build();
+    }
+
+    protected File file(String path, String filename, ServletContext servletContext) {
+        if (filename.startsWith("/")) {
+            // ignore path
+            return new File(filename);
+        } else if (startsWith(path, "file:")) {
+            // use path
+            return new File(path + filename);
+        } else {
+            // load through context
+            return new File(servletContext.getRealPath(path + filename));
+        }
     }
 }
