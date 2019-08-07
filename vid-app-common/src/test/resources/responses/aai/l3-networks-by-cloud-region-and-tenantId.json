@@ -1,0 +1,300 @@
+{
+  "results": [
+    {
+      "l3-network": {
+        "network-id": "CC-l3network_1",
+        "is-bound-to-vpn": false,
+        "resource-version": "1556206041065",
+        "is-provider-network": false,
+        "is-shared-network": false,
+        "is-external-network": false,
+        "relationship-list": {
+          "relationship": [
+            {
+              "related-to": "tenant",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloud-owner-CC-ANAI-528/cloud-region-id-CC-ANAI-528/tenants/tenant/tenant-id-CC-ANAI-528T1",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloud-owner-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloud-region-id-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenant-id-CC-ANAI-528T1"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "tenant.tenant-name",
+                  "property-value": "tenant-name-CC-ANAI-528T1"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "l3-network": {
+        "network-id": "CC-l3network_3",
+        "network-name": "DLLSTXRNDS3",
+        "network-role": "Backup",
+        "is-bound-to-vpn": true,
+        "resource-version": "1556139217403",
+        "is-provider-network": false,
+        "is-shared-network": false,
+        "is-external-network": false,
+        "relationship-list": {
+          "relationship": [
+            {
+              "related-to": "tenant",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloud-owner-CC-ANAI-528/cloud-region-id-CC-ANAI-528/tenants/tenant/tenant-id-CC-ANAI-528T1",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloud-owner-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloud-region-id-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenant-id-CC-ANAI-528T1"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "tenant.tenant-name",
+                  "property-value": "tenant-name-CC-ANAI-528T1"
+                }
+              ]
+            },
+            {
+              "related-to": "tenant",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloud-owner-CC-ANAI-528/cloud-region-id-CC-ANAI-528/tenants/tenant/tenant-id-CC-ANAI-528-T2",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloud-owner-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloud-region-id-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenant-id-CC-ANAI-528-T2"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "tenant.tenant-name",
+                  "property-value": "tenant-name-CC-ANAI-528T2"
+                }
+              ]
+            },
+            {
+              "related-to": "tenant",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloud-owner-CC-ANAI-528/cloud-region-id-CC-ANAI-528/tenants/tenant/tenant-id-CC-ANAI-528T3",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloud-owner-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloud-region-id-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenant-id-CC-ANAI-528T3"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "tenant.tenant-name",
+                  "property-value": "tenant-name-CC-ANAI-528T3"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "l3-network": {
+        "network-id": "l3network2-550-as988q",
+        "network-name": "CHICGIL01VDBE01_SubIntNtwk043",
+        "network-type": "K6VD",
+        "network-role": "X92XE0j",
+        "network-technology": "ZYbPEnCjX6Oqd",
+        "neutron-network-id": "fpFvDje",
+        "is-bound-to-vpn": false,
+        "service-id": "NJnzYaRlz0Test",
+        "network-role-instance": 162,
+        "resource-version": "1556823012443",
+        "orchestration-status": "active",
+        "heat-stack-id": "0GmDeg",
+        "mso-catalog-key": "la5ylhZ5g0D",
+        "contrail-network-fqdn": "EaeexDk47",
+        "model-customization-id": "wgmn6PrJ5",
+        "widget-model-id": "e0yNr",
+        "widget-model-version": "yKpry3J0VVLn",
+        "physical-network-name": "wq6OKbZMTY",
+        "is-provider-network": false,
+        "is-shared-network": false,
+        "is-external-network": false,
+        "selflink": "9xtMu4EPuTi",
+        "operational-status": "W8aj",
+        "is-trunked": true,
+        "relationship-list": {
+          "relationship": [
+            {
+              "related-to": "tenant",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloud-owner-CC-ANAI-528/cloud-region-id-CC-ANAI-528/tenants/tenant/tenant-id-CC-ANAI-528T1",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloud-owner-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloud-region-id-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenant-id-CC-ANAI-528T1"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "tenant.tenant-name",
+                  "property-value": "tenant-name-CC-ANAI-528T1"
+                }
+              ]
+            },
+            {
+              "related-to": "configuration",
+              "relationship-label": "org.onap.relationships.inventory.PartOf",
+              "related-link": "/aai/v17/network/configurations/configuration/configuration2-550-as988q",
+              "relationship-data": [
+                {
+                  "relationship-key": "configuration.configuration-id",
+                  "relationship-value": "configuration2-550-as988q"
+                }
+              ]
+            },
+            {
+              "related-to": "configuration",
+              "relationship-label": "org.onap.relationships.inventory.PartOf",
+              "related-link": "/aai/v17/network/configurations/configuration/configuration1-550-as988q",
+              "relationship-data": [
+                {
+                  "relationship-key": "configuration.configuration-id",
+                  "relationship-value": "configuration1-550-as988q"
+                }
+              ]
+            },
+            {
+              "related-to": "vpn-binding",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/network/vpn-bindings/vpn-binding/VPNbinding3-550-as988q",
+              "relationship-data": [
+                {
+                  "relationship-key": "vpn-binding.vpn-id",
+                  "relationship-value": "VPNbinding3-550-as988q"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "vpn-binding.vpn-name",
+                  "property-value": "SZ2A5L_VPNTest"
+                },
+                {
+                  "property-key": "vpn-binding.vpn-type",
+                  "property-value": "1903e94v"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "l3-network": {
+        "network-id": "CC-l3network_2",
+        "network-name": "DLLSTXRNDS2",
+        "network-role": "Primary",
+        "is-bound-to-vpn": true,
+        "resource-version": "1556136783141",
+        "is-provider-network": true,
+        "is-shared-network": true,
+        "is-external-network": true,
+        "relationship-list": {
+          "relationship": [
+            {
+              "related-to": "tenant",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloud-owner-CC-ANAI-528/cloud-region-id-CC-ANAI-528/tenants/tenant/tenant-id-CC-ANAI-528T1",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloud-owner-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloud-region-id-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenant-id-CC-ANAI-528T1"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "tenant.tenant-name",
+                  "property-value": "tenant-name-CC-ANAI-528T1"
+                }
+              ]
+            },
+            {
+              "related-to": "tenant",
+              "relationship-label": "org.onap.relationships.inventory.Uses",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloud-owner-CC-ANAI-528/cloud-region-id-CC-ANAI-528/tenants/tenant/tenant-id-CC-ANAI-528-T2",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloud-owner-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloud-region-id-CC-ANAI-528"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenant-id-CC-ANAI-528-T2"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "tenant.tenant-name",
+                  "property-value": "tenant-name-CC-ANAI-528T2"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

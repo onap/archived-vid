@@ -160,6 +160,7 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
         aaiServiceWithoutMocks.getVpnListByVpnType("aaa");
     }
 
+    @Test
     public void getNetworkListTest_successResponse() {
         String rawResponse = TestUtils.readFileAsString("/responses/aai/l3-networks-by-cloud-region-and-tenantId.json");
         final ResponseWithRequestInfo responseWithRequestInfo = mockedResponseWithRequestInfo(Response.Status.OK,
