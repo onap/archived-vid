@@ -4,12 +4,7 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
       
-	   <definition extends="ebz_template" name="viewlog">   
-       <put-attribute name="body" value="/WEB-INF/jsp/viewlog.jsp"></put-attribute>
-       <put-attribute name="viewName" value="viewlog"></put-attribute>  
-    </definition>   
-    
-    <definition extends="ebz_template" name="serviceModels">   
+    <definition extends="ebz_template" name="serviceModels">
        <put-attribute name="body" value="/WEB-INF/jsp/serviceModels.jsp"></put-attribute>
        <put-attribute name="viewName" value="serviceModels"></put-attribute>  
     </definition>  

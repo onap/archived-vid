@@ -60,11 +60,6 @@
 		<put-attribute name="viewName" value="menu"></put-attribute>
 	</definition>
 
-    <definition extends="ebz_template" name="viewlog">   
-       <put-attribute name="body" value="/WEB-INF/jsp/viewlog.jsp"></put-attribute>
-       <put-attribute name="viewName" value="viewlog"></put-attribute>  
-    </definition>  
-    
     <definition extends="ebz_template" name="serviceModels">
        <put-attribute name="body" value="/WEB-INF/jsp/serviceModels.jsp"></put-attribute>
        <put-attribute name="viewName" value="serviceModels"></put-attribute>
