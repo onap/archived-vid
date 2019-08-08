@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e5c39f0d_542d6454",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/ExceptionResponse.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-08T11:54:17Z",
+      "side": 1,
+      "message": "Please add a clear line before.",
+      "revId": "86b9aa8cc0fa76e07f61ed59a6b4d2d42f905806",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
