@@ -34,7 +34,7 @@ public class SSLContextProvider {
 
     private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SSLContextProvider.class);
 
-    public SSLContext getSslContext(String keystorePath, String keystorePassword, HttpClientMode httpClientMode) throws HttpClientBuilderException {
+    public SSLContext getSslContext(String keystorePath, String keystorePassword, HttpClientMode httpClientMode){
         try {
             final SSLContext ctx = SSLContext.getInstance("TLSv1.2");
             KeyManager[] keyManagers = getKeyManagerFactory(keystorePath, keystorePassword, httpClientMode);
