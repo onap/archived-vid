@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19de41e2_b04a7e93",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/VnfResult.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-08T11:48:59Z",
+      "side": 1,
+      "message": "I\u0027m not sure this change helps; it\u0027s just an `equals` auto-generated code.\nWhat do you think?",
+      "revId": "304bf65f8bdcbddc22f9731b89d898e6a3da1f14",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
