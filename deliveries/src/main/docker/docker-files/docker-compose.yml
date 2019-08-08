@@ -16,6 +16,8 @@ services:
             ASDC_CLIENT_REST_PORT: 1080
             VID_AAI_URL: http://vid-simulator:1080
             VID_MSO_SERVER_URL: http://vid-simulator:1080
+        volumes:
+            - ../../../../../epsdk-app-onap/src/main/webapp/WEB-INF/cert:/opt/app/vid/etc
 
     vid-mariadb:
         image: mariadb:10
