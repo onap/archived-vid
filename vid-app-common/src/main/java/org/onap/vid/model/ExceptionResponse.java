@@ -29,14 +29,14 @@ import static com.att.eelf.configuration.Configuration.MDC_KEY_REQUEST_ID;
  */
 public class ExceptionResponse {
 
-	public ExceptionResponse() {
-	}
-
-	/** The exception. */
+    /** The exception. */
 	private String exception;
 	
 	/** The message. */
 	private String message;
+	public ExceptionResponse() {
+	}
+
 
 	public ExceptionResponse(String exception, String message) {
 		this.exception = exception;
