@@ -14,7 +14,9 @@ import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
@@ -79,7 +81,9 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + A_LA_CARTE_INSTANTIATION_TYPE_UUID), String.class);
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
         String aLaCarteInstantiationTypeExpectedResponse = loadResourceAsString(A_LA_CARTE_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
-        assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(turnOffInstantiationUI(aLaCarteInstantiationTypeExpectedResponse))));
+        assertThat(response.getBody(), jsonEquals(aLaCarteInstantiationTypeExpectedResponse)
+            .when(IGNORING_ARRAY_ORDER)
+            .whenIgnoringPaths("service.vidNotions.instantiationUI"));
     }
 
 
