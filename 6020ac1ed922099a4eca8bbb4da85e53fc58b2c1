@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b79607c_18cf4bda",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/beans/tosca/ToscaMeta.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-08-08T09:42:56Z",
+      "side": 1,
+      "message": "please follow google code style guidelines ,\nhttps://wiki.onap.org/display/DW/Java+code+style\n f.e.\n\nif(entry.length !\u003d 2){\nthrow new AsdcCatalogException;\n}",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 5
+      },
+      "revId": "6020ac1ed922099a4eca8bbb4da85e53fc58b2c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
