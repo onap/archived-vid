@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +32,9 @@ import java.util.List;
  * The Class Input.
  */
 public class Input {
+	
+	/** The entry schema. */
+	private Input entry_schema;
 
 	public Input(org.onap.sdc.toscaparser.api.parameters.Input input, List<Property> properties){
 		this.type = input.getType();
@@ -48,9 +52,6 @@ public class Input {
 	
 	/** The default. */
 	private Object _default;
-	
-	/** The entry schema. */
-	private Input entry_schema;
 
 	private InputProperties inputProperties;
 
