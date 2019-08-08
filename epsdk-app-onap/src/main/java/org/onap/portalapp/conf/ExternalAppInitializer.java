@@ -37,10 +37,11 @@
  */
 package org.onap.portalapp.conf;
 
+import java.util.TimeZone;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import org.onap.portalsdk.core.conf.AppInitializer;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-
-import java.util.TimeZone;
 
 public class ExternalAppInitializer extends AppInitializer {
 
@@ -52,6 +53,12 @@ public class ExternalAppInitializer extends AppInitializer {
 		// Show something on stdout to indicate the app is starting.
 		LOG.info("ExternalAppInitializer: servlet configuration class is " + appConfigClass.getName());
 		return new Class[] { appConfigClass };
+	}
+
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		super.onStartup(servletContext);
+		setDefaultTimeZoneToUTC();
 	}
 
 	//set time zone to UTC so Dates would be written to DB in UTC timezone
