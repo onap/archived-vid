@@ -38,7 +38,7 @@ public class Group {
 	private ToscaMetadata metadata;
 	
 	/** The vf module type. */
-	private String vf_module_type;
+	private String vfModuleType;
 	
 	/** The properties. */
 	private Map<String, Object> properties;
@@ -103,7 +103,7 @@ public class Group {
 	 * @return the vf module type
 	 */
 	public String getvf_module_type() {
-		return vf_module_type;
+		return vfModuleType;
 	}
 	
 	/**
@@ -111,8 +111,8 @@ public class Group {
 	 *
 	 * @param vf_module_type the new vf module type
 	 */
-	public void setvf_module_type(String vf_module_type) {
-		this.vf_module_type = vf_module_type;
+	public void setvf_module_type(String vfModuleType) {
+		this.vfModuleType = vfModuleType;
 	}
 	
 	/**
