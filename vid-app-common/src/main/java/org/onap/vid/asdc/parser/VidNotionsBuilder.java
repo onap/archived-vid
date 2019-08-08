@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +98,10 @@ public class VidNotionsBuilder {
         }
         if (featureManager.isActive(Features.FLAG_5G_IN_NEW_INSTANTIATION_UI)) {
             VidNotions.InstantiationUI instantiationUI = determine5GInstantiationUI(csarHelper);
-            if ( instantiationUI != null ) return instantiationUI;
+            if ( instantiationUI != null )
+            {
+            	 return instantiationUI;
+            }
         }
         if (featureManager.isActive(Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI) && isTransportService(csarHelper)){
             return VidNotions.InstantiationUI.TRANSPORT_SERVICE;
