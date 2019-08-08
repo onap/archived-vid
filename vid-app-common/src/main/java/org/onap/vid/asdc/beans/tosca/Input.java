@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,16 +32,11 @@ import java.util.List;
  * The Class Input.
  */
 public class Input {
-
-	public Input(org.onap.sdc.toscaparser.api.parameters.Input input, List<Property> properties){
-		this.type = input.getType();
-		this.description = input.getDescription();
-		this._default = input.getDefault();
-		this.inputProperties = new InputProperties(properties);
-		this.fromInputName = input.getName();
-	}
-
-	/** The type. */
+	
+	/** The entry schema. */
+	private Input entry_schema;
+  
+        /** The type. */
 	private String type;
 	
 	/** The description. */
@@ -48,9 +44,6 @@ public class Input {
 	
 	/** The default. */
 	private Object _default;
-	
-	/** The entry schema. */
-	private Input entry_schema;
 
 	private InputProperties inputProperties;
 
@@ -67,6 +60,14 @@ public class Input {
 	private String templateUUID;
 	private String templateInvariantUUID;
 	private String templateCustomizationUUID;
+
+	public Input(org.onap.sdc.toscaparser.api.parameters.Input input, List<Property> properties){
+		this.type = input.getType();
+		this.description = input.getDescription();
+		this._default = input.getDefault();
+		this.inputProperties = new InputProperties(properties);
+		this.fromInputName = input.getName();
+	}
 
 	/**
 	 * Instantiates a new input.
