@@ -304,9 +304,12 @@ public class Artifact {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
-		if (!(o instanceof Artifact)) return false;
-		
+		if (o == this) {
+			return true;
+		}	
+		if (!(o instanceof Artifact)) {
+			return false;
+		}
 		final Artifact artifact = (Artifact) o;
 		
 		return (artifact.getArtifactUUID().equals(getArtifactUUID()));
