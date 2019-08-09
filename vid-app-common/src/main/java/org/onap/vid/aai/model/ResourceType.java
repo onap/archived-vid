@@ -37,7 +37,7 @@ public enum ResourceType {
     INSTANCE_GROUP("instance-groups", "instance-group-name"),
     VOLUME_GROUP("volume-groups", "volume-group-name");
 
-    private static Map<String, ResourceType> AAI_FORMAT_MAP = Stream
+    private static Map<String, ResourceType> AaiFormatMap = Stream
             .of(ResourceType.values())
             .collect(Collectors.toMap(s -> s.aaiFormat, Function.identity()));
 
@@ -60,7 +60,7 @@ public enum ResourceType {
     @JsonCreator
     public static ResourceType fromString(String string) {
         return Optional
-                .ofNullable(AAI_FORMAT_MAP.get(string))
+                .ofNullable(AaiFormatMap.get(string))
                 .orElseThrow(() -> new IllegalArgumentException(string));
     }
 }
