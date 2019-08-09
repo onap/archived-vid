@@ -37,7 +37,7 @@ public enum ResourceType {
     INSTANCE_GROUP("instance-groups", "instance-group-name"),
     VOLUME_GROUP("volume-groups", "volume-group-name");
 
-    private static Map<String, ResourceType> AAI_FORMAT_MAP = Stream
+    private static final Map<String, ResourceType> AAI_FORMAT_MAP = Stream
             .of(ResourceType.values())
             .collect(Collectors.toMap(s -> s.aaiFormat, Function.identity()));
 
