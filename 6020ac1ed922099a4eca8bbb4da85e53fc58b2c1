@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3b91b25_16fae030",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T08:16:17Z",
+      "side": 0,
+      "message": "Please default to ONAP coding conventions; here:\n1) `if (...) {` on same line.\n2) spaces instead of tabs.",
+      "revId": "6020ac1ed922099a4eca8bbb4da85e53fc58b2c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
