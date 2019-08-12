@@ -25,8 +25,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <epsdk.version>2.5.0</epsdk.version>
-        <jackson.version>2.9.8</jackson.version>
-        <springframework.version>5.1.6.RELEASE</springframework.version>
+        <jackson.version>2.9.9</jackson.version>
+        <springframework.version>5.1.9.RELEASE</springframework.version>
         <!-- epsdk-core is importing this class, which is only on spring-orm 4 but not in orm 5:
          org.springframework.orm.hibernate4.HibernateTransactionManager
          so following orm.version lets epsdk-core find it -->
@@ -370,7 +370,7 @@
         <dependency>
             <groupId>io.searchbox</groupId>
             <artifactId>jest</artifactId>
-            <version>2.0.0</version>
+            <version>6.3.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -381,7 +381,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -391,17 +391,17 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20160212</version>
+            <version>20190722</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>3.5.5</version>
+            <version>3.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.2.1</version>
+            <version>2.3.1</version>
             <exclusions>
                 <!-- exclude 0.9.1.1 to avoid dupe of com.mchange:c3p0:0.9.2.1 -->
                 <exclusion>
@@ -414,7 +414,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.12</version>
+            <version>1.7.27</version>
         </dependency>
 
         <!-- springframework to override epsdk-app-common's and epsdk-core's versions -->
@@ -468,7 +468,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.2.3</version>
+            <version>2.3.1</version>
         </dependency>
 
     </dependencies>
