@@ -49,7 +49,8 @@ public class MsoUtil {
         if (httpResponse.getRawBody() != null) {
             try {
                 T body = httpResponse.getBody();
-                String entityStr = body instanceof String ? (String) body : JACKSON_OBJECT_MAPPER.writeValueAsString(httpResponse.getBody());
+                String entityStr = (body instanceof String || body==null) ? (String) body :
+                    JACKSON_OBJECT_MAPPER.writeValueAsString(httpResponse.getBody());
                 msoResponseWrapper.setEntity(entityStr);
             } catch(JsonProcessingException e) {
                 ExceptionUtils.rethrow(e);
