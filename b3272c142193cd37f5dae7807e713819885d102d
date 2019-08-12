@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce67e502_0f689333",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-08-12T13:44:02Z",
+      "side": 0,
+      "message": "it\u0027s better later than never :-)",
+      "revId": "b3272c142193cd37f5dae7807e713819885d102d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
