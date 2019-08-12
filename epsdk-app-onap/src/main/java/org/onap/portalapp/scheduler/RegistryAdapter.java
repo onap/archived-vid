@@ -3,6 +3,7 @@
  * ONAP Portal SDK
  * ===================================================================
  * Copyright © 2017 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ===================================================================
  *
  * Unless otherwise specified, all software contained herein is licensed
@@ -74,8 +75,7 @@ public class RegistryAdapter {
 	public List<Trigger> addCoreTriggers() {
 		// On startup of the application after crash recovery, invoke workflow
 		// schedule trigger
-		List<Trigger> triggers = getWorkflowScheduleService().triggerWorkflowScheduling();
-		return triggers;
+		return getWorkflowScheduleService().triggerWorkflowScheduling();
 	}
 
 	public void setSchedulerBean(final SchedulerFactoryBean schedulerBean) {
