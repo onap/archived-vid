@@ -119,8 +119,7 @@
                 });
 
             return deferred.promise;
-        };
-		
+        };		
 		this.postChangeManagementNow = function (requestData, vnfName) {
 			var url = COMPONENT.CHANGE_MANAGEMENT_OPERATION_NO_SCHEDULER.replace('@vnfName', vnfName);
             return $http.post(url, requestData)
