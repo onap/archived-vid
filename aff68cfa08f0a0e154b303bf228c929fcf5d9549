@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8ff46cc8_59f8138a",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/asdc.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T17:06:57Z",
+      "side": 1,
+      "message": "i think not, but don\u0027t mind.",
+      "parentUuid": "3db53806_f4f765d7",
+      "revId": "aff68cfa08f0a0e154b303bf228c929fcf5d9549",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "805421ef_14c53a37",
         "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2019-08-12T13:44:02Z",
       "side": 1,
       "message": "shall we have such property that started with ecomp ?",
+      "revId": "aff68cfa08f0a0e154b303bf228c929fcf5d9549",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8072f5c0_a1a11af8",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T17:06:57Z",
+      "side": 1,
+      "message": "it\u0027s portal concern, unfortunately. cannot fix.",
+      "parentUuid": "805421ef_14c53a37",
       "revId": "aff68cfa08f0a0e154b303bf228c929fcf5d9549",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "94192fa3_190a0ca5",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T17:06:57Z",
+      "side": 1,
+      "message": "this is the default if nothing defined. prefer explicitly.\nSee DEFAULT_ASDC_MODEL_NAMESPACE in org.onap.vid.model.ModelConstants.",
+      "parentUuid": "65336def_1ba9463a",
+      "revId": "aff68cfa08f0a0e154b303bf228c929fcf5d9549",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fd7c01e1_ae84a392",
         "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/SimulatorController.java",
         "patchSetId": 2
@@ -64,6 +118,24 @@
       "writtenOn": "2019-08-12T13:44:02Z",
       "side": 1,
       "message": "maybe we need to take the value from some configuration file / or environment variable.\nBut we can do it in another change request.",
+      "revId": "aff68cfa08f0a0e154b303bf228c929fcf5d9549",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ac7a15c_619a59ca",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/SimulatorController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T17:06:57Z",
+      "side": 1,
+      "message": "it just need to be; higher is no harm IMO.",
+      "parentUuid": "fd7c01e1_ae84a392",
       "revId": "aff68cfa08f0a0e154b303bf228c929fcf5d9549",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true

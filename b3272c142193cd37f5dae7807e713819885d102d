@@ -16,6 +16,24 @@
       "revId": "b3272c142193cd37f5dae7807e713819885d102d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22e0743d_c45aa504",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T17:06:57Z",
+      "side": 0,
+      "message": "ha ha",
+      "parentUuid": "ce67e502_0f689333",
+      "revId": "b3272c142193cd37f5dae7807e713819885d102d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
