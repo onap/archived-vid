@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bbaa11ea_984972f7",
+        "filename": "deliveries/src/main/docker/docker-files/docker-compose.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T05:43:58Z",
+      "side": 1,
+      "message": "Will `WEB-INF/cert` contain both the \"packaged\" certificates and the mounted certificates? What if certificates are *not* provided?",
+      "revId": "7a3e2594842990fa4450aead1f7b1d87ff9bb20e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
