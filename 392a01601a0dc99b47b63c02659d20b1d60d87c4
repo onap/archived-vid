@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "93682755_6e54e366",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/ResourceType.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-12T07:55:51Z",
+      "side": 0,
+      "message": "Actually, I think the CAPS is ok, but field should be `final`:\n\nprivate static final Map\u003cString, ResourceType\u003e AAI_FORMAT_MAP \u003d ...",
+      "revId": "392a01601a0dc99b47b63c02659d20b1d60d87c4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
