@@ -25,7 +25,7 @@
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <epsdk.version>2.4.0</epsdk.version>
+        <epsdk.version>2.5.0</epsdk.version>
         <springframework.version>5.1.6.RELEASE</springframework.version>
         <springframework.orm.version>4.3.22.RELEASE</springframework.orm.version>
         <!-- epsdk-core is importing this class, which is only on spring-orm 4 but not in orm 5:
@@ -837,6 +837,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-proxy</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
