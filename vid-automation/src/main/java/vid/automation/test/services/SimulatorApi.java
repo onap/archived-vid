@@ -130,7 +130,7 @@ public class SimulatorApi {
         presets.forEach(
                 preset-> {
                     try {registerToSimulatorAndAssertSuccess(preset.getClass().getCanonicalName(), preset.generateScenario());}
-                    catch (RuntimeException e) {
+                    catch (Throwable e) {
                         throw new RuntimeException("Failed to register preset "+preset.getClass().getName(), e);
                     }
                 }
