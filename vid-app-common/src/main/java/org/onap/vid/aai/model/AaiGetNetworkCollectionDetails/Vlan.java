@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +27,16 @@ import org.onap.vid.aai.model.interfaces.AaiModelWithRelationships;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Vlan implements AaiModelWithRelationships {
+	
+     @JsonProperty("vlan-interface")
+	 private final String vlanInterface;
 
+	 @JsonProperty("vlan-id-inner")
+	 private final String vlanIdInner;
+
+	 @JsonProperty("relationship-list")
+	 public final RelationshipList relationshipList;
+	
     public Vlan(
             @JsonProperty("vlan-interface") String vlanInterface,
             @JsonProperty("vlan-id-inner") String vlanIdInner,
@@ -36,14 +46,7 @@ public class Vlan implements AaiModelWithRelationships {
         this.relationshipList = relationshipList;
     }
 
-    @JsonProperty("vlan-interface")
-    private final String vlanInterface;
-
-    @JsonProperty("vlan-id-inner")
-    private final String vlanIdInner;
-
-    @JsonProperty("relationship-list")
-    public final RelationshipList relationshipList;
+    
 
     public String getVlanInterface() {
         return vlanInterface;
