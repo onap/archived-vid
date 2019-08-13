@@ -531,7 +531,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                         $scope.isPermitted = first.isPermitted;
                         deferred.resolve(first.isPermitted);
                     } else {
-                        deferred.reject("some error while resolveIfIsPermitted")
+                        deferred.reject("some error while resolveIfIsPermitted");
                     }
                 });
 
