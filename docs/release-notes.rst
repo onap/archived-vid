@@ -3,7 +3,7 @@
 VID Release Notes
 =================
 
-Version: 5.0.0
+Version: El-Alto (5.0.x)
 --------------
 
 **Resolved Issues**
