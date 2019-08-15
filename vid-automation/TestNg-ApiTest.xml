@@ -4,6 +4,7 @@
 
     <listeners>
         <listener class-name="vid.automation.test.infra.FeatureTogglingTestngTransformer" />
+        <listener class-name="vid.automation.test.infra.SkipTestUntilTestngTransformer"/>
     </listeners>
 
     <test name="test">
