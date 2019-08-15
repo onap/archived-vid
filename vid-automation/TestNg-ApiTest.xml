@@ -3,8 +3,7 @@
 <suite verbose="1" name="VID API Tests" annotations="JDK">
 
     <listeners>
-        <listener class-name="vid.automation.test.infra.FeatureTogglingTestngTransformer" />
-        <listener class-name="vid.automation.test.infra.SkipTestUntilTestngTransformer"/>
+        <listener class-name="vid.automation.test.infra.SkipTestsTestngTransformer" />
     </listeners>
 
     <test name="test">
