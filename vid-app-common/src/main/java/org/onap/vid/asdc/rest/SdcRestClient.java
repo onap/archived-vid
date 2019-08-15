@@ -20,29 +20,6 @@
 
 package org.onap.vid.asdc.rest;
 
-import com.att.eelf.configuration.EELFLogger;
-import com.google.common.collect.ImmutableMap;
-import io.joshworks.restclient.http.HttpResponse;
-import io.vavr.control.Try;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.asdc.AsdcClient;
-import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.client.SyncRestClientInterface;
-import org.onap.vid.model.ModelConstants;
-import org.onap.vid.properties.VidProperties;
-import org.onap.vid.utils.Logging;
-import org.springframework.http.HttpMethod;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
-
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM;
 import static org.onap.portalsdk.core.util.SystemProperties.APP_DISPLAY_NAME;
@@ -53,6 +30,30 @@ import static org.onap.vid.client.SyncRestClientInterface.HEADERS.CONTENT_TYPE;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 import static org.onap.vid.utils.Logging.logRequest;
+
+import com.att.eelf.configuration.EELFLogger;
+import com.google.common.collect.ImmutableMap;
+import io.joshworks.restclient.http.HttpResponse;
+import io.vavr.control.Try;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
+import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
+import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.asdc.AsdcClient;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.client.SyncRestClientInterface;
+import org.onap.vid.model.ModelConstants;
+import org.onap.vid.properties.VidProperties;
+import org.onap.vid.utils.Logging;
+import org.springframework.http.HttpMethod;
 
 public class SdcRestClient implements AsdcClient {
 
@@ -86,15 +87,26 @@ public class SdcRestClient implements AsdcClient {
 
     @Override
     public Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException {
-        String finalUrl = String.format(TOSCA_MODEL_URL_TEMPLATE, baseUrl, path, uuid);
-        logRequest(LOGGER, HttpMethod.GET, finalUrl);
-
         InputStream inputStream = Try
-                .of(() -> syncRestClient.getStream(finalUrl, prepareHeaders(auth, APPLICATION_OCTET_STREAM), Collections.emptyMap()))
+                .of(() -> getServiceInputStream(uuid, false))
                 .getOrElseThrow(AsdcCatalogException::new)
+                .getResponse()
                 .getBody();
 
         return createTmpFile(inputStream);
+    }
+
+    @Override
+    public HttpResponseWithRequestInfo<InputStream> getServiceInputStream(UUID serviceUuid, boolean warpException) {
+        String finalUrl = String.format(TOSCA_MODEL_URL_TEMPLATE, baseUrl, path, serviceUuid);
+        logRequest(LOGGER, HttpMethod.GET, finalUrl);
+        try {
+            HttpResponse<InputStream> httpResponse = syncRestClient.getStream(finalUrl, prepareHeaders(auth, APPLICATION_OCTET_STREAM), Collections.emptyMap());
+            return new HttpResponseWithRequestInfo<>(httpResponse, finalUrl, HttpMethod.GET);
+        }
+        catch (RuntimeException exception) {
+            throw warpException ? new ExceptionWithRequestInfo(HttpMethod.GET, finalUrl, exception) : exception;
+        }
     }
 
 
