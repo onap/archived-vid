@@ -9,6 +9,7 @@ import org.onap.vid.api.BaseApiTest;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import vid.automation.test.infra.SkipTestUntil;
 import vid.automation.test.services.SimulatorApi;
 
 import java.net.URI;
@@ -37,6 +38,7 @@ public class LoggerFormatTest extends BaseApiTest {
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
     }
 
+    @SkipTestUntil("2019-08-22")
     @Test
     public void validateAuditLogsFormat() {
         validateLogsFormat("audit");
@@ -47,6 +49,7 @@ public class LoggerFormatTest extends BaseApiTest {
         validateLogsFormat("error");
     }
 
+    @SkipTestUntil("2019-08-22")
     @Test
     public void validateMetricsLogsFormat() {
         validateLogsFormat("metrics", "metric");
