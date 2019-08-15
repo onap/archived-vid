@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Path;
@@ -34,6 +35,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
@@ -162,6 +164,10 @@ public class LocalAsdcClient implements AsdcClient {
         return HttpResponse.fallback("");
     }
 
+    @Override
+    public HttpResponseWithRequestInfo<InputStream> getServiceInputStream(UUID serviceUuid, boolean warpException) {
+        return null;
+    }
 
     @Override
     public String getBaseUrl(){

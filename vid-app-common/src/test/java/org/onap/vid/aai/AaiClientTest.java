@@ -56,6 +56,7 @@ import java.net.URI;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
