@@ -21,27 +21,44 @@
 package org.onap.vid.services;
 
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsSame.sameInstance;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.AssertJUnit.assertTrue;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.ws.rs.ProcessingException;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.tuple.Triple;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
@@ -50,7 +67,10 @@ import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.properties.Features;
+import org.onap.vid.testUtils.TestUtils;
+import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
 
@@ -151,10 +171,7 @@ public class VidServiceImplTest {
 
     @Test
     public void shouldCheckConnectionToSdc() {
-        when(asdcClientMock.checkSDCConnectivity()).thenReturn(httpResponse);
-        when(httpResponse.isSuccessful()).thenReturn(true);
-        when(httpResponse.getBody()).thenReturn("sampleBody");
-
+        mockGoodSdcConnectivityResponse();
 
         ExternalComponentStatus externalComponentStatus = vidService.probeComponent();
 
@@ -162,6 +179,12 @@ public class VidServiceImplTest {
         assertThat(externalComponentStatus.getComponent(), is(ExternalComponentStatus.Component.SDC));
         HttpRequestMetadata metadata = (HttpRequestMetadata) externalComponentStatus.getMetadata();
         assertThat(metadata.getRawData(), is("sampleBody"));
+    }
+
+    private void mockGoodSdcConnectivityResponse() {
+        when(asdcClientMock.checkSDCConnectivity()).thenReturn(httpResponse);
+        when(httpResponse.isSuccessful()).thenReturn(true);
+        when(httpResponse.getBody()).thenReturn("sampleBody");
     }
 
     @Test
@@ -173,5 +196,129 @@ public class VidServiceImplTest {
         assertThat(externalComponentStatus.isAvailable(), is(false));
         assertThat(externalComponentStatus.getMetadata().getDescription(),containsString("not working"));
     }
+
+    @Test
+    public void shouldNotProbeBySdcConnectionIfProbeUuidConfigured() throws Exception {
+        TestUtils.testWithSystemProperty(
+            "probe.sdc.model.uuid",
+            UUID.randomUUID().toString(),
+            ()->{
+                mockGoodSdcConnectivityResponse(); //no mocking for probeSdcByGettingModel
+                ExternalComponentStatus externalComponentStatus = vidService.probeComponent();
+                assertThat(externalComponentStatus.isAvailable(), is(false));
+            }
+        );
+    }
+
+
+    @Test
+    public void givenProbeUUID_whenAsdcClientReturnNormal_thenProbeComponentReturnAvailableAnswer() throws Exception {
+
+        final UUID uuidForProbe = UUID.randomUUID();
+        final HttpResponse<InputStream> mockResponse = mock(HttpResponse.class);
+        responseSetupper(mockResponse, 200, new ByteArrayInputStream(RandomUtils.nextBytes(66000)));
+        when(asdcClientMock.getServiceInputStream(eq(uuidForProbe), eq(true))).thenReturn(
+            new HttpResponseWithRequestInfo(mockResponse, "my pretty url", HttpMethod.GET)
+        );
+
+        TestUtils.testWithSystemProperty(
+            "probe.sdc.model.uuid",
+            uuidForProbe.toString(),
+            ()-> {
+
+                ExternalComponentStatus sdcComponentStatus = vidService.probeComponent();
+                assertTrue(sdcComponentStatus.isAvailable());
+                assertThat(sdcComponentStatus.getComponent(), is(ExternalComponentStatus.Component.SDC));
+                assertThat(sdcComponentStatus.getMetadata().getDescription(), equalTo("OK"));
+                assertThat(sdcComponentStatus.getMetadata(), instanceOf(HttpRequestMetadata.class));
+
+                HttpRequestMetadata componentStatusMetadata = ((HttpRequestMetadata) sdcComponentStatus.getMetadata());
+                assertThat(componentStatusMetadata.getHttpMethod(), equalTo(HttpMethod.GET));
+                assertThat(componentStatusMetadata.getHttpCode(), equalTo(200));
+                assertThat(componentStatusMetadata.getUrl(), equalTo("my pretty url"));
+            }
+        );
+    }
+
+    private static void responseSetupper(HttpResponse<InputStream> r, Integer httpCode, InputStream body) {
+        when(r.getStatus()).thenReturn(httpCode);
+        when(r.getRawBody()).thenReturn(body);
+    }
+
+    @DataProvider
+    public static Object[][] executionResults() {
+        final BiConsumer<AsdcClient, HttpResponse<InputStream>> defaultClientSetup = (c, r) ->
+            when(c.getServiceInputStream(any(), eq(true))).thenReturn(new HttpResponseWithRequestInfo(r, "foo url", HttpMethod.GET));
+
+        final ByteArrayInputStream defaultResponseBody = new ByteArrayInputStream(RandomUtils.nextBytes(200));
+
+        return Stream.<Triple<HttpRequestMetadata, BiConsumer<AsdcClient, HttpResponse<InputStream>>, Consumer<HttpResponse<InputStream>>>>of(
+
+            Triple.of(
+                new HttpRequestMetadata(null, 200, null, null, "IllegalStateException", 0),
+                defaultClientSetup,
+                r -> {
+                    when(r.getStatus()).thenReturn(200);
+                    when(r.getRawBody()).thenThrow(new IllegalStateException("good news for people who love bad news"));
+                }
+            ),
+
+            Triple.of(
+                new HttpRequestMetadata(null, 200, null, null, "error reading model", 0),
+                defaultClientSetup,
+                r -> responseSetupper(r, 200, new ByteArrayInputStream(new byte[0]))
+            ),
+//
+            Triple.of(
+                new HttpRequestMetadata(null, 200, null, null, "NullPointerException", 0),
+                defaultClientSetup,
+                r -> responseSetupper(r, 200, null)
+            ),
+//
+            Triple.of(
+                new HttpRequestMetadata(null, 0, "bar url", null, "java.net.ConnectException: Connection refused", 0),
+                (c, r) ->
+                    when(c.getServiceInputStream(any(), eq(true))).thenThrow(new ExceptionWithRequestInfo(HttpMethod.GET, "bar url",
+                        new ProcessingException("java.net.ConnectException: Connection refused: connect"))),
+                r -> responseSetupper(r, 200, defaultResponseBody)
+            ),
+
+            Triple.of(
+                new HttpRequestMetadata(null, 500, null, null, "error while retrieving model", 0),
+                defaultClientSetup,
+                r -> responseSetupper(r, 500, defaultResponseBody)
+            ),
+
+            Triple.of(
+                new HttpRequestMetadata(null, 404, null, null, "updating vid probe configuration", 0),
+                defaultClientSetup,
+                r -> responseSetupper(r, 404, defaultResponseBody)
+            )
+
+        ).map(t -> ImmutableList.of(t.getLeft(), t.getMiddle(), t.getRight()).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
+    }
+
+    @Test(dataProvider = "executionResults")
+    public void whenClientReturnWithError_thenProbeSdcByGettingModelDescribes(HttpRequestMetadata expectedMetadata,
+        BiConsumer<AsdcClient, HttpResponse<InputStream>> clientSetup,
+        Consumer<HttpResponse<InputStream>> responseSetup) {
+
+        final HttpResponse<InputStream> mockResponse = mock(HttpResponse.class);
+        clientSetup.accept(asdcClientMock, mockResponse);
+        responseSetup.accept(mockResponse);
+
+        ExternalComponentStatus sdcComponentStatus = vidService.probeSdcByGettingModel(UUID.randomUUID());
+        assertThat(sdcComponentStatus.getComponent(), is(ExternalComponentStatus.Component.SDC));
+        assertThat(sdcComponentStatus.getMetadata(), instanceOf(HttpRequestMetadata.class));
+
+        HttpRequestMetadata componentStatusMetadata = ((HttpRequestMetadata) sdcComponentStatus.getMetadata());
+        assertThat(componentStatusMetadata.getDescription(), containsString(defaultIfNull(expectedMetadata.getDescription(), "OK")));
+        assertThat(componentStatusMetadata.getHttpMethod(), equalTo(defaultIfNull(expectedMetadata.getHttpMethod(), HttpMethod.GET)));
+        assertThat(componentStatusMetadata.getHttpCode(), equalTo(expectedMetadata.getHttpCode()));
+        assertThat(componentStatusMetadata.getUrl(), equalTo(defaultIfNull(expectedMetadata.getUrl(), "foo url")));
+
+        assertThat(sdcComponentStatus.isAvailable(), is(false));
+    }
+
 }
 

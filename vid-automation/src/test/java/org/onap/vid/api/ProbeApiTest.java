@@ -203,7 +203,7 @@ public class ProbeApiTest extends BaseApiTest {
                 new ParameterizedTypeReference<List<ExternalComponentStatus>>() {
                 });
         List<ExternalComponentStatus> probeResults = response.getBody();
-        Assert.assertEquals(4, probeResults.size());
+        Assert.assertEquals(5, probeResults.size());
         assertResultAsExpected(ExternalComponentStatus.Component.AAI, probeResults, expectedStatuses);
         assertResultAsExpected(ExternalComponentStatus.Component.SDC, probeResults, expectedStatuses);
         assertResultAsExpected(ExternalComponentStatus.Component.MSO, probeResults, expectedStatuses);
