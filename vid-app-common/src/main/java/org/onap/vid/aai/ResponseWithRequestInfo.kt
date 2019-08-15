@@ -18,32 +18,17 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.aai;
+package org.onap.vid.aai
 
-import org.springframework.http.HttpMethod;
+import io.joshworks.restclient.http.HttpResponse
+import org.springframework.http.HttpMethod
 
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response
 
-public class ResponseWithRequestInfo {
-    private String requestUrl;
-    private HttpMethod requestHttpMethod;
-    private Response response;
+open class BaseResponseWithRequestInfo(val requestUrl: String, val requestHttpMethod: HttpMethod)
 
-    public ResponseWithRequestInfo(Response response, String requestUrl, HttpMethod requestHttpMethod) {
-        this.response = response;
-        this.requestUrl = requestUrl;
-        this.requestHttpMethod = requestHttpMethod;
-    }
+class HttpResponseWithRequestInfo<T>(val response: HttpResponse<T>, requestUrl: String, requestHttpMethod: HttpMethod) :
+        BaseResponseWithRequestInfo(requestUrl, requestHttpMethod)
 
-    public String getRequestUrl() {
-        return requestUrl;
-    }
-
-    public HttpMethod getRequestHttpMethod() {
-        return requestHttpMethod;
-    }
-
-    public Response getResponse() {
-        return response;
-    }
-}
+class ResponseWithRequestInfo(val response: Response, requestUrl: String, requestHttpMethod: HttpMethod) :
+        BaseResponseWithRequestInfo(requestUrl, requestHttpMethod)

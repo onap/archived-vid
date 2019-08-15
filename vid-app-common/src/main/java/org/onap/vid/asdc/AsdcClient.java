@@ -22,6 +22,9 @@
 package org.onap.vid.asdc;
 
 import io.joshworks.restclient.http.HttpResponse;
+import java.io.InputStream;
+import org.onap.vid.aai.GenericResponseWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.asdc.beans.Service;
 
 import java.nio.file.Path;
@@ -54,6 +57,8 @@ public interface AsdcClient {
 	 */
 	Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException;
 
+
+	HttpResponseWithRequestInfo<InputStream> getServiceInputStream(UUID serviceUuid, boolean warpException);
 
 	HttpResponse<String> checkSDCConnectivity();
 

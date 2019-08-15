@@ -24,8 +24,13 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import io.joshworks.restclient.http.HttpResponse;
+import java.io.InputStream;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.GenericResponseWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
+import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
@@ -34,8 +39,11 @@ import org.onap.vid.asdc.parser.ToscaParserImpl;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.probes.ErrorMetadata;
 import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.model.probes.HttpRequestMetadata;
+import org.onap.vid.model.probes.StatusMetadata;
+import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -46,6 +54,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import static org.onap.vid.model.probes.ExternalComponentStatus.Component.SDC;
 import static org.onap.vid.properties.Features.FLAG_SERVICE_MODEL_CACHE;
 
 /**
@@ -158,10 +167,49 @@ public class VidServiceImpl implements VidService {
                     System.currentTimeMillis() - startTime);
             externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.SDC, stringHttpResponse.isSuccessful(), httpRequestMetadata);
         } catch (Exception e) {
-            HttpRequestMetadata httpRequestMetadata = new HttpRequestMetadata(HttpMethod.GET, 0,
-                    AsdcClient.URIS.HEALTH_CHECK_ENDPOINT, "", Logging.exceptionToDescription(e), System.currentTimeMillis() - startTime);
-            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.SDC, false, httpRequestMetadata);
+            ErrorMetadata errorMetadata = new ErrorMetadata(Logging.exceptionToDescription(e), System.currentTimeMillis() - startTime);
+            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.SDC, false, errorMetadata);
         }
         return externalComponentStatus;
+    }
+
+    protected ExternalComponentStatus probeSdcByGettingModel(UUID modelUUID) {
+        final long startTime = System.currentTimeMillis();
+
+        HttpResponseWithRequestInfo<InputStream> response = null;
+        try {
+            response = asdcClient.getServiceInputStream(modelUUID, true);
+            int responseStatusCode = response.getResponse().getStatus();
+
+            if (responseStatusCode == 404) {
+                return errorStatus(response, startTime, "model " + modelUUID + " not found in SDC" +
+                    " (consider updating vid probe configuration '" + VidProperties.PROBE_SDC_MODEL_UUID + "')");
+            } else if (responseStatusCode >= 400) {
+                return errorStatus(response, startTime, "error while retrieving model " + modelUUID + " from SDC");
+            } else {
+                InputStream inputStreamEntity = response.getResponse().getRawBody();//validate we can read the input steam from the response
+                if (inputStreamEntity.read() <= 0) {
+                    return errorStatus(response, startTime, "error reading model " + modelUUID + " from SDC");
+                } else {
+                    // RESPONSE IS SUCCESS
+                    return new ExternalComponentStatus(SDC, true,
+                        new HttpRequestMetadata(response, "OK", startTime));
+                }
+            }
+        } catch (ExceptionWithRequestInfo e) {
+            return new ExternalComponentStatus(SDC, false,
+                new HttpRequestMetadata(e, System.currentTimeMillis() - startTime));
+        } catch (Exception e) {
+            return errorStatus(response, startTime, Logging.exceptionToDescription(e));
+        }
+    }
+
+    private ExternalComponentStatus errorStatus(HttpResponseWithRequestInfo<InputStream> response, long startTime, String description) {
+        final long duration = System.currentTimeMillis() - startTime;
+        StatusMetadata statusMetadata = (response == null) ?
+            new ErrorMetadata(description, duration) :
+            new HttpRequestMetadata(response, description, duration);
+
+        return new ExternalComponentStatus(SDC, false, statusMetadata);
     }
 }

@@ -24,7 +24,13 @@ import com.att.eelf.configuration.EELFLogger;
 import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
 import io.vavr.control.Try;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.GenericResponseWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
+import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
@@ -90,11 +96,25 @@ public class SdcRestClient implements AsdcClient {
         logRequest(LOGGER, HttpMethod.GET, finalUrl);
 
         InputStream inputStream = Try
-                .of(() -> syncRestClient.getStream(finalUrl, prepareHeaders(auth, APPLICATION_OCTET_STREAM), Collections.emptyMap()))
+                .of(() -> getServiceInputStream(uuid, false))
                 .getOrElseThrow(AsdcCatalogException::new)
+                .getResponse()
                 .getBody();
 
         return createTmpFile(inputStream);
+    }
+
+    @Override
+    public HttpResponseWithRequestInfo<InputStream> getServiceInputStream(UUID serviceUuid, boolean warpException) {
+        String finalUrl = String.format(TOSCA_MODEL_URL_TEMPLATE, baseUrl, path, serviceUuid);
+        logRequest(LOGGER, HttpMethod.GET, finalUrl);
+        try {
+            HttpResponse<InputStream> httpResponse = syncRestClient.getStream(finalUrl, prepareHeaders(auth, APPLICATION_OCTET_STREAM), Collections.emptyMap());
+            return new HttpResponseWithRequestInfo<>(httpResponse, finalUrl, HttpMethod.GET);
+        }
+        catch (RuntimeException exception) {
+            throw warpException ? new ExceptionWithRequestInfo(HttpMethod.GET, finalUrl, exception) : exception;
+        }
     }
 
 

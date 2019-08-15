@@ -23,8 +23,12 @@ package org.onap.vid.model.probes;
 
 import com.google.common.base.MoreObjects;
 import io.joshworks.restclient.http.HttpResponse;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.utils.Logging;
@@ -81,6 +85,19 @@ public class HttpRequestMetadata extends StatusMetadata {
                 duration);
     }
 
+    public HttpRequestMetadata(HttpResponseWithRequestInfo response, String description, long duration, boolean readRawData) {
+        super(description, duration);
+        this.httpMethod = response.getRequestHttpMethod();
+        this.url = response.getRequestUrl();
+        this.httpCode = response.getResponse().getStatus();
+        if (readRawData) {
+            try {
+                this.rawData = IOUtils.toString(response.getResponse().getRawBody(), StandardCharsets.UTF_8.name());
+            } catch (Exception e) {
+                //Nothing to do here
+            }
+        }
+    }
 
 
     public HttpMethod getHttpMethod() {
