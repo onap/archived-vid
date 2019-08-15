@@ -1,5 +1,6 @@
 package vid.automation.test.infra;
 
+import java.time.LocalDate;
 import org.testng.IAnnotationTransformer;
 import org.testng.annotations.ITestAnnotation;
 import org.togglz.core.context.StaticFeatureManagerProvider;
@@ -9,15 +10,21 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /*
-In order to skip test classes regards the state of feature flag we add this listener to our testng configuration
+This transformer skip test we want to ignore during running VID tests.
+Pay attention that this listener shall be configured in the testng.xml (or command line)
+It can't be used as Listener annotation of base class
+
+FeatureTogglingTest:
 There are 2 ways to annotate that tests required featureFlags to be active :
 In method level - with @FeatureTogglingTest on the test method and list of Required Feature flags on
 In Class level - with @FeatureTogglingTest on the test class and list of Required Feature flags on
 For each test annotation of method level, we check if the test shall whole class shall run regards the features flag test.
-Pay attention that this listener shall be configured in the testng.xml (or command line)
-It can't be used as Listener annotation of base class
+
+SkipTestUntil:
+If test annotated with SkipTestUntil the transformer check if the due date has already pass
+
 */
-public class FeatureTogglingTestngTransformer implements IAnnotationTransformer {
+public class SkipTestsTestngTransformer implements IAnnotationTransformer {
 
     @Override
     public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
@@ -29,12 +36,17 @@ public class FeatureTogglingTestngTransformer implements IAnnotationTransformer 
                         return;
                     }
 
-                    if (isIgnoreTest(testMethod)) {
+                    if (isIgnoreFeatureToggledTest(testMethod)) {
                         disableTest(annotation, testMethod.getDeclaringClass().getName());
                         return;
                     }
 
-                    if (isIgnoreTest(testMethod.getDeclaringClass())) {
+                    if (isIgnoreFeatureToggledTest(testMethod.getDeclaringClass())) {
+                        disableTest(annotation, testMethod.getDeclaringClass().getName());
+                        return;
+                    }
+
+                    if (isIgnoreSkipUntilTest(testMethod)) {
                         disableTest(annotation, testMethod.getDeclaringClass().getName());
                         return;
                     }
@@ -45,7 +57,7 @@ public class FeatureTogglingTestngTransformer implements IAnnotationTransformer 
             }
     }
 
-    private boolean isIgnoreTest(AnnotatedElement annotatedElement) {
+    private boolean isIgnoreFeatureToggledTest(AnnotatedElement annotatedElement) {
 
         return (annotatedElement.isAnnotationPresent(FeatureTogglingTest.class) &&
             shallDisableTest(annotatedElement.getAnnotation(FeatureTogglingTest.class)));
@@ -68,9 +80,24 @@ public class FeatureTogglingTestngTransformer implements IAnnotationTransformer 
     }
 
     private void disableTest(ITestAnnotation annotation, String name) {
-        System.out.println("Ignore "+ name+" due to feature flags configuration");
+        System.out.println("Ignore "+ name+" due to annotation");
         annotation.setEnabled(false);
     }
 
+    private boolean isIgnoreSkipUntilTest(AnnotatedElement annotatedElement) {
+        if (!annotatedElement.isAnnotationPresent(SkipTestUntil.class)) {
+            return false;
+        }
+
+        String dateAsStr = annotatedElement.getAnnotation(SkipTestUntil.class).value();
+        try {
+            return LocalDate.now().isBefore(LocalDate.parse(dateAsStr));
+        }
+        catch (RuntimeException exception) {
+            System.out.println("Failure during processing of SkipTestUntil annotation value is " + dateAsStr);
+            exception.printStackTrace();
+            return false;
+        }
+    }
 }
 
