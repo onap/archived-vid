@@ -28,6 +28,12 @@ import org.onap.vid.mso.model.CloudConfiguration;
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LeanCloudConfiguration {
+	
+	public String lcpCloudRegionId;
+
+    public String tenantId;
+
+    public String cloudOwner;
 
     public LeanCloudConfiguration() {
     }
@@ -38,10 +44,5 @@ public class LeanCloudConfiguration {
         this.cloudOwner = cloudConfiguration.getCloudOwner();
 
     }
-    public String lcpCloudRegionId;
-
-    public String tenantId;
-
-    public String cloudOwner;
 
 }
