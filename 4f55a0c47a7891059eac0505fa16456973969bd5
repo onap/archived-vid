@@ -1,0 +1,291 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "282b101f_5f8210aa",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "Select the VID icon",
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d12b77d8_91b7d9a4",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": ".. starts",
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8d67c45_d85c2116",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "shows only",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 17
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebb24ef8_f9231537",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "the",
+      "range": {
+        "startLine": 96,
+        "startChar": 36,
+        "endLine": 96,
+        "endChar": 37
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "571cfc1d_46a0013f",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "status box appears,",
+      "range": {
+        "startLine": 111,
+        "startChar": 2,
+        "endLine": 111,
+        "endChar": 25
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f562412_e584d281",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "is created",
+      "range": {
+        "startLine": 117,
+        "startChar": 17,
+        "endLine": 117,
+        "endChar": 34
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ed9b640_7b827918",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "no VNF instance (e.g. VM) is created on the Cloud Platform",
+      "range": {
+        "startLine": 151,
+        "startChar": 22,
+        "endLine": 151,
+        "endChar": 64
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd426caa_490b1db8",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "to instantiate",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 4
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "423e2ef4_a73ac699",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "\"Confirm\"",
+      "range": {
+        "startLine": 267,
+        "startChar": 10,
+        "endLine": 267,
+        "endChar": 17
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72d62ae0_d5f75a56",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 274,
+        "startChar": 4,
+        "endLine": 274,
+        "endChar": 5
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f450ccb_73b19399",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "a",
+      "range": {
+        "startLine": 305,
+        "startChar": 49,
+        "endLine": 305,
+        "endChar": 50
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd5c8e08_b9f93b78",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "a",
+      "range": {
+        "startLine": 305,
+        "startChar": 19,
+        "endLine": 305,
+        "endChar": 20
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bf636f3_b52a7a82",
+        "filename": "docs/instantiate.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 2679
+      },
+      "writtenOn": "2019-08-16T18:11:37Z",
+      "side": 1,
+      "message": "\"Confirm\"",
+      "range": {
+        "startLine": 381,
+        "startChar": 10,
+        "endLine": 381,
+        "endChar": 17
+      },
+      "revId": "4f55a0c47a7891059eac0505fa16456973969bd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
