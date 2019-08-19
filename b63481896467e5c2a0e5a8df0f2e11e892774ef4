@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "40613d6b_95ce509e",
+        "filename": "docs/installation.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-08-19T12:03:14Z",
+      "side": 1,
+      "message": "I believe it would be beneficial to have there CERTS_PATH variable set as a part of the bash snippet before invoking \u0027docker run\u0027, like this:\n\n#set path to certificates\nexport CERTS_PATH\u003d/path/to/your/cert/directory\n#start VID server\n(...)",
+      "revId": "b63481896467e5c2a0e5a8df0f2e11e892774ef4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d47841fd_83aef9db",
+        "filename": "docs/installation.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-08-19T12:03:14Z",
+      "side": 1,
+      "message": "I think there\u0027s an $ sign missing before CERTS_PATH",
+      "range": {
+        "startLine": 30,
+        "startChar": 86,
+        "endLine": 30,
+        "endChar": 116
+      },
+      "revId": "b63481896467e5c2a0e5a8df0f2e11e892774ef4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
