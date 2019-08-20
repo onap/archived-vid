@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +28,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RelationshipList {
 	
+	public List<Relationship> relationship;
+	
 	@JsonProperty("relationship")
 	public List<Relationship> getRelationship() {
 		return relationship;
@@ -37,7 +40,6 @@ public class RelationshipList {
 		this.relationship = relationship;
 	}
 
-	public List<Relationship> relationship;
 	
 	
 	
