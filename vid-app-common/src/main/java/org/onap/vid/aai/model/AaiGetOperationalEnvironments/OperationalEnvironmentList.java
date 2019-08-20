@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,22 +29,23 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OperationalEnvironmentList {
+	
+	private List<OperationalEnvironment> operationalEnvironment;
+	
+	public OperationalEnvironmentList() {
+	    }
 
-    public List<OperationalEnvironment> getOperationalEnvironment() {
-        return operationalEnvironment;
-    }
+	public OperationalEnvironmentList(List<OperationalEnvironment> operationalEnvironment) {
+	        this.operationalEnvironment = operationalEnvironment;
+	    }
+	 
+        public List<OperationalEnvironment> getOperationalEnvironment() {
+                return operationalEnvironment;
+            }
 
-    @JsonAlias("operational-environment")
-    public void setOperationalEnvironment(List<OperationalEnvironment> operationalEnvironment) {
+        @JsonAlias("operational-environment")
+        public void setOperationalEnvironment(List<OperationalEnvironment> operationalEnvironment) {
         this.operationalEnvironment = operationalEnvironment;
-    }
+            }
 
-    public OperationalEnvironmentList() {
-    }
-
-    public OperationalEnvironmentList(List<OperationalEnvironment> operationalEnvironment) {
-        this.operationalEnvironment = operationalEnvironment;
-    }
-
-    private List<OperationalEnvironment> operationalEnvironment;
 }
