@@ -7,8 +7,8 @@ app.run(function(featureFlags, $http) {
     $http.get('flags').then(function (results) {
          var flags = [];
         for (var key in results.data) {
-            flags.push({"key":key, "active":results.data[key]})
+            flags.push({"key":key, "active":results.data[key]});
         }
         featureFlags.set(flags);
-    })
+    });
 });
