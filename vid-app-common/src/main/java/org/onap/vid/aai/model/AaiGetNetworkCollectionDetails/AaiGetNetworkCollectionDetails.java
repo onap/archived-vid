@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +26,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AaiGetNetworkCollectionDetails {
 
+	 @JsonProperty("results")
+	 private Result results = null;
+	
     public AaiGetNetworkCollectionDetails(){
         results = new Result();
     }
-    @JsonProperty("results")
-    private Result results = null;
-
+    
     @JsonProperty("results")
     public Result getResults() {
         return results;
