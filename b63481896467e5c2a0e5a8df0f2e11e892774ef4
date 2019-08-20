@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f21d7533_b273faed",
+        "filename": "docs/installation.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-08-20T10:17:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40613d6b_95ce509e",
+      "revId": "b63481896467e5c2a0e5a8df0f2e11e892774ef4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d47841fd_83aef9db",
         "filename": "docs/installation.rst",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2019-08-19T12:03:14Z",
       "side": 1,
       "message": "I think there\u0027s an $ sign missing before CERTS_PATH",
+      "range": {
+        "startLine": 30,
+        "startChar": 86,
+        "endLine": 30,
+        "endChar": 116
+      },
+      "revId": "b63481896467e5c2a0e5a8df0f2e11e892774ef4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d20b945a_17ca771e",
+        "filename": "docs/installation.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-08-20T10:17:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d47841fd_83aef9db",
       "range": {
         "startLine": 30,
         "startChar": 86,
