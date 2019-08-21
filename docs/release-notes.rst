@@ -8,8 +8,20 @@ Version: El-Alto (5.0.x)
 
 **Resolved Issues**
 
+  - `↗ <https://jira.onap.org/browse/VID-520>`_ Remove "Dissociate" button for Macro-orchestrated PNF resources
+  - `↗ <https://jira.onap.org/browse/VID-517>`_ Added liquidBase for follow changes in DB
+  - `↗ <https://jira.onap.org/browse/VID-488>`_ Added "Report" popup for common diagnosable cases
+  - `↗ <https://jira.onap.org/browse/VID-358>`_ vid-mariadb-galera runs in high-availability mode
+
 
 **Security Notes**
+
+*Fixed Security Issues*
+
+  - `↗ <https://jira.onap.org/browse/OJSI-119>`_ Closed plain-text HTTP endpoint, port 30238
+
+*Known Security Issues*
+
 
 
 
