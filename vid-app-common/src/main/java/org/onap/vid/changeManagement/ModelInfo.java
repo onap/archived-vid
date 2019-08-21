@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,22 +37,6 @@ import java.util.Map;
 "modelCustomizationId"
 })
 public class ModelInfo {
-
-	public ModelInfo(){
-
-	}
-
-	public ModelInfo(org.onap.vid.mso.model.ModelInfo modelInfo){
-		this.setModelType(modelInfo.getModelType().toString());
-		this.setModelInvariantId(modelInfo.getModelInvariantId());
-		this.setModelVersionId(modelInfo.getModelNameVersionId());
-		this.setModelName(modelInfo.getModelName());
-		this.setModelVersion(modelInfo.getModelVersion());
-		this.setModelCustomizationId(modelInfo.getModelCustomizationId());
-		this.setModelVersionId(modelInfo.getModelVersionId());
-	}
-
-	
 	@JsonProperty("modelType")
 	private String modelType;
 	@JsonProperty("modelInvariantId")
@@ -68,6 +53,20 @@ public class ModelInfo {
 	private String modelCustomizationId;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<>();
+        
+        public ModelInfo(){
+
+	}
+        
+        public ModelInfo(org.onap.vid.mso.model.ModelInfo modelInfo){
+		this.setModelType(modelInfo.getModelType().toString());
+		this.setModelInvariantId(modelInfo.getModelInvariantId());
+		this.setModelVersionId(modelInfo.getModelNameVersionId());
+		this.setModelName(modelInfo.getModelName());
+		this.setModelVersion(modelInfo.getModelVersion());
+		this.setModelCustomizationId(modelInfo.getModelCustomizationId());
+		this.setModelVersionId(modelInfo.getModelVersionId());
+	}
 
 	@JsonProperty("modelType")
 	public String getModelType() {
