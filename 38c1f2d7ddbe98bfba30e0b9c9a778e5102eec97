@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3da0a384_8c66ca6b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/rest/SdcRestClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-21T10:16:32Z",
+      "side": 1,
+      "message": "Can remove",
+      "revId": "38c1f2d7ddbe98bfba30e0b9c9a778e5102eec97",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
