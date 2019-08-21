@@ -142,13 +142,13 @@
 
             }
             return null;
-        }
+        };
         $scope.hasVfModules = function (vnfInstance) {
             if ($scope.returnVfModules(vnfInstance) != null) {
                 return true;
             }
             return false;
-        }
+        };
         $scope.returnVolumeGroups = function (vnfInstance) {
 
             var svcModel = $scope.service.convertedModel;
@@ -183,13 +183,13 @@
 
             }
             return null;
-        }
+        };
         $scope.hasVolumeGroups = function (vnfInstance) {
             if ($scope.returnVolumeGroups(vnfInstance) != null) {
                 return true;
             }
             return false;
-        }
+        };
         $scope.deleteNetwork = function (serviceObject, network) {
 
             console.log("Removing Network " + network.name);
@@ -871,7 +871,7 @@
 
             //Display popup with additional VF-Module information
             DataService.setVfModuleInstanceId(vfModule[FIELD.ID.VF_MODULE_ID]);
-            DataService.setInventoryItem(vfModule)
+            DataService.setInventoryItem(vfModule);
 
             DataService.setSubscriberName(serviceObject[COMPONENT.SUBSCRIBER_NAME]);
             DataService.setServiceType(serviceObject[COMPONENT.SERVICE_TYPE]);
@@ -1323,7 +1323,7 @@
 
         var deleteCallbackFunction = function () {
             console.log('hi')
-        }
+        };
 
         $scope.resetProgress = function () {
             $scope.percentProgress = 0;
@@ -1364,13 +1364,13 @@
             else {
                 return true;
             }
-        }
+        };
         $scope.isMacro = function () {
             return $scope.service && AsdcService.isMacro($scope.service.model);
-        }
+        };
         $scope.reloadRoute = function () {
             $route.reload();
-        }
+        };
 
 
         /*
@@ -1539,7 +1539,7 @@ Private metthods
                     + FIELD.STATUS.IS_SUCCESSFUL + response.isSuccessful;
                 if (response.isSuccessful) {
                     color = FIELD.ID.COLOR_8F8;
-                    $location.path(COMPONENT.SERVICEMODELS_MODELS_SERVICES_PATH)
+                    $location.path(COMPONENT.SERVICEMODELS_MODELS_SERVICES_PATH);
                 } else {
                     color = FIELD.ID.COLOR_F88;
                 }
