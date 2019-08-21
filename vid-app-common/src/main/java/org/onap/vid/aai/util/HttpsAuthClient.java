@@ -51,6 +51,12 @@ public class HttpsAuthClient {
 
     private final SystemPropertyHelper systemPropertyHelper;
     private final SSLContextProvider sslContextProvider;
+	private final String certFilePath;
+	FeatureManager featureManager;
+
+    /** The logger. */
+    static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(org.onap.vid.aai.util.HttpsAuthClient.class);
+	
 
     public HttpsAuthClient(String certFilePath, SystemPropertyHelper systemPropertyHelper, SSLContextProvider sslContextProvider, FeatureManager featureManager) {
         this.certFilePath = certFilePath;
@@ -58,13 +64,6 @@ public class HttpsAuthClient {
         this.sslContextProvider = sslContextProvider;
         this.featureManager = featureManager;
     }
-
-    private final String certFilePath;
-
-    FeatureManager featureManager;
-
-    /** The logger. */
-    static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(org.onap.vid.aai.util.HttpsAuthClient.class);
 
 
     /**
