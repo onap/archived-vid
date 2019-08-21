@@ -270,17 +270,14 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_sub_details/{subscriberId}", method = RequestMethod.GET)
     public ResponseEntity<String> getSubscriberDetails(HttpServletRequest request, @PathVariable("subscriberId") String subscriberId,
                                                        @RequestParam(value="omitServiceInstances", required = false, defaultValue = "false") boolean omitServiceInstances) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ResponseEntity responseEntity;
         List<Role> roles = roleProvider.getUserRoles(request);
         RoleValidator roleValidator = RoleValidator.by(roles);
-        AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator, featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH) && omitServiceInstances);
-        String httpMessage = subscriberData.getT() != null ?
-            objectMapper.writeValueAsString(subscriberData.getT()) :
-            subscriberData.getErrorMessage();
+        AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator,
+            featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH) && omitServiceInstances);
+        String httpMessage = subscriberData.getT() != null ? new ObjectMapper().writeValueAsString(subscriberData.getT()) : subscriberData.getErrorMessage();
 
-        responseEntity = new ResponseEntity<>(httpMessage, HttpStatus.valueOf(subscriberData.getHttpCode()));
-        return responseEntity;
+        return new ResponseEntity<>(httpMessage,
+            HttpStatus.valueOf(subscriberData.getHttpCode()));
     }
 
     @RequestMapping(value = "/search_service_instances", method = RequestMethod.GET)
