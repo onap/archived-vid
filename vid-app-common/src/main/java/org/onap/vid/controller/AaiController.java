@@ -77,6 +77,7 @@ public class AaiController extends RestrictedBaseController {
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiController.class);
     private static final String FROM_APP_ID = "VidAaiController";
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private AaiService aaiService;
     private AAIRestInterface aaiRestInterface;
@@ -157,7 +158,7 @@ public class AaiController extends RestrictedBaseController {
         throws IOException {
         ResponseEntity<String> responseEntity;
         if (aaiResponseData.getHttpCode() == 200) {
-            responseEntity = new ResponseEntity<>(new ObjectMapper().writeValueAsString(aaiResponseData.getT()),
+            responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(aaiResponseData.getT()),
                 HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>(aaiResponseData.getErrorMessage(),
@@ -225,7 +226,6 @@ public class AaiController extends RestrictedBaseController {
 
     @RequestMapping(value = "/aai_get_full_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getFullSubscriberList(HttpServletRequest request) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity<String> responseEntity;
         RoleValidator roleValidator = RoleValidator.by(roleProvider.getUserRoles(request));
         SubscriberFilteredResults subscriberList = aaiService.getFullSubscriberList(roleValidator);
@@ -270,17 +270,14 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_sub_details/{subscriberId}", method = RequestMethod.GET)
     public ResponseEntity<String> getSubscriberDetails(HttpServletRequest request, @PathVariable("subscriberId") String subscriberId,
                                                        @RequestParam(value="omitServiceInstances", required = false, defaultValue = "false") boolean omitServiceInstances) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ResponseEntity responseEntity;
         List<Role> roles = roleProvider.getUserRoles(request);
         RoleValidator roleValidator = RoleValidator.by(roles);
-        AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator, featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH) && omitServiceInstances);
-        String httpMessage = subscriberData.getT() != null ?
-            objectMapper.writeValueAsString(subscriberData.getT()) :
-            subscriberData.getErrorMessage();
+        AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator,
+            featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH) && omitServiceInstances);
+        String httpMessage = subscriberData.getT() != null ? objectMapper.writeValueAsString(subscriberData.getT()) : subscriberData.getErrorMessage();
 
-        responseEntity = new ResponseEntity<>(httpMessage, HttpStatus.valueOf(subscriberData.getHttpCode()));
-        return responseEntity;
+        return new ResponseEntity<>(httpMessage,
+            HttpStatus.valueOf(subscriberData.getHttpCode()));
     }
 
     @RequestMapping(value = "/search_service_instances", method = RequestMethod.GET)
@@ -289,7 +286,6 @@ public class AaiController extends RestrictedBaseController {
         @RequestParam(value = "serviceInstanceIdentifier", required = false) String instanceIdentifier,
         @RequestParam(value = "project", required = false) List<String> projects,
         @RequestParam(value = "owningEntity", required = false) List<String> owningEntities) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity responseEntity;
 
         List<Role> roles = roleProvider.getUserRoles(request);
@@ -354,7 +350,6 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_get_network_collection_details/{serviceInstanceId}", method = RequestMethod.GET)
     public ResponseEntity<String> getNetworkCollectionDetails(
         @PathVariable("serviceInstanceId") String serviceInstanceId) throws IOException {
-        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
         AaiResponse<String> resp = aaiService.getNetworkCollectionDetails(serviceInstanceId);
 
         String httpMessage = resp.getT() != null ?
@@ -367,7 +362,6 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> getInstanceGroupsByCloudRegion(@PathVariable("cloudOwner") String cloudOwner,
         @PathVariable("cloudRegionId") String cloudRegionId,
         @PathVariable("networkFunction") String networkFunction) throws IOException {
-        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
         AaiResponse<AaiGetInstanceGroupsByCloudRegion> resp = aaiService
             .getInstanceGroupsByCloudRegion(cloudOwner, cloudRegionId, networkFunction);
 
@@ -424,7 +418,6 @@ public class AaiController extends RestrictedBaseController {
 
         ResponseEntity responseEntity;
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             List<Role> roles = roleProvider.getUserRoles(request);
             RoleValidator roleValidator = RoleValidator.by(roles);
             AaiResponse<GetTenantsResponse[]> response = aaiService

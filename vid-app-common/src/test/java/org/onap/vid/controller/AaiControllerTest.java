@@ -21,14 +21,11 @@
 
 package org.onap.vid.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.booleanThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -40,16 +37,14 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
@@ -62,13 +57,13 @@ import org.onap.vid.aai.model.PortDetailsTranslator.PortDetails;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsError;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
 import org.onap.vid.aai.util.AAIRestInterface;
-import org.onap.vid.properties.Features;
-import org.onap.vid.roles.Role;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
+import org.onap.vid.properties.Features;
 import org.onap.vid.roles.RoleProvider;
-import org.onap.vid.roles.RoleValidator;
+import org.onap.vid.roles.RoleValidatorByRoles;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -83,7 +78,7 @@ public class AaiControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Mock
     private AaiService aaiService;
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private AAIRestInterface aaiRestInterface;
     @Mock
     private RoleProvider roleProvider;
@@ -98,8 +93,137 @@ public class AaiControllerTest {
 
     @Before
     public void setUp() {
-        aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper, featureManager);
+        aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper,
+            featureManager);
         mockMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
+    }
+
+    @Test
+    public void getAicZoneForPnf_shouldReturnOKResponse() throws Exception {
+        String globalCustomerId = "testCustomerId";
+        String serviceType = "testServiceType";
+        String serviceId = "testServiceId";
+        String expectedResponseBody = "OK_RESPONSE";
+        AaiResponse<String> aaiResponse = new AaiResponse<>(expectedResponseBody, null, HttpStatus.OK.value());
+        given(aaiService.getAicZoneForPnf(globalCustomerId, serviceType, serviceId)).willReturn(aaiResponse);
+
+        mockMvc.perform(
+            get("/aai_get_aic_zone_for_pnf/{globalCustomerId}/{serviceType}/{serviceId}", globalCustomerId, serviceType,
+                serviceId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(expectedResponseBody)));
+    }
+
+    @Test
+    public void getInstanceGroupsByVnfInstanceId_shouldReturnOKResponse() throws Exception {
+        String vnfInstanceId = "testVndInstanceId";
+        String expectedResponseBody = "OK_RESPONSE";
+        AaiResponse<String> aaiResponse = new AaiResponse<>(expectedResponseBody, null, HttpStatus.OK.value());
+        given(aaiService.getInstanceGroupsByVnfInstanceId(vnfInstanceId)).willReturn(aaiResponse);
+
+        mockMvc.perform(get("/aai_get_instance_groups_by_vnf_instance_id/{vnfInstanceId}", vnfInstanceId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(expectedResponseBody)));
+    }
+
+    @Test
+    public void doGetServiceInstance_shouldFetchServiceInstance_byServiceInstanceId() throws Exception {
+        String serviceInstanceId = "testServiceInstanceId";
+        String serviceInstanceType = "Service Instance Id";
+        String expectedResponseBody = "OK_RESPONSE";
+        Response response = mock(Response.class);
+        given(response.readEntity(String.class)).willReturn(expectedResponseBody);
+        given(response.getStatus()).willReturn(HttpStatus.OK.value());
+
+        given(aaiRestInterface.RestGet(eq("VidAaiController"), anyString(), eq(Unchecked.toURI(
+            "search/nodes-query?search-node-type=service-instance&filter=service-instance-id:EQUALS:"
+                + serviceInstanceId)),
+            eq(false)).getResponse()).willReturn(response);
+
+        mockMvc
+            .perform(get("/aai_get_service_instance/{service-instance-id}/{service-instance-type}", serviceInstanceId,
+                serviceInstanceType)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
+    }
+
+    @Test
+    public void doGetServiceInstance_shouldFetchServiceInstance_byServiceInstanceName() throws Exception {
+        String serviceInstanceId = "testServiceInstanceId";
+        String serviceInstanceType = "testServiceInstanceType";
+        String expectedResponseBody = "OK_RESPONSE";
+        Response response = mock(Response.class);
+        given(response.readEntity(String.class)).willReturn(expectedResponseBody);
+        given(response.getStatus()).willReturn(HttpStatus.OK.value());
+
+        given(aaiRestInterface.RestGet(eq("VidAaiController"), anyString(), eq(Unchecked.toURI(
+            "search/nodes-query?search-node-type=service-instance&filter=service-instance-name:EQUALS:"
+                + serviceInstanceId)),
+            eq(false)).getResponse()).willReturn(response);
+
+        mockMvc
+            .perform(get("/aai_get_service_instance/{service-instance-id}/{service-instance-type}", serviceInstanceId,
+                serviceInstanceType)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
+    }
+
+    @Test
+    public void doGetServices_shouldReturnOkResponse() throws Exception {
+        String globalCustomerId = "testGlobalCustomerId";
+        String serviceSubscriptionId = "testServiceSubscriptionId";
+        String expectedResponseBody = "OK_RESPONSE";
+        Response response = mock(Response.class);
+        given(response.readEntity(String.class)).willReturn(expectedResponseBody);
+        given(response.getStatus()).willReturn(HttpStatus.OK.value());
+
+        given(aaiRestInterface.RestGet(
+            eq("VidAaiController"),
+            anyString(),
+            eq(Unchecked.toURI(
+                "business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                    + serviceSubscriptionId + "?depth=0")),
+            eq(false)).getResponse()).willReturn(response);
+
+        mockMvc
+            .perform(
+                get("/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", globalCustomerId,
+                    serviceSubscriptionId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
+    }
+
+    @Test
+    public void doGetServices_shouldReturnInternalServerError_forEmptyResponse() throws Exception {
+        String globalCustomerId = "testGlobalCustomerId";
+        String serviceSubscriptionId = "testServiceSubscriptionId";
+        String expectedResponseBody = "Failed to fetch data from A&AI, check server logs for details.";
+        given(aaiRestInterface.RestGet(
+            eq("VidAaiController"),
+            anyString(),
+            eq(Unchecked.toURI(
+                "business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                    + serviceSubscriptionId + "?depth=0")),
+            eq(false)).getResponse()).willReturn(null);
+
+        mockMvc
+            .perform(
+                get("/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", globalCustomerId,
+                    serviceSubscriptionId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError())
+            .andExpect(content().string(expectedResponseBody));
     }
 
     @Test
@@ -259,7 +383,7 @@ public class AaiControllerTest {
 
         mockMvc.perform(
             post("/aai_get_version_by_invariant_id")
-                .content(new ObjectMapper().writeValueAsString(request))
+                .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -267,40 +391,71 @@ public class AaiControllerTest {
     }
 
     @Test
-    public void getSubscriberDetailsOmitServiceInstances_reduceDepthEnabledAndOmitQueryParam() throws IOException {
-        getSubscriberDetailsOmitServiceInstances("some subscriber id",
-                true, true, true);
+    public void getSubscriberDetails_shouldOmitServiceInstancesFromSubscriberData_whenFeatureEnabled_andOmitFlagIsTrue()
+        throws Exception {
+        boolean isFeatureActive = true;
+        boolean omitServiceInstances = true;
+
+        String subscriberId = "subscriberId";
+        String okResponseBody = "OK_RESPONSE";
+        AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
+        given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
+        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorByRoles.class),
+            eq(isFeatureActive && omitServiceInstances)))
+            .willReturn(aaiResponse);
+
+        mockMvc.perform(
+            get("/aai_sub_details/{subscriberId}", subscriberId)
+                .param("omitServiceInstances", Boolean.toString(omitServiceInstances))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(okResponseBody)));
     }
 
     @Test
-    public void getSubscriberDetailsOmitServiceInstances_reduceDepthDisabledAndOmitQueryParam() throws IOException {
-        getSubscriberDetailsOmitServiceInstances("another-subscriber-id-123",
-                false, true, false);
+    public void getSubscriberDetails_shouldIncludeServiceInstancesFromSubscriberData_whenFeatureEnabled_andOmitFlagIsFalse()
+        throws Exception {
+        boolean isFeatureActive = true;
+        boolean omitServiceInstances = false;
+
+        getSubscriberDetails_assertServiceInstancesInclusion(isFeatureActive, omitServiceInstances);
     }
 
     @Test
-    public void getSubscriberDetailsOmitServiceInstances_reduceDepthDisabled() throws IOException {
-        getSubscriberDetailsOmitServiceInstances("123-456-789-123-345-567-6",
-                false,  false,  false);
+    public void getSubscriberDetails_shouldIncludeServiceInstancesFromSubscriberData_whenFeatureDisabled_andOmitFlagIsTrue()
+        throws Exception {
+        boolean isFeatureActive = false;
+        boolean omitServiceInstances = true;
+
+        getSubscriberDetails_assertServiceInstancesInclusion(isFeatureActive, omitServiceInstances);
     }
 
     @Test
-    public void getSubscriberDetailsOmitServiceInstances_reduceDepthEnabled() throws IOException {
-        getSubscriberDetailsOmitServiceInstances("0000000000000000000000000",
-                true, false,  false);
+    public void getSubscriberDetails_shouldIncludeServiceInstancesFromSubscriberData_whenFeatureDisabled_andOmitFlagIsFalse()
+        throws Exception {
+        boolean isFeatureActive = false;
+        boolean omitServiceInstances = false;
+        getSubscriberDetails_assertServiceInstancesInclusion(isFeatureActive, omitServiceInstances);
     }
 
-    private void getSubscriberDetailsOmitServiceInstances(String subscriberId, boolean isFlag1906AaiSubDetailsReduceDepthEnabled,
-        boolean omitServiceInstancesQueryParam, boolean omitServiceInstancesExpectedGetSubscriberDataParam) throws IOException {
-        when(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).thenReturn(isFlag1906AaiSubDetailsReduceDepthEnabled);
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(roleProvider.getUserRoles(request)).thenReturn(ImmutableList.of(mock(Role.class), mock(Role.class)));
-        AaiResponse subscriberData = mock(AaiResponse.class);
-        when(subscriberData.getT()).thenReturn(null);
-        when(subscriberData.getHttpCode()).thenReturn(200);
-        when(aaiService.getSubscriberData(any(), any(), anyBoolean())).thenReturn(subscriberData);
-        aaiController.getSubscriberDetails(request, subscriberId, omitServiceInstancesQueryParam);
-        verify(aaiService).getSubscriberData(argThat(subscriberId::equals), any(RoleValidator.class), booleanThat(b -> omitServiceInstancesExpectedGetSubscriberDataParam == b));
+    private void getSubscriberDetails_assertServiceInstancesInclusion(boolean isFeatureActive,
+        boolean omitServiceInstances) throws Exception {
+        String subscriberId = "subscriberId";
+        String okResponseBody = "OK_RESPONSE";
+        AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
+        given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
+        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorByRoles.class),
+            eq(isFeatureActive && omitServiceInstances)))
+            .willReturn(aaiResponse);
+
+        mockMvc.perform(
+            get("/aai_sub_details/{subscriberId}", subscriberId)
+                .param("omitServiceInstances", Boolean.toString(omitServiceInstances))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(okResponseBody)));
     }
 }
 
