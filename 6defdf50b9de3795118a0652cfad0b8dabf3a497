@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7e5fff75_0f343c1e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/changeManagement/ModelInfo.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-21T09:04:39Z",
+      "side": 0,
+      "message": "Please reformat the whole change by formatting guidelines.\nhttps://wiki.onap.org/display/DW/Java+code+style",
+      "revId": "6defdf50b9de3795118a0652cfad0b8dabf3a497",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
