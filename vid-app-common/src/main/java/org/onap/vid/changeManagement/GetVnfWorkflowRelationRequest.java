@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +26,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GetVnfWorkflowRelationRequest {
+	
+	@JsonProperty("vnfsDetails")
+	private List<VnfDetails>  vnfsDetails;
 
 	public GetVnfWorkflowRelationRequest() {
 	}
@@ -32,9 +36,6 @@ public class GetVnfWorkflowRelationRequest {
 	public GetVnfWorkflowRelationRequest(List<VnfDetails> vnfsDetails) {
 		this.vnfsDetails = vnfsDetails;
 	}
-
-	@JsonProperty("vnfsDetails")
-	private List<VnfDetails>  vnfsDetails;
 	
 	@JsonProperty("vnfsDetails")
 	public List<VnfDetails> getVnfDetails() {
