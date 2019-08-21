@@ -42,7 +42,6 @@ import org.apache.http.HttpStatus;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiGetVnfResponse;
-import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
