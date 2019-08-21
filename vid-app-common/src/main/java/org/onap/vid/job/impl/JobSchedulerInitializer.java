@@ -46,6 +46,14 @@ public class JobSchedulerInitializer {
     private FeatureManager featureManager;
     private JobCommandFactory jobCommandFactory;
     private EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(JobSchedulerInitializer.class);
+    public static final List<Job.JobStatus> WORKERS_TOPICS = ImmutableList.of(
+            Job.JobStatus.PENDING,
+            Job.JobStatus.CREATING,
+            Job.JobStatus.IN_PROGRESS,
+            Job.JobStatus.RESOURCE_IN_PROGRESS,
+            Job.JobStatus.PENDING_RESOURCE
+    );
+
 
     @Autowired
     public JobSchedulerInitializer(
@@ -60,14 +68,6 @@ public class JobSchedulerInitializer {
         this.jobCommandFactory = jobCommandFactory;
 
     }
-
-    public static final List<Job.JobStatus> WORKERS_TOPICS = ImmutableList.of(
-            Job.JobStatus.PENDING,
-            Job.JobStatus.CREATING,
-            Job.JobStatus.IN_PROGRESS,
-            Job.JobStatus.RESOURCE_IN_PROGRESS,
-            Job.JobStatus.PENDING_RESOURCE
-    );
 
     @PostConstruct
     public void init() {

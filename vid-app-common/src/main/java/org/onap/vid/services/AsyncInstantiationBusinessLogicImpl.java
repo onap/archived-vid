@@ -39,7 +39,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.AaiClientInterface;
-import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.exceptions.DbFailureUncheckedException;
