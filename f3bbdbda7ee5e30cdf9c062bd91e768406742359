@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7df199d7_e6ff1bd3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/AaiGetOperationalEnvironments/OperationalEnvironmentList.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-08-21T08:59:27Z",
+      "side": 1,
+      "message": "Please fix by formatting guidelines.\nhttps://wiki.onap.org/display/DW/Java+code+style",
+      "revId": "f3bbdbda7ee5e30cdf9c062bd91e768406742359",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
