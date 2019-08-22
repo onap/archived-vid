@@ -119,7 +119,7 @@ public class Logging {
             response.bufferEntity();
             logger.debug("Received {} {} Status: {} . Body: {}", method.name(), url, response.getStatus(), response.readEntity(entityClass));
         }
-        catch (ProcessingException | IllegalStateException e) {
+        catch (Exception e) {
             logger.debug("Received {} {} Status: {} . Failed to read response as {}", method.name(), url, response.getStatus(), entityClass.getName());
         }
     }
@@ -128,7 +128,7 @@ public class Logging {
         try {
             logger.debug("Received {} {} Status: {} . Body: {}", method.name(), url, response.getStatus(), response.getBody());
         }
-        catch (ProcessingException | IllegalStateException e) {
+        catch (Exception e) {
             logger.debug("Received {} {} Status: {} . Failed to read response", method.name(), url, response.getStatus());
         }
     }

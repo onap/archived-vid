@@ -85,7 +85,7 @@ public class SdcRestClientITTest {
         String expectedEndpoint = String.format("/sdc/v1/catalog/services/%s/toscaModel", uuid);
 
         stubServer.prepareGetCall(
-                expectedEndpoint, stringContent("sampleFileContent"), "sampleFileContent", ok(), "application/octet-stream");
+                expectedEndpoint, stringContent("sampleFileContent"), ok(), "application/octet-stream");
 
 
         Path serviceToscaModel = sdcRestClient.getServiceToscaModel(uuid);
