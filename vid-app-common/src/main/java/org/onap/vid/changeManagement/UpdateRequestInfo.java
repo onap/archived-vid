@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +27,12 @@ import org.onap.vid.mso.model.RequestInfo;
  * Created by Oren on 9/5/17.
  */
 public class UpdateRequestInfo {
+	
+    public String source;
+
+    public  Boolean suppressRollback;
+
+    public String requestorId;
 
     public UpdateRequestInfo() {
     }
@@ -36,11 +43,6 @@ public class UpdateRequestInfo {
         this.suppressRollback = requestInfo.getSuppressRollback();
         this.source = requestInfo.getSource();
     }
-    public String source;
-
-    public  Boolean suppressRollback;
-
-    public String requestorId;
-
+    
 
 }
