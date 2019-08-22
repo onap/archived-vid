@@ -64,7 +64,7 @@ public class StubServerUtil {
         return String.format("%s://localhost:%s/%s", protocol, stubServer.getPort(), relativePath);
     }
 
-    public void prepareGetCall(String path, Action actionToReturn,Object returnObj, Action expectedAction, String contentType) throws JsonProcessingException {
+    public void prepareGetCall(String path, Action actionToReturn, Action expectedAction, String contentType) throws JsonProcessingException {
         whenHttp(stubServer)
                 .match(Condition.get(path))
                 .then(expectedAction, actionToReturn, contentType(contentType));
@@ -72,7 +72,7 @@ public class StubServerUtil {
 
 
     public void prepareGetCall(String path, Object returnObj, Action expectedAction) throws JsonProcessingException {
-        prepareGetCall(path, jsonContent(returnObj),returnObj, expectedAction, APPLICATION_JSON);
+        prepareGetCall(path, jsonContent(returnObj), expectedAction, APPLICATION_JSON);
     }
 
     public void prepareDeleteCall(String path, Object returnObj, Action expectedAction) throws JsonProcessingException {

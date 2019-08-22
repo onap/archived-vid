@@ -21,6 +21,7 @@
 package org.onap.vid.scheduler;
 
 import com.att.eelf.configuration.EELFLogger;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.joshworks.restclient.http.HttpResponse;
@@ -43,6 +44,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 @Service
@@ -90,15 +92,19 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
                     .putAll(commonHeaders)
                     .put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
                     .build();
-            final HttpResponse<T> response = ((HttpResponse<T>) syncRestClient.get(url, requestHeaders,
-                    Collections.emptyMap(), t.getClass()));
+            final HttpResponse<String> response = syncRestClient.get(url, requestHeaders,
+                    Collections.emptyMap(), String.class);
             Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
             status = response.getStatus();
             restObject.setStatusCode(status);
-
+            rawData = response.getBody();
             if (status == 200) {
-                t = response.getBody();
-                restObject.set(t);
+                if (t instanceof String) {
+                    restObject.set((T)rawData);
+                }
+                else {
+                    restObject.set(JACKSON_OBJECT_MAPPER.readValue(rawData, new TypeReference<T>() {}));
+                }
                 logger.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + SUCCESSFUL_API_MESSAGE);
                 logger.info(EELFLoggerDelegate.errorLogger, "<== " + methodName + SUCCESSFUL_API_MESSAGE);
             } else {
@@ -106,7 +112,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
             }
             return new RestObjectWithRequestInfo<>(HttpMethod.GET, url, restObject, status, rawData);
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ExceptionWithRequestInfo(HttpMethod.GET, url, rawData, status, e);
         }
     }
