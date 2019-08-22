@@ -55,22 +55,18 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 		$scope.baseUrl = "";
 		$scope.responseTimeoutMsec = 10000;
 		$scope.msoMaxPollingIntervalMsec = 1000;
-		$scope.msoMaxPolls = 7;
-		
+		$scope.msoMaxPolls = 7;		
 		$scope.init = function(properties) {
     		var msecs = PropertyService.retrieveMsoMaxPollingIntervalMsec();
-    		PropertyService.setMsoMaxPollingIntervalMsec(msecs);
-    		
+    		PropertyService.setMsoMaxPollingIntervalMsec(msecs);  		
     		var polls = PropertyService.retrieveMsoMaxPolls();
-    		PropertyService.setMsoMaxPolls(polls);
-    		
+    		PropertyService.setMsoMaxPolls(polls);    		
     		// These two properties only added for testing
 			properties.msoDefaultBaseUrl = $scope.baseUrl;
 			properties.responseTimeoutMsec = $scope.responseTimeoutMsec;
 
 			UtilityService.setProperties(properties);
-		};
-		
+		};	
 		$scope.autoGetSubs = function() {
 			/*
 			 * Optionally comment in / out one of these method calls (or add a similar
@@ -81,8 +77,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
-		
+		}	
 		$scope.autoGetSubDetails = function() {
 			/*
 			 * Optionally comment in / out one of these method calls (or add a similar
@@ -93,8 +88,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
-		
+		};		
 		$scope.autoPopulateViewEdit = function() {
 			/*
 			 * Optionally comment in / out one of these method calls (or add a similar
@@ -105,8 +99,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
-		
+		};		
 		$scope.refreshSubs = function() {
 			/*
 			 * Optionally comment in / out one of these method calls (or add a similar
@@ -117,8 +110,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
-		
+		};		
 		$scope.autoStartQueryTest = function() {
 			/*
 			 * Optionally comment in / out one of these method calls (or add a similar
@@ -136,8 +128,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 			$scope.$broadcast(COMPONENT.QUERY_SERVICE_INSTANCE, {
 				serviceInstanceId: COMPONENT.SERVICE_INSTANCE_ID_1
 			});
-		}
-	
+		};
 		$scope.getSubscribers = function() {
 			/*
 			 * Example of method call needed to commit an instance creation request.
@@ -146,8 +137,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_GET_SUBSCRIBERS,
 				requestDetails : createServiceRequestDetails
 			});
-		}
-		
+		};	
 		$scope.getSubDetails = function() {
 			/*
 			 * Example of method call needed to commit an instance creation request.
@@ -156,8 +146,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_SUB_DETAILS,
 				requestDetails : createServiceRequestDetails
 			});
-		}
-		
+		};		
 		$scope.getComponentList = function() {
 			/*
 			 * Example of method call needed to commit an instance creation request.
@@ -166,9 +155,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_SUB_VIEWEDIT,
 				requestDetails : createServiceRequestDetails
 			});
-		}
-		
-		
+		};		
 		$scope.refreshSubscribers = function() {
 			/*
 			 * Example of method call needed to commit an instance creation request.
@@ -177,8 +164,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_REFRESH_SUBSCRIBERS,
 				requestDetails : createServiceRequestDetails
 			});
-		}
-	
+		};	
 		$scope.deleteServiceInstance = function() {
 			/*
 			 * Example of method call needed to commit an instance deletion request.
@@ -211,8 +197,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : COMPONENT.MSO_CREATE_SVC_INSTANCE,
 				requestDetails : request
 			});
-		}
-	
+		}	
 		$scope.generateInvalidUrl404 = function() {
 			var properties = UtilityService.getProperties(properties);
 			properties.msoDefaultBaseUrl = COMPONENT.INVALID_STRING;
@@ -223,28 +208,23 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : COMPONENT.MSO_CREATE_SVC_INSTANCE,
 				requestDetails : createServiceRequestDetails
 			});
-
 			properties.msoDefaultBaseUrl = $scope.baseUrl;
 			UtilityService.setProperties(properties);
 			$scope.$broadcast(COMPONENT.REFRESH_PROPERTIES);				
-		}
-	
+		}	
 		$scope.generateInvalidUrl405 = function() {
 			$scope.$broadcast(COMPONENT.MSO_CREATE_REQ, {
 				url : COMPONENT.INVALID_STRING_MSO_CREATE_SVC_INSTANCE,
 				requestDetails : createServiceRequestDetails
 			});
-		}
-	
+		}	
 		/*
 		 * Test data objects:
-		 */
-	
+		 */	
 		var subscriberInfo = {
 			globalSubscriberId : COMPONENT.GLOBAL_SUBSCRIBER_ID_1,
 			subscriberName : COMPONENT.SUBSCRIBER_NAME_GED12
-		};
-	
+		};	
 		var createServiceRequestDetails = {
 			modelInfo : {
 				modelType : COMPONENT.SERVICE,
@@ -259,8 +239,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				productName : COMPONENT.PRODUCT_NAME_TRINITY,
 				customerId : COMPONENT.CUSTOMER_ID_1
 			}
-		};
-	
+		};	
 		var deleteServiceRequestDetails = {
 			modelInfo : {
 				modelType : COMPONENT.SERVICE,
@@ -269,8 +248,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				modelName : COMPONENT.MODEL_NAME_WANBONDING,
 				modelVersion : COMPONENT.MODEL_VERSION_1
 			}
-		};
-	
+		};	
 		var createNetworkRequestDetails = {
 			modelInfo : {
 				modelType : COMPONENT.NETWORK,
@@ -326,8 +304,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				"gateway-address" : COMPONENT.GATEWAY_ADDRESS_1,
 				"dhcp-enabled" : COMPONENT.TRUE
 			}
-		};
-	
+		};	
 		var deleteNetworkRequestDetails = {
 			modelInfo : {
 				modelType : COMPONENT.NETWORK,
