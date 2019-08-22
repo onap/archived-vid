@@ -20,6 +20,7 @@
 
 package org.onap.vid.controller;
 
+import static java.lang.String.format;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -44,11 +45,14 @@ import org.jeasy.random.randomizers.misc.BooleanRandomizer;
 import org.jeasy.random.randomizers.text.StringRandomizer;
 import org.junit.Before;
 import org.junit.Test;
+import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapper;
+import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.mso.rest.RequestDetailsWrapper;
 import org.onap.vid.mso.rest.Task;
 import org.onap.vid.services.CloudOwnerService;
 import org.springframework.test.web.servlet.MockMvc;
@@ -80,6 +84,27 @@ public class MsoControllerTest {
     }
 
     @Test
+    public void shouldGetOrchestrationRequest() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String requestId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .getOrchestrationRequest(requestId))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(get(format("/mso/mso_get_orch_req/%s", requestId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).shouldHaveZeroInteractions();
+    }
+
+    @Test
     public void shouldDelegateNewServiceInstantiation() throws Exception {
         // given
         RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
@@ -91,6 +116,28 @@ public class MsoControllerTest {
 
         // when & then
         mockMvc.perform(post("/mso/mso_create_svc_instance")
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldCreateVolumeInstance() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String vnfInstanceId = "fe9000-0009-9999";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .createVolumeGroupInstance(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(vnfInstanceId)))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_create_volumegroup_instance/%s/vnfs/%s", serviceInstanceId, vnfInstanceId))
             .content(asJson(requestDetails))
             .contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -195,6 +242,135 @@ public class MsoControllerTest {
     }
 
     @Test
+    public void shouldDeleteVfModuleInstance() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String vnfInstanceId = "fe9000-0009-9999";
+        String vfModuleId = "abeeee-abeeee-abeeee";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.deleteVfModule(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(vnfInstanceId), eq(vfModuleId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_delete_vfmodule_instance/%s/vnfs/%s/vfModules/%s", serviceInstanceId, vnfInstanceId, vfModuleId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDeleteVolumeGroup() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String vnfInstanceId = "fe9000-0009-9999";
+        String volumeGroupId = "abeeee-abeeee-abeeee";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.deleteVolumeGroupInstance(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(vnfInstanceId), eq(volumeGroupId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_delete_volumegroup_instance/%s/vnfs/%s/volumeGroups/%s", serviceInstanceId, vnfInstanceId, volumeGroupId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDeleteInstance() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String networkInstanceId = "fe9000-0009-9999";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.deleteNwInstance(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(networkInstanceId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_delete_nw_instance/%s/networks/%s", serviceInstanceId, networkInstanceId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDeleteServiceInstance() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String serviceStatus = "ACTIVE";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.deleteSvcInstance(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(serviceStatus))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_delete_svc_instance/%s", serviceInstanceId))
+            .param("serviceStatus", serviceStatus)
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).shouldHaveZeroInteractions();
+    }
+
+    @Test
+    public void shouldDeleteVnf() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String vnfInstanceId = "fe9000-0009-9999";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.deleteVnf(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(vnfInstanceId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_delete_vnf_instance/%s/vnfs/%s", serviceInstanceId, vnfInstanceId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDeleteConfiguration() throws Exception {
+        // given
+        RequestDetailsWrapper requestDetails = modelGenerator.nextObject(RequestDetailsWrapper.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String configurationId = "fe9000-0009-9999";
+
+        MsoResponseWrapper wrapper = mock(MsoResponseWrapper.class);
+        given(wrapper.getResponse()).willReturn("some response");
+        given(msoBusinessLogic.deleteConfiguration(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(configurationId))).willReturn(wrapper);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_delete_configuration/%s/configurations/%s", serviceInstanceId, configurationId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("some response"));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails.getRequestDetails()));
+    }
+
+    @Test
     public void shouldDelegateNewInstanceCreation() throws Exception {
         // given
         RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
@@ -230,6 +406,32 @@ public class MsoControllerTest {
             .contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string("some response"));
+
+        then(cloudService).shouldHaveZeroInteractions();
+    }
+
+    @Test
+    public void shouldActivateFabricConfiguration() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+
+        String path = "/mso/path";
+        given(msoBusinessLogic.getActivateFabricConfigurationPath(eq(serviceInstanceId))).willReturn(path);
+
+        RestObject<RequestReferencesContainer> response = new RestObject<>();
+        response.set(mock(RequestReferencesContainer.class));
+        response.setRaw("some response");
+        response.setStatusCode(200);
+
+        given(msoRestClient.PostForObject(objectEqualTo(requestDetails), eq(path), eq(RequestReferencesContainer.class))).willReturn(response);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_activate_fabric_configuration/%s", serviceInstanceId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("{\"status\":200,\"entity\":{}}"));
 
         then(cloudService).shouldHaveZeroInteractions();
     }

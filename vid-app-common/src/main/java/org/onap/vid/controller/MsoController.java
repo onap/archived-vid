@@ -302,7 +302,6 @@ public class MsoController extends RestrictedBaseController {
      * @throws Exception the exception
      */
     @RequestMapping(value = "/mso_delete_vnf_instance/{serviceInstanceId}/vnfs/{vnfInstanceId}", method = RequestMethod.POST)
-
     public ResponseEntity<String> deleteVnf(@PathVariable("serviceInstanceId") String serviceInstanceId,
         @PathVariable("vnfInstanceId") String vnfInstanceId,
         HttpServletRequest request, @RequestBody RequestDetails msoRequest) {
@@ -449,7 +448,6 @@ public class MsoController extends RestrictedBaseController {
      * @return the response entity
      * @throws Exception the exception
      */
-    //mso_delete_vf_module/bc305d54-75b4-431b-adb2-eb6b9e546014/vnfs/fe9000-0009-9999/vfmodules/abeeee-abeeee-abeeee
     @RequestMapping(value = "/mso_delete_vfmodule_instance/{serviceInstanceId}/vnfs/{vnfInstanceId}/vfModules/{vfModuleId}", method = RequestMethod.POST)
     public ResponseEntity<String> deleteVfModule(
         @PathVariable("serviceInstanceId") String serviceInstanceId,
