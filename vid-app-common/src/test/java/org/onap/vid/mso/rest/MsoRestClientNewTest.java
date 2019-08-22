@@ -46,6 +46,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.MsoController;
 import org.onap.vid.controller.WebConfig;
@@ -321,23 +322,6 @@ public class MsoRestClientNewTest {
             HttpStatus.OK_200,
             validResponse,validResponse)) {
             closure.executeGet(endpoint -> msoRestClient().getManualTasksByRequestId(null, null, endpoint, null));
-        }
-    }
-
-    @Test
-    public void testGetOrchestrationRequestsForDashboard() throws Exception {
-        MsoRestClientNew testSubject;
-        String t = "";
-        String sourceId = "";
-        String endpoint = "";
-        RestObject restObject = null;
-        MsoResponseWrapper result;
-
-        // default test
-        try {
-            testSubject = createTestSubject();
-            result = testSubject.getOrchestrationRequest(t, sourceId, endpoint, restObject, true);
-        } catch (Exception e) {
         }
     }
 

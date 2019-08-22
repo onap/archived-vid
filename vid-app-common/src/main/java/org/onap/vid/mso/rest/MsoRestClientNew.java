@@ -35,6 +35,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
@@ -51,6 +52,7 @@ import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.http.HttpMethod;
 
 
 /**
@@ -216,11 +218,11 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     }
 
     @Override
-    public MsoResponseWrapper getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject, boolean warpException) {
+    public HttpResponseWithRequestInfo<String> getOrchestrationRequest(String endpoint, boolean warpException) {
         String path = baseUrl + endpoint;
 
         HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
-        return MsoUtil.wrapResponse(response);
+        return new HttpResponseWithRequestInfo<>(response, path, HttpMethod.GET);
     }
 
     @Override

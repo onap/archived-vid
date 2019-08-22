@@ -21,6 +21,8 @@
 
 package org.onap.vid.model.probes;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+
 import com.google.common.base.MoreObjects;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
@@ -31,8 +33,6 @@ import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
-
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 public class HttpRequestMetadata extends StatusMetadata {
     private final HttpMethod httpMethod;
@@ -90,6 +90,7 @@ public class HttpRequestMetadata extends StatusMetadata {
         this.httpCode = response.getResponse().getStatus();
         if (readRawData) {
             try {
+                response.getResponse().getRawBody().reset();
                 this.rawData = IOUtils.toString(response.getResponse().getRawBody(), StandardCharsets.UTF_8.name());
             } catch (Exception e) {
                 //Nothing to do here
