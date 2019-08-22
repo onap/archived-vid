@@ -30,7 +30,7 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
     $scope.vfModuleName = vfModule.name;
     $scope.volumeGroups = vfModule.volumeGroups;
     $scope.lcpAndTenant = null;
-    $scope.regionSelection = {lcpRegion: null, legacyRegion: null, tenant: null};
+    $scope.regionSelection = {optionId: null, legacyRegion: null, tenant: null};
     $scope.lcpRegionList = null;
     $scope.isHomingData = false;
     $scope.megaRegion = ['AAIAIC25'];
@@ -60,12 +60,12 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
             .then(function (res) {
                 if (res && res.data) {
                     $scope.regionSelection = {
-                        lcpRegion: (res.data[COMPONENT.CLOUD_REGION_ID]) ? res.data[COMPONENT.CLOUD_REGION_ID] : null,
+                        optionId: (res.data[COMPONENT.CLOUD_REGION_ID]) ? res.data[COMPONENT.CLOUD_REGION_ID] : null,
                         legacyRegion: null,
                         tenant: (res.data[COMPONENT.TENANT_ID]) ? res.data[COMPONENT.TENANT_ID] : null
                     };
-                    $scope.isHomingData = $scope.regionSelection.lcpRegion !== null && res.data.tenant !== null;
-                    $scope.isHomingData = $scope.isHomingData && (($scope.megaRegion).indexOf($scope.regionSelection.lcpRegion) === -1);
+                    $scope.isHomingData = $scope.regionSelection.optionId !== null && res.data.tenant !== null;
+                    $scope.isHomingData = $scope.isHomingData && !$scope.selectedLcpRegionIsMegaRegion();
                 }
 
                 if (!$scope.isHomingData) {
@@ -75,11 +75,11 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
             .catch(function (error) {
                 getLcpCloudRegionTenantList();
             });
-    };
+    }
 
     function getLcpRegionId()  {
         if(_.isEmpty($scope.regionSelection.legacyRegion)) {
-            return $scope.regionSelection.lcpRegion
+            return DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudRegionId;
         }
         return $scope.regionSelection.legacyRegion;
     }
@@ -142,6 +142,12 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
 
     $scope.removeVendorFromCloudOwner = function(cloudOwner) {
         return AaiService.removeVendorFromCloudOwner(cloudOwner)
+    };
+
+    $scope.selectedLcpRegionIsMegaRegion = function() {
+        let cloudRegionId =
+            DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudRegionId;
+        return ($scope.megaRegion).indexOf(cloudRegionId) > -1
     };
 
     $scope.cancel = function() {

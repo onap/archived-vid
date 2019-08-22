@@ -1,6 +1,5 @@
 ///<reference path="../../../node_modules/cypress/types/index.d.ts"/>
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
-import {PnfModel} from '../../support/jsonBuilders/models/pnf.model';
 import {ServiceModel} from '../../support/jsonBuilders/models/service.model';
 import {AaiServiceInstancesModel} from '../../support/jsonBuilders/models/serviceInstances.model';
 import {AAISubDetailsModel} from '../../support/jsonBuilders/models/aaiSubDetails.model';
@@ -76,7 +75,7 @@ describe('Soft delete tests', function () {
 
     it(`Resume button display in orch status - pendingactivation, assigned - feature FLAG_VF_MODULE_RESUME_STATUS_CREATE - is OFF`, function () {
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/flags.json').then((res) => {
+      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/flags.json').then(() => {
         cy.server()
           .route({
             method: 'GET',
@@ -121,21 +120,21 @@ describe('Soft delete tests', function () {
       cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
       checkSoftDeleteAndDeletePopup('gg', 'vfModuleTreeNode-assigned', false, true);
-      cy.selectDropdownOptionByText('lcpRegion', 'AAIAIC25');
+      cy.selectDropdownOptionByText('lcpRegion', 'AAIAIC25 (AIC)');
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('have.attr', 'disabled');
       cy.typeToInput("lcpRegionText", "just another region");
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('have.attr', 'disabled');
       cy.selectDropdownOptionByText('tenant', 'USP-SIP-IC-24335-T-01');
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('not.have.attr', 'disabled');
-      cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
+      cy.selectDropdownOptionByText('lcpRegion', 'hvf6 (AIC)');
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('have.attr', 'disabled');
       cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('not.have.attr', 'disabled');
-      cy.getElementByDataTestsId('cancel').click({force: true})
+      cy.getElementByDataTestsId('cancel').click({force: true});
       cy.getElementByDataTestsId('confirmResumeDeleteButton').should('not.be.visible');
     });
 
-    it(`Soft delete button display with partial homing data from AAI`, function () {
+    it.only(`Soft delete button display with partial homing data from AAI`, function () {
 
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiGetHomingData.json').then((res) => {
         jsonBuilderAaiServiceInstances.basicJson(
@@ -149,7 +148,7 @@ describe('Soft delete tests', function () {
 
       cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
       cy.wait('@service-complexService');
-      checkSoftDeleteAndDeletePopup('my_vfModule', 'vfModuleTreeNode-pending-delete', true, true);
+      checkSoftDeleteAndDeletePopup('my_vfModule', 'vfModuleTreeNode-pending-delete', true, false);
       cy.getElementByDataTestsId('lcpRegionText').should('be.visible');
       cy.getElementByDataTestsId('lcpRegion').contains('AAIAIC25');
       cy.getElementByDataTestsId('tenant').contains('USP-SIP-IC-24335-T-01');
@@ -190,10 +189,10 @@ describe('Soft delete tests', function () {
     });
 
     function checkLegacyRegion() {
-      checkIsLegacyRegionTextIsDisplay('AAIAIC25', true);
-      checkIsLegacyRegionTextIsDisplay('olson3', false);
-      checkIsLegacyRegionTextIsDisplay('olson5a', false);
-      checkIsLegacyRegionTextIsDisplay('hvf6', false);
+      checkIsLegacyRegionTextIsDisplay('AAIAIC25 (AIC)', true);
+      checkIsLegacyRegionTextIsDisplay('olson3 (AIC)', false);
+      checkIsLegacyRegionTextIsDisplay('olson5a (AIC)', false);
+      checkIsLegacyRegionTextIsDisplay('hvf6 (AIC)', false);
     }
 
     function checkIsLegacyRegionTextIsDisplay(lcpRegionName: string, isVisible: boolean) {
