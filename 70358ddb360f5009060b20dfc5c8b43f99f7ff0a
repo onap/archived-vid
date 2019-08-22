@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7fac1e09_b2dd2ccf",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ProbeApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-08-22T13:27:27Z",
+      "side": 1,
+      "message": "i think conatins(HttpException) should be enough",
+      "revId": "70358ddb360f5009060b20dfc5c8b43f99f7ff0a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
