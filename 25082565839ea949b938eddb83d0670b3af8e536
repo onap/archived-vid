@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8e3ffeeb_6738e2e9",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoBusinessLogicImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-08-22T13:12:07Z",
+      "side": 1,
+      "message": "maybe extracted as field",
+      "range": {
+        "startLine": 1433,
+        "startChar": 123,
+        "endLine": 1433,
+        "endChar": 138
+      },
+      "revId": "25082565839ea949b938eddb83d0670b3af8e536",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
