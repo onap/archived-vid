@@ -21,6 +21,7 @@
 package org.onap.vid.mso;
 
 import io.joshworks.restclient.http.HttpResponse;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
@@ -89,7 +90,7 @@ public interface MsoInterface {
 
     MsoResponseWrapper deleteNwInstance(RequestDetails requestDetails, String endpoint);
 
-    MsoResponseWrapper getOrchestrationRequest(String t, String sourceId, String endpoint, RestObject restObject, boolean warpException);
+    HttpResponseWithRequestInfo<String> getOrchestrationRequest(String endpoint, boolean warpException);
 
     MsoResponseWrapper getOrchestrationRequest(String endpoint);
 

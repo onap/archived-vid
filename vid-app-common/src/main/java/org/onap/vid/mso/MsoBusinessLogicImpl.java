@@ -60,6 +60,8 @@ import javax.ws.rs.BadRequestException;
 import org.apache.commons.collections4.ListUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
@@ -67,6 +69,7 @@ import org.onap.vid.controller.OperationalEnvironmentController;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
+import org.onap.vid.model.probes.ErrorMetadata;
 import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.model.probes.StatusMetadata;
@@ -84,8 +87,8 @@ import org.onap.vid.mso.rest.RequestList;
 import org.onap.vid.mso.rest.RequestWrapper;
 import org.onap.vid.mso.rest.Task;
 import org.onap.vid.mso.rest.TaskList;
+import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 public class MsoBusinessLogicImpl implements MsoBusinessLogic {
@@ -383,12 +386,13 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     }
 
     private List<RequestWrapper> getOrchestrationRequestsByFilter(String filterName, String filterValue) {
+        HttpResponseWithRequestInfo<String> msoResponseWrapper = getRawOrchestrationRequestsByFilter(filterName, filterValue);
+        return deserializeOrchestrationRequestsJson(msoResponseWrapper.getResponse().getBody());
+    }
+
+    private HttpResponseWithRequestInfo<String> getRawOrchestrationRequestsByFilter(String filterName, String filterValue) {
         String orchestrationReqPath = constructOrchestrationRequestFilter(filterName, filterValue);
-        RestObject<String> restObjStr = new RestObject<>();
-        String str = new String();
-        restObjStr.set(str);
-        MsoResponseWrapper msoResponseWrapper = msoClientInterface.getOrchestrationRequest(str, "", orchestrationReqPath, restObjStr, true);
-        return deserializeOrchestrationRequestsJson(msoResponseWrapper.getEntity());
+        return msoClientInterface.getOrchestrationRequest(orchestrationReqPath, true);
     }
 
     private List<RequestWrapper> deserializeOrchestrationRequestsJson(String orchestrationRequestsJson) {
@@ -837,22 +841,38 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public ExternalComponentStatus probeComponent() {
-        String url = SystemProperties.getProperty(
-                MsoProperties.MSO_SERVER_URL) + "/" + SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS);
-        long startTime = System.currentTimeMillis();
-        ExternalComponentStatus externalComponentStatus;
-
+        final long startTime = System.currentTimeMillis();
+        HttpResponseWithRequestInfo<String> responseWithRequestInfo = null;
         try {
-            String rawBody = objectMapper.writeValueAsString(getOrchestrationRequestsForDashboard());
-            StatusMetadata statusMetadata=new HttpRequestMetadata(HttpMethod.GET,200,url,rawBody,"VID-SO",System.currentTimeMillis() - startTime);
+            responseWithRequestInfo = getRawOrchestrationRequestsByFilter("requestExecutionDate", "01-01-2100" );
+            int httpCode = responseWithRequestInfo.getResponse().getStatus();
+            boolean isAvailable = httpCode == 200 || httpCode == 202;
+            if (isAvailable) {
+                //make sure response can be parsed to RequestList.class
+                JACKSON_OBJECT_MAPPER.readValue(responseWithRequestInfo.getResponse().getBody(), RequestList.class);
+            }
 
-            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, true, statusMetadata);
+            HttpRequestMetadata metadata = new HttpRequestMetadata(responseWithRequestInfo,
+                isAvailable ? "OK" : "MSO returned no orchestration requests",
+                System.currentTimeMillis() - startTime, true);
+            return new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, isAvailable, metadata);
+
+        } catch (ExceptionWithRequestInfo e) {
+            long duration = System.currentTimeMillis() - startTime;
+            return new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, false,
+                new HttpRequestMetadata(e, duration));
         } catch (Exception e) {
-            StatusMetadata statusMetadata = new HttpRequestMetadata(HttpMethod.GET, HttpStatus.INTERNAL_SERVER_ERROR.value(), url, "", e.getMessage(), System.currentTimeMillis() - startTime);
-            externalComponentStatus = new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, false, statusMetadata);
-        }
+            StatusMetadata metadata;
+            long duration = System.currentTimeMillis() - startTime;
 
-        return externalComponentStatus;
+            if (responseWithRequestInfo == null) {
+                metadata = new ErrorMetadata(Logging.exceptionToDescription(e), duration);
+            } else {
+                metadata = new HttpRequestMetadata(responseWithRequestInfo, Logging.exceptionToDescription(e), duration, true);
+            }
+
+            return new ExternalComponentStatus(ExternalComponentStatus.Component.MSO, false, metadata);
+        }
     }
 
     private void validateUpdateVnfConfig(RequestDetails requestDetails) {
