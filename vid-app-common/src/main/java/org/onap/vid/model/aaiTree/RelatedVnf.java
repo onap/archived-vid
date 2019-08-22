@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +31,10 @@ public class RelatedVnf extends Node {
     private String serviceInstanceName;
     private String tenantName;
 
+    public RelatedVnf(AAITreeNode node) {
+        super(node);
+    }
+    
     public String getServiceInstanceId() {
         return serviceInstanceId;
     }
@@ -52,10 +57,6 @@ public class RelatedVnf extends Node {
 
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
-    }
-
-    public RelatedVnf(AAITreeNode node) {
-        super(node);
     }
 
     public static RelatedVnf from(AAITreeNode node) {
