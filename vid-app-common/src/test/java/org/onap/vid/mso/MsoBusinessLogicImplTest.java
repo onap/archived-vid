@@ -25,7 +25,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -37,19 +42,20 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
 import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
+import static org.onap.vid.model.probes.ExternalComponentStatus.Component.MSO;
 import static org.onap.vid.mso.MsoBusinessLogicImpl.validateEndpointPath;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import io.joshworks.restclient.http.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -60,19 +66,26 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.ws.rs.BadRequestException;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpException;
+import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.hamcrest.MockitoHamcrest;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.changeManagement.ChangeManagementRequest;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.controller.OperationalEnvironmentController;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.model.SoftDeleteRequest;
+import org.onap.vid.model.probes.ErrorMetadata;
 import org.onap.vid.model.probes.ExternalComponentStatus;
+import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
@@ -83,9 +96,8 @@ import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestD
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
-import org.onap.vid.mso.rest.RequestList;
-import org.onap.vid.mso.rest.RequestWrapper;
 import org.onap.vid.mso.rest.Task;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -496,12 +508,8 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         String vnfModelTypeOrchestrationRequests = getFileContentAsString("mso_model_info_sample_response.json");
         String scaleOutActionOrchestrationRequests = getFileContentAsString("mso_action_scaleout_sample_response.json");
 
-        MsoResponseWrapper msoResponseWrapperMock = mock(MsoResponseWrapper.class);
-        given(msoInterface
-                .getOrchestrationRequest(any(String.class), any(String.class), any(String.class),
-                        any(RestObject.class), anyBoolean()))
-                .willReturn(msoResponseWrapperMock);
-        given(msoResponseWrapperMock.getEntity())
+        HttpResponse<String> httpResponse = mockForGetOrchestrationRequest();
+        given(httpResponse.getBody())
                 .willReturn(vnfModelTypeOrchestrationRequests, scaleOutActionOrchestrationRequests);
 
         //when
@@ -523,13 +531,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         //given
         String vnfModelTypeOrchestrationRequests = getFileContentAsString("mso_model_info_sample_wrong_response.json");
 
-        MsoResponseWrapper msoResponseWrapperMock = mock(MsoResponseWrapper.class);
-        given(msoInterface
-                .getOrchestrationRequest(any(String.class), any(String.class), any(String.class),
-                        any(RestObject.class), anyBoolean()))
-                .willReturn(msoResponseWrapperMock);
-        given(msoResponseWrapperMock.getEntity())
-                .willReturn(vnfModelTypeOrchestrationRequests);
+        mockForGetOrchestrationRequest(200, vnfModelTypeOrchestrationRequests);
 
         //when
         msoBusinessLogic.getOrchestrationRequestsForDashboard();
@@ -1318,26 +1320,20 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void probeShouldReturnOrchestrationRequestsAndConnectionStatus(){
-        MsoResponseWrapper wrapper = getMsoResponseWrapper();
-        given(msoInterface.getOrchestrationRequest(anyString(),anyString(),
-                anyString(),any(RestObject.class),anyBoolean())).willReturn(wrapper);
+        String body =
+                "{"
+                + "  \"requestList\":"
+                + "  [{"
+                + "      \"request\": {}"
+                + "    }"
+                + "  ]"
+                + "}";
+        mockForGetOrchestrationRequest(200, body);
 
         ExternalComponentStatus externalComponentStatus = msoBusinessLogic.probeComponent();
 
         assertThat(externalComponentStatus.isAvailable()).isTrue();
         assertThat(externalComponentStatus.getComponent()).isEqualTo(ExternalComponentStatus.Component.MSO);
-    }
-
-    @NotNull
-    private MsoResponseWrapper getMsoResponseWrapper() {
-        MsoResponseWrapper wrapper=new MsoResponseWrapper();
-        RequestWrapper requestWrapper = new RequestWrapper();
-        requestWrapper.setRequest(new Request());
-        RequestList requestList = new RequestList();
-        List<RequestWrapper> response = Lists.newArrayList(requestWrapper);
-        requestList.setRequestList(response);
-        wrapper.setEntity(new Gson().toJson(requestList));
-        return wrapper;
     }
 
     private WorkflowRequestDetail createWorkflowRequestDetail() {
@@ -1428,6 +1424,194 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         MsoTestException(String testException) {
             super(testException);
         }
+    }
+
+    //you need to add mocks to httpResponse
+    private HttpResponse<String> mockForGetOrchestrationRequest() {
+
+        HttpResponse<String> httpResponse = mock(HttpResponse.class);
+        HttpResponseWithRequestInfo<String> httpResponseWithRequestInfo = new HttpResponseWithRequestInfo<>(httpResponse, "my pretty url", HttpMethod.GET);
+        when(msoInterface.getOrchestrationRequest(any(String.class),anyBoolean()))
+            .thenReturn(httpResponseWithRequestInfo);
+        return httpResponse;
+    }
+
+    private HttpResponse<String> mockForGetOrchestrationRequest(int statusCode, String body) {
+
+        HttpResponse<String> httpResponse = mockForGetOrchestrationRequest();
+        when(httpResponse.getStatus()).thenReturn(statusCode);
+        when(httpResponse.getBody()).thenReturn(body);
+        try {
+            when(httpResponse.getRawBody()).thenReturn(IOUtils.toInputStream(body, StandardCharsets.UTF_8.name()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return httpResponse;
+    }
+
+    @Test
+    public void probeComponent_verifyGoodRequest(){
+        String responseString = "" +
+            "{ " +
+            " \"requestList\": [{ " +
+            "   \"request\": { " +
+            "    \"requestDetails\": { " +
+            "     \"cloudConfiguration\": { " +
+            "      \"lcpCloudRegionId\": \"hvf6\", " +
+            "      \"cloudOwner\": \"irma-aic\", " +
+            "      \"tenantId\": \"ffdf52b5e5104b0e8f329b0b1637ee2e\" " +
+            "     }, " +
+            "     \"modelInfo\": { " +
+            "      \"modelCustomizationName\": \"VSP1710PID298109_vWINIFRED 0\", " +
+            "      \"modelCustomizationId\": \"24d43fdb-9aa6-4287-a68e-1e702ea89d13\", " +
+            "      \"modelInvariantId\": \"e7961100-cde6-4b5a-bcda-b8945086950a\", " +
+            "      \"modelVersionId\": \"959a7ba0-89ee-4984-9af6-65d5bdda4b0e\", " +
+            "      \"modelName\": \"VSP1710PID298109_vWINIFRED\", " +
+            "      \"modelType\": \"vnf\", " +
+            "      \"modelVersion\": \"1.0\" " +
+            "     }, " +
+            "     \"relatedModelList\": [{ " +
+            "       \"relatedInstance\": { " +
+            "        \"instanceId\": \"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48\", " +
+            "        \"modelInfo\": { " +
+            "         \"modelInvariantId\": \"57e00952-0af7-4f0f-b19a-408a6f73c8df\", " +
+            "         \"modelType\": \"service\", " +
+            "         \"modelName\": \"ServicevWINIFREDPID298109\", " +
+            "         \"modelVersion\": \"1.0\", " +
+            "         \"modelVersionId\": \"fe6985cd-ea33-3346-ac12-ab121484a3fe\" " +
+            "        } " +
+            "       } " +
+            "      } " +
+            "     ], " +
+            "     \"requestInfo\": { " +
+            "      \"source\": \"VID\", " +
+            "      \"suppressRollback\": false, " +
+            "      \"requestorId\": \"ds828e\" " +
+            "     }, " +
+            "     \"requestParameters\": { " +
+            "      \"userParams\": [ " +
+            "      ], " +
+            "      \"aLaCarte\": false, " +
+            "      \"usePreload\": true, " +
+            "      \"rebuildVolumeGroups\": false, " +
+            "      \"autoBuildVfModules\": false, " +
+            "      \"cascadeDelete\": false " +
+            "     }, " +
+            "     \"relatedInstanceList\": [{ " +
+            "       \"relatedInstance\": { " +
+            "        \"instanceId\": \"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48\", " +
+            "        \"modelInfo\": { " +
+            "         \"modelInvariantId\": \"57e00952-0af7-4f0f-b19a-408a6f73c8df\", " +
+            "         \"modelType\": \"service\", " +
+            "         \"modelName\": \"ServicevWINIFREDPID298109\", " +
+            "         \"modelVersion\": \"1.0\", " +
+            "         \"modelVersionId\": \"fe6985cd-ea33-3346-ac12-ab121484a3fe\" " +
+            "        } " +
+            "       } " +
+            "      } " +
+            "     ] " +
+            "    }, " +
+            "    \"requestId\": \"d352c70d-5ef8-4977-9ea8-4c8cbe860422\", " +
+            "    \"requestScope\": \"vnf\", " +
+            "    \"requestStatus\": { " +
+            "     \"percentProgress\": 100.0, " +
+            "     \"requestState\": \"Some Unknown Value\", " +
+            "     \"statusMessage\": \"Update Is In Progress\", " +
+            "     \"finishTime\": \"Fri, 08 Sep 2017 19:34:33 GMT\" " +
+            "    }, " +
+            "    \"requestType\": \"updateInstance\", " +
+            "    \"startTime\": \"<IN_PROGRESS_DATE>\", " +
+            "    \"instanceReferences\": { " +
+            "     \"serviceInstanceId\": \"6dd0f8de-93c7-48a2-914b-1a8d58e0eb48\", " +
+            "     \"vnfInstanceId\": \"7c00cc1e-6425-4fc3-afc3-0289db288d4c\", " +
+            "     \"requestorId\": \"ds828e\" " +
+            "    } " +
+            "   } " +
+            "  } " +
+            " ] " +
+            "} ";
+
+        mockForGetOrchestrationRequest(200, responseString);
+
+        final ExternalComponentStatus msoStatus = msoBusinessLogic.probeComponent();
+
+        assertMsoStatus(msoStatus, true);
+        assertMetadata(msoStatus, 200, startsWith(responseString.substring(0, 400)), "my pretty url", equalTo("OK"));
+    }
+
+    @Test
+    public void probeComponent_response200OkButEmptyPayload_shouldDescribeCorrectly() {
+        String responseString = "" +
+            "{ " +
+            " \"requestList\": []" +
+            "}";
+
+        mockForGetOrchestrationRequest(200, responseString);
+
+        final ExternalComponentStatus msoStatus = msoBusinessLogic.probeComponent();
+
+        assertMsoStatus(msoStatus, true);
+
+        assertMetadata(msoStatus, 200, equalTo(responseString), "my pretty url", containsString("OK"));
+    }
+
+    @Test
+    public void probeComponent_response200OkButInvalidPayload_shouldDescribeCorrectly() {
+        String responseString = "this payload is an invalid json";
+
+        mockForGetOrchestrationRequest(200, responseString);
+
+        final ExternalComponentStatus msoStatus = msoBusinessLogic.probeComponent();
+
+        assertMsoStatus(msoStatus, false);
+
+        assertMetadata(msoStatus, 200, equalTo(responseString), "my pretty url", containsString("JsonParseException: Unrecognized token"));
+    }
+
+    @Test
+    public void probeComponent_verifyResponse406() {
+        String responseString = "my raw data";
+
+        when(msoInterface.getOrchestrationRequest(any(), eq(true))).thenThrow(
+            new ExceptionWithRequestInfo(HttpMethod.GET, "my pretty url", responseString, 406,
+                new GenericUncheckedException(
+                    new HttpException("Simulating as 406 was returned (200 or 202 expected)"))));
+
+        final ExternalComponentStatus msoStatus = msoBusinessLogic.probeComponent();
+
+        assertMsoStatus(msoStatus, false);
+
+        assertMetadata(msoStatus, 406, equalTo(responseString), "my pretty url", containsString("HttpException: Simulating as 406 was returned"));
+    }
+
+
+    @Test
+    public void probeComponent_throwNullPointerException_resultIsWithErrorMetadata() {
+        when(msoInterface.getOrchestrationRequest(any(), eq(true))).thenThrow(new NullPointerException());
+
+        final ExternalComponentStatus msoStatus = msoBusinessLogic.probeComponent();
+
+        MatcherAssert.assertThat(msoStatus.isAvailable(), is(false));
+        MatcherAssert.assertThat(msoStatus.getComponent(), is(MSO));
+        MatcherAssert.assertThat(msoStatus.getMetadata(), instanceOf(ErrorMetadata.class));
+
+        final ErrorMetadata metadata = ((ErrorMetadata) msoStatus.getMetadata());
+        org.junit.Assert.assertThat(metadata.getDescription(), containsString("NullPointerException"));
+    }
+
+    private void assertMsoStatus(ExternalComponentStatus msoStatus, boolean isAvailable) {
+        MatcherAssert.assertThat(msoStatus.isAvailable(), is(isAvailable));
+        MatcherAssert.assertThat(msoStatus.getComponent(), is(MSO));
+        MatcherAssert.assertThat(msoStatus.getMetadata(), instanceOf(HttpRequestMetadata.class));
+    }
+
+    private void assertMetadata(ExternalComponentStatus msoStatus, int httpCode, Matcher<String> rawData, String url, Matcher<String> descriptionMatcher) {
+        final HttpRequestMetadata metadata = ((HttpRequestMetadata) msoStatus.getMetadata());
+        org.junit.Assert.assertThat(metadata.getHttpMethod(), equalTo(HttpMethod.GET));
+        org.junit.Assert.assertThat(metadata.getHttpCode(), equalTo(httpCode));
+        org.junit.Assert.assertThat(metadata.getUrl(), equalTo(url));
+        org.junit.Assert.assertThat(metadata.getRawData(), rawData);
+        org.junit.Assert.assertThat(metadata.getDescription(), descriptionMatcher);
     }
 }
 

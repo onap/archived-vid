@@ -38,6 +38,7 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.mockito.Mock;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
@@ -50,6 +51,7 @@ import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.RequestReferences;
 import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
@@ -375,17 +377,15 @@ public class MsoRestClientTest {
 
     @Test
     public void shouldProperlyGetOrchestrationRequest() {
-        //  given
-        RestObject restObject = generateMockMsoRestObject();
-
         String endpoint = "testEndpoint";
         HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
-        MsoResponseWrapper expectedResponse = MsoUtil.wrapResponse(httpResponse);
+        String expectedPath = baseUrl+endpoint;
+        HttpResponseWithRequestInfo<String> expectedResponse = new HttpResponseWithRequestInfo<>(httpResponse, expectedPath, HttpMethod.GET);
 
-        when( client.get( eq(baseUrl+endpoint),anyMap(),anyMap(),eq(String.class) )  ).thenReturn(httpResponse);
+        when( client.get( eq(expectedPath), anyMap(), anyMap(), eq(String.class) )).thenReturn(httpResponse);
 
         //  when
-        MsoResponseWrapper response = restClient.getOrchestrationRequest(null,null,endpoint,restObject,true);
+        HttpResponseWithRequestInfo<String> response = restClient.getOrchestrationRequest(endpoint, true);
 
         //  then
         assertThat(response).isEqualToComparingFieldByField(expectedResponse);

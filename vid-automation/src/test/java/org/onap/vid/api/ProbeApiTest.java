@@ -168,7 +168,7 @@ public class ProbeApiTest extends BaseApiTest {
                                         406,
                                         MSO_QUERY_PARAMS,
                                         "this payload is an invalid json",
-                                        "org.apache.http.HttpException: Get with status=406 (200 or 202 expected), url= http"
+                                        "MSO returned no orchestration requests"
                                 )
                         ), new ExternalComponentStatus(ExternalComponentStatus.Component.SDC,
                                 false,
