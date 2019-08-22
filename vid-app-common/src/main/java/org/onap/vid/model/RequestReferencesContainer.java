@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +34,11 @@ public class RequestReferencesContainer {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
-
+    
+    public RequestReferencesContainer(@JsonProperty("requestReferences") RequestReferences requestReferences) {
+        this.requestReferences = requestReferences;
+    }
+    
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -42,10 +47,6 @@ public class RequestReferencesContainer {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
-    }
-
-    public RequestReferencesContainer(@JsonProperty("requestReferences") RequestReferences requestReferences) {
-        this.requestReferences = requestReferences;
     }
 
     public RequestReferences getRequestReferences() {
