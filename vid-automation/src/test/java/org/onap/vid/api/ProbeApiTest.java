@@ -142,7 +142,7 @@ public class ProbeApiTest extends BaseApiTest {
                                         200,
                                         SCHEDULER_PATH,
                                         "this payload is an invalid json",
-                                        "javax.ws.rs.ProcessingException"
+                                        "com.fasterxml.jackson.core.JsonParseException"
                                 )
                         ))
                 },
@@ -185,7 +185,7 @@ public class ProbeApiTest extends BaseApiTest {
                                         400,
                                         SCHEDULER_PATH,
                                         "this payload is an invalid json",
-                                        "org.apache.http.HttpException: Get with status = 400, url = " + SCHEDULER_PATH
+                                        "org.apache.http.HttpException"
                                 )
                         ))
                 }
