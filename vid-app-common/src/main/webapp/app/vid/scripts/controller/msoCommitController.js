@@ -120,12 +120,12 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 
     $scope.$on(COMPONENT.MSO_DEACTIVATE_ENVIRONMENT, function(event, request) {
         init(request, COMPONENT.MSO_DEACTIVATE_ENVIRONMENT, getCloudResourcesRequestStatus);
-        TestEnvironmentsService.deactivateApplicationEnv(request).then(handleInitialResponse)
+        TestEnvironmentsService.deactivateApplicationEnv(request).then(handleInitialResponse);
     });
 
     $scope.$on(COMPONENT.MSO_ACTIVATE_ENVIRONMENT, function(event, request) {
         init(request, COMPONENT.MSO_ACTIVATE_ENVIRONMENT, getCloudResourcesRequestStatus);
-        TestEnvironmentsService.activateApplicationEnv(request).then(handleInitialResponse)
+        TestEnvironmentsService.activateApplicationEnv(request).then(handleInitialResponse);
     });
 
 
@@ -161,8 +161,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 
 	var handleInitialResponse = function(response) {
 		try {
-			updateViewAfterInitialResponse(response);
-			
+			updateViewAfterInitialResponse(response);			
 			_this.timer = $timeout(getRequestStatusFunc, PropertyService
 					.getMsoMaxPollingIntervalMsec());
 
@@ -179,7 +178,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 			}
 			MsoService.showResponseContentError(error, showError);
 		}
-	}
+	};
 
 	function getOrchestrationRequestStatus() {
 		MsoService.getOrchestrationRequest(_this.requestId, handleGetStatusResponse);
@@ -207,7 +206,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 			_this.isMsoError = true;
 			MsoService.showResponseContentError(error, showError);
 		}
-	}
+	};
 
 	var updateViewAfterInitialResponse = function(response) {
 		$scope.isCloseEnabled = true;
@@ -220,7 +219,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 
 		$scope.percentProgress = 4; // Show "a little more" progress
 		$scope.status = FIELD.STATUS.IN_PROGRESS;
-	}
+	};
 
 	/*
 	 * Updates the view and returns "true" if the MSO operation has returned a
@@ -267,7 +266,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 		}
 
 		return false;
-	}
+	};
 
 	var updateLog = function(response) {
 		$scope.log = MsoService.getFormattedCommonResponse(response)
@@ -275,14 +274,14 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 		UtilityService.checkUndefined("entity", response.data.entity);
 		UtilityService.checkUndefined("status", response.data.status);
 		MsoService.checkValidStatus(response);
-	}
+	};
 	var updateLogFinalResponse = function(response) {
 		$scope.log = MsoService.getFormattedSingleGetOrchestrationRequestResponse(response)
 				+ $scope.log;
 		UtilityService.checkUndefined("entity", response.data.entity);
 		UtilityService.checkUndefined("status", response.data.status);
 		MsoService.checkValidStatus(response);
-	}
+	};
 	$scope.close = function() {
 		if (_this.timer !== undefined) {
 			$timeout.cancel(_this.timer);
@@ -303,7 +302,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 		} else {
 			$scope.popup.isVisible = false;
 		}
-	}
+	};
 
 	var showError = function(summary, details) {
 		var message = summary;
@@ -314,8 +313,7 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 		$scope.isProgressVisible = false;
 		$scope.error = message;
 		$scope.status = FIELD.STATUS.ERROR;
-	}
-	
+	};	
 	var findNextPage = function ( cid, msoRequestType, isMsoError ) {
 		//console.log ("window.location.href" + window.location.href);
 		//console.log ("component id " + cid);
@@ -345,8 +343,8 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 			}
 			window.location.href = newUrl;
 		}	
-	}
-}
+	};
+};
 
 appDS2.controller("msoCommitController", [ "COMPONENT", "FIELD", "$scope", "$http", "$timeout",
 		"$window", "$log", "$uibModal", "MsoService", "PropertyService", "UtilityService", "TestEnvironmentsService", "DataService",
