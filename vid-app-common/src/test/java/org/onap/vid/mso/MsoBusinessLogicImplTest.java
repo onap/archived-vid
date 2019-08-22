@@ -109,6 +109,7 @@ import org.testng.annotations.Test;
 public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String MY_PRETTY_URL = "my pretty url";
 
     @Mock
     private MsoInterface msoInterface;
@@ -1430,7 +1431,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     private HttpResponse<String> mockForGetOrchestrationRequest() {
 
         HttpResponse<String> httpResponse = mock(HttpResponse.class);
-        HttpResponseWithRequestInfo<String> httpResponseWithRequestInfo = new HttpResponseWithRequestInfo<>(httpResponse, "my pretty url", HttpMethod.GET);
+        HttpResponseWithRequestInfo<String> httpResponseWithRequestInfo = new HttpResponseWithRequestInfo<>(httpResponse, MY_PRETTY_URL, HttpMethod.GET);
         when(msoInterface.getOrchestrationRequest(any(String.class),anyBoolean()))
             .thenReturn(httpResponseWithRequestInfo);
         return httpResponse;
@@ -1536,7 +1537,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         final ExternalComponentStatus msoStatus = msoBusinessLogic.probeComponent();
 
         assertMsoStatus(msoStatus, true);
-        assertMetadata(msoStatus, 200, startsWith(responseString.substring(0, 400)), "my pretty url", equalTo("OK"));
+        assertMetadata(msoStatus, 200, startsWith(responseString.substring(0, 400)), MY_PRETTY_URL, equalTo("OK"));
     }
 
     @Test
@@ -1552,7 +1553,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
         assertMsoStatus(msoStatus, true);
 
-        assertMetadata(msoStatus, 200, equalTo(responseString), "my pretty url", containsString("OK"));
+        assertMetadata(msoStatus, 200, equalTo(responseString), MY_PRETTY_URL, containsString("OK"));
     }
 
     @Test
@@ -1565,7 +1566,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
         assertMsoStatus(msoStatus, false);
 
-        assertMetadata(msoStatus, 200, equalTo(responseString), "my pretty url", containsString("JsonParseException: Unrecognized token"));
+        assertMetadata(msoStatus, 200, equalTo(responseString), MY_PRETTY_URL, containsString("JsonParseException: Unrecognized token"));
     }
 
     @Test
@@ -1573,7 +1574,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         String responseString = "my raw data";
 
         when(msoInterface.getOrchestrationRequest(any(), eq(true))).thenThrow(
-            new ExceptionWithRequestInfo(HttpMethod.GET, "my pretty url", responseString, 406,
+            new ExceptionWithRequestInfo(HttpMethod.GET, MY_PRETTY_URL, responseString, 406,
                 new GenericUncheckedException(
                     new HttpException("Simulating as 406 was returned (200 or 202 expected)"))));
 
@@ -1581,7 +1582,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
         assertMsoStatus(msoStatus, false);
 
-        assertMetadata(msoStatus, 406, equalTo(responseString), "my pretty url", containsString("HttpException: Simulating as 406 was returned"));
+        assertMetadata(msoStatus, 406, equalTo(responseString), MY_PRETTY_URL, containsString("HttpException: Simulating as 406 was returned"));
     }
 
 
