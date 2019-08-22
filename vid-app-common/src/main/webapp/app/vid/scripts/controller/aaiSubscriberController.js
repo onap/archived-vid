@@ -55,7 +55,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 componentId: COMPONENT.VNF,
                 callbackFunction: callbackFunction
             });
-        }
+        };
         $scope.popup = new Object();
 
 
@@ -85,18 +85,18 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
         $scope.getServiceTypes = function (globalCustomerId) {
             DataService.setGlobalCustomerId(globalCustomerId);
-            DataService.setServiceIdList($scope.customerList)
+            DataService.setServiceIdList($scope.customerList);
 
             if (globalCustomerId !== "" && globalCustomerId !== undefined) {
                 window.location.href = COMPONENT.SERVICE_TYPE_LIST_PATH + $scope.serviceTypeList;
             }
-        }
+        };
 
         $scope.refreshServiceTypes = function (globalCustomerId) {
             DataService.setGlobalCustomerId(globalCustomerId);
 
             $scope.getServiceTypesList();
-        }
+        };
 
         $scope.subId = "";
         $scope.createSubscriberName = "";
@@ -138,7 +138,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         $scope.subList = [];
         $scope.getAaiServiceModels = function (selectedServicetype, subName) {
             DataService.setGlobalCustomerId(selectedServicetype);
-            DataService.setServiceIdList($scope.serviceTypeList)
+            DataService.setServiceIdList($scope.serviceTypeList);
             DataService.setSubscriberName(subName);
 
             DataService.setSubscribers($scope.custSubList);
@@ -347,12 +347,12 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 callbackFunction: function (response) {
                 }
             });
-        }
+        };
         $scope.cancelCreateSIType = function () {
 
             window.location.href = COMPONENT.SERVICE_MODLES_INSTANCES_SUBSCRIBERS_PATH;
 
-        }
+        };
 
         $scope.fetchServices = function () {
             var serviceIdList = [];
@@ -395,12 +395,12 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 $scope.errorMsg = FIELD.ERROR.AAI_FETCHING_CUST_DATA + response.status;
                 $scope.errorDetails = response.data;
             });
-        }
+        };
 
         $scope.getPermitted = function (item) {
             return item.isPermitted || item[FIELD.ID.IS_PERMITTED];
 
-        }
+        };
 
 
         $scope.getSubDetails = function () {
@@ -482,7 +482,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             $scope.enableCloseButton(false);
             $scope.resetProgress();
             $scope.setProgress(2); // Show "a little" progress
-        }
+        };
 
         function getRelatedInstanceGroupsByVnfId(genericVnf) {
             var model = vidService.getModel();
@@ -503,7 +503,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                             )
                         }
                     }
-                })
+                });
             }
         }
 
@@ -516,7 +516,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 return resolveIfIsPermitted()
                     .then(function() {
                         return getAsdcModelByVersionId(modelVersionId);
-                    })
+                    });
             }
         }
 
@@ -689,7 +689,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     // the response is erroneous
                     console.log("aaiSubscriber getAsdcModel BAD RESPONSE");
                     errorCallback(response);
-                    return $q.reject()
+                    return $q.reject();
                 }
             }, errorCallback);
 
@@ -706,9 +706,9 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 if (item[FIELD.ID.SERVICE_INSTANCES] != null) {
                     item[FIELD.ID.SERVICE_INSTANCES][FIELD.ID.SERVICE_INSTANCE].forEach(function (service) {
                         if (service[FIELD.ID.SERVICE_INSTANCE_ID] === serviceId) {
-                            orchStatus = service['orchestration-status']
+                            orchStatus = service['orchestration-status'];
                         }
-                    })
+                    });
                 }
             });
             return orchStatus;
@@ -722,7 +722,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 }, function (response) {
                     //TODO
                 });
-        }
+        };
 
         $scope.isConfigurationDataAvailiable = function (configuration) {
             $log.debug(configuration);
