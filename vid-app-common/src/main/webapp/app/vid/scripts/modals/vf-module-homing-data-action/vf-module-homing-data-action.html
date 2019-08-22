@@ -55,7 +55,7 @@
             <div class="lcp-region field">
                 <label>LCP Region</label>
                 <select name="lcp-region" required class="form-item wide"
-                        data-tests-id="lcpRegion" data-ng-model="regionSelection.lcpRegion"
+                        data-tests-id="lcpRegion" data-ng-model="regionSelection.optionId"
                         data-ng-change="regionSelection.tenant = null; regionSelection.legacyRegion = null;">
                     <option class="lcp-region-placeholder" value="" selected>Select LCP Region</option>
                     <option ng-repeat="option in lcpRegionList" value="{{option.cloudRegionOptionId}}"
@@ -69,7 +69,7 @@
                 </select>
             </div>
 
-            <div class="legacy-region field" data-ng-if="(megaRegion).indexOf(regionSelection.lcpRegion) > -1">
+            <div class="legacy-region field" data-ng-if="selectedLcpRegionIsMegaRegion()">
                 <label>Legacy Region</label>
                 <input type="text" data-tests-id="lcpRegionText" required data-ng-model="regionSelection.legacyRegion"
                        placeholder="Enter legacy region">
@@ -81,7 +81,7 @@
                         data-tests-id="tenant" data-ng-model="regionSelection.tenant">
                     <option class="tenant-placeholder" value="" selected>Select Tenant Name</option>
                     <option ng-repeat="option in lcpAndTenant" class="tenantOption" value="{{option.tenantId}}"
-                            data-ng-if="option.isPermitted && option.cloudRegionOptionId === regionSelection.lcpRegion">{{option.tenantName}}
+                            data-ng-if="option.isPermitted && option.cloudRegionOptionId === regionSelection.optionId">{{option.tenantName}}
                     </option>
                 </select>
             </div>
