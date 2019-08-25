@@ -37,6 +37,8 @@
  */
 package org.onap.portalapp.conf;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
@@ -50,6 +52,7 @@ import org.onap.portalsdk.core.objectcache.AbstractCacheManager;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.CacheManager;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -164,8 +167,15 @@ public class ExternalAppConfig extends AppConfig implements Configurable {
 	}
 
 	@Bean
-	public LoginStrategy loginStrategy() {
-		return new LoginStrategyImpl();
+	public LoginStrategy loginStrategy(@Value("${login.strategy.classname:}") String classname) throws ReflectiveOperationException {
+		return isNotEmpty(classname) ?
+			newLoginStrategyInstance(classname) : new LoginStrategyImpl();
+	}
+
+	private LoginStrategy newLoginStrategyInstance(String loginStrategyClassname) throws ReflectiveOperationException {
+		return (LoginStrategy) Class.forName(loginStrategyClassname)
+			.getConstructor()
+			.newInstance();
 	}
 
 	@Bean
