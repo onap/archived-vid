@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2018 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +58,12 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
     private int pollingIntervalSeconds;
 
     private final VersionService versionService;
+    private static String sqlListOfFinalStatus =
+            String.format("(%s)",
+                FINAL_STATUS.stream().
+                map(x->String.format("'%s'",x)).
+                collect(Collectors.joining(","))
+            );
 
     @Autowired
     public JobsBrokerServiceInDatabaseImpl(DataAccessService dataAccessService,
@@ -337,13 +344,6 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
 
         return updatedEntities != 0;
     }
-
-    private static String sqlListOfFinalStatus =
-            String.format("(%s)",
-                FINAL_STATUS.stream().
-                map(x->String.format("'%s'",x)).
-                collect(Collectors.joining(","))
-            );
 
     @Override
     public void deleteOldFinalJobs(long secondsAgo) {
