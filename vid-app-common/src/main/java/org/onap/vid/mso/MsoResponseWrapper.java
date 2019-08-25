@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +40,13 @@ import javax.ws.rs.core.Response;
 
 public class MsoResponseWrapper implements MsoResponseWrapperInterface {
 
+	/** The status. */
+	@JsonProperty("status")
+	private int status;
+	
+	/** The entity. */
+	@JsonProperty("entity")
+	private String entity;
 
     public MsoResponseWrapper() {
     }
@@ -52,14 +60,6 @@ public class MsoResponseWrapper implements MsoResponseWrapperInterface {
 		this.status = status;
 		this.entity = entity;
 	}
-
-	/** The status. */
-	@JsonProperty("status")
-	private int status;
-	
-	/** The entity. */
-	@JsonProperty("entity")
-	private String entity;
 
 	/**
 	 * Gets the entity.
