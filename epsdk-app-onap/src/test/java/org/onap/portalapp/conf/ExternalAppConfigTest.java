@@ -37,18 +37,22 @@
  */
 package org.onap.portalapp.conf;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
+import org.onap.portalapp.login.LoginStrategyImpl;
 import org.onap.portalapp.scheduler.RegistryAdapter;
 import org.onap.portalsdk.core.auth.LoginStrategy;
+import org.onap.portalsdk.core.onboarding.exception.PortalAPIException;
 import org.onap.portalsdk.core.service.DataAccessService;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 public class ExternalAppConfigTest {
 
@@ -112,12 +116,39 @@ public class ExternalAppConfigTest {
     }
 
     @Test
-    public void testLoginStrategy() throws Exception {
-        ExternalAppConfig testSubject;
-        LoginStrategy result;
+    public void loginStrategy_givenEmptyString_yieldDefault() throws Exception {
+        assertThat(new ExternalAppConfig().loginStrategy(""),
+            is(instanceOf(LoginStrategyImpl.class)));
+    }
 
-        // default test
-        testSubject = createTestSubject();
-        result = testSubject.loginStrategy();
+    @Test
+    public void loginStrategy_givenNullString_yieldDefault() throws Exception {
+        assertThat(new ExternalAppConfig().loginStrategy(null),
+            is(instanceOf(LoginStrategyImpl.class)));
+    }
+
+    public static class DummyLoginStrategy extends LoginStrategy {
+        @Override
+        public ModelAndView doLogin(HttpServletRequest request, HttpServletResponse response) {
+            return null;
+        }
+
+        @Override
+        public String getUserId(HttpServletRequest request) {
+            return null;
+        }
+    }
+
+    @Test
+    public void loginStrategy_givenClassname_yieldClassInstance() throws Exception {
+        assertThat(
+            new ExternalAppConfig().loginStrategy("org.onap.portalapp.conf.ExternalAppConfigTest$DummyLoginStrategy"),
+            is(instanceOf(DummyLoginStrategy.class)));
+    }
+
+    @Test(expected = ClassNotFoundException.class)
+    public void loginStrategy_givenMissingClassname_throwsException() throws Exception {
+        assertThat(new ExternalAppConfig().loginStrategy("no.real.classname"),
+            is(instanceOf(DummyLoginStrategy.class)));
     }
 }
