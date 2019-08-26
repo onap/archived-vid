@@ -20,6 +20,13 @@
 
 package org.onap.vid.logging;
 
+import static com.att.eelf.configuration.Configuration.MDC_SERVER_FQDN;
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,13 +34,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.onap.portalsdk.core.logging.aspect.EELFLoggerAdvice;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.service.AppService;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.portalsdk.core.web.support.UserUtils;
+import org.onap.vid.controller.ControllersUtils;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import static com.att.eelf.configuration.Configuration.MDC_SERVER_FQDN;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 @Aspect
@@ -41,10 +49,14 @@ import static com.att.eelf.configuration.Configuration.MDC_SERVER_FQDN;
 public class VidLoggerAspect {
 
     private String canonicalHostName;
-    @Autowired
-    EELFLoggerAdvice advice;
+    private final ControllersUtils controllersUtils;
+    private final String appName;
 
-    public VidLoggerAspect() {
+    private final EELFLoggerAdvice advice;
+
+    @Autowired
+    public VidLoggerAspect(EELFLoggerAdvice advice, SystemPropertiesWrapper systemPropertiesWrapper,
+        AppService appService) {
         try {
             final InetAddress localHost = InetAddress.getLocalHost();
             canonicalHostName = localHost.getCanonicalHostName();
@@ -52,9 +64,13 @@ public class VidLoggerAspect {
             // YOLO
             canonicalHostName = null;
         }
+        this.advice = advice;
+        this.controllersUtils = new ControllersUtils(systemPropertiesWrapper);
+
+        this.appName = defaultIfEmpty(appService.getDefaultAppName(), SystemProperties.SDK_NAME);
     }
 
-    @Pointcut("execution(public * org.onap.vid.controller.*Controller.*(..))")
+    @Pointcut("execution(public * org.onap.vid.controller..*Controller.*(..))")
     public void vidControllers() {}
 
     @Around("vidControllers() && (" +
@@ -69,7 +85,10 @@ public class VidLoggerAspect {
     private Object logAroundMethod(ProceedingJoinPoint joinPoint, SystemProperties.SecurityEventTypeEnum securityEventType) throws Throwable {
         //Before
         Object[] passOnArgs = new Object[] {joinPoint.getSignature().getDeclaringType().getName(),joinPoint.getSignature().getName()};
-        Object[] returnArgs = advice.before(securityEventType, joinPoint.getArgs(), passOnArgs);
+        Object[] returnArgs = advice.before(securityEventType, fabricateArgsWithNull(), passOnArgs);
+
+        fixSetRequestBasedDefaultsIntoGlobalLoggingContext(httpServletRequestOrNull(joinPoint),
+            joinPoint.getSignature().getDeclaringType().getName());
 
         fixServerFqdnInMDC();
 
@@ -92,6 +111,51 @@ public class VidLoggerAspect {
     // Set the status code into MDC *before* the metrics log is written by advice.after()
     private void fixStatusCodeInMDC(String restStatus) {
         EELFLoggerDelegate.mdcPut(SystemProperties.STATUS_CODE, restStatus);
+    }
+
+    /**
+     * Returns an array with a single entry with a null value. This will stop org.onap.portalsdk.core.logging.aspect.EELFLoggerAdvice.before
+     * from throwing on ArrayIndexOutOfBound, and also prevent SessionExpiredException.
+     */
+    private Object[] fabricateArgsWithNull() {
+        return new Object[]{null};
+    }
+
+    /**
+     * Finds the first joinPoint's param which is an HttpServletRequest. If not found, use Spring's RequestContextHolder
+     * to retrieve it.
+     *
+     * @return null or the current httpServletRequest
+     */
+    private HttpServletRequest httpServletRequestOrNull(ProceedingJoinPoint joinPoint) {
+        final Object httpServletRequest = Arrays.stream(joinPoint.getArgs())
+            .filter(param -> param instanceof HttpServletRequest)
+            .findFirst()
+            .orElseGet(() -> {
+                try {
+                    return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+                } catch (Exception e) { // ClassCast, IllegalState, etc.
+                    return null;
+                }
+            });
+
+        return (HttpServletRequest) httpServletRequest;
+    }
+
+    /**
+     * Mimics a part from org.onap.portalsdk.core.logging.aspect.EELFLoggerAdvice.before, but with much more carefulness
+     * of exceptions and defaults. Main difference is that if no session, function does not throw. It just fallback to
+     * an empty loginId.
+     */
+    private void fixSetRequestBasedDefaultsIntoGlobalLoggingContext(HttpServletRequest httpServletRequest, String className) {
+        if (httpServletRequest != null) {
+
+            EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(className);
+            String requestId = UserUtils.getRequestId(httpServletRequest);
+            String loginId = controllersUtils.extractUserId(httpServletRequest);
+
+            logger.setRequestBasedDefaultsIntoGlobalLoggingContext(httpServletRequest, appName, requestId, loginId);
+        }
     }
 
     // Override the non-canonical hostname set by EELFLoggerDelegate::setGlobalLoggingContext()
