@@ -4,6 +4,7 @@
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
  * Modifications Copyright (C) 2019 Nokia. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,9 +46,7 @@ public final class ControllersUtils {
 
     public static ExceptionResponse handleException(Exception e, EELFLoggerDelegate logger) {
         logger.error(EELFLoggerDelegate.errorLogger, "{}: {}", getMethodCallerName(), ExceptionUtils.getMessage(e), e);
-
-        ExceptionResponse exceptionResponse = new ExceptionResponse(e);
-        return exceptionResponse;
+        return new ExceptionResponse(e);
     }
 
     public static ResponseEntity handleWebApplicationException(WebApplicationException e, EELFLoggerDelegate logger) {
