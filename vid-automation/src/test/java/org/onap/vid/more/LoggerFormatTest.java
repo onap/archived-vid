@@ -24,8 +24,10 @@ import static org.junit.Assert.assertThat;
 public class LoggerFormatTest extends BaseApiTest {
 
 
-    // See: https://wiki.web.att.com/display/KSAT/REST-based+Log+Checker
-    private final static String logChecker = "http://eelflogcheck.it.att.com:31820/validate";
+    // See:
+    //   https://wiki.web.att.com/display/KSAT/REST-based+Log+Checker
+    //   and http://spider.research.att.com/~ecomplogtools/logchecker-ELS-2019.11/
+    private final static String logChecker = "http://135.207.141.34:8888/validate";
     private final Logger logger = LogManager.getLogger(LoggerFormatTest.class);
 
     @BeforeClass
