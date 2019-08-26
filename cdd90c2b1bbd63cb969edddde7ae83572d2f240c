@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da8c9796_e3cd8391",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-08-26T08:56:29Z",
+      "side": 1,
+      "message": "as you already touched that piece of code -\u003e it\u0027ll be good to not create objectMapper every each call :P",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 62
+      },
+      "revId": "cdd90c2b1bbd63cb969edddde7ae83572d2f240c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
