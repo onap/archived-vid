@@ -47,7 +47,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	 */
 
 	DataService.setSubscriberName("Mobility");
-	DataService.setGlobalCustomerId("CUSTID12345")
+	DataService.setGlobalCustomerId("CUSTID12345");
 	DataService.setServiceType("Mobility Type 1");
 	DataService.setServiceInstanceName("Example Service Instance Name");
 	DataService.setServiceName("Mobility Service 1");
@@ -61,7 +61,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 
 	setTestMode();
 
-    }
+    };
 
     $scope.autoStartTest = function() {
 	/*
@@ -80,7 +80,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    // $scope.deleteVnf();
 	    // $scope.createVfModule();
 	}, 500);
-    }
+    };
 
     /*
      * This block of code is only used for testing.
@@ -165,14 +165,14 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.SERVICE,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.createVnf = function() {
 
 	DataService.setModelId("91238134091820938018230918230989");
 	DataService.setModelInstanceName("VNF_MODEL_INSTANCE_NAME");
 
-	DataService.setCloudRegionTenantList(exampleCloudRegionTenantList)
+	DataService.setCloudRegionTenantList(exampleCloudRegionTenantList);
 	DataService.setServiceIdList(exampleServiceIdList);
 
 	// Data used to create MSO "relatedInstanceList" object
@@ -183,7 +183,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VNF,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.createVfModule = function() {
 	DataService
@@ -211,7 +211,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VF_MODULE,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.createVolumeGroup = function() {
 
@@ -230,7 +230,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VOLUME_GROUP,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.createNetwork = function() {
 
@@ -248,7 +248,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.NETWORK,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     /*
      * Delete functions
@@ -263,7 +263,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.SERVICE,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.deleteVnf = function() {
 
@@ -279,7 +279,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VNF,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.deleteVfModule = function() {
 
@@ -296,7 +296,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VF_MODULE,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.deleteVolumeGroup = function() {
 
@@ -313,7 +313,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VOLUME_GROUP,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.deleteNetwork = function() {
 
@@ -328,7 +328,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.NETWORK,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     /*
      * Show Details functions
@@ -341,7 +341,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.SERVICE,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.showVnfDetails = function() {
 
@@ -353,7 +353,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VNF,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.showVfModuleDetails = function() {
 
@@ -365,7 +365,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VF_MODULE,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.showVolumeGroupDetails = function() {
 
@@ -376,7 +376,7 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.VOLUME_GROUP,
 	    callbackFunction : callbackFunction
 	});
-    }
+    };
 
     $scope.showNetworkDetails = function() {
 
@@ -387,8 +387,8 @@ var testViewEditController = function(COMPONENT, DataService, PropertyService,
 	    componentId : COMPONENT.NETWORK,
 	    callbackFunction : callbackFunction
 	});
-    }
-}
+    };
+};
 
 app.controller("testViewEditController", [ "COMPONENT", "DataService",
 	"PropertyService", "UtilityService", "$scope", "$timeout",
