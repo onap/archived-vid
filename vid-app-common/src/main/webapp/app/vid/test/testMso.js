@@ -45,13 +45,13 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 			setTestMode();
 			
 			DataService.setSubscriberName("Mobility");
-			DataService.setGlobalCustomerId("CUSTID12345")
+			DataService.setGlobalCustomerId("CUSTID12345");
 			DataService.setServiceType("Mobility Type 1");
 			DataService.setServiceName("Mobility Service 1");
 			DataService.setServiceInstanceId("mmsc-test-service-instance");
 			DataService.setVnfInstanceId("abcd-12345-56789");
 			DataService.setVfModuleInstanceId("xye-99990123213");
-		}
+		};
 		
 		var TEST_MODE_COOKIE = "isTestModeEnabled";
 
@@ -75,7 +75,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 		    } else {
 			PropertyService.setMsoBaseUrl(defaultMsoBaseUrl);
 		    }
-		}
+		};
 		
 		$scope.autoStartCommitTest = function() {
 			/*
@@ -87,7 +87,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl404();			
 			}, 500);
-		}
+		};
 		
 		$scope.autoStartQueryTest = function() {
 			/*
@@ -97,7 +97,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 			$timeout(function() {
 				// $scope.queryServiceInstance();
 			}, 500);
-		}
+		};
 		
 		$scope.queryServiceInstance = function() {
 			/*
@@ -106,7 +106,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 			$scope.$broadcast("showComponentDetails", {
 			    componentId : COMPONENT.SERVICE
 			});
-		}
+		};
 	
 		$scope.createServiceInstance = function() {
 			/*
@@ -116,7 +116,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_create_svc_instance",
 				requestDetails : createServiceRequestDetails
 			});
-		}
+		};
 	
 		$scope.deleteServiceInstance = function() {
 			/*
@@ -126,7 +126,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_delete_svc_instance/bc305d54-75b4-431b-adb2-eb6b9e546014",
 				requestDetails : deleteServiceRequestDetails
 			});
-		}
+		};
 	
 		$scope.createVNFInstance = function() {
 			/*
@@ -136,7 +136,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_create_vnf_instance/bc305d54-75b4-431b-adb2-eb6b9e546099",
 				requestDetails : createVnfRequestDetails
 			});
-		}
+		};
 	
 		$scope.deleteVNFInstance = function() {
 			/*
@@ -146,7 +146,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_delete_vnf_instance/bc305d54-75b4-431b-adb2-eb6b9e546014/vnfs/ab9000-0009-9999",
 				requestDetails : deleteVnfRequestDetails
 			});
-		}
+		};
 		
 		$scope.createVolumeGroupInstance = function() {
 			/*
@@ -156,7 +156,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_create_volumegroup_instance/bc305d54-75b4-431b-adb2-eb6b9e546099/vnfs/fe305d54-75b4-431b-adb2-eb6b9e546fea",
 				requestDetails : createVolumeGroupRequestDetails
 			});
-		}
+		};
 	
 		$scope.deleteVolumeGroupInstance = function() {
 			/*
@@ -166,7 +166,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_delete_volumegroup_instance/bc305d54-75b4-431b-adb2-eb6b9e546014/vnfs/fe305d54-75b4-431b-adb2-eb6b9e546fea/volumeGroups/fe9000-0009-9999",
 				requestDetails : deleteVolumeGroupRequestDetails
 			});
-		}
+		};
 		$scope.createVFModuleInstance = function() {
 			/*
 			 * Example of method call needed to commit an instance creation request.
@@ -175,7 +175,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_create_vfmodule_instance/bc305d54-75b4-431b-adb2-eb6b9e546099/vnfs/111-111-111-111",
 				requestDetails : createVFModuleRequestDetails
 			});
-		}
+		};
 	
 		$scope.deleteVFModuleInstance = function() {
 			/*
@@ -192,14 +192,14 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_create_nw_instance/789098877777",
 				requestDetails : createNetworkRequestDetails
 			});
-		}
+		};
 	
 		$scope.deleteNetworkInstance = function() {
 			$scope.$broadcast("deleteInstance",	{
 				url : "mso_delete_nw_instance/bc305d54-75b4-431b-adb2-eb6b9e546014/networks/ff305d54-75b4-ff1b-fff1-eb6b9e5460ff",
 				requestDetails : deleteNetworkRequestDetails
 			});
-		}
+		};
 	
 		$scope.generateError = function(testName) {
 			// Clone example request object
@@ -209,7 +209,7 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				url : "mso_create_svc_instance",
 				requestDetails : request
 			});
-		}
+		};
 	
 		$scope.generateInvalidUrl404 = function() {
 		    	var baseUrl = PropertyService.getMsoBaseUrl();
@@ -223,14 +223,14 @@ app.controller("testController", [ "$scope", "$timeout", "$cookieStore", "$log",
 				    $scope.popup.isVisible = false;
 				}
 			});	
-		}
+		};
 	
 		$scope.generateInvalidUrl405 = function() {
 			$scope.$broadcast("createInstance", {
 				url : "INVALID_STRING_mso_create_svc_instance",
 				requestDetails : createServiceRequestDetails
 			});
-		}
+		};
 	
 		/*
 		 * Test data objects:
