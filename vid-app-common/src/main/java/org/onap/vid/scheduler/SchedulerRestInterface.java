@@ -98,12 +98,13 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
             status = response.getStatus();
             restObject.setStatusCode(status);
             rawData = response.getBody();
+            restObject.setRaw(rawData);
             if (status == 200) {
                 if (t instanceof String) {
                     restObject.set((T)rawData);
                 }
                 else {
-                    restObject.set(JACKSON_OBJECT_MAPPER.readValue(rawData, new TypeReference<T>() {}));
+                    restObject.set(JACKSON_OBJECT_MAPPER.readValue(rawData, (Class<T>)t.getClass()));
                 }
                 logger.debug(EELFLoggerDelegate.debugLogger, "<== " + methodName + SUCCESSFUL_API_MESSAGE);
                 logger.info(EELFLoggerDelegate.errorLogger, "<== " + methodName + SUCCESSFUL_API_MESSAGE);
