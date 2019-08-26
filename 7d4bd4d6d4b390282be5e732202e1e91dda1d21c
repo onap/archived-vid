@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e2ea1dfe_b3e12b51",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-08-26T17:27:45Z",
+      "side": 1,
+      "message": "Not sure we can commit this ip address",
+      "range": {
+        "startLine": 30,
+        "startChar": 53,
+        "endLine": 30,
+        "endChar": 67
+      },
+      "revId": "7d4bd4d6d4b390282be5e732202e1e91dda1d21c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
