@@ -93,13 +93,13 @@ $(function() {
 		
 		var done = false;
 		var script = document.createElement('script');	
-		script.src = "api/analytics"
+		script.src = "api/analytics";
 		script.async = true;			
 		script.onload = function() {
 
 		runAnalytics();
 
-		}
+		};
 
 		document.head.appendChild(script);
 
@@ -115,7 +115,7 @@ $(function() {
             $footer.addClass('stickyFooter')
                 .animate({
                     top: footerTop
-                }, -1)
+                }, -1);
         } else {
             $footer.removeClass('stickyFooter');
         }
