@@ -40,7 +40,7 @@ import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfMod
 
 @NgModule({
   imports: [
-    TreeModule,
+    TreeModule.forRoot(),
     BrowserModule,
     ContextMenuModule,
     FormsModule,
