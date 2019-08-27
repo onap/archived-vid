@@ -771,6 +771,33 @@ public class AaiApiTest extends BaseApiAaiTest {
                 response.getBody());
     }
 
+    @Test
+    public void getNewestModelVersionByInvariant() throws JsonProcessingException {
+        String invariantId = "f6342be5-d66b-4d03-a1aa-c82c3094c4ea";
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIModelVersionsByInvariantId(), CLEAR_THEN_SET );
+
+        String url = uri +
+                "/aai_get_newest_model_version_by_invariant/" + invariantId;
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertTrue(response.toString().contains("the-newest-version"));
+    }
+
+    @Test
+    public void getNewestModelVersionByInvariant_modelNotExist_thenEmptyResponse() {
+        String invariantId = "f6342be5-d66b-4d03-a1aa-c82c3094c4ea";
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIModelVersionsByInvariantId(), CLEAR_THEN_SET );
+
+        String url = uri +
+                "/aai_get_newest_model_version_by_invariant/" + "model-not-exist";
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNull(response.getBody());
+    }
+
     private void assertResponse(Object expected, String response) {
         assertResponse(Configuration.empty(), expected, response);
     }

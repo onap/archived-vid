@@ -39,12 +39,16 @@ export class DrawingBoardHeader {
   mode : DrawingBoardModes = DrawingBoardModes.CREATE;
   serviceOrchStatus: string;
   isDeleted: boolean = false;
+  isUpgrade: boolean = false;
   isResume: boolean = false;
   store : NgRedux<AppState>;
   drawingBoardPermissions : DrawingBoardPermissions;
   drawingBoardHeaderService : DrawingBoardHeaderService;
   isServiceFailed: boolean;
   serviceStatusMessage: string;
+  private readonly action: string;
+  private presentedAction: string;
+
   constructor(private _contextMenuService: ContextMenuService, private dialogService: DialogService,
               private _iframeService : IframeService,
               private route: ActivatedRoute, private msoService: MsoService,
@@ -68,18 +72,23 @@ export class DrawingBoardHeader {
           });
         }
       });
+    if (!_.isNil(this.store.getState().service.serviceInstance[this.serviceModelId].action)){
+      if (this.store.getState().service.serviceInstance[this.serviceModelId].action.includes("Upgrade")) {
+        this.isUpgrade = true;
+      }
+    }
   }
 
 
   @ViewChild(ContextMenuComponent) public contextMenu: ContextMenuComponent;
 
   editViewEdit(): void {
-     window.parent.location.assign(this._drawingBoardHeaderService.generateOldViewEditPath());
+    window.parent.location.assign(this._drawingBoardHeaderService.generateOldViewEditPath());
   }
 
   isPermitted() : boolean {
     return this.drawingBoardPermissions.isEditPermitted;
-}
+  }
 
   getModeName():string {
     switch (this.mode) {
@@ -114,6 +123,7 @@ export class DrawingBoardHeader {
       this.serviceOrchStatus =  serviceInstance.orchStatus || "";
       this.isServiceFailed = serviceInstance.isFailed;
       this.serviceStatusMessage = serviceInstance.statusMessage;
+      this.isUpgrade = serviceInstance.isUpgraded;
     }
   }
 
@@ -131,10 +141,23 @@ export class DrawingBoardHeader {
     });
   }
 
+
+
   onDeleteUndoDeleteClick(){
     this.cancelResume(this.serviceModelId);
     this.isDeleted = !this.isDeleted;
     this._drawingBoardHeaderService.deleteService(this.serviceModelId, this.isDeleted)
+  }
+
+  determineDataTestId() :string {
+    switch(true) {
+      case this.isResume:
+        return'resume-status-type-header';
+      case this.isDeleted:
+        return 'delete-status-type-header';
+      case this.isUpgrade:
+        return 'upgrade-status-type-header';
+    }
   }
 
   onResumeUndoResumeClick(){
@@ -174,34 +197,39 @@ export class DrawingBoardHeader {
       instanceFields.subscriberName = this.store.getState().service.subscribers.find(sub => sub.id === instanceFields.globalSubscriberId).name;
       instanceFields.owningEntityName = this.extractOwningEntityNameAccordingtoId(instanceFields.owningEntityId);
     }
-    return _.omit(instanceFields,'optionalGroupMembersMap');
+    return _.omit(instanceFields,['optionalGroupMembersMap', 'upgradedVFMSonsCounter', 'isUpgraded', 'latestAvailableVersion']);
   }
 
+  private getAction(): string {
+    if(!_.isNil(this.store.getState().service.serviceInstance[this.serviceModelId].action))
+      return this.store.getState().service.serviceInstance[this.serviceModelId].action.split('_').pop();
+    return;
+  }
 
   public deployService(): void {
-      let instanceFields = this.extractServiceFields();
-      if (this.mode !== DrawingBoardModes.RETRY_EDIT) {
-        instanceFields.rollbackOnFailure = instanceFields.rollbackOnFailure === 'true';
-        this.msoService.submitMsoTask(instanceFields).subscribe((result) => {
-          window.parent.postMessage("navigateToInstantiationStatus", '*');
-        });
-      } else {
-        this.msoService.retryBulkMsoTask(this.jobId, instanceFields).subscribe((result) => {
-          window.parent.postMessage("navigateToInstantiationStatus", '*');
-        });
-      }
+    let instanceFields = this.extractServiceFields();
+    if (this.mode !== DrawingBoardModes.RETRY_EDIT) {
+      instanceFields.rollbackOnFailure = instanceFields.rollbackOnFailure === 'true';
+      this.msoService.submitMsoTask(instanceFields).subscribe((result) => {
+        window.parent.postMessage("navigateToInstantiationStatus", '*');
+      });
+    } else {
+      this.msoService.retryBulkMsoTask(this.jobId, instanceFields).subscribe((result) => {
+        window.parent.postMessage("navigateToInstantiationStatus", '*');
+      });
+    }
   }
 
   closePage() {
     let messageBoxData : MessageBoxData = new MessageBoxData(
-         "Delete Instantiation",  // modal title
+      "Delete Instantiation",  // modal title
       "You are about to stop the instantiation process of this service. \nAll data will be lost. Are you sure you want to stop?",
       SdcUiCommon.ModalType.warning,
       SdcUiCommon.ModalSize.medium,
-             [
-      {text:"Stop Instantiation", size:"large",  callback: this.navigate.bind(this), closeModal:true},
-      {text:"Cancel", size:"medium", closeModal:true}
-    ]);
+      [
+        {text:"Stop Instantiation", size:"large",  callback: this.navigate.bind(this), closeModal:true},
+        {text:"Cancel", size:"medium", closeModal:true}
+      ]);
 
     MessageBoxService.openModal.next(messageBoxData);
   }

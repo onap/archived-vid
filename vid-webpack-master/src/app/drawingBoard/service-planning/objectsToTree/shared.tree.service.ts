@@ -7,10 +7,12 @@ import {MessageBoxService} from "../../../shared/components/messageBox/messageBo
 import * as _ from "lodash";
 import {DrawingBoardModes} from "../drawing-board.modes";
 import {AuditInfoModalComponent} from "../../../shared/components/auditInfoModal/auditInfoModal.component";
-import {VnfModelInfo} from "./models/vnf/vnf.model.info";
 import {ILevelNodeInfo} from "./models/basic.model.info";
 import {ComponentInfoModel, ComponentInfoType} from "../component-info/component-info-model";
 import {ModelInformationItem} from "../../../shared/components/model-information/model-information.component";
+import {undoUpgradeService, upgradeService} from "../../../shared/storeUtil/utils/service/service.actions";
+import {VNFMethods} from "../../../shared/storeUtil/utils/vnf/vnf.actions";
+import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class SharedTreeService {
@@ -106,16 +108,7 @@ export class SharedTreeService {
    * should return true if can delete
    **********************************************/
   shouldShowDelete(node): boolean {
-    const mode = this._store.getState().global.drawingBoardStatus;
-    if (!_.isNil(node) && !_.isNil(node.data) && !_.isNil(node.data.action) && !_.isNil(node.data.menuActions['delete'])) {
-      if (mode !== DrawingBoardModes.EDIT || node.data.action === ServiceInstanceActions.Create) {
-        return false;
-      } else if (node.data.action === ServiceInstanceActions.None) {
-        return true
-      }
-      return false;
-    }
-    return false;
+    return this.shouldShowButtonGeneric(node, "delete")
   }
 
   /**********************************************
@@ -144,6 +137,78 @@ export class SharedTreeService {
       return true;
     }
     return false;
+  }
+  /**********************************************
+   * enabled only on edit/design
+   * enabled only if there's a newer version for VNF-M
+   **********************************************/
+  upgradeBottomUp(node,serviceModelId: string): void {
+    this.iterateOverTreeBranchAndRunAction(node, serviceModelId, VNFMethods.UPGRADE);
+    this._store.dispatch(upgradeService(serviceModelId));
+  }
+
+  private iterateOverTreeBranchAndRunAction(node, serviceModelId: string, actionMethod) {
+    while (_.has(node.parent, 'data') && _.has(node.parent.data, 'menuActions')
+    && !_.isNil(node.parent.data.menuActions[actionMethod])) {
+      node = node.parent;
+      node.data.menuActions[actionMethod]['method'](node, serviceModelId);
+    }
+  }
+
+  /****************************************************
+   * should return true if customer can upgrade a VFM *
+   ****************************************************/
+  shouldShowUpgrade(node, serviceModelId): boolean {
+    if (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
+      this.isThereAnUpdatedLatestVersion(serviceModelId)) {
+      return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE);
+    }
+    else {
+      return false
+    }
+  }
+
+  private isThereAnUpdatedLatestVersion(serviceModelId) : boolean{
+    let serviceInstance = this._store.getState().service.serviceInstance[serviceModelId];
+    return !_.isNil(serviceInstance.latestAvailableVersion) && (Number(serviceInstance.modelInfo.modelVersion) < serviceInstance.latestAvailableVersion);
+  }
+
+  private shouldShowButtonGeneric(node, method) {
+    const mode = this._store.getState().global.drawingBoardStatus;
+    if (!_.isNil(node) && !_.isNil(node.data) && !_.isNil(node.data.action) && !_.isNil(node.data.menuActions[method])) {
+      if (mode !== DrawingBoardModes.EDIT || node.data.action === ServiceInstanceActions.Create) {
+        return false;
+      }
+      else if (node.data.action === ServiceInstanceActions.None) {
+        return true
+      }
+    }
+    return false;
+  }
+
+  /**********************************************
+   * return boolean according to
+   * current defined action of VFModule node
+   **********************************************/
+  shouldShowUndoUpgrade(node): boolean {
+    const mode = this._store.getState().global.drawingBoardStatus;
+    if (mode === DrawingBoardModes.EDIT && !_.isNil(node.data.action) && !_.isNil(node.data.menuActions[VNFMethods.UNDO_UPGRADE])) {
+      if (node.data.action === ServiceInstanceActions.Upgrade) {
+        return false;
+      } else if (node.data.action.split('_').pop() === ServiceInstanceActions.Upgrade) {
+        return true
+      }
+      return false;
+    }
+    return false;
+  }
+  /**********************************************
+   * enabled only on edit/design
+   * enabled only if there's a newer version for VNF-M
+   **********************************************/
+  undoUpgradeBottomUp(node,serviceModelId: string): void {
+    this.iterateOverTreeBranchAndRunAction(node, serviceModelId, VNFMethods.UNDO_UPGRADE);
+    this._store.dispatch(undoUpgradeService(serviceModelId));
   }
   /**********************************************
    * should return true if can duplicate by mode
