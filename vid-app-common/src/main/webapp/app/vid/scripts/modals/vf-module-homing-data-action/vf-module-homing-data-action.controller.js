@@ -74,16 +74,21 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
             });
     }
 
-    function getLcpRegionId()  {
+    function getLcpRegionAndCloudOwner()  {
         if(_.isEmpty($scope.regionSelection.legacyRegion)) {
-            return DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudRegionId;
+            return {
+                cloudRegionId :  DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudRegionId,
+                cloudOwner : DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudOwner
+            }
         }
         return $scope.regionSelection.legacyRegion;
+        //todo need to return cloud owner two
     }
 
     $scope.deleteOrResume = function()  {
 
-        var msoParameterList = [({id: "lcpRegion", value: getLcpRegionId()})];
+        var msoParameterList = [({id: "lcpRegion", value: getLcpRegionAndCloudOwner().cloudRegionId})];
+        msoParameterList.push({id: "cloudOwner", value: getLcpRegionAndCloudOwner().cloudOwner});
         msoParameterList.push({id: "tenant", value: $scope.regionSelection.tenant});
 
         var requestParams = {};
@@ -127,7 +132,7 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
 
         var requestParams = {
             tenantId: $scope.regionSelection.tenant,
-            lcpCloudRegionId: getLcpRegionId(),
+            lcpCloudRegionId: getLcpRegionAndCloudOwner().cloudRegionId,
             serviceInstanceId: DataService.getServiceInstanceId(),
             vnfInstanceId: DataService.getVnfInstanceId(),
             vfModuleInstanceId: DataService.getVfModuleInstanceId()

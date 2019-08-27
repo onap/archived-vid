@@ -778,16 +778,16 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         var lcpRegion;
         var cloudOwner;
 
-        var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
-        var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
-        if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
+        // var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
+        // var cloudOwnerAndLcpCloudRegion = parameterList.cloudRegionId
+        if (parameterList.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
             lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
                 parameterList);
             cloudOwner = undefined;
         } else {
-            var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
-            lcpRegion = cloudOwnerAndLcpCloudRegion.cloudRegionId;
-            cloudOwner = cloudOwnerAndLcpCloudRegion.cloudOwner;
+            // var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
+            lcpRegion = parameterList.cloudRegionId;
+            cloudOwner = parameterList.cloudOwner;
         }
 
         return {
