@@ -1,15 +1,55 @@
 package org.onap.vid.api;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofL3Network;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofServiceInstance;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVlanTag;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVnf;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery.FORMAT.SIMPLE;
+import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.UUID;
 import net.javacrumbs.jsonunit.JsonAssert;
 import net.javacrumbs.jsonunit.core.Configuration;
 import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.text.StringEscapeUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.*;
+import org.onap.simulator.presetGenerator.presets.aai.AAIBaseGetL3NetworksByCloudRegionPreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIBadBodyForGetServicesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetHomingForVfModule;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegion;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegion;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegionSpecificState;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsInvalidRequest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsRequiredMissing;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePortsError;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetVpnsByType;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.model.aai.AaiResponse;
@@ -28,24 +68,6 @@ import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.utils.TestHelper;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.UUID;
-
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.*;
-import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
 
 public class AaiApiTest extends BaseApiAaiTest {
 
@@ -706,17 +728,26 @@ public class AaiApiTest extends BaseApiAaiTest {
     @Test
     public void getVnfDataByGlobalIdAndServiceType() {
 
-        SimulatorApi.registerExpectation(AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON, APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetBaseAAICustomQuery(
+            SIMPLE,
+            "business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances",
+            "query/vnf-topology-fromServiceInstance"
+        ) {
+            @Override
+            public Object getRequestBody() {
+                return getResourceAsString(
+                    "registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_response.json");
+            }
+        }, CLEAR_THEN_SET);
 
         String url = uri + "/get_vnf_data_by_globalid_and_service_type/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/vRichardson";
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-//reduced_vnf_data_by_globalid_and_service_type.json
-        assertTrue(false == response.getBody().contains("generic-vfmodule"));
+
+        assertThat(response.getBody(), containsString("generic-vfmodule"));
         assertResponse(JsonAssert.when(Option.IGNORING_ARRAY_ORDER),
                 getResourceAsString("changeManagement/reduced_vnf_data_by_globalid_and_service_type.json"),
                 response.getBody());
-
     }
 
     @Test
