@@ -7,7 +7,7 @@
         [testId]="'backBtn'"
         [size]="'large'"
         [name]="'navigation-arrow-back'">
-              </svg-icon>
+      </svg-icon>
     </span>
 
     <div class="header-col middleDetails" style="padding-top: 7px;padding-left: 13px;line-height: 100%;" *ngIf="isServiceFailed">
@@ -38,10 +38,13 @@
     <span [attr.data-tests-id]="'isViewOnly-status-test'" class="service-instance-label purple">{{getModeName()}}</span>
   </div>
 
-
   <div class="right-header">
-    <span class="action-status-type-header delete" [attr.data-tests-id]="'delete-status-type-header'" *ngIf="isDeleted === true">Delete</span>
-    <span class="action-status-type-header resume" [attr.data-tests-id]="'resume-status-type-header'" *ngIf="isResume === true">Resume</span>
+    <span
+      *ngIf = "isUpgrade || isDeleted || isResume"
+      [ngClass] = "isDeleted===true ? 'action-status-type-header delete' : 'action-status-type-header resume'"
+      [attr.data-tests-id]="determineDataTestId()">
+      {{getAction()}}
+    </span>
     <span class="menu-container notShowOnViewMode notShowOnRetryMode">
       <span [attr.data-tests-id]="'openMenuBtn'" class="icon-browse" (click)="onContextMenu($event)"></span>
       <context-menu>
@@ -77,9 +80,9 @@
             class="deploy-btn">{{drawingBoardHeaderService?.getModeButton(mode)}}</button>
     <ng-template #viewEditButton>
       <button [disabled]="!isPermitted()"
-        [attr.data-tests-id]="'editBtn'"
-        (click)="editViewEdit()"
-        class="deploy-btn">{{drawingBoardHeaderService?.getButtonText(mode)}}
+              [attr.data-tests-id]="'editBtn'"
+              (click)="editViewEdit()"
+              class="deploy-btn">{{drawingBoardHeaderService?.getButtonText(mode)}}
       </button>
     </ng-template>
   </div>

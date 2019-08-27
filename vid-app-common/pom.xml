@@ -792,6 +792,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-artifact</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-firefox-driver</artifactId>
             <version>${selenium.version}</version>

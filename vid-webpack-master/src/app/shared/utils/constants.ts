@@ -82,6 +82,7 @@ export module Constants {
     public static SERVICE_MODLES_INSTANCES_SUBSCRIBERS_PATH = 'serviceModels.htm#/instances/subscribers';
     public static SERVICES_DIST_STATUS_PATH = '../../rest/models/services?distributionStatus=';
     public static SERVICES_PATH = '../../rest/models/services/';
+    public static SERVICE_LATEST_VERSION = '../../aai_get_newest_model_version_by_invariant/';
     public static SERVICETYPE_SUB_PATH = '&serviceType=';
     public static SERVICEINSTANCEID_SUB_PATH = '&serviceInstanceId=';
     public static SERVICEMODELS_INSTANCES_SERVICES_PATH = 'serviceModels.htm#/instances/services';
