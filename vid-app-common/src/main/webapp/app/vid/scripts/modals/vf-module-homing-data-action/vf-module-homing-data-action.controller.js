@@ -59,13 +59,10 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
         AaiService.getHomingData(DataService.getVnfInstanceId(), DataService.getVfModuleInstanceId())
             .then(function (res) {
                 if (res && res.data) {
-                    $scope.regionSelection = {
-                        optionId: (res.data[COMPONENT.CLOUD_REGION_ID]) ? res.data[COMPONENT.CLOUD_REGION_ID] : null,
-                        legacyRegion: null,
-                        tenant: (res.data[COMPONENT.TENANT_ID]) ? res.data[COMPONENT.TENANT_ID] : null
-                    };
-                    $scope.isHomingData = $scope.regionSelection.optionId !== null && res.data.tenant !== null;
-                    $scope.isHomingData = $scope.isHomingData && !$scope.selectedLcpRegionIsMegaRegion();
+                    $scope.regionSelection.optionId = (res.data.cloudRegionOptionId);
+                    $scope.regionSelection.tenant = (res.data[COMPONENT.TENANT_ID]) ? res.data[COMPONENT.TENANT_ID] : null;
+                    $scope.isHomingData = $scope.regionSelection.optionId !== null && $scope.regionSelection.tenant !== null;
+                    $scope.isHomingData = $scope.isHomingData && (($scope.megaRegion).indexOf(res.data[COMPONENT.CLOUD_REGION_ID]) === -1);
                 }
 
                 if (!$scope.isHomingData) {
@@ -145,9 +142,12 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
     };
 
     $scope.selectedLcpRegionIsMegaRegion = function() {
-        let cloudRegionId =
-            DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudRegionId;
-        return ($scope.megaRegion).indexOf(cloudRegionId) > -1
+        if ($scope.regionSelection.optionId) {
+            let cloudRegionId = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudRegionId;
+            return ($scope.megaRegion).indexOf(cloudRegionId) > -1
+        } else {
+            return false;
+        }
     };
 
     $scope.cancel = function() {

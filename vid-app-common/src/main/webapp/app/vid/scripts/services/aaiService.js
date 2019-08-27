@@ -430,6 +430,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         },
         getLcpCloudRegionTenantList : function(globalCustomerId, serviceType,
                                                successCallbackFunction) {
+            let self = this;
             $log
                 .debug("AaiService:getLcpCloudRegionTenantList: globalCustomerId: "
                     + globalCustomerId);
@@ -447,12 +448,12 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 for (var i = 0; i < aaiLcpCloudRegionTenants.length; i++) {
                     var cloudOwner = aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_OWNER];
                     var cloudRegionId = aaiLcpCloudRegionTenants[i][COMPONENT.CLOUD_REGION_ID];
-                    var cloudRegionOptionId = 'option-' + cloudOwner + '-' + cloudRegionId;
+                    var cloudRegionOptionId = self.cloudRegionOptionId(cloudOwner, cloudRegionId);
 
                     lcpCloudRegionTenants.push({
                         "cloudOwner": cloudOwner,
                         "cloudRegionId": cloudRegionId,
-                        "cloudRegionOptionId": cloudRegionOptionId.toLowerCase(),
+                        "cloudRegionOptionId": cloudRegionOptionId,
                         "tenantName": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_NAME],
                         "tenantId": aaiLcpCloudRegionTenants[i][COMPONENT.TENANT_ID],
                         "isPermitted": aaiLcpCloudRegionTenants[i][COMPONENT.IS_PERMITTED]});
@@ -760,7 +761,12 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 });
         },
 
+        cloudRegionOptionId: function (cloudOwner, cloudRegionId) {
+            return ('option-' + cloudOwner + '-' + cloudRegionId).toLowerCase();
+        },
+
         getHomingData: function(vnfInstanceId, vfModuleId)  {
+            let self = this;
             var url = COMPONENT.AAI_GET_HOMING_DATA.replace('@vnfInstanceId', vnfInstanceId)
                 .replace('@vfModuleId', vfModuleId);
 
@@ -768,6 +774,14 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
 
             $http.get(url)
                 .success(function (response) {
+                    var cloudOwner = response[COMPONENT.CLOUD_OWNER];
+                    var cloudRegionId = response[COMPONENT.CLOUD_REGION_ID];
+                    if (cloudOwner && cloudRegionId) {
+                        response["cloudRegionOptionId"] = self.cloudRegionOptionId(cloudOwner, cloudRegionId);
+                    } else {
+                        response["cloudRegionOptionId"] = null;
+                    }
+
                     deferred.resolve({data: response});
                 }).error(function (data, status, headers, config) {
                 deferred.reject({message: data, status: status});
