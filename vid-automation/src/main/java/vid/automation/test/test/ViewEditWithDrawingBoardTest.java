@@ -54,7 +54,7 @@ public class ViewEditWithDrawingBoardTest extends VidBaseTestCase {
     private String serviceType = "TYLER SILVIA";
     private String serviceInstanceToResumeName;
 
-    @FeatureTogglingTest(Features.FLAG_1902_VNF_GROUPING)
+    @FeatureTogglingTest({Features.FLAG_1902_VNF_GROUPING, Features.FLAG_FLASH_REPLACE_VF_MODULE})
     @Test
     public void testDeleteVnfGroupWithMembers() {
 
@@ -184,7 +184,7 @@ public class ViewEditWithDrawingBoardTest extends VidBaseTestCase {
         );
     }
 
-    @FeatureTogglingTest({Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT, Features.FLAG_1908_RESUME_MACRO_SERVICE})
+    @FeatureTogglingTest({Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT, Features.FLAG_1908_RESUME_MACRO_SERVICE, Features.FLAG_FLASH_REPLACE_VF_MODULE})
     @Test
     public void testResumeServiceInstanceWithCollectionResource() {
 

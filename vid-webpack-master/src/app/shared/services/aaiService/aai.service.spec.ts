@@ -566,6 +566,7 @@ var expectedResult =
   {
     'vnfs': {
       'DROR_vsp': {
+        'upgradedVFMSonsCounter': 0,
         'rollbackOnFailure': 'true',
         'vfModules': {},
         'isMissingData': false,

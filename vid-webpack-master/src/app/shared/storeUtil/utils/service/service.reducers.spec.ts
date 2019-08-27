@@ -6,7 +6,7 @@ import {
   DeleteServiceInstanceAction,
   ServiceActions,
   UpdateServiceInstanceAction,
-  UpdateServiceModelAction
+  UpdateServiceModelAction, UpgradeServiceAction
 } from "./service.actions";
 import {serviceReducer} from "./service.reducers";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
@@ -513,7 +513,62 @@ describe('serviceReducer', () => {
     expect(state.serviceInstance['serviceId'].isDirty).toBeTruthy();
   });
 
+  test('#UPGRADE_SERVICE should update service action to _Upgrade', () => {
+    const state = serviceReducer(<any>{
+        serviceInstance: {
+          'serviceId': {
+            action: ServiceInstanceActions.None,
+            upgradedVFMSonsCounter: 0,
+            'vnfs': {
+              'vnf1': {
+                action: ServiceInstanceActions.None
+              },
+              'vnf2': {
+                action: ServiceInstanceActions.Create
+              }
+            }
+
+          }
+        }
+      },
+      <UpgradeServiceAction> {
+        type: ServiceActions.UPGRADE_SERVICE_ACTION,
+        serviceUuid: 'serviceId'
+      });
+
+    expect(state.serviceInstance['serviceId'].isUpgraded).toBeTruthy();
+    expect(state.serviceInstance['serviceId'].action).toEqual(ServiceInstanceActions.None_Upgrade);
+    expect(state.serviceInstance['serviceId'].upgradedVFMSonsCounter).toEqual(1);
+
+  });
+
+  test('#UNDO_UPGRADE_SERVICE should cancel the upgrade action back to None', () => {
+    const state = serviceReducer(<any>{
+        serviceInstance: {
+          'serviceId': {
+            isUpgraded: true,
+            upgradedVFMSonsCounter: 1,
+            action: ServiceInstanceActions.None_Upgrade,
+            'vnfs': {
+              'vnf1': {
+                action: ServiceInstanceActions.None_Upgrade
+              },
+              'vnf2': {
+                action: ServiceInstanceActions.Create
+              }
+            }
+
+          }
+        }
+      },
+      <UpgradeServiceAction> {
+        type: ServiceActions.UNDO_UPGRADE_SERVICE_ACTION,
+        serviceUuid: 'serviceId'
+      });
+
+    expect(state.serviceInstance['serviceId'].isUpgraded).toBeFalsy();
+    expect(state.serviceInstance['serviceId'].action).toEqual(ServiceInstanceActions.None);
+    expect(state.serviceInstance['serviceId'].upgradedVFMSonsCounter).toEqual(0);
+  });
+
 });
-
-
-

@@ -65,7 +65,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 			.put("Update_Delete", Action.Delete)
 			.put("None_Delete", Action.Delete)
 			.put("Resume", Action.Resume)
-			.put("Replace", Action.Replace)
+			.put("Upgrade", Action.Upgrade)
 			.build();
 
 

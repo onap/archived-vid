@@ -225,10 +225,18 @@
         };
 
         $scope.allowTransferToNewScreenAndShowButton = function (){
-          if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_REPLACE_VF_MODULE)) {
-              return $scope.isPermitted && !($scope.isMacro());
+          if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_VIEW_IN_NEW_VIEWEDIT_SCREEN)) {
+              return $scope.isPermitted;
           }
           return false;
+        };
+
+        $scope.navigateToNewEditViewScreen = function(){
+                window.location.href = 'serviceModels.htm#/servicePlanning/EDIT?' +
+                    'serviceModelId=' +     _.get($scope, 'service.model.service.uuid') +
+                    '&subscriberId=' +      $location.search().subscriberId  +
+                    '&serviceType=' +       $location.search().serviceType      +
+                    '&serviceInstanceId=' + $location.search().serviceInstanceId;
         };
 
         $scope.deleteService = function (serviceObject, serviceOrchestrationStatus) {

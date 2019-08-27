@@ -1,11 +1,14 @@
 import {ActivatedRouteSnapshot, Resolve} from "@angular/router";
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {from, Observable} from "rxjs";
 import {AaiService} from "../../services/aaiService/aai.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {AppState} from "../../store/reducers";
 import {NgRedux} from "@angular-redux/store";
 import {createServiceInstance} from "../../storeUtil/utils/service/service.actions";
+import {ServiceInstance} from "../../models/serviceInstance";
+import * as _ from "lodash";
+import {ModelInfo} from "../../models/modelInfo";
 
 @Injectable()
 export class ViewEditResolver implements Resolve<Observable<boolean>> {
@@ -14,26 +17,51 @@ export class ViewEditResolver implements Resolve<Observable<boolean>> {
   }
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    const serviceModeId: string = route.queryParamMap.get("serviceModelId");
+    const serviceModelId: string = route.queryParamMap.get("serviceModelId");
     const serviceInstanceId: string = route.queryParamMap.get("serviceInstanceId");
     const subscriberId: string = route.queryParamMap.get("subscriberId");
     const serviceType: string = route.queryParamMap.get("serviceType");
-      let serviceModelApi = this._aaiService.getServiceModelById(serviceModeId);
-      let serviceInstanceApi = this._aaiService.retrieveAndStoreServiceInstanceTopology(serviceInstanceId, subscriberId, serviceType, serviceModeId);
-      return forkJoin([serviceModelApi, serviceInstanceApi]).map(([serviceModel, serviceInstance ]) => {
-        this.setIsALaCarte(serviceInstance,serviceModel.service.vidNotions.instantiationType );
-        this.setTestApi(serviceInstance);
-        this._store.dispatch(createServiceInstance( serviceInstance, serviceModeId));
-          return true;
-        });
+    let serviceModelApi = this._aaiService.getServiceModelById(serviceModelId);
+    let serviceInstanceApi = this._aaiService.retrieveAndStoreServiceInstanceTopology(serviceInstanceId, subscriberId, serviceType, serviceModelId);
+    let streams: Observable<any>[] = [serviceModelApi, serviceInstanceApi];
+    streams = streams.filter( stream => stream !== undefined);
+    return forkJoin(streams).switchMap(([serviceModel, serviceInstance]) => {
+      return from(this.retrieveLatestVersionAndSetServiceInstance(serviceInstance.modelInfo.modelInvariantId).then((response)=>{
+        this.setServiceLatestAvailableVersion(serviceInstance, response);
+        this.applyRequestsResponsesToStateAndInitServiceInstance(serviceModelId, serviceInstance, serviceModel);
+        return true;
+      }));
+
+    });
   }
 
-  setTestApi = (service: any) => {
+  private retrieveLatestVersionAndSetServiceInstance(modelInvariantId: string) :Promise<ModelInfo>{
+    return this._aaiService.retrieveServiceLatestUpdateableVersion(modelInvariantId).toPromise();
+  }
+
+  applyRequestsResponsesToStateAndInitServiceInstance(serviceModelId: string,
+                                                      serviceInstance, serviceModel) {
+    this.setIsALaCarte(serviceInstance, serviceModel.service.vidNotions.instantiationType);
+    this.setTestApi(serviceInstance);
+    this._store.dispatch(createServiceInstance(serviceInstance, serviceModelId));
+  }
+
+  setServiceLatestAvailableVersion(serviceInstance :ServiceInstance, modelInfoObject: ModelInfo) :void{
+    if(!_.isNil(modelInfoObject) && !_.isNil(modelInfoObject.modelVersion)){
+      serviceInstance.latestAvailableVersion = Number(modelInfoObject.modelVersion);
+    }
+    else {
+      serviceInstance.latestAvailableVersion = 0;
+    }
+  }
+
+  setTestApi(service: any) :void{
     if (this._store.getState().global.flags['FLAG_ADD_MSO_TESTAPI_FIELD'] && service.isALaCarte) {
       service.testApi = sessionStorage.getItem("msoRequestParametersTestApiValue");
     }
   };
-  setIsALaCarte = (service: any, instantiationType) => {
+
+  setIsALaCarte(service: any, instantiationType) :void{
     service.isALaCarte = instantiationType === 'ALaCarte';
   };
 
