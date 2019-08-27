@@ -1,7 +1,10 @@
 import {
   CreateVFModuleInstanceAction,
   DeleteActionVfModuleInstanceAction,
-  DeleteVfModuleInstanceAction, UndoDeleteActionVfModuleInstanceAction, UpdateVFModluePosition,
+  DeleteVfModuleInstanceAction,
+  UndoDeleteActionVfModuleInstanceAction,
+  UpdateVFModluePosition,
+  UpgradeVfModuleInstanceAction,
   VfModuleActions
 } from "./vfModule.actions";
 import {vfModuleReducer} from "./vfModule.reducers";
@@ -102,10 +105,10 @@ describe('vfModuleReducer', () => {
     vfModuleInstance.isMissingData = false;
     vfModuleInstance.volumeGroupName = 'volumeGroupName';
     let vfModule = vfModuleReducer(<any>{
-      serviceHierarchy : {
-        'serviceModelId' : {}
-      },
-      serviceInstance : {
+        serviceHierarchy : {
+          'serviceModelId' : {}
+        },
+        serviceInstance : {
           'serviceModelId' : {
             vnfs : {
               'vfName' : {
@@ -169,16 +172,16 @@ describe('vfModuleReducer', () => {
 
       }).serviceInstance['serviceModelId'].vnfs['vfName'].vfModules["modelName"]["dynamicModelName"];
 
-      expect(vfModule.position).toEqual(1);
+    expect(vfModule.position).toEqual(1);
   });
 
 
   test('#DELETE_ACTION_VF_MODULE_INSTANCE', ()=>{
     let vfModule = vfModuleReducer(<any>{
-      serviceHierarchy : {
-        'serviceModelId' : {}
-      },
-      serviceInstance : {
+        serviceHierarchy : {
+          'serviceModelId' : {}
+        },
+        serviceInstance : {
           'serviceModelId' : {
             vnfs : {
               'vnfStoreKey' : {
@@ -242,7 +245,70 @@ describe('vfModuleReducer', () => {
     expect(vfModule.action).toEqual(ServiceInstanceActions.None);
   });
 
+  test('#UPGRADE_VFMODULE', ()=>{
+    let vfModule = vfModuleReducer(<any>{
+        serviceHierarchy : {
+          'serviceModelId' : {}
+        },
+        serviceInstance : {
+          'serviceModelId' : {
+            vnfs : {
+              'vnfStoreKey' : {
+                vfModules : {
+                  'modelName' : {
+                    'dynamicModelName1': {
+                      isMissingData : true,
+                      action : 'None'
+                    },
+                    'dynamicModelName2': {},
+                  }
+                }
+              }
+            }
+          }
+        }},
+      <UpgradeVfModuleInstanceAction>{
+        type: VfModuleActions.UPGRADE_VFMODULE,
+        dynamicModelName: 'dynamicModelName1',
+        vnfStoreKey : 'vnfStoreKey',
+        serviceId: 'serviceModelId',
+        modelName: 'modelName'
+      }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+
+    expect(vfModule.action).toEqual(ServiceInstanceActions.None_Upgrade);
+  });
+
+  test('#UNDO_UPGRADE_VFMODULE', ()=>{
+    let vfModule = vfModuleReducer(<any>{
+        serviceHierarchy : {
+          'serviceModelId' : {}
+        },
+        serviceInstance : {
+          'serviceModelId' : {
+            vnfs : {
+              'vnfStoreKey' : {
+                vfModules : {
+                  'modelName' : {
+                    'dynamicModelName1': {
+                      isMissingData : true,
+                      action : 'None_Upgrade'
+                    },
+                    'dynamicModelName2': {},
+                  }
+                }
+              }
+            }
+          }
+        }},
+      <UpgradeVfModuleInstanceAction>{
+        type: VfModuleActions.UNDO_UPGRADE_VFMODULE_ACTION,
+        dynamicModelName: 'dynamicModelName1',
+        vnfStoreKey : 'vnfStoreKey',
+        serviceId: 'serviceModelId',
+        modelName: 'modelName'
+      }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+
+    expect(vfModule.action).toEqual(ServiceInstanceActions.None);
+  });
+
 });
-
-
-

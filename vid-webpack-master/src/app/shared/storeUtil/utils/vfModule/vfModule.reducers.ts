@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import {
   CreateVFModuleInstanceAction, DeleteActionVfModuleInstanceAction,
   DeleteVfModuleInstanceAction, UndoDeleteActionVfModuleInstanceAction, UpdateVFModluePosition,
-  UpdateVFModuleInstanceAction,
+  UpdateVFModuleInstanceAction, UpgradeVfModuleInstanceAction,
   VfModuleActions
 } from "./vfModule.actions";
 import {ServiceInstance} from "../../../models/serviceInstance";
@@ -26,6 +26,7 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
 
       let vfModulesMap = newState.serviceInstance[serviceUuid].vnfs[vnfStoreKey].vfModules[vfModuleId] || new VfModuleMap();
       let randomId = generateId();
+      vfInstance.action = ServiceInstanceActions.Create;
       vfModulesMap[vfModuleId + randomId] = vfInstance;
       updateUniqueNames(null, vfInstance.instanceName, newState.serviceInstance[serviceUuid]);
       updateUniqueNames(null, vfInstance.volumeGroupName, newState.serviceInstance[serviceUuid]);
@@ -109,6 +110,40 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
 
       newState.serviceInstance[serviceUuid].vnfs[updateVFModluePosition.vnfStoreKey].vfModules[modelName][dynamicModelName].position = updateVFModluePosition.node.position;
       return newState;
+    }
+
+    case VfModuleActions.UPGRADE_VFMODULE : {
+      let clonedState = _.cloneDeep(state);
+      const upgradeAction = (<UpgradeVfModuleInstanceAction>action);
+      let oldAction = clonedState
+        .serviceInstance[upgradeAction.serviceId]
+        .vnfs[upgradeAction.vnfStoreKey]
+        .vfModules[upgradeAction.modelName][upgradeAction.dynamicModelName]
+        .action;
+      if(!_.isNil(oldAction) && oldAction.includes("Upgrade")) {
+        return clonedState;
+      }
+      clonedState.serviceInstance[upgradeAction.serviceId]
+        .vnfs[upgradeAction.vnfStoreKey]
+        .vfModules[upgradeAction.modelName][upgradeAction.dynamicModelName]
+        .action = (`${oldAction}_Upgrade`) as ServiceInstanceActions;
+      return clonedState;
+    }
+    case VfModuleActions.UNDO_UPGRADE_VFMODULE_ACTION : {
+      let clonedState = _.cloneDeep(state);
+      const upgradeAction = (<UpgradeVfModuleInstanceAction>action);
+      let oldAction = clonedState
+        .serviceInstance[upgradeAction.serviceId]
+        .vnfs[upgradeAction.vnfStoreKey]
+        .vfModules[upgradeAction.modelName][upgradeAction.dynamicModelName]
+        .action;
+      if(!_.isNil(oldAction) && oldAction.includes("Upgrade")) {
+        clonedState.serviceInstance[upgradeAction.serviceId]
+          .vnfs[upgradeAction.vnfStoreKey]
+          .vfModules[upgradeAction.modelName][upgradeAction.dynamicModelName]
+          .action = ServiceInstanceActions.None;
+      }
+      return clonedState;
     }
   }
 }
