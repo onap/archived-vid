@@ -1,11 +1,14 @@
 export enum ServiceInstanceActions{
   Delete = "Delete",
+  Replace = "Replace",
+  Upgrade = "Upgrade",
   Update="Update",
   Create="Create",
   None="None",
   Resume = "Resume",
   Update_Delete = 'Update_Delete',
-  None_Delete = 'None_Delete'
+  None_Delete = 'None_Delete',
+  None_Upgrade = 'None_Upgrade'
 }
 export enum ServiceAction {
   INSTANTIATE = 'INSTANTIATE',

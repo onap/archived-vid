@@ -1,0 +1,226 @@
+{
+  "instanceName":"SERVICE_INSTANCE_NAME",
+  "action": "None",
+  "instanceId":"service-instance-id",
+  "orchStatus":"GARBAGE DATA",
+  "globalSubscriberId":"global-customer-id",
+  "subscriptionServiceType":"service-instance-type",
+  "owningEntityId":null,
+  "owningEntityName":null,
+  "productFamilyId":null,
+  "lcpCloudRegionId":null,
+  "tenantId":null,
+  "tenantName":null,
+  "aicZoneId":null,
+  "aicZoneName":null,
+  "projectName":null,
+  "rollbackOnFailure":null,
+  "isALaCarte":false,
+  "modelInfo":{
+    "modelInvariantId":"d27e42cf-087e-4d31-88ac-6c4b7585f800",
+    "modelVersionId": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+    "modelName":"vf_vEPDG",
+    "modelType":"service",
+    "modelVersion":"1.0"
+  },
+  "vnfs": {
+    "VNF1_INSTANCE_ID": {
+      "originalName": null,
+      "trackById": "VNF1_INSTANCE_ID",
+      "instanceName": "VNF1_INSTANCE_NAME",
+      "action": "None",
+      "instanceId": "VNF1_INSTANCE_ID",
+      "instanceType": "VNF1_INSTANCE_TYPE",
+      "orchStatus": null,
+      "provStatus": null,
+      "inMaint": false,
+      "modelInfo": {
+        "modelInvariantId": "vnf-instance-model-invariant-id",
+        "modelVersionId": "vnf-instance-model-version-id",
+        "modelCustomizationId": "vnf-instance-model-customization-id",
+        "modelType": "vnf"
+      },
+      "uuid": "vnf-instance-model-version-id",
+      "productFamilyId": null,
+      "lcpCloudRegionId": "olson3",
+      "cloudOwner": "att-nc",
+      "legacyRegion": null,
+      "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e",
+      "lineOfBusiness": null,
+      "platformName": null,
+      "vfModules": {},
+      "networks": {
+        "NETWORK1_INSTANCE_ID": {
+          "trackById": "NETWORK1_INSTANCE_ID",
+          "instanceName": "NETWORK1_INSTANCE_NAME",
+          "action": "None",
+          "instanceId": "NETWORK1_INSTANCE_ID",
+          "instanceType": "CONTRAIL30_BASIC",
+          "orchStatus": "Assigned",
+          "provStatus": "prov",
+          "inMaint": false,
+          "modelInfo": {
+            "modelInvariantId": "network-instance-model-invariant-id",
+            "modelVersionId": "network-instance-model-version-id",
+            "modelCustomizationId": "network-instance-model-customization-id",
+            "modelType": "network"
+          },
+          "uuid": "network-instance-model-version-id"
+        },
+        "NETWORK2_INSTANCE_ID": {
+          "trackById": "NETWORK2_INSTANCE_ID",
+          "instanceName": "NETWORK2_INSTANCE_NAME",
+          "action": "None",
+          "instanceId": "NETWORK2_INSTANCE_ID",
+          "instanceType": "CONTRAIL30_BASIC",
+          "orchStatus": "Created",
+          "provStatus": "prov",
+          "inMaint": false,
+          "modelInfo": {
+            "modelInvariantId": "network-instance-model-invariant-id",
+            "modelVersionId": "network-instance-model-version-id",
+            "modelCustomizationId": "network-instance-model-customization-id",
+            "modelType": "network"
+          },
+          "uuid": "network-instance-model-version-id"
+        }
+      }
+    },
+    "VNF2_INSTANCE_ID": {
+      "originalName": "VF_vGeraldine 0",
+      "trackById": "VNF2_INSTANCE_ID",
+      "instanceName": "VNF2_INSTANCE_NAME",
+      "action": "None",
+      "instanceId": "VNF2_INSTANCE_ID",
+      "instanceType": "VNF2_INSTANCE_TYPE",
+      "orchStatus": null,
+      "provStatus": null,
+      "inMaint": true,
+      "modelInfo": {
+        "modelCustomizationName": "VF_vGeraldine 0",
+        "modelInvariantId": "vnf-instance-model-invariant-id",
+        "modelVersionId": "d6557200-ecf2-4641-8094-5393ae3aae60",
+        "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
+        "modelType": "vnf"
+      },
+      "uuid": "d6557200-ecf2-4641-8094-5393ae3aae60",
+      "productFamilyId": null,
+      "lcpCloudRegionId": "hvf6",
+      "cloudOwner": "irma-aic",
+      "legacyRegion": null,
+      "tenantId": "88a6ca3ee0394ade9403f075db23167e",
+      "lineOfBusiness": null,
+      "platformName": null,
+      "vfModules": {
+        "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1": {
+          "2c1ca484-cbc2-408b-ab86-25a2c15ce280": {
+            "originalName": "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1",
+            "trackById": "2c1ca484-cbc2-408b-ab86-25a2c15ce280",
+            "instanceName": "ss820f_0918_db",
+            "action": "None",
+            "instanceId": "2c1ca484-cbc2-408b-ab86-25a2c15ce280",
+            "instanceType": null,
+            "orchStatus": "deleted",
+            "provStatus": null,
+            "inMaint": true,
+            "modelInfo": {
+              "modelCustomizationName": "VfVgeraldine..vflorence_vlc..module-1",
+              "modelCustomizationId": "55b1be94-671a-403e-a26c-667e9c47d091",
+              "modelInvariantId": "09edc9ef-85d0-4b26-80de-1f569d49e750",
+              "modelVersionId": "522159d5-d6e0-4c2a-aa44-5a542a12a830",
+              "modelType": "vfModule"
+            },
+            "uuid": "522159d5-d6e0-4c2a-aa44-5a542a12a830",
+            "productFamilyId": null,
+            "lcpCloudRegionId": null,
+            "legacyRegion": null,
+            "tenantId": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "isBase": false,
+            "volumeGroupName": null
+          }
+        },
+        "dc229cd8-c132-4455-8517-5c1787c18b14": {
+          "3ef042c4-259f-45e0-9aba-0989bd8d1cc5": {
+            "originalName": null,
+            "trackById": "3ef042c4-259f-45e0-9aba-0989bd8d1cc5",
+            "instanceName": "ss820f_0918_base",
+            "action": "None",
+            "instanceId": "3ef042c4-259f-45e0-9aba-0989bd8d1cc5",
+            "instanceType": null,
+            "orchStatus": "Assigned",
+            "provStatus": null,
+            "inMaint": false,
+            "modelInfo": {
+              "modelCustomizationId": "8ad8670b-0541-4499-8101-275bbd0e8b6a",
+              "modelInvariantId": "1e463c9c-404d-4056-ba56-28fd102608de",
+              "modelVersionId": "dc229cd8-c132-4455-8517-5c1787c18b14",
+              "modelType": "vfModule"
+            },
+            "uuid": "dc229cd8-c132-4455-8517-5c1787c18b14",
+            "productFamilyId": null,
+            "lcpCloudRegionId": null,
+            "legacyRegion": null,
+            "tenantId": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "isBase": true,
+            "volumeGroupName": null
+          }
+        }
+      },
+      "networks": {}
+    }
+  },
+  "networks": {
+    "NETWORK3_INSTANCE_ID": {
+      "originalName": "ExtVL 0",
+      "trackById": "NETWORK3_INSTANCE_ID",
+      "instanceName": "NETWORK3_INSTANCE_NAME",
+      "action": "None",
+      "instanceId": "NETWORK3_INSTANCE_ID",
+      "instanceType": "CONTRAIL30_BASIC",
+      "orchStatus": "Assigned",
+      "provStatus": "nvtprov",
+      "inMaint": false,
+      "modelInfo": {
+        "modelCustomizationName": "ExtVL 0",
+        "modelInvariantId": "network-instance-model-invariant-id",
+        "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+        "modelVersionId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
+        "modelType": "network"
+      },
+      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986"
+    },
+    "NETWORK4_INSTANCE_ID": {
+      "originalName": "ExtVL 0",
+      "trackById": "NETWORK4_INSTANCE_ID",
+      "instanceName": "NETWORK4_INSTANCE_NAME",
+      "action": "None",
+      "instanceId": "NETWORK4_INSTANCE_ID",
+      "instanceType": "CONTRAIL30_HIMELGUARD",
+      "orchStatus": "Created",
+      "provStatus": "preprov",
+      "inMaint": false,
+      "modelInfo": {
+        "modelCustomizationName": "ExtVL 0",
+        "modelInvariantId": "network-instance-model-invariant-id",
+        "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+        "modelVersionId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
+        "modelType": "network"
+      },
+      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986"
+    }
+  },
+  "validationCounter": 0,
+  "vnfGroups": {},
+  "existingVNFCounterMap": {
+    "91415b44-753d-494c-926a-456a9172bbb9": 1,
+    "vnf-instance-model-customization-id": 1
+  },
+  "existingNetworksCounterMap": {
+    "94fdd893-4a36-4d70-b16a-ec29c54c184f": 2
+  },
+  "existingVnfGroupCounterMap": {}
+}
