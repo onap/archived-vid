@@ -603,18 +603,18 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(true);
         when(aaiClient.getCloudOwnerByCloudRegionId("regionOne")).thenReturn("irma-aic");
 
-        ModelInfo vfModuleModelInfo = createVfModuleModelInfo("VfZrdm5bpxmc02092017Vf..CORNELIUS_base..module-0", "1", "eb5de6fb-9ecf-4009-b922-fae3a9ae7d46",
-                "f7a867f2-596b-4f4a-a128-421e825a6190", "074c64d0-7e13-4bcc-8bdb-ea922331102d",null );
+        ModelInfo vfModuleModelInfo = createVfModuleModelInfo("newest-model-name-vfm", "newest-model-version-vfm", "newest-model-uuid-vfm",
+                "f7a867f2-596b-4f4a-a128-421e825a6190", "newest-model-customization-uuid-vfm","newest-model-customization-name-vfm" );
 
         VfModule vfModuleDetails = createVfModuleForReplace(vfModuleModelInfo, "replace_module", "regionOne", "0422ffb57ba042c0800a29dc85ca70f8");
 
-        ModelInfo serviceModelInfo = createServiceModelInfo("Vf zolson5bpxmc02092017-Service", "1", "bad955c3-29b2-4a27-932e-28e942cc6480", "b16a9398-ffa3-4041-b78c-2956b8ad9c7b", null, null );
+        ModelInfo serviceModelInfo = createServiceModelInfo("newest-model-name-service", "newest-model-version-service", "newest-model-uuid-service", "b16a9398-ffa3-4041-b78c-2956b8ad9c7b", null, null );
 
-        ModelInfo vnfModelInfo = createVnfModelInfo("Vf zolson5bpxmc02092017-VF", "1", "d326f424-2312-4dd6-b7fe-364fadbd1ef5", "23122c9b-dd7f-483f-bf0a-e069303db2f7", "96c23a4a-6887-4b2c-9cce-1e4ea35eaade", "Vf zolson5bpxmc02092017-VF 0" );
+        ModelInfo vnfModelInfo = createVnfModelInfo("newest-model-name-vnf", "newest-model-version-vnf", "newest-model-uuid-vnf", "23122c9b-dd7f-483f-bf0a-e069303db2f7", "newest-model-customization-uuid-vnf", "newest-model-customization-name-vnf" );
 
         RequestDetailsWrapper<VfModuleInstantiationRequestDetails> result =
                 msoRequestBuilder.generateVfModuleInstantiationRequest(vfModuleDetails, serviceModelInfo, "e9993045-cc96-4f3f-bf9a-71b2a400a956", vnfModelInfo, "5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5", null,"az2016", "GR_API");
 
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+        assertThat(result, jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
     }
 }

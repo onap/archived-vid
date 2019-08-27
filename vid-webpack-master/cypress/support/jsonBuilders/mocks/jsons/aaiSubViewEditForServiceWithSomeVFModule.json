@@ -60,7 +60,7 @@
                   "extra-properties": {}
                 },
                 {
-                  "model-name": "VidPcrf051517..pcrf_nimbus_pcm..module-4",
+                  "model-name": "VidPcrf051517..pcrf_kennedy_pcm..module-4",
                   "vf-module": {
                     "vf-module-id": "f91515e5-cf8d-4abf-aacc-5bc5c5a47f09",
                     "vf-module-name": "gg",
@@ -75,7 +75,7 @@
                   "extra-properties": {}
                 },
                 {
-                  "model-name": "VidPcrf051517..pcrf_nimbus_pcm..module-5",
+                  "model-name": "VidPcrf051517..pcrf_kennedy_pcm..module-5",
                   "vf-module": {
                     "vf-module-id": "f91515e5-cf8d-4abf-aacc-5bc5c5a47f05",
                     "vf-module-name": "ABC",
@@ -90,7 +90,7 @@
                   "extra-properties": {}
                 },
                 {
-                  "model-name": "VidPcrf051517..pcrf_nimbus_pcm..module-4",
+                  "model-name": "VidPcrf051517..pcrf_kennedy_pcm..module-4",
                   "vf-module": {
                     "vf-module-id": "a231a99c-7e75-4d6d-a0fb-5c7d26f30f77",
                     "vf-module-name": "my_vfModule",
@@ -155,7 +155,7 @@
                   "extra-properties": {}
                 },
                 {
-                  "model-name": "VidPcrf051517..pcrf_nimbus_pcm..module-4",
+                  "model-name": "VidPcrf051517..pcrf_kennedy_pcm..module-4",
                   "vf-module": {
                     "vf-module-id": "a9b70ac0-5917-4203-a308-0e6920e6d09b",
                     "vf-module-name": "vf_module2",

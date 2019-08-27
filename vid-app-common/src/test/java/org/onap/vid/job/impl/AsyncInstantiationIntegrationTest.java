@@ -20,9 +20,66 @@
 
 package org.onap.vid.job.impl;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
+import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartMatches;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.Every.everyItem;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.endsWith;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_ERRORS;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_NO_ACTION;
+import static org.onap.vid.job.Job.JobStatus.FAILED;
+import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.PAUSE;
+import static org.onap.vid.job.Job.JobStatus.PENDING;
+import static org.onap.vid.job.Job.JobStatus.PENDING_RESOURCE;
+import static org.onap.vid.job.Job.JobStatus.RESOURCE_IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.STOPPED;
+import static org.onap.vid.job.impl.JobSchedulerInitializer.WORKERS_TOPICS;
+import static org.onap.vid.model.JobAuditStatus.SourceStatus.VID;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Stack;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import javax.inject.Inject;
+import javax.ws.rs.ProcessingException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +90,24 @@ import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.config.DataSourceConfig;
+import org.onap.vid.config.JobCommandsConfigWithMockedMso;
+import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.job.JobType;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.CommandUtils;
 import org.onap.vid.job.command.InternalState;
-import org.onap.vid.model.*;
+import org.onap.vid.model.Action;
+import org.onap.vid.model.JobAuditStatus;
+import org.onap.vid.model.NameCounter;
+import org.onap.vid.model.RequestReferencesContainer;
+import org.onap.vid.model.Service;
+import org.onap.vid.model.ServiceInfo;
+import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.VNF;
+import org.onap.vid.model.VfModule;
 import org.onap.vid.model.serviceInstantiation.BaseResource;
 import org.onap.vid.model.serviceInstantiation.InstanceGroup;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
@@ -49,15 +117,12 @@ import org.onap.vid.mso.model.RequestReferences;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.AsyncRequestStatusList;
 import org.onap.vid.properties.Features;
+import org.onap.vid.services.AsyncInstantiationBaseTest;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
 import org.onap.vid.services.VersionService;
-import org.onap.vid.utils.DaoUtils;
-import org.onap.vid.config.DataSourceConfig;
-import org.onap.vid.config.JobCommandsConfigWithMockedMso;
-import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
-import org.onap.vid.services.AsyncInstantiationBaseTest;
 import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.DaoUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.BeforeClass;
@@ -65,34 +130,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
-
-import javax.inject.Inject;
-import javax.ws.rs.ProcessingException;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.*;
-import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
-import static net.javacrumbs.jsonunit.JsonMatchers.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.core.Every.everyItem;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.endsWith;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.onap.vid.job.Job.JobStatus.*;
-import static org.onap.vid.job.impl.JobSchedulerInitializer.WORKERS_TOPICS;
-import static org.onap.vid.model.JobAuditStatus.SourceStatus.VID;
-import static org.testng.AssertJUnit.*;
 
 //it's more like integration test than UT
 //But it's very hard to test in API test so I use UT
@@ -1203,11 +1240,17 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     }
 
     @Test
-    public void whenUpgradingAvfModule_thanExpectedReplaceRequestSent() throws IOException {
-        String instanceId = "5d49c3b1-fc90-4762-8c98-e800170baa55"; //from feRequestResumeMacroService.json
+    public void whenUpgradingAvfModule_thanExpectedReplaceRequestSent() throws IOException, AsdcCatalogException {
+        String instanceId = "5d49c3b1-fc90-4762-8c98-e800170baa55"; //from replace_vfmodule_fe_input.json
         String replaceRequestId = randomUuid();
         String userId = "az2016";
 
+
+        //prepare mocks for newest model
+        String newestModelUuid = "newest-model-uuid";
+        when(commandUtils.getNewestModelUuid(eq("b16a9398-ffa3-4041-b78c-2956b8ad9c7b"))).thenReturn(newestModelUuid);
+
+        when(commandUtils.getServiceModel(eq(newestModelUuid))).thenReturn(generateMockLatestModelForUpgrade());
 
         //prepare mocks resume request
         when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), eq("/serviceInstantiation/v7/serviceInstances/e9993045-cc96-4f3f-bf9a-71b2a400a956/vnfs/5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5/vfModules/5d49c3b1-fc90-4762-8c98-e800170baa55/replace"), eq(Optional.of(userId))))
@@ -1235,7 +1278,53 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         requestCaptor.getAllValues().forEach(x->assertJsonEquals(expectedJson, x));
     }
 
+    private ServiceModel generateMockLatestModelForUpgrade() {
+        ServiceModel expectedNewestModel = new ServiceModel();
+
+
+        VfModule vfm = new VfModule();
+        vfm.setModelCustomizationName("newest-model-customization-name-vfm");
+        vfm.setCustomizationUuid("newest-model-customization-uuid-vfm");
+        vfm.setVersion("newest-model-version-vfm");
+        vfm.setUuid("newest-model-uuid-vfm");
+        vfm.setName("newest-model-name-vfm");
+        vfm.setInvariantUuid("f7a867f2-596b-4f4a-a128-421e825a6190");
+
+
+        Map<String,VfModule> vfms = new HashMap<>();
+        vfms.put("074c64d0-7e13-4bcc-8bdb-ea922331102d", vfm);
+
+
+        VNF vnf = new VNF();
+        vnf.setModelCustomizationName("newest-model-customization-name-vnf");
+        vnf.setCustomizationUuid("newest-model-customization-uuid-vnf");
+        vnf.setVersion("newest-model-version-vnf");
+        vnf.setUuid("newest-model-uuid-vnf");
+        vnf.setName("newest-model-name-vnf");
+        vnf.setInvariantUuid("23122c9b-dd7f-483f-bf0a-e069303db2f7");
+        vnf.setVfModules(vfms);
+        expectedNewestModel.setVfModules(vfms);
+
+        Map<String,VNF> vnfs = new HashMap<>();
+        vnfs.put("96c23a4a-6887-4b2c-9cce-1e4ea35eaade", vnf);
+
+        Service svc = new Service();
+        svc.setInvariantUuid("b16a9398-ffa3-4041-b78c-2956b8ad9c7b");
+        svc.setUuid("newest-model-uuid-service");
+        svc.setVersion("newest-model-version-service");
+        svc.setName("newest-model-name-service");
+
+        expectedNewestModel.setService(svc);
+
+        expectedNewestModel.setVnfs(vnfs);
+
+        return expectedNewestModel;
+
+
+    }
+
     private ServiceInstantiation generateReplaceVfModulePayload() throws IOException {
         return TestUtils.readJsonResourceFileAsObject("/payload_jsons/vfmodule/replace_vfmodule_fe_input.json", ServiceInstantiation.class);
     }
+
 }
