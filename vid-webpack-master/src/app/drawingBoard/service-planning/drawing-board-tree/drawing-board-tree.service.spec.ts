@@ -74,10 +74,12 @@ describe('Drawing board tree Service', () => {
       new TreeNodeContextMenuModel('addGroupMember', 'context-menu-addGroupMember', 'Add group members', 'plus'),
       new TreeNodeContextMenuModel('delete', 'context-menu-delete', 'Delete', 'trash-o'),
       new TreeNodeContextMenuModel('remove', 'context-menu-remove', 'Remove', 'trash-o'),
+      new TreeNodeContextMenuModel('upgrade', 'context-menu-upgrade', 'Upgrade', 'upgrade'),
       new TreeNodeContextMenuModel('undoDelete', 'context-menu-undoDelete', 'Undo Delete', 'undo-delete'),
+      new TreeNodeContextMenuModel('undoUpgrade', 'context-menu-undoUpgrade', 'Undo Upgrade', 'undo-delete'),
       new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o')
     ];
-    expect(options.length).toEqual(8);
+    expect(options.length).toEqual(10);
     expect(options).toEqual(expected);
   });
 

@@ -37,12 +37,16 @@ import {
   updateSubscribers,
   updateUserId
 } from "../../storeUtil/utils/general/general.actions";
-import {updateModel, createServiceInstance} from "../../storeUtil/utils/service/service.actions";
+import {
+  updateModel,
+  createServiceInstance,
+} from "../../storeUtil/utils/service/service.actions";
 import {FeatureFlagsService, Features} from "../featureFlag/feature-flags.service";
 import {VnfMember} from "../../models/VnfMember";
 import {setOptionalMembersVnfGroupInstance} from "../../storeUtil/utils/vnfGroup/vnfGroup.actions";
 import {Observable} from "rxjs";import {NetworkModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.model";
 import {VPNModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/vpnStep/vpn.step.model";
+import {ModelInfo} from "../../models/modelInfo";
 
 @Injectable()
 export class AaiService {
@@ -59,6 +63,14 @@ export class AaiService {
       .do((res) => {
         this.store.dispatch(updateModel(res));
       });
+  };
+
+  retrieveServiceLatestUpdateableVersion = (modelInvariantId: string): Observable<ModelInfo> => {
+    if (this.featureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE)){
+      let pathQuery: string = Constants.Path.SERVICE_LATEST_VERSION + modelInvariantId;
+      return this.http.get<ModelInfo>(pathQuery)
+    }
+    return;
   };
 
   getUserId = (): Observable<any> => {
@@ -296,9 +308,6 @@ export class AaiService {
       .do((res) => {
         this.store.dispatch(setOptionalMembersVnfGroupInstance(serviceModelId, pathQuery, res))
       });
-    // let res = Observable.of((JSON.parse(JSON.stringify(this.loadMockMembers()))));
-    // return  res;
-     
   }
 
   //TODO: make other places use this function

@@ -8,7 +8,14 @@ export enum VNFActions {
   REMOVE_VNF_INSTANCE = "REMOVE_VNF_INSTANCE",
   DELETE_ACTION_VNF_INSTANCE = "DELETE_VNF_INSTANCE",
   UNDO_DELETE_ACTION_VNF_INSTANCE = "UNDO_DELETE_VNF_INSTANCE",
-  UPDATE_VNF_POSITION = "UPDATE_VNF_POISTION"
+  UPDATE_VNF_POSITION = "UPDATE_VNF_POISTION",
+  UPGRADE_VNF_ACTION = "UPGRADE_VNF_ACTION",
+  UNDO_UPGRADE_VNF_ACTION = "UNDO_UPGRADE_VNF_ACTION"
+}
+
+export enum VNFMethods{
+  UPGRADE = "upgrade",
+  UNDO_UPGRADE = "undoUpgrade"
 }
 
 
@@ -30,6 +37,16 @@ export interface UpdateVnfInstanceAction extends Action {
   vnfModelName?: string;
   serviceUuid?: string;
   vnfStoreKey?:string;
+}
+
+export interface UpgradeVnfAction extends Action {
+  serviceUuid: string;
+  vnfStoreKey:string;
+}
+
+export interface UndoUpgradeVnfAction extends Action {
+  serviceUuid: string;
+  vnfStoreKey:string;
 }
 
 export interface RemoveVnfInstanceAction extends Action {
@@ -80,6 +97,18 @@ export const updateVnfPosition: ActionCreator<UpdateVnfPosition> = (node, instan
   node: node,
   instanceId: instanceId,
   vnfStoreKey : vnfStoreKey
+});
+
+export const upgradeVnf: ActionCreator<UpgradeVnfAction> = (vnfStoreKey, serviceUuid) => ({
+  type: VNFActions.UPGRADE_VNF_ACTION,
+  serviceUuid,
+  vnfStoreKey
+});
+
+export const undoUpgradeVnf: ActionCreator<UndoUpgradeVnfAction> = (vnfStoreKey, serviceUuid) => ({
+  type: VNFActions.UNDO_UPGRADE_VNF_ACTION,
+  serviceUuid,
+  vnfStoreKey
 });
 
 

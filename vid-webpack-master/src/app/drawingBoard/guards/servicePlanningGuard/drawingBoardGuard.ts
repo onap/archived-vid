@@ -12,7 +12,7 @@ import {of} from "rxjs";
 export class DrawingBoardGuard implements CanActivate {
   constructor(private store: NgRedux<AppState>, private _http: HttpClient, private _router : Router) { }
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-      let url : string = `/vid/roles/service_permissions?subscriberId=${next.queryParams['subscriberId']}&serviceType=${next.queryParams['serviceType']}`;
+      let url : string = `../../roles/service_permissions?subscriberId=${next.queryParams['subscriberId']}&serviceType=${next.queryParams['serviceType']}`;
       const viewMode = state.url.includes(DrawingBoardModes.RETRY_EDIT)? DrawingBoardModes.RETRY: DrawingBoardModes.VIEW;
       return this._http.get(url)
         .map((result : DrawingBoardPermissions) => {

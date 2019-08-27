@@ -19,6 +19,7 @@ export class ServiceInstance extends NodeInstance{
   projectName: string;
   owningEntityId: string;
   owningEntityName: string;
+  latestAvailableVersion: Number;
   pause: boolean;
   bulkSize: number;
   vnfs: { [vnf_module_model_name: string]: VnfInstance; };
@@ -26,6 +27,7 @@ export class ServiceInstance extends NodeInstance{
   vnfGroups : {[vnf_module_model_name: string]: VnfGroupInstance; };
   networks: { [vnf_module_model_name: string]: NetworkInstance; };
   isDirty : boolean;
+  isUpgraded : boolean;
   instanceParams: {[key: string]: string}[];
   rollbackOnFailure: boolean;
   subscriberName: string;
@@ -39,6 +41,7 @@ export class ServiceInstance extends NodeInstance{
   optionalGroupMembersMap?: { [path: string]: VnfMember[]; };
   statusMessage: string;
   vidNotions?: VidNotions;
+  upgradedVFMSonsCounter: number;
 
   constructor() {
     super();
@@ -56,6 +59,8 @@ export class ServiceInstance extends NodeInstance{
     this.networks = {};
     this.vnfGroups = {};
     this.bulkSize = 1;
+    this.isUpgraded = false;
+    this.upgradedVFMSonsCounter = 0;
   }
 
 }

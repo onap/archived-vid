@@ -4,8 +4,10 @@ import {
   ChangeServiceDirty,
   CreateServiceInstanceAction,
   ServiceActions,
+  UndoUpgradeServiceAction,
   UpdateServiceInstanceAction,
-  UpdateServiceModelAction
+  UpdateServiceModelAction,
+  UpgradeServiceAction
 } from "./service.actions";
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {ServiceState} from "../main.reducer";
@@ -13,13 +15,13 @@ import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
 import * as _ from "lodash";
 
 export function serviceReducer(state: ServiceState, action: Action) : ServiceState{
-    switch (action.type) {
+
+  switch (action.type) {
       case ServiceActions.UPDATE_SERVICE_INSTANCE : {
         let newState = _.cloneDeep(state);
         const updateServiceInstanceAction = <UpdateServiceInstanceAction>action;
         const uuid = updateServiceInstanceAction.serviceUuid;
         const serviceInstance = updateServiceInstanceAction.serviceInstance;
-
 
         updateUniqueNames(serviceInstance.instanceName, updateServiceInstanceAction.serviceInstance.instanceName, newState.serviceInstance[uuid]);
 
@@ -77,9 +79,24 @@ export function serviceReducer(state: ServiceState, action: Action) : ServiceSta
             return newState;
           }
         }
-
         newState.serviceInstance[(<ChangeServiceDirty>action).serviceId].isDirty = false;
         return newState;
+      }
+      case ServiceActions.UPGRADE_SERVICE_ACTION: {
+        let clonedState = _.cloneDeep(state);
+        let oldServiceAction: string = ServiceInstanceActions.None;
+        const castingAction = <UpgradeServiceAction>action;
+        const uuid: string = castingAction.serviceUuid;
+       return upgradeServiceInstance(clonedState, uuid, oldServiceAction);
+      }
+
+      case ServiceActions.UNDO_UPGRADE_SERVICE_ACTION: {
+        let clonedState = _.cloneDeep(state);
+        const castingAction = <UndoUpgradeServiceAction>action;
+        const uuid: string = castingAction.serviceUuid;
+        if(!_.isNil(clonedState.serviceInstance[uuid].action) && clonedState.serviceInstance[uuid].action.includes("Upgrade")) {
+         return undoUpgradeServiceInstance(clonedState, uuid);
+        }
       }
     }
 }
@@ -104,6 +121,24 @@ const updateUniqueNames = (oldName : string, newName : string, serviceInstance :
     existingNames[newName.toLowerCase()] = "";
   }
 };
+
+function upgradeServiceInstance(clonedState, uuid: string, oldServiceAction: string) {
+  if(!clonedState.serviceInstance[uuid].action.includes("Upgrade")){
+    clonedState.serviceInstance[uuid].action = (`${oldServiceAction}_Upgrade`) as ServiceInstanceActions;
+  }
+  clonedState.serviceInstance[uuid].isUpgraded = true;
+  clonedState.serviceInstance[uuid].upgradedVFMSonsCounter++;
+  return clonedState;
+}
+
+function undoUpgradeServiceInstance(clonedState, uuid: string) {
+  clonedState.serviceInstance[uuid].upgradedVFMSonsCounter--;
+  if(clonedState.serviceInstance[uuid].upgradedVFMSonsCounter == 0){
+    clonedState.serviceInstance[uuid].action = ServiceInstanceActions.None;
+    clonedState.serviceInstance[uuid].isUpgraded = false;
+  }
+  return clonedState;
+}
 
 
 

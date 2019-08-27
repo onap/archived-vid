@@ -36,6 +36,15 @@ export class DrawingBoardHeaderService{
     }
   }
 
+  upgradeService(serviceModelId: string, isUpgraded: boolean ) {
+    if(isUpgraded){
+      this.store.dispatch(addServiceAction(serviceModelId, ServiceInstanceActions.Upgrade));
+    }
+    else{
+      this.store.dispatch(addServiceAction(serviceModelId, ServiceInstanceActions.None));
+    }
+  }
+
   showAuditInfo(serviceModelId) : void {
     let instance: ServiceInstance = this.store.getState().service.serviceInstance[serviceModelId];
     let model =  new ServiceModel(this.store.getState().service.serviceHierarchy[serviceModelId]);

@@ -87,6 +87,7 @@ describe('Network step service', () => {
           "CREATE_INSTANCE_TEST": false,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
+          "FLAG_ASYNC_INSTANTIATION": true,
           "FLAG_ENABLE_WEBPACK_MODERN_UI": true,
           "FLAG_ASYNC_JOBS": true,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,

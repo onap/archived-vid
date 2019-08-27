@@ -46,7 +46,7 @@
     "@turf/turf": "5.1.6",
     "@types/lodash": "4.14.121",
     "angular-svg-icon": "5.0.0",
-    "angular-tree-component": "7.0.1",
+    "angular-tree-component": "8.4.0",
     "angular2-datatable": "0.6.0",
     "angular2-multiselect-dropdown": "2.5.0",
     "angular5-csv": "^0.2.10",

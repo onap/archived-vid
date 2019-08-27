@@ -3,7 +3,7 @@ import {VnfInstance} from "../../../models/vnfInstance";
 import {
   CreateVnfInstanceAction,
   RemoveVnfInstanceAction,
-  UpdateVnfInstanceAction, UpdateVnfPosition,
+  UpdateVnfInstanceAction, UpdateVnfPosition, UpgradeVnfAction,
   VNFActions
 } from "./vnf.actions";
 import * as _ from "lodash";
@@ -55,7 +55,6 @@ export function vnfReducer(state: ServiceState, action: Action): ServiceState {
 
     case VNFActions.DELETE_ACTION_VNF_INSTANCE : {
       return deleteFirstLevel(state, <ActionOnFirstLevel>action,true);
-
     }
 
     case VNFActions.UNDO_DELETE_ACTION_VNF_INSTANCE : {
@@ -77,13 +76,56 @@ export function vnfReducer(state: ServiceState, action: Action): ServiceState {
 
     case VNFActions.UPDATE_VNF_POSITION : {
       let newState = _.cloneDeep(state);
-      newState.serviceInstance[(<UpdateVnfPosition>action).instanceId].vnfs[(<UpdateVnfPosition>action).vnfStoreKey].position = (<UpdateVnfPosition>action).node.position;
+      newState.serviceInstance[(<UpdateVnfPosition>action).instanceId]
+        .vnfs[(<UpdateVnfPosition>action).vnfStoreKey]
+        .position = (<UpdateVnfPosition>action).node.position;
       return newState;
     }
+
+    case VNFActions.UPGRADE_VNF_ACTION: {
+      let clonedState = _.cloneDeep(state);
+      const castingAction = <UpgradeVnfAction>action;
+      let oldAction = clonedState
+        .serviceInstance[castingAction.serviceUuid]
+        .vnfs[castingAction.vnfStoreKey].action;
+      if(!oldAction.includes("Upgrade")) {
+          clonedState.serviceInstance[castingAction.serviceUuid]
+          .vnfs[castingAction.vnfStoreKey]
+          .action = (`${oldAction}_Upgrade`) as ServiceInstanceActions;
+      }
+
+      if(_.isNil(clonedState.serviceInstance[castingAction.serviceUuid]
+        .vnfs[castingAction.vnfStoreKey].upgradedVFMSonsCounter)) {
+        clonedState.serviceInstance[castingAction.serviceUuid]
+          .vnfs[castingAction.vnfStoreKey].upgradedVFMSonsCounter = 1;
+        return clonedState;
+      }
+      clonedState.serviceInstance[castingAction.serviceUuid]
+        .vnfs[castingAction.vnfStoreKey].upgradedVFMSonsCounter++;
+      return clonedState;
+    }
+
+    case VNFActions.UNDO_UPGRADE_VNF_ACTION: {
+      let clonedState = _.cloneDeep(state);
+      const castingAction = <UpgradeVnfAction>action;
+      if(clonedState.serviceInstance[castingAction.serviceUuid]
+        .vnfs[castingAction.vnfStoreKey]
+        .action.includes("Upgrade")) {
+          clonedState
+            .serviceInstance[castingAction.serviceUuid]
+            .vnfs[castingAction.vnfStoreKey].upgradedVFMSonsCounter--;
+          if(clonedState.serviceInstance[castingAction.serviceUuid].vnfs[castingAction.vnfStoreKey]
+            .upgradedVFMSonsCounter === 0){
+            clonedState.serviceInstance[castingAction.serviceUuid]
+              .vnfs[castingAction.vnfStoreKey]
+              .action = ServiceInstanceActions.None;
+          }
+      }
+      return clonedState;
+    }
+
   }
 }
-
-
 
 
 const updateUniqueNames = (oldName: string, newName: string, serviceInstance: ServiceInstance): void => {

@@ -28,8 +28,8 @@ import {MessageBoxService} from "../../../../../shared/components/messageBox/mes
 import {ServiceInstanceActions} from "../../../../../shared/models/serviceInstanceActions";
 import {
   deleteActionVnfInstance,
-  undoDeleteActionVnfInstance,
-  updateVnfPosition
+  undoDeleteActionVnfInstance, undoUpgradeVnf,
+  updateVnfPosition, upgradeVnf
 } from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
 import * as _ from 'lodash';
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
@@ -278,7 +278,21 @@ export class VnfModelInfo implements ILevelNodeInfo {
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
         enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
-      }
+      },
+      upgrade: {
+        method: (node, serviceModelId) => {
+          this._store.dispatch(upgradeVnf(node.data.vnfStoreKey, serviceModelId));
+        },
+        visible: () => false,
+        enable: () => false
+      },
+      undoUpgrade: {
+        method: (node, serviceModelId) => {
+          this._store.dispatch(undoUpgradeVnf(node.data.vnfStoreKey, serviceModelId));
+        },
+        visible: () => false,
+        enable: () => false
+      },
     }
   }
 
