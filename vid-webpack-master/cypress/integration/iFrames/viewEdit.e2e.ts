@@ -1,26 +1,31 @@
-///<reference path="../../../node_modules/cypress/types/index.d.ts"/> / <reference types="Cypress" />
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {PnfModel} from '../../support/jsonBuilders/models/pnf.model';
 import {ServiceModel} from '../../support/jsonBuilders/models/service.model';
 import {AaiServiceInstancesModel} from '../../support/jsonBuilders/models/serviceInstances.model';
 import {AAISubDetailsModel} from '../../support/jsonBuilders/models/aaiSubDetails.model';
 import {AAISubViewEditModel} from '../../support/jsonBuilders/models/aaiSubViewEdit.model';
+import {initServicePlanning} from "./viewOnlyDrawingBoard.e2e";
+
 
 describe('View Edit Page', function () {
   describe('basic UI tests', () => {
-    var jsonBuilderAAIService : JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
+    let jsonBuilderAAIService : JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
+    let commonUuid = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
+    let serviceInvariantId = "d27e42cf-087e-4d31-88ac-6c4b7585f800";
 
-
-    var jsonBuilderAAISubViewEditModel: JsonBuilder<AAISubViewEditModel> = new JsonBuilder<AAISubViewEditModel>();
-    var jsonBuilderAAISubDetailsModel: JsonBuilder<AAISubDetailsModel> = new JsonBuilder<AAISubDetailsModel>();
-    var jsonBuilderPNF: JsonBuilder<PnfModel> = new JsonBuilder<PnfModel>();
-    var jsonBuilderAaiServiceInstances: JsonBuilder<AaiServiceInstancesModel> = new JsonBuilder<AaiServiceInstancesModel>();
-    var jsonBuilderEmpty: JsonBuilder<Object> = new JsonBuilder<Object>();
+    let jsonBuilderAAISubViewEditModel: JsonBuilder<AAISubViewEditModel> = new JsonBuilder<AAISubViewEditModel>();
+    let jsonBuilderAAISubDetailsModel: JsonBuilder<AAISubDetailsModel> = new JsonBuilder<AAISubDetailsModel>();
+    let jsonBuilderPNF: JsonBuilder<PnfModel> = new JsonBuilder<PnfModel>();
+    let jsonBuilderAaiServiceInstances: JsonBuilder<AaiServiceInstancesModel> = new JsonBuilder<AaiServiceInstancesModel>();
+    let jsonBuilderEmpty: JsonBuilder<Object> = new JsonBuilder<Object>();
     beforeEach(() => {
+      cy.window().then((win) => {
+        win.sessionStorage.clear();
+      });
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
-          Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+          Cypress.config('baseUrl') + "/rest/models/services/" + commonUuid,
           200, 0,
           "service-complexService",
           changeServiceModel)
@@ -147,12 +152,22 @@ describe('View Edit Page', function () {
           0,
           "aai_getPortMirroringSourcePorts - empty response")
       });
-
+      mockAsyncBulkResponse();
+      cy.initVidMock({serviceUuid: commonUuid, invariantId: serviceInvariantId});
+      cy.setReduxState();
+      cy.permissionVidMock();
       cy.login();
     });
 
     afterEach(() => {
       cy.screenshot();
+    });
+
+    it(`should display the more actions button if user is permitted`, function () {
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=USP%20VOICE&serviceType=VIRTUAL%20USP&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.wait('@service-complexService');
+      cy.wait('@aai_getPortMirroringConfigsDate - empty response');
+      cy.getElementByDataTestsId("show-new-screen").should('be.visible').should('have.text', 'More actions').click();
     });
 
     it(`should display service model name and version on each info form`, function () {
@@ -200,7 +215,64 @@ describe('View Edit Page', function () {
       cy.getElementByDataTestsId("activateButton").should('not.have.attr', 'disabled');
       cy.getElementByDataTestsId("deactivateButton").should('have.attr', 'disabled');
     });
+
+    it(`Upgrade a VFModule`, function(){
+      cy.initDrawingBoardUserPermission();
+      initServicePlanning("EDIT",
+        '../vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json');
+      upgradeTheVFM();
+      undoUpgradeForVFM();
+      upgradeTheVFM();
+      cy.getDrawingBoardDeployBtn().click();
+      cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+        expect(Object(xhr.request.body).action).to.equal("None_Upgrade");
+        expect(Object(xhr.request.body).vnfs['VNF2_INSTANCE_ID'].action).to.equal("None_Upgrade");
+        expect(Object(xhr.request.body).vnfs['VNF2_INSTANCE_ID'].vfModules['dc229cd8-c132-4455-8517-5c1787c18b14']['3ef042c4-259f-45e0-9aba-0989bd8d1cc5'].action).to.equal("None_Upgrade");
+      });
+    });
+
+    it(`Upgrade a VFModule, Negative - latest version doesn't exist, upgrade button shouldn't exist`, function(){
+      setLatestVersionMockToEmptyResponse(serviceInvariantId);
+      cy.initDrawingBoardUserPermission();
+      initServicePlanning("EDIT",
+        '../vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json');
+      verifyMenuActionUpgradeDoesNotExist();
+    });
+
   });
+
+  function mockAsyncBulkResponse() {
+    cy.server().route({
+      url: Cypress.config('baseUrl') + '/asyncInstantiation/bulk',
+      method: 'POST',
+      status: 200,
+      response: "[]",
+    }).as("expectedPostAsyncInstantiation");
+  }
+
+  function verifyMenuActionUpgradeDoesNotExist() {
+    cy.getElementByDataTestsId('node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14-menu-btn').click()
+      .getElementByDataTestsId('context-menu-upgrade').should('not.exist');
+  }
+
+  function setLatestVersionMockToEmptyResponse(serviceUuid :string){
+    cy.server().route({
+      url: Cypress.config('baseUrl') + '/aai_get_newest_model_version_by_invariant/' + serviceUuid,
+      method: 'GET',
+      status: 200,
+      response: {},
+    }).as("expectLatestServiceModelUpgradeVersion")
+  }
+
+  function upgradeTheVFM() :Chainable<any>{
+    return cy.getElementByDataTestsId('node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14-menu-btn').click()
+      .drawingBoardTreeClickOnContextMenuOptionByName("Upgrade");
+  }
+
+  function undoUpgradeForVFM() {
+    cy.getElementByDataTestsId('node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14-menu-btn').click()
+      .drawingBoardTreeClickOnContextMenuOptionByName("Undo Upgrade");
+  }
 
   function changeFabric(serviceModel: ServiceModel) {
     serviceModel.service.uuid = "6e59c5de-f052-46fa-aa7e-2fca9d671234";
@@ -532,4 +604,3 @@ describe('View Edit Page', function () {
     return serviceModel;
   }
 });
-

@@ -76,14 +76,14 @@
                          [visible]="isVisible(currentNode, contextMenuOption.methodName)"
                          [enabled]="isEnabled(currentNode, serviceModelId, contextMenuOption.methodName)">
               <div [attr.data-tests-id]="contextMenuOption.dataTestId">
-                <div style="float: left;margin-top: 3px;">
+                <div style="float: left;margin-top: 3px;">isUpgraded
                   <svg-icon
-                    [ngClass]="contextMenuOption.iconClass"
                     class="icon-edit"
+                    [ngClass]="contextMenuOption.iconClass"
                     [size]="'small'"
                     [name]="contextMenuOption.iconClass">
                 </svg-icon></div>
-                <div style="padding-left: 25px;">{{contextMenuOption.label}}</div>
+                <div style="padding-left: 25px;">{{getcontextMenuOptionLabel(contextMenuOption)}}</div>
               </div>
             </ng-template>
           </context-menu>
@@ -100,20 +100,22 @@
                 [size]="'medium'"
                 [name]="'alert-triangle-o'">
               </svg-icon>
-            </span>
+          </span>
           <span *ngIf="drawingBoardTreeService.isVFModuleMissingData(node, serviceModelId)" class="icon-alert"
                 tooltip="{{ missingDataTooltip }}" tooltipPlacement="left"
                 [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>
         </div>
 
         <div class="action-status">
-          <span class="action-status-type delete" [attr.data-tests-id]="'delete-status-type'" [ngStyle]="{ 'opacity': node.data.action.split('_').pop() !== 'Delete' ? '0' : '1'}">Delete</span>
+          <span
+            [ngClass]="isUpgraded(node)?'action-status-type upgrade':'action-status-type delete'"
+            [attr.data-tests-id]="isUpgraded(node)?'action-status-type':'delete-status-type'" [ngStyle]="{ 'opacity': isUpgraded(node) || isDeleted(node) ? '1' : '0'}">{{isUpgraded(node)?"Upgrade":"Delete"}}</span>
         </div>
-
       </div>
     </ng-template>
   </tree-root>
 </div>
+
 
 
 

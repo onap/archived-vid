@@ -40,8 +40,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.*;
 import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
@@ -769,6 +768,33 @@ public class AaiApiTest extends BaseApiAaiTest {
         assertResponse(JsonAssert.when(Option.IGNORING_EXTRA_FIELDS, Option.IGNORING_ARRAY_ORDER),
                 presetAAIGetL3NetworksByCloudRegion.getActiveNetworksWithNameAndRelatedToVpnBindingAsJsonString(),
                 response.getBody());
+    }
+
+    @Test
+    public void getNewestModelVersionByInvariant() throws JsonProcessingException {
+        String invariantId = "f6342be5-d66b-4d03-a1aa-c82c3094c4ea";
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIModelVersionsByInvariantId(), CLEAR_THEN_SET );
+
+        String url = uri +
+                "/aai_get_newest_model_version_by_invariant/" + invariantId;
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertTrue(response.toString().contains("the-newest-version"));
+    }
+
+    @Test
+    public void getNewestModelVersionByInvariant_modelNotExist_thenEmptyResponse() {
+        String invariantId = "f6342be5-d66b-4d03-a1aa-c82c3094c4ea";
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIModelVersionsByInvariantId(), CLEAR_THEN_SET );
+
+        String url = uri +
+                "/aai_get_newest_model_version_by_invariant/" + "model-not-exist";
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNull(response.getBody());
     }
 
     private void assertResponse(Object expected, String response) {

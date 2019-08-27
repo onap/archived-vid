@@ -235,6 +235,12 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.2.11</version>
         </dependency>
+        <dependency>
+            <groupId>org.onap.vid</groupId>
+            <artifactId>vid-app-common</artifactId>
+            <version>5.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

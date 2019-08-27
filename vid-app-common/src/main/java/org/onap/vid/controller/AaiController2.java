@@ -119,7 +119,7 @@ public class AaiController2 extends VidRestrictedBaseController {
     }
 
     @RequestMapping(value = "/aai_get_newest_model_version_by_invariant/{invariantId}",
-        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelVer getNewestModelVersionByInvariant(@PathVariable("invariantId") String invariantId) {
         return aaiService.getNewestModelVersionByInvariantId(invariantId);
     }
