@@ -38,6 +38,11 @@
         <selenium.version>3.141.59</selenium.version>
         <sonar.coverage.exclusions>**/webapp/**/*,**/*.js</sonar.coverage.exclusions>
 
+        <!--Specify path to load jacoco xml report, as Sonar can't load Kotlin coverage from binary report. -->
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.reporting.outputDirectory}/jacoco-ut/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+
         <!-- Skip assembling the zip by default -->
         <skipassembly>true</skipassembly>
         <nexusproxy>https://nexus.onap.org</nexusproxy>
