@@ -3,8 +3,7 @@ import {ActionOnFirstLevel} from "./firstLevel/firstLevel.actions";
 import {ServiceInstanceActions} from "../../models/serviceInstanceActions";
 import {ServiceState} from "./main.reducer";
 
-export function deleteFirstLevel(state: ServiceState, action: ActionOnFirstLevel,shouldUpdateServiceValidationCounter: boolean)
-{
+export function deleteFirstLevel(state: ServiceState, action: ActionOnFirstLevel,shouldUpdateServiceValidationCounter: boolean){
   let newState = _.cloneDeep(state);
   let firstLevel = newState.serviceInstance[action.serviceId][action.firstLevelName][action.storeKey];
   let oldAction = firstLevel.action;
@@ -22,4 +21,10 @@ export function updateServiceValidationCounter(newState: any, oldValidationState
   } else if (!oldValidationState && newValidationState) {
     newState.serviceInstance[serviceUuid].validationCounter++;
   }
+  resetUpgradeStatus(newState, serviceUuid);
 };
+
+function resetUpgradeStatus(newState: any, serviceUuid: string){
+  newState.serviceInstance[serviceUuid].upgradedVFMSonsCounter = 0;
+  newState.serviceInstance[serviceUuid].isUpgraded = false;
+}

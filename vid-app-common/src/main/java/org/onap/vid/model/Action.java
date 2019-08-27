@@ -25,7 +25,7 @@ public enum Action {
     Delete(ServiceInfo.ServiceAction.DELETE),
     None(ServiceInfo.ServiceAction.UPDATE),
     Resume(ServiceInfo.ServiceAction.RESUME),
-    Replace(ServiceInfo.ServiceAction.REPLACE);
+    Upgrade(ServiceInfo.ServiceAction.UPGRADE);
 
     private final ServiceInfo.ServiceAction serviceAction;
     Action(ServiceInfo.ServiceAction serviceAction){

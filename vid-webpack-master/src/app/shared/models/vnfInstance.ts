@@ -8,10 +8,12 @@ export class VnfInstance extends Level1Instance {
   vnfStoreKey : string;
   position: number;
   statusMessage?: string;
+  upgradedVFMSonsCounter: number;
 
   constructor() {
     super();
     this.vfModules = {};
     this.vnfStoreKey = null;
+    this.upgradedVFMSonsCounter = 0;
   }
 }

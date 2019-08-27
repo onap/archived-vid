@@ -85,7 +85,7 @@ describe('Delete vnf instance', function () {
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
         cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/vidRequestDelete1Create1Vnf.json').then((expectedResult) => {
           expectedResult.vnfs["2017-388_PASQUALE-vPE 0_1"].trackById = vnf.trackById;
-          cy.deepCompare(xhr.request.body, expectedResult);
+          cy.deepCompare(expectedResult, xhr.request.body);
         });
       });
     });
