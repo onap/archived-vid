@@ -23,10 +23,12 @@ import {
   deleteActionVfModuleInstance,
   removeVfModuleInstance,
   undoDeleteVfModuleInstance,
-  updateVFModulePosition
+  undoUgradeVFModule,
+  updateVFModulePosition,
+  upgradeVFModule
 } from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
-import {ComponentInfoModel, ComponentInfoType} from "../../../component-info/component-info-model";
+import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 
 export class VFModuleModelInfo implements ILevelNodeInfo {
@@ -353,10 +355,32 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
         enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
-      }
+      },
+      upgrade : {
+        method : (node, serviceModelId) => {
+          this._sharedTreeService.upgradeBottomUp(node, serviceModelId);
+          this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
+        },
+        visible: (node,serviceModelId) => {
+          return this._sharedTreeService.shouldShowUpgrade(node, serviceModelId);
+        },
+        enable:  (node, serviceModelId) => {
+          return this._sharedTreeService.shouldShowUpgrade(node, serviceModelId);
+        }
+      },
+      undoUpgrade: {
+        method: (node, serviceModelId) => {
+          this._sharedTreeService.undoUpgradeBottomUp(node, serviceModelId);
+          this._store.dispatch(undoUgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
+        },
+        visible: (node) => {
+          return this._sharedTreeService.shouldShowUndoUpgrade(node);
+        },
+        enable: (node) => {
+          return this._sharedTreeService.shouldShowUndoUpgrade(node);
+        }
+      },
     };
-
-
   }
 
   updatePosition(that , node, instanceId, parentStoreKey): void {

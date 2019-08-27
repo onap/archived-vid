@@ -1,5 +1,6 @@
 export enum ServiceInstanceActions{
   Delete = "Delete",
+  Upgrade = "Upgrade",
   Update="Update",
   Create="Create",
   None="None",
