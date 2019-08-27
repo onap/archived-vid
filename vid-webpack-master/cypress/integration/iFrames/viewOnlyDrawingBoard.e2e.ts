@@ -4,17 +4,49 @@ import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {ServiceModel} from '../../support/jsonBuilders/models/service.model';
 import {AsyncInstantiationModel} from "../../support/jsonBuilders/models/asyncInstantiation.model";
 
-describe('View only drawing board', function () {
-  var jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
+var jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
+var jsonBuilderInstantiationBuilder: JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
+const SERVICE_MODEL_ID: string = '6e59c5de-f052-46fa-aa7e-2fca9d674c44';
+const SERVICE_INVARIANT_ID: string = "d27e42cf-087e-4d31-88ac-6c4b7585f800";
 
-  var jsonBuilderInstantiationBuilder: JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
+export const initServicePlanning = function (viewOrEdit: string, customModelFilePath?: string ){
+  const SUBSCRIBER_ID: string = "e433710f-9217-458d-a79d-1c7aff376d89";
+  const SERVICE_TYPE: string = "TYLER SILVIA";
+  const SERVICE_INSTANCE_ID: string = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
+  if (Cypress._.isNil(customModelFilePath)){
+    customModelFilePath = '../vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceInstance.json';
+  }
+
+  cy.readFile('../vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceModel.json').then((res) => {
+    jsonBuilderAndMock.basicJson(
+      res,
+      Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+      200,
+      0,
+      "ServiceTreeWithMultipleChildren_serviceModel",
+    )
+  });
+
+  cy.readFile(customModelFilePath).then((res) => {
+    jsonBuilderAndMock.basicJson(
+      res,
+      Cypress.config('baseUrl') + "/aai_get_service_instance_topology/e433710f-9217-458d-a79d-1c7aff376d89/TYLER SILVIA/f8791436-8d55-4fde-b4d5-72dd2cf13cfb",
+      200, 0,
+      "ServiceTreeWithMultipleChildren_serviceInstance",
+    );
+  });
+  cy.openIframe(`app/ui/#/servicePlanning/${viewOrEdit}?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
+}
+
+describe('View only drawing board', function () {
+  const _VIEW = "VIEW";
 
   beforeEach(() => {
     cy.window().then((win) => {
       win.sessionStorage.clear();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
-      cy.initVidMock();
+      cy.initVidMock({serviceUuid:SERVICE_MODEL_ID, invariantId: SERVICE_INVARIANT_ID});
       cy.initZones();
       cy.permissionVidMock();
       cy.login();
@@ -43,7 +75,7 @@ describe('View only drawing board', function () {
       cy.openIframe(`app/ui/#/servicePlanning/VIEW?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
 
       cy.get('div.title')
-        .contains('Server not available');
+      .contains('Server not available');
 
     });
   });
@@ -105,43 +137,16 @@ describe('View only drawing board', function () {
 
 
   });
-  function initServicePlanning(){
-    const SUBSCRIBER_ID: string = "e433710f-9217-458d-a79d-1c7aff376d89";
-    const SERVICE_TYPE: string = "TYLER SILVIA";
-    const SERVICE_INSTANCE_ID: string = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
-    const SERVICE_MODEL_ID: string = '6e59c5de-f052-46fa-aa7e-2fca9d674c44';
 
-    cy.readFile('../vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceModel.json').then((res) => {
-      jsonBuilderAndMock.basicJson(
-        res,
-        Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d674c44",
-        200,
-        0,
-        "ServiceTreeWithMultipleChildren_serviceModel",
-      )
-    });
-
-    cy.readFile('../vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceInstance.json').then((res) => {
-      jsonBuilderAndMock.basicJson(
-        res,
-        Cypress.config('baseUrl') + "/aai_get_service_instance_topology/e433710f-9217-458d-a79d-1c7aff376d89/TYLER SILVIA/f8791436-8d55-4fde-b4d5-72dd2cf13cfb",
-        200, 0,
-        "ServiceTreeWithMultipleChildren_serviceInstance",
-      )
-    });
-
-    cy.openIframe(`app/ui/#/servicePlanning/VIEW?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
-
-  }
   it('check component info for 2 trees for vnf, vf-module, and network', function(){
-    initServicePlanning();
+    initServicePlanning(_VIEW);
     testComponentInfoForVNF();
     testComponentInfoForVFMODULE();
     testComponentInfoForNetwork();
   });
 
   it(`when open service planning in view mode service instance is shown as expected - e2e with API's ServiceTreeWithMultipleChildren`, function () {
-    initServicePlanning();
+    initServicePlanning(_VIEW);
     /*
     0. title area -> generic stuff
                      instance name
