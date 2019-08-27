@@ -6,13 +6,13 @@ function loadjscssfile(filename, filetype){
   		script.async = false; 			
  		document.head.appendChild(script);
     }else if (filetype=="css"){ //if filename is an external CSS file
-        var fileref=document.createElement("link")
-        fileref.setAttribute("rel", "stylesheet")
-        fileref.setAttribute("type", "text/css")
-        fileref.setAttribute("async", false)
-        fileref.setAttribute("href", filename)
+        var fileref=document.createElement("link");
+        fileref.setAttribute("rel", "stylesheet");
+        fileref.setAttribute("type", "text/css");
+        fileref.setAttribute("async", false);
+        fileref.setAttribute("href", filename);
         document.head.appendChild(fileref);
-    } 
+    };
 }
 
 function loadResource(){
