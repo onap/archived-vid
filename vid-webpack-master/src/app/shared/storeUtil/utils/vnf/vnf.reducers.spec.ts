@@ -2,7 +2,7 @@ import {VnfInstance} from "../../../models/vnfInstance";
 import {
   CreateVnfInstanceAction,
   RemoveVnfInstanceAction,
-  UpdateVnfPosition,
+  UpdateVnfPosition, UpgradeVnfAction,
   VNFActions
 } from "./vnf.actions";
 import {vnfReducer} from "./vnf.reducers";
@@ -15,7 +15,7 @@ describe('vnfReducer', () => {
     vnfInstance.isMissingData = false;
     vnfInstance.instanceName = 'instanceName';
     let vnfState = vnfReducer(<any>{
-      serviceInstance : {
+        serviceInstance : {
           'serviceModelId' : {
             vnfs : {
               "vnfStoreKey" : {
@@ -129,7 +129,49 @@ describe('vnfReducer', () => {
     expect(vnfs['vnfStoreKey']).toBeUndefined();
   });
 
+  test('#UPGRADE_VNF_ACTION', () => {
+    const vnfStoreKey: string  = 'vnfStoreKey';
+    const serviceModelId: string  = 'serviceModelId';
+    let vnfs = vnfReducer(<any>{serviceInstance : {
+          [serviceModelId] : {
+            vnfs : {
+              [vnfStoreKey] : {
+                isMissingData : true,
+                action : 'None'
+              }
+            }
+          }
+        }},
+      <UpgradeVnfAction>{
+        type: VNFActions.UPGRADE_VNF_ACTION,
+        vnfStoreKey: vnfStoreKey,
+        serviceUuid: serviceModelId
+      }).serviceInstance[serviceModelId].vnfs[vnfStoreKey];
+
+    expect(vnfs).toBeDefined();
+    expect(vnfs[vnfStoreKey]).toBeUndefined();
+  });
+  test('#UNDO_UPGRADE_VNF_ACTION', () => {
+    const vnfStoreKey: string  = 'vnfStoreKey';
+    const serviceModelId: string  = 'serviceModelId';
+    let vnfs = vnfReducer(<any>{serviceInstance : {
+          [serviceModelId] : {
+            vnfs : {
+              [vnfStoreKey] : {
+                isMissingData : true,
+                action : 'None_Upgrade'
+              }
+            }
+          }
+        }},
+      <UpgradeVnfAction>{
+        type: VNFActions.UNDO_UPGRADE_VNF_ACTION,
+        vnfStoreKey: vnfStoreKey,
+        serviceUuid: serviceModelId
+      }).serviceInstance[serviceModelId].vnfs[vnfStoreKey];
+
+    expect(vnfs).toBeDefined();
+    expect(vnfs[vnfStoreKey]).toBeUndefined();
+  });
+
 });
-
-
-

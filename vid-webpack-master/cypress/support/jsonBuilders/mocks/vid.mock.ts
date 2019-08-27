@@ -6,6 +6,7 @@ declare namespace Cypress {
     initAuditInfoMSO: typeof initAuditInfoMSO;
     initAuditInfoMSOALaCarte: typeof initAuditInfoMSOALaCarte;
     initAsyncInstantiation : typeof  initAsyncInstantiation;
+    mockLatestVersionForService : typeof  mockLatestVersionForService;
   }
 }
 
@@ -106,14 +107,31 @@ function initAsyncInstantiation(response? : JSON, delay?: number, status?: numbe
   })
 }
 
+function mockLatestVersionForService(uuidObject :any) {
+  if(uuidObject && uuidObject.serviceUuid && uuidObject.invariantId){
+    cy.server().route({
+      url: Cypress.config('baseUrl') + '/aai_get_newest_model_version_by_invariant/' + uuidObject.invariantId,
+      method: 'GET',
+      status: 200,
+      response: {
+        "modelVersionId": uuidObject.serviceUuid,
+        "modelName": "SERVICE_INSTANCE_NAME",
+        "modelVersion": "2.0",
+        "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+        "resourceVersion": "resourceVersion",
+        "modelDescription": "modelDescription"
+      },
+    }).as("expectLatestServiceModelUpgradeVersion")
+  }
+}
 
-
-function initVidMock(): void {
+function initVidMock(...args :any): void {
   initGetToMenuInfo();
   initCategoryParameter();
   initFlags();
   initAuditInfoVID();
   initAuditInfoMSO();
+  mockLatestVersionForService(args[0]);
 }
 
 
@@ -123,3 +141,5 @@ Cypress.Commands.add('initCategoryParameter', initCategoryParameter);
 Cypress.Commands.add('initAuditInfoMSO', initAuditInfoMSO);
 Cypress.Commands.add('initAuditInfoMSOALaCarte', initAuditInfoMSOALaCarte);
 Cypress.Commands.add('initAsyncInstantiation', initAsyncInstantiation);
+Cypress.Commands.add('mockLatestVersionForService', mockLatestVersionForService);
+

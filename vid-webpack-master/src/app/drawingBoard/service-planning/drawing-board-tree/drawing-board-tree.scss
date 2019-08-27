@@ -341,15 +341,21 @@ drawing-board-tree {
                   line-height: 42px;
                   width: 95px;
                   min-width: 95px;
-                  .action-status-type.delete {
+                  .action-status-type {
                     background: transparent;
                     font-family: OpenSans-SemiBold;
                     font-size: 12px;
-                    color: red;
                     border-radius: 50px;
                     border: 1px solid gray;
-                    padding: 5px 20px;
+                    padding: 5px 17px;
+                    &.delete {
+                      color: red;
+                    }
+                    &.upgrade{
+                      color: #009FDB;
+                    }
                   }
+
                 }
 
                 .model-info.rightBorder {

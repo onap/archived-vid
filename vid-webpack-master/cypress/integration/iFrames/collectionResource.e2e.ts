@@ -6,7 +6,7 @@ import {ServiceModel} from "../../support/jsonBuilders/models/service.model";
 describe('Drawing board : Collection resource', function () {
 
   let jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
-
+  const serviceModelId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
   beforeEach(() => {
     cy.window().then((win) => {
       win.sessionStorage.clear();
@@ -24,7 +24,7 @@ describe('Drawing board : Collection resource', function () {
 
   describe('should show collection resource model correctly', () => {
     it('collection type + name', () => {
-      const serviceModelId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
+
       const collectionResourceName: string = "CR_sanity 0";
       initDrawingBoardWithColectionResource(serviceModelId, collectionResourceName);
       cy.get('.vf-type').contains('CR');
@@ -32,7 +32,6 @@ describe('Drawing board : Collection resource', function () {
     });
 
     it('collection resource component info', () => {
-      const serviceModelId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
       const collectionResourceName: string = "CR_sanity 0";
       const redux = initDrawingBoardWithColectionResource(serviceModelId, collectionResourceName)
       cy.getElementByDataTestsId(`node-${collectionResourceName}`).click().then(()=>{

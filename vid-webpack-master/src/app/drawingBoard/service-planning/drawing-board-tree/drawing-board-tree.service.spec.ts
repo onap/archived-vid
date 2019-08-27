@@ -1,8 +1,5 @@
-import {TestBed, getTestBed} from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import {getTestBed, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {NgRedux} from "@angular-redux/store";
 import {DrawingBoardTreeService, TreeNodeContextMenuModel} from "./drawing-board-tree.service";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
@@ -74,10 +71,12 @@ describe('Drawing board tree Service', () => {
       new TreeNodeContextMenuModel('addGroupMember', 'context-menu-addGroupMember', 'Add group members', 'plus'),
       new TreeNodeContextMenuModel('delete', 'context-menu-delete', 'Delete', 'trash-o'),
       new TreeNodeContextMenuModel('remove', 'context-menu-remove', 'Remove', 'trash-o'),
+      new TreeNodeContextMenuModel('upgrade', 'context-menu-upgrade', 'Upgrade', 'upgrade'),
       new TreeNodeContextMenuModel('undoDelete', 'context-menu-undoDelete', 'Undo Delete', 'undo-delete'),
+      new TreeNodeContextMenuModel('undoUpgrade', 'context-menu-undoUpgrade', 'Undo Upgrade', 'undo-delete'),
       new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o')
     ];
-    expect(options.length).toEqual(8);
+    expect(options.length).toEqual(10);
     expect(options).toEqual(expected);
   });
 

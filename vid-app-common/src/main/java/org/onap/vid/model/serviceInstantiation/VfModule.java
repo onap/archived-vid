@@ -20,18 +20,17 @@
 
 package org.onap.vid.model.serviceInstantiation;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.onap.vid.job.JobAdapter;
-import org.onap.vid.job.JobType;
-import org.onap.vid.mso.model.ModelInfo;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
+import org.onap.vid.mso.model.ModelInfo;
 
 /**
  * The Class VfModule.
@@ -90,5 +89,26 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	@Override
 	public JobType getJobType() {
 		return JobType.VfmoduleInstantiation;
+	}
+
+	public VfModule cloneWith(ModelInfo modelInfo) {
+		return new VfModule(
+				modelInfo,
+				this.getInstanceName(),
+				this.getVolumeGroupInstanceName(),
+				this.getAction().toString(),
+				this.getLcpCloudRegionId(),
+				this.getLcpCloudRegionId(),
+				this.getTenantId(),
+				this.getInstanceParams(),
+				this.getSupplementaryParams(),
+				this.isRollbackOnFailure(),
+				this.isUsePreload(),
+				this.getInstanceId(),
+				this.getTrackById(),
+				this.getIsFailed(),
+				this.getStatusMessage()
+		);
+
 	}
 }

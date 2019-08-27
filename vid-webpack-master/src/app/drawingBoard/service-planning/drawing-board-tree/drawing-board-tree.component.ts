@@ -28,6 +28,7 @@ import {ComponentInfoService} from "../component-info/component-info.service";
 import {ComponentInfoModel} from "../component-info/component-info-model";
 import {ObjectToModelTreeService} from "../objectsToTree/objectToModelTree/objectToModelTree.service";
 import {DrawingBoardModes} from "../drawing-board.modes";
+import {ServiceInstanceActions} from "../../../shared/models/serviceInstanceActions";
 
 @Component({
   selector: 'drawing-board-tree',
@@ -203,6 +204,24 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
     return false;
   }
 
+
+
+  isUpgraded(node: ITreeNode): boolean {
+    return this.isLabeledAsAction(node, "Upgrade");
+  }
+
+  isDeleted(node: ITreeNode): boolean {
+    return this.isLabeledAsAction(node, "Delete");
+  }
+
+  private isLabeledAsAction(node: ITreeNode, action) {
+    let nodeAction = node.data.action.split('_').pop();
+    if (!_.isNil(nodeAction)) {
+      return nodeAction === action;
+    }
+    return false;
+  }
+
   public selectNode(node: ITreeNode): void {
     node.expand();
     this._sharedTreeService.setSelectedVNF(node);
@@ -220,6 +239,13 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
     this.tree.treeModel.getNodeById(id).parent.expand();
   }
 
+  getcontextMenuOptionLabel(contextMenuOption: TreeNodeContextMenuModel): string{
+    let optionLabel = contextMenuOption.label;
+    if(contextMenuOption.label === ServiceInstanceActions.Upgrade) {
+      return optionLabel.concat(" to V" + this._store.getState().service.serviceInstance[this.serviceModelId].latestAvailableVersion);
+    }
+    return optionLabel;
+  }
 }
 
 

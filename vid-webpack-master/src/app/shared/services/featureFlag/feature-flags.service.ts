@@ -9,7 +9,9 @@ export enum Features {
   FLAG_VF_MODULE_RESUME_STATUS_CREATE = 'FLAG_VF_MODULE_RESUME_STATUS_CREATE',
   DRAG_AND_DROP_OPERATION = 'DRAG_AND_DROP_OPERATION',
   FLAG_1906_COMPONENT_INFO = 'FLAG_1906_COMPONENT_INFO',
-  FLAG_1908_RESUME_MACRO_SERVICE = 'FLAG_1908_RESUME_MACRO_SERVICE'
+  FLAG_1908_RESUME_MACRO_SERVICE = 'FLAG_1908_RESUME_MACRO_SERVICE',
+  FLAG_FLASH_REPLACE_VF_MODULE ='FLAG_FLASH_REPLACE_VF_MODULE',
+  FLAG_FLASH_VIEW_IN_NEW_VIEWEDIT_SCREEN ='FLAG_FLASH_VIEW_IN_NEW_VIEWEDIT_SCREEN'
 }
 
 @Injectable()
@@ -23,7 +25,11 @@ export class FeatureFlagsService {
 
   /*static method for easy refactoring of code, so no injection of FeatureFlagsService is needed*/
   public static getFlagState(flag: Features, store: NgRedux<AppState>):boolean {
-    return store.getState().global.flags[flag];
+    let storeStateGlobalFields = store.getState().global;
+    if(storeStateGlobalFields && storeStateGlobalFields.flags && storeStateGlobalFields.flags[flag] !== undefined){
+      return storeStateGlobalFields.flags[flag];
+    }
+    return false;
   }
 
 

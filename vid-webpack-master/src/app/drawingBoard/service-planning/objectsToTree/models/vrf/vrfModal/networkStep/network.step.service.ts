@@ -8,7 +8,9 @@ import {
 } from "../../../../../../../shared/storeUtil/utils/global/global.actions";
 import {ElementsTableService} from "../../../../../../../shared/components/searchMembersModal/members-table/elements-table.service";
 import {
-  ICriteria, ISearchField, ITableContent,
+  ICriteria,
+  ISearchField,
+  ITableContent,
   ModalInformation
 } from "../../../../../../../shared/components/searchMembersModal/members-table/element-table-row.model";
 import {Observable, of} from "rxjs";
@@ -76,7 +78,7 @@ export class NetworkStepService {
 
   getNetworks = (serviceInstance): Observable<any[]> => {
     let cloudRegion = serviceInstance.lcpCloudRegionId;
-    let tenantId = serviceInstance.tenantName;
+    let tenantId = serviceInstance.tenantId;
     return this._aaiService.retrieveActiveNetwork(cloudRegion, tenantId).map((networks: NetworkModalRow[]) => {
       this.generateRolesOptions(networks);
       return this.sortElementsResultByField(networks, this.uniqObjectField);

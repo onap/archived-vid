@@ -183,7 +183,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     }
 
     protected VfModule createVfModuleForReplace(ModelInfo vfModuleModelInfo, String instanceName, String lcpCloudRegionId, String tenantId) {
-        return new VfModule( vfModuleModelInfo, instanceName, null, Action.Replace.name(), lcpCloudRegionId, null, tenantId,
+        return new VfModule( vfModuleModelInfo, instanceName, null, Action.Upgrade.name(), lcpCloudRegionId, null, tenantId,
                 null, null, true, null, null, UUID.randomUUID().toString(), null, null);
     }
 

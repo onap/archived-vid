@@ -8,7 +8,7 @@
           "VfZrdm5bpxmc02092017Vf..CORNELIUS_base..module-0-?": {
             "instanceName": "replace_module",
             "instanceId": "5d49c3b1-fc90-4762-8c98-e800170baa55",
-            "action": "Replace",
+            "action": "Upgrade",
             "orchStatus": "Create",
             "provStatus": "Prov Status",
             "inMaint": false,
@@ -21,6 +21,7 @@
               "modelName": "VfZrdm5bpxmc02092017Vf..CORNELIUS_base..module-0",
               "modelVersion": "1",
               "modelCustomizationId": "074c64d0-7e13-4bcc-8bdb-ea922331102d",
+              "modelCustomizationName" : "VfZrdm5bpxmc02092017Vf..CORNELIUS_base..module-0",
               "uuid": "eb5de6fb-9ecf-4009-b922-fae3a9ae7d46"
             },
             "uuid": "eb5de6fb-9ecf-4009-b922-fae3a9ae7d46"
