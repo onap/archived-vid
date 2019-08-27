@@ -56,7 +56,6 @@ import java.net.URI;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -75,15 +74,8 @@ import org.apache.http.HttpStatus;
 import org.mockito.Mockito;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.model.*;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
-import org.onap.vid.aai.model.CustomQuerySimpleResult;
-import org.onap.vid.aai.model.ModelVer;
-import org.onap.vid.aai.model.ModelVersions;
-import org.onap.vid.aai.model.PortDetailsTranslator;
-import org.onap.vid.aai.model.Properties;
-import org.onap.vid.aai.model.RelatedToProperty;
-import org.onap.vid.aai.model.ResourceType;
-import org.onap.vid.aai.model.SimpleResult;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.CacheProvider;
 import org.onap.vid.aai.util.HttpsAuthClient;
@@ -756,51 +748,6 @@ public class AaiClientTest {
         };
     }
 
-    @Test
-    public void testGetLatestVersionByInvariantId() throws IOException {
-
-        ModelVersions modelVersions = JACKSON_OBJECT_MAPPER.readValue("" +
-                "{\n" +
-                "    \"results\": [\n" +
-                "        {\n" +
-                "            \"model\": {\n" +
-                "                \"model-invariant-id\": \"f6342be5-d66b-4d03-a1aa-c82c3094c4ea\",\n" +
-                "                \"model-type\": \"service\",\n" +
-                "                \"resource-version\": \"1534274421300\"\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"model-ver\": {\n" +
-                "                \"model-version-id\": \"a92f899d-a3ec-465b-baed-1663b0a5aee1\",\n" +
-                "                \"model-name\": \"NCM_VLAN_SVC_ym161f\",\n" +
-                "                \"model-version\": \"bbb\",\n" +
-                "                \"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
-                "                \"model-description\": \"Network Collection service for vLAN tagging\",\n" +
-                "                \"resource-version\": \"1534788756086\"\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"model-ver\": {\n" +
-                "                \"model-version-id\": \"d2fda667-e92e-4cfa-9620-5da5de01a319\",\n" +
-                "                \"model-name\": \"NCM_VLAN_SVC_ym161f\",\n" +
-                "                \"model-version\": \"aaa\",\n" +
-                "                \"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
-                "                \"model-description\": \"Network Collection service for vLAN tagging\",\n" +
-                "                \"resource-version\": \"1534444087221\"\n" +
-                "            }\n" +
-                "        }]}", ModelVersions.class);
-
-
-        final AaiClient aaiClient = new AaiClient(null, null, null);
-
-        assertThat(aaiClient.toModelVerStream(modelVersions).collect(toList()),
-                containsInAnyOrder(
-                        hasProperty("modelVersionId", is("a92f899d-a3ec-465b-baed-1663b0a5aee1")),
-                        hasProperty("modelVersionId", is("d2fda667-e92e-4cfa-9620-5da5de01a319"))
-                ));
-
-    }
-
     @DataProvider
     public static Object[][]  versionsDataProvider() {
         return new Object[][] {
@@ -984,5 +931,4 @@ public class AaiClientTest {
             ));
 
     }
-
 }

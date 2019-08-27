@@ -10,7 +10,9 @@ export enum ServiceActions {
   ADD_SERVICE_ACTION = 'ADD_SERVICE_ACTION',
   DELETE_ACTION_SERVICE_INSTANCE = "DELETE_ACTION_SERVICE_INSTANCE",
   UNDO_DELETE_ACTION_SERVICE_INSTANCE = "UNDO_DELETE_ACTION_SERVICE_INSTANCE",
-  CHANGE_SERVICE_IS_DIRTY = "CHANGE_SERVICE_IS_DIRTY"
+  CHANGE_SERVICE_IS_DIRTY = "CHANGE_SERVICE_IS_DIRTY",
+  UPGRADE_SERVICE_ACTION = "UPGRADE_SERVICE_ACTION",
+  UNDO_UPGRADE_SERVICE_ACTION = "UNDO_UPGRADE_SERVICE_ACTION"
 }
 
 export interface CreateServiceInstanceAction extends Action {
@@ -40,6 +42,13 @@ export interface AddServiceAction extends Action{
   action: ServiceInstanceActions;
 }
 
+export interface UpgradeServiceAction extends Action{
+  serviceUuid: string;
+}
+
+export interface UndoUpgradeServiceAction extends Action{
+  serviceUuid: string;
+}
 
 export interface DeleteActionServiceInstanceAction extends Action {
   serviceId?: string;
@@ -99,4 +108,12 @@ export const changeServiceIsDirty: ActionCreator<ChangeServiceDirty> = (nodes, s
   serviceId : serviceId
 });
 
+export const upgradeService: ActionCreator<UpgradeServiceAction> = (serviceUuid : string) => ({
+  type: ServiceActions.UPGRADE_SERVICE_ACTION,
+  serviceUuid
+});
 
+export const undoUpgradeService: ActionCreator<UndoUpgradeServiceAction> = (serviceUuid : string) => ({
+  type: ServiceActions.UNDO_UPGRADE_SERVICE_ACTION,
+  serviceUuid
+});
