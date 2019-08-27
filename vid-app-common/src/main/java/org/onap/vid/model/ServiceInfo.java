@@ -22,18 +22,25 @@ package org.onap.vid.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SelectBeforeUpdate;
-import org.hibernate.annotations.Type;
-import org.onap.portalsdk.core.domain.support.DomainVo;
-import org.onap.vid.job.Job;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+import org.hibernate.annotations.Type;
+import org.onap.portalsdk.core.domain.support.DomainVo;
+import org.onap.vid.job.Job;
 
 /*
  The following 2 annotations let hibernate to update only fields that actually have been changed.
@@ -51,7 +58,7 @@ public class ServiceInfo extends DomainVo {
         DELETE,
         UPDATE,
         RESUME,
-        REPLACE
+        UPGRADE
     }
 
     private UUID jobId;

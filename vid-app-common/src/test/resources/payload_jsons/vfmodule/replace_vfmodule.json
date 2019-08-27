@@ -10,9 +10,9 @@
       "relatedInstance": {
         "instanceId": "e9993045-cc96-4f3f-bf9a-71b2a400a956",
         "modelInfo": {
-          "modelVersionId": "bad955c3-29b2-4a27-932e-28e942cc6480",
-          "modelVersion": "1",
-          "modelName": "Vf zolson5bpxmc02092017-Service",
+          "modelVersionId": "newest-model-uuid-service",
+          "modelVersion": "newest-model-version-service",
+          "modelName": "newest-model-name-service",
           "modelInvariantId": "b16a9398-ffa3-4041-b78c-2956b8ad9c7b",
           "modelType": "service"
         }
@@ -21,13 +21,13 @@
       "relatedInstance": {
         "instanceId": "5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5",
         "modelInfo": {
-          "modelName": "Vf zolson5bpxmc02092017-VF",
-          "modelVersion": "1",
+          "modelName": "newest-model-name-vnf",
+          "modelVersion": "newest-model-version-vnf",
           "modelInvariantId": "23122c9b-dd7f-483f-bf0a-e069303db2f7",
           "modelType": "vnf",
-          "modelCustomizationName": "Vf zolson5bpxmc02092017-VF 0",
-          "modelVersionId": "d326f424-2312-4dd6-b7fe-364fadbd1ef5",
-          "modelCustomizationId": "96c23a4a-6887-4b2c-9cce-1e4ea35eaade"
+          "modelCustomizationName": "newest-model-customization-name-vnf",
+          "modelVersionId": "newest-model-uuid-vnf",
+          "modelCustomizationId": "newest-model-customization-uuid-vnf"
         }
       }
     }],
@@ -36,12 +36,13 @@
       "testApi": "GR_API"
     },
     "modelInfo": {
-      "modelName": "VfZrdm5bpxmc02092017Vf..CORNELIUS_base..module-0",
-      "modelVersion": "1",
+      "modelName": "newest-model-name-vfm",
+      "modelVersion": "newest-model-version-vfm",
       "modelInvariantId": "f7a867f2-596b-4f4a-a128-421e825a6190",
       "modelType": "vfModule",
-      "modelVersionId": "eb5de6fb-9ecf-4009-b922-fae3a9ae7d46",
-      "modelCustomizationId": "074c64d0-7e13-4bcc-8bdb-ea922331102d"
+      "modelVersionId": "newest-model-uuid-vfm",
+      "modelCustomizationId": "newest-model-customization-uuid-vfm",
+      "modelCustomizationName":"newest-model-customization-name-vfm"
     },
     "cloudConfiguration": {
       "cloudOwner": "irma-aic",

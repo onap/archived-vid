@@ -7,7 +7,11 @@ import * as _ from 'lodash';
 describe('A la carte', function () {
   describe('check service name', () => {
     let jsonBuilderAAIService: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
-
+    const SERVICE_ID: string = '4d71990b-d8ad-4510-ac61-496288d9078e';
+    const SERVICE_INVARIANT_ID: string = 'd27e42cf-087e-4d31-88ac-6c4b7585f800';
+    const INSTANCE_NAME_MANDATORY_MESSAGE: string = 'Missing data ("Instance Name" and 3 other fields';
+    const INSTANCE_NAME_NOT_MANDATORY_MESSAGE: string = 'Missing data ("Subscriber Name" and 2 other fields)';
+    const CONFIRM_BUTTON: string = 'confirmButton';
 
     beforeEach(() => {
       cy.window().then((win) => {
@@ -15,7 +19,7 @@ describe('A la carte', function () {
         cy.setReduxState();
         cy.preventErrorsOnLoading();
         cy.initAAIMock();
-        cy.initVidMock();
+        cy.initVidMock({serviceUuid:SERVICE_ID, invariantId: SERVICE_INVARIANT_ID});
         cy.initAlaCarteService();
         cy.initZones();
         cy.login();
@@ -26,16 +30,12 @@ describe('A la carte', function () {
       cy.screenshot();
     });
 
-    const SERVICE_ID: string = '4d71990b-d8ad-4510-ac61-496288d9078e';
-    const INSTANCE_NAME_MANDATORY_MESSAGE: string = 'Missing data ("Instance Name" and 3 other fields';
-    const INSTANCE_NAME_NOT_MANDATORY_MESSAGE: string = 'Missing data ("Subscriber Name" and 2 other fields)';
-    const CONFIRM_BUTTON: string = 'confirmButton';
 
 
     it(`service name should be mandatory : serviceEcompNaming = true`, ()=> {
       cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(res,
-          Cypress.config('baseUrl') + '/rest/models/services/4d71990b-d8ad-4510-ac61-496288d9078e',
+          Cypress.config('baseUrl') + '/rest/models/services/' + SERVICE_ID,
           200,
           0,
           SERVICE_ID + ' - service',
@@ -130,10 +130,10 @@ describe('A la carte', function () {
               cy.getReduxState().then((state) => {
 
                 const vnf = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'];
-
                 cy.readFile('../vid-automation/src/test/resources/a-la-carte/redux-a-la-carte.json').then((file) => {
                   file.vnfs['2017-488_PASQUALE-vPE 0'].trackById = vnf.trackById;
                   file.vnfs['2017-488_PASQUALE-vPE 0'].vfModules = {};
+                  file.vnfs['2017-488_PASQUALE-vPE 0'].upgradedVFMSonsCounter = 0;
                   cy.deepCompare(vnf, file.vnfs['2017-488_PASQUALE-vPE 0'])
                 });
               });
@@ -232,6 +232,7 @@ describe('A la carte', function () {
                             for (let vfModulesName of vfModulesNames) {
                               const vfModule = vfModules[vfModulesName];
                               let vfModuleObject = vfModule[Object.keys(vfModule)[0]];
+                              file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName].action = "Create";
                               cy.deepCompare(vfModuleObject, file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName]);
                             }
                           });
@@ -261,7 +262,7 @@ describe('A la carte', function () {
         .get('.error').contains(INSTANCE_NAME_NOT_MANDATORY_MESSAGE);
     }
 
-    function addVfModule(vnfName: string, vfModuleName: string, instanceName: string, lcpRegion: string, legacyRegion: string, tenant: string, rollback: boolean, sdncPreLoad: boolean, deleteVgName: boolean): Chainable<any> {
+    function addVfModule (vnfName: string, vfModuleName: string, instanceName: string, lcpRegion: string, legacyRegion: string, tenant: string, rollback: boolean, sdncPreLoad: boolean, deleteVgName: boolean): Chainable<any> {
       return cy.getElementByDataTestsId('node-' + vnfName).click({force: true}).then(() => {
         cy.getElementByDataTestsId('node-' + vfModuleName + '-add-btn').click({force: true}).then(() => {
           cy.getElementByDataTestsId('instanceName').clear().type(instanceName, {force: true}).then(() => {
@@ -283,6 +284,7 @@ describe('A la carte', function () {
         });
       });
     }
+
 
   });
 });

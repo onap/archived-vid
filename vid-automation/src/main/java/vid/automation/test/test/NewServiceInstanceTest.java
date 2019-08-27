@@ -352,7 +352,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
             PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC,
-                new PresetAAIGetL3NetworksByCloudRegionSpecificState("irma-aic", "hvf6", "AIN Web Tool-15-D-testalexandria"),
+                new PresetAAIGetL3NetworksByCloudRegionSpecificState("irma-aic", "hvf6", "bae71557c5bb4d5aac6743a4e5f1d054"),
             new PresetAAIGetVpnsByType()
         ), APPEND);
 

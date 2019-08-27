@@ -440,6 +440,8 @@ public class AaiClient implements AaiClientInterface {
     }
 
     protected Stream<ModelVer> toModelVerStream(ModelVersions modelVersions) {
+        if (modelVersions == null)
+            return null;
 
         if (modelVersions == null)
             return null;
@@ -454,7 +456,6 @@ public class AaiClient implements AaiClientInterface {
     }
 
     protected ModelVer maxModelVer(Stream<ModelVer> modelVerStream) {
-
         if (modelVerStream == null)
             return null;
 

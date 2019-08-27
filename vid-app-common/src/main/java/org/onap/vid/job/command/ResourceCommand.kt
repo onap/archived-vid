@@ -222,11 +222,16 @@ abstract class ResourceCommand(
                 else -> InternalState.IN_PROGRESS
             }
 
+            InternalState.REPLACE_MYSELF -> when (jobStatus) {
+                JobStatus.IN_PROGRESS -> InternalState.REPLACE_MYSELF
+                else -> InternalState.IN_PROGRESS
+            }
+
             InternalState.IN_PROGRESS -> {
                 when {
                     jobStatus != JobStatus.COMPLETED -> InternalState.IN_PROGRESS
                     isDescendantHasAction(Action.Create) -> InternalState.CREATING_CHILDREN
-                    isDescendantHasAction(Action.Replace) -> InternalState.CREATING_CHILDREN
+                    isDescendantHasAction(Action.Upgrade) -> InternalState.CREATING_CHILDREN
                     else -> InternalState.TERMINAL
                 }
             }
@@ -284,7 +289,7 @@ abstract class ResourceCommand(
                     isNeedToResumeMySelf() -> InternalState.RESUME_MYSELF
                     isNeedToReplaceMySelf() -> InternalState.REPLACE_MYSELF
                     isDescendantHasAction(phase) -> InternalState.CREATING_CHILDREN
-                    isDescendantHasAction(Action.Replace) -> InternalState.CREATING_CHILDREN
+                    isDescendantHasAction(Action.Upgrade) -> InternalState.CREATING_CHILDREN
                     else -> InternalState.TERMINAL
                 }
                 else -> throw IllegalStateException("state $internalState is not supported yet")

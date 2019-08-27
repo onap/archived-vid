@@ -41,7 +41,9 @@
         <h1 class="heading1" style="margin-top: 20px;">{{isPermitted ? "View/Edit" : "View"}} Service Instance</h1>
         <a class="btn btn-primary btn-xs pull-right" ng-click="reloadRoute();"><span
                 class="glyphicon glyphicon-refresh"></span></a>
-
+        <a class="pull-right btn btn-primary btn-xs" data-nodrag
+           data-tests-id="show-new-screen" ng-if="allowTransferToNewScreenAndShowButton()"
+           ng-click="navigateToNewEditViewScreen()" style="margin-right: 8px;">More actions</a>
         <br>
 
         <center>
