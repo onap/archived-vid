@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -257,7 +258,7 @@ public class AaiClient implements AaiClientInterface {
             throw new GenericUncheckedException("Empty resource-name provided to searchNodeTypeByName; request is rejected as this will cause full resources listing");
         }
 
-        URI path = Unchecked.toURI(String.format( // e.g. GET /aai/v$/nodes/vf-modules?vf-module-name={vf-module-name}
+        URI path = Unchecked.toURI(String.format( 
                 "nodes/%s?%s=%s",
                 type.getAaiFormat(),
                 type.getNameFilter(),
