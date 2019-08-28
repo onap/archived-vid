@@ -294,7 +294,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 
 		var lcpRegionOptionId = getValueFromList(FIELD.ID.LCP_REGION, parameterList);
 		var cloudOwnerAndLcpCloudRegion = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId(lcpRegionOptionId);
-		if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) {
+		if (cloudOwnerAndLcpCloudRegion.cloudRegionId === FIELD.KEY.LCP_REGION_TEXT) { // == if is megaRegion
 			lcpRegion = getValueFromList(FIELD.ID.LCP_REGION_TEXT,
 				parameterList);
 			cloudOwner = undefined;
