@@ -54,7 +54,7 @@ public class PresetMSOCreateVfModule extends PresetMSOBaseCreateInstancePost {
                             "\"usePreload\":false" +
                         "}," +
                         "\"cloudConfiguration\":{" +
-                            "\"lcpCloudRegionId\":\"mdt1\"," +
+                            "\"lcpCloudRegionId\":\"hvf6\"," +
                             addCloudOwnerIfNeeded() +
                             "\"tenantId\":\"092eb9e8e4b7412e8787dd091bc58e86\"" +
                         "}," +
