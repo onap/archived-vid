@@ -13,6 +13,7 @@ import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaMo
 import vid.automation.test.Constants;
 import vid.automation.test.Constants.ViewEdit;
 
+import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_CLOUD_OWNER;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
@@ -401,10 +402,9 @@ public class BulkRegistration {
 
         SimulatorApi.registerExpectationFromPresets(
                 ImmutableList.of (
-                        PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
-                        new PresetAAIGetHomingForVfModule("c015cc0f-0f37-4488-aabf-53795fd93cd3", "a231a99c-7e75-4d6d-a0fb-5c7d26f30f77", "092eb9e8e4b7412e8787dd091bc58e86", "mdt1"),
+                        new PresetAAIGetHomingForVfModule("c015cc0f-0f37-4488-aabf-53795fd93cd3", "a231a99c-7e75-4d6d-a0fb-5c7d26f30f77", "092eb9e8e4b7412e8787dd091bc58e86", "hvf6"),
                         new PresetMSOCreateVfModule("3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
-                                "c015cc0f-0f37-4488-aabf-53795fd93cd3", ATT_NC, vfModuleName,
+                                "c015cc0f-0f37-4488-aabf-53795fd93cd3", DEFAULT_CLOUD_OWNER, vfModuleName,
                                 "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0", "ComplexService"),
                         new PresetMSOOrchestrationRequestGet(
                                 COMPLETE,
