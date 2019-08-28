@@ -61,12 +61,12 @@ var detailsDialogController = function($scope, $http, $timeout, $log,
 	    $scope.log = MsoService.getFormattedCommonResponse(response);
 	    MsoService.showResponseContentError(error, showError);
 	}
-    }
+    };
 
     $scope.close = function() {
 	$scope.isDialogVisible = false;
 	$scope.popup.isVisible = false;
-    }
+    };
 
     var showError = function(summary, details) {
 	var message = summary;
@@ -76,8 +76,8 @@ var detailsDialogController = function($scope, $http, $timeout, $log,
 	$scope.isSpinnerVisible = false;
 	$scope.isErrorVisible = true;
 	$scope.error = message;
-    }
-}
+    };
+};
 
 appDS2.controller("detailsDialogController", [ "$scope", "$http", "$timeout",
 	"$log", "MsoService", "DetailsService", "UtilityService", "COMPONENT", "FIELD",
