@@ -83,7 +83,7 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
 
     $scope.deleteOrResume = function()  {
 
-        var msoParameterList = [({id: "lcpRegion", value: getLcpRegionId()})];
+        var msoParameterList = [({id: "lcpRegion", value: $scope.regionSelection.optionId})];
         msoParameterList.push({id: "tenant", value: $scope.regionSelection.tenant});
 
         var requestParams = {};
