@@ -295,7 +295,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         PRIMARY: "primary",
         PROGRESS_BAR_INFO: "progress-bar progress-bar-info",
         PROGRESS_BAR_SUCCESS: "progress-bar progress-bar-success",
-    }
+    };
 
     var ERROR = {
         AAI: "A&AI failure - see log below for details",
@@ -322,7 +322,7 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         INVALID_DATA_FORMAT: 'Invalid data format.Please check your file content whether it is not in json or not.',
         MISSING_FILE: 'Please Select JSON File.',
 
-    }
+    };
 
     /*
      * PARAMETER values indicate field configurations that are provided to
@@ -512,5 +512,5 @@ appDS2.factory("FIELD", ["PARAMETER", function (PARAMETER) {
         STATUS: STATUS,
         STYLE: STYLE,
         ERROR: ERROR
-    }
+    };
 }]);
