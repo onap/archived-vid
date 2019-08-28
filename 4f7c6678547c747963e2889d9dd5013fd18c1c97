@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e5299a3_57860196",
+        "filename": "epsdk-app-onap/src/main/webapp/WEB-INF/conf/system.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-08-28T11:24:12Z",
+      "side": 1,
+      "message": "I think VNF_API is deprecated",
+      "revId": "4f7c6678547c747963e2889d9dd5013fd18c1c97",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
