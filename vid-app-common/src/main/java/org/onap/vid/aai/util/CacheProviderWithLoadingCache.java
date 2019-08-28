@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,10 +79,6 @@ public class CacheProviderWithLoadingCache implements CacheProvider {
      */
     protected <K, V> Cache<K, V> buildAaiClientCacheFrom(Function<K, V> loader, String name) {
         final LoadingCache<K, V> activeCache = buildAaiClientActiveCacheFrom(loader, name);
-
-        // this works because Cache interface has only a single method: "get()"
-        // can be replaced with new anonimous class; e.g.:
-        //     return new Cache() { ... }
         return key -> {
             if (featureManager.isActive(Features.FLAG_1810_AAI_LOCAL_CACHE) &&
                     defaultIfNull(cacheConfigProvider.getCacheConfig(name).isActive(), true)) {
