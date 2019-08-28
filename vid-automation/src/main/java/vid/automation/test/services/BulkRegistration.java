@@ -419,8 +419,7 @@ public class BulkRegistration {
         SimulatorApi.registerExpectationFromPresets(
                 ImmutableList.of (
                         new PresetAAIGetTenants(),
-                        PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
-                        new PresetMSOCreateVfModule(serviceInstanceId,vnfInstanceId, ATT_NC),
+                        new PresetMSOCreateVfModule(serviceInstanceId,vnfInstanceId, DEFAULT_CLOUD_OWNER),
                         new PresetMSOOrchestrationRequestGet(
                                 COMPLETE,
                                 "c0011670-0e1a-4b74-945d-8bf5aede1d9c",
