@@ -65,9 +65,7 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
                     $scope.isHomingData = $scope.isHomingData && (($scope.megaRegion).indexOf(res.data[COMPONENT.CLOUD_REGION_ID]) === -1);
                 }
 
-                if (!$scope.isHomingData) {
-                    getLcpCloudRegionTenantList();
-                }
+                getLcpCloudRegionTenantList();
             })
             .catch(function (error) {
                 getLcpCloudRegionTenantList();
