@@ -1,15 +1,24 @@
 package vid.automation.test.test;
 
+import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_CLOUD_OWNER;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.MDT_1;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_SOME_LEGACY_REGION_TO_ATT_AIC;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.SOME_LEGACY_REGION;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.Assert;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleOldViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteOldViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVolumeGroupOldViewEdit;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -23,12 +32,6 @@ import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.*;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 
 public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
@@ -84,7 +87,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
                             VNF_ID,
                             vfModuleName,
                             msoTestApiValue,
-                            ATT_NC)),
+                            DEFAULT_CLOUD_OWNER)),
                     SimulatorApi.RegistrationStrategy.APPEND);
 
 

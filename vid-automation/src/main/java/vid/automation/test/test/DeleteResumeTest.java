@@ -16,7 +16,7 @@ public class DeleteResumeTest extends CreateInstanceDialogBaseTest {
         SimulatorApi.clearAll();
         BulkRegistration.resumeVfModule(serviceInstanceId,vnfInstanceId);
         navigateToViewEditPageOfuspVoiceVidTest444("240376de-870e-48df-915a-31f140eedd2c");
-        resumeVFModule("aa","AAIAIC25", "AIC", "092eb9e8e4b7412e8787dd091bc58e86","mdt1",user.tenants);
+        resumeVFModule("aa","AAIAIC25", "AIC", "092eb9e8e4b7412e8787dd091bc58e86","hvf6",user.tenants);
     }
 
 }
