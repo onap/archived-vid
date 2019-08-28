@@ -38,18 +38,18 @@
 
         var fuseMsoAndSchedulerTaks = function() {
             if (vm.changeManagements && vm.pendingChangeManagements) {
-                var requestIdToVnfName = {}
+                var requestIdToVnfName = {};
                 vm.pendingChangeManagements.forEach(function(schedulerItem) {
                     if (schedulerItem.msoRequestId && schedulerItem.vnfName) {
                         requestIdToVnfName[schedulerItem.msoRequestId] = schedulerItem.vnfName;
                     }
-                })
+                });
                 $log.debug("requestIdToVnfName", requestIdToVnfName);
 
                 vm.changeManagements = vm.changeManagements.map(function(msoItem) {
                     msoItem['vnfNameFromScheduler'] = requestIdToVnfName[msoItem.requestId];
                     return msoItem;
-                })
+                });
             }
         };
 
@@ -109,7 +109,7 @@
         };
 
         vm.searchChanges = function() {
-            console.log("function for searching changes: " + vm.searchChangesTerm)
+            console.log("function for searching changes: " + vm.searchChangesTerm);
         };
 
 
@@ -141,19 +141,19 @@
         vm.openFailedModal = function($event, jobInfo) {
             vm.openManualTasksPopup($event, jobInfo,
                 'app/vid/scripts/modals/failed-change-management/failed-change-management.html',
-                "This is the result of the failed change management modal.")
+                "This is the result of the failed change management modal.");
         };
 
         vm.openInProgressModal = function($event, jobInfo) {
             vm.openManualTasksPopup($event, jobInfo,
                 'app/vid/scripts/modals/in-progress-modal-management/in-progress-change-management.html',
-                "This is the result of the in progress change management modal.")
+                "This is the result of the in progress change management modal.");
         };
 
         vm.openAlertModal = function($event, jobInfo) {
             vm.openManualTasksPopup($event, jobInfo,
                 'app/vid/scripts/modals/alert-change-management/alert-change-management.html',
-                "This is the result of the alert change management modal.")
+                "This is the result of the alert change management modal.");
         };
 
         vm.openBasicAlertModal = function(jobInfo) {
@@ -231,7 +231,7 @@
                 vm.currModal.close();
                 vm.currModal = null;
             }
-        }
+        };
 
 
         vm.init();
