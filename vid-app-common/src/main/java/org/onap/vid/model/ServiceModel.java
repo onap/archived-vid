@@ -333,7 +333,7 @@ public class ServiceModel {
 
 				// now check to see if there is a vf module with customization name that starts with normalizedVnfCustomizationName
 
-				if (!MapUtils.isEmpty(getVolumeGroups())) {
+				if (!MapUtils.isEmpty(getVfModules())) {
 					for (Entry<String, VfModule> vfModuleComponent : getVfModules().entrySet()) {
 						vfModuleCustomizationName = vfModuleComponent.getValue().getModelCustomizationName();
 

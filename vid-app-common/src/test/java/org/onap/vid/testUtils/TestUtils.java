@@ -68,6 +68,7 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.springframework.core.env.Environment;
@@ -279,7 +280,7 @@ public class TestUtils {
 
     public interface Test {
 
-        void apply();
+        void apply() throws AsdcCatalogException;
     }
 
     public static void testWithSystemProperty(String key, String value, Test test) throws Exception {

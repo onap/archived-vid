@@ -26,11 +26,13 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.ECOMP_GENERATED_NAMING_PROPERTY;
 import static org.onap.vid.testUtils.TestUtils.assertJsonStringEqualsIgnoreNulls;
+import static org.onap.vid.testUtils.TestUtils.testWithSystemProperty;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +45,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -57,6 +60,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
+import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.sdc.toscaparser.api.Group;
 import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.sdc.toscaparser.api.Property;
@@ -178,15 +182,16 @@ public class ToscaParserImpl2Test {
             }
     }
 
-//    @Test
-//    public void verifyFabricConfiguration() throws Exception {
-//        ToscaParserMockHelper toscaParserMockHelper = Arrays.stream(getExpectedServiceModel()).filter(x -> x.getUuid().equals(Constants.fabricConfigurationUuid)).findFirst().get();
-//        ServiceModel actualServiceModel = toscaParserImpl2.makeServiceModel(getCsarPath(Constants.fabricConfigurationUuid), getServiceByUuid(Constants.fabricConfigurationUuid));
-//        final Map<String, Node> fabricConfigurations = actualServiceModel.getFabricConfigurations();
-//        String fabricConfigName = "Fabric Configuration 0";
-//        Map<String, Node> expectedFC = toscaParserMockHelper.getNewServiceModel().getFabricConfigurations();
-//        verifyBaseNodeMetadata(expectedFC.get(fabricConfigName), fabricConfigurations.get(fabricConfigName));
-//    }
+    @Test
+    public void verifyFabricConfiguration() throws Exception {
+        ToscaParserMockHelper toscaParserMockHelper = Arrays.stream(getExpectedServiceModel()).filter(x -> x.getUuid().equals(Constants.fabricConfigurationUuid)).findFirst().get();
+        ServiceModel actualServiceModel = toscaParserImpl2.makeServiceModel(getCsarPath(Constants.fabricConfigurationUuid), getServiceByUuid(Constants.fabricConfigurationUuid));
+        final Map<String, Node> fabricConfigurations = actualServiceModel.getFabricConfigurations();
+        String fabricConfigName = "Fabric Configuration 0";
+        Map<String, Node> expectedFC = toscaParserMockHelper.getServiceModel().getFabricConfigurations();
+        verifyBaseNodeMetadata(expectedFC.get(fabricConfigName), fabricConfigurations.get(fabricConfigName));
+    }
+
 
     private void verifyCollectionResource(CR expectedCR, CR actualCR) {
         verifyBaseNodeMetadata(expectedCR, actualCR);
@@ -273,6 +278,25 @@ public class ToscaParserImpl2Test {
         assertJsonStringEqualsIgnoreNulls("{ vfModules: { 201712488_pasqualevpe10..201712488PasqualeVpe1..PASQUALE_vRE_BV..module-1: { inputs: { availability_zone_0: { } } } } }", om.writeValueAsString(serviceModel));
     }
 
+    @DataProvider
+    public static Object[] oldCsarUuid() {
+        return new Object[][]{{ "2a53419b-3f85-4ad5-a9c9-d79905500a27", "MNS VNN1B EXN VF 1" }
+            , {"e32a5014-357f-4be4-b3f9-fecb0010811e", "MNS VNN1B DMZ VF 1"}};
+    }
+
+    @Test(dataProvider = "oldCsarUuid")
+    public void csarWithVnfWithVfModuleInModel(String oldCsarUuid, String vnfName) throws Exception {
+        testWithSystemProperty("asdc.model.namespace", "com.att.d2.", ()-> {
+            ToscaParser tosca = new ToscaParserImpl();
+            final UUID uuid = UUID.fromString(oldCsarUuid);
+            final ServiceModel serviceModel = tosca.makeServiceModel(oldCsarUuid, asdcClient.getServiceToscaModel(uuid), asdcClient.getService(uuid));
+            assertThat(serviceModel.getVnfs(), aMapWithSize(1));
+            assertThat(serviceModel.getVfModules(), aMapWithSize(2));
+            assertThat(serviceModel.getVolumeGroups(), aMapWithSize(0));
+            assertThat(serviceModel.getVnfs().get(vnfName).getVfModules(), aMapWithSize(2));
+        });
+    }
+
     @Test
     public void modelWithNfNamingWithToValues_ecompGeneratedNamingIsExtracted() throws Exception {
         final ToscaParserMockHelper mockHelper = new ToscaParserMockHelper("90fe6842-aa76-4b68-8329-5c86ff564407", "empty.json");
@@ -309,6 +333,19 @@ public class ToscaParserImpl2Test {
         JsonAssert.assertJsonEquals(actualVnfGroups, expectedVnfGroups);
     }
 
+    @Test
+    public void assertEqualsBetweenVrfs() throws Exception {
+        ToscaParserMockHelper  mockHelper = new ToscaParserMockHelper(Constants.vrfUuid, Constants.vrfFilePath);
+        ServiceModel serviceModel = toscaParserImpl2.makeServiceModel(getCsarPath(mockHelper.getUuid()), getServiceByUuid(mockHelper.getUuid()));
+        Map<String, Node> actualVrfs = serviceModel.getVrfs();
+        Map<String, Node> expectedVrfs = mockHelper.getServiceModel().getVrfs();
+        JsonAssert.assertJsonEquals(expectedVrfs, actualVrfs);
+        //assert that vrf isn't returned also as configuration (because it's type is configuration)
+        Map<String, PortMirroringConfig> actualConfigurations = serviceModel.getConfigurations();
+        Map<String, PortMirroringConfig> expectedConfigurations = mockHelper.getServiceModel().getConfigurations();
+        JsonAssert.assertJsonEquals(expectedConfigurations, actualConfigurations );
+    }
+
     private void verifyBaseNodeMetadata(Node expectedNode, Node actualNode) {
         Assert.assertEquals(expectedNode.getName(), actualNode.getName());
         Assert.assertEquals(expectedNode.getCustomizationUuid(), actualNode.getCustomizationUuid());
@@ -337,9 +374,9 @@ public class ToscaParserImpl2Test {
                 new ToscaParserMockHelper(Constants.vfWithAnnotationUuid, Constants.vfWithAnnotationFilePath),
                 new ToscaParserMockHelper(Constants.vfWithVfcGroup, Constants.vfWithVfcGroupFilePath),
                 new ToscaParserMockHelper(Constants.configurationUuid, Constants.configurationFilePath),
-//                new ToscaParserMockHelper(Constants.fabricConfigurationUuid, Constants.fabricConfigurationFilePath),
-//                new ToscaParserMockHelper(Constants.vlanTaggingUuid, Constants.vlanTaggingFilePath),
-//                new ToscaParserMockHelper(Constants.vnfGroupingUuid, Constants.vnfGroupingFilePath)
+                new ToscaParserMockHelper(Constants.fabricConfigurationUuid, Constants.fabricConfigurationFilePath),
+                new ToscaParserMockHelper(Constants.vlanTaggingUuid, Constants.vlanTaggingFilePath),
+                new ToscaParserMockHelper(Constants.vnfGroupingUuid, Constants.vnfGroupingFilePath),
             new ToscaParserMockHelper("3f6bd9e9-0942-49d3-84e8-6cdccd6de339", "./vLoadBalancerMS-with-policy.TOSCA.json"),
         };
 
@@ -371,12 +408,14 @@ public class ToscaParserImpl2Test {
         static final String vfWithVfcGroupFilePath = "vf-with-vfcInstanceGroups.json";
         public static final String configurationByPolicyFalseUuid = "ee6d61be-4841-4f98-8f23-5de9da845544";
         public static final String configurationByPolicyFalseFilePath = "policy-configuration-by-policy-false.JSON";
-        //public static final String fabricConfigurationUuid = "12344bb4-a416-4b4e-997e-0059973630b9";
-        //public static final String fabricConfigurationFilePath = "fabric-configuration.json";
-        //public static final String vlanTaggingUuid = "1837481c-fa7d-4362-8ce1-d05fafc87bd1";
-        //public static final String vlanTaggingFilePath = "vlan-tagging.json";
-        //public static final String vnfGroupingUuid = "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc";
-        //public static final String vnfGroupingFilePath = "vnf-grouping-csar.json";
+        public static final String fabricConfigurationUuid = "12344bb4-a416-4b4e-997e-0059973630b9";
+        public static final String fabricConfigurationFilePath = "fabric-configuration.json";
+        public static final String vlanTaggingUuid = "1837481c-fa7d-4362-8ce1-d05fafc87bd1";
+        public static final String vlanTaggingFilePath = "vlan-tagging.json";
+        public static final String vnfGroupingUuid = "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc";
+        public static final String vnfGroupingFilePath = "vnf-grouping-csar.json";
+        public static final String vrfUuid = "f028b2e2-7080-4b13-91b2-94944d4c42d8";
+        public static final String vrfFilePath = "vrf-csar.json";
 
         public static final String QUANTITY = "quantity";
 
@@ -409,22 +448,30 @@ public class ToscaParserImpl2Test {
         ));
     }
 
-//    @DataProvider
-//    public Object[][] expectedPoliciesTargets() {
-//        return new Object[][] {
-//                {Constants.vnfGroupingUuid, newArrayList("groupingservicefortest..ResourceInstanceGroup..0", "groupingservicefortest..ResourceInstanceGroup..1")},
-//                {Constants.vfUuid, newArrayList()},
-//                {Constants.vlanTaggingUuid, newArrayList()}
-//        };
-//    }
-//
-//    @Test(dataProvider = "expectedPoliciesTargets")
-//    public void testExtractNamingPoliciesTargets(String uuid, ArrayList<String> expectedTargets) throws AsdcCatalogException, SdcToscaParserException {
-//        ISdcCsarHelper sdcCsarHelper = toscaParserImpl2.getSdcCsarHelper(getCsarPath(uuid));
-//        List<String> policiesTargets = toscaParserImpl2.extractNamingPoliciesTargets(sdcCsarHelper);
-//
-//        assertEquals(expectedTargets, policiesTargets);
-//    }
+    @DataProvider
+    public Object[][] expectedPoliciesTargets() {
+        return new Object[][] {
+            {Constants.vnfGroupingUuid, newArrayList("groupingservicefortest..ResourceInstanceGroup..0", "groupingservicefortest..ResourceInstanceGroup..1")},
+            {Constants.vfUuid, newArrayList()},
+            {Constants.vlanTaggingUuid, newArrayList()}
+        };
+    }
+
+    @Test(dataProvider = "expectedPoliciesTargets")
+    public void testExtractNamingPoliciesTargets(String uuid, ArrayList<String> expectedTargets) throws AsdcCatalogException, SdcToscaParserException {
+        ISdcCsarHelper sdcCsarHelper = toscaParserImpl2.getSdcCsarHelper(getCsarPath(uuid));
+        List<String> policiesTargets = toscaParserImpl2.extractNamingPoliciesTargets(sdcCsarHelper);
+
+        assertEquals(expectedTargets, policiesTargets);
+    }
+
+    @Test
+    public void testScalingPolicyOfVnfGroup() throws AsdcCatalogException, SdcToscaParserException {
+        String vnfGroupingUuid = "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc";
+        Map<String, ResourceGroup> actualVnfGroups = toscaParserImpl2.makeServiceModel(getCsarPath(vnfGroupingUuid), getServiceByUuid(vnfGroupingUuid)).getVnfGroups();
+        assertFalse(actualVnfGroups.get("groupingservicefortest..ResourceInstanceGroup..0").getProperties().containsKey(Constants.QUANTITY));
+        assertEquals(3, actualVnfGroups.get("groupingservicefortest..ResourceInstanceGroup..1").getProperties().get(Constants.QUANTITY));
+    }
 
     @DataProvider
     public Object[][] expectedEcompGeneratedNaming() {
