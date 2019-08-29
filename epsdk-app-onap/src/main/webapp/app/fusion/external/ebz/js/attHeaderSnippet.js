@@ -87,7 +87,7 @@
         methods.close();
       });
     });
-  }
+  };
 
 }).call(this);
 
