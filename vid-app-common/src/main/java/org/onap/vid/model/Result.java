@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,15 +27,15 @@ package org.onap.vid.model;
 public class Result {
 	
 	/** The result. */
-	private String result;
+	private String output;
 	
 	/**
 	 * Instantiates a new result.
 	 *
 	 * @param result the result
 	 */
-	public Result(String result) {
-		this.result = result;
+	public Result(String output) {
+		this.output = output;
 	}
 
 	/**
@@ -42,8 +43,8 @@ public class Result {
 	 *
 	 * @return the result
 	 */
-	public String getResult() {
-		return result;
+	public String getOutput() {
+		return output;
 	}
 
 	/**
@@ -51,8 +52,8 @@ public class Result {
 	 *
 	 * @param result the new result
 	 */
-	public void setResult(String result) {
-		this.result = result;
+	public void setOutput(String output) {
+		this.output = output;
 	}
 	
 }
