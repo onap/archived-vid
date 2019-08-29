@@ -20,8 +20,31 @@
 
 package org.onap.vid.asdc.parser;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.model.VidNotions.InstantiationType;
+import static org.onap.vid.model.VidNotions.InstantiationUI;
+import static org.onap.vid.model.VidNotions.ModelCategory;
+import static org.testng.AssertJUnit.assertEquals;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.BiConsumer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.InjectMocks;
@@ -33,7 +56,12 @@ import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.sdc.toscaparser.api.Property;
 import org.onap.sdc.toscaparser.api.elements.Metadata;
-import org.onap.vid.model.*;
+import org.onap.vid.model.CR;
+import org.onap.vid.model.Network;
+import org.onap.vid.model.Node;
+import org.onap.vid.model.Service;
+import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.VidNotions;
 import org.onap.vid.properties.Features;
 import org.onap.vid.testUtils.TestUtils;
 import org.testng.annotations.AfterMethod;
@@ -41,24 +69,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.BiConsumer;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.onap.vid.model.VidNotions.*;
-import static org.testng.AssertJUnit.assertEquals;
 
 public class VidNotionsBuilderTest {
 
@@ -226,42 +236,6 @@ public class VidNotionsBuilderTest {
     }
 
     @DataProvider
-    public static Object[][] macroToViewEditDataProvider() {
-        return new Object[][] {
-                {"macro service + not excluded + needed flags are open", true, false, true, InstantiationUI.MACRO_SERVICE},
-                {"not macro service", false, true, true, InstantiationUI.LEGACY},
-                {"macro that shall be excluded because it has pnf", true, true, true, InstantiationUI.LEGACY},
-                {"macro service + FLAG_1902_NEW_VIEW_EDIT off", true, false, false, InstantiationUI.LEGACY},
-        };
-    }
-
-    @Test(dataProvider="macroToViewEditDataProvider")
-    public void whenServiceIsMacro_viewEditIsRight(
-            String testDescription,
-            boolean isMacro,
-            boolean isExcluded,
-            boolean isFlag1902NewViewEdit,
-            InstantiationUI expectedViewEditUi) {
-
-        initServiceModelAndscarHelperWithMocks();
-
-        //mock for is Macro
-        String instantiationType = isMacro ? ToscaParserImpl2.Constants.MACRO : ToscaParserImpl2.Constants.A_LA_CARTE;
-        Service service = mock(Service.class);
-        when(serviceModel.getService()).thenReturn(service);
-        when(service.getInstantiationType()).thenReturn(instantiationType);
-        when(featureManagerMock.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)).thenReturn(isFlag1902NewViewEdit);
-
-        //mock for isExcluded
-        if (isExcluded) {
-            when(serviceModel.getPnfs()).thenReturn(ImmutableMap.of("a", mock(Node.class)));
-        }
-
-        InstantiationUI result = vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel);
-        assertEquals(expectedViewEditUi, result);
-    }
-
-    @DataProvider
     public static Object[][] instantiationUIToViewEditDataProvider() {
         return new Object[][] {
                 {"network cloud(5G) service + needed flags are open", true, true, InstantiationUI.NETWORK_WITH_PROPERTY_NETWORK_TECHNOLOGY_EQUALS_STANDARD_SRIOV_OR_OVS},
@@ -391,30 +365,6 @@ public class VidNotionsBuilderTest {
         assertEquals(InstantiationType.Macro, vidNotions.getInstantiationType());
     }
 
-    @DataProvider
-    public static Object[][] givenCollectionResourceServiceDataProvider() {
-        return new Object[][]{
-                {false, true, InstantiationUI.LEGACY},
-                {true, false, InstantiationUI.LEGACY},
-                {true, true, InstantiationUI.SERVICE_WITH_COLLECTION_RESOURCE}
-        };
-    }
-
-    @Test(dataProvider = "givenCollectionResourceServiceDataProvider")
-    public void givenCollectionResourceService_whenSuggestViewEdit_thenResultAccordingFeatureFlag(
-            boolean crFlag, boolean resumeFlag, VidNotions.InstantiationUI expectedViewEditUi) {
-
-        //mock service with CR
-        ServiceModel mockServiceModel = mock(ServiceModel.class);
-        when(mockServiceModel.getCollectionResources()).thenReturn(ImmutableMap.of("a", mock(CR.class)));
-
-        //mock feature flags
-        when(featureManagerMock.isActive(Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI)).thenReturn(crFlag);
-        when(featureManagerMock.isActive(Features.FLAG_1908_RESUME_MACRO_SERVICE)).thenReturn(resumeFlag);
-
-        assertEquals(expectedViewEditUi, vidNotionsBuilder.suggestViewEditUI(mock(ISdcCsarHelper.class), mockServiceModel));
-    }
-
     @Test
     public void whenServiceModelIsNull_thenInstantiationTypeIsClientConfig() {
         assertEquals( InstantiationType.ClientConfig, vidNotionsBuilder.suggestInstantiationType(null, ModelCategory.OTHER));
@@ -506,5 +456,32 @@ public class VidNotionsBuilderTest {
     @Test (dataProvider = "csarHelpersForFabricConfiguration")
     public void hasFabricConfiguration(String desc, boolean shouldHaveFabricConfiguration, ISdcCsarHelper csarHelper) {
         assertThat(desc, vidNotionsBuilder.hasFabricConfiguration(csarHelper), is(shouldHaveFabricConfiguration));
+    }
+
+    @DataProvider
+    public static Object[][] macroTransportDataProvider() {
+        return new Object[][]{
+            {"transport service flag is open", true, true, true, InstantiationUI.LEGACY},
+            {"macro service flag is open", true, false, true, InstantiationUI.MACRO_SERVICE},
+            {"macro service flag is closed", false, true, true, InstantiationUI.LEGACY},
+            {"transport service flag is closed", false, false, true, InstantiationUI.LEGACY},
+            {"not a macro service", true, false, false, InstantiationUI.LEGACY}
+        };
+    }
+
+    @Test (dataProvider = "macroTransportDataProvider")
+    public void viewEditMacroService_transportOrNotTransport(String desc, boolean flagActive, boolean isTransport, boolean isMacro, InstantiationUI expectedViewEditUi) {
+        initServiceModelAndscarHelperWithMocks();
+        Service service = mock(Service.class);
+
+        String instantiationType = isMacro ? ToscaParserImpl2.Constants.MACRO : ToscaParserImpl2.Constants.A_LA_CARTE;
+        when(serviceModel.getService()).thenReturn(service);
+        when(service.getInstantiationType()).thenReturn(instantiationType);
+        when(featureManagerMock.isActive(Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT)).thenReturn(flagActive);
+        when(featureManagerMock.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)).thenReturn(false);
+        when(csarHelper.getServiceMetadata()).thenReturn(new Metadata(isTransport ? ImmutableMap.of(ToscaParserImpl2.Constants.SERVICE_TYPE, "TRANSPORT") : emptyMap()
+        ));
+
+        assertEquals(expectedViewEditUi, vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel));
     }
 }

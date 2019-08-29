@@ -1,43 +1,6 @@
 package vid.automation.test.test;
 
 //import com.automation.common.report_portal_integration.annotations.Step;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import org.apache.commons.lang3.mutable.MutableInt;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hamcrest.Matchers;
-import org.onap.simulator.presetGenerator.presets.aai.*;
-import org.onap.simulator.presetGenerator.presets.mso.*;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork.ResponseDetails;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import vid.automation.test.Constants;
-import vid.automation.test.Constants.BrowseASDC.NewServicePopup;
-import vid.automation.test.infra.*;
-import vid.automation.test.model.Service;
-import vid.automation.test.model.User;
-import vid.automation.test.sections.*;
-import vid.automation.test.services.AsyncJobsService;
-import vid.automation.test.services.ServicesService;
-import vid.automation.test.services.SimulatorApi;
-import vid.automation.test.test.NewServiceInstanceTest.ServiceData.IS_GENERATED_NAMING;
-import vid.automation.test.utils.ReadFile;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -49,12 +12,94 @@ import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrat
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID;
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
-import static vid.automation.test.infra.Features.*;
-import static vid.automation.test.infra.ModelInfo.*;
+import static vid.automation.test.infra.Features.FLAG_1902_VNF_GROUPING;
+import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_1908_INFRASTRUCTURE_VPN;
+import static vid.automation.test.infra.Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT;
+import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_ENABLE_WEBPACK_MODERN_UI;
+import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
+import static vid.automation.test.infra.ModelInfo.aLaCarteVnfGroupingService;
+import static vid.automation.test.infra.ModelInfo.collectionResourceService;
+import static vid.automation.test.infra.ModelInfo.infrastructureVpnService;
+import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails;
+import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse;
+import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse;
+import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails;
+import static vid.automation.test.infra.ModelInfo.pasqualeVmxVpeBvService488Annotations;
+import static vid.automation.test.infra.ModelInfo.transportWithPnfsService;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 import static vid.automation.test.test.ALaCarteflowTest.AIC;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.mutable.MutableInt;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hamcrest.Matchers;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegionSpecificState;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetVpnsByType;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateNetworkALaCarte5G;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork.ResponseDetails;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMsoCreateMacroCommonPre1806;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import vid.automation.test.Constants;
+import vid.automation.test.Constants.BrowseASDC.NewServicePopup;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
+import vid.automation.test.model.Service;
+import vid.automation.test.model.User;
+import vid.automation.test.sections.BrowseASDCPage;
+import vid.automation.test.sections.DrawingBoardPage;
+import vid.automation.test.sections.InstantiationStatusPage;
+import vid.automation.test.sections.SideMenu;
+import vid.automation.test.sections.VidBasePage;
+import vid.automation.test.services.AsyncJobsService;
+import vid.automation.test.services.ServicesService;
+import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.test.NewServiceInstanceTest.ServiceData.IS_GENERATED_NAMING;
+import vid.automation.test.utils.ReadFile;
 
 @FeatureTogglingTest(FLAG_ENABLE_WEBPACK_MODERN_UI)
 public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
@@ -663,10 +708,9 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     //@Step("verify open view edit")
     private void verifyOpenViewEdit(String serviceInstanceName) {
         boolean[] openEnabled = {true, false, false};
-        String[] statuses = {COMPLETED, IN_PROGRESS, PENDING};
         ImmutableList.of(0, 1, 2).forEach(i -> {
             String actualInstanceName = getActualInstanceName(serviceInstanceName, i);
-            if (Features.FLAG_1902_NEW_VIEW_EDIT.isActive()) {
+            if (Features.FLAG_1902_NEW_VIEW_EDIT.isActive() || FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT.isActive()) {
                 InstantiationStatusPage.verifyOpenNewViewEdit(actualInstanceName, openEnabled[i], "EDIT");
             }
             else {
