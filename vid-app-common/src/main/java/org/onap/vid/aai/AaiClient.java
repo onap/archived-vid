@@ -432,18 +432,17 @@ public class AaiClient implements AaiClientInterface {
             throw new GenericUncheckedException("no invariant-id provided to getLatestVersionByInvariantId; request is rejected");
         }
 
-        // add the modelInvariantId to the payload
-        StringBuilder payload = new StringBuilder(GET_SERVICE_MODELS_REQUEST_BODY);
-        payload.insert(50, modelInvariantId);
-
-        Response response = doAaiPut("service-design-and-creation/models/model/", payload.toString(),false);
+        Response response = doAaiPut("query?format=resource&depth=0",  "{\"start\": [\"service-design-and-creation/models/model/" + modelInvariantId + "\"],\"query\": \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}",false);
         AaiResponse<ModelVersions> aaiResponse = processAaiResponse(response, ModelVersions.class, null, VidObjectMapperType.FASTERXML);
+
         Stream<ModelVer> modelVerStream = toModelVerStream(aaiResponse.getT());
         return maxModelVer(modelVerStream);
-
     }
 
     protected Stream<ModelVer> toModelVerStream(ModelVersions modelVersions) {
+
+        if (modelVersions == null)
+            return null;
 
         return Stream.of(modelVersions)
                 .map(ModelVersions::getResults)
@@ -455,6 +454,10 @@ public class AaiClient implements AaiClientInterface {
     }
 
     protected ModelVer maxModelVer(Stream<ModelVer> modelVerStream) {
+
+        if (modelVerStream == null)
+            return null;
+
         return modelVerStream
                 .filter(modelVer -> StringUtils.isNotEmpty(modelVer.getModelVersion()))
                 .max(comparing(ModelVer::getModelVersion, comparing(DefaultArtifactVersion::new)))

@@ -913,4 +913,76 @@ public class AaiClientTest {
         void acceptThrows(T t, U u) throws Exception;
     }
 
+    @Test
+    public void getLatestVersionByInvariantId_verifyCallingExpectedApi(){
+
+        when(aaiClientMock.getLatestVersionByInvariantId(anyString())).thenCallRealMethod();
+
+        aaiClientMock.getLatestVersionByInvariantId("model-invariant-id");
+
+        Mockito.verify(aaiClientMock).doAaiPut(argThat(url -> url.endsWith("query?format=resource&depth=0")),argThat(payload -> payload.contains("service-design-and-creation/models/model/model-invariant-id")),anyBoolean());
+
+    }
+
+    @DataProvider
+    public static Object[][]  getSubscriberDataDataProvider() {
+        return new Object[][] {
+            { "Some-ID", true },
+            { "another id 123", false },
+        };
+    }
+
+    @Test(dataProvider = "getSubscriberDataDataProvider")
+    public void getSubscriberDataParams(String subscriberId, boolean omitServiceInstances) {
+        String depth = omitServiceInstances ? "1" : "2";
+        when(aaiClientMock.getSubscriberData(anyString(),anyBoolean())).thenCallRealMethod();
+        aaiClientMock.getSubscriberData(subscriberId, omitServiceInstances);
+        Mockito.verify(aaiClientMock).doAaiGet(argThat(s -> s.contains("customer/" + subscriberId + "?") && s.contains("depth=" + depth)),any(Boolean.class));
+    }
+
+    @Test
+    public void testToModelVerStream() throws IOException {
+
+        ModelVersions modelVersions = JACKSON_OBJECT_MAPPER.readValue("" +
+            "{\n" +
+            "    \"results\": [\n" +
+            "        {\n" +
+            "            \"model\": {\n" +
+            "                \"model-invariant-id\": \"f6342be5-d66b-4d03-a1aa-c82c3094c4ea\",\n" +
+            "                \"model-type\": \"service\",\n" +
+            "                \"resource-version\": \"1534274421300\"\n" +
+            "            }\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"model-ver\": {\n" +
+            "                \"model-version-id\": \"a92f899d-a3ec-465b-baed-1663b0a5aee1\",\n" +
+            "                \"model-name\": \"NCM_VLAN_SVC_ym161f\",\n" +
+            "                \"model-version\": \"bbb\",\n" +
+            "                \"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
+            "                \"model-description\": \"Network Collection service for vLAN tagging\",\n" +
+            "                \"resource-version\": \"1534788756086\"\n" +
+            "            }\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"model-ver\": {\n" +
+            "                \"model-version-id\": \"d2fda667-e92e-4cfa-9620-5da5de01a319\",\n" +
+            "                \"model-name\": \"NCM_VLAN_SVC_ym161f\",\n" +
+            "                \"model-version\": \"aaa\",\n" +
+            "                \"distribution-status\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
+            "                \"model-description\": \"Network Collection service for vLAN tagging\",\n" +
+            "                \"resource-version\": \"1534444087221\"\n" +
+            "            }\n" +
+            "        }]}", ModelVersions.class);
+
+
+        final AaiClient aaiClient = new AaiClient(null, null, null);
+
+        assertThat(aaiClient.toModelVerStream(modelVersions).collect(toList()),
+            containsInAnyOrder(
+                hasProperty("modelVersionId", is("a92f899d-a3ec-465b-baed-1663b0a5aee1")),
+                hasProperty("modelVersionId", is("d2fda667-e92e-4cfa-9620-5da5de01a319"))
+            ));
+
+    }
+
 }
