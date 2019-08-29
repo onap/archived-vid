@@ -69,7 +69,7 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 
     $scope.userParameterChanged = function(id) {
         DeleteResumeService.updateUserParameterList(id, $scope.userProvidedControl);
-    }
+    };
 
     $scope.confirm = function() {
         DataService.setE2EService($scope.isE2EService); //VoLTE support
@@ -139,13 +139,13 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
 
         }
 
-    }
+    };
 
     $scope.cancel = function() {
         $scope.isDialogVisible = false;
         $scope.popup.isVisible = false;
         runCallback(false);
-    }
+    };
 
     var runCallback = function(isSuccessful) {
         if (angular.isFunction(callbackFunction)) {
@@ -153,8 +153,8 @@ var deleteResumeDialogController = function( COMPONENT, FIELD, $scope, $http, $t
                 isSuccessful : isSuccessful
             });
         }
-    }
-}
+    };
+};
 
 appDS2.controller("deleteResumeDialogController", [ "COMPONENT", "FIELD", "$scope", "$http",
     "$timeout", "$log", "DataService", "DeleteResumeService","CreationService", "UtilityService",
