@@ -62,10 +62,8 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     public static final String GET_VNF_WORKFLOW_RELATION = "get_vnf_workflow_relation";
     public static final String SCHEDULER_BY_SCHEDULE_ID = "/scheduler/schedules/{scheduleId}";
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(ChangeManagementController.class);
-    private String fromAppId;
     private final WorkflowService workflowService;
     private final ChangeManagementService changeManagementService;
-    private final ObjectMapper objectMapper;
 
 
     @Autowired
