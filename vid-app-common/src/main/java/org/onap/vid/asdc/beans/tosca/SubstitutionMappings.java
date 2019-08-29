@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +30,7 @@ import java.util.Map;
 public class SubstitutionMappings {
 
 	/** The node type. */
-	private String node_type;
+	private String nodeType;
 	
 	/** The capabilities. */
 	private Map<String, Object> capabilities;
@@ -51,7 +52,7 @@ public class SubstitutionMappings {
 	 * @return the node type
 	 */
 	public String getnode_type() {
-		return node_type;
+		return nodeType;
 	}
 	
 	/**
@@ -59,8 +60,8 @@ public class SubstitutionMappings {
 	 *
 	 * @param node_type the new node type
 	 */
-	public void setnode_type(String node_type) {
-		this.node_type = node_type;
+	public void setnode_type(String nodeType) {
+		this.nodeType = nodeType;
 	}
 
 	/**
