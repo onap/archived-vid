@@ -1,28 +1,5 @@
 package vid.automation.test.test;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.*;
-import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.simulator.presetGenerator.presets.mso.*;
-import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
-import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.testng.annotations.Test;
-import vid.automation.test.Constants;
-import vid.automation.test.infra.Click;
-import vid.automation.test.infra.FeatureTogglingTest;
-import vid.automation.test.infra.Features;
-import vid.automation.test.infra.ModelInfo;
-import vid.automation.test.sections.DrawingBoardPage;
-import vid.automation.test.services.SimulatorApi;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
 import static vid.automation.test.Constants.DrawingBoard.CONTEXT_MENU_BUTTON_HEADER;
@@ -32,10 +9,44 @@ import static vid.automation.test.infra.ModelInfo.collectionResourceForResume;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIFilterServiceInstanceById;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGetSpecificService;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGetSpecificService;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIModelsByInvariantIdGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIModelsByInvariantIdGetForServiceWithCR;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
+import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAddOrRemoveOneInstanceGroupMember;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteInstanceGroup;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGetByServiceInstanceId;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOResumeRequest;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
+import org.testng.annotations.Test;
+import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.sections.DrawingBoardPage;
+import vid.automation.test.services.SimulatorApi;
+
 public class ViewEditWithDrawingBoardTest extends VidBaseTestCase {
 
     private static final String MSO_COMPLETE_STATUS = "COMPLETE";
-    private static final String COMPLETED = "COMPLETED";
     private String vnfGroupInstanceId;
     private String serviceInstanceToDeleteName;
     private String vnf1Name;
@@ -77,7 +88,7 @@ public class ViewEditWithDrawingBoardTest extends VidBaseTestCase {
         GeneralUIUtils.ultimateWait();
 
         DrawingBoardPage drawingBoardPage = new DrawingBoardPage();
-        drawingBoardPage.goToIframe();
+        DrawingBoardPage.goToIframe();
         GeneralUIUtils.ultimateWait();
         action.run();
         GeneralUIUtils.ultimateWait();
@@ -173,7 +184,7 @@ public class ViewEditWithDrawingBoardTest extends VidBaseTestCase {
         );
     }
 
-    @FeatureTogglingTest({Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI, Features.FLAG_1908_RESUME_MACRO_SERVICE})
+    @FeatureTogglingTest({Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT, Features.FLAG_1908_RESUME_MACRO_SERVICE})
     @Test
     public void testResumeServiceInstanceWithCollectionResource() {
 

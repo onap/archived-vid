@@ -1,4 +1,37 @@
+/*-
+ * ============LICENSE_START=======================================================
+ * VID
+ * ================================================================================
+ * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
 package org.onap.vid.api;
+
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.testng.Assert.assertFalse;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.services.SimulatorApi.registerExpectation;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
@@ -13,19 +46,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
-
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.testng.Assert.assertFalse;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-import static vid.automation.test.services.SimulatorApi.registerExpectation;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 
 public class SdcApiTest extends BaseApiTest {
 
@@ -93,7 +113,9 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
         String macroInstantiationTypeExpectedResponse = loadResourceAsString(MACRO_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
-        assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(turnOffInstantiationUI(macroInstantiationTypeExpectedResponse))));
+        assertThat(response.getBody(), jsonEquals(macroInstantiationTypeExpectedResponse)
+            .when(IGNORING_ARRAY_ORDER)
+            .whenIgnoringPaths("service.vidNotions.viewEditUI"));
     }
 
 
@@ -112,7 +134,9 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
         String macroInstantiationTypeExpectedResponse = loadResourceAsString(MACRO_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
-        assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(turnOffInstantiationUI(macroInstantiationTypeExpectedResponse))));
+        assertThat(response.getBody(), jsonEquals(macroInstantiationTypeExpectedResponse)
+            .when(IGNORING_ARRAY_ORDER)
+            .whenIgnoringPaths("service.vidNotions.viewEditUI"));
     }
 
     @Test

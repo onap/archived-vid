@@ -170,16 +170,15 @@ public class VidNotionsBuilder {
             return VidNotions.InstantiationUI.SERVICE_WITH_VNF_GROUPING;
         }
 
-        if (featureManager.isActive(Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI) &&
-                featureManager.isActive(Features.FLAG_1908_RESUME_MACRO_SERVICE) &&
-                isServiceWithCollectionResource(serviceModel)) {
-            return VidNotions.InstantiationUI.SERVICE_WITH_COLLECTION_RESOURCE;
+        if (featureManager.isActive(Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT) &&
+            isMacro(serviceModel) &&
+            !isTransportService(csarHelper) &&
+            //till new view/edit would support fabric service activation
+            !hasFabricConfiguration(csarHelper)) {
+            return VidNotions.InstantiationUI.MACRO_SERVICE;
         }
 
         if (featureManager.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)) {
-            if (isMacro(serviceModel) && !isMacroExcludedFromAsyncFlow(serviceModel)) {
-                return VidNotions.InstantiationUI.MACRO_SERVICE;
-            }
             VidNotions.InstantiationUI instantiationUISuggestion = suggestInstantiationUI(csarHelper, serviceModel);
             if (instantiationUISuggestion!=VidNotions.InstantiationUI.LEGACY) {
                 return instantiationUISuggestion;
