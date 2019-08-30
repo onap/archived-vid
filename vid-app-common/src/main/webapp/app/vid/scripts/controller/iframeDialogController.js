@@ -48,7 +48,7 @@ var iframeDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $htt
                     $scope.popup.isVisible = false;
                     // }
                 }
-            })
+            });
         }
         $scope.$apply();
     }
