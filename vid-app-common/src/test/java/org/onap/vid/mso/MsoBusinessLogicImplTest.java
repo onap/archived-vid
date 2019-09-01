@@ -42,6 +42,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.onap.vid.controller.MsoController.CONFIGURATION_ID;
 import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
@@ -71,6 +72,7 @@ import org.hamcrest.MatcherAssert;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.hamcrest.MockitoHamcrest;
 import org.onap.portalsdk.core.util.SystemProperties;
@@ -1609,6 +1611,69 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         org.junit.Assert.assertThat(metadata.getUrl(), equalTo(url));
         org.junit.Assert.assertThat(metadata.getRawData(), rawData);
         org.junit.Assert.assertThat(metadata.getDescription(), descriptionMatcher);
+    }
+
+    @Test(dataProvider = "unAssignOrDeleteParams")
+    public void deleteSvcInstance_verifyEndPointPathConstructing(String status) {
+        Mockito.reset(msoInterface);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE);
+        RequestDetails requestDetails = new RequestDetails();
+
+
+        msoBusinessLogic.deleteSvcInstance(requestDetails, "tempId", status);
+
+        verify(msoInterface).deleteSvcInstance(requestDetails, endpoint + "/tempId");
+    }
+
+    @DataProvider
+    public Object[][] unAssignOrDeleteParams() {
+        return new Object[][]{
+            {"Active"},
+            {"unexpected-status"},
+        };
+    }
+
+    @Test(dataProvider = "unAssignStatus")
+    public void deleteSvcInstance_verifyEndPointPathConstructing_unAssignFeatureOn(String status) {
+        Mockito.reset(msoInterface);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE);
+        RequestDetails requestDetails = new RequestDetails();
+
+        msoBusinessLogic.deleteSvcInstance(requestDetails, "tempId", status);
+
+        verify(msoInterface).unassignSvcInstance(requestDetails, endpoint + "/tempId/unassign");
+    }
+
+    @DataProvider
+    public Object[][] unAssignStatus() {
+        return new Object[][]{
+            {"Created"},
+            {"Pendingdelete"},
+            {"pending-Delete"},
+            {"Assigned"}
+        };
+    }
+
+    @Test
+    public void deleteVnf_verifyEndPointPathConstructing() {
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VNF_INSTANCE);
+        RequestDetails requestDetails = new RequestDetails();
+
+        String vnf_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, "serviceInstanceTempId");
+
+        msoBusinessLogic.deleteVnf(requestDetails, "serviceInstanceTempId", "vnfInstanceTempId");
+        verify(msoInterface).deleteVnf(requestDetails, vnf_endpoint + "/vnfInstanceTempId");
+    }
+
+    @Test
+    public void deleteVfModule_verifyEndPointPathConstructing() {
+        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
+        RequestDetails requestDetails = new RequestDetails();
+
+        String vf__modules_endpoint = endpoint.replaceFirst(SVC_INSTANCE_ID, "serviceInstanceTempId").replaceFirst(VNF_INSTANCE_ID, "vnfInstanceTempId");
+
+        msoBusinessLogic.deleteVfModule(requestDetails, "serviceInstanceTempId", "vnfInstanceTempId", "vfModuleTempId");
+        verify(msoInterface).deleteVfModule(requestDetails, vf__modules_endpoint + "/vfModuleTempId");
     }
 }
 
