@@ -32,7 +32,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.ECOMP_GENERATED_NAMING_PROPERTY;
 import static org.onap.vid.testUtils.TestUtils.assertJsonStringEqualsIgnoreNulls;
-import static org.onap.vid.testUtils.TestUtils.testWithSystemProperty;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -286,15 +285,15 @@ public class ToscaParserImpl2Test {
 
     @Test(dataProvider = "oldCsarUuid")
     public void csarWithVnfWithVfModuleInModel(String oldCsarUuid, String vnfName) throws Exception {
-        testWithSystemProperty("asdc.model.namespace", "com.att.d2.", ()-> {
-            ToscaParser tosca = new ToscaParserImpl();
-            final UUID uuid = UUID.fromString(oldCsarUuid);
-            final ServiceModel serviceModel = tosca.makeServiceModel(oldCsarUuid, asdcClient.getServiceToscaModel(uuid), asdcClient.getService(uuid));
-            assertThat(serviceModel.getVnfs(), aMapWithSize(1));
-            assertThat(serviceModel.getVfModules(), aMapWithSize(2));
-            assertThat(serviceModel.getVolumeGroups(), aMapWithSize(0));
-            assertThat(serviceModel.getVnfs().get(vnfName).getVfModules(), aMapWithSize(2));
-        });
+        ToscaParser tosca = new ToscaParserImpl();
+        final UUID uuid = UUID.fromString(oldCsarUuid);
+        final ServiceModel serviceModel = tosca.makeServiceModel(
+            oldCsarUuid, asdcClient.getServiceToscaModel(uuid), asdcClient.getService(uuid)
+        );
+        assertThat(serviceModel.getVnfs(), aMapWithSize(1));
+        assertThat(serviceModel.getVfModules(), aMapWithSize(2));
+        assertThat(serviceModel.getVolumeGroups(), aMapWithSize(0));
+        assertThat(serviceModel.getVnfs().get(vnfName).getVfModules(), aMapWithSize(2));
     }
 
     @Test
