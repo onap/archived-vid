@@ -32,6 +32,7 @@ import org.onap.vid.aai.model.AaiGetInstanceGroupsByCloudRegion;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.ModelVer;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.model.SubscriberList;
@@ -99,4 +100,6 @@ public interface AaiService {
     List<VpnBinding> getVpnListByVpnType(String vpnType);
 
     List<Network> getL3NetworksByCloudRegion(String cloudRegionId, String tenantId, String networkRole);
+
+    ModelVer getNewestModelVersionByInvariantId(String modelInvariantId);
 }
