@@ -22,9 +22,11 @@ package org.onap.vid.client
 
 import io.joshworks.restclient.http.Headers
 import io.joshworks.restclient.http.HttpResponse
+import org.apache.commons.io.IOUtils
 import org.apache.http.HttpVersion
 import org.apache.http.message.BasicHttpResponse
 import java.io.InputStream
+import java.nio.charset.StandardCharsets
 
 /// Patch NPE in joshworks's Unirest HttpResponse::getBody when getRawBody is null
 fun <T> patched(httpResponse: HttpResponse<T>) =
@@ -35,6 +37,17 @@ private fun <T> willGetBodyTriggerNPE(httpResponse: HttpResponse<T>) =
 
 private val dummyHttpResponse = BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "ok")
 
+fun extractRawAsString(response: HttpResponse<*>?): String {
+    try {
+        if (response == null || response.rawBody==null) return ""
+        response.rawBody.reset()
+        return IOUtils.toString(response.rawBody, StandardCharsets.UTF_8.name())
+    } catch (e: Exception) {
+        //Nothing to do here
+    }
+
+    return ""
+}
 /**
  * This class inherits HttpResponse to have compatible interface,
  * but implementation is done through delegation to another

@@ -21,16 +21,12 @@
 
 package org.onap.vid.mso;
 
-import io.joshworks.restclient.http.HttpResponse;
-import org.apache.http.HttpResponseFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.DefaultHttpResponseFactory;
-import org.apache.http.message.BasicStatusLine;
-import org.testng.annotations.Test;
-
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.apache.http.HttpVersion.HTTP_1_1;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import io.joshworks.restclient.http.HttpResponse;
+import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.Test;
 
 public class MsoUtilTest {
 
@@ -51,7 +47,7 @@ public class MsoUtilTest {
     @Test
     public void shouldWrapHttpResponse() throws Exception {
         // given
-        HttpResponse<String> httpResponse = createTestHttpResponse(SC_OK, null);
+        HttpResponse<String> httpResponse = TestUtils.createTestHttpResponse(SC_OK, null);
         // when
         MsoResponseWrapper result = MsoUtil.wrapResponse(httpResponse);
         // then
@@ -63,7 +59,7 @@ public class MsoUtilTest {
     public void shouldWrapHttpResponseWithEntity() throws Exception {
         // given
         String entity = "entity";
-        HttpResponse<String> httpResponse = createTestHttpResponse(SC_OK, entity);
+        HttpResponse<String> httpResponse = TestUtils.createTestHttpResponse(SC_OK, entity);
         // when
         MsoResponseWrapper result = MsoUtil.wrapResponse(httpResponse);
         // then
@@ -71,12 +67,4 @@ public class MsoUtilTest {
         assertThat(result.getStatus()).isEqualTo(SC_OK);
     }
 
-    private HttpResponse<String> createTestHttpResponse(int statusCode, String entity) throws Exception {
-        HttpResponseFactory factory = new DefaultHttpResponseFactory();
-        org.apache.http.HttpResponse response = factory.newHttpResponse(new BasicStatusLine(HTTP_1_1, statusCode, null), null);
-        if (entity != null) {
-            response.setEntity(new StringEntity(entity));
-        }
-        return new HttpResponse<>(response, String.class, null);
-    }
 }

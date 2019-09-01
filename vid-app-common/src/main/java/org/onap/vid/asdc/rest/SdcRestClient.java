@@ -28,6 +28,7 @@ import static org.onap.vid.asdc.AsdcClient.URIS.TOSCA_MODEL_URL_TEMPLATE;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.AUTHORIZATION;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.CONTENT_TYPE;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
+import static org.onap.vid.client.UnirestPatchKt.extractRawAsString;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 import static org.onap.vid.utils.Logging.logRequest;
 
@@ -43,6 +44,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.client.ResponseProcessingException;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.HttpResponseWithRequestInfo;
@@ -87,13 +90,35 @@ public class SdcRestClient implements AsdcClient {
 
     @Override
     public Path getServiceToscaModel(UUID uuid) throws AsdcCatalogException {
-        InputStream inputStream = Try
-                .of(() -> getServiceInputStream(uuid, false))
-                .getOrElseThrow(AsdcCatalogException::new)
-                .getResponse()
-                .getBody();
+        try {
+            HttpResponseWithRequestInfo<InputStream> responseWithRequestInfo = getServiceInputStream(uuid, false);
 
-        return createTmpFile(inputStream);
+            if (responseWithRequestInfo.getResponse().getStatus()>399) {
+                Logging.logResponse(LOGGER, HttpMethod.GET,
+                    responseWithRequestInfo.getRequestUrl(), responseWithRequestInfo.getResponse());
+
+                String body = extractRawAsString(responseWithRequestInfo.getResponse());
+                throw new AsdcCatalogException(String.format("Http bad status code: %s, body: %s",
+                    responseWithRequestInfo.getResponse().getStatus(),
+                    body));
+            }
+
+            final InputStream csarInputStream = responseWithRequestInfo.getResponse().getBody();
+            Path toscaFilePath = createTmpFile(csarInputStream);
+            LOGGER.debug("Received {} {} . Tosca file was saved at: {}",
+                responseWithRequestInfo.getRequestHttpMethod().name(),
+                responseWithRequestInfo.getRequestUrl(),
+                toscaFilePath.toAbsolutePath());
+            return toscaFilePath;
+        } catch (ResponseProcessingException e) {
+            //Couldn't convert response to Java type
+            throw new AsdcCatalogException("ASDC response could not be processed", e);
+        } catch (ProcessingException e) {
+            //IO problems during request
+            throw new AsdcCatalogException("Failed to get a response from ASDC service. Cause: " + e.getMessage(), e);
+        } catch (RuntimeException e) {
+            throw new AsdcCatalogException(e);
+        }
     }
 
     @Override

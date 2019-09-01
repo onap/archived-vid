@@ -28,7 +28,8 @@ import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 import static org.apache.commons.text.CharacterPredicates.LETTERS;
-import static org.mockito.Matchers.any;
+import static org.apache.http.HttpVersion.HTTP_1_1;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.RETURNS_DEFAULTS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -39,12 +40,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.beanmatchers.BeanMatchers;
 import com.google.common.collect.ImmutableList;
+import io.joshworks.restclient.http.HttpResponse;
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -56,8 +59,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.text.RandomStringGenerator;
+import org.apache.http.HttpResponseFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.DefaultHttpResponseFactory;
+import org.apache.http.message.BasicStatusLine;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -67,6 +75,7 @@ import org.mockito.MockSettings;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.mockito.stubbing.OngoingStubbing;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
@@ -191,6 +200,24 @@ public class TestUtils {
         BeanMatchers.registerValueGenerator(() -> new CloudConfiguration(
                 randomAlphabetic(7), randomAlphabetic(7), randomAlphabetic(7)
             ), CloudConfiguration.class);
+    }
+
+    public static OngoingStubbing<InputStream> mockGetRawBodyWithStringBody(HttpResponse<String> httpResponse, String body) {
+        try {
+            return when(httpResponse.getRawBody()).thenReturn(IOUtils.toInputStream(body, StandardCharsets.UTF_8.name()));
+        } catch (IOException e) {
+            ExceptionUtils.rethrow(e);
+        }
+        return null; //never shall get here
+    }
+
+    public static HttpResponse<String> createTestHttpResponse(int statusCode, String entity) throws Exception {
+        HttpResponseFactory factory = new DefaultHttpResponseFactory();
+        org.apache.http.HttpResponse response = factory.newHttpResponse(new BasicStatusLine(HTTP_1_1, statusCode, null), null);
+        if (entity != null) {
+            response.setEntity(new StringEntity(entity));
+        }
+        return new HttpResponse<>(response, String.class, null);
     }
 
 

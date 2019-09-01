@@ -21,6 +21,7 @@
 
 package org.onap.vid.asdc.rest;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,6 +34,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.onap.vid.testUtils.TestUtils.mockGetRawBodyWithStringBody;
 import static org.testng.AssertJUnit.fail;
 
 import io.joshworks.restclient.http.HttpResponse;
@@ -178,10 +180,10 @@ public class SdcRestClientTest {
     public void whenJavaxClientThrowException_then_getServiceToscaModelRethrowException(Class<? extends Throwable> expectedType, Consumer<SyncRestClient> setupMocks) throws Exception {
         /*
         Call chain is like:
-            this test -> RestfulAsdcClient ->  javax's Client
+            this test -> SdcRestClient ->  SdcRestClient -> joshworks client which return  joshworks HttpResponse
 
-        In this test, *RestfulAsdcClient* is under test (actual implementation is used), while javax's Client is
-        mocked to return pseudo-responses or - better - throw exceptions.
+        In this test, *SdcRestClient* is under test (actual implementation is used), while SdcRestClient is
+        mocked to return pseudo joshworks HttpResponse or - better - throw exceptions.
          */
 
         /// TEST:
@@ -197,5 +199,56 @@ public class SdcRestClientTest {
 
         fail("exception shall rethrown by getServiceToscaModel once javax client throw exception ");
     }
+
+    @DataProvider
+    public static Object[][] badResponses() {
+        return new Object[][] {
+            {(Consumer<HttpResponse>) response -> {
+                when(response.getStatus()).thenReturn(404);
+                mockGetRawBodyWithStringBody(response,"");},
+                ""
+            },
+            {(Consumer<HttpResponse>) response -> {
+                when(response.getStatus()).thenReturn(405);
+                when(response.getRawBody()).thenThrow(ClassCastException.class);},
+                ""
+            },
+            {(Consumer<HttpResponse>) response -> {
+                when(response.getStatus()).thenReturn(500);
+                mockGetRawBodyWithStringBody(response,"some message");},
+                "some message"
+            },
+        };
+    }
+
+    @Test(dataProvider = "badResponses")
+    public void whenJavaxClientReturnBadCode_then_getServiceToscaModelThrowException(Consumer<HttpResponse> setupMocks, String exceptedBody) throws Exception {
+        /*
+        Call chain is like:
+            this test -> SdcRestClient ->  SdcRestClient -> joshworks client which return  joshworks HttpResponse
+
+        In this test, *SdcRestClient* is under test (actual implementation is used), while SdcRestClient is
+        mocked to return pseudo joshworks HttpResponse
+         */
+
+        HttpResponse<InputStream> mockResponse = mock(HttpResponse.class);
+        SyncRestClient syncRestClient = mock(SyncRestClient.class);
+        when(syncRestClient.getStream(anyString(), anyMap(), anyMap())).thenReturn(mockResponse);
+
+        // prepare real RestfulAsdcClient (Under test)
+
+        setupMocks.accept(mockResponse);
+
+        try {
+            new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, syncRestClient).getServiceToscaModel(UUID.randomUUID());
+        } catch (AsdcCatalogException e) {
+            assertThat(e.getMessage(), containsString(String.valueOf(mockResponse.getStatus())));
+            assertThat(e.getMessage(), containsString(exceptedBody));
+            return; //OK
+        }
+
+        fail("exception shall be thrown by getServiceToscaModel once response contains error code ");
+    }
+
 
 }

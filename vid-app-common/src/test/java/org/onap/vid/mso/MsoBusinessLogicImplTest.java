@@ -55,7 +55,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.joshworks.restclient.http.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -97,6 +96,7 @@ import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
 import org.onap.vid.mso.rest.Task;
+import org.onap.vid.testUtils.TestUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
@@ -1442,11 +1442,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
         HttpResponse<String> httpResponse = mockForGetOrchestrationRequest();
         when(httpResponse.getStatus()).thenReturn(statusCode);
         when(httpResponse.getBody()).thenReturn(body);
-        try {
-            when(httpResponse.getRawBody()).thenReturn(IOUtils.toInputStream(body, StandardCharsets.UTF_8.name()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        TestUtils.mockGetRawBodyWithStringBody(httpResponse, body);
         return httpResponse;
     }
 
