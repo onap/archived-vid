@@ -59,6 +59,7 @@ import org.json.JSONTokener;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.sdc.toscaparser.api.Group;
@@ -70,6 +71,7 @@ import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.local.LocalAsdcClient;
 import org.onap.vid.controller.ToscaParserMockHelper;
 import org.onap.vid.model.CR;
+import org.onap.vid.model.ModelConstants;
 import org.onap.vid.model.Network;
 import org.onap.vid.model.NetworkCollection;
 import org.onap.vid.model.Node;
@@ -287,6 +289,8 @@ public class ToscaParserImpl2Test {
     @Test(dataProvider = "oldCsarUuid")
     public void csarWithVnfWithVfModuleInModel(String oldCsarUuid, String vnfName) throws Exception {
         testWithSystemProperty("asdc.model.namespace", "com.att.d2.", ()-> {
+            //temporary for debugging the test in Jenkins
+            System.out.println(ModelConstants.ASDC_MODEL_NAMESPACE+" is " + SystemProperties.getProperty(ModelConstants.ASDC_MODEL_NAMESPACE));
             ToscaParser tosca = new ToscaParserImpl();
             final UUID uuid = UUID.fromString(oldCsarUuid);
             final ServiceModel serviceModel = tosca.makeServiceModel(oldCsarUuid, asdcClient.getServiceToscaModel(uuid), asdcClient.getService(uuid));
