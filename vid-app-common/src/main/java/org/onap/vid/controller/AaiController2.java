@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
+import org.onap.vid.aai.model.ModelVer;
 import org.onap.vid.aai.model.Permissions;
 import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.RelatedVnf;
@@ -115,5 +116,11 @@ public class AaiController2 extends VidRestrictedBaseController {
             .filter(network -> StringUtils.isNotEmpty(network.getInstanceName()))
             .filter(network -> StringUtils.equalsIgnoreCase(network.getOrchStatus(), "active"))
             .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/aai_get_newest_model_version_by_invariant/{invariantId}",
+        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelVer getNewestModelVersionByInvariant(@PathVariable("invariantId") String invariantId) {
+        return aaiService.getNewestModelVersionByInvariantId(invariantId);
     }
 }

@@ -702,4 +702,9 @@ public class AaiServiceImpl implements AaiService {
         return "{\"start\":\"/cloud-infrastructure/cloud-regions/cloud-region/" + cloudOwner + "/" + cloudRegionId + "\"," +
                 "\"query\":\"query/l3-networks-by-cloud-region?tenantId=" + tenantId + networkRolePart + "\"}";
     }
+
+    @Override
+    public ModelVer getNewestModelVersionByInvariantId(String modelInvariantId){
+        return aaiClient.getLatestVersionByInvariantId(modelInvariantId);
+    }
 }

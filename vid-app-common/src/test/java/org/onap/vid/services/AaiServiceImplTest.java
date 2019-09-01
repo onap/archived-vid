@@ -791,4 +791,12 @@ public class AaiServiceImplTest {
         subscriber.subscriberType = "type-1";
         return subscriber;
     }
+
+    @Test
+    public void whenGetNewestModelVersionByInvariantId_thenReturnSameValueAsAaiClient() {
+        String modelInvariantId = "123";
+        ModelVer modelVer = mock(ModelVer.class);
+        when(aaiClient.getLatestVersionByInvariantId(eq(modelInvariantId))).thenReturn(modelVer);
+        assertThat(aaiService.getNewestModelVersionByInvariantId(modelInvariantId)).isEqualTo(modelVer);
+    }
 }
