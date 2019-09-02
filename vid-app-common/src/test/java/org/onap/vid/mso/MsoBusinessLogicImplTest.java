@@ -845,20 +845,14 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void shouldProperlyGetDeactivateAndCloudDeletePathWithProperParameters() {
-        // given
-        String serviceInstanceId = "testServiceId";
-        String vnfInstanceId = "testVnfInstanceId";
-        String vfModuleInstanceId = "testVfModuleInstanceId";
-        String path = validateEndpointPath(MsoProperties.MSO_REST_API_VF_MODULE_INSTANCE);
-        path = path.replaceFirst(SVC_INSTANCE_ID, serviceInstanceId);
-        path = path.replaceFirst(VNF_INSTANCE_ID, vnfInstanceId);
-        path += "/" + vfModuleInstanceId + "/deactivateAndCloudDelete";
 
         // when
-        String response = msoBusinessLogic.getDeactivateAndCloudDeletePath(serviceInstanceId, vnfInstanceId, vfModuleInstanceId);
+        String response = msoBusinessLogic.getDeactivateAndCloudDeletePath("testServiceId", "testVnfInstanceId", "testVfModuleInstanceId");
 
         // then
-        assertThat(response).isEqualTo(path);
+        String expectedPath = "/serviceInstantiation/v7/serviceInstances/testServiceId/vnfs/testVnfInstanceId/"+
+            "vfModules/testVfModuleInstanceId/deactivateAndCloudDelete";
+        assertThat(response).isEqualTo(expectedPath);
     }
 
     @Test
