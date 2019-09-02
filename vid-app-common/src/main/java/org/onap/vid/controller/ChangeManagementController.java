@@ -92,14 +92,12 @@ public class ChangeManagementController extends UnRestrictedBaseController {
     @RequestMapping(value = "/workflow/{vnfName}", method = RequestMethod.POST)
     public ResponseEntity<String> changeManagement(HttpServletRequest request,
                                                    @PathVariable("vnfName") String vnfName,
-                                                   @RequestBody ChangeManagementRequest changeManagmentRequest)
-            throws Exception {
+                                                   @RequestBody ChangeManagementRequest changeManagmentRequest){
         return this.changeManagementService.doChangeManagement(changeManagmentRequest, vnfName);
     }
 
     @RequestMapping(value = "/uploadConfigUpdateFile", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity uploadConfigUpdateFile(@RequestPart("file") MultipartFile file)
-        throws Exception {
+    public @ResponseBody ResponseEntity uploadConfigUpdateFile(@RequestPart("file") MultipartFile file){
         try {
             String jsonString = this.changeManagementService.uploadConfigUpdateFile(file);
             return new ResponseEntity<>(jsonString, HttpStatus.OK);
