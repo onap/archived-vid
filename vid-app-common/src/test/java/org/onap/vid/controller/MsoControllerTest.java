@@ -27,6 +27,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -48,6 +49,7 @@ import org.junit.Test;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapper;
+import org.onap.vid.mso.MsoResponseWrapper2;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.Request;
@@ -446,5 +448,39 @@ public class MsoControllerTest {
 
     private <T> T objectEqualTo(T expected) {
         return argThat(given -> asJson(given).equals(asJson(expected)));
+    }
+
+    @Test
+    public void testActivateFabricConfiguration() throws Exception {
+
+        String serviceInstanceId = "tempId";
+
+        //define mock response object
+        String responseString = "{" +
+            "      \"requestReferences\": {" +
+            "        \"instanceId\": \"tempId\"," +
+            "        \"requestId\": \"dbe54591-c8ed-46d3-abc7-d3a24873dfbd\"" +
+            "      }" +
+            "    }";
+        final RestObject<RequestReferencesContainer> restObject = new RestObject<>();
+        restObject.set(objectMapper.readValue(responseString, RequestReferencesContainer.class));
+        restObject.setStatusCode(200);
+
+        //register mock
+        String msoPath = "justAFakePath";
+
+        when(msoBusinessLogic.getActivateFabricConfigurationPath(serviceInstanceId)).thenReturn(msoPath);
+        when(msoRestClient.PostForObject(new RequestDetails(), msoPath, RequestReferencesContainer.class)).thenReturn(restObject);
+
+        //expected response
+        MsoResponseWrapper2<RequestReferencesContainer> expectedResponse = new MsoResponseWrapper2<>(restObject);
+
+        //get response from controller
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_activate_fabric_configuration/%s", serviceInstanceId))
+            .content(asJson(new RequestDetails()))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
     }
 }
