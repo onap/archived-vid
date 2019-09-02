@@ -21,6 +21,7 @@
 
 package org.onap.vid.mso;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.tuple;
@@ -89,7 +90,6 @@ import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentActivateInfo;
 import org.onap.vid.mso.model.OperationalEnvironmentDeactivateInfo;
-import org.onap.vid.mso.model.RequestInfo;
 import org.onap.vid.mso.model.RequestParameters;
 import org.onap.vid.mso.rest.OperationalEnvironment.OperationEnvironmentRequestDetails;
 import org.onap.vid.mso.rest.Request;
@@ -862,39 +862,11 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void shouldProperlyBuildRequestDetailsForSoftDeleteWithProperParameters() {
-        //  given
-        SoftDeleteRequest softDeleteRequest = new SoftDeleteRequest();
-        RequestDetails requestDetails = new RequestDetails();
-
-        String userId = "testUserID";
-        String tenantId = "testTenantId ";
-        String cloudRegionId = "testCloudId";
-
-
-        RequestInfo requestInfo = new RequestInfo();
-        requestInfo.setSource("VID");
-        requestInfo.setRequestorId(userId);
-        requestDetails.setRequestInfo(requestInfo);
-
-        CloudConfiguration cloudConfiguration = new CloudConfiguration();
-        cloudConfiguration.setTenantId(tenantId);
-        cloudConfiguration.setLcpCloudRegionId(cloudRegionId);
-        requestDetails.setCloudConfiguration(cloudConfiguration);
-
-        setModelInfoForRequestDetails(requestDetails);
-
-        setRequestParametersForRequestDetails(requestDetails);
-
-        softDeleteRequest.setLcpCloudRegionId(cloudRegionId);
-        softDeleteRequest.setTenantId(tenantId);
-        softDeleteRequest.setUserId(userId);
-
-        //  when
-        RequestDetails response = msoBusinessLogic.buildRequestDetailsForSoftDelete(softDeleteRequest);
-
-        //  then
-        assertThat(response).isEqualTo(requestDetails);
+    public void shouldProperlyBuildRequestDetailsForSoftDeleteWithProperParameters() throws IOException {
+        SoftDeleteRequest request = new SoftDeleteRequest("testTenantId", "testCloudId", "testUserID");
+        String expected = IOUtils.toString(this.getClass().getResource("/payload_jsons/vfModuleDeactivateAndCloudDelete.json"), "UTF-8");
+        final RequestDetails result = msoBusinessLogic.buildRequestDetailsForSoftDelete(request);
+        MatcherAssert.assertThat(result, jsonEquals(expected));
     }
 
     private void setRequestParametersForRequestDetails(RequestDetails requestDetails) {

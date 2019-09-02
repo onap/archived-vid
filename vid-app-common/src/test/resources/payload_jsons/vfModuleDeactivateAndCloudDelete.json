@@ -3,12 +3,12 @@
     "modelType": "vfModule"
   },
   "cloudConfiguration": {
-    "lcpCloudRegionId": "mdt1",
-    "tenantId": "88a6ca3ee0394ade9403f075db23167e"
+    "lcpCloudRegionId": "testCloudId",
+    "tenantId": "testTenantId"
   },
   "requestInfo": {
     "source": "VID",
-    "requestorId": "az2016"
+    "requestorId": "testUserID"
   },
   "requestParameters" : {
     "testApi" : "GR_API",
