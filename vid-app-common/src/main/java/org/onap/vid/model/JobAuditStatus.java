@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -100,7 +101,7 @@ public class JobAuditStatus extends VidBaseEntity {
             return null;
         }
 
-        DateFormat format = new SimpleDateFormat(defaultFormat);
+        DateFormat format = new SimpleDateFormat(defaultFormat, Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date date = null ;
         try {
