@@ -47,8 +47,8 @@ appDS2.controller("pnfSearchAssociationController", ["COMPONENT", "$log", "FIELD
         var handleGetParametersResponse = function(parameters) {
             $scope.serviceMetadataFields = parameters.summaryList;
             $scope.serviceMetadataFields.forEach(function (t, number) {
-                $scope.serviceMetadataFields[number].key = $scope.serviceMetadataFields[number].name.split(' ').join('')
-            })
+                $scope.serviceMetadataFields[number].key = $scope.serviceMetadataFields[number].name.split(' ').join('');
+            });
             $scope.nodeTemplateFields = _.keyBy(parameters.userProvidedList, 'id');
         };
 
@@ -74,7 +74,7 @@ appDS2.controller("pnfSearchAssociationController", ["COMPONENT", "$log", "FIELD
                    $scope.notFound= true;
                 });
 
-        }
+        };
         var modalInstance;
 
         $scope.associate = function()  {
@@ -99,9 +99,7 @@ appDS2.controller("pnfSearchAssociationController", ["COMPONENT", "$log", "FIELD
                         return null;
                     }
                 }
-            })
-
-
+            });
         };
 
         var updateViewCallbackFunction = function(response) {
