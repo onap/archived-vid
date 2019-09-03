@@ -55,6 +55,7 @@ public class CategoryParameterOption extends DomainVo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CATEGORY_OPT_DB_ID")
+    @Override
     public Long getId() {
         return id;
     }
