@@ -20,10 +20,13 @@
 
 package org.onap.vid.controller;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+
+import java.util.List;
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.exceptions.AccessDeniedException;
-import org.onap.vid.exceptions.OperationNotAllowedException;
-import org.onap.vid.model.ExceptionResponse;
 import org.onap.vid.model.JobAuditStatus;
 import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
@@ -34,15 +37,13 @@ import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.togglz.core.manager.FeatureManager;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.UUID;
-
-import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
-import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 
 
 @RestController
@@ -67,12 +68,6 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
         this.roleProvider = roleProvider;
         this.featureManager = featureManager;
         this.systemPropertiesWrapper = systemPropertiesWrapper;
-    }
-
-    @ExceptionHandler(OperationNotAllowedException.class)
-    @ResponseStatus(value=METHOD_NOT_ALLOWED)
-    public ExceptionResponse illegalStateExceptionHandler(Exception e) {
-        return ControllersUtils.handleException(e, LOGGER);
     }
 
     /**
