@@ -4,6 +4,7 @@
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
  * Modifications Copyright (C) 2019 Nokia.
+ * Modifications Copyright (C) 2019 IBM.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -508,6 +509,7 @@ public class AaiController extends RestrictedBaseController {
             LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + "." + methodName + message);
             LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + "." + methodName + message);
         } catch (Exception e) {
+        	LOGGER.info(e);
             LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + "." + methodName + e.toString());
             LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + "." + methodName + e.toString());
         }
@@ -525,6 +527,7 @@ public class AaiController extends RestrictedBaseController {
             resp = aaiRestInterface.RestPost(FROM_APP_ID, uri, payload, xml);
 
         } catch (Exception e) {
+        	LOGGER.info(e);
             LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + "." + methodName + e.toString());
             LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + "." + methodName + e.toString());
         }
