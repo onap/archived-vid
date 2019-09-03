@@ -397,7 +397,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
                 element.find("input, select").bind("change.namespace2", function() {
                     callback(this, scope);
                 });
-            }
+            };
 
             control.getList = function(expectedId) {
                 var parameterList = new Array();
@@ -411,7 +411,7 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
                     parameterList.push({id: key, value: value});
                 });
                 return parameterList;
-            }
+            };
 
             control.getRequiredFields = function() {
                 var requiredFields = "";
@@ -433,10 +433,10 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
                 } else {
                     return requiredFields + " and " + count + " other fields";
                 }
-            }
+            };
         }
     }
-}
+};
 
 appDS2.directive('parameterBlock', [ "$log", "PARAMETER", "UtilityService", "$compile",
     parameterBlockDirective ]);
@@ -469,7 +469,7 @@ appDS2.directive('onlyIntegers', function () {
                 }
             });
         }
-    }
+    };
 });
 
 appDS2.directive('onlyFloat', function () {
@@ -487,5 +487,5 @@ appDS2.directive('onlyFloat', function () {
                 }
             });
         }
-    }
+    };
 });
