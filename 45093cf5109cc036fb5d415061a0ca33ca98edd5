@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "39870bc2_ddc3e057",
+        "filename": "vid-webpack-master/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-03T10:24:29Z",
+      "side": 1,
+      "message": "I would request keeping the NPM_CMD parameter, and provide a default property, similarly to what explained here: https://stackoverflow.com/questions/899274/setting-default-values-for-custom-maven-2-properties\n\nThis allows something like:\n\n`mvn clean install -DNPM_CMD\u003dtest:jest:pipeline`",
+      "revId": "45093cf5109cc036fb5d415061a0ca33ca98edd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6c48b59_e06cae0e",
+        "filename": "vid-webpack-master/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-03T10:24:29Z",
+      "side": 1,
+      "message": "Nice touch. :)",
+      "revId": "45093cf5109cc036fb5d415061a0ca33ca98edd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
