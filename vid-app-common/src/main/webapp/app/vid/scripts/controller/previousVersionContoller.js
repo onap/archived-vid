@@ -49,10 +49,8 @@ var previousVersionContoller = function( COMPONENT, FIELD, $scope, $http, $timeo
 	$scope.cancelTable = function(){
 		$scope.isTableDialogVisible = false;
 		$scope.popup.isTablePopUpVisible = false;
-	}
-	
-	
-}
+	};	
+};
 
 app
 		.controller("previousVersionContoller", [ "COMPONENT", "FIELD", "$scope", "$http",
