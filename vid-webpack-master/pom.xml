@@ -29,6 +29,7 @@
     <stagingNexusPath>content/repositories/staging/</stagingNexusPath>
     <snapshotNexusPath>content/repositories/snapshots/</snapshotNexusPath>
     <releaseNexusPath>content/repositories/releases/</releaseNexusPath>
+    <NPM_CMD>build</NPM_CMD>
   </properties>
 
 
@@ -73,7 +74,10 @@
     <profile>
       <id>if-not-webpack</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>skipModernUi</name>
+          <value>true</value>
+        </property>
       </activation>
       <build>
         <plugins>
@@ -106,6 +110,13 @@
     </profile>
     <profile>
       <id>webpack-npm</id>
+      <activation>
+        <property>
+          <name>skipModernUi</name>
+          <value>!true</value>
+        </property>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -161,7 +172,6 @@
                   <arguments>run ${NPM_CMD}</arguments>
                 </configuration>
               </execution>
-
             </executions>
           </plugin>
         </plugins>
@@ -245,7 +255,16 @@
           <webXml>src/WEB-INF/web.xml</webXml>
         </configuration>
       </plugin>
-
+    <plugin>
+      <artifactId>maven-clean-plugin</artifactId>
+      <configuration>
+        <filesets>
+          <fileset>
+            <directory>dist</directory>
+          </fileset>
+        </filesets>
+      </configuration>
+    </plugin>
     </plugins>
   </build>
   <dependencies>
