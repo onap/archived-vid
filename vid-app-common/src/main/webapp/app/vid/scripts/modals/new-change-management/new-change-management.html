@@ -24,7 +24,7 @@
     <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
     <div ng-if="vm.errorMsg!==''"><font color='red'>{{vm.errorMsg.message}}</font></div>
 </div>
-<form class="form-create" name="newChangeManagement" ng-submit="vm.openModal();vm.close();" novalidate>
+<form class="form-create" data-tests-id="newChangeManagementForm" name="newChangeManagement" ng-submit="vm.openModal();vm.close();" novalidate>
     <div class="modal-body step1" ng-show="vm.wizardStep === 1" >
         <div class="form-group">
             <label class="control-label">Subscriber</label>
