@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b1fc4991_d6ecf064",
+        "filename": "vid-webpack-master/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-09-03T10:49:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39870bc2_ddc3e057",
+      "revId": "45093cf5109cc036fb5d415061a0ca33ca98edd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f6c48b59_e06cae0e",
         "filename": "vid-webpack-master/pom.xml",
         "patchSetId": 1
