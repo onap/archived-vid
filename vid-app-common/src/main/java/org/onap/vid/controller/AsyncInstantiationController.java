@@ -71,6 +71,7 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
 
     @ExceptionHandler(OperationNotAllowedException.class)
     @ResponseStatus(value=METHOD_NOT_ALLOWED)
+    @Override
     public ExceptionResponse illegalStateExceptionHandler(Exception e) {
         return ControllersUtils.handleException(e, LOGGER);
     }
