@@ -87,7 +87,7 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 
 	$scope.userParameterChanged = function(id) {
 		StatusService.updateUserParameterList(id, $scope.userProvidedControl);
-	}
+	};
 
     /*$scope.submit = function() {
 
@@ -140,9 +140,7 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 		$scope.isSubmitEnabled = false;
 		$scope.isCancelEnabled = false;
 		
-	}
-
-
+	};
     
     $scope.handleInitialResponse = function(response) {
 		try {
@@ -165,7 +163,7 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 		} catch (error) {
 			$scope.showContentError(error);
 		}
-	}
+	};
     
 	/* $scope.setVnfProvStatus = function(vnfId, targetProvStatus) {
 		
@@ -193,7 +191,7 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 		$scope.isDialogVisible = false;
 		$scope.popup.isVisible = false;
 		runCallback(false);
-	}
+	};
 
 	var runCallback = function(response) {
 		if (angular.isFunction(callbackFunction)) {
@@ -203,7 +201,7 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 				instanceId : response.instanceId
 			});
 		}
-	}
+	};
    
 	var showSuccess = function(summary, details) {
 		var message = summary;
@@ -213,7 +211,7 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 		$scope.isSpinnerVisible = false;
 		$scope.isSuccessVisible = true;
 		$scope.success = message;
-	    }
+	    };
 		
     var showError = function(summary, details) {
 	var message = summary;
@@ -223,8 +221,8 @@ var statusDialogController = function(COMPONENT, FIELD, $scope, $http, $timeout,
 	$scope.isSpinnerVisible = false;
 	$scope.isErrorVisible = true;
 	$scope.error = message;
-    }
-}
+    };
+};
 
 appDS2.controller("statusDialogController", [ "COMPONENT", "FIELD", "$scope", "$http", "$timeout",
 	"$log", "MsoService", "StatusService", "DataService", "PropertyService", "UtilityService",
