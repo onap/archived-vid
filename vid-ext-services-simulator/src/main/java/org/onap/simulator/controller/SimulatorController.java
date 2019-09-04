@@ -1,11 +1,13 @@
 package org.onap.simulator.controller;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.matchers.Times.exactly;
 import static org.mockserver.model.JsonBody.json;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -107,8 +109,17 @@ public class SimulatorController {
 
     private void initJPA() {
         if (enableJPA) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("vid");
+            entityManagerFactory = Persistence.createEntityManagerFactory("vid", overrideConnectionUrl());
             entityManager = entityManagerFactory.createEntityManager();
+        }
+    }
+
+    private Map<Object, Object> overrideConnectionUrl() {
+        final String connectionUrlEnvProperty = "hibernate.connection.url";
+        if (isEmpty(System.getProperty(connectionUrlEnvProperty))) {
+            return Collections.emptyMap();
+        } else {
+            return ImmutableMap.of(connectionUrlEnvProperty, System.getProperty(connectionUrlEnvProperty));
         }
     }
 
