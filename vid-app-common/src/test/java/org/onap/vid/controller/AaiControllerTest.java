@@ -21,11 +21,12 @@
 
 package org.onap.vid.controller;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,16 +38,17 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Answers;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.mockito.*;
+
 import org.onap.vid.aai.AaiResponse;
+import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
@@ -59,44 +61,95 @@ import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
 import org.onap.vid.properties.Features;
+import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.roles.RoleValidatorByRoles;
 import org.onap.vid.services.AaiService;
-import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AaiControllerTest {
 
     private static final String ID_1 = "id1";
     private static final String ID_2 = "id2";
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private MockMvc mockMvc;
+
+    @InjectMocks
+    private AaiController aaiController;
+
     @Mock
     private AaiService aaiService;
+
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private AAIRestInterface aaiRestInterface;
+
     @Mock
     private RoleProvider roleProvider;
-    @Mock
-    private SystemPropertiesWrapper systemPropertiesWrapper;
 
     @Mock
     private FeatureManager featureManager;
 
-    private MockMvc mockMvc;
-    private AaiController aaiController;
-
-    @Before
-    public void setUp() {
-        aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper,
-            featureManager);
+    @BeforeMethod
+    public void initMocks() {
+        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
     }
+
+    @Test
+    public void getPortMirroringConfigData_givenThreeIds_ReturnsThreeResults() {
+
+        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForA = new AaiResponseTranslator.PortMirroringConfigDataOk("foobar");
+        final AaiResponseTranslator.PortMirroringConfigDataError toBeReturnedForB = new AaiResponseTranslator.PortMirroringConfigDataError("foo", "{ baz: qux }");
+        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForC = new AaiResponseTranslator.PortMirroringConfigDataOk("corge");
+
+        Mockito
+                .doReturn(toBeReturnedForA)
+                .doReturn(toBeReturnedForB)
+                .doReturn(toBeReturnedForC)
+                .when(aaiService).getPortMirroringConfigData(Mockito.anyString());
+
+        final Map<String, AaiResponseTranslator.PortMirroringConfigData> result = aaiController.getPortMirroringConfigsData(ImmutableList.of("a", "b", "c"));
+
+        assertThat(result, is(ImmutableMap.of(
+                "a", toBeReturnedForA,
+                "b", toBeReturnedForB,
+                "c", toBeReturnedForC
+        )));
+    }
+
+    @DataProvider
+    public static Object[][] getSubscriberDetailsOmitServiceInstancesDataProvider() {
+        return new Object[][] {
+                {"some subscriber id",          true,   true,   true},
+                {"another-subscriber-id-123",   false,  true,   false},
+                {"123-456-789-123-345-567-6",   false,  false,  false},
+                {"0000000000000000000000000",   true,   false,  false},
+        };
+    }
+
+    @Test(dataProvider = "getSubscriberDetailsOmitServiceInstancesDataProvider")
+    public void getSubscriberDetailsOmitServiceInstances(String subscriberId, boolean isFlag1906AaiSubDetailsReduceDepthEnabled,
+                                                         boolean omitServiceInstancesQueryParam, boolean omitServiceInstancesExpectedGetSubscriberDataParam) throws IOException {
+        when(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).thenReturn(isFlag1906AaiSubDetailsReduceDepthEnabled);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(roleProvider.getUserRoles(request)).thenReturn(ImmutableList.of(mock(Role.class), mock(Role.class)));
+        AaiResponse subscriberData = mock(AaiResponse.class);
+        when(subscriberData.getT()).thenReturn(null);
+        when(subscriberData.getHttpCode()).thenReturn(200);
+        when(aaiService.getSubscriberData(any(), any(), anyBoolean())).thenReturn(subscriberData);
+        aaiController.getSubscriberDetails(request, subscriberId, omitServiceInstancesQueryParam);
+        verify(aaiService).getSubscriberData(argThat(subscriberId::equals), any(RoleValidator.class), booleanThat(b -> omitServiceInstancesExpectedGetSubscriberDataParam == b));
+    }
+
 
     @Test
     public void getAicZoneForPnf_shouldReturnOKResponse() throws Exception {
@@ -313,6 +366,7 @@ public class AaiControllerTest {
 
     @Test
     public void getSpecificPnf_shouldReturnPnfObjectForPnfId() throws Exception {
+
         String pnfId = "MyPnfId";
         Pnf pnf = Pnf.builder()
             .withPnfId(pnfId)
