@@ -21,17 +21,18 @@
 
 package org.onap.vid.aai;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AaiResponseTranslatorTest {
 
@@ -116,6 +117,7 @@ public class AaiResponseTranslatorTest {
 
     }
 
+    @Test
     public void extractPortMirroringConfigData_givenAaiResponseWithoutRegionIdName_yieldException() throws IOException {
 
         final JsonNode aaiPayload = objectMapper.readTree("" +
