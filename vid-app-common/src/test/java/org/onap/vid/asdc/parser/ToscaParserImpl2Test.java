@@ -127,6 +127,19 @@ public class ToscaParserImpl2Test {
         assertJsonStringEqualsIgnoreNulls(om.writeValueAsString(expectedService), om.writeValueAsString(actualService));
     }
 
+
+    @Test
+    public void testScalingPolicyOfGroup() throws AsdcCatalogException, SdcToscaParserException {
+        String vnfGroupingUuid = "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc";
+        ISdcCsarHelper sdcCsarHelper = toscaParserImpl2.getSdcCsarHelper(getCsarPath(vnfGroupingUuid));
+        Map<String, Integer> policiesTargets = toscaParserImpl2.extractScalingPolicyOfGroup(sdcCsarHelper);
+
+        assertThat(policiesTargets, is(ImmutableMap.of(
+                "vdorothea_svc_vprs_proxy 0", 2,
+                "groupingservicefortest..ResourceInstanceGroup..1", 3
+        )));
+    }
+
     @Test(dataProvider = "expectedServiceModel")
     public void assertEqualBetweenObjects(String uuid, ToscaParserMockHelper mockHelper) throws Exception {
         final Path csarPath = getCsarPath(mockHelper.getUuid());
