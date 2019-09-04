@@ -127,7 +127,7 @@ var progressBarDirective = function() {
 	     */
 	    element.html("");
 	}
-    }
+    };
 
     return {
 	restrict : "EA",
@@ -153,7 +153,7 @@ var progressBarDirective = function() {
 	    control.reset = function() {
 		previousValue = 0;
 		updateProgress(element, attrs, 0);
-	    }
+	    };
 
 	    attrs.$observe("value", function(valueString) {
 		updateProgress(element, attrs, valueString);
@@ -167,7 +167,7 @@ var progressBarDirective = function() {
 		}
 	    });
 	}
-    }
-}
+    };
+};
 
 appDS2.directive("progressBar", progressBarDirective);
