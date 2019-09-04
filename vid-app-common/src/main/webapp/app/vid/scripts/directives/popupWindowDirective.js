@@ -64,7 +64,7 @@ var popupWindowDirective = function($log, $window) {
 		scrollPosition = {
 		    x : $window.pageXOffset,
 		    y : $window.pageYOffset
-		}
+		};
 		$window.scrollTo(0, 0);
 		element.css("display", "table");
 		element.prev().css("display", "block");
@@ -74,7 +74,7 @@ var popupWindowDirective = function($log, $window) {
 		$window.scrollTo(scrollPosition.x, scrollPosition.y);
 	    }
 	});
-    }
+    };
 
     return {
 	restrict : "EA",
@@ -83,6 +83,6 @@ var popupWindowDirective = function($log, $window) {
 	link : link,
 	template : '<table style="display: none; position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-collapse: collapse; margin: 0; padding: 0"> <tr><td align="center" style="vertical-align: top; padding: 10px"><div style="display: inline-block; padding: 5px; background-color: white" ng-transclude></div></td></tr></table>'
     };
-}
+};
 
 appDS2.directive("popupWindow", [ "$log", "$window", popupWindowDirective ]);
