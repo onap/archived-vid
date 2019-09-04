@@ -81,7 +81,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
+		};
 		
 		$scope.autoGetSubDetails = function() {
 			/*
@@ -93,7 +93,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
+		};
 		
 		$scope.autoPopulateViewEdit = function() {
 			/*
@@ -105,7 +105,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
+		};
 		
 		$scope.refreshSubs = function() {
 			/*
@@ -117,7 +117,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				// $scope.deleteServiceInstance();
 				// $scope.generateInvalidUrl405();			
 			}, 100);
-		}
+		};
 		
 		$scope.autoStartQueryTest = function() {
 			/*
@@ -127,7 +127,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 			$timeout(function() {
 				// $scope.queryServiceInstance();
 			}, 100);
-		}
+		};
 		
 		$scope.queryServiceInstance = function() {
 			/*
@@ -136,7 +136,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 			$scope.$broadcast(COMPONENT.QUERY_SERVICE_INSTANCE, {
 				serviceInstanceId: COMPONENT.SERVICE_INSTANCE_ID_1
 			});
-		}
+		};
 	
 		$scope.getSubscribers = function() {
 			/*
@@ -146,7 +146,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_GET_SUBSCRIBERS,
 				requestDetails : createServiceRequestDetails
 			});
-		}
+		};
 		
 		$scope.getSubDetails = function() {
 			/*
@@ -156,7 +156,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_SUB_DETAILS,
 				requestDetails : createServiceRequestDetails
 			});
-		}
+		};
 		
 		$scope.getComponentList = function() {
 			/*
@@ -166,7 +166,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_SUB_VIEWEDIT,
 				requestDetails : createServiceRequestDetails
 			});
-		}
+		};
 		
 		
 		$scope.refreshSubscribers = function() {
@@ -177,7 +177,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : FIELD.ID.AAI_REFRESH_SUBSCRIBERS,
 				requestDetails : createServiceRequestDetails
 			});
-		}
+		};
 	
 		$scope.deleteServiceInstance = function() {
 			/*
@@ -187,21 +187,21 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : COMPONENT.MSO_DELETE_SVC_INSTANCE_PATH + COMPONENT.SERVICE_INSTANCE_ID_1,
 				requestDetails : deleteServiceRequestDetails
 			});
-		}
+		};
 	
 		$scope.createNetworkInstance = function() {
 			$scope.$broadcast(COMPONENT.MSO_CREATE_REQ, {
 				url : COMPONENT.MSO_CREATE_NW_INSTANCE,
 				requestDetails : createNetworkRequestDetails
 			});
-		}
+		};
 	
 		$scope.deleteNetworkInstance = function() {
 			$scope.$broadcast(COMPONENT.MSO_DELETE_REQ,	{
 				url : COMPONENT.MSO_CREATE_NW_INSTANCE_PATH + COMPONENT.SERVICE_INSTANCE_ID_1 + COMPONENT.FORWARD_SLASH + COMPONENT.NETWORKS + COMPONENT.FORWARD_SLASH + COMPONENT.DELETE_INSTANCE_ID_1,
 				requestDetails : deleteNetworkRequestDetails
 			});
-		}
+		};
 	
 		$scope.generateError = function(testName) {
 			// Clone example request object
@@ -211,7 +211,7 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 				url : COMPONENT.MSO_CREATE_SVC_INSTANCE,
 				requestDetails : request
 			});
-		}
+		};
 	
 		$scope.generateInvalidUrl404 = function() {
 			var properties = UtilityService.getProperties(properties);
@@ -227,14 +227,14 @@ appDS2.controller("aaiSubscriberSearchController", [ "$scope", "$timeout", "$log
 			properties.msoDefaultBaseUrl = $scope.baseUrl;
 			UtilityService.setProperties(properties);
 			$scope.$broadcast(COMPONENT.REFRESH_PROPERTIES);				
-		}
+		};
 	
 		$scope.generateInvalidUrl405 = function() {
 			$scope.$broadcast(COMPONENT.MSO_CREATE_REQ, {
 				url : COMPONENT.INVALID_STRING_MSO_CREATE_SVC_INSTANCE,
 				requestDetails : createServiceRequestDetails
 			});
-		}
+		};
 	
 		/*
 		 * Test data objects:
