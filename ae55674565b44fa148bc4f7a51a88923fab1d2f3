@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "910019a5_5593facf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/AaiControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-09-05T07:20:04Z",
+      "side": 1,
+      "message": "please get rid of asterisks",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 36
+      },
+      "revId": "ae55674565b44fa148bc4f7a51a88923fab1d2f3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
