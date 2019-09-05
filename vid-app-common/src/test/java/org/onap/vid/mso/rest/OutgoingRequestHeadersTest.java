@@ -20,9 +20,33 @@
 
 package org.onap.vid.mso.rest;
 
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.mockito.Mockito.when;
+
 import com.google.common.collect.ImmutableList;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.MultivaluedMap;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
@@ -36,21 +60,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.core.MultivaluedMap;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.when;
 
 
 public class OutgoingRequestHeadersTest {
@@ -78,7 +87,11 @@ public class OutgoingRequestHeadersTest {
     }
 
     @BeforeMethod
-    private void putRequestInSpringContext() {
+    private void setup() {
+        putRequestInSpringContext();
+    }
+
+    public static void putRequestInSpringContext() {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes((HttpServletRequest) PromiseEcompRequestIdFilter.wrapIfNeeded(new MockHttpServletRequest())));
     }
 

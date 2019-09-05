@@ -179,7 +179,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         logger.debug(EELFLoggerDelegate.debugLogger, methodName + START);
         String path = baseUrl + endpoint;
 
-        HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
+        HttpResponse<String> response = client.post(path, getHeaders(), requestDetails, String.class);
         return MsoUtil.wrapResponse(response);
     }
 
@@ -223,7 +223,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     public HttpResponseWithRequestInfo<String> getOrchestrationRequest(String endpoint, boolean warpException) {
         String path = baseUrl + endpoint;
 
-        HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
+        HttpResponse<String> response = client.get(path, getHeaders(), new HashMap<>(), String.class);
         return new HttpResponseWithRequestInfo<>(response, path, HttpMethod.GET);
     }
 
@@ -231,7 +231,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     public MsoResponseWrapper getOrchestrationRequest(String endpoint) {
         String path = baseUrl + endpoint;
 
-        HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
+        HttpResponse<String> response = client.get(path, getHeaders(), new HashMap<>(), String.class);
         return MsoUtil.wrapResponse(response);
     }
 
@@ -243,7 +243,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         try {
             String path = baseUrl + endpoint;
 
-            HttpResponse<String> response = client.get(path, commonHeaders, new HashMap<>(), String.class);
+            HttpResponse<String> response = client.get(path, getHeaders(), new HashMap<>(), String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
 
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w=" + w.getResponse());
@@ -263,7 +263,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         try {
             String path = baseUrl + endpoint;
 
-            HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), requestDetails, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
 
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w=" + w.getResponse());
@@ -304,7 +304,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== "
                   + methodName + " calling change configuration active status, path =[" + path + "]");
-            HttpResponse<String> response = client.post(path, commonHeaders, request, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), request, String.class);
             return MsoUtil.wrapResponse(response);
         } catch (Exception e) {
             logger.info(EELFLoggerDelegate.errorLogger, "." + methodName + e.toString());
@@ -322,7 +322,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             String path = baseUrl + endpoint;
             logger.debug(EELFLoggerDelegate.debugLogger, dateFormat.format(new Date()) + "<== "
                 + methodName + " calling change port configuration status, path =[" + path + "]");
-            HttpResponse<String> response = client.post(path, commonHeaders, request, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), request, String.class);
             return MsoUtil.wrapResponse(response);
         } catch (Exception e) {
             logger.info(EELFLoggerDelegate.errorLogger, "." + methodName + e.toString());
@@ -334,7 +334,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     @Override
     public MsoResponseWrapperInterface changeManagementUpdate(RequestDetailsWrapper requestDetails, String endpoint) {
         String path = baseUrl + endpoint;
-        HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
+        HttpResponse<String> response = client.post(path, getHeaders(), requestDetails, String.class);
         return MsoUtil.wrapResponse2(response, RequestReferencesContainer.class);
     }
 
@@ -347,7 +347,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
             requestDetailsWrapper.requestDetails = new MsoRequestDetails(request);
 
-            HttpResponse<String> response = client.post(path, commonHeaders, requestDetailsWrapper, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), requestDetailsWrapper, String.class);
             MsoResponseWrapper msoResponseWrapperObject = MsoUtil.wrapResponse(response);
             int status = msoResponseWrapperObject.getStatus();
             if (status == 202) {
@@ -388,7 +388,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
 
             RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
             requestDetailsWrapper.requestDetails = new MsoRequestDetails(request);
-            HttpResponse<String> response = client.put(path, commonHeaders, requestDetailsWrapper, String.class);
+            HttpResponse<String> response = client.put(path, getHeaders(), requestDetailsWrapper, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
 
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w=" + w.getResponse());
@@ -408,7 +408,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         logger.debug(EELFLoggerDelegate.debugLogger, methodName + " start ");
         try {
             String path = baseUrl + endpoint;
-            HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), requestDetails, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w =" + w.getResponse());
             return w;
@@ -428,7 +428,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " calling Remove relationship from service instance, path =[" + endpoint + "]");
             String path = baseUrl + endpoint;
-            HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), requestDetails, String.class);
             return MsoUtil.wrapResponse(response);
         } catch (Exception e) {
             logger.info(EELFLoggerDelegate.errorLogger, "." + methodName + e.toString());
@@ -446,7 +446,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " calling Add relationship to service instance, path =[" + addRelationshipsPath + "]");
             String path = baseUrl + addRelationshipsPath;
 
-            HttpResponse<String> response = client.post(path, commonHeaders, requestDetails, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), requestDetails, String.class);
             return MsoUtil.wrapResponse(response);
         } catch (Exception e) {
             logger.info(EELFLoggerDelegate.errorLogger, "." + methodName + e.toString());
@@ -460,7 +460,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         String path = baseUrl + invokeWorkflowsPath;
         Map<String, String> finalHeader = new HashMap<>();
 
-        finalHeader.putAll(commonHeaders);
+        finalHeader.putAll(getHeaders());
         finalHeader.putAll(extraHeaders);
 
         RequestDetailsWrapper<WorkflowRequestDetail> requestDetailsWrapper = new RequestDetailsWrapper<>(workflowRequestDetail);
@@ -472,36 +472,36 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     @Override
     public <T> HttpResponse<T> get(String endpoint, Class<T> responseClass) {
         String path = baseUrl + endpoint;
-        return client.get(path, commonHeaders, new HashMap<>(), responseClass);
+        return client.get(path, getHeaders(), new HashMap<>(), responseClass);
     }
 
     @Override
     public <T> HttpResponse<T> post(String endpoint, RequestDetailsWrapper<?> requestDetailsWrapper, Class<T> responseClass) {
         String path = baseUrl + endpoint;
 
-        return client.post(path, commonHeaders, requestDetailsWrapper, responseClass);
+        return client.post(path, getHeaders(), requestDetailsWrapper, responseClass);
     }
 
     @Override
     public <T> HttpResponse<T> post(String endpoint, RequestDetails requestDetails, Class<T> responseClass) {
         String path = baseUrl + endpoint;
 
-        return client.post(path, commonHeaders, requestDetails, responseClass);
+        return client.post(path, getHeaders(), requestDetails, responseClass);
     }
 
 
     public HttpResponse<SOWorkflowList> getWorkflowListByModelId(String endpoint){
         String path = baseUrl + endpoint;
 
-        return client.get(path, commonHeaders, Maps.newHashMap(), SOWorkflowList.class);
+        return client.get(path, getHeaders(), Maps.newHashMap(), SOWorkflowList.class);
     }
 
-    private MsoResponseWrapper createInstance(Object request, String path) {
+    protected MsoResponseWrapper createInstance(Object request, String path) {
         String methodName = "createInstance";
         logger.debug(methodName + START);
 
         try {
-            HttpResponse<String> response = client.post(path, commonHeaders, request, String.class);
+            HttpResponse<String> response = client.post(path, getHeaders(), request, String.class);
             return MsoUtil.wrapResponse(response);
         } catch (Exception e) {
             logger.error(EELFLoggerDelegate.errorLogger, "." + methodName + e.toString());
@@ -525,7 +525,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         try {
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " calling Delete, path =[" + path + "]");
 
-            HttpResponse<String> response = client.delete(path, commonHeaders, request, String.class);
+            HttpResponse<String> response = client.delete(path, getHeaders(), request, String.class);
             MsoResponseWrapper w = MsoUtil.wrapResponse(response);
 
             logger.debug(EELFLoggerDelegate.debugLogger, methodName + " w=" + w.getResponse());
@@ -537,6 +537,15 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
             throw e;
         }
 
+    }
+
+    private Map<String, String> getHeaders() {
+        Map<String, String> map = new HashMap<>();
+        String requestIdValue = Logging.extractOrGenerateRequestId();
+        map.put(SystemProperties.ECOMP_REQUEST_ID, requestIdValue);
+        map.put(ONAP_REQUEST_ID_HEADER_KEY, requestIdValue);
+        map.putAll(commonHeaders);
+        return map;
     }
 
     private Map<String, String> initCommonHeaders() {
@@ -555,9 +564,6 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         map.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         map.put(X_FROM_APP_ID, systemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME));
         map.put(X_ONAP_PARTNER_NAME, "VID");
-        String requestIdValue = Logging.extractOrGenerateRequestId();
-        map.put(SystemProperties.ECOMP_REQUEST_ID, requestIdValue);
-        map.put(ONAP_REQUEST_ID_HEADER_KEY, requestIdValue);
         return ImmutableMap.copyOf(map);
     }
 
