@@ -20,6 +20,8 @@
  */
 package org.onap.vid.mso.rest;
 
+import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.joshworks.restclient.http.HttpResponse;
@@ -552,8 +554,10 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         map.put(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON);
         map.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         map.put(X_FROM_APP_ID, systemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME));
-        map.put(SystemProperties.ECOMP_REQUEST_ID, Logging.extractOrGenerateRequestId());
         map.put(X_ONAP_PARTNER_NAME, "VID");
+        String requestIdValue = Logging.extractOrGenerateRequestId();
+        map.put(SystemProperties.ECOMP_REQUEST_ID, requestIdValue);
+        map.put(ONAP_REQUEST_ID_HEADER_KEY, requestIdValue);
         return ImmutableMap.copyOf(map);
     }
 
