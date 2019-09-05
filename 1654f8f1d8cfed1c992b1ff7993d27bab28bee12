@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab8c8b09_0c7ac0fa",
+        "filename": "vid-ext-services-simulator/src/main/java/org/onap/simulator/controller/SimulatorController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-05T05:06:36Z",
+      "side": 1,
+      "message": "Is this all the change ?\nOnly more import ?\nOr maybe I\u0027m missing something ?",
+      "revId": "1654f8f1d8cfed1c992b1ff7993d27bab28bee12",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
