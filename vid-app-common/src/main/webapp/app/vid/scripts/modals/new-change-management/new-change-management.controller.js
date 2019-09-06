@@ -97,7 +97,7 @@
                 .catch(function (error) {
                     $log.error(error);
                     vm.errorMsg = err;
-                })
+                });      
         };
 
         var registerVNFNamesWatcher = function () {
@@ -252,16 +252,16 @@
                             source: vnf.availableVersions[0].requestInfo.source,
                             suppressRollback: vnf.availableVersions[0].requestInfo.suppressRollback,
                             requestorId: vnf.availableVersions[0].requestInfo.requestorId
-                        }
+                        };
 
                         if(workflowType=='Update'){
                             requestParametersData = {
                                 usePreload: vnf.availableVersions[0].requestParameters.usePreload
-                            }
+                            };
                         }else if(workflowType=="Replace"){
                             requestParametersData = {
                                 rebuildVolumeGroups: vnf.availableVersions[0].requestParameters.usePreload
-                            }
+                            };
                         }else if(workflowType=="VNF In Place Software Update"){
                             var payloadObj = {
                                 'existing_software_version':vm.getInternalWorkFlowParameter(workflowType, 'text', 'Existing software version').value,
@@ -270,11 +270,11 @@
                             };
                             requestParametersData = {
                                 payload: JSON.stringify(payloadObj)
-                            }
+                            };
                         }else if(workflowType=="VNF Config Update"){
                             requestParametersData = {
                                 payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
-                            }
+                            };
                         }else if(workflowType=="VNF Scale Out"){
                             if(!moduleToScale) return null;
 
@@ -282,12 +282,12 @@
                                 requestParametersData = {
                                     userParams: moduleToScale.userParams
                                     //,usePreload: true
-                                }
+                                };
                             }else{
                                 requestParametersData = {
                                     userParams: []
                                     //,usePreload: false
-                                }
+                                };
                             }
                         }
                         $log.info('SchedulerWidgetCtrl:extractChangeManagementCallbackDataStr info:: workflowType '+ workflowType);
@@ -301,11 +301,11 @@
                         };
                         requestParametersData = {
                             payload: JSON.stringify(payloadObj)
-                        }
+                        };
                     }else if(workflowType=="VNF Config Update"){
                         requestParametersData = {
                             payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
-                        }
+                        };
                     }
 
                     var data;
@@ -525,7 +525,7 @@
                                 const nodeType = vnfsData[i]['node-type'];
                                 if (nodeType === "generic-vnf") {
                                     if (_.find(vnfsData[i]['related-to'], function (node) {
-                                        return node['node-type'] === 'vserver'
+                                        return node['node-type'] === 'vserver';
                                     }) !== undefined) {
                                         vm.vnfs.push(vnfsData[i]);
                                     }
@@ -551,7 +551,7 @@
                         });
 
                         _.forEach(filteredVnfs, function (vnf) {
-                            vm.vnfTypes.push(vnf.properties['nf-role'])
+                            vm.vnfTypes.push(vnf.properties['nf-role']);
                         });
                     }
                 }
@@ -600,7 +600,7 @@
 
                         vm.fromVNFVersions = _.uniqBy(fromVNFVersions, 'value');
                     }
-                })
+                });
             }
         };
 
@@ -724,7 +724,7 @@
                     .then(vm.loadLocalWorkFlowsParameters)
                     .then(function () {
                         vm.workflows = vm.localWorkflows;
-                    })
+                    });
             }
         };
 
@@ -780,7 +780,7 @@
             let parameters = [];
             workflow.workflowInputParameters
                 .filter( function (param) {
-                    return param.soPayloadLocation === "userParams"
+                    return param.soPayloadLocation === "userParams";
                 })
                 .forEach(function (param) {
                         let workflowParams = vm.repackAttributes(param);
@@ -809,27 +809,27 @@
                 soFieldName: workflowParam.soFieldName,
                 maxLength: '500',
                 pattern: '.*'
-            }
+            };
         };
 
         vm.getRemoteWorkFlowParameters = function (workflow) {
             if (workflow && vm.remoteWorkflowsParameters.has(workflow)) {
-                return vm.remoteWorkflowsParameters.get(workflow)
+                return vm.remoteWorkflowsParameters.get(workflow);
             }
             return [];
         };
 
         vm.hasPatternError = function(form, itemName){
             return form[itemName].$error.pattern;
-        }
+        };
 
         vm.hasAsyncFnError = function(form, itemName){
             return form[itemName].$error.validateAsyncFn;
-        }
+        };
 
         vm.getIdFor = function(type, id, name){
             return "internal-workflow-parameter-" + type + "-" + id + "-" + (name ? name.split(' ').join('-').toLowerCase() : "");
-        }
+        };
 
         vm.getInternalWorkFlowParameters = function (workflow, type) {
             if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type==type) != []) {
