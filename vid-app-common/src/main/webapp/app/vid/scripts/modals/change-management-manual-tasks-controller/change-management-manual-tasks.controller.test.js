@@ -102,7 +102,7 @@ describe('changeManagementManualTasksController testing', () => {
         // when
         return $controller.__test_only__.loadAvailableTasks('anything')
         .then(() => {
-            expect($controller.manualTasks).toBeUndefined()
+            expect($controller.manualTasks).toBeUndefined();
         });
     });
 
