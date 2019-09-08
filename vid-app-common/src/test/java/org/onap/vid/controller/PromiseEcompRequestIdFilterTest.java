@@ -67,6 +67,21 @@ public class PromiseEcompRequestIdFilterTest {
         buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(incomingRequestHeaders, specificTxId(someTxId));
     }
 
+
+    @Test
+    public void givenRequestIdHeaderThatIsNotAUUID_headerValueChanged() throws IOException, ServletException {
+
+        final String someTxId = "863850e28544efd94b8afba5f52b3d5";
+
+        final ImmutableMap<String, String> incomingRequestHeaders = ImmutableMap.of(
+                anotherHeader, anotherValue,
+                ECOMP_REQUEST_ID, someTxId
+        );
+
+        buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(incomingRequestHeaders, UserUtils::getRequestId);
+    }
+
+
     @Test
     public void givenMixedCaseRequestIdHeader_headerValueNotChanged() throws IOException, ServletException {
 
