@@ -40,9 +40,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.ws.rs.core.Response;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
@@ -58,7 +56,6 @@ import org.onap.vid.model.aaiTree.ServiceInstance;
 import org.onap.vid.model.aaiTree.Vnf;
 import org.onap.vid.testUtils.TestUtils;
 import org.springframework.http.HttpMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -79,11 +76,9 @@ public class AAIServiceTreeIntegrativeTest {
     @Mock
     ServiceModelInflator serviceModelInflator;
 
-    @InjectMocks
     private AAITreeNodeBuilder aaiTreeNodeBuilder;
 
-    @InjectMocks
-    private AAITreeConverter aaiTreeConverter;
+    private AAITreeConverter aaiTreeConverter = new AAITreeConverter();
 
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
@@ -295,17 +290,17 @@ public class AAIServiceTreeIntegrativeTest {
             "\"property-key\": \"model-ver.model-name\"," +
             "\"property-value\": \"service-instance\"}]}]}}]}}]}}]}";
 
-    @BeforeClass
-    public void initMocks() {
-        MockitoAnnotations.initMocks(this);
-    }
-
     @BeforeMethod
-    public void resetMocks() {
-        Mockito.reset(aaiClient);
-        Mockito.reset(aaiGetVersionByInvariantIdResponse);
-        Mockito.reset(sdcService);
-        Mockito.reset(serviceModelInflator);
+    public void initMocks() {
+        aaiClient = null;
+        aaiGetVersionByInvariantIdResponse = null;
+        sdcService = null;
+        serviceModelInflator = null;
+        exceptionWithRequestInfo = null;
+
+        MockitoAnnotations.initMocks(this);
+
+        aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClient);
     }
 
     public void getServiceInstanceTreeAndAssert(boolean isDuplicatedKeysInTenantRelation) throws IOException, AsdcCatalogException {
