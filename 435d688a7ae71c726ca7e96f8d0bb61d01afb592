@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d31d09d5_273abbfb",
+        "filename": "vid-webpack-master/package-lock.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-08T12:50:41Z",
+      "side": 0,
+      "message": "Remove this file from commit.",
+      "revId": "435d688a7ae71c726ca7e96f8d0bb61d01afb592",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
