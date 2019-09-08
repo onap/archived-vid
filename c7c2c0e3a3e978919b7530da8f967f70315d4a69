@@ -16,6 +16,23 @@
       "revId": "c7c2c0e3a3e978919b7530da8f967f70315d4a69",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6e8ad02_6165ca33",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/constants/componentConstants.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-08T13:10:28Z",
+      "side": 1,
+      "message": "Add comma at end-of-line.",
+      "revId": "c7c2c0e3a3e978919b7530da8f967f70315d4a69",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
