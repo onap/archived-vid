@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "20b0ccab_2fc1f0ba",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/rest/MsoRestClientNew.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-09-08T12:19:04Z",
+      "side": 1,
+      "message": "reorder",
+      "revId": "f6b0ad17f363e6676c00c97059c5cd0c4811bc95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
