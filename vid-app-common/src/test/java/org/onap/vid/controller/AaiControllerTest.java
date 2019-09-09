@@ -49,6 +49,8 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.aai.AaiClient;
+import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
@@ -88,9 +90,10 @@ public class AaiControllerTest {
     private RoleProvider roleProvider;
     @Mock
     private SystemPropertiesWrapper systemPropertiesWrapper;
-
     @Mock
     private FeatureManager featureManager;
+    @Mock
+    private AaiClientInterface aaiClient;
 
     private MockMvc mockMvc;
     private AaiController aaiController;
@@ -98,7 +101,7 @@ public class AaiControllerTest {
     @Before
     public void setUp() {
         aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper,
-                featureManager);
+            featureManager, aaiClient);
         mockMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
     }
 
@@ -112,12 +115,12 @@ public class AaiControllerTest {
         given(aaiService.getAicZoneForPnf(globalCustomerId, serviceType, serviceId)).willReturn(aaiResponse);
 
         mockMvc.perform(
-                get("/aai_get_aic_zone_for_pnf/{globalCustomerId}/{serviceType}/{serviceId}", globalCustomerId, serviceType,
-                        serviceId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(expectedResponseBody)));
+            get("/aai_get_aic_zone_for_pnf/{globalCustomerId}/{serviceType}/{serviceId}", globalCustomerId, serviceType,
+                serviceId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(expectedResponseBody)));
     }
 
     @Test
@@ -128,10 +131,10 @@ public class AaiControllerTest {
         given(aaiService.getInstanceGroupsByVnfInstanceId(vnfInstanceId)).willReturn(aaiResponse);
 
         mockMvc.perform(get("/aai_get_instance_groups_by_vnf_instance_id/{vnfInstanceId}", vnfInstanceId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(expectedResponseBody)));
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(expectedResponseBody)));
     }
 
     @Test
@@ -144,17 +147,17 @@ public class AaiControllerTest {
         given(response.getStatus()).willReturn(HttpStatus.OK.value());
 
         given(aaiRestInterface.RestGet(eq("VidAaiController"), anyString(), eq(Unchecked.toURI(
-                "search/nodes-query?search-node-type=service-instance&filter=service-instance-id:EQUALS:"
-                        + serviceInstanceId)),
-                eq(false)).getResponse()).willReturn(response);
+            "search/nodes-query?search-node-type=service-instance&filter=service-instance-id:EQUALS:"
+                + serviceInstanceId)),
+            eq(false)).getResponse()).willReturn(response);
 
         mockMvc
-                .perform(get("/aai_get_service_instance/{service-instance-id}/{service-instance-type}", serviceInstanceId,
-                        serviceInstanceType)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponseBody));
+            .perform(get("/aai_get_service_instance/{service-instance-id}/{service-instance-type}", serviceInstanceId,
+                serviceInstanceType)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
     }
 
     @Test
@@ -167,17 +170,17 @@ public class AaiControllerTest {
         given(response.getStatus()).willReturn(HttpStatus.OK.value());
 
         given(aaiRestInterface.RestGet(eq("VidAaiController"), anyString(), eq(Unchecked.toURI(
-                "search/nodes-query?search-node-type=service-instance&filter=service-instance-name:EQUALS:"
-                        + serviceInstanceId)),
-                eq(false)).getResponse()).willReturn(response);
+            "search/nodes-query?search-node-type=service-instance&filter=service-instance-name:EQUALS:"
+                + serviceInstanceId)),
+            eq(false)).getResponse()).willReturn(response);
 
         mockMvc
-                .perform(get("/aai_get_service_instance/{service-instance-id}/{service-instance-type}", serviceInstanceId,
-                        serviceInstanceType)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponseBody));
+            .perform(get("/aai_get_service_instance/{service-instance-id}/{service-instance-type}", serviceInstanceId,
+                serviceInstanceType)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
     }
 
     @Test
@@ -190,21 +193,21 @@ public class AaiControllerTest {
         given(response.getStatus()).willReturn(HttpStatus.OK.value());
 
         given(aaiRestInterface.RestGet(
-                eq("VidAaiController"),
-                anyString(),
-                eq(Unchecked.toURI(
-                        "business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
-                                + serviceSubscriptionId + "?depth=0")),
-                eq(false)).getResponse()).willReturn(response);
+            eq("VidAaiController"),
+            anyString(),
+            eq(Unchecked.toURI(
+                "business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                    + serviceSubscriptionId + "?depth=0")),
+            eq(false)).getResponse()).willReturn(response);
 
         mockMvc
-                .perform(
-                        get("/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", globalCustomerId,
-                                serviceSubscriptionId)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponseBody));
+            .perform(
+                get("/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", globalCustomerId,
+                    serviceSubscriptionId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
     }
 
     @Test
@@ -213,21 +216,21 @@ public class AaiControllerTest {
         String serviceSubscriptionId = "testServiceSubscriptionId";
         String expectedResponseBody = "Failed to fetch data from A&AI, check server logs for details.";
         given(aaiRestInterface.RestGet(
-                eq("VidAaiController"),
-                anyString(),
-                eq(Unchecked.toURI(
-                        "business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
-                                + serviceSubscriptionId + "?depth=0")),
-                eq(false)).getResponse()).willReturn(null);
+            eq("VidAaiController"),
+            anyString(),
+            eq(Unchecked.toURI(
+                "business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                    + serviceSubscriptionId + "?depth=0")),
+            eq(false)).getResponse()).willReturn(null);
 
         mockMvc
-                .perform(
-                        get("/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", globalCustomerId,
-                                serviceSubscriptionId)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string(expectedResponseBody));
+            .perform(
+                get("/aai_get_service_subscription/{global-customer-id}/{service-subscription-id}", globalCustomerId,
+                    serviceSubscriptionId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError())
+            .andExpect(content().string(expectedResponseBody));
     }
 
     @Test
@@ -235,18 +238,18 @@ public class AaiControllerTest {
         PortMirroringConfigDataOk okConfigData = new PortMirroringConfigDataOk("foo");
         PortMirroringConfigDataError errorConfigData = new PortMirroringConfigDataError("bar", "{ baz: qux }");
         Map<String, PortMirroringConfigData> expectedJson = ImmutableMap.of(
-                ID_1, okConfigData,
-                ID_2, errorConfigData);
+            ID_1, okConfigData,
+            ID_2, errorConfigData);
         given(aaiService.getPortMirroringConfigData(ID_1)).willReturn(okConfigData);
         given(aaiService.getPortMirroringConfigData(ID_2)).willReturn(errorConfigData);
 
         mockMvc
-                .perform(get("/aai_getPortMirroringConfigsData")
-                        .param("configurationIds", ID_1, ID_2)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedJson)));
+            .perform(get("/aai_getPortMirroringConfigsData")
+                .param("configurationIds", ID_1, ID_2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(expectedJson)));
     }
 
     @Test
@@ -254,18 +257,18 @@ public class AaiControllerTest {
         PortDetailsOk portDetailsOk = new PortDetailsOk("foo", "testInterface", true);
         PortDetailsError portDetailsError = new PortDetailsError("bar", "{ baz: qux }");
         Multimap<String, PortDetails> expectedJson = ImmutableMultimap.of(
-                ID_1, portDetailsOk,
-                ID_2, portDetailsError);
+            ID_1, portDetailsOk,
+            ID_2, portDetailsError);
         given(aaiService.getPortMirroringSourcePorts(ID_1)).willReturn(Lists.newArrayList(portDetailsOk));
         given(aaiService.getPortMirroringSourcePorts(ID_2)).willReturn(Lists.newArrayList(portDetailsError));
 
         mockMvc
-                .perform(get("/aai_getPortMirroringSourcePorts")
-                        .param("configurationIds", ID_1, ID_2)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedJson.asMap())));
+            .perform(get("/aai_getPortMirroringSourcePorts")
+                .param("configurationIds", ID_1, ID_2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(expectedJson.asMap())));
     }
 
     @Test
@@ -279,15 +282,15 @@ public class AaiControllerTest {
         String expectedResponseBody = "myResponse";
         AaiResponse<String> aaiResponse = new AaiResponse<>(expectedResponseBody, "", HttpStatus.OK.value());
         given(aaiService
-                .getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion))
-                .willReturn(aaiResponse);
+            .getNodeTemplateInstances(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion))
+            .willReturn(aaiResponse);
 
         mockMvc
-                .perform(get(urlTemplate, globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponseBody));
+            .perform(get(urlTemplate, globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
     }
 
     @Test
@@ -306,7 +309,7 @@ public class AaiControllerTest {
     public void getAicZones_shouldReturnErrorResponse_whenAaiHttpStatusOtherThanOK() throws Exception {
         String expectedErrorMessage = "Calling AAI Failed";
         given(aaiService.getAaiZones())
-                .willReturn(new AaiResponse(null, expectedErrorMessage, HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            .willReturn(new AaiResponse(null, expectedErrorMessage, HttpStatus.INTERNAL_SERVER_ERROR.value()));
 
         mockMvc.perform(get("/aai_get_aic_zones")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -363,8 +366,8 @@ public class AaiControllerTest {
         AaiResponse<String> aaiResponse = new AaiResponse<>(expectedResponseBody, "", HttpStatus.OK.value());
 
         given(aaiService
-                .getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor,
-                        equipModel)).willReturn(aaiResponse);
+            .getPNFData(globalCustomerId, serviceType, modelVersionId, modelInvariantId, cloudRegion, equipVendor,
+                equipModel)).willReturn(aaiResponse);
 
         mockMvc.perform(
                 get(urlTemplate, globalCustomerId, serviceType, modelVersionId,
@@ -383,7 +386,7 @@ public class AaiControllerTest {
         Response response = mock(Response.class);
         given(response.readEntity(String.class)).willReturn(expectedResponse);
         given(aaiService
-                .getVersionByInvariantId(request.versions)).willReturn(response);
+            .getVersionByInvariantId(request.versions)).willReturn(response);
 
         mockMvc.perform(
                 post("/aai_get_version_by_invariant_id")
@@ -396,7 +399,7 @@ public class AaiControllerTest {
 
     @Test
     public void getSubscriberDetails_shouldOmitServiceInstancesFromSubscriberData_whenFeatureEnabled_andOmitFlagIsTrue()
-            throws Exception {
+        throws Exception {
         boolean isFeatureActive = true;
         boolean omitServiceInstances = true;
 
@@ -405,8 +408,8 @@ public class AaiControllerTest {
         AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
         given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
         given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorByRoles.class),
-                eq(isFeatureActive && omitServiceInstances)))
-                .willReturn(aaiResponse);
+            eq(isFeatureActive && omitServiceInstances)))
+            .willReturn(aaiResponse);
 
         mockMvc.perform(
                 get("/aai_sub_details/{subscriberId}", subscriberId)
@@ -419,7 +422,7 @@ public class AaiControllerTest {
 
     @Test
     public void getSubscriberDetails_shouldIncludeServiceInstancesFromSubscriberData_whenFeatureEnabled_andOmitFlagIsFalse()
-            throws Exception {
+        throws Exception {
         boolean isFeatureActive = true;
         boolean omitServiceInstances = false;
 
@@ -428,7 +431,7 @@ public class AaiControllerTest {
 
     @Test
     public void getSubscriberDetails_shouldIncludeServiceInstancesFromSubscriberData_whenFeatureDisabled_andOmitFlagIsTrue()
-            throws Exception {
+        throws Exception {
         boolean isFeatureActive = false;
         boolean omitServiceInstances = true;
 
