@@ -184,7 +184,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     public void shouldProperlyCreateSvcInstanceWithProperParameters() {
 
         MsoResponseWrapper expectedResponse = createOkResponse();
-        String svcEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String svcEndpoint = SystemProperties.getProperty(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         given(msoInterface.createSvcInstance(msoRequest, svcEndpoint)).willReturn(expectedResponse);
 
         MsoResponseWrapper response = msoBusinessLogic.createSvcInstance(msoRequest);
@@ -833,7 +833,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     public void shouldProperlyGetActivateFabricConfigurationPathWithProperParameters() {
         // given
         String serviceInstanceId = "testServiceId";
-        String path = validateEndpointPath(MsoProperties.MSO_REST_API_SERVICE_INSTANCE_CREATE);
+        String path = validateEndpointPath(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         path += "/" + serviceInstanceId + "/activateFabricConfiguration";
 
         // when

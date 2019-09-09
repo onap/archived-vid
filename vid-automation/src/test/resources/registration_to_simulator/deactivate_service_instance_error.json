@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/mso/serviceInstances/v./f36f5734-e9df-4fbf-9f35-61be13f028a1/deactivate"
+    "path": "/serviceInstantiation/v./serviceInstances/f36f5734-e9df-4fbf-9f35-61be13f028a1/deactivate"
   } ,
   "simulatorResponse": {
     "responseCode": 500,

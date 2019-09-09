@@ -2,7 +2,7 @@
   {
     "simulatorRequest": {
       "method": "POST",
-      "path": "/mso/serviceInstances/v."
+      "path": "/serviceInstantiation/v./serviceInstances"
     },
     "simulatorResponse": {
       "responseCode": 202,

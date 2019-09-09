@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "DELETE",
-    "path": "/mso/serviceInstances/v./f36f5734-e9df-4fbf-9f35-61be13f028a1"
+    "path": "/serviceInstantiation/v./serviceInstances/f36f5734-e9df-4fbf-9f35-61be13f028a1"
   },
   "simulatorResponse": {
     "responseCode": 202,

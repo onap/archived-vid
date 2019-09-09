@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/mso/serviceInstances/v./3f93c7cb-2fd0-4557-9514-e189b7b04f9d/addRelationships",
+    "path": "/serviceInstantiation/v./serviceInstances/3f93c7cb-2fd0-4557-9514-e189b7b04f9d/addRelationships",
     "body": "{\"requestDetails\":{\"modelInfo\":{\"modelType\":\"service\",\"modelInvariantId\":\"709d1be4-9a3f-4a29-8c4d-a20465e808a3\",\"modelVersionId\":\"240376de-870e-48df-915a-31f140eedd2c\",\"modelName\":\"Demo Service 1\",\"modelVersion\":\"1.0\"},\"requestInfo\":{\"source\":\"VID\",\"requestorId\":\"us16807000\"},\"relatedInstanceList\":[{\"relatedInstance\":{\"instanceName\":\"MX_960-F722\",\"modelInfo\":{\"modelType\":\"pnf\"}}}],\"requestParameters\":{\"aLaCarte\":true}}}"
   },
   "simulatorResponse": {
