@@ -247,13 +247,13 @@ public class AsyncInstantiationBusinessLogicImpl implements
         //in case pause flag is true - use assign , else - use create.
         return MsoBusinessLogicImpl.validateEndpointPath(
                 serviceInstantiationRequest.isPause() ?
-                        MsoProperties.MSO_REST_API_SERVICE_INSTANCE_ASSIGN : MsoProperties.MSO_REST_API_SERVICE_INSTANCE_CREATE
+                        MsoProperties.MSO_REST_API_SERVICE_INSTANCE_ASSIGN : MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE
         );
     }
 
     @Override
     public String getServiceDeletionPath(String serviceInstanceId) {
-        return MsoBusinessLogicImpl.validateEndpointPath( MsoProperties.MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE)  + "/" + serviceInstanceId;
+        return MsoBusinessLogicImpl.validateEndpointPath( MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE)  + "/" + serviceInstanceId;
     }
 
     @Override

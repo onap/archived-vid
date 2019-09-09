@@ -140,7 +140,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     public MsoResponseWrapper createSvcInstance(RequestDetails msoRequest) {
         logInvocationInDebug("createSvcInstance");
 
-        String endpoint = validateEndpointPath(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String endpoint = validateEndpointPath(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
 
         return msoClientInterface.createSvcInstance(msoRequest, endpoint);
     }
@@ -260,7 +260,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("deleteSvcInstance");
         String endpoint;
 
-        endpoint = validateEndpointPath(MsoProperties.MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE);
+        endpoint = validateEndpointPath(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         if (shouldUnassignService(serviceStatus)){
             logger.debug(EELFLoggerDelegate.debugLogger, "unassign service");
             String svcEndpoint = endpoint + "/" + serviceInstanceId + "/unassign";
@@ -470,7 +470,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         String methodName = "activateServiceInstance";
         logInvocationInDebug(methodName);
         try {
-            String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+            String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
             String activateServicePath = serviceEndpoint + "/" + serviceInstanceId + ACTIVATE;
 
             RestObject<String> restObjStr = new RestObject<>();
@@ -534,7 +534,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
     @Override
     public String getActivateFabricConfigurationPath(String serviceInstanceId) {
-        String path = validateEndpointPath(MsoProperties.MSO_REST_API_SERVICE_INSTANCE_CREATE);
+        String path = validateEndpointPath(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         path += "/" + serviceInstanceId + ACTIVATE_FABRIC_CONFIGURATION;
 
         return path;
@@ -684,7 +684,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         logInvocationInDebug("setServiceInstanceStatus");
         String methodName = "setServiceInstanceStatus";
         try {
-            String serviceEndpoint = validateEndpointPath(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+            String serviceEndpoint = validateEndpointPath(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
             String endpoint = serviceEndpoint + "/" + serviceInstanceId;
 
             String isActivateState = (isActivate ? ACTIVATE : DEACTIVATE);
@@ -822,7 +822,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     public MsoResponseWrapper removeRelationshipFromServiceInstance(RequestDetails requestDetails, String serviceInstanceId) {
         logInvocationInDebug("removeRelationshipFromServiceInstance");
 
-        String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         String removeRelationshipsPath = serviceEndpoint + "/" + serviceInstanceId + "/removeRelationships";
 
         return msoClientInterface.removeRelationshipFromServiceInstance(requestDetails, removeRelationshipsPath);
@@ -832,7 +832,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     public MsoResponseWrapper addRelationshipToServiceInstance(RequestDetails requestDetails, String serviceInstanceId) {
         logInvocationInDebug("addRelationshipToServiceInstance");
 
-        String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String serviceEndpoint = SystemProperties.getProperty(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         String addRelationshipsPath = serviceEndpoint + "/" + serviceInstanceId + "/addRelationships";
 
         return msoClientInterface.addRelationshipToServiceInstance(requestDetails, addRelationshipsPath);

@@ -69,10 +69,7 @@ public class MsoProperties extends SystemProperties {
     public static final String MSO_REST_API_E2E_SVC_INSTANCE = "mso.restapi.svc.e2einstance"; // /e2eServiceInstances/v3
 
 	/** The Constant MSO_REST_API_SVC_INSTANCE. */
-	public static final String MSO_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance"; // /serviceInstances/v2
-
-	/** The Constant MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE. */
-	public static final String MSO_DELETE_OR_UNASSIGN_REST_API_SVC_INSTANCE = "mso.restapi.svc.instance.deleteAndUnassign";
+	public static final String MSO_RESTAPI_SERVICE_INSTANCE = "mso.restapi.service.instance"; // /serviceInstances/v2
 
 	/** The Constant MSO_REST_API_VNF_INSTANCE. */
 	public static final String MSO_REST_API_VNF_INSTANCE = "mso.restapi.vnf.instance";
@@ -119,9 +116,6 @@ public class MsoProperties extends SystemProperties {
 
 	/** The Constant MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS */
 	public static final String MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS = "mso.restapi.operationalEnvironment.cloudResourcesRequests.status";
-
-	/** The Constant MSO_REST_API_SERVICE_INSTANCE_CREATE */
-	public static final String MSO_REST_API_SERVICE_INSTANCE_CREATE = "mso.restapi.serviceInstanceCreate";
 
 	/** The Constant MSO_REST_API_SERVICE_INSTANCE_ASSIGN */
 	public static final String MSO_REST_API_SERVICE_INSTANCE_ASSIGN = "mso.restapi.serviceInstanceAssign";

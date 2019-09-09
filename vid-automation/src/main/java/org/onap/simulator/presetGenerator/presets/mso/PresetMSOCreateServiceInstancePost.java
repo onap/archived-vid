@@ -6,7 +6,7 @@ package org.onap.simulator.presetGenerator.presets.mso;
 public class PresetMSOCreateServiceInstancePost extends PresetMSOBaseCreateInstancePost {
 
     public String getReqPath() {
-        return getRootPath() + "/serviceInstances/v.";
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances";
     }
 
 }

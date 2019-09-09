@@ -46,7 +46,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.MsoController;
 import org.onap.vid.controller.WebConfig;
@@ -196,7 +195,7 @@ public class MsoRestClientNewTest {
     @Ignore
     @Test
     public void testDeleteSvcInstance() throws Exception {
-        String endpoint = props.getString(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String endpoint = props.getString(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         endpoint = endpoint.replaceFirst(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
 
 
@@ -432,7 +431,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testRemoveRelationshipFromServiceInstance() throws Exception {
-        String serviceEndpoint = props.getString(MsoProperties.MSO_REST_API_SVC_INSTANCE);
+        String serviceEndpoint = props.getString(MsoProperties.MSO_RESTAPI_SERVICE_INSTANCE);
         String removeRelationshipsPath = serviceEndpoint + "/" + SERVICE_INSTANCE_ID + "/removeRelationships";
 
         try (MsoRestClientTestUtil closure = new MsoRestClientTestUtil(
