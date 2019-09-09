@@ -20,24 +20,33 @@
 
 package org.onap.vid.controller;
 
+import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.ModelVer;
 import org.onap.vid.aai.model.Permissions;
 import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.RelatedVnf;
 import org.onap.vid.model.aaiTree.VpnBinding;
+import org.onap.vid.properties.Features;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.togglz.core.manager.FeatureManager;
 
 /**
  * Controller to handle a&ai new requests.
@@ -49,12 +58,14 @@ public class AaiController2 extends VidRestrictedBaseController {
     private final AaiService aaiService;
     private final RoleProvider roleProvider;
     private final AaiClientInterface aaiClient;
+    private final FeatureManager featureManager;
 
     @Autowired
-    public AaiController2(AaiService aaiService, RoleProvider roleProvider, AaiClientInterface aaiClient) {
+    public AaiController2(AaiService aaiService, RoleProvider roleProvider, AaiClientInterface aaiClient, FeatureManager featureManager) {
         this.aaiService = aaiService;
         this.roleProvider = roleProvider;
         this.aaiClient = aaiClient;
+        this.featureManager = featureManager;
     }
 
     @RequestMapping(value = "/aai_get_homing_by_vfmodule/{vnfInstanceId}/{vfModuleId}", method = RequestMethod.GET)
@@ -122,5 +133,29 @@ public class AaiController2 extends VidRestrictedBaseController {
         method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelVer getNewestModelVersionByInvariant(@PathVariable("invariantId") String invariantId) {
         return aaiService.getNewestModelVersionByInvariantId(invariantId);
+    }
+
+    @GetMapping(value = "/aai_change_management_vnfs_by_params")
+    @ResponseBody
+    public AaiResponse getVnfsByParamsFor(
+        @RequestParam String subscriberId,
+        @RequestParam String serviceType,
+        @RequestParam(required = false) String nfRole,
+        @RequestParam(required = false) String cloudRegion
+    ) {
+        return aaiClient.getVnfsByParamsForChangeManagement(subscriberId, serviceType, nfRole, cloudRegion);
+    }
+
+    @GetMapping(value = "/get_vnf_data_by_globalid_and_service_type/{globalCustomerId}/{serviceType}")
+    @ResponseBody
+    public Object getVnfDataByGlobalIdAndServiceType(
+        @PathVariable("globalCustomerId") String globalCustomerId,
+        @PathVariable("serviceType") String serviceType,
+        @RequestParam(required = false) String nfRole,
+        @RequestParam(required = false) String cloudRegion) {
+        if (featureManager.isActive(Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG)){
+            return aaiClient.getVnfsByParamsForChangeManagement(globalCustomerId, serviceType, nfRole, cloudRegion).getT();
+        }
+        return aaiService.getVNFData(globalCustomerId, serviceType).getT();
     }
 }
