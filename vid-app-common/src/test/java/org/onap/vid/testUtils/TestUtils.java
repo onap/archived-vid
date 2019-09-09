@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,11 +46,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -60,6 +62,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.http.HttpResponseFactory;
@@ -71,8 +74,11 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockSettings;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
@@ -174,6 +180,33 @@ public class TestUtils {
             .filter(descriptor -> descriptor.getPropertyType().isAssignableFrom(String.class))
             .map(PropertyDescriptor::getDisplayName)
             .collect(toList());
+    }
+
+    private static List<Field> allMockitoFieldsOf(Object object) {
+        final Predicate<Field> hasMockAnnotation = field -> field.getAnnotation(Mock.class) != null;
+        final Predicate<Field> hasInjectMocksAnnotation = field -> field.getAnnotation(InjectMocks.class) != null;
+
+        return Arrays.stream(FieldUtils.getAllFields(object.getClass()))
+            .filter(hasMockAnnotation.or(hasInjectMocksAnnotation))
+            .collect(toList());
+    }
+
+    /**
+     * Calls MockitoAnnotations.initMocks after nullifying any field which is annotated @Mocke or @InjectMock.
+     * This makes a "hard rest" to any mocked state or instance. Expected to be invoked between any @Tests in class, by
+     * being called in TestNG's @BeforeMethod (or equivalently JUnit's @BeforeTest).
+     */
+    public static void initMockitoMocks(Object testClass) {
+        for (Field field : allMockitoFieldsOf(testClass)) {
+            try {
+                // Write null to fields
+                FieldUtils.writeField(field, testClass, null, true);
+            } catch (ReflectiveOperationException e) {
+                ExceptionUtils.rethrow(e);
+            }
+        }
+
+        MockitoAnnotations.initMocks(testClass);
     }
 
     /**
