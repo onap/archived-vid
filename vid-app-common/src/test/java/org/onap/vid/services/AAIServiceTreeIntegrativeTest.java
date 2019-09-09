@@ -41,7 +41,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.ws.rs.core.Response;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.util.AAITreeConverter;
@@ -292,14 +291,7 @@ public class AAIServiceTreeIntegrativeTest {
 
     @BeforeMethod
     public void initMocks() {
-        aaiClient = null;
-        aaiGetVersionByInvariantIdResponse = null;
-        sdcService = null;
-        serviceModelInflator = null;
-        exceptionWithRequestInfo = null;
-
-        MockitoAnnotations.initMocks(this);
-
+        TestUtils.initMockitoMocks(this);
         aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClient);
     }
 
