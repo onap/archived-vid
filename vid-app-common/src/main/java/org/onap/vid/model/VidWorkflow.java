@@ -35,6 +35,7 @@ public class VidWorkflow extends VidBaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WORKFLOW_DB_ID")
     @JsonIgnore
+    @Override
     public Long getId() {
         return id;
     }
