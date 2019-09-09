@@ -103,6 +103,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import sun.security.provider.certpath.SunCertPathBuilderException;
 import sun.security.validator.ValidatorException;
@@ -134,6 +135,21 @@ public class AaiClientTest {
                 {"", "network/logical-links/logical-link/"},
                 {"link", "network/logical-links/logical-link/link"}
         };
+    }
+
+    @Ignore
+    @Test
+    public void testAaiPutCustomQueryByParams() {
+        String globalCustomerId = "globalCustomerId1-360-as988q";
+        String serviceType = "TEST1-360";
+        String nfRole = "test360";
+        final ResponseWithRequestInfo mockedResponseWithRequestInfo = mockedResponseWithRequestInfo(Response.Status.OK,
+            "OK Response",
+            "query?format=simple&Mock=True",
+            HttpMethod.PUT);
+        when(aaiClientMock.doAaiPut(anyString(), anyString(), anyBoolean(), anyBoolean())).thenReturn(mockedResponseWithRequestInfo);
+        AaiResponse response = aaiClientMock.getVnfsByParamsForChangeManagement(globalCustomerId, serviceType, nfRole, null);
+        verify(aaiClientMock).doAaiPut(anyString(), anyString(),anyBoolean(),anyBoolean());
     }
 
     @Test(dataProvider = "logicalLinkData")
@@ -517,7 +533,7 @@ public class AaiClientTest {
 
     }
     @Test(expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = "A&AI has no homing data associated to vfModule 'vfModuleId' of vnf 'vnfInstanceId'")
-    public void getVfMoudule_Homing_Arguments_Are_Valid_But_Not_Exists() {
+    public void getVfModule_Homing_Arguments_Are_Valid_But_Not_Exists() {
         when(aaiClientMock.getHomingDataByVfModule(any(String.class), any(String.class))).thenCallRealMethod();
 
         Response generalEmptyResponse = mock(Response.class);
@@ -535,7 +551,7 @@ public class AaiClientTest {
     }
 
     @Test(dataProvider = "invalidDataId", expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = "Failed to retrieve homing data associated to vfModule from A&AI, VNF InstanceId or VF Module Id is missing.")
-    public void getVfMoudule_Homing_Arguments_Are_Empty_Or_Null(String data) {
+    public void getVfModule_Homing_Arguments_Are_Empty_Or_Null(String data) {
         when(aaiClientMock.getHomingDataByVfModule(any(), any())).thenCallRealMethod();
              aaiClientMock.getHomingDataByVfModule(data, data);
     }

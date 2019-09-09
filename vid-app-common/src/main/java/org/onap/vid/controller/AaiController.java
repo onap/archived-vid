@@ -39,6 +39,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
@@ -61,6 +62,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,6 +86,7 @@ public class AaiController extends RestrictedBaseController {
     private RoleProvider roleProvider;
     private SystemPropertiesWrapper systemPropertiesWrapper;
     private FeatureManager featureManager;
+    private final AaiClientInterface aaiClient;
 
 
     @Autowired
@@ -91,14 +94,15 @@ public class AaiController extends RestrictedBaseController {
         AAIRestInterface aaiRestInterface,
         RoleProvider roleProvider,
         SystemPropertiesWrapper systemPropertiesWrapper,
-        FeatureManager featureManager
+        FeatureManager featureManager,
+        AaiClientInterface aaiClient
     ) {
-
         this.aaiService = aaiService;
         this.aaiRestInterface = aaiRestInterface;
         this.roleProvider = roleProvider;
         this.systemPropertiesWrapper = systemPropertiesWrapper;
         this.featureManager = featureManager;
+        this.aaiClient = aaiClient;
     }
 
     @RequestMapping(value = {"/subscriberSearch"}, method = RequestMethod.GET)
@@ -151,21 +155,6 @@ public class AaiController extends RestrictedBaseController {
         Response result = aaiService.getVersionByInvariantId(versions.versions);
 
         return new ResponseEntity<>(result.readEntity(String.class), HttpStatus.OK);
-    }
-
-
-    private ResponseEntity<String> aaiResponseToResponseEntity(AaiResponse aaiResponseData)
-        throws IOException {
-        ResponseEntity<String> responseEntity;
-        if (aaiResponseData.getHttpCode() == 200) {
-            responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(aaiResponseData.getT()),
-                HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<>(aaiResponseData.getErrorMessage(),
-                HttpStatus.valueOf(aaiResponseData.getHttpCode()));
-        }
-
-        return responseEntity;
     }
 
     @RequestMapping(value = "/aai_get_service_instance/{service-instance-id}/{service-instance-type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -240,18 +229,6 @@ public class AaiController extends RestrictedBaseController {
         return responseEntity;
     }
 
-
-    @RequestMapping(value = "/get_vnf_data_by_globalid_and_service_type/{globalCustomerId}/{serviceType}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getVnfDataByGlobalIdAndServiceType(
-        @PathVariable("globalCustomerId") String globalCustomerId,
-        @PathVariable("serviceType") String serviceType) throws IOException {
-
-        AaiResponse<AaiGetVnfResponse> resp = aaiService.getVNFData(globalCustomerId, serviceType);
-        return aaiResponseToResponseEntity(resp);
-    }
-
     @RequestMapping(value = "/aai_refresh_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doRefreshSubscriberList() {
         return refreshSubscriberList();
@@ -260,11 +237,6 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_refresh_full_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doRefreshFullSubscriberList() {
         return refreshSubscriberList();
-    }
-
-    protected ResponseEntity<String> refreshSubscriberList() {
-        Response resp = getSubscribers();
-        return convertResponseToResponseEntity(resp);
     }
 
     @RequestMapping(value = "/aai_sub_details/{subscriberId}", method = RequestMethod.GET)
@@ -532,6 +504,11 @@ public class AaiController extends RestrictedBaseController {
         return resp;
     }
 
+    protected ResponseEntity<String> refreshSubscriberList() {
+        Response resp = getSubscribers();
+        return convertResponseToResponseEntity(resp);
+    }
+
     private String getComponentListPutPayload(String namedQueryId, String globalCustomerId, String serviceType,
         String serviceInstance) {
         return
@@ -594,5 +571,19 @@ public class AaiController extends RestrictedBaseController {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public ResponseEntity<String> aaiResponseToResponseEntity(AaiResponse aaiResponseData)
+        throws IOException {
+        ResponseEntity<String> responseEntity;
+        if (aaiResponseData.getHttpCode() == 200) {
+            responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(aaiResponseData.getT()),
+                HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity<>(aaiResponseData.getErrorMessage(),
+                HttpStatus.valueOf(aaiResponseData.getHttpCode()));
+        }
+
+        return responseEntity;
     }
 }

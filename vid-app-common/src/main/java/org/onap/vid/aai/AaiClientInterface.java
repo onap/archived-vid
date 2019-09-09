@@ -21,6 +21,7 @@
 package org.onap.vid.aai;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.poi.hssf.record.formula.functions.T;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -103,4 +104,6 @@ public interface AaiClientInterface extends ProbeInterface {
     void resetCache(String cacheName);
 
     Map<String, Properties> getCloudRegionAndTenantByVnfId(String vnfId);
+
+    AaiResponse<T> getVnfsByParamsForChangeManagement(String subscriberId, String serviceType, String nfRole, String cloudRegion);
 }
