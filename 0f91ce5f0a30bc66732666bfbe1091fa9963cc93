@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96a49ff8_d2d06d60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-09T05:09:24Z",
+      "side": 1,
+      "message": "Please fix the sign-off naming.",
+      "revId": "0f91ce5f0a30bc66732666bfbe1091fa9963cc93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
