@@ -111,7 +111,6 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
     private static final String DEACTIVATE_AND_CLOUD_DELETE = "/deactivateAndCloudDelete";
     private static final String RESOURCE_TYPE_OPERATIONAL_ENVIRONMENT = "operationalEnvironment";
     private static final String SOURCE_OPERATIONAL_ENVIRONMENT = "VID";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     /**
      * The logger.
      */
