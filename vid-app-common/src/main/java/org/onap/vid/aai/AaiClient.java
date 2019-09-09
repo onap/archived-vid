@@ -27,10 +27,15 @@ import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -44,10 +49,12 @@ import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -281,6 +288,36 @@ public class AaiClient implements AaiClientInterface {
                 .collect(toMap(SimpleResult::getNodeType, SimpleResult::getProperties));
     }
 
+    @Override
+    public AaiResponse getVnfsByParamsForChangeManagement(String subscriberId, String serviceType, @Nullable String nfRole,
+        @Nullable String cloudRegion) {
+        String payloadAsString = "";
+        ResponseWithRequestInfo response;
+        ImmutableMap<String, Serializable> payload = getMapForAAIQueryByParams(subscriberId, serviceType,
+            nfRole, cloudRegion);
+        try {
+            payloadAsString = JACKSON_OBJECT_MAPPER.writeValueAsString(payload);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getMessage());
+            ExceptionUtils.rethrow(e);
+        }
+        response = doAaiPut(QUERY_FORMAT_SIMPLE, payloadAsString, false, false);
+        AaiResponseWithRequestInfo aaiResponse = processAaiResponse(response, JsonNode.class, false);
+        verifyAaiResponseValidityOrThrowExc(aaiResponse, aaiResponse.getAaiResponse().getHttpCode());
+        return aaiResponse.getAaiResponse();
+    }
+
+    private ImmutableMap<String, Serializable> getMapForAAIQueryByParams(String subscriberId,
+        String serviceType, @Nullable String nfRole, @Nullable String cloudRegion) {
+        String nfRoleParam = nfRole != null ? "?nfRole=" + nfRole : "";
+        String query = "query/vnfs-fromServiceInstance-filter" + nfRoleParam;
+        return ImmutableMap.of(
+            "start", ImmutableList
+                .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+            "query", query
+        );
+    }
+
     private boolean isResourceExistByStatusCode(ResponseWithRequestInfo responseWithRequestInfo) {
         // 200 - is found
         // 404 - resource not found
@@ -315,18 +352,19 @@ public class AaiClient implements AaiClientInterface {
         }
 
         final AaiResponseWithRequestInfo<T> aaiResponse = processAaiResponse(responseWithRequestInfo, clz, VidObjectMapperType.FASTERXML, true);
-
-        if (aaiResponse.getAaiResponse().getHttpCode() > 399 || aaiResponse.getAaiResponse().getT() == null) {
-            throw new ExceptionWithRequestInfo(aaiResponse.getHttpMethod(),
-                    aaiResponse.getRequestedUrl(),
-                    aaiResponse.getRawData(),
-                    responseWithRequestInfo.getResponse().getStatus(),
-                    new InvalidAAIResponseException(aaiResponse.getAaiResponse()));
-        }
-
+        verifyAaiResponseValidityOrThrowExc(aaiResponse, responseWithRequestInfo.getResponse().getStatus());
         return aaiResponse.getAaiResponse().getT();
     }
 
+    private void verifyAaiResponseValidityOrThrowExc(AaiResponseWithRequestInfo aaiResponse, int httpCode) {
+        if (aaiResponse.getAaiResponse().getHttpCode() > 399 || aaiResponse.getAaiResponse().getT() == null) {
+            throw new ExceptionWithRequestInfo(aaiResponse.getHttpMethod(),
+                aaiResponse.getRequestedUrl(),
+                aaiResponse.getRawData(),
+                httpCode,
+                new InvalidAAIResponseException(aaiResponse.getAaiResponse()));
+        }
+    }
 
     private String getUrlFromLIst(String url, String paramKey, List<String> params){
         int i = 0;
