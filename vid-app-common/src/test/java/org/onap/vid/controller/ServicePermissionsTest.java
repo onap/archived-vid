@@ -55,7 +55,7 @@ public class ServicePermissionsTest {
         when(roleProvider.getUserRolesValidator(any())).thenReturn(roleValidator);
         when(roleValidator.isServicePermitted(subscriberId, serviceType)).thenReturn(expected);
 
-        AaiController2 aaiController2 = new AaiController2(null, roleProvider, null);
+        AaiController2 aaiController2 = new AaiController2(null, roleProvider, null, null);
 
         Permissions permissions = aaiController2.servicePermissions(unimportantRequest(), subscriberId, serviceType);
         assertThat(permissions, is(new Permissions(expected)));

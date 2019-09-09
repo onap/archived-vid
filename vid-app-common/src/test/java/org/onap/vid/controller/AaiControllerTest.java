@@ -46,6 +46,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.aai.AaiClient;
+import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
@@ -84,9 +86,10 @@ public class AaiControllerTest {
     private RoleProvider roleProvider;
     @Mock
     private SystemPropertiesWrapper systemPropertiesWrapper;
-
     @Mock
     private FeatureManager featureManager;
+    @Mock
+    private AaiClientInterface aaiClient;
 
     private MockMvc mockMvc;
     private AaiController aaiController;
@@ -94,7 +97,7 @@ public class AaiControllerTest {
     @Before
     public void setUp() {
         aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper,
-            featureManager);
+            featureManager, aaiClient);
         mockMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
     }
 
