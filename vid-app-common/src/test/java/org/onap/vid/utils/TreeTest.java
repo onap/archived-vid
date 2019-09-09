@@ -80,4 +80,12 @@ public class TreeTest {
         assertTrue(subTree.isPathExist("d"));
         assertFalse(subTree.isPathExist("b","c","d"));
     }
+
+    @Test
+    public void getChildrenDepthTest() {
+        Tree<String> tree = buildTreeForTest();
+        assertEquals(3, tree.getChildrenDepth());
+        Tree<String> subTree = tree.getSubTree("b");
+        assertEquals(2, subTree.getChildrenDepth());
+    }
 }
