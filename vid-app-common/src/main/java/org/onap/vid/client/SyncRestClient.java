@@ -23,6 +23,7 @@ package org.onap.vid.client;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.onap.vid.client.UnirestPatchKt.patched;
 
+import com.att.eelf.configuration.EELFLogger;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
 import io.joshworks.restclient.http.RestClient;
@@ -42,6 +43,7 @@ import java.security.cert.CertificateException;
 import java.util.Map;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
@@ -57,23 +59,29 @@ public class SyncRestClient implements SyncRestClientInterface {
     private static final String[] SUPPORTED_SSL_VERSIONS = {"TLSv1", "TLSv1.2"};
     private static final String HTTPS_SCHEMA = "https://";
     private static final String HTTP_SCHEMA = "http://";
+    private final EELFLogger outgoingRequestsLogger;
 
     private RestClient restClient;
 
-    public SyncRestClient() {
-        restClient = RestClient.newClient().objectMapper(defaultObjectMapper()).httpClient(defaultHttpClient()).build();
+    public SyncRestClient(EELFLogger outgoingRequestsLogger) {
+        this(null, null, outgoingRequestsLogger);
     }
 
-    public SyncRestClient(ObjectMapper objectMapper) {
-        restClient = RestClient.newClient().objectMapper(objectMapper).httpClient(defaultHttpClient()).build();
+    public SyncRestClient(ObjectMapper objectMapper, EELFLogger outgoingRequestsLogger) {
+        this(null, objectMapper,  outgoingRequestsLogger);
     }
 
-    public SyncRestClient(CloseableHttpClient httpClient) {
-        restClient = RestClient.newClient().objectMapper(defaultObjectMapper()).httpClient(httpClient).build();
+    public SyncRestClient(CloseableHttpClient httpClient, EELFLogger outgoingRequestsLogger) {
+        this(httpClient, null,  outgoingRequestsLogger);
     }
 
-    public SyncRestClient(CloseableHttpClient httpClient, ObjectMapper objectMapper) {
-        restClient = RestClient.newClient().objectMapper(objectMapper).httpClient(httpClient).build();
+    public SyncRestClient(CloseableHttpClient httpClient, ObjectMapper objectMapper, EELFLogger outgoingRequestsLogger) {
+        restClient = RestClient
+            .newClient()
+            .objectMapper(ObjectUtils.defaultIfNull(objectMapper, defaultObjectMapper()))
+            .httpClient(ObjectUtils.defaultIfNull(httpClient , defaultHttpClient()))
+            .build();
+        this.outgoingRequestsLogger = outgoingRequestsLogger;
     }
 
     @Override

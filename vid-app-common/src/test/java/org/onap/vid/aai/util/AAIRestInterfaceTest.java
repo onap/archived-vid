@@ -21,18 +21,19 @@
 package org.onap.vid.aai.util;
 
 
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
-import org.onap.vid.aai.ExceptionWithRequestInfo;
-import org.onap.vid.aai.exceptions.InvalidPropertyException;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.utils.Unchecked;
-import org.springframework.http.HttpMethod;
-import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -40,22 +41,17 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.util.Optional;
-import java.util.UUID;
-
-import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
-import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
-import static javax.ws.rs.core.Response.Status.*;
-import static junit.framework.TestCase.assertSame;
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.Unchecked;
+import org.springframework.http.HttpMethod;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 
 public class AAIRestInterfaceTest {
@@ -80,6 +76,9 @@ public class AAIRestInterfaceTest {
     private Response response;
     @Mock
     private SystemPropertyHelper systemPropertyHelper;
+    @Mock
+    private Logging loggingService;
+
 
     private AAIRestInterface testSubject;
 
@@ -99,7 +98,7 @@ public class AAIRestInterfaceTest {
     }
 
     private AAIRestInterface createTestSubject() {
-        return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper);
+        return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper, loggingService);
     }
 
     @Test

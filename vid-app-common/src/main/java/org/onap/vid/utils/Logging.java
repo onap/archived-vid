@@ -20,36 +20,33 @@
 
 package org.onap.vid.utils;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getThrowableList;
+import static org.onap.vid.utils.Streams.not;
+
 import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import io.joshworks.restclient.http.HttpResponse;
-import org.apache.commons.lang3.StringUtils;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
-import static org.apache.commons.lang3.exception.ExceptionUtils.getThrowableList;
-import static org.onap.vid.utils.Streams.not;
-
+@Service
 public class Logging {
-
-    private Logging() {
-    }
 
     public static final String HTTP_REQUESTS_OUTGOING = "http.requests.outgoing.";
 
@@ -84,7 +81,7 @@ public class Logging {
         return EELFLoggerDelegate.getLogger(HTTP_REQUESTS_OUTGOING +serverName);
     }
 
-    public static void logRequest(final EELFLogger logger, final HttpMethod method, final String url, final Object body) {
+    public void logRequest(final EELFLogger logger, final HttpMethod method, final String url, final Object body) {
         if (!logger.isDebugEnabled()) {
             return;
         }
@@ -103,11 +100,11 @@ public class Logging {
         }
     }
 
-    public static void logRequest(final EELFLogger logger, final HttpMethod method, final String url) {
+    public void logRequest(final EELFLogger logger, final HttpMethod method, final String url) {
         logger.debug("Sending  {} {}", method.name(), url);
     }
 
-    public static <T> void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final Response response, final Class<T> entityClass) {
+    public <T> void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final Response response, final Class<T> entityClass) {
         if (!logger.isDebugEnabled()) {
             return;
         }
@@ -124,7 +121,7 @@ public class Logging {
         }
     }
 
-    public static <T> void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final HttpResponse<T> response) {
+    public <T> void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final HttpResponse<T> response) {
         try {
             logger.debug("Received {} {} Status: {} . Body: {}", method.name(), url, response.getStatus(), response.getBody());
         }
@@ -133,7 +130,7 @@ public class Logging {
         }
     }
 
-    public static void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final Response response) {
+    public void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final Response response) {
         logResponse(logger, method, url, response, String.class);
     }
 

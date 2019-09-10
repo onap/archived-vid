@@ -22,25 +22,31 @@
 
 package org.onap.vid.aai;
 
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.aai.util.*;
-import org.onap.vid.utils.Logging;
-import org.springframework.http.HttpMethod;
+import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
+import java.util.UUID;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.UUID;
-
-import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.HttpClientMode;
+import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.ServletRequestHelper;
+import org.onap.vid.aai.util.SystemPropertyHelper;
+import org.onap.vid.utils.Logging;
+import org.springframework.http.HttpMethod;
 
 public class PombaRestInterface extends AAIRestInterface {
 	
     private Client client = null;
 
-    public PombaRestInterface (HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        super(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public PombaRestInterface (HttpsAuthClient httpsAuthClientFactory,
+        ServletRequestHelper servletRequestHelper,
+        SystemPropertyHelper systemPropertyHelper,
+        Logging loggingService) {
+        super(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper, loggingService);
     }
 
     @Override
@@ -64,7 +70,7 @@ public class PombaRestInterface extends AAIRestInterface {
         try {
             initRestClient();
 
-            Logging.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
+            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
             final Response cres = client.target(url)
                     .request()
                     .accept(MediaType.APPLICATION_JSON)
@@ -72,7 +78,7 @@ public class PombaRestInterface extends AAIRestInterface {
                     .header(FROM_APP_ID_HEADER,  fromAppId)
                     .header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
                     .post(Entity.entity(payload, MediaType.APPLICATION_JSON));
-            Logging.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, cres);
+            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, cres);
 
             if (cres.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
                 logger.info(EELFLoggerDelegate.errorLogger, getValidResponseLogMessage(methodName));

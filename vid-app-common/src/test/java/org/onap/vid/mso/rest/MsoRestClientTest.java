@@ -64,6 +64,7 @@ import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.RequestReferences;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
@@ -87,6 +88,9 @@ public class MsoRestClientTest {
     @Mock
     private SystemPropertiesWrapper systemProperties;
 
+    @Mock
+    private Logging loggingService;
+
     private MsoRestClientNew restClient;
 
 
@@ -95,7 +99,7 @@ public class MsoRestClientTest {
         initMocks(this);
         when(systemProperties.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1ghz1kfx1j1w1m7w1i271e8q1eas1hzj1m4i1iyy1kch1gdz");
         when(systemProperties.getProperty("app_display_name")).thenReturn("vid");
-        restClient = new MsoRestClientNew(client,baseUrl,null,systemProperties);
+        restClient = new MsoRestClientNew(client,baseUrl,null,systemProperties,loggingService);
     }
 
     @Test
