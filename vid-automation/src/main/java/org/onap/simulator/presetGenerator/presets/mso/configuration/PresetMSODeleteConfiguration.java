@@ -21,7 +21,7 @@ public class PresetMSODeleteConfiguration extends PresetMSOBaseCreateInstancePos
 
     @Override
     public String getReqPath() {
-        return getRootPath() + "/serviceInstances/v./c187e9fe-40c3-4862-b73e-84ff056205f6/configurations/9533-config-LB1113";
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances/c187e9fe-40c3-4862-b73e-84ff056205f6/configurations/9533-config-LB1113";
     }
 
     @Override

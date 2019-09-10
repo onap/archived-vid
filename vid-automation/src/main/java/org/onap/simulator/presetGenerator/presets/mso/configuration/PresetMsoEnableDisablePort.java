@@ -26,7 +26,7 @@ public class PresetMsoEnableDisablePort extends PresetMSOBaseCreateInstancePost 
 
     @Override
     public String getReqPath() {
-        return "/mso/serviceInstances/v./"+serviceInstanceId+"/configurations/"+configurationId+"/" + action;
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances/"+serviceInstanceId+"/configurations/"+configurationId+"/" + action;
     }
 
     @Override

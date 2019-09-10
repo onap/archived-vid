@@ -138,7 +138,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     public void shouldProperlyCreateConfigurationInstanceWithCorrectServiceInstanceId() throws Exception {
         // given
         String serviceInstanceId = "3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
-        String endpointTemplate = String.format("/serviceInstances/v6/%s/configurations", serviceInstanceId);
+        String endpointTemplate = String.format("/serviceInstantiation/v7/serviceInstances/%s/configurations", serviceInstanceId);
         RequestDetailsWrapper requestDetailsWrapper = createRequestDetails();
         MsoResponseWrapper expectedResponse = createOkResponse();
         given(msoInterface.createConfigurationInstance(requestDetailsWrapper, endpointTemplate))
