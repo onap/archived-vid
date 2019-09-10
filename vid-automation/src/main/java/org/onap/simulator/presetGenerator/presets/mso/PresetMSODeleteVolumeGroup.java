@@ -24,9 +24,4 @@ public class PresetMSODeleteVolumeGroup extends PresetMSOBaseDeleteWithCloudConf
         return getRootPath() + serviceInstanceId + "/vnfs/" + vnfInstanceId + "/volumeGroups/" + volumeGroupInstanceId;
     }
 
-    //remove this method once VfModule path starts with /serviceInstantiation/v7/
-    @Override
-    protected String getRootPath() {
-        return "/mso/serviceInstances/v7/";
-    }
 }
