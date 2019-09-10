@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2019 Nokia Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,34 +21,36 @@
 
 package org.onap.vid.mso;
 
-import io.joshworks.restclient.request.HttpRequest;
-import org.glassfish.jersey.client.JerseyInvocation;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.onap.vid.aai.util.HttpsAuthClient;
-import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.mso.rest.RequestDetails;
-import org.onap.vid.utils.SystemPropertiesWrapper;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
+import io.joshworks.restclient.request.HttpRequest;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Optional;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.glassfish.jersey.client.JerseyInvocation;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.onap.vid.aai.util.HttpClientMode;
+import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 public class RestMsoImplementationTest  {
 
@@ -75,15 +78,19 @@ public class RestMsoImplementationTest  {
     @Mock
     private SystemPropertiesWrapper systemProperties;
 
+    @Mock
+    private Logging loggingService;
+
     @InjectMocks
-    private RestMsoImplementation restMsoImplementation = new RestMsoImplementation(mockHttpsAuthClient, systemProperties);
+    private RestMsoImplementation restMsoImplementation;
 
     private String path = "/test_path/";
     private String rawData = "test-row-data";
 
     @BeforeClass
-    public void setUp(){
+    public void setUp() throws GeneralSecurityException, IOException {
         initMocks(this);
+        when(mockHttpsAuthClient.getClient(any(HttpClientMode.class))).thenReturn(mockClient);
         when(systemProperties.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1ghz1kfx1j1w1m7w1i271e8q1eas1hzj1m4i1iyy1kch1gdz");
     }
 

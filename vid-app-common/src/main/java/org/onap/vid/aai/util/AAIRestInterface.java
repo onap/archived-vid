@@ -21,7 +21,20 @@
 package org.onap.vid.aai.util;
 
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+
 import com.att.eelf.configuration.EELFLogger;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.util.Optional;
+import java.util.UUID;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -32,20 +45,6 @@ import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 
 /**
@@ -68,6 +67,7 @@ public class AAIRestInterface {
 	protected HttpsAuthClient httpsAuthClientFactory;
 	private final ServletRequestHelper servletRequestHelper;
 	private final SystemPropertyHelper systemPropertyHelper;
+	protected final Logging loggingService;
 
 	protected static final String START_STRING = " start";
 	protected static final String TRANSACTION_ID_HEADER = "X-TransactionId";
@@ -75,10 +75,14 @@ public class AAIRestInterface {
 	protected static final String SUCCESSFUL_API_MESSAGE = " REST api call was successful!";
 	protected static final String URL_DECLARATION = ", url=";
 
-	public AAIRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
+	public AAIRestInterface(HttpsAuthClient httpsAuthClientFactory,
+		ServletRequestHelper servletRequestHelper,
+		SystemPropertyHelper systemPropertyHelper,
+		Logging loggingService) {
 		this.httpsAuthClientFactory = httpsAuthClientFactory;
 		this.servletRequestHelper = servletRequestHelper;
 		this.systemPropertyHelper = systemPropertyHelper;
+		this.loggingService = loggingService;
 		initRestClient();
 	}
 
@@ -86,10 +90,14 @@ public class AAIRestInterface {
 	 * For testing purpose
 	 */
 	AAIRestInterface(Optional<Client> client,
-					 HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper){
+					 HttpsAuthClient httpsAuthClientFactory,
+		ServletRequestHelper servletRequestHelper,
+		SystemPropertyHelper systemPropertyHelper,
+		Logging loggingService){
 		this.httpsAuthClientFactory = httpsAuthClientFactory;
 		this.servletRequestHelper = servletRequestHelper;
 		this.systemPropertyHelper = systemPropertyHelper;
+		this.loggingService = loggingService;
 		if (client != null && client.isPresent()){
 			this.client = client.get();
 		}
@@ -182,7 +190,7 @@ public class AAIRestInterface {
 			logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
 			logger.debug(EELFLoggerDelegate.debugLogger, url + " for the get REST API");
 
-			Logging.logRequest(outgoingRequestsLogger, method, url, payload);
+			loggingService.logRequest(outgoingRequestsLogger, method, url, payload);
 
 			final Response response;
 			Invocation.Builder requestBuilder = client.target(url)
@@ -201,7 +209,7 @@ public class AAIRestInterface {
 					requestBuilder.build(method.name(), Entity.entity(payload, MediaType.APPLICATION_JSON));
 
 			response = restInvocation.invoke();
-			Logging.logResponse(outgoingRequestsLogger, method, url, response);
+			loggingService.logResponse(outgoingRequestsLogger, method, url, response);
 
 			if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
 				logger.debug(EELFLoggerDelegate.debugLogger, methodName + SUCCESSFUL_API_MESSAGE);
@@ -242,7 +250,7 @@ public class AAIRestInterface {
 		try {
 
 			initRestClient();
-			Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
+			loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
 			final Response cres = client.target(url)
 					.request()
 					.accept(MediaType.APPLICATION_JSON)
@@ -250,7 +258,7 @@ public class AAIRestInterface {
 					.header(FROM_APP_ID_HEADER, sourceID)
 					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
 					.delete();
-			Logging.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
+			loggingService.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
 			if (cres.getStatusInfo().equals(Response.Status.NOT_FOUND)) {
 				logger.debug(EELFLoggerDelegate.debugLogger, "Resource does not exist...: " + cres.getStatus()
 						+ ":" + cres.readEntity(String.class));
@@ -306,7 +314,7 @@ public class AAIRestInterface {
 		Response response = null;
 		try {
 			initRestClient();
-			Logging.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
+			loggingService.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
 			response = authenticateRequest(client.target(url)
 					.request()
 					.accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
@@ -314,7 +322,7 @@ public class AAIRestInterface {
 					.header(FROM_APP_ID_HEADER,  fromAppId))
 					.header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
 					.post(Entity.entity(payload, MediaType.APPLICATION_JSON));
-			Logging.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, response);
+			loggingService.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, response);
 
 			if (response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
 				logger.info(EELFLoggerDelegate.errorLogger, getValidResponseLogMessage(methodName));

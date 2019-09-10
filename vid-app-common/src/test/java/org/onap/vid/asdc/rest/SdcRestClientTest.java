@@ -52,6 +52,7 @@ import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.utils.Logging;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -80,6 +81,9 @@ public class SdcRestClientTest {
     @Mock
     private InputStream inputStream;
 
+    @Mock
+    private Logging loggingService;
+
     private UUID randomId;
 
     private Service sampleService;
@@ -92,7 +96,7 @@ public class SdcRestClientTest {
         MockitoAnnotations.initMocks(this);
         randomId = UUID.randomUUID();
         sampleService = createTestService();
-        restClient = new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, mockedSyncRestClient);
+        restClient = new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, mockedSyncRestClient, loggingService);
     }
 
 
@@ -191,7 +195,7 @@ public class SdcRestClientTest {
         setupMocks.accept(syncRestClient);
 
         try {
-            new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, syncRestClient).getServiceToscaModel(UUID.randomUUID());
+            new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, syncRestClient, loggingService).getServiceToscaModel(UUID.randomUUID());
         } catch (Exception e) {
             assertThat("root cause incorrect for " + ExceptionUtils.getStackTrace(e), ExceptionUtils.getRootCause(e), instanceOf(expectedType));
             return; //OK
@@ -240,7 +244,7 @@ public class SdcRestClientTest {
         setupMocks.accept(mockResponse);
 
         try {
-            new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, syncRestClient).getServiceToscaModel(UUID.randomUUID());
+            new SdcRestClient(SAMPLE_BASE_URL, SAMPLE_AUTH, syncRestClient, loggingService).getServiceToscaModel(UUID.randomUUID());
         } catch (AsdcCatalogException e) {
             assertThat(e.getMessage(), containsString(String.valueOf(mockResponse.getStatus())));
             assertThat(e.getMessage(), containsString(exceptedBody));

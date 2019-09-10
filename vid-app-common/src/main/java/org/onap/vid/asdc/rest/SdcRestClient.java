@@ -30,7 +30,6 @@ import static org.onap.vid.client.SyncRestClientInterface.HEADERS.CONTENT_TYPE;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
 import static org.onap.vid.client.UnirestPatchKt.extractRawAsString;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
-import static org.onap.vid.utils.Logging.logRequest;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.google.common.collect.ImmutableMap;
@@ -63,23 +62,25 @@ public class SdcRestClient implements AsdcClient {
     private String baseUrl;
     private String path;
     private String auth;
-    private static final EELFLogger LOGGER = Logging.getRequestsLogger("asdc");
+    private static final EELFLogger LOGGER = Logging.getRequestsLogger("sdc");
 
     private SyncRestClientInterface syncRestClient;
+    private Logging loggingService;
 
 
-    public SdcRestClient(String baseUrl, String auth, SyncRestClientInterface client) {
+    public SdcRestClient(String baseUrl, String auth, SyncRestClientInterface client, Logging loggingService) {
         this.syncRestClient = client;
         this.auth = auth;
         this.baseUrl = baseUrl;
         this.path = VidProperties.getPropertyWithDefault(ModelConstants.ASDC_SVC_API_PATH, ModelConstants.DEFAULT_ASDC_SVC_API_PATH);
+        this.loggingService = loggingService;
     }
 
 
     @Override
     public Service getService(UUID uuid) throws AsdcCatalogException {
         String finalUrl = String.format(METADATA_URL_TEMPLATE, baseUrl, path, uuid);
-        logRequest(LOGGER, HttpMethod.GET, finalUrl);
+        loggingService.logRequest(LOGGER, HttpMethod.GET, finalUrl);
 
         return Try
                 .of(() -> syncRestClient.get(finalUrl, prepareHeaders(auth, APPLICATION_JSON), Collections.emptyMap(), Service.class))
@@ -94,7 +95,7 @@ public class SdcRestClient implements AsdcClient {
             HttpResponseWithRequestInfo<InputStream> responseWithRequestInfo = getServiceInputStream(uuid, false);
 
             if (responseWithRequestInfo.getResponse().getStatus()>399) {
-                Logging.logResponse(LOGGER, HttpMethod.GET,
+                loggingService.logRequest(LOGGER, HttpMethod.GET,
                     responseWithRequestInfo.getRequestUrl(), responseWithRequestInfo.getResponse());
 
                 String body = extractRawAsString(responseWithRequestInfo.getResponse());
@@ -124,7 +125,7 @@ public class SdcRestClient implements AsdcClient {
     @Override
     public HttpResponseWithRequestInfo<InputStream> getServiceInputStream(UUID serviceUuid, boolean warpException) {
         String finalUrl = String.format(TOSCA_MODEL_URL_TEMPLATE, baseUrl, path, serviceUuid);
-        logRequest(LOGGER, HttpMethod.GET, finalUrl);
+        loggingService.logRequest(LOGGER, HttpMethod.GET, finalUrl);
         try {
             HttpResponse<InputStream> httpResponse = syncRestClient.getStream(finalUrl, prepareHeaders(auth, APPLICATION_OCTET_STREAM), Collections.emptyMap());
             return new HttpResponseWithRequestInfo<>(httpResponse, finalUrl, HttpMethod.GET);

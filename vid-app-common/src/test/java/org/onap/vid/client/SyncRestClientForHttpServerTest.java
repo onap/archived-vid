@@ -20,30 +20,31 @@
 
 package org.onap.vid.client;
 
+import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
+import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
+import static com.xebialabs.restito.semantics.Action.contentType;
+import static com.xebialabs.restito.semantics.Action.ok;
+import static com.xebialabs.restito.semantics.Action.status;
+import static com.xebialabs.restito.semantics.Action.stringContent;
+import static org.mockito.Mockito.mock;
+import static org.testng.Assert.assertEquals;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.xebialabs.restito.semantics.Action;
 import com.xebialabs.restito.semantics.Condition;
 import com.xebialabs.restito.server.StubServer;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
-import org.glassfish.grizzly.http.util.HttpStatus;
-import com.xebialabs.restito.semantics.Action;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.AfterMethod;
-import org.glassfish.grizzly.http.Method;
-import org.testng.annotations.Test;
-
 import java.util.Collections;
 import java.util.Map;
-
-import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
-import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
-import static com.xebialabs.restito.semantics.Action.stringContent;
-import static com.xebialabs.restito.semantics.Action.contentType;
-import static com.xebialabs.restito.semantics.Action.status;
-import static com.xebialabs.restito.semantics.Action.ok;
-import static org.testng.Assert.assertEquals;
+import org.glassfish.grizzly.http.Method;
+import org.glassfish.grizzly.http.util.HttpStatus;
+import org.onap.vid.utils.Logging;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class SyncRestClientForHttpServerTest {
 
@@ -53,12 +54,14 @@ public class SyncRestClientForHttpServerTest {
     private StubServer stubServer;
     private ObjectMapper objectMapper = new ObjectMapper();
     private SyncRestClient syncRestClient;
+    private Logging mockLoggingService;
 
     @BeforeMethod
     public void setUp() {
         stubServer = new StubServer();
         stubServer.run();
-        syncRestClient = new SyncRestClient();
+        mockLoggingService = mock(Logging.class);
+        syncRestClient = new SyncRestClient(mockLoggingService);
     }
 
     @AfterMethod

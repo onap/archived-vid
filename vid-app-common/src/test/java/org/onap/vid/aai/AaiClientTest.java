@@ -96,6 +96,7 @@ import org.onap.vid.model.probes.ExternalComponentStatus;
 import org.onap.vid.model.probes.HttpRequestMetadata;
 import org.onap.vid.model.probes.StatusMetadata;
 import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
@@ -648,7 +649,10 @@ public class AaiClientTest {
         Response responseMock = mocks.getFakeResponse();
 
         // prepare real AAIRestInterface and AaiClient, and wire mocks
-        AAIRestInterface aaiRestInterface = new AAIRestInterface(httpsAuthClientMock, mock(ServletRequestHelper.class), mock(SystemPropertyHelper.class));
+        AAIRestInterface aaiRestInterface = new AAIRestInterface(httpsAuthClientMock,
+            mock(ServletRequestHelper.class),
+            mock(SystemPropertyHelper.class),
+            mock(Logging.class));
         final AaiClient aaiClient = new AaiClient(aaiRestInterface, null, null);
         when(httpsAuthClientMock.getClient(any())).thenReturn(javaxClientMock);
 

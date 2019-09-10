@@ -20,12 +20,17 @@
 
 package org.onap.vid.aai;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xebialabs.restito.semantics.Action;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
+import java.io.IOException;
 import org.assertj.core.api.Assertions;
 import org.glassfish.grizzly.http.util.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.mockito.Mock;
@@ -33,14 +38,11 @@ import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.testUtils.StubServerUtil;
+import org.onap.vid.utils.Logging;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
-
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class AaiOverTLSClientServerTest {
 
@@ -107,8 +109,7 @@ public class AaiOverTLSClientServerTest {
 
     @Test
     public void shouldSearchNodeTypeByName() throws IOException, ParseException {
-        ObjectMapper objectMapper = getFasterXmlObjectMapper();
-        AaiOverTLSClient aaiOverTLSClient = new AaiOverTLSClient(new SyncRestClient(objectMapper),  propertySupplier, serverUtil.constructTargetUrl("http", ""));
+        AaiOverTLSClient aaiOverTLSClient = createAaiOverTLSClient();
 
         serverUtil.prepareGetCall("/nodes/generic-vnfs", new JSONParser().parse(searchNodesQueryResponsePayload), Action.status(HttpStatus.OK_200));
 
@@ -118,10 +119,19 @@ public class AaiOverTLSClientServerTest {
         Assertions.assertThat(aaiNodeQueryResponseHttpResponse).isEqualTo(true);
     }
 
+    @NotNull
+    private AaiOverTLSClient createAaiOverTLSClient() {
+        return new AaiOverTLSClient(
+            new SyncRestClient(getFasterXmlObjectMapper(), mock(Logging.class)),
+            propertySupplier,
+            serverUtil.constructTargetUrl("http", "")
+        );
+    }
+
     @Test
     public void shouldGetSubscribers() throws ParseException, JsonProcessingException {
         ObjectMapper objectMapper = getFasterXmlObjectMapper();
-        AaiOverTLSClient aaiOverTLSClient = new AaiOverTLSClient(new SyncRestClient(objectMapper),  propertySupplier, serverUtil.constructTargetUrl("http", ""));
+        AaiOverTLSClient aaiOverTLSClient = createAaiOverTLSClient();
 
         serverUtil.prepareGetCall("/business/customers", new JSONParser().parse(subscribersResponsePayload), Action.status(HttpStatus.OK_200));
 
