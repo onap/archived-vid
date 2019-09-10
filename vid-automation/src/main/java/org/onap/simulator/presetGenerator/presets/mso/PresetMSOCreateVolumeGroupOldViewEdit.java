@@ -16,7 +16,7 @@ public class PresetMSOCreateVolumeGroupOldViewEdit extends PresetMSOBaseCreateIn
 
     @Override
     public String getReqPath() {
-        return getRootPath() + "/serviceInstances/v./" + serviceInstanceId + "/vnfs/"+vnfInstanceId+"/volumeGroups";
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances/" + serviceInstanceId + "/vnfs/"+vnfInstanceId+"/volumeGroups";
     }
 
     @Override

@@ -28,11 +28,8 @@ public class PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress extends Prese
 
     @Override
     public String getReqPath() {
-        if (isVolumeGroupPreset) {
-            return getRootPath() + "/serviceInstances/v./" + serviceInstanceId + "/vnfs/" + vnfInstanceId + "/volumeGroups";
-        } else {
-            return getRootPath() + "/serviceInstantiation/v./serviceInstances/" + serviceInstanceId + "/vnfs/" + vnfInstanceId + "/vfModules";
-        }
+        String trailer = isVolumeGroupPreset ? "/volumeGroups" : "/vfModules";
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances/" + serviceInstanceId + "/vnfs/" + vnfInstanceId + trailer;
     }
 
     @Override
