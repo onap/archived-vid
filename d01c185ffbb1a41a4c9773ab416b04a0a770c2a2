@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ead7a09_c7122b71",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoProperties.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2019-09-10T06:38:36Z",
+      "side": 1,
+      "message": "please rename with _",
+      "revId": "d01c185ffbb1a41a4c9773ab416b04a0a770c2a2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
