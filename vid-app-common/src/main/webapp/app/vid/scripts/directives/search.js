@@ -27,5 +27,5 @@ appDS2.directive('searchText', function() {
         scope: {
             searchString : '='
         }
-    }
+    };
 });

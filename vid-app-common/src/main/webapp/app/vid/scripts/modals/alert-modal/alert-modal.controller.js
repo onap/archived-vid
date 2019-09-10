@@ -31,11 +31,11 @@
                 vm.content = jobInfo.message;
                 vm.mode = jobInfo.status;
                 if (vm.mode == "failed") {
-                    vm.Header = "Failed"
+                    vm.Header = "Failed";
                 } else if (vm.mode == "confirm") {
-                    vm.Header = "Confirm"
+                    vm.Header = "Confirm";
                 } else {
-                    vm.Header = "Success"
+                    vm.Header = "Success";
                 }
             }
         };

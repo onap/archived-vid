@@ -30,5 +30,5 @@ appDS2.directive('serviceMetadata', function() {
         },
         link : function(scope, element, attrs) {
         }
-    }
+    };
 });
