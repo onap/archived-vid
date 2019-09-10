@@ -20,7 +20,20 @@
 
 package org.onap.vid.mso;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import io.joshworks.restclient.request.HttpRequest;
+import java.util.Optional;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.JerseyInvocation;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,26 +41,12 @@ import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.mso.rest.RequestDetails;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RestMsoImplementationTest  {
 
@@ -75,8 +74,11 @@ public class RestMsoImplementationTest  {
     @Mock
     private SystemPropertiesWrapper systemProperties;
 
+    @Mock
+    private Logging loggingService;
+
     @InjectMocks
-    private RestMsoImplementation restMsoImplementation = new RestMsoImplementation(mockHttpsAuthClient, systemProperties);
+    private RestMsoImplementation restMsoImplementation = new RestMsoImplementation(mockHttpsAuthClient, systemProperties, loggingService);
 
     private String path = "/test_path/";
     private String rawData = "test-row-data";

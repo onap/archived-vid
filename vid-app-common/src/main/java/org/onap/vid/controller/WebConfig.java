@@ -55,7 +55,6 @@ import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.parser.VidNotionsBuilder;
 import org.onap.vid.asdc.rest.SdcRestClient;
 import org.onap.vid.client.SyncRestClient;
-import org.onap.vid.client.SyncRestClientInterface;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.scheduler.SchedulerService;
@@ -67,6 +66,7 @@ import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.ChangeManagementService;
 import org.onap.vid.services.PombaService;
 import org.onap.vid.services.PombaServiceImpl;
+import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -119,13 +119,19 @@ public class WebConfig {
     }
 
     @Bean(name = "aaiRestInterface")
-    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory,
+        ServletRequestHelper servletRequestHelper,
+        SystemPropertyHelper systemPropertyHelper,
+        Logging loggingService) {
+        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper, loggingService);
     }
 
     @Bean
-    public PombaRestInterface getPombaRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        return new PombaRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public PombaRestInterface getPombaRestInterface(HttpsAuthClient httpsAuthClientFactory,
+        ServletRequestHelper servletRequestHelper,
+        SystemPropertyHelper systemPropertyHelper,
+        Logging loggingService) {
+        return new PombaRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper, loggingService);
     }
 
     @Bean
@@ -150,18 +156,13 @@ public class WebConfig {
     }
 
     @Bean
-    public AsdcClient sdcClient(AsdcClientConfiguration asdcClientConfiguration, SyncRestClientInterface syncRestClient) {
+    public AsdcClient sdcClient(AsdcClientConfiguration asdcClientConfiguration, Logging loggingService) {
         String auth = asdcClientConfiguration.getAsdcClientAuth();
         String host = asdcClientConfiguration.getAsdcClientHost();
         String protocol = asdcClientConfiguration.getAsdcClientProtocol();
         int port = asdcClientConfiguration.getAsdcClientPort();
 
-        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth, syncRestClient);
-    }
-
-    @Bean
-    public SyncRestClientInterface syncRestClient() {
-        return new SyncRestClient();
+        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth, new SyncRestClient(Logging.getRequestsLogger("sdc")), loggingService);
     }
 
     @Bean
@@ -191,7 +192,9 @@ public class WebConfig {
 
     @Bean
     public AaiOverTLSClientInterface aaiOverTLSClient(ObjectMapper unirestObjectMapper, SystemProperties systemProperties){
-        return new AaiOverTLSClient(new SyncRestClient(unirestObjectMapper), new AaiOverTLSPropertySupplier());
+        return new AaiOverTLSClient(
+            new SyncRestClient(unirestObjectMapper,  Logging.getRequestsLogger("aai")),
+            new AaiOverTLSPropertySupplier());
     }
 
     @Bean

@@ -20,8 +20,21 @@
 
 package org.onap.vid.mso;
 
+import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
+import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+import static org.onap.vid.utils.Logging.getMethodCallerName;
+import static org.onap.vid.utils.Logging.getMethodName;
+
 import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collections;
+import java.util.Optional;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpException;
 import org.eclipse.jetty.util.security.Password;
@@ -37,22 +50,12 @@ import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.Response;
-import java.util.Collections;
-import java.util.Optional;
-
-import static org.onap.vid.utils.Logging.*;
-
 /**
  * Created by pickjonathan on 26/06/2017.
  */
 public class RestMsoImplementation implements RestInterface {
 
+    
     /**
      * The logger.
      */
@@ -65,6 +68,7 @@ public class RestMsoImplementation implements RestInterface {
 
     protected HttpsAuthClient httpsAuthClient;
     protected SystemPropertiesWrapper systemProperties;
+    protected final Logging loggingService;
 
     private static final String START_LOG = " start";
     private static final String APPLICATION_JSON = "application/json";
@@ -81,9 +85,10 @@ public class RestMsoImplementation implements RestInterface {
      */
 
     @Autowired
-    protected RestMsoImplementation(HttpsAuthClient httpsAuthClient, SystemPropertiesWrapper systemProperties){
+    protected RestMsoImplementation(HttpsAuthClient httpsAuthClient, SystemPropertiesWrapper systemProperties, Logging loggingService){
         this.httpsAuthClient=httpsAuthClient;
         this.systemProperties = systemProperties;
+        this.loggingService = loggingService;
     }
 
     @SuppressWarnings("Duplicates")
@@ -145,13 +150,13 @@ public class RestMsoImplementation implements RestInterface {
             url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
 
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
-            Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
+            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
                 final Response cres = client.target(url)
                     .request()
                     .accept(APPLICATION_JSON)
                     .headers(commonHeaders)
                     .get();
-            Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, cres);
+            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, cres);
 
             cres.bufferEntity();
             status = cres.getStatus();
@@ -185,13 +190,13 @@ public class RestMsoImplementation implements RestInterface {
         logger.debug(EELFLoggerDelegate.debugLogger, "<== " +  methodName + " sending request to url= " + url);
 
         MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
-        Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
         final Response cres = client.target(url)
                 .request()
                 .accept(APPLICATION_JSON)
                 .headers(commonHeaders)
                 .get();
-        Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, cres);
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, cres);
         final RestObject<T> restObject = cresToRestObject(cres, clazz);
         int status = cres.getStatus();
 
@@ -219,7 +224,7 @@ public class RestMsoImplementation implements RestInterface {
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
             url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
-            Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url, r);
+            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url, r);
             cres = client.target(url)
                     .request()
 
@@ -228,7 +233,7 @@ public class RestMsoImplementation implements RestInterface {
                     //.entity(r)
                     .build("DELETE", Entity.entity(r, MediaType.APPLICATION_JSON))
                     .invoke();
-            Logging.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
+            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
             int status = cres.getStatus();
             restObject.setStatusCode (status);
 
@@ -310,7 +315,7 @@ public class RestMsoImplementation implements RestInterface {
             userId.ifPresent(id->commonHeaders.put("X-RequestorID", Collections.singletonList(id)));
 
             url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
-            Logging.logRequest(outgoingRequestsLogger, httpMethod, url, payload);
+            loggingService.logRequest(outgoingRequestsLogger, httpMethod, url, payload);
             // Change the content length
             final Invocation.Builder restBuilder = client.target(url)
                     .request()
@@ -322,7 +327,7 @@ public class RestMsoImplementation implements RestInterface {
                     restBuilder.build(httpMethod.name(), Entity.entity(payload, MediaType.APPLICATION_JSON));
             final Response cres = restInvocation.invoke();
 
-            Logging.logResponse(outgoingRequestsLogger, httpMethod, url, cres);
+            loggingService.logResponse(outgoingRequestsLogger, httpMethod, url, cres);
             return cresToRestObject(cres, tClass);
         }
         catch (Exception e) {
@@ -372,7 +377,7 @@ public class RestMsoImplementation implements RestInterface {
             MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
 
             url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
-            Logging.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, r);
+            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, r);
             // Change the content length
             final Response cres = client.target(url)
                     .request()
@@ -381,7 +386,7 @@ public class RestMsoImplementation implements RestInterface {
                     //.header("content-length", 201)
                     .put(Entity.entity(r, MediaType.APPLICATION_JSON));
 
-            Logging.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, cres);
+            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, cres);
 
             try {
                 t = (T) cres.readEntity(t.getClass());

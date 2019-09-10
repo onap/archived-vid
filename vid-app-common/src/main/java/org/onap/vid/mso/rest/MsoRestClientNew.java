@@ -77,8 +77,8 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
 
-    public MsoRestClientNew(SyncRestClient client, String baseUrl, HttpsAuthClient authClient, SystemPropertiesWrapper systemPropertiesWrapper) {
-        super(authClient,systemPropertiesWrapper);
+    public MsoRestClientNew(SyncRestClient client, String baseUrl, HttpsAuthClient authClient, SystemPropertiesWrapper systemPropertiesWrapper, Logging loggingService) {
+        super(authClient,systemPropertiesWrapper, loggingService);
         this.client = client;
         this.baseUrl = baseUrl;
         this.commonHeaders = initCommonHeaders();
