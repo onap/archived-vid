@@ -50,7 +50,6 @@ appDS2.constant("PARAMETER", (function() {
 		LESS_OR_EQUAL: "less_or_equal",
 		DISPLAY_NAME: "displayName",
 		CHECKBOX:'checkbox',
-		FILE:'file'
-		
+		FILE:'file'		
     };
-})())
+})());
