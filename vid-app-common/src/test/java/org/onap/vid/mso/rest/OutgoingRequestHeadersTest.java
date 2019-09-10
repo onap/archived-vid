@@ -52,6 +52,7 @@ import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.controller.filter.PromiseEcompRequestIdFilter;
 import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -73,6 +74,9 @@ public class OutgoingRequestHeadersTest {
 
     @Mock
     private ServletRequestHelper servletRequestHelper;
+
+    @Mock
+    private Logging loggingService;
 
     @InjectMocks
     private AAIRestInterface aaiRestInterface;
