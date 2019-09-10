@@ -33,7 +33,7 @@ var OwningEntityService = function ($http, $log, PropertyService, UtilityService
                     successCallbackFunction(response.data.categoryParameters);
                 }).catch(UtilityService.runHttpErrorHandler);
         }
-    }
+    };
 };
 
 appDS2.factory("OwningEntityService", ["$http", "$log", "PropertyService",
