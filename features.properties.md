@@ -1,0 +1,173 @@
+
+### Feature Flags
+
+* FLAG_ADD_MSO_TESTAPI_FIELD
+
+  As MSO are trying a macro/a-la-carte API consolidation, this feature will signal
+  MSO whether to use the old API or the new one.
+  If enabled, VID will add the field "testApi" (with a selectable value) to many 
+  requests' payloads.
+
+* FLAG_NETWORK_TO_ASYNC_INSTANTIATION
+
+  If FLAG_NETWORK_TO_ASYNC_INSTANTIATION is enabled - services that contain networks will also use the new macro instantiation flow
+  as describes under: FLAG_ASYNC_INSTANTIATION
+  Combination of FLAG_ASYNC_INSTANTIATION- enabled and FLAG_NETWORK_TO_ASYNC_INSTANTIATION- disabled - may break tests
+  that contain csars with networks and expected to go to new flow
+
+* FLAG_5G_IN_NEW_INSTANTIATION_UI
+
+  Enable deployment of 5G a-la-carte services in the "new" Angular 2 instantiation pages.
+  If disabled, the deploy process will be in old UI. 
+
+* FLAG_SHOW_ASSIGNMENTS
+
+* FLAG_ASYNC_ALACARTE_VNF
+
+  enable creating vnfs via async instantiation of a-la-carte service
+
+* FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS
+
+    
+* FLAG_A_LA_CARTE_AUDIT_INFO
+
+  This flag enable show a-la-carte mso audit info, online from mso
+
+
+* FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS
+
+  Once a Provider Network is instantiated and the user goes to View / Edit, she will
+  be able to view the Tenant Networks associated with a Provider network.
+  
+  This information about the networks is retrieved from A&AI.
+  
+  If flag disabled, A&AI is not approached, and View / Edit shows no underlying
+  VLANs.
+  
+* FLAG_ASYNC_ALACARTE_VFMODULE
+
+  Enable creating vfModules and volume groups via async instantiation of a-la-carte 
+  service. If turned off, only VNFs will be created; vf modules will be ignored. 
+  
+* FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI
+  
+  Experimental flag that route any a-la-carte service deployment to "new" Angular 2 instantiation pages.
+  This flag is currently only for development propose and shall not be enabled in testing/production.
+  
+* FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST
+
+  When this flag is is on, VID is adding cloudOwner field into CloudConfiguration section of MSO requests.
+  Relevant requests for 1810 :
+  
+    * Create VNF
+    * Create Volume Group
+    * Create VfModule
+    * Create Network  
+    * Create Macro service
+    * Delete VNF
+    * Delete Volume Group
+    * Delete VfModule
+    * Delete Network  
+    * Delete Macro service
+
+ 
+* FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE
+
+  Enable soft delete for vf-module in view/edit page for a-la-carte only.
+
+  
+* FLAG_1810_AAI_LOCAL_CACHE
+
+  Enables the caching of selected AAI responses.
+  
+  
+* FLAG_1810_IDENTIFY_SERVICE_FOR_NEW_UI
+  
+  Enables to identify the service for new UI.
+  
+  
+* FLAG_EXP_USE_DEFAULT_HOST_NAME_VERIFIER
+
+  Enables using DefaultHostnameVerifier in HttpAuthClient in order to enable a more secure connection
+ 
+ 
+* FLAG_1902_NEW_VIEW_EDIT
+
+  Enable users to go to new view service instance page that is based on service planning page.
+  If the feature flag is on, once a use click open a service on instantiation status dashboard,
+  the user is redirected to the new view page.
+  
+  
+* FLAG_1902_VNF_GROUPING
+
+  Support services with vnf grouping. If the flag is enabled, clicking on deploy of service with vnf grouping 
+  would open the new UI of deploy service. Also if the flag is enabled, view/edit of such a service is service planning 
+  new UI in view/edit mode.
+  
+* FLAG_1902_RETRY_JOB
+  Support retry of failed job. Once async job has failed, the user is able to retry execute the job again.
+    
+* FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY
+
+  While creating a port-mirroring configuration, user will be able to choose the service-type for
+  both pnf anv vnf (aka pprobe and vprobe).
+  
+  Disable this flag to go back to original behaviour, that pnf defaults to the service's service-
+  type, without a visible queue nor an option to change.
+  
+* FLAG_EXP_CREATE_RESOURCES_IN_PARALLEL
+
+  Enable the user to create resources (like VNF, NETWORK, VF_MODULE) in parallel during ALaCarte.
+  For 1902 version the flag is false, since SDNC doesn't support creation of resources in parallel
+  for ALaCarte scenarios.
+  
+* FLAG_1906_COMPONENT_INFO
+  
+  Show in drawing board an information for each resource, when the resource is selected in 
+  the drawing board tree
+  
+* FLAG_1906_INSTANTIATION_API_USER_VALIDATION
+  
+  Enable user role validation for the Backend API instantiation request. The validation is applied for subscriber
+  and service type. There is no tenants validation.
+  
+* FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH
+  
+  Enable using the depth=1 instead of depth=2 parameter in outgoing A&AI GET 'business/customers/customer/{subscriberId}' 
+  request when the Frontend sends the GET '/aai_sub_details/{subscriberId}' request with additional parameter 
+  'omitServiceInstances=true' to the Backend. 
+  
+  Relevant for these specific cases:
+  1) Service types fetching on the "Create New Service Instance" page after subscriber choosing.
+  2) Service types fetching on Service Instance creation popup from the "Browse SDC models" page.
+  
+* FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI
+  Enable opening transport service (service with type:TRANSPORT) in new instantiation UI. 
+  
+* FLAG_1908_INFRASTRUCTURE_VPN
+  Enable opening VRF service (service with type:BONDING, role: INFRASTRUCTURE-VPN) in new instantiation UI.
+
+* FLAG_1908_RESUME_MACRO_SERVICE
+  Enable resume macro service from new view edit page, if :
+  * Service model has a Macro deployment 
+  * Service Instance is in Assigned / Inventoried Ocrh. Status
+  * Service instance Service Type != Transport (PNFs)
+  
+* FLAG_1908_VNF_FABRIC_CONFIGURATION_NEW_INSTANTIATION_UI
+  Enable open the  "new" Angular 2 instantiation pages for service with service-role = "VNF"
+  
+* FLAG_FLASH_MORE_ACTIONS_BUTTON_IN_OLD_VIEW_EDIT
+  Adds a button in legacy View/Edit screen that reopens the service in the _new_ View/Edit screen.
+  This button is not displayed when no "Edit" permissions. 
+
+* FLAG_FLASH_REPLACE_VF_MODULE
+  Enable Replace VF module for upgrade flows, requested by the Flash team.
+  When upgrading a VF module VID will invoke the MSO POST VF-module/replace request
+  
+* FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT
+  Enable New UI on View Edit for Macro, NON TRANSPORT services 
+  
+
+  
+  
+ 
