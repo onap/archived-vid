@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/mso/serviceInstances/v./3f93c7cb-2fd0-4557-9514-e189b7b04f9d/addRelationships",
+    "path": "/mso/serviceInstantiation/v./serviceInstances/3f93c7cb-2fd0-4557-9514-e189b7b04f9d/addRelationships",
     "body": {
       "requestDetails": {
         "modelInfo": {

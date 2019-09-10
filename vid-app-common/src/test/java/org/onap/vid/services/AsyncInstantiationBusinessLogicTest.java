@@ -20,9 +20,80 @@
 
 package org.onap.vid.services;
 
+import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
+import static net.javacrumbs.jsonunit.JsonAssert.whenIgnoringPaths;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.Every.everyItem;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_ERRORS;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_NO_ACTION;
+import static org.onap.vid.job.Job.JobStatus.FAILED;
+import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.PAUSE;
+import static org.onap.vid.job.Job.JobStatus.PENDING;
+import static org.onap.vid.job.Job.JobStatus.STOPPED;
+import static org.onap.vid.testUtils.TestUtils.generateRandomAlphaNumeric;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.SessionFactory;
@@ -54,7 +125,11 @@ import org.onap.vid.job.command.MsoRequestBuilder;
 import org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator;
 import org.onap.vid.job.impl.JobDaoImpl;
 import org.onap.vid.job.impl.JobSharedData;
-import org.onap.vid.model.*;
+import org.onap.vid.model.Action;
+import org.onap.vid.model.JobAuditStatus;
+import org.onap.vid.model.NameCounter;
+import org.onap.vid.model.ResourceInfo;
+import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.serviceInstantiation.BaseResource;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.model.serviceInstantiation.Vnf;
@@ -71,34 +146,11 @@ import org.onap.vid.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
-import org.testng.annotations.*;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.time.*;
-import java.util.Optional;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
-import static net.javacrumbs.jsonunit.JsonAssert.whenIgnoringPaths;
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.core.Every.everyItem;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-import static org.onap.vid.job.Job.JobStatus.*;
-import static org.onap.vid.testUtils.TestUtils.generateRandomAlphaNumeric;
-import static org.testng.Assert.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseTest {
@@ -665,7 +717,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     public static Object[][] isPauseAndPropertyDataProvider() {
         return new Object[][]{
                 {true, "mso.restapi.serviceInstanceAssign"},
-                {false, "mso.restapi.serviceInstanceCreate"},
+                {false, "mso.restapi.service.instance"},
         };
     }
 

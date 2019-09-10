@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": "/mso/serviceInstances/v.",
+    "path": "/mso/serviceInstantiation/v./serviceInstances",
     "body": {
       "requestDetails": {
         "requestInfo": {

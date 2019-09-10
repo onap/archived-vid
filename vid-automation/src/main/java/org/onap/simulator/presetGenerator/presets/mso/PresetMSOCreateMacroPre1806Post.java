@@ -8,7 +8,7 @@ public class PresetMSOCreateMacroPre1806Post extends PresetMSOBaseCreateInstance
 
     @Override
     public String getReqPath() {
-        return getRootPath() + "/serviceInstances/v.";
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances";
     }
 
     @Override
