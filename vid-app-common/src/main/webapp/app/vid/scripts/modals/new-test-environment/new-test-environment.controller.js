@@ -55,7 +55,7 @@
                 vm.releaseVersions = response["release"].map(function (releaseOptions){
                     return releaseOptions.name;});
             },COMPONENT.TENANT_ISOLATION_FAMILY);
-        }
+        };
 
 
         vm.setEcompEnvironment = function (selectedIndex) {
@@ -82,7 +82,7 @@
         };
 
         vm.isShowReleaseEnabled = function () {
-            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1908_RELEASE_TENANT_ISOLATION)
+            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1908_RELEASE_TENANT_ISOLATION);
         };
 
         init();
