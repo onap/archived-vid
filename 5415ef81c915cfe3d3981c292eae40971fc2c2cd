@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2a10bfbc_10f37d9f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-10T18:58:11Z",
+      "side": 1,
+      "message": "Why not pass non-null `defaultObjectMapper()`?",
+      "revId": "5415ef81c915cfe3d3981c292eae40971fc2c2cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dea888ed_725416ff",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-10T18:58:11Z",
+      "side": 1,
+      "message": "can use ObjectUtils.defaultIfNull",
+      "revId": "5415ef81c915cfe3d3981c292eae40971fc2c2cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94951c11_203c3417",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-10T18:58:11Z",
+      "side": 1,
+      "message": "I wonder if this can be simplified; and if result is Springish.\nLet\u0027s look together.",
+      "revId": "5415ef81c915cfe3d3981c292eae40971fc2c2cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
