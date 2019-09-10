@@ -225,7 +225,7 @@
         };
 
         $scope.allowTransferToNewScreenAndShowButton = function (){
-          if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_VIEW_IN_NEW_VIEWEDIT_SCREEN)) {
+          if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_MORE_ACTIONS_BUTTON_IN_OLD_VIEW_EDIT)) {
               return $scope.isPermitted;
           }
           return false;
