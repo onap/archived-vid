@@ -1,21 +1,5 @@
 package org.onap.vid.api;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import org.onap.simulator.presetGenerator.presets.aai.*;
-import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
-import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import vid.automation.test.services.SimulatorApi;
-
-import java.util.UUID;
-
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
@@ -23,9 +7,36 @@ import static org.apache.commons.text.StringEscapeUtils.escapeJson;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.*;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_AIC;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.hvf6;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.olson3;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import java.util.Map;
+import java.util.UUID;
+import org.onap.simulator.presetGenerator.presets.aai.Placement;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudRegionFromVnf;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServiceInstancesByInvariantId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetVfModulesByVnf;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIModelsByInvariantIdGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
+import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
+import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.util.RetryAnalyzerCount;
+import vid.automation.test.services.SimulatorApi;
 
 public class ServiceTreeApiTest extends BaseApiTest {
 
@@ -384,8 +395,28 @@ public class ServiceTreeApiTest extends BaseApiTest {
         assertJsonEquals(response, expected);
     }
 
-    @Test
-    public void serviceWithVrf_resultAsExpected(){
+    public static class RetryServiceWithVrf extends RetryAnalyzerCount {
+        // For an unknown reason serviceWithVrf_resultAsExpected test is failing sometimes.
+        // This single retry might shed more light on the situation: will it work the 2nd
+        // time, or still fail 2 times in strike?
+
+        public RetryServiceWithVrf() {
+            setCount(2);
+        }
+
+        @Override
+        public boolean retryMethod(ITestResult result) {
+            if (result.isSuccess()) {
+                return false;
+            } else {
+                LOGGER.error(result.getName() + " failed; retrying (" + this.getClass().getCanonicalName() + ")");
+                return true;
+            }
+        }
+    }
+
+    @Test(retryAnalyzer = RetryServiceWithVrf.class)
+    public void serviceWithVrf_resultAsExpected() {
         PresetAAIStandardQueryGet vpnBindingPreset =
                 PresetAAIStandardQueryGet.ofVpn("Active", ImmutableMultimap.of(), "mock-global-1", "mock-role-x", "VPN1260","USA,EMEA");
 
@@ -434,7 +465,15 @@ public class ServiceTreeApiTest extends BaseApiTest {
 
         final String response = restTemplate.getForObject(buildUri(API_URL), String.class, "global-customer-id", "service-instance-type", "service-instance-id");
 
-        assertJsonEquals(response, expected);
+        try {
+            assertJsonEquals(response, expected);
+        } catch (AssertionError error) {
+            // Logs what happens on simulator's end when error occures
+            final Map<String, Long> recordedSimulatorPaths = SimulatorApi.retrieveRecordedRequestsPathCounter();
+            System.err.println(recordedSimulatorPaths);
+            LOGGER.error(recordedSimulatorPaths);
+            throw error;
+        }
     }
 
     private String randUuid() {
