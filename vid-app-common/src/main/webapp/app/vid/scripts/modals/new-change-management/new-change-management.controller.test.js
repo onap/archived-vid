@@ -359,7 +359,7 @@ describe('Testing workFlows from SO', () => {
   });
 
   test('Verify get remote workflow should call internal service for params when workflow is native', () =>{
-      let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}})
+      let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["workflow 0"]}});
       let getLocalWorkflowsParametersStub = Promise.resolve({"data":{
               "parameterDefinitions": [
                   {
