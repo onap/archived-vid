@@ -137,13 +137,13 @@ var vfModuleActionModalController = function(COMPONENT, FIELD, $scope, $uibModal
     };
 
     $scope.removeVendorFromCloudOwner = function(cloudOwner) {
-        return AaiService.removeVendorFromCloudOwner(cloudOwner)
+        return AaiService.removeVendorFromCloudOwner(cloudOwner);
     };
 
     $scope.selectedLcpRegionIsMegaRegion = function() {
         if ($scope.regionSelection.optionId) {
             let cloudRegionId = DataService.getCloudOwnerAndLcpCloudRegionFromOptionId($scope.regionSelection.optionId).cloudRegionId;
-            return ($scope.megaRegion).indexOf(cloudRegionId) > -1
+            return ($scope.megaRegion).indexOf(cloudRegionId) > -1;
         } else {
             return false;
         }
