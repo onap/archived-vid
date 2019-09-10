@@ -492,7 +492,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 successCallbackFunction(lcpCloudRegionTenants);
             }).catch(function (error) {
                 (UtilityService.runHttpErrorHandler(error.data, error.status));
-            })
+            });
         },
         getSubscribers: function (successCallbackFunction) {
             $log
@@ -553,7 +553,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     catchCallbackFunction();
                 }
                 UtilityService.runHttpErrorHandler(response, status);
-            })
+            });
         },
         getServices: function (successCallbackFunction) {
             $log
