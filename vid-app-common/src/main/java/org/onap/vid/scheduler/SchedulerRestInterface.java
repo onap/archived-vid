@@ -20,11 +20,17 @@
 
 package org.onap.vid.scheduler;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+
 import com.att.eelf.configuration.EELFLogger;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.joshworks.restclient.http.HttpResponse;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
 import org.apache.http.HttpException;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -38,14 +44,6 @@ import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.Function;
-
-import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
-import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 @Service
 public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
@@ -72,7 +70,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
         commonHeaders = Maps.newHashMap();
         commonHeaders.put("Authorization", "Basic " + authStringEnc);
 
-        syncRestClient = new SyncRestClient();
+        syncRestClient = new SyncRestClient(Logging.getRequestsLogger("scheduler"));
 
         logger.info("\t<== Client Initialized \n");
     }

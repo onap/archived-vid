@@ -63,7 +63,7 @@ public class SdcRestClient implements AsdcClient {
     private String baseUrl;
     private String path;
     private String auth;
-    private static final EELFLogger LOGGER = Logging.getRequestsLogger("asdc");
+    private static final EELFLogger LOGGER = Logging.getRequestsLogger("sdc");
 
     private SyncRestClientInterface syncRestClient;
 

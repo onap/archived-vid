@@ -53,6 +53,7 @@ import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.RestObject;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -474,7 +475,8 @@ public class MsoRestClientNewTest {
 
     private MsoRestClientNew msoRestClient() {
         final WebConfig webConfig = new WebConfig();
-        return new MsoRestClientNew(new SyncRestClient(webConfig.unirestFasterxmlObjectMapper(new ObjectMapper())), baseUrl(), null, new SystemPropertiesWrapper());
+        return new MsoRestClientNew(new SyncRestClient(webConfig.unirestFasterxmlObjectMapper(new ObjectMapper()), Logging.getRequestsLogger("mso")),
+            baseUrl(), null, new SystemPropertiesWrapper());
     }
 
     private MsoRestClientNew createTestSubject() {
