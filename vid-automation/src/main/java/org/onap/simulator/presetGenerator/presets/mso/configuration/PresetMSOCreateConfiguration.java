@@ -44,7 +44,7 @@ public class PresetMSOCreateConfiguration extends PresetMSOBaseCreateInstancePos
 
     @Override
     public String getReqPath() {
-        return getRootPath() + "/serviceInstances/v./" + this.serviceInstanceId + "/configurations";
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances/" + this.serviceInstanceId + "/configurations";
     }
 
     @Override

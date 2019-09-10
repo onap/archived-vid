@@ -359,7 +359,7 @@ public class MsoRestClientNewTest {
 
     @Test
     public void testSetConfigurationActiveStatus() throws Exception {
-        String endpoint = "/serviceInstances/v7/<service_instance_id>/configurations/<configuration_id>";
+        String endpoint = "/serviceInstantiation/v7/serviceInstances/<service_instance_id>/configurations/<configuration_id>";
         endpoint = endpoint.replace(MsoController.SVC_INSTANCE_ID, SERVICE_INSTANCE_ID);
         endpoint = endpoint.replace(MsoController.CONFIGURATION_ID, SAMPLE_CONFIGURATION_ID);
         endpoint = endpoint + "/activate";
