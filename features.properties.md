@@ -167,7 +167,6 @@
 * FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT
   Enable New UI on View Edit for Macro, NON TRANSPORT services 
   
-
-  
-  
+* FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH
+  Add cloud-region and nf-role as an optional search criteria fields when fetching VNF details.
  
