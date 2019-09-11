@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "9f7b0d5a_13623a8a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-11T18:46:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5193b8b_6dee0ee3",
+      "revId": "5415ef81c915cfe3d3981c292eae40971fc2c2cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "94951c11_203c3417",
         "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
         "patchSetId": 1
