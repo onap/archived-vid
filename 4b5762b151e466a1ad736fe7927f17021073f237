@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f2f1a7c_b86f3627",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "nfRole is used, but cloudRegion is ignored.",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de6521a5_c04e3853",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "Can be simplified to:\nString query \u003d \"query/vnfs-fromServiceInstance-filter\" + nfRole \u003d\u003d null ? \"\" : (\"?nfRole\u003d\" + nfRole);",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "002a3ba5_059ed97d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "The original line, `responseWithRequestInfo.getResponse().getStatus()`, was populating the correct code. Reading the getAaiResponse, might yield null or wrong code (I don\u0027t remember which ohne of them).",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cbf928a_44915c74",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClientInterface.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "Not good, I think. This makes the \u003cT\u003e below very surprising.",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0ca33ef_142dff26",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "Added but not in use?",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d252e222_dc93cd50",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController2.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "No use, no test.  Looks like this method was mistakenly added.",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e7b6dd7_24c9d18d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController2.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "No need for @ResponseBody annotation.",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c961f65_79c769b9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController2.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "No need for @ResponseBody annotation.",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fdc9b8d_12ce711b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController2.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "must add `value\u003d\"nfRole\"` to @RequestParam, and `value\u003d\"cloudRegion\"` on the next one.",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53429bbf_0ec33290",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/AaiApiTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-11T14:25:37Z",
+      "side": 1,
+      "message": "Non-ONAP comment.",
+      "revId": "4b5762b151e466a1ad736fe7927f17021073f237",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
