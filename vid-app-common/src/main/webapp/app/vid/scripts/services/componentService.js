@@ -177,8 +177,8 @@ var ComponentService = function($log, COMPONENT, UtilityService) {
 	getFieldDisplayName : function(name) {
 	    return getDisplayName(name);
 	}
-    }
-}
+    };
+};
 
 appDS2.factory("ComponentService", [ "$log", "COMPONENT", "UtilityService",
 	ComponentService ]);
