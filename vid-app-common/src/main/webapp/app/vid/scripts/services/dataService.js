@@ -43,7 +43,7 @@ var DataService = function($log, DataService) {
 			return {
 				cloudOwner: cloudRegionTenant.cloudOwner,
 				cloudRegionId: cloudRegionTenant.cloudRegionId
-			}
+			};
 		},
 		getGlobalCustomerId : function() {
 			return _this.globalCustomerId;
@@ -405,7 +405,7 @@ var DataService = function($log, DataService) {
             _this.owningEntityProperties = properties;
         }
 
-	}
+	};
 };
 
 appDS2.factory("DataService", [ "$log", DataService ]);
