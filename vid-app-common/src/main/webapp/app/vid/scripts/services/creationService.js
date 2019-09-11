@@ -417,7 +417,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 								option = {
 										name: constraintsArray[i][PARAMETER.VALID_VALUES][j],
 										isDefault: false
-								} 
+								}; 
 								if ( ( UtilityService.hasContents (inputs[key][PARAMETER.DEFAULT]) ) 
 										&& (inputs[key][PARAMETER.DEFAULT] === constraintsArray[i][PARAMETER.VALID_VALUES][j] ) ) {
 									option = {
@@ -481,7 +481,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 								parameter.min = constraintsArray[i][PARAMETER.IN_RANGE][0];
 								parameter.max = constraintsArray[i][PARAMETER.IN_RANGE][1];
 								parameter.type = PARAMETER.NUMBER;
-								parameter.value = inputs[key][PARAMETER.DEFAULT]
+								parameter.value = inputs[key][PARAMETER.DEFAULT];
 								parameterList.push(parameter);
 								parameterPushed = true;
 								//console.log ("pushed param for in_range");
@@ -492,7 +492,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 						if ( constraintsArray[i][PARAMETER.GREATER_THAN] != null ) {
 								parameter.type = PARAMETER.NUMBER;
 								parameter.min = constraintsArray[i][PARAMETER.GREATER_THAN];
-								parameter.value = inputs[key][PARAMETER.DEFAULT]
+								parameter.value = inputs[key][PARAMETER.DEFAULT];
 								parameterList.push(parameter);
 								parameterPushed = true;
 								//console.log ("pushed param for greater_than");
@@ -515,7 +515,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         var inventoryItem = DataService.getInventoryItem();
         var inventoryInfo = ComponentService.getInventoryInfo(
             _this.componentId, inventoryItem);
-	}
+	};
 
     /*
      * The "*Mso*" functions return URL and request details that can be passed
@@ -723,7 +723,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 if(lineOfBusiness) {
                     requestDetails.lineOfBusiness = {
                         lineOfBusinessName: lineOfBusiness
-                    }
+                    };
                 }
 
                 requestDetails.platform = {
@@ -741,7 +741,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
                     requestDetails.lineOfBusiness = {
                         lineOfBusinessName: lineOfBusinessNamesString
-                    }
+                    };
                 }
 
                 var platform = getValueFromList(FIELD.ID.PLATFORM, parameterList);
@@ -866,7 +866,7 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                         "modelCustomizationId": modelInfo.customizationUuid,
                         "modelCustomizationName": modelInfo.modelCustomizationName
                     }
-                }
+                };
             }
             relatedInstanceList.push({
                 relatedInstance : relatedInstance
@@ -918,13 +918,13 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                         arbitraryParameters = {
                             name: parameter.id,
                             value: parameter.value
-                        }
+                        };
                         arbitraryArray.push(arbitraryParameters);
                     }
             }
         }
         return (arbitraryArray);
-    }
+    };
 
     var getModel = function() {
         AsdcService.getModel(DataService.getModelId(), function(response) {
@@ -1310,8 +1310,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
         getMsoRequestDetails : getMsoRequestDetails,
         getMsoUrl : getMsoUrl,
         setInventoryInfo: setInventoryInfo
-    }
-}
+    };
+};
 
 appDS2.factory("CreationService", [ "$log", "AaiService", "AsdcService",
     "DataService","VIDCONFIGURATION", "ComponentService", "COMPONENT", "FIELD", "PARAMETER",
