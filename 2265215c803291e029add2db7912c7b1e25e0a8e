@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63000671_2ca335c4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-12T07:47:07Z",
+      "side": 1,
+      "message": "Change to a static field.",
+      "revId": "2265215c803291e029add2db7912c7b1e25e0a8e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
