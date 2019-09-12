@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0418251d_046d7fe7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-12T02:32:53Z",
+      "side": 1,
+      "message": "add trailing comma please",
+      "revId": "b3e7739e83694c1be02449d28f91d11976b9f90a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
