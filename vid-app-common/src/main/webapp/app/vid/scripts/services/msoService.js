@@ -42,7 +42,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
         if (response.data.status < 200 || response.data.status > 202) {
             throw {
                 type : FIELD.ID.MSO_FAILURE
-            }
+            };
         }
     };
 
@@ -172,7 +172,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
         getFormattedCommonResponse : function(response) {
             return UtilityService.getCurrentTime() + " HTTP Status: "
                 + UtilityService.getHttpStatusText(response.data.status)
-                + "\n" + angular.toJson(response.data.entity, true)
+                + "\n" + angular.toJson(response.data.entity, true);
 
         },
         checkValidStatus : checkValidStatus,
@@ -326,7 +326,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
                 $log.debug("model info from instance", instance);
                 $log.debug("model info to model", modelInfo);
 
-                return modelInfo
+                return modelInfo;
             };
 
             var payload = {
@@ -572,7 +572,7 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
 
             return sendPostRequestWithBody(url, payload);
         }
-    }
+    };
 };
 
 appDS2.factory("MsoService", MsoService );
