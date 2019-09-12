@@ -18,56 +18,114 @@
   ============LICENSE_END=========================================================
   -->
 
-<link rel="stylesheet" type="text/css" href="app/vid/styles/modal-create-new.css" />
+<link rel="stylesheet" type="text/css" href="app/vid/styles/modal-create-new.css"/>
 <div class="modal-header">
     <h3 class="modal-title" id="modal-title">New VNF Change</h3>
     <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
     <div ng-if="vm.errorMsg!==''"><font color='red'>{{vm.errorMsg.message}}</font></div>
 </div>
-<form class="form-create" data-tests-id="newChangeManagementForm" name="newChangeManagement" ng-submit="vm.openModal();vm.close();" novalidate>
-    <div class="modal-body step1" ng-show="vm.wizardStep === 1" >
+<form class="form-create" data-tests-id="newChangeManagementForm" name="newChangeManagement"
+      ng-submit="vm.openModal();vm.close();" novalidate>
+    <div class="modal-body step1" ng-show="vm.wizardStep === 1">
+
         <div class="form-group">
             <label class="control-label">Subscriber</label>
-            <select class="form-control" ng-model="vm.changeManagement.subscriberId" ng-change="vm.loadServiceTypes()" name="subscriber" id="subscriber" data-tests-id="subscriberName" required>
+            <select class="form-control" ng-model="vm.changeManagement.subscriberId" ng-change="vm.loadServiceTypes()"
+                    name="subscriber" id="subscriber" data-tests-id="subscriberName" required>
                 <option value="" disabled>Select subscriber</option>
-                <option data-tests-id="subscriberNameOption" class="subscriberNameOption" ng-repeat="item in vm.subscribers" ng-value="item['global-customer-id']" ng-disabled="!(item['is-permitted'])">{{item['subscriber-name']}}</option>
+                <option data-tests-id="subscriberNameOption" class="subscriberNameOption"
+                        ng-repeat="item in vm.subscribers" ng-value="item['global-customer-id']"
+                        ng-disabled="!(item['is-permitted'])">{{item['subscriber-name']}}
+                </option>
             </select>
         </div>
+
         <div class="form-group">
             <label class="control-label">Service type</label>
-            <select class="form-control" ng-model="vm.changeManagement.serviceType" ng-change="vm.loadVNFTypes()" name="serviceType" id="serviceType" ng-options="item['service-type'] disable when !(item['is-permitted']) for item in vm.serviceTypes" required data-ng-disabled="newChangeManagement.subscriber.$pristine" data-tests-id="serviceType">
+            <select class="form-control" ng-model="vm.changeManagement.serviceType"
+                    ng-change="vm.serviceTypeChanged()"
+                    name="serviceType" id="serviceType"
+                    ng-options="item['service-type'] disable when !(item['is-permitted']) for item in vm.serviceTypes"
+                    required data-ng-disabled="newChangeManagement.subscriber.$pristine"
+                    data-tests-id="serviceType">
                 <option value="" disabled>Select service type</option>
             </select>
         </div>
-        <div class="form-group">
-            <label class="control-label">NF Role</label>
-            <select class="form-control" ng-model="vm.changeManagement.vnfType" ng-change="vm.loadVNFVersions()" name="vnfType" id="vnfType" ng-options="item for item in vm.vnfTypes" required data-ng-disabled="newChangeManagement.serviceType.$pristine">
-                <option value="" disabled>NF Role</option>
-            </select>
+
+
+        <div ng-if="!isNewFilterChangeManagmentEnabled()">
+
+            <div class="form-group">
+                <label class="control-label">NF Role</label>
+                <select class="form-control" ng-model="vm.changeManagement.vnfType" ng-change="vm.loadVNFVersions()"
+                        name="vnfType" id="vnfType" ng-options="item for item in vm.vnfTypes" required
+                        data-ng-disabled="newChangeManagement.serviceType.$pristine">
+                    <option value="" disabled>NF Role</option>
+                </select>
+            </div>
+
         </div>
+
+
+        <div ng-if="isNewFilterChangeManagmentEnabled()">
+
+            <div class="form-group form-row">
+                <div class="col nf-role-input">
+                    <label class="control-label">NF Role</label>
+                    <input class="form-control" ng-model="vm.changeManagement.vnfType"
+                           name="vnfType" id="vnfTypeInput"
+                           data-ng-disabled="newChangeManagement.serviceType.$pristine">
+                </div>
+
+                <div class="col">
+                    <button calss="search-vnf" type="button" id="searchVNF" name="searchVNFs" class="btn btn-primary"
+                            ng-click="vm.searchVNFs()"
+                            ng-disabled="newChangeManagement.subscriber.$pristine || newChangeManagement.serviceType.$pristine">
+                        Search VNFs
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
         <div class="form-group">
             <label class="control-label">Source VNF Model Version</label>
-            <select class="form-control" ng-model="vm.changeManagement.fromVNFVersion" ng-change="vm.loadVNFNames()" name="fromVNFVersion" id="fromVNFVersion" ng-options="item.key as item.value for item in vm.fromVNFVersions" required data-ng-disabled="newChangeManagement.vnfType.$pristine">
+            <select class="form-control" ng-model="vm.changeManagement.fromVNFVersion" ng-change="vm.loadVNFNames()"
+                    name="fromVNFVersion" id="fromVNFVersion"
+                    ng-options="item.key as item.value for item in vm.fromVNFVersions" required
+                    data-ng-disabled="vm.isDisabledVNFmodelVersion(newChangeManagement.vnfType.$pristine); ">
                 <option value="" disabled>Select VNF Model Version</option>
             </select>
         </div>
+
+
         <div class="form-group">
             <label class="control-label">Available VNF</label>
-            <multiselect ng-model="vm.changeManagement.vnfNames" ng-change="vm.loadWorkFlows()" name="vnfName" id="vnfName" options="vm.vnfNames" display-prop="name" id-prop="id" required data-ng-disabled="newChangeManagement.fromVNFVersion.$pristine"></multiselect>
+            <multiselect ng-model="vm.changeManagement.vnfNames" ng-change="vm.loadWorkFlows()" name="vnfName"
+                         id="vnfName" options="vm.vnfNames" display-prop="name" id-prop="id" required
+                         data-ng-disabled="newChangeManagement.fromVNFVersion.$pristine"></multiselect>
         </div>
-        <div ng-show="vm.changeManagement.vnfNames && vm.changeManagement.vnfNames.length > 0" class="form-group vnf-versions-container">
+        <div ng-show="vm.changeManagement.vnfNames && vm.changeManagement.vnfNames.length > 0"
+             class="form-group vnf-versions-container">
             <table class="table table-bordered">
                 <tbody>
                 <tr ng-repeat="vnfName in vm.changeManagement.vnfNames">
                     <td class="col-md-2"><span class="vnf-versions-name">{{vnfName.name}}</span></td>
                     <td class="col-md-2">
-                        <select ng-model="vnfName.version" ng-change="vm.selectVersionForVNFName(vnfName)" class="vnf-versions-select-as-text" id="{{vnfName['invariant-id']}}-target-version-select">
+                        <select ng-model="vnfName.version" ng-change="vm.selectVersionForVNFName(vnfName)"
+                                class="vnf-versions-select-as-text"
+                                id="{{vnfName['invariant-id']}}-target-version-select">
                             <option value="" disabled="" selected="selected">Select Target VNF Model Version</option>
-                            <option ng-repeat="version in vnfName.availableVersions">{{version.modelInfo.modelVersion}}</option>
+                            <option ng-repeat="version in vnfName.availableVersions">
+                                {{version.modelInfo.modelVersion}}
+                            </option>
                         </select>
                     </td>
                     <td class="col-md-1 vnf-versions-file">
-                        <input ng-model="vnfName.filePath" onchange="angular.element(this).scope().selectFileForVNFName(this)" type="file" id="{{vnfName['invariant-id']}}" class="vnf-files-select" />
+                        <input ng-model="vnfName.filePath"
+                               onchange="angular.element(this).scope().selectFileForVNFName(this)" type="file"
+                               id="{{vnfName['invariant-id']}}" class="vnf-files-select"/>
                         <span class="vnf-versions-file">Select File<span class="caret"></span></span></td>
                 </tr>
                 </tbody>
@@ -75,30 +133,44 @@
         </div>
         <div class="form-group">
             <label class="control-label">Workflow</label>
-            <select class="form-control" ng-model="vm.changeManagement.workflow" name="workflow" id="workflow" ng-options="item for item in vm.workflows" required data-ng-disabled="newChangeManagement.vnfName.$pristine">
+            <select class="form-control" ng-model="vm.changeManagement.workflow" name="workflow" id="workflow"
+                    ng-options="item for item in vm.workflows" required
+                    data-ng-disabled="newChangeManagement.vnfName.$pristine">
                 <option value="" disabled>Select workflow</option>
             </select>
         </div>
 
-        <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'FILE')">
+        <div class="form-group" ng-if="vm.changeManagement.workflow"
+             ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'FILE')">
             <label class="control-label">{{item.name}}</label>
             <div class="file-wrapper">
-                <input id="{{vm.getIdFor('file',item.id,item.name)}}" ng-change="vm.onChange(item)" class="file-input" type="file" ngf-select ng-model="item.value" ngf-validate-async-fn="vm.uploadConfigFile($file)" ng-attr-name="{{'internal-workflow-parameter-file-name-' + item.id}}" accept="{{item.acceptableFileType}}" ngf-pattern="{{item.acceptableFileType}}" ng-required="{{item.required}}"/>
-                <label id="{{vm.getIdFor('file',item.id,item.name)}}-label" class="file-input-label">{{item.value&&item.value.name||"Select File"}} </label>
+                <input id="{{vm.getIdFor('file',item.id,item.name)}}" ng-change="vm.onChange(item)" class="file-input"
+                       type="file" ngf-select ng-model="item.value" ngf-validate-async-fn="vm.uploadConfigFile($file)"
+                       ng-attr-name="{{'internal-workflow-parameter-file-name-' + item.id}}"
+                       accept="{{item.acceptableFileType}}" ngf-pattern="{{item.acceptableFileType}}"
+                       ng-required="{{item.required}}"/>
+                <label id="{{vm.getIdFor('file',item.id,item.name)}}-label" class="file-input-label">
+                    {{item.value&&item.value.name||"Select File"}} </label>
                 <label ng-attr-for="{{vm.getIdFor('file',item.id,item.name)}}"><span class="icon-browse"></span></label>
             </div>
-            <label id="errorLabel" class="icon-alert error" ng-if="vm.hasPatternError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnPatternError}}</label>
-            <label id="errorContentLabel" class="icon-alert error" ng-if="vm.hasAsyncFnError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnContentError}}</label>
+            <label id="errorLabel" class="icon-alert error"
+                   ng-if="vm.hasPatternError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnPatternError}}</label>
+            <label id="errorContentLabel" class="icon-alert error"
+                   ng-if="vm.hasAsyncFnError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnContentError}}</label>
         </div>
 
-        <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'text')">
+        <div class="form-group" ng-if="vm.changeManagement.workflow"
+             ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'text')">
             <label ng-attr-for="{{vm.getIdFor('text',item.id,item.name)}}" class="control-label">{{item.name}}</label>
-            <input ng-model="item.value" type="text" id="{{vm.getIdFor('text',item.id,item.name)}}" pattern="{{item.pattern}}" ng-required="{{item.required}}">
+            <input ng-model="item.value" type="text" id="{{vm.getIdFor('text',item.id,item.name)}}"
+                   pattern="{{item.pattern}}" ng-required="{{item.required}}">
         </div>
 
-        <div class="form-group" ng-if="vm.changeManagement.workflow" ng-repeat="item in vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow)">
+        <div class="form-group" ng-if="vm.changeManagement.workflow"
+             ng-repeat="item in vm.getRemoteWorkFlowParameters(vm.changeManagement.workflow)">
             <label for="so-workflow-parameter-{{item.id}}" class="control-label">{{item.name}}</label>
-            <input  ng-model="item.value" type="text" id="so-workflow-parameter-{{item.id}}" pattern="{{item.pattern}}" maxlength="{{item.maxLength}}" ng-required="{{item.required}}" soFieldName="{{item.soFieldName}}">
+            <input ng-model="item.value" type="text" id="so-workflow-parameter-{{item.id}}" pattern="{{item.pattern}}"
+                   maxlength="{{item.maxLength}}" ng-required="{{item.required}}" soFieldName="{{item.soFieldName}}">
         </div>
     </div>
 
@@ -114,7 +186,8 @@
             <div>Invariant UUID</div>
         </div>
 
-        <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames" ng-click="vnf.isOpen=!!!vnf.isOpen">
+        <div class="table-row" ng-repeat-start="vnf in vm.changeManagement.vnfNames"
+             ng-click="vnf.isOpen=!!!vnf.isOpen">
             <div>{{vnf.isOpen ? '-' : '+'}}</div>
             <div>{{vnf['service-instance-node'][0].properties['service-instance-name']}}</div>
             <div>{{vnf.name}}</div>
@@ -137,12 +210,13 @@
                 <div>{{moduleArr.length}}</div>
                 <div ng-if="!moduleArr[0].scalable">N/A</div>
                 <div ng-if="moduleArr[0].scalable">
-                    <input type="checkbox" ng-model="moduleArr[0].scale" />
+                    <input type="checkbox" ng-model="moduleArr[0].scale"/>
                 </div>
                 <div>{{moduleArr[0].uuid}}</div>
                 <div ng-if="!moduleArr[0].scalable">N/A</div>
                 <div ng-if="moduleArr[0].scalable">
-                    <input type="file" accept="application/json" onchange="angular.element(this).scope().setPreload(this)" />
+                    <input type="file" accept="application/json"
+                           onchange="angular.element(this).scope().setPreload(this)"/>
                 </div>
             </div>
         </div>
@@ -150,13 +224,23 @@
 
     <div class="modal-footer">
         <div class="pull-left">
-            <button ng-if="vm.wizardStep === 2" ng-click="vm.prevStep();" type="button" id="back" name="back" class="btn btn-primary">Back</button>
+            <button ng-if="vm.wizardStep === 2" ng-click="vm.prevStep();" type="button" id="back" name="back"
+                    class="btn btn-primary">Back
+            </button>
         </div>
         <div class="pull-right">
             <button type="button" id="cancel" name="cancel" class="btn btn-white" ng-click="vm.close()">Cancel</button>
-            <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2) || vm.hasScheduler" type="submit" id="submit" name="submit" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">{{vm.hasScheduler ? "Schedule" : "Confirm"}}</button>
-            <button ng-if="(vm.isScaleOut() && vm.wizardStep === 1) && !vm.hasScheduler" ng-click="vm.nextStep();" type="button" id="next" name="next" class="btn btn-primary" data-ng-disabled="newChangeManagement.$invalid">Next</button>
-            <button ng-if="isShowErrorReport() && vm.errorMsg!==''" ng-click="showReportWindow()" type="button" class="btn btn-danger" >Create report</button>
+            <button ng-if="!vm.isScaleOut() || (vm.isScaleOut() && vm.wizardStep === 2) || vm.hasScheduler"
+                    type="submit" id="submit" name="submit" class="btn btn-primary"
+                    data-ng-disabled="newChangeManagement.$invalid">{{vm.hasScheduler ? "Schedule" : "Confirm"}}
+            </button>
+            <button ng-if="(vm.isScaleOut() && vm.wizardStep === 1) && !vm.hasScheduler" ng-click="vm.nextStep();"
+                    type="button" id="next" name="next" class="btn btn-primary"
+                    data-ng-disabled="newChangeManagement.$invalid">Next
+            </button>
+            <button ng-if="isShowErrorReport() && vm.errorMsg!==''" ng-click="showReportWindow()" type="button"
+                    class="btn btn-danger">Create report
+            </button>
         </div>
     </div>
 </form>
