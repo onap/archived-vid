@@ -1,28 +1,18 @@
 package vid.automation.test.test;
 
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.core.IsNot.not;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
-import org.json.JSONException;
-import org.junit.Assert;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.Select;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.testng.annotations.*;
-import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
-import vid.automation.test.model.User;
-import vid.automation.test.sections.ChangeManagementPage;
-import vid.automation.test.services.SimulatorApi;
-import vid.automation.test.utils.DB_CONFIG;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -31,12 +21,36 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.IsNot.not;
+import org.json.JSONException;
+import org.junit.Assert;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
+import vid.automation.test.model.User;
+import vid.automation.test.sections.ChangeManagementPage;
+import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.utils.DB_CONFIG;
 
 public class ChangeManagementTest extends VidBaseTestCase {
 
@@ -453,7 +467,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
 
     // Deleted testUploadConfigUpdateFile test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
-    @FeatureTogglingTest(value = Features.FLAG_NEW_FILTER_CHANGE_MANAGMENT, flagActive = false)
+    @FeatureTogglingTest(value = Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH, flagActive = false)
     @Test
     public void testUploadConfigUpdateNonCsvFile() {
         String fileName = "non-valid.json";
