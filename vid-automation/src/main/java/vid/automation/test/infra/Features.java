@@ -45,6 +45,7 @@ public enum Features implements Feature {
     FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT,
     FLAG_FLASH_REPLACE_VF_MODULE,
     FLAG_FLASH_MORE_ACTIONS_BUTTON_IN_OLD_VIEW_EDIT,
+    FLAG_NEW_FILTER_CHANGE_MANAGMENT,
     ;
 
     public boolean isActive() {
