@@ -20,7 +20,9 @@
 
 package org.onap.vid.utils;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -31,15 +33,19 @@ import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import io.joshworks.restclient.http.HttpResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import javax.crypto.BadPaddingException;
 import javax.net.ssl.SSLHandshakeException;
 import javax.ws.rs.ProcessingException;
+import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.testUtils.TestUtils;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -49,9 +55,26 @@ import sun.security.validator.ValidatorException;
 
 public class LoggingUtilsTest {
 
+    private static final String TEST_OBJECT_JSON = "{\"key\":\"myNumber\",\"value\":42}";
+
+    public static class TestModel {
+        public String key;
+        public int value;
+
+        public TestModel(String key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public TestModel() {}
+    }
+
     private EELFLogger loggerMock;
 
     private Logging logginService = new Logging();
+    private String url = "someUrl";
+    private final TestModel testObject = new TestModel("myNumber", 42);
+
 
     @BeforeMethod
     public void setUp() {
@@ -61,7 +84,6 @@ public class LoggingUtilsTest {
     @Test
     public void whenLogRequest_thenLoggedInDebug() {
         //when
-        String url = "someUrl";
         logginService.logRequest(loggerMock, HttpMethod.GET, url);
 
         //then
@@ -69,6 +91,38 @@ public class LoggingUtilsTest {
         verify(loggerMock).debug(contains("Sending"), argumentCaptor.capture());
         assertEquals("GET", argumentCaptor.getAllValues().get(0));
         assertEquals(url, argumentCaptor.getAllValues().get(1));
+    }
+
+
+
+    @Test
+    public void whenLogResponseOfHttpResponse_thenLoggedInDebug() throws Exception {
+        HttpResponse<TestModel> response = TestUtils.createTestHttpResponse(200, testObject, TestModel.class);
+        logginService.logResponse(loggerMock, HttpMethod.POST, url, response);
+
+        ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
+        ArgumentCaptor<String> messageCaptur = ArgumentCaptor.forClass(String.class);
+        verify(loggerMock).debug(messageCaptur.capture(), argumentCaptor.capture());
+
+        assertThat(messageCaptur.getValue(), matchesPattern("Received.*Status.*Body.*"));
+        assertEquals("POST", argumentCaptor.getAllValues().get(0));
+        assertEquals(url, argumentCaptor.getAllValues().get(1));
+        assertEquals(200, argumentCaptor.getAllValues().get(2));
+        assertEquals(TEST_OBJECT_JSON, argumentCaptor.getAllValues().get(3));
+    }
+
+    @Test
+    public void whenLogResponseOfHttpResponse_thenCanReadEntityAfterwards() throws Exception {
+        HttpResponse<TestModel> response = TestUtils.createTestHttpResponse(200, testObject, TestModel.class);
+        logginService.logResponse(loggerMock, HttpMethod.POST, url, response);
+        assertThat(response.getBody(), jsonEquals(TEST_OBJECT_JSON));
+    }
+
+    @Test
+    public void whenLogResponseOfHttpResponse_thenCanReadRawEntityAfterwards() throws Exception {
+        HttpResponse<TestModel> response = TestUtils.createTestHttpResponse(200, testObject, TestModel.class);
+        logginService.logResponse(loggerMock, HttpMethod.POST, url, response);
+        assertThat(IOUtils.toString(response.getRawBody(), StandardCharsets.UTF_8), jsonEquals(TEST_OBJECT_JSON));
     }
 
     @DataProvider

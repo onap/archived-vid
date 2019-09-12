@@ -31,11 +31,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
 import io.joshworks.restclient.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
@@ -123,7 +125,9 @@ public class Logging {
 
     public <T> void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final HttpResponse<T> response) {
         try {
-            logger.debug("Received {} {} Status: {} . Body: {}", method.name(), url, response.getStatus(), response.getBody());
+            logger.debug("Received {} {} Status: {} . Body: {}", method.name(),
+                url, response.getStatus(), IOUtils.toString(response.getRawBody(), StandardCharsets.UTF_8));
+            response.getRawBody().reset();
         }
         catch (Exception e) {
             logger.debug("Received {} {} Status: {} . Failed to read response", method.name(), url, response.getStatus());
