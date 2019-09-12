@@ -40,7 +40,8 @@ import static org.hamcrest.core.IsNot.not;
 
 public class ChangeManagementTest extends VidBaseTestCase {
 
-    public static final  String SCHEDULED_ID = "0b87fe60-50b0-4bac-a0a7-49e951b0ba9e";
+    public static final String SCHEDULED_ID = "0b87fe60-50b0-4bac-a0a7-49e951b0ba9e";
+
     @Test
     public void testLeftPanelChangeManagementButton() {
         Assert.assertTrue(Wait.byText(Constants.SideMenu.VNF_CHANGES));
@@ -79,8 +80,10 @@ public class ChangeManagementTest extends VidBaseTestCase {
         SelectOption.waitForOptionInSelect(subscriberName, "subscriberName");
         ChangeManagementPage.selectSubscriberById(subscriberId);
         Wait.angularHttpRequestsLoaded();
+
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalServiceTypeInputId, serviceType);
         Wait.angularHttpRequestsLoaded();
+
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalVNFTypeInputId, vnfType);
         Wait.angularHttpRequestsLoaded();
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalFromVNFVersionInputId, vnfSourceVersion);
@@ -161,16 +164,16 @@ public class ChangeManagementTest extends VidBaseTestCase {
         SimulatorApi.clearAll();
         SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
                 "changeManagement/ecompportal_getSessionSlotCheckInterval.json"
-                        , "changeManagement/get_aai_sub_details.json"
-                        , "changeManagement/get_sdc_catalog_services_2f80c596.json"
-                        , "changeManagement/get_service-design-and-creation.json"
-                        , "changeManagement/get_vnf_data_by_globalid_and_service_type.json"
-                        , "changeManagement/service-design-and-creation.json"
-                        , "changeManagement/mso_get_manual_task.json"
-                        , "changeManagement/mso_post_manual_task.json"
-                        , "changeManagement/mso_get_change_managements_scaleout.json"
+                , "changeManagement/get_aai_sub_details.json"
+                , "changeManagement/get_sdc_catalog_services_2f80c596.json"
+                , "changeManagement/get_service-design-and-creation.json"
+                , "changeManagement/get_vnf_data_by_globalid_and_service_type.json"
+                , "changeManagement/service-design-and-creation.json"
+                , "changeManagement/mso_get_manual_task.json"
+                , "changeManagement/mso_post_manual_task.json"
+                , "changeManagement/mso_get_change_managements_scaleout.json"
         );
-        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(),SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.APPEND);
 
         registerDefaultTablesData();
         resetGetServicesCache();
@@ -178,9 +181,9 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     private void registerDefaultTablesData() {
         SimulatorApi.registerExpectation(
-                new String[] {"changeManagement/get_scheduler_details_short.json",
+                new String[]{"changeManagement/get_scheduler_details_short.json",
                         "changeManagement/mso_get_change_managements.json"
-                        ,"changeManagement/delete_scheduled_task.json"},
+                        , "changeManagement/delete_scheduled_task.json"},
                 ImmutableMap.of(
                         "<SCHEDULE_ID>", SCHEDULED_ID,
                         "<IN_PROGRESS_DATE>", "Fri, 08 Sep 2017 19:34:32 GMT"), SimulatorApi.RegistrationStrategy.APPEND
@@ -259,7 +262,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @Test
     public void clickOnScheduledJob_SuccessfulMessageAppear() {
 
-        SimulatorApi.registerExpectationFromPreset(new PresetDeleteSchedulerChangeManagement(),SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetDeleteSchedulerChangeManagement(), SimulatorApi.RegistrationStrategy.APPEND);
 
         ChangeManagementPage.openChangeManagementPage();
         GeneralUIUtils.ultimateWait();
@@ -279,13 +282,14 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     }
 
-    private void clickAndAssertOnCancelButton(String scheduledID){
-        Wait.waitByTestId("icon-status-"+ scheduledID, 5);
-        Click.byTestId("icon-status-"+ scheduledID);
+    private void clickAndAssertOnCancelButton(String scheduledID) {
+        Wait.waitByTestId("icon-status-" + scheduledID, 5);
+        Click.byTestId("icon-status-" + scheduledID);
         GeneralUIUtils.ultimateWait();
         WebElement cancelPendingConfirmationMessage = Get.byTestId("btn-cancel-workflow");
-        assertThat(cancelPendingConfirmationMessage.getText(),containsString("Are you sure you want to delete workflow"));
+        assertThat(cancelPendingConfirmationMessage.getText(), containsString("Are you sure you want to delete workflow"));
     }
+
     private void clickAndAssertClickOnCancelWorkflowButtonOnPendingPopUp() {
 
         try {
@@ -293,14 +297,14 @@ public class ChangeManagementTest extends VidBaseTestCase {
             GeneralUIUtils.ultimateWait();
             Assert.assertTrue(Exists.byClassAndText(Constants.generalModalTitleClass, "Success"));
         } finally {
-            if (Exists.byClassAndText("modal-title", "Pending")){
+            if (Exists.byClassAndText("modal-title", "Pending")) {
                 Click.byClass("pull-right modal-close");
             }
         }
-        Click.byClassAndVisibleText("btn","OK");
+        Click.byClassAndVisibleText("btn", "OK");
     }
 
-    private void assertCorrectJobDeleted (String vnfName){
+    private void assertCorrectJobDeleted(String vnfName) {
         WebElement canceledScheduledJobRow = GeneralUIUtils.getWebElementByTestID("pending-table-cm-row");
         String scheduledVnfName = ((RemoteWebElement) canceledScheduledJobRow).findElementsByTagName("td").get(1).getText();
         String scheduledState = ((RemoteWebElement) canceledScheduledJobRow).findElementsByTagName("td").get(5).getText();
@@ -308,14 +312,14 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Assert.assertEquals("Deleted", scheduledState);
     }
 
-    private void assertAndCheckStatusCellOnDeletedSheduledJob(String scheduledId, String classString){
+    private void assertAndCheckStatusCellOnDeletedSheduledJob(String scheduledId, String classString) {
         boolean isNotDisplayed = GeneralUIUtils.waitForElementInVisibilityByTestId("icon-status-" + scheduledId, 5);
         Assert.assertTrue(isNotDisplayed);
     }
 
-    public void updateSimulatorWithParametersOfScheduledJod(String jasonFile){
+    public void updateSimulatorWithParametersOfScheduledJod(String jasonFile) {
         SimulatorApi.registerExpectation(
-                new String[] {"changeManagement/"+jasonFile},
+                new String[]{"changeManagement/" + jasonFile},
                 ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), SimulatorApi.RegistrationStrategy.APPEND
         );
     }
@@ -330,7 +334,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     @FeatureTogglingTest(value = Features.FLAG_HANDLE_SO_WORKFLOWS, flagActive = false)
     @Test
-    public void testWorkflowVNFInPlaceSoftwareUpdateInWorkflowsListWhenExpected()  {
+    public void testWorkflowVNFInPlaceSoftwareUpdateInWorkflowsListWhenExpected() {
         List<String> workflows = getListOfWorkflowsFor(VNF_DATA_WITH_IN_PLACE.vnfName);
         assertThat(workflows, hasItem(VNF_DATA_WITH_IN_PLACE.workflowName));
     }
@@ -438,19 +442,18 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     @DataProvider
     public static Object[][] dataForUpdateWorkflowPartialWithInPlace() {
-        return new Object[][] {
-                { "1111", "22222", "33333" }
+        return new Object[][]{
+                {"1111", "22222", "33333"}
                 , {"8", "3t3MhTRqkyjB85o5NC9OacAw", "B.bJ6f7KYI6Wz-----DMR0.fyNM9r4"}
                 , {"78058488", "n", "WkH"}
         };
     }
-    
+
     // Deleted testVidToMsoCallbackDataWithInPlaceSWUpdate test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
 
 
-
     // Deleted testUploadConfigUpdateFile test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
-
+    @FeatureTogglingTest(value = Features.FLAG_NEW_FILTER_CHANGE_MANAGMENT, flagActive = false)
     @Test
     public void testUploadConfigUpdateNonCsvFile() {
         String fileName = "non-valid.json";
@@ -470,7 +473,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
     @DataProvider
     public static Object[][] invalidCsvFiles() {
-        return new Object[][] {
+        return new Object[][]{
                 {"emptyFile.csv"},
                 {"withoutPayload.csv"},
                 {"withoutConfigurationParameters.csv"},
@@ -544,15 +547,15 @@ public class ChangeManagementTest extends VidBaseTestCase {
     public void testFinishedSectionIncludeUnlockedItem() {
         ChangeManagementPage.openChangeManagementPage();
         Click.byId(Constants.ChangeManagement.dashboardFinishedTabId);
-        Assert.assertThat(Get.byClassAndText("vnf-name","Unlocked instance"),is(notNullValue()));
+        Assert.assertThat(Get.byClassAndText("vnf-name", "Unlocked instance"), is(notNullValue()));
     }
 
     @Test
-    public void testMainDashboardTableContent () {
+    public void testMainDashboardTableContent() {
         ChangeManagementPage.openChangeManagementPage();
         GeneralUIUtils.ultimateWait();
         List<WebElement> webElements = Get.multipleElementsByTestId(Constants.ChangeManagement.activeTableRowId);
-        assertThat("List of pending workflows is empty",webElements,is(not(empty())));
+        assertThat("List of pending workflows is empty", webElements, is(not(empty())));
         //TODO: After scheduler will be ready than we will examine if the content is valid.
     }
 
@@ -567,11 +570,10 @@ public class ChangeManagementTest extends VidBaseTestCase {
         GeneralUIUtils.ultimateWait();
 
 
-
         List<WebElement> elements = Get.byClass(Constants.ChangeManagement.pendingIconClass);
         Assert.assertTrue(elements != null && elements.size() > 0);
 
-        ((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView();", elements.get(0));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView();", elements.get(0));
 
 
         elements.get(0).click();
@@ -592,7 +594,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     public void testOpenFailedStatusModal() {
         ChangeManagementPage.openChangeManagementPage();
 
-        if(!Exists.byClass(Constants.ChangeManagement.failedIconClass)) {
+        if (!Exists.byClass(Constants.ChangeManagement.failedIconClass)) {
             //TODO: Create a job which will shown with status fail.
         }
 
@@ -612,7 +614,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     public void testOpenInProgressStatusModal() {
         ChangeManagementPage.openChangeManagementPage();
 
-        if(!Exists.byClass(Constants.ChangeManagement.processIconClass)) {
+        if (!Exists.byClass(Constants.ChangeManagement.processIconClass)) {
             //TODO: Create a job which will shown with status in-progress.
         }
 
@@ -632,7 +634,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     public void testOpenAlertStatusModal() {
         ChangeManagementPage.openChangeManagementPage();
 
-        if(!Exists.byClass(Constants.ChangeManagement.alertIconClass)) {
+        if (!Exists.byClass(Constants.ChangeManagement.alertIconClass)) {
             //TODO: Create a job which will shown with status alert.
         }
 
@@ -652,7 +654,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     public void testOpenPendingStatusModal() {
         ChangeManagementPage.openChangeManagementPage();
 
-        if(!Exists.byClass(Constants.ChangeManagement.pendingIconClass)) {
+        if (!Exists.byClass(Constants.ChangeManagement.pendingIconClass)) {
             //TODO: Create a job which will shown with status pending.
         }
 
@@ -696,13 +698,13 @@ public class ChangeManagementTest extends VidBaseTestCase {
         GeneralUIUtils.ultimateWait();
         List<WebElement> pendingRows = Get.multipleElementsByTestId(Constants.ChangeManagement.pendingTableRowId);
         List<WebElement> activeRows = Get.multipleElementsByTestId(Constants.ChangeManagement.activeTableRowId);
-        assertThat("The pending table has no content",pendingRows, is(not(empty())));
-        assertThat("The active table has no content",activeRows, is(not(empty())));
+        assertThat("The pending table has no content", pendingRows, is(not(empty())));
+        assertThat("The active table has no content", activeRows, is(not(empty())));
         Click.byTestId(Constants.ChangeManagement.refreshBtnTestId);
         GeneralUIUtils.ultimateWait();
         pendingRows = Get.multipleElementsByTestId(Constants.ChangeManagement.pendingTableRowId);
-        assertThat("The pending table has no content",pendingRows, is(not(empty())));
-        assertThat("The active table has no content",activeRows, is(not(empty())));
+        assertThat("The pending table has no content", pendingRows, is(not(empty())));
+        assertThat("The active table has no content", activeRows, is(not(empty())));
         //return the register requests to the default state
         registerDefaultTablesData();
     }
