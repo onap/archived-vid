@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "105cf0ad_f15e2c50",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T12:19:46Z",
+      "side": 1,
+      "message": "class",
+      "revId": "2f3858ffbf0d926ed9cc1220ade18d7a8fd8bd63",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
