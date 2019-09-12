@@ -55,6 +55,7 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.Logging;
+import org.springframework.http.HttpMethod;
 
 public class SyncRestClient implements SyncRestClientInterface {
     private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SyncRestClient.class);
@@ -90,68 +91,133 @@ public class SyncRestClient implements SyncRestClientInterface {
 
     @Override
     public HttpResponse<JsonNode> post(String url, Map<String, String> headers, Object body) {
-        return callWithRetryOverHttp(url, url2 -> restClient.post(url2).headers(headers).body(body).asJson());
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, body);
+
+        HttpResponse<JsonNode> response = callWithRetryOverHttp(url,
+            url2 -> restClient.post(url2).headers(headers).body(body).asJson());
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, response);
+
+        return response;
     }
 
     @Override
     public <T> HttpResponse<T> post(String url, Map<String, String> headers, Object body, Class<T> responseClass) {
-        return callWithRetryOverHttp(url,
-                url2 -> restClient.post(url2).headers(headers).body(body).asObject(responseClass));
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, body);
+
+        HttpResponse<T> response = callWithRetryOverHttp(url,
+            url2 -> restClient.post(url2).headers(headers).body(body).asObject(responseClass));
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, response);
+
+        return response;
     }
 
     @Override
     public HttpResponse<JsonNode> get(String url, Map<String, String> headers, Map<String, String> routeParams) {
-        return callWithRetryOverHttp(url, url2 -> {
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url, routeParams);
+
+        HttpResponse<JsonNode> response = callWithRetryOverHttp(url, url2 -> {
             GetRequest getRequest = restClient.get(url2).headers(headers);
             routeParams.forEach(getRequest::routeParam);
             return getRequest.asJson();
         });
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
+
+        return response;
     }
 
     @Override
     public <T> HttpResponse<T> get(String url, Map<String, String> headers, Map<String, String> routeParams,
                                    Class<T> responseClass) {
-        return callWithRetryOverHttp(url, url2 -> {
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url, routeParams);
+
+        HttpResponse<T> response = callWithRetryOverHttp(url, url2 -> {
             GetRequest getRequest = restClient.get(url2).headers(headers);
             routeParams.forEach(getRequest::routeParam);
             return getRequest.asObject(responseClass);
         });
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
+
+        return response;
     }
 
     @Override
     public HttpResponse<InputStream> getStream(String url, Map<String, String> headers,
                                                Map<String, String> routeParams) {
-        return callWithRetryOverHttp(url, url2 -> {
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url, routeParams);
+
+        HttpResponse<InputStream> response = callWithRetryOverHttp(url, url2 -> {
             GetRequest getRequest = restClient.get(url2).headers(headers);
             routeParams.forEach(getRequest::routeParam);
             return getRequest.asBinary();
         });
+
+        //no logging of the response since the response is too long
+        return response;
+
     }
 
     @Override
     public HttpResponse<JsonNode> put(String url, Map<String, String> headers, Object body) {
-        return callWithRetryOverHttp(url, url2 -> restClient.put(url2).headers(headers).body(body).asJson());
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, body);
+
+        HttpResponse<JsonNode> response = callWithRetryOverHttp(url,
+            url2 -> restClient.put(url2).headers(headers).body(body).asJson());
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, response);
+
+        return response;
     }
 
     @Override
     public <T> HttpResponse<T> put(String url, Map<String, String> headers, Object body, Class<T> responseClass) {
-        return callWithRetryOverHttp(url,
-                url2 -> restClient.put(url2).headers(headers).body(body).asObject(responseClass));
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, body);
+
+        HttpResponse<T> response = callWithRetryOverHttp(url,
+            url2 -> restClient.put(url2).headers(headers).body(body).asObject(responseClass));
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, response);
+
+        return response;
     }
 
     @Override
     public <T> HttpResponse<T> delete(String url, Map<String, String> headers, Object body, Class<T> responseClass) {
-        return callWithRetryOverHttp(url, url2 -> restClient.delete(url2).headers(headers).body(body).asObject(responseClass));
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url, body);
+
+        HttpResponse<T> response = callWithRetryOverHttp(url,
+            url2 -> restClient.delete(url2).headers(headers).body(body).asObject(responseClass));
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, response);
+
+        return response;
     }
 
     @Override
     public <T> HttpResponse<T> delete(String url, Map<String, String> headers, Class<T> responseClass) {
-        return callWithRetryOverHttp(url, url2 -> restClient.delete(url2).headers(headers).asObject(responseClass));
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
+
+        HttpResponse<T> response = callWithRetryOverHttp(url,
+            url2 -> restClient.delete(url2).headers(headers).asObject(responseClass));
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, response);
+
+        return response;
     }
 
     @Override
     public HttpResponse<JsonNode> delete(String url, Map<String, String> headers) {
-        return callWithRetryOverHttp(url, url2 -> restClient.delete(url2).headers(headers).asJson());
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
+
+        HttpResponse<JsonNode> response = callWithRetryOverHttp(url,
+            url2 -> restClient.delete(url2).headers(headers).asJson());
+
+        loggingService.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, response);
+
+        return response;
     }
 
     @Override
@@ -172,7 +238,7 @@ public class SyncRestClient implements SyncRestClientInterface {
             return patched(httpRequest.apply(url));
         } catch (RestClientException e) {
             if (causedBySslHandshakeError(e)) {
-                logger.warn(EELFLoggerDelegate.debugLogger, "SSL Handshake problem occured. Will try to retry over Http.", e);
+                logger.warn("SSL Handshake problem occured. Will try to retry over Http.", e);
                 return patched(httpRequest.apply(url.replaceFirst(HTTPS_SCHEMA, HTTP_SCHEMA)));
             }
             throw e;
@@ -199,7 +265,7 @@ public class SyncRestClient implements SyncRestClientInterface {
 
             return HttpClients.custom().setSSLSocketFactory(sslSf).build();
         } catch (IOException | CertificateException | UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            logger.warn(EELFLoggerDelegate.debugLogger, "Cannot initialize custom http client from current configuration. Using default one.", e);
+            logger.warn("Cannot initialize custom http client from current configuration. Using default one.", e);
             return HttpClients.createDefault();
         }
     }
