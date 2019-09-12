@@ -21,8 +21,13 @@
 
 package org.onap.vid.scheduler;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xebialabs.restito.semantics.Action;
+import java.util.HashMap;
+import java.util.Map;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -33,12 +38,8 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.testUtils.StubServerUtil;
+import org.onap.vid.utils.Logging;
 import org.testng.annotations.AfterMethod;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,7 +58,7 @@ public class SchedulerRestInterfaceTest {
         put(SchedulerProperties.SCHEDULER_SERVER_URL_VAL, SAMPLE_SCHEDULER_SERVER_URL);
     }};
     private static StubServerUtil serverUtil;
-    private static SchedulerRestInterface schedulerInterface = new SchedulerRestInterface((key) -> DUMMY_SYSTEM_PROPERTIES.get(key));
+    private static SchedulerRestInterface schedulerInterface = new SchedulerRestInterface((key) -> DUMMY_SYSTEM_PROPERTIES.get(key), mock(Logging.class));
 
     @BeforeClass
     public static void setUpClass() {

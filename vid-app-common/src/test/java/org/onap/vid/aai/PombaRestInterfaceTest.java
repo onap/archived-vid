@@ -20,30 +20,9 @@
 package org.onap.vid.aai;
 
 
-import org.mockito.Mock;
-import org.onap.vid.aai.util.HttpClientMode;
-import org.onap.vid.aai.util.HttpsAuthClient;
-import org.onap.vid.aai.util.ServletRequestHelper;
-import org.onap.vid.aai.util.SystemPropertyHelper;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -52,6 +31,25 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.FROM_APP_ID_HEADER;
 import static org.onap.vid.aai.AaiOverTLSClientInterface.HEADERS.TRANSACTION_ID_HEADER;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.UUID;
+import java.util.regex.Pattern;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.mockito.Mock;
+import org.onap.vid.aai.util.HttpClientMode;
+import org.onap.vid.aai.util.HttpsAuthClient;
+import org.onap.vid.aai.util.ServletRequestHelper;
+import org.onap.vid.aai.util.SystemPropertyHelper;
+import org.onap.vid.utils.Logging;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class PombaRestInterfaceTest {
     private static final String UUID_REGEX = "[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}";
@@ -81,6 +79,9 @@ public class PombaRestInterfaceTest {
     @Mock
     private Response response;
 
+    @Mock
+    private Logging loggingService;
+
     private PombaRestInterface pombaRestInterface;
 
     @BeforeMethod
@@ -90,7 +91,7 @@ public class PombaRestInterfaceTest {
         when(requestHelper.extractOrGenerateRequestId()).thenReturn(UUID.randomUUID().toString());
         when(authClient.getClient(HttpClientMode.WITH_KEYSTORE)).thenReturn(client);
         setUpBuilder();
-        pombaRestInterface = new PombaRestInterface(authClient, requestHelper, systemPropertyHelper);
+        pombaRestInterface = new PombaRestInterface(authClient, requestHelper, systemPropertyHelper, loggingService);
     }
 
 

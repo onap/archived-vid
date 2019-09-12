@@ -20,6 +20,21 @@
 
 package org.onap.vid.aai.util;
 
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,23 +43,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
+import org.onap.vid.utils.Logging;
 import org.testng.Assert;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
-
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
-import static javax.ws.rs.core.Response.Status.OK;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ParametrizedAAIRestInterfaceTest {
@@ -67,6 +67,8 @@ public class ParametrizedAAIRestInterfaceTest {
     private Response response;
     @Mock
     private SystemPropertyHelper systemPropertyHelper;
+    @Mock
+    private Logging loggingService;
 
     private AAIRestInterface testSubject;
     private Response.Status status;
@@ -93,13 +95,11 @@ public class ParametrizedAAIRestInterfaceTest {
     }
 
     private AAIRestInterface createTestSubject() {
-        return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper);
+        return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper, loggingService);
     }
 
     @Test
-    public void testRestDeleteWithValidResponse() throws Exception {
-        // given
-        String methodName = "Delete";
+    public void testRestDeleteWithValidResponse() {
 
         // when
         when(builder.delete()).thenReturn(response);

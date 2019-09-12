@@ -27,7 +27,6 @@ import java.util.concurrent.ExecutorService;
 import javax.servlet.ServletContext;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
-import org.onap.vid.aai.AaiOverTLSClientInterface;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.util.AAIRestInterface;
@@ -46,6 +45,7 @@ import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.VidService;
 import org.onap.vid.services.VidServiceImpl;
+import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -103,8 +103,11 @@ public class LocalWebConfig {
     }
 
     @Bean(name = "aaiRestInterface")
-    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory, ServletRequestHelper servletRequestHelper, SystemPropertyHelper systemPropertyHelper) {
-        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper);
+    public AAIRestInterface aaiRestInterface(HttpsAuthClient httpsAuthClientFactory,
+        ServletRequestHelper servletRequestHelper,
+        SystemPropertyHelper systemPropertyHelper,
+        Logging loggingService) {
+        return new AAIRestInterface(httpsAuthClientFactory, servletRequestHelper, systemPropertyHelper, loggingService);
     }
 
     @Bean

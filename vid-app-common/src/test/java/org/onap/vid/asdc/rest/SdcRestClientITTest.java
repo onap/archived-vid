@@ -29,8 +29,12 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.xebialabs.restito.semantics.Call;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,8 +59,7 @@ import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.testUtils.StubServerUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.xebialabs.restito.semantics.Call;
+import org.onap.vid.utils.Logging;
 
 
 public class SdcRestClientITTest {
@@ -69,9 +72,9 @@ public class SdcRestClientITTest {
     public static void setUpClass() throws GeneralSecurityException {
         stubServer = new StubServerUtil();
         stubServer.runSecuredServer();
-        SyncRestClient syncRestClient = new SyncRestClient(createNaiveHttpClient());
+        SyncRestClient syncRestClient = new SyncRestClient(createNaiveHttpClient(), mock(Logging.class));
         String serverUrl = stubServer.constructTargetUrl("https", "");
-        sdcRestClient = new SdcRestClient(serverUrl, "", syncRestClient);
+        sdcRestClient = new SdcRestClient(serverUrl, "", syncRestClient, mock(Logging.class));
     }
 
     @AfterClass

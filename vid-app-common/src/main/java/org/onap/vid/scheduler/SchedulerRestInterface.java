@@ -20,11 +20,17 @@
 
 package org.onap.vid.scheduler;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
+
 import com.att.eelf.configuration.EELFLogger;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.joshworks.restclient.http.HttpResponse;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
 import org.apache.http.HttpException;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -36,16 +42,9 @@ import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.RestObjectWithRequestInfo;
 import org.onap.vid.utils.Logging;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.Function;
-
-import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
-import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 @Service
 public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
@@ -57,12 +56,17 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
     private Function<String, String> propertyGetter;
     private Map<String, String> commonHeaders;
 
-    public SchedulerRestInterface() {
-        this.propertyGetter = SystemProperties::getProperty;
+    private Logging loggingService;
+
+    public SchedulerRestInterface(Function<String, String> propertyGetter, Logging loggingService) {
+        this.loggingService = loggingService;
+        this.propertyGetter = propertyGetter;
     }
 
-    public SchedulerRestInterface(Function<String, String> propertyGetter) {
-        this.propertyGetter = propertyGetter;
+    @Autowired
+    public SchedulerRestInterface(Logging loggingService) {
+        this.loggingService = loggingService;
+        this.propertyGetter = SystemProperties::getProperty;
     }
 
     public void initRestClient() {
@@ -72,7 +76,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
         commonHeaders = Maps.newHashMap();
         commonHeaders.put("Authorization", "Basic " + authStringEnc);
 
-        syncRestClient = new SyncRestClient();
+        syncRestClient = new SyncRestClient(loggingService);
 
         logger.info("\t<== Client Initialized \n");
     }
@@ -87,14 +91,14 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
             String methodName = "Get";
             url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
             initRestClient();
-            Logging.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
+            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
             Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
                     .putAll(commonHeaders)
                     .put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
                     .build();
             final HttpResponse<String> response = syncRestClient.get(url, requestHeaders,
                     Collections.emptyMap(), String.class);
-            Logging.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, response);
+            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url, response);
             status = response.getStatus();
             restObject.setStatusCode(status);
             rawData = response.getBody();
@@ -121,13 +125,13 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
     public <T> void Delete(T t, String sourceID, String path, RestObject<T> restObject) {
         initRestClient();
         String url = String.format("%s%s", propertyGetter.apply(SchedulerProperties.SCHEDULER_SERVER_URL_VAL), path);
-        Logging.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
         Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
                 .putAll(commonHeaders)
                 .put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId()).build();
         final HttpResponse<T> response = (HttpResponse<T>) syncRestClient.delete(url, requestHeaders, t.getClass());
 
-        Logging.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, response);
+        loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url, response);
 
         int status = response.getStatus();
         restObject.setStatusCode(status);
