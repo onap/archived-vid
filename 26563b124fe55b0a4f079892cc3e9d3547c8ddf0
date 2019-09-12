@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "35687315_1672b712",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T09:07:14Z",
+      "side": 1,
+      "message": "please rebase from onap and use FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH",
+      "revId": "26563b124fe55b0a4f079892cc3e9d3547c8ddf0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3458c818_29537092",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T09:07:14Z",
+      "side": 1,
+      "message": "rename method name to disabled",
+      "revId": "26563b124fe55b0a4f079892cc3e9d3547c8ddf0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f45f0bb_d53a68d9",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T09:07:14Z",
+      "side": 1,
+      "message": "maybe just change loadVNFTypes name",
+      "revId": "26563b124fe55b0a4f079892cc3e9d3547c8ddf0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de0191e9_a70102cf",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T09:07:14Z",
+      "side": 1,
+      "message": "let vnfRole \u003d $scope.isNewFilterChangeManagmentEnabled() ? vm.changeManagement.vnfType : null;",
+      "revId": "26563b124fe55b0a4f079892cc3e9d3547c8ddf0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bbb76a2_5ed774c1",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.css",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T09:07:14Z",
+      "side": 1,
+      "message": "please change to class",
+      "revId": "26563b124fe55b0a4f079892cc3e9d3547c8ddf0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8df47e7_88fdbfea",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T09:07:14Z",
+      "side": 1,
+      "message": "check if is missing not (!) here, or method name is not correct.",
+      "revId": "26563b124fe55b0a4f079892cc3e9d3547c8ddf0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
