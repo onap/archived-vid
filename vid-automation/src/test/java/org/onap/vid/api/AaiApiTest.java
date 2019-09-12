@@ -1,15 +1,59 @@
 package org.onap.vid.api;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNot.not;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofL3Network;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofServiceInstance;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVlanTag;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofVnf;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery.FORMAT.SIMPLE;
+import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.UUID;
 import net.javacrumbs.jsonunit.JsonAssert;
 import net.javacrumbs.jsonunit.core.Configuration;
 import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.*;
+import org.onap.simulator.presetGenerator.presets.aai.AAIBaseGetL3NetworksByCloudRegionPreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIBadBodyForGetServicesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetHomingForVfModule;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegion;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionInvalidRequest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegion;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegionSpecificState;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsInvalidRequest;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsRequiredMissing;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePortsError;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetRelatedInstanceGroupsByVnfId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetVpnsByType;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIModelVersionsByInvariantId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.model.aai.AaiResponse;
@@ -22,31 +66,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.utils.TestHelper;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.UUID;
-
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.*;
-import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils.getEcompPortalPresets;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
 
 public class AaiApiTest extends BaseApiAaiTest {
 
@@ -56,6 +82,7 @@ public class AaiApiTest extends BaseApiAaiTest {
     public static final String[] AAI_GET_SERVICES_ERROR_SIMULATOR_RESPONSES = {"getServicesAaiErrorResp.json", "create_new_instance/aai_get_full_subscribers.json"};
     public static final String[] AAI_GET_SERVICES_FINE_SIMULATOR_RESPONSES = {"getServicesAaiFineResp.json", "create_new_instance/aai_get_full_subscribers.json"};
     public static final String AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON = "changeManagement/get_vnf_data_by_globalid_and_service_type.json";
+    public static final String AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS = "registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_reduced_response.json";
     public static final String OPERATIONAL_ENVIRONMENT_TYPE = "VNF";
     public static final String OPERATIONAL_ENVIRONMENT_STATUS = "Activate";
     public static final String GET_INSTANCE_GROUPS_BY_CLOUDREGION_EXPECTED_RESPONSE = "{\"results\":[{\"instance-group\":{\"id\":\"AAI-12002-test3-vm230w\",\"description\":\"a9DEa0kpY\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"model-id3\",\"model-version-id\":\"a0efd5fc-f7be-4502-936a-a6c6392b958f\",\"instance-group-type\":\"type\",\"resource-version\":\"1520888659539\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"relatedToPropertyList\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}],\"related-to\":\"cloud-region\",\"related-link\":\"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\"relationship-label\":\"org.onap.relationships.inventory.Uses\",\"relationship-data\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"related-to-property\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}]}]}}},{\"instance-group\":{\"id\":\"AAI-12002-test1-vm230w\",\"description\":\"a9DEa0kpY\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"model-id1\",\"model-version-id\":\"a0efd5fc-f7be-4502-936a-a6c6392b958f\",\"instance-group-type\":\"type\",\"resource-version\":\"1520886467989\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"relatedToPropertyList\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}],\"related-to\":\"cloud-region\",\"related-link\":\"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\"relationship-label\":\"org.onap.relationships.inventory.Uses\",\"relationship-data\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"related-to-property\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}]}]}}},{\"instance-group\":{\"id\":\"AAI-12002-test2-vm230w\",\"description\":\"a9DEa0kpY\",\"instance-group-role\":\"JZmha7QSS4tJ\",\"model-invariant-id\":\"model-id2\",\"model-version-id\":\"version2\",\"instance-group-type\":\"type\",\"resource-version\":\"1520888629970\",\"instance-group-name\":\"wKmBXiO1xm8bK\",\"instance-group-function\":\"testfunction2\",\"relationship-list\":{\"relationship\":[{\"relationDataList\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"relatedToPropertyList\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}],\"related-to\":\"cloud-region\",\"related-link\":\"/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/AAI-12002-vm230w/AAI-region-vm230w\",\"relationship-label\":\"org.onap.relationships.inventory.Uses\",\"relationship-data\":[{\"relationship-key\":\"cloud-region.cloud-owner\",\"relationship-value\":\"AAI-12002-vm230w\"},{\"relationship-key\":\"cloud-region.cloud-region-id\",\"relationship-value\":\"AAI-region-vm230w\"}],\"related-to-property\":[{\"property-key\":\"cloud-region.owner-defined-type\",\"property-value\":null}]}]}}}]}\n";
@@ -707,17 +734,26 @@ public class AaiApiTest extends BaseApiAaiTest {
     @Test
     public void getVnfDataByGlobalIdAndServiceType() {
 
-        SimulatorApi.registerExpectation(AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON, APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetBaseAAICustomQuery(
+            SIMPLE,
+            "business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances",
+            "query/vnf-topology-fromServiceInstance"
+        ) {
+            @Override
+            public Object getResponseBody() {
+                return getResourceAsString(
+                    "registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_response.json");
+            }
+        }, CLEAR_THEN_SET);
 
         String url = uri + "/get_vnf_data_by_globalid_and_service_type/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/vRichardson";
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-//reduced_vnf_data_by_globalid_and_service_type.json
-        assertTrue(false == response.getBody().contains("generic-vfmodule"));
+
+        assertThat(response.getBody(), not(containsString("generic-vfmodule")));
         assertResponse(JsonAssert.when(Option.IGNORING_ARRAY_ORDER),
                 getResourceAsString("changeManagement/reduced_vnf_data_by_globalid_and_service_type.json"),
                 response.getBody());
-
     }
 
     @Test
@@ -796,7 +832,33 @@ public class AaiApiTest extends BaseApiAaiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
-        assertNull(response.getBody());
+        AssertJUnit.assertNull(response.getBody());
+    }
+
+    @Test
+    @FeatureTogglingTest(Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH)
+    public void getVnfsWithCustomQueryNewReducedResponse() throws URISyntaxException {
+
+        String globalCustomerId = "globalCustomerId1-360-as988q";
+        String serviceType = "TEST1-360";
+        String nfRole = "test360";
+        SimulatorApi.registerExpectationFromPreset(new PresetBaseAAICustomQuery(
+            SIMPLE,
+            "/business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                + serviceType + "/service-instances",
+            "query/vnfs-fromServiceInstance-filter?nfRole=" + nfRole
+            ) {
+            @Override
+            public Object getResponseBody() {
+                return getResourceAsString(
+                    AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS);
+            }
+        }, CLEAR_THEN_SET);
+        URIBuilder urlBuilder  = new URIBuilder(uri + "/get_vnf_data_by_globalid_and_service_type/" + globalCustomerId + "/" + serviceType);
+        urlBuilder.addParameter("nfRole", nfRole);
+        ResponseEntity<String> response = restTemplate.getForEntity(urlBuilder.build().toString(), String.class);
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertThat(response.getBody(), jsonEquals(getResourceAsString(AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS)));
     }
 
     private void assertResponse(Object expected, String response) {

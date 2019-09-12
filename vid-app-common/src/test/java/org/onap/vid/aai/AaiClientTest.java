@@ -137,6 +137,23 @@ public class AaiClientTest {
         };
     }
 
+    @Test
+    public void testAaiPutCustomQueryByParams() {
+        String globalCustomerId = "globalCustomerId1-360-as988q";
+        String serviceType = "TEST1-360";
+        String nfRole = "test360";
+        String queryFormat = "query?format=simple";
+        final ResponseWithRequestInfo mockedResponseWithRequestInfo = mockedResponseWithRequestInfo(Response.Status.OK,
+            TestUtils.readFileAsString("/payload_jsons/changeManagement/get_vnf_data_by_globalid_and_service_type_reduced_response.json"),
+            "query?format=simple&Mock=True",
+            HttpMethod.PUT);
+        when(aaiClientMock.getVnfsByParamsForChangeManagement(anyString(), anyString(),anyString(), nullable(String.class))).thenCallRealMethod();
+        when(aaiClientMock.doAaiPut(eq(queryFormat), anyString(), anyBoolean(), anyBoolean())).thenReturn(mockedResponseWithRequestInfo);
+        AaiResponse response = aaiClientMock.getVnfsByParamsForChangeManagement(globalCustomerId, serviceType, nfRole, null);
+        verify(aaiClientMock).doAaiPut(anyString(), anyString(),anyBoolean(),anyBoolean());
+        response.toString();
+    }
+
     @Test(dataProvider = "logicalLinkData")
     public void getLogicalLink_Link_Is_Empty(String link, String expectedUrl) {
 
@@ -518,7 +535,7 @@ public class AaiClientTest {
 
     }
     @Test(expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = "A&AI has no homing data associated to vfModule 'vfModuleId' of vnf 'vnfInstanceId'")
-    public void getVfMoudule_Homing_Arguments_Are_Valid_But_Not_Exists() {
+    public void getVfModule_Homing_Arguments_Are_Valid_But_Not_Exists() {
         when(aaiClientMock.getHomingDataByVfModule(any(String.class), any(String.class))).thenCallRealMethod();
 
         Response generalEmptyResponse = mock(Response.class);
@@ -536,7 +553,7 @@ public class AaiClientTest {
     }
 
     @Test(dataProvider = "invalidDataId", expectedExceptions = GenericUncheckedException.class, expectedExceptionsMessageRegExp = "Failed to retrieve homing data associated to vfModule from A&AI, VNF InstanceId or VF Module Id is missing.")
-    public void getVfMoudule_Homing_Arguments_Are_Empty_Or_Null(String data) {
+    public void getVfModule_Homing_Arguments_Are_Empty_Or_Null(String data) {
         when(aaiClientMock.getHomingDataByVfModule(any(), any())).thenCallRealMethod();
              aaiClientMock.getHomingDataByVfModule(data, data);
     }

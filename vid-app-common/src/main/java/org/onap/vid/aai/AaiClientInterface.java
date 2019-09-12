@@ -21,6 +21,10 @@
 package org.onap.vid.aai;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.core.Response;
 import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -31,11 +35,6 @@ import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.services.ProbeInterface;
 import org.springframework.http.HttpMethod;
-
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Oren on 7/4/17.
@@ -103,4 +102,6 @@ public interface AaiClientInterface extends ProbeInterface {
     void resetCache(String cacheName);
 
     Map<String, Properties> getCloudRegionAndTenantByVnfId(String vnfId);
+
+    AaiResponse getVnfsByParamsForChangeManagement(String subscriberId, String serviceType, String nfRole, String cloudRegion);
 }
