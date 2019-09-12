@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2018 - 2019 Nokia. All rights reserved.
+ * Modifications Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +27,13 @@ import static com.xebialabs.restito.semantics.Action.contentType;
 import static com.xebialabs.restito.semantics.Action.ok;
 import static com.xebialabs.restito.semantics.Action.stringContent;
 import static org.apache.http.client.config.RequestConfig.custom;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 
+import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.semantics.Action;
@@ -50,6 +55,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.grizzly.http.Method;
 import org.onap.vid.utils.Logging;
+import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -89,6 +95,8 @@ public class SyncRestClientForHttpsServerTest {
         // then
         verifyHttp(stubServer)
             .once(Condition.method(Method.GET), Condition.url(securedUrl), Condition.not(Condition.url(notSecuredUrl)));
+        verify(mockLoggingService).logRequest(any(EELFLogger.class), eq(HttpMethod.GET), eq(securedUrl), eq(Collections.emptyMap()));
+        verify(mockLoggingService).logResponse(any(EELFLogger.class), eq(HttpMethod.GET), eq(securedUrl), eq(jsonNodeHttpResponse));
         assertEquals(jsonNodeHttpResponse.getStatus(), 200);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("key"), 1);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("value"), "test");
@@ -107,6 +115,8 @@ public class SyncRestClientForHttpsServerTest {
         // then
         verifyHttp(stubServer)
             .once(Condition.method(Method.GET), Condition.url(securedUrl), Condition.not(Condition.url(notSecuredUrl)));
+        verify(mockLoggingService).logRequest(any(EELFLogger.class), eq(HttpMethod.GET), eq(securedUrl), eq(Collections.emptyMap()));
+        verify(mockLoggingService).logResponse(any(EELFLogger.class), eq(HttpMethod.GET), eq(securedUrl), eq(testModelHttpResponse));
         assertEquals(testModelHttpResponse.getStatus(), 200);
         assertEquals(testModelHttpResponse.getBody().getKey(), 1);
         assertEquals(testModelHttpResponse.getBody().getValue(), "test");
