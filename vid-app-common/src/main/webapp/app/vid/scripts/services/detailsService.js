@@ -113,8 +113,8 @@ var DetailsService = function ($log, DataService, ComponentService, COMPONENT,
         getSummaryList: getSummaryList,
         getDetailsList: getDetailsList,
         getMsoFilterString: getMsoFilterString
-    }
-}
+    };
+};
 
 appDS2.factory("DetailsService", ["$log", "DataService", "ComponentService",
     "COMPONENT", "FIELD", "UtilityService", DetailsService]);
