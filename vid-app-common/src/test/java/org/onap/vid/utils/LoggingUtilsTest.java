@@ -20,27 +20,56 @@
 
 package org.onap.vid.utils;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.onap.vid.testUtils.RegExMatcher.matchesRegEx;
+import static org.testng.AssertJUnit.assertEquals;
+
+import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import javax.crypto.BadPaddingException;
+import javax.net.ssl.SSLHandshakeException;
+import javax.ws.rs.ProcessingException;
+import org.mockito.ArgumentCaptor;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.springframework.http.HttpMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import sun.security.provider.certpath.SunCertPathBuilderException;
 import sun.security.validator.ValidatorException;
 
-import javax.crypto.BadPaddingException;
-import javax.net.ssl.SSLHandshakeException;
-import javax.ws.rs.ProcessingException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.vid.testUtils.RegExMatcher.matchesRegEx;
-
 public class LoggingUtilsTest {
+
+    private EELFLogger loggerMock;
+
+    private Logging logginService = new Logging();
+
+    @BeforeMethod
+    public void setUp() {
+        loggerMock = mock(EELFLogger.class);
+    }
+
+    @Test
+    public void whenLogRequest_thenLoggedInDebug() {
+        //when
+        String url = "someUrl";
+        logginService.logRequest(loggerMock, HttpMethod.GET, url);
+
+        //then
+        ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
+        verify(loggerMock).debug(contains("Sending"), argumentCaptor.capture());
+        assertEquals("GET", argumentCaptor.getAllValues().get(0));
+        assertEquals(url, argumentCaptor.getAllValues().get(1));
+    }
 
     @DataProvider
     public static Object[][] exceptions() {
