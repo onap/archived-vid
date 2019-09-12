@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0dfcb1d_bcb21280",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T13:22:31Z",
+      "side": 1,
+      "message": "shall not changed",
+      "revId": "90e13454bccf0bcf7fc97a998461f16a7f184c74",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cffc63e8_1549c6c6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T13:22:31Z",
+      "side": 1,
+      "message": "shall not changed",
+      "revId": "90e13454bccf0bcf7fc97a998461f16a7f184c74",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f053540_eb4d49ba",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/client/SyncRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T13:22:31Z",
+      "side": 1,
+      "message": "shall not changed",
+      "revId": "90e13454bccf0bcf7fc97a998461f16a7f184c74",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b091e76d_5625af21",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/client/SyncRestClientForHttpServerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-12T13:22:31Z",
+      "side": 1,
+      "message": "the default is times(1)",
+      "revId": "90e13454bccf0bcf7fc97a998461f16a7f184c74",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
