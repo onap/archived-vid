@@ -382,7 +382,7 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 				};
 		}
 		return requestDetails;
-    }
+    };
 
     var getLcpRegion = function() {
 		var cloudRegionTenantList = DataService.getCloudRegionTenantList();
@@ -520,8 +520,8 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 		getMsoRequestDetails : getMsoRequestDetails,
 		getMsoUrl : getMsoUrl,
 		isMacro : DataService.getMacro()
-    }
-}
+    };
+};
 
 appDS2.factory("DeleteResumeService", [ "$log", "AaiService", "AsdcService",
 	"DataService", "ComponentService", "COMPONENT", "FIELD",
