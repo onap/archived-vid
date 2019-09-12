@@ -26,9 +26,14 @@ import static com.xebialabs.restito.semantics.Action.contentType;
 import static com.xebialabs.restito.semantics.Action.ok;
 import static com.xebialabs.restito.semantics.Action.status;
 import static com.xebialabs.restito.semantics.Action.stringContent;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 
+import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -42,6 +47,7 @@ import java.util.Map;
 import org.glassfish.grizzly.http.Method;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.onap.vid.utils.Logging;
+import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -80,6 +86,8 @@ public class SyncRestClientForHttpServerTest {
             .get(url, Collections.emptyMap(), Collections.emptyMap());
         // then
         verifyHttp(stubServer).once(Condition.method(Method.GET), Condition.url(url));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.GET), eq(url), eq(Collections.emptyMap()));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.GET), eq(url), eq(jsonNodeHttpResponse));
         assertEquals(jsonNodeHttpResponse.getStatus(), 200);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("key"), 1);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("value"), "test");
@@ -95,6 +103,8 @@ public class SyncRestClientForHttpServerTest {
             .get(url, Collections.emptyMap(), Collections.emptyMap(), SyncRestClientModel.TestModel.class);
         // then
         verifyHttp(stubServer).once(Condition.method(Method.GET), Condition.url(url));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.GET), eq(url), eq(Collections.emptyMap()));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.GET), eq(url), eq(testModelHttpResponse));
         assertEquals(testModelHttpResponse.getStatus(), 200);
         assertEquals(testModelHttpResponse.getBody().getKey(), 1);
         assertEquals(testModelHttpResponse.getBody().getValue(), "test");
@@ -108,6 +118,8 @@ public class SyncRestClientForHttpServerTest {
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.post(url, Collections.emptyMap(), testObject);
         // then
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(testObject));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(jsonNodeHttpResponse));
         verifyHttp(stubServer).once(Condition.method(Method.POST), Condition.url(url));
         assertEquals(jsonNodeHttpResponse.getStatus(), 200);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("key"), 1);
@@ -123,6 +135,8 @@ public class SyncRestClientForHttpServerTest {
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient
             .post(url, Collections.emptyMap(), NOT_EXISTING_OBJECT);
         // then
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(NOT_EXISTING_OBJECT));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(jsonNodeHttpResponse));
         assertEquals(jsonNodeHttpResponse.getStatus(), 404);
         assertEquals(jsonNodeHttpResponse.getStatusText(), "Not Found");
     }
@@ -137,6 +151,8 @@ public class SyncRestClientForHttpServerTest {
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.post(url, headers, testObject);
         // then
         verifyHttp(stubServer).once(Condition.withHeader("Authorization"));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(testObject));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(jsonNodeHttpResponse));
         assertEquals(jsonNodeHttpResponse.getStatus(), 200);
     }
 
@@ -160,6 +176,8 @@ public class SyncRestClientForHttpServerTest {
             .post(url, Collections.emptyMap(), testObject, SyncRestClientModel.TestModel.class);
         // then
         verifyHttp(stubServer).once(Condition.method(Method.POST), Condition.url(url));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(testObject));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.POST), eq(url), eq(objectHttpResponse));
         assertEquals(objectHttpResponse.getStatus(), 200);
         assertEquals(objectHttpResponse.getBody().getKey(), 1);
         assertEquals(objectHttpResponse.getBody().getValue(), "test");
@@ -174,6 +192,8 @@ public class SyncRestClientForHttpServerTest {
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.put(url, Collections.emptyMap(), testObject);
         // then
         verifyHttp(stubServer).once(Condition.method(Method.PUT), Condition.url(url));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.PUT), eq(url),  eq(testObject));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.PUT), eq(url), eq(jsonNodeHttpResponse));
         assertEquals(jsonNodeHttpResponse.getStatus(), 201);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("key"), 1);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("value"), "test");
@@ -189,6 +209,8 @@ public class SyncRestClientForHttpServerTest {
             .put(url, Collections.emptyMap(), testObject, SyncRestClientModel.TestModel.class);
         // then
         verifyHttp(stubServer).once(Condition.method(Method.PUT), Condition.url(url));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.PUT), eq(url),  eq(testObject));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.PUT), eq(url), eq(modelHttpResponse));
         assertEquals(modelHttpResponse.getStatus(), 201);
         assertEquals(modelHttpResponse.getBody().getKey(), 1);
         assertEquals(modelHttpResponse.getBody().getValue(), "test");
@@ -203,6 +225,8 @@ public class SyncRestClientForHttpServerTest {
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.delete(url, Collections.emptyMap());
         // then
         verifyHttp(stubServer).once(Condition.method(Method.DELETE), Condition.url(url));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.DELETE), eq(url));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.DELETE), eq(url), eq(jsonNodeHttpResponse));
         assertEquals(jsonNodeHttpResponse.getStatus(), 200);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("key"), 1);
         assertEquals(jsonNodeHttpResponse.getBody().getObject().get("value"), "test");
@@ -218,6 +242,8 @@ public class SyncRestClientForHttpServerTest {
             .delete(url, Collections.emptyMap(),  SyncRestClientModel.TestModel.class);
         // then
         verifyHttp(stubServer).once(Condition.method(Method.DELETE), Condition.url(url));
+        verify(mockLoggingService, times(1)).logRequest(any(EELFLogger.class), eq(HttpMethod.DELETE), eq(url));
+        verify(mockLoggingService, times(1)).logResponse(any(EELFLogger.class), eq(HttpMethod.DELETE), eq(url), eq(modelHttpResponse));
         assertEquals(modelHttpResponse.getStatus(), 200);
         assertEquals(modelHttpResponse.getBody().getKey(), 1);
         assertEquals(modelHttpResponse.getBody().getValue(), "test");
