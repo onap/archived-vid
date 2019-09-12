@@ -22,9 +22,23 @@ package org.onap.vid.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.apache.commons.lang3.StringUtils.isEmpty
 
 inline fun <reified E: Enum<E>> getEnumFromMapOfStrings(map: Map<String, Any>, key:String, defaultValue:E): E {
     return java.lang.Enum.valueOf(E::class.java, (map.getOrDefault(key, defaultValue.name) as String))
 }
 
 @JvmField val JACKSON_OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper()
+
+class JoshworksJacksonObjectMapper: io.joshworks.restclient.http.mapper.ObjectMapper {
+    override fun writeValue(value: Any?): String? {
+        return JACKSON_OBJECT_MAPPER.writeValueAsString(value)
+    }
+
+    override fun <T : Any?> readValue(value: String?, valueType: Class<T>?): T? {
+        return if (isEmpty(value)) null else JACKSON_OBJECT_MAPPER.readValue(value, valueType)
+    }
+}
+
+@JvmField val JOSHWORKS_JACKSON_OBJECT_MAPPER:
+        io.joshworks.restclient.http.mapper.ObjectMapper = JoshworksJacksonObjectMapper()

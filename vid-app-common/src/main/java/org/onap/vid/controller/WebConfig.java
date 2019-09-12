@@ -22,13 +22,10 @@
 package org.onap.vid.controller;
 
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.joshworks.restclient.http.mapper.ObjectMapper;
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
@@ -66,6 +63,7 @@ import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.ChangeManagementService;
 import org.onap.vid.services.PombaService;
 import org.onap.vid.services.PombaServiceImpl;
+import org.onap.vid.utils.JoshworksJacksonObjectMapper;
 import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -198,28 +196,8 @@ public class WebConfig {
     }
 
     @Bean
-    public ObjectMapper unirestFasterxmlObjectMapper(com.fasterxml.jackson.databind.ObjectMapper objectMapper) {
-        return new ObjectMapper() {
-
-            @Override
-            public <T> T readValue(String s, Class<T> aClass) {
-                try {
-                    return isEmpty(s) ? null : objectMapper.readValue(s, aClass);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            @Override
-            public String writeValue(Object o) {
-                try {
-                    return objectMapper.writeValueAsString(o);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
-
+    public ObjectMapper unirestFasterxmlObjectMapper() {
+        return new JoshworksJacksonObjectMapper();
     }
 
     @Bean

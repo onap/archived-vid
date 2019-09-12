@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2018 - 2019 Nokia. All rights reserved.
+ * Modifications Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +21,8 @@
 
 package org.onap.vid.client;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.onap.vid.client.UnirestPatchKt.patched;
+import static org.onap.vid.utils.KotlinUtilsKt.JOSHWORKS_JACKSON_OBJECT_MAPPER;
 
 import com.att.eelf.configuration.EELFLogger;
 import io.joshworks.restclient.http.HttpResponse;
@@ -183,27 +184,7 @@ public class SyncRestClient implements SyncRestClientInterface {
     }
 
     private ObjectMapper defaultObjectMapper() {
-        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
-
-        return new ObjectMapper() {
-            @Override
-            public <T> T readValue(String value, Class<T> aClass) {
-                try {
-                    return isEmpty(value) ? null : objectMapper.readValue(value, aClass);
-                } catch (IOException e) {
-                    throw new SyncRestClientException("IOException while reading value", e);
-                }
-            }
-
-            @Override
-            public String writeValue(Object value) {
-                try {
-                    return objectMapper.writeValueAsString(value);
-                } catch (IOException e) {
-                    throw new SyncRestClientException("IOException while writing value", e);
-                }
-            }
-        };
+        return JOSHWORKS_JACKSON_OBJECT_MAPPER;
     }
 
     private CloseableHttpClient defaultHttpClient() {

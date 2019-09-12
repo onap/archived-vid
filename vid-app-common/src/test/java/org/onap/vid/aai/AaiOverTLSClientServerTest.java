@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2018 - 2019 Nokia Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +23,11 @@ package org.onap.vid.aai;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.onap.vid.utils.KotlinUtilsKt.JOSHWORKS_JACKSON_OBJECT_MAPPER;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xebialabs.restito.semantics.Action;
 import io.joshworks.restclient.http.HttpResponse;
-import io.joshworks.restclient.http.mapper.ObjectMapper;
 import java.io.IOException;
 import org.assertj.core.api.Assertions;
 import org.glassfish.grizzly.http.util.HttpStatus;
@@ -122,7 +123,7 @@ public class AaiOverTLSClientServerTest {
     @NotNull
     private AaiOverTLSClient createAaiOverTLSClient() {
         return new AaiOverTLSClient(
-            new SyncRestClient(getFasterXmlObjectMapper(), mock(Logging.class)),
+            new SyncRestClient(JOSHWORKS_JACKSON_OBJECT_MAPPER, mock(Logging.class)),
             propertySupplier,
             serverUtil.constructTargetUrl("http", "")
         );
@@ -130,7 +131,6 @@ public class AaiOverTLSClientServerTest {
 
     @Test
     public void shouldGetSubscribers() throws ParseException, JsonProcessingException {
-        ObjectMapper objectMapper = getFasterXmlObjectMapper();
         AaiOverTLSClient aaiOverTLSClient = createAaiOverTLSClient();
 
         serverUtil.prepareGetCall("/business/customers", new JSONParser().parse(subscribersResponsePayload), Action.status(HttpStatus.OK_200));
@@ -140,31 +140,6 @@ public class AaiOverTLSClientServerTest {
         SubscriberList subscriberList = allSubscribers.getBody();
         Assertions.assertThat(subscriberList.customer.size()).isEqualTo(4);
         Assertions.assertThat(allSubscribers.getStatus()).isEqualTo(200);
-    }
-
-    private ObjectMapper getFasterXmlObjectMapper() {
-        return new ObjectMapper() {
-
-            com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
-
-            @Override
-            public <T> T readValue(String s, Class<T> aClass) {
-                try {
-                    return om.readValue(s, aClass);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            @Override
-            public String writeValue(Object o) {
-                try {
-                    return om.writeValueAsString(o);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
     }
 
 }

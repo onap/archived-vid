@@ -29,8 +29,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
+import static org.onap.vid.utils.KotlinUtilsKt.JOSHWORKS_JACKSON_OBJECT_MAPPER;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.server.StubServer;
 import io.joshworks.restclient.http.HttpResponse;
 import java.io.IOException;
@@ -48,7 +48,6 @@ import org.junit.Test;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.MsoController;
-import org.onap.vid.controller.WebConfig;
 import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
@@ -474,8 +473,7 @@ public class MsoRestClientNewTest {
     }
 
     private MsoRestClientNew msoRestClient() {
-        final WebConfig webConfig = new WebConfig();
-        return new MsoRestClientNew(new SyncRestClient(webConfig.unirestFasterxmlObjectMapper(new ObjectMapper()), mock(Logging.class)),
+        return new MsoRestClientNew(new SyncRestClient(JOSHWORKS_JACKSON_OBJECT_MAPPER, mock(Logging.class)),
             baseUrl(), null, new SystemPropertiesWrapper(), mock(Logging.class));
     }
 
