@@ -41,6 +41,12 @@ public class LoggerFormatTest extends BaseApiTest {
         validateLogsFormat("audit");
     }
 
+    @Test
+    @SkipTestUntil("2019-09-17")
+    public void validateAudit2019LogsFormat() {
+        validateLogsFormat("audit2019", "audit-ELS-2019.11", 0);
+    }
+
     @Test(enabled = false) // no total-score is returned for error-log
     public void validateErrorLogsFormat() {
         validateLogsFormat("error");
@@ -57,6 +63,10 @@ public class LoggerFormatTest extends BaseApiTest {
     }
 
     private void validateLogsFormat(String logName, String logType) {
+        validateLogsFormat(logName, logType, 0.95);
+    }
+
+    private void validateLogsFormat(String logName, String logType, double score) {
 
         String logLines = getLogLines(logName);
         logger.info("logLines are: "+logLines);
@@ -65,8 +75,8 @@ public class LoggerFormatTest extends BaseApiTest {
         double fieldscore = response.path("summary").path("score").path("fieldscore").asDouble();
         double overall = response.path("summary").path("score").path("overallscore").asDouble();
 
-        assertThat(fieldscore, is(greaterThan(0.95)));
-        assertThat(overall, is(greaterThan(0.95)));
+        assertThat(fieldscore, is(greaterThan(score)));
+        assertThat(overall, is(greaterThan(score)));
 
     }
 
