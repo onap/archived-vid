@@ -38,7 +38,7 @@
         {
           "operational-environment-id": "UUID of ECOMP Operational Environment",
           "operational-environment-name": "ECOMP Env Name",
-          "operational-environment-type": "ONAP",
+          "operational-environment-type": "ECOMP",
           "operational-environment-status": "ACTIVE",
           "tenant-context": "ECOMP Test",
           "workload-context": "ECOMP_Development",

@@ -67,7 +67,7 @@
       {
         "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ec",
         "operational-environment-name": "ECOMP Env Name",
-        "operational-environment-type": "ONAP",
+        "operational-environment-type": "ECOMP",
         "operational-environment-status": "INACTIVE",
         "tenant-context": "ECOMP Test",
         "workload-context": "ECOMP_Development",
@@ -76,7 +76,7 @@
       {
         "operational-environment-id": "f07ca256-96dd-40ad-b4d2-7a77e2a974ed",
         "operational-environment-name": "ECOMP Env Name",
-        "operational-environment-type": "ONAP",
+        "operational-environment-type": "ECOMP",
         "operational-environment-status": "ACTIVE",
         "tenant-context": "ECOMP Test",
         "workload-context": "ECOMP_Development",

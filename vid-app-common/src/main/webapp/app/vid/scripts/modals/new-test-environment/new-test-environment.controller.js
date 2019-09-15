@@ -36,7 +36,7 @@
         };
 
         var loadEcompEnvironmentsList = function () {
-            TestEnvironmentsService.loadAAIestEnvironments("ONAP")
+            TestEnvironmentsService.loadAAIestEnvironments("ECOMP")
             .then(function(response) {
                 vm.environments = response.operationalEnvironment;
             })
