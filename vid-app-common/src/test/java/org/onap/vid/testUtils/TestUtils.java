@@ -34,6 +34,8 @@ import static org.mockito.Mockito.RETURNS_DEFAULTS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.withSettings;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+import static org.onap.vid.utils.KotlinUtilsKt.JOSHWORKS_JACKSON_OBJECT_MAPPER;
 import static org.testng.Assert.fail;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -66,6 +68,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.http.HttpResponseFactory;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
@@ -251,6 +254,16 @@ public class TestUtils {
             response.setEntity(new StringEntity(entity));
         }
         return new HttpResponse<>(response, String.class, null);
+    }
+
+    public static <T> HttpResponse<T> createTestHttpResponse(int statusCode, T entity, final Class<T> entityClass) throws Exception {
+        HttpResponseFactory factory = new DefaultHttpResponseFactory();
+        org.apache.http.HttpResponse response = factory.newHttpResponse(new BasicStatusLine(HTTP_1_1, statusCode, null), null);
+        if (entity != null) {
+            InputStream inputStream = IOUtils.toInputStream(JACKSON_OBJECT_MAPPER.writeValueAsString(entity), StandardCharsets.UTF_8.name());
+            response.setEntity(new InputStreamEntity(inputStream));
+        }
+        return new HttpResponse(response, entityClass, JOSHWORKS_JACKSON_OBJECT_MAPPER);
     }
 
 
