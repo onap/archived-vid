@@ -475,7 +475,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                 successCallbackFunction(lcpCloudRegionTenants);
             }).catch(function (error) {
                 (UtilityService.runHttpErrorHandler(error.data, error.status));
-            })
+            });
         },
         getSubscribers: function (successCallbackFunction) {
             $log
@@ -536,7 +536,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
                     catchCallbackFunction();
                 }
                 UtilityService.runHttpErrorHandler(response, status);
-            })
+            });
         },
         getServices: function (successCallbackFunction) {
             $log
@@ -632,11 +632,11 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         getVnfsByCustomerIdAndServiceType: function (globalSubscriberId, serviceType, vnfRole, cloudRegion) {
             var deferred = $q.defer();
 
-            let url = globalSubscriberId + COMPONENT.FORWARD_SLASH + serviceType
+            let url = globalSubscriberId + COMPONENT.FORWARD_SLASH + serviceType;
 
             if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH)){
                 if (vnfRole) {
-                    url + COMPONENT.FORWARD_SLASH + vnfRole
+                    url + COMPONENT.FORWARD_SLASH + vnfRole;
                 }
                 if (cloudRegion) {
                     url + COMPONENT.FORWARD_SLASH + cloudRegion;
