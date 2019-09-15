@@ -240,18 +240,6 @@ public class AaiController extends RestrictedBaseController {
         return responseEntity;
     }
 
-
-    @RequestMapping(value = "/get_vnf_data_by_globalid_and_service_type/{globalCustomerId}/{serviceType}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getVnfDataByGlobalIdAndServiceType(
-        @PathVariable("globalCustomerId") String globalCustomerId,
-        @PathVariable("serviceType") String serviceType) throws IOException {
-
-        AaiResponse<AaiGetVnfResponse> resp = aaiService.getVNFData(globalCustomerId, serviceType);
-        return aaiResponseToResponseEntity(resp);
-    }
-
     @RequestMapping(value = "/aai_refresh_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doRefreshSubscriberList() {
         return refreshSubscriberList();
