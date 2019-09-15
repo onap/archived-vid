@@ -1,9 +1,8 @@
 package org.onap.vid.more;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.junit.Assert.assertThat;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;
@@ -41,6 +40,11 @@ public class LoggerFormatTest extends BaseApiTest {
         validateLogsFormat("audit");
     }
 
+    @Test
+    public void validateAudit2019LogsFormat() {
+        validateLogsFormat("audit2019", "audit-ELS-2019.11", 0);
+    }
+
     @Test(enabled = false) // no total-score is returned for error-log
     public void validateErrorLogsFormat() {
         validateLogsFormat("error");
@@ -57,6 +61,10 @@ public class LoggerFormatTest extends BaseApiTest {
     }
 
     private void validateLogsFormat(String logName, String logType) {
+        validateLogsFormat(logName, logType, 0.95);
+    }
+
+    private void validateLogsFormat(String logName, String logType, double score) {
 
         String logLines = getLogLines(logName);
         logger.info("logLines are: "+logLines);
@@ -65,8 +73,8 @@ public class LoggerFormatTest extends BaseApiTest {
         double fieldscore = response.path("summary").path("score").path("fieldscore").asDouble();
         double overall = response.path("summary").path("score").path("overallscore").asDouble();
 
-        assertThat(fieldscore, is(greaterThan(0.95)));
-        assertThat(overall, is(greaterThan(0.95)));
+        assertThat(fieldscore, is(greaterThanOrEqualTo(score)));
+        assertThat(overall, is(greaterThanOrEqualTo(score)));
 
     }
 
