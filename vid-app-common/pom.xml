@@ -65,8 +65,18 @@
         <patch_version/>
 
         <reportportal.argline>-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar -Drp.enable=true -Drp.mode=DEFAULT -Drp.tags="CICD;BE_UNIT;BUILD_${env.BUILD_NUMBER}"</reportportal.argline>
+        <frontendTestsPhase>generate-resources</frontendTestsPhase>
 
     </properties>
+
+    <profiles>
+        <profile>
+            <id>no-frontend-tests</id>
+            <properties>
+                <frontendTestsPhase>none</frontendTestsPhase>
+            </properties>
+        </profile>
+    </profiles>
 
 
     <!-- this should be commented for local debugging -->
@@ -189,7 +199,7 @@
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
-                        <phase>generate-resources</phase>
+                        <phase>${frontendTestsPhase}</phase>
                         <configuration>
                             <npmVersion>${npm.version}</npmVersion>
                             <nodeVersion>${node.version}</nodeVersion>
@@ -203,7 +213,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>generate-resources</phase>
+                        <phase>${frontendTestsPhase}</phase>
                     </execution>
                     <execution>
                         <id>npm install</id>
@@ -213,7 +223,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>generate-resources</phase>
+                        <phase>${frontendTestsPhase}</phase>
                     </execution>
                     <execution>
                         <id>npm run-script build</id>
@@ -223,7 +233,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>generate-resources</phase>
+                        <phase>${frontendTestsPhase}</phase>
                     </execution>
                 </executions>
             </plugin>
