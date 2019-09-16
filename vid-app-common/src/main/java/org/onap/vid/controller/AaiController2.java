@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.ModelVer;
 import org.onap.vid.aai.model.Permissions;
@@ -134,7 +135,7 @@ public class AaiController2 extends VidRestrictedBaseController {
     }
 
     @GetMapping(value = "/get_vnf_data_by_globalid_and_service_type/{globalCustomerId}/{serviceType}")
-    public Object getVnfDataByGlobalIdAndServiceType(
+    public AaiGetVnfResponse getVnfDataByGlobalIdAndServiceType(
         @PathVariable("globalCustomerId") String globalCustomerId,
         @PathVariable("serviceType") String serviceType,
         @RequestParam(name="nfRole", required = false) String nfRole,

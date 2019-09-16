@@ -289,7 +289,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public AaiResponse getVnfsByParamsForChangeManagement(String subscriberId, String serviceType, @Nullable String nfRole,
+    public AaiResponse<AaiGetVnfResponse> getVnfsByParamsForChangeManagement(String subscriberId, String serviceType, @Nullable String nfRole,
         @Nullable String cloudRegion) {
         String payloadAsString = "";
         ResponseWithRequestInfo response;
@@ -302,19 +302,43 @@ public class AaiClient implements AaiClientInterface {
             ExceptionUtils.rethrow(e);
         }
         response = doAaiPut(QUERY_FORMAT_SIMPLE, payloadAsString, false, false);
-        AaiResponseWithRequestInfo aaiResponse = processAaiResponse(response, JsonNode.class, false);
+        AaiResponseWithRequestInfo<AaiGetVnfResponse> aaiResponse = processAaiResponse(response, AaiGetVnfResponse.class, false);
         verifyAaiResponseValidityOrThrowExc(aaiResponse, aaiResponse.getAaiResponse().getHttpCode());
         return aaiResponse.getAaiResponse();
     }
 
     private ImmutableMap<String, Serializable> getMapForAAIQueryByParams(String subscriberId,
         String serviceType, @Nullable String nfRole, @Nullable String cloudRegion) {
-        String nfRoleParam = nfRole != null ? "?nfRole=" + nfRole : "";
-        String query = "query/vnfs-fromServiceInstance-filter" + nfRoleParam;
+        // in a case cloudRegion is null using query/vnfs-fromServiceInstance-filter,
+        // otherwise using query/vnfs-fromServiceInstance-filterByCloudRegion
+        if (nfRole != null){
+            if (cloudRegion != null){
+                return ImmutableMap.of(
+                    "start", ImmutableList
+                        .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+                    "query",  "query/vnfs-fromServiceInstance-filterByCloudRegion?nfRole=" + nfRole + "&cloudRegionID=" + cloudRegion + ""
+                );
+            }else {
+                return ImmutableMap.of(
+                    "start", ImmutableList
+                        .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+                    "query",  "query/vnfs-fromServiceInstance-filter?nfRole=" + nfRole + ""
+                );
+            }
+        }
+
+        if (cloudRegion != null){
+            return ImmutableMap.of(
+                "start", ImmutableList
+                    .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+                "query",  "query/vnfs-fromServiceInstance-filterByCloudRegion?cloudRegionID=" + cloudRegion + ""
+            );
+        }
+
         return ImmutableMap.of(
             "start", ImmutableList
                 .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
-            "query", query
+            "query", "query/vnfs-fromServiceInstance-filter"
         );
     }
 
