@@ -137,21 +137,39 @@ public class AaiClientTest {
         };
     }
 
-    @Test
-    public void testAaiPutCustomQueryByParams() {
-        String globalCustomerId = "globalCustomerId1-360-as988q";
-        String serviceType = "TEST1-360";
-        String nfRole = "test360";
+      private static String nfRoleOnly = "{\"start\":[\"/business/customers/customer/globalCustomerId1-360-as988q/service-subscriptions/service-subscription/TEST1-360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filter?nfRole=test360\"}";
+    private static String nfRoleAndCloudRegion = "{\"start\":[\"/business/customers/customer/globalCustomerId1-360-as988q/service-subscriptions/service-subscription/TEST1-360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filterByCloudRegion?nfRole=test360&cloudRegionID=cloudRegion-1\"}";
+    private static String cloudRegionOnly = "{\"start\":[\"/business/customers/customer/globalCustomerId1-360-as988q/service-subscriptions/service-subscription/TEST1-360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filterByCloudRegion?cloudRegionID=cloudRegion-1\"}";
+    private static String withoutNfroleAndCloudRegion = "{\"start\":[\"/business/customers/customer/globalCustomerId1-360-as988q/service-subscriptions/service-subscription/TEST1-360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filter\"}";
+
+    private static String responseJsonNfRole = "/payload_jsons/changeManagement/vnfs-fromServiceInstance-filterNfRole.json";
+    private static String responseJsonCloudRegion ="/payload_jsons/changeManagement/vnfs-fromServiceInstance-filterByCloudRegion.json";
+
+
+    @DataProvider
+    public static Object[][] aaiPutCustomQueryData() {
+        return new Object[][] {
+            {"globalCustomerId1-360-as988q", "TEST1-360", "test360", null, nfRoleOnly, responseJsonNfRole, "908419144", 200},
+            {"globalCustomerId1-360-as988q", "TEST1-360", null, "cloudRegion-1", cloudRegionOnly, responseJsonCloudRegion, "1165906024", 200},
+            {"globalCustomerId1-360-as988q", "TEST1-360", "test360", "cloudRegion-1", nfRoleAndCloudRegion,
+                responseJsonCloudRegion, "1165906024", 200},
+            {"globalCustomerId1-360-as988q", "TEST1-360", null, null, withoutNfroleAndCloudRegion, responseJsonNfRole, "908419144", 200},
+        };
+    }
+
+    @Test(dataProvider = "aaiPutCustomQueryData")
+    public void testAaiPutCustomQueryByParams(String globalCustomerId, String serviceType, String nfRole, String cloudRegion, String expectedPayload, String responseBody, String expectedId, int responseHttpCode) {
         String queryFormat = "query?format=simple";
         final ResponseWithRequestInfo mockedResponseWithRequestInfo = mockedResponseWithRequestInfo(Response.Status.OK,
-            TestUtils.readFileAsString("/payload_jsons/changeManagement/get_vnf_data_by_globalid_and_service_type_reduced_response.json"),
+            TestUtils.readFileAsString(responseBody),
             "query?format=simple&Mock=True",
             HttpMethod.PUT);
-        when(aaiClientMock.getVnfsByParamsForChangeManagement(anyString(), anyString(),anyString(), nullable(String.class))).thenCallRealMethod();
         when(aaiClientMock.doAaiPut(eq(queryFormat), anyString(), anyBoolean(), anyBoolean())).thenReturn(mockedResponseWithRequestInfo);
-        AaiResponse response = aaiClientMock.getVnfsByParamsForChangeManagement(globalCustomerId, serviceType, nfRole, null);
-        verify(aaiClientMock).doAaiPut(anyString(), anyString(),anyBoolean(),anyBoolean());
-        response.toString();
+        when(aaiClientMock.getVnfsByParamsForChangeManagement(anyString(), anyString(), nullable(String.class), nullable(String.class))).thenCallRealMethod();
+        AaiResponse<AaiGetVnfResponse> response = aaiClientMock.getVnfsByParamsForChangeManagement(globalCustomerId, serviceType, nfRole, cloudRegion);
+        verify(aaiClientMock).doAaiPut(eq(queryFormat), eq(expectedPayload), eq(false), eq(false));
+        assertEquals(response.getHttpCode(), responseHttpCode);
+        assertEquals(response.getT().getResults().get(0).id, expectedId);
     }
 
     @Test(dataProvider = "logicalLinkData")
