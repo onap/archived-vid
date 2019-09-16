@@ -18,7 +18,6 @@
     <encoding>UTF-8</encoding>
     <!--<springframework.version>5.1.6.RELEASE</springframework.version>-->
     <!--<hibernate.version>4.3.11.Final</hibernate.version>-->
-    <!--<jackson.version>2.6.3</jackson.version>-->
     <!-- Skip assembling the zip by default -->
     <skipassembly>true</skipassembly>
     <!-- Tests usually require some setup that maven cannot do, so skip. -->
