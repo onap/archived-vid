@@ -103,5 +103,5 @@ public interface AaiClientInterface extends ProbeInterface {
 
     Map<String, Properties> getCloudRegionAndTenantByVnfId(String vnfId);
 
-    AaiResponse getVnfsByParamsForChangeManagement(String subscriberId, String serviceType, String nfRole, String cloudRegion);
+    AaiResponse<AaiGetVnfResponse> getVnfsByParamsForChangeManagement(String subscriberId, String serviceType, String nfRole, String cloudRegion);
 }
