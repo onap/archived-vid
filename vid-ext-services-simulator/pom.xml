@@ -14,7 +14,8 @@
         <encoding>UTF-8</encoding>
         <springframework.version>5.1.9.RELEASE</springframework.version>
         <hibernate.version>5.3.4.Final</hibernate.version>
-        <jackson.version>2.9.9.3</jackson.version>
+        <jackson.version>2.9.9</jackson.version>
+        <jackson.databind.version>2.9.9.3</jackson.databind.version>
         <!-- Skip assembling the zip by default -->
         <skipassembly>true</skipassembly>
         <!-- Tests usually require some setup that maven cannot do, so skip. -->
@@ -142,7 +143,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson.databind.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
