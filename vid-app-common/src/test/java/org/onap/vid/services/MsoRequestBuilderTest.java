@@ -26,6 +26,7 @@ import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -85,6 +86,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
@@ -138,22 +140,32 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
 
     @Test
     public void createServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected() throws IOException {
-        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(true);
+        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(true,
+                false);
     }
 
     @Test
     public void createServiceInfo_WithUserProvidedNamingFalseAndNoVfmodules_ServiceInfoIsAsExpected() throws IOException {
-        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(false);
+        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(false, false);
     }
 
-    private void createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(boolean withVfmodules) throws IOException {
+    @Test
+    public void shouldCreateServiceInfoWithHomingSolutionDisabled() throws IOException {
+        doReturn(true).when(featureManager).isActive(Features.FLAG_DISABLE_HOMING);
+
+        createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(true, true);
+    }
+
+    private void createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(boolean withVfmodules, boolean disabledHoming) throws IOException {
 
         ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
                 createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
                 1,
                 false, PROJECT_NAME, true);
         URL resource;
-        if (withVfmodules) {
+        if (disabledHoming) {
+            resource = this.getClass().getResource("/payload_jsons/bulk_service_no_homing.json");
+        } else if (withVfmodules) {
             resource = this.getClass().getResource("/payload_jsons/bulk_service_request_ecomp_naming.json");
         } else {
             // remove the vf modules
