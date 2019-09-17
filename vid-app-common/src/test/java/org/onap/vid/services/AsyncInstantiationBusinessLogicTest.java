@@ -190,6 +190,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     @BeforeClass
     void initServicesInfoService() {
         MockitoAnnotations.initMocks(this);
+        doReturn(false).when(featureManager).isActive(Features.FLAG_DISABLE_HOMING);
         AsyncInstantiationRepository realAsyncInstantiationRepository = new AsyncInstantiationRepository(dataAccessService);
         asyncInstantiationRepository = spy(realAsyncInstantiationRepository);
 
