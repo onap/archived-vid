@@ -13,6 +13,7 @@ import org.onap.vid.mso.model.*
 import org.onap.vid.mso.model.BaseResourceInstantiationRequestDetails.*
 import org.onap.vid.mso.model.VfModuleInstantiationRequestDetails.UserParamMap
 import org.onap.vid.mso.rest.SubscriberInfo
+import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
 import org.onap.vid.services.CloudOwnerService
 import org.onap.vid.utils.JACKSON_OBJECT_MAPPER
@@ -33,6 +34,7 @@ class MsoRequestBuilder
     companion object {
         private val LOGGER = EELFLoggerDelegate.getLogger(MsoRequestBuilder::class.java)
         private const val VID_SOURCE = "VID"
+        private const val DISABLED_HOMING_VALUE = "none"
     }
 
     fun generateALaCarteServiceInstantiationRequest(payload: ServiceInstantiation, optimisticUniqueServiceInstanceName: String, userId: String): RequestDetailsWrapper<ServiceInstantiationRequestDetails> {
@@ -61,7 +63,8 @@ class MsoRequestBuilder
     fun generateMacroServiceInstantiationRequest(jobId: UUID?, payload: ServiceInstantiation, optimisticUniqueServiceInstanceName: String, userId: String): RequestDetailsWrapper<ServiceInstantiationRequestDetails> {
         val serviceInstanceName = generateServiceName(jobId, payload, optimisticUniqueServiceInstanceName)
 
-        val serviceInstantiationServiceList = generateServiceInstantiationServicesList(payload, serviceInstanceName, createServiceInstantiationVnfList(jobId, payload))
+        val serviceInstantiationServiceList = generateMacroServiceInstantiationRequestParams(payload, serviceInstanceName, jobId)
+
 
         val requestParameters = ServiceInstantiationRequestDetails.RequestParameters(payload.subscriptionServiceType, false, serviceInstantiationServiceList)
 
@@ -213,9 +216,9 @@ class MsoRequestBuilder
                 }
         }
 
-        val result : MutableMap<String, String> = instanceParams[0].entries.stream()
+        val result: MutableMap<String, String> = instanceParams[0].entries.stream()
                 .filter { entry -> !keysToRemove.contains(entry.key) }
-                .collect(Collectors.toMap({it.key}, {it.value}))
+                .collect(Collectors.toMap({ it.key }, { it.value }))
 
         return if (result.isEmpty()) emptyList() else listOf(result)
     }
@@ -330,7 +333,7 @@ class MsoRequestBuilder
 
     private fun generateCloudConfiguration(lcpCloudRegionId: String?, tenantId: String?): CloudConfiguration {
         val cloudConfiguration = CloudConfiguration(lcpCloudRegionId, tenantId)
-        if(lcpCloudRegionId != null){
+        if (lcpCloudRegionId != null) {
             cloudOwnerService.enrichCloudConfigurationWithCloudOwner(cloudConfiguration, lcpCloudRegionId)
         }
         return cloudConfiguration
@@ -342,7 +345,7 @@ class MsoRequestBuilder
                 .collect(Collectors.toList())
     }
 
-    private fun generateRequestInfo(instanceName: String?, resourceType: ResourceType?, rollbackOnFailure: Boolean?, productFamilyId: String?, userId: String) : BaseResourceInstantiationRequestDetails.RequestInfo {
+    private fun generateRequestInfo(instanceName: String?, resourceType: ResourceType?, rollbackOnFailure: Boolean?, productFamilyId: String?, userId: String): BaseResourceInstantiationRequestDetails.RequestInfo {
         return BaseResourceInstantiationRequestDetails.RequestInfo(
                 if (resourceType == null) null else getUniqueNameIfNeeded(instanceName, resourceType, false),
                 productFamilyId,
@@ -386,10 +389,7 @@ class MsoRequestBuilder
     }
 
     private fun generateUserParamsNameAndValue(instanceParams: List<Map<String, String>>): List<ServiceInstantiationRequestDetails.UserParamNameAndValue> {
-        if (instanceParams == null){
-            return emptyList()
-        }
-        return instanceParams.getOrElse(0, {emptyMap()}).map{x-> ServiceInstantiationRequestDetails.UserParamNameAndValue(x.key, x.value)}
+        return instanceParams.getOrElse(0) {emptyMap()}.map{ x-> ServiceInstantiationRequestDetails.UserParamNameAndValue(x.key, x.value)}
     }
 
     private fun generateSubscriberInfoPre1806(payload: ServiceInstantiation): SubscriberInfo {
@@ -406,6 +406,20 @@ class MsoRequestBuilder
             val vpn = vrfEntries.values.first().vpns.values.first()
             val network = vrfEntries.values.first().networks.values.first()
             listOf(vpn, network).map { RelatedInstance(it.modelInfo, it.instanceId, it.instanceName) }
+        }
+    }
+
+    private fun generateMacroServiceInstantiationRequestParams(payload: ServiceInstantiation, serviceInstanceName: String?, jobId: UUID?): List<UserParamTypes> {
+        val userParams = generateServiceInstantiationServicesList(payload, serviceInstanceName, createServiceInstantiationVnfList(jobId, payload))
+
+        return userParams.plus(enrichParamsByHomingSolution())
+    }
+
+    private fun enrichParamsByHomingSolution(): List<UserParamTypes> {
+        return if (featureManager.isActive(Features.FLAG_DISABLE_HOMING)) {
+            listOf(ServiceInstantiationRequestDetails.HomingSolution(DISABLED_HOMING_VALUE))
+        } else {
+            listOf<ServiceInstantiationRequestDetails.HomingSolution>()
         }
     }
 }
