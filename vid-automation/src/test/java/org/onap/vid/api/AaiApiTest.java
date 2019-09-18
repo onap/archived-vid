@@ -54,6 +54,7 @@ import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetVpnsByType;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIModelVersionsByInvariantId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery;
+import org.onap.simulator.presetGenerator.presets.aai.PrestAAIPutVnfsFromServiceInstanceFilter;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.model.aai.AaiResponse;
@@ -839,21 +840,12 @@ public class AaiApiTest extends BaseApiAaiTest {
     @FeatureTogglingTest(Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG)
     public void getVnfsWithCustomQueryNewReducedResponse() throws URISyntaxException {
 
-        String globalCustomerId = "globalCustomerId1-360-as988q";
-        String serviceType = "TEST1-360";
-        String nfRole = "test360";
-        SimulatorApi.registerExpectationFromPreset(new PresetBaseAAICustomQuery(
-            SIMPLE,
-            "/business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
-                + serviceType + "/service-instances",
-            "query/vnfs-fromServiceInstance-filter?nfRole=" + nfRole
-            ) {
-            @Override
-            public Object getResponseBody() {
-                return getResourceAsString(
-                    AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS);
-            }
-        }, CLEAR_THEN_SET);
+        String globalCustomerId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
+        String serviceType = "vRichardson";
+        String nfRole = "vMobileDNS";
+        SimulatorApi.registerExpectationFromPreset(
+            new PrestAAIPutVnfsFromServiceInstanceFilter(globalCustomerId, serviceType, nfRole, "zolson3amdns02test2"),
+            CLEAR_THEN_SET);
         URIBuilder urlBuilder  = new URIBuilder(uri + "/get_vnf_data_by_globalid_and_service_type/" + globalCustomerId + "/" + serviceType);
         urlBuilder.addParameter("nfRole", nfRole);
         ResponseEntity<String> response = restTemplate.getForEntity(urlBuilder.build().toString(), String.class);

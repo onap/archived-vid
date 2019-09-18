@@ -232,6 +232,82 @@
       }
     },
     {
+      "generic-vnf": {
+        "vnf-id": "8e5e3ba1-3fe6-4d86-966e-f9f03dab4855",
+        "vnf-name": "zolson3amdns02test2",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "equipment-role": "UCPE",
+        "orchestration-status": "Created",
+        "ipv4-oam-address": "12.80.1.18",
+        "nm-lan-v6-address": "2001:1890:e00e:fffe::33c4",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1507132024933",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "76e908e0-5201-44d2-a3e2-9e6128d05820",
+        "nf-role": "vMobileDNS",
+        "relationship-list": {
+          "relationship": [
+            {
+              "related-to": "service-instance",
+              "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+              "related-link": "/aai/v17/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08",
+              "relationship-data": [
+                {
+                  "relationship-key": "customer.global-customer-id",
+                  "relationship-value": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+                },
+                {
+                  "relationship-key": "service-subscription.service-type",
+                  "relationship-value": "vRichardson"
+                },
+                {
+                  "relationship-key": "service-instance.service-instance-id",
+                  "relationship-value": "97315a05-e6f3-4c47-ae7e-d850c327aa08"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "service-instance.service-instance-name",
+                  "property-value": "EUd8Test"
+                }
+              ]
+            },
+            {
+              "related-to": "vserver",
+              "relationship-label": "tosca.relationships.HostedOn",
+              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q/tenants/tenant/tenantID1-369-as988q/vservers/vserver/vserver1-369-test-as988q",
+              "relationship-data": [
+                {
+                  "relationship-key": "cloud-region.cloud-owner",
+                  "relationship-value": "cloudOwnerKeyValue1-369-as988q"
+                },
+                {
+                  "relationship-key": "cloud-region.cloud-region-id",
+                  "relationship-value": "cloudRegionIdKeyValue1-369-as988q"
+                },
+                {
+                  "relationship-key": "tenant.tenant-id",
+                  "relationship-value": "tenantID1-369-as988q"
+                },
+                {
+                  "relationship-key": "vserver.vserver-id",
+                  "relationship-value": "vserver1-369-test-as988q"
+                }
+              ],
+              "related-to-property": [
+                {
+                  "property-key": "vserver.vserver-name",
+                  "property-value": "vserver-name11-369-as988q"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
       "tenant": {
         "tenant-id": "tenantID1-369-as988q",
         "tenant-name": "tenant-name1-369-as988q",
