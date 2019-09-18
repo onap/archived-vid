@@ -730,7 +730,7 @@ public class AaiApiTest extends BaseApiAaiTest {
                 getResourceAsString("serviceWithNetwork/aaiGetNetworksWithVlansToVnfByServiceInstance.json"),
                 response);
     }
-
+    @FeatureTogglingTest(value = Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG, flagActive = false)
     @Test
     public void getVnfDataByGlobalIdAndServiceType() {
 
