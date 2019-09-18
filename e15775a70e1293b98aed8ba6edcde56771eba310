@@ -119,6 +119,24 @@
       "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "674dc4cc_f0f0461e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T20:13:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b55b294e_49d81de3",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
