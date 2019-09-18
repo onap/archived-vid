@@ -730,7 +730,7 @@ public class AaiApiTest extends BaseApiAaiTest {
                 getResourceAsString("serviceWithNetwork/aaiGetNetworksWithVlansToVnfByServiceInstance.json"),
                 response);
     }
-
+    @FeatureTogglingTest(value = Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG, flagActive = false)
     @Test
     public void getVnfDataByGlobalIdAndServiceType() {
 
@@ -836,7 +836,7 @@ public class AaiApiTest extends BaseApiAaiTest {
     }
 
     @Test
-    @FeatureTogglingTest(Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH)
+    @FeatureTogglingTest(Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG)
     public void getVnfsWithCustomQueryNewReducedResponse() throws URISyntaxException {
 
         String globalCustomerId = "globalCustomerId1-360-as988q";
