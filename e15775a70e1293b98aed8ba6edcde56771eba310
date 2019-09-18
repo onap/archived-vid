@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ba3f632_613bb4a9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T05:27:07Z",
+      "side": 1,
+      "message": "what are these new key and value ? \nWhich component read them ?",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "450dbdc7_6a5f34bd",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T05:27:07Z",
+      "side": 1,
+      "message": "please create a method called generateServiceInstantiationRequestParams (or something like that).\nThis method shall generate the elements of the user UserParamTypes list by using \nenerateServiceInstantiationServicesList.\nAnd add the new homing key,value\n\nIn general, if you need to use toMutableList(), it\u0027s alert that maybe there is a better way to do that.",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4163ec61_0aa23a00",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T05:27:07Z",
+      "side": 1,
+      "message": "Please add a UT for this change.",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c29f25af_3375b319",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T05:27:07Z",
+      "side": 1,
+      "message": "i\u0027m not sure about toMutableList()\nPlease try to find a cleaner way",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8dfe808_1a25dbd9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T05:27:07Z",
+      "side": 1,
+      "message": "Please add a UT for this change.",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b55b294e_49d81de3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T05:27:07Z",
+      "side": 1,
+      "message": "the comma is needed here. it enable adding new flag without changing the last line",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
