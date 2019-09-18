@@ -69,6 +69,10 @@
             return (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH));
         };
 
+        $scope.removeVendorFromCloudOwner = function(cloudOwner) {
+            return AaiService.removeVendorFromCloudOwner(cloudOwner)
+        };
+
         vm.isDisabledVNFmodelVersion = function (vnfTypePristine) {
             if ($scope.isNewFilterChangeManagmentEnabled()) {
                 return !vm.isSearchedVNF;
@@ -517,8 +521,19 @@
                 });
         };
 
+        function loadCloudRegions() {
+            AaiService.getLcpCloudRegionTenantList(
+                vm.changeManagement.subscriberId,
+                vm.changeManagement.serviceType["service-type"],
+                function (response) {
+                    $scope.cloudRegionList = _.uniqBy(response, 'cloudRegionOptionId');
+                });
+        }
+
         vm.serviceTypeChanged = function () {
-            if (!$scope.isNewFilterChangeManagmentEnabled()) {
+            if ($scope.isNewFilterChangeManagmentEnabled()) {
+                loadCloudRegions();
+            } else {
                 vm.searchVNFs();
             }
         };
@@ -533,8 +548,14 @@
 
             vm.vnfs = [];
             vm.vfModules = [];
-            let vnfRole = $scope.isNewFilterChangeManagmentEnabled() ? vm.changeManagement.vnfType : null;
+
+            let vnfRole = null;
             let cloudRegion = null;
+
+            if ($scope.isNewFilterChangeManagmentEnabled()) {
+                vnfRole = vm.changeManagement.vnfType ? vm.changeManagement.vnfType : null;
+                cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion.cloudRegionId : null;
+            }
 
 
             AaiService.getVnfsByCustomerIdAndServiceType(
@@ -542,8 +563,7 @@
                 vm.changeManagement.serviceType["service-type"],
                 vnfRole,
                 cloudRegion,
-        ).
-            then(function (response) {
+            ).then(function (response) {
                     vm.isSearchedVNF = true;
                     var vnfsData = response.data.results;
                     if (vnfsData) {
@@ -580,6 +600,9 @@
                         _.forEach(filteredVnfs, function (vnf) {
                             vm.vnfTypes.push(vnf.properties['nf-role'])
                         });
+                    }
+                    if ($scope.isNewFilterChangeManagmentEnabled()) {
+                        vm.loadVNFVersions();
                     }
                 }
             );
