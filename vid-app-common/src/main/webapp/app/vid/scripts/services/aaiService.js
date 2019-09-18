@@ -86,6 +86,23 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         }).join("&");
     }
 
+    function getConfigParams(vnfRole, cloudRegion) {
+        if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH)) {
+            return null
+        }
+
+        let data = {
+            vnfRole: vnfRole,
+            cloudRegion: cloudRegion,
+        };
+
+        let config = {
+            params: data
+        };
+
+        return config;
+    }
+
     return {
         getSubscriberName: function (globalCustomerId,
                                      successCallbackFunction) {
@@ -630,24 +647,17 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         },
 
         getVnfsByCustomerIdAndServiceType: function (globalSubscriberId, serviceType, vnfRole, cloudRegion) {
-            var deferred = $q.defer();
+            let deferred = $q.defer();
 
             let url = globalSubscriberId + COMPONENT.FORWARD_SLASH + serviceType
 
-            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH)){
-                if (vnfRole) {
-                    url + COMPONENT.FORWARD_SLASH + vnfRole
-                }
-                if (cloudRegion) {
-                    url + COMPONENT.FORWARD_SLASH + cloudRegion;
-                }
-            }
-
+            const path = COMPONENT.AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE + url;
+            let config = getConfigParams(vnfRole, cloudRegion);
 
             if (UtilityService.hasContents(globalSubscriberId) &&
                 UtilityService.hasContents(serviceType)) {
 
-                $http.get(COMPONENT.AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE + url)
+                $http.get(path, config)
                     .success(function (response) {
                         if (response) {
                             deferred.resolve({data: response});
