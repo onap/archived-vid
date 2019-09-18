@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f9354abc_547f9e3f",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/dev.features.properties",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T20:13:18Z",
+      "side": 1,
+      "message": "@Ittay Stern - is this feature shall be on by default ?",
+      "revId": "4191001358554d0abccdf65932ce7595728179fe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a9a89af_1e642368",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/onap.features.properties",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-18T20:13:18Z",
+      "side": 1,
+      "message": "@Ittay Stern - is this feature shall be on by default ?",
+      "revId": "4191001358554d0abccdf65932ce7595728179fe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
