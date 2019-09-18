@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "35e193aa_fc08cb9e",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T08:31:27Z",
+      "side": 1,
+      "message": "Can use `FeatureFlagsService.getFlagState()`?",
+      "revId": "f46e53e0c71db2388469558d48f8ffa25130f3d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a5a4090_7a7ce2b5",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T08:31:27Z",
+      "side": 1,
+      "message": "Can use `!isAllow()`.",
+      "revId": "f46e53e0c71db2388469558d48f8ffa25130f3d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
