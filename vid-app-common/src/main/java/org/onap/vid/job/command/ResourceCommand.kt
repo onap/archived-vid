@@ -222,11 +222,6 @@ abstract class ResourceCommand(
                 else -> InternalState.IN_PROGRESS
             }
 
-            InternalState.REPLACE_MYSELF -> when (jobStatus) {
-                JobStatus.IN_PROGRESS -> InternalState.REPLACE_MYSELF
-                else -> InternalState.IN_PROGRESS
-            }
-
             InternalState.IN_PROGRESS -> {
                 when {
                     jobStatus != JobStatus.COMPLETED -> InternalState.IN_PROGRESS
