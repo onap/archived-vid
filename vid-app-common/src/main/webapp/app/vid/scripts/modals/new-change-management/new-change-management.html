@@ -73,19 +73,35 @@
                 <div class="col nf-role-input">
                     <label class="control-label">NF Role</label>
                     <input class="form-control" ng-model="vm.changeManagement.vnfType"
-                           name="vnfType" id="vnfTypeInput"
+                           name="vnfType" id="vnfTypeInput" data-tests-id="vnfType"
                            data-ng-disabled="newChangeManagement.serviceType.$pristine">
                 </div>
 
+                <div class="col nf-role-input">
+                    <label class="control-label">Cloud Region</label>
+                    <select name="cloud-region" class="form-control" ng-model="vm.changeManagement.cloudRegion"
+                            name="vnfType" id="cloudRegion"
+                            data-ng-disabled="newChangeManagement.serviceType.$pristine">
+                        <option value="" disabled>select cloud Region</option>
+                        <option ng-repeat="option in cloudRegionList" value="{{option.cloudRegionOptionId}}"
+                                data-ng-if="option.isPermitted && !isFeatureFlagCloudOwner">{{option.cloudRegionId}}
+                        </option>
+                        <option ng-repeat="option in cloudRegionList" value="{{option.cloudRegionOptionId}}"
+                                data-ng-if="option.isPermitted && isFeatureFlagCloudOwner">
+                            {{option.cloudRegionId}} ({{removeVendorFromCloudOwner(option.cloudOwner).toUpperCase()}})
+                        </option>
+                    </select>
+                </div>
+
                 <div class="col">
-                    <button class="search-vnf" type="button" id="searchVNF" name="searchVNFs" class="btn btn-primary"
+                    <button class="btn btn-primary search-vnf" type="button" id="searchVNF" name="searchVNFs"
                             ng-click="vm.searchVNFs()"
-                            ng-disabled="newChangeManagement.subscriber.$pristine || newChangeManagement.serviceType.$pristine">
+                            ng-disabled="newChangeManagement.subscriber.$pristine || newChangeManagement.serviceType.$pristine"
+                            data-tests-id="searchVNFs">
                         Search VNFs
                     </button>
                 </div>
             </div>
-
         </div>
 
 
