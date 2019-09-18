@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30c0cab7_dff5c039",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T15:38:14Z",
+      "side": 1,
+      "message": "It\u0027s an issue, as `cloudRegionId` might repeat itself. It might be ok to use here `cloudRegionOptionId`. But not sure that even this is required.",
+      "revId": "7f6b0b188902e17d9415e10a368782b1c804fd1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "733271e4_2d708211",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.css",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T15:38:14Z",
+      "side": 1,
+      "message": "Won\u0027t it affect the regular UI as well?",
+      "revId": "7f6b0b188902e17d9415e10a368782b1c804fd1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6380e902_fa23b1ed",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T15:38:14Z",
+      "side": 1,
+      "message": "It is not an `nf-role-input`, right?",
+      "range": {
+        "startLine": 80,
+        "startChar": 32,
+        "endLine": 80,
+        "endChar": 45
+      },
+      "revId": "7f6b0b188902e17d9415e10a368782b1c804fd1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b93b77ac_bb4565de",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T15:38:14Z",
+      "side": 1,
+      "message": "It is neither `vnfType`, right?",
+      "range": {
+        "startLine": 83,
+        "startChar": 34,
+        "endLine": 83,
+        "endChar": 41
+      },
+      "revId": "7f6b0b188902e17d9415e10a368782b1c804fd1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a3b14b0_e3cad881",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T15:38:14Z",
+      "side": 1,
+      "message": "I don\u0027t find `isFeatureFlagCloudOwner` function in scope. What am I missing?",
+      "revId": "7f6b0b188902e17d9415e10a368782b1c804fd1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a48394e6_4315a8dd",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T15:38:14Z",
+      "side": 1,
+      "message": "I understand we should use here `cloudRegionId`. Right?",
+      "range": {
+        "startLine": 89,
+        "startChar": 86,
+        "endLine": 89,
+        "endChar": 105
+      },
+      "revId": "7f6b0b188902e17d9415e10a368782b1c804fd1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
