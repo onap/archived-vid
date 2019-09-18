@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5e34a78e_1667a506",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-18T08:21:00Z",
+      "side": 1,
+      "message": "These goes down to SO.\nSee also https://github.com/onap/so/blob/9fd49c5f4538cb9b498abeaa4e7f45993369a2aa/bpmn/so-bpmn-tasks/src/main/java/org/onap/so/bpmn/infrastructure/workflow/tasks/WorkflowAction.java#L363",
+      "parentUuid": "1ba3f632_613bb4a9",
+      "revId": "e15775a70e1293b98aed8ba6edcde56771eba310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "450dbdc7_6a5f34bd",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
         "patchSetId": 1
