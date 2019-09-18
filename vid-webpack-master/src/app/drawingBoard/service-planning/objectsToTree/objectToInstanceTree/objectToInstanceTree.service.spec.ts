@@ -39,7 +39,7 @@ class MockAppStore<T> {
       global: {
         'drawingBoardStatus': DrawingBoardModes.CREATE,
         flags : {
-          DRAG_AND_DROP_OPERATION : false
+          FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE : false
         }
       }
     }

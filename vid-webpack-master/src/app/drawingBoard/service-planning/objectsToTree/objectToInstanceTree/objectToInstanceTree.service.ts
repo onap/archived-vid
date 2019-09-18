@@ -106,7 +106,7 @@ export class ObjectToInstanceTreeService {
   }
 
   sortElementsByPosition(nodes: any[]): any[] {
-    if (!FeatureFlagsService.getFlagState(Features.DRAG_AND_DROP_OPERATION, this.store)) return nodes;
+    if (!FeatureFlagsService.getFlagState(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE, this.store)) return nodes;
     return nodes.sort((nodeA, nodeB) => {
       return nodeA.position - nodeB.position;
     });
