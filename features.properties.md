@@ -169,4 +169,7 @@
   
 * FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH
   Add cloud-region and nf-role as an optional search criteria fields when fetching VNF details.
- 
+
+* FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE
+  Let the user set the order of resource instantiation while using drawing board (new view edit)
+  for a-la-carte instantiation.

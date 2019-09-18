@@ -1,8 +1,5 @@
-import {TestBed, getTestBed} from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import {getTestBed, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {NgRedux} from "@angular-redux/store";
 import {DragAndDropService} from "./dragAndDrop.service";
 import {AppState} from "../../../../shared/store/reducers";
@@ -15,7 +12,7 @@ class MockAppStore<T> {
     return {
       global: {
         flags: {
-          "DRAG_AND_DROP_OPERATION" : true
+          "FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE" : true
         }
       },
       service: {

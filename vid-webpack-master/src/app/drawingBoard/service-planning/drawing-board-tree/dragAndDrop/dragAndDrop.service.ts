@@ -11,7 +11,7 @@ export class DragAndDropService {
   constructor(private store: NgRedux<AppState>){}
 
   isAllow(): boolean {
-    return FeatureFlagsService.getFlagState(Features.DRAG_AND_DROP_OPERATION, this.store);
+    return FeatureFlagsService.getFlagState(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE, this.store);
   }
   /********************************************************************
    * manage drawing-board drag and drop operation
@@ -23,7 +23,7 @@ export class DragAndDropService {
    ************************************************************/
 
   drag(store, instanceId : string , nodes, {from, to}) :void{
-    if (!store.getState().global.flags["DRAG_AND_DROP_OPERATION"]) return;
+    if (!store.getState().global.flags["FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE"]) return;
 
     let firstLevelNames : DragAndDropModel[] = [
         new DragAndDropModel('VF',true),
