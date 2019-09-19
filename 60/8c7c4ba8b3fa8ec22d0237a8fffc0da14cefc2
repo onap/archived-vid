@@ -1,0 +1,8 @@
+Code-Review+1: Jessica Wagantall <jwagantall@linuxfoundation.org>
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Submitted-by: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Submitted-at: Thu, 19 Sep 2019 23:32:49 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/vid/+/96024
+Project: vid
+Branch: refs/heads/master
