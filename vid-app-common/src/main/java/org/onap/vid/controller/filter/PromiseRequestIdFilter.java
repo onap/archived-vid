@@ -21,10 +21,13 @@
 package org.onap.vid.controller.filter;
 
 
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
+import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
 
+import com.google.common.collect.ImmutableList;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.UUID;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -33,15 +36,11 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.UUID;
-
-import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
 
 @WebFilter(urlPatterns = "/*")
-public class PromiseEcompRequestIdFilter extends GenericFilterBean {
+public class PromiseRequestIdFilter extends GenericFilterBean {
 
     private static final String REQUEST_ID_RESPONSE_HEADER = ECOMP_REQUEST_ID + "-echo";
 
@@ -67,7 +66,7 @@ public class PromiseEcompRequestIdFilter extends GenericFilterBean {
         final String originalRequestId = httpRequest.getHeader(ECOMP_REQUEST_ID);
 
         if (StringUtils.isEmpty(originalRequestId) || !verifyAndValidateUuid(originalRequestId)) {
-            request = new PromiseEcompRequestIdRequestWrapper(httpRequest);
+            request = new PromiseRequestIdRequestWrapper(httpRequest);
         }
 
         return request;
@@ -79,11 +78,11 @@ public class PromiseEcompRequestIdFilter extends GenericFilterBean {
         return value.matches(uuidRegex);
     }
 
-    private static class PromiseEcompRequestIdRequestWrapper extends HttpServletRequestWrapper {
+    private static class PromiseRequestIdRequestWrapper extends HttpServletRequestWrapper {
 
         private final UUID requestId;
 
-        PromiseEcompRequestIdRequestWrapper(HttpServletRequest request) {
+        PromiseRequestIdRequestWrapper(HttpServletRequest request) {
             super(request);
             requestId = UUID.randomUUID();
         }

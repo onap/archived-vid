@@ -50,7 +50,7 @@ import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
-import org.onap.vid.controller.filter.PromiseEcompRequestIdFilter;
+import org.onap.vid.controller.filter.PromiseRequestIdFilter;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
@@ -96,7 +96,8 @@ public class OutgoingRequestHeadersTest {
     }
 
     public static void putRequestInSpringContext() {
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes((HttpServletRequest) PromiseEcompRequestIdFilter.wrapIfNeeded(new MockHttpServletRequest())));
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes((HttpServletRequest) PromiseRequestIdFilter
+            .wrapIfNeeded(new MockHttpServletRequest())));
     }
 
 //    @DataProvider
