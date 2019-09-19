@@ -36,6 +36,7 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
 import org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery;
 import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
 import org.openqa.selenium.JavascriptExecutor;
@@ -88,7 +89,15 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalSubscriberInputId));
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalServiceTypeInputId));
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalVNFNameInputId));
-        Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalVNFTypeInputId));
+
+        if (Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH.isActive()) {
+            Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalVNFTypeInputId1));
+            Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalVNFCloudRegion));
+            Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalVNFSearchVNF));
+        } else {
+            Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalVNFTypeInputId));
+        }
+
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalFromVNFVersionInputId));
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.newModalWorkFlowInputId));
         Assert.assertTrue(Exists.byId(Constants.generalSubmitButtonId));
@@ -100,6 +109,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         String subscriberName = VNF_DATA_WITH_IN_PLACE.subscriberName;
         String serviceType = VNF_DATA_WITH_IN_PLACE.serviceType;
         String vnfType = VNF_DATA_WITH_IN_PLACE.vnfType;
+        String cloudRegion = VNF_DATA_WITH_IN_PLACE.cloudRegion;
         String vnfSourceVersion = VNF_DATA_WITH_IN_PLACE.vnfSourceVersion;
         ChangeManagementPage.openNewChangeManagementModal();
         Wait.angularHttpRequestsLoaded();
@@ -110,8 +120,15 @@ public class ChangeManagementTest extends VidBaseTestCase {
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalServiceTypeInputId, serviceType);
         Wait.angularHttpRequestsLoaded();
 
-        SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalVNFTypeInputId, vnfType);
+        if (Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH.isActive()) {
+            Input.text(vnfType, Constants.ChangeManagement.newModalVNFTypeInputId);
+            SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalVNFCloudRegion, cloudRegion);
+            Click.byId(Constants.ChangeManagement.newModalVNFSearchVNF);
+        } else {
+            SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalVNFTypeInputId, vnfType);
+        }
         Wait.angularHttpRequestsLoaded();
+
         SelectOption.byIdAndVisibleText(Constants.ChangeManagement.newModalFromVNFVersionInputId, vnfSourceVersion);
         Wait.angularHttpRequestsLoaded();
         Click.byId(Constants.ChangeManagement.newModalVNFNameInputId);
@@ -154,6 +171,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         static String subscriberName = "Emanuel";
         static String serviceType = "vRichardson";
         static String vnfType = "vMobileDNS";
+        static String cloudRegion = "AAIAIC25 (AIC)";
         static String vnfSourceVersion = "1.0";
         static String vnfName = "zolson3amdns02test2";
         static String vnfTargetVersion = "5.0";
@@ -217,6 +235,18 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 }
             }, APPEND);
         }
+
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.APPEND);
+
+        if (Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH.isActive()) {
+            SimulatorApi.registerExpectationFromPreset(new PresetAAIGetTenants(
+                    VNF_DATA_WITH_IN_PLACE.subscriberId,
+                    VNF_DATA_WITH_IN_PLACE.serviceType,
+                    "presets_templates/PresetAAIGetTenants_service_type_vWINIFRED.json"), SimulatorApi.RegistrationStrategy.APPEND);
+
+        }
+
         registerDefaultTablesData();
         resetGetServicesCache();
     }
