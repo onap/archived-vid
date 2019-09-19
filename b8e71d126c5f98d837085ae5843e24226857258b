@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f78211dc_508ba051",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-19T07:53:03Z",
+      "side": 1,
+      "message": "May rename to `homingSolution()`?",
+      "range": {
+        "startLine": 415,
+        "startChar": 31,
+        "endLine": 415,
+        "endChar": 59
+      },
+      "revId": "b8e71d126c5f98d837085ae5843e24226857258b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20d2c6de_f60b9f51",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-19T07:53:03Z",
+      "side": 1,
+      "message": "Can be \u003cUserParamTypes\u003e",
+      "range": {
+        "startLine": 422,
+        "startChar": 19,
+        "endLine": 422,
+        "endChar": 68
+      },
+      "revId": "b8e71d126c5f98d837085ae5843e24226857258b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
