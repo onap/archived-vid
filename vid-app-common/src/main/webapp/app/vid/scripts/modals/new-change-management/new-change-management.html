@@ -70,23 +70,22 @@
         <div ng-if="isNewFilterChangeManagmentEnabled()">
 
             <div class="form-group form-row">
-                <div class="col nf-role-input">
+                <div class="col new-filrter-field">
                     <label class="control-label">NF Role</label>
                     <input class="form-control" ng-model="vm.changeManagement.vnfType"
                            name="vnfType" id="vnfTypeInput" data-tests-id="vnfType"
                            data-ng-disabled="newChangeManagement.serviceType.$pristine">
                 </div>
 
-                <div class="col nf-role-input">
+                <div class="col new-filrter-field">
                     <label class="control-label">Cloud Region</label>
-                    <select name="cloud-region" class="form-control" ng-model="vm.changeManagement.cloudRegion"
-                            name="vnfType" id="cloudRegion"
+                    <select name="cloudRegion" class="form-control" ng-model="vm.changeManagement.cloudRegion"  data-tests-id="cloudRegion" id="cloudRegion"
                             data-ng-disabled="newChangeManagement.serviceType.$pristine">
-                        <option value="" disabled>select cloud Region</option>
-                        <option ng-repeat="option in cloudRegionList" value="{{option.cloudRegionOptionId}}"
+                        <option value="" >select cloud Region</option>
+                        <option ng-repeat="option in cloudRegionList" value="{{option.tenantId}}"
                                 data-ng-if="option.isPermitted && !isFeatureFlagCloudOwner">{{option.cloudRegionId}}
                         </option>
-                        <option ng-repeat="option in cloudRegionList" value="{{option.cloudRegionOptionId}}"
+                        <option ng-repeat="option in cloudRegionList" value="{{option.tenantId}}"
                                 data-ng-if="option.isPermitted && isFeatureFlagCloudOwner">
                             {{option.cloudRegionId}} ({{removeVendorFromCloudOwner(option.cloudOwner).toUpperCase()}})
                         </option>
