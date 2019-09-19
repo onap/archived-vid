@@ -1,16 +1,24 @@
 package vid.automation.test.test;
 
 
+import static java.util.Collections.emptyMap;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsNot.not;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery.FORMAT.SIMPLE;
+import static org.onap.vid.api.BaseApiTest.getResourceAsString;
+import static vid.automation.test.infra.Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
 import java.sql.Connection;
@@ -19,13 +27,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import net.javacrumbs.jsonunit.core.Option;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery;
 import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -55,6 +67,7 @@ import vid.automation.test.utils.DB_CONFIG;
 public class ChangeManagementTest extends VidBaseTestCase {
 
     public static final String SCHEDULED_ID = "0b87fe60-50b0-4bac-a0a7-49e951b0ba9e";
+    private final String SCHEDULE_ERROR_PREFIX = "Portal not found. Cannot send: ";
 
     @Test
     public void testLeftPanelChangeManagementButton() {
@@ -88,6 +101,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         String subscriberName = VNF_DATA_WITH_IN_PLACE.subscriberName;
         String serviceType = VNF_DATA_WITH_IN_PLACE.serviceType;
         String vnfType = VNF_DATA_WITH_IN_PLACE.vnfType;
+        String cloudRegion = VNF_DATA_WITH_IN_PLACE.cloudRegion;
         String vnfSourceVersion = VNF_DATA_WITH_IN_PLACE.vnfSourceVersion;
         ChangeManagementPage.openNewChangeManagementModal();
         Wait.angularHttpRequestsLoaded();
@@ -142,6 +156,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         static String subscriberName = "Emanuel";
         static String serviceType = "vRichardson";
         static String vnfType = "vMobileDNS";
+        static String cloudRegion = "AAIAIC25 (AIC)";
         static String vnfSourceVersion = "1.0";
         static String vnfName = "zolson3amdns02test2";
         static String vnfTargetVersion = "5.0";
@@ -176,7 +191,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @BeforeClass
     protected void registerToSimulator() {
         SimulatorApi.clearAll();
-        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
+        SimulatorApi.registerExpectation(APPEND,
                 "changeManagement/ecompportal_getSessionSlotCheckInterval.json"
                 , "changeManagement/get_aai_sub_details.json"
                 , "changeManagement/get_sdc_catalog_services_2f80c596.json"
@@ -187,7 +202,34 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 , "changeManagement/mso_post_manual_task.json"
                 , "changeManagement/mso_get_change_managements_scaleout.json"
         );
-        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
+        if(FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG.isActive()){
+            String AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS = "registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_with_modelVer.json";
+            String globalCustomerId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
+            String serviceType = "vRichardson";
+            SimulatorApi.registerExpectationFromPreset(new PresetBaseAAICustomQuery(
+                SIMPLE,
+                "/business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                    + serviceType + "/service-instances",
+                "query/vnfs-fromServiceInstance-filter"
+            ) {
+                @Override
+                public Object getResponseBody() {
+                    return getResourceAsString(
+                        AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS);
+                }
+            }, APPEND);
+        }
+
+        SimulatorApi.registerExpectationFromPresets(
+                ImmutableList.of(
+                        new PresetAAIGetSubscribersGet(),
+                        new PresetAAIGetTenants(VNF_DATA_WITH_IN_PLACE.subscriberId,
+                                VNF_DATA_WITH_IN_PLACE.serviceType,
+                                "presets_templates/PresetAAIGetTenants_service_type_vWINIFRED.json")),
+                SimulatorApi.RegistrationStrategy.APPEND);
+
+
 
         registerDefaultTablesData();
         resetGetServicesCache();
@@ -200,7 +242,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                         , "changeManagement/delete_scheduled_task.json"},
                 ImmutableMap.of(
                         "<SCHEDULE_ID>", SCHEDULED_ID,
-                        "<IN_PROGRESS_DATE>", "Fri, 08 Sep 2017 19:34:32 GMT"), SimulatorApi.RegistrationStrategy.APPEND
+                        "<IN_PROGRESS_DATE>", "Fri, 08 Sep 2017 19:34:32 GMT"), APPEND
         );
     }
 
@@ -276,7 +318,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @Test
     public void clickOnScheduledJob_SuccessfulMessageAppear() {
 
-        SimulatorApi.registerExpectationFromPreset(new PresetDeleteSchedulerChangeManagement(), SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetDeleteSchedulerChangeManagement(), APPEND);
 
         ChangeManagementPage.openChangeManagementPage();
         GeneralUIUtils.ultimateWait();
@@ -334,7 +376,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     public void updateSimulatorWithParametersOfScheduledJod(String jasonFile) {
         SimulatorApi.registerExpectation(
                 new String[]{"changeManagement/" + jasonFile},
-                ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), SimulatorApi.RegistrationStrategy.APPEND
+                ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), APPEND
         );
     }
 
@@ -463,10 +505,33 @@ public class ChangeManagementTest extends VidBaseTestCase {
         };
     }
 
-    // Deleted testVidToMsoCallbackDataWithInPlaceSWUpdate test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
+    @Test(dataProvider = "dataForUpdateWorkflowPartialWithInPlace")
+    public void testVidToMsoCallbackDataWithInPlaceSWUpdate(String operationsTimeout, String existingSwVersion, String newSwVersion) {
 
+        openAndFill1stScreenWithWorkflowVNFInPlaceSoftwareUpdate();
+        fillVNFInPlace3Fields(operationsTimeout, existingSwVersion, newSwVersion);
 
-    // Deleted testUploadConfigUpdateFile test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
+        assertThatVidToPortalCallbackDataIsOk(VNF_DATA_WITH_IN_PLACE.workflowName, ImmutableMap.of(
+            "existingSoftwareVersion", existingSwVersion,
+            "newSoftwareVersion", newSwVersion,
+            "operationTimeout", operationsTimeout
+        ));
+    }
+
+    @Test
+    public void testUploadConfigUpdateFile() {
+        String fileName = "configuration_file.csv";
+        updateConfigFile(fileName);
+        Assert.assertEquals(Get.byId(Constants.ChangeManagement.newModalConfigUpdateInputId + "-label").getText(), fileName);
+        Assert.assertTrue(Get.byId(Constants.generalSubmitButtonId).isEnabled());
+        assertThatVidToPortalCallbackDataIsOk("VNF Config Update", ImmutableMap.of(
+            "configUpdateFile",
+            "{\"request-parameters\":{\"vm\":[{\"vnfc\":["
+                + "{\"vnfc-name\":\"ibcx0001vm001dbg001\",\"vnfc-function-code\":\"dbg\"}],\"vm-name\":\"ibcx0001vm001\"},"
+                + "{\"vnfc\":[{\"vnfc-name\":\"ibcx0001vm002dbg001\"}],\"vm-name\":\"ibcx0001vm002\"}]},\"configuration-parameters\":{\"node0_hostname\":\"dbtx0001vm001\"}}"
+        ));
+    }
+
     @FeatureTogglingTest(value = Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH, flagActive = false)
     @Test
     public void testUploadConfigUpdateNonCsvFile() {
@@ -495,7 +560,14 @@ public class ChangeManagementTest extends VidBaseTestCase {
         };
     }
 
-    // Deleted testVidToMsoCallbackData test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
+    @Test
+    public void testVidToMsoCallbackData() {
+        String workflow = "Replace";
+
+        openAndFill1stScreen(VNF_DATA_WITH_IN_PLACE.vnfName, VNF_DATA_WITH_IN_PLACE.vnfTargetVersion, workflow);
+
+        assertThatVidToPortalCallbackDataIsOk(workflow, emptyMap());
+    }
 
     private void assertThatVidToMsoCallbackDataIsOk(String workflow, String payload) {
         Assert.assertTrue(Get.byId(Constants.generalSubmitButtonId).isEnabled());
@@ -512,6 +584,42 @@ public class ChangeManagementTest extends VidBaseTestCase {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+        Click.byId(Constants.generalCancelButtonId);
+    }
+
+    private void assertThatVidToPortalCallbackDataIsOk(String workflowName, Map<String, String> workflowParams) {
+        Assert.assertTrue(Get.byId(Constants.generalSubmitButtonId).isEnabled());
+        Click.byId(Constants.generalSubmitButtonId);
+
+        String errorMessage = GeneralUIUtils.getWebElementByTestID("error-message", 2).getText();
+
+        String modelInvariantId = "72e465fe-71b1-4e7b-b5ed-9496118ff7a8";
+        String vnfInstanceId = "8e5e3ba1-3fe6-4d86-966e-f9f03dab4855";
+
+            assertThat(errorMessage, startsWith(SCHEDULE_ERROR_PREFIX));
+            assertThat(errorMessage.replace(SCHEDULE_ERROR_PREFIX, ""), jsonEquals(
+                ImmutableMap.of(
+                    "widgetName", "Portal-Common-Scheduler",
+                    "widgetParameter", "",
+                    "widgetData", ImmutableMap.builder()
+                        .put("vnfNames", ImmutableList.of(ImmutableMap.of(
+                            "id", vnfInstanceId,
+                            "invariant-id", modelInvariantId
+                        )))
+                        .put("workflowParameters", emptyMap())
+                        .put("subscriberId", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb")
+                        .put("fromVNFVersion", "" + "76e908e0-5201-44d2-a3e2-9e6128d05820" + "")
+                        .put("workflow", "" + workflowName + "")
+                        .put("policyYN", "Y")
+                        .put("sniroYN", "Y")
+                        .put("testApi", "VNF_API")
+                        .put("vnfType", "vMobileDNS")
+                        .putAll(workflowParams)
+                    .build()
+                    )
+                ).when(Option.IGNORING_EXTRA_FIELDS));
+
 
         Click.byId(Constants.generalCancelButtonId);
     }

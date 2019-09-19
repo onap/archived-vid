@@ -19,6 +19,8 @@
  */
 package org.onap.vid.services;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
@@ -33,26 +35,31 @@ public class LocalWorkflowsServiceImpl implements LocalWorkflowsService {
     Map<String, LocalWorkflowParameterDefinitions> WORKFLOWS_WITH_PARAMETERS = ImmutableMap.<String, LocalWorkflowParameterDefinitions>builder()
         .put("VNF Scale Out", new LocalWorkflowParameterDefinitions(
             ImmutableList.of(
-                new LocalWorkflowParameterDefinition(1, "Configuration Parameters", true, LocalWorkflowType.text,".*")
+                new LocalWorkflowParameterDefinition(1, "configurationParameters", "Configuration Parameters", true, LocalWorkflowType.text,".*")
             )
         ))
         .put("VNF In Place Software Update", new LocalWorkflowParameterDefinitions(
             ImmutableList.of(
-                new LocalWorkflowParameterDefinition(2, "Operations timeout",true, LocalWorkflowType.text,"[0-9]+"),
-                new LocalWorkflowParameterDefinition(3, "Existing software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+"),
-                new LocalWorkflowParameterDefinition(4, "New software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+")
+                new LocalWorkflowParameterDefinition(2, "operationTimeout", "Operations timeout", true, LocalWorkflowType.text,"[0-9]+"),
+                new LocalWorkflowParameterDefinition(3, "existingSoftwareVersion", "Existing software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+"),
+                new LocalWorkflowParameterDefinition(4, "newSoftwareVersion", "New software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+")
             )
         ))
         .put("VNF Config Update", new LocalWorkflowParameterDefinitions(
             ImmutableList.of(
-                new LocalWorkflowParameterDefinition(5, "Attach configuration file", true, LocalWorkflowType.FILE, ".*", "Invalid file type. Please select a file with a CSV extension.", "Invalid file structure.", ".csv")
+                new LocalWorkflowParameterDefinition(5, "configUpdateFile", "Attach configuration file", true, LocalWorkflowType.FILE, ".*", "Invalid file type. Please select a file with a CSV extension.", "Invalid file structure.", ".csv")
             )
         ))
         .build();
 
+
+    private LocalWorkflowParameterDefinitions defaultEmptyParams() {
+        return new LocalWorkflowParameterDefinitions(emptyList());
+    }
+
     @Override
     public LocalWorkflowParameterDefinitions getWorkflowParameterDefinitions(String workflowName) {
-        return WORKFLOWS_WITH_PARAMETERS.get(workflowName);
+        return WORKFLOWS_WITH_PARAMETERS.getOrDefault(workflowName, defaultEmptyParams());
     }
 
 }

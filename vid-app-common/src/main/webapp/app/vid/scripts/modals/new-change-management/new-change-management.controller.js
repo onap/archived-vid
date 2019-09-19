@@ -69,7 +69,7 @@
             return (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH));
         };
 
-        $scope.removeVendorFromCloudOwner = function(cloudOwner) {
+        $scope.removeVendorFromCloudOwner = function (cloudOwner) {
             return AaiService.removeVendorFromCloudOwner(cloudOwner)
         };
 
@@ -229,7 +229,7 @@
             $uibModalInstance.close();
         };
 
-        vm.uploadConfigFile = function (file) {
+        vm.uploadConfigFile = function (file, item) {
             var defer = $q.defer();
             Upload.upload({
                 url: "change-management/uploadConfigUpdateFile",
@@ -239,7 +239,7 @@
                 }]
             })
                 .then(function (configUpdateResponse) {
-                    vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
+                    item.value = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
                     defer.resolve(true);
                 })
                 .catch(function (error) {
@@ -447,6 +447,19 @@
             }
         };
 
+        vm.collectWorkflowFieldsValues = function () {
+            /**
+             * Transforms items with name and value properties, to associative map, e.g the array
+             * [{name: foo, value: bar}, {name: baz, value: fiz}] will become the object {foo: bar, baz: fiz}
+             */
+            return vm.getAllInternalWorkFlowParameters(
+                    vm.changeManagement.workflow
+            ).reduce(function (result, item) {
+                result[item.name] = item.value;
+                return result;
+            }, {});
+        };
+
         vm.scheduleWorkflow = function () {
             $scope.widgetParameter = ""; // needed by the scheduler?
 
@@ -460,11 +473,18 @@
             }
             var data = {
                 widgetName: 'Portal-Common-Scheduler',
-                widgetData: vm.changeManagement,
+                widgetData: Object.assign({}, vm.changeManagement, vm.collectWorkflowFieldsValues()),
                 widgetParameter: $scope.widgetParameter
             };
 
-            window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
+            console.log("vm.scheduleWorkflow data:", data);
+
+            if (window.parent !== window.self) {
+                window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
+            } else {
+                vm.errorMsg = {message: "Portal not found. Cannot send: " + JSON.stringify(data)};
+                throw vm.errorMsg; // prevent popup closure
+            }
         };
 
         vm.executeWorkflow = function () {
@@ -521,11 +541,26 @@
                 });
         };
 
+        function isCompatibleVNFRole(vnf) {
+
+            return vnf.properties['nf-role'] === vm.changeManagement['vnfType'] || !vm.changeManagement['vnfType'];
+
+        }
+
+        function isValidVnf(vnf) {
+
+            let result =  isCompatibleVNFRole(vnf) && vnf.properties["model-invariant-id"]
+                && vnf.properties["model-version-id"];
+
+            return result;
+        }
+
         function loadCloudRegions() {
             AaiService.getLcpCloudRegionTenantList(
                 vm.changeManagement.subscriberId,
                 vm.changeManagement.serviceType["service-type"],
                 function (response) {
+                    $scope.isFeatureFlagCloudOwner = featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST);
                     $scope.cloudRegionList = _.uniqBy(response, 'cloudRegionId');
                 });
         }
@@ -541,6 +576,9 @@
             vm.vnfTypes = [];
             vm.vnfTypesTemp = [];
             vm.serviceInstances = [];
+            vm.fromVNFVersions=[];
+            vm.vnfNames =[];
+            vm.changeManagement.vnfNames =[];
 
             var instances = vm.changeManagement.serviceType["service-instances"]["service-instance"];
             // var promiseArrOfGetVnfs = preparePromiseArrOfGetVnfs(instances);
@@ -553,9 +591,8 @@
 
             if ($scope.isNewFilterChangeManagmentEnabled()) {
                 vnfRole = vm.changeManagement.vnfType ? vm.changeManagement.vnfType : null;
-                cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion.cloudRegionId : null;
+                cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion : null;
             }
-
 
             AaiService.getVnfsByCustomerIdAndServiceType(
                 vm.changeManagement.subscriberId,
@@ -614,9 +651,7 @@
             vm.serviceInstancesToGetVersions = [];
             var versions = [];
             _.forEach(vm.vnfs, function (vnf) {
-                if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']
-                    && vnf.properties["model-invariant-id"]
-                    && vnf.properties["model-version-id"]) {
+                if (isValidVnf(vnf)) {
                     vm.serviceInstancesToGetVersions.push({
                             "model-invariant-id": vnf.properties["model-invariant-id"],
                             "model-version-id": vnf.properties["model-version-id"]
@@ -687,13 +722,15 @@
         };
 
         vm.loadVNFNames = function () {
+            vm.changeManagement.vnfNames =[];
             vm.vnfNames = [];
+
             const vnfs = vm.changeManagement.fromVNFVersion ? vm.vnfs : [];
             _.forEach(vnfs, function (vnf) {
 
                 var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
 
-                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType &&
+                if (isCompatibleVNFRole(vnf) &&
                     selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
@@ -878,21 +915,23 @@
             return form[itemName].$error.validateAsyncFn;
         };
 
-        vm.getIdFor = function (type, id, name) {
-            return "internal-workflow-parameter-" + type + "-" + id + "-" + (name ? name.split(' ').join('-').toLowerCase() : "");
+        vm.getIdFor = function (type, item) {
+            return "internal-workflow-parameter-" + type + "-" + item.id + "-" + (item.displayName ? item.displayName.split(' ').join('-').toLowerCase() : "");
         };
 
-        vm.getInternalWorkFlowParameters = function (workflow, type) {
-            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type) != []) {
-                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type);
+        vm.getAllInternalWorkFlowParameters = function (workflow) {
+            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow)) {
+                return vm.localWorkflowsParameters.get(workflow);
             }
             return [];
         };
 
+        vm.getInternalWorkFlowParameters = function (workflow, type) {
+            return vm.getAllInternalWorkFlowParameters(workflow).filter(parameter => parameter.type === type);
+        };
+
         vm.getInternalWorkFlowParameter = function (workflow, type, parameterName) {
-            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type) != []) {
-                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type).filter(parameter => parameter.name === parameterName)[0]
-            }
+            return vm.getInternalWorkFlowParameters(workflow, type).filter(parameter => parameter.displayName === parameterName)[0];
         };
 
         vm.getRemoteWorkflowSource = (workflow) => {
