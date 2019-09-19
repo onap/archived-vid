@@ -11,6 +11,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsNot.not;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
 import java.sql.Connection;
@@ -26,6 +27,7 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
 import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -187,7 +189,16 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 , "changeManagement/mso_post_manual_task.json"
                 , "changeManagement/mso_get_change_managements_scaleout.json"
         );
-        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.APPEND);
+
+        SimulatorApi.registerExpectationFromPresets(
+                ImmutableList.of(
+                        new PresetAAIGetSubscribersGet(),
+                        new PresetAAIGetTenants(VNF_DATA_WITH_IN_PLACE.subscriberId,
+                                VNF_DATA_WITH_IN_PLACE.serviceType,
+                                "presets_templates/PresetAAIGetTenants_service_type_vWINIFRED.json")),
+                SimulatorApi.RegistrationStrategy.APPEND);
+
+
 
         registerDefaultTablesData();
         resetGetServicesCache();
@@ -463,7 +474,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         };
     }
 
-    // Deleted testVidToMsoCallbackDataWithInPlaceSWUpdate test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
+    // Deleted testVidToMsoCallbackDataWitvhInPlaceSWUpdate test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
 
 
     // Deleted testUploadConfigUpdateFile test. It was using assertThatVidToMsoCallbackDataIsOk which is no longer valid.
