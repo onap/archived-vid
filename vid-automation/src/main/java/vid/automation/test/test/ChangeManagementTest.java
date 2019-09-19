@@ -36,6 +36,7 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
 import org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery;
 import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
 import org.openqa.selenium.JavascriptExecutor;
@@ -100,6 +101,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         String subscriberName = VNF_DATA_WITH_IN_PLACE.subscriberName;
         String serviceType = VNF_DATA_WITH_IN_PLACE.serviceType;
         String vnfType = VNF_DATA_WITH_IN_PLACE.vnfType;
+        String cloudRegion = VNF_DATA_WITH_IN_PLACE.cloudRegion;
         String vnfSourceVersion = VNF_DATA_WITH_IN_PLACE.vnfSourceVersion;
         ChangeManagementPage.openNewChangeManagementModal();
         Wait.angularHttpRequestsLoaded();
@@ -154,6 +156,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         static String subscriberName = "Emanuel";
         static String serviceType = "vRichardson";
         static String vnfType = "vMobileDNS";
+        static String cloudRegion = "AAIAIC25 (AIC)";
         static String vnfSourceVersion = "1.0";
         static String vnfName = "zolson3amdns02test2";
         static String vnfTargetVersion = "5.0";
@@ -199,6 +202,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 , "changeManagement/mso_post_manual_task.json"
                 , "changeManagement/mso_get_change_managements_scaleout.json"
         );
+
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
         if(FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG.isActive()){
             String AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS = "registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_with_modelVer.json";
@@ -217,6 +221,15 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 }
             }, APPEND);
         }
+
+        SimulatorApi.registerExpectationFromPresets(
+                ImmutableList.of(
+                        new PresetAAIGetSubscribersGet(),
+                        new PresetAAIGetTenants(VNF_DATA_WITH_IN_PLACE.subscriberId,
+                                VNF_DATA_WITH_IN_PLACE.serviceType,
+                                "presets_templates/PresetAAIGetTenants_service_type_vWINIFRED.json")),
+                APPEND);
+
         registerDefaultTablesData();
         resetGetServicesCache();
     }
