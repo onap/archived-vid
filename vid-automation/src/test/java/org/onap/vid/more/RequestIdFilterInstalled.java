@@ -1,7 +1,18 @@
 package org.onap.vid.more;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.onap.vid.api.CategoryParametersApiTest.MAINTENANCE_CATEGORY_PARAMETER;
+import static org.onap.vid.api.pProbeMsoApiTest.MSO_CREATE_CONFIGURATION;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
@@ -10,20 +21,14 @@ import org.onap.simulator.presetGenerator.presets.aaf.AAFGetUrlServicePreset;
 import org.onap.vid.api.BaseApiTest;
 import org.onap.vid.api.OperationalEnvironmentControllerApiTest;
 import org.onap.vid.api.ServiceInstanceMsoApiTest;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.services.SimulatorApi;
-
-import java.util.List;
-import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.vid.api.CategoryParametersApiTest.MAINTENANCE_CATEGORY_PARAMETER;
-import static org.onap.vid.api.pProbeMsoApiTest.MSO_CREATE_CONFIGURATION;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 public class RequestIdFilterInstalled extends BaseApiTest {
 
@@ -39,8 +44,8 @@ public class RequestIdFilterInstalled extends BaseApiTest {
     Clients unit-tests.
      */
 
-    private static final String ECOMP_REQUEST_ID = "x-ecomp-requestid";
-    private final String ECOMP_REQUEST_ID_ECHO = ECOMP_REQUEST_ID + "-echo";
+    private static final String REQUEST_ID_HEADER = "x-onap-requestid";
+    private final String ECOMP_REQUEST_ID_ECHO = "x-ecomp-requestid-echo";
 
     @BeforeClass
     public void login() {
@@ -148,8 +153,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
         // id" filter, which is great!
         Assert.assertNotNull(response);
         List<String> ecompRequestIdHeaderValues = response.getHeaders().get(ECOMP_REQUEST_ID_ECHO);
-        Assert.assertNotNull(ecompRequestIdHeaderValues);
-        Assert.assertTrue(ecompRequestIdHeaderValues.contains(uuid));
+        Assert.assertThat(ecompRequestIdHeaderValues, hasItem(equalToIgnoringCase(uuid)));
     }
 
     private void assertThatTermIsInARecentLog(String uuid) {
@@ -169,7 +173,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
     private Pair<HttpEntity, String> makeRequest(HttpMethod httpMethod, String url, String body, String expectationFilename) {
         final String uuid = UUID.randomUUID().toString();
         final HttpHeaders headers = new HttpHeaders();
-        headers.add(ECOMP_REQUEST_ID, uuid);
+        headers.add(REQUEST_ID_HEADER, uuid);
         headers.add(AUTHORIZATION, "Basic " + AAFGetBasicAuthPreset.VALID_AUTH_VALUE);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
