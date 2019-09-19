@@ -139,6 +139,32 @@
                 <option value="" disabled>Select workflow</option>
             </select>
         </div>
+        <div class="form-group" ng-if="vm.isConfigUpdate()">
+            <label class="control-label">Attach configuration file</label>
+            <div class="file-wrapper">
+                <input id="config-update-input" class="file-input" type="file" ngf-select ng-model="vm.configUpdateFile" ngf-validate-async-fn="vm.uploadConfigFile($file)" name="configUpdateFile"
+                       accept=".csv" ngf-pattern=".csv" required> </input>
+                <label id="config-update-label" class="file-input-label">{{vm.configUpdateFile&&vm.configUpdateFile.name||"Select File"}} </label>
+                <label for="config-update-input"><span class="icon-browse"></span></label>
+            </div>
+            <label id="errorLabel" class="icon-alert error" ng-if="newChangeManagement.configUpdateFile.$error.pattern">{{vm.configUpdatePatternError}}</label>
+            <label id="errorContentLabel" class="icon-alert error" ng-if="newChangeManagement.configUpdateFile.$error.validateAsyncFn">{{vm.configUpdateContentError}}</label>
+        </div>
+        <div ng-if="vm.shouldShowVnfInPlaceFields()">
+            <div class="form-group">
+                <label class="control-label">Operations timeout</label>
+                <input class="form-control" ng-model="vm.changeManagement.operationTimeout" name="operationTimeout" type="text" id="operations-timeout" pattern="[0-9]+" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Existing software version</label>
+                <input class="form-control" ng-model="vm.changeManagement.existingSoftwareVersion" name="existingSoftwareVersion" type="text" id="existing-software-version" pattern="{{vm.softwareVersionRegex}}" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">New software version</label>
+                <input class="form-control" ng-model="vm.changeManagement.newSoftwareVersion" name="newSoftwareVersion" type="text" id="new-software-version" pattern="{{vm.softwareVersionRegex}}" required>
+            </div>
+
+        </div>
 
         <div class="form-group" ng-if="vm.changeManagement.workflow"
              ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'FILE')">
@@ -153,9 +179,9 @@
                     {{item.value&&item.value.name||"Select File"}} </label>
                 <label ng-attr-for="{{vm.getIdFor('file',item.id,item.name)}}"><span class="icon-browse"></span></label>
             </div>
-            <label id="errorLabel" class="icon-alert error"
+            <label class="icon-alert error"
                    ng-if="vm.hasPatternError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnPatternError}}</label>
-            <label id="errorContentLabel" class="icon-alert error"
+            <label class="icon-alert error"
                    ng-if="vm.hasAsyncFnError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnContentError}}</label>
         </div>
 
