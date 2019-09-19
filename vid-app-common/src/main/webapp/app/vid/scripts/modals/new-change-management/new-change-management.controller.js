@@ -69,7 +69,7 @@
             return (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH));
         };
 
-        $scope.removeVendorFromCloudOwner = function(cloudOwner) {
+        $scope.removeVendorFromCloudOwner = function (cloudOwner) {
             return AaiService.removeVendorFromCloudOwner(cloudOwner)
         };
 
@@ -541,11 +541,26 @@
                 });
         };
 
+        function isCompatibleVNFRole(vnf) {
+
+            return vnf.properties['nf-role'] === vm.changeManagement['vnfType'] || !vm.changeManagement['vnfType'];
+
+        }
+
+        function isValidVnf(vnf) {
+
+            let result =  isCompatibleVNFRole(vnf) && vnf.properties["model-invariant-id"]
+                && vnf.properties["model-version-id"];
+
+            return result;
+        }
+
         function loadCloudRegions() {
             AaiService.getLcpCloudRegionTenantList(
                 vm.changeManagement.subscriberId,
                 vm.changeManagement.serviceType["service-type"],
                 function (response) {
+                    $scope.isFeatureFlagCloudOwner = featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST);
                     $scope.cloudRegionList = _.uniqBy(response, 'cloudRegionOptionId');
                 });
         }
@@ -562,6 +577,9 @@
             vm.vnfTypes = [];
             vm.vnfTypesTemp = [];
             vm.serviceInstances = [];
+            vm.fromVNFVersions=[];
+            vm.vnfNames =[];
+            vm.changeManagement.vnfNames =[];
 
             var instances = vm.changeManagement.serviceType["service-instances"]["service-instance"];
             // var promiseArrOfGetVnfs = preparePromiseArrOfGetVnfs(instances);
@@ -574,9 +592,8 @@
 
             if ($scope.isNewFilterChangeManagmentEnabled()) {
                 vnfRole = vm.changeManagement.vnfType ? vm.changeManagement.vnfType : null;
-                cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion.cloudRegionId : null;
+                cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion : null;
             }
-
 
             AaiService.getVnfsByCustomerIdAndServiceType(
                 vm.changeManagement.subscriberId,
@@ -635,9 +652,7 @@
             vm.serviceInstancesToGetVersions = [];
             var versions = [];
             _.forEach(vm.vnfs, function (vnf) {
-                if (vnf.properties['nf-role'] === vm.changeManagement['vnfType']
-                    && vnf.properties["model-invariant-id"]
-                    && vnf.properties["model-version-id"]) {
+                if (isValidVnf(vnf)) {
                     vm.serviceInstancesToGetVersions.push({
                             "model-invariant-id": vnf.properties["model-invariant-id"],
                             "model-version-id": vnf.properties["model-version-id"]
@@ -708,13 +723,15 @@
         };
 
         vm.loadVNFNames = function () {
+            vm.changeManagement.vnfNames =[];
             vm.vnfNames = [];
+
             const vnfs = vm.changeManagement.fromVNFVersion ? vm.vnfs : [];
             _.forEach(vnfs, function (vnf) {
 
                 var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
 
-                if (vnf.properties['nf-role'] === vm.changeManagement.vnfType &&
+                if (isCompatibleVNFRole(vnf) &&
                     selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
