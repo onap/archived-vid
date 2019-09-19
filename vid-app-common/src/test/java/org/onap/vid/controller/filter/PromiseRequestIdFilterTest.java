@@ -18,14 +18,16 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.controller;
+package org.onap.vid.controller.filter;
 
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -38,6 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -49,8 +52,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.onap.portalsdk.core.web.support.UserUtils;
-import org.onap.vid.controller.filter.PromiseRequestIdFilter;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @Test
@@ -59,6 +62,10 @@ public class PromiseRequestIdFilterTest {
     private final String anotherHeader = "ANDREI_RUBLEV";
     private final String anotherValue = "foo value";
     private final String mixedCaseHeader = "x-ecomp-REQUESTID";
+
+    private static final String onapRequestIdHeader = "x-onap-requestid";
+    private static final String transactionIdHeader = "x-transactionid";
+    private static final String requestIdHeader = "x-requestid";
 
     @Test
     public void givenRequestIdHeader_headerValueNotChanged() throws IOException, ServletException {
@@ -111,8 +118,119 @@ public class PromiseRequestIdFilterTest {
         buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(incomingRequestHeaders, UserUtils::getRequestId);
     }
 
-    
-    private void buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(
+    @Test
+    public void givenTwoRequestIdHeader_onapHeaderValueIsUsed() throws IOException, ServletException {
+
+        final String someTxId = "863850e2-8545-4efd-94b8-AFBA5F52B3D5"; // note mixed case
+        final String anotherTxId = "6e8ff89e-88a4-4977-b63f-3142892b6e08";
+
+        final ImmutableMap<String, String> incomingRequestHeaders = ImmutableMap.of(
+            anotherHeader, anotherValue,
+            ECOMP_REQUEST_ID, anotherTxId,
+            onapRequestIdHeader, someTxId
+        );
+
+        buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(incomingRequestHeaders, specificTxId(someTxId));
+    }
+
+    @Test
+    public void givenTwoRequestIdHeaderAndHigherPriorityIsMalformed_headerValueIsGenerated() throws IOException, ServletException {
+
+        final String malformedTxId = "6e8ff89e-88a4-4977-b63f-3142892b6e08-";
+        final String anotherTxId = "863850e2-8545-4efd-94b8-afba5f52b3d5";
+
+        final ImmutableMap<String, String> incomingRequestHeaders = ImmutableMap.of(
+            anotherHeader, anotherValue,
+            requestIdHeader, malformedTxId,
+            transactionIdHeader, anotherTxId
+        );
+
+        HttpServletRequest wrappedRequest =
+            buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(incomingRequestHeaders, UserUtils::getRequestId);
+
+        assertThat(UserUtils.getRequestId(wrappedRequest),
+            not(anyOf(equalTo(malformedTxId), equalTo(anotherTxId)))
+        );
+    }
+
+
+    @Test
+    public void toUuidOrElse_givenValid_yieldSame() {
+        final String someTxId = "729bbd8d-b0c2-4809-a794-DCCCD9CDA2C0"; // note mixed case
+        UUID unexpected = UUID.randomUUID();
+        assertThat(new PromiseRequestIdFilter().toUuidOrElse(someTxId, () -> unexpected), is(UUID.fromString(someTxId)));
+    }
+
+    @Test
+    public void toUuidOrElse_givenNull_yieldSupplier() {
+        UUID expected = UUID.fromString("729bbd8d-b0c2-4809-a794-dcccd9cda2c0");
+        assertThat(new PromiseRequestIdFilter().toUuidOrElse(null, () -> expected), is(expected));
+    }
+
+    @Test
+    public void toUuidOrElse_givenMalformed_yieldSupplier() {
+        UUID expected = UUID.fromString("729bbd8d-b0c2-4809-a794-dcccd9cda2c0");
+        assertThat(new PromiseRequestIdFilter().toUuidOrElse("malformed uuid", () -> expected), is(expected));
+    }
+
+    @DataProvider
+    public static Object[][] severalRequestIdHeaders() {
+        String someTxId = "69fa2575-d7f2-482c-ad1b-53a63ca03617";
+        String anotherTxId = "06de373b-7e19-4357-9bd1-ed95682ae3a4";
+
+        return new Object[][]{
+            {
+                "header is selected when single", transactionIdHeader,
+                ImmutableMap.of(
+                    transactionIdHeader, someTxId
+                )
+            }, {
+                "header is selected when first", onapRequestIdHeader,
+                ImmutableMap.of(
+                    onapRequestIdHeader, someTxId,
+                    "noise-header", anotherTxId,
+                    ECOMP_REQUEST_ID, anotherTxId
+                )
+            }, {
+                "header is selected when last", onapRequestIdHeader,
+                ImmutableMap.of(
+                    ECOMP_REQUEST_ID, anotherTxId,
+                    "noise-header", anotherTxId,
+                    onapRequestIdHeader, someTxId
+                )
+            }, {
+                "header is selected when value is invalid uuid", onapRequestIdHeader,
+                ImmutableMap.of(
+                    onapRequestIdHeader, "invalid-uuid"
+                )
+            }, {
+                "header is selected when no ecomp-request-id", onapRequestIdHeader,
+                ImmutableMap.of(
+                    requestIdHeader, anotherTxId,
+                    onapRequestIdHeader, someTxId
+                )
+            }, {
+                "ECOMP_REQUEST_ID is returned when no request-id header", ECOMP_REQUEST_ID,
+                ImmutableMap.of(
+                    "tsamina-mina", anotherTxId,
+                    "waka-waka", anotherTxId
+                )
+            },
+        };
+    }
+
+    @Test(dataProvider = "severalRequestIdHeaders")
+    public void highestPriorityHeader_givenSeveralRequestIdHeaders_correctHeaderIsUsed(String description, String expectedHeader, Map<String, String> incomingRequestHeaders) {
+        PromiseRequestIdFilter testSubject = new PromiseRequestIdFilter();
+
+        HttpServletRequest mockedHttpServletRequest = createMockedHttpServletRequest(incomingRequestHeaders);
+
+        assertThat(description,
+            testSubject.highestPriorityHeader(mockedHttpServletRequest), equalToIgnoringCase(expectedHeader));
+    }
+
+
+    private HttpServletRequest buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(
             ImmutableMap<String, String> originalRequestHeaders,
             Function<HttpServletRequest, String> txIdExtractor
     ) throws IOException, ServletException {
@@ -135,6 +253,8 @@ public class PromiseRequestIdFilterTest {
 
         assertRequestObjectHeaders(capturedServletRequest, expectedTxId);
         assertResponseObjectHeaders(capturedServletResponse, expectedTxId);
+
+        return (HttpServletRequest) capturedServletRequest;
     }
 
 
@@ -148,14 +268,14 @@ public class PromiseRequestIdFilterTest {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
         assertThat(Collections.list(httpServletRequest.getHeaderNames()),
-                containsInAnyOrder(equalToIgnoringCase(ECOMP_REQUEST_ID), equalToIgnoringCase(anotherHeader)));
+                hasItems(equalToIgnoringCase(ECOMP_REQUEST_ID), equalToIgnoringCase(anotherHeader)));
 
         assertThat(httpServletRequest.getHeader(anotherHeader), is(anotherValue));
 
-        assertThat(httpServletRequest.getHeader(ECOMP_REQUEST_ID), is(expectedTxId));
-        assertThat(httpServletRequest.getHeader(mixedCaseHeader), is(expectedTxId));
+        assertThat(httpServletRequest.getHeader(ECOMP_REQUEST_ID), equalToIgnoringCase(expectedTxId));
+        assertThat(httpServletRequest.getHeader(mixedCaseHeader), equalToIgnoringCase(expectedTxId));
 
-        assertThat(UserUtils.getRequestId(httpServletRequest), is(expectedTxId));
+        assertThat(UserUtils.getRequestId(httpServletRequest), equalToIgnoringCase(expectedTxId));
         assertThat(UserUtils.getRequestId(httpServletRequest), is(not(emptyOrNullString())));
     }
 
@@ -164,7 +284,7 @@ public class PromiseRequestIdFilterTest {
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         assertThat("header " + REQUEST_ID_HEADER_NAME_IN_RESPONSE.toLowerCase() + " in response must be provided",
-                httpServletResponse.getHeader(REQUEST_ID_HEADER_NAME_IN_RESPONSE), is(txId));
+                httpServletResponse.getHeader(REQUEST_ID_HEADER_NAME_IN_RESPONSE), equalToIgnoringCase(txId));
     }
 
 
