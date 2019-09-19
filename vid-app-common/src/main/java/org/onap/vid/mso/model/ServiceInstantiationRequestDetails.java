@@ -136,6 +136,19 @@ public class ServiceInstantiationRequestDetails {
         }
     }
 
+    public static class HomingSolution implements UserParamTypes {
+        private final String homingSolution;
+
+        public HomingSolution(String homingSolution) {
+            this.homingSolution = homingSolution;
+        }
+
+        @JsonProperty("Homing_Solution")
+        public String getHomingSolution() {
+            return homingSolution;
+        }
+    }
+
     public static class ServiceInstantiationService implements UserParamTypes {
         private final ServiceInstantiationServiceInner serviceInstantiationServiceInner;
 
