@@ -51,6 +51,7 @@ import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.controller.filter.PromiseRequestIdFilter;
+import org.onap.vid.logging.Headers;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
@@ -65,7 +66,8 @@ import org.testng.annotations.Test;
 
 public class OutgoingRequestHeadersTest {
 
-    private static final PromiseRequestIdFilter promiseRequestIdFilter = new PromiseRequestIdFilter();
+    private static final PromiseRequestIdFilter promiseRequestIdFilter =
+        new PromiseRequestIdFilter(new Headers());
 
 //    @InjectMocks
 //    private RestMsoImplementation restMsoImplementation;
