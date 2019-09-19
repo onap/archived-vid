@@ -21,6 +21,9 @@
 package org.onap.vid.controller.filter;
 
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
 
 import com.google.common.collect.ImmutableList;
@@ -28,6 +31,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,15 +41,17 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.StringUtils;
+import javax.validation.constraints.NotNull;
+import org.onap.vid.logging.Headers;
 import org.springframework.web.filter.GenericFilterBean;
 
 @WebFilter(urlPatterns = "/*")
 public class PromiseRequestIdFilter extends GenericFilterBean {
 
+    private static final String PROMISED_HEADER_NAME = ECOMP_REQUEST_ID;
     private static final String REQUEST_ID_RESPONSE_HEADER = ECOMP_REQUEST_ID + "-echo";
 
-    private static final Pattern uuidRegex = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+    private static final Pattern uuidRegex = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", Pattern.CASE_INSENSITIVE);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -55,7 +61,7 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
             request = wrapIfNeeded(request);
 
             if (response instanceof HttpServletResponse) {
-                final String actualRequestId = ((HttpServletRequest) request).getHeader(ECOMP_REQUEST_ID);
+                final String actualRequestId = ((HttpServletRequest) request).getHeader(PROMISED_HEADER_NAME);
                 ((HttpServletResponse) response).addHeader(REQUEST_ID_RESPONSE_HEADER, actualRequestId);
             }
         }
@@ -65,35 +71,52 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
 
     public ServletRequest wrapIfNeeded(ServletRequest request) {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
-        final String originalRequestId = incomingRequestId(httpRequest);
 
-        if (isWrapNeeded(originalRequestId)) {
-            request = new PromiseRequestIdRequestWrapper(httpRequest);
+        final String highestPriorityHeader = highestPriorityHeader(httpRequest);
+        final String originalRequestId = httpRequest.getHeader(highestPriorityHeader);
+
+        if (isWrapNeeded(highestPriorityHeader, originalRequestId)) {
+            // Copy originalRequestId to the promised header value
+            request = new PromiseRequestIdRequestWrapper(httpRequest, toUuidOrElse(originalRequestId, UUID::randomUUID));
         }
 
         return request;
     }
 
     private boolean verifyAndValidateUuid(String value) {
-        return uuidRegex.matcher(value).matches();
+        return isNotEmpty(value) && uuidRegex.matcher(value).matches();
     }
 
-    protected boolean isWrapNeeded(String originalRequestId) {
-        return StringUtils.isEmpty(originalRequestId)
-            || !verifyAndValidateUuid(originalRequestId);
+    private boolean isWrapNeeded(String highestPriorityHeader, String originalRequestId) {
+        boolean headerExistsAndValid =
+            equalsIgnoreCase(highestPriorityHeader, PROMISED_HEADER_NAME) && verifyAndValidateUuid(originalRequestId);
+
+        return !headerExistsAndValid;
     }
 
-    protected String incomingRequestId(HttpServletRequest httpRequest) {
-        return httpRequest.getHeader(ECOMP_REQUEST_ID);
+    UUID toUuidOrElse(String uuid, Supplier<UUID> uuidSupplier) {
+        if (verifyAndValidateUuid(uuid)) {
+            try {
+                return UUID.fromString(uuid);
+            } catch (IllegalArgumentException e) {
+                return uuidSupplier.get();
+            }
+        } else {
+            return uuidSupplier.get();
+        }
+    }
+
+    String highestPriorityHeader(HttpServletRequest httpRequest) {
+        return defaultIfNull(Headers.highestPriorityHeader(httpRequest), PROMISED_HEADER_NAME);
     }
 
     private static class PromiseRequestIdRequestWrapper extends HttpServletRequestWrapper {
 
         private final UUID requestId;
 
-        PromiseRequestIdRequestWrapper(HttpServletRequest request) {
+        PromiseRequestIdRequestWrapper(HttpServletRequest request, @NotNull UUID requestId) {
             super(request);
-            requestId = UUID.randomUUID();
+            this.requestId = requestId;
         }
 
         @Override
@@ -114,9 +137,9 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
         @Override
         public Enumeration<String> getHeaderNames() {
 
-            if (null == super.getHeader(ECOMP_REQUEST_ID)) {
+            if (null == super.getHeader(PROMISED_HEADER_NAME)) {
                 return Collections.enumeration(ImmutableList.<String>builder()
-                    .add(ECOMP_REQUEST_ID)
+                    .add(PROMISED_HEADER_NAME)
                     .addAll(Collections.list(super.getHeaderNames()))
                     .build());
             }
@@ -125,7 +148,7 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
         }
 
         private boolean isRequestIdHeaderName(String name) {
-            return ECOMP_REQUEST_ID.equalsIgnoreCase(name);
+            return equalsIgnoreCase(name, PROMISED_HEADER_NAME);
         }
     }
 }
