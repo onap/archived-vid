@@ -1,295 +1,215 @@
-{
-  "results": [
-    {
-      "service-instance": {
-        "service-instance-id": "serviceInstanceID1-369-as988q",
-        "service-instance-name": "EUd8Test",
-        "service-type": "xBoJHJbWTest",
-        "service-role": "sc7OWTest",
-        "environment-context": "O7OVp5Test",
-        "workload-context": "VmnxNeJIgWq7HTest",
-        "model-invariant-id": "modelInvariantValue2-369 -as988q",
-        "model-version-id": "modelVersionKey2-369-as988q",
-        "widget-model-id": "HT7KA2FoRKH3cTest",
-        "widget-model-version": "CsGp5Test",
-        "bandwidth-total": "1Yijkk1Test",
-        "vhn-portal-url": "40PzTest",
-        "service-instance-location-id": "zcAaHJTAt5Hj8Test",
-        "resource-version": "1563820653329",
-        "selflink": "mZP2EVvwwHnlTest",
-        "orchestration-status": "6QvhzNgLudLBTest",
-        "relationship-list": {
-          "relationship": [
-            {
-              "related-to": "generic-vnf",
-              "relationship-label": "org.onap.relationships.inventory.ComposedOf",
-              "related-link": "/aai/v17/network/generic-vnfs/generic-vnf/test-gvnf2-369-as988q",
-              "relationship-data": [
-                {
-                  "relationship-key": "generic-vnf.vnf-id",
-                  "relationship-value": "test-gvnf2-369-as988q"
-                }
-              ],
-              "related-to-property": [
-                {
-                  "property-key": "generic-vnf.vnf-name",
-                  "property-value": "test-name2-gvnf-369"
-                }
-              ]
-            },
-            {
-              "related-to": "generic-vnf",
-              "relationship-label": "org.onap.relationships.inventory.ComposedOf",
-              "related-link": "/aai/v17/network/generic-vnfs/generic-vnf/test-gvnf1-369-as988q",
-              "relationship-data": [
-                {
-                  "relationship-key": "generic-vnf.vnf-id",
-                  "relationship-value": "test-gvnf1-369-as988q"
-                }
-              ],
-              "related-to-property": [
-                {
-                  "property-key": "generic-vnf.vnf-name",
-                  "property-value": "test-name-gvnf-369"
-                }
-              ]
-            }
-          ]
-        }
-      }
+{"results": [
+  {
+    "id": "908419144",
+    "node-type": "service-instance",
+    "url": "/aai/v17/business/customers/customer/globalCustomerId1-369-as988q/service-subscriptions/service-subscription/TEST1-369/service-instances/service-instance/serviceInstanceID1-369-as988q",
+    "properties":       {
+      "service-instance-id": "serviceInstanceID1-369-as988q",
+      "service-instance-name": "EUd8Test",
+      "service-type": "xBoJHJbWTest",
+      "service-role": "sc7OWTest",
+      "environment-context": "O7OVp5Test",
+      "workload-context": "VmnxNeJIgWq7HTest",
+      "model-invariant-id": "modelInvariantValue2-369-as988q",
+      "model-version-id": "modelVersionKey2-369-as988q",
+      "widget-model-id": "HT7KA2FoRKH3cTest",
+      "widget-model-version": "CsGp5Test",
+      "bandwidth-total": "1Yijkk1Test",
+      "vhn-portal-url": "40PzTest",
+      "service-instance-location-id": "zcAaHJTAt5Hj8Test",
+      "resource-version": "1563820653329",
+      "selflink": "mZP2EVvwwHnlTest",
+      "orchestration-status": "6QvhzNgLudLBTest"
     },
-    {
-      "model-ver": {
-        "model-version-id": "modelVersionKey2-369-as988q",
-        "model-name": "vnfc8",
-        "model-version": "1.1",
-        "resource-version": "1563820653007"
+    "related-to":       [
+      {
+        "id": "439189680",
+        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+        "node-type": "generic-vnf",
+        "url": "/aai/v17/network/generic-vnfs/generic-vnf/test-gvnf2-369-as988q"
+      },
+      {
+        "id": "1166020712",
+        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+        "node-type": "generic-vnf",
+        "url": "/aai/v17/network/generic-vnfs/generic-vnf/test-gvnf1-369-as988q"
+      },
+      {
+        "id": "1166016616",
+        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+        "node-type": "service-subscription",
+        "url": "/aai/v17/business/customers/customer/globalCustomerId1-369-as988q/service-subscriptions/service-subscription/TEST1-369"
       }
+    ]
+  },
+  {
+    "id": "890175488",
+    "node-type": "model-ver",
+    "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue2-369-as988q/model-vers/model-ver/modelVersionKey2-369-as988q",
+    "properties":       {
+      "model-version-id": "modelVersionKey2-369-as988q",
+      "model-name": "vnfc8",
+      "model-version": "1.1",
+      "resource-version": "1563820653007"
     },
-    {
-      "model": {
-        "model-invariant-id": "modelInvariantValue2-369-as988q",
-        "model-type": "widget3",
-        "resource-version": "1563820652703",
-        "model-vers": {
-          "model-ver": [
-            {
-              "model-version-id": "modelVersionKey2-369-as988q",
-              "model-name": "vnfc8",
-              "model-version": "1.1",
-              "resource-version": "1563820653007"
-            }
-          ]
-        }
-      }
+    "related-to": [      {
+      "id": "908415048",
+      "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+      "node-type": "model",
+      "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue2-369-as988q"
+    }]
+  },
+  {
+    "id": "908415048",
+    "node-type": "model",
+    "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue2-369-as988q",
+    "properties":       {
+      "model-invariant-id": "modelInvariantValue2-369-as988q",
+      "model-type": "widget3",
+      "resource-version": "1563820652703"
     },
-    {
-      "generic-vnf": {
-        "vnf-id": "test-gvnf2-369-as988q",
-        "vnf-name": "test-name2-gvnf-369",
-        "vnf-type": "SW",
-        "service-id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4",
-        "equipment-role": "UCPE",
-        "orchestration-status": "created",
-        "ipv4-oam-address": "12.80.1.18",
-        "nm-lan-v6-address": "2001:1890:e00e:fffe::33c4",
-        "in-maint": false,
-        "is-closed-loop-disabled": false,
-        "resource-version": "1563820654611",
-        "model-invariant-id": "modelInvariantValue-369-as988q",
-        "model-version-id": "modelVersionKey-369-as988q",
-        "nf-role": "test360",
-        "relationship-list": {
-          "relationship": [
-            {
-              "related-to": "service-instance",
-              "relationship-label": "org.onap.relationships.inventory.ComposedOf",
-              "related-link": "/aai/v17/business/customers/customer/globalCustomerId1-369-as988q/service-subscriptions/service-subscription/TEST1-369/service-instances/service-instance/serviceInstanceID1-369-as988q",
-              "relationship-data": [
-                {
-                  "relationship-key": "customer.global-customer-id",
-                  "relationship-value": "globalCustomerId1-369-as988q"
-                },
-                {
-                  "relationship-key": "service-subscription.service-type",
-                  "relationship-value": "TEST1-369"
-                },
-                {
-                  "relationship-key": "service-instance.service-instance-id",
-                  "relationship-value": "serviceInstanceID1-369-as988q"
-                }
-              ],
-              "related-to-property": [
-                {
-                  "property-key": "service-instance.service-instance-name",
-                  "property-value": "EUd8Test"
-                }
-              ]
-            }
-          ]
-        }
-      }
+    "related-to": [      {
+      "id": "890175488",
+      "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+      "node-type": "model-ver",
+      "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue2-369-as988q/model-vers/model-ver/modelVersionKey2-369-as988q"
+    }]
+  },
+  {
+    "id": "439189680",
+    "node-type": "generic-vnf",
+    "url": "/aai/v17/network/generic-vnfs/generic-vnf/test-gvnf2-369-as988q",
+    "properties":       {
+      "vnf-id": "test-gvnf2-369-as988q",
+      "vnf-name": "test-name2-gvnf-369",
+      "vnf-type": "SW",
+      "service-id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4",
+      "equipment-role": "UCPE",
+      "orchestration-status": "created",
+      "ipv4-oam-address": "12.80.1.18",
+      "nm-lan-v6-address": "2001:1890:e00e:fffe::33c4",
+      "in-maint": false,
+      "is-closed-loop-disabled": false,
+      "resource-version": "1563820654611",
+      "model-invariant-id": "modelInvariantValue-369-as988q",
+      "model-version-id": "modelVersionKey-369-as988q",
+      "nf-role": "test360"
     },
-    {
-      "model-ver": {
-        "model-version-id": "modelVersionKey-369-as988q",
-        "model-name": "vnfc8",
-        "model-version": "1.1",
-        "resource-version": "1563820652380"
-      }
+    "related-to": [      {
+      "id": "908419144",
+      "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+      "node-type": "service-instance",
+      "url": "/aai/v17/business/customers/customer/globalCustomerId1-369-as988q/service-subscriptions/service-subscription/TEST1-369/service-instances/service-instance/serviceInstanceID1-369-as988q"
+    }]
+  },
+  {
+    "id": "1166012520",
+    "node-type": "model-ver",
+    "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue-369-as988q/model-vers/model-ver/modelVersionKey-369-as988q",
+    "properties":       {
+      "model-version-id": "modelVersionKey-369-as988q",
+      "model-name": "vnfc8",
+      "model-version": "1.1",
+      "resource-version": "1563820652380"
     },
-    {
-      "model": {
-        "model-invariant-id": "modelInvariantValue-369-as988q",
-        "model-type": "service",
-        "resource-version": "1563820652072",
-        "model-vers": {
-          "model-ver": [
-            {
-              "model-version-id": "modelVersionKey-369-as988q",
-              "model-name": "vnfc8",
-              "model-version": "1.1",
-              "resource-version": "1563820652380"
-            }
-          ]
-        }
-      }
+    "related-to": [      {
+      "id": "1166008424",
+      "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+      "node-type": "model",
+      "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue-369-as988q"
+    }]
+  },
+  {
+    "id": "1166008424",
+    "node-type": "model",
+    "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue-369-as988q",
+    "properties":       {
+      "model-invariant-id": "modelInvariantValue-369-as988q",
+      "model-type": "service",
+      "resource-version": "1563820652072"
     },
-    {
-      "generic-vnf": {
-        "vnf-id": "test-gvnf1-369-as988q",
-        "vnf-name": "test-name-gvnf-369",
-        "vnf-type": "SW",
-        "service-id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4",
-        "equipment-role": "UCPE",
-        "orchestration-status": "created",
-        "ipv4-oam-address": "12.80.1.18",
-        "nm-lan-v6-address": "2001:1890:e00e:fffe::33c4",
-        "in-maint": false,
-        "is-closed-loop-disabled": false,
-        "resource-version": "1563820654296",
-        "model-invariant-id": "modelInvariantValue-369-as988q",
-        "model-version-id": "modelVersionKey-369-as988q",
-        "nf-role": "test360",
-        "relationship-list": {
-          "relationship": [
-            {
-              "related-to": "service-instance",
-              "relationship-label": "org.onap.relationships.inventory.ComposedOf",
-              "related-link": "/aai/v17/business/customers/customer/globalCustomerId1-369-as988q/service-subscriptions/service-subscription/TEST1-369/service-instances/service-instance/serviceInstanceID1-369-as988q",
-              "relationship-data": [
-                {
-                  "relationship-key": "customer.global-customer-id",
-                  "relationship-value": "globalCustomerId1-369-as988q"
-                },
-                {
-                  "relationship-key": "service-subscription.service-type",
-                  "relationship-value": "TEST1-369"
-                },
-                {
-                  "relationship-key": "service-instance.service-instance-id",
-                  "relationship-value": "serviceInstanceID1-369-as988q"
-                }
-              ],
-              "related-to-property": [
-                {
-                  "property-key": "service-instance.service-instance-name",
-                  "property-value": "EUd8Test"
-                }
-              ]
-            },
-            {
-              "related-to": "vserver",
-              "relationship-label": "tosca.relationships.HostedOn",
-              "related-link": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q/tenants/tenant/tenantID1-369-as988q/vservers/vserver/vserver1-369-test-as988q",
-              "relationship-data": [
-                {
-                  "relationship-key": "cloud-region.cloud-owner",
-                  "relationship-value": "cloudOwnerKeyValue1-369-as988q"
-                },
-                {
-                  "relationship-key": "cloud-region.cloud-region-id",
-                  "relationship-value": "cloudRegionIdKeyValue1-369-as988q"
-                },
-                {
-                  "relationship-key": "tenant.tenant-id",
-                  "relationship-value": "tenantID1-369-as988q"
-                },
-                {
-                  "relationship-key": "vserver.vserver-id",
-                  "relationship-value": "vserver1-369-test-as988q"
-                }
-              ],
-              "related-to-property": [
-                {
-                  "property-key": "vserver.vserver-name",
-                  "property-value": "vserver-name11-369-as988q"
-                }
-              ]
-            }
-          ]
-        }
-      }
+    "related-to": [      {
+      "id": "1166012520",
+      "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+      "node-type": "model-ver",
+      "url": "/aai/v17/service-design-and-creation/models/model/modelInvariantValue-369-as988q/model-vers/model-ver/modelVersionKey-369-as988q"
+    }]
+  },
+  {
+    "id": "1166020712",
+    "node-type": "generic-vnf",
+    "url": "/aai/v17/network/generic-vnfs/generic-vnf/test-gvnf1-369-as988q",
+    "properties":       {
+      "vnf-id": "test-gvnf1-369-as988q",
+      "vnf-name": "test-name-gvnf-369",
+      "vnf-type": "SW",
+      "service-id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4",
+      "equipment-role": "UCPE",
+      "orchestration-status": "created",
+      "ipv4-oam-address": "12.80.1.18",
+      "nm-lan-v6-address": "2001:1890:e00e:fffe::33c4",
+      "in-maint": false,
+      "is-closed-loop-disabled": false,
+      "resource-version": "1563820654296",
+      "model-invariant-id": "modelInvariantValue-369-as988q",
+      "model-version-id": "modelVersionKey-369-as988q",
+      "nf-role": "test360"
     },
-    {
-      "tenant": {
-        "tenant-id": "tenantID1-369-as988q",
-        "tenant-name": "tenant-name1-369-as988q",
-        "resource-version": "1563820651384",
-        "vservers": {
-          "vserver": [
-            {
-              "vserver-id": "vserver1-369-test-as988q",
-              "vserver-name": "vserver-name11-369-as988q",
-              "vserver-name2": "vserver-name22-360-as988q",
-              "prov-status": "ACTIVE",
-              "vserver-selflink": "TRINITY vserverLink",
-              "in-maint": false,
-              "is-closed-loop-disabled": false,
-              "resource-version": "1563820654917",
-              "relationship-list": {
-                "relationship": [
-                  {
-                    "related-to": "generic-vnf",
-                    "relationship-label": "tosca.relationships.HostedOn",
-                    "related-link": "/aai/v17/network/generic-vnfs/generic-vnf/test-gvnf1-369-as988q",
-                    "relationship-data": [
-                      {
-                        "relationship-key": "generic-vnf.vnf-id",
-                        "relationship-value": "test-gvnf1-369-as988q"
-                      }
-                    ],
-                    "related-to-property": [
-                      {
-                        "property-key": "generic-vnf.vnf-name",
-                        "property-value": "test-name-gvnf-369"
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
+    "related-to":       [
+      {
+        "id": "908419144",
+        "relationship-label": "org.onap.relationships.inventory.ComposedOf",
+        "node-type": "service-instance",
+        "url": "/aai/v17/business/customers/customer/globalCustomerId1-369-as988q/service-subscriptions/service-subscription/TEST1-369/service-instances/service-instance/serviceInstanceID1-369-as988q"
+      },
+      {
+        "id": "848445448",
+        "relationship-label": "tosca.relationships.HostedOn",
+        "node-type": "vserver",
+        "url": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q/tenants/tenant/tenantID1-369-as988q/vservers/vserver/vserver1-369-test-as988q"
       }
+    ]
+  },
+  {
+    "id": "908410952",
+    "node-type": "tenant",
+    "url": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q/tenants/tenant/tenantID1-369-as988q",
+    "properties":       {
+      "tenant-id": "tenantID1-369-as988q",
+      "tenant-name": "tenant-name1-369-as988q",
+      "resource-version": "1563820651384"
     },
-    {
-      "cloud-region": {
-        "cloud-owner": "cloudOwnerKeyValue1-369-as988q",
-        "cloud-region-id": "cloudRegionIdKeyValue1-369-as988q",
-        "resource-version": "1563820651058",
-        "orchestration-disabled": false,
-        "in-maint": false,
-        "tenants": {
-          "tenant": [
-            {
-              "tenant-id": "tenantID1-369-as988q",
-              "tenant-name": "tenant-name1-369-as988q",
-              "resource-version": "1563820651384"
-            }
-          ]
-        }
+    "related-to":       [
+      {
+        "id": "848445448",
+        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+        "node-type": "vserver",
+        "url": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q/tenants/tenant/tenantID1-369-as988q/vservers/vserver/vserver1-369-test-as988q"
+      },
+      {
+        "id": "1166004328",
+        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+        "node-type": "cloud-region",
+        "url": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q"
       }
-    }
-  ]
-}
+    ]
+  },
+  {
+    "id": "1166004328",
+    "node-type": "cloud-region",
+    "url": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q",
+    "properties":       {
+      "cloud-owner": "cloudOwnerKeyValue1-369-as988q",
+      "cloud-region-id": "cloudRegionIdKeyValue1-369-as988q",
+      "resource-version": "1563820651058",
+      "orchestration-disabled": false,
+      "in-maint": false
+    },
+    "related-to": [      {
+      "id": "908410952",
+      "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+      "node-type": "tenant",
+      "url": "/aai/v17/cloud-infrastructure/cloud-regions/cloud-region/cloudOwnerKeyValue1-369-as988q/cloudRegionIdKeyValue1-369-as988q/tenants/tenant/tenantID1-369-as988q"
+    }]
+  }
+]}
