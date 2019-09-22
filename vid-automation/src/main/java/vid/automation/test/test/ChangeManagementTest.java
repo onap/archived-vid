@@ -10,6 +10,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsNot.not;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery.FORMAT.SIMPLE;
+import static org.onap.vid.api.BaseApiTest.getResourceAsString;
+import static vid.automation.test.infra.Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
@@ -26,6 +30,7 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetBaseAAICustomQuery;
 import org.onap.simulator.presetGenerator.presets.scheduler.PresetDeleteSchedulerChangeManagement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -176,7 +181,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @BeforeClass
     protected void registerToSimulator() {
         SimulatorApi.clearAll();
-        SimulatorApi.registerExpectation(SimulatorApi.RegistrationStrategy.APPEND,
+        SimulatorApi.registerExpectation(APPEND,
                 "changeManagement/ecompportal_getSessionSlotCheckInterval.json"
                 , "changeManagement/get_aai_sub_details.json"
                 , "changeManagement/get_sdc_catalog_services_2f80c596.json"
@@ -187,8 +192,24 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 , "changeManagement/mso_post_manual_task.json"
                 , "changeManagement/mso_get_change_managements_scaleout.json"
         );
-        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.APPEND);
-
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
+        if(FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG.isActive()){
+            String AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS = "registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_with_modelVer.json";
+            String globalCustomerId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
+            String serviceType = "vRichardson";
+            SimulatorApi.registerExpectationFromPreset(new PresetBaseAAICustomQuery(
+                SIMPLE,
+                "/business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                    + serviceType + "/service-instances",
+                "query/vnfs-fromServiceInstance-filter"
+            ) {
+                @Override
+                public Object getResponseBody() {
+                    return getResourceAsString(
+                        AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS);
+                }
+            }, APPEND);
+        }
         registerDefaultTablesData();
         resetGetServicesCache();
     }
@@ -200,7 +221,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                         , "changeManagement/delete_scheduled_task.json"},
                 ImmutableMap.of(
                         "<SCHEDULE_ID>", SCHEDULED_ID,
-                        "<IN_PROGRESS_DATE>", "Fri, 08 Sep 2017 19:34:32 GMT"), SimulatorApi.RegistrationStrategy.APPEND
+                        "<IN_PROGRESS_DATE>", "Fri, 08 Sep 2017 19:34:32 GMT"), APPEND
         );
     }
 
@@ -276,7 +297,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     @Test
     public void clickOnScheduledJob_SuccessfulMessageAppear() {
 
-        SimulatorApi.registerExpectationFromPreset(new PresetDeleteSchedulerChangeManagement(), SimulatorApi.RegistrationStrategy.APPEND);
+        SimulatorApi.registerExpectationFromPreset(new PresetDeleteSchedulerChangeManagement(), APPEND);
 
         ChangeManagementPage.openChangeManagementPage();
         GeneralUIUtils.ultimateWait();
@@ -334,7 +355,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     public void updateSimulatorWithParametersOfScheduledJod(String jasonFile) {
         SimulatorApi.registerExpectation(
                 new String[]{"changeManagement/" + jasonFile},
-                ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), SimulatorApi.RegistrationStrategy.APPEND
+                ImmutableMap.of("<SCHEDULE_ID>", SCHEDULED_ID), APPEND
         );
     }
 
