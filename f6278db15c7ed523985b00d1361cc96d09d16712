@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e227f14f_7b732588",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-09-22T15:21:49Z",
+      "side": 1,
+      "message": "What if the vnfType doesn\u0027t exist(because the user didn\u0027t typed it), but the VNF\u0027s properties do have a vnfType? (lets say, search by Cloud region\u0026 ServType \u0026 SubId)?",
+      "revId": "f6278db15c7ed523985b00d1361cc96d09d16712",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec08ad4a_9a8849f1",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-09-22T15:21:49Z",
+      "side": 1,
+      "message": "I would have expect the flag\u0027s status to be checked before trying to call \ngetLcpCloudRegionTenantList.\nI think it is better to prevent the loadCloudRegions() from doing anything if the flag is off(otherwise the BE would respond with 404), right?",
+      "revId": "f6278db15c7ed523985b00d1361cc96d09d16712",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0b73993_b0308145",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.css",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-09-22T15:21:49Z",
+      "side": 1,
+      "message": "Please correct type to: filter",
+      "revId": "f6278db15c7ed523985b00d1361cc96d09d16712",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bc4ffab_d414d2bb",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-09-22T15:21:49Z",
+      "side": 1,
+      "message": "Please fix typo",
+      "revId": "f6278db15c7ed523985b00d1361cc96d09d16712",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "750b67fd_ae11a9a1",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-09-22T15:21:49Z",
+      "side": 1,
+      "message": "Same",
+      "revId": "f6278db15c7ed523985b00d1361cc96d09d16712",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca940266_063be749",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-09-22T15:21:49Z",
+      "side": 1,
+      "message": "remove extra v :)",
+      "revId": "f6278db15c7ed523985b00d1361cc96d09d16712",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
