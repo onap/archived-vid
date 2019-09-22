@@ -20,35 +20,41 @@
 
 package org.onap.vid.controller;
 
-import com.google.common.collect.ImmutableMap;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
-import org.onap.portalsdk.core.web.support.UserUtils;
-import org.onap.vid.controller.filter.PromiseEcompRequestIdFilter;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.testng.annotations.Test;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.not;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
 
+import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.function.Function;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Function;
-
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.onap.portalsdk.core.util.SystemProperties.ECOMP_REQUEST_ID;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
+import org.onap.portalsdk.core.web.support.UserUtils;
+import org.onap.vid.controller.filter.PromiseRequestIdFilter;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.annotations.Test;
 
 @Test
-public class PromiseEcompRequestIdFilterTest {
+public class PromiseRequestIdFilterTest {
 
     private final String anotherHeader = "ANDREI_RUBLEV";
     private final String anotherValue = "foo value";
@@ -119,7 +125,7 @@ public class PromiseEcompRequestIdFilterTest {
         //
         // doFilter() is the function under test
         //
-        new PromiseEcompRequestIdFilter().doFilter(servletRequest, servletResponse, capturingFilterChain);
+        new PromiseRequestIdFilter().doFilter(servletRequest, servletResponse, capturingFilterChain);
         //
         //////////////////
 
