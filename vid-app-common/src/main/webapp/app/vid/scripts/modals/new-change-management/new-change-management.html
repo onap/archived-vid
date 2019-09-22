@@ -22,7 +22,7 @@
 <div class="modal-header">
     <h3 class="modal-title" id="modal-title">New VNF Change</h3>
     <span ng-click="vm.close()" class="pull-right modal-close" aria-hidden="true">&times;</span>
-    <div ng-if="vm.errorMsg!==''"><font color='red'>{{vm.errorMsg.message}}</font></div>
+    <div ng-if="vm.errorMsg!==''" style="max-height: 150px; overflow: auto;" data-tests-id="error-message"><font color='red'>{{vm.errorMsg.message}}</font></div>
 </div>
 <form class="form-create" data-tests-id="newChangeManagementForm" name="newChangeManagement"
       ng-submit="vm.openModal();vm.close();" novalidate>
@@ -142,16 +142,16 @@
 
         <div class="form-group" ng-if="vm.changeManagement.workflow"
              ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'FILE')">
-            <label class="control-label">{{item.name}}</label>
+            <label class="control-label">{{item.displayName}}</label>
             <div class="file-wrapper">
-                <input id="{{vm.getIdFor('file',item.id,item.name)}}" ng-change="vm.onChange(item)" class="file-input"
-                       type="file" ngf-select ng-model="item.value" ngf-validate-async-fn="vm.uploadConfigFile($file)"
+                <input id="{{vm.getIdFor('file',item)}}" ng-change="vm.onChange(item)" class="file-input"
+                       type="file" ngf-select ng-model="item.file" ngf-validate-async-fn="vm.uploadConfigFile($file, item)"
                        ng-attr-name="{{'internal-workflow-parameter-file-name-' + item.id}}"
                        accept="{{item.acceptableFileType}}" ngf-pattern="{{item.acceptableFileType}}"
                        ng-required="{{item.required}}"/>
-                <label id="{{vm.getIdFor('file',item.id,item.name)}}-label" class="file-input-label">
-                    {{item.value&&item.value.name||"Select File"}} </label>
-                <label ng-attr-for="{{vm.getIdFor('file',item.id,item.name)}}"><span class="icon-browse"></span></label>
+                <label id="{{vm.getIdFor('file',item)}}-label" class="file-input-label">
+                    {{item.file&&item.file.name||"Select File"}} </label>
+                <label ng-attr-for="{{vm.getIdFor('file',item)}}"><span class="icon-browse"></span></label>
             </div>
             <label id="errorLabel" class="icon-alert error"
                    ng-if="vm.hasPatternError(newChangeManagement, 'internal-workflow-parameter-file-name-' + item.id)">{{item.msgOnPatternError}}</label>
@@ -161,8 +161,8 @@
 
         <div class="form-group" ng-if="vm.changeManagement.workflow"
              ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'text')">
-            <label ng-attr-for="{{vm.getIdFor('text',item.id,item.name)}}" class="control-label">{{item.name}}</label>
-            <input ng-model="item.value" type="text" id="{{vm.getIdFor('text',item.id,item.name)}}"
+            <label ng-attr-for="{{vm.getIdFor('text',item)}}" class="control-label">{{item.displayName}}</label>
+            <input ng-model="item.value" type="text" id="{{vm.getIdFor('text',item)}}"
                    pattern="{{item.pattern}}" ng-required="{{item.required}}">
         </div>
 

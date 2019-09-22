@@ -318,6 +318,23 @@ describe('Testing workFlows from SO', () => {
     });
   });
 
+  test('Verify get internal workflow parameters should return an empty list if type exist but mapped to undefined', () => {
+    // given
+    $featureFlags.isOn = jestMock.fn(() => false);
+    let getWorkflowsStub = Promise.resolve({"data": {"workflows": ["VNF Scale Out"]}});
+    let getLocalWorkflowsParametersStub = Promise.resolve({"data": undefined});
+
+    $controller.changeManagement.vnfNames = [{name: 'test1'}];
+    $changeManagementService.getWorkflows = () => getWorkflowsStub;
+    $changeManagementService.getLocalWorkflowParameter = () => getLocalWorkflowsParametersStub;
+    // when
+    return $controller.loadWorkFlows()
+    .then(() => {
+      let internalWorkFlowParameters = $controller.getInternalWorkFlowParameters("VNF Scale Out", "FILE");
+      expect(internalWorkFlowParameters).toEqual([]);
+    });
+  });
+
   test('Verify get internal workflow parameters should return a list if such workflow and type exist', () => {
     // given
     $featureFlags.isOn = jestMock.fn(() => false);
