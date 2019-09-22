@@ -52,7 +52,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.onap.portalsdk.core.web.support.UserUtils;
-import org.onap.vid.logging.Headers;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -68,8 +67,7 @@ public class PromiseRequestIdFilterTest {
     private static final String transactionIdHeader = "x-transactionid";
     private static final String requestIdHeader = "x-requestid";
 
-    private final PromiseRequestIdFilter promiseRequestIdFilter =
-        new PromiseRequestIdFilter(new Headers());
+    private final PromiseRequestIdFilter promiseRequestIdFilter = new PromiseRequestIdFilter();
 
     @Test
     public void givenRequestIdHeader_headerValueNotChanged() throws IOException, ServletException {

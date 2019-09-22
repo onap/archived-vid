@@ -58,12 +58,6 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
 
     private static final Pattern uuidRegex = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", Pattern.CASE_INSENSITIVE);
 
-    private final Headers headers;
-
-    public PromiseRequestIdFilter(Headers headers) {
-        this.headers = headers;
-    }
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -118,7 +112,7 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
     }
 
     String highestPriorityHeader(HttpServletRequest httpRequest) {
-        return defaultIfNull(headers.highestPriorityHeader(httpRequest), PROMISED_HEADER_NAME);
+        return defaultIfNull(Headers.highestPriorityHeader(httpRequest), PROMISED_HEADER_NAME);
     }
 
     private static class PromiseRequestIdRequestWrapper extends HttpServletRequestWrapper {
