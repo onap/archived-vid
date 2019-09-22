@@ -10,4 +10,4 @@ TESTS_GROUP_FILE=cypress/pipeline/group1.txt
 cd ${CYPRESS_HOME_DIR}
 
 cat ${TESTS_GROUP_FILE}
-npm run cypress:headless -- --spec=$(cat ${TESTS_GROUP_FILE} | tr '\n' ',')
+npm run cypress:headless --max-old-space-size=4096 -- --spec=$(cat ${TESTS_GROUP_FILE} | tr '\n' ',')
