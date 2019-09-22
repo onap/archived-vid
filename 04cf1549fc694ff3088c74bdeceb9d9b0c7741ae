@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ee84a2b_b9cbcbe6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/filter/PromiseRequestIdFilter.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-22T12:54:27Z",
+      "side": 1,
+      "message": "please add a comment that describe the differences between",
+      "revId": "04cf1549fc694ff3088c74bdeceb9d9b0c7741ae",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bd28ef9_d36ea89b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/filter/PromiseRequestIdFilter.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-22T12:54:27Z",
+      "side": 1,
+      "message": "please inject Headers via spring",
+      "range": {
+        "startLine": 110,
+        "startChar": 29,
+        "endLine": 110,
+        "endChar": 36
+      },
+      "revId": "04cf1549fc694ff3088c74bdeceb9d9b0c7741ae",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21641204_2b28f8a1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/filter/PromiseRequestIdFilterTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-22T12:54:27Z",
+      "side": 1,
+      "message": "onapTxId",
+      "range": {
+        "startLine": 124,
+        "startChar": 21,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "04cf1549fc694ff3088c74bdeceb9d9b0c7741ae",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "782b4e33_c5fa28b5",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/filter/PromiseRequestIdFilterTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-22T12:54:27Z",
+      "side": 1,
+      "message": "ecompTxId",
+      "range": {
+        "startLine": 125,
+        "startChar": 21,
+        "endLine": 125,
+        "endChar": 32
+      },
+      "revId": "04cf1549fc694ff3088c74bdeceb9d9b0c7741ae",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30dc1e65_a1a0c106",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/filter/PromiseRequestIdFilterTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-22T12:54:27Z",
+      "side": 1,
+      "message": "comment that requestIdHeader has higher priority than transactionIdHeader",
+      "revId": "04cf1549fc694ff3088c74bdeceb9d9b0c7741ae",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
