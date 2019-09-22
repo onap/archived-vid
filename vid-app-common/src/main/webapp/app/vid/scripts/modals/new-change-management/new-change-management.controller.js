@@ -225,7 +225,7 @@
             $uibModalInstance.close();
         };
 
-        vm.uploadConfigFile = function (file) {
+        vm.uploadConfigFile = function (file, item) {
             var defer = $q.defer();
             Upload.upload({
                 url: "change-management/uploadConfigUpdateFile",
@@ -235,7 +235,7 @@
                 }]
             })
                 .then(function (configUpdateResponse) {
-                    vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
+                    item.value = configUpdateResponse && JSON.parse(configUpdateResponse.data).payload;
                     defer.resolve(true);
                 })
                 .catch(function (error) {
@@ -443,6 +443,18 @@
             }
         };
 
+        vm.grabWorkflowFieldsValues = function () {
+            return vm.getRemoteWorkFlowParameters(
+                vm.changeManagement.workflow
+            ).concat(
+                vm.getAllInternalWorkFlowParameters(
+                    vm.changeManagement.workflow)
+            ).reduce(function (result, item) {
+                result[item.name] = item.value;
+                return result;
+            }, {});
+        };
+
         vm.scheduleWorkflow = function () {
             $scope.widgetParameter = ""; // needed by the scheduler?
 
@@ -456,9 +468,11 @@
             }
             var data = {
                 widgetName: 'Portal-Common-Scheduler',
-                widgetData: vm.changeManagement,
+                widgetData: Object.assign({}, vm.changeManagement, vm.grabWorkflowFieldsValues()),
                 widgetParameter: $scope.widgetParameter
             };
+
+            console.log("vm.scheduleWorkflow data:", data);
 
             window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
         };
@@ -860,17 +874,19 @@
             return "internal-workflow-parameter-" + type + "-" + id + "-" + (name ? name.split(' ').join('-').toLowerCase() : "");
         };
 
-        vm.getInternalWorkFlowParameters = function (workflow, type) {
-            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type) != []) {
-                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type);
+        vm.getAllInternalWorkFlowParameters = function (workflow) {
+            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow)) {
+                return vm.localWorkflowsParameters.get(workflow);
             }
             return [];
         };
 
+        vm.getInternalWorkFlowParameters = function (workflow, type) {
+            return vm.getAllInternalWorkFlowParameters(workflow).filter(parameter => parameter.type === type);
+        };
+
         vm.getInternalWorkFlowParameter = function (workflow, type, parameterName) {
-            if (workflow && vm.localWorkflowsParameters.has(workflow) && vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type) != []) {
-                return vm.localWorkflowsParameters.get(workflow).filter(parameter => parameter.type == type).filter(parameter => parameter.name === parameterName)[0]
-            }
+            return vm.getInternalWorkFlowParameters(workflow, type).filter(parameter => parameter.name === parameterName)[0];
         };
 
         vm.getRemoteWorkflowSource = (workflow) => {

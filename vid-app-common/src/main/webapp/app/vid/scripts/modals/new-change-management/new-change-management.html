@@ -142,10 +142,10 @@
 
         <div class="form-group" ng-if="vm.changeManagement.workflow"
              ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'FILE')">
-            <label class="control-label">{{item.name}}</label>
+            <label class="control-label">{{item.displayName}}</label>
             <div class="file-wrapper">
                 <input id="{{vm.getIdFor('file',item.id,item.name)}}" ng-change="vm.onChange(item)" class="file-input"
-                       type="file" ngf-select ng-model="item.value" ngf-validate-async-fn="vm.uploadConfigFile($file)"
+                       type="file" ngf-select ng-model="item.file" ngf-validate-async-fn="vm.uploadConfigFile($file, item)"
                        ng-attr-name="{{'internal-workflow-parameter-file-name-' + item.id}}"
                        accept="{{item.acceptableFileType}}" ngf-pattern="{{item.acceptableFileType}}"
                        ng-required="{{item.required}}"/>
@@ -161,7 +161,7 @@
 
         <div class="form-group" ng-if="vm.changeManagement.workflow"
              ng-repeat="item in vm.getInternalWorkFlowParameters(vm.changeManagement.workflow, 'text')">
-            <label ng-attr-for="{{vm.getIdFor('text',item.id,item.name)}}" class="control-label">{{item.name}}</label>
+            <label ng-attr-for="{{vm.getIdFor('text',item.id,item.name)}}" class="control-label">{{item.displayName}}</label>
             <input ng-model="item.value" type="text" id="{{vm.getIdFor('text',item.id,item.name)}}"
                    pattern="{{item.pattern}}" ng-required="{{item.required}}">
         </div>
