@@ -72,6 +72,7 @@ data class SOWorkflowParameterDefinitions constructor(
 data class LocalWorkflowParameterDefinition @JvmOverloads constructor(
         val id: Long,
         val name: String,
+        val displayName: String,
         val required: Boolean,
         val type: LocalWorkflowType,
         val pattern: String? = null,
