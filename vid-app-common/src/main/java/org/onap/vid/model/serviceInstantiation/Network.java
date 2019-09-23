@@ -39,22 +39,24 @@ public class Network extends BaseResource implements JobAdapter.AsyncJobRequest 
 	private final String lineOfBusiness;
 
 	public Network(@JsonProperty("modelInfo") ModelInfo modelInfo,
-				   @JsonProperty("productFamilyId") String productFamilyId,
-				   @JsonProperty("instanceName") String instanceName,
-				   @JsonProperty("action") String action,
-				   @JsonProperty("platformName") String platformName,
-				   @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
-				   @JsonProperty("legacyRegion") String legacyRegion,
-				   @JsonProperty("tenantId") String tenantId,
-				   @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
-				   @JsonProperty("lineOfBusinessName") String lineOfBusiness,
-				   @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
-				   @JsonProperty("instanceId") String instanceId,
-				   @JsonProperty("trackById") String trackById,
-				   @JsonProperty("isFailed") Boolean isFailed,
-				   @JsonProperty("statusMessage") String statusMessage) {
+		@JsonProperty("productFamilyId") String productFamilyId,
+		@JsonProperty("instanceName") String instanceName,
+		@JsonProperty("action") String action,
+		@JsonProperty("platformName") String platformName,
+		@JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
+		@JsonProperty("legacyRegion") String legacyRegion,
+		@JsonProperty("tenantId") String tenantId,
+		@JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
+		@JsonProperty("lineOfBusinessName") String lineOfBusiness,
+		@JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+		@JsonProperty("instanceId") String instanceId,
+		@JsonProperty("trackById") String trackById,
+		@JsonProperty("isFailed") Boolean isFailed,
+		@JsonProperty("statusMessage") String statusMessage,
+		@JsonProperty("position") Integer position) {
 
-		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage);
+		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
+            position);
 		this.productFamilyId = productFamilyId;
 		this.platformName = platformName;
 		this.lineOfBusiness = lineOfBusiness;

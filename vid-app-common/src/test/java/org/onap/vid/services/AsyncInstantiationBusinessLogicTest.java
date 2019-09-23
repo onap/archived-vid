@@ -1048,7 +1048,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     public void whenLcpRegionNotEmpty_thenCloudRegionIdOfResourceIsLegacy() {
         String legacyCloudRegion = "legacyCloudRegion";
         Vnf vnf = new Vnf(new ModelInfo(), null, null, Action.Create.name(), null, "anyCloudRegion", legacyCloudRegion,
-                null, null, null, false, null, null, UUID.randomUUID().toString(), null, null);
+                null, null, null, false, null, null, UUID.randomUUID().toString(), null, null, null);
         assertThat(vnf.getLcpCloudRegionId(), equalTo(legacyCloudRegion));
     }
 

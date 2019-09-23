@@ -30,11 +30,13 @@ import org.onap.vid.mso.model.ModelInfo;
 public class InstanceGroupMember extends BaseResource implements JobAdapter.AsyncJobRequest{
 
     public InstanceGroupMember(@JsonProperty("instanceId") String instanceId,
-                               @JsonProperty("action") String action,
-                               @JsonProperty("trackById") String trackById,
-                               @JsonProperty("isFailed") Boolean isFailed,
-                               @JsonProperty("statusMessage") String statusMessage) {
-        super(new ModelInfo(), null, action, null, null, null, null, false, instanceId, trackById, isFailed, statusMessage);
+        @JsonProperty("action") String action,
+        @JsonProperty("trackById") String trackById,
+        @JsonProperty("isFailed") Boolean isFailed,
+        @JsonProperty("statusMessage") String statusMessage,
+        @JsonProperty("position") Integer position) {
+        super(new ModelInfo(), null, action, null, null, null, null, false, instanceId, trackById, isFailed, statusMessage,
+            position);
     }
 
     @Override
