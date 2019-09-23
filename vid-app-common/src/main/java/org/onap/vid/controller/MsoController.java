@@ -237,7 +237,7 @@ public class MsoController extends RestrictedBaseController {
      * @return the response entity
      * @throws Exception the exception
      */
-    @RequestMapping(value = "/mso_create_configuration_instance/{serviceInstanceId}/configurations/", method = RequestMethod.POST)
+    @RequestMapping(value = "/mso_create_configuration_instance/{serviceInstanceId}/configurations", method = RequestMethod.POST)
     public ResponseEntity<String> createConfigurationInstance(
         @PathVariable("serviceInstanceId") String serviceInstanceId,
         HttpServletRequest request, @RequestBody RequestDetailsWrapper msoRequest) {
