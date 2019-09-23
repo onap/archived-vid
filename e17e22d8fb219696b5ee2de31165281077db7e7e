@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c32b3fa7_fe625253",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-23T09:42:41Z",
+      "side": 1,
+      "message": "extract constant",
+      "revId": "e17e22d8fb219696b5ee2de31165281077db7e7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
