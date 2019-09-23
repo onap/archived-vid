@@ -16,6 +16,24 @@
       "revId": "871772aafdf88d95d7714f9375841e886ce25b11",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f26f210b_0b96f93c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/MsoController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 2731
+      },
+      "writtenOn": "2019-09-23T12:28:05Z",
+      "side": 1,
+      "message": "I thought that this is typo as other endpoints are without trailing slash. Back to the question, looks like Spring resolves this differently so I will rollback this one.",
+      "parentUuid": "c4261017_3e13a609",
+      "revId": "871772aafdf88d95d7714f9375841e886ce25b11",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
