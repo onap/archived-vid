@@ -127,6 +127,137 @@ public class MsoControllerTest {
     }
 
     @Test
+    public void shouldCreateVfModuleInstance() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String vnfInstanceId = "fe9000-0009-9999";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .createVfModuleInstance(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(vnfInstanceId)))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_create_vfmodule_instance/%s/vnfs/%s", serviceInstanceId, vnfInstanceId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+    
+    @Test
+    public void shouldCreateConfigurationInstance() throws Exception {
+        // given
+        RequestDetailsWrapper requestDetails = modelGenerator.nextObject(RequestDetailsWrapper.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .createConfigurationInstance(objectEqualTo(requestDetails), eq(serviceInstanceId)))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_create_configuration_instance/%s/configurations/", serviceInstanceId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails.getRequestDetails()));
+    }
+
+    @Test
+    public void shouldDeleteE2eSvcInstance() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String configurationId = "28630972-d548-4d5f-acc2-ad1d748d023d";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .setConfigurationActiveStatus(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(configurationId), eq(true)))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_activate_configuration/%s/configurations/%s", serviceInstanceId, configurationId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDeactivateConfiguration() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String configurationId = "28630972-d548-4d5f-acc2-ad1d748d023d";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .setConfigurationActiveStatus(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(configurationId), eq(false)))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_deactivate_configuration/%s/configurations/%s", serviceInstanceId, configurationId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldDisablePortOnConfiguration() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String configurationId = "28630972-d548-4d5f-acc2-ad1d748d023d";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .setPortOnConfigurationStatus(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(configurationId), eq(false)))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_disable_port_configuration/%s/configurations/%s", serviceInstanceId, configurationId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
+    public void shouldEnablePortOnConfiguration() throws Exception {
+        // given
+        RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
+        String serviceInstanceId = "bc305d54-75b4-431b-adb2-eb6b9e546014";
+        String configurationId = "28630972-d548-4d5f-acc2-ad1d748d023d";
+
+        MsoResponseWrapper expectedResponse = new MsoResponseWrapper(200, "test");
+        given(msoBusinessLogic
+            .setPortOnConfigurationStatus(objectEqualTo(requestDetails), eq(serviceInstanceId), eq(configurationId), eq(true)))
+            .willReturn(expectedResponse);
+
+        // when & then
+        mockMvc.perform(post(format("/mso/mso_enable_port_configuration/%s/configurations/%s", serviceInstanceId, configurationId))
+            .content(asJson(requestDetails))
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(asJson(expectedResponse)));
+
+        then(cloudService).should(only()).enrichRequestWithCloudOwner(objectEqualTo(requestDetails));
+    }
+
+    @Test
     public void shouldCreateVolumeInstance() throws Exception {
         // given
         RequestDetails requestDetails = modelGenerator.nextObject(RequestDetails.class);
