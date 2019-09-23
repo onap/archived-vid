@@ -22,6 +22,7 @@ package org.onap.vid.job.command
 
 
 import com.fasterxml.jackson.module.kotlin.convertValue
+import org.apache.commons.lang3.ObjectUtils.defaultIfNull
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate
 import org.onap.vid.changeManagement.RequestDetailsWrapper
 import org.onap.vid.exceptions.AbortingException

@@ -104,7 +104,8 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
                                 @JsonProperty("isFailed") Boolean isFailed,
                                 @JsonProperty("statusMessage") String statusMessage,
                                 @JsonProperty("vidNotions") VidNotions vidNotions) {
-        super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage);
+        super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
+            null);
         this.owningEntityId = owningEntityId;
         this.owningEntityName = owningEntityName;
         this.projectName = projectName;

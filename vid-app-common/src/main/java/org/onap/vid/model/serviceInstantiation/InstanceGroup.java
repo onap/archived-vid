@@ -34,16 +34,18 @@ public class InstanceGroup extends BaseResource implements JobAdapter.AsyncJobRe
     private final  Map<String, InstanceGroupMember> vnfGroupMembers;
 
     public InstanceGroup(@JsonProperty("modelInfo") ModelInfo modelInfo,
-                         @JsonProperty("instanceName") String instanceName,
-                         @JsonProperty("action") String action,
-                         @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
-                         @JsonProperty("instanceId") String instanceId,
-                         @JsonProperty("vnfs") Map<String, InstanceGroupMember> vnfGroupMembers,
-                         @JsonProperty("trackById") String trackById,
-                         @JsonProperty("isFailed") Boolean isFailed,
-                         @JsonProperty("statusMessage") String statusMessage) {
+        @JsonProperty("instanceName") String instanceName,
+        @JsonProperty("action") String action,
+        @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+        @JsonProperty("instanceId") String instanceId,
+        @JsonProperty("vnfs") Map<String, InstanceGroupMember> vnfGroupMembers,
+        @JsonProperty("trackById") String trackById,
+        @JsonProperty("isFailed") Boolean isFailed,
+        @JsonProperty("statusMessage") String statusMessage,
+        @JsonProperty("position") Integer position) {
 
-        super(modelInfo, instanceName, action, null, null, null, null, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage);
+        super(modelInfo, instanceName, action, null, null, null, null, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
+            position);
         this.vnfGroupMembers = vnfGroupMembers;
     }
 
