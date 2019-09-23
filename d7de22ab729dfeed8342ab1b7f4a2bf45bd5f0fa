@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5e390652_682180b7",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-23T05:02:46Z",
+      "side": 1,
+      "message": "this preset shall be in else statement of if(FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG.isActive())",
+      "revId": "d7de22ab729dfeed8342ab1b7f4a2bf45bd5f0fa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
