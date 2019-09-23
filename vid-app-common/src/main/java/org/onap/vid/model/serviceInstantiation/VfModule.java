@@ -42,22 +42,24 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	@JsonInclude(NON_NULL) private Boolean usePreload;
 	private Map<String, String> supplementaryParams;
 
-	public VfModule( @JsonProperty("modelInfo") ModelInfo modelInfo,
-					 @JsonProperty("instanceName") String instanceName,
-					 @JsonProperty("volumeGroupName") String volumeGroupInstanceName,
-					 @JsonProperty("action") String action,
-					 @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
-					 @JsonProperty("legacyRegion") String legacyRegion,
-					 @JsonProperty("tenantId") String tenantId,
-					 @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
-					 @JsonProperty("supplementaryFileContent") Map<String, String> supplementaryParams,
-					 @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
-					 @JsonProperty("sdncPreLoad") Boolean usePreload,
-					 @JsonProperty("instanceId") String instanceId,
-					 @JsonProperty("trackById") String trackById,
-					 @JsonProperty("isFailed") Boolean isFailed,
-					 @JsonProperty("statusMessage") String statusMessage) {
-		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage);
+	public VfModule(@JsonProperty("modelInfo") ModelInfo modelInfo,
+		@JsonProperty("instanceName") String instanceName,
+		@JsonProperty("volumeGroupName") String volumeGroupInstanceName,
+		@JsonProperty("action") String action,
+		@JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
+		@JsonProperty("legacyRegion") String legacyRegion,
+		@JsonProperty("tenantId") String tenantId,
+		@JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
+		@JsonProperty("supplementaryFileContent") Map<String, String> supplementaryParams,
+		@JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+		@JsonProperty("sdncPreLoad") Boolean usePreload,
+		@JsonProperty("instanceId") String instanceId,
+		@JsonProperty("trackById") String trackById,
+		@JsonProperty("isFailed") Boolean isFailed,
+		@JsonProperty("statusMessage") String statusMessage,
+		@JsonProperty("position") Integer position) {
+		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
+			position);
 		this.volumeGroupInstanceName = volumeGroupInstanceName;
 		this.usePreload = usePreload;
 		this.supplementaryParams = supplementaryParams;
@@ -107,8 +109,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 				this.getInstanceId(),
 				this.getTrackById(),
 				this.getIsFailed(),
-				this.getStatusMessage()
-		);
-
+				this.getStatusMessage(),
+				this.getPosition());
 	}
 }
