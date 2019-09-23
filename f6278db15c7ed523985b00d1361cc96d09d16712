@@ -70,6 +70,29 @@
     },
     {
       "key": {
+        "uuid": "4cf331f4_4bd68b66",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-23T12:09:57Z",
+      "side": 1,
+      "message": "I\u0027m not keen with saying \"new\" on things that will eventually become the new old. :)",
+      "range": {
+        "startLine": 73,
+        "startChar": 32,
+        "endLine": 73,
+        "endChar": 49
+      },
+      "revId": "f6278db15c7ed523985b00d1361cc96d09d16712",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "750b67fd_ae11a9a1",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.html",
         "patchSetId": 2
