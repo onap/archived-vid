@@ -3,6 +3,7 @@ package vid.automation.test.test;
 
 import static java.util.Collections.emptyMap;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.apache.commons.lang3.exception.ExceptionUtils.rethrow;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -18,9 +19,11 @@ import static org.onap.vid.api.BaseApiTest.getResourceAsString;
 import static vid.automation.test.infra.Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
+import com.aventstack.extentreports.Status;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -34,6 +37,7 @@ import net.javacrumbs.jsonunit.core.Option;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
@@ -45,6 +49,7 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -360,6 +365,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         GeneralUIUtils.ultimateWait();
         WebElement cancelPendingConfirmationMessage = Get.byTestId("btn-cancel-workflow");
         assertThat(cancelPendingConfirmationMessage.getText(), containsString("Are you sure you want to delete workflow"));
+        screenshot("delete workflow");
     }
 
     private void clickAndAssertClickOnCancelWorkflowButtonOnPendingPopUp() {
@@ -373,6 +379,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 Click.byClass("pull-right modal-close");
             }
         }
+        screenshot("cancel workflow");
         Click.byClassAndVisibleText("btn", "OK");
     }
 
@@ -416,7 +423,10 @@ public class ChangeManagementTest extends VidBaseTestCase {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void closeForm() {
+    public void screenshotAndCloseForm(ITestResult testResult) {
+
+        screenshot(testResult.getName() + (testResult.isSuccess() ? "" : " FAIL"));
+
         // Tries closing left-out popups, if any
         // If none -- catch clause will swallow the exception
         try {
@@ -427,6 +437,14 @@ public class ChangeManagementTest extends VidBaseTestCase {
             // ok, stop
         }
         Wait.modalToDisappear();
+    }
+
+    protected void screenshot(String testName) {
+        try {
+            ExtentTestActions.addScreenshot(Status.INFO, "ChangeManagementTest." + testName, testName);
+        } catch (IOException e) {
+            rethrow(e);
+        }
     }
 
     @Test
@@ -605,6 +623,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
     }
 
     private void assertThatVidToPortalCallbackDataIsOk(String workflowName, Map<String, String> workflowParams) {
+        screenshot("submit to scheduler");
         Assert.assertTrue(Get.byId(Constants.generalSubmitButtonId).isEnabled());
         Click.byId(Constants.generalSubmitButtonId);
 
@@ -808,7 +827,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Wait.modalToDisappear();
     }
 
-    @Test(enabled = false)
+    @Test
     public void testSuccessCancelPendingWorkflow() {
         ChangeManagementPage.openChangeManagementPage();
         Wait.angularHttpRequestsLoaded();
@@ -818,6 +837,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Assert.assertTrue(Exists.modal());
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.pendingModalHeaderId));
         Assert.assertTrue(Exists.byClass(Constants.ChangeManagement.pendingModalCancelWorkflowButtonClass));
+        screenshot("pendingModalCancelWorkflow");
         Click.byClass(Constants.ChangeManagement.pendingModalCancelWorkflowButtonClass);
         Wait.angularHttpRequestsLoaded();
 
@@ -825,6 +845,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Assert.assertTrue(Exists.modal());
         Assert.assertTrue(Exists.byId(Constants.ChangeManagement.alertModalHeaderId));
         Assert.assertTrue(Exists.byClassAndText(Constants.generalModalTitleClass, "Success"));
+        screenshot("successCancelWorkflow");
         Click.byClass(Constants.generalCloseModalButtonClass);
         Wait.modalToDisappear();
         //TODO check the workflow deleted from table/changed to deleted action
