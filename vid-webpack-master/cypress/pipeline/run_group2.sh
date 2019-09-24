@@ -14,4 +14,4 @@ cd ${CYPRESS_HOME_DIR}
 ls -1 cypress/integration/*/*.e2e.ts | comm -3 - ${TESTS_GROUP_FILE_1} > ${TESTS_GROUP_FILE}
 
 cat ${TESTS_GROUP_FILE}
-npm run cypress:headless -- --spec=$(cat ${TESTS_GROUP_FILE} | tr '\n' ',')
+npm run cypress:headless --max-old-space-size=4096 -- --spec=$(cat ${TESTS_GROUP_FILE} | tr '\n' ',')
