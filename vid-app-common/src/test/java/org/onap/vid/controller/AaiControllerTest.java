@@ -39,6 +39,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.ws.rs.core.Response;
@@ -295,10 +296,10 @@ public class AaiControllerTest {
         given(aaiService.getAaiZones()).willReturn(new AaiResponse(aicZones, "", HttpStatus.OK.value()));
 
         mockMvc.perform(get("/aai_get_aic_zones")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(aicZones)));
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(aicZones)));
     }
 
     @Test
@@ -308,32 +309,32 @@ public class AaiControllerTest {
             .willReturn(new AaiResponse(null, expectedErrorMessage, HttpStatus.INTERNAL_SERVER_ERROR.value()));
 
         mockMvc.perform(get("/aai_get_aic_zones")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string(expectedErrorMessage));
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError())
+            .andExpect(content().string(expectedErrorMessage));
     }
 
     @Test
     public void getSpecificPnf_shouldReturnPnfObjectForPnfId() throws Exception {
         String pnfId = "MyPnfId";
         Pnf pnf = Pnf.builder()
-                .withPnfId(pnfId)
-                .withPnfName("TestPnf")
-                .withPnfName2("pnfName2")
-                .withPnfName2Source("pnfNameSource")
-                .withEquipModel("model")
-                .withEquipType("type")
-                .withEquipVendor("vendor")
-                .build();
+            .withPnfId(pnfId)
+            .withPnfName("TestPnf")
+            .withPnfName2("pnfName2")
+            .withPnfName2Source("pnfNameSource")
+            .withEquipModel("model")
+            .withEquipType("type")
+            .withEquipVendor("vendor")
+            .build();
         AaiResponse<Pnf> aaiResponse = new AaiResponse<>(pnf, "", HttpStatus.OK.value());
         given(aaiService.getSpecificPnf(pnfId)).willReturn(aaiResponse);
 
         mockMvc.perform(get("/aai_get_pnfs/pnf/{pnf_id}", pnfId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(pnf)));
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(pnf)));
     }
 
     @Test
@@ -343,10 +344,10 @@ public class AaiControllerTest {
         given(aaiService.getSpecificPnf(pnfId)).willThrow(new RuntimeException(expectedErrorMessage));
 
         mockMvc.perform(get("/aai_get_pnfs/pnf/{pnf_id}", pnfId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string(expectedErrorMessage));
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError())
+            .andExpect(content().string(expectedErrorMessage));
     }
 
     public void getPNFInstances_shouldReturnOKResponseFromAAIService() throws Exception {
@@ -366,12 +367,12 @@ public class AaiControllerTest {
                 equipModel)).willReturn(aaiResponse);
 
         mockMvc.perform(
-                get(urlTemplate, globalCustomerId, serviceType, modelVersionId,
-                        modelInvariantId, cloudRegion, equipVendor, equipModel)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponseBody));
+            get(urlTemplate, globalCustomerId, serviceType, modelVersionId,
+                modelInvariantId, cloudRegion, equipVendor, equipModel)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
     }
 
     @Test
@@ -385,12 +386,12 @@ public class AaiControllerTest {
             .getVersionByInvariantId(request.versions)).willReturn(response);
 
         mockMvc.perform(
-                post("/aai_get_version_by_invariant_id")
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponse));
+            post("/aai_get_version_by_invariant_id")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponse));
     }
 
     @Test
@@ -408,12 +409,12 @@ public class AaiControllerTest {
             .willReturn(aaiResponse);
 
         mockMvc.perform(
-                get("/aai_sub_details/{subscriberId}", subscriberId)
-                        .param("omitServiceInstances", Boolean.toString(omitServiceInstances))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(okResponseBody)));
+            get("/aai_sub_details/{subscriberId}", subscriberId)
+                .param("omitServiceInstances", Boolean.toString(omitServiceInstances))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(okResponseBody)));
     }
 
     @Test
@@ -437,50 +438,98 @@ public class AaiControllerTest {
     @Test
     public void getPortMirroringConfigData_givenThreeIds_ReturnsThreeResults() {
 
-        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForA = new AaiResponseTranslator.PortMirroringConfigDataOk("foobar");
-        final AaiResponseTranslator.PortMirroringConfigDataError toBeReturnedForB = new AaiResponseTranslator.PortMirroringConfigDataError("foo", "{ baz: qux }");
-        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForC = new AaiResponseTranslator.PortMirroringConfigDataOk("corge");
+        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForA = new AaiResponseTranslator.PortMirroringConfigDataOk(
+            "foobar");
+        final AaiResponseTranslator.PortMirroringConfigDataError toBeReturnedForB = new AaiResponseTranslator.PortMirroringConfigDataError(
+            "foo", "{ baz: qux }");
+        final AaiResponseTranslator.PortMirroringConfigDataOk toBeReturnedForC = new AaiResponseTranslator.PortMirroringConfigDataOk(
+            "corge");
 
         Mockito
-                .doReturn(toBeReturnedForA)
-                .doReturn(toBeReturnedForB)
-                .doReturn(toBeReturnedForC)
-                .when(aaiService).getPortMirroringConfigData(Mockito.anyString());
+            .doReturn(toBeReturnedForA)
+            .doReturn(toBeReturnedForB)
+            .doReturn(toBeReturnedForC)
+            .when(aaiService).getPortMirroringConfigData(Mockito.anyString());
 
-        final Map<String, AaiResponseTranslator.PortMirroringConfigData> result = aaiController.getPortMirroringConfigsData(ImmutableList.of("a", "b", "c"));
+        final Map<String, AaiResponseTranslator.PortMirroringConfigData> result = aaiController
+            .getPortMirroringConfigsData(ImmutableList.of("a", "b", "c"));
 
         assertThat(result, is(ImmutableMap.of(
-                "a", toBeReturnedForA,
-                "b", toBeReturnedForB,
-                "c", toBeReturnedForC
+            "a", toBeReturnedForA,
+            "b", toBeReturnedForB,
+            "c", toBeReturnedForC
         )));
     }
 
     @Test
     public void getSubscriberDetails_shouldIncludeServiceInstancesFromSubscriberData_whenFeatureDisabled_andOmitFlagIsFalse()
-            throws Exception {
+        throws Exception {
         boolean isFeatureActive = false;
         boolean omitServiceInstances = false;
         getSubscriberDetails_assertServiceInstancesInclusion(isFeatureActive, omitServiceInstances);
     }
 
     private void getSubscriberDetails_assertServiceInstancesInclusion(boolean isFeatureActive,
-                                                                      boolean omitServiceInstances) throws Exception {
+        boolean omitServiceInstances) throws Exception {
         String subscriberId = "subscriberId";
         String okResponseBody = "OK_RESPONSE";
         AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
         given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
         given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorByRoles.class),
-                eq(isFeatureActive && omitServiceInstances)))
-                .willReturn(aaiResponse);
+            eq(isFeatureActive && omitServiceInstances)))
+            .willReturn(aaiResponse);
 
         mockMvc.perform(
-                get("/aai_sub_details/{subscriberId}", subscriberId)
-                        .param("omitServiceInstances", Boolean.toString(omitServiceInstances))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(okResponseBody)));
+            get("/aai_sub_details/{subscriberId}", subscriberId)
+                .param("omitServiceInstances", Boolean.toString(omitServiceInstances))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(objectMapper.writeValueAsString(okResponseBody)));
     }
+
+    @Test
+    public void getSpecificConfiguration_shouldReturnOkResponse() throws Exception {
+        String configurationId = "testGlobalCustomerId";
+        String expectedResponseBody = "OK_RESPONSE";
+        Response response = mock(Response.class);
+        given(response.readEntity(String.class)).willReturn(expectedResponseBody);
+        given(response.getStatus()).willReturn(HttpStatus.OK.value());
+
+        given(aaiRestInterface.RestGet(
+            eq("VidAaiController"),
+            anyString(),
+            eq(Unchecked.toURI("network/configurations/configuration/" + configurationId)),
+            eq(false)).getResponse()).willReturn(response);
+
+        mockMvc
+            .perform(
+                get("/aai_get_configuration/{configuration_id}", configurationId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponseBody));
+    }
+
+    @Test
+    public void getServiceInstanceAssociatedPnfs_shouldReturnPnfs() throws Exception {
+        String globalCustomerId = "testCustomerId";
+        String serviceType = "testServiceType";
+        String serviceInstanceId = "testServiceInstanceId";
+        List<String> expectedPnfs = ImmutableList.of("pnf1", "pnf2", "pnf3");
+
+        given(aaiService.getServiceInstanceAssociatedPnfs(globalCustomerId, serviceType, serviceInstanceId))
+            .willReturn(expectedPnfs);
+
+        mockMvc
+            .perform(
+                get("/aai_get_service_instance_pnfs/{globalCustomerId}/{serviceType}/{serviceInstanceId}",
+                    globalCustomerId, serviceType, serviceInstanceId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(expectedPnfs)));
+    }
+
 }
 
