@@ -94,6 +94,9 @@ public class Constants {
         public static final String newModalSubscriberInputId = "subscriber";
         public static final String newModalServiceTypeInputId = "serviceType";
         public static final String newModalVNFTypeInputId = "vnfType";
+        public static final String newModalVNFTypeInputId1 = "vnfTypeInput";
+        public static final String newModalVNFCloudRegion = "cloudRegion";
+        public static final String newModalVNFSearchVNF = "searchVNF";
         public static final String newModalFromVNFVersionInputId = "fromVNFVersion";
         public static final String newModalVNFNameInputId = "vnfName";
         public static final String newModalWorkFlowInputId = "workflow";
