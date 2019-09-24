@@ -31,8 +31,9 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_SHOW_ORCHESTRATION_TYPE;
+import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.ModelInfo.*;
 
 
@@ -479,4 +480,39 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertFalse(Exists.tagNameInAnotherElement(serviceModelsTbody, "tr"), "Table should be empty on empty results");
         resetGetServicesCache();
     }
+
+    private static final String[] macroModelsIds = {
+            "f1bde010-cc5f-4765-941f-75f15b24f9fc",
+            "lmoser410-connector-model-version-id",
+            "ipe-resource-id-ps-02",
+            "797a6c41-0f80-4d35-a288-3920c4e06baa",
+    };
+    private static final String[] alacarteModelsIds = {
+            "0903e1c0-8e03-4936-b5c2-260653b96413",
+            "666a06ee-4b57-46df-bacf-908da8f10c3f",
+            "20c4431c-246d-11e7-93ae-92361f002671",
+    };
+
+    @DataProvider
+    public static Object[][] filterOrchestrationType() {
+        return new Object[][]{{"a la carte", 3, alacarteModelsIds},{"macro", 4, macroModelsIds}};
+    }
+
+    @Test(dataProvider = "filterOrchestrationType")
+    @FeatureTogglingTest(FLAG_SHOW_ORCHESTRATION_TYPE)
+    public void browseSdcModel_filterModelsWithOrchestrationType_alacarte(
+            String orchestrationType,int numberOfOccurrence, String[] expectedModelsIds) {
+        resetGetServicesCache();
+        SimulatorApi.clearAll();
+        BrowseASDCPage browseAsdcPage = registerSimulatorAndGoToBrowseSDC();
+        GeneralUIUtils.ultimateWait();
+        assertThat(browseAsdcPage.countCurrentRowsInTable(),(Matchers.greaterThan(numberOfOccurrence)));
+        browseAsdcPage.fillFilterText(orchestrationType);
+        Assert.assertEquals(browseAsdcPage.countCurrentRowsInTable(),numberOfOccurrence);
+        for(String id : expectedModelsIds) {
+            Assert.assertTrue(browseAsdcPage.isModelWithGivenServiceUUIDVisible(id));
+        }
+        browseAsdcPage.fillFilterText("");
+    }
+
 }

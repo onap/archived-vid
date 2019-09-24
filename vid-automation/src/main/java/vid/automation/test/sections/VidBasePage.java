@@ -4,10 +4,7 @@ import com.aventstack.extentreports.Status;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import vid.automation.test.Constants;
@@ -111,6 +108,17 @@ public class VidBasePage {
         screenshotDeployDialog(serviceUUID);
 
         return this;
+    }
+
+    public boolean isModelWithGivenServiceUUIDVisible(String serviceUUID) {
+        String elementTestId = Constants.DEPLOY_BUTTON_TESTS_ID_PREFIX + serviceUUID;
+        try {
+            GeneralUIUtils.getWebElementByTestID(elementTestId, 10);
+            GeneralUIUtils.ultimateWait();
+        } catch (TimeoutException te) {
+            return false;
+        }
+        return true;
     }
 
     public void screenshotDeployDialog(String serviceUUID) {
