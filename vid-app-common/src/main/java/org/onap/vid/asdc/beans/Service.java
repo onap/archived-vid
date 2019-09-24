@@ -105,6 +105,9 @@ public class Service {
 
     /** The resources. */
     private Collection<SubResource> resources;
+
+    /** The orchestration type. */
+    private String orchestrationType;
     
     
     public static class ServiceBuilder {
@@ -118,6 +121,7 @@ public class Service {
        private String distributionStatus;
        private Collection<Artifact> artifacts;
        private Collection<SubResource> resources;
+        private String orchestrationType;
 
         public ServiceBuilder setUuid(String uuid) {
             this.uuid = uuid;
@@ -166,6 +170,11 @@ public class Service {
 
         public ServiceBuilder setResources(Collection<SubResource> resources) {
             this.resources = resources;
+            return this;
+        }
+
+        public ServiceBuilder setOrchestrationType(String orchestrationType) {
+            this.orchestrationType = orchestrationType;
             return this;
         }
 
@@ -284,6 +293,15 @@ public class Service {
     }
 
     /**
+     * Gets the orchestrationType.
+     *
+     * @return the orchestrationType
+     */
+    public String getOrchestrationType() {
+        return orchestrationType;
+    }
+
+    /**
      * Sets the uuid.
      *
      * @param uuid the new uuid
@@ -391,6 +409,15 @@ public class Service {
         this.resources = resources;
     }
 
+    /**
+     * Sets the orchestrationType.
+     *
+     * @param orchestrationType the new orchestrationType
+     */
+    public void setOrchestrationType(String orchestrationType) {
+        this.orchestrationType = orchestrationType;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -442,5 +469,6 @@ public class Service {
         this.distributionStatus = serviceBuilder.distributionStatus;
         this.artifacts = serviceBuilder.artifacts;
         this.resources = serviceBuilder.resources;
+        this.orchestrationType = serviceBuilder.orchestrationType;
     }
 }

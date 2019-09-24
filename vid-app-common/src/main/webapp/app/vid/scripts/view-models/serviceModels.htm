@@ -48,6 +48,7 @@
 				<tr>
 					<th att-table-header key="action">Action</th>
 					<th att-table-header key="uuid">UUID</th>
+					<th att-table-header key="uuid">Orchestration Type</th>
 					<th att-table-header key="invariantUUID">Invariant UUID</th>
 					<th att-table-header default-sort="A" key="name">Name</th>
 		            <th att-table-header key="version">Version</th>
@@ -62,6 +63,7 @@
 				<tr class="sdcServiceModel" data-tests-id="Browse_SDC_Service_Models-uuid-{{service['uuid']}}">
 					<td class="deploy" att-table-body ><button class="deploy-service-class" type=button data-tests-id="deploy-{{service['uuid']}}" ng-click="deployService(service)" att-button btn-type="{{deployButtonType}}" size="small">Deploy</button></td>
 					<td class="uuid" att-table-body ng-bind="service['uuid']"></td>
+					<td class="uuid" att-table-body ng-bind="service['orchestrationType']"></td>
 					<td class="invariantUUID" att-table-body data-tests-id="Invariant-{{service['invariantUUID']}}" ng-bind="service['invariantUUID']"></td>
 					<td class="name" att-table-body ng-bind="service['name']"></td>
 					<td class="version" att-table-body ng-bind="service['version']"></td>
