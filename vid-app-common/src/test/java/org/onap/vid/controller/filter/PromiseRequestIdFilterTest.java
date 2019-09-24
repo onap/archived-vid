@@ -52,6 +52,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.onap.portalsdk.core.web.support.UserUtils;
+import org.onap.vid.logging.RequestIdHeader;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -182,37 +183,37 @@ public class PromiseRequestIdFilterTest {
 
         return new Object[][]{
             {
-                "header is selected when single", transactionIdHeader,
+                "header is selected when single", RequestIdHeader.TRANSACTION_ID,
                 ImmutableMap.of(
                     transactionIdHeader, someTxId
                 )
             }, {
-                "header is selected when first", onapRequestIdHeader,
+                "header is selected when first", RequestIdHeader.ONAP_ID,
                 ImmutableMap.of(
                     onapRequestIdHeader, someTxId,
                     "noise-header", anotherTxId,
                     ECOMP_REQUEST_ID, anotherTxId
                 )
             }, {
-                "header is selected when last", onapRequestIdHeader,
+                "header is selected when last", RequestIdHeader.ONAP_ID,
                 ImmutableMap.of(
                     ECOMP_REQUEST_ID, anotherTxId,
                     "noise-header", anotherTxId,
                     onapRequestIdHeader, someTxId
                 )
             }, {
-                "header is selected when value is invalid uuid", onapRequestIdHeader,
+                "header is selected when value is invalid uuid", RequestIdHeader.ONAP_ID,
                 ImmutableMap.of(
                     onapRequestIdHeader, "invalid-uuid"
                 )
             }, {
-                "header is selected when no ecomp-request-id", onapRequestIdHeader,
+                "header is selected when no ecomp-request-id", RequestIdHeader.ONAP_ID,
                 ImmutableMap.of(
                     requestIdHeader, anotherTxId,
                     onapRequestIdHeader, someTxId
                 )
             }, {
-                "ECOMP_REQUEST_ID is returned when no request-id header", ECOMP_REQUEST_ID,
+                "ECOMP_REQUEST_ID is returned when no request-id header", RequestIdHeader.ECOMP_ID,
                 ImmutableMap.of(
                     "tsamina-mina", anotherTxId,
                     "waka-waka", anotherTxId
@@ -222,13 +223,12 @@ public class PromiseRequestIdFilterTest {
     }
 
     @Test(dataProvider = "severalRequestIdHeaders")
-    public void highestPriorityHeader_givenSeveralRequestIdHeaders_correctHeaderIsUsed(String description, String expectedHeader, Map<String, String> incomingRequestHeaders) {
-        PromiseRequestIdFilter testSubject = promiseRequestIdFilter;
+    public void highestPriorityHeader_givenSeveralRequestIdHeaders_correctHeaderIsUsed(String description, RequestIdHeader expectedHeader, Map<String, String> incomingRequestHeaders) {
 
         HttpServletRequest mockedHttpServletRequest = createMockedHttpServletRequest(incomingRequestHeaders);
 
         assertThat(description,
-            testSubject.highestPriorityHeader(mockedHttpServletRequest), equalToIgnoringCase(expectedHeader));
+            promiseRequestIdFilter.highestPriorityHeader(mockedHttpServletRequest), is(expectedHeader));
     }
 
 
