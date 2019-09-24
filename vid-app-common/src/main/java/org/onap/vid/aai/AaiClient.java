@@ -315,13 +315,13 @@ public class AaiClient implements AaiClientInterface {
             if (cloudRegion != null){
                 return ImmutableMap.of(
                     "start", ImmutableList
-                        .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+                        .of("/business/customers/customer/" + encodePathSegment(subscriberId) + "/service-subscriptions/service-subscription/" + encodePathSegment(serviceType) + "/service-instances"),
                     "query",  "query/vnfs-fromServiceInstance-filterByCloudRegion?nfRole=" + nfRole + "&cloudRegionID=" + cloudRegion + ""
                 );
             }else {
                 return ImmutableMap.of(
                     "start", ImmutableList
-                        .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+                        .of("/business/customers/customer/" + encodePathSegment(subscriberId) + "/service-subscriptions/service-subscription/" + encodePathSegment(serviceType) + "/service-instances"),
                     "query",  "query/vnfs-fromServiceInstance-filter?nfRole=" + nfRole + ""
                 );
             }
@@ -330,14 +330,14 @@ public class AaiClient implements AaiClientInterface {
         if (cloudRegion != null){
             return ImmutableMap.of(
                 "start", ImmutableList
-                    .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+                    .of("/business/customers/customer/" + encodePathSegment(subscriberId) + "/service-subscriptions/service-subscription/" + encodePathSegment(serviceType) + "/service-instances"),
                 "query",  "query/vnfs-fromServiceInstance-filterByCloudRegion?cloudRegionID=" + cloudRegion + ""
             );
         }
 
         return ImmutableMap.of(
             "start", ImmutableList
-                .of("/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/" + serviceType + "/service-instances"),
+                .of("/business/customers/customer/" + encodePathSegment(subscriberId) + "/service-subscriptions/service-subscription/" + encodePathSegment(serviceType) + "/service-instances"),
             "query", "query/vnfs-fromServiceInstance-filter"
         );
     }

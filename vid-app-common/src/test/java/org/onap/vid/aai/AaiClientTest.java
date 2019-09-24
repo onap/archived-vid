@@ -141,6 +141,7 @@ public class AaiClientTest {
     private static String nfRoleAndCloudRegion = "{\"start\":[\"/business/customers/customer/globalCustomerId1-360-as988q/service-subscriptions/service-subscription/TEST1-360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filterByCloudRegion?nfRole=test360&cloudRegionID=cloudRegion-1\"}";
     private static String cloudRegionOnly = "{\"start\":[\"/business/customers/customer/globalCustomerId1-360-as988q/service-subscriptions/service-subscription/TEST1-360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filterByCloudRegion?cloudRegionID=cloudRegion-1\"}";
     private static String withoutNfroleAndCloudRegion = "{\"start\":[\"/business/customers/customer/globalCustomerId1-360-as988q/service-subscriptions/service-subscription/TEST1-360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filter\"}";
+    private static String withoutNfroleAndCloudRegionWithSpace = "{\"start\":[\"/business/customers/customer/globalCustomerId1with%20space%20360-as988q/service-subscriptions/service-subscription/TEST1%20360/service-instances\"],\"query\":\"query/vnfs-fromServiceInstance-filter\"}";
 
     private static String responseJsonNfRole = "/payload_jsons/changeManagement/vnfs-fromServiceInstance-filterNfRole.json";
     private static String responseJsonCloudRegion ="/payload_jsons/changeManagement/vnfs-fromServiceInstance-filterByCloudRegion.json";
@@ -153,7 +154,8 @@ public class AaiClientTest {
             {"globalCustomerId1-360-as988q", "TEST1-360", null, "cloudRegion-1", cloudRegionOnly, responseJsonCloudRegion, "1165906024", 200},
             {"globalCustomerId1-360-as988q", "TEST1-360", "test360", "cloudRegion-1", nfRoleAndCloudRegion,
                 responseJsonCloudRegion, "1165906024", 200},
-            {"globalCustomerId1-360-as988q", "TEST1-360", null, null, withoutNfroleAndCloudRegion, responseJsonNfRole, "908419144", 200},
+            {"globalCustomerId1with space 360-as988q", "TEST1 360", null, null, withoutNfroleAndCloudRegionWithSpace, responseJsonNfRole, "908419144", 200},
+                {"globalCustomerId1-360-as988q", "TEST1-360", null, null, withoutNfroleAndCloudRegion, responseJsonNfRole, "908419144", 200},
         };
     }
 
