@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "18f49e2c_e3524f75",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/beans/Service.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-09-24T06:12:26Z",
+      "side": 1,
+      "message": "I think that instead of adding those kind of comments we should remove them from whole file.",
+      "range": {
+        "startLine": 109,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 34
+      },
+      "revId": "3d07d5ce087c81d5ac296e2255e75776a434e37d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
