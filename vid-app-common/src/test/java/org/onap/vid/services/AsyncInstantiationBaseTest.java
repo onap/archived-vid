@@ -171,11 +171,12 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
             vfModuleInfo.setModelInvariantId("22222222-f63c-463e-ba94-286933b895f9");
             vfModuleInfo.setModelVersion("10.0");
             return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), "mdt1", null,
-                    "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false, true, null, UUID.randomUUID().toString(), null, null);
+                    "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false, true, null, UUID.randomUUID().toString(), null, null,
+                null);
         }
 
         return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), null, null, null,
-                instanceParams, supplementaryParams, false, false, null, UUID.randomUUID().toString(), null, null);
+                instanceParams, supplementaryParams, false, false, null, UUID.randomUUID().toString(), null, null, null);
     }
 
     protected ModelInfo createVfModuleModelInfo(String modelName, String modelVersion, String modelVersionId, String modelInvariantId, String modelCustomizationId, String modelCustomizationName) {
@@ -184,7 +185,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
 
     protected VfModule createVfModuleForReplace(ModelInfo vfModuleModelInfo, String instanceName, String lcpCloudRegionId, String tenantId) {
         return new VfModule( vfModuleModelInfo, instanceName, null, Action.Upgrade.name(), lcpCloudRegionId, null, tenantId,
-                null, null, true, null, null, UUID.randomUUID().toString(), null, null);
+                null, null, true, null, null, UUID.randomUUID().toString(), null, null, null);
     }
 
     protected ModelInfo createVnfModelInfo(boolean isAlacarte) {
@@ -267,7 +268,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
 
         Vnf vnf = new Vnf(vnfModelInfo, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", (isUserProvidedNaming ? VNF_NAME : null), Action.Create.name(),
                 "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", vnfInstanceParams,"lineOfBusinessName" , false, null, vfModules,
-                UUID.randomUUID().toString(), null, null);
+                UUID.randomUUID().toString(), null, null, null);
 
         vnfs.put(vnf.getModelInfo().getModelName(), vnf);
         return vnfs;
@@ -320,7 +321,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 details->new Network(createNetworkModelInfo(isALaCarte, details.modelCustomizationId), "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
                 details.name, Action.Create.name(),
                 "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", instanceParams,"lineOfBusinessName" ,
-                false, null, UUID.randomUUID().toString(), null, null));
+                false, null, UUID.randomUUID().toString(), null, null, null));
 //        I can't tell why compiler don't like the statement if it's only one line...
         return networkStream.collect(Collectors.toMap(network -> network.getModelInfo().getModelCustomizationId(), network -> network));
     }
@@ -335,7 +336,8 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         modelInfo.setModelInvariantId("11111111-f63c-463e-ba94-286933b895f9");
         modelInfo.setModelVersion("10.0");
 
-        return new InstanceGroup(modelInfo, (isUserProvidedNaming ? VNF_GROUP_NAME : null), action.name(), false, null, emptyMap(), UUID.randomUUID().toString(), null, null);
+        return new InstanceGroup(modelInfo, (isUserProvidedNaming ? VNF_GROUP_NAME : null), action.name(), false, null, emptyMap(), UUID.randomUUID().toString(), null, null,
+            null);
     }
 
     protected ModelInfo createServiceModelInfo() {

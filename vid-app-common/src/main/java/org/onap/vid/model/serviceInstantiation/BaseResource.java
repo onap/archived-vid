@@ -58,6 +58,9 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 	protected String statusMessage;
 
+	protected Integer position;
+
+
 	private static final Map<String, Action> actionStingToEnumMap = ImmutableMap.<String, Action>builder()
 			.put("Delete", Action.Delete)
 			.put("Create", Action.Create)
@@ -70,17 +73,18 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 
 	protected BaseResource(@JsonProperty("modelInfo") ModelInfo modelInfo,
-						   @JsonProperty("instanceName") String instanceName,
-						   @JsonProperty("action") String action,
-						   @JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
-						   @JsonProperty("legacyRegion") String legacyRegion,
-						   @JsonProperty("tenantId") String tenantId,
-						   @JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
-						   @JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
-						   @JsonProperty("instanceId") String instanceId,
-						   @JsonProperty("trackById") String trackById,
-						   @JsonProperty("isFailed") Boolean isFailed,
-						   @JsonProperty("statusMessage") String statusMessage) {
+		@JsonProperty("instanceName") String instanceName,
+		@JsonProperty("action") String action,
+		@JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
+		@JsonProperty("legacyRegion") String legacyRegion,
+		@JsonProperty("tenantId") String tenantId,
+		@JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
+		@JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
+		@JsonProperty("instanceId") String instanceId,
+		@JsonProperty("trackById") String trackById,
+		@JsonProperty("isFailed") Boolean isFailed,
+		@JsonProperty("statusMessage") String statusMessage,
+		@JsonProperty("position") Integer position) {
 		this.modelInfo = modelInfo;
 		this.modelInfo.setModelType(getModelType());
 		this.rollbackOnFailure = rollbackOnFailure;
@@ -93,6 +97,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		this.trackById = trackById;
 		this.isFailed = isFailed!= null ? isFailed: false;
 		this.statusMessage = statusMessage;
+		this.position = position;
 	}
 
 	private Action actionStringToEnum(String actionAsString) {
@@ -161,6 +166,14 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 
 	@JsonIgnore
