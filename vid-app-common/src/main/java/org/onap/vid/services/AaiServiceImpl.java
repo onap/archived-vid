@@ -137,7 +137,9 @@ public class AaiServiceImpl implements AaiService {
                         .setToscaModelURL(null)
                         .setLifecycleState(null)
                         .setArtifacts(null)
-                        .setResources(null).build();
+                        .setResources(null)
+                        .setOrchestrationType(modelVer.getOrchestrationType())
+                        .build();
 
 
 
