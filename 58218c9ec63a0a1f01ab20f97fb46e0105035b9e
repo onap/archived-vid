@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c1ad4874_7c86b01e",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/ChangeManagementTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-24T04:02:23Z",
+      "side": 1,
+      "message": "please scope the registration conditionally, depends on the flag.",
+      "revId": "58218c9ec63a0a1f01ab20f97fb46e0105035b9e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a171952_1ca768e8",
+        "filename": "vid-automation/src/main/resources/presets_templates/PresetAAIGetTenants_service_type_vWINIFRED.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-24T04:02:23Z",
+      "side": 1,
+      "message": "I wonder if this preset really had to be added.\nGiven that it is really similar to other get-tenant responses, I suppose something could be reused.\n\nif not, and I doubt, at least reduce the payload to needed data, instead of these 700 lines.\n\nstill, any resolution may be in a separate commit.",
+      "revId": "58218c9ec63a0a1f01ab20f97fb46e0105035b9e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
