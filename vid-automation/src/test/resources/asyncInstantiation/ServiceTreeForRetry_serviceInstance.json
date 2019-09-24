@@ -44,6 +44,7 @@
       "trackById": "TRACK_BY_ID",
       "isFailed": true,
       "statusMessage":"Vnf failed.",
+      "position":null,
       "lineOfBusiness": "vnf_lineOfBusinessName"
     }
   },

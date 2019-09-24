@@ -62,6 +62,7 @@
       "statusMessage": null,
       "tenantId": "88a6ca3ee0394ade9403f075db23167e",
       "trackById": "TRACK_BY_ID",
+      "position":null,
       "vfModules": {
       }
     }
