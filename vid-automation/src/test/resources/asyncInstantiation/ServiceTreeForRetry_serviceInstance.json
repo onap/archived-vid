@@ -10,6 +10,7 @@
   "owningEntityId": "038d99af-0427-42c2-9d15-971b99b9b489",
   "owningEntityName": "Lucine Sarika",
   "projectName": "zasaki",
+  "position":null,
   "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
   "subscriberName": "SILVIA ROBBINS",
   "productFamilyId": "ddf9cc0f-6331-4d35-bed0-a37f2d5e9cb3",
@@ -44,6 +45,7 @@
       "trackById": "TRACK_BY_ID",
       "isFailed": true,
       "statusMessage":"Vnf failed.",
+      "position":null,
       "lineOfBusiness": "vnf_lineOfBusinessName"
     }
   },
