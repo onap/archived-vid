@@ -31,8 +31,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
-import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.*;
 import static vid.automation.test.infra.ModelInfo.*;
 
 
@@ -478,5 +477,31 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         WebElement serviceModelsTbody = Get.byXpath("//table[@data-tests-id='serviceModelsTable']/tbody");
         assertFalse(Exists.tagNameInAnotherElement(serviceModelsTbody, "tr"), "Table should be empty on empty results");
         resetGetServicesCache();
+    }
+
+    @Test
+    @FeatureTogglingTest(FLAG_SHOW_ORCHESTRATION_TYPE)
+    public void browseSdcModel_filterModelsWithOrchestrationType_alacart() {
+        resetGetServicesCache();
+        SimulatorApi.clearAll();
+        BrowseASDCPage browseAsdcPage = registerSimulatorAndGoToBrowseSDC();
+        GeneralUIUtils.ultimateWait();
+        assertThat(browseAsdcPage.countCurrentRowsInTable(),(Matchers.greaterThan(3)));
+        browseAsdcPage.fillFilterText("a la carte");
+        Assert.assertEquals(browseAsdcPage.countCurrentRowsInTable(),3);
+        browseAsdcPage.fillFilterText("");
+    }
+
+    @Test
+    @FeatureTogglingTest(FLAG_SHOW_ORCHESTRATION_TYPE)
+    public void browseSdcModel_filterModelsWithOrchestrationType_macro() {
+        resetGetServicesCache();
+        SimulatorApi.clearAll();
+        BrowseASDCPage browseAsdcPage = registerSimulatorAndGoToBrowseSDC();
+        GeneralUIUtils.ultimateWait();
+        assertThat(browseAsdcPage.countCurrentRowsInTable(),(Matchers.greaterThan(5)));
+        browseAsdcPage.fillFilterText("macro");
+        Assert.assertEquals(browseAsdcPage.countCurrentRowsInTable(),4);
+        browseAsdcPage.fillFilterText("");
     }
 }
