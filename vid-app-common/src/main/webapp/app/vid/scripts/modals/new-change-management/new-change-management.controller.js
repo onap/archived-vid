@@ -587,18 +587,18 @@
             vm.vnfs = [];
             vm.vfModules = [];
 
-            let vnfRole = null;
+            let nfRole = null;
             let cloudRegion = null;
 
             if ($scope.isNewFilterChangeManagmentEnabled()) {
-                vnfRole = vm.changeManagement.vnfType ? vm.changeManagement.vnfType : null;
+                nfRole = vm.changeManagement.vnfType ? vm.changeManagement.vnfType : null;
                 cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion : null;
             }
 
             AaiService.getVnfsByCustomerIdAndServiceType(
                 vm.changeManagement.subscriberId,
                 vm.changeManagement.serviceType["service-type"],
-                vnfRole,
+                nfRole,
                 cloudRegion,
             ).then(function (response) {
                     vm.isSearchedVNF = true;

@@ -86,13 +86,13 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         }).join("&");
     }
 
-    function getConfigParams(vnfRole, cloudRegion) {
+    function getConfigParams(nfRole, cloudRegion) {
         if (!featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH)) {
             return null
         }
 
         let data = {
-            vnfRole: vnfRole,
+            nfRole: nfRole,
             cloudRegion: cloudRegion,
         };
 
@@ -646,13 +646,13 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             (UtilityService.runHttpErrorHandler);
         },
 
-        getVnfsByCustomerIdAndServiceType: function (globalSubscriberId, serviceType, vnfRole, cloudRegion) {
+        getVnfsByCustomerIdAndServiceType: function (globalSubscriberId, serviceType, nfRole, cloudRegion) {
             let deferred = $q.defer();
 
             let url = globalSubscriberId + COMPONENT.FORWARD_SLASH + serviceType
 
             const path = COMPONENT.AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE + url;
-            let config = getConfigParams(vnfRole, cloudRegion);
+            let config = getConfigParams(nfRole, cloudRegion);
 
             if (UtilityService.hasContents(globalSubscriberId) &&
                 UtilityService.hasContents(serviceType)) {
