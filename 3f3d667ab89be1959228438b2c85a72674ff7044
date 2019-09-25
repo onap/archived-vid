@@ -16,6 +16,24 @@
       "revId": "3f3d667ab89be1959228438b2c85a72674ff7044",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c597d5c_c4d1786e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scripts/AdministrationScriptsTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-09-25T10:05:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02e6d960_184d4042",
+      "revId": "3f3d667ab89be1959228438b2c85a72674ff7044",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
