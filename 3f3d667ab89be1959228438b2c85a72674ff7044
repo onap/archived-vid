@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02e6d960_184d4042",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/scripts/AdministrationScriptsTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-25T09:58:08Z",
+      "side": 1,
+      "message": "add comment which specials are replaced and how",
+      "revId": "3f3d667ab89be1959228438b2c85a72674ff7044",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
