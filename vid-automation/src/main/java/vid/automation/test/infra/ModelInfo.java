@@ -60,6 +60,7 @@ public class ModelInfo {
     public static final ModelInfo collectionResourceService = new ModelInfo("abd0cb02-5f97-42cd-be93-7dd3e31a6a64", "04bdd793-32ed-4045-adea-4e096304a067", "csar_collection_resource.zip");
     public static final ModelInfo collectionResourceForResume = new ModelInfo("6e0bec91-09f3-43aa-9cf3-e617cd0146be", "f6342be5-d66b-4d03-a1aa-c82c3094c4ea", "csar_collection_resource_for_resume.zip");
     public static final ModelInfo transportWithPnfsService = new ModelInfo("12550cd7-7708-4f53-a09e-41d3d6327ebc", "561faa57-7bbb-40ec-a81c-c0d4133e98d4", "csarTransportWithPnfs.zip");
+    public static final ModelInfo aLaCarteWith3Vnfs = new ModelInfo("8e453f3e-f843-49d5-870a-42928a4fa466", "0f8b74f7-807f-4a40-aeb8-974436476de4", "csarTransportWithPnfs.zip");
     public static final ImmutableList<ModelInfo> superSetOfModelInfos = buildModelInfos();
 
     public static ImmutableList<ModelInfo> buildModelInfos()  {
@@ -81,6 +82,7 @@ public class ModelInfo {
                 .add(transportWithPnfsService)
                 .add(collectionResourceService)
                 .add(collectionResourceForResume)
+                .add(aLaCarteWith3Vnfs)
                 .build();
     }
 }

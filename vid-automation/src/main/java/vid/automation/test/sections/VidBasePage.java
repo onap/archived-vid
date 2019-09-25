@@ -1,6 +1,18 @@
 package vid.automation.test.sections;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
+
 import com.aventstack.extentreports.Status;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.function.Function;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
@@ -12,22 +24,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import vid.automation.test.Constants;
 import vid.automation.test.Constants.ViewEdit;
-import vid.automation.test.infra.*;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.function.Function;
-
-import static java.util.stream.Collectors.toMap;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
-import static org.testng.Assert.assertEquals;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 
 public class VidBasePage {
 
@@ -349,7 +352,7 @@ public class VidBasePage {
 
     public void setReduxState(String state) {
         final JavascriptExecutor javascriptExecutor = (JavascriptExecutor) GeneralUIUtils.getDriver();
-        String script = String.format("window.sessionStorage.setItem('reduxState', '%s');", state);
+        String script = String.format("window.sessionStorage.setItem('reduxState', '%s');", state.replaceAll("\\r|\\n",""));
         System.out.println("executing script:");
         System.out.println(script);
         javascriptExecutor.executeScript(script);

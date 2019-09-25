@@ -4,6 +4,7 @@
 declare namespace Cypress {
   interface Chainable {
     fillVnfPopup: typeof FillVnfPopup,
+    fillVnfPopupWithName: typeof FillVnfPopupWithName,
     duplicateVnf: typeof DuplicateVnf,
   }
 }
@@ -17,6 +18,12 @@ function FillVnfPopup(): Chainable<any> {
     return done;
   });
 }
+
+function FillVnfPopupWithName(instanceName:string): Chainable<any> {
+  cy.typeToInput("instanceName", instanceName);
+  return FillVnfPopup();
+}
+
 function DuplicateVnf( vnfNode: string, amountBefore: number): Chainable<any> {
   return cy.getElementByDataTestsId(vnfNode).should('have.length', amountBefore)
     .getElementByDataTestsId(vnfNode+"-menu-btn").click({force:true})
@@ -27,4 +34,5 @@ function DuplicateVnf( vnfNode: string, amountBefore: number): Chainable<any> {
     });
 }
 Cypress.Commands.add('fillVnfPopup', FillVnfPopup);
+Cypress.Commands.add('fillVnfPopupWithName', FillVnfPopupWithName);
 Cypress.Commands.add('duplicateVnf', DuplicateVnf);

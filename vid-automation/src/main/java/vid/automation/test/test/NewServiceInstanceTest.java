@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_SOME_LEGACY_REGION_TO_ATT_AIC;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID;
+import static org.onap.vid.api.BaseApiTest.getResourceAsString;
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 import static vid.automation.test.infra.Features.FLAG_1902_VNF_GROUPING;
@@ -21,6 +22,7 @@ import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI
 import static vid.automation.test.infra.Features.FLAG_ENABLE_WEBPACK_MODERN_UI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
 import static vid.automation.test.infra.ModelInfo.aLaCarteVnfGroupingService;
+import static vid.automation.test.infra.ModelInfo.aLaCarteWith3Vnfs;
 import static vid.automation.test.infra.ModelInfo.collectionResourceService;
 import static vid.automation.test.infra.ModelInfo.infrastructureVpnService;
 import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails;
@@ -39,6 +41,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,6 +75,7 @@ import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGe
 import org.onap.simulator.presetGenerator.presets.mso.PresetMsoCreateMacroCommonPre1806;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -573,7 +577,37 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
-    public void createNewServiceInstance_macro_validPopupDataAndUI__ecompNamingServiceFalseVnfFalse_vgNameTrue() throws Exception {
+    public void testDragAndDrop3Vnfs() {
+        vidBasePage.setReduxState(getResourceAsString("asyncInstantiation/service3VnfsRedux.json"));
+        String subscriberId = "e433710f-9217-458d-a79d-1c7aff376d89";
+        SimulatorApi.registerExpectationFromPresets(
+            getPresetForServiceBrowseAndDesign(ImmutableList.of(aLaCarteWith3Vnfs), subscriberId),
+            SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
+        vidBasePage.navigateTo("serviceModels.htm#/servicePlanning?serviceModelId="+aLaCarteWith3Vnfs.modelVersionId);
+        vidBasePage.goToIframe();
+
+        WebElement first = Get.byTestId("node-87ef7b41-5259-4160-a7ac-f181a26fbd7c-importedVSPVFb22359c51be5 0");
+        WebElement second = Get.byTestId("node-a80469bb-d8e6-4487-8149-e86ec5550582-importedVSPVF9080d7d92ec0 0");
+        WebElement third = Get.byTestId("node-32b65524-1218-4c4c-bb4e-c915acde434a-importedVSPVFdb9c831a0457 0");
+
+        WebElement firstNode = Get.byXpath("//drawing-board-tree//tree-node[@ng-reflect-index=\"0\"]");
+        WebElement secondNode = Get.byXpath("//drawing-board-tree//tree-node[@ng-reflect-index=\"1\"]");
+        WebElement thirdNode = Get.byXpath("//drawing-board-tree//tree-node[@ng-reflect-index=\"2\"]");
+        new Actions(GeneralUIUtils.getDriver())
+            .moveToElement(first)
+            .pause(Duration.ofSeconds(1))
+            .clickAndHold(first)
+            .pause(Duration.ofSeconds(1))
+            .moveByOffset(1, 0)
+            .moveToElement(second)
+            .moveByOffset(1, 0)
+            .pause(Duration.ofSeconds(1))
+            .release().perform();
+        (new Actions(GeneralUIUtils.getDriver())).dragAndDrop(firstNode, thirdNode).perform();
+    }
+
+    @Test
+    public void createNewServiceInstance_macro_validPopupDataAndUI__ecompNamingServiceFalseVnfFalse_vgNameTrue()  {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse.modelVersionId,
                 new ArrayList<>(),

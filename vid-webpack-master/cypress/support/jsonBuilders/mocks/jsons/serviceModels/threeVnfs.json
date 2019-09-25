@@ -1,0 +1,97 @@
+{
+  "service": {
+    "uuid": "8e453f3e-f843-49d5-870a-42928a4fa466",
+    "invariantUuid": "0f8b74f7-807f-4a40-aeb8-974436476de4",
+    "name": "ThreeVNFs",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Mobility",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "ThreeVNFs",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "anyAlacarteNewUi",
+      "instantiationType": "ALaCarte",
+      "modelCategory": "other",
+      "viewEditUI" : "anyAlacarteNewUi"
+    }
+  },
+  "vnfs": {
+    "importedVSPVFb22359c51be5 0": {
+      "uuid": "87ef7b41-5259-4160-a7ac-f181a26fbd7c",
+      "invariantUuid": "b30c1a2e-534f-44b0-ab57-eb260e144a5f",
+      "description": "Represents a generic software component that can be managed and run by a Compute Node Type.",
+      "name": "importedVSPVFb22359c51be5",
+      "version": "1.0",
+      "customizationUuid": "56914f43-7d62-4a43-adf1-d916de9cbb48",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "availability_zone_max_count": "1",
+        "ecomp_generated_naming": "true"
+      },
+      "type": "VF",
+      "modelCustomizationName": "importedVSPVFb22359c51be5 0",
+      "vfModules": {},
+      "volumeGroups": {},
+      "vfcInstanceGroups": {}
+    },
+    "importedVSPVF9080d7d92ec0 0": {
+      "uuid": "a80469bb-d8e6-4487-8149-e86ec5550582",
+      "invariantUuid": "93c30187-f0af-4bee-b37b-a34028cffd5d",
+      "description": "Represents a generic software component that can be managed and run by a Compute Node Type.",
+      "name": "importedVSPVF9080d7d92ec0",
+      "version": "1.0",
+      "customizationUuid": "9a75c0b9-6b63-46ea-845e-78c16fadf750",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "availability_zone_max_count": "1",
+        "ecomp_generated_naming": "true"
+      },
+      "type": "VF",
+      "modelCustomizationName": "importedVSPVF9080d7d92ec0 0",
+      "vfModules": {},
+      "volumeGroups": {},
+      "vfcInstanceGroups": {}
+    },
+    "importedVSPVFdb9c831a0457 0": {
+      "uuid": "32b65524-1218-4c4c-bb4e-c915acde434a",
+      "invariantUuid": "7701a76e-8b8c-4df7-996f-c483c8e3434a",
+      "description": "Represents a generic software component that can be managed and run by a Compute Node Type.",
+      "name": "importedVSPVFdb9c831a0457",
+      "version": "1.0",
+      "customizationUuid": "af3c1af0-b262-4c72-9c73-a856b36e5f61",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "availability_zone_max_count": "1",
+        "ecomp_generated_naming": "true"
+      },
+      "type": "VF",
+      "modelCustomizationName": "importedVSPVFdb9c831a0457 0",
+      "vfModules": {},
+      "volumeGroups": {},
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}
