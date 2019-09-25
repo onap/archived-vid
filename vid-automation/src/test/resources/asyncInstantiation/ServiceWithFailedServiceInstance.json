@@ -10,6 +10,7 @@
   ],
   "isALaCarte": true,
   "isFailed": true,
+  "position":null,
   "lcpCloudRegionId": "a93f8383-707e-43fa-8191-a6e69a1aab17",
   "modelInfo": {
     "modelInvariantId": "0367689e-d41e-483f-b200-eab17e4a7f8d",
@@ -62,6 +63,7 @@
       "statusMessage": null,
       "tenantId": "88a6ca3ee0394ade9403f075db23167e",
       "trackById": "TRACK_BY_ID",
+      "position":null,
       "vfModules": {
       }
     }
