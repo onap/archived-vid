@@ -1,5 +1,5 @@
 {
-  "action": "None",
+  "action": "None_Upgrade",
   "isDirty": true,
   "vnfs": {
     "Vf zolson5bpxmc02092017-VF 0": {
@@ -8,7 +8,7 @@
           "VfZrdm5bpxmc02092017Vf..CORNELIUS_base..module-0-?": {
             "instanceName": "replace_module",
             "instanceId": "5d49c3b1-fc90-4762-8c98-e800170baa55",
-            "action": "Upgrade",
+            "action": "None_Upgrade",
             "orchStatus": "Create",
             "provStatus": "Prov Status",
             "inMaint": false,
@@ -48,7 +48,7 @@
       "rollbackOnFailure": true,
       "instanceId": "5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5",
       "instanceName": "vnf_of_replace_module",
-      "action": "None",
+      "action": "None_Upgrade",
       "legacyRegion": "some legacy region"
     }
   },
