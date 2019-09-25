@@ -228,15 +228,15 @@ public class ChangeManagementTest extends VidBaseTestCase {
             String globalCustomerId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
             String serviceType = "vRichardson";
             SimulatorApi.registerExpectationFromPreset(new PresetBaseAAICustomQuery(
-                SIMPLE,
-                "/business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
-                    + serviceType + "/service-instances",
-                "query/vnfs-fromServiceInstance-filter"
+                    SIMPLE,
+                    "/business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
+                            + serviceType + "/service-instances",
+                    "query/vnfs-fromServiceInstance-filterByCloudRegion?nfRole=vMobileDNS&cloudRegionID=092eb9e8e4b7412e8787dd091bc58e86"
             ) {
                 @Override
                 public Object getResponseBody() {
                     return getResourceAsString(
-                        AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS);
+                            AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS);
                 }
             }, APPEND);
         }
@@ -546,9 +546,9 @@ public class ChangeManagementTest extends VidBaseTestCase {
         fillVNFInPlace3Fields(operationsTimeout, existingSwVersion, newSwVersion);
 
         assertThatVidToPortalCallbackDataIsOk(VNF_DATA_WITH_IN_PLACE.workflowName, ImmutableMap.of(
-            "existingSoftwareVersion", existingSwVersion,
-            "newSoftwareVersion", newSwVersion,
-            "operationTimeout", operationsTimeout
+                "existingSoftwareVersion", existingSwVersion,
+                "newSoftwareVersion", newSwVersion,
+                "operationTimeout", operationsTimeout
         ));
     }
 
@@ -559,10 +559,10 @@ public class ChangeManagementTest extends VidBaseTestCase {
         Assert.assertEquals(Get.byId(Constants.ChangeManagement.newModalConfigUpdateInputId + "-label").getText(), fileName);
         Assert.assertTrue(Get.byId(Constants.generalSubmitButtonId).isEnabled());
         assertThatVidToPortalCallbackDataIsOk("VNF Config Update", ImmutableMap.of(
-            "configUpdateFile",
-            "{\"request-parameters\":{\"vm\":[{\"vnfc\":["
-                + "{\"vnfc-name\":\"ibcx0001vm001dbg001\",\"vnfc-function-code\":\"dbg\"}],\"vm-name\":\"ibcx0001vm001\"},"
-                + "{\"vnfc\":[{\"vnfc-name\":\"ibcx0001vm002dbg001\"}],\"vm-name\":\"ibcx0001vm002\"}]},\"configuration-parameters\":{\"node0_hostname\":\"dbtx0001vm001\"}}"
+                "configUpdateFile",
+                "{\"request-parameters\":{\"vm\":[{\"vnfc\":["
+                        + "{\"vnfc-name\":\"ibcx0001vm001dbg001\",\"vnfc-function-code\":\"dbg\"}],\"vm-name\":\"ibcx0001vm001\"},"
+                        + "{\"vnfc\":[{\"vnfc-name\":\"ibcx0001vm002dbg001\"}],\"vm-name\":\"ibcx0001vm002\"}]},\"configuration-parameters\":{\"node0_hostname\":\"dbtx0001vm001\"}}"
         ));
     }
 
@@ -632,28 +632,28 @@ public class ChangeManagementTest extends VidBaseTestCase {
         String modelInvariantId = "72e465fe-71b1-4e7b-b5ed-9496118ff7a8";
         String vnfInstanceId = "8e5e3ba1-3fe6-4d86-966e-f9f03dab4855";
 
-            assertThat(errorMessage, startsWith(SCHEDULE_ERROR_PREFIX));
-            assertThat(errorMessage.replace(SCHEDULE_ERROR_PREFIX, ""), jsonEquals(
+        assertThat(errorMessage, startsWith(SCHEDULE_ERROR_PREFIX));
+        assertThat(errorMessage.replace(SCHEDULE_ERROR_PREFIX, ""), jsonEquals(
                 ImmutableMap.of(
-                    "widgetName", "Portal-Common-Scheduler",
-                    "widgetParameter", "",
-                    "widgetData", ImmutableMap.builder()
-                        .put("vnfNames", ImmutableList.of(ImmutableMap.of(
-                            "id", vnfInstanceId,
-                            "invariant-id", modelInvariantId
-                        )))
-                        .put("workflowParameters", emptyMap())
-                        .put("subscriberId", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb")
-                        .put("fromVNFVersion", "" + "76e908e0-5201-44d2-a3e2-9e6128d05820" + "")
-                        .put("workflow", "" + workflowName + "")
-                        .put("policyYN", "Y")
-                        .put("sniroYN", "Y")
-                        .put("testApi", "VNF_API")
-                        .put("vnfType", "vMobileDNS")
-                        .putAll(workflowParams)
-                    .build()
-                    )
-                ).when(Option.IGNORING_EXTRA_FIELDS));
+                        "widgetName", "Portal-Common-Scheduler",
+                        "widgetParameter", "",
+                        "widgetData", ImmutableMap.builder()
+                                .put("vnfNames", ImmutableList.of(ImmutableMap.of(
+                                        "id", vnfInstanceId,
+                                        "invariant-id", modelInvariantId
+                                )))
+                                .put("workflowParameters", emptyMap())
+                                .put("subscriberId", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb")
+                                .put("fromVNFVersion", "" + "76e908e0-5201-44d2-a3e2-9e6128d05820" + "")
+                                .put("workflow", "" + workflowName + "")
+                                .put("policyYN", "Y")
+                                .put("sniroYN", "Y")
+                                .put("testApi", "VNF_API")
+                                .put("vnfType", "vMobileDNS")
+                                .putAll(workflowParams)
+                                .build()
+                )
+        ).when(Option.IGNORING_EXTRA_FIELDS));
 
 
         Click.byId(Constants.generalCancelButtonId);
