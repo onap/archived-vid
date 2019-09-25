@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a809a97_aee75c93",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/Headers.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-25T09:35:02Z",
+      "side": 1,
+      "message": "Maybe find better name ?",
+      "revId": "b66104edbfeec09edc61cbd43107b2fe82856c80",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
