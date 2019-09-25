@@ -21,8 +21,52 @@
 package org.onap.vid.services;
 
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_ERRORS;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_NO_ACTION;
+import static org.onap.vid.job.Job.JobStatus.CREATING;
+import static org.onap.vid.job.Job.JobStatus.FAILED;
+import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.PAUSE;
+import static org.onap.vid.job.Job.JobStatus.PENDING;
+import static org.onap.vid.job.Job.JobStatus.PENDING_RESOURCE;
+import static org.onap.vid.job.Job.JobStatus.RESOURCE_IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.STOPPED;
+import static org.onap.vid.testUtils.TestUtils.generateRandomAlphaNumeric;
+import static org.onap.vid.utils.Streams.not;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -37,6 +81,8 @@ import org.mockito.MockitoAnnotations;
 import org.onap.portalsdk.core.domain.support.DomainVo;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.config.DataSourceConfig;
+import org.onap.vid.config.JobAdapterConfig;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.exceptions.OperationNotAllowedException;
 import org.onap.vid.job.Job;
@@ -47,10 +93,7 @@ import org.onap.vid.job.command.JobCommandFactoryTest;
 import org.onap.vid.job.impl.JobDaoImpl;
 import org.onap.vid.job.impl.JobSchedulerInitializer;
 import org.onap.vid.job.impl.JobsBrokerServiceInDatabaseImpl;
-import org.onap.vid.services.VersionService;
 import org.onap.vid.utils.DaoUtils;
-import org.onap.vid.config.DataSourceConfig;
-import org.onap.vid.config.JobAdapterConfig;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -58,31 +101,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import javax.inject.Inject;
-import java.lang.reflect.Method;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.mockito.Mockito.when;
-import static org.onap.vid.job.Job.JobStatus.*;
-import static org.onap.vid.utils.Streams.not;
-import static org.onap.vid.testUtils.TestUtils.generateRandomAlphaNumeric;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertFalse;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, JobAdapterConfig.class})
 public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
@@ -944,4 +962,22 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
         broker.delete(new UUID(111, 111));
     }
 
+    @Test
+    public void twoJobsWithSamePosition(){
+        UUID uuid = UUID.randomUUID();
+        int positionInBulk = RandomUtils.nextInt();
+        String userId = "userId";
+        JobDaoImpl job1 = createNewJob(positionInBulk, uuid, userId, CREATING, null, LocalDateTime.now().minusSeconds(1), false);
+        JobDaoImpl job2 = createNewJob(positionInBulk, uuid, userId, CREATING, null, LocalDateTime.now().minusSeconds(1), false);
+
+        broker.add(job1);
+        broker.add(job2);
+
+        Optional<Job> firstPulledJob = broker.pull(CREATING, userId);
+        Optional<Job> secondPulledJob = broker.pull(CREATING, userId);
+
+
+        assertEquals(firstPulledJob.get().getIndexInBulk().intValue(), positionInBulk);
+        assertEquals(secondPulledJob.get().getIndexInBulk().intValue(), positionInBulk);
+    }
 }

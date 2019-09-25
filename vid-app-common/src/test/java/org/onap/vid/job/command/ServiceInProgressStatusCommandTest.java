@@ -143,9 +143,14 @@ public class ServiceInProgressStatusCommandTest {
         UUID uuid = UUID.randomUUID();
         String userId = "mockedUserID";
         String testApi = "VNF_API";
-        Vnf vnf1 = createVnf(emptyList(), Create);
-        Vnf vnf2 = createVnf(emptyList(), Create);
+
+        // Create components setPosition in order to verify on the creation order on createChildJob
         Network network = createNetwork(Create);
+        network.setPosition(0);
+        Vnf vnf1 = createVnf(emptyList(), Create);
+        vnf1.setPosition(1);
+        Vnf vnf2 = createVnf(emptyList(), Create);
+        vnf2.setPosition(2);
         ServiceInstantiation serviceInstantiation = createService(
                 ImmutableList.of(vnf1, vnf2),
                 ImmutableList.of(network),
