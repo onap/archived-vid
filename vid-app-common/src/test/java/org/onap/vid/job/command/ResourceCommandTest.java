@@ -20,8 +20,45 @@
 
 package org.onap.vid.job.command;
 
+import static java.util.Collections.emptyList;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.RETURNS_MOCKS;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.job.command.ResourceCommandKt.ACTION_PHASE;
+import static org.onap.vid.job.command.ResourceCommandKt.INTERNAL_STATE;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createGroup;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createMember;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createNetwork;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createService;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createVfModule;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createVnf;
+import static org.onap.vid.model.Action.Create;
+import static org.onap.vid.model.Action.Delete;
+import static org.onap.vid.model.Action.None;
+import static org.onap.vid.model.Action.Resume;
+import static org.onap.vid.model.Action.values;
+import static org.onap.vid.utils.Logging.getMethodCallerName;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.ws.rs.ProcessingException;
+import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.onap.vid.exceptions.AbortingException;
 import org.onap.vid.exceptions.GenericUncheckedException;
@@ -32,31 +69,18 @@ import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.NextCommand;
 import org.onap.vid.job.impl.JobSharedData;
 import org.onap.vid.model.Action;
-import org.onap.vid.model.serviceInstantiation.*;
+import org.onap.vid.model.serviceInstantiation.BaseResource;
+import org.onap.vid.model.serviceInstantiation.InstanceGroup;
+import org.onap.vid.model.serviceInstantiation.InstanceGroupMember;
+import org.onap.vid.model.serviceInstantiation.Network;
+import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
+import org.onap.vid.model.serviceInstantiation.VfModule;
+import org.onap.vid.model.serviceInstantiation.Vnf;
 import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.model.ModelInfo;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import javax.ws.rs.ProcessingException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.Collections.emptyList;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.onap.vid.job.command.ResourceCommandKt.ACTION_PHASE;
-import static org.onap.vid.job.command.ResourceCommandKt.INTERNAL_STATE;
-import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.*;
-import static org.onap.vid.model.Action.*;
-import static org.onap.vid.utils.Logging.getMethodCallerName;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertFalse;
 
 public class ResourceCommandTest {
 
@@ -503,4 +527,29 @@ public class ResourceCommandTest {
         assertEquals(expectedNextStatus, nextCommand.getStatus());
     }
 
+    @DataProvider
+    public static Object[][] resourcePosition() {
+        return new Object[][]{
+            {1, 2, 3, ImmutableList.of(1,2,3)},
+            {null, 1, 100, ImmutableList.of(101,1,100)},
+            {null, null, null, ImmutableList.of(1,2,3)},
+        };
+    }
+
+    @Test(dataProvider = "resourcePosition")
+    public void sortChildren_sortAccordingToPosition(Integer firstPosition, Integer secondPosition, Integer thirdPosition, List<Integer> expectedPositions){
+        BaseResource mockedRequest1 = mock(BaseResource.class);
+        when(mockedRequest1.getPosition()).thenReturn(firstPosition);
+        BaseResource mockedRequest2 = mock(BaseResource.class);
+        when(mockedRequest2.getPosition()).thenReturn(secondPosition);
+        BaseResource mockedRequest3 = mock(BaseResource.class);
+        when(mockedRequest3.getPosition()).thenReturn(thirdPosition);
+
+        MockCommand underTest = new MockCommand(InternalState.CREATING_CHILDREN, Create, Job.JobStatus.IN_PROGRESS);
+        List<Pair<BaseResource, Integer>> sortedList = underTest.sortChildren(ImmutableList.of(mockedRequest1, mockedRequest2, mockedRequest3));
+
+        assertEquals(sortedList.get(0).getSecond(),expectedPositions.get(0));
+        assertEquals(sortedList.get(1).getSecond(),expectedPositions.get(1));
+        assertEquals(sortedList.get(2).getSecond(),expectedPositions.get(2));
+    }
 }
