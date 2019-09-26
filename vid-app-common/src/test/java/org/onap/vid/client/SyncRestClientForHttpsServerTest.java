@@ -8,9 +8,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,6 +29,7 @@ import static com.xebialabs.restito.semantics.Action.stringContent;
 import static org.apache.http.client.config.RequestConfig.custom;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
@@ -41,18 +42,25 @@ import com.xebialabs.restito.semantics.Condition;
 import com.xebialabs.restito.server.StubServer;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
+
+import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.util.Collections;
+import java.util.Enumeration;
 import javax.net.ssl.SSLContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
+
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.glassfish.grizzly.http.Method;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
@@ -71,7 +79,7 @@ public class SyncRestClientForHttpsServerTest {
     private Logging mockLoggingService;
 
     @BeforeMethod
-    public void setUp() throws GeneralSecurityException {
+    public void setUp() throws GeneralSecurityException{
         stubServer = new StubServer();
         stubServer.secured().run();
         mockLoggingService = mock(Logging.class);
@@ -132,12 +140,16 @@ public class SyncRestClientForHttpsServerTest {
             .then(ok(), jsonContent(), contentType("application/json"));
     }
 
-    private CloseableHttpClient createNaiveHttpClient() throws GeneralSecurityException {
-        final SSLContext context = new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy())
-            .build();
+    private CloseableHttpClient createNaiveHttpClient() throws GeneralSecurityException{
+        KeyStore mock = getMockedKeyStore();
+
+        final SSLContext context = SSLContextBuilder
+                .create()
+                .loadTrustMaterial(mock, new TrustSelfSignedStrategy())
+                .build();
 
         final SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(context, SUPPORTED_PROTOCOLS,
-            null, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            null, NoopHostnameVerifier.INSTANCE);
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
             .register("https", socketFactory)
             .build();
@@ -148,4 +160,20 @@ public class SyncRestClientForHttpsServerTest {
             .setSSLSocketFactory(socketFactory).build();
     }
 
+    private KeyStore getMockedKeyStore() throws KeyStoreException {
+        KeyStore mock = mock(KeyStore.class);
+        doReturn(new Enumeration<String>() {
+
+            @Override
+            public boolean hasMoreElements() {
+                return false;
+            }
+
+            @Override
+            public String nextElement() {
+                return null;
+            }
+        }).when(mock).aliases();
+        return mock;
+    }
 }
