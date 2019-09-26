@@ -47,12 +47,13 @@ import javax.net.ssl.SSLContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.glassfish.grizzly.http.Method;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
@@ -137,7 +138,7 @@ public class SyncRestClientForHttpsServerTest {
             .build();
 
         final SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(context, SUPPORTED_PROTOCOLS,
-            null, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            null, NoopHostnameVerifier.INSTANCE);
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
             .register("https", socketFactory)
             .build();
