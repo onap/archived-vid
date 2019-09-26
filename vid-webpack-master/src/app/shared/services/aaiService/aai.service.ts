@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
-import {of} from "rxjs";
+import {Observable, of} from "rxjs";
 
 import {AicZone} from "../../models/aicZone";
 import {CategoryParams} from "../../models/categoryParams";
@@ -29,22 +29,12 @@ import {VnfInstance} from "../../models/vnfInstance";
 import {VfModuleInstance} from "../../models/vfModuleInstance";
 import {ServiceInstance} from "../../models/serviceInstance";
 import {VfModuleMap} from "../../models/vfModulesMap";
-import {
-  updateAicZones,
-  updateCategoryParameters,
-  updateLcpRegionsAndTenants,
-  updateServiceTypes,
-  updateSubscribers,
-  updateUserId
-} from "../../storeUtil/utils/general/general.actions";
-import {
-  updateModel,
-  createServiceInstance,
-} from "../../storeUtil/utils/service/service.actions";
+import {updateAicZones, updateCategoryParameters, updateLcpRegionsAndTenants, updateServiceTypes, updateSubscribers, updateUserId} from "../../storeUtil/utils/general/general.actions";
+import {createServiceInstance, updateModel,} from "../../storeUtil/utils/service/service.actions";
 import {FeatureFlagsService, Features} from "../featureFlag/feature-flags.service";
 import {VnfMember} from "../../models/VnfMember";
 import {setOptionalMembersVnfGroupInstance} from "../../storeUtil/utils/vnfGroup/vnfGroup.actions";
-import {Observable} from "rxjs";import {NetworkModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.model";
+import {NetworkModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.model";
 import {VPNModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/vpnStep/vpn.step.model";
 import {ModelInfo} from "../../models/modelInfo";
 
@@ -66,11 +56,8 @@ export class AaiService {
   };
 
   retrieveServiceLatestUpdateableVersion = (modelInvariantId: string): Observable<ModelInfo> => {
-    if (this.featureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE)){
-      let pathQuery: string = Constants.Path.SERVICE_LATEST_VERSION + modelInvariantId;
-      return this.http.get<ModelInfo>(pathQuery)
-    }
-    return;
+    let pathQuery: string = Constants.Path.SERVICE_LATEST_VERSION + modelInvariantId;
+    return this.http.get<ModelInfo>(pathQuery)
   };
 
   getUserId = (): Observable<any> => {

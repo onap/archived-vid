@@ -1,6 +1,6 @@
 import {ActivatedRouteSnapshot, Resolve} from "@angular/router";
 import {Injectable} from "@angular/core";
-import {from, Observable} from "rxjs";
+import {from, Observable, of} from "rxjs";
 import {AaiService} from "../../services/aaiService/aai.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {AppState} from "../../store/reducers";
@@ -9,11 +9,14 @@ import {createServiceInstance} from "../../storeUtil/utils/service/service.actio
 import {ServiceInstance} from "../../models/serviceInstance";
 import * as _ from "lodash";
 import {ModelInfo} from "../../models/modelInfo";
+import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class ViewEditResolver implements Resolve<Observable<boolean>> {
 
-  constructor(private _aaiService: AaiService, private _store: NgRedux<AppState>) {
+  constructor(private _aaiService: AaiService,
+              private featureFlagsService:FeatureFlagsService,
+              private _store: NgRedux<AppState>) {
   }
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
@@ -26,12 +29,16 @@ export class ViewEditResolver implements Resolve<Observable<boolean>> {
     let streams: Observable<any>[] = [serviceModelApi, serviceInstanceApi];
     streams = streams.filter( stream => stream !== undefined);
     return forkJoin(streams).switchMap(([serviceModel, serviceInstance]) => {
-      return from(this.retrieveLatestVersionAndSetServiceInstance(serviceInstance.modelInfo.modelInvariantId).then((response)=>{
-        this.setServiceLatestAvailableVersion(serviceInstance, response);
-        this.applyRequestsResponsesToStateAndInitServiceInstance(serviceModelId, serviceInstance, serviceModel);
-        return true;
-      }));
-
+      if (this.featureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE)) {
+        return from(this.retrieveLatestVersionAndSetServiceInstance(serviceInstance.modelInfo.modelInvariantId).then((response) => {
+          this.setServiceLatestAvailableVersion(serviceInstance, response);
+          this.applyRequestsResponsesToStateAndInitServiceInstance(serviceModelId, serviceInstance, serviceModel);
+          return true;
+        }));
+      }
+      else {
+        return of(true);
+      }
     });
   }
 
