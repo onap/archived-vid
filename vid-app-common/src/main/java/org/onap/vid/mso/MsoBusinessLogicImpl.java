@@ -30,6 +30,7 @@ import static org.onap.vid.controller.MsoController.REQUEST_TYPE;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
 import static org.onap.vid.controller.MsoController.WORKFLOW_ID;
+import static org.onap.vid.logging.Headers.PARTNER_NAME;
 import static org.onap.vid.mso.MsoProperties.MSO_REST_API_CLOUD_RESOURCES_REQUEST_STATUS;
 import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_ACTIVATE;
 import static org.onap.vid.mso.MsoProperties.MSO_REST_API_OPERATIONAL_ENVIRONMENT_CREATE;
@@ -230,7 +231,7 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
         UUID requestId = UUID.randomUUID();
         extraHeaders.put("X-ONAP-RequestID",requestId.toString());
-        extraHeaders.put("X-ONAP-PartnerName","VID");
+        extraHeaders.put(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue());
         extraHeaders.put("X-RequestorID",userId);
 
         return msoClientInterface.invokeWorkflow(request,final_endpoint,extraHeaders);

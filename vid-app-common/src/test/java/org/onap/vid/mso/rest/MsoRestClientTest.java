@@ -832,7 +832,7 @@ public class MsoRestClientTest {
 
         Map<String,String> extraHeaders = new HashMap<>();
         extraHeaders.put("X-ONAP-RequestID",requestId.toString());
-        extraHeaders.put("X-ONAP-PartnerName","VID");
+        extraHeaders.put("X-ONAP-PartnerName","VID.VID");
         extraHeaders.put("X-RequestorID","testRequester");
 
         //  when

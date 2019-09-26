@@ -145,6 +145,7 @@ public class OutgoingRequestHeadersTest {
         assertEquals(requestIdValue, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
 
         assertThat((String) captureHeaderKeyAndReturnItsValue(fakeBuilder, "Authorization"), startsWith("Basic "));
+        verifyXOnapPartnerNameHeaderWasAdded(fakeBuilder);
     }
 
     @Test
@@ -176,6 +177,7 @@ public class OutgoingRequestHeadersTest {
         f.accept(aaiRestInterface);
 
         verifyXEcompRequestIdHeaderWasAdded(mocks.getFakeBuilder());
+        verifyXOnapPartnerNameHeaderWasAdded(mocks.getFakeBuilder());
     }
 
 //    @Test(dataProvider = "schedulerMethods")
@@ -196,6 +198,13 @@ public class OutgoingRequestHeadersTest {
         assertThat("header '" + requestIdHeader + "' should be a uuid", requestId,
                 allOf(instanceOf(String.class), hasToString(matchesPattern(uuidRegex))));
         return requestId;
+    }
+
+    private void verifyXOnapPartnerNameHeaderWasAdded(Invocation.Builder fakeBuilder) {
+        assertThat(
+            captureHeaderKeyAndReturnItsValue(fakeBuilder, Headers.PARTNER_NAME.getHeaderName()),
+            is("VID.VID")
+        );
     }
 
     private Object captureHeaderKeyAndReturnItsValue(Invocation.Builder fakeBuilder, String headerName) {
