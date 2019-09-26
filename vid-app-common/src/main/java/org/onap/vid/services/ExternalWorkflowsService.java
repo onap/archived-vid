@@ -23,7 +23,7 @@ package org.onap.vid.services;
 import java.util.List;
 import org.onap.vid.model.SOWorkflow;
 
-
+@FunctionalInterface
 public interface ExternalWorkflowsService {
     List<SOWorkflow> getWorkflows(String vnfModelId);
 }
