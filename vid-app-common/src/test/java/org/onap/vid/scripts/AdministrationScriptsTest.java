@@ -56,6 +56,11 @@ public class AdministrationScriptsTest {
 
     @Test
     public void categoryParameterSh_addReleaseCategory_PostAsExpected() throws Exception {
+        if (localWgetNotCompatible()) {
+            // cannot perform the test on hosting machine
+            return;
+        }
+
         final StubServer stubServer = new StubServer();
         final URI scriptSource = AdministrationScriptsTest.class
             .getResource("/scripts/category_parameter.sh").toURI();
@@ -98,6 +103,13 @@ public class AdministrationScriptsTest {
         } finally {
             stubServer.stop();
         }
+    }
+
+    private boolean localWgetNotCompatible() throws IOException, InterruptedException {
+        // we need versions > 1.14
+        Pair<Integer, String> wgetVersion = exec("wget --version");
+        return wgetVersion.getLeft() != 0 ||
+            Pattern.compile(".*GNU Wget 1.1[0-4].*", Pattern.DOTALL).matcher(wgetVersion.getRight()).matches();
     }
 
     private Path createTempFile(String text) throws IOException {
