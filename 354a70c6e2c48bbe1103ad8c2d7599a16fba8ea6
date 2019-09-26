@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30746c9a_e994088d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/ResourceCommandTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-26T12:19:25Z",
+      "side": 1,
+      "message": "I think you can use hamcrest to cleaner assert.\nYou can advise with Ittay how",
+      "revId": "354a70c6e2c48bbe1103ad8c2d7599a16fba8ea6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b74adaea_d02e7291",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/ServiceInProgressStatusCommandTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-09-26T12:19:25Z",
+      "side": 1,
+      "message": "please add comment that this setPosition enable the order that we verify on createChildJob",
+      "revId": "354a70c6e2c48bbe1103ad8c2d7599a16fba8ea6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
