@@ -24,6 +24,7 @@ import org.onap.vid.model.JobModel;
 
 import java.util.UUID;
 
+@FunctionalInterface
 public interface BulkInstantiationService {
 
     JobModel getJob(UUID uuid);
