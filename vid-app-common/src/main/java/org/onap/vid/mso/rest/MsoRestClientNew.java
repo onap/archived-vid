@@ -20,6 +20,7 @@
  */
 package org.onap.vid.mso.rest;
 
+import static org.onap.vid.logging.Headers.PARTNER_NAME;
 import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
 
 import com.google.common.collect.ImmutableMap;
@@ -66,7 +67,6 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
      * The Constant dateFormat.
      */
     public static final String X_FROM_APP_ID = "X-FromAppId";
-    public static final String X_ONAP_PARTNER_NAME = "X-ONAP-PartnerName";
     final static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
     private static final String START = " start";
     private final SyncRestClient client;
@@ -563,7 +563,7 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
         map.put(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON);
         map.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         map.put(X_FROM_APP_ID, systemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME));
-        map.put(X_ONAP_PARTNER_NAME, "VID");
+        map.put(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue());
         return ImmutableMap.copyOf(map);
     }
 

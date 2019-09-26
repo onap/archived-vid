@@ -32,7 +32,7 @@ import static com.xebialabs.restito.semantics.Condition.post;
 import static com.xebialabs.restito.semantics.Condition.uri;
 import static com.xebialabs.restito.semantics.Condition.withHeader;
 import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
-import static org.onap.vid.mso.rest.MsoRestClientNew.X_ONAP_PARTNER_NAME;
+import static org.onap.vid.logging.Headers.PARTNER_NAME;
 import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -235,7 +235,7 @@ class MsoRestClientTestUtil implements AutoCloseable {
         withHeader(HttpHeaders.ACCEPT),
         withHeader(HttpHeaders.CONTENT_TYPE),
         withHeader(MsoRestClientNew.X_FROM_APP_ID),
-        withHeader(X_ONAP_PARTNER_NAME, "VID"),
+        withHeader(PARTNER_NAME.getHeaderName(), "VID.VID"),
         withHeader(SystemProperties.ECOMP_REQUEST_ID),
         withHeader(ONAP_REQUEST_ID_HEADER_KEY)
     );

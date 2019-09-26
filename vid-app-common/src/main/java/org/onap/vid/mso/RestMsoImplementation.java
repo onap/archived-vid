@@ -20,6 +20,7 @@
 
 package org.onap.vid.mso;
 
+import static org.onap.vid.logging.Headers.PARTNER_NAME;
 import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 import static org.onap.vid.utils.Logging.getMethodCallerName;
@@ -109,7 +110,7 @@ public class RestMsoImplementation implements RestInterface {
 
         MultivaluedHashMap<String, Object> commonHeaders = new MultivaluedHashMap();
         commonHeaders.put("Authorization",  Collections.singletonList(("Basic " + authStringEnc)));
-        commonHeaders.put("X-ONAP-PartnerName", Collections.singletonList("VID"));
+        commonHeaders.put(PARTNER_NAME.getHeaderName(), Collections.singletonList(PARTNER_NAME.getHeaderValue()));
 
         String requestIdValue = Logging.extractOrGenerateRequestId();
         commonHeaders.put(REQUEST_ID_HEADER_KEY, Collections.singletonList(requestIdValue));

@@ -6,15 +6,26 @@ import org.onap.portalsdk.core.util.SystemProperties
 import org.onap.vid.logging.RequestIdHeader.*
 import javax.servlet.http.HttpServletRequest
 
-enum class RequestIdHeader(val headerName: String) {
+interface Header {
+    val headerName: String
+    fun stringEquals(header: String): Boolean = headerName.equals(header, true)
+}
 
+abstract class NamedHeader(override val headerName: String) : Header {
+    abstract fun getHeaderValue(): String
+}
+
+@JvmField
+val PARTNER_NAME = object : NamedHeader("X-ONAP-PartnerName") {
+    override fun getHeaderValue() = "VID.VID"
+}
+
+enum class RequestIdHeader(override val headerName: String) : Header {
     ONAP_ID("X-ONAP-RequestID"),
     REQUEST_ID("X-RequestID"),
     TRANSACTION_ID("X-TransactionID"),
     ECOMP_ID(SystemProperties.ECOMP_REQUEST_ID),
     ;
-
-    fun stringEquals(header: String) = headerName.equals(header, true)
 
     fun getHeaderValue(request: HttpServletRequest): String? = request.getHeader(headerName)
 }
