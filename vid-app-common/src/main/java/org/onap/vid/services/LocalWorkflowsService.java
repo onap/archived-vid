@@ -21,6 +21,7 @@ package org.onap.vid.services;
 
 import org.onap.vid.model.LocalWorkflowParameterDefinitions;
 
+@FunctionalInterface
 public interface LocalWorkflowsService {
     LocalWorkflowParameterDefinitions getWorkflowParameterDefinitions(String workflowName);
 }
