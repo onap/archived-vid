@@ -21,6 +21,7 @@ package org.onap.vid.services;
 
 import org.onap.vid.model.probes.ExternalComponentStatus;
 
+@FunctionalInterface
 public interface ProbeInterface {
     ExternalComponentStatus probeComponent();
 }
