@@ -22,6 +22,7 @@ package org.onap.vid.services;
 
 import org.onap.vid.model.PombaInstance.PombaRequest;
 
+@FunctionalInterface
 public interface PombaService {
     void verify(PombaRequest request);
 }
