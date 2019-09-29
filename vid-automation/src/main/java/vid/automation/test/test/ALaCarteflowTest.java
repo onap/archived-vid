@@ -24,6 +24,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Get;
 import vid.automation.test.model.ServiceModel;
 import vid.automation.test.model.User;
@@ -99,7 +101,40 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
             ServiceModel serviceInstance = new ServicesService().getServiceModel(MODEL_UUID);
             addVFModule("Vsp1710pid298109Vwinifred..mmsc_mod1_ltm..module-8", vfModuleName, AAIAIC_25, AIC,
                     TENANT, FALSE, MDT_1, getCurrentUser().tenants, serviceInstance);
+        });
+    }
 
+    @FeatureTogglingTest(value = Features.FLAG_FLASH_MORE_ACTIONS_BUTTON_IN_OLD_VIEW_EDIT)
+    @Test
+    private void testUpgradeVfModule(String msoTestApiOption, String msoTestApiValue) {
+        withMsoTestApiConfiguration(msoTestApiOption, msoTestApiValue, () -> {
+            final String REQUEST_ID = "dbe54591-c8ed-46d3-abc7-d3a24873bddd";
+            final String MODEL_UUID = "d205e01d-e5da-4e68-8c52-f95cb0607959";
+
+            String vfModuleName = viewEditPage.generateInstanceName(Constants.ViewEdit.VF_MODULE_INSTANCE_NAME_PREFIX);
+
+            SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                    PRESET_MDT1_TO_ATT_NC,
+                    new PresetMSOCreateVfModuleOldViewEdit(
+                            REQUEST_ID,
+                            BaseMSOPreset.DEFAULT_INSTANCE_ID,
+                            SERVICE_ID,
+                            VNF_ID,
+                            vfModuleName,
+                            msoTestApiValue,
+                            DEFAULT_CLOUD_OWNER)),
+                    SimulatorApi.RegistrationStrategy.APPEND);
+
+
+            SimulatorApi.registerExpectation(A_LACARTE_FLOW_GET_ORCHESTRATION,
+                    ImmutableMap.of(ORCHESTRATION_REQUEST_ID, REQUEST_ID, STATUS_MESSAGE, Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT,
+                            REQUEST_TYPE, CREATE), APPEND);
+            GeneralUIUtils.ultimateWait();
+            goToInstance();
+            ServiceModel serviceInstance = new ServicesService().getServiceModel(MODEL_UUID);
+            addVFModule("Vsp1710pid298109Vwinifred..mmsc_mod1_ltm..module-8", vfModuleName, AAIAIC_25, AIC,
+                    TENANT, FALSE, MDT_1, getCurrentUser().tenants, serviceInstance);
+            viewEditPage.moveToNewViewEditScreen();
         });
     }
 

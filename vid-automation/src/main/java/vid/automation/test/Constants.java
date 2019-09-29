@@ -61,6 +61,7 @@ public class Constants {
     public static final String ACTIVATE_DEACTIVATE_BUTTON = "activateDeactivateButton";
     public static final String ENABLE_DISABLE_BUTTON = "enableDisableButton";
     public static final String SUBSCRIBER_SELECT_ID= "subscriber-name-select";
+    public static final String MORE_ACTIONS_BUTTON= "show-new-screen";
 
     public static final String PNF_SERVICE_TYPE = "pnf";
     public static final String GR_API = "GR_API";
