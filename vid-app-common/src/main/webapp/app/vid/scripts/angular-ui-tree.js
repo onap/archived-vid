@@ -982,21 +982,21 @@
                     placeElm.css('display', '');
                   }
 
-                  if (targetNode.$type == 'uiTree' && targetNode.dragEnabled) {
+                  if (targetNode.$type === 'uiTree' && targetNode.dragEnabled) {
                     isEmpty = targetNode.isEmpty(); // Check if it's empty tree
                   }
 
-                  if (targetNode.$type == 'uiTreeHandle') {
+                  if (targetNode.$type === 'uiTreeHandle') {
                     targetNode = targetNode.$nodeScope;
                   }
 
-                  if (targetNode.$type != 'uiTreeNode'
+                  if (targetNode.$type !== 'uiTreeNode'
                     && !isEmpty) { // Check if it is a uiTreeNode or it's an empty tree
                     return;
                   }
 
                   // if placeholder move from empty tree, reset it.
-                  if (treeScope && placeElm.parent()[0] != treeScope.$element[0]) {
+                  if (treeScope && placeElm.parent()[0] !== treeScope.$element[0]) {
                     treeScope.resetEmptyElement();
                     treeScope = null;
                   }
@@ -1182,7 +1182,7 @@
             };
 
             keydownHandler = function (e) {
-              if (e.keyCode == 27) {
+              if (e.keyCode === 27) {
                 scope.$$allowNodeDrop = false;
                 dragEnd(e);
               }
@@ -1400,8 +1400,8 @@
               },
 
               isDirty: function () {
-                return this.source.$parentNodesScope != this.parent ||
-                  this.source.index() != this.index;
+                return this.source.$parentNodesScope !== this.parent ||
+                  this.source.index() !== this.index;
               },
 
               isForeign: function () {
