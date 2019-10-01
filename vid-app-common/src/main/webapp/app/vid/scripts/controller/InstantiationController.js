@@ -35,7 +35,7 @@
         $scope.properties = UtilityService.getProperties();
         $scope.resumeStatus = COMPONENT.RESUME_STATUS;
         //isPermitted - returned as string from url and converted into boolean
-        $scope.isPermitted = $location.search().isPermitted == "true";
+        $scope.isPermitted = $location.search().isPermitted === "true";
         $scope.STATUS_CONSTANTS = FIELD.STATUS;
         $scope.pnfs = [];// PNF data init;
         $scope.collectionResource = {};
