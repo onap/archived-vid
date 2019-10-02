@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed530d66_77a4f547",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/OutgoingRequestHeadersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-02T13:51:41Z",
+      "side": 1,
+      "message": "Can you verify value is not repeated across two transactions?",
+      "revId": "ea46d04a9bc5569bd29b83bdeb58f52a88d876c3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
