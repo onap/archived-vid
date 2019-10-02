@@ -42,18 +42,6 @@ public interface RestInterface {
     <T> RestObjectWithRequestInfo<T> Get(T t, String path, RestObject<T> restObject, boolean warpException);
 
     /**
-     * Delete.
-     *
-     * @param <T> the generic type
-     * @param t the t
-     * @param r the r
-     * @param path the path
-     * @param restObject the rest object
-     * @throws Exception the exception
-     */
-    <T> void Delete(T t, Object r, String path, RestObject<T> restObject);
-
-    /**
      * Post.
      *
      * @param t the t

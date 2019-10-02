@@ -38,6 +38,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpException;
 import org.eclipse.jetty.util.security.Password;
+import org.glassfish.jersey.client.ClientProperties;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.util.HttpClientMode;
@@ -211,64 +212,6 @@ public class RestMsoImplementation implements RestInterface {
         return restObject;
     }
 
-    @Override
-    public <T> void Delete(T t, Object r, String path, RestObject<T> restObject) {
-
-        String methodName = "Delete";
-        String url="";
-        Response cres;
-
-        logger.debug(EELFLoggerDelegate.debugLogger,"<== " +  methodName + START_LOG);
-
-        try {
-            MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
-
-            url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
-            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url, r);
-            cres = client.target(url)
-                    .request()
-
-                    .accept(APPLICATION_JSON)
-                    .headers(commonHeaders)
-                    //.entity(r)
-                    .build("DELETE", Entity.entity(r, MediaType.APPLICATION_JSON))
-                    .invoke();
-            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
-            int status = cres.getStatus();
-            restObject.setStatusCode (status);
-
-            if (status == 404) { // resource not found
-                String msg = "Resource does not exist...: " + cres.getStatus();
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + msg);
-            } else if (status == 200  || status == 204){
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + "Resource " + url + " deleted");
-            } else if (status == 202) {
-                String      msg = "Delete in progress: " + status;
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + msg);
-            }
-            else {
-                String msg = "Deleting Resource failed: " + status;
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + msg);
-            }
-
-            try {
-                t = (T) cres.readEntity(t.getClass());
-                restObject.set(t);
-            }
-            catch ( Exception e ) {
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + NO_RESPONSE_ENTITY_LOG
-                        + e.getMessage());
-                throw e;
-            }
-
-        }
-        catch (Exception e)
-        {
-            logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + WITH_URL_LOG +url+ EXCEPTION_LOG + e.toString());
-            throw e;
-        }
-    }
-
     public <T> RestObject<T> PostForObject(Object requestDetails, String path, Class<T> clazz) {
         logger.debug(EELFLoggerDelegate.debugLogger, REST_MSG_TEMPLATE, getMethodCallerName(), getMethodName(), requestDetails, path, clazz);
         return restCall(HttpMethod.POST, clazz, requestDetails, path);
@@ -320,7 +263,9 @@ public class RestMsoImplementation implements RestInterface {
             final Invocation.Builder restBuilder = client.target(url)
                     .request()
                     .accept(APPLICATION_JSON)
-                    .headers(commonHeaders);
+                    .headers(commonHeaders)
+                    .property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
+                ;
 
             Invocation restInvocation = payload==null ?
                     restBuilder.build(httpMethod.name()) :

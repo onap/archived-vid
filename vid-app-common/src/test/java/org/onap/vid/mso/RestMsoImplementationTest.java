@@ -37,6 +37,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.JerseyInvocation;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -171,79 +172,6 @@ public class RestMsoImplementationTest  {
         assertThat(response.getRaw()).isEqualTo(rawData);
     }
 
-    @Test()
-    public void shouldProperlyDeleteRestObjectWithStatusHttpAccepted() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-
-        prepareMocks(rawData,HttpStatus.ACCEPTED.value(),"DELETE");
-
-        //  when
-        restMsoImplementation.Delete(httpRequest, "testObject", path, restObject);
-
-        //  then
-        assertThat(restObject.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED.value());
-    }
-
-    @Test()
-    public void shouldProperlyDeleteRestObjectWithStatusOK() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-
-        prepareMocks(rawData,HttpStatus.OK.value(),"DELETE");
-
-        //  when
-        restMsoImplementation.Delete(httpRequest, "testObject", path, restObject);
-
-        //  then
-        assertThat(restObject.getStatusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @Test()
-    public void shouldProperlyReturnFromDeleteWithStatusBadRequest() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-
-        prepareMocks(rawData,HttpStatus.BAD_REQUEST.value(),"DELETE");
-
-        //  when
-        restMsoImplementation.Delete(httpRequest, "testObject", path, restObject);
-
-        //  then
-        assertThat(restObject.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-    }
-
-    @Test()
-    public void shouldProperlyReturnFromDeleteWithStatusOtherThenAbove() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-        prepareMocks(rawData,HttpStatus.NOT_EXTENDED.value(),"DELETE");
-
-        //  when
-        restMsoImplementation.Delete(httpRequest, "testObject", path, restObject);
-
-        //  then
-        assertThat(restObject.getStatusCode()).isEqualTo(HttpStatus.NOT_EXTENDED.value());
-    }
-
-    @Test( expectedExceptions = MsoTestException.class)
-    public void shouldThrowExceptionWhenCallsDeleteWithWrongParameters() {
-        //  given
-        when(mockClient.target(any(String.class))).thenThrow(new MsoTestException("testDeleteException"));
-
-        //  when
-        restMsoImplementation.Delete(httpRequest, "testObject", "", null);
-    }
-
-    @Test( expectedExceptions = NullPointerException.class)
-    public void shouldThrowExceptionWhenCallsDeleteWithWrongObjectType() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-        prepareMocks(rawData,HttpStatus.ACCEPTED.value(),"DELETE");
-
-        //  when
-        restMsoImplementation.Delete(null, "testObject", path, restObject);
-    }
 
     @Test
     public void shouldProperlyPostForObject() {
@@ -411,6 +339,7 @@ public class RestMsoImplementationTest  {
 
         when(builder.accept(any(String.class))).thenReturn(builder);
         when(builder.headers(any(MultivaluedMap.class))).thenReturn(builder);
+        when(builder.property(eq(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION), eq(true))).thenReturn(builder);
         when(builder.get()).thenReturn(response);
 
         when(builder.build( eq(httpMethod), any(Entity.class))).thenReturn(jerseyInvocation);
