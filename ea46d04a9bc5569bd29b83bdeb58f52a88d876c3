@@ -34,6 +34,24 @@
       "revId": "ea46d04a9bc5569bd29b83bdeb58f52a88d876c3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b0dd1eb_a2c51d0b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/OutgoingRequestHeadersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-02T18:49:22Z",
+      "side": 1,
+      "message": "you\u0027re right, but the way request-id header\u0027s value is yielded is:\n1. thoroughly tested\n2. not required to differ from one call to another. it is only dependant on the\"promised\" value.",
+      "parentUuid": "3a4d61f6_db353063",
+      "revId": "ea46d04a9bc5569bd29b83bdeb58f52a88d876c3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
