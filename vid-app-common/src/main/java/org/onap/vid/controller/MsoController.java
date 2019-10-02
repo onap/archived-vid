@@ -38,7 +38,6 @@ import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapper2;
 import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.RestObject;
-import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
@@ -90,7 +89,7 @@ public class MsoController extends RestrictedBaseController {
     private final CloudOwnerService cloudOwnerService;
 
     @Autowired
-    public MsoController(MsoBusinessLogic msoBusinessLogic, MsoRestClientNew msoClientInterface, CloudOwnerService cloudOwnerService) {
+    public MsoController(MsoBusinessLogic msoBusinessLogic, RestMsoImplementation msoClientInterface, CloudOwnerService cloudOwnerService) {
         this.msoBusinessLogic = msoBusinessLogic;
         this.restMso = msoClientInterface;
         this.cloudOwnerService = cloudOwnerService;

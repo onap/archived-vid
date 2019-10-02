@@ -99,7 +99,7 @@ public class MsoRestClientTest {
         initMocks(this);
         when(systemProperties.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1ghz1kfx1j1w1m7w1i271e8q1eas1hzj1m4i1iyy1kch1gdz");
         when(systemProperties.getProperty("app_display_name")).thenReturn("vid");
-        restClient = new MsoRestClientNew(client,baseUrl,null,systemProperties,loggingService);
+        restClient = new MsoRestClientNew(client, baseUrl, systemProperties);
     }
 
     @Test

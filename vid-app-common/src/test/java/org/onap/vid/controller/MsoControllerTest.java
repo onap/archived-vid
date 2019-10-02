@@ -50,8 +50,8 @@ import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapper2;
+import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.RestObject;
-import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.mso.rest.Request;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
@@ -73,13 +73,13 @@ public class MsoControllerTest {
     private MockMvc mockMvc;
     private MsoBusinessLogic msoBusinessLogic;
     private CloudOwnerService cloudService;
-    private MsoRestClientNew msoRestClient;
+    private RestMsoImplementation msoRestClient;
 
     @Before
     public void setUp() {
         msoBusinessLogic = mock(MsoBusinessLogic.class);
         cloudService = mock(CloudOwnerService.class);
-        msoRestClient = mock(MsoRestClientNew.class);
+        msoRestClient = mock(RestMsoImplementation.class);
         MsoController msoController = new MsoController(msoBusinessLogic, msoRestClient, cloudService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(msoController).build();

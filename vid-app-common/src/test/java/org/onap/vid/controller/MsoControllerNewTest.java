@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoInterface;
-import org.onap.vid.mso.rest.MsoRestClientNew;
+import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.mso.rest.RequestDetailsWrapper;
 import org.onap.vid.services.CloudOwnerServiceImpl;
@@ -36,7 +36,7 @@ public class MsoControllerNewTest {
 
     private MsoController createTestSubject() {
         try {
-            return new MsoController(new MsoBusinessLogicImpl(mock(MsoInterface.class)), mock(MsoRestClientNew.class),
+            return new MsoController(new MsoBusinessLogicImpl(mock(MsoInterface.class)), mock(RestMsoImplementation.class),
                 new CloudOwnerServiceImpl(null, null));
         } catch (Exception e) {
             return null;
