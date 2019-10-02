@@ -4,6 +4,7 @@ package org.onap.vid.logging
 
 import org.onap.portalsdk.core.util.SystemProperties
 import org.onap.vid.logging.RequestIdHeader.*
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 interface Header {
@@ -18,6 +19,11 @@ abstract class NamedHeader(override val headerName: String) : Header {
 @JvmField
 val PARTNER_NAME = object : NamedHeader("X-ONAP-PartnerName") {
     override fun getHeaderValue() = "VID.VID"
+}
+
+@JvmField
+val INVOCATION_ID = object : NamedHeader("X-InvocationID") {
+    override fun getHeaderValue() = UUID.randomUUID().toString()
 }
 
 enum class RequestIdHeader(override val headerName: String) : Header {

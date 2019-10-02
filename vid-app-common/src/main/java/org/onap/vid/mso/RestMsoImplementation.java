@@ -20,6 +20,7 @@
 
 package org.onap.vid.mso;
 
+import static org.onap.vid.logging.Headers.INVOCATION_ID;
 import static org.onap.vid.logging.Headers.PARTNER_NAME;
 import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
@@ -115,7 +116,7 @@ public class RestMsoImplementation implements RestInterface {
         String requestIdValue = Logging.extractOrGenerateRequestId();
         commonHeaders.put(REQUEST_ID_HEADER_KEY, Collections.singletonList(requestIdValue));
         commonHeaders.put(ONAP_REQUEST_ID_HEADER_KEY, Collections.singletonList(requestIdValue));
-
+        commonHeaders.put(INVOCATION_ID.getHeaderName(), Collections.singletonList(INVOCATION_ID.getHeaderValue()));
 
         boolean useSsl = true;
         if ( (mso_url != null) && ( !(mso_url.isEmpty()) ) ) {
