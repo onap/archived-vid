@@ -16,6 +16,24 @@
       "revId": "ea46d04a9bc5569bd29b83bdeb58f52a88d876c3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a4d61f6_db353063",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/OutgoingRequestHeadersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-02T17:52:06Z",
+      "side": 1,
+      "message": "i can add such a test.\nthe same case for request id.\nthere is no test that validate it is not repeated across 2 transactions",
+      "parentUuid": "ed530d66_77a4f547",
+      "revId": "ea46d04a9bc5569bd29b83bdeb58f52a88d876c3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
