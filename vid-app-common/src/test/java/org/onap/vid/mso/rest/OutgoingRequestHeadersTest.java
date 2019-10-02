@@ -143,7 +143,7 @@ public class OutgoingRequestHeadersTest {
         Invocation.Builder fakeBuilder = mocks.getFakeBuilder();
         Object requestIdValue = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
         assertEquals(requestIdValue, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
-
+        assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
         assertThat((String) captureHeaderKeyAndReturnItsValue(fakeBuilder, "Authorization"), startsWith("Basic "));
         verifyXOnapPartnerNameHeaderWasAdded(fakeBuilder);
     }
@@ -192,12 +192,15 @@ public class OutgoingRequestHeadersTest {
 
     private Object verifyXEcompRequestIdHeaderWasAdded(Invocation.Builder fakeBuilder) {
         final String requestIdHeader = "x-ecomp-requestid";
-        final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
-        Object requestId = captureHeaderKeyAndReturnItsValue(fakeBuilder, requestIdHeader);
+        return assertRequestHeaderIsUUID(fakeBuilder, requestIdHeader);
+    }
 
-        assertThat("header '" + requestIdHeader + "' should be a uuid", requestId,
+    private Object assertRequestHeaderIsUUID(Invocation.Builder fakeBuilder, String headerName) {
+        Object headerValue = captureHeaderKeyAndReturnItsValue(fakeBuilder, headerName);
+        final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+        assertThat("header '" + headerName + "' should be a uuid", headerValue,
                 allOf(instanceOf(String.class), hasToString(matchesPattern(uuidRegex))));
-        return requestId;
+        return headerValue;
     }
 
     private void verifyXOnapPartnerNameHeaderWasAdded(Invocation.Builder fakeBuilder) {
