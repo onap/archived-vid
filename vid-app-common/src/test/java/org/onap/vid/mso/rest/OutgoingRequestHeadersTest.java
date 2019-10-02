@@ -20,16 +20,21 @@
 
 package org.onap.vid.mso.rest;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.matchesPattern;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -48,12 +53,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.util.AAIRestInterface;
+import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
+import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.controller.filter.PromiseRequestIdFilter;
+import org.onap.vid.logging.Headers;
+import org.onap.vid.mso.MsoProperties;
+import org.onap.vid.mso.RestMsoImplementation;
+import org.onap.vid.mso.RestObject;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.onap.vid.utils.Unchecked;
+import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -67,11 +80,17 @@ public class OutgoingRequestHeadersTest {
 
     private static final PromiseRequestIdFilter promiseRequestIdFilter = new PromiseRequestIdFilter();
 
-//    @InjectMocks
-//    private RestMsoImplementation restMsoImplementation;
+    @InjectMocks
+    private RestMsoImplementation restMsoImplementation;
 
     @Mock
     private SystemPropertyHelper systemPropertyHelper;
+
+    @Mock
+    private SystemPropertiesWrapper  systemPropertiesWrapper;
+
+    @Mock
+    private HttpsAuthClient httpsAuthClient;
 
     @Mock
     private ServletRequestHelper servletRequestHelper;
@@ -89,6 +108,7 @@ public class OutgoingRequestHeadersTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         when(servletRequestHelper.extractOrGenerateRequestId()).thenAnswer(invocation -> UUID.randomUUID().toString());
+        when(systemPropertiesWrapper.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1vub1ua51uh81ugi1u9d1vuz");
     }
 
     @BeforeMethod
@@ -101,42 +121,41 @@ public class OutgoingRequestHeadersTest {
             (HttpServletRequest) promiseRequestIdFilter.wrapIfNeeded(new MockHttpServletRequest())));
     }
 
-//    @DataProvider
-//    public Object[][] msoMethods() {
-//        return Stream.<ThrowingConsumer<RestMsoImplementation>>of(
-//
-//                client -> client.Get(new Object(), "/any path", new RestObject<>(), false),
-//                client -> client.GetForObject("/any path", Object.class),
-//                client -> client.Post("", "some payload", "/any path", new RestObject<>()),
-//                client -> client.PostForObject("some payload", "/any path", Object.class),
-//                client -> client.Put(Object.class, new RequestDetailsWrapper(), "/any path", new RestObject<>())
-//
-//        ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
-//    }
-//
-//    @Test(dataProvider = "msoMethods")
-//    public void mso(Consumer<RestMsoImplementation> f) throws Exception {
-//        final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(restMsoImplementation);
-//
-//        f.accept(restMsoImplementation);
-//
-//        Invocation.Builder fakeBuilder = mocks.getFakeBuilder();
-//        Object requestIdValue = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
-//        assertEquals(requestIdValue, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
-//
-//        assertThat((String) captureHeaderKeyAndReturnItsValue(fakeBuilder, "Authorization"), startsWith("Basic "));
-//        assertThat(captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-PartnerName"), equalTo("VID"));
-//    }
-//
-//    @Test
-//    public void whenProvideMsoRestCallUserId_builderHasXRequestorIDHeader() throws Exception {
-//
-//        final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(restMsoImplementation);
-//        String randomUserName = randomAlphabetic(10);
-//
-//        restMsoImplementation.restCall(HttpMethod.DELETE, String.class, null, "abc", Optional.of(randomUserName));
-//        assertEquals(randomUserName, captureHeaderKeyAndReturnItsValue(mocks.getFakeBuilder(), "X-RequestorID"));
-//    }
+    @DataProvider
+    public Object[][] msoMethods() {
+        return Stream.<ThrowingConsumer<RestMsoImplementation>>of(
+
+                client -> client.Get(new Object(), "/any path", new RestObject<>(), false),
+                client -> client.GetForObject("/any path", Object.class),
+                client -> client.Post("", "some payload", "/any path", new RestObject<>()),
+                client -> client.PostForObject("some payload", "/any path", Object.class),
+                client -> client.Put(Object.class, new RequestDetailsWrapper(), "/any path", new RestObject<>())
+
+        ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
+    }
+
+    @Test(dataProvider = "msoMethods")
+    public void mso(Consumer<RestMsoImplementation> f) throws Exception {
+        final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(restMsoImplementation);
+
+        f.accept(restMsoImplementation);
+
+        Invocation.Builder fakeBuilder = mocks.getFakeBuilder();
+        Object requestIdValue = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
+        assertEquals(requestIdValue, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
+
+        assertThat((String) captureHeaderKeyAndReturnItsValue(fakeBuilder, "Authorization"), startsWith("Basic "));
+    }
+
+    @Test
+    public void whenProvideMsoRestCallUserId_builderHasXRequestorIDHeader() throws Exception {
+
+        final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(restMsoImplementation);
+        String randomUserName = randomAlphabetic(10);
+
+        restMsoImplementation.restCall(HttpMethod.DELETE, String.class, null, "abc", Optional.of(randomUserName));
+        assertEquals(randomUserName, captureHeaderKeyAndReturnItsValue(mocks.getFakeBuilder(), "X-RequestorID"));
+    }
 
     @DataProvider
     public Object[][] aaiMethods() {
@@ -187,22 +206,26 @@ public class OutgoingRequestHeadersTest {
         // The 'verify()' will capture the request id. If no match -- AssertionError will
         // catch for a second chance -- another 'verify()'.
         try {
-            ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
-            Mockito.verify(fakeBuilder)
+            try {
+                ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
+                Mockito.verify(fakeBuilder)
                     .header(
-                            Matchers.argThat(s -> equalsIgnoreCase(s, headerName)),
-                            argumentCaptor.capture()
+                        Matchers.argThat(s -> equalsIgnoreCase(s, headerName)),
+                        argumentCaptor.capture()
                     );
-            requestId = argumentCaptor.getValue();
+                requestId = argumentCaptor.getValue();
 
+            } catch (AssertionError e) {
+                Mockito.verify(fakeBuilder).headers(multivaluedMapArgumentCaptor.capture());
+
+                final MultivaluedMap<String, Object> headersMap = multivaluedMapArgumentCaptor.getValue();
+                final String thisRequestIdHeader = getFromSetCaseInsensitive(headersMap.keySet(), headerName);
+
+                assertThat(headersMap.keySet(), hasItem(thisRequestIdHeader));
+                requestId = headersMap.getFirst(thisRequestIdHeader);
+            }
         } catch (AssertionError e) {
-            Mockito.verify(fakeBuilder).headers(multivaluedMapArgumentCaptor.capture());
-
-            final MultivaluedMap<String, Object> headersMap = multivaluedMapArgumentCaptor.getValue();
-            final String thisRequestIdHeader = getFromSetCaseInsensitive(headersMap.keySet(), headerName);
-
-            assertThat(headersMap.keySet(), hasItem(thisRequestIdHeader));
-            requestId = headersMap.getFirst(thisRequestIdHeader);
+            throw new AssertionError("header not captured: " + headerName, e);
         }
         return requestId;
     }
