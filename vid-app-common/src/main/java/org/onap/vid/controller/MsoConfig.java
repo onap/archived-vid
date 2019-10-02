@@ -30,6 +30,7 @@ import org.onap.vid.mso.MsoBusinessLogic;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoInterface;
 import org.onap.vid.mso.MsoProperties;
+import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.rest.MsoRestClientNew;
 import org.onap.vid.services.CloudOwnerService;
 import org.onap.vid.services.CloudOwnerServiceImpl;
@@ -49,14 +50,23 @@ public class MsoConfig {
     }
 
     @Bean
-    public MsoRestClientNew msoClient(ObjectMapper unirestObjectMapper,
-        HttpsAuthClient httpsAuthClient,
+    public MsoRestClientNew msoRestClientNew(ObjectMapper unirestObjectMapper,
         SystemPropertiesWrapper systemPropertiesWrapper,
         Logging loggingService){
         // Satisfy both interfaces -- MsoInterface and RestMsoImplementation
         return new MsoRestClientNew(
             new SyncRestClient(unirestObjectMapper, loggingService),
             SystemProperties.getProperty(MsoProperties.MSO_SERVER_URL),
+            systemPropertiesWrapper
+        );
+    }
+
+    @Bean
+    public RestMsoImplementation restMsoImplementation(HttpsAuthClient httpsAuthClient,
+        SystemPropertiesWrapper systemPropertiesWrapper,
+        Logging loggingService){
+        // Satisfy both interfaces -- MsoInterface and RestMsoImplementation
+        return new RestMsoImplementation(
             httpsAuthClient,
             systemPropertiesWrapper,
             loggingService

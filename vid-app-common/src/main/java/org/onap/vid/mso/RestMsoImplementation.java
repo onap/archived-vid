@@ -88,7 +88,7 @@ public class RestMsoImplementation implements RestInterface {
      */
 
     @Autowired
-    protected RestMsoImplementation(HttpsAuthClient httpsAuthClient, SystemPropertiesWrapper systemProperties, Logging loggingService){
+    public RestMsoImplementation(HttpsAuthClient httpsAuthClient, SystemPropertiesWrapper systemProperties, Logging loggingService){
         this.httpsAuthClient=httpsAuthClient;
         this.systemProperties = systemProperties;
         this.loggingService = loggingService;

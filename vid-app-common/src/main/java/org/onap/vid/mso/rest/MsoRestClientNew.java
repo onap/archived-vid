@@ -39,7 +39,6 @@ import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.HttpResponseWithRequestInfo;
-import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
@@ -51,7 +50,6 @@ import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
-import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
@@ -61,7 +59,7 @@ import org.springframework.http.HttpMethod;
 /**
  * Created by pickjonathan on 21/06/2017.
  */
-public class MsoRestClientNew extends RestMsoImplementation implements MsoInterface {
+public class MsoRestClientNew implements MsoInterface {
 
     /**
      * The Constant dateFormat.
@@ -71,16 +69,18 @@ public class MsoRestClientNew extends RestMsoImplementation implements MsoInterf
     private static final String START = " start";
     private final SyncRestClient client;
     private final String baseUrl;
+    private final SystemPropertiesWrapper systemProperties;
     private final Map<String, String> commonHeaders;
+
     /**
      * The logger.
      */
     EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MsoRestClientNew.class);
 
-    public MsoRestClientNew(SyncRestClient client, String baseUrl, HttpsAuthClient authClient, SystemPropertiesWrapper systemPropertiesWrapper, Logging loggingService) {
-        super(authClient,systemPropertiesWrapper, loggingService);
+    public MsoRestClientNew(SyncRestClient client, String baseUrl, SystemPropertiesWrapper systemPropertiesWrapper) {
         this.client = client;
         this.baseUrl = baseUrl;
+        this.systemProperties = systemPropertiesWrapper;
         this.commonHeaders = initCommonHeaders();
     }
 

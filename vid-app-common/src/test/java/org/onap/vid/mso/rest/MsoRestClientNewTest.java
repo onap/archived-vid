@@ -410,7 +410,7 @@ public class MsoRestClientNewTest {
         String sourceId = "";
         String endpoint = "";
         final SyncRestClient client = mock(SyncRestClient.class);
-        MsoRestClientNew testSubject = new MsoRestClientNew(client, "", null, new SystemPropertiesWrapper(), mock(Logging.class));
+        MsoRestClientNew testSubject = new MsoRestClientNew(client, "", new SystemPropertiesWrapper());
 
         // setup
         final HttpResponse<String> response = mock(HttpResponse.class);
@@ -474,10 +474,10 @@ public class MsoRestClientNewTest {
 
     private MsoRestClientNew msoRestClient() {
         return new MsoRestClientNew(new SyncRestClient(JOSHWORKS_JACKSON_OBJECT_MAPPER, mock(Logging.class)),
-            baseUrl(), null, new SystemPropertiesWrapper(), mock(Logging.class));
+            baseUrl(), new SystemPropertiesWrapper());
     }
 
     private MsoRestClientNew createTestSubject() {
-        return new MsoRestClientNew(null, "", null, new SystemPropertiesWrapper(), mock(Logging.class));
+        return new MsoRestClientNew(null, "", new SystemPropertiesWrapper());
     }
 }
