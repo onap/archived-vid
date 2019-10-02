@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "339d97e5_5124923c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-02T10:35:29Z",
+      "side": 1,
+      "message": "Please add a few words about the flag in the file `features.properties.md`.\nSpecifically, I suggest mentioning also the fact that contract with AAI is not available (yet).",
+      "revId": "c0f41858992090eff2e4ccb06d5e3332d8c008e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c77c6a01_de6e4831",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/constants/componentConstants.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-02T10:35:29Z",
+      "side": 1,
+      "message": "Please keep with the trailing commas. (it is better for change history.)",
+      "revId": "c0f41858992090eff2e4ccb06d5e3332d8c008e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cb6a3e7_5b73306e",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-02T10:35:29Z",
+      "side": 1,
+      "message": "Thanks for correctly using the @FeaturesToggling annotation. :)",
+      "revId": "c0f41858992090eff2e4ccb06d5e3332d8c008e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98ed559a_b9452635",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-02T10:35:29Z",
+      "side": 1,
+      "message": "I suggest considering here TestNG\u0027s \"@DataProvider\". It will let a single implementation, where inputs are \"a la carte\"+3 OR \"macro\"+4.",
+      "revId": "c0f41858992090eff2e4ccb06d5e3332d8c008e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "152e95d0_ab913538",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-02T10:35:29Z",
+      "side": 1,
+      "message": "It will make the test more robust if we will assert on the actual values, manybe the model names or IDs.\nIt will make sure that we are actually \"seeing\" the macro models. (I imagine a possible defect that the filtering works, but displays the models that precedes the 4 macro models, instead of the correct ones.)",
+      "revId": "c0f41858992090eff2e4ccb06d5e3332d8c008e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
