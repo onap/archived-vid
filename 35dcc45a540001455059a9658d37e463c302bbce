@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "53e6eddc_329ae446",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-03T06:29:54Z",
+      "side": 1,
+      "message": "maybe setPositionWhereIsMissing ?",
+      "revId": "35dcc45a540001455059a9658d37e463c302bbce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acf3dabe_ea27c054",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/ResourceCommandTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-03T06:29:54Z",
+      "side": 1,
+      "message": "it\u0027s just another case of previous method\n{1,2,2, ImmutableList.of(1,2,2)}",
+      "revId": "35dcc45a540001455059a9658d37e463c302bbce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f674ee43_a1facfe0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/JobsBrokerServiceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-03T06:29:54Z",
+      "side": 1,
+      "message": "I don\u0027t understand what do you test here ?\nHow do you verify that firstPulledJob  and secondPulledJob are different ?",
+      "revId": "35dcc45a540001455059a9658d37e463c302bbce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
