@@ -427,14 +427,17 @@ abstract class ResourceCommand(
     protected fun pushChildrenJobsToBroker(children:Collection<BaseResource>,
                                            dataForChild: Map<String, Any>,
                                            jobType: JobType?=null): List<String> {
-        var counter = 0;
-        return  children
-                .map {Pair(it, counter++)}
+        return  setPositionWhereIsMissing(children)
                 .map { jobAdapter.createChildJob(jobType ?: it.first.jobType, it.first, sharedData, dataForChild, it.second) }
                 .map { jobsBrokerService.add(it) }
                 .map { it.toString() }
     }
 
+    protected fun setPositionWhereIsMissing(children: Collection<BaseResource>): List<Pair<BaseResource, Int>> {
+        var orderingPosition = children.map{ defaultIfNull(it.position, 0) }.max() ?: 0
+        return  children
+                .map {Pair(it, it.position ?: ++orderingPosition)}
+    }
 }
 
 
