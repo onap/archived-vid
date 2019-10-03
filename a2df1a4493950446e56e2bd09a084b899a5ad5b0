@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "924b5526_eabb4b37",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/OutgoingRequestHeadersTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-10-03T11:07:21Z",
+      "side": 1,
+      "message": "reset shall be part of setMocksForMsoRestClientNew",
+      "revId": "a2df1a4493950446e56e2bd09a084b899a5ad5b0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
