@@ -173,3 +173,7 @@
 * FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE
   Let the user set the order of resource instantiation while using drawing board (new view edit)
   for a-la-carte instantiation.
+
+* FLAG_SHOW_ORCHESTRATION_TYPE
+  enables showing/hiding (true/false) column with orchestration type in Service Model browser.
+  The types are fetched from aai.

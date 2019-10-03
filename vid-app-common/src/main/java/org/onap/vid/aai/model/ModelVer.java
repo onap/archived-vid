@@ -32,6 +32,7 @@ public class ModelVer {
     private String distributionStatus;
     private String resourceVersion;
     private String modelDescription;
+    private String orchestrationType;
 
 
 
@@ -89,4 +90,12 @@ public class ModelVer {
         this.modelDescription = modelDescription;
     }
 
+    public String getOrchestrationType() {
+        return orchestrationType;
+    }
+
+    @JsonAlias("orchestration-type")
+    public void setOrchestrationType(String orchestrationType) {
+        this.orchestrationType = orchestrationType;
+    }
 }

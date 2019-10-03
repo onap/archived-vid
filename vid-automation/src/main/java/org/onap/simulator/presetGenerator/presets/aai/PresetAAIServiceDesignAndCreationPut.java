@@ -208,6 +208,7 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
                 "                {" +
                 "                  \"model-version-id\": \"0903e1c0-8e03-4936-b5c2-260653b96413\"," +
                 "                  \"model-name\": \"action-data\"," +
+                "                  \"orchestration-type\": \"a la carte\"," +
                 "                  \"model-version\": \"1.0\"," +
                 "                  \"model-description\": \"honor immunity exile prong below misshapen\"," +
                 "                  \"resource-version\": \"4076846985447\"" +
@@ -226,6 +227,7 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
                 "                {" +
                 "                  \"model-version-id\": \"666a06ee-4b57-46df-bacf-908da8f10c3f\"," +
                 "                  \"model-name\": \"multicast-configuration\"," +
+                "                  \"orchestration-type\": \"a la carte\"," +
                 "                  \"model-version\": \"1.0\"," +
                 "                  \"model-description\": \"python bullwhip appointment computation ambidextrous heaving\"," +
                 "                  \"resource-version\": \"1500136282691\"" +
@@ -244,6 +246,7 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
                 "                {" +
                 "                  \"model-version-id\": \"20c4431c-246d-11e7-93ae-92361f002671\"," +
                 "                  \"model-name\": \"vSAMP10aDEV::base::module-0\"," +
+                "                  \"orchestration-type\": \"a la carte\"," +
                 "                  \"model-version\": \"2\"," +
                 "                  \"model-description\": \"MSO aLaCarte VF vSAMP10aDEV Base\"," +
                 "                  \"resource-version\": \"1492627634300\"" +
@@ -262,6 +265,7 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
                 "                {" +
                 "                  \"model-version-id\": \"797a6c41-0f80-4d35-a288-3920c4e06baa\"," +
                 "                  \"model-name\": \"CONTRAIL30_L2NODHCP\"," +
+                "                  \"orchestration-type\": \"macro\"," +
                 "                  \"model-version\": \"1.0\"," +
                 "                  \"model-description\": \"contrail 3.0.x L2 network for AIC 3.x sites (and No DHCP).\"," +
                 "                  \"resource-version\": \"1492814035003\"," +
@@ -307,6 +311,7 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
                 "                {" +
                 "                  \"model-version-id\": \"f1bde010-cc5f-4765-941f-75f15b24f9fc\"," +
                 "                  \"model-name\": \"BkVmxAv061917..base_vPE_AV..module-0\"," +
+                "                  \"orchestration-type\": \"macro\"," +
                 "                  \"model-version\": \"2\"," +
                 "                  \"resource-version\": \"1497897268769\"," +
                 "                  \"relationship-list\": {" +
@@ -351,6 +356,7 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
                 "                {" +
                 "                  \"model-version-id\": \"ipe-resource-id-ps-02\"," +
                 "                  \"model-name\": \"abc\"," +
+                "                  \"orchestration-type\": \"macro\"," +
                 "                  \"model-version\": \"v1.0\"," +
                 "                  \"resource-version\": \"1493389520357\"," +
                 "                  \"relationship-list\": {" +
@@ -395,6 +401,7 @@ public class PresetAAIServiceDesignAndCreationPut extends BaseAAIPreset {
                 "                {" +
                 "                  \"model-version-id\": \"lmoser410-connector-model-version-id\"," +
                 "                  \"model-name\": \"connector\"," +
+                "                  \"orchestration-type\": \"macro\"," +
                 "                  \"model-version\": \"v1.0\"," +
                 "                  \"resource-version\": \"1493389444766\"" +
                 "                }" +

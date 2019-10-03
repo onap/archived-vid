@@ -37,7 +37,7 @@ public class BrowseASDCPage extends VidBasePage {
     }
 
     public int countCurrentRowsInTable(){
-        List<WebElement> rowsInTable = Get.byClass("alt-row");
+        List<WebElement> rowsInTable = Get.byClass("sdcServiceModel");
        return rowsInTable.size();
     }
 

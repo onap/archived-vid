@@ -89,6 +89,10 @@
 			});
 		};
 
+		$scope.isShowOrchestrationType = function() {
+			return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_SHOW_ORCHESTRATION_TYPE);
+		};
+
 		var wholeData=[];
 
 		$scope.filterDataWithHigherVersion = function(serviceData){
