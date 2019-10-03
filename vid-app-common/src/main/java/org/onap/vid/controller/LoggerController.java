@@ -20,6 +20,8 @@
 
 package org.onap.vid.controller;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -63,7 +65,7 @@ public class LoggerController extends RestrictedBaseController {
         this.logfilePathCreator = logfilePathCreator;
     }
 
-    @GetMapping(value = "/{loggerName:audit|error|metrics}")
+    @GetMapping(value = "/{loggerName:audit|audit2019|error|metrics}")
     public String getLog(@PathVariable String loggerName, HttpServletRequest request,
                          @RequestParam(value="limit", defaultValue = "5000") Integer limit) throws IOException {
 
@@ -74,7 +76,7 @@ public class LoggerController extends RestrictedBaseController {
         }
 
         String logfilePath = logfilePathCreator.getLogfilePath(loggerName);
-        try (final ReversedLinesFileReader reader = new ReversedLinesFileReader(new File(logfilePath))) {
+        try (final ReversedLinesFileReader reader = new ReversedLinesFileReader(new File(logfilePath), UTF_8)) {
             Supplier<String> reverseLinesSupplier = () -> {
                 try {
                     return reader.readLine();
