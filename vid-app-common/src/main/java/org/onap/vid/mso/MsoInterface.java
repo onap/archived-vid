@@ -21,13 +21,12 @@
 package org.onap.vid.mso;
 
 import io.joshworks.restclient.http.HttpResponse;
+import java.util.Map;
 import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
+import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.mso.rest.RequestDetails;
-
-import java.util.Map;
 
 /**
  * Created by pickjonathan on 21/06/2017.
@@ -124,6 +123,5 @@ public interface MsoInterface {
 
     <T> HttpResponse<T> post(String path, RequestDetailsWrapper<?> requestDetailsWrapper, Class<T> responseClass);
 
-    <T> HttpResponse<T> post(String path, RequestDetails requestDetails, Class<T> responseClass);
 }
 
