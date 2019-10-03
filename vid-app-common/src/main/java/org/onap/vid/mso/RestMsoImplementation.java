@@ -38,16 +38,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HttpException;
 import org.eclipse.jetty.util.security.Password;
 import org.glassfish.jersey.client.ClientProperties;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.util.HttpClientMode;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.client.HttpBasicClient;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.mso.rest.RestInterface;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +52,7 @@ import org.springframework.http.HttpMethod;
 /**
  * Created by pickjonathan on 26/06/2017.
  */
-public class RestMsoImplementation implements RestInterface {
+public class RestMsoImplementation {
 
     
     /**
@@ -139,52 +135,6 @@ public class RestMsoImplementation implements RestInterface {
         return commonHeaders;
     }
 
-    public <T> RestObjectWithRequestInfo<T> Get(T t, String path, RestObject<T> restObject, boolean warpException) {
-        String methodName = "Get";
-
-        logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_LOG);
-
-        String url = null;
-        String rawData = null;
-        Integer status = null;
-
-        try {
-            restObject.set(t);
-            url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
-
-            MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
-            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
-                final Response cres = client.target(url)
-                    .request()
-                    .accept(APPLICATION_JSON)
-                    .headers(commonHeaders)
-                    .get();
-            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.GET, url, cres);
-
-            cres.bufferEntity();
-            status = cres.getStatus();
-            rawData = cres.readEntity(String.class);
-
-            restObject.setStatusCode(status);
-
-            if (status == 200 || status == 202) {
-                t = (T) cres.readEntity(t.getClass());
-                restObject.set(t);
-                logger.debug(EELFLoggerDelegate.debugLogger, methodName + REST_API_SUCCESSFULL_LOG);
-
-            } else {
-                throw new GenericUncheckedException(new HttpException(methodName + WITH_STATUS + status + " (200 or 202 expected), url= " + url));
-            }
-
-            logger.debug(EELFLoggerDelegate.debugLogger, methodName + " received status=" + status);
-
-            return new RestObjectWithRequestInfo<>(HttpMethod.GET, url, restObject, status, rawData);
-        } catch (RuntimeException e) {
-            throw warpException ? new ExceptionWithRequestInfo(HttpMethod.GET, url, rawData, status, e) : e;
-        }
-    }
-
-    @Override
     public <T> RestObject<T> GetForObject(String path, Class<T> clazz) {
         final String methodName = getMethodName();
         logger.debug(EELFLoggerDelegate.debugLogger, "start {}->{}({}, {})", getMethodCallerName(), methodName, path, clazz);
@@ -217,17 +167,6 @@ public class RestMsoImplementation implements RestInterface {
     public <T> RestObject<T> PostForObject(Object requestDetails, String path, Class<T> clazz) {
         logger.debug(EELFLoggerDelegate.debugLogger, REST_MSG_TEMPLATE, getMethodCallerName(), getMethodName(), requestDetails, path, clazz);
         return restCall(HttpMethod.POST, clazz, requestDetails, path);
-    }
-
-    public <T> RestObject<T> DeleteForObject(Object requestDetails, String path, Class<T> clazz) {
-        logger.debug(EELFLoggerDelegate.debugLogger, REST_MSG_TEMPLATE, getMethodCallerName(), getMethodName(), requestDetails, path, clazz);
-        return restCall(HttpMethod.DELETE, clazz, requestDetails, path);
-    }
-
-    @Override
-    public void Post(String t, Object r, String path, RestObject<String> restObject) {
-        logger.debug(EELFLoggerDelegate.debugLogger, REST_MSG_TEMPLATE, getMethodCallerName(), getMethodName(), t.getClass(), r, path);
-        restObject.copyFrom(restCall(HttpMethod.POST, String.class, r, path));
     }
 
     public Invocation.Builder prepareClient(String path, String methodName) {
@@ -311,56 +250,4 @@ public class RestMsoImplementation implements RestInterface {
         return restObject;
     }
 
-    @Override
-    public <T> void Put(T t, org.onap.vid.changeManagement.RequestDetailsWrapper r, String path, RestObject<T> restObject) {
-
-        String methodName = "Put";
-        String url="";
-
-        logger.debug(EELFLoggerDelegate.debugLogger,"<== " +  methodName + START_LOG);
-
-        try {
-
-            MultivaluedHashMap<String, Object> commonHeaders = initMsoClient();
-
-            url = systemProperties.getProperty(MsoProperties.MSO_SERVER_URL) + path;
-            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.PUT, url, r);
-            // Change the content length
-            final Response cres = client.target(url)
-                    .request()
-                    .accept(APPLICATION_JSON)
-                    .headers(commonHeaders)
-                    //.header("content-length", 201)
-                    .put(Entity.entity(r, MediaType.APPLICATION_JSON));
-
-            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.PUT, url, cres);
-
-            try {
-                t = (T) cres.readEntity(t.getClass());
-                restObject.set(t);
-            }
-            catch ( Exception e ) {
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + NO_RESPONSE_ENTITY_LOG
-                        + e.getMessage());
-                throw e;
-            }
-
-            int status = cres.getStatus();
-            restObject.setStatusCode (status);
-
-            if ( status >= 200 && status <= 299 ) {
-                logger.info(EELFLoggerDelegate.errorLogger, "<== " + methodName + REST_API_SUCCESSFULL_LOG);
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + REST_API_SUCCESSFULL_LOG);
-
-            } else {
-                logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + WITH_STATUS +status+ URL_LOG +url);
-            }
-
-        } catch (Exception e)
-        {
-            logger.debug(EELFLoggerDelegate.debugLogger,"<== " + methodName + WITH_URL_LOG +url+ EXCEPTION_LOG + e.toString());
-            throw e;
-
-        }
-    }
 }
