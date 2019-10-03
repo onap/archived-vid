@@ -56,12 +56,10 @@ import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
-import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.controller.filter.PromiseRequestIdFilter;
 import org.onap.vid.logging.Headers;
 import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.RestMsoImplementation;
-import org.onap.vid.mso.RestObject;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
@@ -124,13 +122,8 @@ public class OutgoingRequestHeadersTest {
     @DataProvider
     public Object[][] msoMethods() {
         return Stream.<ThrowingConsumer<RestMsoImplementation>>of(
-
-                client -> client.Get(new Object(), "/any path", new RestObject<>(), false),
                 client -> client.GetForObject("/any path", Object.class),
-                client -> client.Post("", "some payload", "/any path", new RestObject<>()),
-                client -> client.PostForObject("some payload", "/any path", Object.class),
-                client -> client.Put(Object.class, new RequestDetailsWrapper(), "/any path", new RestObject<>())
-
+                client -> client.PostForObject("some payload", "/any path", Object.class)
         ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
     }
 

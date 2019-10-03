@@ -43,8 +43,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.onap.vid.aai.util.HttpClientMode;
 import org.onap.vid.aai.util.HttpsAuthClient;
-import org.onap.vid.changeManagement.RequestDetailsWrapper;
-import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.mso.rest.RequestDetails;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
@@ -105,46 +103,6 @@ public class RestMsoImplementationTest  {
         assertThat(result).doesNotContainKey("notExistingKey");
     }
 
-    @Test
-    public void shouldProperlyGetRestObjectWithRequestInfo() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-
-        prepareMocks(rawData, HttpStatus.ACCEPTED.value(),"");
-
-        //  when
-        RestObjectWithRequestInfo<HttpRequest> response = restMsoImplementation.Get(httpRequest, path, restObject,false);
-
-        //  then
-        assertThat(response.getRequestedUrl()).contains(path);
-        assertThat(response.getRawData()).isEqualTo(rawData);
-        assertThat(response.getHttpCode()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(response.getHttpMethod()).isEqualTo(HttpMethod.GET);
-    }
-
-    @Test( expectedExceptions = GenericUncheckedException.class)
-    public void shouldThrowExceptionWhenGetRestObjectWithRequestInfoGetsWrongStatus() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-
-        prepareMocks("",HttpStatus.BAD_REQUEST.value(),"");
-
-        //  when
-        restMsoImplementation.Get(httpRequest, "", restObject,false);
-    }
-
-    @Test( expectedExceptions = MsoTestException.class)
-    public void shouldThrowExceptionWhenGetRestObjectWithRequestInfoGetsWrongParameters() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-
-        prepareMocks("",HttpStatus.ACCEPTED.value(),"");
-        when(systemProperties.getProperty(MsoProperties.MSO_SERVER_URL)).thenReturn("SAMPLE_URL");
-        when(mockClient.target("SAMPLE_URL")).thenThrow(new MsoTestException("test-target-exception"));
-
-        //  when
-        restMsoImplementation.Get(httpRequest, "", restObject,false);
-    }
 
     @Test()
     public void shouldProperlyGetRestObjectForObjectWithRequestInfoAndAcceptCode() {
@@ -192,43 +150,6 @@ public class RestMsoImplementationTest  {
     }
 
     @Test
-    public void shouldProperlyDeleteForObject() {
-        //  given
-        RequestDetails requestDetails = new RequestDetails();
-
-        RestObject<HttpRequest> expectedResponse = new RestObject<>();
-        expectedResponse.setStatusCode(HttpStatus.ACCEPTED.value());
-        expectedResponse.setRaw(rawData);
-
-        prepareMocks(rawData,HttpStatus.ACCEPTED.value(),"DELETE");
-
-        //  when
-        RestObject<HttpRequest> response = restMsoImplementation.DeleteForObject(requestDetails, path, HttpRequest.class);
-
-        //  then
-        assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-    }
-
-    @Test
-    public void shouldProperlyPost() {
-        //  given
-        RequestDetails requestDetails = new RequestDetails();
-        RestObject<String> response = new RestObject<>();
-
-        RestObject<String> expectedResponse = new RestObject<>();
-        expectedResponse.setStatusCode(HttpStatus.ACCEPTED.value());
-        expectedResponse.setRaw(rawData);
-
-        prepareMocks(rawData,HttpStatus.ACCEPTED.value(),"POST");
-
-        //  when
-        restMsoImplementation.Post(rawData,requestDetails, path, response);
-
-        //  then
-        assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-    }
-
-    @Test
     public void shouldProperlyPrepareClient() {
         //  given
         String method = "POST";
@@ -266,70 +187,6 @@ public class RestMsoImplementationTest  {
         //  when
         restMsoImplementation.restCall(HttpMethod.GET, String.class, null, "", Optional.empty());
     }
-
-    @Test
-    public void shouldProperlyPutRestObjectWithProperParametersAndStatusAccepted() {
-        //  given
-        String method = "PUT";
-        prepareMocks(rawData,HttpStatus.ACCEPTED.value(),method);
-
-        org.onap.vid.changeManagement.RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
-        RestObject<String> response = new RestObject<>();
-
-        RestObject<String> expectedResponse = new RestObject<>();
-        expectedResponse.setStatusCode(HttpStatus.ACCEPTED.value());
-        expectedResponse.set(rawData);
-
-        //  when
-        restMsoImplementation.Put("testPutBody", requestDetailsWrapper , path, response);
-
-        //  then
-        assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-    }
-
-    @Test
-    public void shouldProperlyPutRestObjectWithProperParametersAndStatusMultipleChoices() {
-        //  given
-        String method = "PUT";
-        prepareMocks(rawData,HttpStatus.MULTIPLE_CHOICES.value(),method);
-
-        org.onap.vid.changeManagement.RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
-        RestObject<String> response = new RestObject<>();
-
-        RestObject<String> expectedResponse = new RestObject<>();
-        expectedResponse.setStatusCode(HttpStatus.MULTIPLE_CHOICES.value());
-        expectedResponse.set(rawData);
-
-        //  when
-        restMsoImplementation.Put("testPutBody", requestDetailsWrapper , path, response);
-
-        //  then
-        assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-    }
-
-    @Test( expectedExceptions = MsoTestException.class)
-    public void shouldThrowExceptionWhenCallsPutWithWrongParameters() {
-        //  given
-        when(mockClient.target(any(String.class))).thenThrow(new MsoTestException("testDeleteException"));
-        org.onap.vid.changeManagement.RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
-
-        //  when
-        restMsoImplementation.Put(null, requestDetailsWrapper, "", null);
-    }
-
-    @Test( expectedExceptions = NullPointerException.class)
-    public void shouldThrowExceptionWhenCallsPutWithWrongObjectType() {
-        //  given
-        RestObject<HttpRequest> restObject = new RestObject<>();
-        org.onap.vid.changeManagement.RequestDetailsWrapper requestDetailsWrapper = new RequestDetailsWrapper();
-
-        prepareMocks(rawData,HttpStatus.ACCEPTED.value(),"DELETE");
-
-        //  when
-        restMsoImplementation.Put(null, requestDetailsWrapper, path, restObject);
-    }
-
-
 
     private void prepareMocks(String rawData,int status,String httpMethod) {
 
