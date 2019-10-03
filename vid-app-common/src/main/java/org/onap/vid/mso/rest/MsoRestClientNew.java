@@ -43,6 +43,7 @@ import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.logging.Headers;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.mso.MsoInterface;
@@ -537,6 +538,7 @@ public class MsoRestClientNew implements MsoInterface {
         String requestIdValue = Logging.extractOrGenerateRequestId();
         map.put(SystemProperties.ECOMP_REQUEST_ID, requestIdValue);
         map.put(ONAP_REQUEST_ID_HEADER_KEY, requestIdValue);
+        map.put(Headers.INVOCATION_ID.getHeaderName(), Headers.INVOCATION_ID.getHeaderValue());
         return map;
     }
 
