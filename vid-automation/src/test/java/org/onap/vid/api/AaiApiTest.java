@@ -99,6 +99,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
             "  }, {\n" +
@@ -112,6 +113,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_ERROR\",\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
             "  }, {\n" +
@@ -124,6 +126,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lifecycleState\": null,\n" +
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
@@ -138,6 +141,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
             "  }, {\n" +
@@ -151,6 +155,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
             "  }, {\n" +
@@ -163,6 +168,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lifecycleState\": null,\n" +
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
@@ -176,6 +182,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lifecycleState\": null,\n" +
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
@@ -189,6 +196,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lifecycleState\": null,\n" +
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
@@ -202,6 +210,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lifecycleState\": null,\n" +
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
@@ -215,6 +224,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lifecycleState\": null,\n" +
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
@@ -228,6 +238,7 @@ public class AaiApiTest extends BaseApiAaiTest {
             "    \"lifecycleState\": null,\n" +
             "    \"lastUpdaterUserId\": null,\n" +
             "    \"lastUpdaterFullName\": null,\n" +
+            "    \"orchestrationType\": null,\n" +
             "    \"distributionStatus\": \"DISTRIBUTION_COMPLETE_OK\",\n" +
             "    \"artifacts\": null,\n" +
             "    \"resources\": null\n" +
