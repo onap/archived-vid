@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "29904363_887e301f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestMsoImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-03T06:49:02Z",
+      "side": 0,
+      "message": "no.\nAs you can see the code is compiled ...",
+      "parentUuid": "9081f02a_6b95c1aa",
+      "revId": "ab9cd4374e918187907e19a57585bc57b72f1bc7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8d4364e3_22c53702",
         "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-10-03T05:25:39Z",
       "side": 0,
       "message": "\"sad of those who leave and not left.\"",
+      "revId": "ab9cd4374e918187907e19a57585bc57b72f1bc7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a24af3ef_2c694006",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-03T06:49:02Z",
+      "side": 0,
+      "message": "\"Blessed who got rid of his punishment\"",
+      "parentUuid": "8d4364e3_22c53702",
       "revId": "ab9cd4374e918187907e19a57585bc57b72f1bc7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
