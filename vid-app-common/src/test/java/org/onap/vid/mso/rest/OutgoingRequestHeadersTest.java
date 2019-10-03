@@ -123,6 +123,7 @@ public class OutgoingRequestHeadersTest {
     public Object[][] msoMethods() {
         return Stream.<ThrowingConsumer<RestMsoImplementation>>of(
                 client -> client.GetForObject("/any path", Object.class),
+                client -> client.restCall(HttpMethod.DELETE, Object.class, "some payload", "/any path", Optional.of("userId")),
                 client -> client.PostForObject("some payload", "/any path", Object.class)
         ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
     }
