@@ -31,6 +31,7 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
@@ -143,9 +144,25 @@ public class OutgoingRequestHeadersTest {
         Invocation.Builder fakeBuilder = mocks.getFakeBuilder();
         Object requestIdValue = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
         assertEquals(requestIdValue, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
-        assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
+        Object invocationId1 = assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
         assertThat((String) captureHeaderKeyAndReturnItsValue(fakeBuilder, "Authorization"), startsWith("Basic "));
         verifyXOnapPartnerNameHeaderWasAdded(fakeBuilder);
+
+        //validate requestId is same in next call but invocationId is different
+
+        //given
+        final TestUtils.JavaxRsClientMocks mocks2 = setAndGetMocksInsideRestImpl(restMsoImplementation);
+
+        //when
+        f.accept(restMsoImplementation);
+        Invocation.Builder fakeBuilder2 = mocks2.getFakeBuilder();
+
+        //then
+        Object requestIdValue2 = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder2);
+        assertEquals(requestIdValue, requestIdValue2);
+
+        Object invocationId2 = assertRequestHeaderIsUUID(fakeBuilder2, "X-InvocationID");
+        assertNotEquals(invocationId1, invocationId2);
     }
 
     @Test
