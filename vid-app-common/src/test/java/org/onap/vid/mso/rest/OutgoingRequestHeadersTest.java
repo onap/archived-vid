@@ -20,6 +20,7 @@
 
 package org.onap.vid.mso.rest;
 
+import static org.apache.commons.io.IOUtils.toInputStream;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.hamcrest.CoreMatchers.is;
@@ -32,9 +33,18 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import io.joshworks.restclient.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -53,10 +63,12 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.aai.util.ServletRequestHelper;
 import org.onap.vid.aai.util.SystemPropertyHelper;
+import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.controller.filter.PromiseRequestIdFilter;
 import org.onap.vid.logging.Headers;
 import org.onap.vid.mso.MsoProperties;
@@ -82,6 +94,8 @@ public class OutgoingRequestHeadersTest {
     @InjectMocks
     private RestMsoImplementation restMsoImplementation;
 
+    private MsoRestClientNew msoRestClientNew;
+
     @Mock
     private SystemPropertyHelper systemPropertyHelper;
 
@@ -97,6 +111,9 @@ public class OutgoingRequestHeadersTest {
     @Mock
     private Logging loggingService;
 
+    @Mock
+    SyncRestClient syncRestClient;
+
     @InjectMocks
     private AAIRestInterface aaiRestInterface;
 
@@ -108,6 +125,9 @@ public class OutgoingRequestHeadersTest {
         MockitoAnnotations.initMocks(this);
         when(servletRequestHelper.extractOrGenerateRequestId()).thenAnswer(invocation -> UUID.randomUUID().toString());
         when(systemPropertiesWrapper.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1vub1ua51uh81ugi1u9d1vuz");
+        when(systemPropertiesWrapper.getProperty(SystemProperties.APP_DISPLAY_NAME)).thenReturn("vid");
+        //the ctor of MsoRestClientNew require the above lines as preconditions
+        msoRestClientNew = new MsoRestClientNew(syncRestClient, "baseUrl",systemPropertiesWrapper);
     }
 
     @BeforeMethod
@@ -136,9 +156,9 @@ public class OutgoingRequestHeadersTest {
         f.accept(restMsoImplementation);
 
         Invocation.Builder fakeBuilder = mocks.getFakeBuilder();
-        Object requestIdValue = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
+        String requestIdValue = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
         assertEquals(requestIdValue, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
-        Object invocationId1 = assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
+        String invocationId1 = assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
         assertThat((String) captureHeaderKeyAndReturnItsValue(fakeBuilder, "Authorization"), startsWith("Basic "));
         verifyXOnapPartnerNameHeaderWasAdded(fakeBuilder);
 
@@ -152,7 +172,7 @@ public class OutgoingRequestHeadersTest {
         Invocation.Builder fakeBuilder2 = mocks2.getFakeBuilder();
 
         //then
-        Object requestIdValue2 = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder2);
+        String requestIdValue2 = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder2);
         assertEquals(requestIdValue, requestIdValue2);
 
         Object invocationId2 = assertRequestHeaderIsUUID(fakeBuilder2, "X-InvocationID");
@@ -167,6 +187,62 @@ public class OutgoingRequestHeadersTest {
 
         restMsoImplementation.restCall(HttpMethod.DELETE, String.class, null, "abc", Optional.of(randomUserName));
         assertEquals(randomUserName, captureHeaderKeyAndReturnItsValue(mocks.getFakeBuilder(), "X-RequestorID"));
+    }
+
+    @DataProvider
+    public Object[][] msoRestClientNewMethods() {
+        return Stream.<ThrowingConsumer<MsoRestClientNew>>of(
+            client -> client.createInstance(new Object(), "/any path")
+        ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
+    }
+
+    @Test(dataProvider = "msoRestClientNewMethods")
+    public void msoRestClientNewHeadersTest(Consumer<MsoRestClientNew> f) throws Exception {
+        Map[] captor = setMocksForMsoRestClientNew();
+
+        f.accept(msoRestClientNew);
+        Map headers = captor[0];
+
+        String ecompRequestId = assertRequestHeaderIsUUID(headers, "X-ECOMP-RequestID");
+        String onapRequestID = assertRequestHeaderIsUUID(headers, "X-ONAP-RequestID");
+        assertEquals(ecompRequestId, onapRequestID);
+
+
+        String invocationId1 = assertRequestHeaderIsUUID(headers, "X-InvocationID");
+        assertThat((String) headers.get("Authorization"), startsWith("Basic "));
+        assertThat(headers.get("X-ONAP-PartnerName"), is("VID.VID"));
+
+        //validate requestId is same in next call but invocationId is different
+
+        //given
+        captor = setMocksForMsoRestClientNew();
+
+        //when
+        f.accept(msoRestClientNew);
+        headers = captor[0];
+
+        //then
+        assertEquals(headers.get("X-ONAP-RequestID"), onapRequestID);
+        String invocationId2 = assertRequestHeaderIsUUID(headers, "X-InvocationID");
+        assertNotEquals(invocationId1, invocationId2);
+
+    }
+
+    private Map[] setMocksForMsoRestClientNew() {
+        reset(syncRestClient);
+        HttpResponse<String> httpResponse = mock(HttpResponse.class);
+        String expectedResponse = "myResponse";
+        when(httpResponse.getStatus()).thenReturn(202);
+        when(httpResponse.getBody()).thenReturn(expectedResponse);
+        when(httpResponse.getRawBody()).thenReturn(toInputStream(expectedResponse, StandardCharsets.UTF_8));
+        final Map[] headersCapture = new Map[1];
+        when(syncRestClient.post(anyString(), anyMap(), any(), eq(String.class))).thenAnswer(
+            invocation -> {
+                headersCapture[0] = (Map)invocation.getArguments()[1];
+                return httpResponse;
+            });
+
+        return headersCapture;
     }
 
     @DataProvider
@@ -201,17 +277,25 @@ public class OutgoingRequestHeadersTest {
 //
 //    }
 
-    private Object verifyXEcompRequestIdHeaderWasAdded(Invocation.Builder fakeBuilder) {
+    private String verifyXEcompRequestIdHeaderWasAdded(Invocation.Builder fakeBuilder) {
         final String requestIdHeader = "x-ecomp-requestid";
         return assertRequestHeaderIsUUID(fakeBuilder, requestIdHeader);
     }
 
-    private Object assertRequestHeaderIsUUID(Invocation.Builder fakeBuilder, String headerName) {
+    private String assertRequestHeaderIsUUID(Invocation.Builder fakeBuilder, String headerName) {
         Object headerValue = captureHeaderKeyAndReturnItsValue(fakeBuilder, headerName);
+        return assertRequestHeaderIsUUID(headerName, headerValue);
+    }
+
+    private String assertRequestHeaderIsUUID(Map headers, String headerName) {
+        return assertRequestHeaderIsUUID(headerName, headers.get(headerName));
+    }
+
+    private String assertRequestHeaderIsUUID(String headerName, Object headerValue) {
         final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         assertThat("header '" + headerName + "' should be a uuid", headerValue,
                 allOf(instanceOf(String.class), hasToString(matchesPattern(uuidRegex))));
-        return headerValue;
+        return (String)headerValue;
     }
 
     private void verifyXOnapPartnerNameHeaderWasAdded(Invocation.Builder fakeBuilder) {
