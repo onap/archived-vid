@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1521966f_b533670e",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/aai/PresetAAIGetTenants.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-06T06:47:04Z",
+      "side": 1,
+      "message": "final?",
+      "range": {
+        "startLine": 13,
+        "startChar": 12,
+        "endLine": 13,
+        "endChar": 19
+      },
+      "revId": "e80b2e23f3014048a815b3aed6d79b023e3e4ca2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ec5309f_9fe02add",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/aai/PresetAAIGetTenants.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-06T06:47:04Z",
+      "side": 1,
+      "message": "lower-case \u0027r\u0027",
+      "range": {
+        "startLine": 48,
+        "startChar": 54,
+        "endLine": 48,
+        "endChar": 55
+      },
+      "revId": "e80b2e23f3014048a815b3aed6d79b023e3e4ca2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6503e44_ae551dbc",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/aai/PresetAAIGetTenants.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-06T06:47:04Z",
+      "side": 1,
+      "message": "return resourceBodyAsString.replace(...)",
+      "range": {
+        "startLine": 50,
+        "startChar": 30,
+        "endLine": 50,
+        "endChar": 59
+      },
+      "revId": "e80b2e23f3014048a815b3aed6d79b023e3e4ca2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
