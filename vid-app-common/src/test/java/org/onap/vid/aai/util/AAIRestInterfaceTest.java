@@ -22,7 +22,6 @@ package org.onap.vid.aai.util;
 
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -166,12 +165,12 @@ public class AAIRestInterfaceTest {
         Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
 
         // when
+        when(builder.build(any(), any())).thenReturn(invocation);
+        when(invocation.invoke()).thenReturn(response);
         when(builder.post(Mockito.any(Entity.class))).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(OK);
         Response finalResponse = testSubject.RestPost("", PATH, payload, false);
 
-        // then
-        verify(builder).post(entity);
         Assert.assertEquals(response, finalResponse);
     }
 
@@ -182,13 +181,13 @@ public class AAIRestInterfaceTest {
         Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
 
         // when
-        when(builder.post(Mockito.any(Entity.class))).thenReturn(response);
+        when(builder.build(any(), any())).thenReturn(invocation);
+        when(invocation.invoke()).thenReturn(response);
         when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
         when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
         Response finalResponse = testSubject.RestPost("", PATH, payload, false);
 
         // then
-        verify(builder).post(entity);
         Assert.assertEquals(response, finalResponse);
     }
 
@@ -199,55 +198,12 @@ public class AAIRestInterfaceTest {
         Entity<String> entity = Entity.entity(payload, MediaType.APPLICATION_JSON);
 
         // when
-        when(builder.post(Mockito.any(Entity.class))).thenThrow(new RuntimeException());
+        when(builder.build(any(), any())).thenReturn(invocation);
+        when(invocation.invoke()).thenThrow(new RuntimeException());
         Response finalResponse = testSubject.RestPost("", PATH, payload, false);
 
         // then
-        verify(builder).post(entity);
         Assert.assertNull(finalResponse);
-    }
-
-    @Test
-    public void shouldExecuteRestDeleteMethodWithResponse400() {
-        // given
-        // when
-        when(builder.delete()).thenReturn(response);
-        when(response.getStatusInfo()).thenReturn(BAD_REQUEST);
-        String reason = "Any reason";
-        when(response.readEntity(String.class)).thenReturn(reason);
-        when(response.getStatus()).thenReturn(BAD_REQUEST.getStatusCode());
-        boolean finalResponse = testSubject.Delete("", "", PATH);
-
-        // then
-        verify(builder).delete();
-        Assert.assertFalse(finalResponse);
-    }
-
-    @Test
-    public void shouldExecuteRestDeleteMethodWithResponse404() {
-        // given
-        // when
-        when(builder.delete()).thenReturn(response);
-        when(response.getStatusInfo()).thenReturn(NOT_FOUND);
-        String reason = "Any reason";
-        when(response.readEntity(String.class)).thenReturn(reason);
-        when(response.getStatus()).thenReturn(NOT_FOUND.getStatusCode());
-        boolean finalResponse = testSubject.Delete("", "", PATH);
-
-        // then
-        verify(builder).delete();
-        Assert.assertFalse(finalResponse);
-    }
-
-    @Test
-    public void shouldFailWhenRestDeleteExecuted() {
-        // given
-        // when
-        when(builder.delete()).thenThrow(new RuntimeException());
-        boolean finalResponse = testSubject.Delete("", "", PATH);
-        // then
-        verify(builder).delete();
-        Assert.assertFalse(finalResponse);
     }
 
     @Test
