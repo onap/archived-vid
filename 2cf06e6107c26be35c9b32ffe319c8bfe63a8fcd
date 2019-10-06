@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5fbf72db_8bdbd85f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/OutgoingRequestHeadersTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-06T09:07:07Z",
+      "side": 1,
+      "message": "Rename variables; consider reordering to have fakeBuilder first",
+      "range": {
+        "startLine": 174,
+        "startChar": 40,
+        "endLine": 174,
+        "endChar": 105
+      },
+      "revId": "2cf06e6107c26be35c9b32ffe319c8bfe63a8fcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a8d600b_e4e64f11",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/rest/OutgoingRequestHeadersTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-06T09:07:07Z",
+      "side": 1,
+      "message": "add verifySecondCall()",
+      "revId": "2cf06e6107c26be35c9b32ffe319c8bfe63a8fcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
