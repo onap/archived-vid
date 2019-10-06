@@ -250,7 +250,6 @@ public class OutgoingRequestHeadersTest {
         return Stream.<ThrowingConsumer<AAIRestInterface>>of(
 
                 client -> client.RestGet("from app id", "some transId", Unchecked.toURI("/any path"), false),
-                client -> client.Delete("whatever source id", "some transId", "/any path"),
                 client -> client.RestPost("from app id", "/any path", "some payload", false),
                 client -> client.RestPut("from app id", "/any path", "some payload", false, false)
 
