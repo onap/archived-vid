@@ -541,7 +541,7 @@
                 });
         };
 
-        function isCompatibleVNFRole(vnf) {
+        function isCompatibleNFRole(vnf) {
 
             return vnf.properties['nf-role'] === vm.changeManagement['vnfType'] || !vm.changeManagement['vnfType'];
 
@@ -549,7 +549,7 @@
 
         function isValidVnf(vnf) {
 
-            let result =  isCompatibleVNFRole(vnf) && vnf.properties["model-invariant-id"]
+            let result =  isCompatibleNFRole(vnf) && vnf.properties["model-invariant-id"]
                 && vnf.properties["model-version-id"];
 
             return result;
@@ -577,9 +577,9 @@
             vm.vnfTypes = [];
             vm.vnfTypesTemp = [];
             vm.serviceInstances = [];
-            vm.fromVNFVersions=[];
-            vm.vnfNames =[];
-            vm.changeManagement.vnfNames =[];
+            vm.fromVNFVersions = [];
+            vm.vnfNames = [];
+            vm.changeManagement.vnfNames = [];
 
             var instances = vm.changeManagement.serviceType["service-instances"]["service-instance"];
             // var promiseArrOfGetVnfs = preparePromiseArrOfGetVnfs(instances);
@@ -723,7 +723,7 @@
         };
 
         vm.loadVNFNames = function () {
-            vm.changeManagement.vnfNames =[];
+            vm.changeManagement.vnfNames = [];
             vm.vnfNames = [];
 
             const vnfs = vm.changeManagement.fromVNFVersion ? vm.vnfs : [];
@@ -731,7 +731,7 @@
 
                 var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
 
-                if (isCompatibleVNFRole(vnf) &&
+                if (isCompatibleNFRole(vnf) &&
                     selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
