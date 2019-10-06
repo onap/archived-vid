@@ -103,7 +103,6 @@ public class AaiServiceImplTest {
     private static final String SUBSCRIBER_ID = "SUBSCRIBER_ID_EXPECTED";
     private static final String STATUS_TEXT = "STATUS_TEXT";
     private static final String GLOBAL_SUBSCRIBER_ID = "GLOBAL_SUBSCRIBER_ID";
-    private static final String GLOBAL_SUBSCRIBER_ID_NULL_RESPONSE = "ID_NULL";
     private static final String VNF_INSTANCE_ID_OK = "VNF_INSTANCE_ID_OK";
     private static final String VNF_INSTANCE_ID_FAIL = "VNF_INSTANCE_ID_FAIL";
     private static final String PARENT_NAME = "PARENT_NAME";
@@ -277,7 +276,7 @@ public class AaiServiceImplTest {
     }
 
     @Test
-    public void shouldGetVNFDataWithoutFiltering() {
+    public void shouldGetVNFDataOfInstanceWithoutFiltering() {
         when(aaiClient.getVNFData(anyString(), anyString(), anyString())).thenReturn(aaiResponse);
 
         AaiResponse actualResponse = aaiService.getVNFData(anyString(), anyString(), anyString());
@@ -286,30 +285,26 @@ public class AaiServiceImplTest {
     }
 
     @Test
-    public void shouldGetVNFDataWithFiltering() {
+    public void shouldGetVNFDataOfServiceWithoutFiltering() {
         VnfResult vnfResult1 = createVnfResult("ID1", "generic-vnf");
         VnfResult vnfResult2 = createVnfResult("ID2", "service-instance");
         VnfResult vnfResult3 = createVnfResult("ID3", "anything-else");
 
-        List<VnfResult> vnfResults = Arrays.asList(vnfResult1, vnfResult2, vnfResult3);
-        AaiResponse<AaiGetVnfResponse> aaiResponseGetVnfResponse = createAaiResponseVnfResponse(vnfResults);
-
-        vnfResults = Arrays.asList(vnfResult1, vnfResult2);
-        AaiResponse<AaiGetVnfResponse> expectedResponseWithReturnedVnfs = createAaiResponseVnfResponse(vnfResults);
-        AaiResponse expectedResponseWithoutReturnedVnfs = new AaiResponse();
+        AaiResponse<AaiGetVnfResponse> aaiResponseGetVnfResponse = createAaiResponseVnfResponse(
+            Arrays.asList(vnfResult1, vnfResult2, vnfResult3));
 
         when(aaiClient.getVNFData(GLOBAL_SUBSCRIBER_ID, SERVICE_TYPE)).thenReturn(aaiResponseGetVnfResponse);
-        when(aaiClient.getVNFData(GLOBAL_SUBSCRIBER_ID_NULL_RESPONSE, SERVICE_TYPE)).thenReturn(null);
 
-        AaiResponse<AaiGetVnfResponse> actualResponseWithReturnedVnfs =
-            aaiService.getVNFData(GLOBAL_SUBSCRIBER_ID, SERVICE_TYPE);
-        AaiResponse<AaiGetVnfResponse> actualResponseWithoutReturnedVnfs =
-            aaiService.getVNFData(GLOBAL_SUBSCRIBER_ID_NULL_RESPONSE, SERVICE_TYPE);
+        assertThat(aaiService.getVNFData(GLOBAL_SUBSCRIBER_ID, SERVICE_TYPE))
+            .isEqualTo(aaiResponseGetVnfResponse);
+    }
 
-        assertThat(actualResponseWithReturnedVnfs)
-            .isEqualToComparingFieldByFieldRecursively(expectedResponseWithReturnedVnfs);
-        assertThat(actualResponseWithoutReturnedVnfs)
-            .isEqualToComparingFieldByField(expectedResponseWithoutReturnedVnfs);
+    @Test
+    public void shouldGetNonNullVNFDataOfServiceWhenNoResult() {
+        when(aaiClient.getVNFData(GLOBAL_SUBSCRIBER_ID, SERVICE_TYPE)).thenReturn(null);
+
+        assertThat(aaiService.getVNFData(GLOBAL_SUBSCRIBER_ID, SERVICE_TYPE))
+            .isEqualToComparingFieldByField(new AaiResponse());
     }
 
     @Test

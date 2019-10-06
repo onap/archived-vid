@@ -22,7 +22,6 @@ package org.onap.vid.services;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -33,14 +32,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.AaiClientInterface;
-import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.model.AaiGetPnfResponse;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
@@ -50,7 +46,6 @@ import org.onap.vid.aai.model.Relationship;
 import org.onap.vid.aai.model.RelationshipData;
 import org.onap.vid.aai.model.RelationshipList;
 import org.onap.vid.aai.model.ServiceRelationships;
-import org.onap.vid.aai.model.VnfResult;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleValidator;
@@ -211,20 +206,4 @@ public class AaiServiceTest {
         assertThat(anyMatch, equalTo(expectedMatch));
     }
 
-    @Test
-    public void testFilterChangeManagementVNFCandidatesResponse() {
-        AaiGetVnfResponse aaiGetVnfResponse = new AaiGetVnfResponse();
-        aaiGetVnfResponse.results = new ArrayList<>();
-        Stream.of("genEric-vNf", "l3-interface-ipv6-address-list", "vserver", "pserver", "serviCe-inStance").forEach(
-                nodeType->{
-                    VnfResult vnfResult = new VnfResult();
-                    vnfResult.nodeType=nodeType;
-                    aaiGetVnfResponse.results.add(vnfResult);
-                }
-        );
-
-        AaiResponse<AaiGetVnfResponse> result = aaiService.filterChangeManagementVNFCandidatesResponse(new AaiResponse<>(aaiGetVnfResponse, "", 200));
-        assertEquals(2, result.getT().results.size());
-        assertThat(result.getT().results.stream().map(x->x.nodeType).collect(Collectors.toList()), containsInAnyOrder("genEric-vNf","serviCe-inStance"));
-    }
 }

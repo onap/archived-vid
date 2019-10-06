@@ -3,7 +3,6 @@ package org.onap.vid.api;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofL3Network;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofServiceInstance;
@@ -741,6 +740,7 @@ public class AaiApiTest extends BaseApiAaiTest {
                 getResourceAsString("serviceWithNetwork/aaiGetNetworksWithVlansToVnfByServiceInstance.json"),
                 response);
     }
+
     @FeatureTogglingTest(value = Features.FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG, flagActive = false)
     @Test
     public void getVnfDataByGlobalIdAndServiceType() {
@@ -761,9 +761,8 @@ public class AaiApiTest extends BaseApiAaiTest {
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-        assertThat(response.getBody(), not(containsString("generic-vfmodule")));
         assertResponse(JsonAssert.when(Option.IGNORING_ARRAY_ORDER),
-                getResourceAsString("changeManagement/reduced_vnf_data_by_globalid_and_service_type.json"),
+                getResourceAsString("registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_response.json"),
                 response.getBody());
     }
 
