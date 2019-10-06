@@ -24,10 +24,14 @@ import static com.xebialabs.restito.semantics.Action.ok;
 import static com.xebialabs.restito.semantics.Action.stringContent;
 import static org.apache.http.client.config.RequestConfig.custom;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.hamcrest.collection.IsMapContaining.hasEntry;
+import static org.hamcrest.collection.IsMapContaining.hasKey;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
@@ -125,10 +129,12 @@ public class SdcRestClientITTest {
 
         assertTrue(first.isPresent());
 
-        assertThat(first.get().getHeaders().keySet(),
-                hasItems(X_ECOMP_INSTANCE_ID.toLowerCase(), REQUEST_ID_HEADER_KEY.toLowerCase()));
-        assertThat(first.get().getHeaders().get(REQUEST_ID_HEADER_KEY.toLowerCase()).get(0),
-                matchesPattern(UUID_REGEX));
+        assertThat(first.get().getHeaders(),
+            allOf(
+                hasEntry(equalToIgnoringCase(REQUEST_ID_HEADER_KEY), contains(matchesPattern(UUID_REGEX))),
+                hasKey(equalToIgnoringCase(X_ECOMP_INSTANCE_ID)),
+                hasEntry(equalToIgnoringCase("x-onap-partnerName"), contains(equalTo("VID.VID")))
+            ));
     }
 
     private Service getExpectedService(String stringId) {
