@@ -29,6 +29,7 @@ import static org.onap.vid.client.SyncRestClientInterface.HEADERS.AUTHORIZATION;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.CONTENT_TYPE;
 import static org.onap.vid.client.SyncRestClientInterface.HEADERS.X_ECOMP_INSTANCE_ID;
 import static org.onap.vid.client.UnirestPatchKt.extractRawAsString;
+import static org.onap.vid.logging.Headers.PARTNER_NAME;
 import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 
 import com.att.eelf.configuration.EELFLogger;
@@ -152,6 +153,7 @@ public class SdcRestClient implements AsdcClient {
     private Map<String, String> prepareHeaders(String auth, String contentType) {
         return ImmutableMap.of(
                 X_ECOMP_INSTANCE_ID, SystemProperties.getProperty(APP_DISPLAY_NAME),
+                PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue(),
                 AUTHORIZATION, auth,
                 REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId(),
                 CONTENT_TYPE, contentType
