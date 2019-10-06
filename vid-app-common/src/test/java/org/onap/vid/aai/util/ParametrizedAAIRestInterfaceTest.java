@@ -22,7 +22,6 @@ package org.onap.vid.aai.util;
 
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.UnsupportedEncodingException;
@@ -36,7 +35,6 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.Mock;
@@ -44,7 +42,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
 import org.onap.vid.utils.Logging;
-import org.testng.Assert;
 
 @RunWith(Parameterized.class)
 public class ParametrizedAAIRestInterfaceTest {
@@ -96,19 +93,6 @@ public class ParametrizedAAIRestInterfaceTest {
 
     private AAIRestInterface createTestSubject() {
         return new AAIRestInterface(Optional.of(client), httpsAuthClient, servletRequestHelper, systemPropertyHelper, loggingService);
-    }
-
-    @Test
-    public void testRestDeleteWithValidResponse() {
-
-        // when
-        when(builder.delete()).thenReturn(response);
-        when(response.getStatusInfo()).thenReturn(status);
-        boolean finalResponse = testSubject.Delete("", "", PATH);
-
-        // then
-        verify(builder).delete();
-        Assert.assertTrue(finalResponse);
     }
 
     private void mockSystemProperties() throws UnsupportedEncodingException, InvalidPropertyException {
