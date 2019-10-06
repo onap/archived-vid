@@ -23,6 +23,7 @@ import com.aventstack.extentreports.Status;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import net.javacrumbs.jsonunit.core.Option;
 import org.json.JSONException;
 import org.junit.Assert;
@@ -223,7 +225,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                 , "changeManagement/mso_get_change_managements_scaleout.json"
         );
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
-        if(FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG.isActive()){
+        if (FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG.isActive()) {
             String AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS = "registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_with_modelVer.json";
             String globalCustomerId = "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb";
             String serviceType = "vRichardson";
@@ -246,9 +248,9 @@ public class ChangeManagementTest extends VidBaseTestCase {
 
         if (Features.FLAG_FLASH_CLOUD_REGION_AND_NF_ROLE_OPTIONAL_SEARCH.isActive()) {
             SimulatorApi.registerExpectationFromPreset(new PresetAAIGetTenants(
-                    VNF_DATA_WITH_IN_PLACE.subscriberId,
-                    VNF_DATA_WITH_IN_PLACE.serviceType,
-                    "presets_templates/PresetAAIGetTenants_service_type_vWINIFRED.json"), SimulatorApi.RegistrationStrategy.APPEND);
+                            VNF_DATA_WITH_IN_PLACE.subscriberId,
+                            VNF_DATA_WITH_IN_PLACE.serviceType),
+                    SimulatorApi.RegistrationStrategy.APPEND);
 
         }
 
