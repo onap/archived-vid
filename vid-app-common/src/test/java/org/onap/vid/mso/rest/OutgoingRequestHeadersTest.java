@@ -54,6 +54,7 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MultivaluedMap;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.ArgumentCaptor;
@@ -123,7 +124,8 @@ public class OutgoingRequestHeadersTest {
     @BeforeClass
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
-        when(servletRequestHelper.extractOrGenerateRequestId()).thenAnswer(invocation -> UUID.randomUUID().toString());
+        String oneIncomingRequestId = UUID.randomUUID().toString();
+        when(servletRequestHelper.extractOrGenerateRequestId()).thenReturn(oneIncomingRequestId);
         when(systemPropertiesWrapper.getProperty(MsoProperties.MSO_PASSWORD)).thenReturn("OBF:1vub1ua51uh81ugi1u9d1vuz");
         when(systemPropertiesWrapper.getProperty(SystemProperties.APP_DISPLAY_NAME)).thenReturn("vid");
         //the ctor of MsoRestClientNew require the above lines as preconditions
@@ -154,30 +156,22 @@ public class OutgoingRequestHeadersTest {
         final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(restMsoImplementation);
 
         f.accept(restMsoImplementation);
+        HeadersVerifier headersVerifier = new HeadersVerifier().verifyFirstCall(mocks.getFakeBuilder());
 
-        Invocation.Builder fakeBuilder = mocks.getFakeBuilder();
-        String requestIdValue = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
-        assertEquals(requestIdValue, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
-        String invocationId1 = assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
-        assertThat((String) captureHeaderKeyAndReturnItsValue(fakeBuilder, "Authorization"), startsWith("Basic "));
-        verifyXOnapPartnerNameHeaderWasAdded(fakeBuilder);
+        assertThat((String) captureHeaderKeyAndReturnItsValue(mocks.getFakeBuilder(), "Authorization"), startsWith("Basic "));
 
-        //validate requestId is same in next call but invocationId is different
+        //verify requestId is same in next call but invocationId is different
 
         //given
         final TestUtils.JavaxRsClientMocks mocks2 = setAndGetMocksInsideRestImpl(restMsoImplementation);
 
         //when
         f.accept(restMsoImplementation);
-        Invocation.Builder fakeBuilder2 = mocks2.getFakeBuilder();
-
         //then
-        String requestIdValue2 = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder2);
-        assertEquals(requestIdValue, requestIdValue2);
-
-        Object invocationId2 = assertRequestHeaderIsUUID(fakeBuilder2, "X-InvocationID");
-        assertNotEquals(invocationId1, invocationId2);
+        headersVerifier.verifySecondCall(mocks2.getFakeBuilder());
     }
+
+
 
     @Test
     public void whenProvideMsoRestCallUserId_builderHasXRequestorIDHeader() throws Exception {
@@ -212,7 +206,7 @@ public class OutgoingRequestHeadersTest {
         assertThat((String) headers.get("Authorization"), startsWith("Basic "));
         assertThat(headers.get("X-ONAP-PartnerName"), is("VID.VID"));
 
-        //validate requestId is same in next call but invocationId is different
+        //verify requestId is same in next call but invocationId is different
 
         //given
         captor = setMocksForMsoRestClientNew();
@@ -251,6 +245,7 @@ public class OutgoingRequestHeadersTest {
 
                 client -> client.RestGet("from app id", "some transId", Unchecked.toURI("/any path"), false),
                 client -> client.RestPost("from app id", "/any path", "some payload", false),
+                client -> client.doRest("from app id", "some transId", Unchecked.toURI("/any path"), "somebody", HttpMethod.GET, false, true),
                 client -> client.RestPut("from app id", "/any path", "some payload", false, false)
 
         ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
@@ -258,12 +253,21 @@ public class OutgoingRequestHeadersTest {
 
     @Test(dataProvider = "aaiMethods")
     public void aai(Consumer<AAIRestInterface> f) throws Exception {
+        //given
         final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(aaiRestInterface);
-
+        //when
         f.accept(aaiRestInterface);
+        //then
+        HeadersVerifier headersVerifier = new HeadersVerifier().verifyFirstCall(mocks.getFakeBuilder());
 
-        verifyXEcompRequestIdHeaderWasAdded(mocks.getFakeBuilder());
-        verifyXOnapPartnerNameHeaderWasAdded(mocks.getFakeBuilder());
+        //verify requestId is same in next call but invocationId is different
+        //given
+        final TestUtils.JavaxRsClientMocks mocks2 = setAndGetMocksInsideRestImpl(aaiRestInterface);
+        //when
+        f.accept(aaiRestInterface);
+        //then
+        headersVerifier.verifySecondCall(mocks2.getFakeBuilder());
+
     }
 
 //    @Test(dataProvider = "schedulerMethods")
@@ -375,4 +379,26 @@ public class OutgoingRequestHeadersTest {
         void acceptThrows(T t) throws Exception;
     }
 
+    private class HeadersVerifier {
+
+        private String firstRequestId;
+        private String firstInvocationId;
+
+
+        HeadersVerifier verifyFirstCall(Builder fakeBuilder) {
+            firstRequestId = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
+            assertEquals(firstRequestId, captureHeaderKeyAndReturnItsValue(fakeBuilder, "X-ONAP-RequestID"));
+            firstInvocationId = assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
+            verifyXOnapPartnerNameHeaderWasAdded(fakeBuilder);
+            return this;
+        }
+
+        void verifySecondCall(Builder fakeBuilder) {
+            String secondRequestId = verifyXEcompRequestIdHeaderWasAdded(fakeBuilder);
+            assertEquals(firstRequestId, secondRequestId);
+
+            Object secondInvocationId = assertRequestHeaderIsUUID(fakeBuilder, "X-InvocationID");
+            assertNotEquals(firstInvocationId, secondInvocationId);
+        }
+    }
 }
