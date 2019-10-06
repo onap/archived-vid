@@ -31,6 +31,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -162,15 +163,6 @@ public class AAIRestInterface {
     }
 
 
-    /**
-     * Rest get.
-     *
-     * @param fromAppId the from app id
-     * @param transId the trans id
-     * @param requestUri the request uri
-     * @param xml the xml
-     * @return the string
-     */
     public ResponseWithRequestInfo RestGet(String fromAppId, String transId, URI requestUri, boolean xml) {
         return RestGet(fromAppId, transId, requestUri, xml, false);
     }
@@ -180,11 +172,16 @@ public class AAIRestInterface {
     }
 
     public ResponseWithRequestInfo doRest(String fromAppId, String transId, URI requestUri, String payload, HttpMethod method, boolean xml, boolean propagateExceptions) {
+        return doRest(fromAppId, transId, ()->systemPropertyHelper.getFullServicePath(requestUri), payload, method, xml, propagateExceptions);
+    }
+
+
+    public ResponseWithRequestInfo doRest(String fromAppId, String transId, Supplier<String> urlSupplier, String payload, HttpMethod method, boolean xml, boolean propagateExceptions) {
         String url = null;
         String methodName = "Rest"+method.name();
         try {
 
-            url = systemPropertyHelper.getFullServicePath(requestUri);
+            url = urlSupplier.get();
 
             initRestClient(propagateExceptions);
 
@@ -223,7 +220,7 @@ public class AAIRestInterface {
         } catch (Exception e) {
             logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
             if (propagateExceptions) {
-                throw new ExceptionWithRequestInfo(method, defaultIfNull(url, requestUri.toASCIIString()), e);
+                throw new ExceptionWithRequestInfo(method, defaultIfNull(url, ""), e);
             } else {
                 return new ResponseWithRequestInfo(null, url, method);
             }
@@ -235,109 +232,21 @@ public class AAIRestInterface {
     }
 
 
-    /**
-     * Delete.
-     *
-     * @param sourceID the source ID
-     * @param transId the trans id
-     * @param path the path
-     * @return true, if successful
-     */
-    public boolean Delete(String sourceID, String transId, String path) {
-        String methodName = "Delete";
-        transId += ":" + UUID.randomUUID().toString();
-        logger.debug(methodName + START_STRING);
-        Boolean response = false;
-        String url = systemPropertyHelper.getFullServicePath(path);
-        try {
-
-            initRestClient();
-            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
-            final Response cres = client.target(url)
-                .request()
-                .accept(MediaType.APPLICATION_JSON)
-                .header(TRANSACTION_ID_HEADER, transId)
-                .header(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue())
-                .header(FROM_APP_ID_HEADER, sourceID)
-                .header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
-                .delete();
-            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.DELETE, url, cres);
-            if (cres.getStatusInfo().equals(Response.Status.NOT_FOUND)) {
-                logger.debug(EELFLoggerDelegate.debugLogger, "Resource does not exist...: " + cres.getStatus()
-                    + ":" + cres.readEntity(String.class));
-                response = false;
-            } else if (cres.getStatusInfo().equals(Response.Status.OK) || cres.getStatusInfo().equals(Response.Status.NO_CONTENT)) {
-                logger.debug(EELFLoggerDelegate.debugLogger, "Resource " + url + " deleted");
-                logger.info(EELFLoggerDelegate.errorLogger, "Resource " + url + " deleted");
-                response = true;
-            } else {
-                logger.debug(EELFLoggerDelegate.debugLogger, "Deleting Resource failed: " + cres.getStatus()
-                    + ":" + cres.readEntity(String.class));
-                response = false;
-            }
-
-        } catch (Exception e) {
-            logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
-        }
-        return response;
-    }
-
-
-    /**
-     * Rest put.
-     *
-     * @param fromAppId the from app id
-     * @param path the path
-     * @param payload the payload
-     * @param xml the xml
-     * @param propagateExceptions
-     * @return the string
-     */
     public ResponseWithRequestInfo RestPut(String fromAppId, String path, String payload, boolean xml, boolean propagateExceptions) {
         return doRest(fromAppId, UUID.randomUUID().toString(), Unchecked.toURI(path), payload, HttpMethod.PUT, xml, propagateExceptions);
     }
 
 
-
-    /**
-     * Rest post.
-     *
-     * @param fromAppId the from app id
-     * @param path the path
-     * @param payload the payload
-     * @param xml the xml
-     * @return the string
-     */
     public Response RestPost(String fromAppId, String path, String payload, boolean xml) {
-        String methodName = "RestPost";
-        String url=systemPropertyHelper.getServiceBasePath(path);
-        String transId = UUID.randomUUID().toString();
-        logger.debug(EELFLoggerDelegate.debugLogger, methodName + START_STRING);
-
-        Response response = null;
-        try {
-            initRestClient();
-            loggingService.logRequest(outgoingRequestsLogger, HttpMethod.POST, url, payload);
-            response = authenticateRequest(client.target(url)
-                .request()
-                .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-                .header(TRANSACTION_ID_HEADER, transId)
-                .header(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue())
-                .header(FROM_APP_ID_HEADER,  fromAppId))
-                .header(REQUEST_ID_HEADER_KEY, extractOrGenerateRequestId())
-                .post(Entity.entity(payload, MediaType.APPLICATION_JSON));
-            loggingService.logResponse(outgoingRequestsLogger, HttpMethod.POST, url, response);
-
-            if (response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
-                logger.info(EELFLoggerDelegate.errorLogger, getValidResponseLogMessage(methodName));
-                logger.debug(EELFLoggerDelegate.debugLogger, getValidResponseLogMessage(methodName));
-            } else {
-                logger.debug(EELFLoggerDelegate.debugLogger, getInvalidResponseLogMessage(url, methodName, response));
-            }
-        } catch (Exception e) {
-            logger.debug(EELFLoggerDelegate.debugLogger, getFailedResponseLogMessage(url, methodName, e));
-        }
-        return response;
+        ResponseWithRequestInfo response = doRest(
+            fromAppId,
+            UUID.randomUUID().toString(),
+            ()->systemPropertyHelper.getServiceBasePath(path),
+            payload,
+            HttpMethod.POST,
+            xml,
+            false);
+        return response.getResponse();
     }
 
     protected String getFailedResponseLogMessage(String path, String methodName, Exception e) {
