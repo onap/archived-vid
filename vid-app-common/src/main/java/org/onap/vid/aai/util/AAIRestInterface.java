@@ -23,7 +23,6 @@ package org.onap.vid.aai.util;
 
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.onap.vid.logging.Headers.INVOCATION_ID;
-import static org.onap.vid.logging.Headers.PARTNER_NAME;
 
 import com.att.eelf.configuration.EELFLogger;
 import java.io.UnsupportedEncodingException;
@@ -39,6 +38,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.onap.logging.filter.base.MetricLogClientFilter;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
@@ -127,6 +127,8 @@ public class AAIRestInterface {
         if (client == null) {
             try {
                 client = httpsAuthClientFactory.getClient(HttpClientMode.WITH_KEYSTORE);
+                MetricLogClientFilter metricLogClientFilter = new MetricLogClientFilter();
+                client.register(metricLogClientFilter);
             } catch (Exception e) {
                 logger.info(EELFLoggerDelegate.errorLogger, "Exception in REST call to DB in initRestClient" + e.toString());
                 logger.debug(EELFLoggerDelegate.debugLogger, "Exception in REST call to DB : " + e.toString());
@@ -198,8 +200,8 @@ public class AAIRestInterface {
             Invocation.Builder requestBuilder = client.target(url)
                 .request()
                 .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-                .header(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue())
-                .header(TRANSACTION_ID_HEADER, transId)
+             //   .header(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue())
+              //  .header(TRANSACTION_ID_HEADER, transId)
                 .header(FROM_APP_ID_HEADER, fromAppId)
                 .header("Content-Type", MediaType.APPLICATION_JSON)
                 .header(RequestIdHeader.ONAP_ID.getHeaderName(), requestId)

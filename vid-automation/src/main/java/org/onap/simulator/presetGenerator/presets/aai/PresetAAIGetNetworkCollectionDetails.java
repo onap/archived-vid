@@ -2,12 +2,11 @@ package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetNetworkCollectionDetails extends BaseAAIPreset {
 
@@ -21,6 +20,14 @@ public class PresetAAIGetNetworkCollectionDetails extends BaseAAIPreset {
     @Override
     public HttpMethod getReqMethod() {
         return HttpMethod.PUT;
+    }
+
+    @Override
+    public Map<String, String> getRequestHeaders() {
+        Map<String, String> map = super.getRequestHeaders();
+        map.put("X-ONAP-PartnerName", "UNKNOWN");
+        map.put("X-TransactionId", ".*");
+        return map;
     }
 
     @Override
