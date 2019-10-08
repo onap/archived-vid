@@ -5,6 +5,9 @@ VID Release Notes
 
 Version: El-Alto (5.0.x)
 --------------
+**Known Issues**
+
+  - `↗ <https://jira.onap.org/browse/VID-659>`_ VID generates always the same VF module name during scale out
 
 **Resolved Issues**
 
