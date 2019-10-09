@@ -75,7 +75,6 @@ import org.onap.vid.aai.model.RelationshipData;
 import org.onap.vid.aai.model.RelationshipList;
 import org.onap.vid.aai.model.Result;
 import org.onap.vid.aai.model.ServiceRelationships;
-import org.onap.vid.aai.model.VnfResult;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceInstanceSearchResult;
@@ -150,6 +149,10 @@ public class AaiServiceImpl implements AaiService {
         }
 
         return services;
+    }
+
+    private boolean hasData(AaiResponse<?> aaiResponse) {
+        return aaiResponse != null && aaiResponse.getT() != null;
     }
 
     private boolean validateModel(Model model){
@@ -390,24 +393,7 @@ public class AaiServiceImpl implements AaiService {
     @Override
     public AaiResponse<AaiGetVnfResponse> getVNFData(String globalSubscriberId, String serviceType) {
         AaiResponse<AaiGetVnfResponse> response = aaiClient.getVNFData(globalSubscriberId, serviceType);
-        return filterChangeManagementVNFCandidatesResponse(response);
-    }
-
-    protected AaiResponse<AaiGetVnfResponse> filterChangeManagementVNFCandidatesResponse(AaiResponse<AaiGetVnfResponse> response) {
-
-        if (response != null && response.getT() != null) {
-            List<VnfResult> filteredVnfs = response.getT().results.stream()
-                    .filter(result -> (
-                            result.nodeType.equalsIgnoreCase("generic-vnf") ||
-                                    result.nodeType.equalsIgnoreCase("service-instance")))
-                    .collect(Collectors.toList());
-
-            AaiGetVnfResponse aaiGetVnfResponse = new AaiGetVnfResponse();
-            aaiGetVnfResponse.results = filteredVnfs;
-            return new AaiResponse<>(aaiGetVnfResponse, response.getErrorMessage(), response.getHttpCode());
-        }
-
-        return new AaiResponse<>();
+        return hasData(response) ? response : new AaiResponse<>();
     }
 
     @Override

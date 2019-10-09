@@ -51,6 +51,38 @@
       ]
     },
     {
+      "id": "454760",
+      "node-type": "vf-module",
+      "url": "https://aai.onap.org:8443/aai/v13/network/generic-vnfs/generic-vnf/a9c90905-99f2-45d5-8389-a2e0f6997c25/vf-modules/vf-module/98da0cd7-008a-4935-864e-333bb97bd15a",
+      "properties": {
+        "vf-module-id": "98da0cd7-008a-4935-864e-333bb97bd15a",
+        "vf-module-name": "ws-vnf",
+        "heat-stack-id": "ws-vnf/ba8955da-912d-4aa7-8bbe-ff51025f56fe",
+        "orchestration-status": "active",
+        "is-base-vf-module": true,
+        "automated-assignment": false,
+        "resource-version": "1551709026933",
+        "model-invariant-id": "4c6d21f0-dc36-46e7-ba9e-c8b602054d12",
+        "model-version-id": "0040b766-37e8-42e7-a930-bfc568265735",
+        "model-customization-id": "1cb1464c-4bf2-4910-8eac-e7d27b597d58",
+        "module-index": 0
+      },
+      "related-to": [
+        {
+          "id": "442472",
+          "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+          "node-type": "generic-vnf",
+          "url": "/aai/v13/network/generic-vnfs/generic-vnf/a9c90905-99f2-45d5-8389-a2e0f6997c25"
+        },
+        {
+          "id": "430168",
+          "relationship-label": "org.onap.relationships.inventory.Uses",
+          "node-type": "vserver",
+          "url": "/aai/v13/cloud-infrastructure/cloud-regions/cloud-region/CloudOwner/RegionOne/tenants/tenant/982c540f6e69488eb6be5664255e00c0/vservers/vserver/154e8975-5a59-4824-af5d-b6564b7b712a"
+        }
+      ]
+    },
+    {
       "id": "3775807704",
       "node-type": "service-instance",
       "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/9ad4ac55-a5e0-4b49-95c0-b2d846abf700",

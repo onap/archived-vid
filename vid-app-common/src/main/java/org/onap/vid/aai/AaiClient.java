@@ -459,7 +459,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public AaiResponse getVNFData(String globalSubscriberId, String serviceType) {
+    public AaiResponse<AaiGetVnfResponse> getVNFData(String globalSubscriberId, String serviceType) {
         String payload = "{\"start\": [\"business/customers/customer/" + globalSubscriberId + SERVICE_SUBSCRIPTIONS_PATH + encodePathSegment(serviceType) +"/service-instances\"]," +
                 "\"query\": \"query/vnf-topology-fromServiceInstance\"}";
         Response resp = doAaiPut(QUERY_FORMAT_SIMPLE, payload, false);

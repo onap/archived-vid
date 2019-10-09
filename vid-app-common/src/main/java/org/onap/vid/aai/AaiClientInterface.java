@@ -65,7 +65,7 @@ public interface AaiClientInterface extends ProbeInterface {
 
     AaiResponse getInstanceGroupsByCloudRegion(String cloudOwner, String cloudRegionId, String networkFunction);
 
-    AaiResponse getVNFData(String globalSubscriberId, String serviceType);
+    AaiResponse<AaiGetVnfResponse> getVNFData(String globalSubscriberId, String serviceType);
 
     AaiResponse getVNFData(String globalSubscriberId, String serviceType, String serviceInstanceId);
 
