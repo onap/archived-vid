@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5962b40e_73d5a8e6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/ApacheClientMetricInterceptor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-10T10:15:15Z",
+      "side": 1,
+      "message": "`null` to fallback to default value.\nhttps://github.com/onap/logging-analytics/blob/e219ab7cc03e144c7217f639aec52921ab49d0d5/reference/logging-filter/logging-filter-base/src/main/java/org/onap/logging/filter/base/AbstractMetricLogFilter.java#L84",
+      "revId": "47f26ff3f5503686f04aa2d954e20dc2117cf2af",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dc80314_7ec0cdd7",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/logging/ApacheClientMetricInterceptorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-10T10:15:15Z",
+      "side": 1,
+      "message": "Will assert null",
+      "revId": "47f26ff3f5503686f04aa2d954e20dc2117cf2af",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
