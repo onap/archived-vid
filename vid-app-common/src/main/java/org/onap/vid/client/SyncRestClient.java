@@ -49,10 +49,13 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.jetty.util.security.Password;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.logging.ApacheClientMetricRequestInterceptor;
+import org.onap.vid.logging.ApacheClientMetricResponseInterceptor;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
@@ -68,22 +71,29 @@ public class SyncRestClient implements SyncRestClientInterface {
     private RestClient restClient;
 
     public SyncRestClient(Logging loggingService) {
-        this(null, null, loggingService);
+        this(null, null, loggingService, false);
+    }
+
+    public SyncRestClient(Logging loggingService, boolean useLoggingInterceptor) {
+        this(null, null, loggingService, useLoggingInterceptor);
     }
 
     public SyncRestClient(ObjectMapper objectMapper, Logging loggingService) {
-        this(null, objectMapper,  loggingService);
+        this(null, objectMapper,  loggingService, false);
     }
 
     public SyncRestClient(CloseableHttpClient httpClient, Logging loggingService) {
-        this(httpClient, null,  loggingService);
+        this(httpClient, null,  loggingService, false);
     }
 
-    public SyncRestClient(CloseableHttpClient httpClient, ObjectMapper objectMapper, Logging loggingService) {
+    public SyncRestClient(CloseableHttpClient httpClient,
+        ObjectMapper objectMapper,
+        Logging loggingService,
+        boolean useLoggingInterceptor) {
         restClient = RestClient
             .newClient()
             .objectMapper(ObjectUtils.defaultIfNull(objectMapper, defaultObjectMapper()))
-            .httpClient(ObjectUtils.defaultIfNull(httpClient , defaultHttpClient()))
+            .httpClient(ObjectUtils.defaultIfNull(httpClient , defaultHttpClient(useLoggingInterceptor)))
             .build();
         this.loggingService = loggingService;
         this.outgoingRequestsLogger = Logging.getRequestsLogger("syncRestClient");
@@ -253,7 +263,7 @@ public class SyncRestClient implements SyncRestClientInterface {
         return JOSHWORKS_JACKSON_OBJECT_MAPPER;
     }
 
-    private CloseableHttpClient defaultHttpClient() {
+    private CloseableHttpClient defaultHttpClient(boolean useLoggingInterceptor) {
         try {
             String trustStorePath = SystemProperties.getProperty(VidProperties.VID_TRUSTSTORE_FILENAME);
             String trustStorePass = SystemProperties.getProperty(VidProperties.VID_TRUSTSTORE_PASSWD_X);
@@ -263,7 +273,13 @@ public class SyncRestClient implements SyncRestClientInterface {
             SSLContext sslContext = trustOwnCACerts(decryptedTrustStorePass, trustStore);
             SSLConnectionSocketFactory sslSf = allowTLSProtocols(sslContext);
 
-            return HttpClients.custom().setSSLSocketFactory(sslSf).build();
+            HttpClientBuilder httpClientBuilder = HttpClients.custom().setSSLSocketFactory(sslSf);
+            if (useLoggingInterceptor) {
+                httpClientBuilder
+                    .addInterceptorFirst(new ApacheClientMetricRequestInterceptor())
+                    .addInterceptorLast(new ApacheClientMetricResponseInterceptor());
+            }
+            return httpClientBuilder.build();
         } catch (IOException | CertificateException | UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             logger.warn("Cannot initialize custom http client from current configuration. Using default one.", e);
             return HttpClients.createDefault();

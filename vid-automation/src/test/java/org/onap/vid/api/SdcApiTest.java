@@ -24,28 +24,39 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
+import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseSDCPreset.SDC_ROOT_PATH;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 import static vid.automation.test.services.SimulatorApi.registerExpectation;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
+import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.services.SimulatorApi.RecordedRequests;
 
 public class SdcApiTest extends BaseApiTest {
 
@@ -99,7 +110,7 @@ public class SdcApiTest extends BaseApiTest {
     public void getServiceModelALaCarteInstantiation() {
         registerToSimulatorWithPresets(A_LA_CARTE_INSTANTIATION_TYPE_UUID, A_LA_CARTE_INSTANTIATION_TYPE_INVARIANT_UUID, A_LA_CARTE_INSTANTIATION_TYPE_FILE_PATH);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + A_LA_CARTE_INSTANTIATION_TYPE_UUID), String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
         String aLaCarteInstantiationTypeExpectedResponse = loadResourceAsString(A_LA_CARTE_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
         assertThat(response.getBody(), jsonEquals(aLaCarteInstantiationTypeExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
@@ -111,7 +122,7 @@ public class SdcApiTest extends BaseApiTest {
     public void getServiceModelMacroInstantiation() {
         registerToSimulatorWithPresets(MACRO_INSTANTIATION_TYPE_UUID, MACRO_INSTANTIATION_TYPE_INVARIANT_UUID, MACRO_INSTANTIATION_TYPE_FILE_PATH);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
         String macroInstantiationTypeExpectedResponse = loadResourceAsString(MACRO_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
         assertThat(response.getBody(), jsonEquals(macroInstantiationTypeExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
@@ -123,7 +134,7 @@ public class SdcApiTest extends BaseApiTest {
     public void getServiceModelWithoutInstantiationType(){
         registerToSimulatorWithPresets(MACRO_INSTANTIATION_TYPE_UUID, MACRO_INSTANTIATION_TYPE_INVARIANT_UUID, EMPTY_INSTANTIATION_TYPE_FILE_PATH);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
         String emptyInstantiationTypeExpectedResponse = loadResourceAsString(EMPTY_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
         assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(turnOffInstantiationUI(emptyInstantiationTypeExpectedResponse))));
     }
@@ -132,7 +143,7 @@ public class SdcApiTest extends BaseApiTest {
     public void getServiceModelBothInstantiationType(){
         registerToSimulatorWithPresets(MACRO_INSTANTIATION_TYPE_UUID, MACRO_INSTANTIATION_TYPE_INVARIANT_UUID, BOTH_INSTANTIATION_TYPE_FILE_PATH);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
         String macroInstantiationTypeExpectedResponse = loadResourceAsString(MACRO_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
         assertThat(response.getBody(), jsonEquals(macroInstantiationTypeExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
@@ -143,7 +154,7 @@ public class SdcApiTest extends BaseApiTest {
     public void getServiceModelWithGroupsAndCheckMinMaxInitialParams(){
         registerToSimulatorWithPresets(MIN_MAX_INITIAL_UUID, MIN_MAX_INITIAL_INVARIANT_UUID, MIN_MAX_INITIAL_FILE_PATH);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MIN_MAX_INITIAL_UUID), String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
         String minMaxInitialExpectedResponse = loadResourceAsString("sdcApiTest/minMaxInitialExpectedResponse.json");
         assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(turnOffInstantiationUI(minMaxInitialExpectedResponse))));
     }
@@ -152,7 +163,7 @@ public class SdcApiTest extends BaseApiTest {
     public void getServiceModelWithGroupsAndCheckMinMaxInitialParamsOldCsar(){
         registerToSimulatorWithPresets(MIN_MAX_INITIAL_UUID_OLD_CSAR, MIN_MAX_INITIAL_INVARIANT_UUID_OLD_CSAR, MIN_MAX_INITIAL_FILE_PATH_OLD_CSAR);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MIN_MAX_INITIAL_UUID_OLD_CSAR), String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
         String minMaxInitialExpectedResponseOldCsar = loadResourceAsString("sdcApiTest/minMaxInitialExpectedResponseOldCsar.json");
         assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(minMaxInitialExpectedResponseOldCsar)));
     }
@@ -162,7 +173,7 @@ public class SdcApiTest extends BaseApiTest {
     public void getServiceModelWithServiceRoleGrouping(){
         registerToSimulatorWithPresets(GROUPING_SERVICE_ROLE_UUID, GROUPING_SERVICE_ROLE_INVARIANT_UUID, GROUPING_SERVICE_ROLE_FILE_PATH);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + GROUPING_SERVICE_ROLE_UUID), String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
         String groupingServiceRoleExpectedResponse = loadResourceAsString(GROUPING_SERVICE_ROLE_EXPECTED_RESPONSE);
         assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(groupingServiceRoleExpectedResponse)));
     }
@@ -210,5 +221,42 @@ public class SdcApiTest extends BaseApiTest {
         assertThat("volumeGroups under '" + myVnf + "' must not be empty; got: " + response,
                 response.at(base + "/volumeGroups").size(), is(not(0)));
 
+    }
+
+    @Test
+    public void whenCallSdc_thenRequestRecordedInMetricsLog() {
+
+        ModelInfo modelInfo = ModelInfo.transportWithPnfsService;
+
+        registerExpectationFromPresets(ImmutableList.of(
+            new PresetSDCGetServiceToscaModelGet(modelInfo),
+            new PresetSDCGetServiceMetadataGet(modelInfo),
+            new PresetAAIGetSubscribersGet() //for read logs permissions
+        ), CLEAR_THEN_SET);
+        //registerExpectationFromPresets(getEcompPortalPresets(), APPEND);
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+            buildUri(SDC_GET_SERVICE_MODEL + modelInfo.modelVersionId), String.class);
+
+        String logLines = LoggerFormatTest.getLogLines("metrics2019", 15, 0, restTemplate, uri);
+
+        final String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
+
+        List<RecordedRequests> requests = retrieveRecordedRequests();
+        List<RecordedRequests> sdcRequests = requests.stream().filter(x->x.path.startsWith(SDC_ROOT_PATH)).collect(Collectors.toList());
+        assertEquals(sdcRequests.size(), 2);
+        sdcRequests.forEach(request->{
+            assertThat("X-ONAP-RequestID", request.headers.get("X-ONAP-RequestID"), contains(requestId));
+            assertThat("X-ECOMP-RequestID", request.headers.get("X-ECOMP-RequestID"), contains(requestId));
+            assertThat("X-ONAP-PartnerName", request.headers.get("X-ONAP-PartnerName"), contains("VID.VID"));
+            List<String> invocationIds = request.headers.get("X-ONAP-InvocationID");
+            assertEquals(invocationIds.size(), 1);
+            List<String> sdcMetricsLogLines =
+                Stream.of(logLines.split("\n"))
+                    .filter(x->x.contains(SDC_ROOT_PATH) && x.contains(requestId) && x.contains(invocationIds.get(0)))
+                    .collect(Collectors.toList());
+            assertThat("not found sdc call in metrics log with requestId and invocationId" + requestId,
+                sdcMetricsLogLines.size(), is(equalTo(2)));
+        });
     }
 }
