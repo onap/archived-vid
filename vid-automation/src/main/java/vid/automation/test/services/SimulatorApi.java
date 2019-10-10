@@ -1,5 +1,6 @@
 package vid.automation.test.services;
 
+import static java.util.stream.Collectors.toList;
 import static org.testng.Assert.assertEquals;
 import static vid.automation.test.services.DropTestApiField.dropFieldCloudOwnerFromString;
 import static vid.automation.test.services.DropTestApiField.dropTestApiFieldFromString;
@@ -55,9 +56,22 @@ public class SimulatorApi {
         public List<StringWrapper> values;
     }
 
-    public static class HttpRequest{
+    public static class HttpRequest {
         public StringWrapper path;
         public List<RecordedHeaders> headers;
+    }
+
+    public static class RecordedRequests {
+        public String path;
+        public Map<String, List<String>> headers;
+
+        public RecordedRequests(String path, Map<String, List<String>> headers) {
+            this.path = path;
+            this.headers = headers;
+        }
+
+        public RecordedRequests() {
+        }
     }
 
     private static final URI uri; //uri for registration
@@ -125,7 +139,7 @@ public class SimulatorApi {
     public static void registerExpectationFromPresetsCollections(Collection<Collection<BasePreset>> presets, RegistrationStrategy registrationStrategy) {
         registerExpectationFromPresets(presets.stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList()), registrationStrategy);
+                .collect(toList()), registrationStrategy);
     }
 
     public static void registerExpectationFromPresets(Collection<BasePreset> presets, RegistrationStrategy registrationStrategy) {
@@ -152,14 +166,25 @@ public class SimulatorApi {
         The key of the map is a path, and the value is counter
      */
     public static Map<String, Long> retrieveRecordedRequestsPathCounter() {
-        List<HttpRequest> httpRequests =  retrieveRecordedRequests();
+        List<HttpRequest> httpRequests =  retrieveRecordedHttpRequests();
         return httpRequests.stream().map(x->x.path.value).collect(
                 Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
-    public static List<HttpRequest> retrieveRecordedRequests() {
+    private static List<HttpRequest> retrieveRecordedHttpRequests() {
         Response response = client.target(uri).path("retrieveRecordedRequests").request().get();
         return response.readEntity(new GenericType<List<HttpRequest>>(){});
+    }
+
+    public static List<RecordedRequests> retrieveRecordedRequests() {
+        List<HttpRequest> rawRequests =  retrieveRecordedHttpRequests();
+        return rawRequests.stream().map(request->new RecordedRequests(
+            request.path.value,
+            request.headers.stream().collect(
+                Collectors.toMap(
+                    x->x.name.value,
+                    x->x.values.stream().map(y->y.value).collect(toList())))
+        )).collect(toList());
     }
 
     private static void registerToSimulatorAndAssertSuccess(String name, Object content, RegistrationStrategy registrationStrategy) {

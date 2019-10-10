@@ -59,6 +59,12 @@ public class ExternalAppInitializer extends AppInitializer {
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
 		setDefaultTimeZoneToUTC();
+		setPartnerName();
+	}
+
+	private void setPartnerName() {
+		//org.onap.logging.filter.base.AbstractMetricLogFilter read this system property
+		System.setProperty("partnerName", "VID.VID");
 	}
 
 	//set time zone to UTC so Dates would be written to DB in UTC timezone
