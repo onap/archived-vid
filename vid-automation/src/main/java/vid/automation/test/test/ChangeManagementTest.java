@@ -23,7 +23,6 @@ import com.aventstack.extentreports.Status;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import net.javacrumbs.jsonunit.core.Option;
 import org.json.JSONException;
 import org.junit.Assert;
@@ -233,7 +231,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                     SIMPLE,
                     "/business/customers/customer/" + globalCustomerId + "/service-subscriptions/service-subscription/"
                             + serviceType + "/service-instances",
-                    "query/vnfs-fromServiceInstance-filterByCloudRegion?nfRole=vMobileDNS&cloudRegionID=092eb9e8e4b7412e8787dd091bc58e86"
+                    "query/vnfs-fromServiceInstance-filterByCloudRegion?nfRole=vMobileDNS&cloudRegionID=AAIAIC25"
             ) {
                 @Override
                 public Object getResponseBody() {

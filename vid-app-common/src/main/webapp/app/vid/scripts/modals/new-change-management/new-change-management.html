@@ -82,10 +82,10 @@
                     <select name="cloudRegion" class="form-control" ng-model="vm.changeManagement.cloudRegion"  data-tests-id="cloudRegion" id="cloudRegion"
                             data-ng-disabled="newChangeManagement.serviceType.$pristine">
                         <option value="" >select cloud Region</option>
-                        <option ng-repeat="option in cloudRegionList" value="{{option.tenantId}}"
+                        <option ng-repeat="option in cloudRegionList" value="{{option.cloudRegionId}}"
                                 data-ng-if="option.isPermitted && !isFeatureFlagCloudOwner">{{option.cloudRegionId}}
                         </option>
-                        <option ng-repeat="option in cloudRegionList" value="{{option.tenantId}}"
+                        <option ng-repeat="option in cloudRegionList" value="{{option.cloudRegionId}}"
                                 data-ng-if="option.isPermitted && isFeatureFlagCloudOwner">
                             {{option.cloudRegionId}} ({{removeVendorFromCloudOwner(option.cloudOwner).toUpperCase()}})
                         </option>
