@@ -46,12 +46,18 @@ public class SimulatorApi {
     com.fasterxml.jackson.databind.JsonMappingException: Can not find a (Map) Key deserializer for type
      [simple type, class org.mockserver.model.NottableString]
     */
-    public static class Path {
+    public static class StringWrapper {
         public String value;
     }
 
+    public static class RecordedHeaders {
+        public StringWrapper name;
+        public List<StringWrapper> values;
+    }
+
     public static class HttpRequest{
-        public Path path;
+        public StringWrapper path;
+        public List<RecordedHeaders> headers;
     }
 
     private static final URI uri; //uri for registration
@@ -146,10 +152,14 @@ public class SimulatorApi {
         The key of the map is a path, and the value is counter
      */
     public static Map<String, Long> retrieveRecordedRequestsPathCounter() {
-        Response response = client.target(uri).path("retrieveRecordedRequests").request().get();
-        List<HttpRequest> httpRequests =  response.readEntity(new GenericType<List<HttpRequest>>(){});
+        List<HttpRequest> httpRequests =  retrieveRecordedRequests();
         return httpRequests.stream().map(x->x.path.value).collect(
                 Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    }
+
+    public static List<HttpRequest> retrieveRecordedRequests() {
+        Response response = client.target(uri).path("retrieveRecordedRequests").request().get();
+        return response.readEntity(new GenericType<List<HttpRequest>>(){});
     }
 
     private static void registerToSimulatorAndAssertSuccess(String name, Object content, RegistrationStrategy registrationStrategy) {
