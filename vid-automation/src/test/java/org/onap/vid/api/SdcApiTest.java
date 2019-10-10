@@ -23,6 +23,7 @@ package org.onap.vid.api;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
@@ -36,8 +37,10 @@ import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
+import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.Assert;
@@ -46,6 +49,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
+import vid.automation.test.infra.ModelInfo;
 
 public class SdcApiTest extends BaseApiTest {
 
@@ -209,6 +213,30 @@ public class SdcApiTest extends BaseApiTest {
 
         assertThat("volumeGroups under '" + myVnf + "' must not be empty; got: " + response,
                 response.at(base + "/volumeGroups").size(), is(not(0)));
+
+    }
+
+    @Test
+    public void whenCallSdc_thenRequestRecordedInMetricsLog() {
+
+        ModelInfo modelInfo = ModelInfo.transportWithPnfsService;
+
+        registerExpectationFromPresets(ImmutableList.of(
+            new PresetSDCGetServiceToscaModelGet(modelInfo),
+            new PresetSDCGetServiceMetadataGet(modelInfo),
+            new PresetAAIGetSubscribersGet() //for read logs permissions
+        ), CLEAR_THEN_SET);
+        //registerExpectationFromPresets(getEcompPortalPresets(), APPEND);
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+            buildUri(SDC_GET_SERVICE_MODEL + modelInfo.modelVersionId), String.class);
+
+        String logLines = LoggerFormatTest.getLogLines("metrics", 15, 0, restTemplate, uri);
+
+        String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
+        assertThat("not found sdc call in metrics log with requestId "+ requestId,
+            logLines, containsString(requestId));
+
 
     }
 }
