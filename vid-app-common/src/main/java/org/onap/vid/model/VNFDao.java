@@ -41,6 +41,7 @@ public class VNFDao extends DomainVo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "VNF_DB_ID")
     @JsonIgnore
+    @Override
     public Long getId() {
         return id;
     }
