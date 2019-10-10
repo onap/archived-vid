@@ -160,7 +160,9 @@ public class WebConfig {
         String protocol = asdcClientConfiguration.getAsdcClientProtocol();
         int port = asdcClientConfiguration.getAsdcClientPort();
 
-        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth, new SyncRestClient(loggingService), loggingService);
+        return new SdcRestClient(protocol + "://" + host + ":" + port + "/", auth,
+            new SyncRestClient( loggingService, true),
+            loggingService);
     }
 
     @Bean
