@@ -151,28 +151,6 @@ public class OutgoingRequestHeadersTest {
         ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
     }
 
-    @Test(dataProvider = "msoMethods")
-    public void mso(Consumer<RestMsoImplementation> f) throws Exception {
-        final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(restMsoImplementation);
-
-        f.accept(restMsoImplementation);
-        HeadersVerifier headersVerifier = new HeadersVerifier().verifyFirstCall(mocks.getFakeBuilder());
-
-        assertThat((String) captureHeaderKeyAndReturnItsValue(mocks.getFakeBuilder(), "Authorization"), startsWith("Basic "));
-
-        //verify requestId is same in next call but invocationId is different
-
-        //given
-        final TestUtils.JavaxRsClientMocks mocks2 = setAndGetMocksInsideRestImpl(restMsoImplementation);
-
-        //when
-        f.accept(restMsoImplementation);
-        //then
-        headersVerifier.verifySecondCall(mocks2.getFakeBuilder());
-    }
-
-
-
     @Test
     public void whenProvideMsoRestCallUserId_builderHasXRequestorIDHeader() throws Exception {
 
