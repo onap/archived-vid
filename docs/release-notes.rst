@@ -129,9 +129,9 @@ VID code has been formally scanned during build time using NexusIQ and all Criti
 
 Quick Links:
 
-- `VID project page <https://wiki.onap.org/display/DW/Virtual+Infrastructure+Deployment+Project>`_
-- `Passing Badge information for VID <https://bestpractices.coreinfrastructure.org/en/projects/1658>`_
-- `Project Vulnerability Review Table for VID <https://wiki.onap.org/pages/viewpage.action?pageId=45300871>`_
+- `VID project page <https://wiki.onap.org/display/DW/Virtual+Infrastructure+Deployment+Project>`__
+- `Passing Badge information for VID <https://bestpractices.coreinfrastructure.org/en/projects/1658>`__
+- `Project Vulnerability Review Table for VID <https://wiki.onap.org/pages/viewpage.action?pageId=45300871>`__
 
 **Other**
 
@@ -284,7 +284,7 @@ New Features
 
 **Security Notes**
 
-VID code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The VID open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`_.
+VID code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The VID open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`__.
 
 Quick Links:
 
