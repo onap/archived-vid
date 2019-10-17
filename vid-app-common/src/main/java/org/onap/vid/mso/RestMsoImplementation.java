@@ -20,10 +20,6 @@
 
 package org.onap.vid.mso;
 
-import static org.onap.vid.logging.Headers.INVOCATION_ID;
-import static org.onap.vid.logging.Headers.PARTNER_NAME;
-import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
-import static org.onap.vid.utils.Logging.REQUEST_ID_HEADER_KEY;
 import static org.onap.vid.utils.Logging.getMethodCallerName;
 import static org.onap.vid.utils.Logging.getMethodName;
 
@@ -40,6 +36,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.glassfish.jersey.client.ClientProperties;
+import org.onap.logging.filter.base.MetricLogClientFilter;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.util.HttpClientMode;
 import org.onap.vid.aai.util.HttpsAuthClient;
@@ -107,12 +104,8 @@ public class RestMsoImplementation {
 
         MultivaluedHashMap<String, Object> commonHeaders = new MultivaluedHashMap();
         commonHeaders.put("Authorization",  Collections.singletonList(("Basic " + authStringEnc)));
-        commonHeaders.put(PARTNER_NAME.getHeaderName(), Collections.singletonList(PARTNER_NAME.getHeaderValue()));
 
         String requestIdValue = Logging.extractOrGenerateRequestId();
-        commonHeaders.put(REQUEST_ID_HEADER_KEY, Collections.singletonList(requestIdValue));
-        commonHeaders.put(ONAP_REQUEST_ID_HEADER_KEY, Collections.singletonList(requestIdValue));
-        commonHeaders.put(INVOCATION_ID.getHeaderName(), Collections.singletonList(INVOCATION_ID.getHeaderValue()));
 
         boolean useSsl = true;
         if ( (mso_url != null) && ( !(mso_url.isEmpty()) ) ) {
@@ -121,11 +114,13 @@ public class RestMsoImplementation {
         if (client == null) {
 
             try {
-                if ( useSsl ) {
-                    client = httpsAuthClient.getClient(HttpClientMode.WITHOUT_KEYSTORE);
-                }
+                    if ( useSsl ) {
+                        client = httpsAuthClient.getClient(HttpClientMode.WITHOUT_KEYSTORE);
+                        registerClientToMetricLogClientFilter(client);
+                    }
                 else {
                     client = HttpBasicClient.getClient();
+                    registerClientToMetricLogClientFilter(client);
                 }
             } catch (Exception e) {
                 logger.info(EELFLoggerDelegate.errorLogger,methodname + " Unable to get the SSL client");
@@ -133,6 +128,11 @@ public class RestMsoImplementation {
         }
 
         return commonHeaders;
+    }
+
+    private void registerClientToMetricLogClientFilter(Client client) {
+        MetricLogClientFilter metricLogClientFilter = new MetricLogClientFilter();
+        client.register(metricLogClientFilter);
     }
 
     public <T> RestObject<T> GetForObject(String path, Class<T> clazz) {
