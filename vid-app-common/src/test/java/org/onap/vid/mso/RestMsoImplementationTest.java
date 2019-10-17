@@ -26,10 +26,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertEquals;
 
 import io.joshworks.restclient.request.HttpRequest;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.Optional;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -99,7 +101,9 @@ public class RestMsoImplementationTest  {
         MultivaluedHashMap<String, Object> result = restMsoImplementation.initMsoClient();
 
         //  then
-        assertThat(result).containsKeys("Authorization","X-ONAP-PartnerName");
+        List<Object> authorizationHeaders = result.get("Authorization");
+        assertEquals(authorizationHeaders.size(), 1);
+        assertThat((String) authorizationHeaders.get(0)).startsWith("Basic ");
         assertThat(result).doesNotContainKey("notExistingKey");
     }
 
