@@ -160,6 +160,8 @@ public class RequestIdFilterInstalled extends BaseApiTest {
         final ImmutableList<String> logLines = ImmutableList.of(
                 LoggerFormatTest.getLogLines("audit", 20, 0, restTemplate, uri),
                 LoggerFormatTest.getLogLines("error", 20, 0, restTemplate, uri)
+            // TODO: 10/17/2019 need to check logback.xml definition related to metrics2019 log,
+            //  LoggerFormatTest.getLogLines("metrics2019", 20, 0, restTemplate, uri)
         );
 
         // Assert that audit *OR* error has the uuid
