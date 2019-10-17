@@ -50,6 +50,8 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.portalsdk.core.domain.User;
+import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
@@ -529,6 +531,34 @@ public class AaiControllerTest {
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(expectedPnfs)));
+    }
+
+    @Test
+    public void getUserID_shouldReturnOKResponse_withExtractedUserId() throws Exception {
+        String userPropertyKey = "user";
+        String expectedUserLoginId = "testUserLoginId";
+        User user = new User();
+        user.setLoginId(expectedUserLoginId);
+        given(systemPropertiesWrapper.getProperty(SystemProperties.USER_ATTRIBUTE_NAME)).willReturn(userPropertyKey);
+
+        mockMvc.perform(get("/getuserID")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .sessionAttr(userPropertyKey, user))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedUserLoginId));
+    }
+
+    @Test
+    public void getTargetProvStatus_shouldReturnProperty() throws Exception {
+        String expectedResponse = "targetProvStatus";
+        given(systemPropertiesWrapper.getProperty("aai.vnf.provstatus")).willReturn(expectedResponse);
+
+        mockMvc.perform(get("/get_system_prop_vnf_prov_status")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(expectedResponse));
     }
 
 }

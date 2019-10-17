@@ -38,8 +38,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.portalsdk.core.util.SystemProperties;
-import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.ServiceInstancesSearchResults;
@@ -201,7 +199,7 @@ public class AaiController extends RestrictedBaseController {
 
     @RequestMapping(value = "/get_system_prop_vnf_prov_status", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getTargetProvStatus() {
-        String p = SystemProperties.getProperty("aai.vnf.provstatus");
+        String p = systemPropertiesWrapper.getProperty("aai.vnf.provstatus");
         return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
