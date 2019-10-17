@@ -4,24 +4,24 @@ VID Release Notes
 =================
 
 Version: El-Alto (5.0.x)
---------------
+------------------------
 **Known Issues**
 
-  - `↗ <https://jira.onap.org/browse/VID-659>`_ VID generates always the same VF module name during scale out
+  - `↗ <https://jira.onap.org/browse/VID-659>`__ VID generates always the same VF module name during scale out
 
 **Resolved Issues**
 
-  - `↗ <https://jira.onap.org/browse/VID-520>`_ Remove "Dissociate" button for Macro-orchestrated PNF resources
-  - `↗ <https://jira.onap.org/browse/VID-517>`_ Added liquidBase for follow changes in DB
-  - `↗ <https://jira.onap.org/browse/VID-488>`_ Added "Report" popup for common diagnosable cases
-  - `↗ <https://jira.onap.org/browse/VID-358>`_ vid-mariadb-galera runs in high-availability mode
+  - `↗ <https://jira.onap.org/browse/VID-520>`__ Remove "Dissociate" button for Macro-orchestrated PNF resources
+  - `↗ <https://jira.onap.org/browse/VID-517>`__ Added liquidBase for follow changes in DB
+  - `↗ <https://jira.onap.org/browse/VID-488>`__ Added "Report" popup for common diagnosable cases
+  - `↗ <https://jira.onap.org/browse/VID-358>`__ vid-mariadb-galera runs in high-availability mode
 
 
 **Security Notes**
 
 *Fixed Security Issues*
 
-  - `↗ <https://jira.onap.org/browse/OJSI-119>`_ Closed plain-text HTTP endpoint, port 30238
+  - `↗ <https://jira.onap.org/browse/OJSI-119>`__ Closed plain-text HTTP endpoint, port 30238
 
 *Known Security Issues*
 
