@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6d7ef4a_3b92b992",
+        "filename": "epsdk-app-onap/src/main/resources/logback.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-21T21:14:39Z",
+      "side": 1,
+      "message": "I\u0027m not sure we want to add this file to onap. Please talk with Ittay about it",
+      "revId": "898d9808d86c77b84d2fb51828c85a1ca4877486",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad70a21b_cb3cc704",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestMsoImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-21T21:14:39Z",
+      "side": 1,
+      "message": "I think that the library use some system property to read the partner name. Please add it to system.properties (and also to relevant templates in internal git)",
+      "revId": "898d9808d86c77b84d2fb51828c85a1ca4877486",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06b4222a_f3b83240",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestMsoImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-21T21:14:39Z",
+      "side": 1,
+      "message": "please delete all commented out lines (we have the history in the git)",
+      "revId": "898d9808d86c77b84d2fb51828c85a1ca4877486",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a9ec285_d90316da",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestMsoImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-21T21:14:39Z",
+      "side": 1,
+      "message": "please run full pipeline on your changes.",
+      "revId": "898d9808d86c77b84d2fb51828c85a1ca4877486",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae338829_41784fc1",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/BasePresets/BaseMSOPreset.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-21T21:14:39Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "898d9808d86c77b84d2fb51828c85a1ca4877486",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "377c75c3_df4f1eb5",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/RequestIdFilterInstalled.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-21T21:14:39Z",
+      "side": 1,
+      "message": "please do not add commented out lines. You can add this to do to some JIRA ticket",
+      "revId": "898d9808d86c77b84d2fb51828c85a1ca4877486",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
