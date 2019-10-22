@@ -58,6 +58,7 @@ import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaMo
 import org.onap.vid.model.aai.AaiResponse;
 import org.onap.vid.model.mso.OperationalEnvironmentList;
 import org.onap.vid.more.LoggerFormatTest;
+import org.onap.vid.more.LoggerFormatTest.LogName;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -353,7 +354,7 @@ public class AaiApiTest extends BaseApiAaiTest {
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
 
         restTemplateErrorAgnostic.getForEntity(uri + "/aai_get_services", String.class);
-        String logLines = LoggerFormatTest.getLogLines("error", 15, 0, restTemplate, uri);
+        String logLines = LoggerFormatTest.getLogLines(LogName.error, 15, 0, restTemplate, uri);
 
         assertThat("not found in error log", logLines, containsString("Failed to parse aai response"));
         assertThat("not found in error log", logLines, containsString(notAJson));
