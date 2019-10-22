@@ -48,6 +48,7 @@ import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.more.LoggerFormatTest;
+import org.onap.vid.more.LoggerFormatTest.LogName;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.BeforeClass;
@@ -238,7 +239,7 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(
             buildUri(SDC_GET_SERVICE_MODEL + modelInfo.modelVersionId), String.class);
 
-        String logLines = LoggerFormatTest.getLogLines("metrics2019", 15, 0, restTemplate, uri);
+        String logLines = LoggerFormatTest.getLogLines(LogName.metrics2019, 15, 0, restTemplate, uri);
 
         final String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
 
