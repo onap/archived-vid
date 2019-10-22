@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
+import org.onap.logging.filter.spring.LoggingInterceptor;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
@@ -68,6 +69,8 @@ import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.togglz.core.manager.FeatureManager;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -77,7 +80,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @Configuration
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
 
     /**
      * Gets the object mapper.
@@ -215,5 +218,10 @@ public class WebConfig {
     public ExecutorService executorService() {
         int threadsCount = defaultIfNull(Integer.parseInt(SystemProperties.getProperty(VidProperties.VID_THREAD_COUNT)), 1);
         return Executors.newFixedThreadPool(threadsCount);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoggingInterceptor());
     }
 }
