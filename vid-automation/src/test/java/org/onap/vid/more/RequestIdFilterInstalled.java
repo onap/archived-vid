@@ -9,7 +9,6 @@ import static org.onap.vid.api.pProbeMsoApiTest.MSO_CREATE_CONFIGURATION;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +20,7 @@ import org.onap.simulator.presetGenerator.presets.aaf.AAFGetUrlServicePreset;
 import org.onap.vid.api.BaseApiTest;
 import org.onap.vid.api.OperationalEnvironmentControllerApiTest;
 import org.onap.vid.api.ServiceInstanceMsoApiTest;
+import org.onap.vid.more.LoggerFormatTest.LogName;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -53,7 +53,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
     }
 
     @Test
-    public void frontendApi_doGET_RequestIdReceived() throws InterruptedException {
+    public void frontendApi_doGET_RequestIdReceived() {
 
         final Pair<HttpEntity, String> responseAndUuid = makeRequest(
                 HttpMethod.GET,
@@ -61,12 +61,12 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 null,
                 OperationalEnvironmentControllerApiTest.GET_CLOUD_RESOURCES_REQUEST_STATUS
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
 
     }
 
     @Test
-    public void frontendApi_doPOST_RequestIdReceived() throws InterruptedException {
+    public void frontendApi_doPOST_RequestIdReceived() {
 
         final Pair<HttpEntity, String> responseAndUuid = makeRequest(
                 HttpMethod.POST,
@@ -74,7 +74,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 "{}",
                 ServiceInstanceMsoApiTest.DEACTIVATE_OK_JSON
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
     }
 
     @Test
@@ -85,20 +85,20 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 "/" + MSO_CREATE_CONFIGURATION,
                 "i'm not a json"
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.error, responseAndUuid);
 
     }
 
 
     @Test(groups = { "worksOnlyWithLocalhostVID" })
-    public void mopOwningEntityApi_doGET_RequestIdReceived() throws InterruptedException {
+    public void mopOwningEntityApi_doGET_RequestIdReceived() {
 
         final Pair<HttpEntity, String> responseAndUuid = makeRequest(
                 HttpMethod.GET,
                 "/" + MAINTENANCE_CATEGORY_PARAMETER + "?familyName=PARAMETER_STANDARDIZATION",
                 null
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
 
         /*
         test should be for:
@@ -113,7 +113,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
     }
 
     @Test
-    public void schedulerApi_doPOST_RequestIdReceived() throws InterruptedException {
+    public void schedulerApi_doPOST_RequestIdReceived() {
 
         final String anyInstanceId = "any instance id";
         SimulatorApi.registerExpectation(
@@ -130,7 +130,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 "/change-management/workflow/" + anyInstanceId,
                 "{}"
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
 
     }
 
@@ -139,12 +139,12 @@ public class RequestIdFilterInstalled extends BaseApiTest {
         final Pair<HttpEntity, String> responseAndUuid = makeRequest(
                 HttpMethod.GET, "/healthCheck", null
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
     }
 
-    private void assertThatUuidInResponseAndUuidIsInARecentLog(Pair<HttpEntity, String> responseAndUuid) {
+    private void assertThatUuidInResponseAndUuidIsInARecentLog(LogName logName, Pair<HttpEntity, String> responseAndUuid) {
         assertThatResponseHasUuid(responseAndUuid.getLeft(), responseAndUuid.getRight());
-        assertThatTermIsInARecentLog(responseAndUuid.getRight());
+        assertThatTermIsInARecentLog(logName, responseAndUuid.getRight());
     }
 
     private void assertThatResponseHasUuid(HttpEntity response, String uuid) {
@@ -153,17 +153,13 @@ public class RequestIdFilterInstalled extends BaseApiTest {
         // id" filter, which is great!
         Assert.assertNotNull(response);
         List<String> ecompRequestIdHeaderValues = response.getHeaders().get(ECOMP_REQUEST_ID_ECHO);
-        Assert.assertThat(ecompRequestIdHeaderValues, hasItem(equalToIgnoringCase(uuid)));
+        assertThat(ecompRequestIdHeaderValues, hasItem(equalToIgnoringCase(uuid)));
     }
 
-    private void assertThatTermIsInARecentLog(String uuid) {
-        final ImmutableList<String> logLines = ImmutableList.of(
-                LoggerFormatTest.getLogLines("audit", 20, 0, restTemplate, uri),
-                LoggerFormatTest.getLogLines("error", 20, 0, restTemplate, uri)
-        );
+    private void assertThatTermIsInARecentLog(LogName logName, String uuid) {
+        final String logLines = LoggerFormatTest.getLogLines(logName, 20, 0, restTemplate, uri);
 
-        // Assert that audit *OR* error has the uuid
-        assertThat("uuid not found in any log", logLines, hasItem(containsString(uuid)));
+        assertThat("uuid not found in any log", logLines, containsString(uuid));
     }
 
     private Pair<HttpEntity, String> makeRequest(HttpMethod httpMethod, String url, String body) {
@@ -184,9 +180,8 @@ public class RequestIdFilterInstalled extends BaseApiTest {
         SimulatorApi.registerExpectation("ecompportal_getSessionSlotCheckInterval.json", APPEND);
 
         HttpEntity entity = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = null;
-        response = restTemplateErrorAgnostic.exchange(uri + url,
-                httpMethod, entity, String.class);
+        ResponseEntity<String> response =
+            restTemplateErrorAgnostic.exchange(uri + url, httpMethod, entity, String.class);
 
         return Pair.of(response, uuid);
     }
