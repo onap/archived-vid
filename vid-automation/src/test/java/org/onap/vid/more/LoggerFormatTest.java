@@ -1,12 +1,16 @@
 package org.onap.vid.more;
 
+import static java.util.Collections.reverse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -92,6 +96,24 @@ public class LoggerFormatTest extends BaseApiTest {
                 StringUtils.countMatches(logLines, '\n') + 1,
                 is(greaterThanOrEqualTo(minRows)));
         return logLines;
+    }
+
+    /**
+     * @return Chronological-ordered list of recent log-lines of a given requestId
+     */
+    public static List<String> getRequestLogLines(String requestId, LOG_NAME logname, RestTemplate restTemplate, URI uri) {
+        String logLines = LoggerFormatTest.getLogLines(LOG_NAME.audit2019, 30, 1, restTemplate, uri);
+
+        // Split
+        List<String> lines = new ArrayList<>(Arrays.asList(logLines.split("(\\r?\\n)")));
+
+        // Filter
+        lines.removeIf(line -> !StringUtils.containsIgnoreCase(line, requestId));
+
+        // Reverse
+        reverse(lines);
+
+        return lines;
     }
 
     private JsonNode getCheckerResults(String logtype, String logLines) {
