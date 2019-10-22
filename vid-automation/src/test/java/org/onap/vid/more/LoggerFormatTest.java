@@ -24,6 +24,10 @@ public class LoggerFormatTest extends BaseApiTest {
     private final static String logChecker = System.getProperty("EELF_LOG_CHECKER", "http://my-logchecker:8888/validate");
     private final Logger logger = LogManager.getLogger(LoggerFormatTest.class);
 
+    public enum LOG_NAME {
+        audit, error, audit2019, metrics
+    }
+
     @BeforeClass
     public void login() {
         super.login();
@@ -37,34 +41,34 @@ public class LoggerFormatTest extends BaseApiTest {
     @SkipTestUntil("2019-09-24")
     @Test
     public void validateAuditLogsFormat() {
-        validateLogsFormat("audit");
+        validateLogsFormat(LOG_NAME.audit);
     }
 
     @Test
     public void validateAudit2019LogsFormat() {
-        validateLogsFormat("audit2019", "audit-ELS-2019.11", 0);
+        validateLogsFormat(LOG_NAME.audit2019, "audit-ELS-2019.11", 0);
     }
 
     @Test(enabled = false) // no total-score is returned for error-log
     public void validateErrorLogsFormat() {
-        validateLogsFormat("error");
+        validateLogsFormat(LOG_NAME.error);
     }
 
     @SkipTestUntil("2019-09-24")
     @Test
     public void validateMetricsLogsFormat() {
-        validateLogsFormat("metrics", "metric");
+        validateLogsFormat(LOG_NAME.metrics, "metric");
     }
 
-    private void validateLogsFormat(String logName) {
-        validateLogsFormat(logName, logName);
+    private void validateLogsFormat(LOG_NAME logName) {
+        validateLogsFormat(logName, logName.name());
     }
 
-    private void validateLogsFormat(String logName, String logType) {
+    private void validateLogsFormat(LOG_NAME logName, String logType) {
         validateLogsFormat(logName, logType, 0.95);
     }
 
-    private void validateLogsFormat(String logName, String logType, double score) {
+    private void validateLogsFormat(LOG_NAME logName, String logType, double score) {
 
         String logLines = getLogLines(logName);
         logger.info("logLines are: "+logLines);
@@ -78,13 +82,13 @@ public class LoggerFormatTest extends BaseApiTest {
 
     }
 
-    private String getLogLines(String logname) {
+    private String getLogLines(LOG_NAME logname) {
         return getLogLines(logname, 5000, 30, restTemplate, uri);
     }
 
-    public static String getLogLines(String logname, int maxRows, int minRows, RestTemplate restTemplate, URI uri) {
-        String logLines = restTemplate.getForObject(uri + "/logger/" + logname + "?limit={maxRows}", String.class, maxRows);
-        assertThat("expecting at least " + minRows + " rows in " + logname,
+    public static String getLogLines(LOG_NAME logname, int maxRows, int minRows, RestTemplate restTemplate, URI uri) {
+        String logLines = restTemplate.getForObject(uri + "/logger/" + logname.name() + "?limit={maxRows}", String.class, maxRows);
+        assertThat("expecting at least " + minRows + " rows in " + logname.name(),
                 StringUtils.countMatches(logLines, '\n') + 1,
                 is(greaterThanOrEqualTo(minRows)));
         return logLines;
