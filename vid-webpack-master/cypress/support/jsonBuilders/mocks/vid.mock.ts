@@ -107,14 +107,13 @@ function initAsyncInstantiation(response? : JSON, delay?: number, status?: numbe
   })
 }
 
-function mockLatestVersionForService(uuidObject :any) {
-  if(uuidObject && uuidObject.serviceUuid && uuidObject.invariantId){
+function mockLatestVersionForService(serviceUuid: string, invariantId: string) {
     cy.server().route({
-      url: Cypress.config('baseUrl') + '/aai_get_newest_model_version_by_invariant/' + uuidObject.invariantId,
+      url: Cypress.config('baseUrl') + '/aai_get_newest_model_version_by_invariant/' + invariantId,
       method: 'GET',
       status: 200,
       response: {
-        "modelVersionId": uuidObject.serviceUuid,
+        "modelVersionId": serviceUuid,
         "modelName": "SERVICE_INSTANCE_NAME",
         "modelVersion": "2.0",
         "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
@@ -122,16 +121,14 @@ function mockLatestVersionForService(uuidObject :any) {
         "modelDescription": "modelDescription"
       },
     }).as("expectLatestServiceModelUpgradeVersion")
-  }
 }
 
-function initVidMock(...args :any): void {
+function initVidMock(): void {
   initGetToMenuInfo();
   initCategoryParameter();
   initFlags();
   initAuditInfoVID();
   initAuditInfoMSO();
-  mockLatestVersionForService(args[0]);
 }
 
 

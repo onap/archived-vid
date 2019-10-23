@@ -46,7 +46,8 @@ describe('View only drawing board', function () {
       win.sessionStorage.clear();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
-      cy.initVidMock({serviceUuid:SERVICE_MODEL_ID, invariantId: SERVICE_INVARIANT_ID});
+      cy.initVidMock();
+      cy.mockLatestVersionForService(SERVICE_MODEL_ID, SERVICE_INVARIANT_ID);
       cy.initZones();
       cy.permissionVidMock();
       cy.login();

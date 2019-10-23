@@ -143,7 +143,8 @@ describe('View Edit Page', function () {
           0,
           "aai_getPortMirroringSourcePorts - empty response")
       });
-      cy.initVidMock({serviceUuid: commonUuid, invariantId: serviceInvariantId});
+      cy.initVidMock();
+      cy.mockLatestVersionForService(commonUuid, serviceInvariantId);
       cy.setReduxState();
       cy.permissionVidMock();
       cy.login();
