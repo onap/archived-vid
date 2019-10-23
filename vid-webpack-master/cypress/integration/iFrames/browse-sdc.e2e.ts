@@ -29,7 +29,7 @@ describe('Browse SDC', function () {
       const MACRO_FOR_NEW_FLOW_ID: string = '74fa72dd-012b-49c3-800d-06b12bcaf1a0';
       const CANCEL_BUTTON = "cancelButton";
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/bug616888/list-services.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/bug616888/list-services.json').then((res) => {
         jsonBuilderAndMock.basicJson(res,
           Cypress.config('baseUrl') + '/rest/models/services?distributionStatus=DISTRIBUTED',
           200,
@@ -37,7 +37,7 @@ describe('Browse SDC', function () {
           'list_services');
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/bug616888/service-with-configuration.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/bug616888/service-with-configuration.json').then((res) => {
         jsonBuilderAndMock.basicJson(res,
           Cypress.config('baseUrl') + '/rest/models/services/' + MACRO_WITH_NETWORK_ID,
           200,
@@ -45,7 +45,7 @@ describe('Browse SDC', function () {
           'MACRO_WITH_CONFIGURATION');
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/bug616888/Dror_service1806_Macro1.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/bug616888/Dror_service1806_Macro1.json').then((res) => {
         jsonBuilderAndMock.basicJson(res,
           Cypress.config('baseUrl') + '/rest/models/services/' + MACRO_FOR_NEW_FLOW_ID,
           200,
@@ -67,7 +67,7 @@ describe('Browse SDC', function () {
 
   it(`browse sdc of service without instantiationType open aLaCarte popup`, function () {
     const VERY_OLD_SERVICE_UUID: string = "09c476c7-91ae-44b8-a731-04d8d8fa3695";
-    const TEST_MOCKS_PATH="/cypress/support/jsonBuilders/mocks/jsons/bug_aLaCarteServiceWrongPopup/";
+    const TEST_MOCKS_PATH="cypress/support/jsonBuilders/mocks/jsons/bug_aLaCarteServiceWrongPopup/";
 
     const CANCEL_BUTTON = "cancelButton";
 

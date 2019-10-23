@@ -13,7 +13,7 @@ describe('Resume tests', function () {
     let jsonBuilderAAISubDetailsModel: JsonBuilder<AAISubDetailsModel> = new JsonBuilder<AAISubDetailsModel>();
     let jsonBuilderAaiServiceInstances: JsonBuilder<AaiServiceInstancesModel> = new JsonBuilder<AaiServiceInstancesModel>();
     beforeEach(() => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/defect710619/serviceE2E.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/defect710619/serviceE2E.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
           Cypress.config('baseUrl') + "/rest/models/services/**",
@@ -22,7 +22,7 @@ describe('Resume tests', function () {
       });
 
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiSubViewEditForServiceWithSomeVFModuleE2E.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiSubViewEditForServiceWithSomeVFModuleE2E.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_viewedit/**",
@@ -31,7 +31,7 @@ describe('Resume tests', function () {
           "aai-sub-view-edit")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiSubDetailsE2E.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiSubDetailsE2E.json').then((res) => {
         jsonBuilderAAISubDetailsModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_details/**",
@@ -40,7 +40,7 @@ describe('Resume tests', function () {
           "aai-sub-details")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiServiceInstancesE2E.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiServiceInstancesE2E.json').then((res) => {
         jsonBuilderAaiServiceInstances.basicJson(
           res,
           Cypress.config('baseUrl') + "/search_service_instances**",
@@ -76,7 +76,7 @@ describe('Resume tests', function () {
 
     it(`Resume Defect 710619 - with flag FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE is OFF`, function () {
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/flags.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.json').then((res) => {
         cy.server()
           .route({
             method: 'GET',
@@ -108,7 +108,7 @@ describe('Resume tests', function () {
           .getElementByDataTestsId('tenant').should('be.visible').select("bae71557c5bb4d5aac6743a4e5f1d054");
         cy.getElementByDataTestsId('confirmResumeDeleteButton').not('.button--inactive').click().then(()=> {
             cy.wait('@actualResumeCall').then(xhr => {
-              cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/defect710619/expectedResumeWithVGResults.json').then((expectedResult) => {
+              cy.readFile('cypress/support/jsonBuilders/mocks/jsons/defect710619/expectedResumeWithVGResults.json').then((expectedResult) => {
                 cy.deepCompare(xhr.request.body, expectedResult);
               });
             });

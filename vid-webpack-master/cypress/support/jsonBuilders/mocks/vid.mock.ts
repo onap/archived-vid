@@ -17,7 +17,7 @@ function preventErrorsOnLoading() : void {
 }
 
 function initGetToMenuInfo(response? : JSON) : void {
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/topMenuInfo.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/topMenuInfo.json').then((res) => {
       cy.server()
         .route({
           method: 'GET',
@@ -31,7 +31,7 @@ function initGetToMenuInfo(response? : JSON) : void {
 
 
 function initCategoryParameter(response? : JSON) : void {
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/categoryParametres.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/categoryParametres.json').then((res) => {
       cy.server()
         .route({
           method: 'GET',
@@ -43,7 +43,7 @@ function initCategoryParameter(response? : JSON) : void {
 }
 
 function initFlags(response? : JSON, delay?: number, status?: number) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/flags.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -56,7 +56,7 @@ function initFlags(response? : JSON, delay?: number, status?: number) : void {
 }
 
 function initAuditInfoVID(response? : JSON, delay?: number, status?: number) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/auditInfoVid.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/auditInfoVid.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -69,7 +69,7 @@ function initAuditInfoVID(response? : JSON, delay?: number, status?: number) : v
 }
 
 function initAuditInfoMSO(response? : JSON, delay?: number, status?: number) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/auditInfoMSO.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/auditInfoMSO.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -95,7 +95,7 @@ function initAuditInfoMSOALaCarte(response? : JSON, delay?: number, status?: num
 }
 
 function initAsyncInstantiation(response? : JSON, delay?: number, status?: number) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicAsyncInstantiation.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicAsyncInstantiation.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',

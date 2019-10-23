@@ -12,7 +12,7 @@ describe('Change management AKA VNF changes', function () {
     cy.login();
     cy.initAAIMock();
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiSubDetailsE2E.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/defect710619/aaiSubDetailsE2E.json').then((res) => {
       jsonBuilderAAISubDetailsModel.basicJson(
         res,
         Cypress.config('baseUrl') + "/aai_sub_details/e433710f-9217-458d-a79d-1c7aff376d89**",

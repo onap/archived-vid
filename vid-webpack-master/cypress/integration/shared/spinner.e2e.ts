@@ -25,7 +25,7 @@ describe('Spinner', function () {
       const timeBomb:Date = new Date(2018,6,10,0,0,0); //month 6 is July
       if (new Date(Date.now()) > timeBomb) {
 
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json').then((res) => {
 
           jsonBuilderInstantiationBuilder.basicJson(res,
             Cypress.config('baseUrl') + "/asyncInstantiation**",

@@ -24,7 +24,7 @@ describe('Welcome page', function () {
   it(`verifying VID version"`, function () {
 
     const APP_VERSION = "1902.1948";
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/version.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/version.json').then((res) => {
       jsonBuilderAndMock.basicJson(res,
         Cypress.config('baseUrl') + '/version',
         200,
