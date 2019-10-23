@@ -9,7 +9,7 @@ import {AAISubViewEditModel} from '../../support/jsonBuilders/models/aaiSubViewE
 describe('View Edit Page', function () {
   describe('test view service with network', () => {
     var jsonBuilderAAIService : JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
-    const presetsPrefix : string = '/cypress/support/jsonBuilders/mocks/jsons/';
+    const presetsPrefix : string = 'cypress/support/jsonBuilders/mocks/jsons/';
 
     var jsonBuilderAAISubViewEditModel: JsonBuilder<AAISubViewEditModel> = new JsonBuilder<AAISubViewEditModel>();
     var jsonBuilderAAISubDetailsModel: JsonBuilder<AAISubDetailsModel> = new JsonBuilder<AAISubDetailsModel>();

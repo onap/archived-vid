@@ -17,7 +17,7 @@ describe('Service With VNF network', function () {
     var jsonBuilderAaiServiceInstances: JsonBuilder<AaiServiceInstancesModel> = new JsonBuilder<AaiServiceInstancesModel>();
     var jsonBuilderEmpty: JsonBuilder<Object> = new JsonBuilder<Object>();
     beforeEach(() => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
           Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d674c44",
@@ -27,7 +27,7 @@ describe('Service With VNF network', function () {
       });
 
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForComplexService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForComplexService.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
@@ -36,7 +36,7 @@ describe('Service With VNF network', function () {
           "aai-sub-view-edit")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubDetails.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubDetails.json').then((res) => {
         jsonBuilderAAISubDetailsModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_details/**",
@@ -45,7 +45,7 @@ describe('Service With VNF network', function () {
           "aai-sub-details")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiServiceInstances.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiServiceInstances.json').then((res) => {
         jsonBuilderAaiServiceInstances.basicJson(
           res,
           Cypress.config('baseUrl') + "/search_service_instances**",

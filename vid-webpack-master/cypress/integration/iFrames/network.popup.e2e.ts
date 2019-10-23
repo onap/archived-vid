@@ -148,7 +148,7 @@ describe('Network popup', function () {
       const SERVICE_INSTANCE_ID: string = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
       const SERVICE_MODEL_ID: string = '6b528779-44a3-4472-bdff-9cd15ec93450';
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicNetworkModel.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicNetworkModel.json').then((res) => {
         jsonBuilderAndMock.basicJson(res,
           Cypress.config('baseUrl') + '/rest/models/services/6b528779-44a3-4472-bdff-9cd15ec93450',
           200,
@@ -156,7 +156,7 @@ describe('Network popup', function () {
           'initServiceModel');
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicNetworkInstance.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicNetworkInstance.json').then((res) => {
         jsonBuilderAndMock.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_get_service_instance_topology/e433710f-9217-458d-a79d-1c7aff376d89/TYLER SILVIA/f8791436-8d55-4fde-b4d5-72dd2cf13cfb",

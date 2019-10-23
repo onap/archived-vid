@@ -23,7 +23,7 @@ describe('View Edit Page', function () {
       cy.window().then((win) => {
         win.sessionStorage.clear();
       });
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
           Cypress.config('baseUrl') + "/rest/models/services/" + commonUuid,
@@ -32,7 +32,7 @@ describe('View Edit Page', function () {
           changeServiceModel)
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicFabricConfigService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
           Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d671234",
@@ -40,7 +40,7 @@ describe('View Edit Page', function () {
           "service-FabricConfig", changeFabric)
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/activeFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/activeFabricConfigService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
           Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d675678",
@@ -48,7 +48,7 @@ describe('View Edit Page', function () {
           "service-FabricConfig", changeFabric)
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/createdFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/createdFabricConfigService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
           Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d679000",
@@ -56,7 +56,7 @@ describe('View Edit Page', function () {
           "service-FabricConfig", changeFabric)
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/deactivatedFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/deactivatedFabricConfigService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
           Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d671000",
@@ -64,7 +64,7 @@ describe('View Edit Page', function () {
           "service-FabricConfig", changeFabric)
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForComplexService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForComplexService.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/3f93c7cb-2fd0-4557-9514-e189b7b04f9d",
@@ -73,7 +73,7 @@ describe('View Edit Page', function () {
           "aai-sub-view-edit")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForFabricConfigService.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f61234",
@@ -82,7 +82,7 @@ describe('View Edit Page', function () {
           "aai-sub-view-edit")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForActiveFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForActiveFabricConfigService.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f65678",
@@ -91,7 +91,7 @@ describe('View Edit Page', function () {
           "aai-sub-view-edit")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForCreatedFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForCreatedFabricConfigService.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f69000",
@@ -100,7 +100,7 @@ describe('View Edit Page', function () {
           "aai-sub-view-edit")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForDeactivatedFabricConfigService.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubViewEditForDeactivatedFabricConfigService.json').then((res) => {
         jsonBuilderAAISubViewEditModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_viewedit/**/**/**/c187e9fe-40c3-4862-b73e-84ff056205f61000",
@@ -109,7 +109,7 @@ describe('View Edit Page', function () {
           "aai-sub-view-edit")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubDetails.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubDetails.json').then((res) => {
         jsonBuilderAAISubDetailsModel.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_sub_details/**",
@@ -118,7 +118,7 @@ describe('View Edit Page', function () {
           "aai-sub-details")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiServiceInstancePnfs.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiServiceInstancePnfs.json').then((res) => {
         jsonBuilderPNF.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_get_service_instance_pnfs/**",
@@ -127,7 +127,7 @@ describe('View Edit Page', function () {
           "aai-get-service-instance-pnfs")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiServiceInstances.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiServiceInstances.json').then((res) => {
         jsonBuilderAaiServiceInstances.basicJson(
           res,
           Cypress.config('baseUrl') + "/search_service_instances**",
@@ -136,7 +136,7 @@ describe('View Edit Page', function () {
           "aai-get-service-instances")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyObjectResponse.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyObjectResponse.json').then((res) => {
         jsonBuilderEmpty.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_getPortMirroringConfigsData**",
@@ -145,7 +145,7 @@ describe('View Edit Page', function () {
           "aai_getPortMirroringConfigsDate - empty response")
       });
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyObjectResponse.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyObjectResponse.json').then((res) => {
         jsonBuilderEmpty.basicJson(
           res,
           Cypress.config('baseUrl') + "/aai_getPortMirroringSourcePorts**",

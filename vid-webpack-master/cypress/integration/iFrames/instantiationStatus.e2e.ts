@@ -16,7 +16,7 @@ describe('Instantiation status', function () {
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
       cy.initVidMock();
-      jsonBuilderInstantiationBuilder.basicMock('/cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json',
+      jsonBuilderInstantiationBuilder.basicMock('cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json',
         Cypress.config('baseUrl') + "/asyncInstantiation**",
         (res: any) => {
             asyncRes = res;
@@ -90,5 +90,5 @@ describe('Instantiation status', function () {
         cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-hide']`).should('not.exist');
         cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-audit-info']`).should('not.exist');
   });
-  
+
 });
