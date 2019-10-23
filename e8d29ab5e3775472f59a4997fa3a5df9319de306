@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a648fd7_fc990737",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/SdcApiTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-23T06:36:44Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "e8d29ab5e3775472f59a4997fa3a5df9319de306",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0310fa0e_1f993221",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/SdcApiTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-23T06:36:44Z",
+      "side": 1,
+      "message": "maybe add \"requestId\u003d\"+requestId and \"InvocationID\u003d\"+invocationIds",
+      "revId": "e8d29ab5e3775472f59a4997fa3a5df9319de306",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b007f05a_ee09013b",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/SdcApiTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-10-23T06:36:44Z",
+      "side": 1,
+      "message": "assert for invoke and invoke return",
+      "revId": "e8d29ab5e3775472f59a4997fa3a5df9319de306",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
