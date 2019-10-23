@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "32a928ad_b03f880d",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-23T05:36:02Z",
+      "side": 1,
+      "message": "yeh, but it refers directly to the logger names. \npreferred having it simple vs. defining AUDIT(\"audit\"), ERROR(\"error\"), etc\n\nwhat do you think?",
+      "parentUuid": "c48c511d_63cf6dac",
+      "revId": "80a705f88c85bd8cb18d560f8b765c5103b72661",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "65a78c60_ee8906e0",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e6ada9b7_0cd3a330",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-23T05:36:02Z",
+      "side": 1,
+      "message": "supposedly yes.\nalthough fixing the compilation-error is very straightforward. right?",
+      "parentUuid": "65a78c60_ee8906e0",
+      "revId": "80a705f88c85bd8cb18d560f8b765c5103b72661",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "959cb3f1_b501bbf3",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/RequestIdFilterInstalled.java",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2019-10-23T05:24:07Z",
       "side": 1,
       "message": "is this line not too long ?\nWhat is the maximum allowed length ?",
+      "revId": "80a705f88c85bd8cb18d560f8b765c5103b72661",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45a8b74a_d3dfb369",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/RequestIdFilterInstalled.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-23T05:36:02Z",
+      "side": 1,
+      "message": "120 chars. this line-break only improves the previous break which was in the middle of the params... :)",
+      "parentUuid": "959cb3f1_b501bbf3",
       "revId": "80a705f88c85bd8cb18d560f8b765c5103b72661",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
