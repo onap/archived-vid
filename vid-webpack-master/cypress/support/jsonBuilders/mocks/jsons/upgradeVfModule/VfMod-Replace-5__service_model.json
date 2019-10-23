@@ -1,0 +1,445 @@
+{
+  "service": {
+    "uuid": "06c415d8-afc2-4bcb-a131-e4db4b8e96ce",
+    "invariantUuid": "b3a1a119-dede-4ed0-b077-2a617fa519a3",
+    "name": "xbi test module replace",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "test module replacement feature",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "legacy",
+      "modelCategory": "other",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {
+    "xbi test module replace 0": {
+      "uuid": "fb0fea03-db45-4617-a2a8-0910309e5c86",
+      "invariantUuid": "5626a5ec-7dce-4cc1-b025-bdb7abb2f058",
+      "description": "VSP for testing module replacement feature",
+      "name": "xbi test module replace",
+      "version": "1.0",
+      "customizationUuid": "84ea2603-b892-4b63-b7ad-e53b902eacdb",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_function": "OFFLINE-CHARGING-GATEWAY",
+        "vnf_name": "zolson5avocg01",
+        "eth1_ip_range": "10.0.0.10",
+        "ocgmgr_image_name": "vOCG_MGR_SNAP_20180130"
+      },
+      "type": "VF",
+      "modelCustomizationName": "xbi test module replace 0",
+      "vfModules": {
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_002..module-4": {
+          "uuid": "8dbb2188-219a-4cc9-872a-71fa9378533c",
+          "invariantUuid": "702cd75b-6a3f-41cd-b3a5-d7dede4896a1",
+          "customizationUuid": "c9c86c56-02d6-434c-a8fd-3b82cc4b328d",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_002..module-4",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_002..module-4",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_002",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
+          "uuid": "04b21d26-9780-4956-8329-b22b049329f4",
+          "invariantUuid": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+          "customizationUuid": "3f1f0fcb-8a88-4612-a794-3912613ed9e8",
+          "description": null,
+          "name": "XbiTestModuleReplace..base_ocg..module-0",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_ocg",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_001..module-5": {
+          "uuid": "cfe1b135-db45-471f-bfe2-ea20cc1f298c",
+          "invariantUuid": "6773daf8-0721-4e6d-bc71-e581c5c974ba",
+          "customizationUuid": "818fb135-7a12-460e-8c5d-67bdfc50cdee",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_001..module-5",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_001..module-5",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_001",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+          "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+          "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+          "customizationUuid": "9d428546-00c6-468b-94de-2d4e136459cd",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgmgr..module-1",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgmgr",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_004..module-2": {
+          "uuid": "19a16a0d-4724-4ce1-a1ea-0687a7b3c5af",
+          "invariantUuid": "e0c67ac6-c10e-4235-9c1c-5de1ed115955",
+          "customizationUuid": "876c3f6f-406c-4919-9b67-754f224ebc24",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_004..module-2",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_004..module-2",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_004",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_003..module-3": {
+          "uuid": "7becdf28-d128-453c-90de-7687040ddd90",
+          "invariantUuid": "1d100136-ffec-421e-9fca-0511f0269e6b",
+          "customizationUuid": "617f2842-6402-41f3-bd77-cc9af33a1798",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_003..module-3",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_003..module-3",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_003",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        }
+      },
+      "volumeGroups": {
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_002..module-4": {
+          "uuid": "8dbb2188-219a-4cc9-872a-71fa9378533c",
+          "invariantUuid": "702cd75b-6a3f-41cd-b3a5-d7dede4896a1",
+          "customizationUuid": "c9c86c56-02d6-434c-a8fd-3b82cc4b328d",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_002..module-4",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_002..module-4",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_002",
+            "baseModule": false
+          },
+          "inputs": {}
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_001..module-5": {
+          "uuid": "cfe1b135-db45-471f-bfe2-ea20cc1f298c",
+          "invariantUuid": "6773daf8-0721-4e6d-bc71-e581c5c974ba",
+          "customizationUuid": "818fb135-7a12-460e-8c5d-67bdfc50cdee",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_001..module-5",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_001..module-5",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_001",
+            "baseModule": false
+          },
+          "inputs": {}
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+          "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+          "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+          "customizationUuid": "9d428546-00c6-468b-94de-2d4e136459cd",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgmgr..module-1",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgmgr",
+            "baseModule": false
+          },
+          "inputs": {}
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_004..module-2": {
+          "uuid": "19a16a0d-4724-4ce1-a1ea-0687a7b3c5af",
+          "invariantUuid": "e0c67ac6-c10e-4235-9c1c-5de1ed115955",
+          "customizationUuid": "876c3f6f-406c-4919-9b67-754f224ebc24",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_004..module-2",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_004..module-2",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_004",
+            "baseModule": false
+          },
+          "inputs": {}
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_003..module-3": {
+          "uuid": "7becdf28-d128-453c-90de-7687040ddd90",
+          "invariantUuid": "1d100136-ffec-421e-9fca-0511f0269e6b",
+          "customizationUuid": "617f2842-6402-41f3-bd77-cc9af33a1798",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgapp_003..module-3",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgapp_003..module-3",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgapp_003",
+            "baseModule": false
+          },
+          "inputs": {}
+        }
+      },
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_002..module-4": {
+      "uuid": "8dbb2188-219a-4cc9-872a-71fa9378533c",
+      "invariantUuid": "702cd75b-6a3f-41cd-b3a5-d7dede4896a1",
+      "customizationUuid": "c9c86c56-02d6-434c-a8fd-3b82cc4b328d",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_002..module-4",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_002..module-4",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_002",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
+      "uuid": "04b21d26-9780-4956-8329-b22b049329f4",
+      "invariantUuid": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+      "customizationUuid": "3f1f0fcb-8a88-4612-a794-3912613ed9e8",
+      "description": null,
+      "name": "XbiTestModuleReplace..base_ocg..module-0",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_ocg",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_001..module-5": {
+      "uuid": "cfe1b135-db45-471f-bfe2-ea20cc1f298c",
+      "invariantUuid": "6773daf8-0721-4e6d-bc71-e581c5c974ba",
+      "customizationUuid": "818fb135-7a12-460e-8c5d-67bdfc50cdee",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_001..module-5",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_001..module-5",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_001",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+      "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+      "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+      "customizationUuid": "9d428546-00c6-468b-94de-2d4e136459cd",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgmgr..module-1",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgmgr",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_004..module-2": {
+      "uuid": "19a16a0d-4724-4ce1-a1ea-0687a7b3c5af",
+      "invariantUuid": "e0c67ac6-c10e-4235-9c1c-5de1ed115955",
+      "customizationUuid": "876c3f6f-406c-4919-9b67-754f224ebc24",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_004..module-2",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_004..module-2",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_004",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_003..module-3": {
+      "uuid": "7becdf28-d128-453c-90de-7687040ddd90",
+      "invariantUuid": "1d100136-ffec-421e-9fca-0511f0269e6b",
+      "customizationUuid": "617f2842-6402-41f3-bd77-cc9af33a1798",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_003..module-3",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_003..module-3",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_003",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    }
+  },
+  "volumeGroups": {
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_002..module-4": {
+      "uuid": "8dbb2188-219a-4cc9-872a-71fa9378533c",
+      "invariantUuid": "702cd75b-6a3f-41cd-b3a5-d7dede4896a1",
+      "customizationUuid": "c9c86c56-02d6-434c-a8fd-3b82cc4b328d",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_002..module-4",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_002..module-4",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_002",
+        "baseModule": false
+      },
+      "inputs": {}
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_004..module-2": {
+      "uuid": "19a16a0d-4724-4ce1-a1ea-0687a7b3c5af",
+      "invariantUuid": "e0c67ac6-c10e-4235-9c1c-5de1ed115955",
+      "customizationUuid": "876c3f6f-406c-4919-9b67-754f224ebc24",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_004..module-2",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_004..module-2",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_004",
+        "baseModule": false
+      },
+      "inputs": {}
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_001..module-5": {
+      "uuid": "cfe1b135-db45-471f-bfe2-ea20cc1f298c",
+      "invariantUuid": "6773daf8-0721-4e6d-bc71-e581c5c974ba",
+      "customizationUuid": "818fb135-7a12-460e-8c5d-67bdfc50cdee",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_001..module-5",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_001..module-5",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_001",
+        "baseModule": false
+      },
+      "inputs": {}
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgapp_003..module-3": {
+      "uuid": "7becdf28-d128-453c-90de-7687040ddd90",
+      "invariantUuid": "1d100136-ffec-421e-9fca-0511f0269e6b",
+      "customizationUuid": "617f2842-6402-41f3-bd77-cc9af33a1798",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgapp_003..module-3",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgapp_003..module-3",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgapp_003",
+        "baseModule": false
+      },
+      "inputs": {}
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+      "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+      "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+      "customizationUuid": "9d428546-00c6-468b-94de-2d4e136459cd",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgmgr..module-1",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgmgr",
+        "baseModule": false
+      },
+      "inputs": {}
+    }
+  },
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}

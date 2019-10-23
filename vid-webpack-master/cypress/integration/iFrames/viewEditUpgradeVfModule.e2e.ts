@@ -79,7 +79,8 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
       mockAsyncBulkResponse();
       cy.initGetAAISubDetails();
-      cy.initVidMock({serviceUuid: serviceUuid, invariantId: serviceInvariantId});
+      cy.initVidMock();
+      cy.mockLatestVersionForService(serviceUuid, serviceInvariantId);
       cy.setReduxState();
       cy.permissionVidMock();
       cy.login();
@@ -126,6 +127,74 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
   });
 
+  describe('More UI tests', () => {
+
+    beforeEach(() => {
+      cy.window().then((win) => {win.sessionStorage.clear();});
+      cy.setTestApiParamToVNF();
+      cy.initVidMock();
+      cy.login();
+    });
+
+    afterEach(() => {
+      cy.screenshot();
+    });
+
+    it(`Upgrade a VFModule: another case`, function () {
+
+      const serviceType = 'Emanuel';
+      const subscriberId = 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb';
+      const serviceModelId = '06c415d8-afc2-4bcb-a131-e4db4b8e96ce';
+      const serviceInstanceId = '6196ab1f-2349-4b32-9b6c-cffeb0ccc79c';
+      const serviceInvariantUuid = "b3a1a119-dede-4ed0-b077-2a617fa519a3";
+
+      cy.initDrawingBoardUserPermission();
+
+      cy.route(`**/rest/models/services/${serviceModelId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/upgradeVfModule/VfMod-Replace-5__service_model.json')
+      .as('serviceModel2');
+
+      cy.route(`**/aai_get_service_instance_topology/${subscriberId}/${serviceType}/${serviceInstanceId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/upgradeVfModule/VfMod-Replace-5__service_instance.json')
+      .as('serviceInstance2');
+
+      cy.route(`**/aai_get_newest_model_version_by_invariant/${serviceInvariantUuid}`,
+        {
+          "modelVersionId": "d9a5b318-187e-476d-97f7-a15687a927a9",
+          "modelName": "xbi test module replace",
+          "modelVersion": "2.0",
+          "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+          "resourceVersion": "1571769586156",
+          "modelDescription": "test module replacement feature",
+          "orchestrationType": null
+        }
+      ).as("newestModelVersion2");
+
+      cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
+
+      upgradeTheVFM('node-04b21d26-9780-4956-8329-b22b049329f4-xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0');
+
+      mockAsyncBulkResponse();
+      cy.getDrawingBoardDeployBtn().click();
+
+      // cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+      //   expect(Object(xhr.request.body).action).to.equal("None_Upgrade");
+      //   expect(Object(xhr.request.body).vnfs['VNF2_INSTANCE_ID'].action).to.equal("None_Upgrade");
+      //   expect(Object(xhr.request.body).vnfs['VNF2_INSTANCE_ID'].vfModules['dc229cd8-c132-4455-8517-5c1787c18b14']['3ef042c4-259f-45e0-9aba-0989bd8d1cc5'].action).to.equal("None_Upgrade");
+      // });
+
+      cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+        cy.readFile('../vid-app-common/src/test/resources/payload_jsons/vfmodule/replace_vfmodule_fe_input__cypress_e2e.json').then((expectedResult) => {
+          // expectedResult.vnfGroups[GROUP_NAME_TO_DEPLOY].trackById = vnfGroup.trackById;
+          cy.deepCompare(xhr.request.body, expectedResult);
+        });
+      });
+
+    });
+
+  });
+
+
   function mockAsyncBulkResponse() {
     cy.server().route({
       url: Cypress.config('baseUrl') + '/asyncInstantiation/bulk',
@@ -149,8 +218,8 @@ describe('View Edit Page: Upgrade VFModule', function () {
     }).as("expectLatestServiceModelUpgradeVersion")
   }
 
-  function upgradeTheVFM(): Chainable<any> {
-    return cy.getElementByDataTestsId('node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14-menu-btn').click()
+  function upgradeTheVFM(treeNodeId = 'node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14'): Chainable<any> {
+    return cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
     .drawingBoardTreeClickOnContextMenuOptionByName("Upgrade");
   }
 
