@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea46c627_c4c96de7",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/RestMsoImplementationTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-23T12:03:37Z",
+      "side": 1,
+      "message": "assertThat(authorizationHeaders, hasSize(1));",
+      "revId": "1abef9160a91785baf4a2e6c756b630c7bb32b12",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
