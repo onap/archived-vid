@@ -11,7 +11,7 @@ declare namespace Cypress {
 }
 
 function initGetSubscribers(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/subscribers.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/subscribers.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -23,7 +23,7 @@ function initGetSubscribers(response? : JSON) : void {
 }
 
 function initAaiGetFullSubscribers(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/subscribers.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/subscribers.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -35,7 +35,7 @@ function initAaiGetFullSubscribers(response? : JSON) : void {
 }
 
 function initGetAAISubDetails(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiSubDetails.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubDetails.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -47,7 +47,7 @@ function initGetAAISubDetails(response? : JSON) : void {
 }
 
 function initAlaCarteService(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/a-la-carteService.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/a-la-carteService.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -63,7 +63,7 @@ function initAlaCarteService(response? : JSON) : void {
 
 
 function initTenants(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/tenants.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/tenants.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -75,7 +75,7 @@ function initTenants(response? : JSON) : void {
 }
 
 function initAAIServices(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiServices.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiServices.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -87,7 +87,7 @@ function initAAIServices(response? : JSON) : void {
 }
 
 function initZones(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/zones.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/zones.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',
@@ -124,7 +124,7 @@ function initActiveNetworks(response? : JSON) : void {
 }
 
 function initActiveVPNs(response? : JSON) : void {
-  cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/aaiActiveVPNs.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiActiveVPNs.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',

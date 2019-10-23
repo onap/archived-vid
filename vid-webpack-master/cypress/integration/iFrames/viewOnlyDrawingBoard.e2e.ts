@@ -63,7 +63,7 @@ describe('View only drawing board', function () {
     const SERVICE_INSTANCE_ID: string = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
     const SERVICE_MODEL_ID: string = '6b528779-44a3-4472-bdff-9cd15ec93450';
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
       jsonBuilderInstantiationBuilder.basicJson(
         res,
         Cypress.config('baseUrl') + "/rest/models/services/6b528779-44a3-4472-bdff-9cd15ec93450",
@@ -86,7 +86,7 @@ describe('View only drawing board', function () {
     const SERVICE_INSTANCE_ID: string = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
     const SERVICE_MODEL_ID: string = '6b528779-44a3-4472-bdff-9cd15ec93450';
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
       jsonBuilderAndMock.basicJson(
         res,
         Cypress.config('baseUrl') + "/rest/models/services/6b528779-44a3-4472-bdff-9cd15ec93450",

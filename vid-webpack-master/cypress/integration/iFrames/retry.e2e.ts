@@ -10,7 +10,7 @@ describe('Retry Page', function () {
       win.sessionStorage.clear();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
-      jsonBuilderAndMock.basicMock('/cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json',
+      jsonBuilderAndMock.basicMock('cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json',
         Cypress.config('baseUrl') + "/rest/models/services/6b528779-44a3-4472-bdff-9cd15ec93450");
       cy.initVidMock();
       cy.initZones();
@@ -115,7 +115,7 @@ describe('Retry Page', function () {
       res.vnfs["2017-488_PASQUALE-vPE 0"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"]["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot"].isFailed = true;
       res.vnfs["2017-488_PASQUALE-vPE 0"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"]["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot"].action = 'Create';
 
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/responceForFailedInstance.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/responceForFailedInstance.json').then((res) => {
         jsonBuilderAndMock.basicJson(
           res,
           Cypress.config('baseUrl') + "/asyncInstantiation/auditStatusForRetry**",

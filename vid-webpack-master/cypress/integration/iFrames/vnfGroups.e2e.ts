@@ -81,11 +81,11 @@ describe('Vnf Groups', function () {
           serviceModel = res;
         });
 
-        cy.readFile('./cypress/support/jsonBuilders/mocks/jsons/vnfGroupBasicServiceInstance.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/vnfGroupBasicServiceInstance.json').then((res) => {
           basicServiceInstance = res;
         });
 
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((reduxRes) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((reduxRes) => {
 
           reduxRes.service.serviceHierarchy[SERVICE_MODEL_ID] = serviceModel;
           reduxRes.service.serviceInstance[SERVICE_MODEL_ID] = basicServiceInstance;
@@ -137,11 +137,11 @@ describe('Vnf Groups', function () {
           serviceModel = res;
         });
 
-        cy.readFile('./cypress/support/jsonBuilders/mocks/jsons/vnfGroupBasicServiceInstance.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/vnfGroupBasicServiceInstance.json').then((res) => {
           basicServiceInstance = res;
         });
 
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((reduxRes) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((reduxRes) => {
 
           reduxRes.service.serviceHierarchy[SERVICE_MODEL_ID] = serviceModel;
           reduxRes.service.serviceInstance[SERVICE_MODEL_ID] = basicServiceInstance;
@@ -696,7 +696,7 @@ describe('Vnf Groups', function () {
           )
         });
 
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((reduxRes) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((reduxRes) => {
 
           reduxRes.service.serviceHierarchy[SERVICE_MODEL_ID] = serviceModel;
 

@@ -45,7 +45,7 @@ describe('Vnf popup', function () {
     });
 
     it('should display min/max', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].properties.min_instances = 100;
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].properties.max_instances = 200;
         cy.setReduxState(<any>res);
@@ -59,7 +59,7 @@ describe('Vnf popup', function () {
     });
 
     it('should display default values for undefined min/max', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].properties.min_instances = null;
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].properties.max_instances = null;
         cy.setReduxState(<any>res);
@@ -73,7 +73,7 @@ describe('Vnf popup', function () {
      });
 
     it('fill all fields of vnf popup', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].min = null;
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].max = null;
         cy.setReduxState(<any>res);

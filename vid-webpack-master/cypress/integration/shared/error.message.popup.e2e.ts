@@ -24,7 +24,7 @@ describe('Error message popup', function () {
 
     it('error should display on api error', function () {
       // adding call with delay of 2000 sec
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json').then((res) => {
         jsonBuilderInstantiationBuilder.basicJson(res, Cypress.config('baseUrl') + "/asyncInstantiation**", 500,0, "error 500 asyncInstantiation");
 
         cy.openIframe('app/ui/#/instantiationStatus');

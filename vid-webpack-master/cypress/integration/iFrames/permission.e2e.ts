@@ -29,7 +29,7 @@ describe('Permissions ',  ()=> {
 
     cy.initDrawingBoardUserPermission(<any>{isEditPermitted : false});
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
       jsonBuilderAndMock.basicJson(
         res,
         Cypress.config('baseUrl') + "/rest/models/services/6b528779-44a3-4472-bdff-9cd15ec93450",
@@ -61,7 +61,7 @@ describe('Permissions ',  ()=> {
 
     cy.initDrawingBoardUserPermission();
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
       jsonBuilderAndMock.basicJson(
         res,
         Cypress.config('baseUrl') + "/rest/models/services/6b528779-44a3-4472-bdff-9cd15ec93450",

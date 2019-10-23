@@ -62,7 +62,7 @@ describe('search existing instance', function () {
         response: searchServiceInstancesResponse
       }).as('search_service_instances');
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceModels/serviceForNewViewEdit.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceModels/serviceForNewViewEdit.json').then((res) => {
       jsonBuilderAndMock.basicJson(
         res,
         Cypress.config('baseUrl') + `/rest/models/services/${SERVICE_MODEL_VERSION_ID}`,

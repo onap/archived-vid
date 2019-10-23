@@ -22,7 +22,7 @@ describe('Drawing board', function () {
   describe('duplicate', () => {
 
     it('delete vf module reduce the number of vf modules ', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle');
@@ -40,7 +40,7 @@ describe('Drawing board', function () {
     });
 
     it('create new  vf module  update the number of vf modules ', () => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle');
@@ -58,7 +58,7 @@ describe('Drawing board', function () {
     });
 
     it('duplicate vnf multi - should update number of vf modules on left side and disable duplicate when created max', () => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle')
@@ -267,7 +267,7 @@ describe('Drawing board', function () {
     });
 
     xit('should display service model name', () => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.get('#service-model-name').contains('action-data');
@@ -275,7 +275,7 @@ describe('Drawing board', function () {
     });
 
     it('should display icon and message if no vnf and vnfModules', () => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         res.global.drawingBoardStatus = "CREATE";
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
@@ -290,7 +290,7 @@ describe('Drawing board', function () {
     });
 
     it('should show alert on remove vnf with modules', () => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0');
@@ -309,7 +309,7 @@ describe('Drawing board', function () {
     });
 
     it('should not show alert on remove vnf without modules', () => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-0903e1c0-8e03-4936-b5c2-260653b96413-2017-388_PASQUALE-vPE 1');
@@ -318,7 +318,7 @@ describe('Drawing board', function () {
     });
 
     it('should show <Automatically Assigned> if ecomp is true', () => {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-388_PASQUALE-vPE 0').click({force: true});
@@ -338,7 +338,7 @@ describe('Drawing board', function () {
     it('should show model name if ecomp is false', () => {
       const vnfModelKey: string = '2017-488_PASQUALE-vPE 0',
         vnfModelName: string = '2017-488_PASQUALE-vPE';
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs[vnfModelKey].properties.ecomp_generated_naming = 'false';
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
@@ -358,7 +358,7 @@ describe('Drawing board', function () {
     describe('add instance open a popup', () => {
 
       it('should add vfModule with popup with empty required instance name', () => {
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
           res.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].properties.ecomp_generated_naming = "false";
           res.service.serviceInstance["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].vfModules = [];
           cy.setReduxState(<any>res);
@@ -369,7 +369,7 @@ describe('Drawing board', function () {
       });
 
       it('should add vfModule with popup if empty required dynamic input', () => {
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
           res.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1"].inputs["pasqualevpe0_bandwidth"].default = '';
           res.service.serviceInstance["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].vfModules = [];
           cy.setReduxState(<any>res);
@@ -385,7 +385,7 @@ describe('Drawing board', function () {
 
     describe('show warning and disable deploy button on vnf missing data', () => {
       it('show warning on vnf, and disable button, remove warning and enable button after edit', () => {
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceWithVnfAndVfModules.json').then((res) => {
           res.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].existingVNFCounterMap['0903e1c0-8e03-4936-b5c2-260653b96413'] = 1;
           res.service.serviceInstance["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].validationCounter = 1;
           res.service.serviceInstance["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-388_PASQUALE-vPE 1"] = {
@@ -426,7 +426,7 @@ describe('Drawing board', function () {
     describe('vnf should automatically displayed or not according its min value and its vf-modules min value', () => {
 
       it('vnf with min_instances value > 0 without required VF modules, should be created automatically without children', () => {
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
           res.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].properties['min_instances'] = 1;
           res.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"].properties['initialCount'] = 0;
           res.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"].properties['initialCount'] = 0;
@@ -445,7 +445,7 @@ describe('Drawing board', function () {
       });
 
       it('vnf with min_instances value > 1 with required VF modules, should be created automatically with children only once', () => {
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
           res.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].properties['min_instances'] = 3;
           cy.setReduxState(<any>res);
           cy.fillServicePopup().then(() => {
@@ -461,7 +461,7 @@ describe('Drawing board', function () {
 
 
       it('vnf with min_instances value = 0 with required VF modules should be created automatically with its children', () => {
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
           res.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].vnfs["2017-488_PASQUALE-vPE 0"].properties['min_instances'] = 0;
           cy.setReduxState(<any>res);
           cy.fillServicePopup().then(() => {
@@ -478,7 +478,7 @@ describe('Drawing board', function () {
 
 
       it('vnf without min_instances and without required VF modules, should not exist automatically in right side', () => {
-        cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
+        cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicRedux.json').then((res) => {
           cy.setReduxState(<any>res);
           cy.fillServicePopup().then(() => {
             cy.visit("welcome.htm").then(() => {

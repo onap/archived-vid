@@ -13,7 +13,7 @@ describe('Audit information modal', function () {
         win.sessionStorage.clear();
         cy.setReduxState();
         cy.preventErrorsOnLoading();
-        jsonBuilderInstantiationBuilder.basicMock('/cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json',
+        jsonBuilderInstantiationBuilder.basicMock('cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json',
           Cypress.config('baseUrl') + "/asyncInstantiation**");
         cy.initAAIMock();
         cy.initVidMock();

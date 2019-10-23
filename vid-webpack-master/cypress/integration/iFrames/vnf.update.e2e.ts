@@ -37,7 +37,7 @@ describe('Delete vnf instance', function () {
       response: "[]",
     }).as("expectedPostAsyncInstantiation");
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json').then((res) => {
       res.service.vidNotions.instantiationType = 'ALaCarte';
       jsonBuilderAndMock.basicJson(
         res,

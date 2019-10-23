@@ -18,7 +18,7 @@ describe('Service popup', function () {
     });
 
     it('a-la-carte service instantiation popup has all required fields ', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
         res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.vidNotions.instantiationType = 'ALaCarte';
         cy.setReduxState(<any>res1);
         cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
@@ -33,7 +33,7 @@ describe('Service popup', function () {
     });
 
     it('a-la-carte service instantiation popup has Instance name as required', function () {
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
         res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.vidNotions.instantiationType = 'ALaCarte';
         let isEcompNaming = false;
         res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.serviceEcompNaming = isEcompNaming.toString();
@@ -75,7 +75,7 @@ describe('Service popup', function () {
 
     it('should display error when api return empty data', function () {
       cy.initCategoryParameter(<any>{});
-      cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
         res1.service.categoryParameters.owningEntityList = [];
         cy.setReduxState(<any>res1);
         cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
