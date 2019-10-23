@@ -69,7 +69,7 @@ export class ViewEditResolver implements Resolve<Observable<boolean>> {
   };
 
   setIsALaCarte(service: any, instantiationType) :void{
-    service.isALaCarte = instantiationType === 'ALaCarte';
+    service.isALaCarte = instantiationType === 'A-la-carte';
   };
 
 }

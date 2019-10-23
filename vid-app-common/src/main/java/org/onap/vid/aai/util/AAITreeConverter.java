@@ -24,6 +24,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.A_LA_CARTE;
+import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.CLIENT_CONFIG;
 
 import java.util.Map;
 import java.util.Objects;
@@ -63,7 +64,7 @@ public class AAITreeConverter {
         serviceInstance.setOrchStatus(rootNode.getOrchestrationStatus());
         serviceInstance.setGlobalSubscriberId(globalCustomerId);
         serviceInstance.setSubscriptionServiceType(serviceType);
-        serviceInstance.setIsALaCarte(StringUtils.equals(instantiationType, A_LA_CARTE));
+        serviceInstance.setIsALaCarte(StringUtils.equals(instantiationType, A_LA_CARTE) || (StringUtils.equals(instantiationType, CLIENT_CONFIG)) || ((StringUtils.equals(instantiationType, CLIENT_CONFIG)) && !isInvariantUuidInList(rootNode.getModelInvariantId())) ? true : false);
 
         serviceInstance.setModelInfo(createModelInfo(rootNode));
 

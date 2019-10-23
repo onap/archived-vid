@@ -169,7 +169,7 @@ export class ServicePopupService implements GenericPopupInterface {
   };
 
   setIsALaCarte = (formValues: any, instantiationType) => {
-    formValues.isALaCarte = instantiationType === 'ALaCarte';
+    formValues.isALaCarte = instantiationType === 'A-la-carte';
   };
 
   setTestApi = (formValues: any) =>{
