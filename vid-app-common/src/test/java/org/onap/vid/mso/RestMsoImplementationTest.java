@@ -22,6 +22,7 @@
 package org.onap.vid.mso;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -30,6 +31,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import io.joshworks.restclient.request.HttpRequest;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.Optional;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -39,6 +41,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.JerseyInvocation;
+import org.hamcrest.MatcherAssert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.onap.vid.aai.util.HttpClientMode;
@@ -99,7 +102,9 @@ public class RestMsoImplementationTest  {
         MultivaluedHashMap<String, Object> result = restMsoImplementation.initMsoClient();
 
         //  then
-        assertThat(result).containsKeys("Authorization","X-ONAP-PartnerName");
+        List<Object> authorizationHeaders = result.get("Authorization");
+        MatcherAssert.assertThat(authorizationHeaders, hasSize(1));
+        assertThat((String) authorizationHeaders.get(0)).startsWith("Basic ");
         assertThat(result).doesNotContainKey("notExistingKey");
     }
 
