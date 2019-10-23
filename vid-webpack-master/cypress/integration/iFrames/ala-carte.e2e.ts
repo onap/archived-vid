@@ -19,7 +19,8 @@ describe('A la carte', function () {
         cy.setReduxState();
         cy.preventErrorsOnLoading();
         cy.initAAIMock();
-        cy.initVidMock({serviceUuid:SERVICE_ID, invariantId: SERVICE_INVARIANT_ID});
+        cy.initVidMock();
+        cy.mockLatestVersionForService(SERVICE_ID, SERVICE_INVARIANT_ID);
         cy.initAlaCarteService();
         cy.initZones();
         cy.login();
