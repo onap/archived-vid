@@ -1,0 +1,752 @@
+{
+  "service-type": "TYLER SILVIA",
+  "resource-version": "1494001841964",
+  "relationship-list": {
+    "relationship": [
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/AAIAIC25/tenants/tenant/092eb9e8e4b7412e8787dd091bc58e86",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "AAIAIC25"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "092eb9e8e4b7412e8787dd091bc58e86"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "USP-SIP-IC-24335-T-01"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/bae71557c5bb4d5aac6743a4e5f1d054",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "bae71557c5bb4d5aac6743a4e5f1d054"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN Web Tool-15-D-testalexandria"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/229bcdc6eaeb4ca59d55221141d01f8e",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "229bcdc6eaeb4ca59d55221141d01f8e"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN Web Tool-15-D-STTest2"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/1178612d2b394be4834ad77f567c0af2",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "1178612d2b394be4834ad77f567c0af2"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN Web Tool-15-D-SSPtestcustome"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/19c5ade915eb461e8af52fb2fd8cd1f2",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "19c5ade915eb461e8af52fb2fd8cd1f2"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN Web Tool-15-D-UncheckedEcopm"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/de007636e25249238447264a988a927b",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "de007636e25249238447264a988a927b"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN Web Tool-15-D-dfsdf"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/62f29b3613634ca6a3065cbe0e020c44",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "62f29b3613634ca6a3065cbe0e020c44"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN/SMS-16-D-Multiservices1"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/649289e30d3244e0b48098114d63c2aa",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "649289e30d3244e0b48098114d63c2aa"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN Web Tool-15-D-SSPST66"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/3f21eeea6c2c486bba31dab816c05a32",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "3f21eeea6c2c486bba31dab816c05a32"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AIN Web Tool-15-D-ASSPST47"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/f60ce21d3ee6427586cff0d22b03b773",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "f60ce21d3ee6427586cff0d22b03b773"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "CESAR-100-D-sspjg67246"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/8774659e425f479895ae091bb5d46560",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "8774659e425f479895ae091bb5d46560"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "CESAR-100-D-sspjg68359"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/624eb554b0d147c19ff8885341760481",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "624eb554b0d147c19ff8885341760481"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-D-iftach"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/214f55f5fc414c678059c383b03e4962",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "214f55f5fc414c678059c383b03e4962"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "CESAR-100-D-sspjg612401"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/c90666c291664841bb98e4d981ff1db5",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "c90666c291664841bb98e4d981ff1db5"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "CESAR-100-D-sspjg621340"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/ce5b6bc5c7b348e1bf4b91ac9a174278",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "ce5b6bc5c7b348e1bf4b91ac9a174278"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "sspjg621351cloned"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/b386b768a3f24c8e953abbe0b3488c02",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "b386b768a3f24c8e953abbe0b3488c02"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-D-eteancomp"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/dc6c4dbfd225474e9deaadd34968646c",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "dc6c4dbfd225474e9deaadd34968646c"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-T-SPFET"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/02cb5030e9914aa4be120bd9ed1e19eb",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "02cb5030e9914aa4be120bd9ed1e19eb"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-X-eeweww"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/f2f3830e4c984d45bcd00e1a04158a79",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "f2f3830e4c984d45bcd00e1a04158a79"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "CESAR-100-D-spjg61909"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/05b91bd5137f4929878edd965755c06d",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "05b91bd5137f4929878edd965755c06d"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "CESAR-100-D-sspjg621512cloned"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/7002fbe8482d4a989ddf445b1ce336e0",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "7002fbe8482d4a989ddf445b1ce336e0"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-X-vdr"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/4008522be43741dcb1f5422022a2aa0b",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "4008522be43741dcb1f5422022a2aa0b"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-D-ssasa"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/f44e2e96a1b6476abfda2fa407b00169",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "f44e2e96a1b6476abfda2fa407b00169"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-D-PFNPT"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/b69a52bec8a84669a37a1e8b72708be7",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "b69a52bec8a84669a37a1e8b72708be7"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-X-vdre"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/fac7d9fd56154caeb9332202dcf2969f",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "fac7d9fd56154caeb9332202dcf2969f"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "AINWebTool-15-X-NONPODECOMP"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/2d34d8396e194eb49969fd61ffbff961",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "2d34d8396e194eb49969fd61ffbff961"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "DN5242-Nov16-T5"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/cb42a77ff45b48a8b8deb83bb64acc74",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "cb42a77ff45b48a8b8deb83bb64acc74"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "ro-T11"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/fa45ca53c80b492fa8be5477cd84fc2b",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "fa45ca53c80b492fa8be5477cd84fc2b"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "ro-T112"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/4914ab0ab3a743e58f0eefdacc1dde77",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "4914ab0ab3a743e58f0eefdacc1dde77"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "DN5242-Nov21-T1"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/d0a3e3f2964542259d155a81c41aadc3",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "d0a3e3f2964542259d155a81c41aadc3"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "test-hvf6-09"
+          }
+        ]
+      },
+      {
+        "related-to": "tenant",
+        "related-link": "/aai/v11/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/hvf6/tenants/tenant/cbb99fe4ada84631b7baf046b6fd2044",
+        "relationship-data": [
+          {
+            "relationship-key": "cloud-region.cloud-owner",
+            "relationship-value": "irma-aic"
+          },
+          {
+            "relationship-key": "cloud-region.cloud-region-id",
+            "relationship-value": "hvf6"
+          },
+          {
+            "relationship-key": "tenant.tenant-id",
+            "relationship-value": "cbb99fe4ada84631b7baf046b6fd2044"
+          }
+        ],
+        "related-to-property": [
+          {
+            "property-key": "tenant.tenant-name",
+            "property-value": "DN5242-Nov16-T3"
+          }
+        ]
+      }
+    ]
+  }
+}
