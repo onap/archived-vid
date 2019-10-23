@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.is;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_AAIAIC25_TO_ATT_AIC;
 import static org.testng.AssertJUnit.assertEquals;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
-import static vid.automation.test.test.ALaCarteflowTest.AIC;
+import static vid.automation.test.test.ALaCarteFlowTest.AIC;
 
 public class VlanTagSubInterfaceTest extends CreateInstanceDialogBaseTest {
 

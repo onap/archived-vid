@@ -5,20 +5,30 @@ import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOw
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_SOME_LEGACY_REGION_TO_ATT_AIC;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.SOME_LEGACY_REGION;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
+import static vid.automation.test.infra.ModelInfo.aLaCarteVnfGroupingService;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIModelsByInvariantIdGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleOldViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteOldViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVolumeGroupOldViewEdit;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -34,7 +44,7 @@ import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
 
 
-public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
+public class ALaCarteFlowTest extends CreateInstanceDialogBaseTest {
     static final String SUBSCRIBER = "Emanuel";
     static final String SERVICE_NAME = "ggghhh";
     static final String SERVICE_ID = "537d3eb0-b7ab-4fe8-a438-6166ab6af49b";
@@ -99,7 +109,86 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
             ServiceModel serviceInstance = new ServicesService().getServiceModel(MODEL_UUID);
             addVFModule("Vsp1710pid298109Vwinifred..mmsc_mod1_ltm..module-8", vfModuleName, AAIAIC_25, AIC,
                     TENANT, FALSE, MDT_1, getCurrentUser().tenants, serviceInstance);
+        });
+    }
 
+    @DataProvider
+    public static Object[][] msoTestApiSingleOption() {
+        return new Object[][]{
+            {"VNF_API (old)", DEFAULT_TEST_API_VALUE}
+        };
+    }
+
+//    public List<BasePreset> createPresetsForServiceInstanceTopologyExpectationOnAAIAndGetVnf1Name(String serviceInstanceId) {
+//
+//        final String RELATED_VNF_UUID1 = "a9f1b136-11ed-471f-8d77-f123c7501a01";
+//
+//        PresetAAIStandardQueryGet relatedVnf1 =
+//            PresetAAIStandardQueryGet.ofVnf(RELATED_VNF_UUID1, "7a6ee536-f052-46fa-aa7e-2fca9d674c44", "7a6ee536-f052-46fa-aa7e-2fca9d674c44",
+//                "", ImmutableMultimap.of(), defaultPlacement());
+//
+//        final PresetAAIStandardQueryGet serviceInstance =
+//            PresetAAIStandardQueryGet.ofServiceInstance(serviceInstanceId, aLaCarteVnfGroupingService.modelVersionId, aLaCarteVnfGroupingService.modelInvariantId, "e433710f-9217-458d-a79d-1c7aff376d89", "TYLER SILVIA",
+//                ImmutableMultimap.<String, String>builder()
+//                    .build()
+//            );
+//
+//        serviceInstanceToDeleteName = serviceInstance.getInstanceName();
+//        vnfGroupInstanceId = vnfGroup1.getInstanceId();
+//        vnf1Name = vnfGroup1.getInstanceName();
+//        return ImmutableList.of(
+//            serviceInstance,
+//            vnfGroup1, vnfGroup2, relatedVnf1, relatedVnf2, relatedVnf3);
+//    }
+//
+//    public void testDeleteVnfGroupWithMembers() {
+//        String serviceInstanceId = "b9af7c1d-a2d7-4370-b747-1b266849ad32";
+//        String serviceReqId = "3cf5ea96-6b34-4945-b5b1-4a7798b1caf2";
+//        //createPresetsForServiceInstanceTopologyExpectationOnAAIAndGetVnf1Name init serviceInstanceToDeleteName
+//        final List<BasePreset> presetsForGetTopology = createPresetsForServiceInstanceTopologyExpectationOnAAIAndGetVnf1Name(serviceInstanceId);
+//        final ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names = ImmutableMap.of(SERVICE_NAME, serviceInstanceToDeleteName);
+//        SimulatorApi.registerExpectationFromPresetsCollections(ImmutableList.of(
+//            presetsForSearchAndEdit(aLaCarteVnfGroupingService, subscriberId, serviceType, serviceInstanceId),
+//            presetsForGetTopology,
+//            ImmutableList.of(
+//                new PresetAAIModelsByInvariantIdGet(ImmutableList.of(aLaCarteVnfGroupingService.modelInvariantId)),
+//                new PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService(names, 0, serviceReqId)
+//            )),
+//            CLEAR_THEN_SET);
+//        registerMsoPresetForRemoveInstanceGroupMember();
+//    }
+
+    @FeatureTogglingTest(value = Features.FLAG_FLASH_MORE_ACTIONS_BUTTON_IN_OLD_VIEW_EDIT)
+    @Test
+    private void testUpgradeVfModule(String msoTestApiOption, String msoTestApiValue) {
+        withMsoTestApiConfiguration(msoTestApiOption, msoTestApiValue, () -> {
+            final String REQUEST_ID = "dbe54591-c8ed-46d3-abc7-d3a24873bddd";
+            final String MODEL_UUID = "d205e01d-e5da-4e68-8c52-f95cb0607959";
+
+            String vfModuleName = viewEditPage.generateInstanceName(Constants.ViewEdit.VF_MODULE_INSTANCE_NAME_PREFIX);
+
+            SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
+                    PRESET_MDT1_TO_ATT_NC,
+                    new PresetMSOCreateVfModuleOldViewEdit(
+                            REQUEST_ID,
+                            BaseMSOPreset.DEFAULT_INSTANCE_ID,
+                            SERVICE_ID,
+                            VNF_ID,
+                            vfModuleName,
+                            msoTestApiValue,
+                            DEFAULT_CLOUD_OWNER)),
+                    SimulatorApi.RegistrationStrategy.APPEND);
+
+
+            SimulatorApi.registerExpectation(A_LACARTE_FLOW_GET_ORCHESTRATION,
+                    ImmutableMap.of(ORCHESTRATION_REQUEST_ID, REQUEST_ID, STATUS_MESSAGE, Constants.ViewEdit.VF_MODULE_CREATED_SUCCESSFULLY_TEXT,
+                            REQUEST_TYPE, CREATE), APPEND);
+            GeneralUIUtils.ultimateWait();
+            goToInstance();
+            ServiceModel serviceInstance = new ServicesService().getServiceModel(MODEL_UUID);
+            addVFModule("Vsp1710pid298109Vwinifred..mmsc_mod1_ltm..module-8", vfModuleName, AAIAIC_25, AIC,
+                    TENANT, FALSE, MDT_1, getCurrentUser().tenants, serviceInstance);
+            viewEditPage.moveToNewViewEditScreen();
         });
     }
 

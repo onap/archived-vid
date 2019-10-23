@@ -32,7 +32,7 @@ import static vid.automation.test.infra.ModelInfo.transportWithPnfsService;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-import static vid.automation.test.test.ALaCarteflowTest.AIC;
+import static vid.automation.test.test.ALaCarteFlowTest.AIC;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

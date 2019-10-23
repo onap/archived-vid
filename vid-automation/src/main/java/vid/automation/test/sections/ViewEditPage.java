@@ -122,6 +122,15 @@ public class ViewEditPage extends VidBasePage {
         return this;
     }
 
+    public void moveToNewViewEditScreen() {
+        clickMoreActionsButton(1);
+    }
+
+    private VidBasePage clickMoreActionsButton(int customTimeout) {
+        GeneralUIUtils.clickOnElementByTestId(Constants.MORE_ACTIONS_BUTTON, customTimeout);
+        return this;
+    }
+
 //    public ViewEditPage selectLineOfBusiness(String lineOfBusiness) {
 //        try {
 //            SelectOption.selectFirstTwoOptionsFromMultiselectById(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
