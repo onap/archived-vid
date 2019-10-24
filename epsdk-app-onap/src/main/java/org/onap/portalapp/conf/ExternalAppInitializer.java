@@ -37,11 +37,16 @@
  */
 package org.onap.portalapp.conf;
 
+import static org.onap.vid.controller.LoggerController.VID_IS_STARTED;
+
 import java.util.TimeZone;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import org.onap.logging.filter.base.AbstractAuditLogFilter;
+import org.onap.logging.filter.base.AbstractMetricLogFilter;
 import org.onap.portalsdk.core.conf.AppInitializer;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.slf4j.LoggerFactory;
 
 public class ExternalAppInitializer extends AppInitializer {
 
@@ -60,6 +65,13 @@ public class ExternalAppInitializer extends AppInitializer {
 		super.onStartup(servletContext);
 		setDefaultTimeZoneToUTC();
 		setPartnerName();
+		logVidIsStarted();
+	}
+
+	//mark in logs that vid is started.
+	private void logVidIsStarted() {
+		LoggerFactory.getLogger(AbstractMetricLogFilter.class).info(VID_IS_STARTED);
+		LoggerFactory.getLogger(AbstractAuditLogFilter.class).info(VID_IS_STARTED);
 	}
 
 	private void setPartnerName() {
