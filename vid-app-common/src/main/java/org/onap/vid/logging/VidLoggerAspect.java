@@ -32,7 +32,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.onap.logging.ref.slf4j.ONAPLogConstants;
 import org.onap.portalsdk.core.logging.aspect.EELFLoggerAdvice;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.service.AppService;
@@ -40,7 +39,6 @@ import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.controller.ControllersUtils;
 import org.onap.vid.utils.SystemPropertiesWrapper;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -92,7 +90,7 @@ public class VidLoggerAspect {
         HttpServletRequest httpServletRequest = httpServletRequestOrNull(joinPoint);
         fixSetRequestBasedDefaultsIntoGlobalLoggingContext(httpServletRequest,
             joinPoint.getSignature().getDeclaringType().getName());
-        addRequestIdToMdcForMetricFilter(httpServletRequest);
+
         fixServerFqdnInMDC();
 
         //Execute the actual method
@@ -109,14 +107,6 @@ public class VidLoggerAspect {
         }
 
         return result;
-    }
-
-    //prepare MDC for org.onap.logging.filter.base.AbstractMetricLogFilter
-    private void addRequestIdToMdcForMetricFilter(HttpServletRequest httpServletRequest) {
-        if (httpServletRequest!=null) {
-            String requestId = UserUtils.getRequestId(httpServletRequest);
-            MDC.put(ONAPLogConstants.MDCs.REQUEST_ID, requestId);
-        }
     }
 
     // Set the status code into MDC *before* the metrics log is written by advice.after()
@@ -166,7 +156,6 @@ public class VidLoggerAspect {
             String loginId = controllersUtils.extractUserId(httpServletRequest);
 
             logger.setRequestBasedDefaultsIntoGlobalLoggingContext(httpServletRequest, appName, requestId, loginId);
-
         }
     }
 

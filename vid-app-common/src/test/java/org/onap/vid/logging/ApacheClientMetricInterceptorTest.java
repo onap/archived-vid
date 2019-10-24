@@ -67,7 +67,7 @@ public class ApacheClientMetricInterceptorTest {
 
     @Test
     public void testGetResponseCode() {
-        assertEquals(interceptor.getResponseCode(response), "ok");
+        assertEquals(interceptor.getResponseCode(response), "200");
     }
 
     @Test

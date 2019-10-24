@@ -8,6 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
@@ -27,7 +28,6 @@ import org.onap.vid.api.BaseApiTest;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import vid.automation.test.infra.SkipTestUntil;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RecordedRequests;
 
@@ -50,7 +50,6 @@ public class LoggerFormatTest extends BaseApiTest {
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
     }
 
-    @SkipTestUntil("2019-09-24")
     @Test
     public void validateAuditLogsFormat() {
         validateLogsFormat(LogName.audit);
@@ -66,10 +65,14 @@ public class LoggerFormatTest extends BaseApiTest {
         validateLogsFormat(LogName.error);
     }
 
-    @SkipTestUntil("2019-09-24")
     @Test
     public void validateMetricsLogsFormat() {
         validateLogsFormat(LogName.metrics, "metric");
+    }
+
+    @Test
+    public void validateMetrics2019LogsFormat() {
+        validateLogsFormat(LogName.metrics2019, "metric-ELS-2019.11");
     }
 
     private void validateLogsFormat(LogName logName) {
@@ -86,12 +89,12 @@ public class LoggerFormatTest extends BaseApiTest {
         logger.info("logLines are: "+logLines);
         JsonNode response = getCheckerResults(logType, logLines);
         logger.info("Response is:" + response.toString());
-        double fieldscore = response.path("summary").path("score").path("fieldscore").asDouble();
-        double overall = response.path("summary").path("score").path("overallscore").asDouble();
 
-        assertThat(fieldscore, is(greaterThanOrEqualTo(score)));
-        assertThat(overall, is(greaterThanOrEqualTo(score)));
+        int total_records = response.path("summary").path("total_records").asInt();
+        int valid_records = response.path("summary").path("valid_records").asInt();
 
+        assertThat(total_records, greaterThan(30)); //make sure we have at least 30 total records
+        assertThat((double)valid_records/total_records, is(greaterThanOrEqualTo(score)));
     }
 
     private String getLogLines(LogName logname) {
