@@ -7,6 +7,7 @@ declare namespace Cypress {
     initSearchVNFMemebers : typeof  initSearchVNFMemebers;
     initActiveNetworks : typeof  initActiveNetworks;
     initActiveVPNs : typeof  initActiveVPNs;
+    initGetAAISubDetails : typeof  initGetAAISubDetails;
   }
 }
 
@@ -40,9 +41,9 @@ function initGetAAISubDetails(response? : JSON) : void {
       .route({
         method: 'GET',
         status: 200,
-        url: Cypress.config('baseUrl') + "/aai_sub_details**",
+        url: Cypress.config('baseUrl') + "/aai_sub_details/**",
         response: response ? response : res
-      })
+      }).as('aai-sub-details')
   });
 }
 
@@ -149,6 +150,7 @@ Cypress.Commands.add('initAlaCarteService', initAlaCarteService);
 Cypress.Commands.add('initZones', initZones);
 Cypress.Commands.add('initTenants', initTenants);
 Cypress.Commands.add('initAaiGetFullSubscribers', initAaiGetFullSubscribers);
+Cypress.Commands.add('initGetAAISubDetails', initGetAAISubDetails);
 Cypress.Commands.add('initSearchVNFMemebers', initSearchVNFMemebers);
 Cypress.Commands.add('initActiveNetworks', initActiveNetworks);
 Cypress.Commands.add('initActiveVPNs', initActiveVPNs);
