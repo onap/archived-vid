@@ -62,7 +62,6 @@ import org.onap.vid.utils.Logging;
 
 
 public class SdcRestClientITTest {
-    private static final String UUID_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     private static final String[] SUPPORTED_SSL_VERSIONS = {"TLSv1", "TLSv1.2"};
     private static StubServerUtil stubServer;
     private static SdcRestClient sdcRestClient;

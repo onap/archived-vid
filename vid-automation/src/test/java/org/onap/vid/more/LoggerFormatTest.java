@@ -1,9 +1,16 @@
 package org.onap.vid.more;
 
 import static java.util.Collections.reverse;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
+import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;
@@ -22,6 +29,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.SkipTestUntil;
 import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.services.SimulatorApi.RecordedRequests;
 
 public class LoggerFormatTest extends BaseApiTest {
 
@@ -102,7 +110,7 @@ public class LoggerFormatTest extends BaseApiTest {
      * @return Chronological-ordered list of recent log-lines of a given requestId
      */
     public static List<String> getRequestLogLines(String requestId, LogName logname, RestTemplate restTemplate, URI uri) {
-        String logLines = LoggerFormatTest.getLogLines(LogName.audit2019, 30, 1, restTemplate, uri);
+        String logLines = LoggerFormatTest.getLogLines(logname, 30, 1, restTemplate, uri);
 
         // Split
         List<String> lines = new ArrayList<>(Arrays.asList(logLines.split("(\\r?\\n)")));
@@ -114,6 +122,43 @@ public class LoggerFormatTest extends BaseApiTest {
         reverse(lines);
 
         return lines;
+    }
+
+    public static void assertHeadersAndMetricLogs(RestTemplate restTemplate, URI uri, String requestId, String path, int requestsSize) {
+        List<String> logLines =
+            getRequestLogLines(requestId, LogName.metrics2019, restTemplate, uri);
+
+        List<RecordedRequests> requests = retrieveRecordedRequests();
+        List<RecordedRequests> underTestRequests =
+            requests.stream().filter(x->x.path.startsWith(path)).collect(toList());
+
+        assertThat(underTestRequests, hasSize(requestsSize));
+
+        underTestRequests.forEach(request-> {
+            assertThat("X-ONAP-RequestID", request.headers.get("X-ONAP-RequestID"), contains(requestId));
+            assertThat("X-ECOMP-RequestID", request.headers.get("X-ECOMP-RequestID"), contains(requestId));
+            assertThat("X-ONAP-PartnerName", request.headers.get("X-ONAP-PartnerName"), contains("VID.VID"));
+        });
+
+        underTestRequests.forEach(request->{
+
+            List<String> invocationIds = request.headers.get("X-ONAP-InvocationID");
+            assertThat(invocationIds, hasSize(1));
+
+            String invocationId = invocationIds.get(0);
+            assertThat("request id  and invocation id must be found in exactly two rows",
+                logLines,
+                containsInRelativeOrder(
+                    allOf(
+                        containsString("RequestID="+requestId),
+                        containsString("InvocationID="+ invocationId),
+                        containsString("Invoke")),
+                    allOf(
+                        containsString("RequestID="+requestId),
+                        containsString("InvocationID="+ invocationId),
+                        containsString("InvokeReturn"))
+                ));
+        });
     }
 
     private JsonNode getCheckerResults(String logtype, String logLines) {

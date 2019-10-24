@@ -24,8 +24,6 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseSDCPreset.SDC_ROOT_PATH;
@@ -35,20 +33,15 @@ import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APP
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 import static vid.automation.test.services.SimulatorApi.registerExpectation;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 import static vid.automation.test.utils.ReadFile.loadResourceAsString;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.vid.more.LoggerFormatTest;
-import org.onap.vid.more.LoggerFormatTest.LogName;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.BeforeClass;
@@ -57,7 +50,6 @@ import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
 import vid.automation.test.infra.ModelInfo;
-import vid.automation.test.services.SimulatorApi.RecordedRequests;
 
 public class SdcApiTest extends BaseApiTest {
 
@@ -234,30 +226,13 @@ public class SdcApiTest extends BaseApiTest {
             new PresetSDCGetServiceMetadataGet(modelInfo),
             new PresetAAIGetSubscribersGet() //for read logs permissions
         ), CLEAR_THEN_SET);
-        //registerExpectationFromPresets(getEcompPortalPresets(), APPEND);
 
         ResponseEntity<String> response = restTemplate.getForEntity(
             buildUri(SDC_GET_SERVICE_MODEL + modelInfo.modelVersionId), String.class);
 
-        String logLines = LoggerFormatTest.getLogLines(LogName.metrics2019, 15, 0, restTemplate, uri);
-
         final String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
 
-        List<RecordedRequests> requests = retrieveRecordedRequests();
-        List<RecordedRequests> sdcRequests = requests.stream().filter(x->x.path.startsWith(SDC_ROOT_PATH)).collect(Collectors.toList());
-        assertEquals(sdcRequests.size(), 2);
-        sdcRequests.forEach(request->{
-            assertThat("X-ONAP-RequestID", request.headers.get("X-ONAP-RequestID"), contains(requestId));
-            assertThat("X-ECOMP-RequestID", request.headers.get("X-ECOMP-RequestID"), contains(requestId));
-            assertThat("X-ONAP-PartnerName", request.headers.get("X-ONAP-PartnerName"), contains("VID.VID"));
-            List<String> invocationIds = request.headers.get("X-ONAP-InvocationID");
-            assertEquals(invocationIds.size(), 1);
-            List<String> sdcMetricsLogLines =
-                Stream.of(logLines.split("\n"))
-                    .filter(x->x.contains(SDC_ROOT_PATH) && x.contains(requestId) && x.contains(invocationIds.get(0)))
-                    .collect(Collectors.toList());
-            assertThat("not found sdc call in metrics log with requestId and invocationId" + requestId,
-                sdcMetricsLogLines.size(), is(equalTo(2)));
-        });
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId, SDC_ROOT_PATH, 2);
     }
+
 }
