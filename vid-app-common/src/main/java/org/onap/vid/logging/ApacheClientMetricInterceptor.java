@@ -51,7 +51,7 @@ public abstract class ApacheClientMetricInterceptor extends AbstractMetricLogFil
 
     @Override
     protected String getResponseCode(HttpResponse httpResponse) {
-        return httpResponse.getStatusLine().getReasonPhrase();
+        return String.valueOf(httpResponse.getStatusLine().getStatusCode());
     }
 
     @Override
