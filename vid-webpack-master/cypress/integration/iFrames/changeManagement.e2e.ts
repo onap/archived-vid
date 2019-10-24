@@ -23,7 +23,7 @@ describe('Change management AKA VNF changes', function () {
         "aai-sub-details")
     });
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/flags.json').then(() => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.json').then(() => {
       cy.server()
         .route({
           method: 'GET',
@@ -38,7 +38,7 @@ describe('Change management AKA VNF changes', function () {
         }).as('initFlags');
     });
 
-    cy.readFile('/cypress/support/jsonBuilders/mocks/jsons/get_vnf_data.json').then((res) => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/get_vnf_data.json').then((res) => {
       jsonBuilderVnfData.basicJson(
         res,
         aaiGetVNFDataUrl + '**',
