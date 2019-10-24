@@ -1,0 +1,556 @@
+{
+  "results": [
+    {
+      "id": "3400916992",
+      "node-type": "service-instance",
+      "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/66b13cb4-b575-449f-aa45-ffbfe005c7b1",
+      "properties": {
+        "service-instance-id": "66b13cb4-b575-449f-aa45-ffbfe005c7b1",
+        "service-instance-name": "CHARLOTTE_preload_1710_0914",
+        "model-invariant-id": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+        "model-version-id": "1525f534-99a2-408f-b847-ff636997d352",
+        "resource-version": "1505856078810",
+        "orchestration-status": "Active"
+      },
+      "related-to": [
+        {
+          "id": "10207440",
+          "node-type": "service-subscription",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
+        },
+        {
+          "id": "3481829392",
+          "node-type": "generic-vnf",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/0c465dd3-4151-4da9-92a2-541bb3174cec"
+        }
+      ]
+    },
+    {
+      "id": "890175488",
+      "node-type": "model-ver",
+      "url": "/aai/v17/service-design-and-creation/models/model/1525f534-99a2-408f-b847-ff636997d352model-vers/model-ver/modelVersionKey2-369-as988q",
+      "properties":       {
+        "model-version-id": "1525f534-99a2-408f-b847-ff636997d352",
+        "model-name": "vnfc8",
+        "model-version": "1.1",
+        "resource-version": "1563820653007"
+      },
+      "related-to": [      {
+        "id": "3400916992",
+        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+        "node-type": "service-instance",
+        "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/66b13cb4-b575-449f-aa45-ffbfe005c7b1"
+      }]
+    },
+    {
+      "id": "3771572432",
+      "node-type": "service-instance",
+      "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/f195837b-ef28-42c3-8dea-47ad37eaed95",
+      "properties": {
+        "service-instance-id": "f195837b-ef28-42c3-8dea-47ad37eaed95",
+        "service-instance-name": "CHARLOTTE_preload_1710_0914_0920",
+        "model-invariant-id": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+        "model-version-id": "3915de55-a904-4cc6-8fc3-86f8bc316616",
+        "resource-version": "1505964829466",
+        "orchestration-status": "Active"
+      },
+      "related-to": [
+        {
+          "id": "10207440",
+          "node-type": "service-subscription",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
+        },
+        {
+          "id": "3484520464",
+          "node-type": "generic-vnf",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1"
+        }
+      ]
+    },
+    {
+      "id": "3775807704",
+      "node-type": "service-instance",
+      "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/9ad4ac55-a5e0-4b49-95c0-b2d846abf700",
+      "properties": {
+        "service-instance-id": "9ad4ac55-a5e0-4b49-95c0-b2d846abf700",
+        "service-instance-name": "CHARLOTTE_preload_1710_0914_100417",
+        "model-invariant-id": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+        "model-version-id": "3915de55-a904-4cc6-8fc3-86f8bc316616",
+        "resource-version": "1507144734087",
+        "orchestration-status": "Active"
+      },
+      "related-to": [
+        {
+          "id": "10207440",
+          "node-type": "service-subscription",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
+        },
+        {
+          "id": "3783459064",
+          "node-type": "generic-vnf",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/54626a59-ec0d-4fa9-b0c2-08d008688165"
+        }
+      ]
+    },
+    {
+      "id": "4178862184",
+      "node-type": "service-instance",
+      "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/599c7247-b083-447c-b6b1-0cdd5170dfd2",
+      "properties": {
+        "service-instance-id": "599c7247-b083-447c-b6b1-0cdd5170dfd2",
+        "service-instance-name": "CHARLOTTE_preload_1710_0914_1010",
+        "model-invariant-id": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+        "model-version-id": "3915de55-a904-4cc6-8fc3-86f8bc316616",
+        "resource-version": "1507664240411",
+        "orchestration-status": "Active"
+      },
+      "related-to": [
+        {
+          "id": "10207440",
+          "node-type": "service-subscription",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
+        },
+        {
+          "id": "3892133896",
+          "node-type": "generic-vnf",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/d74503d8-abab-49c6-ba48-a6211eee9b7a"
+        }
+      ]
+    },
+    {
+      "id": "3008335920",
+      "node-type": "service-instance",
+      "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08",
+      "properties": {
+        "service-instance-id": "97315a05-e6f3-4c47-ae7e-d850c327aa08",
+        "service-instance-name": "CHARLOTTE_preload_1710_0914_0927",
+        "model-invariant-id": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+        "model-version-id": "3915de55-a904-4cc6-8fc3-86f8bc316616",
+        "resource-version": "1506527653053",
+        "orchestration-status": "Active"
+      },
+      "related-to": [
+        {
+          "id": "10207440",
+          "node-type": "service-subscription",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson"
+        },
+        {
+          "id": "3418898432",
+          "node-type": "generic-vnf",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/8e5e3ba1-3fe6-4d86-966e-f9f03dab4855"
+        }
+      ]
+    },
+    {
+      "id": "3481829392",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/0c465dd3-4151-4da9-92a2-541bb3174cec",
+      "properties": {
+        "vnf-id": "0c465dd3-4151-4da9-92a2-541bb3174cec",
+        "vnf-name": "Eoghan Fausto",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1505856137206",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "afacccf6-397d-45d6-b5ae-94c39734b168",
+        "model-customization-id": "b54689f8-45c5-4be2-9e91-f033e028feec",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vWheeler",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "3285635208",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/0c465dd3-4151-4da9-92a2-541bb3174cec/vf-modules/vf-module/d49713bf-1bff-4eab-bed1-a8f1bb83aa98"
+        },
+        {
+          "id": "3441209432",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/0c465dd3-4151-4da9-92a2-541bb3174cec/vf-modules/vf-module/b8397fec-cf13-40b3-be8f-7d0912506419"
+        },
+        {
+          "id": "3687522312",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/0c465dd3-4151-4da9-92a2-541bb3174cec/vf-modules/vf-module/fd098a52-09be-4c48-a9e9-a565d1b39db3"
+        },
+        {
+          "id": "3400916992",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/66b13cb4-b575-449f-aa45-ffbfe005c7b1"
+        },
+        {
+          "id": "3477385312",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/8627b971-1032-420f-a044-6802f0ab6976"
+        }
+      ]
+    },
+    {
+      "id": "3484520464",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1",
+      "properties": {
+        "vnf-id": "c2d2d389-fa00-4fb4-a269-e46d495719e1",
+        "vnf-name": "Odell Romana",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1505964996823",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "76e908e0-5201-44d2-a3e2-9e6128d05820",
+        "model-customization-id": "c00e8fc8-af39-4da8-8c78-a7efc2fe5994",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vMobileDNS",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "3447107680",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/c4711b5c-742e-4d03-8146-bff763f69fbd"
+        },
+        {
+          "id": "3448307712",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/0ba3fcdd-0536-4ac7-a9ec-8d8622db7fb2"
+        },
+        {
+          "id": "3692179528",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/6bb843eb-ef84-43b1-83b4-3154a7f9928c"
+        },
+        {
+          "id": "3771588816",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/a4c008c6-cac0-4e3f-928f-90fa37dc8c4b"
+        },
+        {
+          "id": "3904077944",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/eecb619c-a173-4ead-bf48-d4d09cbbdd5e"
+        },
+        {
+          "id": "4027855088",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/1e29424e-2dca-45ac-b1df-59a8f74d0bc1"
+        },
+        {
+          "id": "4390871192",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/b185220a-7f63-4b29-867d-1452813a4f09"
+        },
+        {
+          "id": "4450529432",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/c2d2d389-fa00-4fb4-a269-e46d495719e1/vf-modules/vf-module/7a0c4b98-b3cc-490c-bbab-e2d7f169f2d7"
+        },
+        {
+          "id": "3771572432",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/f195837b-ef28-42c3-8dea-47ad37eaed95"
+        }
+      ]
+    },
+    {
+      "id": "3783459064",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/54626a59-ec0d-4fa9-b0c2-08d008688165",
+      "properties": {
+        "vnf-id": "54626a59-ec0d-4fa9-b0c2-08d008688165",
+        "vnf-name": "Dominika Fionnbharr",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1507144948937",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "76e908e0-5201-44d2-a3e2-9e6128d05820",
+        "model-customization-id": "c00e8fc8-af39-4da8-8c78-a7efc2fe5994",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vMobileDNS",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "3775807704",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/9ad4ac55-a5e0-4b49-95c0-b2d846abf700"
+        }
+      ]
+    },
+    {
+      "id": "3892133896",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/d74503d8-abab-49c6-ba48-a6211eee9b7a",
+      "properties": {
+        "vnf-id": "d74503d8-abab-49c6-ba48-a6211eee9b7a",
+        "vnf-name": "CHARLOTTE_PreloadTest_VNF",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1507664288548",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "76e908e0-5201-44d2-a3e2-9e6128d05820",
+        "model-customization-id": "c00e8fc8-af39-4da8-8c78-a7efc2fe5994",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vMobileDNS",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "4178862184",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/599c7247-b083-447c-b6b1-0cdd5170dfd2"
+        }
+      ]
+    },
+    {
+      "id": "1507690314",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/385548e2-3f31-4900-9437-317d0346e49a",
+      "properties": {
+        "vnf-id": "385548e2-3f31-4900-9437-317d0346e49a",
+        "vnf-name": "Senga Gabrielle",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "7788675952902",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "b217c612-7fcf-484c-861b-df0a5c4b5bcb",
+        "model-customization-id": "ce15d245-763c-4079-ac82-fe93007adb69",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vMobileDNS",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "3664617648",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/8e5e3ba1-3fe6-4d86-966e-f9f03dab4855/vf-modules/vf-module/788cde64-c288-4971-8e8c-77973c5009dc"
+        },
+        {
+          "id": "3008335920",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+        },
+        {
+          "id": "3477385312",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/8627b971-1032-420f-a044-6802f0ab6976"
+        }
+      ]
+    },
+    {
+      "id": "5278880615",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/0465e048-92a4-4a7f-bfe7-de39b32de4bd",
+      "properties": {
+        "vnf-id": "0465e048-92a4-4a7f-bfe7-de39b32de4bd",
+        "vnf-name": "Constantius Raghu",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "7788675952902",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "afacccf6-397d-45d6-b5ae-94c39734b168",
+        "model-customization-id": "ce15d245-763c-4079-ac82-fe93007adb69",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vWheeler",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "3664617648",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/8e5e3ba1-3fe6-4d86-966e-f9f03dab4855/vf-modules/vf-module/788cde64-c288-4971-8e8c-77973c5009dc"
+        },
+        {
+          "id": "3008335920",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+        },
+        {
+          "id": "3477385312",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/8627b971-1032-420f-a044-6802f0ab6976"
+        }
+      ]
+    },
+    {
+      "id": "3418898432",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/8e5e3ba1-3fe6-4d86-966e-f9f03dab4855",
+      "properties": {
+        "vnf-id": "8e5e3ba1-3fe6-4d86-966e-f9f03dab4855",
+        "vnf-name": "zolson3amdns02test2",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "1507132024933",
+        "model-invariant-id": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "model-version-id": "76e908e0-5201-44d2-a3e2-9e6128d05820",
+        "model-customization-id": "c00e8fc8-af39-4da8-8c78-a7efc2fe5994",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vMobileDNS",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "3664617648",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/8e5e3ba1-3fe6-4d86-966e-f9f03dab4855/vf-modules/vf-module/788cde64-c288-4971-8e8c-77973c5009dc"
+        },
+        {
+          "id": "3008335920",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+        },
+        {
+          "id": "3477385312",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/8627b971-1032-420f-a044-6802f0ab6976"
+        },
+        {
+          "id": "3647635704",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/b30b17e9-10d0-4475-b558-7d18ae0aade0"
+        },
+        {
+          "id": "3664621744",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mdt1/tenants/tenant/88a6ca3ee0394ade9403f075db23167e/vservers/vserver/d3b293ba-85de-440e-904b-9dad160fbdce"
+        },
+        {
+          "id": "3975352504",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mdt1/tenants/tenant/88a6ca3ee0394ade9403f075db23167e/vservers/vserver/495a9a72-c9f6-41ed-93eb-065ebc2bfb1f"
+        },
+        {
+          "id": "4059455552",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mdt1/tenants/tenant/88a6ca3ee0394ade9403f075db23167e/vservers/vserver/b4b9f419-3ed4-4bd8-bb2e-32b0a98e80b7"
+        },
+        {
+          "id": "4098130088",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mdt1/tenants/tenant/88a6ca3ee0394ade9403f075db23167e/vservers/vserver/94c79f43-e76d-461e-b8df-8af2acb08e1e"
+        },
+        {
+          "id": "4401291416",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mdt1/tenants/tenant/88a6ca3ee0394ade9403f075db23167e/vservers/vserver/99cad3c6-1301-49c4-ad67-ae3c955de5f1"
+        },
+        {
+          "id": "4458950808",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/mdt1/tenants/tenant/88a6ca3ee0394ade9403f075db23167e/vservers/vserver/047354dc-0244-4241-b24a-7d7b00413b82"
+        }
+      ]
+    },
+    {
+      "id": "1024648346",
+      "node-type": "generic-vnf",
+      "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/a58bf551-a79c-42d1-83b4-ed9288036245",
+      "properties": {
+        "vnf-id": "a58bf551-a79c-42d1-83b4-ed9288036245",
+        "vnf-name": "Harrison Kris",
+        "vnf-type": "CHARLOTTE preload 1710 0914/CHARLOTTE preload 1710 0914 0",
+        "service-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+        "prov-status": "PREPROV",
+        "orchestration-status": "Created",
+        "in-maint": false,
+        "is-closed-loop-disabled": false,
+        "resource-version": "4679861552759",
+        "model-invariant-id": "00beb8f9-6d39-452f-816d-c709b9cbb87d",
+        "model-version-id": "0903e1c0-8e03-4936-b5c2-260653b96413",
+        "model-customization-id": "14e8057d-b22a-405c-84aa-90b82bfd6e46",
+        "nf-type": "DNS",
+        "nf-function": "Mobile DNS",
+        "nf-role": "vMobileDNS",
+        "nf-naming-code": "null"
+      },
+      "related-to": [
+        {
+          "id": "3664617648",
+          "node-type": "vf-module",
+          "url": "https://aai.onap.org:8443/aai/v10/network/generic-vnfs/generic-vnf/8e5e3ba1-3fe6-4d86-966e-f9f03dab4855/vf-modules/vf-module/788cde64-c288-4971-8e8c-77973c5009dc"
+        },
+        {
+          "id": "3008335920",
+          "node-type": "service-instance",
+          "url": "https://aai.onap.org:8443/aai/v10/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/vRichardson/service-instances/service-instance/97315a05-e6f3-4c47-ae7e-d850c327aa08"
+        },
+        {
+          "id": "3477385312",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/8627b971-1032-420f-a044-6802f0ab6976"
+        },
+        {
+          "id": "3647635704",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/b30b17e9-10d0-4475-b558-7d18ae0aade0"
+        },
+        {
+          "id": "3664621744",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/d3b293ba-85de-440e-904b-9dad160fbdce"
+        },
+        {
+          "id": "3975352504",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/495a9a72-c9f6-41ed-93eb-065ebc2bfb1f"
+        },
+        {
+          "id": "4059455552",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/b4b9f419-3ed4-4bd8-bb2e-32b0a98e80b7"
+        },
+        {
+          "id": "4098130088",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/94c79f43-e76d-461e-b8df-8af2acb08e1e"
+        },
+        {
+          "id": "4401291416",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/99cad3c6-1301-49c4-ad67-ae3c955de5f1"
+        },
+        {
+          "id": "4458950808",
+          "node-type": "vserver",
+          "url": "https://aai.onap.org:8443/aai/v10/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/olson3/tenants/tenant/eecd15e8e7ee46c3bbc2096f0924f4c4/vservers/vserver/047354dc-0244-4241-b24a-7d7b00413b82"
+        }
+      ]
+    }
+  ]
+}
