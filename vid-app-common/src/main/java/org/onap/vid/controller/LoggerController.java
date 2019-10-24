@@ -90,7 +90,8 @@ public class LoggerController extends RestrictedBaseController {
 
             return Streams.takeWhile(
                     Stream.generate(reverseLinesSupplier),
-                    line -> !StringUtils.contains(line, "Logging is started"))
+                    line -> !StringUtils.contains(line, "Logging is started") &&
+                            !StringUtils.contains(line, "VID is started"))
                     .limit(limit)
                     .limit(5_000)
                     .filter(Objects::nonNull)
