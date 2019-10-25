@@ -640,7 +640,8 @@ public class ChangeManagementTest extends VidBaseTestCase {
                         "widgetData", ImmutableMap.builder()
                                 .put("vnfNames", ImmutableList.of(ImmutableMap.of(
                                         "id", vnfInstanceId,
-                                        "invariant-id", modelInvariantId
+                                        "invariant-id", modelInvariantId,
+                                        "version", "5.0"
                                 )))
                                 .put("workflowParameters", emptyMap())
                                 .put("subscriberId", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb")

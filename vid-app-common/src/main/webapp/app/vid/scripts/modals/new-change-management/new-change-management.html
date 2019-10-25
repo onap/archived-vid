@@ -132,9 +132,7 @@
                                 class="vnf-versions-select-as-text"
                                 id="{{vnfName['invariant-id']}}-target-version-select">
                             <option value="" disabled="" selected="selected">Select Target VNF Model Version</option>
-                            <option ng-repeat="version in vnfName.availableVersions">
-                                {{version.modelInfo.modelVersion}}
-                            </option>
+                            <option ng-repeat="version in vnfName.availableVersions">{{version.modelInfo.modelVersion}}</option>
                         </select>
                     </td>
                     <td class="col-md-1 vnf-versions-file">
