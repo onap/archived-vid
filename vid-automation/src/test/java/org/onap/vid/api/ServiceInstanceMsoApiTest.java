@@ -1,19 +1,25 @@
 package org.onap.vid.api;
 
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import org.apache.commons.text.StringEscapeUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfiguration;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfigurationErrorResponse;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndCloudDelete;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndCloudDeleteErrorResponse;
+import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.testng.annotations.Test;
+import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
 
@@ -121,6 +127,18 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
         String requestBody = TestUtils.convertRequest(objectMapper, ACTIVATE_FABRIC_CONFIGURATION_REQUEST_DETAILS);
         callMsoWithFineRequest(new PresetMSOActivateFabricConfiguration("f36f5734-e9df-4fbf-9f35-61be13f028a1", "b6dc9806-b094-42f7-9386-a48de8218ce8"), buildUri(MSO_ACTIVATE_FABRIC_CONFIGURATION), requestBody,
                 HttpStatus.ACCEPTED.value(), EXPECTED_SUCCESS_MSO_RESPONSE, HttpMethod.POST);
+    }
+
+    @Test
+    public void testWhenCallMsoRequestLoggedInMetrics() {
+        String msoRootPath = "/mso/serviceInstantiation/v7";
+        String requestBody = TestUtils.convertRequest(objectMapper, ACTIVATE_FABRIC_CONFIGURATION_REQUEST_DETAILS);
+        registerExpectationFromPresets(ImmutableList.of(
+            new PresetMSOActivateFabricConfiguration("f36f5734-e9df-4fbf-9f35-61be13f028a1", "b6dc9806-b094-42f7-9386-a48de8218ce8"),
+            new PresetAAIGetSubscribersGet()), RegistrationStrategy.CLEAR_THEN_SET);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(buildUri(MSO_ACTIVATE_FABRIC_CONFIGURATION), requestBody, String.class);
+        String requestId = responseEntity.getHeaders().getFirst("X-ECOMP-RequestID-echo");
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId, msoRootPath, 1);
     }
 
     @Test(dataProvider = "errorCodes")
