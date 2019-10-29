@@ -234,10 +234,7 @@ class MsoRestClientTestUtil implements AutoCloseable {
         withHeader(HttpHeaders.AUTHORIZATION),
         withHeader(HttpHeaders.ACCEPT),
         withHeader(HttpHeaders.CONTENT_TYPE),
-        withHeader(MsoRestClientNew.X_FROM_APP_ID),
-        withHeader(PARTNER_NAME.getHeaderName(), "VID.VID"),
-        withHeader(SystemProperties.ECOMP_REQUEST_ID),
-        withHeader(ONAP_REQUEST_ID_HEADER_KEY)
+        withHeader(MsoRestClientNew.X_FROM_APP_ID)
     );
   }
 
