@@ -42,8 +42,7 @@ describe('View only drawing board', function () {
   const _VIEW = "VIEW";
 
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
       cy.initVidMock();
@@ -51,7 +50,6 @@ describe('View only drawing board', function () {
       cy.initZones();
       cy.permissionVidMock();
       cy.login();
-    });
   });
 
   afterEach(() => {

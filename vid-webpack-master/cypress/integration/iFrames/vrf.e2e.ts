@@ -6,8 +6,7 @@ describe('Drawing board : VRF', function () {
   var jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
 
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.setReduxState();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
@@ -22,7 +21,6 @@ describe('Drawing board : VRF', function () {
         status: 200,
         response: "[]",
       }).as("expectedPostAsyncInstantiation");
-    });
   });
 
   afterEach(() => {

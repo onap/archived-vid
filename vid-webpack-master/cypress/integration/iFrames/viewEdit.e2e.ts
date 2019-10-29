@@ -17,9 +17,7 @@ describe('View Edit Page', function () {
     let jsonBuilderAaiServiceInstances: JsonBuilder<AaiServiceInstancesModel> = new JsonBuilder<AaiServiceInstancesModel>();
     let jsonBuilderEmpty: JsonBuilder<Object> = new JsonBuilder<Object>();
     beforeEach(() => {
-      cy.window().then((win) => {
-        win.sessionStorage.clear();
-      });
+      cy.clearSessionStorage();
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,

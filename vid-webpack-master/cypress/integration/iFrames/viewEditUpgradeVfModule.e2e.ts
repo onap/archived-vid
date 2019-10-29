@@ -47,9 +47,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
     let jsonBuilderAaiServiceInstances: JsonBuilder<AaiServiceInstancesModel> = new JsonBuilder<AaiServiceInstancesModel>();
 
     beforeEach(() => {
-      cy.window().then((win) => {
-        win.sessionStorage.clear();
-      });
+      cy.clearSessionStorage();
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(
           res,
@@ -130,7 +128,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
   describe('More UI tests', () => {
 
     beforeEach(() => {
-      cy.window().then((win) => {win.sessionStorage.clear();});
+      cy.clearSessionStorage();
       cy.setTestApiParamToVNF();
       cy.initVidMock();
       cy.login();

@@ -14,8 +14,7 @@ describe('A la carte', function () {
     const CONFIRM_BUTTON: string = 'confirmButton';
 
     beforeEach(() => {
-      cy.window().then((win) => {
-        win.sessionStorage.clear();
+        cy.clearSessionStorage();
         cy.setReduxState();
         cy.preventErrorsOnLoading();
         cy.initAAIMock();
@@ -24,7 +23,6 @@ describe('A la carte', function () {
         cy.initAlaCarteService();
         cy.initZones();
         cy.login();
-      });
     });
 
     afterEach(() => {

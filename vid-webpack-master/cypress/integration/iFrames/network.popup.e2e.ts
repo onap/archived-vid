@@ -8,8 +8,7 @@ describe('Network popup', function () {
   var jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
 
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.setReduxState();
       cy.preventErrorsOnLoading();
       cy.permissionVidMock();
@@ -17,7 +16,6 @@ describe('Network popup', function () {
       cy.initAAIMock();
       cy.initVidMock();
       cy.login();
-    })
   });
 
   afterEach(() => {
