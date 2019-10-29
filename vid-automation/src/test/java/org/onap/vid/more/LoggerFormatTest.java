@@ -145,7 +145,7 @@ public class LoggerFormatTest extends BaseApiTest {
 
         underTestRequests.forEach(request->{
 
-            List<String> invocationIds = request.headers.get("X-ONAP-InvocationID");
+            List<String> invocationIds = request.headers.get("X-InvocationID");
             assertThat(invocationIds, hasSize(1));
 
             String invocationId = invocationIds.get(0);

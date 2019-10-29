@@ -29,7 +29,6 @@ import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
-import org.onap.logging.filter.spring.LoggingInterceptor;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
@@ -53,6 +52,7 @@ import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.parser.VidNotionsBuilder;
 import org.onap.vid.asdc.rest.SdcRestClient;
 import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.logging.VidLoggingInterceptor;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.scheduler.SchedulerService;
@@ -222,6 +222,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoggingInterceptor());
+        registry.addInterceptor(new VidLoggingInterceptor());
     }
 }
