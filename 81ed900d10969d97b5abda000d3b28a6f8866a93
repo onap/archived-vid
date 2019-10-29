@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9e3df2e4_b449f4f4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-29T18:35:35Z",
+      "side": 1,
+      "message": "add super.additional() ?",
+      "revId": "81ed900d10969d97b5abda000d3b28a6f8866a93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
