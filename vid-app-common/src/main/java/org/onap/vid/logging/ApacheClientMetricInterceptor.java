@@ -25,6 +25,7 @@ import org.apache.http.HttpMessage;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.onap.logging.filter.base.AbstractMetricLogFilter;
+import org.onap.logging.ref.slf4j.ONAPLogConstants;
 
 
 public abstract class ApacheClientMetricInterceptor extends AbstractMetricLogFilter<HttpRequest, HttpResponse, HttpMessage> {
@@ -59,4 +60,11 @@ public abstract class ApacheClientMetricInterceptor extends AbstractMetricLogFil
         //fallback to default value that provided by AbstractMetricLogFilter
         return null;
     }
+
+    @Override
+    protected void additionalPre(HttpRequest request, HttpMessage message) {
+        LoggingFilterHelper.updateInvocationIDInMdcWithHeaderValue(
+            ()->message.getFirstHeader(ONAPLogConstants.Headers.INVOCATION_ID).getValue());
+    }
+
 }
