@@ -36,11 +36,11 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.util.security.Password;
 import org.glassfish.jersey.client.ClientProperties;
-import org.onap.logging.filter.base.MetricLogClientFilter;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.util.HttpClientMode;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.client.HttpBasicClient;
+import org.onap.vid.logging.VidMetricLogClientFilter;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,7 +131,7 @@ public class RestMsoImplementation {
     }
 
     private void registerClientToMetricLogClientFilter(Client client) {
-        MetricLogClientFilter metricLogClientFilter = new MetricLogClientFilter();
+        VidMetricLogClientFilter metricLogClientFilter = new VidMetricLogClientFilter();
         client.register(metricLogClientFilter);
     }
 
