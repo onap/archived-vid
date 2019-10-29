@@ -4,15 +4,13 @@ import {ServiceModel} from "../../support/jsonBuilders/models/service.model";
 
 describe('Drawing board', function () {
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.setReduxState();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
       cy.initVidMock();
       cy.initActiveNetworks();
       cy.login();
-    });
   });
 
   afterEach(() => {

@@ -9,8 +9,7 @@ describe('Audit information modal', function () {
     var jsonBuilderInstantiationBuilder: JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
     var jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
     beforeEach(() => {
-      cy.window().then((win) => {
-        win.sessionStorage.clear();
+        cy.clearSessionStorage();
         cy.setReduxState();
         cy.preventErrorsOnLoading();
         jsonBuilderInstantiationBuilder.basicMock('cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json',
@@ -19,7 +18,6 @@ describe('Audit information modal', function () {
         cy.initVidMock();
         cy.initAsyncInstantiation();
         cy.login();
-      })
     });
 
     afterEach(() => {

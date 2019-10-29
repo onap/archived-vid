@@ -6,8 +6,7 @@ import {ServiceModel} from '../../support/jsonBuilders/models/service.model';
 describe('Retry Page', function () {
   let jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
       jsonBuilderAndMock.basicMock('cypress/support/jsonBuilders/mocks/jsons/serviceModels/ecompNamingFalseModel.json',
@@ -16,7 +15,6 @@ describe('Retry Page', function () {
       cy.initZones();
       cy.permissionVidMock();
       cy.login();
-    });
   });
 
   afterEach(() => {

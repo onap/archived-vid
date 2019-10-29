@@ -2,6 +2,7 @@ declare namespace Cypress {
   interface Chainable {
     setReduxState : typeof setReduxState;
     getReduxState : typeof getReduxState;
+    clearSessionStorage: typeof clearSessionStorage;
     setTestApiParamToGR: typeof setTestApiParamToGR;
     setTestApiParamToVNF: typeof setTestApiParamToVNF;
     buildReduxStateWithServiceRespone: typeof buildReduxStateWithServiceRespone;
@@ -22,6 +23,12 @@ function getReduxState(): Chainable<any> {
   return cy.window().then((win) => {
     let stateRaw = win.sessionStorage.getItem('reduxState');
     return JSON.parse(stateRaw ?  stateRaw : '{}');
+  });
+}
+
+function clearSessionStorage() : void {
+  cy.window().then((win) => {
+    win.sessionStorage.clear();
   });
 }
 
@@ -72,6 +79,7 @@ function buildReduxStateWithServiceRespone(res: any, serviceId:string, isEcompGe
 
 Cypress.Commands.add('setReduxState', setReduxState);
 Cypress.Commands.add('getReduxState', getReduxState);
+Cypress.Commands.add('clearSessionStorage', clearSessionStorage);
 Cypress.Commands.add('setTestApiParamToGR', setTestApiParamToGR);
 Cypress.Commands.add('setTestApiParamToVNF',setTestApiParamToVNF);
 Cypress.Commands.add('buildReduxStateWithServiceRespone', buildReduxStateWithServiceRespone);
