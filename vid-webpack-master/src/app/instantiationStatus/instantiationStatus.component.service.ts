@@ -12,13 +12,15 @@ import {updateDrawingBoardStatus} from "../shared/storeUtil/utils/global/global.
 import {Router, UrlTree} from "@angular/router";
 import {of} from "rxjs";
 import {MsoService} from "../shared/services/msoService/mso.service";
+
 export let PENDING : string = "pending";
 export let INPROGRESS : string = "in_progress";
 export let PAUSE : string = "pause";
 export let X_O : string = "x-circle-o";
 export let SUCCESS_CIRCLE : string = "success-circle-o";
-export let STOPED : string = "stop";
+export let STOPPED : string = "stop";
 export let COMPLETED_WITH_ERRORS : string = "success_with_warning";
+export let UNKNOWN : string = "question-mark-circle-o";
 
 
 @Injectable()
@@ -148,9 +150,12 @@ export class InstantiationStatusComponentService {
       case  'COMPLETED' :
         return new ServiceStatus(SUCCESS_CIRCLE, 'success', 'Completed successfully: Service is successfully instantiated, updated or deleted.');
       case  'STOPPED' :
-        return new ServiceStatus(STOPED, 'error', 'Stopped: Due to previous failure, will not be instantiated.');
+        return new ServiceStatus(STOPPED, 'error', 'Stopped: Due to previous failure, will not be instantiated.');
       case  'COMPLETED_WITH_ERRORS' :
         return new ServiceStatus(COMPLETED_WITH_ERRORS, 'success', 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.');
+
+      default:
+        return new ServiceStatus(UNKNOWN, 'primary', `Unexpected status: "${status}"`);
     }
   }
 

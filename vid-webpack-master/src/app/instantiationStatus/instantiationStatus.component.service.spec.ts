@@ -6,8 +6,9 @@ import {
   PAUSE,
   PENDING,
   ServiceStatus,
-  STOPED,
+  STOPPED,
   SUCCESS_CIRCLE,
+  UNKNOWN,
   X_O
 } from './instantiationStatus.component.service';
 import {ServiceInfoModel} from '../shared/server/serviceInfo/serviceInfo.model';
@@ -129,28 +130,23 @@ describe('Instantiation Status Service', () => {
     expect (suffix + serviceModelUrl).toEqual(result);
   });
 
-  test('getStatusTooltip should return status popover', () => {
-    let result : ServiceStatus  = service.getStatus('pending');
-    expect(result.tooltip).toEqual('Pending: The action required will be sent as soon as possible.');
+  for (let [status, tooltip] of Object.entries({
+    'pending': 'Pending: The action required will be sent as soon as possible.',
+    'IN_PROGRESS': 'In-progress: the service is in process of the action required.',
+    'PAUSED': 'Paused: Service has paused and waiting for your action.\n Select actions from the menu to the right.',
+    'FAILED': 'Failed: All planned actions have failed.',
+    'COMPLETED': 'Completed successfully: Service is successfully instantiated, updated or deleted.',
+    'STOPPED': 'Stopped: Due to previous failure, will not be instantiated.',
+    'StOpPeD': 'Stopped: Due to previous failure, will not be instantiated.',
+    'COMPLETED_WITH_ERRORS': 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.',
+    'UNEXPECTED_STATUS': 'Unexpected status: "UNEXPECTED_RANDOM_STATUS"',
+  })) {
 
-    result = service.getStatus('IN_PROGRESS');
-    expect(result.tooltip).toEqual('In-progress: the service is in process of the action required.');
+    test(`getStatusTooltip should return status popover: status=${status}`, () => {
+      expect(service.getStatus(status).tooltip).toEqual(tooltip);
+    });
 
-    result = service.getStatus('PAUSED');
-    expect(result.tooltip).toEqual('Paused: Service has paused and waiting for your action.\n Select actions from the menu to the right.');
-
-    result = service.getStatus('FAILED');
-    expect(result.tooltip).toEqual('Failed: All planned actions have failed.');
-
-    result = service.getStatus('COMPLETED');
-    expect(result.tooltip).toEqual('Completed successfully: Service is successfully instantiated, updated or deleted.');
-
-    result = service.getStatus('STOPPED');
-    expect(result.tooltip).toEqual('Stopped: Due to previous failure, will not be instantiated.');
-
-    result = service.getStatus('COMPLETED_WITH_ERRORS');
-    expect(result.tooltip).toEqual('Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.');
-  });
+  }
 
   test('getStatusTooltip should return correct icon per job status', () => {
     let result : ServiceStatus  = service.getStatus('pending');
@@ -169,10 +165,13 @@ describe('Instantiation Status Service', () => {
     expect(result.iconClassName).toEqual(SUCCESS_CIRCLE);
 
     result = service.getStatus('STOPPED');
-    expect(result.iconClassName).toEqual(STOPED);
+    expect(result.iconClassName).toEqual(STOPPED);
 
     result = service.getStatus('COMPLETED_WITH_ERRORS');
     expect(result.iconClassName).toEqual(COMPLETED_WITH_ERRORS);
+
+    result = service.getStatus('UNEXPECTED_RANDOM_STATUS');
+    expect(result.iconClassName).toEqual(UNKNOWN);
   });
 
   function generateServiceInfoData(){
