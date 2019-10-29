@@ -44,6 +44,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import org.onap.logging.filter.base.AbstractAuditLogFilter;
 import org.onap.logging.filter.base.AbstractMetricLogFilter;
+import org.onap.logging.ref.slf4j.ONAPLogConstants;
 import org.onap.portalsdk.core.conf.AppInitializer;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.slf4j.LoggerFactory;
@@ -70,8 +71,8 @@ public class ExternalAppInitializer extends AppInitializer {
 
 	//mark in logs that vid is started.
 	private void logVidIsStarted() {
-		LoggerFactory.getLogger(AbstractMetricLogFilter.class).info(VID_IS_STARTED);
-		LoggerFactory.getLogger(AbstractAuditLogFilter.class).info(VID_IS_STARTED);
+		LoggerFactory.getLogger(AbstractMetricLogFilter.class).info(ONAPLogConstants.Markers.INVOKE, VID_IS_STARTED);
+		LoggerFactory.getLogger(AbstractAuditLogFilter.class).info(ONAPLogConstants.Markers.ENTRY, VID_IS_STARTED);
 	}
 
 	private void setPartnerName() {
