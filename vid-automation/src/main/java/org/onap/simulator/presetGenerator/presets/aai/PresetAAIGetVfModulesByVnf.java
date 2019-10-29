@@ -5,9 +5,16 @@ import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetVfModulesByVnf extends BaseAAIPreset {
     private final String vnfInstanceId;
+    private final Placement vfModule1Placement;
 
     public PresetAAIGetVfModulesByVnf(String vnfInstanceId) {
         this.vnfInstanceId = vnfInstanceId;
+        vfModule1Placement = null;
+    }
+
+    public PresetAAIGetVfModulesByVnf(String vnfInstanceId, Placement vfModule2Placement) {
+        this.vnfInstanceId = vnfInstanceId;
+        this.vfModule1Placement = vfModule2Placement;
     }
 
     @Override
@@ -18,6 +25,14 @@ public class PresetAAIGetVfModulesByVnf extends BaseAAIPreset {
     @Override
     public String getReqPath() {
         return getRootPath() + "/network/generic-vnfs/generic-vnf/" + this.vnfInstanceId + "/vf-modules";
+    }
+
+    private String placementRelationship(Placement placement) {
+        if (placement != null) {
+            return "," + Placement.Util.placementRelationship("vserver", placement);
+        } else {
+            return "";
+        }
     }
 
     @Override
@@ -72,6 +87,7 @@ public class PresetAAIGetVfModulesByVnf extends BaseAAIPreset {
                 "              }" +
                 "            ]" +
                 "          }" +
+            placementRelationship(vfModule1Placement) +
                 "        ]" +
                 "      }" +
                 "    }" +

@@ -1,22 +1,21 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.text.StringEscapeUtils.escapeJson;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_AIC;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.hvf6;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StrSubstitutor;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
 import org.springframework.http.HttpMethod;
-
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.apache.commons.text.StringEscapeUtils.escapeJson;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_AIC;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.hvf6;
 
 public class PresetAAIStandardQueryGet extends BaseAAIPreset {
     private final String instanceId;
@@ -289,36 +288,7 @@ public class PresetAAIStandardQueryGet extends BaseAAIPreset {
 
     private String buildPlacementRelationship() {
         String relatedTo = StringUtils.equals(instanceType,"vf-module")? "vserver": "tenant";
-        return "" +
-                "            {" +
-                "                \"related-to\": \"" + relatedTo + "\"," +
-                "                \"relationship-label\": \"org.onap.relationships.inventory.Uses\"," +
-                "                \"related-link\": \"/aai/v12/cloud-infrastructure/cloud-regions/cloud-region/irma-aic/" +  this.placement.lcpRegionId + "/tenants/tenant/" + this.placement.tenantId+ "/vservers/vserver/5eef9f6d-9933-4bc6-9a1a-862d61309437\"," +
-                "                \"relationship-data\": [" +
-                "                    {" +
-                "                        \"relationship-key\": \"cloud-region.cloud-owner\"," +
-                "                        \"relationship-value\": \""+ this.placement.cloudOwner+"\"" +
-                "                    }," +
-                "                    {" +
-                "                        \"relationship-key\": \"cloud-region.cloud-region-id\"," +
-                "                        \"relationship-value\": \"" +  this.placement.lcpRegionId + "\"" +
-                "                    }," +
-                "                    {" +
-                "                        \"relationship-key\": \"tenant.tenant-id\"," +
-                "                        \"relationship-value\": \"" +  this.placement.tenantId + "\"" +
-                "                    }," +
-                "                    {" +
-                "                        \"relationship-key\": \"vserver.vserver-id\"," +
-                "                        \"relationship-value\": \"5eef9f6d-9933-4bc6-9a1a-862d61309437\"" +
-                "                    }" +
-                "                ]," +
-                "                \"related-to-property\": [" +
-                "                    {" +
-                "                        \"property-key\": \"vserver.vserver-name\"," +
-                "                        \"property-value\": \"zolson5bfapn01dns002\"" +
-                "                    }" +
-                "                ]" +
-                "            }" ;
+        return Placement.Util.placementRelationship(relatedTo, placement);
     }
 
     @Override

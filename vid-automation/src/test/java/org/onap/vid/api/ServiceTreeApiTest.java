@@ -9,6 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_AIC;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.AUK51A;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.hvf6;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.olson3;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
@@ -240,7 +241,12 @@ public class ServiceTreeApiTest extends BaseApiTest {
                         "\"in-maint\": true,", ImmutableMultimap.of("volume-group", volumeGroup1.getReqPath()),
                         new Placement(ATT_AIC, hvf6, "88a6ca3ee0394ade9403f075db23167e"));
 
-        PresetAAIGetVfModulesByVnf vfModules2 = new PresetAAIGetVfModulesByVnf(vnfPreset2.getInstanceId());
+
+        Placement vfModule2Placement
+            = new Placement(ATT_NC, AUK51A, "73bb4c548dc048d78eccecd445ac06fc");
+
+        PresetAAIGetVfModulesByVnf twoVfModulesPreset =
+            new PresetAAIGetVfModulesByVnf(vnfPreset2.getInstanceId(), vfModule2Placement);
 
         final PresetAAIStandardQueryGet serviceInstance =
                 PresetAAIStandardQueryGet.ofServiceInstance("service-instance-id", "6e59c5de-f052-46fa-aa7e-2fca9d674c44", "d27e42cf-087e-4d31-88ac-6c4b7585f800", "global-customer-id", "service-instance-type",
@@ -255,7 +261,7 @@ public class ServiceTreeApiTest extends BaseApiTest {
                 serviceInstance,
                 l3NetworkPreset3, l3NetworkPreset4, vnfPreset1, vnfPreset2, collection1,
                 volumeGroup1, l3NetworkPreset1, l3NetworkPreset2, instanceGroup1,
-                vlanTag1, vfModules2,
+                vlanTag1, twoVfModulesPreset,
                 new PresetAAIModelsByInvariantIdGet(ImmutableList.of("d27e42cf-087e-4d31-88ac-6c4b7585f800")),
                 new PresetGetSessionSlotCheckIntervalGet(),
                 new PresetAAIGetSubscribersGet(),
