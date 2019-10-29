@@ -16,6 +16,24 @@
       "revId": "e63fe3aa29fc637d57f5dbf92dda200685be790b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16d07040_a44a0187",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/replace_vfmodule_fe_input.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-29T08:14:38Z",
+      "side": 0,
+      "message": "I don\u0027t know the file history.\nAnyhow, FE does not have a \"modelInavariantId\" field on this object level.",
+      "parentUuid": "48644c30_3f6b95c2",
+      "revId": "e63fe3aa29fc637d57f5dbf92dda200685be790b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
