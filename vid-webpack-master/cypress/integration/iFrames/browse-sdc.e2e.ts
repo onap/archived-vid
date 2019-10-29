@@ -8,15 +8,13 @@ describe('Browse SDC', function () {
 
 
     beforeEach(() => {
-      cy.window().then((win) => {
-        win.sessionStorage.clear();
+        cy.clearSessionStorage();
         cy.preventErrorsOnLoading();
         cy.initAAIMock();
         cy.initVidMock();
         cy.initZones();
         cy.login();
         cy.visit("welcome.htm")
-      });
     });
 
     afterEach(() => {

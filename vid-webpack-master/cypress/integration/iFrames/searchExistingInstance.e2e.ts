@@ -7,15 +7,13 @@ describe('search existing instance', function () {
   var jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
 
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
       cy.initVidMock();
       cy.initZones();
       cy.permissionVidMock();
       cy.login();
-    });
   });
 
   afterEach(() => {

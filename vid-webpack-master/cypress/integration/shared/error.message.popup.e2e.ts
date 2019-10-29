@@ -1,21 +1,19 @@
 ///<reference path="../../../node_modules/cypress/types/index.d.ts"/>
 /// <reference types="Cypress" />
 
-import { JsonBuilder } from '../../support/jsonBuilders/jsonBuilder';
-import { AsyncInstantiationModel } from '../../support/jsonBuilders/models/asyncInstantiation.model';
+import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
+import {AsyncInstantiationModel} from '../../support/jsonBuilders/models/asyncInstantiation.model';
 
 describe('Error message popup', function () {
   describe('show error on status 500', () => {
     var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
     beforeEach(() => {
-      cy.window().then((win) => {
-        win.sessionStorage.clear();
+        cy.clearSessionStorage();
         cy.setReduxState();
         cy.preventErrorsOnLoading();
         cy.initAAIMock();
         cy.initVidMock();
         cy.login();
-      })
     });
 
     afterEach(() => {

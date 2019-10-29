@@ -6,8 +6,7 @@ describe('Vnf Groups', function () {
   var jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
 
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.setReduxState();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
@@ -15,7 +14,6 @@ describe('Vnf Groups', function () {
       cy.permissionVidMock();
       cy.setTestApiParamToVNF();
       cy.login();
-    });
   });
 
   afterEach(() => {

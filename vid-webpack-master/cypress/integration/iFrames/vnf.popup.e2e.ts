@@ -4,14 +4,12 @@ describe('Vnf popup', function () {
   describe('basic UI tests', () => {
 
     beforeEach(() => {
-      cy.window().then((win) => {
-        win.sessionStorage.clear();
+        cy.clearSessionStorage();
         cy.setReduxState();
         cy.preventErrorsOnLoading();
         cy.initAAIMock();
         cy.initVidMock();
         cy.login();
-      })
     });
 
     afterEach(() => {

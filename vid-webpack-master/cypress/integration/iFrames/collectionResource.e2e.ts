@@ -8,13 +8,11 @@ describe('Drawing board : Collection resource', function () {
   let jsonBuilderAndMock: JsonBuilder<ServiceModel> = new JsonBuilder<ServiceModel>();
   const serviceModelId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
       cy.initVidMock();
       cy.login();
-    });
   });
 
   afterEach(() => {

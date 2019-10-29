@@ -3,15 +3,13 @@
 
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {AsyncInstantiationModel} from '../../support/jsonBuilders/models/asyncInstantiation.model';
-import {ServiceModel} from "../../support/jsonBuilders/models/service.model";
 
 describe('Instantiation status', function () {
   var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
   var asyncRes: Array<any>;
 
   beforeEach(() => {
-    cy.window().then((win) => {
-      win.sessionStorage.clear();
+      cy.clearSessionStorage();
       cy.setReduxState();
       cy.preventErrorsOnLoading();
       cy.initAAIMock();
@@ -23,7 +21,6 @@ describe('Instantiation status', function () {
             return res;
       });
       cy.login();
-    })
   });
 
   afterEach(() => {
