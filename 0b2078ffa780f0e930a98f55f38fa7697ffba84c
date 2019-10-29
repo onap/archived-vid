@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf96d187_10445d7e",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/upgrade_vfmodule_e2e__fe_input_cypress.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-10-29T08:02:18Z",
+      "side": 1,
+      "message": "modelCustomizationName isn\u0027t required according to the MSO AID",
+      "revId": "0b2078ffa780f0e930a98f55f38fa7697ffba84c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6f0c8b3_7d77e14e",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-10-29T08:02:18Z",
+      "side": 1,
+      "message": "Can this be extracted in anyway to serve the current and the previous describe?",
+      "revId": "0b2078ffa780f0e930a98f55f38fa7697ffba84c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53ebecb1_67da9e9d",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/upgradeVfModule/upgrade_vfmodule_e2e__service_instance.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-10-29T08:02:18Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "0b2078ffa780f0e930a98f55f38fa7697ffba84c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48644c30_3f6b95c2",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/replace_vfmodule_fe_input.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-10-29T08:02:18Z",
+      "side": 0,
+      "message": "Wasn\u0027t this file received from MSO? changes are not expected in this file",
+      "revId": "e63fe3aa29fc637d57f5dbf92dda200685be790b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
