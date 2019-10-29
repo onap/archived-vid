@@ -27,6 +27,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicHttpResponse;
+import org.onap.logging.ref.slf4j.ONAPLogConstants;
+import org.slf4j.MDC;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -73,5 +75,18 @@ public class ApacheClientMetricInterceptorTest {
     @Test
     public void testGetTargetEntity() {
         assertNull(interceptor.getTargetEntity(request));
+    }
+
+    @Test
+    protected void testAdditionalPre() {
+        request.addHeader(ONAPLogConstants.Headers.INVOCATION_ID, "123");
+        interceptor.additionalPre(request, request);
+        assertEquals(MDC.get(ONAPLogConstants.MDCs.INVOCATION_ID), "123");
+    }
+
+    @Test
+    protected void whenThereIsNoInvocationIdHeader_thenMdcValueIsNull() {
+        interceptor.additionalPre(request, request);
+        assertNull(MDC.get(ONAPLogConstants.MDCs.INVOCATION_ID));
     }
 }
