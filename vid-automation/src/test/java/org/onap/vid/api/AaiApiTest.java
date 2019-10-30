@@ -15,6 +15,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -765,6 +766,19 @@ public class AaiApiTest extends BaseApiAaiTest {
         assertResponse(JsonAssert.when(Option.IGNORING_ARRAY_ORDER),
                 getResourceAsString("registration_to_simulator/changeManagement/get_vnf_data_by_globalid_and_service_type_response.json"),
                 response.getBody());
+    }
+
+    @Test
+    public void whenCallAaiThroughAAIRestInterface_thenRequestRecordedInMetricsLog() {
+        registerExpectationFromPresets(ImmutableList.of(
+            new PresetAAIGetVpnsByType(),
+            new PresetAAIGetSubscribersGet()
+        ),CLEAR_THEN_SET);
+
+        String url = uri + "/aai_get_vpn_list";
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        final String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId,"/network/vpn-bindings" , 1);
     }
 
     @Test

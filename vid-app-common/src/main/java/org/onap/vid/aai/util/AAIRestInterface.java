@@ -22,8 +22,6 @@ package org.onap.vid.aai.util;
 
 
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.onap.vid.logging.Headers.INVOCATION_ID;
-import static org.onap.vid.logging.Headers.PARTNER_NAME;
 
 import com.att.eelf.configuration.EELFLogger;
 import java.io.UnsupportedEncodingException;
@@ -43,7 +41,7 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
-import org.onap.vid.logging.RequestIdHeader;
+import org.onap.vid.logging.VidMetricLogClientFilter;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,6 +125,8 @@ public class AAIRestInterface {
         if (client == null) {
             try {
                 client = httpsAuthClientFactory.getClient(HttpClientMode.WITH_KEYSTORE);
+                VidMetricLogClientFilter metricLogClientFilter = new VidMetricLogClientFilter();
+                client.register(metricLogClientFilter);
             } catch (Exception e) {
                 logger.info(EELFLoggerDelegate.errorLogger, "Exception in REST call to DB in initRestClient" + e.toString());
                 logger.debug(EELFLoggerDelegate.debugLogger, "Exception in REST call to DB : " + e.toString());
@@ -193,18 +193,11 @@ public class AAIRestInterface {
 
             final Response response;
 
-            String requestId = extractOrGenerateRequestId();
-
             Invocation.Builder requestBuilder = client.target(url)
                 .request()
                 .accept(xml ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON)
-                .header(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue())
-                .header(TRANSACTION_ID_HEADER, transId)
                 .header(FROM_APP_ID_HEADER, fromAppId)
                 .header("Content-Type", MediaType.APPLICATION_JSON)
-                .header(RequestIdHeader.ONAP_ID.getHeaderName(), requestId)
-                .header(RequestIdHeader.ECOMP_ID.getHeaderName(), requestId)
-                .header(INVOCATION_ID.getHeaderName(), INVOCATION_ID.getHeaderValue())
                 ;
 
             requestBuilder = systemPropertyHelper.isClientCertEnabled() ?
