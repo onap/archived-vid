@@ -16,6 +16,24 @@
       "revId": "c439c8193a2f819586b0ca9bb1b219a5c110e092",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed830be3_4b6258fc",
+        "filename": "vid-webpack-master/src/app/instantiationStatus/instantiationStatus.component.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-30T14:31:43Z",
+      "side": 1,
+      "message": "It handles the case where status is undefined.",
+      "parentUuid": "3571f414_cac5ca34",
+      "revId": "c439c8193a2f819586b0ca9bb1b219a5c110e092",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
