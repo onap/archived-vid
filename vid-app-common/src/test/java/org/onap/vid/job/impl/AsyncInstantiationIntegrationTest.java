@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonNodePresent;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartMatches;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -56,6 +57,7 @@ import static org.onap.vid.job.Job.JobStatus.RESOURCE_IN_PROGRESS;
 import static org.onap.vid.job.Job.JobStatus.STOPPED;
 import static org.onap.vid.job.impl.JobSchedulerInitializer.WORKERS_TOPICS;
 import static org.onap.vid.model.JobAuditStatus.SourceStatus.VID;
+import static org.onap.vid.testUtils.TestUtils.readJsonResourceFileAsObject;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertFalse;
 import static org.testng.AssertJUnit.assertTrue;
@@ -67,7 +69,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -80,6 +81,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.ws.rs.ProcessingException;
+import net.javacrumbs.jsonunit.core.Configuration;
+import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
@@ -103,11 +106,8 @@ import org.onap.vid.model.Action;
 import org.onap.vid.model.JobAuditStatus;
 import org.onap.vid.model.NameCounter;
 import org.onap.vid.model.RequestReferencesContainer;
-import org.onap.vid.model.Service;
 import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.ServiceModel;
-import org.onap.vid.model.VNF;
-import org.onap.vid.model.VfModule;
 import org.onap.vid.model.serviceInstantiation.BaseResource;
 import org.onap.vid.model.serviceInstantiation.InstanceGroup;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
@@ -955,7 +955,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         RestObject<AsyncRequestStatus> createStatusResponse,
         RestObject<AsyncRequestStatus> deleteStatusResponse,
         JobStatus expectedJobStatus,
-        int getStatusCounter) throws IOException {
+        int getStatusCounter) {
 
         UUID jobUUID = createAndDeleteIntegrationTest("/payload_jsons/VnfGroupCreate1Delete1None1Request.json",
             "/serviceInstantiation/v7/instanceGroups",
@@ -992,7 +992,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         RestObject<AsyncRequestStatus> createStatusResponse,
         RestObject<AsyncRequestStatus> deleteStatusResponse,
         JobStatus expectedJobStatus,
-        int getStatusCounter) throws IOException {
+        int getStatusCounter) {
 
         createAndDeleteIntegrationTest("/payload_jsons/vnfDelete1Create1Request.json",
             "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/vnfs",
@@ -1041,7 +1041,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         RestObject<AsyncRequestStatus> createStatusResponse,
         RestObject<AsyncRequestStatus> deleteStatusResponse,
         JobStatus expectedJobStatus,
-        int getStatusCounter) throws IOException {
+        int getStatusCounter) {
 
         createAndDeleteIntegrationTest("/payload_jsons/networkDelete1Create1Request.json",
             "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/networks",
@@ -1062,9 +1062,9 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         RestObject<AsyncRequestStatus> createStatusResponse,
         RestObject<AsyncRequestStatus> deleteStatusResponse,
         JobStatus expectedJobStatus,
-        int getStatusCounter) throws IOException {
+        int getStatusCounter) {
         UUID jobUUID = asyncInstantiationBL.pushBulkJob(
-            TestUtils.readJsonResourceFileAsObject(payload, ServiceInstantiation.class), "userId")
+            readJsonResourceFileAsObject(payload, ServiceInstantiation.class), "userId")
             .get(0);
 
         when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), eq(createPath), any())).thenReturn(createResponse);
@@ -1086,7 +1086,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     }
 
     @Test
-    public void whenCreateTransportService_thanExpectedPre1806MacroRequestSent() throws IOException {
+    public void whenCreateTransportService_thanExpectedPre1806MacroRequestSent() {
         UUID jobUUID = asyncInstantiationBL.pushBulkJob(generatePre1806MacroTransportServiceInstantiationPayload(null, null),"az2016").get(0);
         RestObject<RequestReferencesContainer> createResponse = createResponseRandomIds(202);
 
@@ -1096,7 +1096,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
             .thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
         processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
 
-        JsonNode expectedJson = TestUtils.readJsonResourceFileAsObject("/payload_jsons/pre_1806_macro_without_cloudConfiguration.json", JsonNode.class);
+        JsonNode expectedJson = readJsonResourceFileAsObject("/payload_jsons/pre_1806_macro_without_cloudConfiguration.json", JsonNode.class);
         ArgumentCaptor<RequestDetailsWrapper> requestCaptor = ArgumentCaptor.forClass(RequestDetailsWrapper.class);
         verify(restMso).restCall(any(), any(), requestCaptor.capture(), any(), any());
         requestCaptor.getAllValues().forEach(x->assertJsonEquals(expectedJson, x));
@@ -1184,7 +1184,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     }
 
     @Test
-    public void whenResumeService_thanExpectedResumeRequestSent() throws IOException {
+    public void whenResumeService_thanExpectedResumeRequestSent() {
         String instanceId = "a565e6ad-75d1-4493-98f1-33234b5c17e2"; //from feRequestResumeMacroService.json
         String originalRequestId = "894089b8-f7f4-418d-81da-34186fd32670"; //from msoResponseGetRequestsOfServiceInstance.json
         String resumeRequestId = randomUuid();
@@ -1218,15 +1218,15 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     }
 
     @Test
-    public void givenResumeRequest_whenMsoReturnBadResponse_thanJobIsFailed() throws IOException {
+    public void givenResumeRequest_whenMsoReturnBadResponse_thanJobIsFailed() {
         //there is no mocks for restMSO which means restMso return bad response...
         UUID jobUUID = asyncInstantiationBL.pushBulkJob(generateResumeMacroPayload(), "abc").get(0);
         processJobsCountTimesAndAssertStatus(jobUUID, 20, FAILED);
     }
 
     @NotNull
-    private RestObject<AsyncRequestStatusList> createAsyncRequestStatusListByInstanceId() throws IOException {
-        AsyncRequestStatusList asyncRequestStatusList = TestUtils.readJsonResourceFileAsObject(
+    private RestObject<AsyncRequestStatusList> createAsyncRequestStatusListByInstanceId() {
+        AsyncRequestStatusList asyncRequestStatusList = readJsonResourceFileAsObject(
             "/payload_jsons/resume/msoResponseGetRequestsOfServiceInstance.json",
             AsyncRequestStatusList.class);
         RestObject<AsyncRequestStatusList> getRequestByIdResponse = new RestObject<>();
@@ -1235,26 +1235,33 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         return getRequestByIdResponse;
     }
 
-    private ServiceInstantiation generateResumeMacroPayload() throws IOException {
-        return TestUtils.readJsonResourceFileAsObject("/payload_jsons/resume/feRequestResumeMacroService.json", ServiceInstantiation.class);
+    private ServiceInstantiation generateResumeMacroPayload() {
+        return readJsonResourceFileAsObject("/payload_jsons/resume/feRequestResumeMacroService.json", ServiceInstantiation.class);
     }
 
     @Test
-    public void whenUpgradingAvfModule_thanExpectedReplaceRequestSent() throws IOException, AsdcCatalogException {
-        String instanceId = "5d49c3b1-fc90-4762-8c98-e800170baa55"; //from replace_vfmodule_fe_input.json
+    public void whenUpgradingAvfModule_thenExpectedReplaceRequestSent() throws AsdcCatalogException {
+        String serviceInstanceId = "6196ab1f-2349-4b32-9b6c-cffeb0ccc79c";
+        String vnfInstanceId = "d520268f-7489-4662-be59-f81495b3a069";
+        String vfModuleInstanceId = "b0732bed-3ddf-43cc-b193-7f18db84e476";
+
         String replaceRequestId = randomUuid();
         String userId = "az2016";
 
+        String modelInvariantId = "b3a1a119-dede-4ed0-b077-2a617fa519a3";
+        String newestModelUuid = "d9a5b318-187e-476d-97f7-a15687a927a9";
 
-        //prepare mocks for newest model
-        String newestModelUuid = "newest-model-uuid";
-        when(commandUtils.getNewestModelUuid(eq("b16a9398-ffa3-4041-b78c-2956b8ad9c7b"))).thenReturn(newestModelUuid);
+        String expectedMsoReplacePath = "/serviceInstantiation/v7/serviceInstances/"
+            + serviceInstanceId + "/vnfs/" + vnfInstanceId + "/vfModules/" + vfModuleInstanceId + "/replace";
 
-        when(commandUtils.getServiceModel(eq(newestModelUuid))).thenReturn(generateMockLatestModelForUpgrade());
+        when(commandUtils.getNewestModelUuid(eq(modelInvariantId))).thenReturn(newestModelUuid);
+        when(commandUtils.getServiceModel(eq(newestModelUuid))).thenReturn(newestServiceModel());
 
         //prepare mocks resume request
-        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), eq("/serviceInstantiation/v7/serviceInstances/e9993045-cc96-4f3f-bf9a-71b2a400a956/vnfs/5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5/vfModules/5d49c3b1-fc90-4762-8c98-e800170baa55/replace"), eq(Optional.of(userId))))
-            .thenReturn(createResponse(202, instanceId, replaceRequestId));
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(),
+            eq(expectedMsoReplacePath),
+            eq(Optional.of(userId)))
+        ).thenReturn(createResponse(202, vfModuleInstanceId, replaceRequestId));
 
 
         when(restMso.GetForObject(eq("/orchestrationRequests/v7/" + replaceRequestId), eq(AsyncRequestStatus.class)))
@@ -1262,69 +1269,39 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
                 asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
                 asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        ///orchestrationRequests/v7/0174b25a-dd81-45b7-b4af-0057bcc30857
-
         when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
         enableAddCloudOwnerOnMsoRequest();
 
-        UUID jobUUID = asyncInstantiationBL.pushBulkJob(generateReplaceVfModulePayload(), userId).get(0);
+        ServiceInstantiation upgradeVfModulePayload = upgradeVfModulePayload();
+        assertThat(upgradeVfModulePayload, jsonPartEquals("instanceId", serviceInstanceId));
+        assertThat(upgradeVfModulePayload, jsonNodePresent(
+            "vnfs"
+                + "." + vnfInstanceId
+                + ".vfModules"
+                + ".xbitestmodulereplace0\\.\\.XbiTestModuleReplace\\.\\.base_ocg\\.\\.module-0"
+                + "." + vfModuleInstanceId));
+
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(upgradeVfModulePayload, userId).get(0);
         processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
 
 
 
-        JsonNode expectedJson = TestUtils.readJsonResourceFileAsObject("/payload_jsons/vfmodule/replace_vfmodule.json", JsonNode.class);
+        JsonNode expectedJson = readJsonResourceFileAsObject("/payload_jsons/vfmodule/upgrade_vfmodule_e2e__payload_to_mso.json", JsonNode.class);
         ArgumentCaptor<RequestDetailsWrapper> requestCaptor = ArgumentCaptor.forClass(RequestDetailsWrapper.class);
-        verify(restMso).restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), requestCaptor.capture(), eq("/serviceInstantiation/v7/serviceInstances/e9993045-cc96-4f3f-bf9a-71b2a400a956/vnfs/5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5/vfModules/5d49c3b1-fc90-4762-8c98-e800170baa55/replace"), eq(Optional.of(userId)));
-        requestCaptor.getAllValues().forEach(x->assertJsonEquals(expectedJson, x));
+        verify(restMso).restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), requestCaptor.capture(), eq(expectedMsoReplacePath), eq(Optional.of(userId)));
+        requestCaptor.getAllValues().forEach(x->assertJsonEquals(expectedJson, x, Configuration.empty().when(Option.TREATING_NULL_AS_ABSENT)));
     }
 
-    private ServiceModel generateMockLatestModelForUpgrade() {
-        ServiceModel expectedNewestModel = new ServiceModel();
-
-
-        VfModule vfm = new VfModule();
-        vfm.setModelCustomizationName("newest-model-customization-name-vfm");
-        vfm.setCustomizationUuid("newest-model-customization-uuid-vfm");
-        vfm.setVersion("newest-model-version-vfm");
-        vfm.setUuid("newest-model-uuid-vfm");
-        vfm.setName("newest-model-name-vfm");
-        vfm.setInvariantUuid("f7a867f2-596b-4f4a-a128-421e825a6190");
-
-
-        Map<String,VfModule> vfms = new HashMap<>();
-        vfms.put("074c64d0-7e13-4bcc-8bdb-ea922331102d", vfm);
-
-
-        VNF vnf = new VNF();
-        vnf.setModelCustomizationName("newest-model-customization-name-vnf");
-        vnf.setCustomizationUuid("newest-model-customization-uuid-vnf");
-        vnf.setVersion("newest-model-version-vnf");
-        vnf.setUuid("newest-model-uuid-vnf");
-        vnf.setName("newest-model-name-vnf");
-        vnf.setInvariantUuid("23122c9b-dd7f-483f-bf0a-e069303db2f7");
-        vnf.setVfModules(vfms);
-        expectedNewestModel.setVfModules(vfms);
-
-        Map<String,VNF> vnfs = new HashMap<>();
-        vnfs.put("96c23a4a-6887-4b2c-9cce-1e4ea35eaade", vnf);
-
-        Service svc = new Service();
-        svc.setInvariantUuid("b16a9398-ffa3-4041-b78c-2956b8ad9c7b");
-        svc.setUuid("newest-model-uuid-service");
-        svc.setVersion("newest-model-version-service");
-        svc.setName("newest-model-name-service");
-
-        expectedNewestModel.setService(svc);
-
-        expectedNewestModel.setVnfs(vnfs);
-
-        return expectedNewestModel;
-
-
+    protected <T> ImmutableMap<String, T> kv(String k, T v) {
+        return ImmutableMap.of(k, v);
     }
 
-    private ServiceInstantiation generateReplaceVfModulePayload() throws IOException {
-        return TestUtils.readJsonResourceFileAsObject("/payload_jsons/vfmodule/replace_vfmodule_fe_input.json", ServiceInstantiation.class);
+    private ServiceModel newestServiceModel() {
+        return readJsonResourceFileAsObject("/payload_jsons/vfmodule/upgrade_vfmodule_e2e__target_newest_service_model.json", ServiceModel.class);
+    }
+
+    private ServiceInstantiation upgradeVfModulePayload() {
+        return readJsonResourceFileAsObject("/payload_jsons/vfmodule/upgrade_vfmodule_e2e__fe_input_cypress.json", ServiceInstantiation.class);
     }
 
 }

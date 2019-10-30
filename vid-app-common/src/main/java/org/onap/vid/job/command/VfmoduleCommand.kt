@@ -78,23 +78,6 @@ class VfmoduleCommand @Autowired constructor(
         return false
     }
 
-    private fun planReplaceMyselfRestCall3(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {
-        val serviceInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.SERVICE_INSTANCE_ID)
-        val serviceModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
-        val vnfModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.VNF_MODEL_INFO)
-        val vnfInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.VNF_INSTANCE_ID)
-        val replacePath = asyncInstantiationBL.getVfModuleReplacePath(serviceInstanceId, vnfInstanceId, getRequest().instanceId)
-
-        amendModelInfoWithNewestModel(serviceModelInfo, vnfModelInfo, (request as VfModule).modelInfo)
-
-        val requestDetailsWrapper = msoRequestBuilder.generateVfModuleInstantiationRequest(
-                request as VfModule, serviceModelInfo, serviceInstanceId,vnfModelInfo, vnfInstanceId,null,userId, testApi)
-
-        val actionDescription = "replace vfmodule ${request.instanceId}"
-
-        return MsoRestCallPlan(HttpMethod.POST, replacePath, Optional.of(requestDetailsWrapper), Optional.of(userId), actionDescription)
-    }
-
     private fun planReplaceMyselfRestCall(commandParentData: CommandParentData): MsoRestCallPlan {
 
         val newestModel = fetchNewestServiceModel()
@@ -139,19 +122,19 @@ class VfmoduleCommand @Autowired constructor(
 
     private fun newestVfmModelInfo(newestModel: ServiceModel): ModelInfo? {
         val vfmModelInfo = getRequest().modelInfo
-        val newestVfm = selectVfm(newestModel, vfmModelInfo)
-        return toModelInfo(newestVfm)
+        val matchingVfms = selectVfms(newestModel, vfmModelInfo)
+        return toModelInfo(matchingVfms.getOrNull(0))
     }
 
     private fun newestVnfModelInfo(newestModel: ServiceModel, commandParentData: CommandParentData): ModelInfo? {
         val vnfModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.VNF_MODEL_INFO)
-        val newestVnf = selectVnf(newestModel, vnfModelInfo)
-        return toModelInfo(newestVnf)
+        val matchingVnfs = selectVnfs(newestModel, vnfModelInfo)
+        return toModelInfo(matchingVnfs.getOrNull(0))
     }
 
-    private fun selectVfm(newestModel: ServiceModel, modelInfo: ModelInfo) = newestModel.vfModules[modelInfo.modelCustomizationId]
+    private fun selectVfms(newestModel: ServiceModel, modelInfo: ModelInfo) = newestModel.vfModules.values.filter { it.modelCustomizationName == modelInfo.modelCustomizationName }
 
-    private fun selectVnf(newestModel: ServiceModel, modelInfo: ModelInfo) = newestModel.vnfs[modelInfo.modelCustomizationId]
+    private fun selectVnfs(newestModel: ServiceModel, modelInfo: ModelInfo) = newestModel.vnfs.values.filter { it.modelCustomizationName == modelInfo.modelCustomizationName }
 
     private fun toModelInfo(toBeConverted: VNF?): ModelInfo? = toBeConverted?.let { toModelInfo(it, "vnf") }
 
@@ -192,41 +175,11 @@ class VfmoduleCommand @Autowired constructor(
         targetModelInfo.modelVersionId = toBeConverted.uuid
         targetModelInfo.modelInvariantId = toBeConverted.invariantUuid
         targetModelInfo.modelVersion = toBeConverted.version
-        //targetModelInfo.modelCustomizationId = toBeConverted.customizationUuid
-        //targetModelInfo.modelCustomizationName = toBeConverted.modelCustomizationName
         targetModelInfo.modelType = "service"
         targetModelInfo.modelName = toBeConverted.name
 
         return targetModelInfo
     }
-
-    private fun amendModelInfoWithNewestModel(serviceModelInfo: ModelInfo, vnfModelInfo: ModelInfo, vfmModelInfo: ModelInfo) {
-        val newestModel = fetchNewestServiceModel()
-        val newestService = newestModel.service
-
-        val newestVfm = newestModel.vfModules[vfmModelInfo.modelCustomizationId]
-        val newestVnf = newestModel.vnfs[vnfModelInfo.modelCustomizationId]
-
-        if (!(newestService == null || newestVnf == null || newestVfm == null)) {
-
-            serviceModelInfo.modelName = newestService.name
-            serviceModelInfo.modelVersionId = newestService.uuid
-            serviceModelInfo.modelVersion = newestService.version
-
-            vnfModelInfo.modelName = newestVnf.name
-            vnfModelInfo.modelVersionId = newestVnf.uuid
-            vnfModelInfo.modelVersion = newestVnf.version
-            vnfModelInfo.modelCustomizationId = newestVnf.customizationUuid
-            vnfModelInfo.modelCustomizationName = newestVnf.modelCustomizationName
-
-            vfmModelInfo.modelName = newestVfm.name
-            vfmModelInfo.modelVersionId = newestVfm.uuid
-            vfmModelInfo.modelVersion = newestVfm.version
-            vfmModelInfo.modelCustomizationId = newestVfm.customizationUuid
-            vfmModelInfo.modelCustomizationName = newestVfm.modelCustomizationName
-        }
-    }
-
 
     override fun replaceMyself(): Job.JobStatus {
         try {

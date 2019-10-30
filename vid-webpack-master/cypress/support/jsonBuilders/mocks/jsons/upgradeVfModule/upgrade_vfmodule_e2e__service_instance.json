@@ -60,9 +60,9 @@
             "instanceId": "b0732bed-3ddf-43cc-b193-7f18db84e476",
             "orchStatus": "Active",
             "productFamilyId": null,
-            "lcpCloudRegionId": null,
-            "tenantId": null,
-            "cloudOwner": null,
+            "lcpCloudRegionId": "olson5a",
+            "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+            "cloudOwner": "irma-aic",
             "modelInfo": {
               "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
               "modelCustomizationId": "3f1f0fcb-8a88-4612-a794-3912613ed9e8",
