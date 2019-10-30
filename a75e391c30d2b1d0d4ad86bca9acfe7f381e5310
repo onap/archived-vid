@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e5c79d8b_bdb23ba4",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/BasePresets/BaseAAIPreset.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-30T12:19:45Z",
+      "side": 1,
+      "message": "Please delete these \"created by\" lines.",
+      "revId": "a75e391c30d2b1d0d4ad86bca9acfe7f381e5310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd8d2c6d_1d8ffddd",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/AaiApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-30T12:19:45Z",
+      "side": 1,
+      "message": "add the specific \"AAIRestInterface\", e.g. whenCallAaiThroughAAIRestInterface_thenRequestRecordedInMetricsLog",
+      "revId": "a75e391c30d2b1d0d4ad86bca9acfe7f381e5310",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
