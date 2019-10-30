@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0c785582_7fd6c98b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidMetricLogClientFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-10-30T12:56:44Z",
+      "side": 1,
+      "message": "Let\u0027s give it a name of VidJaxRsMetrics.. same as Apache..",
+      "range": {
+        "startLine": 30,
+        "startChar": 13,
+        "endLine": 30,
+        "endChar": 37
+      },
+      "revId": "c638391d22999bd61243794a1981d7476bfdbd5f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
