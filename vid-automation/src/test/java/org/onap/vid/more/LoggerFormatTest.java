@@ -133,7 +133,7 @@ public class LoggerFormatTest extends BaseApiTest {
 
         List<RecordedRequests> requests = retrieveRecordedRequests();
         List<RecordedRequests> underTestRequests =
-            requests.stream().filter(x->x.path.startsWith(path)).collect(toList());
+            requests.stream().filter(x->x.path.contains(path)).collect(toList());
 
         assertThat(underTestRequests, hasSize(requestsSize));
 
