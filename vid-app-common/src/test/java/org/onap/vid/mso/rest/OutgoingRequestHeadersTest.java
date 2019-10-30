@@ -77,7 +77,6 @@ import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
-import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -115,7 +114,6 @@ public class OutgoingRequestHeadersTest {
     @Mock
     SyncRestClient syncRestClient;
 
-    @InjectMocks
     private AAIRestInterface aaiRestInterface;
 
     @Captor
@@ -130,6 +128,7 @@ public class OutgoingRequestHeadersTest {
         when(systemPropertiesWrapper.getProperty(SystemProperties.APP_DISPLAY_NAME)).thenReturn("vid");
         //the ctor of MsoRestClientNew require the above lines as preconditions
         msoRestClientNew = new MsoRestClientNew(syncRestClient, "baseUrl",systemPropertiesWrapper);
+        aaiRestInterface = new AAIRestInterface(httpsAuthClient, servletRequestHelper, systemPropertyHelper, loggingService);
     }
 
     @BeforeMethod
@@ -217,34 +216,8 @@ public class OutgoingRequestHeadersTest {
         return headersCapture;
     }
 
-    @DataProvider
-    public Object[][] aaiMethods() {
-        return Stream.<ThrowingConsumer<AAIRestInterface>>of(
-
-                client -> client.RestGet("from app id", "some transId", Unchecked.toURI("/any path"), false),
-                client -> client.RestPost("from app id", "/any path", "some payload", false),
-                client -> client.doRest("from app id", "some transId", Unchecked.toURI("/any path"), "somebody", HttpMethod.GET, false, true),
-                client -> client.RestPut("from app id", "/any path", "some payload", false, false)
-
-        ).map(l -> ImmutableList.of(l).toArray()).collect(Collectors.toList()).toArray(new Object[][]{});
-    }
-
-    @Test(dataProvider = "aaiMethods")
-    public void aai(Consumer<AAIRestInterface> f) throws Exception {
-        //given
-        final TestUtils.JavaxRsClientMocks mocks = setAndGetMocksInsideRestImpl(aaiRestInterface);
-        //when
-        f.accept(aaiRestInterface);
-        //then
-        HeadersVerifier headersVerifier = new HeadersVerifier().verifyFirstCall(mocks.getFakeBuilder());
-
-        //verify requestId is same in next call but invocationId is different
-        //given
-        final TestUtils.JavaxRsClientMocks mocks2 = setAndGetMocksInsideRestImpl(aaiRestInterface);
-        //when
-        f.accept(aaiRestInterface);
-        //then
-        headersVerifier.verifySecondCall(mocks2.getFakeBuilder());
+    @Test
+    public void aaiRestInterfaceNewHeadersTest() {
 
     }
 
