@@ -331,11 +331,7 @@ public class AAIServiceTreeIntegrativeTest {
     }
 
     private void mockAaiGetCall(String aaiPath, String jsonFilePath) {
-        try {
-            when(aaiClient.typedAaiRest(URI.create(aaiPath), JsonNode.class, null, HttpMethod.GET, false)).thenReturn(TestUtils.readJsonResourceFileAsObject(jsonFilePath, JsonNode.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        when(aaiClient.typedAaiRest(URI.create(aaiPath), JsonNode.class, null, HttpMethod.GET, false)).thenReturn(TestUtils.readJsonResourceFileAsObject(jsonFilePath, JsonNode.class));
     }
 
     @Test
