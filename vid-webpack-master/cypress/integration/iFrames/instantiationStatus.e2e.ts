@@ -28,7 +28,7 @@ describe('Instantiation status', function () {
   });
 
   it('should display the correct icons per status', function () {
-      const serviceAction:any = {INSTANTIATE : 'Instantiate', DELETE: 'Delete', UPDATE: 'Update'};
+      const serviceAction:any = {INSTANTIATE : 'Instantiate', DELETE: 'Delete', UPDATE: 'Update', UPGRADE: 'Upgrade'};
       cy.openIframe('app/ui/#/instantiationStatus');
       for(let i = 0 ; i < asyncRes.length; i++){
         if(asyncRes[i].project){

@@ -138,7 +138,7 @@ export class InstantiationStatusComponentService {
   }
 
   getStatus(status : string) : ServiceStatus {
-    switch(status.toUpperCase()) {
+    switch(`${status}`.toUpperCase()) {
       case  'PENDING' :
         return new ServiceStatus(PENDING, 'primary', 'Pending: The action required will be sent as soon as possible.');
       case  'IN_PROGRESS' :

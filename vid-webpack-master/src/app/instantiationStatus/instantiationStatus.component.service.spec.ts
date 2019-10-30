@@ -139,7 +139,7 @@ describe('Instantiation Status Service', () => {
     'STOPPED': 'Stopped: Due to previous failure, will not be instantiated.',
     'StOpPeD': 'Stopped: Due to previous failure, will not be instantiated.',
     'COMPLETED_WITH_ERRORS': 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.',
-    'UNEXPECTED_STATUS': 'Unexpected status: "UNEXPECTED_RANDOM_STATUS"',
+    'UNEXPECTED_RANDOM_STATUS': 'Unexpected status: "UNEXPECTED_RANDOM_STATUS"',
   })) {
 
     test(`getStatusTooltip should return status popover: status=${status}`, () => {
@@ -147,6 +147,12 @@ describe('Instantiation Status Service', () => {
     });
 
   }
+
+  test(`service.getStatus should handle undefined status`, () => {
+    const statusResult = service.getStatus(undefined);
+    expect(statusResult.tooltip).toEqual('Unexpected status: "undefined"');
+    expect(statusResult.iconClassName).toEqual(UNKNOWN);
+  });
 
   test('getStatusTooltip should return correct icon per job status', () => {
     let result : ServiceStatus  = service.getStatus('pending');
@@ -171,6 +177,9 @@ describe('Instantiation Status Service', () => {
     expect(result.iconClassName).toEqual(COMPLETED_WITH_ERRORS);
 
     result = service.getStatus('UNEXPECTED_RANDOM_STATUS');
+    expect(result.iconClassName).toEqual(UNKNOWN);
+
+    result = service.getStatus(undefined);
     expect(result.iconClassName).toEqual(UNKNOWN);
   });
 
