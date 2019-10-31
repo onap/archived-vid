@@ -25,18 +25,12 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.refEq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
-import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.AssertJUnit.assertEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.joshworks.restclient.http.HttpResponse;
@@ -48,9 +42,7 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.HttpResponseWithRequestInfo;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
@@ -69,8 +61,6 @@ import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -148,45 +138,6 @@ public class MsoRestClientTest {
 
         //  then
         assertThat(response).isEqualToComparingFieldByField(expectedResponse);
-    }
-
-    @Test
-    public void whenCreateInstanceTwice_thenRequestIdHeaderIsDifferentEachTime() {
-
-        RequestAttributes prevRequestAttributes = RequestContextHolder.getRequestAttributes();
-
-        try {
-            //given
-            Mockito.reset(client);
-
-            //mocking syncRestClient
-            RequestDetails requestDetails = MsoRestClientTestUtil.generateMockMsoRequest();
-            HttpResponse<String> httpResponse = HttpResponse.fallback("testOkResponse");
-            when( client.post( anyString() ,anyMap(), any(RequestDetails.class), eq(String.class) )  ).thenReturn(httpResponse);
-
-            //when
-            //create different ECOMP_REQUEST_ID header in Spring HttpServlet each time
-            OutgoingRequestHeadersTest.putRequestInSpringContext();
-            restClient.createInstance(requestDetails, "someEndPoint");
-
-            OutgoingRequestHeadersTest.putRequestInSpringContext();
-            restClient.createInstance(requestDetails, "someEndPoint");
-
-            //then
-            ArgumentCaptor<Map<String, String>> requestCaptor = ArgumentCaptor.forClass(Map.class);
-            verify(client, times(2)).post(anyString(), requestCaptor.capture(), any(RequestDetails.class), eq(String.class));
-            assertEquals(2, requestCaptor.getAllValues().size());
-            assertNotEquals(requestCaptor.getAllValues().get(0).get(SystemProperties.ECOMP_REQUEST_ID),
-                requestCaptor.getAllValues().get(1).get(SystemProperties.ECOMP_REQUEST_ID),
-                SystemProperties.ECOMP_REQUEST_ID + " headers are the same");
-            assertNotEquals(requestCaptor.getAllValues().get(0).get(ONAP_REQUEST_ID_HEADER_KEY),
-                requestCaptor.getAllValues().get(1).get(ONAP_REQUEST_ID_HEADER_KEY),
-                ONAP_REQUEST_ID_HEADER_KEY + " headers are the same");
-        }
-        finally {
-            //make sure other test keep go smooth
-            RequestContextHolder.setRequestAttributes(prevRequestAttributes);
-        }
     }
 
     @Test
