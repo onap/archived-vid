@@ -20,9 +20,6 @@
  */
 package org.onap.vid.mso.rest;
 
-import static org.onap.vid.logging.Headers.PARTNER_NAME;
-import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.joshworks.restclient.http.HttpResponse;
@@ -43,7 +40,6 @@ import org.onap.vid.changeManagement.MsoRequestDetails;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
 import org.onap.vid.client.SyncRestClient;
-import org.onap.vid.logging.Headers;
 import org.onap.vid.model.RequestReferencesContainer;
 import org.onap.vid.model.SOWorkflowList;
 import org.onap.vid.mso.MsoInterface;
@@ -52,7 +48,6 @@ import org.onap.vid.mso.MsoResponseWrapper;
 import org.onap.vid.mso.MsoResponseWrapperInterface;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
-import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.HttpMethod;
 
@@ -535,10 +530,6 @@ public class MsoRestClientNew implements MsoInterface {
     private Map<String, String> getHeaders() {
         Map<String, String> map = new HashMap<>();
         map.putAll(commonHeaders);
-        String requestIdValue = Logging.extractOrGenerateRequestId();
-        map.put(SystemProperties.ECOMP_REQUEST_ID, requestIdValue);
-        map.put(ONAP_REQUEST_ID_HEADER_KEY, requestIdValue);
-        map.put(Headers.INVOCATION_ID.getHeaderName(), Headers.INVOCATION_ID.getHeaderValue());
         return map;
     }
 
@@ -557,7 +548,6 @@ public class MsoRestClientNew implements MsoInterface {
         map.put(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON);
         map.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         map.put(X_FROM_APP_ID, systemProperties.getProperty(SystemProperties.APP_DISPLAY_NAME));
-        map.put(PARTNER_NAME.getHeaderName(), PARTNER_NAME.getHeaderValue());
         return ImmutableMap.copyOf(map);
     }
 

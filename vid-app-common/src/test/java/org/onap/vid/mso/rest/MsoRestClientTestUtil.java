@@ -32,8 +32,6 @@ import static com.xebialabs.restito.semantics.Condition.post;
 import static com.xebialabs.restito.semantics.Condition.uri;
 import static com.xebialabs.restito.semantics.Condition.withHeader;
 import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
-import static org.onap.vid.logging.Headers.PARTNER_NAME;
-import static org.onap.vid.utils.Logging.ONAP_REQUEST_ID_HEADER_KEY;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebialabs.restito.semantics.Action;
@@ -52,7 +50,6 @@ import org.glassfish.grizzly.http.Method;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.json.JSONObject;
 import org.junit.Assert;
-import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.changeManagement.RelatedInstanceList;
 import org.onap.vid.changeManagement.RequestDetailsWrapper;
 import org.onap.vid.changeManagement.WorkflowRequestDetail;
@@ -234,10 +231,7 @@ class MsoRestClientTestUtil implements AutoCloseable {
         withHeader(HttpHeaders.AUTHORIZATION),
         withHeader(HttpHeaders.ACCEPT),
         withHeader(HttpHeaders.CONTENT_TYPE),
-        withHeader(MsoRestClientNew.X_FROM_APP_ID),
-        withHeader(PARTNER_NAME.getHeaderName(), "VID.VID"),
-        withHeader(SystemProperties.ECOMP_REQUEST_ID),
-        withHeader(ONAP_REQUEST_ID_HEADER_KEY)
+        withHeader(MsoRestClientNew.X_FROM_APP_ID)
     );
   }
 
