@@ -18,7 +18,7 @@ public abstract  class PresetMsoChangeManagementBase extends PresetMSOBaseCreate
 
     @Override
     public String getReqPath() {
-        return getRootPath() + "/serviceInstances/v./" + serviceInstanceId + "/vnfs/"+vnfInstanceId+ getReqPathTrailer();
+        return getRootPath() + "/serviceInstantiation/v./serviceInstances/" + serviceInstanceId + "/vnfs/"+vnfInstanceId+ getReqPathTrailer();
     }
 
     protected String getReqPathTrailer() {

@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "POST",
-    "path": ".*/serviceInstances/v./SERVICE_INSTANCE_ID/vnfs/VNF_INSTANCE_ID/inPlaceSoftwareUpdate"
+    "path": ".*/serviceInstantiation/v./serviceInstances/SERVICE_INSTANCE_ID/vnfs/VNF_INSTANCE_ID/inPlaceSoftwareUpdate"
   } ,
   "simulatorResponse": {
     "responseCode": 202,
