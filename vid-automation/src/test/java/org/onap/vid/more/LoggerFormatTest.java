@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -18,6 +19,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
@@ -143,12 +146,16 @@ public class LoggerFormatTest extends BaseApiTest {
             assertThat("X-ONAP-PartnerName", request.headers.get("X-ONAP-PartnerName"), contains("VID.VID"));
         });
 
+        List<String> allInvocationIds = new LinkedList<>();
+
         underTestRequests.forEach(request->{
 
             List<String> invocationIds = request.headers.get("X-InvocationID");
             assertThat(invocationIds, hasSize(1));
 
             String invocationId = invocationIds.get(0);
+            allInvocationIds.add(invocationId);
+
             assertThat("request id  and invocation id must be found in exactly two rows",
                 logLines,
                 containsInRelativeOrder(
@@ -162,6 +169,9 @@ public class LoggerFormatTest extends BaseApiTest {
                         containsString("InvokeReturn"))
                 ));
         });
+        //make sure non InvocationId is repeated twice
+        assertThat("expect all InvocationIds to be unique",
+            allInvocationIds, containsInAnyOrder(new HashSet<>(allInvocationIds).toArray()));
     }
 
     private JsonNode getCheckerResults(String logtype, String logLines) {
