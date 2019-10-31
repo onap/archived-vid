@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb337e61_7ed3dbc2",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiUserLoginTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T10:25:55Z",
+      "side": 1,
+      "message": "I suggest classname like ChangeManagementMsoApiLoggingTest`",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "f420cf4c3fbfb49f69b5bf2f1c65c2347ce25325",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ce0c30b_23389876",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiUserLoginTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T10:25:55Z",
+      "side": 1,
+      "message": "If you don\u0027t mind, please replace \"zero\" with \"O\". :)",
+      "range": {
+        "startLine": 15,
+        "startChar": 32,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "f420cf4c3fbfb49f69b5bf2f1c65c2347ce25325",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad4fd1cc_c5b44f05",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiUserLoginTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T10:25:55Z",
+      "side": 1,
+      "message": "If you don\u0027t mind, please replace \"zero\" with \"O\". :) :)",
+      "range": {
+        "startLine": 16,
+        "startChar": 32,
+        "endLine": 16,
+        "endChar": 33
+      },
+      "revId": "f420cf4c3fbfb49f69b5bf2f1c65c2347ce25325",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60566fe3_14405c0f",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiUserLoginTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T10:25:55Z",
+      "side": 1,
+      "message": "please remove the \"7\", as it\u0027ll depend on config, which doesn\u0027t really matter here.\ni suggest inlining this field, so last line of test will be:\n```\n    LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId, \"/mso/orchestrationRequests/\", 2);\n```",
+      "range": {
+        "startLine": 30,
+        "startChar": 46,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "f420cf4c3fbfb49f69b5bf2f1c65c2347ce25325",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
