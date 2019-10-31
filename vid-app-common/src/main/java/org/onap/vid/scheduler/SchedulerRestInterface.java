@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -76,7 +76,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
         commonHeaders = Maps.newHashMap();
         commonHeaders.put("Authorization", "Basic " + authStringEnc);
 
-        syncRestClient = new SyncRestClient(loggingService);
+        syncRestClient = new SyncRestClient(loggingService, true);
 
         logger.info("\t<== Client Initialized \n");
     }
@@ -94,7 +94,6 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
             loggingService.logRequest(outgoingRequestsLogger, HttpMethod.GET, url);
             Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
                     .putAll(commonHeaders)
-                    .put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId())
                     .build();
             final HttpResponse<String> response = syncRestClient.get(url, requestHeaders,
                     Collections.emptyMap(), String.class);
@@ -128,7 +127,7 @@ public class SchedulerRestInterface implements SchedulerRestInterfaceIfc {
         loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url);
         Map<String, String> requestHeaders = ImmutableMap.<String, String>builder()
                 .putAll(commonHeaders)
-                .put(REQUEST_ID_HEADER_KEY, Logging.extractOrGenerateRequestId()).build();
+                .build();
         final HttpResponse<T> response = (HttpResponse<T>) syncRestClient.delete(url, requestHeaders, t.getClass());
 
         loggingService.logRequest(outgoingRequestsLogger, HttpMethod.DELETE, url, response);
