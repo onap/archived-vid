@@ -61,7 +61,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 null,
                 OperationalEnvironmentControllerApiTest.GET_CLOUD_RESOURCES_REQUEST_STATUS
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit2019, responseAndUuid);
 
     }
 
@@ -74,7 +74,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 "{}",
                 ServiceInstanceMsoApiTest.DEACTIVATE_OK_JSON
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit2019, responseAndUuid);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 "/" + MAINTENANCE_CATEGORY_PARAMETER + "?familyName=PARAMETER_STANDARDIZATION",
                 null
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit2019, responseAndUuid);
 
         /*
         test should be for:
@@ -130,7 +130,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
                 "/change-management/workflow/" + anyInstanceId,
                 "{}"
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit2019, responseAndUuid);
 
     }
 
@@ -139,7 +139,7 @@ public class RequestIdFilterInstalled extends BaseApiTest {
         final Pair<HttpEntity, String> responseAndUuid = makeRequest(
                 HttpMethod.GET, "/healthCheck", null
         );
-        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit, responseAndUuid);
+        assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit2019, responseAndUuid);
     }
 
     private void assertThatUuidInResponseAndUuidIsInARecentLog(LogName logName, Pair<HttpEntity, String> responseAndUuid) {
