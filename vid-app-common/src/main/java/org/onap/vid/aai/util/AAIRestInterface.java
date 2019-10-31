@@ -41,7 +41,7 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ResponseWithRequestInfo;
 import org.onap.vid.aai.exceptions.InvalidPropertyException;
-import org.onap.vid.logging.VidMetricLogClientFilter;
+import org.onap.vid.logging.JaxRsMetricLogClientFilter;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +125,7 @@ public class AAIRestInterface {
         if (client == null) {
             try {
                 client = httpsAuthClientFactory.getClient(HttpClientMode.WITH_KEYSTORE);
-                VidMetricLogClientFilter metricLogClientFilter = new VidMetricLogClientFilter();
+                JaxRsMetricLogClientFilter metricLogClientFilter = new JaxRsMetricLogClientFilter();
                 client.register(metricLogClientFilter);
             } catch (Exception e) {
                 logger.info(EELFLoggerDelegate.errorLogger, "Exception in REST call to DB in initRestClient" + e.toString());

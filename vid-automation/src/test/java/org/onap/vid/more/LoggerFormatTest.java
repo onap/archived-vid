@@ -51,23 +51,13 @@ public class LoggerFormatTest extends BaseApiTest {
     }
 
     @Test
-    public void validateAuditLogsFormat() {
-        validateLogsFormat(LogName.audit);
-    }
-
-    @Test
     public void validateAudit2019LogsFormat() {
-        validateLogsFormat(LogName.audit2019, "audit-ELS-2019.11", 0);
+        validateLogsFormat(LogName.audit2019, "audit-ELS-2019.11", 0.95);
     }
 
     @Test(enabled = false) // no total-score is returned for error-log
     public void validateErrorLogsFormat() {
         validateLogsFormat(LogName.error);
-    }
-
-    @Test
-    public void validateMetricsLogsFormat() {
-        validateLogsFormat(LogName.metrics, "metric");
     }
 
     @Test
