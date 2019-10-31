@@ -1,0 +1,54 @@
+{
+  "requestDetails": {
+    "requestInfo": {
+      "source": "VID",
+      "requestorId": "az2016",
+      "instanceName": "PST-VfMod-Replace-5-Vfmod",
+      "suppressRollback": true
+    },
+    "relatedInstanceList": [{
+        "relatedInstance": {
+          "instanceId": "6196ab1f-2349-4b32-9b6c-cffeb0ccc79c",
+          "modelInfo": {
+            "modelType": "service",
+            "modelName": "xbi test module replace",
+            "modelVersion": "2.0",
+            "modelVersionId": "d9a5b318-187e-476d-97f7-a15687a927a9",
+            "modelInvariantId": "b3a1a119-dede-4ed0-b077-2a617fa519a3"
+          }
+        }
+      }, {
+        "relatedInstance": {
+          "instanceId": "d520268f-7489-4662-be59-f81495b3a069",
+          "modelInfo": {
+            "modelType": "vnf",
+            "modelName": "xbi test module replace",
+            "modelVersion": "2.0",
+            "modelVersionId": "b726207d-12ad-4245-90e0-bb9f71824b01",
+            "modelInvariantId": "5626a5ec-7dce-4cc1-b025-bdb7abb2f058",
+            "modelCustomizationId": "b2fea30c-3794-44c1-9d62-1103319a4c44",
+            "modelCustomizationName": "xbi test module replace 0"
+          }
+        }
+      }
+    ],
+    "requestParameters": {
+      "userParams": [],
+      "testApi": "VNF_API"
+    },
+    "modelInfo": {
+      "modelType": "vfModule",
+      "modelName": "XbiTestModuleReplace..base_ocg..module-0",
+      "modelVersion": "1",
+      "modelVersionId": "04b21d26-9780-4956-8329-b22b049329f4",
+      "modelInvariantId": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+      "modelCustomizationId": "51f9acf5-4ab3-4041-bb0d-b022e747dc6b",
+      "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0"
+    },
+    "cloudConfiguration": {
+      "lcpCloudRegionId": "olson5a",
+      "cloudOwner": "irma-aic",
+      "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08"
+    }
+  }
+}

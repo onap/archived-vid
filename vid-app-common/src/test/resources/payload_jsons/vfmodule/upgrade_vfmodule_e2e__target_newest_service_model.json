@@ -1,0 +1,160 @@
+{
+  "service": {
+    "uuid": "d9a5b318-187e-476d-97f7-a15687a927a9",
+    "invariantUuid": "b3a1a119-dede-4ed0-b077-2a617fa519a3",
+    "name": "xbi test module replace",
+    "version": "2.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "test module replacement feature",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "legacy",
+      "modelCategory": "other",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {
+    "xbi test module replace 0": {
+      "uuid": "b726207d-12ad-4245-90e0-bb9f71824b01",
+      "invariantUuid": "5626a5ec-7dce-4cc1-b025-bdb7abb2f058",
+      "description": "VSP for testing module replacement feature",
+      "name": "xbi test module replace",
+      "version": "2.0",
+      "customizationUuid": "b2fea30c-3794-44c1-9d62-1103319a4c44",
+      "inputs": {},
+      "commands": {},
+      "properties": {},
+      "type": "VF",
+      "modelCustomizationName": "xbi test module replace 0",
+      "vfModules": {
+        "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
+          "uuid": "04b21d26-9780-4956-8329-b22b049329f4",
+          "invariantUuid": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+          "customizationUuid": "51f9acf5-4ab3-4041-bb0d-b022e747dc6b",
+          "description": null,
+          "name": "XbiTestModuleReplace..base_ocg..module-0",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_ocg",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+          "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+          "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+          "customizationUuid": "73b88d25-b8e9-41bc-bba5-18c9b07750a3",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgmgr..module-1",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgmgr",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        }
+      },
+      "volumeGroups": {
+        "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+          "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+          "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+          "customizationUuid": "73b88d25-b8e9-41bc-bba5-18c9b07750a3",
+          "description": null,
+          "name": "XbiTestModuleReplace..ocgmgr..module-1",
+          "version": "1",
+          "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "ocgmgr",
+            "baseModule": false
+          },
+          "inputs": {}
+        }
+      },
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
+      "uuid": "04b21d26-9780-4956-8329-b22b049329f4",
+      "invariantUuid": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+      "customizationUuid": "51f9acf5-4ab3-4041-bb0d-b022e747dc6b",
+      "description": null,
+      "name": "XbiTestModuleReplace..base_ocg..module-0",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_ocg",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+      "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+      "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+      "customizationUuid": "73b88d25-b8e9-41bc-bba5-18c9b07750a3",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgmgr..module-1",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgmgr",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    }
+  },
+  "volumeGroups": {
+    "xbitestmodulereplace0..XbiTestModuleReplace..ocgmgr..module-1": {
+      "uuid": "17dc819b-6cae-40e6-aea0-3afb856646f6",
+      "invariantUuid": "9fe2a0bb-e1e2-4dfd-9566-a7dfc3adc07d",
+      "customizationUuid": "73b88d25-b8e9-41bc-bba5-18c9b07750a3",
+      "description": null,
+      "name": "XbiTestModuleReplace..ocgmgr..module-1",
+      "version": "1",
+      "modelCustomizationName": "XbiTestModuleReplace..ocgmgr..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "ocgmgr",
+        "baseModule": false
+      },
+      "inputs": {}
+    }
+  },
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}

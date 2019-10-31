@@ -86,7 +86,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.togglz.core.manager.FeatureManager;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
@@ -611,8 +610,8 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     @Test
-    public void generateReplaceVfModuleRequest_verifyResultAsExpected() throws IOException {
-        String expected = TestUtils.readFileAsString("/payload_jsons/vfmodule/replace_vfmodule.json");
+    public void generateReplaceVfModuleRequest_verifyResultAsExpected() {
+        String expected = TestUtils.readFileAsString("/payload_jsons/vfmodule/replace_vfmodule__payload_to_mso.json");
         when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(true);
         when(aaiClient.getCloudOwnerByCloudRegionId("regionOne")).thenReturn("irma-aic");
 

@@ -150,18 +150,19 @@ public class TestUtils {
         }
     }
 
-    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType) throws IOException {
+    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType) {
         return readJsonResourceFileAsObject(pathInResource, valueType, false);
     }
 
-    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType,
-        boolean failOnUnknownProperties)
-        throws IOException {
-        ObjectMapper objectMapper = jacksonObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, failOnUnknownProperties);
-        return objectMapper.readValue(
-            TestUtils.class.getResource(pathInResource),
-            valueType);
+    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType, boolean failOnUnknownProperties) {
+        ObjectMapper objectMapper =
+            jacksonObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, failOnUnknownProperties);
+
+        try {
+            return objectMapper.readValue(TestUtils.class.getResource(pathInResource), valueType);
+        } catch (IOException e) {
+            return ExceptionUtils.rethrow(e);
+        }
     }
 
     public static String readFileAsString(String pathInResource) {
