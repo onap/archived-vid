@@ -18,8 +18,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,12 +146,18 @@ public class LoggerFormatTest extends BaseApiTest {
             assertThat("X-ONAP-PartnerName", request.headers.get("X-ONAP-PartnerName"), contains("VID.VID"));
         });
 
+        Set<String> allUniqueInvocationIds = new LinkedHashSet<>();
+        List<String> allInvocationIds = new LinkedList<>();
+
         underTestRequests.forEach(request->{
 
             List<String> invocationIds = request.headers.get("X-InvocationID");
             assertThat(invocationIds, hasSize(1));
 
             String invocationId = invocationIds.get(0);
+            allUniqueInvocationIds.add(invocationId);
+            allInvocationIds.add(invocationId);
+
             assertThat("request id  and invocation id must be found in exactly two rows",
                 logLines,
                 containsInRelativeOrder(
@@ -162,6 +171,9 @@ public class LoggerFormatTest extends BaseApiTest {
                         containsString("InvokeReturn"))
                 ));
         });
+
+        //make sure non InvocationId is repeated twice
+        assertThat(allUniqueInvocationIds, contains(allInvocationIds.toArray()));
     }
 
     private JsonNode getCheckerResults(String logtype, String logLines) {
