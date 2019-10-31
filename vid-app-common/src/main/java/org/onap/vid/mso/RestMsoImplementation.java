@@ -40,7 +40,7 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.util.HttpClientMode;
 import org.onap.vid.aai.util.HttpsAuthClient;
 import org.onap.vid.client.HttpBasicClient;
-import org.onap.vid.logging.VidMetricLogClientFilter;
+import org.onap.vid.logging.JaxRsMetricLogClientFilter;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,7 +131,7 @@ public class RestMsoImplementation {
     }
 
     private void registerClientToMetricLogClientFilter(Client client) {
-        VidMetricLogClientFilter metricLogClientFilter = new VidMetricLogClientFilter();
+        JaxRsMetricLogClientFilter metricLogClientFilter = new JaxRsMetricLogClientFilter();
         client.register(metricLogClientFilter);
     }
 
