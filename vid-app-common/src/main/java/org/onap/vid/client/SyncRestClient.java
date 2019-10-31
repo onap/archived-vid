@@ -79,7 +79,7 @@ public class SyncRestClient implements SyncRestClientInterface {
     }
 
     public SyncRestClient(ObjectMapper objectMapper, Logging loggingService) {
-        this(null, objectMapper,  loggingService, false);
+        this(null, objectMapper,  loggingService, true);
     }
 
     public SyncRestClient(CloseableHttpClient httpClient, Logging loggingService) {
