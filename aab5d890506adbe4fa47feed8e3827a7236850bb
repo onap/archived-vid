@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0175129e_19de07ff",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/scheduler/SchedulerRestInterface.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T13:26:56Z",
+      "side": 1,
+      "message": "Aint it better to remove the `boolean useLoggingInterceptor` param from `SyncRestClient`, as this is the lat usage of the non-interceptor case?",
+      "revId": "aab5d890506adbe4fa47feed8e3827a7236850bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c51ed25_eaee6686",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementUserApiLoggingTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T13:26:56Z",
+      "side": 1,
+      "message": "`import static` should come before the other imports. please install the \"Java Code Style\" on your IntelliJ: https://wiki.onap.org/display/DW/Java+code+style",
+      "revId": "aab5d890506adbe4fa47feed8e3827a7236850bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3dee335_7ac14b9d",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementUserApiLoggingTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T13:26:56Z",
+      "side": 1,
+      "message": "`whenCallSchedulerGet_...`",
+      "range": {
+        "startLine": 47,
+        "startChar": 14,
+        "endLine": 47,
+        "endChar": 31
+      },
+      "revId": "aab5d890506adbe4fa47feed8e3827a7236850bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa6e623f_307c1cbf",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementUserApiLoggingTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T13:26:56Z",
+      "side": 1,
+      "message": "please extract method and reuse this \"retreiveRequestId\" idiom",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 86
+      },
+      "revId": "aab5d890506adbe4fa47feed8e3827a7236850bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cd28dcf_44355798",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementUserApiLoggingTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T13:26:56Z",
+      "side": 1,
+      "message": "`whenCallSchedulerDelete_...`",
+      "range": {
+        "startLine": 66,
+        "startChar": 14,
+        "endLine": 66,
+        "endChar": 37
+      },
+      "revId": "aab5d890506adbe4fa47feed8e3827a7236850bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e391290_03603f54",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementUserApiLoggingTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-10-31T13:26:56Z",
+      "side": 1,
+      "message": "`restTemplate.exchange(buildUri(SCHEDULER_PATH), HttpMethod.DELETE, String.class)`?",
+      "range": {
+        "startLine": 78,
+        "startChar": 24,
+        "endLine": 78,
+        "endChar": 41
+      },
+      "revId": "aab5d890506adbe4fa47feed8e3827a7236850bb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
