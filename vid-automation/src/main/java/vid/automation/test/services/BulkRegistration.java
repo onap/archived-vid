@@ -1,9 +1,37 @@
 package vid.automation.test.services;
 
+import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_CLOUD_OWNER;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
+import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.aai.*;
-import org.onap.simulator.presetGenerator.presets.mso.*;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIFilterServiceInstanceById;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetHomingForVfModule;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByOwningEntity;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByProject;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOActivateFabricConfiguration;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModule;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeactivateAndCloudDelete;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteInstanceOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteNetwork;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteService;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVfModule;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVnf;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteVolumeGroup;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSOActOnConfiguration;
 import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSOCreateConfiguration;
 import org.onap.simulator.presetGenerator.presets.mso.configuration.PresetMSODeleteConfiguration;
@@ -12,12 +40,6 @@ import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadat
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import vid.automation.test.Constants;
 import vid.automation.test.Constants.ViewEdit;
-
-import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_CLOUD_OWNER;
-import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.ATT_NC;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
-import static vid.automation.test.infra.ModelInfo.serviceFabricSriovService;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 public class BulkRegistration {
 
@@ -352,9 +374,17 @@ public class BulkRegistration {
         SimulatorApi.registerExpectation(
                 new String [] {
                         Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS,
-                        Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT,
                         Constants.RegisterToSimulator.CreateNewServiceInstance.deploy.GET_AIC_ZONES
                 }, ImmutableMap.<String, Object>of("<ORCH_STATUS>", orchStatus, "<VF_MODULE_ORCH_STATUS>", vfModuleOrchStatus), SimulatorApi.RegistrationStrategy.APPEND);
+
+        //for delete service instance we will use other preset , so the service would be empty
+        if (!StringUtils.equals(type, "Service")) {
+            SimulatorApi.registerExpectation(
+                new String [] {
+                    Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT,
+                }, ImmutableMap.<String, Object>of("<ORCH_STATUS>", orchStatus, "<VF_MODULE_ORCH_STATUS>", vfModuleOrchStatus), SimulatorApi.RegistrationStrategy.APPEND);
+        }
+
         SimulatorApi.registerExpectationFromPresets(
                 ImmutableList.of(
                         new PresetAAIGetTenants(),
