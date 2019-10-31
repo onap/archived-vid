@@ -49,7 +49,7 @@ public abstract class BaseMSOPreset extends BasePreset {
         Map<String, String> map = super.getRequestHeaders();
         map.put("X-ONAP-PartnerName", "VID.VID");
         map.put("X-ECOMP-RequestID", "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
-        map.put("X-ONAP-InvocationID", "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
+        map.put("X-InvocationID", "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
         map.put("X-ONAP-RequestID", "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
         return map;
     }
