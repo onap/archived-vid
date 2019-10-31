@@ -1,21 +1,57 @@
 package org.onap.vid.api;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+import static vid.automation.test.infra.Features.FLAG_1906_INSTANTIATION_API_USER_VALIDATION;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import net.bytebuddy.utility.RandomString;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.collection.IsCollectionWithSize;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.simulator.presetGenerator.presets.mso.*;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAssignServiceInstanceGen2WithNames;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNames;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteMacroService;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGetErrorResponse;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsManyInstanceStatusesGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2ErrorResponse;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -27,23 +63,6 @@ import vid.automation.test.infra.Wait;
 import vid.automation.test.model.JobStatus;
 import vid.automation.test.model.ServiceAction;
 import vid.automation.test.services.SimulatorApi;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
-import static vid.automation.test.infra.Features.FLAG_1906_INSTANTIATION_API_USER_VALIDATION;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
-import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
 
 public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
     private static final Logger logger = LogManager.getLogger(AsyncInstantiationMacroApiTest.class);
@@ -116,9 +135,12 @@ public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
             deleteOneJobHavingTheStatus(jobs, JobStatus.IN_PROGRESS);
         } catch (HttpClientErrorException e) {
             JsonAssert.assertJsonPartEquals(
-                    "Service status does not allow deletion from the queue (Request id: null)",
-                    e.getResponseBodyAsString(),
-                    "message"
+                String.format(
+                    "Service status does not allow deletion from the queue (Request id: %s)",
+                    e.getResponseHeaders().getFirst("X-ECOMP-RequestID-echo")
+                ),
+                e.getResponseBodyAsString(),
+                "message"
             );
             assertThat(e.getStatusCode(), is(HttpStatus.METHOD_NOT_ALLOWED));
 
