@@ -20,19 +20,30 @@
 
 package org.onap.vid.logging;
 
-import static org.onap.vid.logging.LoggingFilterHelper.updateInvocationIDInMdcWithHeaderValue;
+import static org.testng.Assert.assertEquals;
 
-import javax.ws.rs.client.ClientRequestContext;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
-import org.onap.logging.filter.base.MetricLogClientFilter;
 import org.onap.logging.ref.slf4j.ONAPLogConstants;
+import org.slf4j.MDC;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-public class VidMetricLogClientFilter extends MetricLogClientFilter {
+public class JaxRsMetricLogClientFilterTest {
 
-    @Override
-    protected void additionalPre(ClientRequestContext clientRequestContext, MultivaluedMap<String, Object> stringObjectMultivaluedMap) {
-        updateInvocationIDInMdcWithHeaderValue(
-            ()->(String)stringObjectMultivaluedMap.getFirst(ONAPLogConstants.Headers.INVOCATION_ID)
-        );
+    JaxRsMetricLogClientFilter metricLogClientFilter;
+
+    @BeforeMethod
+    public void setup() {
+        this.metricLogClientFilter = new JaxRsMetricLogClientFilter();
+        MDC.clear();
+    }
+
+    @Test
+    public void testAdditionalPre() {
+        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
+        headers.add(ONAPLogConstants.Headers.INVOCATION_ID, "xyz");
+        metricLogClientFilter.additionalPre(null, headers);
+        assertEquals(MDC.get(ONAPLogConstants.MDCs.INVOCATION_ID), "xyz");
     }
 }
