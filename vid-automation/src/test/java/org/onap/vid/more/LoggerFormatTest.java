@@ -115,8 +115,8 @@ public class LoggerFormatTest extends BaseApiTest {
     /**
      * @return Chronological-ordered list of recent log-lines of a given requestId
      */
-    public static List<String> getRequestLogLines(String requestId, LogName logname, RestTemplate restTemplate, URI uri) {
-        String logLines = LoggerFormatTest.getLogLines(logname, 30, 1, restTemplate, uri);
+    public static List<String> getRequestLogLines(String requestId, LogName logname, RestTemplate restTemplate, URI uri, int maxRows) {
+        String logLines = LoggerFormatTest.getLogLines(logname, maxRows, 1, restTemplate, uri);
 
         // Split
         List<String> lines = new ArrayList<>(Arrays.asList(logLines.split("(\\r?\\n)")));
@@ -131,8 +131,11 @@ public class LoggerFormatTest extends BaseApiTest {
     }
 
     public static void assertHeadersAndMetricLogs(RestTemplate restTemplate, URI uri, String requestId, String path, int requestsSize) {
+        assertHeadersAndMetricLogs(restTemplate, uri, requestId, path, requestsSize, 30);
+    }
+    public static void assertHeadersAndMetricLogs(RestTemplate restTemplate, URI uri, String requestId, String path, int requestsSize, int maxRows) {
         List<String> logLines =
-            getRequestLogLines(requestId, LogName.metrics2019, restTemplate, uri);
+            getRequestLogLines(requestId, LogName.metrics2019, restTemplate, uri, maxRows);
 
         List<RecordedRequests> requests = retrieveRecordedRequests();
         List<RecordedRequests> underTestRequests =
@@ -156,7 +159,7 @@ public class LoggerFormatTest extends BaseApiTest {
             String invocationId = invocationIds.get(0);
             allInvocationIds.add(invocationId);
 
-            assertThat("request id  and invocation id must be found in exactly two rows",
+            assertThat("request id  and invocation id must be found in exactly two rows in: \n" + String.join("\n", logLines),
                 logLines,
                 containsInRelativeOrder(
                     allOf(

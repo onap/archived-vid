@@ -31,6 +31,7 @@ import org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
+import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.ITestResult;
@@ -150,13 +151,15 @@ public class ServiceTreeApiTest extends BaseApiTest {
                         new PresetAAIGetCloudRegionFromVnf(vnfPreset1.getInstanceId()),
                         new PresetAAIGetCloudRegionFromVnf(vnfPreset2.getInstanceId()),
                         new PresetAAIGetCloudRegionFromVnf(vnfPreset3.getInstanceId()),
-                        new PresetAAIGetCloudRegionFromVnf(vnfPreset4.getInstanceId())
+                        new PresetAAIGetCloudRegionFromVnf(vnfPreset4.getInstanceId()),
+                        new PresetAAIGetSubscribersGet()
                 ), CLEAR_THEN_SET);
 
         String api_url = "aai_search_group_members?subscriberId={subscriberId}&serviceType={serviceType}&serviceInvariantId={serviceInvariantId}" +
                 "&groupType={groupType}&groupRole={groupRole}";
 
-        final String response = restTemplate.getForObject(buildUri(api_url), String.class, "global-customer-id", "service-instance-type", "24632e6b-584b-4f45-80d4-fefd75fd9f14", "LOAD-GROUP", "SERVICE-ACCESS");
+        final ResponseEntity<String> responseEntity = restTemplate.getForEntity(buildUri(api_url), String.class, "global-customer-id", "service-instance-type", "24632e6b-584b-4f45-80d4-fefd75fd9f14", "LOAD-GROUP", "SERVICE-ACCESS");
+        String response = responseEntity.getBody();
 
         LOGGER.info(response);
 
@@ -176,6 +179,8 @@ public class ServiceTreeApiTest extends BaseApiTest {
                 .replace("VNF4_INSTANCE_TYPE", vnfPreset4.getInstanceType());
 
         assertJsonEquals(response, expected);
+        final String requestId = responseEntity.getHeaders().getFirst("X-ECOMP-RequestID-echo");
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId,  "/network/generic-vnfs/generic-vnf/", 5, 100);
     }
 
     @Test

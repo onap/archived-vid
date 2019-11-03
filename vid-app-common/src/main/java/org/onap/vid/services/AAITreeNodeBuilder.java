@@ -42,6 +42,7 @@ import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.Streams;
 import org.onap.vid.utils.Tree;
 import org.onap.vid.utils.Unchecked;
+import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -255,11 +256,17 @@ public class AAITreeNodeBuilder {
                             AAITreeNode node, List<Relationship> relationships, Tree<AAIServiceTree.AaiRelationship> pathsTree, long timeout) {
 
         if (!relationships.isEmpty()) {
+            //in order to be able to write the correct data while creating the node on a new thread
+            // save a copy of the current thread's context map, with keys and values of type String.
+            Map<String, String> copyOfParentMDC = MDC.getCopyOfContextMap();
             List<Callable<List<AAITreeNode>>> tasks = relationships.stream()
                     .map(relationship ->
-                            (Callable<List<AAITreeNode>>) () ->
-                                    getChildNode(threadPool, nodesAccumulator, relationship.getRelatedTo(),
-                                            relationship.getRelatedLink(), pathsTree))
+                            (Callable<List<AAITreeNode>>) () -> {
+                                // use the saved MDC map
+                                MDC.setContextMap(copyOfParentMDC);
+                                return getChildNode(threadPool, nodesAccumulator, relationship.getRelatedTo(),
+                                    relationship.getRelatedLink(), pathsTree);
+                            })
                     .collect(Collectors.toList());
 
             try {

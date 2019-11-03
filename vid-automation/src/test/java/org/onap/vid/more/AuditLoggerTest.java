@@ -49,7 +49,7 @@ public class AuditLoggerTest extends BaseApiTest {
     }
 
     private List<String> getRequestLogLines(String requestId) {
-        return LoggerFormatTest.getRequestLogLines(requestId, LogName.audit2019, restTemplate, uri);
+        return LoggerFormatTest.getRequestLogLines(requestId, LogName.audit2019, restTemplate, uri, 30);
     }
 
     private String getRequestId(Supplier<ResponseEntity<?>> request) {
